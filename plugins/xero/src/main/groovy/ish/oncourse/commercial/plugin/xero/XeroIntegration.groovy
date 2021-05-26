@@ -22,8 +22,10 @@ import ish.common.types.Gender
 import ish.common.types.PayslipStatus
 import ish.math.Money
 
+import static ish.oncourse.commercial.plugin.xero.AuthentificationContext.XERO_ACCESS_TOKEN
 import static ish.oncourse.commercial.plugin.xero.AuthentificationContext.XERO_CLIENT_ID
 import static ish.oncourse.commercial.plugin.xero.AuthentificationContext.XERO_CLIENT_SECRET
+import static ish.oncourse.commercial.plugin.xero.AuthentificationContext.XERO_REFRESH_TOKEN
 import static ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl.VERIFICATION_CODE
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Contact
@@ -72,10 +74,7 @@ Review all the other employee settings and ensure they are correct.
 	static final String MESSAGE_CONFIGURE_EARNING = "Add an 'Ordinary Earnings Rate' of type 'fixed' to this employee in Xero."
 	static final String MESSAGE_CONFIGURE_CALENDAR = "Add a 'payroll calendar' to this employee in Xero."
 	static final String MESSAGE_PAYSLIP_MISSING =  "The draft pay run in Xero has this employee disabled. Log into Xero, go to 'Pay Employee' menu, choose the payrun and ensure there is a green tick next to the employee."
-
-
-	private static final String XERO_ACCESS_TOKEN = "accessToken"
-	private static final String XERO_REFRESH_TOKEN = "refreshToken"
+	
 	private static final String XERO_ACTIVE = "active"
 	private static final String XERO_ORGANISATION = "companyName"
 
@@ -100,60 +99,98 @@ Review all the other employee settings and ensure they are correct.
 
 	@OnSave
 	static void onSave(IntegrationConfiguration configuration, Map<String, String> props) {
-		String initialAccessToken = null 
-		String initialRefreshToken = null
-		String organisationName = null
+		
+		if (props[XERO_ACTIVE] != null && props[XERO_ACTIVE] == 'false' ) {
+			AuthentificationContext authContext = new AuthentificationContext(configuration)
+			authContext.init()
+			authContext.disconnect()
+			configuration.setProperty(XERO_ACTIVE, 'true')
+		} else {
+			
+			new RESTClient('https://identity.xero.com').request(POST, URLENC) {
+				uri.path = '/connect/token'
+				headers.'Authorization' = "Basic ${"$XERO_CLIENT_ID:$XERO_CLIENT_SECRET".bytes.encodeBase64().toString()}"
+				body = "grant_type=authorization_code&code=${props[(VERIFICATION_CODE)]}&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html"
 
-		new RESTClient('https://identity.xero.com').request(POST, URLENC) {
-			uri.path = '/connect/token'
-			headers.'Authorization' = "Basic ${"$XERO_CLIENT_ID:$XERO_CLIENT_SECRET".bytes.encodeBase64().toString()}"
-			body = "grant_type=authorization_code&code=${props[(VERIFICATION_CODE)]}&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html"
+				response.success = { resp, body ->
+					Map<String, String> jsonResponce = new JsonSlurper().parseText(body.keySet()[0])
+					configuration.setProperty(XERO_ACCESS_TOKEN, jsonResponce['access_token'])
+					configuration.setProperty(XERO_REFRESH_TOKEN,jsonResponce['refresh_token'])
+				}
 
-			response.success = { resp, body ->
-				Map<String, String> jsonResponce = new JsonSlurper().parseText(body.keySet()[0])
-				initialAccessToken =  jsonResponce['access_token']
-				initialRefreshToken =  jsonResponce['refresh_token']
+				response.failure = { resp, body ->
+					logger.error(body.toString())
+					throw new RuntimeException("Xero app authentication error: $body.toString()")
+				}
 			}
 
-			response.failure = { resp, body ->
-				String error = body.keySet()[0]
-				logger.error(error)
+			AuthentificationContext authContext = new AuthentificationContext(configuration)
+			authContext.init()
 
-				throw new RuntimeException("Xero app authentication error: $error")
-			}
+			configuration.setProperty(XERO_ACTIVE, 'true')
+			configuration.setProperty(XERO_ORGANISATION, getOrganisationName(authContext))
+			
 		}
-		
-		AuthentificationContext authContext = new AuthentificationContext(initialRefreshToken)
-		authContext.init()
-		
-		
-		new RESTClient(XERO_API_BASE).request(GET, JSON) {
-			uri.path = '/api.xro/2.0/Organisations'
-			headers.'Authorization' = "Bearer ${authContext.newAccessToken}"
-			headers.'Xero-tenant-id' = authContext.tenantId
-			response.success = { resp, body ->
-				organisationName = body['Organisations'][0]['Name']
-			}
-			response.failure = { resp, body ->
-				String error = body.keySet()[0]
-				logger.error(error)
-
-				throw new RuntimeException("Xero app authentication error: $error")
-			}
-		}
-
-
-		configuration.setProperty(XERO_ACCESS_TOKEN, authContext.newAccessToken)
-		configuration.setProperty(XERO_REFRESH_TOKEN, authContext.newRefreshToken)
-		configuration.setProperty(XERO_ACTIVE, 'true')
-		configuration.setProperty(XERO_ORGANISATION, organisationName)
-
 
 	}
 
 	@GetProps
 	static List<IntegrationProperty> getProps(IntegrationConfiguration configuration) {
-		return [configuration.getIntegrationProperty(XERO_ACTIVE), configuration.getIntegrationProperty(XERO_ACTIVE)]
+		List<IntegrationProperty> result = []
+		
+		IntegrationProperty active = configuration.getIntegrationProperty(XERO_ACTIVE)  
+		if (!active) {
+			active = configuration.context.newObject(IntegrationProperty)
+			active.integrationConfiguration = configuration
+			active.keyCode = XERO_ACTIVE
+			active.value = 'true'
+			configuration.context.commitChanges()
+		}
+		result << active
+		
+		IntegrationProperty organisation = configuration.getIntegrationProperty(XERO_ORGANISATION)
+		if (organisation) {
+			result << organisation
+		} else (active && active.value == 'true') {
+			try {
+				AuthentificationContext authContext = new AuthentificationContext(configuration)
+				authContext.init()
+				organisation = configuration.context.newObject(IntegrationProperty)
+				organisation.integrationConfiguration = configuration
+				organisation.keyCode = XERO_ORGANISATION
+				organisation.value = getOrganisationName(authContext)
+				
+				
+				configuration.context.commitChanges()
+
+				result << organisation
+			} catch (Exception e) {
+				logger.catching(e)
+			}
+		}
+		
+		return result	
+	}
+	
+	static String getOrganisationName(AuthentificationContext authContext) {
+		
+
+		String name = null
+		new RESTClient(XERO_API_BASE).request(GET, JSON) {
+			uri.path = '/api.xro/2.0/Organisations'
+			headers.'Authorization' = "Bearer ${authContext.newAccessToken}"
+			headers.'Xero-tenant-id' = authContext.tenantId
+			response.success = { resp, body ->
+				name =  body['Organisations'][0]['Name']
+			}
+			response.failure = { resp, body ->
+				logger.error(body.toString())
+				throw new RuntimeException("Xero app authentication error: $body.toString()")
+			}
+		}
+		
+		return name
+		
 	}
 
 	XeroIntegration(Map args) {
