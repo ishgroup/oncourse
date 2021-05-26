@@ -48,7 +48,7 @@ class UnitAPI extends TCSI_API {
             response.success = { resp, result ->
 
                 def units = handleResponce(result, message)
-                if (units.empty) {
+                if (!units.empty) {
                     def unit = units.find {it['unit_enrolment']['unit_of_study_code'] == enrolment.courseClass.uniqueCode}
                     if (unit) {
                         return unit['unit_enrolment']['unit_enrolments_uid']
@@ -106,7 +106,7 @@ class UnitAPI extends TCSI_API {
             unit["unit_of_study_census_date"] = clazz.censusDate.format(DATE_FORMAT)
         }
         
-        String foe = highEducation.modules*.fieldOfEducation.sort().first()
+        String foe = highEducation.modules*.fieldOfEducation.grep().sort().first()
         unit["discipline_code"] = foe
         
 
@@ -200,11 +200,15 @@ class UnitAPI extends TCSI_API {
                 Money.ZERO.toBigDecimal() :
                 enrolment.originalInvoiceLine.priceTotalIncTax.toBigDecimal()
         unit["amount_charged"] = feeCharged
-        unit["amount_paid_upfront"] = feeCharged
+        unit["amount_paid_upfront"] = BigDecimal.ZERO
         if (enrolment.feeHelpAmount) {
             unit["loan_fee"] =  enrolment.feeHelpAmount.multiply(0.2).toBigDecimal()
             unit["help_loan_amount"] =  enrolment.feeHelpAmount.toBigDecimal()
+        } else {
+            unit["loan_fee"] =  BigDecimal.ZERO
+            unit["help_loan_amount"] =  BigDecimal.ZERO
         }
+        
         if (enrolment.creditTotal) {
             switch (enrolment.creditTotal) {
                 case RecognitionOfPriorLearningIndicator.NOT_RPL_UNIT_OF_STUDY:
