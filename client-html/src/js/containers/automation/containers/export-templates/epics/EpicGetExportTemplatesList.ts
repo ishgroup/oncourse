@@ -7,7 +7,7 @@ import { Epic } from "redux-observable";
 
 import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_EXPORT_TEMPLATES_LIST, GET_EXPORT_TEMPLATES_LIST_FULFILLED } from "../actions/index";
+import { GET_EXPORT_TEMPLATES_LIST, GET_EXPORT_TEMPLATES_LIST_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import history from "../../../../../constants/History";
@@ -25,6 +25,8 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: s
       hasIcon: r.values[1].startsWith("ish."),
       grayOut: r.values[2] === "false"
     }));
+
+    exportTemplates.sort((a, b) => (a.name[0].toLowerCase() > b.name[0].toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {

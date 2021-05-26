@@ -7,7 +7,7 @@ import { Epic } from "redux-observable";
 
 import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_SCRIPTS_LIST, GET_SCRIPTS_LIST_FULFILLED } from "../actions/index";
+import { GET_SCRIPTS_LIST, GET_SCRIPTS_LIST_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import { CommonListItem } from "../../../../../model/common/sidebar";
@@ -24,6 +24,8 @@ const request: EpicUtils.Request<any,{ nameToSelect: string; selectFirst: boolea
       keyCode: r.values[2],
       hasIcon: r.values[2] && r.values[2].startsWith("ish.")
     }));
+
+    scripts.sort((a, b) => (a.name[0].toLowerCase() > b.name[0].toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.nameToSelect) {
