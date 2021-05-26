@@ -82,7 +82,7 @@ interface Props {
   themes: Theme[];
   layouts: Layout[];
   onBack: () => void;
-  onEdit?: (settings) => void;
+  onSaveTheme?: (settings) => void;
   showError?: (title) => any;
   onDelete?: (title) => void;
   showModal?: (props) => void;
@@ -193,9 +193,9 @@ class ThemeSettings extends React.Component<Props, any> {
   }
 
   onSave = () => {
-    const {onEdit} = this.props;
+    const {onSaveTheme} = this.props;
 
-    onEdit({
+    onSaveTheme({
       title: this.state.title,
       layoutId: this.state.layoutId,
       paths: this.state.urls,
@@ -322,12 +322,12 @@ class ThemeSettings extends React.Component<Props, any> {
               >
                 Remove
               </CustomButton>
-              {/*<CustomButton*/}
-              {/*  styleType="submit"*/}
-              {/*  onClick={e => this.onSave()}*/}
-              {/*>*/}
-              {/*  Save*/}
-              {/*</CustomButton>*/}
+              <CustomButton
+                styleType="submit"
+                onClick={e => this.onSave()}
+              >
+                Save
+              </CustomButton>
             </div>
           </form>
         </div>

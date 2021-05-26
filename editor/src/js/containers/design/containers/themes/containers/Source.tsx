@@ -52,6 +52,7 @@ interface Props {
   classes: any;
   list: any[];
   showFilter?: boolean;
+  saveBlock: (blockId, settings) => any;
 }
 
 class Source extends Component<any, any> {
@@ -119,7 +120,7 @@ class Source extends Component<any, any> {
 
   render() {
     const {cards, filter} = this.state;
-    const {canDrop, classes, isOver, connectDropTarget, placeholder, className, showFilter, noUpperCase} = this.props;
+    const {canDrop, classes, isOver, connectDropTarget, placeholder, className, showFilter, noUpperCase, saveBlock} = this.props;
     const isActive = canDrop && isOver;
 
     return connectDropTarget(
@@ -153,6 +154,7 @@ class Source extends Component<any, any> {
                 card={card}
                 removeCard={this.removeCard.bind(this)}
                 moveCard={this.moveCard.bind(this)}
+                saveBlock={saveBlock}
               />
             ),
           )}

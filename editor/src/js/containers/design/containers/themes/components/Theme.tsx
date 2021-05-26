@@ -26,11 +26,12 @@ interface Props {
   theme: ThemeModel;
   onUpdateLayout: (blockId, items) => any;
   onSaveTheme: () => any;
+  saveBlock: (blockId, settings) => any;
   blocks?: Block[];
 }
 
 const Theme = (props: Props) => {
-  const {theme, blocks, onUpdateLayout} = props;
+  const {theme, blocks, onUpdateLayout, saveBlock} = props;
   const classes = useStyles();
 
   return (
@@ -41,6 +42,7 @@ const Theme = (props: Props) => {
             theme={theme}
             blocks={blocks}
             onUpdate={onUpdateLayout}
+            saveBlock={saveBlock}
           />
         </Grid>
 
@@ -52,6 +54,7 @@ const Theme = (props: Props) => {
             noUpperCase={true}
             id="default"
             list={getFreeBlocks(theme, blocks)}
+            saveBlock={saveBlock}
           />
         </Grid>
       </Grid>

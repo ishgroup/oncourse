@@ -4,13 +4,10 @@ import {findDOMNode} from 'react-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import clsx from "clsx";
 import {IconButton} from "@material-ui/core";
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
 import flow from 'lodash/flow';
 import {withStyles} from "@material-ui/core/styles";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
-import {saveBlock} from "../../../../content/containers/blocks/actions";
 import {addContentMarker} from "../../../../content/utils";
 
 const styles = theme => ({
@@ -178,12 +175,6 @@ const cardTarget = {
   },
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
-    saveBlock: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
-  };
-};
-
 export default flow<any, any, any>(
   DropTarget("CARD", cardTarget, connect => ({
     connectDropTarget: connect.dropTarget(),
@@ -192,4 +183,4 @@ export default flow<any, any, any>(
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
   })),
-)(connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles)(Card)));
+)(withStyles(styles)(Card));

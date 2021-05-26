@@ -7,7 +7,7 @@ import {getLayouts, getThemes, saveTheme, updateThemeState} from "./actions";
 import {Theme as ThemeModel} from "../../../../model";
 import Theme from "./components/Theme";
 import {State} from "../../../../reducers/state";
-import {getBlocks} from "../../../content/containers/blocks/actions";
+import {getBlocks, saveBlock} from "../../../content/containers/blocks/actions";
 import {BlockState} from "../../../content/containers/blocks/reducers/State";
 
 interface Props {
@@ -18,6 +18,7 @@ interface Props {
   match?: any;
   onUpdateLayout: (themeId, blockId, items) => any;
   onSaveTheme: (theme) => any;
+  saveBlock: (blockId, settings) => any;
 }
 
 export class Themes extends React.Component<Props, any> {
@@ -26,7 +27,7 @@ export class Themes extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onUpdateLayout, onSaveTheme, blocks, fetching} = this.props;
+    const {themes, match, onUpdateLayout, onSaveTheme, blocks, fetching, saveBlock} = this.props;
     const theme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
@@ -38,6 +39,7 @@ export class Themes extends React.Component<Props, any> {
             onUpdateLayout={(blockId, items) => onUpdateLayout(theme, blockId, items)}
             onSaveTheme={() => onSaveTheme(theme)}
             blocks={blocks}
+            saveBlock={saveBlock}
           />
         </Grid>
         }
@@ -70,6 +72,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
         },
       ));
     },
+    saveBlock: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
     onSaveTheme: (theme: ThemeModel) => dispatch(saveTheme(theme.id, theme)),
   };
 };

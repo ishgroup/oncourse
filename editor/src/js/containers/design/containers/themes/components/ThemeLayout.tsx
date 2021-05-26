@@ -25,11 +25,12 @@ interface Props {
   theme: ThemeModel;
   blocks: any;
   onUpdate: (blockId, items) => any;
+  saveBlock: (blockId, settings) => any;
 }
 
 class ThemeLayout extends React.Component<Props, any> {
   render() {
-    const {blocks, classes, theme, onUpdate} = this.props;
+    const {blocks, classes, theme, onUpdate, saveBlock} = this.props;
 
     const getThemeBlocks = key => {
       if (!theme.blocks) return [];
@@ -46,6 +47,7 @@ class ThemeLayout extends React.Component<Props, any> {
               id="top"
               onUpdate={onUpdate}
               list={getThemeBlocks('top')}
+              saveBlock={saveBlock}
             />
           </Grid>
         </Grid>
@@ -57,6 +59,7 @@ class ThemeLayout extends React.Component<Props, any> {
               id="left"
               onUpdate={onUpdate}
               list={getThemeBlocks('left')}
+              saveBlock={saveBlock}
             />
           </Grid>
 
@@ -66,6 +69,7 @@ class ThemeLayout extends React.Component<Props, any> {
               id="centre"
               onUpdate={onUpdate}
               list={getThemeBlocks('centre')}
+              saveBlock={saveBlock}
             />
           </Grid>
 
@@ -75,6 +79,7 @@ class ThemeLayout extends React.Component<Props, any> {
               id="right"
               onUpdate={onUpdate}
               list={getThemeBlocks('right')}
+              saveBlock={saveBlock}
             />
           </Grid>
         </Grid>
@@ -86,6 +91,7 @@ class ThemeLayout extends React.Component<Props, any> {
               id="footer"
               onUpdate={onUpdate}
               list={getThemeBlocks('footer')}
+              saveBlock={saveBlock}
             />
           </Grid>
         </Grid>

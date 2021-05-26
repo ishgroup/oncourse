@@ -16,7 +16,7 @@ interface Props {
   themes: Theme[];
   layouts: Layout[];
   match: any;
-  onEditSettings: (themeId, settings) => any;
+  onSaveTheme: (themeId, settings) => any;
   onDeleteTheme: (id) => any;
   onAddTheme: () => any;
   history: any;
@@ -42,7 +42,7 @@ class ThemesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onEditSettings, onDeleteTheme, showError, showModal, fetching, layouts, showNavigation} = this.props;
+    const {themes, match, onSaveTheme, onDeleteTheme, showError, showModal, fetching, layouts, showNavigation} = this.props;
     const activeTheme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
@@ -63,7 +63,7 @@ class ThemesSidebar extends React.Component<Props, any> {
           themes={themes}
           layouts={layouts}
           onBack={() => this.resetActiveTheme()}
-          onEdit={prop => onEditSettings(activeTheme, prop)}
+          onSaveTheme={prop => onSaveTheme(activeTheme, prop)}
           showError={showError}
           onDelete={id => onDeleteTheme(id)}
           showModal={showModal}
@@ -83,7 +83,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onEditSettings: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
+    onSaveTheme: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
     showError: title => dispatch(
       {
         type: SHOW_MESSAGE,
