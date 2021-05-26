@@ -33,7 +33,6 @@ const getFieldType = value => {
 
 export const formatSectionField = fileText => {
   const sections = [];
-  // const settingsList = [];
   const code = fileText ? fileText.replace(/\t/gm, "") : "";
 
   if (fileText) {
@@ -44,8 +43,8 @@ export const formatSectionField = fileText => {
       type: [],
     };
 
-    // const variables = code.split(";").map(c => (c.includes('$') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
-    const variables = code.split("\n").map(c => (c.includes('$') && !c.includes('//') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
+    const variables = code.split(";").map(c => (c.includes('$') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
+    // const variables = code.split("\n").map(c => (c.includes('$') && !c.includes('//') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
       docVars.forEach(docValue => {
         const regex = new RegExp(`@${docValue}\\s[\\S]*[\\t]*[^*]+$`, 'gm');
         const matched = c.match(regex);
@@ -63,7 +62,7 @@ export const formatSectionField = fileText => {
 
       const sectionTitle = variable.section ? variable.section.replace('@section ', '') : "common";
       let labelText = variable.label ? variable.label.replace('@label ', '') : null;
-      const typeText = variable.type ? variable.type.replace('@type ', '') : null;
+      const type = variable.type ? variable.type.replace('@type ', '') : null;
 
       let defaultField;
 
@@ -74,18 +73,13 @@ export const formatSectionField = fileText => {
         labelText = _.upperFirst(_.toLower(_.startCase(fieldName)));
       }
 
-      if (!typeText) {
+      if (type !== "text") {
         defaultField = getFieldType(settingValue);
       } else {
         defaultField = {
-          type: typeText,
+          type: type,
         };
       }
-
-      // settingsList.push({
-      //   key: fieldName,
-      //   value: settingValue,
-      // });
 
       const field = {
         name: fieldName,
@@ -110,7 +104,6 @@ export const formatSectionField = fileText => {
 
   return {
     sections,
-    // settingsList,
     code,
   };
 };
