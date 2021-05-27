@@ -66,6 +66,9 @@ class FieldBuilder<T> {
                 case CUSTOM_FIELD_ENROLMENT:
                 case CUSTOM_FIELD_APPLICATION:
                 case CUSTOM_FIELD_WAITING_LIST:
+                case CUSTOM_FIELD_ARTICLE:
+                case CUSTOM_FIELD_MEMBERSHIP:
+                case CUSTOM_FIELD_VOUCHER:
                     ProcessCustomFieldType processor = new ProcessCustomFieldType(field).process()
                     f.dataType = processor.dataType
                     f.defaultValue = processor.defaultValue

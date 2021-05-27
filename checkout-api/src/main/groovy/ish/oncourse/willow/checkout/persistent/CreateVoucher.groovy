@@ -15,6 +15,7 @@ import ish.oncourse.model.Voucher
 import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.checkout.payment.ProductsItemInvoiceLine
+import ish.oncourse.willow.functions.field.FieldHelper
 import ish.util.ProductUtil
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
@@ -52,6 +53,7 @@ class CreateVoucher {
                 Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
                 voucher.redemptionValue = price
                 voucher.valueOnPurchase = price
+                FieldHelper.valueOf([] as Set).populateFields(v.fieldHeadings, voucher)
                 vouchers << voucher
             }
         } else if (voucherProduct.priceExTax != null) {
@@ -60,6 +62,7 @@ class CreateVoucher {
                 Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
                 voucher.redemptionValue = voucherProduct.value != null ? voucherProduct.value : price
                 voucher.valueOnPurchase = voucherProduct.value != null ? voucherProduct.value : price
+                FieldHelper.valueOf([] as Set).populateFields(v.fieldHeadings, voucher)
                 vouchers << voucher
             }
         }

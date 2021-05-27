@@ -348,6 +348,17 @@ class ProcessCheckoutModel {
                     a.total = processProduct.article.total
                     totalAmount = totalAmount.add(a.total.toMoney())
                     totalProductsAmount = totalProductsAmount.add(a.total.toMoney())
+
+                    ValidateFormFields validateCustomFields = ValidateFormFields
+                            .valueOf(a.fieldHeadings, processProduct.article.fieldHeadings, processProduct.persistentProduct.name, 'Article', context, college)
+                    validateCustomFields.validate()
+                    if (validateCustomFields.commonError) {
+                        model.error = validateCustomFields.commonError
+                    }
+                    validateCustomFields.fieldErrors.each { fieldError ->
+                        model.validationErrors.formErrors << fieldError.error
+                        model.validationErrors.fieldsErrors << fieldError
+                    }
                 } else {
                     a.selected = false
                 }
@@ -374,6 +385,18 @@ class ProcessCheckoutModel {
                     m.price = processProduct.membership.price
                     totalAmount = totalAmount.add(m.price.toMoney())
                     totalProductsAmount = totalProductsAmount.add(m.price.toMoney())
+
+                    ValidateFormFields validateCustomFields = ValidateFormFields
+                            .valueOf(m.fieldHeadings, processProduct.membership.fieldHeadings, processProduct.persistentProduct.name, 'Membership', context, college)
+                    validateCustomFields.validate()
+                    if (validateCustomFields.commonError) {
+                        model.error = validateCustomFields.commonError
+                    }
+                    validateCustomFields.fieldErrors.each { fieldError ->
+                        model.validationErrors.formErrors << fieldError.error
+                        model.validationErrors.fieldsErrors << fieldError
+                    }
+
                 } else {
                     m.selected = false
                 }
@@ -387,17 +410,33 @@ class ProcessCheckoutModel {
         v.errors.clear()
         v.warnings.clear()
         if (v.selected) {
-            ValidateVoucher validateVoucher = new ValidateVoucher(context, college, model.payerId).validate(v)
-            v.errors += validateVoucher.errors
-            v.warnings += validateVoucher.warnings
-            if (v.errors.empty) {
-                products << validateVoucher.persistentProduct
-                productsToProceed[contact] << validateVoucher.persistentProduct
-
-                totalAmount = totalAmount.add(v.total.toMoney())
-                totalProductsAmount = totalProductsAmount.add(v.total.toMoney())
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, v.productId, 1, model.payerId, taxOverridden).process()
+            if (processProduct.voucher == null) {
+                v.errors << "Purchase is wrong"
             } else {
-                v.selected = false 
+                v.errors += processProduct.voucher.errors
+                v.warnings += processProduct.voucher.warnings
+                if (v.errors.empty) {
+                    products << processProduct.persistentProduct
+                    productsToProceed[contact] << processProduct.persistentProduct
+
+                    totalAmount = totalAmount.add(v.total.toMoney())
+                    totalProductsAmount = totalProductsAmount.add(v.total.toMoney())
+
+                    ValidateFormFields validateCustomFields = ValidateFormFields
+                            .valueOf(v.fieldHeadings, processProduct.voucher.fieldHeadings, processProduct.persistentProduct.name, 'Voucher', context, college)
+                    validateCustomFields.validate()
+                    if (validateCustomFields.commonError) {
+                        model.error = validateCustomFields.commonError
+                    }
+                    validateCustomFields.fieldErrors.each { fieldError ->
+                        model.validationErrors.formErrors << fieldError.error
+                        model.validationErrors.fieldsErrors << fieldError
+                    }
+
+                } else {
+                    v.selected = false
+                }
             }
         }
         return v

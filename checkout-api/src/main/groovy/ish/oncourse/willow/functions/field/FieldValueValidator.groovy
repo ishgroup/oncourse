@@ -108,6 +108,9 @@ class FieldValueValidator {
             case FieldProperty.CUSTOM_FIELD_ENROLMENT:
             case FieldProperty.CUSTOM_FIELD_APPLICATION:
             case FieldProperty.CUSTOM_FIELD_WAITING_LIST:
+            case FieldProperty.CUSTOM_FIELD_ARTICLE:
+            case FieldProperty.CUSTOM_FIELD_MEMBERSHIP:
+            case FieldProperty.CUSTOM_FIELD_VOUCHER:
                 stringError = validateCustomField(value as String)
                 break
             default:
