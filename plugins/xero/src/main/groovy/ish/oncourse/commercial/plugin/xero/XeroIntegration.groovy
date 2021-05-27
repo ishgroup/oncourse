@@ -99,12 +99,12 @@ Review all the other employee settings and ensure they are correct.
 
 	@OnSave
 	static void onSave(IntegrationConfiguration configuration, Map<String, String> props) {
-		
-		if (props[XERO_ACTIVE] != null && props[XERO_ACTIVE] == 'false' ) {
+
+		if (props[XERO_ACTIVE] != null && props[XERO_ACTIVE] == 'false' && configuration.getIntegrationProperty(XERO_ACTIVE).value == 'true') {
 			AuthentificationContext authContext = new AuthentificationContext(configuration)
 			authContext.init()
 			authContext.disconnect()
-			configuration.setProperty(XERO_ACTIVE, 'true')
+			configuration.setProperty(XERO_ACTIVE, 'false')
 		} else {
 			
 			new RESTClient('https://identity.xero.com').request(POST, URLENC) {
@@ -146,12 +146,11 @@ Review all the other employee settings and ensure they are correct.
 			active.value = 'true'
 			configuration.context.commitChanges()
 		}
-		result << active
 		
 		IntegrationProperty organisation = configuration.getIntegrationProperty(XERO_ORGANISATION)
 		if (organisation) {
 			result << organisation
-		} else (active && active.value == 'true') {
+		} else if (active.value == 'true') {
 			try {
 				AuthentificationContext authContext = new AuthentificationContext(configuration)
 				authContext.init()
@@ -160,15 +159,16 @@ Review all the other employee settings and ensure they are correct.
 				organisation.keyCode = XERO_ORGANISATION
 				organisation.value = getOrganisationName(authContext)
 				
-				
 				configuration.context.commitChanges()
 
 				result << organisation
 			} catch (Exception e) {
+				active.value = 'false'
 				logger.catching(e)
 			}
 		}
-		
+		result << active
+
 		return result	
 	}
 	
