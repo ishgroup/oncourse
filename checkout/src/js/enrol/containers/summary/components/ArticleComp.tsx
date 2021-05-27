@@ -2,6 +2,8 @@ import React from "react";
 import {Contact, Article, Product} from "../../../../model";
 import classnames from "classnames";
 import {ItemWrapper} from "./ItemWrapper";
+import CustomFieldsForm from "./CustomFieldsForm";
+import {getFormInitialValues} from "../../../../components/form/FieldFactory";
 
 
 export interface Props {
@@ -9,6 +11,7 @@ export interface Props {
   article: Article;
   product: Product;
   onQuantityValueChange?: (val: number) => any;
+  onChangeFields?: (form, type) => any;
   onChange?: (item, contact) => void;
   readonly?: boolean;
 }
@@ -48,7 +51,7 @@ class ArticleComp extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element {
-    const {article, product, contact, onChange, readonly} = this.props;
+    const {article, product, contact, onChange, readonly, onChangeFields} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !article.selected});
     const warning = article.warnings && article.warnings.length ? this.props.article.warnings[0] : null;
     const error = article.warnings && article.errors.length ? this.props.article.errors[0] : null;
@@ -76,6 +79,15 @@ class ArticleComp extends React.Component<Props, State> {
             </div>
           </div>
         }
+
+        {!readonly && <CustomFieldsForm
+          headings={article.fieldHeadings}
+          selected={article.selected}
+          form={`${article.contactId}-${article.productId}`}
+          onSubmit={() => undefined}
+          initialValues={getFormInitialValues(article.fieldHeadings)}
+          onUpdate={form => onChangeFields(form, 'waitingLists')}
+        />}
       </div>
     );
   }

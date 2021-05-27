@@ -215,7 +215,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onToggleVoucher: (redeemVoucher, enabled) => {
       dispatch(toggleRedeemVoucher(redeemVoucher, enabled));
     },
-    onChangeEnrolmentFields: (form, type) => {
+    onChangeCustomFields: (form, type) => {
       // added min delay until redux-form will changed
       // TODO: figure out correct way to dispatch redux-dorm change action before form-blur
       setTimeout(() => dispatch(updateEnrolmentFields(form, type)), 30);

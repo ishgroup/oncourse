@@ -34,7 +34,7 @@ export interface Props {
   studentMemberships?: StudentMembership[];
   onChangeParent?: (contactId) => void;
   onRemoveContact?: (contactId) => void;
-  onChangeEnrolmentFields?: (form, type) => any;
+  onChangeCustomFields?: (form, type) => any;
   readonly?: boolean;
   isPayer?: boolean;
 }
@@ -42,7 +42,7 @@ export interface Props {
 class ContactComp extends React.Component<Props, any> {
   render() {
     const {
-      contact, enrolments, applications, vouchers, memberships, concessions, onChangeEnrolmentFields,
+      contact, enrolments, applications, vouchers, memberships, concessions, onChangeCustomFields,
       articles, onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, studentMemberships, onChangeParent, waitingLists,
       onUpdateWaitingCourse, concessionTypes, onRemoveContact, readonly, isPayer, onChangeClass
     } = this.props;
@@ -108,7 +108,7 @@ class ContactComp extends React.Component<Props, any> {
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Enrolment(), props.enrolment), !props.enrolment.selected)}
               onChangeClass={(classId, newClasses) => onChangeClass(Object.assign(new Enrolment(), props.enrolment), Object.assign(new Enrolment(), props.enrolment, { classId, selected: true }), newClasses)}
-              onChangeFields={onChangeEnrolmentFields}
+              onChangeFields={onChangeCustomFields}
               readonly={readonly}
             />,
           )}
@@ -116,7 +116,7 @@ class ContactComp extends React.Component<Props, any> {
             props.courseClass && (readonly ? props.application.selected : true) && <ApplicationComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Application(), props.application), !props.application.selected)}
-              onChangeFields={onChangeEnrolmentFields}
+              onChangeFields={onChangeCustomFields}
               readonly={readonly}
             />,
           )}
@@ -126,6 +126,7 @@ class ContactComp extends React.Component<Props, any> {
               onChange={() => onSelect(Object.assign(new Voucher(), props.voucher), !props.voucher.selected)}
               onPriceValueChange={val => onPriceValueChange(Object.assign(new Voucher(), props.voucher), val)}
               onQuantityValueChange={val => onQuantityValueChange(Object.assign(new Voucher(), props.voucher), val)}
+              onChangeFields={onChangeCustomFields}
               readonly={readonly}
             />,
           )}
@@ -133,6 +134,7 @@ class ContactComp extends React.Component<Props, any> {
             props.product && (readonly ? props.membership.selected : true) && <MembershipComp
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Membership(), props.membership), !props.membership.selected)}
+              onChangeFields={onChangeCustomFields}
               readonly={readonly}
             />,
           )}
@@ -141,6 +143,7 @@ class ContactComp extends React.Component<Props, any> {
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new Article(), props.article), !props.article.selected)}
 							onQuantityValueChange={val => onQuantityValueChange(Object.assign(new Article(), props.article), val)}
+              onChangeFields={onChangeCustomFields}
               readonly={readonly}
             />,
           )}
@@ -149,7 +152,7 @@ class ContactComp extends React.Component<Props, any> {
               key={index} {...props}
               onChange={() => onSelect(Object.assign(new WaitingList(), props.waitingList), !props.waitingList.selected)}
               onUpdate={prop => onUpdateWaitingCourse(Object.assign(new WaitingList(), props.waitingList), prop)}
-              onChangeFields={onChangeEnrolmentFields}
+              onChangeFields={onChangeCustomFields}
               readonly={readonly}
             />,
           )}

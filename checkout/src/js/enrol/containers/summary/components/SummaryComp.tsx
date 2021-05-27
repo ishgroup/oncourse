@@ -9,8 +9,7 @@ import {
   PurchaseItem,
   ConcessionType,
   Voucher,
-  Article,
-  CourseClass
+  Article
 } from "../../../../model";
 import {StudentMembership} from "../../../../model";
 import {Concession} from "../../../../model";
@@ -44,7 +43,7 @@ export interface Props {
   onUpdatePayNow?: (val, validate?: boolean) => void;
   needParent?: boolean;
   fetching?: boolean;
-  onChangeEnrolmentFields?: (form, type) => any;
+  onChangeCustomFields?: (form, type) => any;
   forms?: any;
   isOnlyWaitingLists?: boolean;
   successLink?: string;
@@ -92,7 +91,7 @@ export class SummaryComp extends React.Component<Props, any> {
 
   renderContact = (props: ContactProps) => {
     const {onSelect, onPriceValueChange, onQuantityValueChange, onAddConcession, concessions, memberships, onChangeParent,
-      onUpdateWaitingCourse, onChangeEnrolmentFields, concessionTypes, onRemoveContact, onChangeClass} = this.props;
+      onUpdateWaitingCourse, onChangeCustomFields, concessionTypes, onRemoveContact, onChangeClass} = this.props;
 
     return (
       <ContactComp
@@ -108,7 +107,7 @@ export class SummaryComp extends React.Component<Props, any> {
         concessionTypes={concessionTypes}
         studentMemberships={memberships.filter(item => item.contactId === props.contact.id)}
         onUpdateWaitingCourse={onUpdateWaitingCourse}
-        onChangeEnrolmentFields={onChangeEnrolmentFields}
+        onChangeCustomFields={onChangeCustomFields}
         onRemoveContact={onRemoveContact}
       />
     );

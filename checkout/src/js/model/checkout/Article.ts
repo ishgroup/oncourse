@@ -1,3 +1,4 @@
+import {FieldHeading} from "../field/FieldHeading";
 
 export class Article {
   contactId?: string;
@@ -11,5 +12,6 @@ export class Article {
   allowRemove?: boolean;
   relatedClassId?: string;
   relatedProductId?: string;
+  fieldHeadings?: FieldHeading[];
 }
 

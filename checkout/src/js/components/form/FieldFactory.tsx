@@ -273,4 +273,20 @@ const withOptionNotSet = items => {
   });
 };
 
+export const getFormInitialValues = (headings) => {
+  const initialValues = {};
+
+  if (headings && headings.length) {
+    headings
+      .map(h => h.fields
+        .filter(f => f.defaultValue)
+        .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+      );
+
+    return initialValues;
+  }
+
+  return null;
+}
+
 export default FieldFactory;

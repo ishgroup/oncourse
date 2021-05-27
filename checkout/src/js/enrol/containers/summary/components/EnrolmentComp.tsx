@@ -7,7 +7,7 @@ import {Enrolment, Contact, CourseClass, CourseClassPrice} from "../../../../mod
 import { ClassHasCommenced } from "../Messages";
 import { ItemWrapper } from "./ItemWrapper";
 import { toFormKey } from "../../../../components/form/FieldFactory";
-import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
+import CustomFieldsForm from "./CustomFieldsForm";
 import SelectField from "../../../../components/form-new/SelectField";
 import {CourseClassService} from "../../../../web/services/CourseClassService";
 
@@ -74,7 +74,7 @@ class EnrolmentComp extends React.Component<Props, any> {
         </ItemWrapper>
         {!error && enrolment.selected && courseClass.price && <ClassPrice enrolment={enrolment} />}
 
-        {!readonly && <EnrolmentFieldsForm
+        {!readonly && <CustomFieldsForm
           headings={enrolment.fieldHeadings}
           classId={enrolment.classId}
           selected={enrolment.selected}

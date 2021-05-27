@@ -2,13 +2,11 @@ import * as React from "react";
 import {connect} from 'react-redux';
 import {reduxForm} from "redux-form";
 import {isNil} from "lodash";
-
 import HeadingComp from "../../../components/HeadingComp";
 import {toFormKey} from "../../../../components/form/FieldFactory";
 import {IshState} from "../../../../services/IshState";
 
-class EnrolmentFields extends React.Component<any, any> {
-
+class CustomFields extends React.Component<any, any> {
   getFormErrors() {
     const {forms, form, submitFailed} = this.props;
 
@@ -58,7 +56,7 @@ class EnrolmentFields extends React.Component<any, any> {
   }
 }
 
-const EnrolmentFieldsForm = reduxForm({
+const CustomFieldsForm = reduxForm({
   validate: (data, props: any) => {
     const errors = {};
 
@@ -77,6 +75,6 @@ const EnrolmentFieldsForm = reduxForm({
     return errors;
   },
   destroyOnUnmount: false,
-})(EnrolmentFields);
+})(CustomFields);
 
-export default connect<any, any, any, IshState>((state: any) => ({forms: state.form}))(EnrolmentFieldsForm) as any;
+export default connect<any, any, any, IshState>((state: any) => ({forms: state.form}))(CustomFieldsForm) as any;

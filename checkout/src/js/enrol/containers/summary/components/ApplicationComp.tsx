@@ -5,7 +5,7 @@ import moment from "moment";
 import {ClassHasCommenced} from "../Messages";
 import {ItemWrapper} from "./ItemWrapper";
 import {toFormKey} from "../../../../components/form/FieldFactory";
-import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
+import CustomFieldsForm from "./CustomFieldsForm";
 
 export interface Props {
   contact: Contact;
@@ -51,9 +51,9 @@ class ApplicationComp extends React.Component<Props, any> {
                      onChange={onChange}>
         </ItemWrapper>
 
-        {!readonly && <EnrolmentFieldsForm
+        {!readonly && <CustomFieldsForm
           headings={application.fieldHeadings}
-          classId={application.classId}Ω
+          classId={application.classId}
           selected={application.selected}
           form={`${application.contactId}-${application.classId}`}
           onSubmit={() => undefined}

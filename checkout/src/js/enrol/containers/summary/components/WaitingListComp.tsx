@@ -2,8 +2,8 @@ import * as React from "react";
 import classnames from "classnames";
 import {Contact, Course, WaitingList} from "../../../../model";
 import {ItemWrapper} from "./ItemWrapper";
-import {toFormKey} from "../../../../components/form/FieldFactory";
-import EnrolmentFieldsForm from "./EnrolmentFieldsForm";
+import {getFormInitialValues} from "../../../../components/form/FieldFactory";
+import CustomFieldsForm from "./CustomFieldsForm";
 
 export interface Props {
   contact: Contact;
@@ -16,22 +16,6 @@ export interface Props {
 }
 
 class WaitingListComp extends React.Component<Props, any> {
-  getFieldInitialValues(headings) {
-    const initialValues = {};
-
-    if (headings && headings.length) {
-      headings
-        .map(h => h.fields
-          .filter(f => f.defaultValue)
-          .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
-        );
-
-      return initialValues;
-    }
-
-    return null;
-  }
-
   public render(): JSX.Element {
     const {waitingList, product, contact, onChange, onChangeFields, readonly} = this.props;
 
@@ -59,13 +43,13 @@ class WaitingListComp extends React.Component<Props, any> {
 
         </ItemWrapper>
 
-        {!readonly && <EnrolmentFieldsForm
+        {!readonly && <CustomFieldsForm
           headings={waitingList.fieldHeadings}
           classId={waitingList.courseId}
           selected={waitingList.selected}
           form={`${waitingList.contactId}-${waitingList.courseId}`}
           onSubmit={() => undefined}
-          initialValues={this.getFieldInitialValues(waitingList.fieldHeadings)}
+          initialValues={getFormInitialValues(waitingList.fieldHeadings)}
           onUpdate={form => onChangeFields(form, 'waitingLists')}
         />}
       </div>

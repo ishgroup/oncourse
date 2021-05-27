@@ -1,3 +1,4 @@
+import {FieldHeading} from "../field/FieldHeading";
 
 export class Membership {
   contactId?: string;
@@ -9,5 +10,6 @@ export class Membership {
   allowRemove?: boolean;
   relatedClassId?: string;
   relatedProductId?: string;
+  fieldHeadings?: FieldHeading[];
 }
 

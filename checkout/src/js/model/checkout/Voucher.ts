@@ -1,3 +1,4 @@
+import {FieldHeading} from "../field/FieldHeading";
 
 export class Voucher {
   contactId?: string;
@@ -14,5 +15,6 @@ export class Voucher {
   allowRemove?: boolean;
   relatedClassId?: string;
   relatedProductId?: string;
+  fieldHeadings?: FieldHeading[];
 }
 

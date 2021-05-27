@@ -3,6 +3,8 @@ import classnames from "classnames";
 import {Contact, Voucher, Product} from "../../../../model";
 import {ItemWrapper} from "./ItemWrapper";
 import NumberFormat from "react-number-format";
+import CustomFieldsForm from "./CustomFieldsForm";
+import {getFormInitialValues} from "../../../../components/form/FieldFactory";
 
 
 export interface Props {
@@ -13,6 +15,7 @@ export interface Props {
   onPriceValueChange?: (val: number) => any;
   onQuantityValueChange?: (val: number) => any;
   updateCheckoutModel?: () => void;
+  onChangeFields?: (form, type) => any;
   readonly?: boolean;
 }
 
@@ -74,7 +77,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
   }
 
   public render(): JSX.Element {
-    const {voucher, product, contact, onChange, readonly} = this.props;
+    const {voucher, product, contact, onChange, readonly, onChangeFields} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !voucher.selected});
     const warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
     const error = voucher.warnings && voucher.errors.length ? this.props.voucher.errors[0] : null;
@@ -108,6 +111,15 @@ class VoucherComp extends React.PureComponent<Props, State> {
             />
           </div>
         }
+
+        {!readonly && <CustomFieldsForm
+          headings={voucher.fieldHeadings}
+          selected={voucher.selected}
+          form={`${voucher.contactId}-${voucher.productId}`}
+          onSubmit={() => undefined}
+          initialValues={getFormInitialValues(voucher.fieldHeadings)}
+          onUpdate={form => onChangeFields(form, 'waitingLists')}
+        />}
       </div>
     );
   }
