@@ -50,6 +50,7 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ matrix.java }}-
 
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
