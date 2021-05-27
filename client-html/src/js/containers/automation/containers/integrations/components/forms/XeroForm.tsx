@@ -107,22 +107,17 @@ class XeroBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <CustomAppBar>{appBarContent}</CustomAppBar>
 
-        {item.id ? (
+        {values?.fields?.active === "true" ? (
           <>
             <Typography variant="caption" component="div">
-              {values?.fields?.active === "true"
-                 ? `You are connected to Xero organisation: ${values?.fields?.companyName}`
-                 : "Xero integration is disconected. Press \"Save\" to complete configuration process"}
+              {`You are connected to Xero organisation: ${values?.fields?.companyName}`}
             </Typography>
-            {values?.fields?.active === "true"
-              && (
-              <Button
-                text="Disconnect from Xero"
-                variant="contained"
-                className="mt-1"
-                onClick={this.onDisconnect}
-              />
-            )}
+            <Button
+              text="Disconnect from Xero"
+              variant="contained"
+              className="mt-1"
+              onClick={this.onDisconnect}
+            />
           </>
         ) : (
           <>
