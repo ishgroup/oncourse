@@ -24,6 +24,7 @@ class ProcessCustomFieldType {
 
     private DataType dataType = DataType.STRING
     private String defaultValue = null
+    private String pattern = null
     private List<Item> items = new ArrayList<>()
 
     ProcessCustomFieldType(Field field) {
@@ -88,6 +89,10 @@ class ProcessCustomFieldType {
                     List<CustomFieldItem> choices = new JsonSlurper().parseText(defaultValue).collect { it as CustomFieldItem }
                     choices.each {  items << new Item(value: "$it.label ($it.value)".toString(), key: it.value.trim()) }
                     break
+                case ish.common.types.DataType.PATTERN_TEXT:
+                    this.dataType = DataType.PATTERN_TEXT
+                    this.pattern = customField.pattern
+                    break
                 default:
                     throw new IllegalArgumentException("Unsupported custom field data type: $customField.dataType," +
                             " college id: $customField.college.id," +
@@ -129,6 +134,10 @@ class ProcessCustomFieldType {
 
     String getDefaultValue() {
         return defaultValue
+    }
+
+    String getPattern() {
+        return pattern
     }
 
     List<Item> getItems() {

@@ -13,6 +13,8 @@ public enum DataType {
   
   LONG_STRING("LONG_STRING"),
   
+  PATTERN_TEXT("PATTERN_TEXT"),
+  
   BOOLEAN("BOOLEAN"),
   
   DATE("DATE"),
