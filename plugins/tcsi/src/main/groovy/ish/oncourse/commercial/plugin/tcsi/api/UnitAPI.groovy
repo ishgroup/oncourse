@@ -199,16 +199,17 @@ class UnitAPI extends TCSI_API {
         BigDecimal feeCharged =  enrolment.invoiceLines.empty ?
                 Money.ZERO.toBigDecimal() :
                 enrolment.originalInvoiceLine.priceTotalIncTax.toBigDecimal()
-        unit["amount_charged"] = feeCharged
-        unit["amount_paid_upfront"] = BigDecimal.ZERO
-        if (enrolment.feeHelpAmount) {
-            unit["loan_fee"] =  enrolment.feeHelpAmount.multiply(0.2).toBigDecimal()
-            unit["help_loan_amount"] =  enrolment.feeHelpAmount.toBigDecimal()
-        } else {
-            unit["loan_fee"] =  BigDecimal.ZERO
-            unit["help_loan_amount"] =  BigDecimal.ZERO
-        }
+        BigDecimal helpLoanAmount =  enrolment.feeHelpAmount?enrolment.feeHelpAmount.toBigDecimal():BigDecimal.ZERO
         
+        if ( clazz.censusDate.plusDays(14).isAfter(LocalDate.now())) {
+            //Update to current value until the census date. Then corrections only with value to be correct as at the unit of study census date (E489)
+            //Within 14 days of the census date
+            unit["amount_charged"] = feeCharged //E384
+            unit["help_loan_amount"] = helpLoanAmount // E558
+            unit["amount_paid_upfront"] = feeCharged.subtract(helpLoanAmount) //E381
+            unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)) // E529
+        }
+
         if (enrolment.creditTotal) {
             switch (enrolment.creditTotal) {
                 case RecognitionOfPriorLearningIndicator.NOT_RPL_UNIT_OF_STUDY:
