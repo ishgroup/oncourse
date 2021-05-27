@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.checkout;
 
+import ish.oncourse.willow.model.field.FieldHeading;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Voucher  {
     private Boolean allowRemove = null;
     private String relatedClassId = null;
     private String relatedProductId = null;
+    private List<FieldHeading> fieldHeadings = new ArrayList<FieldHeading>();
 
     /**
      * Get contactId
@@ -273,6 +275,28 @@ public class Voucher  {
       return this;
     }
 
+    /**
+     * Get fieldHeadings
+     * @return fieldHeadings
+     */
+    public List<FieldHeading> getFieldHeadings() {
+        return fieldHeadings;
+    }
+
+    public void setFieldHeadings(List<FieldHeading> fieldHeadings) {
+       this.fieldHeadings = fieldHeadings;
+    }
+
+    public Voucher fieldHeadings(List<FieldHeading> fieldHeadings) {
+      this.fieldHeadings = fieldHeadings;
+      return this;
+    }
+
+    public Voucher addFieldHeadingsItem(FieldHeading fieldHeadingsItem) {
+      this.fieldHeadings.add(fieldHeadingsItem);
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -293,6 +317,7 @@ public class Voucher  {
       sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
       sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
       sb.append("    relatedProductId: ").append(toIndentedString(relatedProductId)).append("\n");
+      sb.append("    fieldHeadings: ").append(toIndentedString(fieldHeadings)).append("\n");
       sb.append("}");
       return sb.toString();
     }
