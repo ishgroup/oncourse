@@ -91,7 +91,8 @@ class XeroBaseForm extends React.Component<any, any> {
   }
 
   onDisconnect = () => {
-    const { dispatch } = this.props;
+    const { dispatch, canSave } = this.props;
+    canSave(true)
     dispatch(change("XeroForm", "fields.active", "false"));
   }
 
@@ -109,11 +110,11 @@ class XeroBaseForm extends React.Component<any, any> {
         {item.id ? (
           <>
             <Typography variant="caption" component="div">
-              {values.fields.active === "true"
-                 ? `You are connected to Xero organisation: ${values.fields.companyName}`
+              {values?.fields?.active === "true"
+                 ? `You are connected to Xero organisation: ${values?.fields?.companyName}`
                  : "Xero integration is disconected. Press \"Save\" to complete configuration process"}
             </Typography>
-            {values.fields.active === "true"
+            {values?.fields?.active === "true"
               && (
               <Button
                 text="Disconnect from Xero"
