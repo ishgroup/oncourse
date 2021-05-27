@@ -6,6 +6,7 @@
 package ish.oncourse.commercial.plugin.xero
 
 import groovy.json.JsonSlurper
+import groovy.transform.CompileDynamic
 import groovyx.net.http.RESTClient
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import org.apache.logging.log4j.LogManager
@@ -17,6 +18,8 @@ import static groovyx.net.http.Method.DELETE
 import static groovyx.net.http.Method.GET
 import static groovyx.net.http.Method.POST
 
+
+@CompileDynamic
 class AuthentificationContext {
     // ish group developer credentials
     static final String XERO_CLIENT_ID = "A05FD21034974F29ABD4301FC54513BC"
