@@ -8,5 +8,8 @@ properties:
   defaultStatus:
     type: boolean
     example: True
+  noAssessment:
+    type: boolean
+    example: True
   settings:
     $ref: './AvetmissExportSettings.yaml'

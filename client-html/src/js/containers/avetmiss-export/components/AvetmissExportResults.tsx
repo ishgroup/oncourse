@@ -5,8 +5,11 @@
 
 import React from "react";
 import { change } from "redux-form";
-import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import {
+  Typography,
+  ButtonBase,
+  Divider
+} from "@material-ui/core";
 import Launch from "@material-ui/icons/Launch";
 import {
   AvetmissExportOutcome,
@@ -17,7 +20,6 @@ import {
   AvetmissExportType
 } from "@api/model";
 import clsx from "clsx";
-import Divider from "@material-ui/core/Divider";
 import FormField from "../../../common/components/form/form-fields/FormField";
 import SpeechCard from "../../../common/components/layout/SpeechCard";
 import Button from "../../../common/components/buttons/Button";
@@ -25,6 +27,7 @@ import { openInternalLink, saveCategoryAQLLink } from "../../../common/utils/lin
 
 interface ExtendedValues extends AvetmissExportSettings {
   defaultStatus: boolean;
+  noAssessment: boolean;
 }
 
 interface Props {
@@ -45,11 +48,9 @@ const categories = Object.keys(AvetmissExportOutcomeCategory);
 const tree = {};
 
 types.forEach(t => {
-  // eslint-disable-next-line id-blacklist
   tree[t] = { number: 0 };
 
   categories.forEach(c => {
-    // eslint-disable-next-line id-blacklist
     tree[t][c] = { number: 0 };
 
     statuses.forEach(s => {
@@ -122,9 +123,11 @@ class AvetmissExportResults extends React.Component<Props, any> {
       }
     });
     exportObj.defaultStatus = values.defaultStatus;
+    exportObj.noAssessment = values.noAssessment;
 
     const settings = { ...values };
     delete settings.defaultStatus;
+    delete settings.noAssessment;
     exportObj.settings = settings;
 
     this.props.onExport(exportObj);
@@ -148,7 +151,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
           <SpeechCard
             className={clsx({
-              "invisible": !outcome["Not yet started"].number
+              [classes.hidden]: !outcome["Not yet started"].number
             })}
           >
             <Typography color="inherit" className={clsx("heading", classes.resultsHeader)}>
@@ -205,7 +208,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <SpeechCard
             leftSide
             className={clsx({
-              "invisible": !enrolment["Not yet started"].number
+              [classes.hidden]: !enrolment["Not yet started"].number
             })}
           >
             <Typography color="inherit" className={clsx("heading", classes.resultsHeader)}>
@@ -247,17 +250,19 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
         <div className="d-flex">
           <div className="flex-fill" />
-          <SpeechCard
-            className={clsx({
-              "invisible": !enrolment["Commenced"].number
-            })}
-          >
-            <Typography variant="body1">
-              <strong>Commenced</strong>
-            </Typography>
 
-            {Object.keys(outcome["Commenced"]).map(k => {
-              const item = outcome["Commenced"][k];
+          <div>
+            <SpeechCard
+              className={clsx({
+              [classes.hidden]: !enrolment["Started (not assessed)"].number
+            })}
+            >
+              <Typography variant="body1">
+                <strong>Started (not assessed)</strong>
+              </Typography>
+
+              {Object.keys(outcome["Started (not assessed)"]).map(k => {
+              const item = outcome["Started (not assessed)"][k];
 
               if (k !== "number" && item.ids.length) {
                 return (
@@ -279,8 +284,59 @@ class AvetmissExportResults extends React.Component<Props, any> {
               return null;
             })}
 
-            <Typography className="mt-1">export as continuing (70)</Typography>
-          </SpeechCard>
+              <div className="d-flex mt-2 mb-2">
+                <Typography color={!values.noAssessment ? "textSecondary" : undefined}>
+                  don't require assessment
+                </Typography>
+
+                <FormField
+                  type="switch"
+                  name="noAssessment"
+                  color="primary"
+                  inline
+                />
+              </div>
+
+              <Typography>
+                {values.noAssessment ? "export as continuing (70)" : "export as starting in 7 days (85)"}
+              </Typography>
+            </SpeechCard>
+
+            <SpeechCard
+              className={clsx({
+                [classes.hidden]: !enrolment["Commenced"].number
+              })}
+            >
+              <Typography variant="body1">
+                <strong>Commenced</strong>
+              </Typography>
+
+              {Object.keys(outcome["Commenced"]).map(k => {
+                const item = outcome["Commenced"][k];
+
+                if (k !== "number" && item.ids.length) {
+                  return (
+                    <ButtonBase
+                      className="coloredHover d-flex"
+                      key={k + item.ids.length}
+                      onClick={() => this.openLink(item)}
+                    >
+                      <Typography className={classes.recordContainer}>
+                        {item.ids.length}
+                        {' '}
+                        {k}
+                        {' '}
+                        <Launch className={classes.recordIcon} />
+                      </Typography>
+                    </ButtonBase>
+                  );
+                }
+                return null;
+              })}
+
+              <Typography className="mt-1">export as continuing (70)</Typography>
+            </SpeechCard>
+          </div>
 
           <div className={classes.stepsArrowContainer}>
             <div className={classes.stepWrapper}>
@@ -294,7 +350,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <SpeechCard
             leftSide
             className={clsx({
-              "invisible": !enrolment["Commenced"].number
+              [classes.hidden]: !enrolment["Commenced"].number
             })}
           >
             <Typography variant="body1">
@@ -331,7 +387,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <div className="flex-fill" />
           <SpeechCard
             className={clsx({
-              "invisible": !outcome["Delivered"].number
+              [classes.hidden]: !outcome["Delivered"].number
             })}
           >
             <Typography variant="body1">
@@ -391,7 +447,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <SpeechCard
             leftSide
             className={clsx({
-              "invisible": !enrolment["Delivered"].number
+              [classes.hidden]: !enrolment["Delivered"].number
             })}
           >
             <Typography variant="body1">
@@ -430,7 +486,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
           <SpeechCard
             className={clsx({
-              "invisible": !outcome["Final Status"].number
+              [classes.hidden]: !outcome["Final Status"].number
             })}
           >
             <Typography variant="body1">
@@ -474,7 +530,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             <SpeechCard
               leftSide
               className={clsx({
-                "invisible": !enrolment["All outcomes final"].number
+                [classes.hidden]: !enrolment["All outcomes final"].number
               })}
             >
               <Typography variant="body1">
@@ -508,7 +564,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
             <SpeechCard
               leftSide
               className={clsx({
-                "invisible": !enrolment["Issued"].number
+                [classes.hidden]: !enrolment["Issued"].number
               })}
             >
               <Typography variant="body1">
