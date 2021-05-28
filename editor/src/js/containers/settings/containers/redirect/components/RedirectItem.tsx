@@ -36,23 +36,7 @@ interface Props {
   style: any;
 }
 
-const areEqual = (prev: Props, cur: Props) => {
-  let equal = true;
-
-  const prevItem = prev.data.items[prev.index];
-  const curItem = cur.data.items[cur.index];
-
-  for (const key in prevItem) {
-    if (prevItem[key] !== curItem[key]) {
-      equal = false;
-      break;
-    }
-  }
-
-  return equal;
-};
-
-const RedirectItem = React.memo<Props>((
+const RedirectItem = (
   {
     style,
     data,
@@ -120,7 +104,7 @@ const RedirectItem = React.memo<Props>((
       </Grid>
     </div>
   );
-},areEqual);
+};
 
 export default RedirectItem;
 
