@@ -27,9 +27,9 @@ export const getLayouts = () => ({
   type: GET_LAYOUTS_REQUEST,
 });
 
-export const saveTheme = (id, props) => ({
+export const saveTheme = (theme) => ({
   type: SAVE_THEME_REQUEST,
-  payload: {id, ...props},
+  payload: theme,
 });
 
 export const addTheme = () => ({

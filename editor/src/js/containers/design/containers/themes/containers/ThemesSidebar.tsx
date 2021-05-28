@@ -16,7 +16,7 @@ interface Props {
   themes: Theme[];
   layouts: Layout[];
   match: any;
-  onSaveTheme: (themeId, settings) => any;
+  onSaveTheme: (theme) => any;
   onDeleteTheme: (id) => any;
   onAddTheme: () => any;
   history: any;
@@ -63,7 +63,7 @@ class ThemesSidebar extends React.Component<Props, any> {
           themes={themes}
           layouts={layouts}
           onBack={() => this.resetActiveTheme()}
-          onSaveTheme={prop => onSaveTheme(activeTheme, prop)}
+          onSaveTheme={theme => onSaveTheme(theme)}
           showError={showError}
           onDelete={id => onDeleteTheme(id)}
           showModal={showModal}
@@ -83,7 +83,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onSaveTheme: (theme, settings) => dispatch(saveTheme(theme.id, {...theme, ...settings})),
+    onSaveTheme: (theme) => dispatch(saveTheme(theme)),
     showError: title => dispatch(
       {
         type: SHOW_MESSAGE,

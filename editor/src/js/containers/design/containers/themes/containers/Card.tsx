@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {DragSource, DropTarget} from 'react-dnd';
-import {findDOMNode} from 'react-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {Draggable} from "react-beautiful-dnd";
 import clsx from "clsx";
 import {IconButton} from "@material-ui/core";
-import flow from 'lodash/flow';
 import {withStyles} from "@material-ui/core/styles";
 import {stubFunction} from "../../../../../common/utils/Components";
 import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
@@ -70,117 +68,50 @@ class Card extends Component<any, any> {
     const {
       card,
       classes,
-      connectDragSource,
-      connectDropTarget,
       index,
-      isDragging,
       listId,
       removeCard,
     } = this.props;
 
     const isDefault = listId === "default";
 
-    return connectDragSource(connectDropTarget(
-      <div className={clsx(classes.themeCard, isDragging && classes.dragging)}>
-        <EditInPlaceField
-          // label="Block title"
-          name="blockTitle"
-          id="blockTitle"
-          meta={{}}
-          input={{
-            onChange: e => this.onChange(e),
-            onFocus: stubFunction,
-            onBlur: () => this.onSave(card),
-            value: this.state.title,
-          }}
-        />
+    return (
+      <Draggable
+        key={card.id}
+        draggableId={card.id.toString()}
+        index={index}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <div className={clsx(classes.themeCard)}>
 
-        {!isDefault && (
-          <IconButton size="small">
-            <DeleteIcon className={classes.removeIcon} onClick={() => removeCard(index)}/>
-          </IconButton>
+              <EditInPlaceField
+                // label="Block title"
+                name="blockTitle"
+                id="blockTitle"
+                meta={{}}
+                input={{
+                  onChange: e => this.onChange(e),
+                  onFocus: stubFunction,
+                  onBlur: () => this.onSave(card),
+                  value: this.state.title,
+                }}
+              />
+
+              {!isDefault && (
+                <IconButton size="small">
+                  <DeleteIcon className={classes.removeIcon} onClick={() => removeCard(index, listId)}/>
+                </IconButton>
+              )}
+            </div>
+          </div>
         )}
-      </div>,
-    ));
+      </Draggable>
+    );
   }
 }
 
-const cardSource = {
-  beginDrag(props) {
-    return {
-      index: props.index,
-      listId: props.listId,
-      card: props.card,
-    };
-  },
-
-  endDrag(props, monitor) {
-    const item = monitor.getItem();
-    const dropResult = monitor.getDropResult();
-
-    if ( dropResult && dropResult.listId !== item.listId ) {
-      props.removeCard(item.index);
-    }
-  },
-};
-
-const cardTarget = {
-  hover(props, monitor, component) {
-    const dragIndex = monitor.getItem().index;
-    const hoverIndex = props.index;
-    const sourceListId = monitor.getItem().listId;
-
-    // Don't replace items with themselves
-    if (dragIndex === hoverIndex) {
-      return;
-    }
-
-    // Determine rectangle on screen
-    const node = findDOMNode(component) as Element;
-    const hoverBoundingRect = node.getBoundingClientRect();
-
-    // Get vertical middle
-    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-    // Determine mouse position
-    const clientOffset = monitor.getClientOffset();
-
-    // Get pixels to the top
-    const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-    // Only perform the move when the mouse has crossed half of the items height
-    // When dragging downwards, only move when the cursor is below 50%
-    // When dragging upwards, only move when the cursor is above 50%
-
-    // Dragging downwards
-    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-      return;
-    }
-
-    // Dragging upwards
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-      return;
-    }
-
-    // Time to actually perform the action
-    if ( props.listId === sourceListId ) {
-      props.moveCard(dragIndex, hoverIndex);
-
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      monitor.getItem().index = hoverIndex;
-    }
-  },
-};
-
-export default flow<any, any, any>(
-  DropTarget("CARD", cardTarget, connect => ({
-    connectDropTarget: connect.dropTarget(),
-  })),
-  DragSource("CARD", cardSource, (connect, monitor) => ({
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
-  })),
-)(withStyles(styles)(Card));
+export default withStyles(styles)(Card);

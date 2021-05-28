@@ -24,13 +24,13 @@ interface Props {
   classes: any;
   theme: ThemeModel;
   blocks: any;
-  onUpdate: (blockId, items) => any;
   saveBlock: (blockId, settings) => any;
+  removeBlock: (index, sourceId) => any;
 }
 
 class ThemeLayout extends React.Component<Props, any> {
   render() {
-    const {blocks, classes, theme, onUpdate, saveBlock} = this.props;
+    const {blocks, classes, theme, removeBlock, saveBlock} = this.props;
 
     const getThemeBlocks = key => {
       if (!theme.blocks) return [];
@@ -45,9 +45,9 @@ class ThemeLayout extends React.Component<Props, any> {
             <Source
               placeholder="Header"
               id="top"
-              onUpdate={onUpdate}
-              list={getThemeBlocks('top')}
+              cards={getThemeBlocks('top')}
               saveBlock={saveBlock}
+              removeBlock={(index, sourceId) => removeBlock(index, sourceId)}
             />
           </Grid>
         </Grid>
@@ -57,9 +57,9 @@ class ThemeLayout extends React.Component<Props, any> {
             <Source
               placeholder="Left"
               id="left"
-              onUpdate={onUpdate}
-              list={getThemeBlocks('left')}
+              cards={getThemeBlocks('left')}
               saveBlock={saveBlock}
+              removeBlock={(index, sourceId) => removeBlock(index, sourceId)}
             />
           </Grid>
 
@@ -67,9 +67,9 @@ class ThemeLayout extends React.Component<Props, any> {
             <Source
               placeholder="Middle"
               id="centre"
-              onUpdate={onUpdate}
-              list={getThemeBlocks('centre')}
+              cards={getThemeBlocks('centre')}
               saveBlock={saveBlock}
+              removeBlock={(index, sourceId) => removeBlock(index, sourceId)}
             />
           </Grid>
 
@@ -77,9 +77,9 @@ class ThemeLayout extends React.Component<Props, any> {
             <Source
               placeholder="Right"
               id="right"
-              onUpdate={onUpdate}
-              list={getThemeBlocks('right')}
+              cards={getThemeBlocks('right')}
               saveBlock={saveBlock}
+              removeBlock={(index, sourceId) => removeBlock(index, sourceId)}
             />
           </Grid>
         </Grid>
@@ -89,9 +89,9 @@ class ThemeLayout extends React.Component<Props, any> {
             <Source
               placeholder="Footer"
               id="footer"
-              onUpdate={onUpdate}
-              list={getThemeBlocks('footer')}
+              cards={getThemeBlocks('footer')}
               saveBlock={saveBlock}
+              removeBlock={(index, sourceId) => removeBlock(index, sourceId)}
             />
           </Grid>
         </Grid>

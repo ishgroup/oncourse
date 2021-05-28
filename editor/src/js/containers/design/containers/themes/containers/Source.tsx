@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import update from 'react-addons-update';
-import Card from "./Card";
-import {DropTarget} from 'react-dnd';
 import {TextField} from "@material-ui/core";
+import {Droppable} from "react-beautiful-dnd";
 import clsx from "clsx";
 import {withStyles} from "@material-ui/core/styles";
+import Card from "./Card";
 
 const styles = theme => ({
   themeSource: {
@@ -50,66 +50,26 @@ const styles = theme => ({
 
 interface Props {
   classes: any;
-  list: any[];
+  id: string;
+  cards: any[];
   showFilter?: boolean;
   saveBlock: (blockId, settings) => any;
+  removeBlock: (index, sourceId) => any;
 }
 
 class Source extends Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      cards: props.list,
+      cards: props.cards,
       filter: '',
     };
   }
 
   componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any) {
-    if (prevProps.list !== this.props.list) {
-      this.setState({ cards: this.props.list });
+    if (prevProps.cards !== this.props.cards) {
+      this.setState({ cards: this.props.cards });
     }
-  }
-
-  pushCard(card) {
-    const {id} = this.props;
-    this.setState(update(this.state, {
-      cards: {
-        $push: [card],
-      },
-    }));
-
-    this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
-  }
-
-  removeCard(index) {
-    const {id} = this.props;
-
-    this.setState(update(this.state, {
-      cards: {
-        $splice: [
-          [index, 1],
-        ],
-      },
-    }), () => {
-      this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
-    });
-  }
-
-  moveCard(dragIndex, hoverIndex) {
-    const {id} = this.props;
-    const {cards} = this.state;
-    const dragCard = cards[dragIndex];
-
-    this.setState(update(this.state, {
-      cards: {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, dragCard],
-        ],
-      },
-    }));
-
-    this.props.onUpdate && this.props.onUpdate(id, this.state.cards);
   }
 
   onChangeFilter(e) {
@@ -120,63 +80,52 @@ class Source extends Component<any, any> {
 
   render() {
     const {cards, filter} = this.state;
-    const {canDrop, classes, isOver, connectDropTarget, placeholder, className, showFilter, noUpperCase, saveBlock} = this.props;
-    const isActive = canDrop && isOver;
+    const {classes, id, placeholder, className, showFilter, noUpperCase, removeBlock, saveBlock} = this.props;
 
-    return connectDropTarget(
-      <div className="relative h-100">
-        <div className={classes.placeholder}>
-          {placeholder}
-        </div>
-        <div
-          className={clsx(classes.themeSource, className === "blocks" && classes.blocks,
-            isActive && classes.activeBlock || classes.notActiveBlock, !noUpperCase && classes.upperCaseAfter)}
-          // data-placeholder={placeholder}
-        >
-          {cards && cards.length > 0 && showFilter &&
-            <TextField
-              type="text"
-              name="filter"
-              placeholder="Filter"
-              id="filter"
-              className="w-100 pl-1 pr-1"
-              value={filter}
-              onChange={e => this.onChangeFilter(e)}
-            />
-          }
+    return (
+      <Droppable droppableId={id}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} className={"h-100"}>
+            <div className={"relative h-100"}>
+              <div className={classes.placeholder}>
+                {placeholder}
+              </div>
+              <div
+                className={clsx(classes.themeSource, className === "blocks" && classes.blocks,
+                  snapshot.isDraggingOver && classes.activeBlock || classes.notActiveBlock, !noUpperCase && classes.upperCaseAfter)}
+              >
+                {cards && cards.length > 0 && showFilter &&
+                  <TextField
+                    type="text"
+                    name="filter"
+                    placeholder="Filter"
+                    id="filter"
+                    className="w-100 pl-1 pr-1"
+                    value={filter}
+                    onChange={e => this.onChangeFilter(e)}
+                  />
+                }
 
-          {cards.filter(card => card.title.toLowerCase().indexOf(filter.toLowerCase()) !== -1).map((card, i) => (
-            card &&
-              <Card
-                key={card.id}
-                index={i}
-                listId={this.props.id}
-                card={card}
-                removeCard={this.removeCard.bind(this)}
-                moveCard={this.moveCard.bind(this)}
-                saveBlock={saveBlock}
-              />
-            ),
-          )}
-        </div>
-      </div>,
+                {cards && cards.filter(card => card.title.toLowerCase().indexOf(filter.toLowerCase()) !== -1).map((card, i) => (
+                  card &&
+                    <Card
+                      key={card.id}
+                      index={i}
+                      listId={this.props.id}
+                      card={card}
+                      saveBlock={saveBlock}
+                      removeCard={(index, sourceId) => removeBlock(index, sourceId)}
+                    />
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </Droppable>
     );
   }
 }
 
-const cardTarget = {
-  drop(props, monitor, component) {
-    const {id} = props;
-    const sourceObj = monitor.getItem();
-    if (id !== sourceObj.listId) component.pushCard(sourceObj.card);
-    return {
-      listId: id,
-    };
-  },
-};
 
-export default DropTarget("CARD", cardTarget, (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop(),
-}))(withStyles(styles as any)(Source));
+export default withStyles(styles as any)(Source);

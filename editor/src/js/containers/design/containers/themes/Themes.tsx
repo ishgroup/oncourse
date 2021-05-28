@@ -16,7 +16,7 @@ interface Props {
   blocks: BlockState[];
   onInit: () => any;
   match?: any;
-  onUpdateLayout: (themeId, blockId, items) => any;
+  onUpdateTheme: (theme) => any;
   onSaveTheme: (theme) => any;
   saveBlock: (blockId, settings) => any;
 }
@@ -27,7 +27,7 @@ export class Themes extends React.Component<Props, any> {
   }
 
   render() {
-    const {themes, match, onUpdateLayout, onSaveTheme, blocks, fetching, saveBlock} = this.props;
+    const {themes, match, onUpdateTheme, onSaveTheme, blocks, fetching, saveBlock} = this.props;
     const theme = match.params.id && themes.find(theme => theme.id == match.params.id);
 
     return (
@@ -36,8 +36,8 @@ export class Themes extends React.Component<Props, any> {
         <Grid item xs={12} className={clsx((fetching && "fetching"), "h-100")}>
           <Theme
             theme={theme}
-            onUpdateLayout={(blockId, items) => onUpdateLayout(theme, blockId, items)}
-            onSaveTheme={() => onSaveTheme(theme)}
+            onUpdateTheme={(theme) => onUpdateTheme(theme)}
+            onSaveTheme={(theme) => onSaveTheme(theme)}
             blocks={blocks}
             saveBlock={saveBlock}
           />
@@ -61,19 +61,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
       dispatch(getBlocks());
       dispatch(getLayouts());
     },
-    onUpdateLayout: (theme, blockId, items) => {
-      dispatch(updateThemeState(
-        {
-          ...theme,
-          blocks: {
-            ...theme.blocks,
-            [blockId]: items.map((block, index) => ({id: block.id, position: index})),
-          },
-        },
-      ));
-    },
+    onUpdateTheme: (theme) => dispatch(updateThemeState(theme)),
     saveBlock: (blockId, settings) => dispatch(saveBlock(blockId, settings)),
-    onSaveTheme: (theme: ThemeModel) => dispatch(saveTheme(theme.id, theme)),
+    onSaveTheme: (theme: ThemeModel) => dispatch(saveTheme(theme)),
   };
 };
 

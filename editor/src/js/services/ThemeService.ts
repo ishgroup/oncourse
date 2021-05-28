@@ -15,8 +15,8 @@ class ThemeService {
     return this.themeApi.getLayouts();
   }
 
-  public saveTheme(props, state: State): Promise<Theme> {
-    return this.themeApi.updateTheme(this.buildSaveThemeRequest(props, state));
+  public saveTheme(theme): Promise<Theme> {
+    return this.themeApi.updateTheme(theme);
   }
 
   public addTheme(): Promise<Theme> {

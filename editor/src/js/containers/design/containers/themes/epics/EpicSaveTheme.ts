@@ -10,8 +10,8 @@ import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
 
 const request: EpicUtils.Request<any, any> = {
   type: SAVE_THEME_REQUEST,
-  getData: (props, state) => ThemeService.saveTheme(props, state),
-  processData: (theme: Theme, state: any) => {
+  getData: (theme) => ThemeService.saveTheme(theme),
+  processData: (theme: Theme) => {
 
     getHistoryInstance().push(`${URL.THEMES}/${theme.id}`);
 
