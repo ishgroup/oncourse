@@ -21,6 +21,8 @@ describe("Get export templates list epic tests", () => {
         grayOut: r.values[2] === "false"
       }));
 
+      exportTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+
       return [
         {
           type: GET_EXPORT_TEMPLATES_LIST_FULFILLED,

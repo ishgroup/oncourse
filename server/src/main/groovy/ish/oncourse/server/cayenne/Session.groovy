@@ -226,6 +226,11 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 		return super.getAttendance()
 	}
 
+	Attendance getAttendance(Student student) {
+		return getAttendance().find {attendance -> attendance.student.id == student.id}
+	}
+
+
 	/**
 	 * @return attendance records for all SUCCESS enrolments
 	 */

@@ -16,6 +16,7 @@ import ish.messaging.IAttendance
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Attendance
+import ish.util.DurationFormatter
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
@@ -88,6 +89,13 @@ class Attendance extends _Attendance implements IAttendance, Queueable {
 	@Override
 	Integer getDurationMinutes() {
 		return super.getDurationMinutes()
+	}
+
+	BigDecimal getDurationInHours() {
+		if (getAttendedFrom() == null || getAttendedUntil()) {
+			return BigDecimal.ZERO
+		}
+		return DurationFormatter.parseDurationInHours(getAttendedUntil().getTime() - getAttendedFrom().getTime())
 	}
 
 
