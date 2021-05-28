@@ -13,7 +13,7 @@ import EntityService from "../../../../../common/services/EntityService";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 import history from "../../../../../constants/History";
 
-const request: EpicUtils.Request<any,{ nameToSelect: string; selectFirst: boolean }> = {
+const request: EpicUtils.Request<any, { nameToSelect: string; selectFirst: boolean }> = {
   type: GET_SCRIPTS_LIST,
   getData: () => EntityService.getPlainRecords("Script", "name,enabled,keyCode", null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {
@@ -25,7 +25,7 @@ const request: EpicUtils.Request<any,{ nameToSelect: string; selectFirst: boolea
       hasIcon: r.values[2] && r.values[2].startsWith("ish.")
     }));
 
-    scripts.sort((a, b) => (a.name[0].toLowerCase() > b.name[0].toLowerCase() ? 1 : -1));
+    scripts.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.nameToSelect) {
