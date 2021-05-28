@@ -15,8 +15,7 @@ const request: EpicUtils.Request = {
   getData: () => IntegrationService.getIntegrations(),
   processData: response => {
     const integrations = parseIntegrations(response);
-
-    integrations.sort((a, b) => (a.name[0].toLowerCase() > b.name[0].toLowerCase() ? 1 : -1));
+    integrations.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     return [
       {
