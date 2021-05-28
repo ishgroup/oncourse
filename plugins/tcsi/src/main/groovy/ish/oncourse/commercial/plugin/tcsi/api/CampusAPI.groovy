@@ -28,7 +28,7 @@ class CampusAPI extends TCSI_API {
 
     String campusUid() {
         String campuseUid = null
-        if (enrolment.courseClass.room) {
+        if (enrolment.courseClass.room && !enrolment.courseClass.room.site.isVirtual) {
             campuseUid = getCampus()
             if (!campuseUid) {
                 campuseUid = createCampus()

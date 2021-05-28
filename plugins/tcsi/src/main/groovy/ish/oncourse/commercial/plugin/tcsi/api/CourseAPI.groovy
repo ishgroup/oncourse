@@ -65,7 +65,7 @@ class CourseAPI extends TCSI_API {
       
             client.request(PATCH, JSON) {
                 uri.path = COURSES_PATH +"/$courseUid"
-                boby = getCourseData()
+                body = getCourseData()
                 response.success = { resp, result ->
                     handleResponce(result, message)
                 }
