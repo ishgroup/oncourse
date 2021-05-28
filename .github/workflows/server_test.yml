@@ -23,7 +23,6 @@ jobs:
         uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
-      - uses: actions/checkout@v2
 
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -83,7 +82,6 @@ jobs:
         uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
-      - uses: actions/checkout@v2
 
       - name: Set up JDK
         uses: actions/setup-java@v2
