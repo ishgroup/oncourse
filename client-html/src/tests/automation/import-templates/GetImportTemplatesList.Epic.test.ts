@@ -8,7 +8,7 @@ import { CommonListItem } from "../../../js/model/common/sidebar";
 import { DefaultEpic } from "../../common/Default.Epic";
 
 describe("Get import templates list epic tests", () => {
-  it("EpicGetImportTemplatesList should returns correct values", () => 
+  it("EpicGetImportTemplatesList should returns correct values", () =>
      DefaultEpic({
       action: {
         type: GET_IMPORT_TEMPLATES_LIST
@@ -24,6 +24,8 @@ describe("Get import templates list epic tests", () => {
           hasIcon: r.values[1].startsWith("ish."),
           grayOut: r.values[2] === "false"
         }));
+
+        importTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
         return [
           {
