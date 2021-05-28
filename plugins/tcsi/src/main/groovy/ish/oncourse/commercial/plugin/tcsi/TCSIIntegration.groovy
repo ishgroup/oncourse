@@ -272,6 +272,12 @@ class TCSIIntegration implements PluginTrait {
             } else {
                 unitAPI.createUnit(admissionUid, campuseUid)
             }
+            emailService.email {
+                subject("TCSI export SUCCESS for: $enrolment.student.contact.fullName  $enrolment.courseClass.uniqueCode")
+                content("The enrolment unit was successfully ${unitUid == null? 'exported':'updated'}")
+                from (preferenceController.emailFromAddress)
+                to (preferenceController.emailAdminAddress)
+            }
         }
     }
      

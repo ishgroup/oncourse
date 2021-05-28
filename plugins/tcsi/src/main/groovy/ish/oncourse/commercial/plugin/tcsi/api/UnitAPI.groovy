@@ -69,7 +69,7 @@ class UnitAPI extends TCSI_API {
             //POST as array with single JSON object inside
             body = JsonOutput.toJson([getUnitData(admissionUid, campuseUid)])
             response.success = { resp, result -> 
-                handleResponce(result as List, message)
+                handleResponce(result, message)
             }
             response.failure =  { resp, body ->
                 interraptExport("Something unexpected happend white $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
@@ -85,7 +85,7 @@ class UnitAPI extends TCSI_API {
             body = JsonOutput.toJson(getUnitData(admissionUid, campuseUid)) 
 
             response.success = { resp, result ->
-                handleResponce(result as List, message)
+                handleResponce(result, message)
             }
             response.failure =  { resp, body ->
                 interraptExport("Something unexpected happend white $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
