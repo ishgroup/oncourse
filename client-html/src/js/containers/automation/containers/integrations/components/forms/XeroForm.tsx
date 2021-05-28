@@ -92,7 +92,7 @@ class XeroBaseForm extends React.Component<any, any> {
 
   onDisconnect = () => {
     const { dispatch, canSave } = this.props;
-    canSave(true)
+    canSave(true);
     dispatch(change("XeroForm", "fields.active", "false"));
   }
 
@@ -121,11 +121,15 @@ class XeroBaseForm extends React.Component<any, any> {
           </>
         ) : (
           <>
-            <FormField
-              type="stub"
-              name="verificationCode"
-              validate={validateSingleMandatoryField}
-            />
+            {
+              !values.id && (
+                <FormField
+                  type="stub"
+                  name="verificationCode"
+                  validate={validateSingleMandatoryField}
+                />
+              )
+            }
 
             <Typography variant="caption" component="div">
               {hideConfig
