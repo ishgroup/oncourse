@@ -129,9 +129,9 @@ class UnitAPI extends TCSI_API {
             unit["unit_of_study_status_code"] = "1"
         } else {
             if (enrolment.outcomes.any {(it.endDate?.isAfter(LocalDate.now())) || !(it.status in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE)}) {
-                unit["unit_of_study_status_code"] = "3"
-            } else {
                 unit["unit_of_study_status_code"] = "4"
+            } else {
+                unit["unit_of_study_status_code"] = "3"
             }
         }
 
@@ -213,6 +213,7 @@ class UnitAPI extends TCSI_API {
         if (enrolment.creditTotal) {
             switch (enrolment.creditTotal) {
                 case RecognitionOfPriorLearningIndicator.NOT_RPL_UNIT_OF_STUDY:
+                    unit["recognition_of_prior_learning_code"]=null
                     break
                 case RecognitionOfPriorLearningIndicator.UNIT_OF_STUDY_CONSISTS_WHOLLY_OF_RPL:
                     unit["recognition_of_prior_learning_code"]='1'
