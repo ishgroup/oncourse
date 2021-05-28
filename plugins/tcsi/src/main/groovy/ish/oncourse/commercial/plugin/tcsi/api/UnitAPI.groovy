@@ -106,8 +106,10 @@ class UnitAPI extends TCSI_API {
             unit["unit_of_study_census_date"] = clazz.censusDate.format(DATE_FORMAT)
         }
         
-        String foe = highEducation.modules*.fieldOfEducation.grep().sort().first()
-        unit["discipline_code"] = foe
+        List<String> foes = highEducation.modules*.fieldOfEducation.grep()
+        if (!foes.empty) {
+            unit["discipline_code"] = foes.countBy { it }.max { it.value }.key
+        }
         
 
         if (clazz.startDateTime && clazz.endDateTime) {
