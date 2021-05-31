@@ -271,24 +271,24 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                   size={twoColumn ? [600, 207] : [600, 300]}
                 />
               </Grid>
-
-              <Grid item xs={layoutArray[8].xs}>
-                <MinifiedEntitiesList
-                  name="rooms"
-                  header="Rooms"
-                  oneItemHeader="Room"
-                  entity="Room"
-                  FieldsContent={SitesRoomFields}
-                  onAdd={this.addRoom}
-                  onDelete={this.deleteRoom}
-                  onViewMore={openRoom}
-                  count={values.rooms && values.rooms.length}
-                  validate={validateRooms}
-                  syncErrors={syncErrors}
-                />
-              </Grid>
             </Grid>
           </Collapse>
+
+          <Grid item xs={layoutArray[8].xs}>
+            <MinifiedEntitiesList
+              name="rooms"
+              header="Rooms"
+              oneItemHeader="Room"
+              entity="Room"
+              FieldsContent={SitesRoomFields}
+              onAdd={this.addRoom}
+              onDelete={this.deleteRoom}
+              onViewMore={openRoom}
+              count={values.rooms && values.rooms.length}
+              validate={validateRooms}
+              syncErrors={syncErrors}
+            />
+          </Grid>
         </Grid>
       </>
     );
