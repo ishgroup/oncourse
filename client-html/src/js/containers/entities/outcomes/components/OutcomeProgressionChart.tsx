@@ -7,10 +7,8 @@
  */
 
 import React, { useMemo, useState } from "react";
-import {
-  PieChart, Pie, Legend, Cell
-} from "recharts";
-import { useTheme, fade, Tooltip } from '@material-ui/core';
+import { Cell, Legend, Pie, PieChart } from "recharts";
+import { fade, Tooltip, useTheme } from '@material-ui/core';
 import { OutcomeProgression } from "@api/model";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 
@@ -140,6 +138,8 @@ export function AssessmentChart({ data }: Props) {
   ];
 
   const markedIndex = chartData.findIndex(c => c.name.includes("marked"));
+  const releasedIndex = chartData.findIndex(c => c.name.includes("released"));
+  const notReleasedIndex = chartData.findIndex(c => c.name.includes("notReleased"));
 
   return (
     <Tooltip title={tooltipText} placement="top">
@@ -163,7 +163,9 @@ export function AssessmentChart({ data }: Props) {
             <tspan fontSize="30">
               {normalizeNumber(chartData.length
                 && chartData[markedIndex].value
-                && Math.round(chartData[markedIndex].value / (chartData.reduce((p, c) => p + c.value, 0) / 100)))}
+                && Math.round(chartData[markedIndex].value / (((
+                  chartData[releasedIndex].value + (includeUnreleased ? chartData[notReleasedIndex].value : 0)
+                )) / 100)))}
               %
             </tspan>
             <tspan x="100" dy="15">assessments</tspan>
