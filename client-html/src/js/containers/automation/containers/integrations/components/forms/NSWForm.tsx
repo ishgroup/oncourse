@@ -30,13 +30,15 @@ class NSWBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, appBarContent, dirty, form
+      handleSubmit, onSubmit, AppBarContent, dirty, form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
         <FormField name="fields.voucher" label="Voucher type" type="select" items={ServiceNSWVoucherTypes} required fullWidth />
         <FormField name="fields.chanelCode" label="Store channel code" type="text" required fullWidth />
         <FormField name="fields.terminalId" label="POS terminal id" type="text" required fullWidth />

@@ -32,24 +32,29 @@ class XeroBaseForm extends React.Component<any, any> {
 
   componentDidMount() {
     const {
-     match: { params: { name } }, item, dispatch, canSave
+     match: { params: { name } }, item, dispatch
     } = this.props;
 
     if (name && !item.name) {
       dispatch(change("XeroForm", "name", name));
     }
-    canSave(false);
   }
 
   componentDidUpdate(prevProps) {
     const {
-     item, dispatch, location: { search }, canSave
+     item, dispatch, location: { search }, history, dirty
     } = this.props;
     const { hideConfig } = this.state;
 
     if (prevProps.item.id !== item.id) {
       // Reinitializing form with values
       dispatch(initialize("XeroForm", item));
+      this.setState({
+        hideConfig: false
+      });
+    }
+
+    if (prevProps.dirty === true && dirty === false) {
       this.setState({
         hideConfig: false
       });
@@ -64,16 +69,19 @@ class XeroBaseForm extends React.Component<any, any> {
           hideConfig: true
         });
         dispatch(change("XeroForm", "verificationCode", code));
-        canSave(true);
+        params.delete('code');
+
+        history.replace({
+          pathname: history.location.pathname,
+          search: decodeURIComponent(params.toString())
+        });
       }
     }
   }
 
   beforeSubmit = integration => {
-    const { onSubmit, dispatch } = this.props;
-
+    const { onSubmit } = this.props;
     onSubmit(integration);
-    dispatch(change("XeroForm", "verificationCode", null));
   };
 
   showTokenField = () => {
@@ -85,27 +93,32 @@ class XeroBaseForm extends React.Component<any, any> {
 
     window.open(
       // eslint-disable-next-line max-len
-      `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${window.location.href}/${values && values.name}`,
+      `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${window.location.href}${values.id ? "" : `/${values.name}`}`,
       "_self"
     );
   }
 
   onDisconnect = () => {
-    const { dispatch, canSave } = this.props;
-    canSave(true);
+    const { dispatch } = this.props;
+    this.setState({
+      hideConfig: true
+    });
     dispatch(change("XeroForm", "fields.active", "false"));
   }
 
   render() {
     const {
-      appBarContent, dirty, handleSubmit, values = {}, item, form
+      AppBarContent, dirty, handleSubmit, values = {}, form
     } = this.props;
+
     const { hideConfig, loading } = this.state;
 
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent disableName={Boolean(values?.id)} />
+        </CustomAppBar>
 
         {values?.fields?.active === "true" ? (
           <>
@@ -122,7 +135,7 @@ class XeroBaseForm extends React.Component<any, any> {
         ) : (
           <>
             {
-              !values.id && (
+              !hideConfig && (
                 <FormField
                   type="stub"
                   name="verificationCode"
