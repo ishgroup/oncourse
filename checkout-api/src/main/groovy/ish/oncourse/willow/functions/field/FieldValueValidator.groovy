@@ -22,6 +22,7 @@ import static ish.oncourse.willow.model.field.DataType.CHOICE
 import static ish.oncourse.willow.model.field.DataType.EMAIL
 import static ish.oncourse.willow.model.field.DataType.ENUM
 import static ish.oncourse.willow.model.field.DataType.MONEY
+import static ish.oncourse.willow.model.field.DataType.PATTERN_TEXT
 import static ish.validation.ContactValidator.Property.*
 
 @CompileStatic
@@ -107,6 +108,9 @@ class FieldValueValidator {
             case FieldProperty.CUSTOM_FIELD_ENROLMENT:
             case FieldProperty.CUSTOM_FIELD_APPLICATION:
             case FieldProperty.CUSTOM_FIELD_WAITING_LIST:
+            case FieldProperty.CUSTOM_FIELD_ARTICLE:
+            case FieldProperty.CUSTOM_FIELD_MEMBERSHIP:
+            case FieldProperty.CUSTOM_FIELD_VOUCHER:
                 stringError = validateCustomField(value as String)
                 break
             default:
@@ -203,6 +207,11 @@ class FieldValueValidator {
                 } catch (NumberFormatException e) {
                     logger.error('Wrong money format', e)
                     return  'Wrong money format'
+                }
+                break
+            case PATTERN_TEXT:
+                if (!value.matches(processor.pattern)) {
+                    return "The value isn't matched to pattern expression"
                 }
                 break
             default:

@@ -23,7 +23,7 @@ public class FieldConfigurationUtil {
                     return PayerFieldConfiguration.class;
                 case PARENT:
                     return ParentFieldConfiguration.class;
-                case PRODUCT:
+                case ARTICLE:
                     return ArticleFieldConfiguration.class;
                 case MEMBERSHIP:
                     return MembershipFieldConfiguration.class;

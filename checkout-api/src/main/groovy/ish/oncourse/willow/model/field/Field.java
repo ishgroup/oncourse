@@ -10,6 +10,7 @@ public class Field  {
     private String id = null;
     private String key = null;
     private String name = null;
+    private String pattern = null;
     private String description = null;
     private Boolean mandatory = null;
     private DataType dataType = null;
@@ -68,6 +69,23 @@ public class Field  {
 
     public Field name(String name) {
       this.name = name;
+      return this;
+    }
+
+    /**
+     * Field pattern ( PATTERN_TEXT only )
+     * @return pattern
+     */
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+       this.pattern = pattern;
+    }
+
+    public Field pattern(String pattern) {
+      this.pattern = pattern;
       return this;
     }
 
@@ -238,6 +256,7 @@ public class Field  {
       sb.append("    id: ").append(toIndentedString(id)).append("\n");
       sb.append("    key: ").append(toIndentedString(key)).append("\n");
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
+      sb.append("    pattern: ").append(toIndentedString(pattern)).append("\n");
       sb.append("    description: ").append(toIndentedString(description)).append("\n");
       sb.append("    mandatory: ").append(toIndentedString(mandatory)).append("\n");
       sb.append("    dataType: ").append(toIndentedString(dataType)).append("\n");
