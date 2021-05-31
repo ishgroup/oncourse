@@ -1,6 +1,9 @@
 name: API test
-
-on: push
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
 
@@ -31,7 +34,6 @@ jobs:
         uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
-      - uses: actions/checkout@v2
 
       - name: Set up JDK
         uses: actions/setup-java@v2
