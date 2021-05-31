@@ -16,6 +16,7 @@ import {settingFileName, webDavSrcSitePath} from "../../common/webdav/constants/
 import {formatSectionField} from "../../common/webdav/utils";
 import FormSubmitButton from "../../common/components/form/FormSubmitButton";
 import AppBar from "../../common/components/layout/AppBar";
+import {getPort} from "../../utils";
 
 const WEBDAV_FORM_NAME = "WebDavForm";
 
@@ -68,7 +69,8 @@ const StylesSettingsForm: React.FC<any> = props => {
   useEffect(() => {
     if (credentials) {
       if (client === null) {
-        setClient(`${window.location.origin}:443`, {
+        const port = getPort();
+        setClient(`${window.location.origin}:${port}`, {
           username: credentials.email,
           password: credentials.password,
         });

@@ -75,3 +75,5 @@ export class Browser {
   }
 
 }
+
+export const getPort = () => window.location.protocol.includes("https") ? 443 : 80;
