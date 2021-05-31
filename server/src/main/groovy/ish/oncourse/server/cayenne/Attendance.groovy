@@ -92,7 +92,7 @@ class Attendance extends _Attendance implements IAttendance, Queueable {
 	}
 
 	BigDecimal getDurationInHours() {
-		if (getAttendedFrom() == null || getAttendedUntil()) {
+		if (getAttendedFrom() == null || getAttendedUntil()  == null) {
 			return BigDecimal.ZERO
 		}
 		return DurationFormatter.parseDurationInHours(getAttendedUntil().getTime() - getAttendedFrom().getTime())
