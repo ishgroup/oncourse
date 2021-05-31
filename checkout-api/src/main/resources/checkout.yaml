@@ -1563,10 +1563,6 @@ definitions:
         type: string
       relatedProductId:
         type: string
-      fieldHeadings:
-        type: array
-        items:
-          $ref: '#/definitions/field.FieldHeading'
   checkout.Membership:
     type: object
     requred:
@@ -1599,10 +1595,6 @@ definitions:
         type: string
       relatedProductId:
         type: string
-      fieldHeadings:
-        type: array
-        items:
-          $ref: '#/definitions/field.FieldHeading'
   checkout.Voucher:
     type: object
     requred:
@@ -1650,10 +1642,6 @@ definitions:
         type: string
       relatedProductId:
         type: string
-      fieldHeadings:
-        type: array
-        items:
-          $ref: '#/definitions/field.FieldHeading'
   checkout.WaitingList:
     type: object
     requred:

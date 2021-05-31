@@ -11,7 +11,6 @@ import ish.oncourse.model.MembershipProduct
 import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
 import ish.oncourse.model.VoucherProduct
-import ish.oncourse.willow.functions.field.GetProductFields
 import ish.oncourse.willow.model.checkout.Article
 import ish.oncourse.willow.model.checkout.Membership
 import ish.oncourse.willow.model.checkout.Voucher
@@ -51,7 +50,7 @@ class ProcessProduct {
     @CompileStatic(TypeCheckingMode.SKIP)
     ProcessProduct process() {
         persistentProduct = new GetProduct(context, college, productId).get()
-        ProductType productType = TypesUtil.getEnumForDatabaseValue(persistentProduct.type, ProductType.class)
+        ProductType productType =TypesUtil.getEnumForDatabaseValue(persistentProduct.type, ProductType.class)
         
         switch (productType) {
             case ARTICLE:
@@ -62,7 +61,6 @@ class ProcessProduct {
                     a.quantity = quantityVal
                     a.total = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, new BigDecimal(quantityVal)).calculate().finalPriceToPayIncTax.doubleValue()
                     a.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
-                    a.fieldHeadings = new GetProductFields(persistentProduct, productType).get()
                     a
                 }
                 ValidateArticle validate = new ValidateArticle(context, college, taxOverridden).validate(article)
@@ -75,8 +73,6 @@ class ProcessProduct {
                     m.productId = persistentProduct.id.toString()
                     m.selected = true
                     m.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
-                    m.fieldHeadings = new GetProductFields(persistentProduct, productType).get()
-
                     ValidateMembership validateMembership = new ValidateMembership(context, college).validate(persistentProduct as MembershipProduct, contact)
                     m.errors += validateMembership.errors
                     m.warnings += validateMembership.warnings
@@ -111,7 +107,6 @@ class ProcessProduct {
                         v.classes += voucher.redemptionCourses.collect{c -> c.name}
                         v.isEditablePrice = false
                     }
-                    v.fieldHeadings = new GetProductFields(persistentProduct, productType).get()
 
                     ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, v.price, v.total, v.contactId,  quantityVal)
                     v.errors += validateVoucher.errors

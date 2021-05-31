@@ -1,14 +1,15 @@
 package ish.oncourse.willow.functions.field
 
 import groovy.transform.CompileStatic
+import ish.common.types.FieldConfigurationType
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
-import ish.oncourse.model.Product
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.application.FindOfferedApplication
-import ish.oncourse.willow.checkout.functions.GetProduct
+import ish.oncourse.willow.model.field.ContactFields
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
@@ -23,15 +24,15 @@ class GetContactFields {
     private Contact contact
     private List<Course> coursesByClassIds
     private List<String> courseIds
-    private List<String> productIds
+    private boolean hasProducts
     private boolean mandatoryOnly
 
     GetContactFields(Contact contact, List<Course> coursesByClassIds, List<String> courseIds, List<String> productIds, boolean mandatoryOnly) {
         this.contact = contact
+        this.hasProducts = !productIds.empty
         this.mandatoryOnly = mandatoryOnly
         this.coursesByClassIds = coursesByClassIds
         this.courseIds = courseIds
-        this.productIds = productIds
     }
     
     List<Field> getFields() {
@@ -61,15 +62,7 @@ class GetContactFields {
             }
         }
         
-        productIds.each {productId ->
-            Product product = new GetProduct(contact.objectContext, contact.college, productId).get()
-            FieldConfiguration productForm = new GetProductFields(product).getConfiguration()
-            if (productForm) {
-                configurations << productForm
-            }
-        }
-
-        if (configurations.empty) {
+        if (hasProducts || configurations.empty) {
             configurations << new GetDefaultFieldConfiguration(contact.college, contact.objectContext).get()
         }
         configurations

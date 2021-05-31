@@ -50,16 +50,4 @@ public class FieldConfigurationScheme extends _FieldConfigurationScheme implemen
 	public FieldConfiguration getParentFieldConfiguration() {
 		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.PARENT, null);
 	}
-
-	public FieldConfiguration getArticleFieldConfiguration() {
-		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.ARTICLE, null);
-	}
-
-	public FieldConfiguration getMembershipFieldConfiguration() {
-		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.MEMBERSHIP, null);
-	}
-
-	public FieldConfiguration getVoucherFieldConfiguration() {
-		return FieldConfigurationSchemeUtil.getConfiguration(this, FieldConfigurationType.VOUCHER, null);
-	}
 }

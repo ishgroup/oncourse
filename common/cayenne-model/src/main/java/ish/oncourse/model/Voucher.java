@@ -3,7 +3,6 @@ package ish.oncourse.model;
 import ish.common.types.PaymentStatus;
 import ish.common.types.ProductStatus;
 import ish.math.Money;
-import ish.oncourse.common.field.*;
 import ish.oncourse.model.auto._Voucher;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.PersistenceState;
@@ -14,7 +13,6 @@ import static ish.common.types.ProductStatus.*;
 import static ish.common.types.ProductStatus.CANCELLED;
 import static ish.common.types.ProductStatus.EXPIRED;
 
-@Type(value = ContextType.VOUCHER)
 public class Voucher extends _Voucher implements Queueable {
 	private static final long serialVersionUID = -836996096054884238L;
 	public static final int VOUCHER_CODE_LENGTH = 8;
@@ -152,17 +150,6 @@ public class Voucher extends _Voucher implements Queueable {
     	}
 
 		super.setStatus(newStatus);
-	}
-
-	@Property(value = FieldProperty.CUSTOM_FIELD_VOUCHER, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
-	public void setCustomFieldValue(String key, String value) {
-		setCustomFieldValue(key, value, VoucherCustomField.class);
-	}
-
-	@Property(value = FieldProperty.CUSTOM_FIELD_VOUCHER, type = PropertyGetSetFactory.GET, params = {String.class})
-	public String getCustomFieldValue(String key) {
-		CustomField field = getCustomField(key);
-		return  field == null ? null : field.getValue();
 	}
 
 }

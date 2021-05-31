@@ -10,7 +10,6 @@ import ish.oncourse.model.MembershipProduct
 import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.checkout.payment.ProductItemInvoiceLine
-import ish.oncourse.willow.functions.field.FieldHelper
 import ish.util.ProductUtil
 import org.apache.cayenne.ObjectContext
 
@@ -43,7 +42,5 @@ class CreateMembership {
         membership.status = status
         InvoiceLine invoiceLine = new ProductItemInvoiceLine(membership, contact, membership.product.priceExTax, taxOverridden).create()
         invoiceLine.invoice = invoice
-
-        FieldHelper.valueOf([] as Set).populateFields(m.fieldHeadings, membership)
     }
 }

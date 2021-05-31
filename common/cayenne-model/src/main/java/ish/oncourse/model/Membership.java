@@ -3,7 +3,6 @@ package ish.oncourse.model;
 import java.util.Date;
 import ish.common.types.PaymentSource;
 import ish.common.types.ProductStatus;
-import ish.oncourse.common.field.*;
 import ish.oncourse.model.auto._Membership;
 import ish.oncourse.utils.DateUtils;
 import ish.oncourse.utils.QueueableObjectUtils;
@@ -11,7 +10,6 @@ import ish.util.DateTimeUtil;
 import ish.util.ProductUtil;
 import org.apache.cayenne.exp.Expression;
 
-@Type(value = ContextType.MEMBERSHIP)
 public class Membership extends _Membership implements Queueable {
 	private static final long serialVersionUID = -7624202404417919994L;
 	
@@ -45,16 +43,5 @@ public class Membership extends _Membership implements Queueable {
 		}
 		
 		super.setStatus(status);
-	}
-
-	@Property(value = FieldProperty.CUSTOM_FIELD_MEMBERSHIP, type = PropertyGetSetFactory.SET, params = {String.class, String.class})
-	public void setCustomFieldValue(String key, String value) {
-		setCustomFieldValue(key, value, MembershipCustomField.class);
-	}
-
-	@Property(value = FieldProperty.CUSTOM_FIELD_MEMBERSHIP, type = PropertyGetSetFactory.GET, params = {String.class})
-	public String getCustomFieldValue(String key) {
-		CustomField field = getCustomField(key);
-		return  field == null ? null : field.getValue();
 	}
 }

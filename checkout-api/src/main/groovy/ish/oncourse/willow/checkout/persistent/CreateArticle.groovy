@@ -12,7 +12,6 @@ import ish.oncourse.model.ProductItem
 import ish.oncourse.model.Tax
 import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.checkout.payment.ProductsItemInvoiceLine
-import ish.oncourse.willow.functions.field.FieldHelper
 import org.apache.cayenne.ObjectContext
 
 class CreateArticle {
@@ -40,9 +39,8 @@ class CreateArticle {
 
         List<ProductItem> articles = new ArrayList<>()
         (1..a.quantity).each {
-            Article article = createArticle(context, college, contact, ap, status)
-            FieldHelper.valueOf([] as Set).populateFields(a.fieldHeadings, article)
-            articles << article
+            Article a = createArticle(context, college, contact, ap, status)
+            articles << a
         }
         InvoiceLine invoiceLine = new ProductsItemInvoiceLine(context, articles, contact, ap.priceExTax, taxOverride).create()
         invoiceLine.invoice = invoice
