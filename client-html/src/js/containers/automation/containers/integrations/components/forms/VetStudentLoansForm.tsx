@@ -32,7 +32,7 @@ class VetStudentLoans extends React.Component<any, any> {
 
   render() {
     const {
-      appBarContent,
+      AppBarContent,
       dirty,
       handleSubmit,
       onSubmit,
@@ -45,7 +45,9 @@ class VetStudentLoans extends React.Component<any, any> {
     return values ? (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
         <FormField
           name="fields.deviceName"
           label="Device name"
