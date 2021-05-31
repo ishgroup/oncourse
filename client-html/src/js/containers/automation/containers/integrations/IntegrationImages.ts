@@ -6,7 +6,7 @@
 import moodle from "../../../../../images/moodle.png";
 import mailchimp from "../../../../../images/mailchimp.png";
 import surveymonkey from "../../../../../images/surveymonkey.png";
-import surveygizmo from "../../../../../images/surveygizmo.png";
+import alchemer from "../../../../../images/alchemer.png";
 import xero from "../../../../../images/xero.png";
 import myob from "../../../../../images/myob.png";
 import cloudassess from "../../../../../images/cloudassess.png";
@@ -26,7 +26,7 @@ export default {
   moodle,
   mailchimp,
   surveymonkey,
-  surveygizmo,
+  alchemer,
   xero,
   myob,
   cloudassess,
