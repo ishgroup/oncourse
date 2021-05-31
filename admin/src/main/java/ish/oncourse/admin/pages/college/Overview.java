@@ -103,7 +103,7 @@ public class Overview {
 		if (replicationPref != null) {
 			replicationPref.setValueString(Boolean.toString(false));
 		}
-
+		college.setBillingCode(null);
 		context.commitChanges();
 	}
 }
