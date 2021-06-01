@@ -35,3 +35,6 @@ properties:
     items:
       type: integer
       format: int64
+  noAssessment:
+    type: boolean
+    example: True
