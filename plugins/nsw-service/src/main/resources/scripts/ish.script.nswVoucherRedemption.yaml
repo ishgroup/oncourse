@@ -1,0 +1,7 @@
+name: Service NSW Redemption
+keyCode: ish.script.nswVoucherRedemption
+body: ish.script.nswVoucherRedemption.groovy
+enabled: false
+triggerType: CRON
+schedule: "@daily-morning"
+description: The script is redeeming outdated vouchers

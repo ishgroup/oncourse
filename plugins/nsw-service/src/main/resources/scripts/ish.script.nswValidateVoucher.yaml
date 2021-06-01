@@ -1,0 +1,8 @@
+name: Service NSW Validation
+keyCode: ish.script.nswValidateVoucher
+body: ish.script.nswValidateVoucher.groovy
+enabled: false
+triggerType: ENTITY_EVENT
+entityEventType: CREATE_OR_UPDATE
+entityClass: Voucher
+description: The script is checking not redemeed vouchers on they are had valid code
