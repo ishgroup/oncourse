@@ -15,8 +15,7 @@ import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.scripting.api.EmailService
 
 import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.Method.GET
-import static groovyx.net.http.Method.POST
+import static groovyx.net.http.Method.*
 
 @CompileDynamic
 class CampusAPI extends TCSI_API {
@@ -28,10 +27,12 @@ class CampusAPI extends TCSI_API {
 
     String campusUid() {
         String campuseUid = null
-        if (enrolment.courseClass.room && !enrolment.courseClass.room.site.isVirtual) {
+        if (enrolment.courseClass.room) {
             campuseUid = getCampus()
             if (!campuseUid) {
                 campuseUid = createCampus()
+            } else {
+                updateCampus(campuseUid)   
             }
         }
         return campuseUid
@@ -76,17 +77,32 @@ class CampusAPI extends TCSI_API {
         }
     }
 
+    String updateCampus(String campusId) {
+        String message = 'update campus'
+
+        client.request(PUT, JSON) {
+            uri.path = CAMPUSES_PATH + "/$campusId"
+            body = getCampusData()
+            response.success = { resp, result ->
+                handleResponce(result, message)
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+
     @CompileDynamic
     String getCampusData () {
         Map<String, Object> campus = [:]
         Site site = enrolment.courseClass.room.site
         campus["delivery_location_code"] = site.id.toString()
         campus["campus_effective_from_date"] = '2000-01-01'
-        campus["delivery_location_street_address"] = site.street
-        campus["delivery_location_suburb"] = site.suburb
-        campus["delivery_location_country_code"] = site.country?.saccCode?.toString()
-        campus["delivery_location_postcode"] = site.postcode
-        campus["delivery_location_state"] = site.state
+        campus["delivery_location_street_address"] = site.street?:preferenceController.avetmissAddress1
+        campus["delivery_location_suburb"] = site.suburb ?: preferenceController.avetmissSuburb
+        campus["delivery_location_country_code"] = (site.country?.saccCode?.toString()) ?: '1101'
+        campus["delivery_location_postcode"] = site.postcode ?: preferenceController.avetmissPostcode
+        campus["delivery_location_state"] = site.state ?: preferenceController.avetmissState
 
 
         def campuseData  = [
