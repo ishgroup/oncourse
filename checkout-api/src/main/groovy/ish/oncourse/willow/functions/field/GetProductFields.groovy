@@ -39,23 +39,26 @@ class GetProductFields {
 
     List<FieldHeading> get() {
         Set<ish.oncourse.model.Field> customFields
-        switch (productType) {
-            case ARTICLE:
-                customFields = configuration.fields
-                        .findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_ARTICLE }
-                        .toSet()
-                break
-            case MEMBERSHIP:
-                customFields = configuration.fields
-                        .findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_MEMBERSHIP }
-                        .toSet()
-                break
-            case VOUCHER:
-                customFields = configuration.fields
-                        .findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_VOUCHER }
-                        .toSet()
-                break
+        if (configuration) {
+            switch (productType) {
+                case ARTICLE:
+                    customFields = configuration.fields
+                            .findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_ARTICLE }
+                            .toSet()
+                    break
+                case MEMBERSHIP:
+                    customFields = configuration.fields
+                            .findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_MEMBERSHIP }
+                            .toSet()
+                    break
+                case VOUCHER:
+                    customFields = configuration.fields
+                            .findAll { f -> FieldProperty.getByKey(f.property) == FieldProperty.CUSTOM_FIELD_VOUCHER }
+                            .toSet()
+                    break
+            }
+            return FieldHelper.valueOf(customFields).buildFieldHeadings()
         }
-        return FieldHelper.valueOf(customFields).buildFieldHeadings()
+        return null
     }
 }
