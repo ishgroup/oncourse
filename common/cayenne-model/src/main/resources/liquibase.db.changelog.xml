@@ -506,5 +506,17 @@
 			<column name="fieldConfigurationSchemeId" type="BIGINT"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="42" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists columnName="fieldConfigurationSchemeId" tableName="Product"/>
+		</preConditions>
+		<addForeignKeyConstraint baseTableName="Product"
+								 baseColumnNames="fieldConfigurationSchemeId"
+								 constraintName="fk_Product_FieldConfigurationScheme"
+								 referencedTableName="FieldConfigurationScheme"
+								 referencedColumnNames="id"
+								 validate="true"/>
+	</changeSet>
 	
 </databaseChangeLog>
