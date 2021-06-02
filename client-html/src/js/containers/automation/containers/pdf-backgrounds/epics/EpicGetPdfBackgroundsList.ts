@@ -24,7 +24,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; filenameToSelect: 
       hasIcon: true
     }));
 
-    pdfBackgrounds.sort((a, b) => (a.name[0].toLowerCase() > b.name[0].toLowerCase() ? 1 : -1));
+    pdfBackgrounds.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {

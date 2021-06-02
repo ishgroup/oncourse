@@ -26,7 +26,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: s
       grayOut: r.values[2] === "false"
     }));
 
-    exportTemplates.sort((a, b) => (a.name[0].toLowerCase() > b.name[0].toLowerCase() ? 1 : -1));
+    exportTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {

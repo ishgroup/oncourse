@@ -12,6 +12,7 @@ describe("Get integrations epic tests", () => {
     epic: EpicGetIntegrations,
     processData: mockedAPI => {
       const integrations = parseIntegrations(mockedAPI.db.getIntegrations());
+      integrations.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
       return [
         {

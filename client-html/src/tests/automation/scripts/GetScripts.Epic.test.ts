@@ -20,6 +20,8 @@ describe("Get scripts list epic tests", () => {
         hasIcon: r.values[2] && r.values[2].startsWith("ish.")
       }));
 
+      scripts.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+
       return [
         {
           type: GET_SCRIPTS_LIST_FULFILLED,
