@@ -13,6 +13,9 @@ properties:
   liabilityAccountId:
     type: integer
     format: int64
+  underpaymentAccountId:
+    type: integer
+    format: int64
   expiryDays:
     type: integer
   value:
