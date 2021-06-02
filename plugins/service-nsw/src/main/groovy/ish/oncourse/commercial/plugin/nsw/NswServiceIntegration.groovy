@@ -11,6 +11,7 @@ import ish.common.types.DataType
 import ish.math.Money
 import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.IntegrationConfiguration
+import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherCustomField
 import ish.oncourse.server.integration.OnSave
@@ -19,6 +20,7 @@ import ish.oncourse.server.integration.PluginTrait
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang.StringUtils
+import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -131,15 +133,16 @@ class NswServiceIntegration implements PluginTrait {
     }
 
     void takeNecessaryVoucherInfo(Voucher voucher) {
-        this.pin = voucher.invoiceLine?.invoice?.contact?.birthDate?.collect {it ->
-            StringUtils.leftPad(it.dayOfMonth.toString(), 2, '0') + StringUtils.leftPad(it.month.value.toString(), 2, '0')
-        }[0]
-        this.amount = voucher.voucherPaymentsIn*.paymentIn.sum {it.amount.toFloat() } as Float
-        this.postcode = voucher.voucherPaymentsIn*.paymentIn.get(0).administrationCentre.postcode
+        PaymentInLine payment = voucher.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
+        this.pin = payment?.invoice?.invoiceLines[0]?.enrolment?.student?.contact?.birthDate?.collect {it ->
+                    StringUtils.leftPad(it.dayOfMonth.toString(), 2, '0') + StringUtils.leftPad(it.month.value.toString(), 2, '0')
+                }[0]
+        this.amount = payment.amount.floatValue()
+        this.postcode = payment?.invoice?.invoiceLines[0]?.enrolment?.courseClass?.room?.site?.postcode
         this.voucherCode = voucher.customFields.find {it.customFieldType.key == VOUCHER_CODE_TYPE_KEY }?.value
         this.voucher = voucher
 
-        logger.debug("pin:$pin, amount:$amount, voucherId:$voucher.id, voucherCode:$voucherCode")
+        logger.warn("pin:$pin, amount:$amount, voucherId:$voucher.id, voucherCode:$voucherCode")
     }
 
     @OnSave

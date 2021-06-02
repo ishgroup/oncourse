@@ -9,7 +9,7 @@ import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
 
-@ScriptClosure(key = "nsw", integration = NswServiceIntegration)
+@ScriptClosure(key = "service_nsw", integration = NswServiceIntegration)
 class NswServiceScriptClosure implements ScriptClosureTrait<NswServiceIntegration>  {
 
     private String action

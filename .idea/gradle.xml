@@ -13,8 +13,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/plugins" />
             <option value="$PROJECT_DIR$/plugins/cloud-assess" />
-            <option value="$PROJECT_DIR$/plugins/nsw-service" />
             <option value="$PROJECT_DIR$/plugins/replication" />
+            <option value="$PROJECT_DIR$/plugins/service-nsw" />
             <option value="$PROJECT_DIR$/plugins/tcsi" />
             <option value="$PROJECT_DIR$/plugins/xero" />
           </set>
