@@ -9,28 +9,23 @@ import ish.oncourse.webservices.v23.stubs.replication.MembershipProductStub
 
 /**
  */
-class MembershipProductStubBuilder extends AbstractAngelStubBuilder<MembershipProduct, MembershipProductStub> {
+class MembershipProductStubBuilder extends AbstractProductStubBuilder<MembershipProduct, MembershipProductStub> {
 
 	/**
 	 * @see AbstractAngelStubBuilder#createFullStub(ish.oncourse.server.cayenne.Queueable)
 	 */
 	@Override
 	protected MembershipProductStub createFullStub(final MembershipProduct entity) {
-		final def stub = new MembershipProductStub()
-		stub.setSku(entity.getSku())
-		stub.setCreated(entity.getCreatedOn())
-		stub.setDescription(entity.getDescription())
-		stub.setIsOnSale(entity.getIsOnSale())
-		stub.setIsWebVisible(entity.getIsWebVisible())
-		stub.setModified(entity.getModifiedOn())
-		stub.setName(entity.getName())
-		stub.setNotes(entity.getNotes())
-		stub.setPriceExTax(entity.getPriceExTax().toBigDecimal())
-		stub.setTaxAdjustment(entity.getTaxAdjustment().toBigDecimal())
-		stub.setTaxAmount(entity.getFeeGST().toBigDecimal())
-		stub.setType(entity.getType())
+		final def stub = super.createFullStub(entity) as MembershipProductStub
+
 		stub.setExpiryDays(entity.getExpiryDays())
 		stub.setExpiryType(entity.getExpiryType().getDatabaseValue())
+
 		return stub
+	}
+
+	@Override
+	protected MembershipProductStub createStub() {
+		return new MembershipProductStub()
 	}
 }
