@@ -29,7 +29,6 @@ import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
 import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
-import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
@@ -37,8 +36,6 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
@@ -124,7 +121,7 @@ public class AngelServerFactory {
 
             LOGGER.warn("Upgrade data");
             schemaUpdateService.upgradeData();
-            createSystemUsers(cayenneService.getNewContext(), licenseService.getCollege_key(), httpFactory.getIp(), httpFactory.getPort(), prefController, mailDeliveryService);
+            createSystemUsers(cayenneService.getNewContext(), licenseService.getCurrentHostName(), httpFactory.getIp(), httpFactory.getPort(), prefController, mailDeliveryService);
 
         } catch (Throwable e) {
             LOGGER.catching(e);
@@ -241,7 +238,7 @@ public class AngelServerFactory {
         LOGGER.warn("Server ready");
     }
 
-    private void createSystemUsers(DataContext context, String collegeKey, String host, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
+    private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
         Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
         if (!systemUsersFile.toFile().exists()) {
             systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
@@ -279,7 +276,7 @@ public class AngelServerFactory {
             user.setLastName(lineData[1]);
 
             try {
-                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, collegeKey, host, port);
+                String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, hostName, ipAddress, port);
                 user.setInvitationToken(invitationToken);
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
             } catch (MessagingException ex) {

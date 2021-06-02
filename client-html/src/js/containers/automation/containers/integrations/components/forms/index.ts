@@ -7,7 +7,7 @@ export { CloudAssessForm as cloudassess } from "./CloudAssessForm";
 export { MailchimpForm as mailchimp } from "./MailchimpForm";
 export { MoodleForm as moodle } from "./MoodleForm";
 export { MYOBForm as myob } from "./MYOBForm";
-export { SurveyGizmoForm as surveygizmo } from "./SurveyGizmoForm";
+export { AlchemerForm as alchemer } from "./AlchemerForm";
 export { SurveyMonkeyForm as surveymonkey } from "./SurveyMonkeyForm";
 export { XeroForm as xero } from "./XeroForm";
 export { CanvasForm as canvas } from "./CanvasForm";
