@@ -5,11 +5,7 @@
 
 import React from "react";
 import { change } from "redux-form";
-import {
-  Typography,
-  ButtonBase,
-  Divider
-} from "@material-ui/core";
+import { ButtonBase, Divider, Typography } from "@material-ui/core";
 import Launch from "@material-ui/icons/Launch";
 import {
   AvetmissExportOutcome,
@@ -123,12 +119,12 @@ class AvetmissExportResults extends React.Component<Props, any> {
       }
     });
     exportObj.defaultStatus = values.defaultStatus;
-    exportObj.noAssessment = values.noAssessment;
 
     const settings = { ...values };
     delete settings.defaultStatus;
     delete settings.noAssessment;
     exportObj.settings = settings;
+    exportObj.settings.noAssessment = values.noAssessment;
 
     this.props.onExport(exportObj);
   };
@@ -254,7 +250,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <div>
             <SpeechCard
               className={clsx({
-              [classes.hidden]: !enrolment["Started (not assessed)"].number
+              [classes.hidden]: !outcome["Started (not assessed)"].number
             })}
             >
               <Typography variant="body1">
@@ -304,7 +300,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
             <SpeechCard
               className={clsx({
-                [classes.hidden]: !enrolment["Commenced"].number
+                [classes.hidden]: !outcome["Commenced"].number
               })}
             >
               <Typography variant="body1">

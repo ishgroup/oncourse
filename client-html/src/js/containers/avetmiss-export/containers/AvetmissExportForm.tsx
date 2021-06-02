@@ -5,36 +5,26 @@
 
 import React from "react";
 import posed from "react-pose";
-import {
- format as formatDate, getDaysInMonth, setDate, setMonth, setYear
-} from "date-fns";
+import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  Grid,
-  Typography,
-  withStyles,
   Card,
   CardContent,
+  CircularProgress,
+  Collapse,
   Divider,
   FormControlLabel,
   FormGroup,
+  Grid,
+  Hidden,
   IconButton,
   Tooltip,
-  Collapse,
-  CircularProgress,
-  Hidden
+  Typography,
+  withStyles
 } from "@material-ui/core";
 import { ExpandMore, HelpOutline } from "@material-ui/icons";
-import {
-  arrayPush,
-  arrayRemove,
-  change,
-  getFormValues,
-  initialize,
-  InjectedFormProps,
-  reduxForm
-} from "redux-form";
+import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import clsx from "clsx";
 import {
   AvetmissExportFee,
@@ -67,7 +57,7 @@ import {
 } from "../actions";
 import { interruptProcess } from "../../../common/actions";
 import { validateMinMaxDate } from "../../../common/utils/validation";
-import { YYYY_MM_DD_MINUSED, III_DD_MMM_YYYY } from "../../../common/utils/dates/format";
+import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
 import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
@@ -520,7 +510,11 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
     }
 
     this.props.dispatch(
-      change(FORM, "fee", [...(this.props.values.fee.findIndex(f => f === "Non VET") === -1 ? [] : ["Non VET"])])
+      change(
+        FORM,
+        "fee",
+        [...(this.props.values.fee.findIndex(f => f === "Non VET") === -1 ? [] : ["Non VET"])]
+      )
     );
   };
 
@@ -554,8 +548,8 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
 
   reset = () => {
     const {
- exportID, outcomesID, resetOutcomes, clearAvetmiss8ExportID, interruptProcess, outcomes
-} = this.props;
+     exportID, outcomesID, resetOutcomes, clearAvetmiss8ExportID, interruptProcess, outcomes
+    } = this.props;
 
     const { pending } = this.state;
 
