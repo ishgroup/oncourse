@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.replication.upgrades
 
+import groovy.transform.CompileStatic
 import ish.common.types.ProductType
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
@@ -85,6 +86,7 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+@CompileStatic
 class QueueAllRecordsForFirstTimeReplication {
 
     /**
@@ -208,7 +210,7 @@ class QueueAllRecordsForFirstTimeReplication {
         ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(Field.class))
         ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(FieldConfigurationScheme.class))
         ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(FieldConfigurationLink.class))
-        
+
         //Entity relation types
         ORDERED_QUEUEABLE_CLASSES.add(new RecordDescriptor(EntityRelationType.class))
 
@@ -242,7 +244,7 @@ class QueueAllRecordsForFirstTimeReplication {
      *
      * @param record
      */
-    private void addRecordToReplicationQueue(Queueable record, ObjectContext context, QueuedTransaction t) {
+    private static void addRecordToReplicationQueue(Queueable record, ObjectContext context, QueuedTransaction t) {
 
         def result = new QueuedRecord()
         result.setLastAttemptOn(new Date())
@@ -299,8 +301,8 @@ class QueueAllRecordsForFirstTimeReplication {
                 .and(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3))
                 .selectFirst(record.objectContext) != null
     }
-    
-    QueuedTransaction createTransaction(ISHDataContext ishContext) {
+
+    static QueuedTransaction createTransaction(ISHDataContext ishContext) {
         def transactionKey = TRANSACTION_KEY_PREFIX + ishContext.generateTransactionKey()
         QueuedTransaction t = ishContext.newObject(QueuedTransaction.class)
         def today = new Date()

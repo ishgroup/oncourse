@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.replication.services
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.webservices.util.GenericReplicatedRecord
 import ish.oncourse.webservices.util.GenericReplicationStub
@@ -13,6 +14,7 @@ import ish.oncourse.webservices.v23.stubs.replication.HollowStub
 import ish.oncourse.webservices.v23.stubs.replication.ReplicatedRecord
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class ReplicationUtils {
 
     @SuppressWarnings("unchecked")

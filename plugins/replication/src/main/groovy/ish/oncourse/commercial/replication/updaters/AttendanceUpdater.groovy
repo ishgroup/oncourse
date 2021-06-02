@@ -4,6 +4,7 @@
  */
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.common.types.AttendanceType
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Attendance
@@ -12,14 +13,10 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.webservices.v23.stubs.replication.AttendanceStub
 
-/**
- */
+@CompileStatic
 class AttendanceUpdater extends AbstractAngelUpdater<AttendanceStub, Attendance> {
 
-	/**
-	 * @see AbstractAngelUpdater#updateEntity(ish.oncourse.webservices.util.GenericReplicationStub,
-	 *      ish.oncourse.server.cayenne.Queueable, RelationShipCallback)
-	 */
+
 	@Override
 	protected void updateEntity(AttendanceStub stub, Attendance entity, RelationShipCallback callback) {
 		def type = TypesUtil.getEnumForDatabaseValue(stub.getAttendanceType(), AttendanceType.class)

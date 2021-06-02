@@ -4,12 +4,12 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.webservices.v23.stubs.replication.CertificateStub
 import ish.util.LocalDateUtils
 
-/**
- */
+@CompileStatic
 class CertificateStubBuilder extends AbstractAngelStubBuilder<Certificate, CertificateStub> {
 
 	/**

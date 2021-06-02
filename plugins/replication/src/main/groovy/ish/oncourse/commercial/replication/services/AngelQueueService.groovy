@@ -18,6 +18,7 @@ import org.apache.cayenne.query.SQLTemplate
 import org.apache.cayenne.query.SelectQuery
 import org.apache.cayenne.query.SortOrder
 
+
 class AngelQueueService implements IAngelQueueService {
     /**
      * Cayenne service.

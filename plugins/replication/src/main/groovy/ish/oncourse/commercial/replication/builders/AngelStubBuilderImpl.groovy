@@ -4,13 +4,12 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.webservices.util.GenericReplicationStub
 
-import java.util.HashMap
-import java.util.Map
-
+@CompileStatic
 class AngelStubBuilderImpl implements IAngelStubBuilder {
 	private static final String BUILDER_NOT_FOUND_DURING_RECORD_CONVERSION_MESSAGE = "Builder not found during record conversion: %s"
 	private Map<String, IAngelStubBuilder> builderMap = new HashMap<>()

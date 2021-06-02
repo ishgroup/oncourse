@@ -5,11 +5,11 @@
 
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.webservices.v23.stubs.replication.ArticleProductStub
 
-/**
- */
+@CompileStatic
 class ArticleProductStubBuilder extends AbstractAngelStubBuilder<ArticleProduct, ArticleProductStub>{
 
 	@Override

@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.replication.services
 
+import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.cayenne.QueueKey
 import ish.oncourse.server.cayenne.Attendance
 import ish.oncourse.server.cayenne.Outcome
@@ -13,6 +14,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+@CompileStatic
 final class DedupperFactory {
     private List<QueuedRecord> currentBatch
     private  ObjectContext ctx

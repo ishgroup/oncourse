@@ -4,11 +4,13 @@
  */
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.webservices.util.GenericReplicationStub
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+@CompileStatic
 abstract class AbstractAngelUpdater<V extends GenericReplicationStub, T extends Queueable> implements IAngelUpdater {
 	protected static final Logger LOG = LogManager.getLogger()
 	static final String TUTOR_ENTITY_NAME = "Tutor"

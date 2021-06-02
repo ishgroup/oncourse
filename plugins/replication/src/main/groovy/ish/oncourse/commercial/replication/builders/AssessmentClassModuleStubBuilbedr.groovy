@@ -5,12 +5,11 @@
 
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.AssessmentClassModule
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentClassModuleStub
 
-/**
- * Created by anarut on 12/1/16.
- */
+@CompileStatic
 class AssessmentClassModuleStubBuilbedr extends AbstractAngelStubBuilder<AssessmentClassModule, AssessmentClassModuleStub> {
 
     @Override

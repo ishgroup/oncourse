@@ -5,8 +5,10 @@
 
 package ish.oncourse.commercial.replication
 
+import groovy.transform.CompileStatic
 import ish.oncourse.webservices.util.SupportedVersions;
 
+@CompileStatic
 class Replication {
 
     static final SupportedVersions ACTUAL_REPLICATION_VERSION = SupportedVersions.V23

@@ -5,13 +5,13 @@
 
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.webservices.v23.stubs.replication.ArticleStub
 
-/**
- */
+@CompileStatic
 class ArticleUpdater extends AbstractProductItemUpdater<ArticleStub, Article> {
 
 	@Override

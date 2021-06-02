@@ -4,12 +4,12 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Attendance
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.webservices.v23.stubs.replication.AttendanceStub
 
-/**
- */
+@CompileStatic
 class AttendanceStubBuilder extends AbstractAngelStubBuilder<Attendance, AttendanceStub> {
 
 	/**

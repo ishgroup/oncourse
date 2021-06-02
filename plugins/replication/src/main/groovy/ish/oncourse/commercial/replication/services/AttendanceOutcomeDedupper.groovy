@@ -5,6 +5,9 @@
 
 package ish.oncourse.commercial.replication.services
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 class AttendanceOutcomeDedupper extends DFADedupper {
 
     protected InternalState deleteAfterCreateState() {

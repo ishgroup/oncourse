@@ -4,9 +4,11 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.ContactDuplicate
 import ish.oncourse.webservices.v23.stubs.replication.ContactDuplicateStub
 
+@CompileStatic
 class ContactDuplicateStubBuilder extends AbstractAngelStubBuilder<ContactDuplicate, ContactDuplicateStub> {
 	@Override
 	protected ContactDuplicateStub createFullStub(ContactDuplicate entity) {

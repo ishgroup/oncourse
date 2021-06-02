@@ -4,6 +4,7 @@
  */
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentSource
@@ -14,6 +15,7 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.webservices.v23.stubs.replication.ApplicationStub
 
+@CompileStatic
 class ApplicationUpdater extends AbstractAngelUpdater<ApplicationStub, Application> {
 
 	@Override

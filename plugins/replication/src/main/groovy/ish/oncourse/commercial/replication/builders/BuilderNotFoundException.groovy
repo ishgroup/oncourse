@@ -4,8 +4,9 @@
  */
 package ish.oncourse.commercial.replication.builders
 
-/**
- */
+import groovy.transform.CompileStatic
+
+@CompileStatic
 class BuilderNotFoundException extends RuntimeException {
 
 	private String entityName

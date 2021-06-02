@@ -5,13 +5,12 @@
 
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentSubmissionStub
 import ish.util.LocalDateUtils
 
-/**
- * Created by Artem on 24/10/2016.
- */
+@CompileStatic
 class AssessmentSubmissionStubBuilder extends AbstractAngelStubBuilder<AssessmentSubmission, AssessmentSubmissionStub> {
 
     @Override

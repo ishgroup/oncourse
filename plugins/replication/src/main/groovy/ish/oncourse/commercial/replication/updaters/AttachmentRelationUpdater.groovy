@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.common.types.AttachmentSpecialType
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.*
@@ -12,9 +13,7 @@ import ish.oncourse.webservices.v23.stubs.replication.BinaryInfoRelationStub
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-/**
- * Created by Artem on 26/10/2016.
- */
+@CompileStatic
 class AttachmentRelationUpdater extends AbstractAngelUpdater<BinaryInfoRelationStub, AttachmentRelation> {
 
     private static final Logger logger = LogManager.getLogger()

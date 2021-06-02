@@ -5,13 +5,12 @@
 
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.GradingType
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentStub
 
-/**
- * Created by Artem on 24/10/2016.
- */
+@CompileStatic
 class AssessmentUpdater extends AbstractAngelUpdater<AssessmentStub, Assessment> {
     @Override
     protected void updateEntity(AssessmentStub stub, Assessment entity, RelationShipCallback callback) {

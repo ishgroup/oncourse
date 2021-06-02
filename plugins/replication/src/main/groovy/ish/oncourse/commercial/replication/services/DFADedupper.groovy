@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.replication.services
 
+import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger
 import static ish.oncourse.commercial.replication.cayenne.QueuedRecordAction.*
 import static ish.oncourse.commercial.replication.services.DFADedupper.InternalState.*
 
+@CompileStatic
 class DFADedupper implements Comparable<DFADedupper> {
 
     /**

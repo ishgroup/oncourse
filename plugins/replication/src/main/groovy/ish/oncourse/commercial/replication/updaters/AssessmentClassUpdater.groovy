@@ -5,14 +5,13 @@
 
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.webservices.v23.stubs.replication.AssessmentClassStub
 
-/**
- * Created by Artem on 24/10/2016.
- */
+@CompileStatic
 class AssessmentClassUpdater extends AbstractAngelUpdater<AssessmentClassStub, AssessmentClass>{
 
     @Override

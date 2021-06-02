@@ -4,13 +4,12 @@
  */
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.common.types.EntityMapping
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.webservices.util.GenericReplicationStub
 
-import java.util.HashMap
-import java.util.Map
-
+@CompileStatic
 class AngelUpdaterImpl implements IAngelUpdater {
 
 	private Map<String, IAngelUpdater> updaterMap = new HashMap<>()

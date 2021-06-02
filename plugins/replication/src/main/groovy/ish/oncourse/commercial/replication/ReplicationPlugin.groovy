@@ -9,12 +9,16 @@ import com.google.inject.Binder
 import com.google.inject.Injector
 import com.google.inject.Scopes
 import com.google.inject.name.Names
+import groovy.transform.CompileStatic
 import ish.common.types.SystemEventType
 import ish.oncourse.commercial.replication.builders.AngelStubBuilderImpl
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.commercial.replication.event.CheckoutEventListener
 import ish.oncourse.commercial.replication.event.WillowValidator
-import ish.oncourse.commercial.replication.handler.*
+import ish.oncourse.commercial.replication.handler.InboundReplicationHandler
+import ish.oncourse.commercial.replication.handler.InstructionHandler
+import ish.oncourse.commercial.replication.handler.OutboundReplicationHandler
+import ish.oncourse.commercial.replication.handler.ReplicationHandler
 import ish.oncourse.commercial.replication.lifecycle.ReplicationListenersService
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.commercial.replication.modules.SoapPortLocatorImpl
@@ -29,7 +33,6 @@ import ish.oncourse.commercial.replication.updaters.AngelUpdaterImpl
 import ish.oncourse.commercial.replication.updaters.IAngelUpdater
 import ish.oncourse.commercial.replication.upgrades.QueueAllRecordsForFirstTimeReplication
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.integration.OnConfigure
 import ish.oncourse.server.integration.OnStart
@@ -43,28 +46,24 @@ import org.quartz.Scheduler
 
 import java.util.concurrent.Executors
 
-
+@CompileStatic
 @Plugin(type = 15)
 class ReplicationPlugin {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger()
 
-    
-    static int PRODUCTION_REFERENCE_JOB_INTERVAL = 4 * 60 * 60
-    static int PRODUCTION_PRIMARY_REPLICATION_INTERVAL = 60
-    static int DISABLED_PRIMARY_REPLICATION_INTERVAL = 60 * 60 * 24
-    static long REPLICATION_INTERVAL = 5 * 60 * 1000; //5 minutes
+    static final int PRODUCTION_REFERENCE_JOB_INTERVAL = 4 * 60 * 60
+    static final int PRODUCTION_PRIMARY_REPLICATION_INTERVAL = 60
+    static final long REPLICATION_INTERVAL = 5 * 60 * 1000 //5 minutes
 
     String REFERENCE_HANDLER_JOB_ID = "referenceHandlerJob"
     String REPLICATION_JOBS_GROUP_ID = "replicationJobs"
     String PRIMARY_REPLICATION_SERVICE_JOB_ID = "primaryReplicationServiceJob"
-    
+
     private Injector injector
-    
-    
+
     @OnConfigure
     static void configure(Binder binder) {
-
         binder.bind(ISoapPortLocator).to(SoapPortLocatorImpl).asEagerSingleton()
         binder.bind(ReplicationJob)
         binder.bind(WillowValidator)
@@ -80,7 +79,7 @@ class ReplicationPlugin {
         binder.bind(ITransactionGroupProcessor).to(TransactionGroupProcessorImpl)
         binder.bind(ReplicationListenersService).asEagerSingleton()
     }
-    
+
 
     @OnStart
     void start() {
@@ -93,11 +92,11 @@ class ReplicationPlugin {
         WillowValidator willowValidator = injector.getInstance(WillowValidator)
 
         CheckoutEventListener checkoutEventListener = new CheckoutEventListener(licenseService, willowValidator)
-        injector.getInstance(EventService).registerListener(checkoutEventListener, SystemEventType.VALIDATE_CHECKOUT) 
+        injector.getInstance(EventService).registerListener(checkoutEventListener, SystemEventType.VALIDATE_CHECKOUT)
 
         // every 4 hours
         if (!licenseService.isReplicationDisabled()) {
-            
+
             int referenceJobScheduleInterval = PRODUCTION_REFERENCE_JOB_INTERVAL
             schedulerService.schedulePeriodicJob(ReferenceJob.class, REFERENCE_HANDLER_JOB_ID,
                     REPLICATION_JOBS_GROUP_ID, referenceJobScheduleInterval, true, false)
@@ -118,8 +117,8 @@ class ReplicationPlugin {
                 logger.warn("Queueing all unreplicated records finished")
             }
         }
-        
+
     }
-    
-    
+
+
 }

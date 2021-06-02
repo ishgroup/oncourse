@@ -5,9 +5,11 @@
 
 package ish.oncourse.commercial.replication.services
 
+import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import org.apache.cayenne.DataRow
 
+@CompileStatic
 interface IAngelQueueService {
     String STACKED_RECORDS_COUNT_ALIAS = "cnt"
 

@@ -4,11 +4,11 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.ProductItem
 import ish.oncourse.webservices.v23.stubs.replication.ProductItemStub
 
-/**
- */
+@CompileStatic
 abstract class AbstractProductItemStubBuilder<E extends ProductItem, S extends ProductItemStub> extends AbstractAngelStubBuilder<E, S> {
 
 	protected S createFullStub(final E entity) {
