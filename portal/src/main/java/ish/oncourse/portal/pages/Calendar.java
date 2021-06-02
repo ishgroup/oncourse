@@ -68,7 +68,7 @@ public class Calendar {
 					List<Session> sessions = courseClassService.getContactSessions(contact);
 
 					List<VEvent> events = new ArrayList<>();
-					UidGenerator ug = new UidGenerator("uidGen");
+					UidGenerator ug;
 
 					for (Session s : sessions) {
 						
@@ -103,7 +103,7 @@ public class Calendar {
                         dateTime.setTimeZone(tz);
 						VEvent event = new VEvent(dateTime, dur, courseInformation.toString());
 						event.getProperties().add(new Description(sessionInformation.toString()));
-						
+						ug = new UidGenerator(null, s.getId().toString());
 						Uid uid = ug.generateUid();
 						event.getProperties().add(uid);
 
