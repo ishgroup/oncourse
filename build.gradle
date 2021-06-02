@@ -27,7 +27,7 @@ subprojects {
 
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
-    
+
     compileGroovy.groovyOptions.configurationScript = file("${rootDir}/groovyConfig.groovy")
 
     sourceCompatibility = 11
@@ -41,13 +41,15 @@ subprojects {
         maven {
             url 'https://repo.ish.com.au/repository/ish'
         }
-
     }
-    
+
+    sourceSets.main.java.srcDirs = []
+    sourceSets.main.groovy.srcDir 'src/main/java'
+
     configurations.all {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
-    
+
     dependencies {
         implementation group: "ish.oncourse.angel", name: "server-jar", version: "99-SNAPSHOT", changing: true
     }

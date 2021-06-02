@@ -5,23 +5,17 @@
 
 apply plugin: 'org.apache.cayenne'
 
-
-sourceSets.main.java.srcDirs = []
-sourceSets.main.groovy.srcDir 'src/main/java'
-sourceSets.main.groovy.srcDirs += "${buildDir}/generated-resources/main/java"
 ext {
     webservicesVersion = '117'
     cayenneVersion = '4.1'
     derbyVersion = '10.14.2.0'
     bootiqueVersion = '1.0'
     groovyVersion ='2.5.13'
-
 }
-
 
 dependencies {
     implementation("ish.oncourse.willow:webservices-client:$webservicesVersion")
-    testImplementation group: "ish.oncourse.angel", name: "test", version: "99-SNAPSHOT", classifier: 'tests', changing: true 
+    testImplementation group: "ish.oncourse.angel", name: "test", version: "99-SNAPSHOT", classifier: 'tests', changing: true
     testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
     testImplementation 'org.mockito:mockito-core:2.18.3'
     testImplementation "org.apache.derby:derbytools:$derbyVersion"
@@ -32,8 +26,6 @@ dependencies {
     testImplementation "org.testng:testng:6.13.1"
     testImplementation "org.apache.derby:derbyclient:$derbyVersion"
     testImplementation "org.apache.derby:derbynet:$derbyVersion"
-
-
 
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.dbunit:dbunit:2.6.0'
@@ -46,7 +38,6 @@ dependencies {
 }
 
 cgen {
-
     map = "${projectDir}/src/main/resources/cayenne/ReplicationMap.map.xml"
     makePairs = true
     template = "${projectDir}/src/main/resources/cayenne/dotemplates/subclass.vm"
@@ -70,6 +61,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
+sourceSets.main.groovy.srcDirs += "${buildDir}/generated-resources/main/java"
 
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
