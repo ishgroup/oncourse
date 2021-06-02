@@ -248,20 +248,6 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
 
     @Override
     ProductItem toCayenneModel(ProductItemDTO productItemDTO, ProductItem productItem) {
-        productItem.expiryDate = valueToDate(productItemDTO.expiresOn)
-
-        if (ProductItemStatusDTO.DELIVERED == productItemDTO.status && productItem instanceof Article && ProductStatus.DELIVERED != productItem.status) {
-            productItem.status = ProductStatus.DELIVERED
-        }
-
-        if (productItemDTO.productType == ProductTypeDTO.VOUCHER) {
-            Voucher voucher = productItem as Voucher
-            if (productItemDTO.redeemableById != null) {
-                voucher.redeemableBy = contactDao.getById(productItem.context, productItemDTO.redeemableById)
-            } else {
-                voucher.redeemableBy = null
-            }
-        }
         switch (productItemDTO.productType) {
             case ProductTypeDTO.PRODUCT:
                 updateCustomFields(productItem.context, productItem as Article, productItemDTO.customFields, ArticleCustomField)
@@ -273,6 +259,23 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
                 updateCustomFields(productItem.context, productItem as Voucher, productItemDTO.customFields, VoucherCustomField)
                 break
         }
+        if (productItem.status == ProductStatus.ACTIVE) {
+
+            productItem.expiryDate = valueToDate(productItemDTO.expiresOn)
+
+            if (ProductItemStatusDTO.DELIVERED == productItemDTO.status && productItem instanceof Article && ProductStatus.DELIVERED != productItem.status) {
+                productItem.status = ProductStatus.DELIVERED
+            }
+
+            if (productItemDTO.productType == ProductTypeDTO.VOUCHER) {
+                Voucher voucher = productItem as Voucher
+                if (productItemDTO.redeemableById != null) {
+                    voucher.redeemableBy = contactDao.getById(productItem.context, productItemDTO.redeemableById)
+                } else {
+                    voucher.redeemableBy = null
+                }
+            }
+        }
         productItem
     }
 
@@ -283,9 +286,7 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             if (productItem == null) {
                 validator.throwClientErrorException(id, "id", "ProductItem with id=$id doesn't exist.")
             }
-            if (productItem.status != ProductStatus.ACTIVE) {
-                validator.throwClientErrorException(id, "id", "Only ProductItem with active status can be modified.")
-            }
+            
             def expiryDate = dateToValue(productItem.expiryDate)
             if (productItemDTO.expiresOn != expiryDate && LocalDate.now().isAfter(expiryDate)) {
                 validator.throwClientErrorException(id, "expiresOn", "Only ProductItem with active status can be modified.")
