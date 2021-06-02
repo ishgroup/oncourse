@@ -8,11 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="Set up gradle properly, add Intellij settings and set copyright.">
-      <change afterPath="$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/test.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/angel-secret.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins" beforeDir="true" afterPath="$PROJECT_DIR$/plugins" afterDir="true" />
-      <change beforePath="$PROJECT_DIR$/plugins/tcsi" beforeDir="true" afterPath="$PROJECT_DIR$/plugins/tcsi" afterDir="true" />
-      <change beforePath="$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/TCSIIntegration.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/tcsi/src/main/groovy/ish/oncourse/commercial/plugin/tcsi/TCSIIntegration.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
     </list>
     <list id="bb6a737a-b326-4518-9528-cd61bc199048" name="local" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -70,6 +74,9 @@
       </state>
     </system>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -94,7 +101,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/plugins/cloud-assess/src/main/resources/scripts" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2835294" />
@@ -242,24 +249,6 @@
     <configuration>$USER_HOME$/.subversion</configuration>
     <supportedVersion>125</supportedVersion>
   </component>
-  <component name="SvnFileUrlMappingImpl">
-    <option name="myMappingRoots">
-      <list>
-        <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="$PROJECT_DIR$" />
-          <option name="myCopyRoot" value="$PROJECT_DIR$" />
-        </SvnCopyRootSimple>
-      </list>
-    </option>
-    <option name="myMoreRealMappingRoots">
-      <list>
-        <SvnCopyRootSimple>
-          <option name="myVcsRoot" value="$PROJECT_DIR$" />
-          <option name="myCopyRoot" value="$PROJECT_DIR$" />
-        </SvnCopyRootSimple>
-      </list>
-    </option>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="464eb329-4356-4dd0-ae52-6b59f92ddf6a" name="Default Changelist" comment="" />
@@ -293,6 +282,8 @@
       <workItem from="1606111686697" duration="2836000" />
       <workItem from="1606130542135" duration="981000" />
       <workItem from="1606314517458" duration="4412000" />
+      <workItem from="1622593071255" duration="182000" />
+      <workItem from="1622594719570" duration="311000" />
     </task>
     <task id="LOCAL-00003" summary="fix module's settings">
       <created>1602756655028</created>
@@ -642,6 +633,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Fix imports" />
