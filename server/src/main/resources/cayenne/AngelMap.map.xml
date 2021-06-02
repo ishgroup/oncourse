@@ -1209,6 +1209,7 @@
 		<db-attribute name="value" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="weight" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="underpaymentAccountId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="ProductItem">
 		<db-attribute name="code" type="VARCHAR" length="10"/>
@@ -4356,6 +4357,9 @@
 	<db-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme">
 		<db-attribute-pair source="fieldConfigurationSchemeId" target="id"/>
 	</db-relationship>
+	<db-relationship name="underpaymentAccount" source="Product" target="Account">
+		<db-attribute-pair source="underpaymentAccountId" target="id"/>
+	</db-relationship>
 	<db-relationship name="productItems" source="Product" target="ProductItem" toMany="true">
 		<db-attribute-pair source="id" target="productId"/>
 	</db-relationship>
@@ -5121,6 +5125,7 @@
 	<obj-relationship name="corporatePassProducts" source="Product" target="CorporatePassProduct" deleteRule="Deny" db-relationship-path="corporatePassProduct"/>
 	<obj-relationship name="incomeAccount" source="Product" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
 	<obj-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
+	<obj-relationship name="underpaymentAccount" source="VoucherProduct" target="Account" deleteRule="Deny" db-relationship-path="underpaymentAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
 	<obj-relationship name="contact" source="ProductItem" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
