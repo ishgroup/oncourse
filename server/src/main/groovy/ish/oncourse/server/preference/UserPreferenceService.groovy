@@ -16,9 +16,13 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import groovy.transform.CompileStatic
 import ish.oncourse.API
+import ish.oncourse.DefaultAccount
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.CategoryDTO
+import ish.oncourse.server.cayenne.Account
+import ish.util.AccountUtil
+
 import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID
 import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
@@ -165,6 +169,8 @@ class UserPreferenceService {
                 return preferenceController.getValueForKey(Preferences.CLASS_DEFAULTS_MAXIMUM_PLACES)
             case PreferenceEnumDTO.COURSECLASS_DEFAULT_MINIMUMPLACES:
                 return preferenceController.getValueForKey(Preferences.CLASS_DEFAULTS_MINIMUM_PLACES)
+            case PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERUNDERPAYMENT_ID:
+                return AccountUtil.getDefaultVoucherExpenseAccount(preferenceController.objectContext, Account.class)?.id?.toString()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)
