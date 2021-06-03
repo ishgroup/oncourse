@@ -263,6 +263,7 @@ class OutcomeFunctions {
                     
                 }
             }
+            progression.released = progression.released - (progression.marked + progression.submitted)
         }
         
         return progression
