@@ -138,8 +138,6 @@ export function AssessmentChart({ data }: Props) {
   ];
 
   const markedIndex = chartData.findIndex(c => c.name.includes("marked"));
-  const releasedIndex = chartData.findIndex(c => c.name.includes("released"));
-  const notReleasedIndex = chartData.findIndex(c => c.name.includes("notReleased"));
 
   return (
     <Tooltip title={tooltipText} placement="top">
@@ -162,10 +160,8 @@ export function AssessmentChart({ data }: Props) {
           <text x={100} y={85} dy={8} textAnchor="middle" fill={primary}>
             <tspan fontSize="30">
               {normalizeNumber(chartData.length
-                && chartData[markedIndex].value
-                && Math.round(chartData[markedIndex].value / (((
-                  chartData[releasedIndex].value + (includeUnreleased ? chartData[notReleasedIndex].value : 0)
-                )) / 100)))}
+                && chartData[markedIndex]?.value
+                && Math.round(chartData[markedIndex].value / ( (chartData.reduce((p, c) => p + c.value, 0) / 100))))}
               %
             </tspan>
             <tspan x="100" dy="15">assessments</tspan>
