@@ -102,7 +102,7 @@ class CampusAPI extends TCSI_API {
         campus["delivery_location_suburb"] = site.suburb ?: preferenceController.avetmissSuburb
         campus["delivery_location_country_code"] = (site.country?.saccCode?.toString()) ?: '1101'
         campus["delivery_location_postcode"] = site.postcode ?: preferenceController.avetmissPostcode
-        campus["delivery_location_state"] = site.state ?: preferenceController.avetmissState
+        campus["delivery_location_state"] = site.state ?: preferenceController.avetmissStateName
 
 
         def campuseData  = [
