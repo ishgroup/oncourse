@@ -15,14 +15,9 @@ import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
+import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { getUserPreferences } from "../../../../../common/actions";
-import {
-  getCommonPlainRecords,
-  setCommonPlainSearch
-} from "../../../../../common/actions/CommonPlainRecordsActions";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 import Button from "../../../../../common/components/buttons/Button";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
@@ -269,7 +264,7 @@ const CancelEnrolmentModalForm = React.memo<CancelEnrolmentModalProps & Injected
 const mapStateToProps = (state: State) => ({
   invoiceLines: state.enrolments.invoiceLines,
   value: getFormValues(FORM)(state),
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items,
   enrolmentPlainRecord: state.plainSearchRecords["Enrolment"],
   defaultIncomeAccountId: state.userPreferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID]

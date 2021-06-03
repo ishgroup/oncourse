@@ -6,14 +6,14 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import {
+  countriesReducer,
+  currencyReducer,
+  enumsReducer,
+  languagesReducer,
+  lockedDateReducer,
   preferencesReducer,
   timezonesReducer,
-  enumsReducer,
-  countriesReducer,
-  languagesReducer,
-  currencyReducer,
-  usiSoftwareIdReducer,
-  lockedDateReducer
+  usiSoftwareIdReducer
 } from "../containers/preferences/reducers";
 import { drawerReducer } from "../common/reducers/drawerReducer";
 import { loginReducer } from "../containers/login/reducers";
@@ -32,7 +32,6 @@ import { documentReducer } from "../common/components/form/documents/reducers";
 import { dashboardReducer } from "../containers/dashboard/reducers";
 import { payrollsReducer } from "../containers/entities/payrolls/reducers";
 import { accessReducer } from "../common/reducers/accessReducer";
-import { accountEntityReducer } from "../containers/entities/accounts/reducers";
 import { contactsReducer } from "../containers/entities/contacts/reducers";
 import { userPreferencesReducer } from "../common/reducers/userPreferencesReducer";
 import { bankingReducer } from "../containers/entities/bankings/reducers";
@@ -48,10 +47,7 @@ import { paymentInReducer } from "../containers/entities/paymentsIn/reducers";
 import { automationReducer } from "../containers/automation/reducers";
 import { confirmReducer } from "../common/reducers/confirmReducer";
 import { paymentOutReducer } from "../containers/entities/paymentsOut/reducers";
-import {
-  courseClassesBulkSessionReducer,
-  courseClassReducer
-} from "../containers/entities/courseClasses/reducers";
+import { courseClassesBulkSessionReducer, courseClassReducer } from "../containers/entities/courseClasses/reducers";
 import { actionsQueueReducer } from "../common/reducers/actionsQueueReducer";
 import { messageReducer } from "../common/reducers/messageReducer";
 import { checkoutReducer } from "../containers/checkout/reducers";
@@ -60,54 +56,53 @@ import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
 import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
 
 export const combinedReducers = combineReducers({
+  access: accessReducer,
+  actionsQueue: actionsQueueReducer,
   automation: automationReducer,
+  banking: bankingReducer,
+  certificates: certificatesReducer,
+  checkout: checkoutReducer,
   confirm: confirmReducer,
+  contacts: contactsReducer,
+  countries: countriesReducer,
   courseClass: courseClassReducer,
   courseClassesBulkSession: courseClassesBulkSessionReducer,
-  preferences: preferencesReducer,
-  userPreferences: userPreferencesReducer,
-  access: accessReducer,
-  timezones: timezonesReducer,
-  countries: countriesReducer,
-  languages: languagesReducer,
-  fetch: fetchReducer,
-  enums: enumsReducer,
-  drawer: drawerReducer,
-  swipeableDrawer: swipeableDrawerReducer,
-  form: formReducer,
-  login: loginReducer,
-  security: securityReducer,
-  tags: tagsReducer,
-  export: AvetmissExportReducer,
-  process: processReducer,
-  list: listReducer,
-  share: shareReducer,
-  lastLocation: lastLocationReducer,
-  nextLocation: setNextLocationReducer,
-  sites: siteReducer,
-  googleApiResponse: googleApiReducer,
-  documents: documentReducer,
-  dashboard: dashboardReducer,
-  payrolls: payrollsReducer,
-  accounts: accountEntityReducer,
-  contacts: contactsReducer,
-  certificates: certificatesReducer,
-  taxes: taxesReducer,
   currency: currencyReducer,
-  usiSoftwareId: usiSoftwareIdReducer,
-  banking: bankingReducer,
-  lockedDate: lockedDateReducer,
-  discounts: discountsReducer,
-  sales: saleReducer,
-  timetable: timetableReducer,
   customFieldTypes: customFieldTypesReducer,
-  voucherProducts: voucherProductReducer,
+  dashboard: dashboardReducer,
+  discounts: discountsReducer,
+  documents: documentReducer,
+  drawer: drawerReducer,
+  enrolments: enrolmentsReducer,
+  enums: enumsReducer,
+  export: AvetmissExportReducer,
+  fetch: fetchReducer,
+  form: formReducer,
+  googleApiResponse: googleApiReducer,
   invoices: invoicesReducer,
+  languages: languagesReducer,
+  lastLocation: lastLocationReducer,
+  list: listReducer,
+  lockedDate: lockedDateReducer,
+  login: loginReducer,
+  message: messageReducer,
+  nextLocation: setNextLocationReducer,
   paymentsIn: paymentInReducer,
   paymentsOut: paymentOutReducer,
-  actionsQueue: actionsQueueReducer,
-  message: messageReducer,
-  checkout: checkoutReducer,
-  enrolments: enrolmentsReducer,
-  plainSearchRecords: commonPlainRecordSearchReducer
+  payrolls: payrollsReducer,
+  plainSearchRecords: commonPlainRecordSearchReducer,
+  preferences: preferencesReducer,
+  process: processReducer,
+  sales: saleReducer,
+  security: securityReducer,
+  share: shareReducer,
+  sites: siteReducer,
+  swipeableDrawer: swipeableDrawerReducer,
+  tags: tagsReducer,
+  taxes: taxesReducer,
+  timetable: timetableReducer,
+  timezones: timezonesReducer,
+  userPreferences: userPreferencesReducer,
+  usiSoftwareId: usiSoftwareIdReducer,
+  voucherProducts: voucherProductReducer,
 });

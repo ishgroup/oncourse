@@ -3,12 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
-import {
-  arrayInsert, arrayRemove, change
-} from "redux-form";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { arrayInsert, arrayRemove, change } from "redux-form";
 import { CourseClassPaymentPlan, Tax } from "@api/model";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
@@ -147,7 +143,7 @@ const StudentFeeContent: React.FC<Props> = ({
 
   const onAccountIdChange = useCallback(
     id => {
-      const selectedAccountTaxId = Number(accounts.find(a => a.id === id).taxId);
+      const selectedAccountTaxId = Number(accounts.find(a => a.id === id)["tax.id"]);
 
       if (values.taxId !== selectedAccountTaxId) {
         dispatch(change(form, namePrefix + "taxId", selectedAccountTaxId));

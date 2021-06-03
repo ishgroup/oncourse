@@ -3,8 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
-import { Account } from "@api/model";
+import { Account, AccountType } from "@api/model";
+import { Dispatch } from "redux";
+import { _toRequestType } from "../../../../common/actions/ActionUtils";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 export const GET_ACCOUNT_ITEM = _toRequestType("get/account");
 
@@ -13,15 +16,6 @@ export const DELETE_ACCOUNT_ITEM = _toRequestType("delete/account");
 export const UPDATE_ACCOUNT_ITEM = _toRequestType("put/account");
 
 export const CREATE_ACCOUNT_ITEM = _toRequestType("post/account");
-
-export const GET_PLAIN_ACCOUNTS = _toRequestType("get/plain/account");
-export const GET_PLAIN_ACCOUNTS_FULFILLED = FULFILLED(GET_PLAIN_ACCOUNTS);
-
-export const GET_INCOME_ACCOUNTS = _toRequestType("get/account/incomeAccounts");
-export const GET_INCOME_ACCOUNTS_FULFILLED = FULFILLED(GET_INCOME_ACCOUNTS);
-
-export const GET_LIABILITY_ACCOUNTS = _toRequestType("get/account/liabilityAccounts");
-export const GET_LIABILITY_ACCOUNTS_FULFILLED = FULFILLED(GET_LIABILITY_ACCOUNTS);
 
 export const getAccount = (id: string) => ({
   type: GET_ACCOUNT_ITEM,
@@ -43,15 +37,7 @@ export const createAccount = (account: Account) => ({
   payload: { account }
 });
 
-export const getPlainAccounts = () => ({
-  type: GET_PLAIN_ACCOUNTS,
-  payload: {}
-});
-
-export const getIncomeAccounts = () => ({
-  type: GET_INCOME_ACCOUNTS
-});
-
-export const getLiabilityAccounts = () => ({
-  type: GET_LIABILITY_ACCOUNTS
-});
+export const getPlainAccounts = (dispatch: Dispatch, type?: AccountType) => {
+  dispatch(setCommonPlainSearch("Account", `isEnabled is true${type ? ` and type is ${type}` : ""}`));
+  dispatch(getCommonPlainRecords("Account", 0, "description,accountCode,type,tax.id", true, "description", PLAIN_LIST_MAX_PAGE_SIZE));
+};
