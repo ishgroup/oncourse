@@ -5,9 +5,7 @@
 
 import React, { useEffect, useMemo } from "react";
 import { Dispatch } from "redux";
-import {
-  FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
+import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
@@ -279,7 +277,7 @@ const mapStateToProps = (state: State) => ({
   value: getFormValues(FORM)(state),
   invoiceLines: state.enrolments.invoiceLines,
   isTransfered: state.enrolments.isTransfered,
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items,
   enrolmentPlainRecord: state.plainSearchRecords["Enrolment"],
   defaultIncomeAccountId: state.userPreferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID]

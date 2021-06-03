@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { useEffect } from "react";
 import * as React from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
@@ -13,15 +13,11 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
-  createInvoice, getDefaultInvoiceTerms, getInvoice, removeInvoice, updateInvoice
+ createInvoice, getDefaultInvoiceTerms, getInvoice, removeInvoice, updateInvoice
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
-import {
-  setListEditRecord,
-  clearListState,
-  getFilters,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
@@ -174,7 +170,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
-  getAccounts: () => dispatch(getPlainAccounts()),
+  getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getAdministrationSites: () => dispatch(getAdministrationSites()),
   getFilters: () => dispatch(getFilters("Invoice")),

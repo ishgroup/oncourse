@@ -7,16 +7,16 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import { Tax, Account } from "@api/model";
-import { getTaxTypes, updateTaxTypes, deleteTaxType } from "../../actions";
+import { Account, Tax } from "@api/model";
+import { deleteTaxType, getTaxTypes, updateTaxTypes } from "../../actions";
 import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import TaxTypesForm from "./components/TaxTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
-import { getPlainAccounts } from "../../../entities/accounts/actions";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { getPlainAccounts } from "../../../entities/accounts/actions";
 
 interface Props {
   getTypes: () => void;
@@ -93,18 +93,18 @@ const mapStateToProps = (state: State) => ({
   timestamps: state.preferences.taxTypes && getTimestamps(state.preferences.taxTypes),
   data: getFormValues("TaxTypesForm")(state),
   taxTypes: state.preferences.taxTypes,
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getTypes: () => dispatch(getTaxTypes()),
-    getAccounts: () => dispatch(getPlainAccounts()),
-    updateTaxTypes: (taxTypes: Tax[]) => dispatch(updateTaxTypes(taxTypes)),
-    deleteTaxType: (id: string) => dispatch(deleteTaxType(id)),
-    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-    openConfirm: props => dispatch(showConfirm(props))
-  });
+  getTypes: () => dispatch(getTaxTypes()),
+  getAccounts: () => getPlainAccounts(dispatch),
+  updateTaxTypes: (taxTypes: Tax[]) => dispatch(updateTaxTypes(taxTypes)),
+  deleteTaxType: (id: string) => dispatch(deleteTaxType(id)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  openConfirm: props => dispatch(showConfirm(props))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(TaxTypes);
