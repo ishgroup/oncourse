@@ -3,17 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { change } from "redux-form";
-import {
-  Account,
-  Course,
-  Currency,
-  ProductStatus,
-  VoucherProduct,
-  VoucherProductCourse
-} from "@api/model";
+import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
@@ -23,9 +16,7 @@ import { formatCurrency } from "../../../../common/utils/numbers/numbersNormaliz
 import { State } from "../../../../reducers/state";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import {
-  getMinMaxFee, clearMinMaxFee
-} from "../actions";
+import { clearMinMaxFee, getMinMaxFee } from "../actions";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -157,6 +148,8 @@ const validateCourses = values => (values && values.length === 0 ? "At least one
 
 const sortCourses = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
+const accountLabelCondition = a => `${a.accountCode}, ${a.description}`;
+
 const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   const {
     twoColumn,
@@ -208,6 +201,10 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     }
   }, [coursesIds]);
 
+  const liabilityAccounts = useMemo(() => accounts.filter(a => a.type === "liability"), [accounts]);
+
+  const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
+
   return (
     <div className="generalRoot">
       <div className="pt-1">
@@ -235,12 +232,21 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           type="select"
           name="liabilityAccountId"
           label="Liability account"
-          validate={value => (accounts.find((item: Account) => item.id === value) ? undefined : `Mandatory field`)}
-          items={accounts}
+          items={liabilityAccounts}
           selectValueMark="id"
-          selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
+          selectLabelCondition={accountLabelCondition}
+          required
         />
       </div>
+      <FormField
+        type="select"
+        name="underpaymentAccountId"
+        label="Default voucher underpayment account"
+        items={expenseAccounts}
+        selectValueMark="id"
+        selectLabelCondition={accountLabelCondition}
+        required
+      />
       <Typography color="inherit" component="div" noWrap>
         Expires
         <FormField
@@ -356,7 +362,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.liabilityItems,
+  accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,

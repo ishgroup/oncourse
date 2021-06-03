@@ -4,29 +4,24 @@
  */
 
 import { connect } from "react-redux";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { initialize } from "redux-form";
-import {
-  Account, ArticleProduct, Tax
-} from "@api/model";
+import { Account, ArticleProduct, Tax } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { plainCorporatePassPath } from "../../../constants/Api";
 import ArticleProductEditView from "./components/ArticleProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
-import { getArticleProduct, updateArticleProduct, createArticleProduct } from "./actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
+import { createArticleProduct, getArticleProduct, updateArticleProduct } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import { getPlainTaxes } from "../taxes/actions";
-import { getIncomeAccounts } from "../accounts/actions";
+import { getPlainAccounts } from "../accounts/actions";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
+import { Dispatch } from "redux";
 
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
@@ -143,7 +138,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
       const defaultId = preferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID];
       const account = accounts.find(item => item.id === Number(defaultId));
       if (account) {
-        onInit({ ...Initial, incomeAccountId: account.id, taxId: account.tax.id });
+        onInit({ ...Initial, incomeAccountId: account.id, taxId: account["tax.id"] });
       } else {
         onInit(Initial);
       }
@@ -197,7 +192,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
   getTaxes: () => dispatch(getPlainTaxes()),
-  getAccounts: () => dispatch(getIncomeAccounts()),
+  getAccounts: () => getPlainAccounts(dispatch, "income"),
   getFilters: () => dispatch(getFilters("ArticleProduct")),
   clearListState: () => dispatch(clearListState()),
   getArticleProductRecord: (id: string) => dispatch(getArticleProduct(id)),
@@ -211,8 +206,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const mapStateToProps = (state: State) => ({
   updatingTaxes: state.taxes.updatingItems,
   taxes: state.taxes.items,
-  updatingAccounts: state.accounts.updatingIncomeItems,
-  accounts: state.accounts.incomeItems,
+  updatingAccounts: state.plainSearchRecords.Account.loading,
+  accounts: state.plainSearchRecords.Account.items,
   preferences: state.userPreferences
 });
 
