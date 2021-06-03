@@ -7,7 +7,8 @@ import {
   CheckoutArticle,
   CheckoutEnrolment,
   CheckoutMembership,
-  CheckoutModel, CheckoutPaymentPlan,
+  CheckoutModel,
+  CheckoutPaymentPlan,
   CheckoutVoucher,
   ContactNode,
   Invoice,
@@ -19,7 +20,8 @@ import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
 import {
   CheckoutCourse,
-  CheckoutCourseClass, CheckoutDiscount,
+  CheckoutCourseClass,
+  CheckoutDiscount,
   CheckoutEntity,
   CheckoutItem,
   CheckoutState,
@@ -300,7 +302,9 @@ export const getCheckoutModel = (
 
     payForThisInvoice,
 
-    invoiceDueDate: summary.invoiceDueDate,
+    invoiceDueDate: (paymentPlans.length
+      && paymentPlans.reduce((p, c) => (new Date(p.date) < new Date(c.date) ? p : c))?.date)
+      || summary.invoiceDueDate,
 
     invoiceCustomerReference: summaryValues.invoiceCustomerReference,
 

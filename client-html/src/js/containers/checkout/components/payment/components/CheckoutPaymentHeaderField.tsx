@@ -16,9 +16,7 @@ import clsx from "clsx";
 import { addDays, compareAsc, isSameDay } from "date-fns";
 import { format } from "date-fns-tz";
 import debounce from "lodash.debounce";
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
@@ -39,9 +37,9 @@ import {
   clearCcIframeUrl
 } from "../../../actions/checkoutPayment";
 import {
-  checkoutUncheckAllPreviousInvoice,
   checkoutGetVoucherPromo,
   checkoutRemoveVoucher,
+  checkoutUncheckAllPreviousInvoice,
   checkoutUpdatePromo,
   checkoutUpdateSummaryField
 } from "../../../actions/checkoutSummary";
@@ -191,7 +189,10 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     plansTotal.sort((a, b) => (a.date > b.date ? 1 : -1));
 
     return plansTotal;
-  }, [checkoutSummary]);
+  }, [
+    checkoutSummary.list,
+    checkoutSummary.previousOwing.invoices
+  ]);
 
   const paymentPlansTotal = useMemo(() => {
     let total = 0;
@@ -420,7 +421,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         let invoiceDueDate = null;
 
         if (invoicePayLater > 0) {
-          invoiceDueDate = addDays(today, Number(invoiceTerms));
+          invoiceDueDate = checkoutSummary.invoiceDueDate || addDays(today, Number(invoiceTerms));
           planItems.push(
             {
               date: invoiceDueDate,
@@ -434,10 +435,6 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           planItems.push({
             amount: owingPaylater
           });
-        }
-
-        if (invoiceDueDate) {
-          dispatch(checkoutUpdateSummaryField("invoiceDueDate", format(invoiceDueDate, YYYY_MM_DD_MINUSED)));
         }
       }
     }
@@ -468,18 +465,28 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       {
         amount: checkoutSummary.payNowTotal,
       },
-      ...updatedPaymentPlans,
-      ...planItems
+      ...[
+        ...updatedPaymentPlans,
+        ...planItems
+      ]
+        .filter(p => p.amount > 0)
+        .sort((a, b) => a.date && (new Date(a.date) > new Date(b.date) ? 1 : -1))
     ];
 
     dispatch(change(form, "paymentPlans", plansFinal));
-    setPaymentPlans(plansFinal.filter(p => p.date && p.amount > 0).map(({ amount, date }) => ({ amount, date: format(date, YYYY_MM_DD_MINUSED) })));
+    setPaymentPlans(
+      plansFinal
+        .filter(p => p.date && p.amount > 0)
+        .map(({ amount, date }) => ({ amount, date: format(new Date(date), YYYY_MM_DD_MINUSED) }))
+    );
   }, [
     checkoutItems,
     paymentPlansTotal,
     vouchersTotal,
     classVouchersTotal,
     payerContact,
+    paymentPlans,
+    checkoutSummary.invoiceDueDate,
     checkoutSummary.payNowTotal,
     checkoutSummary.previousOwing.invoices,
     checkoutSummary.previousCredit.invoices
