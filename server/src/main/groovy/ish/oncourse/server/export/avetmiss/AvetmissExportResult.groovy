@@ -57,6 +57,7 @@ class AvetmissExportResult {
     OutcomeStatus defaultOutcome
     Site adminSite
     LocalDate overriddenEndDate
+    Boolean ignoreAssessments
     
     boolean has_SKILLSET_LOCAL_TYPE = false
 

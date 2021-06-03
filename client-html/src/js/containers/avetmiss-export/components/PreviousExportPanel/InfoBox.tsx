@@ -9,8 +9,9 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { FundingUpload, FundingStatus } from "@api/model";
 import { format } from "date-fns";
 import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
+import { AppTheme } from "../../../../model/common/Theme";
 
-const styles = theme =>
+const styles = (theme: AppTheme) =>
   createStyles({
     buttons: {
       "& > *": {
@@ -34,9 +35,11 @@ const styles = theme =>
       height: "1.2em",
       width: "1.2em",
       borderRadius: `${theme.shape.borderRadius}px`,
-      margin: theme.spacing(0, 0, 0.25, 0.25)
+      margin: theme.spacing(0, 0, 0.25, 0.25),
+      color: theme.palette.secondary.main
     },
-    linkButtonIcon: { fontSize: "1.2em" }
+    linkButtonIcon: { fontSize: "1.2em" },
+
   });
 
 interface Props {
@@ -63,8 +66,8 @@ const InfoBox = ({
       >
         <OpenInNew
           classes={{
-              root: classes.linkButtonIcon
-            }}
+            root: classes.linkButtonIcon
+          }}
         />
       </ButtonBase>
       {created && (
@@ -80,10 +83,10 @@ const InfoBox = ({
         )}
     </Typography>
     <div className={clsx(classes.buttons, "d-flex justify-content-end pb-2")}>
-      <Button variant="outlined" color="primary" onClick={() => onClick(id, FundingStatus.unknown)}>
+      <Button variant="outlined" className="textSecondaryColor" onClick={() => onClick(id, FundingStatus.unknown)}>
         Unknown
       </Button>
-      <Button variant="outlined" color="primary" onClick={() => onClick(id, FundingStatus.fail)}>
+      <Button variant="outlined" className="errorColor" onClick={() => onClick(id, FundingStatus.fail)}>
         Fail
       </Button>
       <Button variant="contained" color="primary" onClick={() => onClick(id, FundingStatus.success)}>
