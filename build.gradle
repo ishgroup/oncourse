@@ -70,4 +70,34 @@ subprojects {
             }
         }
     }
+    
+    task expandConfig(type: Copy) {
+        def dbUrl = project.findProperty('dbUrl') ?: ''
+
+        from("$projectDir/src/test/resources/") {
+            include 'application-test.txt'
+        }
+        rename { String fileName ->
+            fileName.replace("txt", "yml")
+        }
+        into "$projectDir/build/resources/test"
+        expand(dbUrl: dbUrl)
+    }
+
+    test {
+        description = "Run unit tests which require a database."
+     
+        testLogging {
+            exceptionFormat = 'full'
+        }
+
+        doFirst {
+            println 'user.country:' + System.getProperty('user.country')
+            println 'user.language:' + System.getProperty('user.language')
+            println 'Locale.getDefault():' + Locale.getDefault()
+        }
+        dependsOn "expandConfig"
+        // the database tests interfere with each other if run in parallel
+        maxParallelForks = 1
+    }
 }

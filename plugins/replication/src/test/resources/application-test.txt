@@ -1,0 +1,44 @@
+jetty:
+  context: /
+  connectors:
+    - port: 8182
+      type: https2
+
+jdbc:
+  angel-test:
+    url: ${dbUrl}
+    username: root
+    driverClassName: org.mariadb.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    validationInterval: 30000
+    timeBetweenEvictionRunsMillis: 3000
+    maxActive: 100
+    maxIdle: 5
+    minIdle: 2
+    removeAbandonedTimeout: 300
+    removeAbandoned: true
+    logAbandoned: true
+    jmxEnabled: true
+
+  angel-test-creation:
+    url: ${dbUrl}
+    username: root
+    password: X3f8kVjj
+    driverClassName: org.mariadb.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    validationInterval: 30000
+    timeBetweenEvictionRunsMillis: 3000
+    maxActive: 100
+    maxIdle: 5
+    minIdle: 2
+    removeAbandonedTimeout: 300
+    removeAbandoned: true
+    logAbandoned: true
+    jmxEnabled: true
+
+cayenne:
+  datasource: angel-test
+  configs:
+    - cayenne/cayenne-Angel.xml
