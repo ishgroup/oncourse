@@ -20,8 +20,8 @@ abstract class AbstractProductStubBuilder<E extends Product, S extends ProductSt
         stub.setModified(entity.getModifiedOn())
         stub.setName(entity.getName())
         stub.setNotes(entity.getNotes())
-        stub.setPriceExTax(entity.getPriceExTax().toBigDecimal())
-        stub.setTaxAdjustment(entity.getTaxAdjustment().toBigDecimal())
+        stub.setPriceExTax(entity.getPriceExTax()?.toBigDecimal())
+        stub.setTaxAdjustment(entity.getTaxAdjustment()?.toBigDecimal())
         stub.setTaxAmount(entity.getFeeGST().toBigDecimal())
         stub.setType(entity.getType())
 
