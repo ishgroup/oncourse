@@ -5,34 +5,27 @@
 
 import React from "react";
 import posed from "react-pose";
-import {
- format as formatDate, getDaysInMonth, setDate, setMonth, setYear
-} from "date-fns";
+import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import { FormControlLabel } from "@material-ui/core";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import FormGroup from "@material-ui/core/FormGroup";
-import IconButton from "@material-ui/core/IconButton";
-import HelpOutline from "@material-ui/icons/HelpOutline";
-import Tooltip from "@material-ui/core/Tooltip";
 import {
-  arrayPush,
-  arrayRemove,
-  change,
-  getFormValues,
-  initialize,
-  InjectedFormProps,
-  reduxForm
-} from "redux-form";
+  Card,
+  CardContent,
+  CircularProgress,
+  Collapse,
+  Divider,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  Hidden,
+  IconButton,
+  Tooltip,
+  Typography,
+  withStyles
+} from "@material-ui/core";
+import { ExpandMore, HelpOutline } from "@material-ui/icons";
+import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import clsx from "clsx";
-import Collapse from "@material-ui/core/Collapse";
 import {
   AvetmissExportFee,
   AvetmissExportFlavour,
@@ -42,8 +35,6 @@ import {
   FundingStatus,
   FundingUpload
 } from "@api/model";
-import Hidden from "@material-ui/core/Hidden";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorMessage from "../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../common/components/form/form-fields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
@@ -65,17 +56,17 @@ import {
   updateFundingUpload
 } from "../actions";
 import { interruptProcess } from "../../../common/actions";
-import { validateMinMaxDate } from "../../../common/utils/validation/datesValidation";
-import { YYYY_MM_DD_MINUSED, III_DD_MMM_YYYY } from "../../../common/utils/dates/format";
+import { validateMinMaxDate } from "../../../common/utils/validation";
+import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
 import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
 import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
+import { AppTheme } from "../../../model/common/Theme";
 
-const Field: any = FormField;
 export const FORM: string = "AvetmissExportForm";
 
-const styles: any = theme => ({
+const styles: any = (theme: AppTheme) => ({
   divider: {
     margin: theme.spacing(3, -3)
   },
@@ -83,7 +74,8 @@ const styles: any = theme => ({
     width: "65px",
     position: "relative",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    minHeight: "90px"
   },
   stepsArrow: {
     height: "690px",
@@ -132,7 +124,8 @@ const styles: any = theme => ({
   },
   recordIcon: {
     fontSize: "0.875rem",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+    color: theme.palette.secondary.main
   },
   recordContainer: {
     textAlign: "left",
@@ -143,6 +136,10 @@ const styles: any = theme => ({
     left: "50%",
     top: "50%",
     transform: "translate(-50%, -50%)"
+  },
+  hidden: {
+    visibility: "hidden",
+    height: 0
   }
 });
 
@@ -462,6 +459,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
 
     delete request.dateRange;
     delete request.defaultStatus;
+    delete request.noAssessment;
 
     this.props.getExportOutcomesID(request);
   };
@@ -512,7 +510,11 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
     }
 
     this.props.dispatch(
-      change(FORM, "fee", [...(this.props.values.fee.findIndex(f => f === "Non VET") === -1 ? [] : ["Non VET"])])
+      change(
+        FORM,
+        "fee",
+        [...(this.props.values.fee.findIndex(f => f === "Non VET") === -1 ? [] : ["Non VET"])]
+      )
     );
   };
 
@@ -546,8 +548,8 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
 
   reset = () => {
     const {
- exportID, outcomesID, resetOutcomes, clearAvetmiss8ExportID, interruptProcess, outcomes
-} = this.props;
+     exportID, outcomesID, resetOutcomes, clearAvetmiss8ExportID, interruptProcess, outcomes
+    } = this.props;
 
     const { pending } = this.state;
 
@@ -953,21 +955,21 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getExportOutcomesID: (settings: AvetmissExportSettings) => dispatch(getAvetmiss8ExportOutcomesProcessID(settings)),
-    resetOutcomes: () => dispatch(clearExportOutcomes()),
-    clearAvetmiss8ExportID: () => dispatch(clearAvetmiss8ExportID()),
-    getAvetmiss8ExportID: (params: AvetmissExportRequest) => dispatch(getAvetmiss8ExportID(params)),
-    processExport: (processId: string) => dispatch(getAvetmiss8ExportStatus(processId)),
-    processOutcomes: (outcomesID: string) => dispatch(getAvetmiss8OutcomesStatus(outcomesID)),
-    interruptProcess: (processId: string) => dispatch(interruptProcess(processId)),
-    getFundingUploads: () => dispatch(getFundingUploads()),
-    updateFundingUpload: (id: number, status: FundingStatus) => dispatch(updateFundingUpload(id, status)),
-    getFundingContracts: () => dispatch(getActiveFundingContracts()),
-    updateSettings: (s: AvetmissExportSettings) => {
-      const settings = getAvetmissExportFormValues(s);
-      dispatch(initialize(FORM, settings));
-    }
-  });
+  getExportOutcomesID: (settings: AvetmissExportSettings) => dispatch(getAvetmiss8ExportOutcomesProcessID(settings)),
+  resetOutcomes: () => dispatch(clearExportOutcomes()),
+  clearAvetmiss8ExportID: () => dispatch(clearAvetmiss8ExportID()),
+  getAvetmiss8ExportID: (params: AvetmissExportRequest) => dispatch(getAvetmiss8ExportID(params)),
+  processExport: (processId: string) => dispatch(getAvetmiss8ExportStatus(processId)),
+  processOutcomes: (outcomesID: string) => dispatch(getAvetmiss8OutcomesStatus(outcomesID)),
+  interruptProcess: (processId: string) => dispatch(interruptProcess(processId)),
+  getFundingUploads: () => dispatch(getFundingUploads()),
+  updateFundingUpload: (id: number, status: FundingStatus) => dispatch(updateFundingUpload(id, status)),
+  getFundingContracts: () => dispatch(getActiveFundingContracts()),
+  updateSettings: (s: AvetmissExportSettings) => {
+    const settings = getAvetmissExportFormValues(s);
+    dispatch(initialize(FORM, settings));
+  }
+});
 
 export default reduxForm<any, Props>({
   form: FORM

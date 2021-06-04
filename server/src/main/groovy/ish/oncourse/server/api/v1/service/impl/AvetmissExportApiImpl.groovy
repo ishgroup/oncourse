@@ -99,6 +99,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
                         requestParameters.defaultStatus ? OutcomeStatus.STATUS_ASSESSABLE_CONTINUING_ENROLMENT : null,
                         LocalDate.now().plusDays(7),
                         requestParameters.settings?.outcomesEnd ?: LocalDate.now(),
+                        requestParameters.settings.noAssessment,
                         requestParameters.ids
                 )
 

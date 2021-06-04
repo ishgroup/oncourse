@@ -4,26 +4,27 @@
  */
 
 import React, { Component } from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
-import { Typography } from "@material-ui/core";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import {
+  Typography,
+  Button,
+  ButtonBase,
+  createStyles,
+  withStyles,
+  FormControl,
+  Select,
+  MenuItem
+} from "@material-ui/core";
 import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model";
 import clsx from "clsx";
 import { format } from "date-fns";
-import { green, grey } from "@material-ui/core/colors";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import { KeyboardArrowDown } from "@material-ui/icons";
-import MenuItem from "@material-ui/core/MenuItem";
+import { KeyboardArrowDown, OpenInNew } from "@material-ui/icons";
 import { stubComponent } from "../../utils/common";
 import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../utils/dates/format";
 import { AnyArgFunction } from "../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../utils/links";
+import { AppTheme } from "../../../model/common/Theme";
 
-const styles = theme => createStyles({
+const styles = (theme: AppTheme) => createStyles({
     rootPanel: {
       display: "grid",
       gridTemplateColumns: "1fr auto",
@@ -33,7 +34,7 @@ const styles = theme => createStyles({
     actionGroup: {
       display: "flex",
       alignItems: "baseline",
-      width: "165px",
+      width: "168px",
       justifyContent: "space-between"
     },
     button: {
@@ -79,15 +80,6 @@ const styles = theme => createStyles({
     },
     select: {
       paddingRight: `${theme.spacing(2.5)}px`
-    },
-    success: {
-      color: green[600]
-    },
-    failed: {
-      color: theme.palette.error.main
-    },
-    unknown: {
-      color: grey[600]
     }
   });
 
@@ -160,9 +152,9 @@ class FundingUploadComponent extends Component<Props, any> {
                 disableUnderline
                 classes={{
                   root: clsx(classes.rootSelect, {
-                    [classes.unknown]: fundingUpload.status === FundingStatus.unknown,
-                    [classes.failed]: fundingUpload.status === FundingStatus.fail,
-                    [classes.success]: fundingUpload.status === FundingStatus.success
+                    "textSecondaryColor": fundingUpload.status === FundingStatus.unknown,
+                    "errorColor": fundingUpload.status === FundingStatus.fail,
+                    "successColor": fundingUpload.status === FundingStatus.success
                   }),
                   select: classes.select
                 }}

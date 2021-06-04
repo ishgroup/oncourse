@@ -191,8 +191,16 @@ class OutcomeFunctions {
         progression.notMarked = BigDecimal.ZERO
         progression.absent = BigDecimal.ZERO
         progression.futureTimetable = BigDecimal.ZERO
-        
+
+        progression.released = 0
+        progression.notReleased = 0
+        progression.submitted =  0
+        progression.marked = 0
+
+        List<AssessmentClass> outcomeAssessments
+
         if (clazz.isDistantLearningCourse || clazz.sessions.empty) {
+            outcomeAssessments = clazz.assessmentClasses
             // skip attendance diagram since no sessions
         } else {
             List<Session> outcomeSessions
@@ -200,9 +208,11 @@ class OutcomeFunctions {
             //if vet outcome - take in account only training plan sessions
             if (outcome.module) {
                 outcomeSessions = clazz.sessions.findAll {session -> outcome.module in session.modules }
+                outcomeAssessments = clazz.assessmentClasses.findAll {assessment -> outcome.module in assessment.modules }
             } else {
                 // all sessions for defaullt outcome
                 outcomeSessions = clazz.sessions
+                outcomeAssessments = clazz.assessmentClasses
             }
             
             List<Session> futureSessions = outcomeSessions.findAll { session -> session.endDatetime.after(new Date())}
@@ -216,38 +226,32 @@ class OutcomeFunctions {
                 if (attendance && attendance.attendanceType) {
                     switch (attendance.attendanceType) {
                         case AttendanceType.UNMARKED:
-                            progression.notMarked =+ duration
+                            progression.notMarked += duration
                             break
                         case AttendanceType.ATTENDED:
-                            progression.attended =+ duration
+                            progression.attended += duration
                             break
                         case AttendanceType.DID_NOT_ATTEND_WITH_REASON:
                         case AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON:
-                            progression.absent =+ duration 
+                            progression.absent += duration
                             break
                         case AttendanceType.PARTIAL:
                             BigDecimal attended = attendance.durationInHours
-                            progression.attended =+ attended
-                            progression.absent =+ (duration - attended)
+                            progression.attended += attended
+                            progression.absent += (duration - attended)
                             break
                     }
                 } else {
-                    progression.notMarked =+ session.durationInHours
+                    progression.notMarked += session.durationInHours
                 }
                 
             }
         }
         
-        progression.released = 0
-        progression.notReleased = 0
-        progression.submitted =  0
-        progression.marked = 0
-
-        List<AssessmentClass> allAssessments =  clazz.assessmentClasses
-        if (!allAssessments.empty) {
-            List<AssessmentClass> releasedAssessments = allAssessments.findAll {assessment -> assessment.releaseDate.before(new Date())}
+        if (!outcomeAssessments.empty) {
+            List<AssessmentClass> releasedAssessments = outcomeAssessments.findAll {assessment -> assessment.releaseDate == null || assessment.releaseDate.before(new Date())}
             progression.released = releasedAssessments.size()
-            progression.notReleased = allAssessments.size() - progression.released
+            progression.notReleased = outcomeAssessments.size() - progression.released
             releasedAssessments.each { assessment ->
                 AssessmentSubmission submission = assessment.getAssessmentSubmission(outcome.enrolment)
                 if (submission) {
@@ -259,6 +263,7 @@ class OutcomeFunctions {
                     
                 }
             }
+            progression.released = progression.released - (progression.marked + progression.submitted)
         }
         
         return progression

@@ -90,4 +90,8 @@ public class LicenseService {
     public Boolean isReplicationDisabled() {
         return security_key == null;
     }
+
+    public String getCurrentHostName() {
+        return college_key == null ? null : String.format("https://%s.cloud.oncourse.cc", college_key);
+    }
 }

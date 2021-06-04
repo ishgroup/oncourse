@@ -21,8 +21,6 @@ import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.http.HttpFactory
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.MailDeliveryService
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.ServerConnector
 
 import javax.mail.MessagingException
 
@@ -189,10 +187,10 @@ class UserApiImpl implements UserApi {
 
     private void sendInvitationToUser(SystemUser whoBeChanged) {
         SystemUser whoChange = systemUserService.currentUser
-        String collegeKey = licenseService.getCollege_key()
+        String hostName = licenseService.currentHostName
         HttpFactory httpFactory = httpFactoryProvider.get() 
         try {
-            whoBeChanged.invitationToken = sendInvitationEmailToNewSystemUser(whoChange, whoBeChanged, preferenceController, mailDeliveryService, collegeKey, httpFactory.ip, httpFactory.port)
+            whoBeChanged.invitationToken = sendInvitationEmailToNewSystemUser(whoChange, whoBeChanged, preferenceController, mailDeliveryService, hostName, httpFactory.ip, httpFactory.port)
         } catch (MessagingException | IllegalArgumentException ex) {
             ValidationErrorDTO error = new ValidationErrorDTO()
             error.setErrorMessage(ex.message)

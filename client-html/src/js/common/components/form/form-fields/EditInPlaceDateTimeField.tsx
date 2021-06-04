@@ -13,14 +13,12 @@
  * Wrapper component for DateTimeField with edit in place functional
  * */
 
-import React, {
- ComponentClass, useMemo, useRef, useState
-} from "react";
+import React, { ComponentClass, useMemo, useRef, useState } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import DateRange from "@material-ui/icons/DateRange";
@@ -32,9 +30,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
-import {
-  HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED
-} from "../../../utils/dates/format";
+import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
 const styles = theme => createStyles({
@@ -245,6 +241,16 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     }
   };
 
+  const renderedValue = useMemo(() => {
+    if (!input.value) {
+      return (
+        <span className={clsx(classes.placeholderContent, classes.editable, fieldClasses.placeholder)}>{placeholder || "No value"}</span>
+      );
+    }
+
+    return formatDateInner(dateValue);
+  }, [dateValue, input.value, placeholder, classes, fieldClasses]);
+
   const onChange = (v: Date) => {
     if (v) {
       let formatted;
@@ -301,16 +307,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
   const onEditButtonFocus = () => {
     edit();
-  };
-
-  const getValue = () => {
-    if (!input.value) {
-      return (
-        <span className={clsx(classes.placeholderContent, classes.editable, fieldClasses.placeholder)}>{placeholder || "No value"}</span>
-      );
-    }
-
-    return formatDateInner(dateValue);
   };
 
   const onButtonOver = () => {
@@ -406,7 +402,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
             onKeyDown={onEnterPress}
             inputRef={inputNode}
             inputProps={{
-              size: isInline && input.value ? String(input.value.length + 1) : undefined,
+              size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
               className: clsx({
                 [classes.inlineInput]: isInline,
                 [classes.readonly]: disabled
@@ -472,7 +468,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 className={clsx(classes.editable, "hoverIconContainer")}
                 component="div"
               >
-                {editableComponent || getValue()}
+                {editableComponent || renderedValue}
                 {editIcon}
               </ButtonBase>
             )}
@@ -495,7 +491,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 className={clsx(classes.editable, "hoverIconContainer")}
                 component="span"
               >
-                {editableComponent || getValue()}
+                {editableComponent || renderedValue}
                 {editIcon}
               </ButtonBase>
             )}
@@ -513,7 +509,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
             onClick={onEditButtonFocus}
             className={clsx(classes.editable, "hoverIconContainer")}
           >
-            {editableComponent || getValue()}
+            {editableComponent || renderedValue}
             {editIcon}
           </ButtonBase>
         )}
@@ -529,7 +525,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
             onClick={onEditButtonFocus}
             className={clsx(classes.editable, classes.inline, "hoverIconContainer")}
           >
-            {editableComponent || getValue()}
+            {editableComponent || renderedValue}
             {editIcon}
           </ButtonBase>
         )}
