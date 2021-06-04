@@ -50,7 +50,7 @@ class PaymentInTransactionsBuilder implements TransactionsBuilder {
     static PaymentInTransactionsBuilder valueOf(PaymentInLine paymentInLine, Account voucherExpense, Closure<Money> getLiabilityExpenseAmount, LocalDate date) {
         PaymentInTransactionsBuilder builder = new PaymentInTransactionsBuilder()
         builder.paymentInLine = paymentInLine
-        if (PaymentType.VOUCHER  == paymentInLine.paymentIn.paymentMethod.type && paymentInLine.paymentIn.voucherPayments.empty) {
+        if (PaymentType.VOUCHER  == paymentInLine.paymentIn.paymentMethod.type && !paymentInLine.paymentIn.voucherPayments.empty) {
             builder.underpaymentAccount = paymentInLine.paymentIn?.voucherPayments[0].voucher.voucherProduct.underpaymentAccount ?:voucherExpense
         }
         builder.underpaymentAccount = voucherExpense
