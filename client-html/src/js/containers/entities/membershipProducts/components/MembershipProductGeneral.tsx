@@ -113,7 +113,7 @@ const handleChangeTax = (values: MembershipProduct, taxes: Tax[], dispatch, form
 
 const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
   const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === account["tax.id"]);
+  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
   if (tax.id !== values.taxId) {
     const taxRate = tax ? tax.rate : 0;
     dispatch(change(form, "taxId", tax.id));
