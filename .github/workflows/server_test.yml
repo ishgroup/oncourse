@@ -12,6 +12,16 @@ jobs:
     strategy:
       matrix:
         java: [ 11 ]
+        
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: plugins_test
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: actions/checkout@v2
@@ -49,4 +59,4 @@ jobs:
 
       - name: Unit tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew test --stacktrace -Duser.language=en -Duser.country=AU
+        run: ./gradlew plugins:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/plugins_test --stacktrace -Duser.language=en -Duser.country=AU
