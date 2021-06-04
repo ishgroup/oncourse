@@ -53,7 +53,6 @@ class PaymentInTransactionsBuilder implements TransactionsBuilder {
         if (PaymentType.VOUCHER  == paymentInLine.paymentIn.paymentMethod.type && !paymentInLine.paymentIn.voucherPayments.empty) {
             builder.underpaymentAccount = paymentInLine.paymentIn?.voucherPayments[0].voucher.voucherProduct.underpaymentAccount ?:voucherExpense
         }
-        builder.underpaymentAccount = voucherExpense
         builder.getLiabilityExpenseAmount = getLiabilityExpenseAmount
         builder.date = date
         builder
