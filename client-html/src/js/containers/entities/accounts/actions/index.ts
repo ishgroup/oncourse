@@ -38,6 +38,6 @@ export const createAccount = (account: Account) => ({
 });
 
 export const getPlainAccounts = (dispatch: Dispatch, type?: AccountType) => {
-  dispatch(setCommonPlainSearch("Account", `isEnabled is true${type ? ` and type is ${type}` : ""}`));
+  dispatch(setCommonPlainSearch("Account", `isEnabled is true${type ? ` and type is ${type.toUpperCase()}` : ""}`));
   dispatch(getCommonPlainRecords("Account", 0, "description,accountCode,type,tax.id", true, "description", PLAIN_LIST_MAX_PAGE_SIZE));
 };

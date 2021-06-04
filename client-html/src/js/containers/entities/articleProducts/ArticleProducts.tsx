@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { initialize } from "redux-form";
 import { Account, ArticleProduct, Tax } from "@api/model";
+import { Dispatch } from "redux";
 import ListView from "../../../common/components/list-view/ListView";
 import { plainCorporatePassPath } from "../../../constants/Api";
 import ArticleProductEditView from "./components/ArticleProductEditView";
@@ -21,7 +22,6 @@ import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../constants/Config
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
-import { Dispatch } from "redux";
 
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
@@ -138,7 +138,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
       const defaultId = preferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID];
       const account = accounts.find(item => item.id === Number(defaultId));
       if (account) {
-        onInit({ ...Initial, incomeAccountId: account.id, taxId: account["tax.id"] });
+        onInit({ ...Initial, incomeAccountId: account.id, taxId: Number(account["tax.id"]) });
       } else {
         onInit(Initial);
       }
