@@ -144,7 +144,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                   formatting="inline"
                   disabled={!field.dateEditable || disabledStep}
                   validate={(!field.dateEditable || disabledStep) ? undefined : validateDueDate}
-                  onChange={onDueDateChange}
+                  onChange={(!field.dateEditable || disabledStep) ? undefined : onDueDateChange}
                 />
               </Typography>
             )}
@@ -175,4 +175,11 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
   );
 });
 
-export default props => <FieldArray name={props.name} component={CheckoutPaymentPlansBase as any} {...props} />;
+export default props => (
+  <FieldArray
+    name={props.name}
+    component={CheckoutPaymentPlansBase as any}
+    {...props}
+    rerenderOnEveryChange
+  />
+);
