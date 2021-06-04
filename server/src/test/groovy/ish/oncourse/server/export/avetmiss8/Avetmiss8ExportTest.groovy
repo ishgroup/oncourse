@@ -147,6 +147,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
                 defaultOutcome,
                 LocalDate.now().plusDays(7),
                 localEndDate,
+                true,
                 outcomes*.id)
     }
 

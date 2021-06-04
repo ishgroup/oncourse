@@ -64,7 +64,7 @@ class SurveyGizmoBaseForm extends React.Component<any, any> {
   }
 }
 
-export const SurveyGizmoForm = reduxForm({
+export const AlchemerForm = reduxForm({
   form: "SurveyGizmoForm",
   onSubmitFail
 })(connect<any, any, any>(null, null)(SurveyGizmoBaseForm));
