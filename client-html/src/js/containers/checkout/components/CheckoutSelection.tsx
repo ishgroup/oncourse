@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback, useMemo } from "react";
@@ -45,10 +48,10 @@ import { EditViewProps } from "../../../model/common/ListView";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
-import { getCustomFieldTypes } from "../../entities/customFieldTypes/actions";
 import {
+  CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_CONTACT_COLUMNS,
-  CHECKOUT_MEMBERSHIP_COLUMNS, CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep
 } from "../constants";
@@ -1322,7 +1325,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getLanguages: () => dispatch(getLanguages()),
   getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes(CONTACT_ENTITY_NAME)),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) =>
     dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),

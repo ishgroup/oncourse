@@ -1,6 +1,6 @@
 {
   "name": "angel-react",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-only",
   "private": true,
   "description": "react web client for oncourse application",
   "main": "webpack.config.js",

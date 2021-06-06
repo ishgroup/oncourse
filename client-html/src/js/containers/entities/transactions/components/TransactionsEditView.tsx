@@ -103,7 +103,7 @@ const TransactionsEditView = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.items
+  accounts: state.plainSearchRecords.Account.items
 });
 
 export default connect<any, any, any>(

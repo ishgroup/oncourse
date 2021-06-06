@@ -7,7 +7,7 @@ import { Epic } from "redux-observable";
 
 import { DataResponse } from "@api/model";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_AUTOMATION_PDF_BACKGROUNDS_LIST, GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED } from "../actions/index";
+import { GET_AUTOMATION_PDF_BACKGROUNDS_LIST, GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import EntityService from "../../../../../common/services/EntityService";
 import history from "../../../../../constants/History";
@@ -23,6 +23,8 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; filenameToSelect: 
       isPortrait: r.values[1] === "true",
       hasIcon: true
     }));
+
+    pdfBackgrounds.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {

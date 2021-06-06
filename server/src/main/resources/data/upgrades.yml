@@ -11,3 +11,27 @@ databaseChangeLog:
         - customChange: {
             "class": "ish.oncourse.server.upgrades.liquibase.change.SetCorrectStatusToRedeemedVouchers"
         }
+  - changeSet:
+      id: 82-1
+      author: rostislav
+      comment: add new default field configurations forms with fields from actual default enrolment form
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: FieldConfiguration
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.AddDefaultProductForms"
+        }
+  - changeSet:
+      id: 82-2
+      author: rostislav
+      comment: set correct status to redeemed vouchers
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: FieldConfigurationScheme
+      changes:
+        - customChange: {
+          "class": "ish.oncourse.server.upgrades.liquibase.change.AddNewProductRule"
+        }

@@ -28,10 +28,9 @@ import java.time.LocalDate
 class PaymentInTransactionsBuilder implements TransactionsBuilder {
 
     private PaymentInLine paymentInLine
-    private Account voucherExpense
     private Closure<Money> getLiabilityExpenseAmount
     private LocalDate date
-
+    private Account underpaymentAccount
     private PaymentInTransactionsBuilder() {
 
     }
@@ -51,7 +50,9 @@ class PaymentInTransactionsBuilder implements TransactionsBuilder {
     static PaymentInTransactionsBuilder valueOf(PaymentInLine paymentInLine, Account voucherExpense, Closure<Money> getLiabilityExpenseAmount, LocalDate date) {
         PaymentInTransactionsBuilder builder = new PaymentInTransactionsBuilder()
         builder.paymentInLine = paymentInLine
-        builder.voucherExpense = voucherExpense
+        if (PaymentType.VOUCHER  == paymentInLine.paymentIn.paymentMethod.type && !paymentInLine.paymentIn.voucherPayments.empty) {
+            builder.underpaymentAccount = paymentInLine.paymentIn?.voucherPayments[0].voucher.voucherProduct.underpaymentAccount ?:voucherExpense
+        }
         builder.getLiabilityExpenseAmount = getLiabilityExpenseAmount
         builder.date = date
         builder
@@ -71,9 +72,10 @@ class PaymentInTransactionsBuilder implements TransactionsBuilder {
         if (PaymentType.VOUCHER == paymentInLine.paymentIn.paymentMethod.type) {
             Money amountPaid = paymentInLine.amount
             Money amountOf2ndTransaction = getLiabilityExpenseAmount.call()
+            
             return TransactionSettings.valueOf(
-                    AccountTransactionDetail.valueOf(paymentInLine, amountPaid, voucherExpense , secondaryAccount, transactionDate),
-                    AccountTransactionDetail.valueOf(paymentInLine, amountOf2ndTransaction, voucherExpense, primaryAccount, transactionDate))
+                    AccountTransactionDetail.valueOf(paymentInLine, amountPaid, underpaymentAccount , secondaryAccount, transactionDate),
+                    AccountTransactionDetail.valueOf(paymentInLine, amountOf2ndTransaction, underpaymentAccount, primaryAccount, transactionDate))
                     .initialTransaction()
 
         } else {

@@ -1,16 +1,25 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Card, Chip, Grid, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Card, Chip, Grid, Tooltip, Typography
+} from "@material-ui/core";
+import React, {
+ useCallback, useEffect, useMemo, useState
+} from "react";
 import { change } from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus } from "@api/model";
+import {
+ ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
+} from "@api/model";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -35,6 +44,7 @@ import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../model/common/Theme";
+import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -110,13 +120,16 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     height: "60px",
   },
   deleteIcon: {
-    marginTop: "10px",
-    fontSize: "18px"
+    padding: theme.spacing(0.5),
+    marginTop: theme.spacing(1)
   },
   chip: {
     minWidth: "8em",
     height: "26px",
   },
+  tooltip: {
+    marginTop: theme.spacing(-2)
+  }
 }));
 
 const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
@@ -199,6 +212,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       mapSelectItems
     )), [values]);
 
+  const today = new Date();
+
   return (
     <Grid container className={className}>
       {!twoColumn && (
@@ -210,53 +225,83 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           />
         </Grid>
       )}
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="remoteDataSearchSelect"
-              name={getFieldName("moduleCode")}
-              label="Module code"
-              entity="Module"
-              selectValueMark="nationalCode"
-              selectLabelMark="nationalCode"
-              defaultDisplayValue={values && values.moduleCode}
-              labelAdornment={(
-                <LinkAdornment
-                  linkHandler={openModuleLink}
-                  link={values && values.moduleId}
-                  disabled={values && !values.moduleId}
-                />
-              )}
-              onInnerValueChange={onModuleCodeChange}
-              disabled={values && values.hasCertificate}
-              allowEmpty
-              fullWidth
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="remoteDataSearchSelect"
+          name={getFieldName("moduleCode")}
+          label="Module code"
+          entity="Module"
+          selectValueMark="nationalCode"
+          selectLabelMark="nationalCode"
+          defaultDisplayValue={values && values.moduleCode}
+          labelAdornment={(
+            <LinkAdornment
+              linkHandler={openModuleLink}
+              link={values && values.moduleId}
+              disabled={values && !values.moduleId}
             />
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="remoteDataSearchSelect"
-              entity="Module"
-              name={getFieldName("moduleName")}
-              label="Module name"
-              selectValueMark="title"
-              selectLabelMark="title"
-              defaultDisplayValue={values && values.moduleName}
-              labelAdornment={(
-                <LinkAdornment
-                  linkHandler={openModuleLink}
-                  link={values && values.moduleId}
-                  disabled={values && !values.moduleId}
-                />
-              )}
-              onInnerValueChange={onModuleNameChange}
-              allowEmpty
-              disabled={values && values.hasCertificate}
-              fullWidth
+          )}
+          onInnerValueChange={onModuleCodeChange}
+          disabled={values && values.hasCertificate}
+          allowEmpty
+          fullWidth
+        />
+        <FormField
+          type="remoteDataSearchSelect"
+          entity="Module"
+          name={getFieldName("moduleName")}
+          label="Module name"
+          selectValueMark="title"
+          selectLabelMark="title"
+          defaultDisplayValue={values && values.moduleName}
+          labelAdornment={(
+            <LinkAdornment
+              linkHandler={openModuleLink}
+              link={values && values.moduleId}
+              disabled={values && !values.moduleId}
             />
+          )}
+          onInnerValueChange={onModuleNameChange}
+          allowEmpty
+          disabled={values && values.hasCertificate}
+          fullWidth
+        />
+        <FormField
+          type="select"
+          name={getFieldName("deliveryMode")}
+          label="Delivery mode"
+          items={deliveryModeValues}
+          fullWidth
+        />
+        <FormField
+          type="number"
+          name={getFieldName("reportableHours")}
+          label="Reportable hours"
+          normalize={normalizeNumberToZero}
+        />
+        <FormField
+          type="select"
+          name={getFieldName("fundingSource")}
+          label="Funding source"
+          items={fundingSourceValues}
+          fullWidth
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <Card className={classes.card}>
+          <Grid container>
+            <Grid item xs={12}>
+              <div className="heading">OUTCOME PROGRESSION</div>
+            </Grid>
+            <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
+              <AttendanceChart data={values.progression} />
+            </Grid>
+            <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
+              <AssessmentChart data={values.progression} />
+            </Grid>
           </Grid>
-        </Grid>
+        </Card>
       </Grid>
 
       {priorLearningEditView ? (
@@ -281,7 +326,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 label="End date"
                 validate={validateEndtDate}
                 listSpacing={false}
-                placeHolder="Leave empty to calculate date from class"
+                placeholder="Leave empty to calculate date from class"
               />
             </div>
           </Grid>
@@ -290,41 +335,64 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         <Card className={classes.card}>
           <Grid container>
             <Grid xs={twoColumn ? 3 : 12}>
-              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</Grid>
-              <FormField
-                type="date"
-                name={getFieldName("trainingPlanStartDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="Start date"
-                disabled
-              />
-              <FormField
-                type="date"
-                name={getFieldName("trainingPlanEndDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="End date"
-                disabled
-              />
+              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
+              <Tooltip
+                placement="top-start"
+                title="First session related to this outcome"
+              >
+                <div>
+                  <FormField
+                    type="date"
+                    name={getFieldName("trainingPlanStartDate")}
+                    label="Start date"
+                    disabled
+                  />
+                </div>
+              </Tooltip>
+              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <div>
+                  <FormField
+                    type="date"
+                    name={getFieldName("trainingPlanEndDate")}
+                    label="End date"
+                    disabled
+                  />
+                </div>
+              </Tooltip>
             </Grid>
             <Grid xs={twoColumn ? 3 : 12}>
-              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</Grid>
-              <FormField
-                type="date"
-                name={getFieldName("actualStartDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="Start date"
-                disabled
-              />
-              <FormField
-                type="date"
-                name={getFieldName("actualEndDate")}
-                placeHolder="Leave empty to calculate date from class"
-                label="End date"
-                disabled
-              />
+              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
+              <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
+                <div>
+                  {values.actualStartDate && new Date(values.actualStartDate) > today
+                    ? <Uneditable label="Start date" value="Not yet started" />
+                    : (
+                      <FormField
+                        type="date"
+                        name={getFieldName("actualStartDate")}
+                        label="Start date"
+                        disabled
+                      />
+                    )}
+                </div>
+              </Tooltip>
+              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                <div>
+                  {values.actualEndDate && new Date(values.actualEndDate) > today
+                    ? <Uneditable label="End date" value="Not yet finished" />
+                    : (
+                      <FormField
+                        type="date"
+                        name={getFieldName("actualEndDate")}
+                        label="End date"
+                        disabled
+                      />
+                    )}
+                </div>
+              </Tooltip>
             </Grid>
             <Grid xs={twoColumn ? 3 : 12}>
-              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</Grid>
+              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
               <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                 {values.startDateOverridden ? (
                   <>
@@ -333,16 +401,16 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       name={getFieldName("startDate")}
                       validate={validateStartDate}
                       disabled={!isPriorLearningBinded && !values.startDateOverridden}
-                      placeHolder="Leave empty to calculate date from class"
+                      placeholder={(!isPriorLearningBinded && !values.startDateOverridden) ? null : "Leave empty to calculate date from class"}
                       label="Start date"
                     />
-                    <IconButton className="inputAdornmentButton" onClick={onLockStartDate}>
-                      <DeleteIcon className={classes.deleteIcon} />
+                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockStartDate}>
+                      <DeleteIcon fontSize="inherit" color="disabled" />
                     </IconButton>
                   </>
                 ) : (
                   <Grid item className={classes.buttonWrapper}>
-                    <Chip label="Override" onClick={onLockStartDate} className={classes.chip} />
+                    <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
                   </Grid>
                 )}
               </Grid>
@@ -354,16 +422,16 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       name={getFieldName("endDate")}
                       validate={validateEndtDate}
                       disabled={!isPriorLearningBinded && !values.endDateOverridden}
-                      placeHolder="Leave empty to calculate date from class"
+                      placeholder={(!isPriorLearningBinded && !values.endDateOverridden) ? null : "Leave empty to calculate date from class"}
                       label="End date"
                     />
-                    <IconButton className="inputAdornmentButton" onClick={onLockEndDate}>
-                      <DeleteIcon className={classes.deleteIcon} />
+                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockEndDate}>
+                      <DeleteIcon fontSize="inherit" color="disabled" />
                     </IconButton>
                   </>
                 ) : (
                   <Grid item className={classes.buttonWrapper}>
-                    <Chip label="Override" onClick={onLockEndDate} className={classes.chip} />
+                    <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
                   </Grid>
                 )}
               </Grid>
@@ -371,37 +439,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           </Grid>
         </Card>
       )}
-
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="select"
-              name={getFieldName("deliveryMode")}
-              label="Delivery mode"
-              items={deliveryModeValues}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="number"
-              name={getFieldName("reportableHours")}
-              label="Reportable hours"
-              normalize={normalizeNumberToZero}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="select"
-          name={getFieldName("fundingSource")}
-          label="Funding source"
-          items={fundingSourceValues}
-          fullWidth
-        />
-      </Grid>
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={twoColumn ? 4 : 12}>
@@ -470,17 +507,18 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <Grid item xs={twoColumn ? 4 : 12} className="saveButtonTableOffset mt-1">
               <div className="heading mb-1">Funding Uploads</div>
               {fundingUploads.length
-                  ? (
-                    <>
-                      {fundingUploads.map(u => (
-                        <FundingUploadComponent
-                          key={u.id}
-                          fundingUpload={u}
-                          readOnly
-                        />
-                      ))}
-                    </>
-                  ) : <Typography variant="caption" color="textSecondary" className="mt-1">No funding uploads were found</Typography>}
+                ? (
+                  <>
+                    {fundingUploads.map(u => (
+                      <FundingUploadComponent
+                        key={u.id}
+                        fundingUpload={u}
+                        readOnly
+                      />
+                    ))}
+                  </>
+                )
+                : <Typography variant="caption" color="textSecondary" className="mt-1">No funding uploads were found</Typography>}
             </Grid>
           )}
         </Grid>

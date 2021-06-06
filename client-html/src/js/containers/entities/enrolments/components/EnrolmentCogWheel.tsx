@@ -4,12 +4,11 @@
  */
 
 import MenuItem from "@material-ui/core/MenuItem";
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import CreateCertificateMenu from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
+import CreateCertificateMenu
+  from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
 import { State } from "../../../../reducers/state";
 import AvetmissExportModal, { manualAvetmisConfirm } from "../../../avetmiss-export/components/modal/AvetmissExportModal";
@@ -140,7 +139,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch,
     getEnrolmentInvoiceLines: (id: string) => dispatch(getEnrolmentInvoiceLines(id)),
-    getAccounts: () => dispatch(getPlainAccounts()),
+    getAccounts: () => getPlainAccounts(dispatch),
     getTaxes: () => dispatch(getPlainTaxes())
   });
 

@@ -24,13 +24,15 @@ export const getFirstErrorNodePath = (errors: FormErrors, deepObj?: any, path?: 
 
   const targetObj = deepObj || errors;
   let firstKeyIndex = 0;
+  let key;
+  let numberKey = false;
 
   if (Array.isArray(targetObj)) {
     firstKeyIndex = targetObj.findIndex(t => t);
+    key = firstKeyIndex;
+  } else {
+    key = Object.keys(targetObj)[firstKeyIndex];
   }
-
-  let key = Object.keys(targetObj)[firstKeyIndex];
-  let numberKey = false;
 
   if (!isNaN(Number(key))) {
     key = `[${key}]`;

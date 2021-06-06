@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -251,7 +254,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
       const newSubmission: AssessmentSubmission = {
         id: null,
         submittedOn: today,
-        markedById: submissionTutors && submissionTutors.length ? submissionTutors[0].contactId : null,
+        markedById: null,
         markedOn: today,
         enrolmentId: Number(elem.enrolmentId),
         studentId: Number(elem.studentId),
@@ -263,7 +266,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
     } else {
        updatedSubmissions = row.submissions.map((s, index) => {
         if (elem.submissionIndex === index) {
-          return { ...s, grade, ...grade === "" ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
+          return { ...s, grade, ...["", null].includes(grade) ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
         }
         return s;
       });
@@ -277,7 +280,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
       const newSubmission: AssessmentSubmission = {
         id: null,
         submittedOn: today,
-        markedById: submissionTutors && submissionTutors.length ? submissionTutors[0].contactId : null,
+        markedById: null,
         markedOn: today,
         enrolmentId: Number(elem.enrolmentId),
         studentId: Number(elem.studentId),
@@ -474,7 +477,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           <div className="heading">Assessment Submission</div>
           <Grid container xs={12} className={classes.tableHeader}>
             <Grid item xs={4} />
-            <Grid item xs={Boolean(gradeType) ? 2 : 4} className={classes.center}>
+            <Grid item xs={gradeType ? 2 : 4} className={classes.center}>
               <span className="relative">
                 Submitted
                 <IconButton

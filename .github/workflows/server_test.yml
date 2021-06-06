@@ -1,83 +1,32 @@
 name: Server test
-on: push
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  should_run:
-    runs-on: ubuntu-latest
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: 'true'
-          skip_after_successful_duplicate: 'true'
-          paths_ignore: '["client-html/**", "api-doc/**"]'
 
   server-junit:
-    needs: should_run
-    if: ${{ needs.should_run.outputs.should_skip != 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         java: [ 11 ]
 
     steps:
+      - uses: actions/checkout@v2
+
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v3.4.0
+        with:
+          cancel_others: 'true'
+          skip_after_successful_duplicate: 'true'
+          paths_ignore: '["client-html/**", "api-doc/**"]'
+
       - name: Setup timezone
         uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
-      - uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: ${{ matrix.java }}
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Cache
-        uses: actions/cache@v2.1.5
-        with:
-          path: |
-            **/node_modules
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-
-      - name: Types unit tests
-        run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
-
-      - name: Server unit tests
-        run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
-
-
-  server-integrations:
-    needs: should_run
-    if: ${{ needs.should_run.outputs.should_skip != 'true' }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [11]
-
-    services:
-      mysql:
-       image: mysql:8.0
-       env:
-         MYSQL_ALLOW_EMPTY_PASSWORD: yes
-         MYSQL_DATABASE: angelTest_trunk
-       ports:
-         - 3306
-       options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-    steps:
-      - name: Setup timezone
-        uses: zcong1993/setup-timezone@v1.1.1
-        with:
-          timezone: "Australia/Sydney"
-      - uses: actions/checkout@v2
 
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -96,7 +45,68 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ matrix.java }}-
+
+      - name: Types unit tests
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
+
+      - name: Server unit tests
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
+
+
+  server-integrations:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [11]
+
+    services:
+      mysql:
+       image: mysql:8.0
+       env:
+         MYSQL_ALLOW_EMPTY_PASSWORD: yes
+         MYSQL_DATABASE: angelTest_trunk
+       ports:
+         - 3306
+       options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v3.4.0
+        with:
+          cancel_others: 'true'
+          skip_after_successful_duplicate: 'true'
+          paths_ignore: '["client-html/**", "api-doc/**"]'
+
+      - name: Setup timezone
+        uses: zcong1993/setup-timezone@v1.1.1
+        with:
+          timezone: "Australia/Sydney"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: ${{ matrix.java }}
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ matrix.java }}-
 
       - name: Integration tests
-        run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk?user=root --stacktrace -Duser.language=en -Duser.country=AU
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
 

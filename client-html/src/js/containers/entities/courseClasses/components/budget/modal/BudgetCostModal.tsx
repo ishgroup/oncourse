@@ -4,18 +4,14 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import {
- getFormValues, InjectedFormProps, reduxForm, submit
-} from "redux-form";
+import { getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import MuiButton from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import { connect } from "react-redux";
-import {
- Tax, Account, ClassCostRepetitionType
-} from "@api/model";
+import { Account, ClassCostRepetitionType, Tax } from "@api/model";
 import Button from "../../../../../../common/components/buttons/Button";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { State } from "../../../../../../reducers/state";
@@ -191,7 +187,7 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(COURSE_CLASS_COST_DIALOG_FORM)(state),
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   tutorRoles: state.preferences.tutorRoles,
   opened: state.courseClass.budgetModalOpened,
   defaultOnCostRate: state.courseClass.defaultOnCostRate

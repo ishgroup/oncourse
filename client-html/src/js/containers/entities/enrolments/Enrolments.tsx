@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Dialog } from "@material-ui/core";
@@ -44,7 +47,6 @@ import ContactEditView from "../contacts/components/ContactEditView";
 import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
 import EnrolmentEditView from "./components/EnrolmentEditView";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../../common/utils/links";
 import { checkPermissions } from "../../../common/actions";
@@ -65,7 +67,6 @@ interface EnrolmentsProps {
   getGradingTypes?: () => void;
   getPermissions?: () => void;
   getFundingContracts?: () => void;
-  getCustomFieldTypes?: () => void;
   customFieldTypesUpdating?: boolean;
   customFieldTypes?: CustomFieldType[];
   hasQePermissions?: boolean;
@@ -195,7 +196,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     clearListState,
     getTags,
     getFundingContracts,
-    getCustomFieldTypes,
     getGradingTypes,
     customFieldTypesUpdating,
     customFieldTypes,
@@ -210,7 +210,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
   const [changedFields, setChangedFields] = useState([]);
 
   useEffect(() => {
-    getCustomFieldTypes();
     getFilters();
     getTags();
     getFundingContracts();
@@ -422,7 +421,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getGradingTypes: () => dispatch(getGradingTypes()),
   getFilters: () => dispatch(getFilters("Enrolment")),
   getFundingContracts: () => dispatch(getActiveFundingContracts(true)),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Enrolment")),
   clearListState: () => dispatch(clearListState()),
   getEnrolmentRecord: (id: string) => dispatch(getEnrolment(id)),
   onSave: (id: number, enrolment: Enrolment) => dispatch(updateEnrolment(id, enrolment)),

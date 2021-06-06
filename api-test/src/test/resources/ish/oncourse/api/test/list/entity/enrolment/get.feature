@@ -97,7 +97,7 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "assessments":[{"modifiedOn":"2019-09-11T12:48:40.000Z","code":"code1","documents":[],"name":"assessment 1","active":true,"description":"some description","id":1000,"createdOn":"2019-09-11T12:45:19.000Z","tags":[],"gradingTypeId":1}],
+        "assessments":[{"modifiedOn":"#ignore","code":"code1","documents":[],"name":"assessment 1","active":true,"description":"some description","id":1000,"createdOn":"#ignore","tags":[],"gradingTypeId":1}],
         "submissions":[]
         }
         """
@@ -179,7 +179,7 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "assessments":[{"modifiedOn":"2019-09-11T12:48:40.000Z","code":"code1","documents":[],"name":"assessment 1","active":true,"description":"some description","id":1000,"createdOn":"2019-09-11T12:45:19.000Z","tags":[],"gradingTypeId":1}],
+        "assessments":[{"modifiedOn":"#ignore","code":"code1","documents":[],"name":"assessment 1","active":true,"description":"some description","id":1000,"createdOn":"#ignore","tags":[],"gradingTypeId":1}],
         "submissions":[]
         }
         """

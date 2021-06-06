@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, {
@@ -20,6 +23,7 @@ import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-
 import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
 import { renderAutomationItems } from "../../../../utils";
+import { validateEmail } from "../../../../../../common/utils/validation";
 
 interface Props {
   name: string;
@@ -88,8 +92,9 @@ const MessageCardContent = React.memo<Props>(props => {
         type="text"
         name={`${name}.from`}
         label="From"
-        placeholder={customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY] || 'No value'}
+        placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || 'No value'}
         disabled={disabled}
+        validate={validateEmail}
         fullWidth
       />
     </Grid>

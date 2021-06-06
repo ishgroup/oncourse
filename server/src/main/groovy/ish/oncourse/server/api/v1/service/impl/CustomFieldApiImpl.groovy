@@ -53,7 +53,7 @@ class CustomFieldApiImpl implements CustomFieldApi {
                 type.created = dbType.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
                 type.modified = dbType.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
                 type.name = dbType.name
-                type.entityType = EntityTypeDTO.fromValue(dbType.entityIdentifier)
+                type.entityType = EntityTypeDTO.fromValue(dbType.entityIdentifierExtended)
                 type.fieldKey = dbType.key
                 type.defaultValue = dbType.defaultValue
                 type.sortOrder = dbType.sortOrder

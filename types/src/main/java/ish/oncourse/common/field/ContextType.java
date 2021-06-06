@@ -20,7 +20,10 @@ public enum ContextType {
 	TAG_GROUP("tag"),
 	MAILING_LIST("mailingList"),
 	SURVEY("survey"),
-	COURSE_CLASS("courseClass");
+	COURSE_CLASS("courseClass"),
+	ARTICLE("article"),
+	MEMBERSHIP("membership"),
+	VOUCHER("voucher");
 
 	private String identifier;
 

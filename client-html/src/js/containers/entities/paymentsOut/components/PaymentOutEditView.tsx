@@ -261,7 +261,7 @@ const mapStateToProps = (state: State, props) => ({
   lockedDate: state.lockedDate,
   initialValues: getFormInitialValues(props.form)(state),
   paymentMethods: state.paymentsOut.paymentOutMethods,
-  accountItems: state.accounts.items,
+  accountItems: state.plainSearchRecords.Account.items,
   adminSites: state.sites.adminSites
 });
 

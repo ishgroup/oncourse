@@ -1,13 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import * as React from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { CustomFieldType, WaitingList } from "@api/model";
+import { WaitingList } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import WaitingListEditView from "./components/WaitingListEditView";
@@ -21,7 +24,6 @@ import {
   createWaitingList, getWaitingList, removeWaitingList, updateWaitingList
 } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { State } from "../../../reducers/state";
 import WaitingListCogWheel from "./components/WaitingListCogWheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -51,13 +53,10 @@ const manualLink = getManualLink("waitingLists");
 const nameCondition = (value: WaitingList) => value.courseName;
 
 class WaitingLists extends React.Component<any, any> {
-  private initializingNew: boolean = false;
-
   componentDidMount() {
     this.props.getTags();
     this.props.getFilters();
     this.props.getQePermissions();
-    this.props.getCustomFieldTypes();
     this.props.getTagsForSitesSearch();
   }
 
@@ -65,37 +64,9 @@ class WaitingLists extends React.Component<any, any> {
     this.props.clearListState();
   }
 
-  componentDidUpdate(prev) {
-    const { customFieldTypesUpdating, customFieldTypes } = this.props;
-
-    if (this.initializingNew && prev.customFieldTypesUpdating && !customFieldTypesUpdating) {
-      this.initializingNew = false;
-
-      const customFields = {};
-
-      // customFieldTypes.forEach((field: CustomFieldType) => {
-      //   if (field.defaultValue && !field.defaultValue.match(/[;*]/g)) {
-      //     customFields[field.fieldKey] = field.defaultValue;
-      //   }
-      // });
-
-      const initial = {
-        ...Initial,
-        customFields
-      };
-
-      this.props.onInit(initial);
-    }
-  }
-
-  onInit = () => {
-    this.initializingNew = true;
-    this.props.getCustomFieldTypes();
-  };
-
   render() {
     const {
-      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel
+      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel, onInit
     } = this.props;
 
     return (
@@ -114,7 +85,7 @@ class WaitingLists extends React.Component<any, any> {
           EditViewContent={WaitingListEditView}
           getEditRecord={getWaitingListRecord}
           rootEntity="WaitingList"
-          onInit={this.onInit}
+          onInit={onInit}
           onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
@@ -132,9 +103,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: (initial: WaitingList) => {
-    dispatch(setListEditRecord(initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
+  onInit: () => {
+    dispatch(setListEditRecord(Initial));
+    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getQePermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
@@ -142,7 +113,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTagsForSitesSearch: () => {
     dispatch(getEntityTags("Site"));
   },
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("WaitingList")),
   getFilters: () => dispatch(getFilters("WaitingList")),
   getTags: () => dispatch(getListTags("WaitingList")),
   clearListState: () => dispatch(clearListState()),

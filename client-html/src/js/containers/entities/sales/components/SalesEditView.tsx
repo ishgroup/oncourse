@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback } from "react";
@@ -23,6 +26,7 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import { contactLabelCondition } from "../../contacts/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { buildUrl, productUrl } from "../utils";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface SalesGeneralViewProps {
   classes?: any;
@@ -83,6 +87,8 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
 
   const type = values ? values.productType : undefined;
 
+  const customFieldType: any = type === "Product" ? "Article" : type;
+
   const redeemableById = values ? values.redeemableById : undefined;
 
   const contactUrl = buildUrl(redeemableById, "Contacts");
@@ -121,6 +127,15 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
         </Grid>
       </Grid>
+
+      <CustomFields
+        entityName={customFieldType}
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+      />
+
       <Grid container>
         {type === ProductType.Voucher && (
           <Grid item xs={twoColumn ? 6 : 12}>
