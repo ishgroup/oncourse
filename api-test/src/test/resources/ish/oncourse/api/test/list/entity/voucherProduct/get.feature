@@ -65,7 +65,8 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "soldVouchersCount": "#number",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 
@@ -105,7 +106,8 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "soldVouchersCount": "#number",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 

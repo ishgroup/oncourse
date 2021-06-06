@@ -16,7 +16,15 @@ import { getFormInitialValues, getFormValues, initialize } from "redux-form";
 
 import { format } from "date-fns";
 import {
-  TableModel, CourseClass, Course, ClassCost, Account, ClassFundingSource, DeliveryMode, Enrolment, Outcome
+  Account,
+  ClassCost,
+  ClassFundingSource,
+  Course,
+  CourseClass,
+  DeliveryMode,
+  Enrolment,
+  Outcome,
+  TableModel
 } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "../../../common/components/buttons/Button";
@@ -29,18 +37,20 @@ import {
   clearListState,
   getFilters,
   setListCreatingNew,
-  setListEditRecord, setListSelection,
+  setListEditRecord,
+  setListSelection,
 } from "../../../common/components/list-view/actions";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
+import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
 import {
-  createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass
-} from "./actions";
-import {
- AnyArgFunction, BooleanArgFunction, NoArgFunction, NumberArgFunction
+  AnyArgFunction,
+  BooleanArgFunction,
+  NoArgFunction,
+  NumberArgFunction
 } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
@@ -66,7 +76,8 @@ import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
   DEFAULT_MAXIMUM_PLACES_KEY,
-  DEFAULT_MINIMUM_PLACES_KEY, PLAIN_LIST_MAX_PAGE_SIZE
+  DEFAULT_MINIMUM_PLACES_KEY,
+  PLAIN_LIST_MAX_PAGE_SIZE
 } from "../../../constants/Config";
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
@@ -765,7 +776,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     );
     dispatch(getFilters("CourseClass"));
     dispatch(getVirtualSites());
-    dispatch(getPlainAccounts());
+    getPlainAccounts(dispatch);
     dispatch(getPlainTaxes());
     dispatch(getGradingTypes());
     dispatch(getActiveFundingContracts(true));

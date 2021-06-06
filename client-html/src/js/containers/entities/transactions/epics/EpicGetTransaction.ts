@@ -19,8 +19,8 @@ const request: EpicUtils.Request<any,  any> = {
   processData: (transaction: Transaction, state) => {
     let name: any = transaction.fromAccount;
 
-    if (state.accounts.items) {
-      const account = state.accounts.items.find((acc: Account) => acc.id === transaction.fromAccount);
+    if (state.plainSearchRecords.Account.items) {
+      const account = state.plainSearchRecords.Account.items.find((acc: Account) => acc.id === transaction.fromAccount);
 
       if (account) {
         name = `${account.description} ${account.accountCode}`;

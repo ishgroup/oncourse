@@ -11,9 +11,12 @@
 
 package ish.oncourse.server.api.v1.function.avetmiss
 
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.common.types.AttendanceType
 import ish.common.types.OutcomeStatus
+import ish.oncourse.server.cayenne.AssessmentClass
+
 import static ish.common.types.OutcomeStatus.*
 import ish.common.types.UsiStatus
 import ish.oncourse.server.api.v1.model.AvetmissExportOutcomeDTO
@@ -156,12 +159,22 @@ class AvetmissExportPreviewBuilder {
 
         def currentOutcomes = outcomes.findAll { it.startDate <= now  && it.endDate >= now && it.status != STATUS_WA_NOT_YET_STARTED }
         if (!currentOutcomes.empty) {
-            result += createFromOutcomes(currentOutcomes,
-                    AvetmissExportOutcomeCategoryDTO.COMMENCED,
-                    AvetmissExportOutcomeStatusDTO.IN_PROGRESS)
 
+            Collection<Collection<Outcome>> collections = currentOutcomes.split { o -> o.submissions.empty }
+            def (notAssessed, commenced) = [collections[0], collections[1]]
+            
+            if (!notAssessed.empty) {
+                result += createFromOutcomes(notAssessed,
+                        AvetmissExportOutcomeCategoryDTO.STARTED_NOT_ASSESSED_,
+                        AvetmissExportOutcomeStatusDTO.IN_PROGRESS)
+            }
 
-
+            if (!commenced.empty) {
+                result += createFromOutcomes(commenced,
+                        AvetmissExportOutcomeCategoryDTO.COMMENCED,
+                        AvetmissExportOutcomeStatusDTO.IN_PROGRESS)
+            }
+            
             result += createFromEnrolments((currentOutcomes*.enrolment.findAll() + inProgressEnrolments).unique(),
                     AvetmissExportOutcomeCategoryDTO.COMMENCED,
                     AvetmissExportOutcomeStatusDTO.IN_PROGRESS)

@@ -66,7 +66,8 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -140,7 +141,8 @@ Feature: Main feature for all POST requests with path 'list/entity/membershipPro
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 

@@ -27,11 +27,11 @@ export const surveymonkey: IntegrationTypeSchema = {
     "Create and publish online surveys in minutes, and view results graphically in real time SurveyMonkey provides free online questionnaire and survey software."
 };
 
-export const surveygizmo: IntegrationTypeSchema = {
+export const alchemer: IntegrationTypeSchema = {
   type: 4,
-  name: "SurveyGizmo",
+  name: "Alchemer",
   description:
-    "SurveyGizmo is an exeptionally powerful survey tool designed to make even the most advanced survey projects fun, easy & affordable."
+    "Alchemer is an exeptionally powerful survey tool designed to make even the most advanced survey projects fun, easy & affordable."
 };
 
 export const xero: IntegrationTypeSchema = {

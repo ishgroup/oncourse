@@ -89,7 +89,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/voucherProduct
         "corporatePasses":[{"id":1001,"contactFullName":"company #1"}],
         "soldVouchersCount":0,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 
@@ -185,7 +186,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/voucherProduct
         "corporatePasses":[{"id":1001,"contactFullName":"company #1"}],
         "soldVouchersCount":0,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 

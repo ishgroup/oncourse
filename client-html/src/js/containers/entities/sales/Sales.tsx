@@ -3,13 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { Dispatch, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { TableModel, ProductItem } from "@api/model";
-import {
-  clearListState,
-  getFilters
-} from "../../../common/components/list-view/actions";
+import { ProductItem, TableModel } from "@api/model";
+import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getSale, updateSale } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
@@ -19,6 +16,7 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
+import { Dispatch } from "redux";
 
 interface SalesProps {
   getSaleRecord?: () => void;
@@ -155,7 +153,7 @@ const Sales: React.FC<SalesProps> = props => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {},
-  getAccounts: () => dispatch(getPlainAccounts()),
+  getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getFilters: () => dispatch(getFilters("ProductItem")),
   onSave: (id: string, productItem: ProductItem) => dispatch(updateSale(id, productItem)),

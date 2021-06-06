@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormMeta, getFormValues } from "redux-form";
 import { Account, PaymentMethod } from "@api/model";
-import { getPaymentTypes, updatePaymentTypes, deletePaymentType } from "../../actions";
+import { deletePaymentType, getPaymentTypes, updatePaymentTypes } from "../../actions";
 import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import PaymentTypesForm from "./components/PaymentTypesForm";
@@ -55,7 +55,6 @@ class PaymentTypes extends React.Component<Props, any> {
 
     const assetAccounts = accounts
       && accounts
-        .filter(account => account.type === "asset")
         .map(item => ({
           value: Number(item.id),
           label: `${item.description} ${item.accountCode}`
@@ -87,13 +86,13 @@ const mapStateToProps = (state: State) => ({
   data: getFormValues("PaymentTypesForm")(state),
   touched: getFormMeta("PaymentTypesForm")(state),
   paymentTypes: state.preferences.paymentTypes,
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   fetch: state.fetch
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getTypes: () => dispatch(getPaymentTypes()),
-    getAccounts: () => dispatch(getPlainAccounts()),
+    getAccounts: () => getPlainAccounts(dispatch, "asset"),
     updatePaymentTypes: (paymentTypes: PaymentMethod[]) => dispatch(updatePaymentTypes(paymentTypes)),
     deletePaymentType: (id: string) => dispatch(deletePaymentType(id)),
     openConfirm: props => dispatch(showConfirm(props))

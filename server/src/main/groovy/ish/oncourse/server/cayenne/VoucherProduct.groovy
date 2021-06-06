@@ -59,6 +59,10 @@ class VoucherProduct extends _VoucherProduct {
 	void validateForSave(@Nonnull ValidationResult result) {
 		super.validateForSave(result)
 
+		if (!underpaymentAccount) {
+			result.addFailure(ValidationFailure.validationFailure(this, UNDERPAYMENT_ACCOUNT.getName(), "Underpayment account required."))
+		}
+		
 		if (StringUtils.trimToNull(getName()) == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, NAME.getName(), "Name cannot be empty."))
 		}

@@ -30,14 +30,15 @@ class AzureFormBase extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, appBarContent, dirty, form
+      handleSubmit, onSubmit, AppBarContent, dirty, form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
 
         <FormField type="text" name="fields.account" label="Account" required fullWidth />
         <FormField type="text" name="fields.key" label="Key" required fullWidth />

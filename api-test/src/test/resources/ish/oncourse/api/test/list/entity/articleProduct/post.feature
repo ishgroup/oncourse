@@ -60,7 +60,8 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -128,7 +129,8 @@ Feature: Main feature for all POST requests with path 'list/entity/articleProduc
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 

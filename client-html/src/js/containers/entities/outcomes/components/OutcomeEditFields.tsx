@@ -44,6 +44,7 @@ import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../model/common/Theme";
+import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -224,53 +225,83 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           />
         </Grid>
       )}
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="remoteDataSearchSelect"
-              name={getFieldName("moduleCode")}
-              label="Module code"
-              entity="Module"
-              selectValueMark="nationalCode"
-              selectLabelMark="nationalCode"
-              defaultDisplayValue={values && values.moduleCode}
-              labelAdornment={(
-                <LinkAdornment
-                  linkHandler={openModuleLink}
-                  link={values && values.moduleId}
-                  disabled={values && !values.moduleId}
-                />
-              )}
-              onInnerValueChange={onModuleCodeChange}
-              disabled={values && values.hasCertificate}
-              allowEmpty
-              fullWidth
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="remoteDataSearchSelect"
+          name={getFieldName("moduleCode")}
+          label="Module code"
+          entity="Module"
+          selectValueMark="nationalCode"
+          selectLabelMark="nationalCode"
+          defaultDisplayValue={values && values.moduleCode}
+          labelAdornment={(
+            <LinkAdornment
+              linkHandler={openModuleLink}
+              link={values && values.moduleId}
+              disabled={values && !values.moduleId}
             />
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="remoteDataSearchSelect"
-              entity="Module"
-              name={getFieldName("moduleName")}
-              label="Module name"
-              selectValueMark="title"
-              selectLabelMark="title"
-              defaultDisplayValue={values && values.moduleName}
-              labelAdornment={(
-                <LinkAdornment
-                  linkHandler={openModuleLink}
-                  link={values && values.moduleId}
-                  disabled={values && !values.moduleId}
-                />
-              )}
-              onInnerValueChange={onModuleNameChange}
-              allowEmpty
-              disabled={values && values.hasCertificate}
-              fullWidth
+          )}
+          onInnerValueChange={onModuleCodeChange}
+          disabled={values && values.hasCertificate}
+          allowEmpty
+          fullWidth
+        />
+        <FormField
+          type="remoteDataSearchSelect"
+          entity="Module"
+          name={getFieldName("moduleName")}
+          label="Module name"
+          selectValueMark="title"
+          selectLabelMark="title"
+          defaultDisplayValue={values && values.moduleName}
+          labelAdornment={(
+            <LinkAdornment
+              linkHandler={openModuleLink}
+              link={values && values.moduleId}
+              disabled={values && !values.moduleId}
             />
+          )}
+          onInnerValueChange={onModuleNameChange}
+          allowEmpty
+          disabled={values && values.hasCertificate}
+          fullWidth
+        />
+        <FormField
+          type="select"
+          name={getFieldName("deliveryMode")}
+          label="Delivery mode"
+          items={deliveryModeValues}
+          fullWidth
+        />
+        <FormField
+          type="number"
+          name={getFieldName("reportableHours")}
+          label="Reportable hours"
+          normalize={normalizeNumberToZero}
+        />
+        <FormField
+          type="select"
+          name={getFieldName("fundingSource")}
+          label="Funding source"
+          items={fundingSourceValues}
+          fullWidth
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 8 : 12}>
+        <Card className={classes.card}>
+          <Grid container>
+            <Grid item xs={12}>
+              <div className="heading">OUTCOME PROGRESSION</div>
+            </Grid>
+            <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
+              <AttendanceChart data={values.progression} />
+            </Grid>
+            <Grid item xs={twoColumn ? 6 : 12} className="d-flex justify-content-center">
+              <AssessmentChart data={values.progression} />
+            </Grid>
           </Grid>
-        </Grid>
+        </Card>
       </Grid>
 
       {priorLearningEditView ? (
@@ -304,7 +335,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         <Card className={classes.card}>
           <Grid container>
             <Grid xs={twoColumn ? 3 : 12}>
-              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</Grid>
+              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
               <Tooltip
                 placement="top-start"
                 title="First session related to this outcome"
@@ -330,7 +361,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               </Tooltip>
             </Grid>
             <Grid xs={twoColumn ? 3 : 12}>
-              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</Grid>
+              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
               <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
                 <div>
                   {values.actualStartDate && new Date(values.actualStartDate) > today
@@ -361,7 +392,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
               </Tooltip>
             </Grid>
             <Grid xs={twoColumn ? 3 : 12}>
-              <Grid className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</Grid>
+              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
               <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                 {values.startDateOverridden ? (
                   <>
@@ -408,37 +439,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           </Grid>
         </Card>
       )}
-
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="select"
-              name={getFieldName("deliveryMode")}
-              label="Delivery mode"
-              items={deliveryModeValues}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="number"
-              name={getFieldName("reportableHours")}
-              label="Reportable hours"
-              normalize={normalizeNumberToZero}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="select"
-          name={getFieldName("fundingSource")}
-          label="Funding source"
-          items={fundingSourceValues}
-          fullWidth
-        />
-      </Grid>
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={twoColumn ? 4 : 12}>
@@ -507,17 +507,18 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <Grid item xs={twoColumn ? 4 : 12} className="saveButtonTableOffset mt-1">
               <div className="heading mb-1">Funding Uploads</div>
               {fundingUploads.length
-                  ? (
-                    <>
-                      {fundingUploads.map(u => (
-                        <FundingUploadComponent
-                          key={u.id}
-                          fundingUpload={u}
-                          readOnly
-                        />
-                      ))}
-                    </>
-                  ) : <Typography variant="caption" color="textSecondary" className="mt-1">No funding uploads were found</Typography>}
+                ? (
+                  <>
+                    {fundingUploads.map(u => (
+                      <FundingUploadComponent
+                        key={u.id}
+                        fundingUpload={u}
+                        readOnly
+                      />
+                    ))}
+                  </>
+                )
+                : <Typography variant="caption" color="textSecondary" className="mt-1">No funding uploads were found</Typography>}
             </Grid>
           )}
         </Grid>

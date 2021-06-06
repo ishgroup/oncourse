@@ -232,11 +232,20 @@ class Avetmiss120Factory extends AvetmissFactory {
             } else {
                 line.setResult(OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.getDatabaseValue().toString())
             }
-        }
-
+        } 
+        
         // outcomes which have not ended
+        // if no submittions (and 'ignore' flag is false) - export outcomes as future (not yet started)
+        // if the 'ignore assessments' flag enabled - export as commenced
         if (exportEffectiveDate.isBefore(outcome.getEndDate())) {
-            line.setResult("70")
+            if (result.ignoreAssessments || !outcome.submissions.empty) {
+                line.setResult("70")
+            } else {
+                line.setResult("85")
+                if (exportEffectiveDate.isAfter(outcome.startDate)) {
+                    line.setStartDate(result.overriddenEndDate)
+                }
+            }
         }
 
         // if outcomes starts in the future

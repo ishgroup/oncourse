@@ -1193,6 +1193,7 @@
 		<db-attribute name="expiryDays" type="INTEGER"/>
 		<db-attribute name="expiryType" type="INTEGER"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="fieldConfigurationSchemeId" type="BIGINT"/>
 		<db-attribute name="incomeAccountId" type="BIGINT"/>
 		<db-attribute name="isOnSale" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isWebVisible" type="SMALLINT" isMandatory="true"/>
@@ -1208,6 +1209,7 @@
 		<db-attribute name="value" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="weight" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="underpaymentAccountId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="ProductItem">
 		<db-attribute name="code" type="VARCHAR" length="10"/>
@@ -1647,6 +1649,12 @@
 	</obj-entity>
 	<obj-entity name="Article" superEntityName="ProductItem" className="ish.oncourse.server.cayenne.Article" clientClassName="ish.oncourse.cayenne.Article">
 		<qualifier><![CDATA[type = 1]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.ArticleCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Article"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.ArticleFieldConfiguration">
+		<qualifier><![CDATA[intType = 7]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ArticleProduct" superEntityName="Product" className="ish.oncourse.server.cayenne.ArticleProduct" clientClassName="ish.oncourse.cayenne.ArticleProduct">
 		<qualifier><![CDATA[type = 1]]></qualifier>
@@ -2437,6 +2445,12 @@
 	<obj-entity name="Membership" superEntityName="ProductItem" className="ish.oncourse.server.cayenne.Membership" clientClassName="ish.oncourse.cayenne.Membership">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
+	<obj-entity name="MembershipCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.MembershipCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Membership"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="MembershipFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.MembershipFieldConfiguration">
+		<qualifier><![CDATA[intType = 8]]></qualifier>
+	</obj-entity>
 	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.server.cayenne.MembershipProduct" clientClassName="ish.oncourse.cayenne.MembershipProduct">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
@@ -3084,6 +3098,12 @@
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="valueOnPurchase" type="ish.math.Money" db-attribute-path="valueOnPurchase"/>
 	</obj-entity>
+	<obj-entity name="VoucherCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.VoucherCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Voucher"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="VoucherFieldConfiguration" superEntityName="FieldConfiguration" className="ish.oncourse.server.cayenne.VoucherFieldConfiguration">
+		<qualifier><![CDATA[intType = 9]]></qualifier>
+	</obj-entity>
 	<obj-entity name="VoucherPaymentIn" className="ish.oncourse.server.cayenne.VoucherPaymentIn" clientClassName="ish.oncourse.cayenne.VoucherPaymentIn" dbEntityName="Voucher_PaymentIn" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="enrolmentsCount" type="java.lang.Integer" db-attribute-path="enrolmentsCount"/>
@@ -3710,6 +3730,15 @@
 	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedArticle" source="CustomField" target="ProductItem">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedMembership" source="CustomField" target="ProductItem">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedVoucher" source="CustomField" target="ProductItem">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedSurvey" source="CustomField" target="Survey">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -3874,6 +3903,9 @@
 	</db-relationship>
 	<db-relationship name="courses" source="FieldConfigurationScheme" target="Course" toMany="true">
 		<db-attribute-pair source="id" target="fieldConfigurationSchemaId"/>
+	</db-relationship>
+	<db-relationship name="products" source="FieldConfigurationScheme" target="Product" toMany="true">
+		<db-attribute-pair source="id" target="fieldConfigurationSchemeId"/>
 	</db-relationship>
 	<db-relationship name="createdBy" source="FieldConfigurationScheme" target="SystemUser">
 		<db-attribute-pair source="createdById" target="id"/>
@@ -4322,6 +4354,12 @@
 	<db-relationship name="liabilityAccount" source="Product" target="Account">
 		<db-attribute-pair source="liabilityAccountId" target="id"/>
 	</db-relationship>
+	<db-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme">
+		<db-attribute-pair source="fieldConfigurationSchemeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="underpaymentAccount" source="Product" target="Account">
+		<db-attribute-pair source="underpaymentAccountId" target="id"/>
+	</db-relationship>
 	<db-relationship name="productItems" source="Product" target="ProductItem" toMany="true">
 		<db-attribute-pair source="id" target="productId"/>
 	</db-relationship>
@@ -4345,6 +4383,9 @@
 	</db-relationship>
 	<db-relationship name="voucherPayments" source="ProductItem" target="Voucher_PaymentIn" toMany="true">
 		<db-attribute-pair source="id" target="voucherId"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="ProductItem" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="certificates" source="Qualification" target="Certificate" toMany="true">
 		<db-attribute-pair source="id" target="qualificationId"/>
@@ -4966,6 +5007,7 @@
 	<obj-relationship name="fieldConfiguration" source="FieldConfigurationLink" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
 	<obj-relationship name="fieldConfigurationScheme" source="FieldConfigurationLink" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
 	<obj-relationship name="courses" source="FieldConfigurationScheme" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
+	<obj-relationship name="products" source="FieldConfigurationScheme" target="Product" deleteRule="Deny" db-relationship-path="products"/>
 	<obj-relationship name="createdBy" source="FieldConfigurationScheme" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>
@@ -5082,11 +5124,19 @@
 	<obj-relationship name="attachedPriorLearning" source="PriorLearningAttachmentRelation" target="PriorLearning" deleteRule="Nullify" db-relationship-path="attachedPriorLearning"/>
 	<obj-relationship name="corporatePassProducts" source="Product" target="CorporatePassProduct" deleteRule="Deny" db-relationship-path="corporatePassProduct"/>
 	<obj-relationship name="incomeAccount" source="Product" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
+	<obj-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
+	<obj-relationship name="underpaymentAccount" source="VoucherProduct" target="Account" deleteRule="Deny" db-relationship-path="underpaymentAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
 	<obj-relationship name="contact" source="ProductItem" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="invoiceLine" source="ProductItem" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="product" source="ProductItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
+	<obj-relationship name="customFields" source="Article" target="ArticleCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="ArticleCustomField" target="Article" deleteRule="Nullify" db-relationship-path="relatedArticle"/>
+	<obj-relationship name="customFields" source="Membership" target="MembershipCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="MembershipCustomField" target="Membership" deleteRule="Nullify" db-relationship-path="relatedMembership"/>
+	<obj-relationship name="customFields" source="Voucher" target="VoucherCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="relatedObject" source="VoucherCustomField" target="Voucher" deleteRule="Nullify" db-relationship-path="relatedVoucher"/>
 	<obj-relationship name="certificates" source="Qualification" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="courses" source="Qualification" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>
