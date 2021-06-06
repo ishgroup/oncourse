@@ -88,6 +88,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
             voucherProductDTO.code = voucherProduct.sku
             voucherProductDTO.feeExTax = voucherProduct.priceExTax?.toBigDecimal()
             voucherProductDTO.liabilityAccountId = voucherProduct.liabilityAccount?.id
+            voucherProductDTO.underpaymentAccountId = voucherProduct.underpaymentAccount?.id
             voucherProductDTO.expiryDays = voucherProduct.expiryDays
             voucherProductDTO.value = voucherProduct.value?.toBigDecimal()
             voucherProductDTO.maxCoursesRedemption = voucherProduct.maxCoursesRedemption
@@ -124,6 +125,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
         voucherProduct.sku = trimToNull(voucherProductDTO.code)
         voucherProduct.priceExTax = toMoneyValue(voucherProductDTO.feeExTax)
         voucherProduct.liabilityAccount = accountDao.getById(voucherProduct.context, voucherProductDTO.liabilityAccountId.toLong())
+        voucherProduct.underpaymentAccount = accountDao.getById(voucherProduct.context, voucherProductDTO.underpaymentAccountId.toLong())
         voucherProduct.expiryDays = voucherProductDTO.expiryDays
         voucherProduct.value = toMoneyValue(voucherProductDTO.value)
         voucherProduct.maxCoursesRedemption = voucherProductDTO.maxCoursesRedemption
@@ -202,7 +204,17 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 validator.throwClientErrorException(id, 'liabilityAccount', "Only accounts of liability type can be assigned to voucher.")
             }
         }
-
+        if (!voucherProductDTO.underpaymentAccountId) {
+            validator.throwClientErrorException(id, 'underpaymentAccountId', 'underpaymentAccountId is required for voucher product entity.')
+        } else {
+            Account account = accountDao.getById(context, voucherProductDTO.underpaymentAccountId)
+            if (!account) {
+                validator.throwClientErrorException(id, 'underpaymentAccountId', "Account with id=$voucherProductDTO.underpaymentAccountId doesn't exist.")
+            } else if (account.type != AccountType.EXPENSE) {
+                validator.throwClientErrorException(id, 'underpaymentAccountId', "Only accounts of expense type can be assigned to voucher underpayment account.")
+            }
+        }
+        
         voucherProductDTO.corporatePasses.each {
             if (!it.id) {
                 validator.throwClientErrorException(id, 'corporatePasses', 'Id is required for corporate pass entity.')

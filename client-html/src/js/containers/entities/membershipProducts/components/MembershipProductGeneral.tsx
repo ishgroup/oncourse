@@ -5,13 +5,7 @@
 
 import React from "react";
 import { change } from "redux-form";
-import {
-  Account,
-  ExpiryType,
-  MembershipProduct,
-  ProductStatus,
-  Tax
-} from "@api/model";
+import { Account, ExpiryType, MembershipProduct, ProductStatus, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
 import { Decimal } from "decimal.js-light";
@@ -119,7 +113,7 @@ const handleChangeTax = (values: MembershipProduct, taxes: Tax[], dispatch, form
 
 const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
   const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === account.tax.id);
+  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
   if (tax.id !== values.taxId) {
     const taxRate = tax ? tax.rate : 0;
     dispatch(change(form, "taxId", tax.id));
@@ -249,7 +243,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
 
 const mapStateToProps = (state: State) => ({
   dataCollectionRules: state.preferences.dataCollectionRules,
-  accounts: state.accounts.incomeItems,
+  accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items
 });
 

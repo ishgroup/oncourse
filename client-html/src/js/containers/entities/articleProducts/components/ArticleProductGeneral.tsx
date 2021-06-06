@@ -5,9 +5,7 @@
 
 import React from "react";
 import { change } from "redux-form";
-import {
-  Account, ArticleProduct, ProductStatus, Tax
-} from "@api/model";
+import { Account, ArticleProduct, ProductStatus, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
 import { Decimal } from "decimal.js-light";
@@ -17,7 +15,6 @@ import { State } from "../../../../reducers/state";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { PreferencesState } from "../../../preferences/reducers/state";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { normalizeString } from "../../../../common/utils/strings";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
@@ -50,7 +47,7 @@ const handleChangeTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) =
 
 const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
   const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === account.tax.id);
+  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
   if (tax.id !== values.taxId) {
     const taxRate = tax ? tax.rate : 0;
     dispatch(change(form, "taxId", tax.id));
@@ -167,7 +164,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.incomeItems,
+  accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items,
   dataCollectionRules: state.preferences.dataCollectionRules
 });

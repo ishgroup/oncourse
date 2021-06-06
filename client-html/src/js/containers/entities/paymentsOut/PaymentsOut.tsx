@@ -15,10 +15,7 @@ import { FilterGroup } from "../../../model/common/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getActivePaymentOutMethods, getPaymentOut, updatePaymentOut } from "./actions";
 import { getPlainAccounts } from "../accounts/actions";
-import {
-  clearListState,
-  getFilters,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
 import PaymentsOutEditView from "./components/PaymentOutEditView";
@@ -175,7 +172,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("PaymentOut"));
   },
   getAdministrationSites: () => dispatch(getAdministrationSites()),
-  getAccounts: () => dispatch(getPlainAccounts()),
+  getAccounts: () => getPlainAccounts(dispatch),
   clearListState: () => dispatch(clearListState()),
   getPaymentOutRecord: (id: string) => dispatch(getPaymentOut(id)),
   getActivePaymentOutMethods: () => dispatch(getActivePaymentOutMethods()),
