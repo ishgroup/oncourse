@@ -13,7 +13,6 @@ describe("Get pdf reports list epic tests", () => {
     epic: EpicGetPdfReportsList,
     processData: () => {
       const pdfReportsResponse = mockedAPI.db.getReports();
-
       const pdfReports: CommonListItem[] = pdfReportsResponse.rows.map(r => ({
         id: Number(r.id),
         name: r.values[0],
@@ -21,6 +20,8 @@ describe("Get pdf reports list epic tests", () => {
         hasIcon: r.values[1].startsWith("ish."),
         grayOut: r.values[2] === "false"
       }));
+
+      pdfReports.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
       return [
         {

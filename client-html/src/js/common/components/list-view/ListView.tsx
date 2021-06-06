@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -19,7 +22,6 @@ import {
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ErrorOutline from "@material-ui/icons/ErrorOutline";
 import Button from "@material-ui/core/Button";
-import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
 import SideBar from "./components/side-bar/SideBar";
@@ -201,7 +203,6 @@ interface Props extends Partial<ListState> {
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   setEntity?: (entity: EntityName) => void;
-  getCustomFieldTypes?: NoArgFunction;
   getListViewPreferences?: () => void;
   preferences?: UserPreferencesState;
   setListviewMainContentWidth?: (value: string) => void;
@@ -256,7 +257,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       setEntity,
       match: { url },
       filterGroupsInitial = [],
-      getCustomFieldTypes,
       getListViewPreferences
     } = this.props;
 
@@ -266,7 +266,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     window.performance.mark("ListViewStart");
 
     getScripts();
-    getCustomFieldTypes();
     getListViewPreferences();
 
     if (this.props.location.search) {
@@ -1223,7 +1222,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
   onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(ownProps.rootEntity, true, false, startIndex, stopIndex, resolve)),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes(ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
   onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),

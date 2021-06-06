@@ -28,31 +28,37 @@ import ish.oncourse.server.api.v1.model.ProductItemCancelDTO
 import ish.oncourse.server.api.v1.model.ProductItemDTO
 import ish.oncourse.server.api.v1.model.ProductItemPaymentDTO
 import ish.oncourse.server.api.v1.model.ProductItemStatusDTO
-import ish.oncourse.server.api.v1.model.ProductStatusDTO
 import ish.oncourse.server.api.v1.model.ProductTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Article
+import ish.oncourse.server.cayenne.ArticleCustomField
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.Discount
 import ish.oncourse.server.cayenne.DiscountMembership
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.InvoiceLineDiscount
 import ish.oncourse.server.cayenne.Membership
+import ish.oncourse.server.cayenne.MembershipCustomField
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.ProductItem
+
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
 import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.VoucherCustomField
 import ish.oncourse.server.cayenne.VoucherProduct
+
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.util.LocalDateUtils.dateToValue
 import static ish.util.LocalDateUtils.valueToDate
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -109,6 +115,17 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             productItemDTO.redeemableById = type == ProductTypeDTO.VOUCHER ? (productItem as Voucher).redeemableBy?.id : null
             productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? GetContactFullName.valueOf((productItem as Voucher).redeemableBy, true).get() : null
             productItemDTO.payments = getPayments(type, productItem)
+            switch (type) {
+                case ProductTypeDTO.PRODUCT:
+                    productItemDTO.customFields = (productItem as Article).customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+                    break
+                case ProductTypeDTO.MEMBERSHIP:
+                    productItemDTO.customFields = (productItem as Membership).customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+                    break
+                case ProductTypeDTO.VOUCHER:
+                    productItemDTO.customFields = (productItem as Voucher).customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+                    break
+            }
 
             return productItemDTO
         }
@@ -231,18 +248,32 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
 
     @Override
     ProductItem toCayenneModel(ProductItemDTO productItemDTO, ProductItem productItem) {
-        productItem.expiryDate = valueToDate(productItemDTO.expiresOn)
-
-        if (ProductItemStatusDTO.DELIVERED == productItemDTO.status && productItem instanceof Article && ProductStatus.DELIVERED != productItem.status) {
-            productItem.status = ProductStatus.DELIVERED
+        switch (productItemDTO.productType) {
+            case ProductTypeDTO.PRODUCT:
+                updateCustomFields(productItem.context, productItem as Article, productItemDTO.customFields, ArticleCustomField)
+                break
+            case ProductTypeDTO.MEMBERSHIP:
+                updateCustomFields(productItem.context, productItem as Membership, productItemDTO.customFields, MembershipCustomField)
+                break
+            case ProductTypeDTO.VOUCHER:
+                updateCustomFields(productItem.context, productItem as Voucher, productItemDTO.customFields, VoucherCustomField)
+                break
         }
+        if (productItem.status == ProductStatus.ACTIVE) {
 
-        if (productItemDTO.productType == ProductTypeDTO.VOUCHER) {
-            Voucher voucher = productItem as Voucher
-            if (productItemDTO.redeemableById != null) {
-                voucher.redeemableBy = contactDao.getById(productItem.context, productItemDTO.redeemableById)
-            } else {
-                voucher.redeemableBy = null
+            productItem.expiryDate = valueToDate(productItemDTO.expiresOn)
+
+            if (ProductItemStatusDTO.DELIVERED == productItemDTO.status && productItem instanceof Article && ProductStatus.DELIVERED != productItem.status) {
+                productItem.status = ProductStatus.DELIVERED
+            }
+
+            if (productItemDTO.productType == ProductTypeDTO.VOUCHER) {
+                Voucher voucher = productItem as Voucher
+                if (productItemDTO.redeemableById != null) {
+                    voucher.redeemableBy = contactDao.getById(productItem.context, productItemDTO.redeemableById)
+                } else {
+                    voucher.redeemableBy = null
+                }
             }
         }
         productItem
@@ -255,9 +286,7 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             if (productItem == null) {
                 validator.throwClientErrorException(id, "id", "ProductItem with id=$id doesn't exist.")
             }
-            if (productItem.status != ProductStatus.ACTIVE) {
-                validator.throwClientErrorException(id, "id", "Only ProductItem with active status can be modified.")
-            }
+            
             def expiryDate = dateToValue(productItem.expiryDate)
             if (productItemDTO.expiresOn != expiryDate && LocalDate.now().isAfter(expiryDate)) {
                 validator.throwClientErrorException(id, "expiresOn", "Only ProductItem with active status can be modified.")
@@ -269,6 +298,8 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
                 validator.throwClientErrorException(id, "redeemableById", "Contact with id=${productItemDTO.redeemableById} doesn't exist.")
             }
         }
+
+        validateCustomFields(context, ProductItem.class.simpleName, productItemDTO.customFields, id as String, validator)
     }
 
     @Override

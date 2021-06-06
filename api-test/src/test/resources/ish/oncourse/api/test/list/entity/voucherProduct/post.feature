@@ -65,7 +65,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -125,7 +126,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -185,7 +187,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -258,7 +261,8 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "soldVouchersCount":0,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 

@@ -550,6 +550,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
                         deleteField={this.deleteField}
                         dispatch={dispatch}
                         classes={classes}
+                        rerenderOnEveryChange
                       />
                     )}
                   </Grid>

@@ -25,7 +25,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: s
       grayOut: r.values[2] === "false"
     }));
 
-    emailTemplates.sort((a, b) => (a.name > b.name ? 1 : -1));
+    emailTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {

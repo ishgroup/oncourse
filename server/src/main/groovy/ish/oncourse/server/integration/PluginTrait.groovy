@@ -11,14 +11,13 @@
 package ish.oncourse.server.integration
 
 import com.google.inject.Injector
-import ish.oncourse.server.CayenneService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.IntegrationConfiguration
+import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.scripting.api.TemplateService
 import ish.oncourse.server.services.ISystemUserService
-import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
@@ -47,6 +46,7 @@ trait PluginTrait {
 	ISystemUserService systemUserService
 	PreferenceController preferenceController
 	TemplateService templateService
+	LicenseService licenseService
 	Injector injector
 	IntegrationConfiguration configuration
 	ObjectContext context
@@ -74,6 +74,7 @@ trait PluginTrait {
 			systemUserService = injector.getInstance(ISystemUserService)
 			templateService = injector.getInstance(TemplateService)
 			preferenceController = injector.getInstance(PreferenceController)
+			licenseService = injector.getInstance(LicenseService)
 		}
 
 				// check to see whether this plugin with initialised with a configuration

@@ -103,10 +103,8 @@ class TestWithDatabaseExtension implements
         if (a) {
             if (a.readOnly() && store.get("db_data_loaded")) {
                 //do nothing, data not changed from tests to test 
-            } else {
-                if (a.type() == ish.DatabaseOperation.DELETE_ALL) {
-                    wipeTablesMariadb()
-                }
+            } else if (a.type() == DatabaseOperation.DELETE_ALL) {
+                wipeTablesMariadb()             
                 for (dataSource in a?.value()) {
                     store.put("dataSource", dataSource)
                     InputStream st = SessionTest.class.getClassLoader().getResourceAsStream(dataSource)
@@ -116,12 +114,13 @@ class TestWithDatabaseExtension implements
 
                     ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
                     databaseTest.dataSourceReplaceValues(rDataSet)
-                    IDatabaseConnection testDatabaseConnection = getTestDatabaseConnection()
-                    //                new CompositeOperation(org.dbunit.operation.DatabaseOperation.TRUNCATE_TABLE, org.dbunit.operation.DatabaseOperation.INSERT).execute(testDatabaseConnection, dataSet)
 
-                    org.dbunit.operation.DatabaseOperation.CLEAN_INSERT.execute(testDatabaseConnection, rDataSet)
+                    org.dbunit.operation.DatabaseOperation.INSERT.execute(testDatabaseConnection, rDataSet)
                 }
                 store.put("db_data_loaded", true)
+            } else {
+                //All tests has DELETE_ALL strategy. Need to implement alghorithm for other strategies. Not sure how it hould be right now
+                throw new UnsupportedOperationException(" ${a.type()}  Not implemented")
             }
          
         }
@@ -306,6 +305,9 @@ class TestWithDatabaseExtension implements
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedApplication"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedWaitingList"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedSurvey"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedArticle"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedMembership"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedVoucher"))
         for (Relationship rel : customFieldRelationships) {
             datamap.getDbEntity("CustomField").removeRelationship(rel.getName())
         }

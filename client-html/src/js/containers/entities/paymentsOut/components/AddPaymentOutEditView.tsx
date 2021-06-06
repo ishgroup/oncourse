@@ -5,9 +5,7 @@
 
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import {
-  change, FieldArray, initialize
-} from "redux-form";
+import { change, FieldArray, initialize } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import { compareAsc, format as formatDate } from "date-fns";
 import { Currency, PaymentMethod } from "@api/model";
@@ -19,7 +17,7 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { D_MMM_YYYY, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from "../../../../common/utils/dates/format";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
+import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { getActivePaymentOutMethods } from "../actions";
 import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
 import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
@@ -470,7 +468,7 @@ const mapStateToProps = (state: State) => ({
   paymentOutMethods: state.paymentsOut.paymentOutMethods,
   refundablePayments: state.paymentsOut.refundablePayments,
   currency: state.currency,
-  accountItems: state.accounts.items,
+  accountItems: state.plainSearchRecords.Account.items,
   adminSites: state.sites.adminSites,
   lockedDate: state.lockedDate,
   selection: state.list.selection

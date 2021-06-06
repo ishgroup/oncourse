@@ -63,7 +63,8 @@ Feature: Main feature for all GET requests with path 'list/entity/articleProduct
         "corporatePasses":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -101,7 +102,8 @@ Feature: Main feature for all GET requests with path 'list/entity/articleProduct
         "corporatePasses":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 

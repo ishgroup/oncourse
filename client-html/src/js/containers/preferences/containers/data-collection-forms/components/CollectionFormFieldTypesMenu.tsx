@@ -137,7 +137,7 @@ const decorateFeildTypes = types => (
       label: item.label,
       formattedLabel:
         item.uniqueKey.split(".")[0] === "customField"
-          ? `${item.label} [${item.uniqueKey.split(".")[1].capitalize()}]`
+          ? `${item.label} [${item.uniqueKey.split(".")[1].capitalize() === 'Article' ? 'Product' : item.uniqueKey.split(".")[1].capitalize()}]`
           : item.label
     }))
   );

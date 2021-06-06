@@ -32,7 +32,7 @@ public class EntityFactory {
      * List of types that supports custom fields.
      */
     private static final List<String> ENTITIES_WITH_CUSTOM_FIELDS =
-            Arrays.asList("Application", "Contact", "Course", "Enrolment", "WaitingList", "Survey");
+            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Voucher");
 
     /**
      * List of synthetic attributes.

@@ -21,10 +21,12 @@ import ish.oncourse.server.api.dao.CorporatePassDao
 import ish.oncourse.server.api.dao.CorporatePassProductDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
@@ -62,6 +64,9 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
     private CourseDao courseDao
 
     @Inject
+    private FieldConfigurationSchemeDao fieldConfigurationSchemeDao
+
+    @Inject
     private VoucherProductCourseDao voucherProductCourseDao
 
     @Inject
@@ -83,6 +88,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
             voucherProductDTO.code = voucherProduct.sku
             voucherProductDTO.feeExTax = voucherProduct.priceExTax?.toBigDecimal()
             voucherProductDTO.liabilityAccountId = voucherProduct.liabilityAccount?.id
+            voucherProductDTO.underpaymentAccountId = voucherProduct.underpaymentAccount?.id
             voucherProductDTO.expiryDays = voucherProduct.expiryDays
             voucherProductDTO.value = voucherProduct.value?.toBigDecimal()
             voucherProductDTO.maxCoursesRedemption = voucherProduct.maxCoursesRedemption
@@ -108,6 +114,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
             voucherProductDTO.createdOn = voucherProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.modifiedOn = voucherProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            voucherProductDTO.dataCollectionRuleId = voucherProduct.fieldConfigurationScheme?.id
             voucherProductDTO
         }
     }
@@ -118,12 +125,16 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
         voucherProduct.sku = trimToNull(voucherProductDTO.code)
         voucherProduct.priceExTax = toMoneyValue(voucherProductDTO.feeExTax)
         voucherProduct.liabilityAccount = accountDao.getById(voucherProduct.context, voucherProductDTO.liabilityAccountId.toLong())
+        voucherProduct.underpaymentAccount = accountDao.getById(voucherProduct.context, voucherProductDTO.underpaymentAccountId.toLong())
         voucherProduct.expiryDays = voucherProductDTO.expiryDays
         voucherProduct.value = toMoneyValue(voucherProductDTO.value)
         voucherProduct.maxCoursesRedemption = voucherProductDTO.maxCoursesRedemption
         voucherProduct.description = trimToNull(voucherProductDTO.description)
         voucherProduct.isOnSale = voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE || voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE
         voucherProduct.isWebVisible = voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE
+        voucherProduct.fieldConfigurationScheme = voucherProductDTO.dataCollectionRuleId ?
+                fieldConfigurationSchemeDao.getById(voucherProduct.context, voucherProductDTO.dataCollectionRuleId) :
+                null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
@@ -193,7 +204,17 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 validator.throwClientErrorException(id, 'liabilityAccount', "Only accounts of liability type can be assigned to voucher.")
             }
         }
-
+        if (!voucherProductDTO.underpaymentAccountId) {
+            validator.throwClientErrorException(id, 'underpaymentAccountId', 'underpaymentAccountId is required for voucher product entity.')
+        } else {
+            Account account = accountDao.getById(context, voucherProductDTO.underpaymentAccountId)
+            if (!account) {
+                validator.throwClientErrorException(id, 'underpaymentAccountId', "Account with id=$voucherProductDTO.underpaymentAccountId doesn't exist.")
+            } else if (account.type != AccountType.EXPENSE) {
+                validator.throwClientErrorException(id, 'underpaymentAccountId', "Only accounts of expense type can be assigned to voucher underpayment account.")
+            }
+        }
+        
         voucherProductDTO.corporatePasses.each {
             if (!it.id) {
                 validator.throwClientErrorException(id, 'corporatePasses', 'Id is required for corporate pass entity.')

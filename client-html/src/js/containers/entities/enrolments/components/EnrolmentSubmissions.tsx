@@ -333,6 +333,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
               handleGradeMenuOpen={handleGradeMenuOpen}
               triggerAsyncChange={triggerAsyncChange}
               classes={classes}
+              hasGrades={hasGrades}
               index={index}
             />
           );

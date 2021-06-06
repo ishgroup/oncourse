@@ -41,8 +41,6 @@ trait DocumentVisibilityDTOTrait {
             return null
         }
         switch(dataType) {
-            default:
-                throw new IllegalArgumentException("$dataType.displayName")
             case AttachmentInfoVisibility.PRIVATE:
                 return DocumentVisibilityDTO.PRIVATE
             case AttachmentInfoVisibility.TUTORS:
@@ -53,6 +51,8 @@ trait DocumentVisibilityDTOTrait {
                 return DocumentVisibilityDTO.LINK
             case AttachmentInfoVisibility.PUBLIC:
                 return DocumentVisibilityDTO.PUBLIC
+            default:
+                throw new IllegalArgumentException("$dataType.displayName")
         }
     }
 

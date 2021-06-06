@@ -23,6 +23,7 @@ import static ish.common.types.DataType.LONG_TEXT
 import static ish.common.types.DataType.MAP
 import static ish.common.types.DataType.MESSAGE_TEMPLATE
 import static ish.common.types.DataType.MONEY
+import static ish.common.types.DataType.PATTERN_TEXT
 import static ish.common.types.DataType.TEXT
 
 
@@ -51,6 +52,7 @@ trait CustomFieldTrait {
                 case DataType.URL:
                 case TEXT:
                 case LONG_TEXT:
+                case PATTERN_TEXT:
                     return value
                 case DATE:
                     return LocalDateUtils.stringToValue(value)

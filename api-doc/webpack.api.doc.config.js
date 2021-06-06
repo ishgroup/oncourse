@@ -100,7 +100,6 @@ module.exports = () => {
       ]
     },
     devServer: {
-      inline: true,
       hot: true,
       port: 8100
     },
