@@ -1,9 +1,9 @@
-def integrations = query {
+records = query {
     entity "IntegrationConfiguration"
     query "name = \"${record.tag.name}\""
 }
-def integration = integrations.sort { it.createdOn }.last()
-if (integration && NodeSpecialType.MAILING_LISTS.equals(record.tag?.parentTag?.specialType) && record.taggedContact.email) {
+def integration = records.sort { it.createdOn }.reverse()[0]
+if (integration && record.taggedContact.email && record.taggedContact.allowEmail) {
     mailchimp {
         name record.tag.name
         action integrationAction

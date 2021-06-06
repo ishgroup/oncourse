@@ -86,12 +86,12 @@ class DataCollectionApiTest extends TestWithDatabase {
 
         List<DataCollectionFormDTO> forms = integrationApi.forms
 
-        Assertions.assertEquals(5, forms.size())
+        Assertions.assertEquals(8, forms.size())
 
         Assertions.assertEquals(new File(getClass().getResource('/ish/oncourse/server/api/DataCollectionForms.txt')
                 .toURI()).text,
                 forms.sort { it.name }.toString()
-                        .replaceAll(/id: .+\n/, '\n')
+                        .replaceAll(/\n.+id: .+\n/, '\n')
                         .replaceAll(/.+created: .+\n/, '')
                         .replaceAll(/.+modified: .+\n/, '')
 
@@ -171,27 +171,39 @@ class DataCollectionApiTest extends TestWithDatabase {
         
         FieldConfigurationLink link = cayenneContext.newObject(FieldConfigurationLink)
         link.fieldConfigurationScheme = rule
-        link.fieldConfiguration = cretaeForm('Enrol form', EnrolmentFieldConfiguration)
+        link.fieldConfiguration = createForm('Enrol form', EnrolmentFieldConfiguration)
 
         link = cayenneContext.newObject(FieldConfigurationLink)
         link.fieldConfigurationScheme = rule
-        link.fieldConfiguration = cretaeForm('Application form', ApplicationFieldConfiguration)
+        link.fieldConfiguration = createForm('Application form', ApplicationFieldConfiguration)
 
         link = cayenneContext.newObject(FieldConfigurationLink)
         link.fieldConfigurationScheme = rule
-        link.fieldConfiguration = cretaeForm('WaitingList form', WaitingListFieldConfiguration)
+        link.fieldConfiguration = createForm('WaitingList form', WaitingListFieldConfiguration)
     
         link = cayenneContext.newObject(FieldConfigurationLink)
         link.fieldConfigurationScheme = rule
-        link.fieldConfiguration = cretaeSurveyForm('Survey form MIDWAY', DeliverySchedule.MIDWAY)
+        link.fieldConfiguration = createSurveyForm('Survey form MIDWAY', DeliverySchedule.MIDWAY)
     
         link = cayenneContext.newObject(FieldConfigurationLink)
         link.fieldConfigurationScheme = rule
-        link.fieldConfiguration = cretaeSurveyForm('Survey form ON_ENROL', DeliverySchedule.ON_ENROL)
+        link.fieldConfiguration = createSurveyForm('Survey form ON_ENROL', DeliverySchedule.ON_ENROL)
+
+        link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = createForm('Article form', ArticleFieldConfiguration)
+
+        link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = createForm('Membership form', MembershipFieldConfiguration)
+
+        link = cayenneContext.newObject(FieldConfigurationLink)
+        link.fieldConfigurationScheme = rule
+        link.fieldConfiguration = createForm('Voucher form', VoucherFieldConfiguration)
     
     }
 
-    private  SurveyFieldConfiguration cretaeSurveyForm( String name, DeliverySchedule deliverySchedule) {
+    private  SurveyFieldConfiguration createSurveyForm( String name, DeliverySchedule deliverySchedule) {
         SurveyFieldConfiguration form = cayenneContext.newObject(SurveyFieldConfiguration)
         form.name = name
         
@@ -235,7 +247,7 @@ class DataCollectionApiTest extends TestWithDatabase {
         return form
     }
 
-    private FieldConfiguration cretaeForm(String name, Class<? extends FieldConfiguration> clazz) {
+    private FieldConfiguration createForm(String name, Class<? extends FieldConfiguration> clazz) {
         
         FieldConfiguration form = cayenneContext.newObject(clazz)
         form.name = name

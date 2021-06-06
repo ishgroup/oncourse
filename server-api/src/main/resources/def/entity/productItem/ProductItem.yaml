@@ -49,3 +49,7 @@ properties:
   redeemableByName:
     description: voucher property
     type: string
+  customFields:
+    type: object
+    additionalProperties:
+      type: string

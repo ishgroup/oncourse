@@ -162,5 +162,4 @@ class ProductItem extends _ProductItem implements Queueable {
 		}
 
 	}
-
 }

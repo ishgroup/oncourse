@@ -6,26 +6,24 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import Grid from "@material-ui/core/Grid";
 import {
-  arrayInsert, arrayRemove, change, initialize
+ arrayInsert, arrayRemove, change, initialize
 } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import {
- Currency, Account, Tax
-} from "@api/model";
+import { Account, Currency, Tax } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { addDays } from "date-fns";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import { validateSingleMandatoryField, validateMinMaxDate } from "../../../../common/utils/validation";
+import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { getInvoiceClosestPaymentDueDate } from "../utils";
-import { InvoiceLines, HeaderContent } from "./InvoiceLines";
+import { HeaderContent, InvoiceLines } from "./InvoiceLines";
 import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
 import { EditViewProps } from "../../../../model/common/ListView";
 import InvoicePaymentPlans from "./InvoicePaymentPlans";
@@ -407,7 +405,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   taxes: state.taxes.items,
   defaultTerms: state.invoices.defaultTerms,

@@ -32,12 +32,12 @@ class Financial extends React.Component<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   financial: state.preferences.financial,
-  accounts: state.accounts.items
+  accounts: state.plainSearchRecords.Account.items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    onInit: () => dispatch(getPlainAccounts())
+    onInit: () => getPlainAccounts(dispatch)
   };
 };
 

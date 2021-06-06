@@ -20,7 +20,11 @@ import ish.oncourse.server.cayenne.glue._Article
  */
 @API
 @QueueableEntity
-class Article extends _Article {
+class Article extends _Article implements ExpandableTrait {
 
 
+    @Override
+    Class<? extends CustomField> getCustomFieldClass() {
+        return ArticleCustomField
+    }
 }

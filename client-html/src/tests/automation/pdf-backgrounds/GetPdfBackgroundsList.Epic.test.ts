@@ -21,6 +21,8 @@ describe("Get pdf backgrounds list epic tests", () => {
         hasIcon: true
       }));
 
+      pdfBackgrounds.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+
       return [
         {
           type: GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED,

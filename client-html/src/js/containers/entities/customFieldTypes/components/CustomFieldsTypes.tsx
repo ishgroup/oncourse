@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { FormControlLabel } from "@material-ui/core";
@@ -8,6 +11,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { change, Field as FormField } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { CheckboxField } from "../../../../common/components/form/form-fields/CheckboxField";
 import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
@@ -20,6 +24,8 @@ import {
 } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import EditInPlaceSearchSelect from "../../../../common/components/form/form-fields/EditInPlaceSearchSelect";
+import { getCustomFieldTypes } from "../actions";
+import { EntityName } from "../../../../model/entities/common";
 
 const Field: any = FormField;
 
@@ -171,8 +177,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
               .map(v => (v.label ? v : { ...v, label: v.value })) : [];
           }
         }
-      }
-      catch (e) {
+      } catch (e) {
         console.error(e);
       }
     }
@@ -210,7 +215,8 @@ const CustomField: React.FC<CustomFieldProps> = ({
 
 interface CustomFieldsProps {
   customFieldTypes?: { key: string; value: CustomFieldType[] };
-  entityName: string;
+  getCustomFieldTypes?: (entity: EntityName) => void;
+  entityName: EntityName;
   fieldName: string;
   entityValues: any;
   dispatch?: any;
@@ -220,6 +226,7 @@ interface CustomFieldsProps {
 
 const CustomFieldsTypes = React.memo<CustomFieldsProps>(
   ({
+     getCustomFieldTypes,
      entityName,
      customFieldTypes,
      fieldName,
@@ -227,23 +234,35 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
      dispatch,
      form,
      fullWidth
-  }) => (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
-    ? customFieldTypes[entityName].map((type, i) => (
-      <CustomField
-        key={i}
-        type={type}
-        value={entityValues[fieldName][type.fieldKey]}
-        fieldName={fieldName}
-        dispatch={dispatch}
-        form={form}
-        fullWidth={fullWidth}
-      />
-    ))
-    : null)
+  }) => {
+    useEffect(() => {
+      if (!customFieldTypes || !customFieldTypes[entityName]) {
+        getCustomFieldTypes(entityName);
+      }
+    }, [entityName, customFieldTypes]);
+
+    return (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
+      ? customFieldTypes[entityName].map((type, i) => (
+        <CustomField
+          key={i}
+          type={type}
+          value={entityValues[fieldName][type.fieldKey]}
+          fieldName={fieldName}
+          dispatch={dispatch}
+          form={form}
+          fullWidth={fullWidth}
+        />
+      ))
+      : null);
+  }
 );
 
 const mapStateToProps = (state: State) => ({
   customFieldTypes: state.customFieldTypes.types
 });
 
-export default connect<any, any, any>(mapStateToProps)(CustomFieldsTypes);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getCustomFieldTypes: entity => dispatch(getCustomFieldTypes(entity))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomFieldsTypes);

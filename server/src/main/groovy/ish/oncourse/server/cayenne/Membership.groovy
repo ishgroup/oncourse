@@ -27,7 +27,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Membership extends _Membership {
+class Membership extends _Membership implements ExpandableTrait {
 
     @Override
     void validateForSave(@Nonnull ValidationResult result) {
@@ -44,5 +44,10 @@ class Membership extends _Membership {
         }
 
 
+    }
+
+    @Override
+    Class<? extends CustomField> getCustomFieldClass() {
+        return MembershipCustomField
     }
 }

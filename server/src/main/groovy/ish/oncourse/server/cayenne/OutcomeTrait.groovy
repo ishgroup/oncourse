@@ -19,6 +19,8 @@ trait OutcomeTrait {
     abstract Enrolment getEnrolment()
 
     abstract PriorLearning getPriorLearning()
+    
+    abstract Module getModule()
 
     String getStudentName() {
         Contact contact = (enrolment) ? enrolment?.student?.contact : priorLearning?.student?.contact
@@ -26,6 +28,21 @@ trait OutcomeTrait {
             return GetContactFullName.valueOf(contact, true).get()
         } else {
             return StringUtils.EMPTY
+        }
+    }
+    List<AssessmentClass> getAssessments() {
+        if (module) {
+            enrolment.courseClass.assessmentClasses.findAll {assessment -> module.id in assessment.modules*.id }
+        } else {
+            return enrolment.courseClass.assessmentClasses
+        }
+    }
+
+    List<AssessmentSubmission> getSubmissions() {
+        if(enrolment) {
+            return  assessments.collect {assessment -> assessment.getAssessmentSubmission(enrolment)}.grep()
+        } else {
+            return []
         }
     }
 }

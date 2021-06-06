@@ -40,7 +40,7 @@ class XeroBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      appBarContent,
+      AppBarContent,
       dirty,
       handleSubmit,
       onSubmit,
@@ -51,7 +51,9 @@ class XeroBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
         <Typography component="div" variant="body2">
           <div>
             Go to

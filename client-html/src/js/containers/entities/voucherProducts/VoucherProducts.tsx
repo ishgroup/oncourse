@@ -3,28 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Account, TableModel, VoucherProduct } from "@api/model";
-import {
-  setListEditRecord,
-  getFilters,
-  clearListState
-} from "../../../common/components/list-view/actions";
+import { Dispatch } from "redux";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { plainCorporatePassPath } from "../../../constants/Api";
-import { getVoucherProduct, updateVoucherProduct, createVoucherProduct } from "./actions";
+import { createVoucherProduct, getVoucherProduct, updateVoucherProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import VoucherProductEditView from "./components/VoucherProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { State } from "../../../reducers/state";
-import { getLiabilityAccounts } from "../accounts/actions";
+import { getPlainAccounts } from "../accounts/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID } from "../../../constants/Config";
+import {
+  ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID,
+  ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID
+} from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getEntityTags } from "../../tags/actions";
-import { getEntityRelationTypes } from "../../preferences/actions";
+import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 
 interface VoucherProductsProps {
   getVoucherProductRecord?: () => void;
@@ -36,9 +36,9 @@ interface VoucherProductsProps {
   getRelationTypes?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  getDefaultLiabilityAccount?: () => void;
+  getDefaultAccounts?: () => void;
   getAccounts?: () => void;
-  updatingAccounts?: boolean;
+  getDataCollectionRules?: () => void;
   accounts?: Account[];
   preferences?: any;
   checkPermissions?: () => void;
@@ -106,38 +106,34 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
     onSave,
     getFilters,
     clearListState,
-    getDefaultLiabilityAccount,
+    getDefaultAccounts,
     getTagsForClassesSearch,
     getAccounts,
-    updatingAccounts,
     preferences,
     accounts,
     checkPermissions,
-    getRelationTypes
+    getRelationTypes,
+    getDataCollectionRules
   } = props;
 
-  const [initNew, setInitNew] = useState(false);
-
-  useEffect(() => {
-    if (initNew && accounts && preferences && preferences[ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID]) {
-      setInitNew(false);
-      const defaultId = preferences[ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID];
-      const account = accounts.find(item => item.id === Number(defaultId));
-      if (account) {
-        onInit({ ...Initial, liabilityAccountId: account.id });
-      } else {
-        onInit(Initial);
-      }
+  const onInitCustom = () => {
+    if (accounts && preferences) {
+      const voucherLiability = accounts.find(item => item.id === Number(preferences[ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID]));
+      const voucherUnderpayment = accounts.find(item => item.id === Number(preferences[ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID]));
+      onInit({ ...Initial, liabilityAccountId: voucherLiability?.id, underpaymentAccountId: voucherUnderpayment?.id });
+    } else {
+      onInit(Initial);
     }
-  }, [initNew, updatingAccounts, preferences]);
+  };
 
   useEffect(() => {
-    getDefaultLiabilityAccount();
+    getDefaultAccounts();
     getAccounts();
     getFilters();
     getTagsForClassesSearch();
     checkPermissions();
     getRelationTypes();
+    getDataCollectionRules();
     return () => {
       clearListState();
     };
@@ -157,7 +153,7 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
         getEditRecord={getVoucherProductRecord}
         rootEntity="VoucherProduct"
         aqlEntity="Product"
-        onInit={() => setInitNew(true)}
+        onInit={onInitCustom}
         onCreate={onCreate}
         onSave={onSave}
         findRelated={findRelatedGroup}
@@ -179,19 +175,22 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Course"));
   },
   getFilters: () => dispatch(getFilters("VoucherProduct")),
-  getAccounts: () => dispatch(getLiabilityAccounts()),
-  getDefaultLiabilityAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID])),
+  getAccounts: () => getPlainAccounts(dispatch),
+  getDefaultAccounts: () => {
+    dispatch(getUserPreferences([ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID]));
+    dispatch(getUserPreferences([ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID]));
+  },
   clearListState: () => dispatch(clearListState()),
   getVoucherProductRecord: (id: string) => dispatch(getVoucherProduct(id)),
   onSave: (id: string, voucherProduct: VoucherProduct) => dispatch(updateVoucherProduct(id, voucherProduct)),
   onCreate: (voucherProduct: VoucherProduct) => dispatch(createVoucherProduct(voucherProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
-  getRelationTypes: () => dispatch(getEntityRelationTypes())
+  getRelationTypes: () => dispatch(getEntityRelationTypes()),
+  getDataCollectionRules: () => dispatch(getDataCollectionRules()),
 });
 
 const mapStateToProps = (state: State) => ({
-  updatingAccounts: state.accounts.updatingLiabilityItems,
-  accounts: state.accounts.liabilityItems,
+  accounts: state.plainSearchRecords.Account.items,
   preferences: state.userPreferences
 });
 

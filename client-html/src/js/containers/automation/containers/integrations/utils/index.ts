@@ -47,7 +47,7 @@ export const getByType = (type: number, source: any) => {
       return source.surveymonkey;
     }
     case 4: {
-      return source.surveygizmo;
+      return source.alchemer;
     }
     case 5: {
       return source.xero;

@@ -1,13 +1,16 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { connect } from "react-redux";
 import React, { Dispatch } from "react";
 import { initialize } from "redux-form";
 import { format as formatDate } from "date-fns";
-import { Application, CustomFieldType } from "@api/model";
+import { Application } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import {
@@ -24,7 +27,6 @@ import {
 import ApplicationEditView from "./components/ApplicationEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { State } from "../../../reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -32,14 +34,13 @@ import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption"
 
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
-  onInit?: (initial: Application) => void;
+  onInit?: () => void;
   onCreate?: (application: Application) => void;
   onDelete?: (id: string) => void;
   onSave?: (id: string, application: Application) => void;
   getFilters?: () => void;
   getTags?: () => void;
   clearListState?: () => void;
-  getCustomFieldTypes?: () => void;
   customFieldTypesUpdating: any;
   customFieldTypes: any;
 }
@@ -121,49 +122,18 @@ const nestedEditFields = {
 };
 
 class Applications extends React.Component<ApplicationsProps, any> {
-  private initializingNew: boolean = false;
-
   componentDidMount() {
     this.props.getTags();
-    this.props.getCustomFieldTypes();
     this.props.getFilters();
-  }
-
-  componentDidUpdate(prev) {
-    const { customFieldTypesUpdating, customFieldTypes } = this.props;
-
-    if (this.initializingNew && prev.customFieldTypesUpdating && !customFieldTypesUpdating) {
-      this.initializingNew = false;
-
-      const customFields = {};
-
-      // customFieldTypes.forEach((field: CustomFieldType) => {
-      //   if (field.defaultValue && !field.defaultValue.match(/[;*]/g)) {
-      //     customFields[field.fieldKey] = field.defaultValue;
-      //   }
-      // });
-
-      const initial = {
-        ...Initial,
-        customFields
-      };
-
-      this.props.onInit(initial);
-    }
   }
 
   componentWillUnmount(): void {
     this.props.clearListState();
   }
 
-  onInit = () => {
-    this.initializingNew = true;
-    this.props.getCustomFieldTypes();
-  };
-
   render() {
     const {
-      getApplicationRecord, onCreate, onDelete, onSave
+      getApplicationRecord, onCreate, onDelete, onSave, onInit
     } = this.props;
 
     return (
@@ -184,7 +154,7 @@ class Applications extends React.Component<ApplicationsProps, any> {
           CogwheelAdornment={BulkEditCogwheelOption}
           getEditRecord={getApplicationRecord}
           rootEntity="Application"
-          onInit={this.onInit}
+          onInit={onInit}
           onCreate={onCreate}
           onDelete={onDelete}
           onSave={onSave}
@@ -202,9 +172,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: (initial: Application) => {
-    dispatch(setListEditRecord(initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
+  onInit: () => {
+    dispatch(setListEditRecord(Initial));
+    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("Application")),
   getTags: () => {
@@ -215,7 +185,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, application: Application) => dispatch(updateApplication(id, application)),
   onCreate: (application: Application) => dispatch(createApplication(application)),
   onDelete: (id: string) => dispatch(removeApplication(id)),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Application"))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Applications);
