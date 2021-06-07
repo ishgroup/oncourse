@@ -350,7 +350,6 @@ cgen {
 	}
 }
 
-
 compileJava {
 	dependsOn queryGrammar, cgen
 }
