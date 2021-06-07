@@ -2735,9 +2735,9 @@
   integrity sha512-0qXvpeYO6vaNoRBI52/UsbcaBydJCggoBBnIo/ovQQdn6fug0BgwsjorV1hVS7fMqGVTZGcVxv8334gjmbj5hw==
 
 "@wojtekmaj/enzyme-adapter-react-17@0.6.*":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@wojtekmaj/enzyme-adapter-react-17/-/enzyme-adapter-react-17-0.6.0.tgz#b9e3b27b9d02f27c4224e55432ad132920fd72a4"
-  integrity sha512-2lRGjZDNTaUyIHLEKqkbGIKK0I4vLgXOcwt90ddsOAGalrZGKmnHnFQzFoO9V84hF+fMYHkpRqka4JGCnvkoow==
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@wojtekmaj/enzyme-adapter-react-17/-/enzyme-adapter-react-17-0.6.1.tgz#28caa37118c183e5f13c4dfb68cc32cde828ecbc"
+  integrity sha512-xgPfzLVpN0epIHeZofahwr5qwpukEDNAbrufgeDWN6vZPtfblGCC+OZG5TlfK+A6ePVy8sBkD8S2X4tO17JKjg==
   dependencies:
     "@wojtekmaj/enzyme-adapter-utils" "^0.1.0"
     enzyme-shallow-equal "^1.0.0"
