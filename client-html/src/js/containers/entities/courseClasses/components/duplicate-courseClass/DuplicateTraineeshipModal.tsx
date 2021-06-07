@@ -549,7 +549,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
 
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
-  accounts: state.plainSearchRecords.Account,
+  accounts: state.plainSearchRecords.Account.items,
   values: getFormValues(DUPLICATE_TRAINEESHIP_FORM)(state),
   budget: state.courseClass.duplicateTraineeshipBudget,
   fetching: state.courseClass.timetable.fetching,
