@@ -5,53 +5,44 @@
 package ish.oncourse.commercial.replication.services
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.*
 
-import static org.junit.Assert.assertEquals
 
 /**
  */
 @CompileStatic
-class AngelQueueServiceTest extends CayenneIshTestCase {
+@DatabaseSetup(value = 'ish/oncourse/commercial/replication/services/angelQueueServiceTest.xml')
+class AngelQueueServiceTest extends TestWithDatabase {
 
-	private AngelQueueService service
 
-    @Before
-    void setup() throws Exception {
-		wipeTables()
-        InputStream st = AngelQueueServiceTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/services/angelQueueServiceTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        executeDatabaseOperation(dataSet)
-
-        ICayenneService cayenneService = injector.getInstance(ICayenneService.class)
-        this.service = new AngelQueueService(cayenneService)
-    }
 
 	@Test
     void testAngelQueue() throws Exception {
+        AngelQueueService service = new AngelQueueService(cayenneService)
 		int numberOfTransactions = service.getNumberOfTransactions()
-        assertEquals("Expecting 2 transactions.", 2, numberOfTransactions)
+        assertEquals( 2, numberOfTransactions, "Expecting 2 transactions.")
 
         List<QueuedTransaction> transactions = service.getReplicationQueue(0, 2)
-        assertEquals("Expecting 2 transactions.", 2, transactions.size())
+        assertEquals( 2, transactions.size(),"Expecting 2 transactions.")
 
         int numberOfRecords = 0
         for (QueuedTransaction t : transactions) {
 			numberOfRecords += t.getQueuedRecords().size()
         }
 
-		assertEquals("Expecting 8 records.", 8, numberOfRecords)
+		assertEquals( 8, numberOfRecords)
 
         transactions = service.getReplicationQueue(-1, 4)
-        assertEquals("Expecting 2 transactions.", 2, transactions.size())
+        assertEquals( 2, transactions.size())
 
         transactions = service.getReplicationQueue(200, 4)
-        assertEquals("Expecting 0 transactions.", 0, transactions.size())
+        assertEquals( 0, transactions.size())
     }
 }

@@ -11,9 +11,8 @@ import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.Attendance
 import ish.oncourse.server.cayenne.Outcome
-
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import static junit.framework.Assert.assertEquals
 import static org.mockito.Mockito.*
@@ -23,7 +22,7 @@ class DeduperFactoryTest {
 
 	public List<QueuedRecord> currentBatch
 
-	@Before
+	@BeforeEach
 	void setup() throws Exception {
 
 		currentBatch = new LinkedList<>()

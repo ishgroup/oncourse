@@ -5,42 +5,28 @@
 package ish.oncourse.commercial.replication.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.MessageType
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
-import ish.oncourse.commercial.replication.handler.OutboundReplicationHandlerTest
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.lifecycle.SampleEntityBuilder
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.EJBQLQuery
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
-
-import static org.junit.Assert.*
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  */
 @CompileStatic
-class QueueableLifecycleListenerTest extends CayenneIshTestCase {
+@DatabaseSetup(value = 'ish/oncourse/commercial/replication/lifecycle/queuDataSet.xml')
+class QueueableLifecycleListenerTest extends TestWithDatabase {
 
-	@Before
-    void setup() throws Exception {
-		wipeTables()
-        InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/lifecycle/queuDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        executeDatabaseOperation(dataSet)
-        PreferenceController pref = injector.getInstance(PreferenceController.class)
-        pref.setReplicationEnabled(true)
-        super.setup()
-    }
 
 	@Test
     void testCreateEmailAndSMSMessagesForReplication() throws Exception {
@@ -63,7 +49,7 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
         ctx.commitChanges()
 
         List<QueuedRecord> queuedRecordList = ObjectSelect.query(QueuedRecord).select(ctx)
-        assertEquals("Expecting 10 queueable records.", 10, queuedRecordList.size())
+        assertEquals( 10, queuedRecordList.size())
         // Check entity names
 		final Map<String, Integer> entities = new HashMap<>()
         for (int i = 0; i < queuedRecordList.size(); i++) {
@@ -76,12 +62,12 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
 				entities.put(entityName, 1)
             }
 		}
-		assertTrue("Expecting Contact record.", entities.containsKey(Contact.class.getSimpleName()))
-        assertTrue("Expecting Message record.", entities.containsKey(Message.class.getSimpleName()))
-        assertTrue("Expecting MessagePerson record.", entities.containsKey(MessagePerson.class.getSimpleName()))
-        assertEquals("Expected 2 Contacts ", 2, (int) entities.get(Contact.class.getSimpleName()))
-        assertEquals("Expected 3 Messages ", 3, (int) entities.get(Message.class.getSimpleName()))
-        assertEquals("Expected 5 MessagePersons ", 5, (int) entities.get(MessagePerson.class.getSimpleName()))
+		assertTrue(entities.containsKey(Contact.class.getSimpleName()))
+        assertTrue(entities.containsKey(Message.class.getSimpleName()))
+        assertTrue(entities.containsKey(MessagePerson.class.getSimpleName()))
+        assertEquals( 2, (int) entities.get(Contact.class.getSimpleName()))
+        assertEquals( 3, (int) entities.get(Message.class.getSimpleName()))
+        assertEquals( 5, (int) entities.get(MessagePerson.class.getSimpleName()))
     }
 
 	@Test
@@ -102,7 +88,7 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
 
         List<QueuedRecord> queuedRecordList = ObjectSelect.query(QueuedRecord)
                 .select(ctx)
-        assertEquals("Expecting 6 queueable records.", 6, queuedRecordList.size())
+        assertEquals(6, queuedRecordList.size())
 
         // Check entity names
 		final Map<String, Integer> entities = new HashMap<>()
@@ -117,12 +103,12 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
             }
 		}
 
-		assertTrue("Expecting Contact record.", entities.containsKey(Contact.class.getSimpleName()))
-        assertTrue("Expecting Message record.", entities.containsKey(Message.class.getSimpleName()))
-        assertTrue("Expecting MessagePerson record.", entities.containsKey(MessagePerson.class.getSimpleName()))
-        assertEquals("Expected 2 Contacts ", 2, (int) entities.get(Contact.class.getSimpleName()))
-        assertEquals("Expected 2 Messages ", 2, (int) entities.get(Message.class.getSimpleName()))
-        assertEquals("Expected 2 MessagePersons ", 2, (int) entities.get(MessagePerson.class.getSimpleName()))
+		assertTrue( entities.containsKey(Contact.class.getSimpleName()))
+        assertTrue( entities.containsKey(Message.class.getSimpleName()))
+        assertTrue(entities.containsKey(MessagePerson.class.getSimpleName()))
+        assertEquals(2, (int) entities.get(Contact.class.getSimpleName()))
+        assertEquals(2, (int) entities.get(Message.class.getSimpleName()))
+        assertEquals(2, (int) entities.get(MessagePerson.class.getSimpleName()))
     }
 
 	@Test
@@ -144,7 +130,7 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
         deleteContext.performQuery(new EJBQLQuery("update Preference p set p.valueString='true'"))
 
         List<QueuedRecord> queuedRecordList = ObjectSelect.query(QueuedRecord).select(ctx)
-        assertEquals("Expecting 0 queueable records.", 0, queuedRecordList.size())
+        assertEquals( 0, queuedRecordList.size())
 
         // Check entity names
 		Map<String, Integer> entities = new HashMap<>()
@@ -159,15 +145,15 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
             }
 		}
 
-		assertFalse("Expecting Contact record.", entities.containsKey(Contact.class.getSimpleName()))
-        assertFalse("Expecting Message record.", entities.containsKey(Message.class.getSimpleName()))
-        assertFalse("Expecting MessagePerson record.", entities.containsKey(MessagePerson.class.getSimpleName()))
-        assertNull("Expected 0 Contact ", entities.get(Contact.class.getSimpleName()))
-        assertNull("Expected 0 Message ", entities.get(Message.class.getSimpleName()))
-        assertNull("Expected 0 MessagePerson ", entities.get(MessagePerson.class.getSimpleName()))
+		assertFalse( entities.containsKey(Contact.class.getSimpleName()))
+        assertFalse( entities.containsKey(Message.class.getSimpleName()))
+        assertFalse( entities.containsKey(MessagePerson.class.getSimpleName()))
+        assertNull(entities.get(Contact.class.getSimpleName()))
+        assertNull(entities.get(Message.class.getSimpleName()))
+        assertNull(entities.get(MessagePerson.class.getSimpleName()))
         ctx.commitChanges()
         queuedRecordList = ObjectSelect.query(QueuedRecord).select(ctx)
-        assertEquals("Expecting 3 queueable records.", 3, queuedRecordList.size())
+        assertEquals( 3, queuedRecordList.size())
 
         // Check entity names
 		entities = new HashMap<>()
@@ -182,12 +168,12 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
             }
 		}
 
-		assertTrue("Expecting Contact record.", entities.containsKey(Contact.class.getSimpleName()))
-        assertTrue("Expecting Message record.", entities.containsKey(Message.class.getSimpleName()))
-        assertTrue("Expecting MessagePerson record.", entities.containsKey(MessagePerson.class.getSimpleName()))
-        assertEquals("Expected 1 Contact ", 1, (int) entities.get(Contact.class.getSimpleName()))
-        assertEquals("Expected 1 Message ", 1, (int) entities.get(Message.class.getSimpleName()))
-        assertEquals("Expected 1 MessagePerson ", 1, (int) entities.get(MessagePerson.class.getSimpleName()))
+		assertTrue(entities.containsKey(Contact.class.getSimpleName()))
+        assertTrue(entities.containsKey(Message.class.getSimpleName()))
+        assertTrue(entities.containsKey(MessagePerson.class.getSimpleName()))
+        assertEquals( 1, (int) entities.get(Contact.class.getSimpleName()))
+        assertEquals( 1, (int) entities.get(Message.class.getSimpleName()))
+        assertEquals( 1, (int) entities.get(MessagePerson.class.getSimpleName()))
     }
 
 	@Test
@@ -242,43 +228,43 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
 		 * </ul>
 		 * Total of 13 records in the queue
 		 */
-		assertTrue("Expecting Enrolment record.", entityNames.containsKey("Enrolment"))
-        assertEquals("Expecting 1 Enrolment record.", Integer.valueOf(2), entityNames.get("Enrolment"))
-        assertTrue("Expecting CourseClass record.", entityNames.containsKey("CourseClass"))
-        assertEquals("Expecting 1 CourseClass record.", Integer.valueOf(1), entityNames.get("CourseClass"))
-        assertTrue("Expecting Course record.", entityNames.containsKey("Course"))
-        assertEquals("Expecting 1 Course record.", Integer.valueOf(1), entityNames.get("Course"))
-        assertTrue("Expecting InvoiceLine record.", entityNames.containsKey("InvoiceLine"))
-        assertEquals("Expecting 1 InvoiceLine record.", Integer.valueOf(1), entityNames.get("InvoiceLine"))
-        assertTrue("Expecting Invoice record.", entityNames.containsKey("Invoice"))
-        assertEquals("Expecting 1 Invoice record.", Integer.valueOf(1), entityNames.get("Invoice"))
-        assertTrue("Expecting Student record.", entityNames.containsKey("Student"))
-        assertEquals("Expecting 1 Student record.", Integer.valueOf(1), entityNames.get("Student"))
-        assertTrue("Expecting Contact record.", entityNames.containsKey("Contact"))
-        assertEquals("Expecting 1 Contact record.", Integer.valueOf(1), entityNames.get("Contact"))
-        assertTrue("Expecting Outcome record.", entityNames.containsKey("Outcome"))
-        assertEquals("Expecting 1 Outcome record.", Integer.valueOf(1), entityNames.get("Outcome"))
-        assertTrue("Expecting Tax record.", entityNames.containsKey("Outcome"))
-        assertEquals("Expecting 3 Tax records.", Integer.valueOf(1), entityNames.get("Outcome"))
+		assertTrue(entityNames.containsKey("Enrolment"))
+        assertEquals( Integer.valueOf(2), entityNames.get("Enrolment"))
+        assertTrue(entityNames.containsKey("CourseClass"))
+        assertEquals( Integer.valueOf(1), entityNames.get("CourseClass"))
+        assertTrue(entityNames.containsKey("Course"))
+        assertEquals( Integer.valueOf(1), entityNames.get("Course"))
+        assertTrue(entityNames.containsKey("InvoiceLine"))
+        assertEquals( Integer.valueOf(1), entityNames.get("InvoiceLine"))
+        assertTrue(entityNames.containsKey("Invoice"))
+        assertEquals( Integer.valueOf(1), entityNames.get("Invoice"))
+        assertTrue(entityNames.containsKey("Student"))
+        assertEquals( Integer.valueOf(1), entityNames.get("Student"))
+        assertTrue(entityNames.containsKey("Contact"))
+        assertEquals( Integer.valueOf(1), entityNames.get("Contact"))
+        assertTrue(entityNames.containsKey("Outcome"))
+        assertEquals( Integer.valueOf(1), entityNames.get("Outcome"))
+        assertTrue(entityNames.containsKey("Outcome"))
+        assertEquals( Integer.valueOf(1), entityNames.get("Outcome"))
         assertFalse(entityNames.containsKey("Preference"))
-        assertTrue("Expecting FieldConfigurationScheme record.", entityNames.containsKey("FieldConfigurationScheme"))
-        assertEquals("Expecting 1 FieldConfigurationScheme record.", Integer.valueOf(1), entityNames.get("FieldConfigurationScheme"))
-        assertTrue("Expecting FieldConfigurationLink record.", entityNames.containsKey("FieldConfigurationLink"))
-        assertEquals("Expecting 1 FieldConfigurationLink record.", Integer.valueOf(3), entityNames.get("FieldConfigurationLink"))
-        assertTrue("Expecting ApplicationFieldConfiguration record.", entityNames.containsKey("ApplicationFieldConfiguration"))
-        assertEquals("Expecting 1 FieldConfigurationLink record.", Integer.valueOf(1), entityNames.get("ApplicationFieldConfiguration"))
-        assertTrue("Expecting WaitingListFieldConfiguration record.", entityNames.containsKey("WaitingListFieldConfiguration"))
-        assertEquals("Expecting 1 FieldConfigurationLink record.", Integer.valueOf(1), entityNames.get("WaitingListFieldConfiguration"))
-        assertTrue("Expecting EnrolmentFieldConfiguration record.", entityNames.containsKey("EnrolmentFieldConfiguration"))
-        assertEquals("Expecting 1 FieldConfiguration record.", Integer.valueOf(1), entityNames.get("EnrolmentFieldConfiguration"))
-        assertEquals("Expecting 14 queueable records.", 19, queuedRecordList.size())
+        assertTrue( entityNames.containsKey("FieldConfigurationScheme"))
+        assertEquals( Integer.valueOf(1), entityNames.get("FieldConfigurationScheme"))
+        assertTrue( entityNames.containsKey("FieldConfigurationLink"))
+        assertEquals( Integer.valueOf(3), entityNames.get("FieldConfigurationLink"))
+        assertTrue( entityNames.containsKey("ApplicationFieldConfiguration"))
+        assertEquals( Integer.valueOf(1), entityNames.get("ApplicationFieldConfiguration"))
+        assertTrue( entityNames.containsKey("WaitingListFieldConfiguration"))
+        assertEquals( Integer.valueOf(1), entityNames.get("WaitingListFieldConfiguration"))
+        assertTrue( entityNames.containsKey("EnrolmentFieldConfiguration"))
+        assertEquals( Integer.valueOf(1), entityNames.get("EnrolmentFieldConfiguration"))
+        assertEquals( 19, queuedRecordList.size())
 
         List<QueuedTransaction> queuedTransactionList = ObjectSelect.query(QueuedTransaction).select(ctx)
 
         // 2, one for the actual replication, one for the Outcome created in trigger
-		assertEquals("Expecting only one transaction created.", 2, queuedTransactionList.size())
-        assertNotNull("Expecting not null transaction key.", queuedTransactionList.get(0).getTransactionKey())
-        assertNotNull("Expecting not null transaction key.", queuedTransactionList.get(1).getTransactionKey())
+		assertEquals( 2, queuedTransactionList.size())
+        assertNotNull( queuedTransactionList.get(0).getTransactionKey())
+        assertNotNull( queuedTransactionList.get(1).getTransactionKey())
     }
 
 	@Test
@@ -300,8 +286,8 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
                 .and(QueuedRecord.FOREIGN_RECORD_ID.eq(3L))
                 .select(ctx)
 
-        assertEquals("Expecting 1 queueable records.", 1, queuedRecordList.size())
-        assertTrue("Expecting action 'Update'",
+        assertEquals( 1, queuedRecordList.size())
+        assertTrue(
                 "update".equalsIgnoreCase(queuedRecordList.get(0).getAction().name()))
     }
 
@@ -323,8 +309,8 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
                 .where(QueuedRecord.TABLE_NAME.eq("Course"))
                 .and(QueuedRecord.FOREIGN_RECORD_ID.eq(4L))
                 .select(ctx)
-        assertEquals("Expecting 1 queueable records.", 1, queuedRecordList.size())
-        assertNotNull("Expecting not null transaction id.", queuedRecordList.get(0).getTransactionId())
+        assertEquals( 1, queuedRecordList.size())
+        assertNotNull( queuedRecordList.get(0).getTransactionId())
 
         CourseClassTutor tutorRole = SelectById.query(CourseClassTutor.class, 1).selectOne(ctx)
         CourseClass courseClass = SelectById.query(CourseClass.class, 10).selectOne(ctx)
@@ -340,10 +326,10 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
                         .andExp(QueuedRecord.FOREIGN_RECORD_ID.eq(10L)))
                 .select(ctx)
 
-        assertEquals("Expecting courseClass and TutorRole records.", 2, queuedRecordList.size())
-        assertTrue("Expecting Delete action.", "Delete".equalsIgnoreCase(queuedRecordList.get(0).getAction().name()))
-        assertTrue("Expecting Delete action.", "Delete".equalsIgnoreCase(queuedRecordList.get(1).getAction().name()))
-        assertEquals("Expecting identical transactionIds.", queuedRecordList.get(0).getTransactionId(),
+        assertEquals( 2, queuedRecordList.size())
+        assertTrue( "Delete".equalsIgnoreCase(queuedRecordList.get(0).getAction().name()))
+        assertTrue( "Delete".equalsIgnoreCase(queuedRecordList.get(1).getAction().name()))
+        assertEquals( queuedRecordList.get(0).getTransactionId(),
                 queuedRecordList.get(1).getTransactionId())
 
         Course course2 = SelectById.query(Course.class, 5).selectOne(ctx)
@@ -361,9 +347,9 @@ class QueueableLifecycleListenerTest extends CayenneIshTestCase {
                         .andExp(QueuedRecord.TABLE_NAME.eq("Tutor"))
                         .andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.DELETE)))
         .select(ctx)
-        assertEquals("Expecting course and tutor records.", 2, queuedRecordList.size())
-        assertEquals("Expecting identical transactionIds.", queuedRecordList.get(0).getTransactionId(),
-                queuedRecordList.get(1).getTransactionId())
+        assertEquals( 2, queuedRecordList.size(),"Expecting course and tutor records.")
+        assertEquals( queuedRecordList.get(0).getTransactionId(),
+                queuedRecordList.get(1).getTransactionId(),"Expecting identical transactionIds.")
 
     }
 }

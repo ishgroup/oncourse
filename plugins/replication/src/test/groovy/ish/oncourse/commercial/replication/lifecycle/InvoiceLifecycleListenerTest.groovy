@@ -6,19 +6,18 @@
 package ish.oncourse.commercial.replication.lifecycle
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.math.Money
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tax
-import ish.oncourse.server.scripting.GroovyScriptService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.Ordering
 import org.apache.cayenne.query.SelectById
@@ -26,57 +25,33 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.cayenne.query.SortOrder
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertEquals
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.*
 
 @CompileStatic
-class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
+@DatabaseSetup(value = 'ish/oncourse/commercial/replication/lifecycle/invoiceLifecycleTest.xml')
+class InvoiceLifecycleListenerTest extends TestWithDatabase {
 
 
     private ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-        wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = InvoiceLifecycleListenerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/lifecycle/invoiceLifecycleTest.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    
+    protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -2)
         Date start2 = DateUtils.addDays(new Date(), -2)
         rDataSet.addReplacementObject("[start_date1]", start1)
         rDataSet.addReplacementObject("[start_date2]", start2)
         rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
-
-        executeDatabaseOperation(rDataSet)
-
-        injector.getInstance(GroovyScriptService.class).initTriggers()
-
-        super.setup()
     }
 
-    @After
-    void tearDown() {
-        wipeTables()
-    }
+
     /**
      * Test  <code>InvoiceLifecycleListener.createReplicationDataFor</code>
      */
     @Test
     void testCreateReplicationDataFor() throws Exception {
-        PreferenceController pref = injector.getInstance(PreferenceController.class)
-        pref.setEmailSMTPHost("test.test")
-        pref.setEmailFromAddress("test@test.test")
-        pref.setReplicationEnabled(true)
+
 
         ObjectContext context = cayenneService.getNewContext()
         Account account = SelectById.query(Account.class, 50).selectOne(context)
@@ -132,10 +107,10 @@ class InvoiceLifecycleListenerTest extends CayenneIshTestCase {
         SelectQuery<QueuedTransaction> query = SelectQuery.query(QueuedTransaction.class)
         query.addOrdering(new Ordering(QueuedTransaction.ID_PROPERTY, SortOrder.ASCENDING))
         List<QueuedTransaction> transactions = context.select(query)
-        assertEquals("Only one transaction should be added.",1, transactions.size())
-        assertEquals("The trasaction should contain only one queued record.", 1, transactions.get(0).getQueuedRecords().size())
-        assertEquals("The queued record should be for Invoice", "Invoice", transactions.get(0).getQueuedRecords().get(0).getTableName())
-        assertEquals("The queued record should be for the Invoice", invoice.getId(), transactions.get(0).getQueuedRecords().get(0).getForeignRecordId())
+        assertEquals(1, transactions.size(), "Only one transaction should be added.")
+        assertEquals( 1, transactions.get(0).getQueuedRecords().size(),"The trasaction should contain only one queued record.")
+        assertEquals( "Invoice", transactions.get(0).getQueuedRecords().get(0).getTableName(), "The queued record should be for Invoice")
+        assertEquals(invoice.getId(), transactions.get(0).getQueuedRecords().get(0).getForeignRecordId(), "The queued record should be for the Invoice")
 
     }
 

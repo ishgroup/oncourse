@@ -5,7 +5,8 @@
 package ish.oncourse.commercial.replication.handler
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
@@ -13,128 +14,28 @@ import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.commercial.replication.services.IAngelQueueService
 import ish.oncourse.generator.DataGenerator
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.soap.v22.ReplicationPortType
+import ish.oncourse.webservices.soap.v23.ReplicationPortType
 import ish.oncourse.webservices.util.GenericReplicationStub
-import ish.oncourse.webservices.v22.stubs.replication.*
-import org.apache.cayenne.Cayenne
+import ish.oncourse.webservices.v23.stubs.replication.*
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectIdQuery
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
+import static org.junit.jupiter.api.Assertions.*
 
-import static org.junit.Assert.*
 
 /**
  */
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/replication/handler/courseClassTutorDataSet.xml")
+class OutboundReplicationHandlerTest extends TestWithDatabase {
 
-class OutboundReplicationHandlerTest extends CayenneIshTestCase {
-
-	private ICayenneService cayenneService
-
-
-	@Before
-	void setup() throws Exception {
-		wipeTables()
-		this.cayenneService = injector.getInstance(ICayenneService.class)
-	}
-
-	@Test
-	void testSendInvoiceRecords() throws Exception {
-
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/handler/testDataSet.xml")
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-		executeDatabaseOperation(dataSet)
-		ObjectContext ctx = this.cayenneService.getNewContext()
-		super.setup()
-		injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
-
-        Course course = createCourse(ctx)
-        Contact contact = createContact(ctx)
-        Invoice invoice = createInvoice(contact)
-        InvoiceLine invoiceLine = createInvoiceLine(invoice)
-        Student student = createStudent(contact)
-        CourseClass courseClass = createCourseClass(course)
-        Enrolment enrol = createEnrolment(invoiceLine, student, courseClass)
-
-        Queueable[] queuableArray = [course, contact, student, courseClass, invoiceLine, enrol]
-
-		ctx.commitChanges()
-
-		assertNotNull(enrol)
-
-		ISoapPortLocator soapLocator = new AbstractSoapPortLocator() {
-
-			@Override
-			ReplicationPortType replicationPort() {
-
-				return new AbstractReplicationPortType() {
-					@Override
-					ReplicationResult sendRecords(ReplicationRecords records) {
-						assertNotNull(records)
-
-						ReplicationResult result = new ReplicationResult()
-
-						for (TransactionGroup group : records.getGroups()) {
-							for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
-								ReplicatedRecord r = new ReplicatedRecord()
-								r.setStatus(Status.SUCCESS)
-								r.setStub(toHollow(stub))
-								r.getStub().setWillowId(1L)
-								result.getReplicatedRecord().add(r)
-							}
-						}
-
-						return result
-					}
-				}
-			}
-
-		}
-
-		OutboundReplicationHandler handler = new OutboundReplicationHandler(
-					injector.getInstance(IAngelQueueService.class),
-					this.cayenneService,
-					soapLocator,
-					injector.getInstance(IAngelStubBuilder.class))
-		handler.replicate()
-
-		ObjectContext ctx1 = this.cayenneService.getNewContext()
-		// checking that willowId is set
-		for (Queueable q : queuableArray) {
-			ObjectIdQuery query = new ObjectIdQuery(q.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH)
-            Queueable local = (Queueable) Cayenne.objectForQuery(ctx1, query)
-			Long willowId = local.getWillowId()
-
-			 long count = ObjectSelect.query(QueuedRecord)
-					.where(QueuedRecord.TABLE_NAME.eq(q.getObjectId().getEntityName()))
-					.and(QueuedRecord.FOREIGN_RECORD_ID.eq(q.getId()))
-					.selectCount(ctx1)
-
-			assertEquals("Expecting zero queued records for entity.", 0, count)
-
-			assertNotNull("Check that willowId is not null", willowId)
-			assertEquals("Expecting willowId=1.", willowId, new Long(1L))
-		}
-	}
 
 	@Test
 	void testCourseClassTutor() throws Exception {
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/server/replication/handler/courseClassTutorDataSet.xml")
-
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-		executeDatabaseOperation(dataSet)
-		super.setup()
-		injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
 
 		ObjectContext ctx = this.cayenneService.getNewContext()
 
@@ -200,11 +101,11 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 							}
 						}
 
-                        assertTrue("Check CourseClassStub", isCourseClassStub)
-						assertTrue("Check SesionStub", isSesionStub)
-						assertTrue("Check TutorStub", isTutorStub)
-						assertTrue("Check CourseClassTutorStub", isCourseClassTutorStub)
-						assertTrue("Check TutorAttendanceStub", isTutorAttendanceStub)
+                        assertTrue(isCourseClassStub,"Check CourseClassStub")
+						assertTrue(isSesionStub,"Check SesionStub")
+						assertTrue(isTutorStub,"Check TutorStub")
+						assertTrue(isCourseClassTutorStub,"Check CourseClassTutorStub")
+						assertTrue(isTutorAttendanceStub,"Check TutorAttendanceStub")
 
 						return result
 					}
@@ -224,28 +125,19 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		for (Queueable q : queuableArray) {
 			Queueable local = SelectById.query(Queueable.class, q.getObjectId()).selectOne(ctx1)
 			long willowId = local.getWillowId()
-			assertEquals("Expecting willowId=1.", willowId, 1L)
+			assertEquals(willowId, 1L,"Expecting willowId=1.")
 
 			long count = ObjectSelect.query(QueuedRecord)
 					.where(QueuedRecord.TABLE_NAME.eq(q.getObjectId().getEntityName()))
 					.and(QueuedRecord.FOREIGN_RECORD_ID.eq(q.getId()))
 					.selectCount(ctx1)
 
-			assertEquals("Expecting zero queued records for entity.", 0, count)
+			assertEquals( 0, count,"Expecting zero queued records for entity.")
 		}
 	}
 
 	@Test
 	void testCourseClassTutorRemoveAndAdd() throws Exception {
-
-		InputStream st = OutboundReplicationHandlerTest.class.getClassLoader().getResourceAsStream(
-				"ish/oncourse/server/replication/handler/courseClassTutorDataSet.xml")
-
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-		executeDatabaseOperation(dataSet)
-		super.setup()
-		injector.getInstance(PreferenceController.class).setReplicationEnabled(true)
-
 		ObjectContext ctx = this.cayenneService.getNewContext()
 
 		SelectById.query(Tutor.class, 1).selectOne(ctx)
@@ -290,8 +182,8 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 							}
 						}
 
-                        assertTrue("Check CourseClassTutorStub ", isCourseClassTutorStub)
-						assertEquals("Check TutorStub ", 2, tutorStubCount)
+                        assertTrue( isCourseClassTutorStub, "Check CourseClassTutorStub ")
+						assertEquals(2, tutorStubCount,"Check TutorStub ")
 
 						return result
 					}
@@ -320,13 +212,13 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 							.where(QueuedRecord.TABLE_NAME.eq(q.getObjectId().getEntityName()))
 							.and(QueuedRecord.FOREIGN_RECORD_ID.eq(q.getId()))
 							.selectCount(ctx1)
-					assertEquals("Expecting zero queued records for entity.", 0, count)
+					assertEquals( 0, count,"Expecting zero queued records for entity.")
 				}
 			}
 		}
 	}
 
-    CourseClassTutor createCourseClassTutor(Tutor tutor, CourseClass cc) {
+	static CourseClassTutor createCourseClassTutor(Tutor tutor, CourseClass cc) {
 		ObjectContext ctx = cc.getObjectContext()
         CourseClassTutor cct = ctx.newObject(CourseClassTutor.class)
 		cct.setTutor(tutor)
@@ -340,14 +232,14 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		return cct
 	}
 
-    Session createSession(ObjectContext ctx) {
+	static Session createSession(ObjectContext ctx) {
 		Session session = ctx.newObject(Session.class)
 		session.setCourseClass(SelectById.query(CourseClass.class, 1).selectOne(ctx))
 		session.setPayAdjustment(4)
 		return session
 	}
 
-    Enrolment createEnrolment(InvoiceLine invoiceLine, Student student, CourseClass courseClass) {
+	static Enrolment createEnrolment(InvoiceLine invoiceLine, Student student, CourseClass courseClass) {
 		ObjectContext ctx = invoiceLine.getObjectContext()
 
         Enrolment enrl = ctx.newObject(Enrolment.class)
@@ -360,7 +252,7 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		return enrl
 	}
 
-    CourseClass createCourseClass(Course course) {
+	static CourseClass createCourseClass(Course course) {
 		ObjectContext ctx = course.getObjectContext()
 
         CourseClass c = ctx.newObject(CourseClass.class)
@@ -383,12 +275,11 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		c.setTax(SelectById.query(Tax.class, 1).selectOne(ctx))
 		c.setIncomeAccount(SelectById.query(Account.class, 200).selectOne(ctx))
 		c.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
-		c.setFeeHelpClass(false)
 
 		return c
 	}
 
-    Course createCourse(ObjectContext ctx) {
+	static Course createCourse(ObjectContext ctx) {
 
 		Course c = ctx.newObject(Course.class)
 
@@ -411,7 +302,7 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		return c
 	}
 
-    InvoiceLine createInvoiceLine(Invoice invoice) {
+	static InvoiceLine createInvoiceLine(Invoice invoice) {
 		ObjectContext ctx = invoice.getObjectContext()
 
         InvoiceLine invLine = ctx.newObject(InvoiceLine.class)
@@ -432,7 +323,7 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		return invLine
 	}
 
-    Invoice createInvoice(Contact contact) {
+	static Invoice createInvoice(Contact contact) {
 		ObjectContext ctx = contact.getObjectContext()
 
         Invoice inv = ctx.newObject(Invoice.class)
@@ -451,7 +342,7 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		return inv
 	}
 
-    Student createStudent(Contact contact) {
+	static Student createStudent(Contact contact) {
 		ObjectContext ctx = contact.getObjectContext()
 
         Student st = ctx.newObject(Student.class)
@@ -477,7 +368,7 @@ class OutboundReplicationHandlerTest extends CayenneIshTestCase {
 		return st
 	}
 
-    Contact createContact(ObjectContext ctx) {
+	static Contact createContact(ObjectContext ctx) {
 		Contact c = ctx.newObject(Contact.class)
 
         Country country = SelectById.query(Country.class, 1).selectOne(ctx)

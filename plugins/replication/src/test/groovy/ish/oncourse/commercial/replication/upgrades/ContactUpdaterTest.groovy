@@ -19,6 +19,7 @@ import org.junit.Test
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
+import static org.mockito.Mockito.*
 
 /**
  */
@@ -34,15 +35,15 @@ class ContactUpdaterTest {
 
 	@Before
 	void initMethod() {
-		objectContext = org.mockito.Mockito.mock(ObjectContext.class)
-		tutor = org.mockito.Mockito.mock(Tutor.class)
-		student = org.mockito.Mockito.mock(Student.class)
-		org.mockito.Mockito.when(tutor.getObjectContext()).thenReturn(objectContext)
-		org.mockito.Mockito.when(student.getObjectContext()).thenReturn(objectContext)
-		org.mockito.Mockito.when(tutor.getWillowId()).thenReturn(1234L)
-		org.mockito.Mockito.when(student.getWillowId()).thenReturn(4321L)
+		objectContext = mock(ObjectContext.class)
+		tutor = mock(Tutor.class)
+		student = mock(Student.class)
+		when(tutor.getObjectContext()).thenReturn(objectContext)
+		when(student.getObjectContext()).thenReturn(objectContext)
+		when(tutor.getWillowId()).thenReturn(1234L)
+		when(student.getWillowId()).thenReturn(4321L)
 		final Contact preparedContact = new Contact()
-		org.mockito.Mockito.when(objectContext.newObject(Contact.class)).thenReturn(preparedContact)
+		when(objectContext.newObject(Contact.class)).thenReturn(preparedContact)
 	}
 
 	@Test
