@@ -197,7 +197,9 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         setLoadingDocVersion(false);
       }).catch(error => {
         setLoadingDocVersion(false);
-        dispatch(showMessage({ message: error.data.errorMessage, success: false }));
+        if (error && error.data) {
+          dispatch(showMessage({ message: error.data.errorMessage, success: false }));
+        }
       });
     }
   }, [form]);
