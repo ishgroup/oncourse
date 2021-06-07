@@ -1,0 +1,40 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ matrix.java }}-
+
+      - name: Build artifacts
+        run: ./gradlew clean server:distZip -x server:test -x client-html:test
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifact: "server/build/distributions/onCourseServer-*.zip"
+          body: "onCourse"
+          token: ${{ secrets.GITHUB_TOKEN }}
