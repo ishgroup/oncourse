@@ -34,7 +34,7 @@ jobs:
         run: ./gradlew clean server:distZip -x server:test -x client-html:test
 
       - uses: ncipollo/release-action@v1
-          with:
-            artifact: "server/build/distributions/onCourseServer-*.zip"
-            body: "onCourse"
-            token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          artifact: "server/build/distributions/onCourseServer-*.zip"
+          body: "onCourse"
+          token: ${{ secrets.GITHUB_TOKEN }}
