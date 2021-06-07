@@ -5,33 +5,25 @@
 package ish.oncourse.commercial.replication.handler
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.*
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.webservices.ITransactionGroupProcessor
-import ish.oncourse.webservices.soap.v22.ReplicationPortType
+import ish.oncourse.webservices.soap.v23.ReplicationPortType
 import ish.oncourse.webservices.util.GenericTransactionGroup
-import ish.oncourse.webservices.v22.stubs.replication.*
+import ish.oncourse.webservices.v23.stubs.replication.*
 import ish.util.SecurityUtil
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.*
 
-import static org.junit.Assert.*
 
 /**
  */
 @CompileStatic
-class InboundReplicationHandlerTest extends CayenneIshTestCase {
-
-	private ITransactionGroupProcessor transactionGroupAtomicUpdater
-
-	@Before
-	void setup() throws Exception {
-		wipeTables()
-        PreferenceController pref = injector.getInstance(PreferenceController.class)
-		this.transactionGroupAtomicUpdater = injector.getInstance(ITransactionGroupProcessor.class)
-	}
+@DatabaseSetup
+class InboundReplicationHandlerTest extends TestWithDatabase {
+	
 
 	@Test
 	void testMainFlow() throws Exception {
@@ -168,8 +160,8 @@ class InboundReplicationHandlerTest extends CayenneIshTestCase {
 					int sendResults(ReplicationResult replResult) {
 
 						for (ReplicatedRecord r : replResult.getReplicatedRecord()) {
-							assertNotNull(String.format("Check angel id for %s", r.getStub().getEntityIdentifier()), r.getStub().getAngelId())
-							assertEquals(String.format("Check status SUCESS %s", r.getStub().getEntityIdentifier()), Status.SUCCESS, r.getStatus())
+							assertNotNull(r.getStub().getAngelId(),String.format("Check angel id for %s", r.getStub().getEntityIdentifier()))
+							assertEquals(Status.SUCCESS, r.getStatus(), String.format("Check status SUCESS %s", r.getStub().getEntityIdentifier()))
 						}
 
 						return replResult.getReplicatedRecord().size()
@@ -179,97 +171,8 @@ class InboundReplicationHandlerTest extends CayenneIshTestCase {
 
 		}
 
-		InboundReplicationHandler handler = new InboundReplicationHandler(soapPortLocator, this.transactionGroupAtomicUpdater)
+		InboundReplicationHandler handler = new InboundReplicationHandler(soapPortLocator, injector.getInstance(ITransactionGroupProcessor.class))
 		handler.replicate()
 	}
 
-	// @Test
-	void testPartialSucess() throws Exception {
-
-		ISoapPortLocator soapPortLocator = new AbstractSoapPortLocator() {
-			@Override
-			ReplicationPortType replicationPort() {
-
-				return new AbstractReplicationPortType() {
-
-					@Override
-					ReplicationRecords getRecords() {
-						ReplicationRecords records = new ReplicationRecords()
-						TransactionGroup group = new TransactionGroup()
-
-						WaitingListStub wList = new WaitingListStub()
-						wList.setEntityIdentifier("WaitingList")
-						wList.setWillowId(3L)
-						wList.setCourseId(37L)
-						wList.setStudentId(101L)
-						wList.setStudentCount(5)
-
-						CourseStub course = new CourseStub()
-						course.setEntityIdentifier("Course")
-						course.setWillowId(36L)
-						course.setCode("123")
-						course.setVETCourse(false)
-						course.setName("Math")
-						course.setAllowWaitingList(true)
-						course.setSufficientForQualification(false)
-						// course.setAngelId(15l);
-
-						StudentStub st = new StudentStub()
-						st.setEntityIdentifier("Student")
-						st.setWillowId(101L)
-						st.setContactId(251L)
-						st.setAngelId(null)
-						st.setOverseasClient(false)
-						st.setIndigenousStatus(AvetmissStudentIndigenousStatus.NEITHER.getDatabaseValue())
-						st.setDisabilityType(AvetmissStudentDisabilityType.NONE.getDatabaseValue())
-						st.setPriorEducationCode(AvetmissStudentPriorEducation.NONE.getDatabaseValue())
-						st.setEnglishProficiency(AvetmissStudentEnglishProficiency.VERY_WELL.getDatabaseValue())
-						st.setHighestSchoolLevel(AvetmissStudentSchoolLevel.COMPLETED_YEAR_12.getDatabaseValue())
-
-						ContactStub con = new ContactStub()
-						con.setFamilyName("Test")
-						con.setGivenName("Test1")
-						con.setCompany(false)
-						con.setMarketingViaEmailAllowed(true)
-						con.setMarketingViaPostAllowed(true)
-						con.setMarketingViaSMSAllowed(true)
-						con.setEntityIdentifier("Contact")
-						con.setWillowId(201L)
-
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(course)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(st)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(con)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(wList)
-
-						records.getGroups().add(group)
-
-						return records
-					}
-
-					@Override
-					int sendResults(ReplicationResult replResult) {
-
-						for (ReplicatedRecord r : replResult.getReplicatedRecord()) {
-							if (r.getStub().getEntityIdentifier().equals("Student")) {
-								assertNull("Check angel id", r.getStub().getAngelId())
-								assertEquals("Check status FAILED on Student.", Status.FAILED, r.getStatus())
-							} else if (r.getStub().getEntityIdentifier().equals("WaitingList")) {
-								assertNull("Check angel id", r.getStub().getAngelId())
-								assertEquals("Check status FAILED on WaitingList.", Status.FAILED, r.getStatus())
-							} else {
-								assertNotNull("Check angel id", r.getStub().getAngelId())
-								assertEquals("Check status SUCESS", Status.SUCCESS, r.getStatus())
-							}
-						}
-
-						return replResult.getReplicatedRecord().size()
-					}
-				}
-			}
-
-		}
-
-		InboundReplicationHandler handler = new InboundReplicationHandler(soapPortLocator, this.transactionGroupAtomicUpdater)
-		handler.replicate()
-	}
 }

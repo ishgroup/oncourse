@@ -6,50 +6,29 @@
 package ish.oncourse.commercial.replication.handler
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
 import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.soap.v22.ReplicationPortType
-import ish.oncourse.webservices.v22.stubs.replication.InstructionStub
+import ish.oncourse.webservices.soap.v23.ReplicationPortType
+import ish.oncourse.webservices.v23.stubs.replication.InstructionStub
 import org.apache.cayenne.CayenneRuntimeException
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ejbql.EJBQLException
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectQuery
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.*
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  */
 @CompileStatic
-class InstructionHandlerTest extends CayenneIshTestCase {
-	private ICayenneService cayenneService
-
-	@Before
-	void setup() throws Exception {
-		wipeTables()
-		this.cayenneService = injector.getInstance(ICayenneService.class)
-
-		InputStream st = DiscountTest.class.getClassLoader().getResourceAsStream(
-			"ish/oncourse/commercial/replication/handler/instructionHandlerTestDataSet.xml")
-		FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-
-		ReplacementDataSet replacementDataSet = new ReplacementDataSet(dataSet)
-		replacementDataSet.addReplacementObject("[null]", null)
-
-		executeDatabaseOperation(replacementDataSet)
-
-		super.setup()
-	}
+@DatabaseSetup(value = 'ish/oncourse/commercial/replication/handler/instructionHandlerTestDataSet.xml')
+class InstructionHandlerTest extends TestWithDatabase {
 
 	@Test
 	void testNoInstructions() throws Exception {
@@ -72,7 +51,7 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		InstructionHandler handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 		long count = ObjectSelect.query(QueuedRecord).selectCount(cayenneService.getNewContext())
-		assertEquals("Expecting zero queued records for entity.", 0, count)
+		assertEquals(0, count, "Expecting zero queued records for entity.")
 	}
 
 	@Test
@@ -212,15 +191,15 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		ObjectSelect<QueuedRecord> queuedRecordObjectSelect = ObjectSelect.query(QueuedRecord)
 				.where(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3));
 		long count = queuedRecordObjectSelect.selectCount(context)
-		assertEquals("Expecting 16 queued attendancies for entity.", 16, count)
+		assertEquals( 16, count, "Expecting 16 queued attendancies for entity.")
 
 		SelectQuery<QueuedRecord> recordSelectQuery = SelectQuery.query(QueuedRecord.class)
 		List<QueuedRecord> records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test get attendancies for course class with id=2
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -249,15 +228,15 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 8 queued attendancies for entity.", 8,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 8,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 8 queued attendancies for entity.")
 
 		records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test get attendancies for course class with id=3
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -286,8 +265,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test get attendancies for course class with unexisted id=10
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -414,16 +393,16 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 
 		ObjectSelect<QueuedRecord> queuedRecordObjectSelect = ObjectSelect.query(QueuedRecord)
 				.where(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3))
-		assertEquals("Expecting 3 queued attendancies for entity.", 3,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(3,
+				queuedRecordObjectSelect.selectCount(context),"Expecting 3 queued attendancies for entity.")
 
 		SelectQuery<QueuedRecord> recordSelectQuery = SelectQuery.query(QueuedRecord.class)
 		List<QueuedRecord> records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 
 		//test get attendancies for active enrolment with id=2
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -452,15 +431,15 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 3 queued attendancies for entity.", 3,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(3,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 3 queued attendancies for entity.")
 
 		records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test get attendancies for refunded enrolment with id=22
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -489,8 +468,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 
 		//test get attendancies for enrolment with unexisted id=100
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -700,8 +679,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 
 		ObjectSelect<QueuedRecord> queuedRecordObjectSelect = ObjectSelect.query(QueuedRecord)
 				.where(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3))
-		assertEquals("Expecting 13 queued entities for request.", 13,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 13,
+				queuedRecordObjectSelect.selectCount(context),"Expecting 13 queued entities for request.")
 
 		SelectQuery<QueuedRecord> recordSelectQuery = SelectQuery.query(QueuedRecord.class)
 		List<QueuedRecord> records = context.select(recordSelectQuery)
@@ -736,8 +715,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 
 		//instruct enrolment with payment
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -767,8 +746,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 15 queued entities for request.", 15,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(15,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 15 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -804,8 +783,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//instruct enrolment with payment for few invoices
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -835,8 +814,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 16 queued entities for request.", 16,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(16,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 16 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -872,8 +851,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//instruct enrolment with invoices with few invoice lines
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -903,8 +882,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 16 queued entities for request.", 16,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(16,
+				queuedRecordObjectSelect.selectCount(context),"Expecting 16 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -940,8 +919,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//instruct invoice with payment for few invoices
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -971,8 +950,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 16 queued entities for request.", 16,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(16,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 16 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -1008,8 +987,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//instruct invoice with payment
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1039,8 +1018,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 15 queued entities for request.", 15,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(15,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 15 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -1076,8 +1055,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//instruct payment with multiple invoices
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1107,8 +1086,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 28 queued entities for request.", 28,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(28,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 28 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -1146,8 +1125,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//instruct payment with single invoice but multiple invoicelines
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1177,8 +1156,7 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 25 queued entities for request.", 25,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 25, queuedRecordObjectSelect.selectCount(context),"Expecting 25 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -1216,7 +1194,7 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0, queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0, queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 	}
 
 	@Test
@@ -1335,7 +1313,7 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 
 		ObjectSelect<QueuedRecord> queuedRecordObjectSelect = ObjectSelect.query(QueuedRecord)
 				.where(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3))
-		assertEquals("Expecting 4 queued entities for request.", 4, queuedRecordObjectSelect.selectCount(context))
+		assertEquals(4, queuedRecordObjectSelect.selectCount(context), "Expecting 4 queued entities for request.")
 
 		SelectQuery<QueuedRecord> recordSelectQuery = SelectQuery.query(QueuedRecord.class)
 		List<QueuedRecord> records = context.select(recordSelectQuery)
@@ -1358,8 +1336,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test payment with multiple invoices
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1388,8 +1366,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 7 queued entities for request.", 7,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(7,
+				queuedRecordObjectSelect.selectCount(context),"Expecting 7 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -1411,8 +1389,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test in transaction payment
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1441,8 +1419,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 
 		//check that payment line instruction will return the same results
 
@@ -1473,8 +1451,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 4 queued entities for request.", 4,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 4,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 4 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -1496,8 +1474,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test payment with multiple invoices
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1526,8 +1504,7 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 7 queued entities for request.", 7,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 7, queuedRecordObjectSelect.selectCount(context), "Expecting 7 queued entities for request.")
 
 		records = context.select(recordSelectQuery)
 		for (QueuedRecord record : records) {
@@ -1549,8 +1526,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 
 		//test in transaction payment
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1579,8 +1556,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 	}
 
 	@Test
@@ -1616,16 +1593,16 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 
 		ObjectSelect<QueuedRecord> queuedRecordObjectSelect = ObjectSelect.query(QueuedRecord)
 				.where(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3))
-		assertEquals("Expecting 58 queued enrolments.", 58,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 58,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 58 queued enrolments.")
 
 		SelectQuery<QueuedRecord> recordSelectQuery = SelectQuery.query(QueuedRecord.class)
 		List<QueuedRecord> records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 
 		//test instruct all enrolments with * instead of id
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1654,15 +1631,15 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 58 queued enrolments.", 58,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 58,
+				queuedRecordObjectSelect.selectCount(context),"Expecting 58 queued enrolments.")
 
 		records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test instruct active specific enrolment by id
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1691,15 +1668,15 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 1 queued enrolment.", 1,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 1,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 1 queued enrolment.")
 
 		records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test instruct refunded specific enrolment by id
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1728,15 +1705,15 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting 1 queued enrolment.", 1,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals(1,
+				queuedRecordObjectSelect.selectCount(context), "Expecting 1 queued enrolment.")
 
 		records = context.select(recordSelectQuery)
 		context.deleteObjects(records)
 		context.commitChanges()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context), "Expecting zero queued records for entity.")
 
 		//test instruct refunded enrolment by unexisting id
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1765,8 +1742,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordObjectSelect.selectCount(context))
+		assertEquals( 0,
+				queuedRecordObjectSelect.selectCount(context),"Expecting zero queued records for entity.")
 
 		//test instruct refunded enrolment by incorrect id
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1831,8 +1808,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 
 		ObjectSelect<QueuedRecord> queuedRecordEq3 = ObjectSelect.query(QueuedRecord)
 				.where(QueuedRecord.NUMBER_OF_ATTEMPTS.eq(3))
-		assertEquals("Expecting zero queued records for entity.", 3,
-				queuedRecordEq3.selectCount(context))
+		assertEquals( 3,
+				queuedRecordEq3.selectCount(context),"Expecting zero queued records for entity.")
 
 		//test all queue reset
 		ISoapPortLocator soapPortLocator = new AbstractSoapPortLocator() {
@@ -1861,13 +1838,13 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		InstructionHandler handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting zero queued records for entity.", 0,
-				queuedRecordEq3.selectCount(context))
+		assertEquals(0,
+				queuedRecordEq3.selectCount(context),"Expecting zero queued records for entity.")
 
 		ObjectSelect<QueuedRecord> queuedRecordLt3 = ObjectSelect.query(QueuedRecord)
 				.where(QueuedRecord.NUMBER_OF_ATTEMPTS.lt(3))
-		assertEquals("Expecting 3 queued records for entity.", 3,
-				queuedRecordLt3.selectCount(context))
+		assertEquals( 3,
+				queuedRecordLt3.selectCount(context), "Expecting 3 queued records for entity.")
 
 		SelectQuery<QueuedRecord> recordSelectQuery = SelectQuery.query(QueuedRecord.class)
 		List<QueuedRecord> records = context.select(recordSelectQuery)
@@ -1875,8 +1852,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 			record.setNumberOfAttempts(3)
 		}
 		context.commitChanges()
-		assertEquals("Expecting 3 queued records for entity.", 3,
-				queuedRecordEq3.selectCount(context))
+		assertEquals( 3,
+				queuedRecordEq3.selectCount(context),"Expecting 3 queued records for entity.")
 
 		//test specific table reset
 		soapPortLocator = new AbstractSoapPortLocator() {
@@ -1905,11 +1882,11 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		handler = new InstructionHandler(soapPortLocator, cayenneService)
 		handler.replicate()
 
-		assertEquals("Expecting zero queued records for entity.", 2,
-				queuedRecordEq3.selectCount(context))
+		assertEquals( 2,
+				queuedRecordEq3.selectCount(context), "Expecting zero queued records for entity.")
 
-		assertEquals("Expecting zero queued records for entity.", 1,
-				queuedRecordLt3.selectCount(context))
+		assertEquals( 1,
+				queuedRecordLt3.selectCount(context),"Expecting zero queued records for entity.")
 
 		for (QueuedRecord record : records) {
 			if (Invoice.class.getSimpleName().equals(record.getTableName())) {
@@ -1919,8 +1896,8 @@ class InstructionHandlerTest extends CayenneIshTestCase {
 		}
 		context.commitChanges()
 
-		assertEquals("Expecting 3 queued records for entity.", 3,
-				queuedRecordEq3.selectCount(context))
+		assertEquals( 3,
+				queuedRecordEq3.selectCount(context),"Expecting 3 queued records for entity.")
 
 		//test illegal usage
 		soapPortLocator = new AbstractSoapPortLocator() {

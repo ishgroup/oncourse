@@ -6,8 +6,8 @@ package ish.oncourse.commercial.replication.handler
 
 import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
-import ish.oncourse.webservices.soap.v22.PaymentPortType
-import ish.oncourse.webservices.soap.v22.ReplicationPortType
+import ish.oncourse.webservices.soap.v23.PaymentPortType
+import ish.oncourse.webservices.soap.v23.ReplicationPortType
 import ish.oncourse.webservices.soap.v7.ReferencePortType
 
 /**

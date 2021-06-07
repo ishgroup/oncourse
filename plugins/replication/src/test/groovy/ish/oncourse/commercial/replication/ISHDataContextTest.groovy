@@ -5,7 +5,8 @@
 package ish.oncourse.commercial.replication
 
 import groovy.transform.CompileStatic
-import ish.CayenneIshTestCase
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentType
 import ish.math.Money
@@ -20,39 +21,27 @@ import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
-
-import static org.junit.Assert.assertEquals
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  */
 @CompileStatic
-class ISHDataContextTest extends CayenneIshTestCase {
+@DatabaseSetup(value = 'ish/oncourse/commercial/replication/ishDataContextTestDataSet.xml')
+class ISHDataContextTest extends TestWithDatabase {
 
 	private ICayenneService cayenneService
 
-    @Before
-    void setup() throws Exception {
-		wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-        InputStream st = ISHDataContextTest.class.getClassLoader().getResourceAsStream("ish/oncourse/commercial/replication/ishDataContextTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
 
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
+    protected void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
         Date start1 = DateUtils.addDays(new Date(), -2)
         Date start2 = DateUtils.addDays(new Date(), -2)
         rDataSet.addReplacementObject("[start_date1]", start1)
         rDataSet.addReplacementObject("[start_date2]", start2)
         rDataSet.addReplacementObject("[end_date1]", DateUtils.addHours(start1, 2))
         rDataSet.addReplacementObject("[end_date2]", DateUtils.addHours(start2, 2))
-
-        executeDatabaseOperation(rDataSet)
-        super.setup()
     }
 
 	@Test

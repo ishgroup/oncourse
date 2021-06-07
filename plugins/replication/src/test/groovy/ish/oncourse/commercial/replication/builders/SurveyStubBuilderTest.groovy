@@ -10,12 +10,12 @@ import ish.common.types.SurveyVisibility
 import ish.oncourse.commercial.replication.updaters.AngelUpdaterImpl
 import ish.oncourse.commercial.replication.updaters.RelationShipCallback
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v22.stubs.replication.SurveyStub
+import ish.oncourse.webservices.v23.stubs.replication.SurveyStub
 import org.apache.cayenne.ObjectId
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
-import static org.junit.Assert.assertEquals
 import static org.mockito.Mockito.*
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 @CompileStatic
 class SurveyStubBuilderTest {
@@ -28,12 +28,12 @@ class SurveyStubBuilderTest {
         AngelStubBuilderImpl stubBuilder = new AngelStubBuilderImpl()
         SurveyStub stub = (SurveyStub) stubBuilder.convert(survey)
 
-        assertEquals("stub Comment", survey.getComment(), stub.getComment())
-        assertEquals("stub CourseScore", survey.getCourseScore(), stub.getCourseScore())
-        assertEquals("stub TutorScore", survey.getTutorScore(), stub.getTutorScore())
-        assertEquals("stub VenueScore", survey.getVenueScore(), stub.getVenueScore())
-        assertEquals("stub Enrolment", survey.getEnrolment().getId(), stub.getEnrolmentId())
-        assertEquals("stub visibility", survey.getVisibility().getDatabaseValue(), stub.getVisibility())
+        assertEquals(survey.getComment(), stub.getComment(), "stub Comment")
+        assertEquals(survey.getCourseScore(), stub.getCourseScore(), "stub CourseScore")
+        assertEquals(survey.getTutorScore(), stub.getTutorScore(), "stub TutorScore")
+        assertEquals(survey.getVenueScore(), stub.getVenueScore(), "stub VenueScore")
+        assertEquals(survey.getEnrolment().getId(), stub.getEnrolmentId(), "stub Enrolment")
+        assertEquals(survey.getVisibility().getDatabaseValue(), stub.getVisibility(), "stub visibility")
 
         AngelUpdaterImpl updater = new AngelUpdaterImpl()
         Survey surveyFromStub  = createMockSurvey()
@@ -48,11 +48,11 @@ class SurveyStubBuilderTest {
                 return null
             }
         })
-        assertEquals("stub Comment", survey.getComment(), surveyFromStub.getComment())
-        assertEquals("stub CourseScore", survey.getCourseScore(), surveyFromStub.getCourseScore())
-        assertEquals("stub TutorScore", survey.getTutorScore(), surveyFromStub.getTutorScore())
-        assertEquals("stub VenueScore", survey.getVenueScore(), surveyFromStub.getVenueScore())
-        assertEquals("stub Enrolment", survey.getEnrolment().getId(), surveyFromStub.getEnrolment().getId())
+        assertEquals(survey.getComment(), surveyFromStub.getComment(),"stub Comment")
+        assertEquals(survey.getCourseScore(), surveyFromStub.getCourseScore(), "stub CourseScore")
+        assertEquals(survey.getTutorScore(), surveyFromStub.getTutorScore(), "stub TutorScore")
+        assertEquals(survey.getVenueScore(), surveyFromStub.getVenueScore(), "stub VenueScore")
+        assertEquals(survey.getEnrolment().getId(), surveyFromStub.getEnrolment().getId(), "stub Enrolment")
 
 
     }

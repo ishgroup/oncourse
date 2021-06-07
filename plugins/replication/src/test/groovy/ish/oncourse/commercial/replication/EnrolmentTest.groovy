@@ -5,6 +5,7 @@
 
 package ish.oncourse.commercial.replication
 
+import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.EnrolmentStatus
@@ -23,9 +24,9 @@ import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
 import org.junit.jupiter.api.Test
 
-@groovy.transform.CompileStatic
-import static org.junit.Assert.assertEquals
+import static org.junit.jupiter.api.Assertions.assertEquals
 
+@CompileStatic
 @DatabaseSetup
 class EnrolmentTest extends TestWithDatabase {
 
@@ -67,20 +68,20 @@ class EnrolmentTest extends TestWithDatabase {
         Expression expression = QueuedRecord.TABLE_NAME.eq("Enrolment")
         expression = expression.andExp(QueuedRecord.FOREIGN_RECORD_ID.eq(enrolment.getId()))
         expression = expression.andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.CREATE))
-        assertEquals("Check queue ", 1, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(1, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         expression = QueuedRecord.TABLE_NAME.eq("Enrolment")
         expression = expression.andExp(QueuedRecord.FOREIGN_RECORD_ID.eq(enrolment.getId()))
         expression = expression.andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.UPDATE))
-        assertEquals("Check queue ", 1, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(1, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         expression = QueuedRecord.TABLE_NAME.eq("Attendance")
         expression = expression.andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.CREATE))
-        assertEquals("Check queue ", 2, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(2, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         expression = QueuedRecord.TABLE_NAME.eq("Outcome")
         expression = expression.andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.CREATE))
-        assertEquals("Check queue ", 3, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(3, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         enrolment.setStatus(EnrolmentStatus.CANCELLED)
         newContext.commitChanges()
@@ -88,26 +89,26 @@ class EnrolmentTest extends TestWithDatabase {
         expression = QueuedRecord.TABLE_NAME.eq("Enrolment")
         expression = expression.andExp(QueuedRecord.FOREIGN_RECORD_ID.eq(enrolment.getId()))
         expression = expression.andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.CREATE))
-        assertEquals("Check queue ", 1, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(1, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         expression = QueuedRecord.TABLE_NAME.eq("Enrolment")
         expression = expression.andExp(QueuedRecord.FOREIGN_RECORD_ID.eq(enrolment.getId()))
         expression = expression.andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.UPDATE))
         // only 2 updates for enrolment now (before 3), because when perform cancel/refund then outcomes are not deleted on postPersist/postUpdate (on server side)
-        assertEquals("Check queue ", 2, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(2, cayenneService.getNewContext().select(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         expression = QueuedRecord.TABLE_NAME.eq("Attendance").andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.CREATE))
-        assertEquals("Check queue ", 2, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(2, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         expression = QueuedRecord.TABLE_NAME.eq("Outcome").andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.CREATE))
-        assertEquals("Check queue ", 3, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(3, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         expression = QueuedRecord.TABLE_NAME.eq("Attendance").andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.DELETE))
-        assertEquals("Check queue ", 2, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(2, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         // do not delete outcomes on server side when user perform cancel/refund
         expression = QueuedRecord.TABLE_NAME.eq("Outcome").andExp(QueuedRecord.ACTION.eq(QueuedRecordAction.DELETE))
-        assertEquals("Check queue ", 0, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size())
+        assertEquals(0, cayenneService.getNewContext().performQuery(SelectQuery.query(QueuedRecord.class, expression)).size(),"Check queue ")
 
         newContext.deleteObjects(enrolment)
         newContext.commitChanges()

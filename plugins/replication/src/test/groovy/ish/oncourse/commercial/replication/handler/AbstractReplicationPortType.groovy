@@ -5,10 +5,10 @@
 package ish.oncourse.commercial.replication.handler
 
 import groovy.transform.CompileStatic
-import ish.oncourse.webservices.soap.v22.AuthFailure
-import ish.oncourse.webservices.soap.v22.ReplicationFault
-import ish.oncourse.webservices.soap.v22.ReplicationPortType
-import ish.oncourse.webservices.v22.stubs.replication.*
+import ish.oncourse.webservices.soap.v23.AuthFailure
+import ish.oncourse.webservices.soap.v23.ReplicationFault
+import ish.oncourse.webservices.soap.v23.ReplicationPortType
+import ish.oncourse.webservices.v23.stubs.replication.*
 
 /**
  */
@@ -16,7 +16,7 @@ import ish.oncourse.webservices.v22.stubs.replication.*
 class AbstractReplicationPortType implements ReplicationPortType {
 
 	/**
-	 * @see ish.oncourse.webservices.soap.v22.ReplicationPortType#sendRecords(ish.oncourse.webservices.v22.stubs.replication.ReplicationRecords)
+	 * @see ish.oncourse.webservices.soap.v23.ReplicationPortType#sendRecords(ish.oncourse.webservices.v23.stubs.replication.ReplicationRecords)
 	 */
 	@Override
 	ReplicationResult sendRecords(ReplicationRecords records) {
@@ -24,7 +24,7 @@ class AbstractReplicationPortType implements ReplicationPortType {
 	}
 
 	/**
-	 * @see ish.oncourse.webservices.soap.v22.ReplicationPortType#getRecords()
+	 * @see ish.oncourse.webservices.soap.v23.ReplicationPortType#getRecords()
 	 */
 	@Override
 	ReplicationRecords getRecords() {
@@ -32,7 +32,7 @@ class AbstractReplicationPortType implements ReplicationPortType {
 	}
 
 	/**
-	 * @see ish.oncourse.webservices.soap.v22.ReplicationPortType#sendResults(ish.oncourse.webservices.v22.stubs.replication.ReplicationResult)
+	 * @see ish.oncourse.webservices.soap.v23.ReplicationPortType#sendResults(ish.oncourse.webservices.v23.stubs.replication.ReplicationResult)
 	 */
 	@Override
 	int sendResults(ReplicationResult replResult) {
@@ -40,14 +40,14 @@ class AbstractReplicationPortType implements ReplicationPortType {
 	}
 
 	/**
-	 * @see ish.oncourse.webservices.soap.v22.ReplicationPortType#confirmExecution(java.lang.Long, java.lang.String)
+	 * @see ish.oncourse.webservices.soap.v23.ReplicationPortType#confirmExecution(java.lang.Long, java.lang.String)
 	 */
 	@Override
 	void confirmExecution(Long arg0, String arg1) {
 	}
 
 	/**
-	 * @see ish.oncourse.webservices.soap.v22.ReplicationPortType#getInstructions()
+	 * @see ish.oncourse.webservices.soap.v23.ReplicationPortType#getInstructions()
 	 */
 	@Override
 	List<InstructionStub> getInstructions() {
@@ -55,8 +55,8 @@ class AbstractReplicationPortType implements ReplicationPortType {
 	}
 
 	/**
-	 * @throws ish.oncourse.webservices.soap.v22.AuthFailure
-	 * @see ish.oncourse.webservices.soap.v22.ReplicationPortType#authenticate(java.lang.String, long)
+	 * @throws ish.oncourse.webservices.soap.v23.AuthFailure
+	 * @see ish.oncourse.webservices.soap.v23.ReplicationPortType#authenticate(java.lang.String, long)
 	 */
 	@Override
 	long authenticate(String securityCode, long lastCommunicationKey) throws AuthFailure {
@@ -64,7 +64,7 @@ class AbstractReplicationPortType implements ReplicationPortType {
 	}
 
 	/**
-	 * @see ish.oncourse.webservices.soap.v22.ReplicationPortType#getUnreplicatedEntities()
+	 * @see ish.oncourse.webservices.soap.v23.ReplicationPortType#getUnreplicatedEntities()
 	 */
 	@Override
 	List<UnreplicatedEntitiesStub> getUnreplicatedEntities() {
