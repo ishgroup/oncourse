@@ -78,7 +78,8 @@ class SMTPService {
     static enum Mode {
         ssl,
         starttls,
-        unsafe
+        unsafe,
+        mock
         
         static Mode byName(String name) {
             switch (name) {
@@ -89,6 +90,8 @@ class SMTPService {
                 case 'tls':
                 case 'ssl':
                     return ssl
+                case 'mock':
+                    return mock
                 default:
                     return ssl
             }
