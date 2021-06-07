@@ -240,30 +240,28 @@ tasks.withType(CreateStartScripts).each { task ->
 	}
 }
 
-task installer_unix(dependsOn: [jar, assembleDist], type: Zip) {
-	description "Create the Unix/Linux package (zip)."
+task addVersion {
 	doFirst {
 		file("build/resources/VERSION").text = project.version
 	}
+}
+distZip.dependsOn(addVersion)
 
-	from (configurations.runtimeClasspath) {
-		into 'onCourseServer/lib'
+distributions {
+	main {
+		distributionBaseName = 'onCourseServer'
+		contents {
+			from (configurations.runtimeClasspath) {
+				into 'lib'
+			}
+			from configurations.runtime.artifacts.files
+			from "src/packaging/unix/"
+			from "build/resources/VERSION"
+			from (file("build/scripts/")) {
+				into 'bin'
+			}
+		}
 	}
-	from (configurations.runtime.artifacts.files) {
-		into 'onCourseServer'
-	}
-	from (file("src/packaging/unix/")) {
-		into 'onCourseServer'
-	}
-	from (file("build/resources/VERSION")) {
-		into 'onCourseServer'
-	}
-	from (file("build/scripts/")) {
-		into 'onCourseServer/bin/'
-	}
-
-	archiveFileName = 'onCourseServer.zip'
-	destinationDirectory = file("${buildDir}/distributions/unix")
 }
 
 // DSL asciidoc documentation
@@ -303,7 +301,7 @@ publishing {
 			}
 		}
 		executables(MavenPublication) {
-			artifact(installer_unix) {
+			artifact(distZip) {
 				classifier "executable"
 				extension "zip"
 			}
