@@ -240,20 +240,25 @@ tasks.withType(CreateStartScripts).each { task ->
 	}
 }
 
+task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
+	from('../client-html/build/assets') {
+		include '**/*.*'
+	}
+	into 'build/resources/main/static'
+}
+
 task addVersion {
 	doFirst {
 		file("build/resources/VERSION").text = project.version
 	}
 }
-distZip.dependsOn(addVersion)
+
+distZip.dependsOn(copyWebApp,addVersion)
 
 distributions {
 	main {
 		distributionBaseName = 'onCourseServer'
 		contents {
-			from (configurations.runtimeClasspath) {
-				into 'lib'
-			}
 			from configurations.runtime.artifacts.files
 			from "src/packaging/unix/"
 			from "build/resources/VERSION"
@@ -345,17 +350,9 @@ cgen {
 	}
 }
 
-task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
-	from('../client-html/build/assets') {
-		include '**/*.*'
-	}
-	into 'build/resources/main/static'
-}
-
 compileJava {
 	dependsOn queryGrammar, cgen
 }
-assembleDist.dependsOn(copyWebApp)
 
 task runServer(dependsOn: [classes], type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
