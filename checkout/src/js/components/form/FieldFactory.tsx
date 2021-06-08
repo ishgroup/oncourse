@@ -22,6 +22,8 @@ import moment from "moment";
 
 class FieldFactory extends React.Component<any, any> {
 
+  private validatePatternInner = val => validatePattern(val,this.props?.field?.pattern)
+
   private getComponent = (field: Field): any => {
     const props: any = toFormFieldProps(field);
     props.onBlurSelect = this.props.onBlurSelect;
@@ -39,7 +41,7 @@ class FieldFactory extends React.Component<any, any> {
         return <Form.Field
           {...props}
           component={TextField}
-          validate={val => validatePattern(val,props.pattern)}
+          validate={this.validatePatternInner}
           type="text"
         />;
 

@@ -79,13 +79,13 @@ class VoucherComp extends React.PureComponent<Props, State> {
   public render(): JSX.Element {
     const {voucher, product, contact, onChange, readonly, onChangeFields} = this.props;
     const divClass = classnames("row", "enrolmentItem", {disabled: !voucher.selected});
-    const warning = voucher.warnings && voucher.warnings.length ? this.props.voucher.warnings[0] : null;
-    const error = voucher.warnings && voucher.errors.length ? this.props.voucher.errors[0] : null;
-    const name = `voucher-${contact.id}-${voucher.productId}`;
+    const warning = voucher.warnings && voucher.warnings.length ? voucher.warnings[0] : null;
+    const error = voucher.warnings && voucher.errors.length ? voucher.errors[0] : null;
+    const name = `voucher-${voucher.contactId}-${voucher.productId}`;
 
     return (
       <div className={divClass}>
-        <ItemWrapper title={product.name}
+        <ItemWrapper title={product?.name}
           name={name}
           error={error}
           warning={warning}

@@ -42,7 +42,7 @@ function inputComponent(props: any) {
           {...input}
           className={classnames('input-fixed', 'contact-field', {'t-error': isShowError})}
           placeholder={placeholder || label}
-          autocomplete={autocomplete}
+          autoComplete={autocomplete}
           type={type}
         />
         <ValidateText {...props} meta={props.meta || {}}/>
