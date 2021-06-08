@@ -27,14 +27,14 @@ jobs:
             **/node_modules
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ matrix.java }}-
+          key: 11-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: 11-
 
       - name: Build artifacts
-        run: ./gradlew clean server:distZip -x server:test -x client-html:test
+        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${GITHUB_REF##*v}
 
       - uses: ncipollo/release-action@v1
-          with:
-            artifact: "server/build/distributions/onCourseServer-*.zip"
-            body: "onCourse"
-            token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          artifact: "server/build/distributions/onCourseServer-*.zip"
+          body: "onCourse"
+          token: ${{ secrets.GITHUB_TOKEN }}
