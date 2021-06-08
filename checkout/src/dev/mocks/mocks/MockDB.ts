@@ -16,7 +16,7 @@ import {
 } from "../../../js/NormalizeSchema";
 import {WaitingList} from "../../../js/model/checkout/WaitingList";
 import {Course} from "../../../js/model/web/Course";
-import { localForage } from "../../constants/LocalForage";
+import { localForage } from "../../../js/constants/LocalForage";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
