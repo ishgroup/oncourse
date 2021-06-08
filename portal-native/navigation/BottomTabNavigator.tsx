@@ -1,18 +1,11 @@
-import { Octicons } from '@expo/vector-icons'; import {
+import React from 'react';
+import { Octicons } from '@expo/vector-icons';
+import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
+  DrawerItemList
 } from '@react-navigation/drawer';
-import {createStackNavigator} from '@react-navigation/stack';
-import { View, Text, Button, TouchableHighlight } from 'react-native';
-import * as React from 'react';
-
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import {BottomTabParamList, TabOneParamList, TabTwoParamList} from '../types';
+import { View, Text, TouchableHighlight } from 'react-native';
 
 
 

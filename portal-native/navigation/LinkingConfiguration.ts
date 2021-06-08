@@ -6,16 +6,8 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
-            screens: {
-              TabOneScreen: 'one',
-            },
-          },
-          TabTwo: {
-            screens: {
-              TabTwoScreen: 'two',
-            },
-          },
+          Feed: "feed",
+          Notifications: "notifications",
         },
       },
       NotFound: '*',

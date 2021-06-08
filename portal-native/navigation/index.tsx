@@ -2,7 +2,6 @@ import {DarkTheme, DefaultTheme, NavigationContainer} from '@react-navigation/na
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
 import {ColorSchemeName} from 'react-native';
-import { View, Text, Button } from 'react-native';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import {RootStackParamList} from '../types';
@@ -16,7 +15,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+    >
       <RootNavigator />
     </NavigationContainer>
   );

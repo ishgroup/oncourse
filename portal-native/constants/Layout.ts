@@ -10,3 +10,5 @@ export default {
   },
   isSmallDevice: width < 375,
 };
+
+export const SPACING_UNIT = 8;
