@@ -1,0 +1,42 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: 11-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: 11-
+
+      - name: Build artifacts
+        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${GITHUB_REF##*v}
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          name: onCourse ${GITHUB_REF##*v}
+          artifacts: "server/build/distributions/onCourseServer-*.zip"
+          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${GITHUB_REF##*v}/release-notes.html"
+          token: ${{ secrets.GITHUB_TOKEN }}
