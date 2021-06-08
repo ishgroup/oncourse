@@ -7,11 +7,11 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { CheckoutItem, CheckoutSummary } from "../../../../../model/checkout";
-import { AppBarTitle } from "../../CheckoutSelection";
 import QuickEnrolItemViewFormWraper from "./CkecoutItemViewForm";
 import MembershipEditView from "./MembershipEditView";
 import ProductEditView from "./ProductEditView";
 import VoucherEditView from "./VoucherEditView";
+import CheckoutAppBar from "../../CheckoutAppBar";
 
 interface Props {
   onClose?: any;
@@ -35,7 +35,7 @@ const CheckoutItemView: React.FC<Props> = ({ onClose, openedItem, summary }) => 
 
   const headerField = React.useMemo(() => (
     <>
-      <AppBarTitle
+      <CheckoutAppBar
         title={`${openedItem.type.charAt(0).toUpperCase()}${openedItem.type.slice(1)}: ${openedItem.name}`}
         type={openedItem.type}
         link={openedItem.id}

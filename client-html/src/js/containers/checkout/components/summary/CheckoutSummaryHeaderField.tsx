@@ -8,8 +8,8 @@ import { connect } from "react-redux";
 import { State } from "../../../../reducers/state";
 import { CheckoutSummaryListItem } from "../../../../model/checkout";
 import { getContactName } from "../../../entities/contacts/utils";
-import { CheckoutPage } from "../CheckoutSelection";
 import { HeaderFieldTypo } from "../HeaderField";
+import { CheckoutPage } from "../../constants";
 
 interface Props {
   classes?: any;

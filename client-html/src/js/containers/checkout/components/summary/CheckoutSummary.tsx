@@ -16,8 +16,8 @@ import {
   checkoutUpdateSummaryPrices
 } from "../../actions/checkoutSummary";
 import CheckoutDiscountEditView from "./promocode/CheckoutDiscountEditView";
-import { CheckoutPage } from "../CheckoutSelection";
 import CheckoutSummaryList from "./CheckoutSummaryList";
+import { CheckoutPage } from "../../constants";
 
 interface Props {
   checkoutStep?: number;
