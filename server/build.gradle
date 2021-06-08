@@ -224,6 +224,7 @@ task startDaemon(dependsOn: [classes], type: JavaExecFork) {
 }
 
 tasks.withType(CreateStartScripts).each { task ->
+	task.outputs.files("build/scripts/*")
 	task.doLast {
 		String text = task.windowsScript.text
 		text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, "set CLASSPATH=%APP_HOME%\\\\onCourseServer.jar;%APP_HOME%\\\\lib\\\\*;%APP_HOME%\\\\plugins\\\\*" )
@@ -264,9 +265,6 @@ distributions {
 			from configurations.runtime.artifacts.files
 			from "src/packaging/"
 			from addVersion.outputs.files
-			from (file("build/scripts/")) {
-				into 'bin'
-			}
 		}
 	}
 }
