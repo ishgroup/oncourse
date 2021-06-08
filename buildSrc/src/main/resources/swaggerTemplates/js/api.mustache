@@ -24,7 +24,7 @@ export class {{classname}} {
 
   {{#operation}}
   {{operationId}}({{#allParams}}{{paramName}}: {{{dataType}}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
-      return this.http.{{httpMethod}}(`/{{version}}{{path}}{{#pathParams}}/{{=<% %>=}}${<%baseName%>}<%={{ }}=%>{{/pathParams}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{^bodyParams}}{{^isGetOrDeleteMethod}}, {}{{/isGetOrDeleteMethod}}{{/bodyParams}}, { headers: { {{#headerParams}}{{paramName}}, {{/headerParams}} }, params: { {{#queryParams}}{{paramName}}, {{/queryParams}}}, responseType: {{#produces}}'{{{mediaType}}}'{{/produces}} });
+      return this.http.{{httpMethod}}(`/{{version}}{{path}}`{{#bodyParams}}, {{paramName}}{{/bodyParams}}{{^bodyParams}}{{^isGetOrDeleteMethod}}, {}{{/isGetOrDeleteMethod}}{{/bodyParams}}, { headers: { {{#headerParams}}{{paramName}}, {{/headerParams}} }, params: { {{#queryParams}}{{paramName}}, {{/queryParams}}}, responseType: {{#produces}}'{{{mediaType}}}'{{/produces}} });
   }
   {{/operation}}
 

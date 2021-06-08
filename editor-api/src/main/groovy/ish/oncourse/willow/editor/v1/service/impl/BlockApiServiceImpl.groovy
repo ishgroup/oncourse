@@ -57,6 +57,13 @@ class BlockApiServiceImpl implements BlockApi {
         }
     }
 
+    @Override
+    Block getBlockById(String id) {
+        WebContent block =  WebContentFunctions.getBlockById(requestService.request, cayenneService.newContext(), Long.valueOf(id))
+        return WebContentToBlock.valueOf(block).block
+
+    }
+
     List<Block> getBlocks() {
         WebContentFunctions.getBlocks(requestService.request, cayenneService.newContext())
                 .collect { node -> WebContentToBlock.valueOf(node).block }
