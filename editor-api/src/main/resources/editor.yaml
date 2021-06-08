@@ -278,6 +278,32 @@ paths:
           schema:
             $ref: '#/definitions/UnexpectedError'
 
+  /block/{id}:
+    get:
+      summary: Get block
+      description: |
+        Get block
+      operationId: getBlockById
+      tags:
+        - Block
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: unique block identifier
+          required: true
+          type: string
+      responses:
+        200:
+          description: block object
+          schema:
+            $ref: '#/definitions/Block'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/UnexpectedError'
+
 #################
   /block:
 #################
