@@ -74,7 +74,10 @@ import {
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED,
   CHECKOUT_UNCHECK_SUMMARY_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_ITEMS,
-  CHECKOUT_UPDATE_PROMO, CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS, CHECKOUT_SET_DISABLE_DISCOUNTS
+  CHECKOUT_UPDATE_PROMO,
+  CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS,
+  CHECKOUT_SET_DISABLE_DISCOUNTS,
+  CHECKOUT_SET_PREVIOUS_OWING_PAY_DUE
 } from "../actions/checkoutSummary";
 
 const initial: CheckoutState = {
@@ -96,7 +99,8 @@ const initial: CheckoutState = {
     previousOwing: {
       invoices: [],
       invoiceTotal: 0,
-      unCheckAll: false
+      unCheckAll: false,
+      payDueAmounts: true
     },
     voucherItems: [],
     invoiceDueDate: null
@@ -734,14 +738,17 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         }
       });
 
-      const summary = {
-        ...state.summary,
-        previousCredit: { invoices, invoiceTotal }
-      };
 
       return {
         ...state,
-        summary
+        summary: {
+          ...state.summary,
+          previousCredit: {
+            ...state.summary.previousCredit,
+            invoices,
+            invoiceTotal
+          }
+        }
       };
     }
 
@@ -751,6 +758,8 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
 
       const payer = state.summary.list.find(i => i.payer);
 
+      const totalMarker = state.summary.previousOwing.payDueAmounts ? "nextDue" : "amountOwing";
+
       const today = new Date();
 
       invoices.forEach(item => {
@@ -759,18 +768,38 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           : !(item.dateDue && (new Date(item.dateDue) > today));
 
         if (item.checked) {
-          invoiceTotal = decimalPlus(invoiceTotal, parseFloat(item.amountOwing));
+          invoiceTotal = decimalPlus(invoiceTotal, item[totalMarker]);
         }
       });
 
-      const summary = {
-        ...state.summary,
-        previousOwing: { invoices, invoiceTotal }
+      return {
+        ...state,
+        summary: {
+          ...state.summary,
+          previousOwing: {
+            ...state.summary.previousOwing,
+            invoices,
+            invoiceTotal
+          }
+        }
       };
+    }
+
+    case CHECKOUT_SET_PREVIOUS_OWING_PAY_DUE: {
+      const previousInvoiceList = listPreviousInvoices({
+        summary: state.summary,
+        type: "previousOwing",
+        isUnCheckAll: false,
+        itemIndex: undefined,
+        payDueAmounts: action.payload
+      });
 
       return {
         ...state,
-        summary
+        summary: {
+          ...state.summary,
+          ...previousInvoiceList
+        }
       };
     }
 
@@ -778,17 +807,19 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const { itemIndex, type } = action.payload;
 
       const previousInvoiceList = listPreviousInvoices({
-        summary: state.summary, itemIndex, type, isUnCheckAll: false
+        summary: state.summary,
+        itemIndex,
+        type,
+        isUnCheckAll: false,
+        payDueAmounts: state.summary[type].payDueAmounts
       });
-
-      const summary = {
-        ...state.summary,
-        ...previousInvoiceList
-      };
 
       return {
         ...state,
-        summary
+        summary: {
+          ...state.summary,
+          ...previousInvoiceList
+        }
       };
     }
 
@@ -796,17 +827,21 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const { type, value } = action.payload;
 
       const previousInvoiceList = listPreviousInvoices({
-        summary: { ...state.summary, [type]: { ...state.summary[type], unCheckAll: value } }, type, isUnCheckAll: true, itemIndex: undefined
+        summary: {
+          ...state.summary,
+          [type]: { ...state.summary[type], unCheckAll: value } },
+        type,
+        isUnCheckAll: true,
+        itemIndex: undefined,
+        payDueAmounts: state.summary[type].payDueAmounts
       });
-
-      const summary = {
-        ...state.summary,
-        ...previousInvoiceList
-      };
 
       return {
         ...state,
-        summary
+        summary: {
+          ...state.summary,
+          ...previousInvoiceList
+        }
       };
     }
 

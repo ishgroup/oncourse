@@ -2,7 +2,7 @@ import * as React from "react";
 import { defaultComponents } from "../../common/Default.Components";
 import CheckoutPreviousInvoiceList
   from "../../../js/containers/checkout/components/summary/CheckoutPreviousInvoiceList";
-import { CheckoutPage, titles } from "../../../js/containers/checkout/components/CheckoutSelection";
+import { CheckoutPage, titles } from "../../../js/containers/checkout/constants";
 import { decimalPlus } from "../../../js/common/utils/numbers/decimalCalculation";
 
 describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
