@@ -31,7 +31,7 @@ jobs:
           restore-keys: 11-
 
       - name: Build artifacts
-        run: ./gradlew clean server:distZip -x server:test -x client-html:test
+        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${GITHUB_REF##*v}
 
       - uses: ncipollo/release-action@v1
         with:
