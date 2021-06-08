@@ -248,7 +248,9 @@ task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
 }
 
 task addVersion {
+	outputs.files("build/resources/VERSION")
 	doFirst {
+		mkdir "build/resources"
 		file("build/resources/VERSION").text = project.version
 	}
 }
@@ -260,8 +262,8 @@ distributions {
 		distributionBaseName = 'onCourseServer'
 		contents {
 			from configurations.runtime.artifacts.files
-			from "src/packaging/unix/"
-			from "build/resources/VERSION"
+			from "src/packaging/"
+			from addVersion.outputs.files
 			from (file("build/scripts/")) {
 				into 'bin'
 			}
