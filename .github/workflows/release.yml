@@ -33,8 +33,10 @@ jobs:
       - name: Build artifacts
         run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${GITHUB_REF##*v}
 
-      - uses: ncipollo/release-action@v1
+      - name: Release
+        uses: ncipollo/release-action@v1
         with:
-          artifact: "server/build/distributions/onCourseServer-*.zip"
-          body: "onCourse"
+          name: onCourse ${GITHUB_REF##*v}
+          artifacts: "server/build/distributions/onCourseServer-*.zip"
+          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${GITHUB_REF##*v}/release-notes.html"
           token: ${{ secrets.GITHUB_TOKEN }}
