@@ -8,6 +8,9 @@ import LoginScreen from "./js/components/login/LoginScreen";
 import { Provider as PaperProvider } from 'react-native-paper';
 import {theme} from "./js/common/styles";
 
+
+
+
 if (__DEV__) {
   initMockDB();
 }
