@@ -171,6 +171,7 @@ class Avetmiss8ExportRunner {
                                        OutcomeStatus defaultOutcome,
                                        LocalDate overriddenEndDate,
                                        LocalDate exportEndDate,
+                                       Boolean noAssessments,
                                        List<Long> outcomeIds) {
 
         logger.info("Getting {} outcomes from the database.", outcomeIds.size())
@@ -181,7 +182,7 @@ class Avetmiss8ExportRunner {
         result.exportEndDate = exportEndDate
         result.defaultOutcome = defaultOutcome
         result.overriddenEndDate = overriddenEndDate
-        
+        result.ignoreAssessments = noAssessments
         // get default administrative site
         result.adminSite = ObjectSelect.query(Site.class).where(Site.IS_ADMINISTRATION_CENTRE.isTrue()).selectFirst(context)
 

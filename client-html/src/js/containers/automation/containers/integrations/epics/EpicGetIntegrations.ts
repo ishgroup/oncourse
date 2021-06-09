@@ -7,7 +7,7 @@ import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import IntegrationService from "../services";
-import { parseIntegrations } from "../utils/index";
+import { parseIntegrations } from "../utils";
 import { GET_INTEGRATIONS_FULFILLED, GET_INTEGRATIONS_REQUEST } from "../../../actions";
 
 const request: EpicUtils.Request = {
@@ -15,6 +15,7 @@ const request: EpicUtils.Request = {
   getData: () => IntegrationService.getIntegrations(),
   processData: response => {
     const integrations = parseIntegrations(response);
+    integrations.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 
     return [
       {

@@ -267,3 +267,19 @@ databaseChangeLog:
                   name: triggerOnAttribute
                   type: VARCHAR(128)
                   afterColumn: entityClass
+  - changeSet:
+      id: 78-10
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Product
+              columnName: fieldConfigurationSchemeId
+      changes:
+        - addColumn:
+            tableName: Product
+            columns:
+              - column:
+                  name: fieldConfigurationSchemeId
+                  type: BIGINT

@@ -23,6 +23,8 @@ trait ExpandableTrait {
 
     abstract Long getId()
 
+    abstract void setModifiedOn(Date date)
+
     abstract ObjectContext getContext()
 
     abstract Class<? extends CustomField> getCustomFieldClass()

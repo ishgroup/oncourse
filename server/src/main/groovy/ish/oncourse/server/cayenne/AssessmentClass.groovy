@@ -121,6 +121,11 @@ class AssessmentClass extends _AssessmentClass implements Queueable, AssessmentC
         return super.getAssessmentSubmissions()
     }
 
+    AssessmentSubmission getAssessmentSubmission(Enrolment enrolment) {
+        return getAssessmentSubmissions().find {submittion -> submittion.enrolment.id == enrolment.id } 
+        
+    }
+
     @Nonnull
     @API
     @Override

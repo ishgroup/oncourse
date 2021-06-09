@@ -3,17 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { change } from "redux-form";
-import {
-  Account,
-  Course,
-  Currency,
-  ProductStatus,
-  VoucherProduct,
-  VoucherProductCourse
-} from "@api/model";
+import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
@@ -23,9 +16,7 @@ import { formatCurrency } from "../../../../common/utils/numbers/numbersNormaliz
 import { State } from "../../../../reducers/state";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import {
-  getMinMaxFee, clearMinMaxFee
-} from "../actions";
+import { clearMinMaxFee, getMinMaxFee } from "../actions";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -36,6 +27,8 @@ import {
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { PreferencesState } from "../../../preferences/reducers/state";
+import { normalizeString } from "../../../../common/utils/strings";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -48,6 +41,7 @@ interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   foundCourses?: Course[];
   submitSucceeded?: any;
   getMinMaxFee?: (ids: string) => void;
+  dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
 const parseFloatValue = value => (value ? parseFloat(value) : value);
@@ -123,13 +117,13 @@ const getInitialRedemptionIndex = (isNew: boolean, voucher: VoucherProduct) => {
 };
 
 const coursesToNestedListItems = (courses: VoucherProductCourse[]): NestedListItem[] => courses.map(course => ({
-      id: course.id.toString(),
-      entityId: course.id,
-      primaryText: course.name,
-      secondaryText: course.code,
-      link: `/course/${course.id}`,
-      active: true
-    }));
+  id: course.id.toString(),
+  entityId: course.id,
+  primaryText: course.name,
+  secondaryText: course.code,
+  link: `/course/${course.id}`,
+  active: true
+}));
 
 const onAddCourses = props => (items: NestedListItem[]) => {
   const {
@@ -154,6 +148,8 @@ const validateCourses = values => (values && values.length === 0 ? "At least one
 
 const sortCourses = (a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
 
+const accountLabelCondition = a => `${a.accountCode}, ${a.description}`;
+
 const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   const {
     twoColumn,
@@ -171,7 +167,8 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     getMinMaxFee,
     dispatch,
     form,
-    rootEntity
+    rootEntity,
+    dataCollectionRules
   } = props;
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
@@ -204,11 +201,15 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     }
   }, [coursesIds]);
 
+  const liabilityAccounts = useMemo(() => accounts.filter(a => a.type === "liability"), [accounts]);
+
+  const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
+
   return (
     <div className="generalRoot">
       <div className="pt-1">
         <Grid container>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="name"
@@ -216,7 +217,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
               required
             />
           </Grid>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="code"
@@ -231,12 +232,21 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           type="select"
           name="liabilityAccountId"
           label="Liability account"
-          validate={value => (accounts.find((item: Account) => item.id === value) ? undefined : `Mandatory field`)}
-          items={accounts}
+          items={liabilityAccounts}
           selectValueMark="id"
-          selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
+          selectLabelCondition={accountLabelCondition}
+          required
         />
       </div>
+      <FormField
+        type="select"
+        name="underpaymentAccountId"
+        label="Default voucher underpayment account"
+        items={expenseAccounts}
+        selectValueMark="id"
+        selectLabelCondition={accountLabelCondition}
+        required
+      />
       <Typography color="inherit" component="div" noWrap>
         Expires
         <FormField
@@ -311,6 +321,22 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         items={productStatusItems}
         selectLabelMark="value"
       />
+      <Grid container>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="dataCollectionRuleId"
+            label="Data collection rule"
+            selectValueMark="id"
+            selectLabelMark="name"
+            items={dataCollectionRules || []}
+            format={normalizeString}
+            fullWidth
+            required
+            sort
+          />
+        </Grid>
+      </Grid>
       <FormEditorField
         name="description"
         label="Web description"
@@ -336,12 +362,13 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.liabilityItems,
+  accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
-  pendingCourses: state.plainSearchRecords["Course"].loading
+  pendingCourses: state.plainSearchRecords["Course"].loading,
+  dataCollectionRules: state.preferences.dataCollectionRules
 });
 
 export default connect<any, any, any>(

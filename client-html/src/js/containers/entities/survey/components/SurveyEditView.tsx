@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React, { useCallback } from "react";
@@ -8,14 +11,13 @@ import { createStyles, withStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { change, Field } from "redux-form";
-import { Category, SurveyItem } from "@api/model";
+import { SurveyItem } from "@api/model";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import Score from "./Score";
 import Uneditable from "../../../../common/components/form/Uneditable";
-import { getMainRouteUrl } from "../../../../routes/routesMapping";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface Props {
@@ -25,8 +27,6 @@ interface Props {
   dispatch?: any;
   form?: string;
 }
-
-const buildUrl = (id: number | string, category: Category) => getMainRouteUrl(category) + `/${id}`;
 
 const styles = createStyles(({ spacing }: Theme) => ({
   root: {
@@ -51,15 +51,15 @@ const SurveyEditView = (props: Props) => {
   const classId = values && values.classId;
 
   const openSite = useCallback(() => {
-    openInternalLink(buildUrl(siteId, Category.Sites));
+    openInternalLink(`/site/${siteId}`);
   }, [siteId]);
 
   const openRoom = useCallback(() => {
-    openInternalLink(buildUrl(roomId, Category.Rooms));
+    openInternalLink(`/room/${roomId}`);
   }, [roomId]);
 
   const openClass = useCallback( () => {
-    openInternalLink(buildUrl(classId, Category.Classes));
+    openInternalLink(`/class/${classId}`);
   }, [classId]);
 
   return values ? (
@@ -68,7 +68,7 @@ const SurveyEditView = (props: Props) => {
         <Uneditable
           value={values.studentName}
           label="Student"
-          url={buildUrl(values.studentContactId, "Contacts")}
+          url={`/contact/${values.studentContactId}`}
         />
       </Grid>
       <Grid container justify="space-between" className="mw-800 pb-2" spacing={2}>
@@ -99,7 +99,7 @@ const SurveyEditView = (props: Props) => {
             <Grid item xs={twoColumn ? "auto" : 12}>
               <Field name="tutorScore" label="Tutor" component={Score} />
               {Object.keys(values.tutors).map(id => (
-                <Link key={id} href={buildUrl(id, "Contacts")} target="_blank" color="textSecondary" className="pr-1">
+                <Link key={id} href={`/contact/${id}`} target="_blank" color="textSecondary" className="pr-1">
                   {values.tutors[id]}
                 </Link>
               ))}

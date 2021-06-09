@@ -5,9 +5,7 @@
 
 import React from "react";
 import { change } from "redux-form";
-import {
-  Account, ArticleProduct, ProductStatus, Tax
-} from "@api/model";
+import { Account, ArticleProduct, ProductStatus, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
 import { Decimal } from "decimal.js-light";
@@ -16,10 +14,13 @@ import { FormEditorField } from "../../../../common/components/markdown-editor/F
 import { State } from "../../../../reducers/state";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { PreferencesState } from "../../../preferences/reducers/state";
+import { normalizeString } from "../../../../common/utils/strings";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
   taxes?: Tax[];
+  dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
 const validateNonNegative = value => (value < 0 ? "Must be non negative" : undefined);
@@ -46,7 +47,7 @@ const handleChangeTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) =
 
 const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
   const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === account.tax.id);
+  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
   if (tax.id !== values.taxId) {
     const taxRate = tax ? tax.rate : 0;
     dispatch(change(form, "taxId", tax.id));
@@ -56,13 +57,13 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded, rootEntity
+    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
   return (
     <div className="generalRoot">
       <div className="pt-1">
         <Grid container>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="name"
@@ -70,7 +71,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
               required
             />
           </Grid>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
               name="code"
@@ -93,50 +94,64 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
         />
       </div>
-      <div className="mr-2">
-        <Grid container>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="feeExTax"
-              label="Fee ex tax"
-              validate={validateNonNegative}
-              onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
-              required
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="totalFee"
-              label="Total fee"
-              validate={validateNonNegative}
-              onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="select"
-              label="Tax"
-              name="taxId"
-              onChange={handleChangeTax(values, taxes, dispatch, form)}
-              items={taxes}
-              selectValueMark="id"
-              selectLabelCondition={tax => tax.code}
-              required
-            />
-          </Grid>
+      <Grid container>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="money"
+            name="feeExTax"
+            label="Fee ex tax"
+            validate={validateNonNegative}
+            onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+            required
+          />
         </Grid>
-      </div>
-      <div>
-        <FormField
-          type="select"
-          name="status"
-          label="Status"
-          items={productStatusItems}
-          selectLabelMark="value"
-        />
-      </div>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="money"
+            name="totalFee"
+            label="Total fee"
+            validate={validateNonNegative}
+            onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 6}>
+          <FormField
+            type="select"
+            label="Tax"
+            name="taxId"
+            onChange={handleChangeTax(values, taxes, dispatch, form)}
+            items={taxes}
+            selectValueMark="id"
+            selectLabelCondition={tax => tax.code}
+            required
+          />
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="status"
+            label="Status"
+            items={productStatusItems}
+            selectLabelMark="value"
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="dataCollectionRuleId"
+            label="Data collection rule"
+            selectValueMark="id"
+            selectLabelMark="name"
+            items={dataCollectionRules || []}
+            format={normalizeString}
+            fullWidth
+            required
+            sort
+          />
+        </Grid>
+      </Grid>
       <RelationsCommon
         values={values}
         dispatch={dispatch}
@@ -149,8 +164,9 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.incomeItems,
-  taxes: state.taxes.items
+  accounts: state.plainSearchRecords.Account.items,
+  taxes: state.taxes.items,
+  dataCollectionRules: state.preferences.dataCollectionRules
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(ArticleProductGeneral);

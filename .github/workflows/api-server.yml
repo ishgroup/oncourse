@@ -1,24 +1,15 @@
 name: API test
-
-on: push
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  should_run:
-    runs-on: ubuntu-latest
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          cancel_others: 'true'
-          skip_after_successful_duplicate: 'true'
-          paths_ignore: '["client-html/**", "api-doc/**"]'
 
   api-tests:
-    needs: should_run
-    if: ${{ needs.should_run.outputs.should_skip != 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     services:
       mysql:
@@ -31,11 +22,19 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - uses: actions/checkout@v2
+
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v3.4.0
+        with:
+          cancel_others: 'true'
+          skip_after_successful_duplicate: 'true'
+          paths_ignore: '["client-html/**", "api-doc/**"]'
+
       - name: Setup timezone
         uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
-      - uses: actions/checkout@v2
 
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -54,6 +53,8 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ matrix.java }}-
 
       - name: Run tests
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root

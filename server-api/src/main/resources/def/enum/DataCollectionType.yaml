@@ -1,9 +1,12 @@
 type: string
 description: Avalible data collection types
 enum:
-  - Enrolment
   - Application
-  - WaitingList
-  - Survey
-  - Payer
+  - Enrolment
+  - Membership
   - Parent
+  - Payer
+  - Product
+  - Survey
+  - Voucher
+  - WaitingList

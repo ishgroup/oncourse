@@ -97,10 +97,7 @@ class DataCollectionApiImpl implements DataCollectionApi {
     @Override
     void createRule(DataCollectionRuleDTO rule) {
         ObjectContext context = cayenneService.newContext
-        ValidationErrorDTO error = validateRule(context, rule)
-        if (error) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
-        }
+        validateRule(context, rule)
         toDbRule(context, rule)
         context.commitChanges()
     }
@@ -198,22 +195,18 @@ class DataCollectionApiImpl implements DataCollectionApi {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(id, null, "The data collection rule $id is not exist")).build())
         }
 
-        ValidationErrorDTO error = validateRule(context, rule, dbRule)
-        if (error) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
-        } else {
-            try {
-                cayenneService.serverRuntime.performInTransaction {
-                    context.deleteObjects(dbRule.fieldConfigurationLinks)
-                    context.commitChanges()
-                    toDbRule(context, rule, dbRule)
-                    context.commitChanges()
-                }
-            } catch (Exception e) {
-                logger.catching(e)
-                context.rollbackChanges()
-                throw new ServerErrorException('Unexpected error', Response.Status.INTERNAL_SERVER_ERROR)
+        validateRule(context, rule, dbRule)
+        try {
+            cayenneService.serverRuntime.performInTransaction {
+                context.deleteObjects(dbRule.fieldConfigurationLinks)
+                context.commitChanges()
+                toDbRule(context, rule, dbRule)
+                context.commitChanges()
             }
+        } catch (Exception e) {
+            logger.catching(e)
+            context.rollbackChanges()
+            throw new ServerErrorException('Unexpected error', Response.Status.INTERNAL_SERVER_ERROR)
         }
     }
 }

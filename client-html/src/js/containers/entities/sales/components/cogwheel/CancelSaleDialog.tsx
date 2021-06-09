@@ -10,12 +10,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import MuiButton from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
-import {
-  reduxForm, getFormValues, DecoratedComponentClass, change, clearFields
-} from "redux-form";
+import { change, clearFields, DecoratedComponentClass, getFormValues, reduxForm } from "redux-form";
 import Grid from "@material-ui/core/Grid/Grid";
 import { Dispatch } from "redux";
-import { ProductItemCancel, Tax, Account } from "@api/model";
+import { Account, ProductItemCancel, Tax } from "@api/model";
 import { FormControlLabel } from "@material-ui/core";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
@@ -191,7 +189,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("CancelSaleForm")(state),
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items
 });
 

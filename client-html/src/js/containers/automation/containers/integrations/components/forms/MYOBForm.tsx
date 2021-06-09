@@ -29,7 +29,7 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, appBarContent, dirty, item, form
+     handleSubmit, onSubmit, AppBarContent, dirty, item, form
     } = this.props;
     const configured = item && item.id;
 
@@ -39,7 +39,9 @@ class MYOBBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
         <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
         <FormField name="fields.user" label="User" type="text" fullWidth />
         <FormField name="fields.password" type="password" label="Password" fullWidth />

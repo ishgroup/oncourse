@@ -4,6 +4,7 @@
  */
 
 import { _toRequestType, FULFILLED } from "./ActionUtils";
+import { PlainSearchEntity } from "../../model/common/Plain";
 
 export const SET_COMMON_PLAIN_RECORD_SEARCH = "set/common/plain/record/search";
 export const CLEAR_COMMON_PLAIN_RECORDS = "clear/common/plain/records";
@@ -11,7 +12,7 @@ export const GET_COMMON_PLAIN_RECORDS = _toRequestType("get/common/plain/records
 export const GET_COMMON_PLAIN_RECORDS_FULFILLED = FULFILLED(GET_COMMON_PLAIN_RECORDS);
 
 export const setCommonPlainSearch = (
-  key: string,
+  key: PlainSearchEntity,
   search: string
 ) => ({
   type: SET_COMMON_PLAIN_RECORD_SEARCH,
@@ -21,7 +22,7 @@ export const setCommonPlainSearch = (
 });
 
 export const getCommonPlainRecords = (
-  key: string,
+  key: PlainSearchEntity,
   offset?: number,
   columns?: string,
   ascending?: boolean,

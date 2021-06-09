@@ -9,14 +9,10 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import ListView from "../../../common/components/list-view/ListView";
 import { createTransaction, getTransaction } from "./actions";
-import { Transaction, Account } from "@api/model";
+import { Account, Transaction } from "@api/model";
 import { FilterGroup } from "../../../model/common/ListView";
 import TransactionsEditView from "./components/TransactionsEditView";
-import {
-  setListEditRecord,
-  clearListState,
-  getFilters,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { State } from "../../../reducers/state";
 import { getPlainAccounts } from "../accounts/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -133,7 +129,7 @@ class Transactions extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   currency: state.currency
 });
 
@@ -143,7 +139,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => {
     dispatch(getFilters("AccountTransaction"));
   },
-  getAccounts: () => dispatch(getPlainAccounts()),
+  getAccounts: () => getPlainAccounts(dispatch),
   clearListState: () => dispatch(clearListState()),
   onCreate: (transaction: Transaction) => dispatch(createTransaction(transaction))
 });

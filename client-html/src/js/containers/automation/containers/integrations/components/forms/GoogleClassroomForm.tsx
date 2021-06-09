@@ -66,7 +66,7 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, appBarContent, dirty, values, form
+     handleSubmit, onSubmit, AppBarContent, dirty, values, form
     } = this.props;
 
     const hasIdAndSecret = values && values.fields.clientId && values.fields.clientSecret;
@@ -74,8 +74,9 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
 
         <FormField name="fields.clientId" label="Client id" type="text" required fullWidth />
         <FormField name="fields.clientSecret" label="Client secret" type="text" required fullWidth />

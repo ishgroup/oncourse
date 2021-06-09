@@ -170,8 +170,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "tags":[],
         "memberships":
             [
-                {"redeemableByName":null,"productId":1008,"payments":[],"redeemableById":null,"purchasePrice":150.0,"validFrom":"2019-09-21","productName":"Membership for mergeB","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1013,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired"},
-                {"redeemableByName":null,"productId":1007,"payments":[],"redeemableById":null,"purchasePrice":60.0,"validFrom":"2019-09-21","productName":"Membership for mergeA","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1014,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired"}
+                {"redeemableByName":null,"productId":1008,"payments":[],"redeemableById":null,"purchasePrice":150.0,"validFrom":"2019-09-21","productName":"Membership for mergeB","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1013,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired","customFields":{}},
+                {"redeemableByName":null,"productId":1007,"payments":[],"redeemableById":null,"purchasePrice":60.0,"validFrom":"2019-09-21","productName":"Membership for mergeA","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1014,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired","customFields":{}}
             ], 
         "profilePicture":null,
         "relations":

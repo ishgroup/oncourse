@@ -66,7 +66,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -107,7 +108,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 

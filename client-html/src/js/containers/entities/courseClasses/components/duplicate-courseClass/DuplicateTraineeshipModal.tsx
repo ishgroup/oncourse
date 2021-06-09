@@ -6,14 +6,20 @@
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import React, {
-  useCallback, useEffect, useMemo, useRef, useState
+ useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import clsx from "clsx";
 import debounce from "lodash.debounce";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
-  reduxForm, getFormValues, FormSection, DecoratedComponentClass, InjectedFormProps, change, initialize
+  change,
+  DecoratedComponentClass,
+  FormSection,
+  getFormValues,
+  initialize,
+  InjectedFormProps,
+  reduxForm
 } from "redux-form";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Dialog from "@material-ui/core/Dialog";
@@ -24,10 +30,10 @@ import Grid from "@material-ui/core/Grid/Grid";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
- ClassCost, CourseClassDuplicate, Account, Tax
+ Account, ClassCost, CourseClassDuplicate, Tax
 } from "@api/model";
 import {
- addDays, differenceInDays, getHours, getMinutes, getSeconds, getMilliseconds
+ addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds
 } from "date-fns";
 import { Typography } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -39,8 +45,10 @@ import { getPlainAccounts } from "../../../accounts/actions";
 import { getPlainTaxes } from "../../../taxes/actions";
 import {
   clearDuplicateCourseClassesSessions,
-  duplicateCourseClass, getDuplicateCourseClassesBudget,
-  getDuplicateCourseClassesSessions, setDuplicateCourseClassesBudget
+  duplicateCourseClass,
+  getDuplicateCourseClassesBudget,
+  getDuplicateCourseClassesSessions,
+  setDuplicateCourseClassesBudget
 } from "../../actions";
 import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
@@ -541,7 +549,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
 
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
-  accounts: state.accounts.items,
+  accounts: state.plainSearchRecords.Account.items,
   values: getFormValues(DUPLICATE_TRAINEESHIP_FORM)(state),
   budget: state.courseClass.duplicateTraineeshipBudget,
   fetching: state.courseClass.timetable.fetching,
@@ -552,15 +560,15 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    duplicateCourseClass: (values: CourseClassDuplicate, onComplete) =>
-      dispatch(duplicateCourseClass(values, onComplete)),
-    getSessions: request => dispatch(getDuplicateCourseClassesSessions(request)),
-    clearTimetable: () => dispatch(clearDuplicateCourseClassesSessions()),
-    getBudget: id => dispatch(getDuplicateCourseClassesBudget(id)),
-    clearBudget: () => dispatch(setDuplicateCourseClassesBudget([])),
-    getAccounts: () => dispatch(getPlainAccounts()),
-    getTaxes: () => dispatch(getPlainTaxes())
-  });
+  duplicateCourseClass: (values: CourseClassDuplicate, onComplete) =>
+    dispatch(duplicateCourseClass(values, onComplete)),
+  getSessions: request => dispatch(getDuplicateCourseClassesSessions(request)),
+  clearTimetable: () => dispatch(clearDuplicateCourseClassesSessions()),
+  getBudget: id => dispatch(getDuplicateCourseClassesBudget(id)),
+  clearBudget: () => dispatch(setDuplicateCourseClassesBudget([])),
+  getAccounts: () => getPlainAccounts(dispatch),
+  getTaxes: () => dispatch(getPlainTaxes())
+});
 
 export default reduxForm({
   form: DUPLICATE_TRAINEESHIP_FORM,

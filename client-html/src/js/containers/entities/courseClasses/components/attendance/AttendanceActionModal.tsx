@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import {
-  reduxForm, getFormValues, InjectedFormProps, submit
+  reduxForm, getFormValues, InjectedFormProps, Form
 } from "redux-form";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -330,7 +330,6 @@ const getDifferenceInMinutes = (start: string, end: string): number => {
 
 const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedFormProps> = ({
   changeType,
-  dispatch,
   reset,
   setAttendanceChangeType,
   fetching,
@@ -338,7 +337,9 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
   values,
   sessions,
   change,
-  tutors
+  tutors,
+  handleSubmit,
+  onSubmit
 }) => {
   const [hasError, setHasError] = useState(false);
 
@@ -348,10 +349,6 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
   const onClose = useCallback(() => {
     setAttendanceChangeType(null);
     reset();
-  }, []);
-
-  const handleSubmit = useCallback(() => {
-    dispatch(submit(ATTENDANCE_COURSE_CLASS_FORM));
   }, []);
 
   const bindedSession = useMemo(() => sessions.find(s => s.id === values.sessionId), [values.sessionId]);
@@ -376,25 +373,27 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
       disableRestoreFocus
     >
       <DialogContent>
-        {isStudent && (
-          <StudentAttendanceContent
-            change={change}
-            values={values}
-            sessionDuration={sessionDuration}
-            bindedSession={bindedSession}
-            setHasError={setHasError}
-          />
-        )}
-        {isTutor && (
-          <TutorAttendanceContent
-            change={change}
-            values={values}
-            tutors={tutors}
-            sessionDuration={sessionDuration}
-            bindedSession={bindedSession}
-            setHasError={setHasError}
-          />
-        )}
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          {isStudent && (
+            <StudentAttendanceContent
+              change={change}
+              values={values}
+              sessionDuration={sessionDuration}
+              bindedSession={bindedSession}
+              setHasError={setHasError}
+            />
+          )}
+          {isTutor && (
+            <TutorAttendanceContent
+              change={change}
+              values={values}
+              tutors={tutors}
+              sessionDuration={sessionDuration}
+              bindedSession={bindedSession}
+              setHasError={setHasError}
+            />
+          )}
+        </Form>
       </DialogContent>
 
       <DialogActions className="p-3">

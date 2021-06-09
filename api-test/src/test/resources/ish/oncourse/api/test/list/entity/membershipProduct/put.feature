@@ -91,7 +91,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "corporatePasses":[{"id":1001,"contactFullName":"company #1"}],
         "membershipDiscounts":[{"discountId":1001,"discountName":"discount1","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 
@@ -189,7 +190,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/membershipProd
         "corporatePasses":[],
         "membershipDiscounts":[],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 

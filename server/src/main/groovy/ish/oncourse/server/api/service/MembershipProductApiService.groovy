@@ -22,14 +22,15 @@ import ish.oncourse.server.api.dao.DiscountDao
 import ish.oncourse.server.api.dao.DiscountMembershipDao
 import ish.oncourse.server.api.dao.DiscountMembershipRelationTypeDao
 import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.MembershipProductDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import ish.oncourse.server.api.v1.function.MembershipProductFunctions
-
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
@@ -71,6 +72,9 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
     private CorporatePassProductDao corporatePassProductDao
 
     @Inject
+    private FieldConfigurationSchemeDao fieldConfigurationSchemeDao
+
+    @Inject
     private ProductDao productDao
 
     @Inject
@@ -110,6 +114,7 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
                     EntityRelationDao.getRelatedTo(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestToEntityRelation(it) })
             membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
             membershipProductDTO
         }
     }
@@ -124,17 +129,22 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
 
     @Override
     MembershipProduct toCayenneModel(MembershipProductDTO membershipProductDTO, MembershipProduct membershipProduct) {
+        ObjectContext context = membershipProduct.context
+
         membershipProduct.name = trimToNull(membershipProductDTO.name)
         membershipProduct.sku = trimToNull(membershipProductDTO.code)
         membershipProduct.description = trimToNull(membershipProductDTO.description)
         membershipProduct.priceExTax = toMoneyValue(membershipProductDTO.feeExTax)
-        membershipProduct.tax = taxDao.getById(membershipProduct.context, membershipProductDTO.taxId.toLong())
+        membershipProduct.tax = taxDao.getById(context, membershipProductDTO.taxId.toLong())
         membershipProduct.taxAdjustment = calculateTaxAdjustment(toMoneyValue(membershipProductDTO.totalFee), membershipProduct.priceExTax, membershipProduct.tax.rate)
         membershipProduct.expiryType = expiryTypeMap.getByValue(membershipProductDTO.expiryType)
         membershipProduct.expiryDays = membershipProductDTO.expiryDays
-        membershipProduct.incomeAccount = accountDao.getById(membershipProduct.context, membershipProductDTO.incomeAccountId.toLong())
+        membershipProduct.incomeAccount = accountDao.getById(context, membershipProductDTO.incomeAccountId.toLong())
         membershipProduct.isOnSale = membershipProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE || membershipProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE
         membershipProduct.isWebVisible = membershipProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE
+        membershipProduct.fieldConfigurationScheme = membershipProductDTO.dataCollectionRuleId ?
+                fieldConfigurationSchemeDao.getById(membershipProduct.context, membershipProductDTO.dataCollectionRuleId) :
+                null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
         membershipProduct

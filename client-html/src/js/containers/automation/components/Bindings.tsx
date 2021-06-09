@@ -241,7 +241,7 @@ const Bindings = React.memo<BindingsProps>( props => {
 
       {defaultVariables && defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" />)}
 
-      <FieldArray name={name} component={itemsRenderer} />
+      <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange/>
     </div>
   );
 });

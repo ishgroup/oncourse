@@ -274,6 +274,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   items={this.getItems("Enrolment") || []}
                   margin="none"
                   className={classes.selectField}
+                  fullWidth
                   required
                 />
               </Grid>
@@ -288,6 +289,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   items={this.getItems("Survey") || []}
                   margin="none"
                   className={classes.selectField}
+                  fullWidth
                 />
               </Grid>
 
@@ -299,6 +301,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   items={this.getItems("Application") || []}
                   margin="none"
                   className={classes.selectField}
+                  fullWidth
                   required
                 />
               </Grid>
@@ -312,6 +315,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   items={this.getItems("Payer") || []}
                   margin="none"
                   className={classes.selectField}
+                  fullWidth
                 />
               </Grid>
 
@@ -323,6 +327,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   items={this.getItems("WaitingList") || []}
                   margin="none"
                   className={classes.selectField}
+                  fullWidth
                   required
                 />
               </Grid>
@@ -336,6 +341,49 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   items={this.getItems("Parent") || []}
                   margin="none"
                   className={classes.selectField}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <FormField
+                  type="select"
+                  name="productFormName"
+                  label="Product"
+                  allowEmpty
+                  items={this.getItems("Product") || []}
+                  margin="none"
+                  className={classes.selectField}
+                  fullWidth
+                  required
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <FormField
+                  type="select"
+                  name="voucherFormName"
+                  label="Voucher"
+                  allowEmpty
+                  items={this.getItems("Voucher") || []}
+                  margin="none"
+                  className={classes.selectField}
+                  fullWidth
+                  required
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <FormField
+                  type="select"
+                  name="membershipFormName"
+                  label="Membership"
+                  allowEmpty
+                  items={this.getItems("Membership") || []}
+                  margin="none"
+                  className={classes.selectField}
+                  fullWidth
+                  required
                 />
               </Grid>
             </Grid>

@@ -15,6 +15,7 @@ enum:
 - license.accesscontrol
 - account.default.studentEnrolments.id
 - account.default.voucherLiability.id
+- account.default.voucherUnderpayment.id
 - account.invoice.terms
 - replication.enabled
 - avetmiss.identifier

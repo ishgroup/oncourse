@@ -1,3 +1,11 @@
+/*
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import React, { useEffect, useMemo, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import clsx from "clsx";
@@ -16,6 +24,7 @@ interface Props {
   values: EnrolmentExtended;
   onChangeStatus: any;
   classes: any;
+  hasGrades: boolean;
   index: number;
   onToggleGrade: (elem: EnrolmentAssessmentExtended, grade: GradingItem) => void;
   onChangeGrade: (value: number, elem: EnrolmentAssessmentExtended) => void;
@@ -31,6 +40,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
     values,
     onChangeStatus,
     classes,
+    hasGrades,
     index,
     onToggleGrade,
     onChangeGrade,
@@ -82,7 +92,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
       <Grid item xs={3} className="d-inline-flex-center pl-1">
         {elem.name}
       </Grid>
-      <Grid item xs={Boolean(gradeType) ? 3 : 6} className={classes.center}>
+      <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
         {submitStatus === "Submitted"
           ? (
             <EditInPlaceDateTimeField
