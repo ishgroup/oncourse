@@ -11,4 +11,4 @@ Feature: Main feature for all GET requests with path '/datacollection/form'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
+        And match karate.sizeOf(response) == 19

@@ -25,7 +25,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 17
+        And match karate.sizeOf(response) == 20
         And match response[*].name contains 'Survey#9'
 
         * def id = get[0] response[?(@.name == 'Survey#9')].id
@@ -35,7 +35,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
+        And match karate.sizeOf(response) == 19
         And match response[*].name !contains 'Survey#9'
 
 
@@ -116,7 +116,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 22
+        And match karate.sizeOf(response) == 26
         And match response[*].name contains ['Enrolment#123', 'Application#123', 'WaitingList#123', 'Survey#123', 'Payer#123', 'Parent#123']
 
         * def someDataCollectionRuleArray =
