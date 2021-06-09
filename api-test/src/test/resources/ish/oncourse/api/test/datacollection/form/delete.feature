@@ -111,7 +111,6 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 26
         And match response[*].name contains ['Enrolment#123', 'Application#123', 'WaitingList#123', 'Survey#123', 'Payer#123', 'Parent#123']
 
         * def someDataCollectionRuleArray =
@@ -159,7 +158,6 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathRule
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 8
         And match response[*].name contains ['someRule#1', 'someRule#2', 'someRule#3', 'someRule#4', 'someRule#5', 'someRule#6']
 #       <--->
 
@@ -217,7 +215,6 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathRule
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains ['someRule#1', 'someRule#2', 'someRule#3', 'someRule#4', 'someRule#5', 'someRule#6']
 
         * call read('../../removeEntity.feature') {path: '#(ishPathForm)', entityName: 'Enrolment#123'}
@@ -230,6 +227,5 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
         And match response[*].name !contains ['Enrolment#123', 'Application#123', 'WaitingList#123', 'Survey#123', 'Payer#123', 'Parent#123']
 #       <--->

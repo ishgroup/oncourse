@@ -40,7 +40,6 @@ Feature: Main feature for all PUT requests with path 'datacollection/form'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 17
         And match response[*].name contains 'Survey#7_UPD'
         And match response[*].name !contains 'Survey#7'
 
@@ -61,6 +60,5 @@ Feature: Main feature for all PUT requests with path 'datacollection/form'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
         And match response[*].name !contains ['Survey#7', 'Survey#7_UPD']
 
