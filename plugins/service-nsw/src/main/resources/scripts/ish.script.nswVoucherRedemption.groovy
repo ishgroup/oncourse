@@ -1,10 +1,10 @@
 records = query {
-    entity "Voucher"
-    query "serviceNswVoucher not is null and serviceNswRedeemedOn is null"
+    entity "CustomField"
+    query "entityIdentifier = \"Voucher\" and customFieldType.key is \"serviceNswVoucher\""
 }
 
-records.each { record ->
-    PaymentInLine paymentInLine = record.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
+records.findAll { it.relatedObject.serviceNswRedeemedOn == null}.each { voucherCustomField ->
+    PaymentInLine paymentInLine = voucherCustomField.relatedObject.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
     if (paymentInLine?.invoice?.invoiceLines?.collect { it.enrolment.courseClass.startDateTime}?.unique()?.any {it < new Date() }) {
         service_nsw {
             action "redeem"
