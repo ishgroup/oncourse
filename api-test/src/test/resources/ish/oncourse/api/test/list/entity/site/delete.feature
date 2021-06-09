@@ -228,25 +228,3 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
         When method DELETE
         Then status 400
         And match response.errorMessage == "Site with id:99999 doesn't exist"
-
-
-    Scenario: (-) Delete site without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete site with NULL as ID
-
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
-
-
-    Scenario: (-) Delete site without path
-
-        Given path ishPath
-        When method DELETE
-        Then status 405
-

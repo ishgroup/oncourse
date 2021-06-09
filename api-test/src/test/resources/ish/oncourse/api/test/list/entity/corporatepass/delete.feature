@@ -189,19 +189,4 @@ Feature: Main feature for all DELETE requests with path 'list/entity/corporatepa
         When method DELETE
         Then status 400
         And match response.errorMessage == "CorporatePass with id:99999 doesn't exist"
-
-
-
-    Scenario: (-) Delete Corporate Pass without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
-
-
-    Scenario: (-) Delete Corporate Pass with NULL as ID
-
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
+        

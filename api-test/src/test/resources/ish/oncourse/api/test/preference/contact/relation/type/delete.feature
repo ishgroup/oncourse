@@ -57,12 +57,6 @@ Feature: Main feature for all DELETE requests with path 'preference/contact/rela
         And match response.errorMessage == "Contact relation type is not exist"
 
 
-    Scenario: (-) Delete ContactRelationType without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
-
     Scenario: (-) Delete ContactRelationType with null ID
         Given path ishPath + '/null'
         When method DELETE

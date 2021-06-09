@@ -53,12 +53,7 @@ Feature: Main feature for all DELETE requests with path '/datacollection/rule'
         When method DELETE
         Then status 400
         And match response.errorMessage == "The data collection rule 100000 is not exist"
-    
-    
-    Scenario: (-) Delete datacollection rule without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
+        
     
     
     Scenario: (-) Delete datacollection rule with null ID

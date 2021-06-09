@@ -87,16 +87,6 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         Then status 400
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
 
-
-
-    Scenario: (-) Get PriorLearning without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
-
-
-
     Scenario: (+) Get PriorLearning by notadmin
 
 #       <----->  Add a new entity to update and define its id:

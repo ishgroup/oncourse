@@ -156,11 +156,4 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         When method GET
         Then status 400
         And match $.errorMessage == "CorporatePass with id:9999 doesn't exist"
-
-
-
-    Scenario: (-) Get Corporate Pass without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
+        
