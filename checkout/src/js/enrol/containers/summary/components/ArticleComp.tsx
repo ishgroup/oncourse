@@ -86,7 +86,7 @@ class ArticleComp extends React.Component<Props, State> {
           form={`${article.contactId}-${article.productId}`}
           onSubmit={() => undefined}
           initialValues={getFormInitialValues(article.fieldHeadings)}
-          onUpdate={form => onChangeFields(form, 'waitingLists')}
+          onUpdate={form => onChangeFields(form, 'articles')}
         />}
       </div>
     );

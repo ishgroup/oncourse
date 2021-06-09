@@ -44,7 +44,7 @@ class MembershipComp extends React.Component<Props, any> {
           form={`${membership.contactId}-${membership.productId}`}
           onSubmit={() => undefined}
           initialValues={getFormInitialValues(membership.fieldHeadings)}
-          onUpdate={form => onChangeFields(form, 'waitingLists')}
+          onUpdate={form => onChangeFields(form, 'memberships')}
         />}
       </div>
     );

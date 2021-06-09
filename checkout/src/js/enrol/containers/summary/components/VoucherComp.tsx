@@ -118,7 +118,7 @@ class VoucherComp extends React.PureComponent<Props, State> {
           form={`${voucher.contactId}-${voucher.productId}`}
           onSubmit={() => undefined}
           initialValues={getFormInitialValues(voucher.fieldHeadings)}
-          onUpdate={form => onChangeFields(form, 'waitingLists')}
+          onUpdate={form => onChangeFields(form, 'vouchers')}
         />}
       </div>
     );

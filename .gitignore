@@ -35,4 +35,4 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 /portal-native/.expo/
-/portal/application.properties
+**/application.properties
