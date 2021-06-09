@@ -363,14 +363,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
 
 
 
-    Scenario: (-) Delete Application without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
-
-
     Scenario: (-) Delete Application with NULL as ID
 
         Given path ishPath + '/null'

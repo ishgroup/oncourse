@@ -65,15 +65,6 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
         And match $.errorMessage == "WaitingList with id:9999 doesn't exist"
 
 
-
-    Scenario: (-) Get waitingList without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
-
-
-
     Scenario: (+) Get list of all waitingLists by notadmin with access rights
 
 #       <--->  Login as notadmin

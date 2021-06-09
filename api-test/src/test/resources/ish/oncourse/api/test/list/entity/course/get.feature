@@ -54,14 +54,6 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
 
 
 
-    Scenario: (-) Get Course without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
-
-
-
     Scenario: (+) Get list of all Courses by notadmin
 
 #       <--->  Login as notadmin

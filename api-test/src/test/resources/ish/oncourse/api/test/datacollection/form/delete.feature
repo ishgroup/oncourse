@@ -52,12 +52,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         When method DELETE
         Then status 400
         And match response.errorMessage == "The data collection form 100000 is not exist"
-
-
-    Scenario: (-) Delete DataCollectionForm without ID
-        Given path ishPathForm
-        When method DELETE
-        Then status 405
+        
 
 
     Scenario: (-) Delete DataCollectionForm with null ID

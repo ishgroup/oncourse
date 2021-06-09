@@ -201,11 +201,3 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         When method GET
         Then status 400
         And match $.errorMessage == "Discount with id:9999 doesn't exist"
-
-
-
-    Scenario: (-) Get existing discount without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405

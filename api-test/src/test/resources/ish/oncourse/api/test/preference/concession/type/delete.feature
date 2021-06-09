@@ -35,13 +35,6 @@ Feature: Main feature for all DELETE requests with path 'preference/concession/t
         Then status 400
         And match response.errorMessage == "Concession type id is incorrect. It must consist of only numbers"
         
-        
-    Scenario: (-) Delete concession type without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-        
-        
     Scenario: (-) Delete not existing concession type 
         Given path ishPath + '100000'
         When method DELETE
