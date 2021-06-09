@@ -32,7 +32,7 @@ jobs:
           paths_ignore: '["client-html/**", "api-doc/**"]'
 
       - name: Setup timezone
-        uses: zcong1993/setup-timezone@v1
+        uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
 
