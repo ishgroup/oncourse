@@ -46,6 +46,15 @@ class CustomFieldUpdater extends AbstractAngelUpdater<CustomFieldStub, CustomFie
 			case COURSE_CLASS_ENTITY_NAME:
 				relatedObject = callback.updateRelationShip(stub.getForeignId(), CourseClass.class)
 				break
+			case ARTICLE_ENTITY_NAME:
+				relatedObject = callback.updateRelationShip(stub.getForeignId(), Article.class)
+				break
+			case MEMBERSHIP_ENTITY_NAME:
+				relatedObject = callback.updateRelationShip(stub.getForeignId(), Membership.class)
+				break
+			case VOUCHER_ENTITY_NAME:
+				relatedObject = callback.updateRelationShip(stub.getForeignId(), Voucher.class)
+				break
 			default:
 				def message = String.format("Unexpected related entity with type %s and willowId %s",
 						stub.getEntityName(), stub.getForeignId())
