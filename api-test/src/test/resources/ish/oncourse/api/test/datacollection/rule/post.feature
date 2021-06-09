@@ -50,7 +50,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains 'someRule#1'
 
         Given path ishPath
@@ -61,7 +60,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 3
         And match response[?(@.name=='someRule#1')].enrolmentFormName contains "Waiting list form (Enrolment)"
         And match response[?(@.name=='someRule#1')].applicationFormName contains "Default Field form (Application)"
         And match response[?(@.name=='someRule#1')].waitingListFormName contains "Accredited course enrolment form (Waiting List)"
@@ -76,7 +74,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains 'someRule#1'
 
         Given path 'datacollection/form'
@@ -108,7 +105,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 3
         And match response[*].name contains 'someRule#1'
 #       <--->
 
@@ -130,7 +126,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 4
         * def id1 = get[0] response[?(@.name == 'someRule#1')].id
         * def id2 = get[0] response[?(@.name == 'someRule#2')].id
 
@@ -140,7 +135,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains ['someRule#1', 'someRule#2']
 
 
