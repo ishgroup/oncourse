@@ -50,7 +50,8 @@ Feature: Main feature for all POST requests with path 'list/entity/priorLearning
         "notes":"some notes",
         "contactId":18,
         "contactName":"stud12",
-        "outcomeIdTrainingOrg":"123"
+        "outcomeIdTrainingOrg":"123",
+        "progression":null
         }
         """
 
@@ -158,7 +159,8 @@ Feature: Main feature for all POST requests with path 'list/entity/priorLearning
         "notes":"some notes",
         "contactId":18,
         "contactName":"stud12",
-        "outcomeIdTrainingOrg":"123"
+        "outcomeIdTrainingOrg":"123",
+        "progression":null
         }
         """
 
