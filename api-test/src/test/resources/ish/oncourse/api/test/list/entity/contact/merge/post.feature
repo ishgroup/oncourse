@@ -100,9 +100,9 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1006,"createdOn":"#ignore","sentOn":null,"subject":"a","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1007,"createdOn":"#ignore","sentOn":null,"subject":"b","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1013,"createdOn":"#ignore","sentOn":null,"subject":"a","creatorKey":null,"status":"Queued","type":"Email"}
+            {"messageId":1006,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1007,"createdOn":"#ignore","sentOn":"#ignore","subject":"b","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1013,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"Queued","type":"Email"}
             ],
         "rules":[{"id":"1001","description":"bbbbb-bb","startDate":"2019-09-20","endDate":"2019-10-01","startDateTime":null,"endDateTime":null,"repeat":"year","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]
         }
@@ -272,8 +272,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1011,"createdOn":"#ignore","sentOn":null,"subject":"co1","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1012,"createdOn":"#ignore","sentOn":null,"subject":"co2","creatorKey":null,"status":"Queued","type":"Email"}
+            {"messageId":1011,"createdOn":"#ignore","sentOn":"#ignore","subject":"co1","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1012,"createdOn":"#ignore","sentOn":"#ignore","subject":"co2","creatorKey":null,"status":"Queued","type":"Email"}
             ],
         "rules":[{"id":"1003","description":"Co2","startDate":"2019-09-20","endDate":"2019-09-20","startDateTime":null,"endDateTime":null,"repeat":"month","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2019-08-01","created":"#ignore","modified":"#ignore"}]
         }
@@ -402,9 +402,9 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1008,"createdOn":"#ignore","sentOn":null,"subject":"ta","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1009,"createdOn":"#ignore","sentOn":null,"subject":"tB","creatorKey":null,"status":"Queued","type":"Email"},
-            {"messageId":1010,"createdOn":"#ignore","sentOn":null,"subject":"tb2","creatorKey":null,"status":"Queued","type":"Email"}
+            {"messageId":1008,"createdOn":"#ignore","sentOn":"#ignore","subject":"ta","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1009,"createdOn":"#ignore","sentOn":"#ignore","subject":"tB","creatorKey":null,"status":"Queued","type":"Email"},
+            {"messageId":1010,"createdOn":"#ignore","sentOn":"#ignore","subject":"tb2","creatorKey":null,"status":"Queued","type":"Email"}
             ],
         "rules":[{"id":"1002","description":"tA","startDate":null,"endDate":null,"startDateTime":"#ignore","endDateTime":"#ignore","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]}
         }
