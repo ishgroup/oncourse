@@ -44,7 +44,7 @@ Feature: Main feature for all PUT requests with path '/datacollection/rule'
         When method POST
         Then status 204
 
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#1","parentFormName":"Parent#1","surveyForms":["Survey#1", 'Survey#2']}
+        * def rule = {"name":"someRule#1","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#1","parentFormName":"Parent#1","surveyForms":["Survey#1", 'Survey#2']}
 
         Given path ishPath
         And request rule
