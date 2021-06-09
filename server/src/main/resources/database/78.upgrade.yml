@@ -283,3 +283,18 @@ databaseChangeLog:
               - column:
                   name: fieldConfigurationSchemeId
                   type: BIGINT
+  - changeSet:
+      id: 78-11
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            foreignKeyConstraintExists:
+              foreignKeyName: fk_Product_FieldConfigurationScheme
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: fieldConfigurationSchemeId
+            baseTableName: Product
+            constraintName: fk_Product_FieldConfigurationScheme
+            referencedColumnNames: id
+            referencedTableName: FieldConfigurationScheme
