@@ -1,17 +1,10 @@
 import {StyleSheet} from "react-native";
 import {SPACING_UNIT} from "../../constants/Layout";
+import {theme} from "./theme";
 
-export const spacing = (unit1: number, unit2?: number, unit3?: number, unit4?: number) => {
-  let result = `${unit1 * SPACING_UNIT}px`;
-  [unit2,unit3,unit4].forEach(u => {
-    if (typeof u === "number") {
-      result+= " " + `${u * SPACING_UNIT}px`;
-    }
-  });
-  return result;
-}
+export const spacing = (unit: number) => unit * SPACING_UNIT;
 
-export const commonStyles = StyleSheet.create({
+export const cs = StyleSheet.create({
   strong: {
     fontWeight: "bold"
   },
@@ -295,9 +288,6 @@ export const commonStyles = StyleSheet.create({
   mw400: {
     maxWidth: spacing(50)
   },
-  textReset: {
-    color: "inherit"
-  },
   textWhite: {
     color: "#fff"
   },
@@ -312,5 +302,8 @@ export const commonStyles = StyleSheet.create({
   },
   zIndex0: {
     zIndex: 0
+  },
+  colorPrimary: {
+    color: theme.colors.primary
   }
 })

@@ -1,10 +1,12 @@
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import {initMockDB} from "./apiMocks/MockAdapter";
-import {DefaultHttpService} from "./constants/HttpService";
-import LoginScreen from "./components/login/LoginScreen";
+import useCachedResources from './js/hooks/useCachedResources';
+import useColorScheme from './js/hooks/useColorScheme';
+import {initMockDB} from "./js/apiMocks/MockAdapter";
+import {DefaultHttpService} from "./js/constants/HttpService";
+import LoginScreen from "./js/components/login/LoginScreen";
+import { Provider as PaperProvider } from 'react-native-paper';
+import {theme} from "./js/common/styles";
 
 if (__DEV__) {
   initMockDB();
@@ -26,9 +28,11 @@ export default function App() {
   if (isLoadingComplete) {
     return (
       <SafeAreaProvider>
-        {/*<Navigation colorScheme={colorScheme} />*/}
-        {/*<StatusBar hidden />*/}
-        <LoginScreen />
+        <PaperProvider theme={theme}>
+          {/*<Navigation colorScheme={colorScheme} />*/}
+          {/*<StatusBar hidden />*/}
+          <LoginScreen />
+        </PaperProvider>
       </SafeAreaProvider>
     );
   } else {
