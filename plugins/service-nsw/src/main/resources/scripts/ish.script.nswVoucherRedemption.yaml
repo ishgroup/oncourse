@@ -4,4 +4,4 @@ body: ish.script.nswVoucherRedemption.groovy
 enabled: false
 triggerType: CRON
 schedule: "@daily-morning"
-description: The script is redeeming outdated vouchers
+description: For classes which have already commenced, redeem the Service NSW Voucher code against the Service NSW api. If there is an error send email to the errorsTo address or, if there is no set address in errorsTo, send to the onCourse administrator.

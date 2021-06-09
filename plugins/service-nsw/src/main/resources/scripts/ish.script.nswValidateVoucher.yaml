@@ -5,4 +5,4 @@ enabled: false
 triggerType: ENTITY_EVENT
 entityEventType: CREATE_OR_UPDATE
 entityClass: Voucher
-description: The script is checking not redemeed vouchers on they are had valid code
+description: For Service NSW vouchers which are not redeemed, validate the code against the Service NSW api. If there is a validation failure such as the code being invalid or already redeemed, send an email to the errorsTo address or to the onCourse administrator if there is no address set
