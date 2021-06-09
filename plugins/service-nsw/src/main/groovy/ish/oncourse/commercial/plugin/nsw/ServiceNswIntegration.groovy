@@ -45,6 +45,7 @@ class ServiceNswIntegration implements PluginTrait {
     private List<ApiData> apiData
     private Float amount
     private String voucherCode
+    private String emailAddress
     private Voucher voucher
 
     private static Logger logger = LogManager.logger
@@ -155,12 +156,12 @@ class ServiceNswIntegration implements PluginTrait {
             subject('Сreative kids voucher is not valid')
             content("The following voucher is not valid. Please contact the customer.\n${licenseService.currentHostName}/sale/${voucher.id}")
             from(preferenceController.emailFromAddress)
-            to(preferenceController.emailAdminAddress)
+            to(emailAddress)
         }
         throw new ServiceNswException(message)
     }
 
-    boolean init(Voucher voucher) {
+    boolean init(Voucher voucher, String emailAddress) {
         if (voucher.getCustomFieldValue("serviceNswVoucher")) {
             PaymentInLine paymentInLine = voucher.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
             paymentInLine?.invoice?.invoiceLines?.each {invoiceLine ->
@@ -174,6 +175,7 @@ class ServiceNswIntegration implements PluginTrait {
             this.amount = paymentInLine.amount.floatValue()
             this.voucherCode = voucher.getCustomFieldValue("serviceNswVoucher")
             this.voucher = voucher
+            this.emailAddress = emailAddress ?: preferenceController.emailAdminAddress
 
             return true
         }
