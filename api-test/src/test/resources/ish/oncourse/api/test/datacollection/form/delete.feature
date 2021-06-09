@@ -116,12 +116,12 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         * def someDataCollectionRuleArray =
         """
         [
-        {"name":"someRule#1","enrolmentFormName":"Enrolment#123","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
-        {"name":"someRule#2","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Application#123","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
-        {"name":"someRule#3","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"WaitingList#123"},
-        {"name":"someRule#4","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","surveyForms":["Survey#123"]},
-        {"name":"someRule#5","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#123"},
-        {"name":"someRule#6","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","parentFormName":"Parent#123"}
+        {"name":"someRule#1","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Enrolment#123","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
+        {"name":"someRule#2","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Application#123","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
+        {"name":"someRule#3","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"WaitingList#123"},
+        {"name":"someRule#4","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","surveyForms":["Survey#123"]},
+        {"name":"someRule#5","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#123"},
+        {"name":"someRule#6","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","parentFormName":"Parent#123"}
         ]
         """
 
