@@ -81,7 +81,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
         "notes":"some notes UPD",
         "contactId":16,
         "contactName":"stud10",
-        "outcomeIdTrainingOrg":"456"
+        "outcomeIdTrainingOrg":"456",
+        "progression":null
         }
         """
 
@@ -355,7 +356,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
         "notes":"some notes UPD",
         "contactId":16,
         "contactName":"stud10",
-        "outcomeIdTrainingOrg":"456"
+        "outcomeIdTrainingOrg":"456",
+        "progression":null
         }
         """
 
