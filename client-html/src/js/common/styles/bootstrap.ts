@@ -190,6 +190,12 @@ export const bootstrap = (theme: AppTheme) => ({
   ".mr-1": {
     marginRight: theme.spacing(1)
   },
+  ".mr-auto": {
+    marginRight: "auto"
+  },
+  ".ml-auto": {
+    marginLeft: "auto"
+  },
   ".mb-1": {
     marginBottom: theme.spacing(1)
   },
