@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 87-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: AssessmentSubmission
+            columnName: submittedOn
+      changes:
+        - modifyDataType:
+            tableName: AssessmentSubmission
+            columnName: submittedOn
+            newDataType: DATETIME
+  - changeSet:
+      id: 87-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: AssessmentSubmission
+            columnName: markedOn
+      changes:
+        - modifyDataType:
+            tableName: AssessmentSubmission
+            columnName: markedOn
+            newDataType: DATETIME
