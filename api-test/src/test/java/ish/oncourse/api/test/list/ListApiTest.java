@@ -23,7 +23,9 @@ public class ListApiTest {
                 "classpath:ish/oncourse/api/test/list/getListOfEntityWithoutRights.feature",
                 "classpath:ish/oncourse/api/test/list/post.feature",
                 "classpath:ish/oncourse/api/test/list/postListOfEntity.feature",
-                "classpath:ish/oncourse/api/test/list/postListOfEntityWithoutRights.feature").tags("~@ignore").parallel(1);
+                "classpath:ish/oncourse/api/test/list/postListOfEntityWithoutRights.feature",
+                "classpath:ish/oncourse/api/test/list/postListOfEntityWithFilters.feature"
+                ).tags("~@ignore").parallel(1);
         Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }
 }

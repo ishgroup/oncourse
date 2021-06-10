@@ -5,11 +5,6 @@
 
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import {
-  clearCommonPlainRecords,
-  getCommonPlainRecords,
-  setCommonPlainSearch
-} from "../../../common/actions/CommonPlainRecordsActions";
-import {
  CheckoutDiscount, CheckoutItem, CheckoutSummary, CheckoutSummaryListItem
 } from "../../../model/checkout";
 
@@ -26,6 +21,7 @@ export const CHECKOUT_SET_PREVIOUS_CREDIT = "checkout/set/previous/credit";
 
 export const CHECKOUT_GET_PREVIOUS_OWING = _toRequestType("checkout/get/previous/owing");
 export const CHECKOUT_SET_PREVIOUS_OWING = "checkout/set/previous/owing";
+export const CHECKOUT_SET_PREVIOUS_OWING_PAY_DUE = "checkout/set/previous/owing/payDue";
 
 export const CHECKOUT_TOGGLE_PREVIOUS_INVOICES = "checkout/toggle/previous/invoices";
 export const CHECKOUT_UNCHECK_ALL_PREVIOUS_INVOICES = "checkout/uncheck/all/previous/invoices";
@@ -78,6 +74,11 @@ export const checkoutUncheckAllPreviousInvoice = (type: string, value: boolean) 
   payload: { type, value }
 });
 
+export const checkoutSetPreviousOwingPayDue = (value: boolean) => ({
+  type: CHECKOUT_SET_PREVIOUS_OWING_PAY_DUE,
+  payload: value
+});
+
 export const checkoutSetPreviousOwing = (items: any[]) => ({
   type: CHECKOUT_SET_PREVIOUS_OWING,
   payload: { items }
@@ -115,12 +116,12 @@ export const checkoutUpdateSummaryItem = (listIndex: number, item: CheckoutItem)
   payload: { listIndex, item }
 });
 
-export const checkoutUpdateSummaryItems = (items: {listIndex: number, itemIndex: number, item: CheckoutItem}[]) => ({
+export const checkoutUpdateSummaryItems = (items: { listIndex: number, itemIndex: number, item: CheckoutItem }[]) => ({
   type: CHECKOUT_UPDATE_SUMMARY_ITEMS,
   payload: { items }
 });
 
-export const checkoutUpdateSummaryListItems = (items: {listIndex: number, item: CheckoutSummaryListItem}[]) => ({
+export const checkoutUpdateSummaryListItems = (items: { listIndex: number, item: CheckoutSummaryListItem }[]) => ({
   type: CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS,
   payload: { items }
 });

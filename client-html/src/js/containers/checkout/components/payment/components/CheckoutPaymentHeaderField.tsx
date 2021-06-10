@@ -43,10 +43,10 @@ import {
   checkoutUpdatePromo,
   checkoutUpdateSummaryField
 } from "../../../actions/checkoutSummary";
-import { CheckoutPage } from "../../CheckoutSelection";
 import HeaderField, { HeaderFieldTypo } from "../../HeaderField";
 import SelectedPromoCodesRenderer from "../../summary/promocode/SelectedPromoCodesRenderer";
 import CheckoutPaymentPlans from "./payment-plans/CheckoutPaymentPlans";
+import { CheckoutPage } from "../../../constants";
 
 const styles = () => createStyles({
   success: {
@@ -180,18 +180,11 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
       });
     });
 
-    checkoutSummary.previousOwing.invoices.forEach(inv => {
-      if (inv.checked && inv.paymentPlans.length) {
-        inv.paymentPlans.map(({ date, ...rest }) => ({ ...rest })).forEach(mergeDuplicate);
-      }
-    });
-
     plansTotal.sort((a, b) => (a.date > b.date ? 1 : -1));
 
     return plansTotal;
   }, [
-    checkoutSummary.list,
-    checkoutSummary.previousOwing.invoices
+    checkoutSummary.list
   ]);
 
   const paymentPlansTotal = useMemo(() => {
@@ -531,7 +524,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         )}
         {Boolean(checkoutSummary.previousOwing.invoices.length) && (
           <HeaderFieldTypo
-            title="Pay previous owing"
+            title={checkoutSummary.previousOwing.payDueAmounts ? "Pay previous due" : "Pay previous owing"}
             activeField={activeField}
             field={CheckoutPage.previousOwing}
             onClick={onClickPreviousOwing}
