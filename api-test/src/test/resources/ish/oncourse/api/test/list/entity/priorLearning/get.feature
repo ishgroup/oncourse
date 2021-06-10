@@ -64,13 +64,12 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         "qualificationNationalCode":"10218NAT",
         "qualificationLevel":"Certificate I in",
         "qualificationName":"Certificate I in Aboriginal Language/s v2",
-        "outcomes":[{"id":"#number","contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "outcomes":[{"id":"#number","progression":null,"contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
         "documents":"#ignore",
         "notes":"some notes",
         "contactId":18,
         "contactName":"stud12",
-        "outcomeIdTrainingOrg":"123",
-        "progression":null
+        "outcomeIdTrainingOrg":"123"
         }
         """
 
@@ -141,13 +140,12 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         "qualificationNationalCode":"10218NAT",
         "qualificationLevel":"Certificate I in",
         "qualificationName":"Certificate I in Aboriginal Language/s v2",
-        "outcomes":[{"id":"#number","contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "outcomes":[{"id":"#number","progression":null,"contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
         "documents":"#ignore",
         "notes":"some notes",
         "contactId":18,
         "contactName":"stud12",
-        "outcomeIdTrainingOrg":"123",
-        "progression":null
+        "outcomeIdTrainingOrg":"123"
         }
         """
 
