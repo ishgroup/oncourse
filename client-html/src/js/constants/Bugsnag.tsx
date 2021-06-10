@@ -7,10 +7,10 @@ import React from "react";
 import Bugsnag from "@bugsnag/browser";
 import { Client } from "@bugsnag/core";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
-import { EnvironmentConstants } from "./EnvironmentConstants";
+import { EnvironmentConstants, IS_JEST } from "./EnvironmentConstants";
 import { stubFunction } from "../common/utils/common";
 
-export const bugsnagClient = jest
+export const bugsnagClient = IS_JEST
   ? {
     setUser: stubFunction,
   } as Client
@@ -22,6 +22,6 @@ export const bugsnagClient = jest
     plugins: [new BugsnagPluginReact(React)]
   });
 
-export const ErrorBoundary = jest
+export const ErrorBoundary = IS_JEST
   ? props => <>{props.children}</>
   : bugsnagClient.getPlugin("react").createErrorBoundary(React);
