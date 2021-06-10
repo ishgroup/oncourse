@@ -105,8 +105,15 @@ class PaymentInTransactionsBuilderTest {
         Assertions.assertEquals(AccountTransactionType.PAYMENT_IN_LINE, detail.tableName)
         Assertions.assertEquals(transactionDate, detail.transactionDate)
 
-
+        VoucherPaymentIn voucherPaymentIn = mock(VoucherPaymentIn)
+        Voucher voucher = mock(Voucher)
+        VoucherProduct product = mock(VoucherProduct)
+        when(voucher.voucherProduct).thenReturn(product)
+        when(voucherPaymentIn.voucher).thenReturn(voucher)
+        when(paymentIn.voucherPayments).thenReturn([voucherPaymentIn])
+        when(product.underpaymentAccount).thenReturn(voucherExpense)
         when(paymentMethod.type).thenReturn(PaymentType.VOUCHER)
+        
         settings = PaymentInTransactionsBuilder.valueOf(paymentInLine, voucherExpense, { amountOf2Tr }).build()
         Assertions.assertTrue(settings.isInitialTransaction)
         Assertions.assertEquals(2, settings.details.size())
