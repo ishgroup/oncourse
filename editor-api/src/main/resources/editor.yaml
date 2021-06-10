@@ -254,8 +254,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/UnexpectedError'
-            
-  /page/{id}:
+
     delete:
       operationId: deletePage
       x-filter:
@@ -279,7 +278,7 @@ paths:
           schema:
             $ref: '#/definitions/UnexpectedError'
 
-  /block/{id}:
+  /block/id:
     get:
       summary: Get block
       description: |
@@ -304,29 +303,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/UnexpectedError'
-            
-    delete:
-      operationId: deleteBlock
-      x-filter:
-        - ish.oncourse.api.access.AuthFilter
-      description: Remove block
-      tags:
-        - Block
-      consumes:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: Identifier of block which will be deleted.
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Block successfully deleted
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/UnexpectedError'
+
 #################
   /block:
 #################
@@ -394,6 +371,28 @@ paths:
           schema:
             $ref: '#/definitions/UnexpectedError'
 
+    delete:
+      operationId: deleteBlock
+      x-filter:
+        - ish.oncourse.api.access.AuthFilter
+      description: Remove block
+      tags:
+        - Block
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: Identifier of block which will be deleted.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Block successfully deleted
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/UnexpectedError'
 
 #################
   /layout:
@@ -483,8 +482,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/UnexpectedError'
-  
-  /theme/{id}:
+
     delete:
       operationId: deleteTheme
       x-filter:
@@ -531,8 +529,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/UnexpectedError'
-            
-  /version/{id}:
+
     patch:
       operationId: updateVersion
       x-filter:
