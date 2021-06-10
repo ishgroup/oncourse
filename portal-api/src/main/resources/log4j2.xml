@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="30">
+    <Properties>
+        <Property name="name">willow_billing-api</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="FILE" fileName="${sys:logs.path}/${name}.log" filePattern="${sys:logs.path}/${name}.log.%i">
+            <JsonLayout compact="true" eventEol="true"/>
+            <SizeBasedTriggeringPolicy size="10M"/>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
+        <RollingFile name="FILE_ERROR" fileName="${sys:logs.path}/${name}-error.log"
+                     filePattern="${sys:logs.path}/${name}-error.log.%i">
+            <JsonLayout compact="true" eventEol="true"/>
+            <SizeBasedTriggeringPolicy size="10M"/>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="warn">
+            <AppenderRef ref="FILE" level="warn"/>
+            <AppenderRef ref="FILE_ERROR" level="error"/>
+        </Root>
+        <Logger name="ish.oncourse.util.log.LogAppInfo" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="ish.oncourse.services.site.ScriptExecutor" level="info">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+    </Loggers>
+</Configuration>
