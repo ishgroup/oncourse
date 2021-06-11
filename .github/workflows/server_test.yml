@@ -91,12 +91,12 @@ jobs:
 
     services:
       mysql:
-       image: mysql:8.0
+       image: mariadb:10.4
        env:
          MYSQL_ALLOW_EMPTY_PASSWORD: yes
          MYSQL_DATABASE: angelTest_trunk
        ports:
-         - 3306
+         - 30000:3306
        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -135,7 +135,7 @@ jobs:
 
       - name: Integration tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
+        run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:30000/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
 
       - name: Build coverage report
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
