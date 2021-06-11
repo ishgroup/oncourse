@@ -20,7 +20,7 @@ const request: EpicUtils.Request = {
     items.forEach(i => {
       const merged = mergeInvoicePaymentPlans(i.paymentPlans) as any;
       i.paymentPlans = merged;
-      i.nextDue = merged.find(m => m.date > today)?.amount || i.amountOwing;
+      i.nextDue = i.overdue || merged.find(m => m.date > today)?.amount || i.amountOwing;
     });
 
     return [
