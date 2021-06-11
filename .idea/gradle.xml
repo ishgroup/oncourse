@@ -40,6 +40,8 @@
             <option value="$PROJECT_DIR$/editor" />
             <option value="$PROJECT_DIR$/editor-api" />
             <option value="$PROJECT_DIR$/portal" />
+            <option value="$PROJECT_DIR$/portal-api" />
+            <option value="$PROJECT_DIR$/portal-native" />
             <option value="$PROJECT_DIR$/search" />
             <option value="$PROJECT_DIR$/services" />
             <option value="$PROJECT_DIR$/usi" />

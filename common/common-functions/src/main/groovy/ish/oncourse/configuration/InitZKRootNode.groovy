@@ -15,19 +15,20 @@ class InitZKRootNode {
     public static final String REINDEX_LOCK_NODE = '/willow/reindexLock'
     public static final String BILLING_SESSIONS_NODE = '/willow/billing'
     public static final String WEB_PUBLISH = '/willow/publish'
-    
+    public static final String PORTAL_SESSIONS_NODE = '/willow/portal'
+
     private String zkHostPort
 
     private Logger logger = LogManager.logger
 
     private InitZKRootNode() {}
-    
+
     static InitZKRootNode valueOf(String zkHostPort) {
         InitZKRootNode initializer = new InitZKRootNode()
         initializer.zkHostPort = zkHostPort
-        
+
         initializer
-    } 
+    }
 
     void init() {
         ZooKeeper keeper = new ZooKeeper(zkHostPort, 20000, {e -> logger.info(e)})
@@ -50,6 +51,9 @@ class InitZKRootNode {
         }
         if (keeper.exists(BILLING_SESSIONS_NODE, false) == null) {
             keeper.create(BILLING_SESSIONS_NODE, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
+        }
+        if (keeper.exists(PORTAL_SESSIONS_NODE, false) == null) {
+            keeper.create(PORTAL_SESSIONS_NODE, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
         }
         if (keeper.exists(WEB_PUBLISH, false) == null) {
             keeper.create(WEB_PUBLISH, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)

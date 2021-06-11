@@ -13,7 +13,7 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="admin" target="1.8" />
       <module name="admin_main" target="1.8" />
       <module name="admin_test" target="1.8" />
