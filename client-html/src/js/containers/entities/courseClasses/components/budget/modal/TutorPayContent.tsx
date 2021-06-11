@@ -21,8 +21,8 @@ import { PayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import {
   formatCurrency,
-  normalizeNumberToZero,
   formatFieldPercent,
+  normalizeNumberToZero,
   parseFieldPercent,
   preventNegativeOrLogEnter
 } from "../../../../../../common/utils/numbers/numbersNormalizing";
@@ -95,14 +95,16 @@ const TutorPayContent: React.FC<Props> = ({
         classValues.maximumPlaces,
         classValues.budgetedPlaces,
         classValues.successAndQueuedEnrolmentsCount,
-        classValues.sessions
+        classValues.sessions,
+        classValues.tutorAttendance
       ).projected,
     [
       values,
       classValues.maximumPlaces,
       classValues.budgetedPlaces,
       classValues.successAndQueuedEnrolmentsCount,
-      classValues.sessions
+      classValues.sessions,
+      classValues.tutorAttendance
     ]
   );
 
