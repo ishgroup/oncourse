@@ -150,6 +150,16 @@ subprojects {
 			}
 		}
 	}
+
+	jacocoTestReport {
+		reports {
+			xml.enabled true
+			csv.enabled false
+			html.enabled false
+		}
+	}
+
+
 }
 
 task testReport(type: TestReport) {

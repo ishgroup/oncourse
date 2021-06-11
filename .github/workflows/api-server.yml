@@ -58,3 +58,15 @@ jobs:
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root
+
+      - name: Run tests
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew api-test:jacocoTestReport
+
+      - name: Upload coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: api
+          directory: api-test/build/reports/jacoco/test

@@ -56,6 +56,18 @@ jobs:
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
 
+      - name: Build coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew server:jacocoTestReport
+
+      - name: Upload coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: junit
+          directory: server/build/reports/jacoco/test
+
 
   server-integrations:
     runs-on: ubuntu-latest
@@ -112,3 +124,14 @@ jobs:
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
 
+      - name: Build coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew server:jacocoTestReport
+
+      - name: Upload coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: integration
+          directory: server/build/reports/jacoco/test
