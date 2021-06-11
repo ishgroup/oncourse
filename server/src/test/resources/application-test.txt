@@ -6,9 +6,8 @@ jetty:
 
 jdbc:
   angel-test:
-    url: jdbc:mysql://127.0.0.1:3306/angelTest_trunk
+    url: ${dbUrl}
     username: root
-    password: X3f8kVjj
     driverClassName: org.mariadb.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1
@@ -23,9 +22,8 @@ jdbc:
     jmxEnabled: true
 
   angel-test-creation:
-    url: jdbc:mysql://127.0.0.1:3306/angelTest_trunk
+    url: ${dbUrl}
     username: root
-    password: X3f8kVjj
     driverClassName: org.mariadb.jdbc.Driver
     testWhileIdle: true
     validationQuery: SELECT 1
