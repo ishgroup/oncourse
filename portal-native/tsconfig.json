@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "rootDirs": [
+      "src/js",
+      "src/assets",
+      "build/generated-sources"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@api/model": ["build/generated-sources/api.ts"],
+    },
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
     "lib": [

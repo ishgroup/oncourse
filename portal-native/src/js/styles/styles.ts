@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {SPACING_UNIT} from "../../constants/Layout";
+import {SPACING_UNIT} from "../constants/Layout";
 import {theme} from "./theme";
 
 export const spacing = (unit: number) => unit * SPACING_UNIT;

@@ -4,7 +4,7 @@
  * */
 
 import axiosMockAdapter from "axios-mock-adapter";
-import {defaultAxios} from "../constants/DefaultHttpClient";
+import {defaultAxios} from "../js/constants/DefaultHttpClient";
 import {LoginApiMock} from "./api/LoginApiMock";
 import {promiseReject} from "./utils";
 

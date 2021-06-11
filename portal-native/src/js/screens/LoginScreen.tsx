@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react";
 import {Image, View, StyleSheet, Animated } from "react-native";
 import { TextInput, Card, Headline, Switch, Caption, Button } from 'react-native-paper';
-import {cs, spacing, theme} from "../../common/styles";
+import {cs, spacing, theme} from "../styles";
 
 const styles = StyleSheet.create({
   root: {
@@ -81,7 +81,7 @@ const LoginScreen = () => {
       <View style={styles.loginContainerWrapper}
       >
         <Image
-          source={require("../../../assets/images/ish-onCourse-icon-192.png")}
+          source={require("../../assets/images/ish-onCourse-icon-192.png")}
           style={styles.logo}
         />
         <View

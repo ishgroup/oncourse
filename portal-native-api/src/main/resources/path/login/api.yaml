@@ -1,0 +1,20 @@
+put:
+  summary: Get Authentication
+  operationId: login
+  tags:
+    - Authentication
+  parameters:
+    - name: details
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/LoginRequest.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request
+      schema:
+        $ref: './def/entity/ErrorResponse.yaml'
+    default:
+      description: Unexpected error
