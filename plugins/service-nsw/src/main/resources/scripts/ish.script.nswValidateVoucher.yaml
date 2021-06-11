@@ -6,3 +6,7 @@ triggerType: ENTITY_EVENT
 entityEventType: CREATE_OR_UPDATE
 entityClass: Voucher
 description: For Service NSW vouchers which are not redeemed, validate the code against the Service NSW api. If there is a validation failure such as the code being invalid or already redeemed, send an email to the errorsTo address or to the onCourse administrator if there is no address set
+options:
+  - name: emailAddress
+    dataType: TEXT
+    value: ""
