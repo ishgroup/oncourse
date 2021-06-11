@@ -1,0 +1,24 @@
+90990NSW/A  ADVANCED GRAMMAR FOR FURTHER EDUCATION                                                              120103Y0030
+90990NSW/B  SPEAKING SKILLS FOR FURTHER EDUCATION                                                               120103Y0030
+90990NSW/C  READING SKILLS FOR FURTHER EDUCATION                                                                120103Y0030
+CHCAC10A    DEVELOP A SERVICE DELIVERY STRATEGY                                                                 090507Y0000
+CHCAC11A    SAFEGUARD THE RIGHTS AND NEEDS OF AGED PEOPLE                                                       090507Y0000
+CHCAC12A    PROVIDE SERVICES TO MEET AGED PEOPLE'S PERSONAL NEEDS                                               090507Y0000
+CHCAC13A    COORDINATE WORK IN THE AGED CARE SECTOR                                                             090507Y0000
+CHCAC15A    PROVIDE CARE SUPPORT WHICH IS RESPONSIVE TO THE SPECIFIC NATURE OF DEMENTIA                         090507Y0000
+CHCAC16A    PROVIDE FOOD SERVICES                                                                               110111Y0000
+CHCAC17A    SUPPORT THE OLDER PERSON TO MAINTAIN THEIR INDEPENDENCE                                             090507Y0000
+CHCAC1A     PROVIDE CARE SUPPORT TO AGED PEOPLE                                                                 090507Y0000
+CHCAC2A     ASSIST WITH AGED PEOPLE'S PERSONAL NEEDS                                                            090507Y0000
+CHCAC2C     PROVIDE PERSONAL CARE                                                                               090507Y0000
+CHCCHILD1A  WORK WITHIN LEGISLATIVE AND ETHICAL REQUIREMENTS                                                    091103Y0000
+CHCCHILD2A  SUPPORT THE RIGHTS AND SAFETY OF CHILDREN WITHIN DUTY OF CARE REQUIREMENTS                          091103Y0000
+CHCCHILD301ASUPPORT BEHAVIOUR OF CHILDREN AND YOUNG PEOPLE                                                      090505Y0000
+CHCCHILD3A  PROMOTE THE SAFETY, WELL-BEING AND WELFARE OF CHILDREN, YOUNG PEOPLE AND THEIR FAMILIES             090501Y0000
+CHCCHILD401AIDENTIFY AND RESPOND TO CHILDREN AND YOUNG PEOPLE AT RISK                                           090505Y0000
+ICAA4041A   DETERMINE AND CONFIRM CLIENT BUSINESS EXPECTATIONS AND NEEDS                                        020305Y0000
+ICAA4047A   DETERMINE PROJECT SPECIFICATIONS AND SECURE CLIENT AGREEMENT                                        020305Y0000
+ICAA4142A   DESIGN A WEBSITE TO MEET TECHNICAL REQUIREMENTS                                                     020305Y0000
+ICAA5044A   DEVELOP SYSTEM INFRASTRUCTURE DESIGN PLAN                                                           020305Y0000
+ISH1        WORDPROCESSING ESSENTIALS                                                                           129999Y0000
+ISH203      SWF SO YOU WANT TO BE A FLORIST?                                                                    129999Y0000

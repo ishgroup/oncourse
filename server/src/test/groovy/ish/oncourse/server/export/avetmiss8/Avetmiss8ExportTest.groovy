@@ -40,6 +40,12 @@ class Avetmiss8ExportTest extends TestWithDatabase {
     }
 
     @Test
+    void testNotAssessed() throws Exception {
+        AvetmissExportResult runner = createTestRunner(ExportJurisdiction.PLAIN, startYear, endYear, false, null, false)
+        verifyOutput(runner, "notAssessed")
+    }
+
+    @Test
     void test2() throws Exception {
         def runner = createTestRunner(ExportJurisdiction.PLAIN, true, OutcomeStatus.STATUS_NO_RESULT_QLD)
         verifyOutput(runner, "test2")
@@ -47,7 +53,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
 
     @Test
     void partialSubmission() throws Exception {
-        def runner = createTestRunner(ExportJurisdiction.PLAIN, startYear, midYear, true, OutcomeStatus.STATUS_NO_RESULT_QLD)
+        def runner = createTestRunner(ExportJurisdiction.PLAIN, startYear, midYear, true, OutcomeStatus.STATUS_NO_RESULT_QLD, true)
         verifyOutput(runner, "partialSubmission")
     }
 
@@ -112,19 +118,19 @@ class Avetmiss8ExportTest extends TestWithDatabase {
     }
 
     private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction) {
-        return createTestRunner(jurisdiction, startYear, endYear, false, null)
+        return createTestRunner(jurisdiction, startYear, endYear, false, null, true)
     }
 
     private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, Boolean isVET) {
-        return createTestRunner(jurisdiction, startYear, endYear, isVET, null)
+        return createTestRunner(jurisdiction, startYear, endYear, isVET, null, true)
     }
 
     private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, Boolean isVET, OutcomeStatus defaultOutcome) {
-        return createTestRunner(jurisdiction, startYear, endYear, isVET, defaultOutcome)
+        return createTestRunner(jurisdiction, startYear, endYear, isVET, defaultOutcome, true)
     }
 
     
-    private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, LocalDate localStartDate, LocalDate localEndDate, Boolean isVET, OutcomeStatus defaultOutcome) {
+    private AvetmissExportResult createTestRunner(ExportJurisdiction jurisdiction, LocalDate localStartDate, LocalDate localEndDate, Boolean isVET, OutcomeStatus defaultOutcome, Boolean ignoreAssessments) {
 
         List<AvetmissExport> fees = AvetmissExport.values()
                 .findAll { avetmissExport -> !isVET || AvetmissExport.AVETMISS_NON_VET != avetmissExport } as List
@@ -147,7 +153,7 @@ class Avetmiss8ExportTest extends TestWithDatabase {
                 defaultOutcome,
                 LocalDate.now().plusDays(7),
                 localEndDate,
-                true,
+                ignoreAssessments,
                 outcomes*.id)
     }
 
