@@ -18,6 +18,8 @@ import org.apache.commons.lang.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import java.time.LocalDate
+
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.POST
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
@@ -152,30 +154,45 @@ class ServiceNswIntegration implements PluginTrait {
     }
 
     private void interruptException(String message) {
+        sendEmail("The following voucher is not valid. Please contact the customer.\n${licenseService.currentHostName}/sale/${voucher.id}")
+        throw new ServiceNswException(message)
+    }
+
+    private void sendEmail(String message) {
         emailService.email {
             subject('Сreative kids voucher is not valid')
-            content("The following voucher is not valid. Please contact the customer.\n${licenseService.currentHostName}/sale/${voucher.id}")
+            content(message)
             from(preferenceController.emailFromAddress)
             to(emailAddress)
         }
-        throw new ServiceNswException(message)
     }
 
     boolean init(Voucher voucher, String emailAddress) {
         if (voucher.getCustomFieldValue("serviceNswVoucher")) {
-            PaymentInLine paymentInLine = voucher.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
-            paymentInLine?.invoice?.invoiceLines?.each {invoiceLine ->
-                String pin = invoiceLine.enrolment.student.contact.birthDate?.collect {it ->
-                    StringUtils.leftPad(it.dayOfMonth.toString(), 2, '0') + StringUtils.leftPad(it.month.value.toString(), 2, '0')
-                }[0]
-                String postCode = invoiceLine.enrolment.courseClass.room.site.postcode
-
-                apiData << new ApiData(pin, postCode)
-            }
-            this.amount = paymentInLine.amount.floatValue()
             this.voucherCode = voucher.getCustomFieldValue("serviceNswVoucher")
             this.voucher = voucher
             this.emailAddress = emailAddress ?: preferenceController.emailAdminAddress
+
+            PaymentInLine paymentInLine = voucher.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
+            if (paymentInLine) {
+                paymentInLine.invoice.invoiceLines.each { invoiceLine ->
+                    LocalDate birthDate = invoiceLine.enrolment.student.contact.birthDate
+                    if (birthDate == null) {
+                        sendEmail("Birthday date wasn't specified. Please contact the customer.\n" +
+                                "${licenseService.currentHostName}/contact/${invoiceLine.enrolment.student.contact.id}")
+                        throw new IllegalArgumentException("Birthday date wasn't specified. ContactId: ${invoiceLine.enrolment.student.contact.id}")
+                    }
+                    String pin = birthDate.collect { it ->
+                        StringUtils.leftPad(it.dayOfMonth.toString(), 2, '0') + StringUtils.leftPad(it.month.value.toString(), 2, '0')
+                    }.first()
+                    String postCode = invoiceLine.enrolment.courseClass.room.site.postcode
+
+                    apiData << new ApiData(pin, postCode)
+                }
+                setAmount(paymentInLine.amount.floatValue())
+            } else {
+                setAmount(voucher.valueRemaining.floatValue())
+            }
 
             return true
         }
@@ -211,6 +228,13 @@ class ServiceNswIntegration implements PluginTrait {
             type.dataType = DataType.DATE_TIME
             type.isMandatory = false
         }
+    }
+
+    private void setAmount(float amount) {
+        if (amount < 100f) {
+            amount = 100f
+        }
+        this.amount = amount
     }
 
     String getVoucherCode() {
