@@ -52,15 +52,28 @@ jobs:
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
 
+      - name: Build types coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew types:jacocoTestReport
+
+      - name: Upload types coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: types
+          directory: types/build/reports/jacoco/test
+
+
       - name: Server unit tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
 
-      - name: Build coverage report
+      - name: Build server coverage report
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:jacocoTestReport
 
-      - name: Upload coverage to Codecov
+      - name: Upload server coverage to Codecov
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         uses: codecov/codecov-action@v1
         with:
