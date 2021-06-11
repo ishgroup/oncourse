@@ -9,8 +9,12 @@ import { getCustomColumnsMap } from "../../../common/utils/common";
 import { CheckoutContact, CheckoutCourse, CheckoutEnrolmentCustom } from "../../../model/checkout";
 import { addContact, checkoutAddEnrolments } from "../actions";
 import { checkoutUpdateSummaryPrices } from "../actions/checkoutSummary";
-import { CheckoutPage } from "../components/CheckoutSelection";
-import { CHECKOUT_CONTACT_COLUMNS, CHECKOUT_COURSE_CLASS_COLUMNS, CheckoutCurrentStep } from "../constants";
+import {
+  CHECKOUT_CONTACT_COLUMNS,
+  CHECKOUT_COURSE_CLASS_COLUMNS,
+  CheckoutCurrentStep,
+  CheckoutPage
+} from "../constants";
 import CheckoutService from "../services/CheckoutService";
 import { checkoutCourseClassMap, checkoutCourseMap } from "./index";
 import uniqid from "../../../common/utils/uniqid";

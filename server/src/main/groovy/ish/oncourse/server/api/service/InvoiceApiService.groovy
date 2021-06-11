@@ -442,6 +442,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
             dto.invoiceNumber = invoice.invoiceNumber
             dto.invoiceDate = invoice.invoiceDate
             dto.dateDue = invoice.dateDue
+            dto.overdue = invoice.overdue.toBigDecimal()
             dto.amountOwing = invoice.amountOwing.toBigDecimal()
             dto.paymentPlans.addAll([toRestPaymentPlan(invoice)])
             dto.paymentPlans.addAll(invoice.invoiceDueDates.collect { toRestPaymentPlan(it) }.sort { it.date })

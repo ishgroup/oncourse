@@ -51,7 +51,6 @@ import { mockSites } from "./data/entities/sites";
 import { mockRooms } from "./data/entities/rooms";
 import { mockCourseClasses } from "./data/entities/courseClasses";
 import { mockTimetable } from "./data/timetable";
-
 import { mockCurrency } from "./data/currency";
 import { mockColumnsSettings } from "./data/columns";
 import { mockTimezones } from "./data/timezones";
@@ -96,8 +95,6 @@ import { mockCheckout } from "./data/checkout";
 import { mockGradingTypes } from "./data/preference/grading";
 import { mockSecurityRoles } from "./data/security/roles";
 import { mockSecurityUsers } from "./data/security/users";
-
-export const CreateMockDB = (): MockDB => new MockDB();
 
 export class MockDB {
   integrations: any;
@@ -360,3 +357,5 @@ export class MockDB {
     return this[entity];
   }
 }
+
+export const CreateMockDB = (): MockDB => new MockDB();
