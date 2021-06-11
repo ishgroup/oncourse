@@ -11,6 +11,7 @@ import Content from "../../../../common/components/layout/Content";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { openInternalLink } from "../../../../common/utils/links";
+import { AvetmissExportSettingsReqired } from "../../../../model/preferences";
 
 interface Props {
   opened: boolean;
@@ -50,8 +51,9 @@ const AvetmissExportModalForm: React.FC<Props> = props => {
   }, []);
 
   const customAvetmissExportSettings = useCallback(
-    ({ flavour }: AvetmissExportSettings) => ({
+    ({ flavour, noAssessment }: AvetmissExportSettings): AvetmissExportSettingsReqired => ({
       flavour,
+      noAssessment,
       [entity === "CourseClass" ? "classIds" : "enrolmentIds"]: selection
     }),
     [selection]
