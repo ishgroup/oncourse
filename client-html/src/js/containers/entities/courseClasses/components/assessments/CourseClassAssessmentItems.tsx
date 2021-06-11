@@ -14,7 +14,7 @@ import { change, Field } from "redux-form";
 import {
   Grid, FormControlLabel, IconButton, Typography
 } from "@material-ui/core";
-import { differenceInDays, format } from "date-fns";
+import { differenceInDays } from "date-fns";
 import {
   AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
@@ -27,7 +27,6 @@ import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
 import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import SubmissionModal from "./SubmissionModal";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import styles from "./styles";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import CourseClassAssessmentStudent from "./CourseClassAssessmentStudent";
@@ -58,7 +57,7 @@ export interface StudentForRender {
 
 type TickType = "Submitted" | "Marked";
 
-const today = format(new Date(), YYYY_MM_DD_MINUSED);
+const today = new Date().toISOString();
 
 const CourseClassAssessmentItems: React.FC<Props> = props => {
   const {
@@ -405,7 +404,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               title={title}
               onSave={onPickerClose}
               onClose={() => setModalOpenedBy(null)}
-              selectDefault={modalProps[2] === "all" ? today : modalProps[0] === "Submitted"
+              selectDefault={modalProps[2] === "all" || modalProps[0] === "Submitted"
                 ? null
                 : row?.submissions[modalProps[1]]?.markedById}
               dateDefault={modalProps[2] === "all" ? today : modalProps[0] === "Submitted"

@@ -8,17 +8,14 @@
 
 import React, { useEffect, useState } from "react";
 import { AssessmentSubmission, GradingItem, GradingType } from "@api/model";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
+import {
+ Grid, IconButton, Typography, withStyles
+} from "@material-ui/core";
 import DateRange from "@material-ui/icons/DateRange";
-import { format } from "date-fns";
-import { withStyles } from "@material-ui/core/styles";
 import { Dispatch } from "redux";
 import {
  arrayInsert, arrayRemove, change, WrappedFieldArrayProps
 } from "redux-form";
-import Typography from "@material-ui/core/Typography";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import styles from "../../courseClasses/components/assessments/styles";
 import SubmissionModal from "../../courseClasses/components/assessments/SubmissionModal";
 import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
@@ -34,7 +31,7 @@ interface Props {
   twoColumn: boolean;
 }
 
-const today = format(new Date(), YYYY_MM_DD_MINUSED);
+const today = new Date().toISOString();
 
 const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
