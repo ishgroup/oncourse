@@ -59,9 +59,9 @@ jobs:
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:30000/angel_api_test?user=root
 
-      - name: Run tests
+      - name: Build coverage report
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew api-test:jacocoTestReport
+        run: ./gradlew api-test:jacocoTestReport server:jacocoTestReport
 
       - name: Upload coverage to Codecov
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
@@ -69,4 +69,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: api
-          directory: api-test/build/reports/jacoco/test
+          files: server/build/reports/jacoco/test/jacocoTestReport.xml,api-test/build/reports/jacoco/test/jacocoTestReport.xml
