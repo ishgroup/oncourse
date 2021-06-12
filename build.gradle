@@ -131,7 +131,7 @@ subprojects {
 
 		systemProperties 'java.awt.headless': 'true',
 		    'java.locale.providers': 'COMPAT,SPI'
-		maxHeapSize = '2G'
+		maxHeapSize = '3000M'
 		maxParallelForks = 1
 		ignoreFailures = true
 
