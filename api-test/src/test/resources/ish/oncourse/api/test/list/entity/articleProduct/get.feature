@@ -116,10 +116,3 @@ Feature: Main feature for all GET requests with path 'list/entity/articleProduct
         Then status 400
         And match $.errorMessage == "Record with id = '9999' doesn't exist."
 
-
-
-    Scenario: (-) Get ArticleProduct without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405

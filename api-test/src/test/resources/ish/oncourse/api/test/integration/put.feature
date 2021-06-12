@@ -76,35 +76,6 @@ Feature: Main feature for all PUT requests with path 'integration'
         * call read('../removeEntity.feature') {path: '#(ishPath)', entityName: 'updatedName'}
 
 
-
-    Scenario: (-) Update integration name setting 'id' only in body
-#       Prepare new integration to update it
-#       <--->
-        * def integration = {name: 'someName', type: 6}
-        Given path ishPath
-        And request integration
-        When method POST
-        Then status 204
-#       <--->
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match response[*].name contains 'someName'
-        And match response[*].name !contains 'updatedName'
-        * def id = get[0] response[?(@.name == 'someName')].id
-
-        * def integrationToUpdate = {id: '#(id)', name: 'updatedName', type: 6}
-        Given path ishPath + '/'
-        And request integrationToUpdate
-        When method PUT
-        Then status 405
-
-#       Scenario have been finished. Now find and remove created object from DB
-        * call read('../removeEntity.feature') {path: '#(ishPath)', entityName: 'someName'}
-
-
-
     Scenario: (+) Update integration name setting different 'ids' in body and in path
 #       Prepare new integrations to update
 #       <--->

@@ -17,7 +17,7 @@ Feature: Main feature for all DELETE requests with path '/datacollection/rule'
 
 #       Prepare new data collection rule to delete it
 #       <--->
-        * def rule = {name: 'someName', enrolmentFormName: 'Non-accredited course enrolment form (Enrolment)', applicationFormName: 'Application form (Application)', waitingListFormName: 'Waiting list form (Waiting List)'}
+        * def rule = {name: 'someName', enrolmentFormName: 'Non-accredited course enrolment form (Enrolment)', applicationFormName: 'Application form (Application)', waitingListFormName: 'Waiting list form (Waiting List)', productFormName: 'Default Field form (Product)', voucherFormName: 'Default Field form (Voucher)', membershipFormName: 'Default Field form (Membership)'}
         Given path ishPath
         And request rule
         When method POST
@@ -53,12 +53,7 @@ Feature: Main feature for all DELETE requests with path '/datacollection/rule'
         When method DELETE
         Then status 400
         And match response.errorMessage == "The data collection rule 100000 is not exist"
-    
-    
-    Scenario: (-) Delete datacollection rule without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
+        
     
     
     Scenario: (-) Delete datacollection rule with null ID

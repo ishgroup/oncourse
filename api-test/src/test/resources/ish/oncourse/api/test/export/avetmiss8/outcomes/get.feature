@@ -11,7 +11,7 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8/outcomes'
 
 
 
-    Scenario: (+) Get passed outcomes/enrolments by admin
+    Scenario: (+) Get passed outcomes/enrolments by admin, commenced outcomes now 'Started not assessed'
 
         * def filtersSettings =
         """
@@ -43,7 +43,7 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8/outcomes'
         And match $ contains
         """
         [
-        {"ids":"#present","type":"outcome","status":"in progress","category":"Commenced"},
+        {"ids":"#present","type":"outcome","status":"in progress","category":"Started (not assessed)"},
         {"ids":"#present","type":"enrolment","status":"in progress","category":"Commenced"}
         ]
         """

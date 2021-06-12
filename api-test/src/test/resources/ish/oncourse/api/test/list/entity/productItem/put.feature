@@ -590,63 +590,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/sales'
 
 
 
-    Scenario: (-) Update delivered Article sale
-
-#       <---> Change not editable fields:
-        * def productItemToUpdate =
-        """
-        {
-        "id":1002,
-        "productId":1001,
-        "productType":"Product",
-        "productName":"product1_upd",
-        "purchasedById":15,
-        "purchasedByName":"stud9",
-        "purchasedOn":"2020-07-20",
-        "expiresOn":null,
-        "purchasePrice":80.00,
-        "status":"Active",
-        "payments":[],
-        "validFrom":null,
-        "valueRemaining":null,
-        "voucherCode":null,
-        "redeemableById":null,
-        "redeemableByName":null,
-        "customFields":{}
-        }
-        """
-
-        Given path ishPath + '/1002'
-        And request productItemToUpdate
-        When method PUT
-        Then status 400
-        And match $.errorMessage == "Only ProductItem with active status can be modified."
-
-
-
-    Scenario: (-) Update expired Membership sale
-
-#       <---> Change not editable fields:
-        * def productItemToUpdate = {"id":1003,"productId":1003,"productType":"Membership","productName":"Membership#1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2018-07-22","expiresOn":"2020-05-05","purchasePrice":50.00,"status":"Active","payments":[],"validFrom":null,"valueRemaining":null,"voucherCode":null,"redeemableById":null,"redeemableByName":null}
-
-        Given path ishPath + '/1003'
-        And request productItemToUpdate
-        When method PUT
-        Then status 400
-        And match $.errorMessage == "Only ProductItem with active status can be modified."
-
-
-
-    Scenario: (-) Update expired Voucher sale
-
-#       <---> Change not editable fields:
-        * def productItemToUpdate = {"id":1004,"productId":1002,"productType":"Voucher","productName":"voucherType1","purchasedById":14,"purchasedByName":"stud8","purchasedOn":"2018-05-22","expiresOn":"2019-01-21","purchasePrice":50.00,"status":"Expired","payments":[],"validFrom":null,"valueRemaining":"1 classes","voucherCode":"2zMEaTEr","redeemableById":15,"redeemableByName":"stud8"}
-
-        Given path ishPath + '/1004'
-        And request productItemToUpdate
-        When method PUT
-        Then status 400
-        And match $.errorMessage == "Only ProductItem with active status can be modified."
 
 
 

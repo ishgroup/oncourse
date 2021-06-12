@@ -171,10 +171,3 @@ Feature: Main feature for all GET requests with path 'list/entity/account'
         Then status 400
         And match $.errorMessage == "Account with id:9999 doesn't exist"
 
-
-
-    Scenario: (-) Get existing account without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405

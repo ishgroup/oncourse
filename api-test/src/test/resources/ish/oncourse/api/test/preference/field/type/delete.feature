@@ -39,12 +39,6 @@ Feature: Main feature for all DELETE requests with path 'preference/field/type'
         And match response.errorMessage == "Custom field type is not exist"
 
 
-    Scenario: (-) Delete fieldType without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
-
     Scenario: (-) Delete fieldType with null ID
         Given path ishPath + '/null'
         When method DELETE

@@ -11,15 +11,18 @@
  */
 
 apply plugin: 'java'
+ext {
+    karateVersion = '0.9.6'
+}
 
 dependencies {
     implementation 'org.dbunit:dbunit:2.6.0'
     implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
     testImplementation "com.sun.activation:javax.activation:$javaxActivationVersion"
-    testImplementation 'com.intuit.karate:karate-junit4:0.9.6'
-    testImplementation 'com.intuit.karate:karate-jersey:0.9.6'
-    testImplementation 'com.intuit.karate:karate-core:0.9.6'
+    testImplementation "com.intuit.karate:karate-junit5:$karateVersion"
+    testImplementation "com.intuit.karate:karate-jersey:$karateVersion"
+    testImplementation "com.intuit.karate:karate-core:$karateVersion"
     testImplementation 'org.glassfish.jersey.connectors:jersey-jetty-connector:2.26'
     testImplementation "org.eclipse.jetty.http2:http2-http-client-transport:$jettyVersion"
     testImplementation "org.eclipse.jetty:jetty-client:$jettyVersion"

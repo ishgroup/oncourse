@@ -208,9 +208,3 @@ Feature: Main feature for all DELETE requests with path 'list/entity/certificate
 
 
 
-    Scenario: (-) Delete Certificate without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-

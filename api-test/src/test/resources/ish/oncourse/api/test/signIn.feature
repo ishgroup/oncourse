@@ -14,7 +14,8 @@ Feature: Sign in as Admin
         And request {}
         When method PUT
 
-    Scenario: Authorize as admin
+    Scenario: Authorize as admin, clean up any intermediate client cookies
+        * configure cookies = null
         * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
         Given path 'a/v1/login'
         And request loginBody

@@ -50,8 +50,7 @@ Feature: Main feature for all PUT requests with path 'user/resetPassword'
         Given path ishPath + '/' + id
         And request {}
         When method PUT
-        Then status 400
-        And match response.errorMessage contains "Could not connect to SMTP"
+        Then status 204
 
 
 

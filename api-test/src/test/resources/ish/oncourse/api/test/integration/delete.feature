@@ -46,12 +46,7 @@ Feature: Main feature for all DELETE requests with path 'integration'
         When method DELETE
         Then status 400
         And match response.errorMessage == "Integration '100000' is not exist"
-    
-    
-    Scenario: (-) Delete integration without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
+        
     
     
     Scenario: (-) Delete integration with null ID

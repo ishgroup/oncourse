@@ -149,6 +149,11 @@ subprojects {
 				testFailed = true
 			}
 		}
+		doLast {
+			if (testFailed) {
+				throw new Exception("tests failed, exit code == 1")
+			}
+		}
 	}
 
 	jacocoTestReport {
