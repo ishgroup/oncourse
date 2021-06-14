@@ -52,9 +52,34 @@ jobs:
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
 
+      - name: Build types coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew types:jacocoTestReport
+
+      - name: Upload types coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: types
+          directory: types/build/reports/jacoco/test
+
+
       - name: Server unit tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
+
+      - name: Build server coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew server:jacocoTestReport
+
+      - name: Upload server coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: junit
+          directory: server/build/reports/jacoco/test
 
 
   server-integrations:
@@ -66,12 +91,12 @@ jobs:
 
     services:
       mysql:
-       image: mysql:8.0
+       image: mariadb:10.4
        env:
          MYSQL_ALLOW_EMPTY_PASSWORD: yes
          MYSQL_DATABASE: angelTest_trunk
        ports:
-         - 3306
+         - 30000:3306
        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -110,5 +135,16 @@ jobs:
 
       - name: Integration tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
+        run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://127.0.0.1:30000/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
 
+      - name: Build coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew server:jacocoTestReport
+
+      - name: Upload coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: integration
+          directory: server/build/reports/jacoco/test

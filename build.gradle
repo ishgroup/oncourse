@@ -1,3 +1,5 @@
+import java.security.MessageDigest
+
 /*
  * Copyright ish group pty ltd 2021.
  *
@@ -131,7 +133,7 @@ subprojects {
 
 		systemProperties 'java.awt.headless': 'true',
 		    'java.locale.providers': 'COMPAT,SPI'
-		maxHeapSize = '2G'
+		maxHeapSize = '3000M'
 		maxParallelForks = 1
 		ignoreFailures = true
 
@@ -155,6 +157,30 @@ subprojects {
 			}
 		}
 	}
+
+	jacocoTestReport {
+		reports {
+			xml.enabled true
+			csv.enabled false
+			html.enabled false
+		}
+	}
+
+	task createChecksums(dependsOn: distZip) {
+		inputs.files(distZip.outputs.files)
+		outputs.files(inputs.files.collect({ it.path + ".sha256"}))
+		doLast {
+			inputs.files.each { f ->
+				def messageDigest = MessageDigest.getInstance("SHA-256")
+				f.eachByte(1024 * 1024) { byte[] buf, int bytesRead ->
+					messageDigest.update(buf, 0, bytesRead);
+				}
+				def hash = messageDigest.digest().encodeHex().toString()
+				file(f.path + ".sha256").text = hash
+			}
+		}
+	}
+	distZip.finalizedBy(createChecksums)
 }
 
 task testReport(type: TestReport) {

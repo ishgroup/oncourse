@@ -18,7 +18,7 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: angel_api_test
         ports:
-          - 3306
+          - 30000:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -57,4 +57,16 @@ jobs:
 
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root
+        run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:30000/angel_api_test?user=root
+
+      - name: Build coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew api-test:jacocoTestReport server:jacocoTestReport
+
+      - name: Upload coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: api
+          files: server/build/reports/jacoco/test/jacocoTestReport.xml,api-test/build/reports/jacoco/test/jacocoTestReport.xml
