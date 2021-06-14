@@ -6,7 +6,7 @@ Feature: Main feature for all POST requests with path 'preference/concession/typ
         * callonce read('../../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/concession/type'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
         
     Scenario: (+) Create valid concession type

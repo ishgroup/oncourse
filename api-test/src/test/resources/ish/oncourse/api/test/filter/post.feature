@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'filter'
         * def ishPath = 'filter'
         * def ishPathLogin = 'login'
         * def ishPathTag = 'tag'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Create new custom filter by admin

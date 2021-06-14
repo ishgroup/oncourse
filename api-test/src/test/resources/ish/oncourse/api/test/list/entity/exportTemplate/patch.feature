@@ -7,7 +7,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
         * def ishPath = 'list/entity/exportTemplate'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

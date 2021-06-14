@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         * def ishPath = 'list/entity/qualification'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
         
 

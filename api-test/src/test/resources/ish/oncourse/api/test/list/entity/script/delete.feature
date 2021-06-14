@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/script' wit
         * def ishPath = 'list/entity/script'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
       
 
     Scenario: (-) Delete NOT existing script

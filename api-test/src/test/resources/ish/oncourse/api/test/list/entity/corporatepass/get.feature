@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         * def ishPath = 'list/entity/corporatepass'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

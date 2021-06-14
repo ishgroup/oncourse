@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/export/pdf'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathPdfTemplate = 'list/export/pdf/template'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         Given path ishPathPdfTemplate

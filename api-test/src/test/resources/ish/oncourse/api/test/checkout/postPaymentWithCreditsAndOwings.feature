@@ -4,7 +4,7 @@ Feature: performance of payment with previous credits and previous owings
   Background: Authorize first, create checkoutModel
     * callonce read('../signIn.feature')
     * url 'https://127.0.0.1:8182/a/v1'
-    * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+    
     * def ishPath = 'checkout'
     * table checkoutModelTable
       | i | payerId   | firstId   | secondId | enrolment                                                             | membershipIds                  | voucherData              | product |

@@ -9,7 +9,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         * def ishPathList = 'list'
         * def ishPathPlain = 'list/plain'
         * def ishPathCustomFieldsType = 'preference/field/type'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -5,7 +5,7 @@ Feature: Main feature for all GET requests with path '/datacollection/form'
         * callonce read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'datacollection/form'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
     Scenario: (+) Get all DataCollectionForms
         Given path ishPath

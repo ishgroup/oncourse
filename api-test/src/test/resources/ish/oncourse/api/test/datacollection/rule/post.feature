@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'datacollection/rule'
         * def datacollectionForm = 'datacollection/form'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
         
     Scenario: (+) Create datacollection rule

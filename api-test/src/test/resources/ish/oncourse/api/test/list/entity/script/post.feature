@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         * def ishPath = 'list/entity/script'
         * def ishPathPlain = 'list/plain'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
