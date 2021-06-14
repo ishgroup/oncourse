@@ -12,7 +12,7 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
     * def fun =
       """
         function(list, sum, i) {
-          if (list[i]) {
+          if (list.length && list[i]) {
             return fun(list, sum + parseFloat(list[i]), ++i)
           } else {
             return sum
