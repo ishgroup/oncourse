@@ -5,7 +5,7 @@ Feature: Main feature for all DELETE requests with path 'preference/tax'
         * callonce read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/tax'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Delete existing (not system) taxType

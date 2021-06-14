@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice/contr
         * def ishPathLogin = 'login'
         * def ishPathInvoice = 'list/entity/invoice'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

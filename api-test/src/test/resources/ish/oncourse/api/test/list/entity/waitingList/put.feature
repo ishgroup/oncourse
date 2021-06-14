@@ -8,7 +8,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         * def ishPath = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
         * def ishPathCustomFieldsType = 'preference/field/type'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

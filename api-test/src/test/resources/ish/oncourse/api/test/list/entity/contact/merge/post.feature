@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         * def ishPath = 'list/entity/contact/merge'
         * def ishPathContact = 'list/entity/contact'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

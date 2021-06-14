@@ -4,7 +4,7 @@ Feature: Main feature for all GET requests with path 'preference/timezone'
     Background:
         * callonce read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/timezone'
 

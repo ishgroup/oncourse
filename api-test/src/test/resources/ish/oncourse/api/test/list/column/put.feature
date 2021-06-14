@@ -4,7 +4,7 @@ Feature: Main feature for all PUT requests with path 'list/column'
     Background: Authorize first
         * callonce read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPath = 'list/column'
         * def ishPathList = 'list'
 

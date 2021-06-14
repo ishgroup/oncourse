@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
         * def ishPath = 'list/entity/script'
         * def ishPathList = 'list'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
   
         
     Scenario: (+) Get list of all scripts by admin

@@ -6,7 +6,7 @@ Feature: Main feature for all POST requests with path 'timetable/session'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'timetable/session'
         * def ishPathCalendar = 'timetable/calendar'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -6,7 +6,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
         
     Scenario: (+) Delete not system tag group by admin

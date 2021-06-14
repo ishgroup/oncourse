@@ -6,7 +6,7 @@ Feature: Main feature for all GET requests with path 'preference/lockedDate'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/lockedDate'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

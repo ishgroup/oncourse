@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class AccountApiTest {
     @Test
     public void test() {
-        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/entity/account",
+        Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path(  "classpath:ish/oncourse/api/test/list/entity/account",
                 "classpath:ish/oncourse/api/test/list/entity/accountTransaction").tags("~@ignore").parallel(1);
         Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }

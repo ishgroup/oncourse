@@ -8,7 +8,7 @@ Feature: Main feature for all GET requests with path 'list/export'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathTemplate = 'list/export/template'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 #       <---> Gives CSV reports id's which we will use in requests:
         Given path ishPathTemplate

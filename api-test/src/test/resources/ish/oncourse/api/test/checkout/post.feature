@@ -19,7 +19,7 @@ Feature: Main feature for all POST requests with path 'checkout'
           }
         }
       """
-    * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+    
 
 #  Scenario: Receive pre Invoice with all Invoice Line which will created after payment. Without payment method. X-validate-only
 #

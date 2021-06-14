@@ -4,7 +4,7 @@ Feature: Validations on invoices amount after payment
   Background: Authorize first, create checkoutModel
     * callonce read('../signIn.feature')
     * url 'https://127.0.0.1:8182/a/v1'
-    * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+    
     * def ishPath = 'checkout'
     * def ishPathEntity = 'list/entity/'
 

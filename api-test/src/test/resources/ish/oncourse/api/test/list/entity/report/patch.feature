@@ -7,7 +7,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/report'
         * def ishPath = 'list/entity/report'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Update system Report by notadmin with access rights
