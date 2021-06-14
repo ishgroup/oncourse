@@ -195,12 +195,12 @@ Feature: Main feature for all POST requests with path 'preference/payment/type'
         Given path ishPath
         When method GET
         Then status 200
-        And match response[*].name contains '#(existedName)'
+        And match response[*].name contains 'Cash'
         And match response[*].name contains 'someName'
 
         * def id = get[0] response[?(@.name == 'someName')].id
 
-        * def paymentTypeToUpdateArray = [{id: '#(id)', name: '#(existedName)', active: true, reconcilable: true, bankedAuto: true, accountId: "1", undepositAccountId: "1", type: "Cheque"}]
+        * def paymentTypeToUpdateArray = [{id: '#(id)', name: 'Cash', active: true, reconcilable: true, bankedAuto: true, accountId: "1", undepositAccountId: "1", type: "Cheque"}]
         Given path ishPath
         And request paymentTypeToUpdateArray
         When method POST
