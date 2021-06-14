@@ -16,7 +16,7 @@ Feature: Main feature for all PUT requests with path 'user/requireComplexPass'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == 'false'
+        And match $ == false
 
 
     Scenario: (+) Check changed requireComplexPass
@@ -30,7 +30,7 @@ Feature: Main feature for all PUT requests with path 'user/requireComplexPass'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == 'true'
+        And match $ == true
 
 #       <---> Return old value
         Given path ishPreferencePath
@@ -41,4 +41,4 @@ Feature: Main feature for all PUT requests with path 'user/requireComplexPass'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == 'false'
+        And match $ == false
