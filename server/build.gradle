@@ -314,19 +314,6 @@ publishing {
 	}
 }
 
-String sha256(String filename) {
-	if (! file(filename).exists()) return "missing file"
-
-	new ByteArrayOutputStream().withStream { result ->
-		exec {
-			executable = 'shasum' // this is only going to work on OSX
-			args = ['-a', '256', filename]
-			standardOutput = result
-		}
-		return result.toString().split()[0]
-	}
-}
-
 task queryGrammar(type: Aql) {
 	outputDir = file("${buildDir}/antlr/java/ish/oncourse/aql/impl")
 	packageDir = 'ish.oncourse.aql.impl'

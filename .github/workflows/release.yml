@@ -37,6 +37,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           name: onCourse ${{ GITHUB_REF##*v }}
-          artifacts: "server/build/distributions/onCourseServer-*.zip"
+          artifacts: "server/build/distributions/onCourseServer-*.zip", "server/build/distributions/onCourseServer-*.sha256"
           body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{ GITHUB_REF##*v }}/release-notes.html"
           token: ${{ secrets.GITHUB_TOKEN }}
