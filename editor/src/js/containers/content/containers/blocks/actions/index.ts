@@ -4,6 +4,9 @@ import {ContentMode} from "../../../../../model";
 export const GET_BLOCKS_REQUEST = _toRequestType("block/get/blocks");
 export const GET_BLOCKS_FULFILLED = FULFILLED(GET_BLOCKS_REQUEST);
 
+export const GET_BLOCK_REQUEST = "GET_BLOCK_REQUEST";
+export const GET_BLOCK_FULFILLED = "GET_BLOCK_FULFILLED";
+
 export const SAVE_BLOCK_REQUEST = _toRequestType("block/save");
 export const SAVE_BLOCK_FULFILLED = FULFILLED(SAVE_BLOCK_REQUEST);
 
@@ -19,6 +22,11 @@ export const setBlockContentMode = (id: number, contentMode: ContentMode) => ({
   type: SET_BLOCK_CONTENT_MODE,
   payload: {id, contentMode},
 });
+
+export const getBlock = (id: string) => ({
+  type: GET_BLOCK_REQUEST,
+  payload: id,
+})
 
 export const getBlocks = () => ({
   type: GET_BLOCKS_REQUEST,

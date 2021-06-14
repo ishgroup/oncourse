@@ -27,12 +27,45 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
       return ns;
     }
 
+    case GET_BLOCK_FULFILLED: {
+      const {block} = action.payload;
+
+      return {...state}
+    }
+
     case ADD_BLOCK_FULFILLED: {
       const block = {...action.payload, contentMode: CONTENT_MODES[0].id};
 
       return {
         ...state,
         items: state.items.concat(block),
+      };
+    }
+
+    case GET_BLOCK_RENDER_FULFILLED: {
+      const {newBlocks} = action.payload;
+
+      const stateBlocks = [...state.items];
+
+      for (let key in newBlocks) {
+        const DOMBlock = newBlocks[+key];
+
+        if (DOMBlock) {
+          const blockIndex = stateBlocks.findIndex((elem) => elem.id === +DOMBlock.getAttribute("data-block-id"))
+          if (blockIndex) stateBlocks[blockIndex].renderHTML = DOMBlock.innerHTML;
+        }
+      }
+
+      return {
+        ...state,
+        items: stateBlocks,
+      };
+    }
+
+    case CLEAR_BLOCK_RENDER_HTML: {
+      return {
+        ...state,
+        items: state.items.map(item => ({...item, renderHTML: ''})),
       };
     }
 

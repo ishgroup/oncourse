@@ -74,6 +74,7 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
       case "md": {
         return (
           <MarkdownEditor
+            height={window.innerHeight - 30 - 48 - 45 - 51}
             value={draftContent}
             onChange={setDraftContent}
           />

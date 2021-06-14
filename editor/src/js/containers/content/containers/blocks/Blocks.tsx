@@ -2,12 +2,20 @@ import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import clsx from "clsx";
-import {Paper} from "@material-ui/core";
+import {createStyles, makeStyles, Paper} from "@material-ui/core";
 import {getBlocks, saveBlock, setBlockContentMode} from "./actions";
 import {State} from "../../../../reducers/state";
 import {BlockState} from "./reducers/State";
 import Block from "./components/Block";
 import {ContentMode} from "../../../../model";
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    wrapper: {
+      height: "calc(100vh - 30px)",
+    }
+  }),
+);
 
 interface Props {
   blocks: BlockState[];
@@ -19,17 +27,19 @@ interface Props {
 }
 
 const Blocks: React.FC<Props> = ({match, blocks, onEditHtml, fetching, onInit, setContentMode}) => {
+  const classes = useStyles();
+
   useEffect(() => {
     onInit();
-  },        []);
+  }, []);
 
   const activeBlock = match.params.id && blocks.find(block => String(block.id) === match.params.id);
 
   return (
-    <div>
+    <>
       {activeBlock &&
         <div className={clsx((fetching && "fetching"))}>
-          <Paper className="p-3">
+          <Paper className={clsx("p-3", classes.wrapper)}>
             <Block
               block={activeBlock}
               onSave={onEditHtml}
@@ -38,7 +48,7 @@ const Blocks: React.FC<Props> = ({match, blocks, onEditHtml, fetching, onInit, s
           </Paper>
         </div>
       }
-    </div>
+    </>
   );
 };
 

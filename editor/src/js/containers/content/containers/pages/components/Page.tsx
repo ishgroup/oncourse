@@ -8,10 +8,11 @@ import PageService from "../../../../../services/PageService";
 import {addContentMarker} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import Editor from "../../../../../common/components/editor/HtmlEditor";
-import marked from "marked";
 import {ContentMode} from "../../../../../model";
 import ContentModeSwitch from "../../../../../common/components/ContentModeSwitch";
 import CustomButton from "../../../../../common/components/CustomButton";
+
+const blocksType = ["block", "flex", "grid", "table"];
 
 interface PageProps {
   page: PageState;
@@ -34,7 +35,6 @@ export const Page: React.FC<PageProps> = ({
   onSave,
   setContentMode,
 }) => {
-  const [editModeInner, setEditModeInner] = useState(false);
   const [draftContent, setDraftContent] = useState('');
 
   const onClickArea = e => {
@@ -81,7 +81,6 @@ export const Page: React.FC<PageProps> = ({
   };
 
   useEffect(( ) => {
-    setEditModeInner(false);
     setDraftContent(page.content);
   },        [page.id]);
 
@@ -114,7 +113,6 @@ export const Page: React.FC<PageProps> = ({
   };
 
   const handleCancel = () => {
-    setEditModeInner(false);
     setDraftContent(page.content);
     toggleEditMode(false);
   };
@@ -142,6 +140,8 @@ export const Page: React.FC<PageProps> = ({
       }
     }
   };
+
+  const reverse = getReverseValue(position.height, position.top);
 
   return (
     <div>

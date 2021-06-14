@@ -10,6 +10,10 @@ class BlockService {
     return this.blockApi.getBlocks();
   }
 
+  public getBlock(id: string): Promise<Block> {
+    return this.blockApi.getBlockById(id);
+  }
+
   public saveBlock(props, state: State): Promise<Block> {
     return this.blockApi.updateBlock(this.buildSaveBlockRequest(props, state));
   }
