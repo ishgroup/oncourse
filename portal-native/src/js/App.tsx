@@ -1,45 +1,49 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { registerRootComponent } from 'expo';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { StatusBar } from 'react-native';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import {initMockDB} from "../dev/MockAdapter";
-import {DefaultHttpService} from "./constants/HttpService";
-import LoginScreen from "./screens/LoginScreen";
-import { Provider as PaperProvider } from 'react-native-paper';
-import {theme} from "./styles";
-
+import { initMockDB } from '../dev/MockAdapter';
+import LoginScreen from './screens/LoginScreen';
+import { theme } from './styles';
+import store from './reducers/Store';
+import { useAppSelector } from './hooks/redux';
+import Navigation from './components/navigation';
 
 if (__DEV__) {
   initMockDB();
 }
 
-function App() {
-  const [isLogged, setIsLogged] = useState(false);
-
-  const isLoadingComplete = useCachedResources();
+const RootResolver = () => {
+  const isLogged = useAppSelector((state) => state.login.isLogged);
   const colorScheme = useColorScheme();
 
-  React.useEffect(() => {
-    (new DefaultHttpService()).GET("/v1/login/").then(r => {
-      setIsLogged(r);
-    })
-  }, [])
+  return isLogged ? (
+    <>
+      <Navigation colorScheme={colorScheme} />
+      <StatusBar hidden />
+    </>
+  ) : <LoginScreen />;
+};
 
+const App = () => {
+  const isLoadingComplete = useCachedResources();
 
   if (isLoadingComplete) {
     return (
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
-          {/*<Navigation colorScheme={colorScheme} />*/}
-          {/*<StatusBar hidden />*/}
-          <LoginScreen />
+          <Provider store={store}>
+            <RootResolver />
+          </Provider>
         </PaperProvider>
       </SafeAreaProvider>
     );
-  } else {
-    return null;
   }
-}
+  return null;
+};
 
 export default registerRootComponent(App);

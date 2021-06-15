@@ -1,21 +1,21 @@
-import {StyleSheet} from "react-native";
-import {SPACING_UNIT} from "../constants/Layout";
-import {theme} from "./theme";
+import { StyleSheet } from 'react-native';
+import { SPACING_UNIT } from '../constants/Layout';
+import { theme } from './theme';
 
 export const spacing = (unit: number) => unit * SPACING_UNIT;
 
 export const cs = StyleSheet.create({
   strong: {
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
   fontWeightNormal: {
-    fontWeight: "normal"
+    fontWeight: 'normal'
   },
   relative: {
-    position: "relative"
+    position: 'relative'
   },
   absolute: {
-    position: "absolute"
+    position: 'absolute'
   },
   left0: {
     left: 0
@@ -174,7 +174,7 @@ export const cs = StyleSheet.create({
     margin: 0
   },
   mtAuto: {
-    marginTop: "auto"
+    marginTop: 'auto'
   },
   ml0: {
     marginLeft: 0
@@ -189,71 +189,71 @@ export const cs = StyleSheet.create({
     marginBottom: 0
   },
   textUppercase: {
-    textTransform: "uppercase"
+    textTransform: 'uppercase'
   },
   overflowVisible: {
-    overflow: "visible"
+    overflow: 'visible'
   },
   overflowHidden: {
-    overflow: "hidden"
+    overflow: 'hidden'
   },
   dFlex: {
-    display: "flex"
+    display: 'flex'
   },
   flexRow: {
-    display: "flex",
-    flexDirection: "row"
+    display: 'flex',
+    flexDirection: 'row'
   },
   flexColumn: {
-    display: "flex",
-    flexDirection: "column"
+    display: 'flex',
+    flexDirection: 'column'
   },
   flexCenter: {
-    display: "flex",
-    alignItems: "center"
+    display: 'flex',
+    alignItems: 'center'
   },
   dFlexStart: {
-    display: "flex",
-    alignItems: "flex-start"
+    display: 'flex',
+    alignItems: 'flex-start'
   },
   dNone: {
-    display: "none"
+    display: 'none'
   },
   flex1: {
     flex: 1
   },
   flexNowrap: {
-    flexWrap: "nowrap"
+    flexWrap: 'nowrap'
   },
   alignItemsBaseline: {
-    alignItems: "baseline"
+    alignItems: 'baseline'
   },
   alignItemsCenter: {
-    alignItems: "center"
+    alignItems: 'center'
   },
   alignItemsStart: {
-    alignItems: "flex-start"
+    alignItems: 'flex-start'
   },
   alignItemsEnd: {
-    alignItems: "flex-end"
+    alignItems: 'flex-end'
   },
   alignContentBetween: {
-    alignContent: "space-between"
+    alignContent: 'space-between'
   },
   alignContentStart: {
-    alignContent: "flex-start"
+    alignContent: 'flex-start'
   },
   justifyContentEnd: {
-    justifyContent: "flex-end"
+    justifyContent: 'flex-end'
   },
   justifyContentStart: {
-    justifyContent: "flex-start"
+    justifyContent: 'flex-start'
   },
   justifyContentCenter: {
-    justifyContent: "center"
+    justifyContent: 'center'
   },
   justifyContentSpaceBetween: {
-    justifyContent: "space-between"
+    justifyContent: 'space-between'
   },
   op075: {
     opacity: 0.75
@@ -262,19 +262,19 @@ export const cs = StyleSheet.create({
     opacity: 0.5
   },
   textLeft: {
-    textAlign: "left"
+    textAlign: 'left'
   },
   textCenter: {
-    textAlign: "center"
+    textAlign: 'center'
   },
   h100: {
-    height: "100%"
+    height: '100%'
   },
   w100: {
-    width: "100%"
+    width: '100%'
   },
   mw100: {
-    maxWidth: "100%"
+    maxWidth: '100%'
   },
   mw800: {
     maxWidth: spacing(100)
@@ -289,7 +289,7 @@ export const cs = StyleSheet.create({
     maxWidth: spacing(50)
   },
   textWhite: {
-    color: "#fff"
+    color: '#fff'
   },
   zIndex9: {
     zIndex: 9
@@ -305,5 +305,8 @@ export const cs = StyleSheet.create({
   },
   colorPrimary: {
     color: theme.colors.primary
+  },
+  colorText: {
+    color: theme.colors.text
   }
-})
+});

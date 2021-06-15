@@ -1,7 +1,9 @@
-import {MockAdapter} from "../MockAdapter";
-import {promiseResolve} from "../utils";
+import { promiseResolve } from '../utils';
+import { MockAdapterType } from '../types';
 
-export function LoginApiMock(this: MockAdapter) {
-  this.api.onGet("/v1/login/")
-    .reply(config => promiseResolve(config, true))
+export default function LoginApiMock(this: MockAdapterType) {
+  this.api.onPut('/v1/login/')
+    .reply((config) => promiseResolve(config, true));
+  this.api.onPost('/v1/login/')
+    .reply((config) => promiseResolve(config, true));
 }
