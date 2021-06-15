@@ -306,7 +306,7 @@ Feature: Main feature for all GET requests with path 'list/export'
         When method GET
         Then status 200
         * def surveyXmlExportId = get[0] response[?(@.name == 'StudentFeedback XML export')].id
-        * print "id = " + surveyXmlExportIxx
+        * print "id = " + surveyXmlExportId 
 
         Given path ishPathTemplate
         And param entityName = 'Audit'

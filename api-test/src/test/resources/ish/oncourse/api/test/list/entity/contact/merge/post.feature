@@ -22,7 +22,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == '21'
+        And match $ == 21
 
 #       <---> Assertion:
         Given path ishPathContact + '/21'
@@ -123,7 +123,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == '23'
+        And match $ == 23
 
 #       <---> Assertion:
         Given path ishPathContact + '/23'
@@ -215,7 +215,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == '27'
+        And match $ == 27
 
 #       <---> Assertion:
         Given path ishPathContact + '/27'
@@ -329,7 +329,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         And request mergeRequest
         When method POST
         Then status 200
-        And match $ == '24'
+        And match $ == 24
 
 #       <---> Assertion:
         Given path ishPathContact + '/24'
