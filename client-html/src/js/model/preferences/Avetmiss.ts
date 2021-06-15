@@ -1,3 +1,4 @@
+import { AvetmissExportSettings } from "@api/model";
 import { PreferenceSchema } from "./PreferencesSchema";
 
 export const Address1: PreferenceSchema = {
@@ -119,3 +120,8 @@ export const showOfferedQM: PreferenceSchema = {
   mandatory: false,
   editable: true
 };
+
+export interface AvetmissExportSettingsReqired extends AvetmissExportSettings {
+  noAssessment: AvetmissExportSettings["noAssessment"];
+  flavour: AvetmissExportSettings["flavour"];
+}
