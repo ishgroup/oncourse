@@ -52,8 +52,8 @@ Feature: Validations on invoices amount after payment
     * set checkoutModel.paymentMethodId = 1
     * set checkoutModel.payNow = 50.0
     * set checkoutModel.payForThisInvoice = 50.0
-    * checkoutModel.contactNodes[0].vouchers.add({ "productId":1009, "validTo":"2021-05-07", "value":0, "restrictToPayer":false })
-    * checkoutModel.contactNodes[0].vouchers.add({ "productId":1002, "validTo":"2021-05-07", "value":50, "restrictToPayer":false })
+    * checkoutModel.contactNodes[0].vouchers.push({ "productId":1009, "validTo":"2021-05-07", "value":0, "restrictToPayer":false })
+    * checkoutModel.contactNodes[0].vouchers.push({ "productId":1002, "validTo":"2021-05-07", "value":50, "restrictToPayer":false })
 
     Given path ishPath
     And request checkoutModel
