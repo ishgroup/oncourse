@@ -64,9 +64,7 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
     And set checkoutModel.payForThisInvoice = currentOwing
     And set checkoutModel.paymentMethodId = 1
     * if (contactId == 18) checkoutModel.previousInvoices = { 37: 750 }
-
-    * print checkoutModel
-
+    
     Given path ishPath
     And request checkoutModel
     And header xValidateOnly = false
