@@ -227,7 +227,7 @@ Feature: Main feature for all POST requests with path 'holiday'
         * print "id = " + id
 #       <--->
 
-       * def holidayToUpdateArray = [{id:"#(id)","description":"UPD#1upd","startDateTime":"2020-02-12T11:41:56.719Z","endDateTime":"2020-02-12T12:41:56.719Z","repeatEnd":"onDate","repeat":"day","repeatEndAfter":0,"repeatOn":"2021-02-12","startDate":null,"endDate":null}]
+       * def holidayToUpdateArray = [{id:"#(id)","description":"UPD#1upd","startDateTime":"2020-02-12T11:00:00.000Z","endDateTime":"2020-02-12T12:00:00.000Z","repeatEnd":"onDate","repeat":"day","repeatEndAfter":0,"repeatOn":"2021-02-12","startDate":null,"endDate":null}]
 
         Given path ishPath
         And request holidayToUpdateArray
@@ -241,7 +241,7 @@ Feature: Main feature for all POST requests with path 'holiday'
         """
             [{
             "repeatEnd":"onDate",
-            "startDateTime":"2020-02-12T11:41:57.000Z",
+            "startDateTime":"2020-02-12T11:00:00.000Z",
             "endDate":null,
             "created":"#ignore",
             "repeat":"day",
@@ -249,7 +249,7 @@ Feature: Main feature for all POST requests with path 'holiday'
             "repeatEndAfter":null,
             "modified":"#ignore",
             "id":"#ignore",
-            "endDateTime":"2020-02-12T12:41:57.000Z",
+            "endDateTime":"2020-02-12T12:00:00.000Z",
             "repeatOn":"2021-02-12",
             "startDate":null}]
         """
