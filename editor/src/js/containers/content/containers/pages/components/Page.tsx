@@ -80,7 +80,7 @@ export const Page: React.FC<PageProps> = ({
     setBlockId(0);
     setPosition(getEditorSize(pageNode.getBoundingClientRect()));
 
-    setDraftContent(page.contentMode === "md" ? page.content : marked(page.content || ""));
+    setDraftContent(page.contentMode === "html" ? marked(page.content || "") : page.content);
     toggleEditMode(true);
     getHistoryInstance().push(`/page/${page.id}`);
   };

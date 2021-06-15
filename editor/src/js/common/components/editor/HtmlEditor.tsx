@@ -18,7 +18,6 @@ interface Props {
 }
 
 const HtmlEditor = props => {
-
   const {height = "500px", value, onChange, mode = "html"} = props;
 
   return (
