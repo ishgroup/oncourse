@@ -24,14 +24,20 @@ class PageService {
     return this.pageApi.deletePage(id.toString());
   }
 
-  public getPageRender(id: number): Promise<any> {
+  public getPageRender(id: number, blockId?: number): Promise<any> {
     const instance = axios.create();
     return instance.get(`/page/${id}`).then(
       payload => {
         const template = document.createElement('div');
         template.innerHTML = payload.data;
-        const content = template.querySelector("div[class^='block-']").innerHTML;
-        return {html: content};
+
+        if (blockId) {
+          const newBlocks = template.getElementsByClassName("editor-block-class");
+          return {newBlocks};
+        } else {
+          const content = template.querySelector("div[class^='block-']").innerHTML;
+          return {html: content};
+        }
       },
       payload => Promise.reject(payload.response),
     ) as Promise<any>;

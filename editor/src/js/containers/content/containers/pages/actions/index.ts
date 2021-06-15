@@ -58,9 +58,9 @@ export const toggleEditMode = flag => ({
   payload: flag,
 });
 
-export const getPageRender = id => ({
+export const getPageRender = (id, blockId?) => ({
   type: GET_PAGE_RENDER_REQUEST,
-  payload: {id},
+  payload: {id, blockId},
 });
 
 export const clearRenderHtml = id => ({

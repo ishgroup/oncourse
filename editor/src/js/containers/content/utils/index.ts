@@ -40,3 +40,26 @@ export const getEditorModeLabel = (mode: ContentMode) => {
       return getEditorModeLabel(DEFAULT_CONTENT_MODE_ID);
   }
 };
+
+export const getEditorSize = (data) => {
+  const minHeight = 230;
+  const minWidth = 570;
+
+  const result = {
+    height: minHeight,
+    width: minWidth,
+    top: 0,
+    left: 0,
+    bottom: 0,
+  };
+
+  if (!data) return result;
+
+  if (data.height > minHeight) result.height = data.height
+  if (data.width > minWidth) result.width = data.width
+  result.top = data.top;
+  result.left = data.left;
+  result.bottom = data.bottom;
+
+  return result;
+};

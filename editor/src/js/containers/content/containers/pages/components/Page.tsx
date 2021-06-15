@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import clsx from "clsx";
-import {Paper} from "@material-ui/core";
+import {createStyles, makeStyles, Paper} from "@material-ui/core";
+import marked from "marked";
 import {PageState} from "../reducers/State";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 import PageService from "../../../../../services/PageService";
-import {addContentMarker} from "../../../utils";
+import {addContentMarker, getEditorSize} from "../../../utils";
 import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
 import Editor from "../../../../../common/components/editor/HtmlEditor";
 import {ContentMode} from "../../../../../model";
@@ -17,12 +18,23 @@ const blocksType = ["block", "flex", "grid", "table"];
 interface PageProps {
   page: PageState;
   onSave: (id, content) => void;
+  onSaveBlock: (id, html) => any;
   openPage: (url) => void;
+  blocks: any[];
+  clearBlockRenderHtml: () => void;
   toggleEditMode: (flag: boolean) => any;
   clearRenderHtml?: (id: number) => void;
   setContentMode?: (id: number, contentMode: ContentMode) => any;
   editMode?: any;
 }
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    paperWrapper: {
+      maxHeight: "100%",
+    }
+  }),
+);
 
 const pluginInitEvent = new Event("plugins:init");
 
@@ -31,29 +43,85 @@ export const Page: React.FC<PageProps> = ({
   openPage,
   toggleEditMode,
   clearRenderHtml,
+  clearBlockRenderHtml,
   editMode,
   onSave,
+  onSaveBlock,
+  blocks,
   setContentMode,
 }) => {
   const [draftContent, setDraftContent] = useState('');
+  const [topValue, setTopValue] = useState(0);
+  const [blockId, setBlockId] = useState(0);
+  const [DOMNode, setDOMNode] = useState(null);
+  const [position, setPosition] = useState({
+    height: 230,
+    width: 570,
+    top: 0,
+    left: 0,
+    bottom: 0,
+  })
 
-  const onClickArea = e => {
+  const classes = useStyles();
+
+  useEffect(() => {
+    return () => toggleEditMode(false);
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('scroll', onScroll);
+    return () => document.removeEventListener('scroll', onScroll);
+  }, [blockId]);
+
+  const onClickArea = (e, pageNode) => {
     e.preventDefault();
-    setEditModeInner(false);
+    setDOMNode(pageNode);
+    setTopValue(0);
+    setBlockId(0);
+    setPosition(getEditorSize(pageNode.getBoundingClientRect()));
+
+    setDraftContent(page.contentMode === "md" ? page.content : marked(page.content || ""));
     toggleEditMode(true);
     getHistoryInstance().push(`/page/${page.id}`);
   };
+
+  const onClickBlock = (e, DOMBlock, id) => {
+    e.preventDefault();
+    const block = blocks.filter(elem => elem.id === id)[0];
+    if (!block) return null
+    setDOMNode(DOMBlock);
+
+    setTopValue(0);
+
+    setBlockId(id);
+    setPosition(getEditorSize(DOMBlock.getBoundingClientRect()));
+    setDraftContent(block.contentMode === "md" ? block.content : marked(block.content || ""));
+
+    toggleEditMode(true);
+  }
+
+  const getReverseValue = (height, top) => {
+    const windowHeight = window.innerHeight;
+
+    return window.innerHeight - height - top < 0 && height < windowHeight;
+  }
+
+  const onScroll = () => {
+    const DOMNodeElementData = DOMNode && DOMNode.getBoundingClientRect();
+
+    if (!DOMNodeElementData) return null;
+
+    const reverse = getReverseValue(position.height, DOMNodeElementData.top);
+
+    DOMNodeElementData && reverse ? setTopValue(DOMNodeElementData.bottom) : setTopValue(DOMNodeElementData.top);
+  }
 
   useEffect(() => {
     document.dispatchEvent(pluginInitEvent);
     const pageNode = DOM.findPage(page.title);
 
-    toggleEditMode(false);
-    setEditModeInner(false);
-    setDraftContent(page.contentMode === "md" ? page.content : marked(page.content || ""));
-
     if (pageNode) {
-      pageNode.addEventListener('click', onClickArea);
+      pageNode.addEventListener('click', (e) => onClickArea(e, pageNode));
     } else {
       const defaultPageUrl = page.urls.find(url => url.isDefault);
 
@@ -68,8 +136,10 @@ export const Page: React.FC<PageProps> = ({
     }
 
     return () => {
+      toggleEditMode(false);
+
       if (pageNode) {
-        pageNode.removeEventListener('click', onClickArea);
+        pageNode.removeEventListener('click', (e) => onClickArea(e, pageNode));
       }
     };
   }, [page]);
@@ -82,13 +152,69 @@ export const Page: React.FC<PageProps> = ({
 
   useEffect(( ) => {
     setDraftContent(page.content);
-  },        [page.id]);
+  }, [page.id]);
 
   useEffect(() => {
-    if (editModeInner === false && editMode === true) {
-      setEditModeInner(true);
+    let needClining = false;
+    const DOMBlocks = DOM.findBlocks();
+
+    if (DOMBlocks) {
+      for (let key in DOMBlocks) {
+        const DOMBlock = DOMBlocks[+key];
+
+        if (DOMBlock) {
+          let displaValue = "inline";
+
+          for (let key in DOMBlock.children) {
+            const child = DOMBlock.children[+key];
+            if (!child) continue;
+
+            const styleDeclaration = window.getComputedStyle(child);
+            if (!styleDeclaration) continue;
+
+            const displayProperty = styleDeclaration.getPropertyValue('display');
+            if (blocksType.includes(displayProperty)) {
+              displaValue = "block";
+              break;
+            }
+          }
+
+          if (displaValue === "inline") DOMBlock.style.display = "inline";
+
+          DOMBlock && DOMBlock.addEventListener('click', (e) => (
+            onClickBlock(e, DOMBlock, +DOMBlock.getAttribute("data-block-id")))
+          )
+        }
+      }
     }
-  },        [editMode]);
+
+    blocks.forEach((block) => {
+      if (block.renderHTML) {
+        const nodes = document.querySelectorAll(`[data-block-id='${block.id}']`)
+
+        nodes.length && nodes.forEach((node) => {
+          node.innerHTML = block.renderHTML;
+        })
+
+        needClining = true
+      }
+    })
+
+    needClining && clearBlockRenderHtml();
+
+    return () => {
+      toggleEditMode(false);
+
+      if (DOMBlocks) {
+        for (let key in DOMBlocks) {
+          const DOMBlock = DOMBlocks[+key];
+          DOMBlock && DOMBlock.removeEventListener('click', (e) => (
+            onClickBlock(e, DOMBlock, +DOMBlock.getAttribute("data-block-id")))
+          )
+        }
+      }
+    };
+  }, [blocks]);
 
   useEffect(() => {
     if (page.renderHtml) {
@@ -109,7 +235,12 @@ export const Page: React.FC<PageProps> = ({
 
   const handleSave = () => {
     toggleEditMode(false);
-    onSave(page.id, addContentMarker(draftContent, page.contentMode));
+
+    if (blockId) {
+      onSaveBlock(blockId, addContentMarker(draftContent, page.contentMode));
+    } else {
+      onSave(page.id, addContentMarker(draftContent, page.contentMode));
+    }
   };
 
   const handleCancel = () => {
@@ -117,11 +248,12 @@ export const Page: React.FC<PageProps> = ({
     toggleEditMode(false);
   };
 
-  const renderEditor = () => {
+  const renderEditor = (height) => {
     switch (page.contentMode) {
       case "md": {
         return (
           <MarkdownEditor
+            height={height - 67 - 45}
             value={draftContent}
             onChange={setDraftContent}
           />
@@ -132,6 +264,7 @@ export const Page: React.FC<PageProps> = ({
       default: {
         return (
           <Editor
+            height={`${height - 67 - 44}px`}
             value={draftContent}
             onChange={onChangeArea}
             mode={page.contentMode}
@@ -144,23 +277,28 @@ export const Page: React.FC<PageProps> = ({
   const reverse = getReverseValue(position.height, position.top);
 
   return (
-    <div>
-      {editMode && <Paper className="p-3">
-        <div className={
-          clsx("editor-wrapper", (page.contentMode === "html" || page.contentMode === "textile") && "ace-wrapper")
-        }>
-          <ContentModeSwitch
-              contentModeId={page.contentMode}
-              moduleId={page.id}
-              setContentMode={setContentMode}
-          />
-          {renderEditor()}
-        </div>
-        <div className="mt-3">
-          <CustomButton onClick={handleCancel} styleType="cancel">Cancel</CustomButton>
-          <CustomButton onClick={handleSave} styleType="submit">Save</CustomButton>
-        </div>
-      </Paper>}
+    <div style={{width: `${position.width}px`, height: `${position.height}px`, position: "absolute",
+      top: reverse ? "auto" : `${topValue || position.top}px`, left: `${position.left}px`,
+      bottom: reverse ? `${(topValue && window.innerHeight - topValue) || window.innerHeight - position.bottom}px` : "auto"}}
+    >
+      {editMode && (
+        <Paper className={clsx("p-1 h-100", classes.paperWrapper)}>
+          <div className={
+            clsx("editor-wrapper", (page.contentMode === "html" || page.contentMode === "textile") && "ace-wrapper")
+          }>
+            <ContentModeSwitch
+                contentModeId={page.contentMode}
+                moduleId={page.id}
+                setContentMode={setContentMode}
+            />
+            {renderEditor(position.height)}
+          </div>
+          <div className="mt-3">
+            <CustomButton onClick={handleCancel} styleType="cancel" styles={"mr-2"}>Cancel</CustomButton>
+            <CustomButton onClick={handleSave} styleType="submit">Save</CustomButton>
+          </div>
+        </Paper>
+      )}
     </div>
   );
-};
+}

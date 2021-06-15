@@ -49,6 +49,10 @@ const styles: any = theme => ({
     pointerEvents: "none",
     background: "transparent",
   },
+  cmsContainerEditModePage: {
+    pointerEvents: "all",
+    background: "rgba(0, 0, 0, .4)",
+  }
 });
 
 interface Props {
@@ -79,7 +83,8 @@ const checkSlimSidebar = history => (
 );
 
 const checkViewMode = (history, pageEditMode) => (
-  history.location.pathname === '/' || (history.location.pathname.indexOf('/page/') === 0 && !pageEditMode)
+  // history.location.pathname === '/' || (history.location.pathname.indexOf('/page/') === 0 && !pageEditMode)
+  history.location.pathname === '/' || (history.location.pathname.indexOf('/page/') === 0)
 );
 
 class Cms extends React.Component<Props, any> {
@@ -139,7 +144,15 @@ class Cms extends React.Component<Props, any> {
         cursor: pointer;
       }
       #content div[class^='block-']:hover {
-        border: 1px solid red;
+        border: 1px solid #f7941d;
+      }
+      
+      #container ish[class="editor-block-class"] {
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
+      #container ish[class="editor-block-class"]:hover {
+        border: 1px solid #f7941d;
       }
     `;
 
@@ -154,7 +167,8 @@ class Cms extends React.Component<Props, any> {
           <ScopedCssBaseline/>
           <GlobalStylesProvider/>
           <div className={classes.cms}>
-            <div className={clsx(classes.cmsContainer, viewMode && classes.cmsContainerViewMode)}>
+            <div className={clsx(classes.cmsContainer, viewMode && classes.cmsContainerViewMode,
+                pageEditMode && classes.cmsContainerEditModePage)}>
               {globalSiteStyle}
               {hasBrowserWarning && <BrowserWarning />}
               <Modal {...modal} onHide={hideModal}/>

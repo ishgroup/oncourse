@@ -9,6 +9,8 @@ export const GET_BLOCK_FULFILLED = "GET_BLOCK_FULFILLED";
 
 export const SAVE_BLOCK_REQUEST = _toRequestType("block/save");
 export const SAVE_BLOCK_FULFILLED = FULFILLED(SAVE_BLOCK_REQUEST);
+export const GET_BLOCK_RENDER_FULFILLED = "GET_BLOCK_RENDER_FULFILLED";
+export const CLEAR_BLOCK_RENDER_HTML = "CLEAR_BLOCK_RENDER_HTML";
 
 export const ADD_BLOCK_REQUEST = _toRequestType("block/add");
 export const ADD_BLOCK_FULFILLED = FULFILLED(ADD_BLOCK_REQUEST);
@@ -35,6 +37,10 @@ export const getBlocks = () => ({
 export const saveBlock = (id, props, updatePageRender = false) => ({
   type: SAVE_BLOCK_REQUEST,
   payload: {id, ...props, updatePageRender},
+});
+
+export const clearBlockRenderHtml = () => ({
+  type: CLEAR_BLOCK_RENDER_HTML,
 });
 
 export const deleteBlock = id => ({

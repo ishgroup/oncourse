@@ -39,6 +39,17 @@ export class DOM {
 
     return null;
   }
+
+  static findBlocks() {
+    const blocks = document.querySelectorAll<HTMLElement>(".editor-block-class");
+
+    return blocks.length ? blocks : null;
+  }
+
+  static findBlock(id) {
+    const DOMBlock = document.getElementById(id);
+    return DOMBlock;
+  }
 }
 
 export class Browser {

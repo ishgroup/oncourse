@@ -12,6 +12,7 @@ import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 
 interface Props {
+  height?: number;
   value?: string;
   onChange?: (val: any) => void;
   setParentHeight?: (val: any) => void;
@@ -60,13 +61,13 @@ const config = {
 };
 
 const WysiwygEditor: React.FC<Props> = ({
+  height,
   value,
   onChange,
-  defaultHeight,
   setParentHeight
 }) => {
   const editorRef = useRef(null);
-  const [previewHeight, setPreviewHeight] = useState(defaultHeight);
+  const [previewHeight, setPreviewHeight] = useState(height);
 
   function storeDimensions(element) {
     element.srcElement.textHeight = element.srcElement.clientHeight;
@@ -92,15 +93,16 @@ const WysiwygEditor: React.FC<Props> = ({
     if (editorRef.current) {
       editorRef.current.editing.view.change(writer => {
         const root = editorRef.current.editing.view.document.getRoot();
-
         writer.setStyle(
           "height",
-          `${previewHeight + 1}px`,
+          `${height}px`,
+          // `${previewHeight + 1}px`,
           root,
         );
       });
     }
-  },[previewHeight, editorRef.current]);
+  },[editorRef.current]);
+  // },[previewHeight, editorRef.current]);
 
   return <CKEditor
     editor={ClassicEditor}

@@ -11,6 +11,7 @@ ace.config.set("basePath", "https://cdn.jsdelivr.net/npm/ace-builds@1.4.12/src-n
 ace.config.setModuleUrl('ace/mode/javascript_worker', "https://cdn.jsdelivr.net/npm/ace-builds@1.4.3/src-noconflict/worker-javascript.js");
 
 interface Props {
+  height?: string;
   value?: string;
   mode?: string;
   onChange?: (html) => void;
@@ -18,11 +19,12 @@ interface Props {
 
 const HtmlEditor = props => {
 
-  const {value, onChange, mode = "html"} = props;
+  const {height = "500px", value, onChange, mode = "html"} = props;
 
   return (
     <AceEditor
       mode={mode}
+      height={height}
       theme="tomorrow"
       fontSize={14}
       showPrintMargin={true}

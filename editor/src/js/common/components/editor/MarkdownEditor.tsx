@@ -10,15 +10,16 @@ import {ItalicCommandCustom} from "./components/ItalicCommand";
 import {BoldCommandCustom} from "./components/BoldCommand";
 
 interface Props {
+  height?: number;
   value?: string;
   onChange?: (html) => void;
 }
 
 const MarkdownEditor = props => {
-  const {value, onChange} = props;
+  const {value, onChange, height} = props;
 
   const [selectedTab, setSelectedTab] = useState<ReactMdeProps["selectedTab"]>("write");
-  const [previewHeight, setPreviewHeight] = useState(200);
+  const [previewHeight, setPreviewHeight] = useState(100);
 
   function storeDimensions(element) {
     element.srcElement.textHeight = element.srcElement.clientHeight;
@@ -37,11 +38,12 @@ const MarkdownEditor = props => {
       contentNode.onmousedown = storeDimensions;
       contentNode.onmouseup = onResize;
     }
-  },        []);
+  }, []);
 
   return (
     <ReactMde
       value={value}
+      maxEditorHeight={height}
       commands={{
         "header-custom": HeaderCommand,
         "bullet-list-custom": UnorderedListCommand,
@@ -60,7 +62,9 @@ const MarkdownEditor = props => {
           <WysiwygEditor
             value={markdown}
             onChange={onChange}
-            defaultHeight={previewHeight}
+            // defaultHeight={previewHeight}
+            defaultHeight={height}
+            height={height}
             setParentHeight={setPreviewHeight}
           />,
         )
@@ -71,7 +75,7 @@ const MarkdownEditor = props => {
         },
         textArea: {
           style: {
-            height: previewHeight + "px",
+            height: height + "px",
           },
         },
       }}

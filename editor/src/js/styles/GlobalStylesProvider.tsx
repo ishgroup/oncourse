@@ -492,6 +492,9 @@ const globalStyles = (theme: AppTheme) =>
       ".gridAutoFlow-column": {
         gridAutoFlow: "column"
       },
+      ".editor-block-class": {
+        display: "block",
+      },
       ...bootstrap(theme),
       ...customOSScrollbars,
       ...animateStyles
