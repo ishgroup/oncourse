@@ -203,6 +203,8 @@ task integration(type: Test) {
 	testLogging {
 		exceptionFormat = 'full'
 	}
+	
+	jvmArgs = ['-Xmx3000m','-Xms3000m']
 	dependsOn "expandConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
