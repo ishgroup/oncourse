@@ -1274,6 +1274,7 @@
 		<db-attribute name="siteId" type="BIGINT"/>
 		<db-attribute name="token" type="VARCHAR" length="16"/>
 		<db-attribute name="tokenScratchCodes" type="LONGVARCHAR" length="16777215"/>
+		<db-attribute name="sessionId" type="VARCHAR" length="256"/>
 	</db-entity>
 	<db-entity name="Tag">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -2640,6 +2641,7 @@
 		<obj-attribute name="surname" type="java.lang.String" db-attribute-path="lastName"/>
 		<obj-attribute name="token" type="java.lang.String" db-attribute-path="token"/>
 		<obj-attribute name="tokenScratchCodes" type="java.lang.String" db-attribute-path="tokenScratchCodes"/>
+		<obj-attribute name="sessionId" type="java.lang.String" db-attribute-path="sessionId"/>
 	</obj-entity>
 	<obj-entity name="Tag" className="ish.oncourse.model.Tag" dbEntityName="Tag" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>

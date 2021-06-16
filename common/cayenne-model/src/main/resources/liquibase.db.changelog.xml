@@ -519,4 +519,15 @@
 								 validate="true"/>
 	</changeSet>
 	
+	<changeSet id="43" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="sessionId" tableName="SystemUser"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="SystemUser">
+			<column name="sessionId" type="VARCHAR(256)"/>
+		</addColumn>
+	</changeSet>
+	
 </databaseChangeLog>
