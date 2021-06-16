@@ -8,6 +8,7 @@ package ish.oncourse.commercial.plugin.nsw
 import groovy.transform.CompileDynamic
 import groovyx.net.http.RESTClient
 import ish.common.types.DataType
+import ish.oncourse.commercial.plugin.nsw.ServiceNswException
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.integration.OnSave
 import ish.oncourse.server.integration.Plugin
@@ -33,6 +34,22 @@ class ServiceNswIntegration implements PluginTrait {
     private static final String VOUCHER_CODE_TYPE_KEY = "serviceNswVoucher"
     private static final String VOUCHER_REDEEMED_DATE_TYPE_KEY = "serviceNswRedeemedOn"
 
+    private static String INVALID_VOUCHER_TEMPLATE = """
+A Service NSW voucher entered into onCourse is not valid. The error message from Service NSW is:
+
+    %s
+
+Voucher: %s
+VoucherCode: %s\n
+"""
+
+    private static String PINS_ARE_NOT_APPROPRIATE_TEMPLATE = "The following students weren't a match for the voucher code above:\n"
+
+    private static String STUDENT_INFO_TEMPLATE = """
+Student: %s
+PIN: %s\n
+"""
+
     static final String URL_TEST = "https://api-psm.g.testservicensw.net"
     static final String URL = "https://api.g.service.nsw.gov.au"
     static final String BASE_URL = isTest ? URL_TEST : URL
@@ -43,7 +60,6 @@ class ServiceNswIntegration implements PluginTrait {
     String programme
     String apiKey
 
-    private Map<String, String> pinPostcode
     private List<ApiData> apiData
     private Float amount
     private String voucherCode
@@ -65,24 +81,22 @@ class ServiceNswIntegration implements PluginTrait {
     }
 
     void validate() {
-        def result = null
+        String result = null
         apiData.collect { it.pin }.toSet().each {pin ->
             logger.warn("pin:$pin, voucherCode:$voucherCode, voucherId:$voucher.id")
-            try {
-                result = sendValidateRequest(pin)
+            result = sendValidateRequest(pin)
+            if (result == "Voucher is valid.") {
                 return
-            } catch (ServiceNswException ex) {
-                if (ex.message != 'Invalid Pin.') {
-                    interruptException(ex.message)
-                }
+            } else if (result != "Invalid pin.") {
+                sendEmail(getStandartErrorMessage(result))
             }
         }
-        if (!result) {
-            interruptException('Invalid Pin.')
+        if (result == "Invalid pin.") {
+            sendEmail(invalidPinErrorMessage)
         }
     }
 
-    private void sendValidateRequest(String pin) {
+    private String sendValidateRequest(String pin) {
         new RESTClient(BASE_URL).request(POST, JSON) {
             uri.path = '/voucher-management/checkBalance'
             headers.'x-api-key' = apiKey
@@ -94,11 +108,14 @@ class ServiceNswIntegration implements PluginTrait {
             ]
 
             response.failure = { resp, result ->
-                logger.error(result.toString())
-                throw new ServiceNswException(result['message'].toString())
+                logger.error("Bad Request. Voucher: ${voucher.id}; Error: ${result.toString()}")
+                if (resp.getStatusLine().getStatusCode() == 400) {
+                    return result['message'].toString()
+                }
+                throw new ServiceNswException(result.toString())
             }
             response.success = { resp, result ->
-                return result
+                return "Voucher is valid."
             }
         }
     }
@@ -106,27 +123,25 @@ class ServiceNswIntegration implements PluginTrait {
     void redeem() {
         def result = null
         apiData.each {data ->
-            try {
-                result = sendRedeemRequest(data.pin, data.postcode)
+            result = sendRedeemRequest(data.pin, data.postcode)
+            if (result == "Voucher was redeemed.") {
                 return
-            } catch (ServiceNswException ex) {
-                if (ex.message != 'Invalid Pin.') {
-                    interruptException(ex.message)
-                }
+            } else if (result != "Invalid pin.") {
+                sendEmail(getStandartErrorMessage(result))
             }
         }
 
-        if (result) {
+        if (result == "Invalid pin.") {
+            sendEmail(invalidPinErrorMessage)
+        } else {
             Map<String, String> customFields = voucher.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             customFields[VOUCHER_REDEEMED_DATE_TYPE_KEY] = DateFormatter.formatDate(new Date())
             updateCustomFields(voucher.context, voucher, customFields, VoucherCustomField)
             voucher.context.commitChanges()
-        } else {
-            interruptException('Invalid Pin.')
         }
     }
 
-    private void sendRedeemRequest(String pin, postcode) {
+    private String sendRedeemRequest(String pin, postcode) {
         new RESTClient(BASE_URL).request(POST, JSON) {
             uri.path = '/voucher-management/redeem'
             headers.'x-api-key' = apiKey
@@ -144,18 +159,34 @@ class ServiceNswIntegration implements PluginTrait {
 
             response.failure = { resp, result ->
 
-                logger.error(result.toString())
-                throw new ServiceNswException(result['message'].toString())
+                logger.error("Bad Request. Voucher: ${voucher.id}; Error: ${result.toString()}")
+                if (resp.getStatusLine().getStatusCode() == 400) {
+                    return result['message'].toString()
+                }
+                throw new ServiceNswException(result.toString())
             }
             response.success = { resp, result ->
-                return result
+                return "Voucher was redeemed."
             }
         }
     }
 
     private void interruptException(String message) {
-        sendEmail("The following voucher is not valid. Please contact the customer.\n${licenseService.currentHostName}/sale/${voucher.id}")
+        sendEmail(getStandartErrorMessage(message))
         throw new ServiceNswException(message)
+    }
+
+    private String getStandartErrorMessage(String exceptionMessage) {
+        String.format(INVALID_VOUCHER_TEMPLATE, exceptionMessage, "${licenseService.currentHostName}/sale/$voucher.id", voucherCode)
+    }
+
+    private String getInvalidPinErrorMessage() {
+        StringBuilder message = new StringBuilder(getStandartErrorMessage('The PIN is not valid.'))
+                .append(PINS_ARE_NOT_APPROPRIATE_TEMPLATE)
+        apiData.each {data ->
+            message.append(String.format(STUDENT_INFO_TEMPLATE, "${licenseService.currentHostName}/contact/$apiData.contactId", apiData.pin))
+        }
+        message.toString()
     }
 
     private void sendEmail(String message) {
@@ -168,27 +199,30 @@ class ServiceNswIntegration implements PluginTrait {
     }
 
     boolean init(Voucher voucher, String emailAddress) {
-        if (voucher.getCustomFieldValue("serviceNswVoucher")) {
+        if (voucher.getCustomFieldValue("serviceNswVoucher") && voucher.getCustomFieldValue("serviceNswRedeemedOn") == null) {
             this.voucherCode = voucher.getCustomFieldValue("serviceNswVoucher")
             this.voucher = voucher
             this.emailAddress = emailAddress ?: preferenceController.emailAdminAddress
 
             PaymentInLine paymentInLine = voucher.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
             if (paymentInLine) {
-                paymentInLine.invoice.invoiceLines.each { invoiceLine ->
-                    LocalDate birthDate = invoiceLine.enrolment.student.contact.birthDate
-                    if (birthDate == null) {
-                        sendEmail("Birthday date wasn't specified. Please contact the customer.\n" +
-                                "${licenseService.currentHostName}/contact/${invoiceLine.enrolment.student.contact.id}")
-                        throw new IllegalArgumentException("Birthday date wasn't specified. ContactId: ${invoiceLine.enrolment.student.contact.id}")
-                    }
-                    String pin = birthDate.collect { it ->
-                        StringUtils.leftPad(it.dayOfMonth.toString(), 2, '0') + StringUtils.leftPad(it.month.value.toString(), 2, '0')
-                    }.first()
-                    String postCode = invoiceLine.enrolment.courseClass.room.site.postcode
+                paymentInLine.invoice.invoiceLines
+                        .findAll {it.enrolment != null } //
+                        .each { invoiceLine ->
+                            Contact contact = invoiceLine.enrolment.student.contact
+                            LocalDate birthDate = contact.birthDate
+                            if (birthDate == null) {
+                                sendEmail("Birthday date wasn't specified. Please contact the customer.\n" +
+                                        "${licenseService.currentHostName}/contact/${invoiceLine.enrolment.student.contact.id}")
+                                throw new ServiceNswException("Birthday date wasn't specified. ContactId: ${invoiceLine.enrolment.student.contact.id}")
+                            }
+                            String pin = birthDate.collect { it ->
+                                StringUtils.leftPad(it.dayOfMonth.toString(), 2, '0') + StringUtils.leftPad(it.month.value.toString(), 2, '0')
+                            }.first()
+                            String postCode = invoiceLine.enrolment.courseClass.room.site.postcode
 
-                    apiData << new ApiData(pin, postCode)
-                }
+                            apiData << new ApiData(contact.id, pin, postCode)
+                        }
                 setAmount(paymentInLine.amount.floatValue())
             } else {
                 setAmount(voucher.valueRemaining.floatValue())
@@ -242,10 +276,12 @@ class ServiceNswIntegration implements PluginTrait {
     }
 
     private class ApiData {
+        Long contactId
         String pin
         String postcode
 
-        ApiData(String pin, String postcode) {
+        ApiData(Long contactId, String pin, String postcode) {
+            this.contactId = contactId
             this.pin = pin
             this.postcode = postcode
         }
