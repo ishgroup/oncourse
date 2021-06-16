@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="defaultAdministrationCentreId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="tokenScratchCodes" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -57,7 +58,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "isAdmin",
     "defaultAdministrationCentreId",
     "token",
-    "tokenScratchCodes"
+    "tokenScratchCodes",
+    "sessionId"
 })
 public class SystemUserStub
     extends ReplicationStub
@@ -103,6 +105,8 @@ public class SystemUserStub
     protected String token;
     @XmlElement(required = true)
     protected String tokenScratchCodes;
+    @XmlElement(required = true)
+    protected String sessionId;
 
     /**
      * Gets the value of the editCMS property.
@@ -438,6 +442,30 @@ public class SystemUserStub
      */
     public void setTokenScratchCodes(String value) {
         this.tokenScratchCodes = value;
+    }
+
+    /**
+     * Gets the value of the sessionId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * Sets the value of the sessionId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSessionId(String value) {
+        this.sessionId = value;
     }
 
 }

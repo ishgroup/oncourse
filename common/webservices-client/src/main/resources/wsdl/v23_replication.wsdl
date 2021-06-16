@@ -1316,6 +1316,8 @@
                             <xs:element name="defaultAdministrationCentreId" type="xs:long" />
                             <xs:element name="token" type="xs:string"/>
                             <xs:element name="tokenScratchCodes" type="xs:string"/>
+                            <xs:element name="sessionId" type="xs:string"/>
+
                             <!--xs:element name="roleSystemUserId" type="xs:long" nillable="false"/-->
                         </xs:sequence>
                     </xs:extension>
