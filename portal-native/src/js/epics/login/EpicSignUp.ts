@@ -5,14 +5,14 @@
 
 import { LoginRequest } from '@api/model';
 import { createRequest, Request } from '../../utils/EpicUtils';
-import { SIGN_UP, SIGN_UP_FULFILLED } from '../../actions/LoginActions';
+import { SIGN_IN_FULFILLED, SIGN_UP } from '../../actions/LoginActions';
 import LoginService from '../../services/LoginService';
 
 const request: Request<any, LoginRequest> = {
   type: SIGN_UP,
   getData: (req) => LoginService.signUp(req),
   processData: () => [{
-    type: SIGN_UP_FULFILLED,
+    type: SIGN_IN_FULFILLED,
   }],
 };
 

@@ -1,12 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState
+} from 'react';
+import { LoginRequest } from '@api/model';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 import {
   Image, View, StyleSheet, Animated,
 } from 'react-native';
 import {
-  TextInput, Card, Switch, Caption, Button,
+  Card, Switch, Caption, Button, TextInput
 } from 'react-native-paper';
 import { cs, spacing, theme } from '../styles';
-import '@expo/match-media';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import TextField from '../components/fields/TextField';
+import { signIn } from '../actions/LoginActions';
 
 const styles = StyleSheet.create({
   topPart: {
@@ -57,54 +64,98 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignInContent = ({ setIsSignIn }) => (
-  <>
-    <TextInput
-      style={styles.input}
-      label="Email"
-    />
-    <TextInput
-      label="Password"
-      style={styles.input}
-      secureTextEntry
-      right={<TextInput.Icon name="eye" />}
-    />
-    <View style={[cs.flexRow, cs.justifyContentEnd]}>
-      <Caption style={cs.colorPrimary} onPress={() => console.log('Pressed')}>
-        Forgot password?
-      </Caption>
-    </View>
-    <View style={styles.submit}>
-      <Button mode="contained" dark onPress={() => console.log('Pressed')}>Log in</Button>
-    </View>
-    <View style={[cs.flexCenter, cs.mt3, cs.mb1]}>
-      <Caption>
-        Or connect using
-      </Caption>
-    </View>
-    <View style={[cs.flexRow, cs.justifyContentCenter]}>
-      <Image
-        style={styles.socialNetworkImage}
-        source={require('../../assets/images/google-color.png')}
-      />
-      <Image
-        style={styles.socialNetworkImage}
-        source={require('../../assets/images/facebook-square-color.png')}
-      />
-    </View>
-    <View style={[cs.flexCenter, cs.mt1]}>
-      <Caption style={cs.colorText}>
-        Don't have an account?
-        {' '}
-        <Caption onPress={() => setIsSignIn((prev) => !prev)} style={cs.colorPrimary}>Sign Up</Caption>
-      </Caption>
-    </View>
-  </>
-);
+const SignInContent = (
+  {
+    isValid,
+    loading,
+    onPressSign,
+    handleSubmit
+  }
+) => {
+  const [hidePassword, setHidePassword] = useState(true);
 
-const SignUpContent = ({ setIsSignIn }) => {
+  return (
+    <>
+      <TextField
+        name="email"
+        label="Email"
+        style={styles.input}
+      />
+      <TextField
+        name="password"
+        label="Password"
+        style={styles.input}
+        secureTextEntry={hidePassword}
+        right={(
+          <TextInput.Icon
+            onPress={() => setHidePassword((pr) => !pr)}
+            name={hidePassword ? 'eye' : 'eye-off'}
+          />
+      )}
+      />
+      <View style={[cs.flexRow, cs.justifyContentEnd]}>
+        <Caption style={cs.colorPrimary} onPress={() => console.log('Pressed')}>
+          Forgot password?
+        </Caption>
+      </View>
+      <View style={styles.submit}>
+        <Button
+          mode="contained"
+          dark
+          onPress={handleSubmit}
+          disabled={!isValid}
+          loading={loading}
+        >
+          Log in
+        </Button>
+      </View>
+      <View style={[cs.flexCenter, cs.mt3, cs.mb1]}>
+        <Caption>
+          Or connect using
+        </Caption>
+      </View>
+      <View style={[cs.flexRow, cs.justifyContentCenter]}>
+        <Image
+          style={styles.socialNetworkImage}
+          source={require('../../assets/images/google-color.png')}
+        />
+        <Image
+          style={styles.socialNetworkImage}
+          source={require('../../assets/images/facebook-square-color.png')}
+        />
+      </View>
+      <View style={[cs.flexCenter, cs.mt1]}>
+        <Caption style={cs.colorText}>
+          Don't have an account?
+          {' '}
+          <Caption onPress={onPressSign} style={cs.colorPrimary}>Sign Up</Caption>
+        </Caption>
+      </View>
+    </>
+  );
+};
+
+const SignUpContent = (
+  {
+    onPressSign,
+    handleSubmit,
+    isValid,
+    loading,
+    values,
+    setFieldTouched,
+    touched
+  }
+) => {
   const [isCompany, setIsCompany] = useState(false);
   const [showCompany, setShowCompany] = useState(false);
+  const [hidePassword, setHidePassword] = useState(true);
+  const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
+
+  useEffect(() => {
+    if (!touched.confirmPassword && values.password) {
+      setFieldTouched('confirmPassword');
+    }
+  }, [values.password]);
 
   const heightAnim = useRef(new Animated.Value(160)).current;
 
@@ -140,49 +191,73 @@ const SignUpContent = ({ setIsSignIn }) => {
         {showCompany
           ? (
             <>
-              <TextInput
-                style={styles.input}
+              <TextField
+                name="companyName"
                 label="Company name"
+                style={styles.input}
               />
             </>
           )
           : (
             <>
-              <TextInput
-                style={styles.input}
+              <TextField
+                name="firstName"
                 label="First name"
-              />
-              <TextInput
                 style={styles.input}
+              />
+              <TextField
+                name="lastName"
                 label="Last name"
+                style={styles.input}
               />
             </>
           )}
       </Animated.View>
-      <TextInput
-        style={styles.input}
+      <TextField
+        name="email"
         label="Email"
+        style={styles.input}
       />
-      <TextInput
+      <TextField
+        name="password"
         label="Password"
         style={styles.input}
-        secureTextEntry
-        right={<TextInput.Icon name="eye" />}
+        secureTextEntry={hidePassword}
+        right={(
+          <TextInput.Icon
+            onPress={() => setHidePassword((pr) => !pr)}
+            name={hidePassword ? 'eye' : 'eye-off'}
+          />
+        )}
       />
-      <TextInput
+      <TextField
+        name="confirmPassword"
         label="Confirm password"
         style={styles.input}
-        secureTextEntry
-        right={<TextInput.Icon name="eye" />}
+        secureTextEntry={hidePasswordConfirm}
+        right={(
+          <TextInput.Icon
+            onPress={() => setHidePasswordConfirm((pr) => !pr)}
+            name={hidePasswordConfirm ? 'eye' : 'eye-off'}
+          />
+        )}
       />
       <View style={styles.submit}>
-        <Button mode="contained" dark onPress={() => console.log('Pressed')}>Create account</Button>
+        <Button
+          mode="contained"
+          dark
+          onPress={handleSubmit}
+          disabled={!isValid}
+          loading={loading}
+        >
+          Create account
+        </Button>
       </View>
       <View style={[cs.flexCenter, cs.mt1]}>
         <Caption style={cs.colorText}>
           Already have an account?
           {' '}
-          <Caption onPress={() => setIsSignIn((prev) => !prev)} style={cs.colorPrimary}>Sign In</Caption>
+          <Caption onPress={onPressSign} style={cs.colorPrimary}>Sign In</Caption>
         </Caption>
       </View>
     </>
@@ -191,6 +266,23 @@ const SignUpContent = ({ setIsSignIn }) => {
 
 const LoginScreen = () => {
   const [isSignIn, setIsSignIn] = useState(true);
+
+  const loading = useAppSelector((state) => state.login.loading);
+
+  const dispatch = useAppDispatch();
+
+  const validationSchema = useMemo<yup.SchemaOf<LoginRequest & { confirmPassword: string }>>(() => yup.object({
+    confirmPassword: isSignIn ? yup.string().notRequired() : yup.string().when('password', {
+      is: (val) => val,
+      then: yup.string().required('Please confirm password').oneOf([yup.ref('password')], 'Passwords should match'),
+      otherwise: yup.string().notRequired(),
+    }),
+    firstName: yup.string().notRequired(),
+    lastName: yup.string().notRequired(),
+    companyName: yup.string().notRequired(),
+    email: yup.string().required('Email is required').email('Please enter valid email'),
+    password: yup.string().required('Password is required'),
+  }), [isSignIn]);
 
   return (
     <View
@@ -213,9 +305,48 @@ const LoginScreen = () => {
             style={styles.loginContainer}
           >
             <Card.Content>
-              {isSignIn
-                ? <SignInContent setIsSignIn={setIsSignIn} />
-                : <SignUpContent setIsSignIn={setIsSignIn} />}
+              <Formik
+                initialValues={{} as any}
+                validationSchema={validationSchema}
+                onSubmit={({ confirmPassword, ...values }) => {
+                  dispatch(signIn(values));
+                }}
+              >
+                {({
+                  resetForm,
+                  handleSubmit,
+                  isValid,
+                  touched,
+                  values,
+                  setFieldTouched
+                }) => {
+                  const onPressSign = () => {
+                    resetForm();
+                    setIsSignIn((prev) => !prev);
+                  };
+
+                  return (isSignIn
+                    ? (
+                      <SignInContent
+                        onPressSign={onPressSign}
+                        handleSubmit={handleSubmit}
+                        isValid={isValid}
+                        loading={loading}
+                      />
+                    )
+                    : (
+                      <SignUpContent
+                        onPressSign={onPressSign}
+                        handleSubmit={handleSubmit}
+                        isValid={isValid}
+                        loading={loading}
+                        values={values}
+                        touched={touched}
+                        setFieldTouched={setFieldTouched}
+                      />
+                    ));
+                }}
+              </Formik>
             </Card.Content>
           </Card>
           <Caption style={styles.caption}>
