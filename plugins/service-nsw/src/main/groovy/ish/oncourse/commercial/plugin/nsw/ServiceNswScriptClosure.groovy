@@ -14,7 +14,7 @@ class ServiceNswScriptClosure implements ScriptClosureTrait<ServiceNswIntegratio
 
     private String action
     private Voucher voucher
-    private String emailAddress
+    private String errorsTo
 
     void action(String action) {
         this.action = action
@@ -24,13 +24,13 @@ class ServiceNswScriptClosure implements ScriptClosureTrait<ServiceNswIntegratio
         this.voucher = voucher
     }
 
-    void errorsTo(String emailAddress) {
-        this.emailAddress = emailAddress
+    void errorsTo(String errorsTo) {
+        this.errorsTo = errorsTo
     }
 
     @Override
     Object execute(ServiceNswIntegration integration) {
-        if (integration.init(voucher, emailAddress)) {
+        if (integration.init(voucher, errorsTo)) {
             switch (action) {
                 case "validate":
                     integration.validate()
