@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         * def ishPath = 'list/entity/application'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -360,14 +360,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         When method DELETE
         Then status 400
         And match response.errorMessage == "Record with id = '99999' doesn't exist."
-
-
-
-    Scenario: (-) Delete Application without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
 
 
 

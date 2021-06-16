@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/banking'
         * def ishPath = 'list/entity/banking'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -187,19 +187,4 @@ Feature: Main feature for all DELETE requests with path 'list/entity/banking'
         When method DELETE
         Then status 400
         And match response.errorMessage == "Banking with id:99999 doesn't exist"
-
-
-
-    Scenario: (-) Delete Banking deposit without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
-
-
-    Scenario: (-) Delete Banking deposit with NULL as ID
-
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
+        

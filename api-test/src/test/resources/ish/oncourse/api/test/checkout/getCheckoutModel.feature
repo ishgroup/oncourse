@@ -28,9 +28,9 @@ Feature: re-usable feature to getting checkout model
           "sendConfirmation": true
         }
       """
-    * if (membership.productId != null) firstContactNode.memberships.add(membership)
-    * if (voucher.productId != null) firstContactNode.vouchers.add(voucher)
-    * if (checkoutModelTable[i].firstId != null) contactNodes.add(firstContactNode)
+    * if (membership.productId != null) firstContactNode.memberships.push(membership)
+    * if (voucher.productId != null) firstContactNode.vouchers.push(voucher)
+    * if (checkoutModelTable[i].firstId != null) contactNodes.push(firstContactNode)
 
     * def membership = {"productId": #(checkoutModelTable[i].membershipIds.second), "validTo": "2030-10-23"}
     * def secondContactNode =
@@ -44,8 +44,8 @@ Feature: re-usable feature to getting checkout model
           "sendConfirmation": true
         }
       """
-    * if (membership.productId != null) secondContactNode.memberships.add(membership)
-    * if (checkoutModelTable[i].secondId != null) contactNodes.add(secondContactNode)
+    * if (membership.productId != null) secondContactNode.memberships.push(membership)
+    * if (checkoutModelTable[i].secondId != null) contactNodes.push(secondContactNode)
 
     * def checkoutModel =
       """

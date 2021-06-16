@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/room'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -183,24 +183,3 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         When method DELETE
         Then status 400
         And match response.errorMessage == "Room with id:99999 doesn't exist"
-
-
-    Scenario: (-) Delete room without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete room with NULL as ID
-
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
-
-
-    Scenario: (-) Delete room without path
-
-        Given path ishPath
-        When method DELETE
-        Then status 405

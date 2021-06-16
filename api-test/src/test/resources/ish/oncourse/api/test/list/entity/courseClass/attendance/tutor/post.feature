@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         * def ishPath = 'list/entity/courseClass/attendance/tutor'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         * def attendanceToDefault = [{"id":14,"sessionId":20,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Not confirmed for payroll","note":null,"durationMinutes":30,"hasPayslip":false},{"id":12,"sessionId":18,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Not confirmed for payroll","note":null,"durationMinutes":null,"hasPayslip":false},{"id":17,"sessionId":13,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Not confirmed for payroll","note":null,"durationMinutes":null,"hasPayslip":false},{"id":19,"sessionId":15,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Not confirmed for payroll","note":"","durationMinutes":null,"hasPayslip":false}]

@@ -6,7 +6,7 @@ Feature: Main feature for all POST requests with path 'summaryextracts/finalisep
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'summaryextracts/finaliseperiod'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

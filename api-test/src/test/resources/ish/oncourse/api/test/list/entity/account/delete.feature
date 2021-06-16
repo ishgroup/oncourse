@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/account'
         * def ishPath = 'list/entity/account'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -223,15 +223,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/account'
         When method DELETE
         Then status 400
         And match response.errorMessage == "Account with id:99999 doesn't exist"
-
-
-
-    Scenario: (-) Delete account without ID in path
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
 
 
     Scenario: (-) Delete account with NULL as ID

@@ -5,7 +5,7 @@ Feature: Main feature for all DELETE requests with path 'preference/tax'
         * callonce read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/tax'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Delete existing (not system) taxType
@@ -60,15 +60,3 @@ Feature: Main feature for all DELETE requests with path 'preference/tax'
         Then status 400
         And match response.errorMessage == "Tax is not exist"
 
-
-    Scenario: (-) Delete taxType without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete taxType with null ID
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 400
-        And match response.errorMessage == "Tax is not exist"

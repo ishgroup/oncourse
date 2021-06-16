@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'user'
         * def ishPathLogin = 'login'
         * def ishPathInvite = 'invite'
         * def ishPathPreference = 'preference'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -22,8 +22,7 @@ Feature: Main feature for all POST requests with path 'user'
         Given path ishPath
         And request someUser
         When method POST
-        Then status 400
-        And match response.errorMessage contains "Could not connect to SMTP"
+        Then status 204
 
 
     Scenario: (+) Search user by exist invitation
@@ -266,7 +265,7 @@ Feature: Main feature for all POST requests with path 'user'
 
     Scenario: (-) Create new User with not exist site
 
-        * def someUser = {"active":true,"firstName":"firstName1","lastName":"lastName","administrationCentre":200200200,"email":"testMail1@gmail.com","admin":true,"role":null,"accessEditor":false,"tfaEnabled":false,"passwordUpdateRequired":false }
+        * def someUser = {"active":true,"firstName":"firstName1","lastName":"lastName","administrationCentre":200200200,"email":"testMail2@gmail.com","admin":true,"role":null,"accessEditor":false,"tfaEnabled":false,"passwordUpdateRequired":false }
 
         Given path ishPath
         And request someUser
@@ -277,7 +276,7 @@ Feature: Main feature for all POST requests with path 'user'
 
     Scenario: (-) Create new not admin User without role
 
-        * def someUser = {"active":true,"firstName":"firstName1","lastName":"lastName","administrationCentre":200,"email":"testMail1@gmail.com","admin":false,"role":null,"accessEditor":false,"tfaEnabled":false,"passwordUpdateRequired":false }
+        * def someUser = {"active":true,"firstName":"firstName1","lastName":"lastName","administrationCentre":200,"email":"testMail2@gmail.com","admin":false,"role":null,"accessEditor":false,"tfaEnabled":false,"passwordUpdateRequired":false }
 
         Given path ishPath
         And request someUser
@@ -288,7 +287,7 @@ Feature: Main feature for all POST requests with path 'user'
 
     Scenario: (-) Create new not admin User with not exist role
 
-        * def someUser = {"active":true,"firstName":"firstName1","lastName":"lastName","administrationCentre":200,"email":"testMail1@gmail.com","admin":false,"role":1111111,"accessEditor":false,"tfaEnabled":false,"passwordUpdateRequired":false }
+        * def someUser = {"active":true,"firstName":"firstName1","lastName":"lastName","administrationCentre":200,"email":"testMail2@gmail.com","admin":false,"role":1111111,"accessEditor":false,"tfaEnabled":false,"passwordUpdateRequired":false }
 
         Given path ishPath
         And request someUser

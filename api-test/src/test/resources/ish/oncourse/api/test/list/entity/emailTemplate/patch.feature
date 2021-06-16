@@ -7,7 +7,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/emailTemplat
         * def ishPath = 'list/entity/emailTemplateToUpdate'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

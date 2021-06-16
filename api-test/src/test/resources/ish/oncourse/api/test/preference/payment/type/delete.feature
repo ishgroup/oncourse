@@ -5,7 +5,7 @@ Feature: Main feature for all DELETE requests with path 'preference/payment/type
         * callonce read('../../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/payment/type'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Delete existing paymentType
@@ -60,13 +60,7 @@ Feature: Main feature for all DELETE requests with path 'preference/payment/type
         When method DELETE
         Then status 400
         And match response.errorMessage == "Payment type is not exist"
-
-
-    Scenario: (-) Delete paymentType without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
+        
 
     Scenario: (-) Delete paymentType with null ID
         Given path ishPath + '/null'

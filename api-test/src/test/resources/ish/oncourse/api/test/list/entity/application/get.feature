@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/application'
         * def ishPath = 'list/entity/application'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -56,14 +56,6 @@ Feature: Main feature for all GET requests with path 'list/entity/application'
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '9999' doesn't exist."
-
-
-
-    Scenario: (-) Get Application without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
 
 
     Scenario: (+) Get list of all Applications by notadmin with access rights

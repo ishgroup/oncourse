@@ -8,7 +8,7 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
         * def ishPathWaitingList = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -6,7 +6,7 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/option/message/recipients'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Get recipients ids to send by notadmin with access rights

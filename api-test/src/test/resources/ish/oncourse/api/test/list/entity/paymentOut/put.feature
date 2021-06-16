@@ -8,7 +8,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
         * def ishPathBanking = 'list/entity/banking'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -6,7 +6,7 @@ Feature: Main feature for all PUT requests with path 'integration'
         * callonce read('../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'integration'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
     
     Scenario: (+) Update integration name setting 'id' in path and in body
@@ -74,35 +74,6 @@ Feature: Main feature for all PUT requests with path 'integration'
 
 #       Scenario have been finished. Now find and remove created object from DB
         * call read('../removeEntity.feature') {path: '#(ishPath)', entityName: 'updatedName'}
-
-
-
-    Scenario: (-) Update integration name setting 'id' only in body
-#       Prepare new integration to update it
-#       <--->
-        * def integration = {name: 'someName', type: 6}
-        Given path ishPath
-        And request integration
-        When method POST
-        Then status 204
-#       <--->
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match response[*].name contains 'someName'
-        And match response[*].name !contains 'updatedName'
-        * def id = get[0] response[?(@.name == 'someName')].id
-
-        * def integrationToUpdate = {id: '#(id)', name: 'updatedName', type: 6}
-        Given path ishPath + '/'
-        And request integrationToUpdate
-        When method PUT
-        Then status 405
-
-#       Scenario have been finished. Now find and remove created object from DB
-        * call read('../removeEntity.feature') {path: '#(ishPath)', entityName: 'someName'}
-
 
 
     Scenario: (+) Update integration name setting different 'ids' in body and in path

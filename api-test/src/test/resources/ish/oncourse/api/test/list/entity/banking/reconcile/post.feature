@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/entity/banking/recon
         * def ishPathBanking = 'list/entity/banking'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
