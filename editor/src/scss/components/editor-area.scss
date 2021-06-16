@@ -23,6 +23,7 @@
 
 .editor-wrapper {
   position: relative;
+  max-height: calc(100% - 51px);
 
   .mde-textarea-wrapper, .mde-preview {
     ol {
@@ -97,6 +98,7 @@
 
     .mde-text {
       margin-bottom: 0;
+      resize: none;
     }
   }
 
@@ -148,6 +150,7 @@
   }
 
   .mde-preview {
+    min-height: 118px!important;
     .ck.ck-button.ck-dropdown__button {
       margin-right: 12px;
       width: 140px;
@@ -242,9 +245,9 @@
     }
 
     .ck-content {
-      resize: vertical;
-      max-height: 80vh;
-      min-height: 200px;
+      resize: none;
+      //max-height: 80vh;
+      //min-height: 200px;
       border-bottom: 0;
       font-size: 14px;
     }

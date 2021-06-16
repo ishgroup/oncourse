@@ -65,9 +65,9 @@ const Block: React.FC<Props> = ({block, classes, onSave, setContentMode}) => {
   //   }
   // }, [editMode, block, block && block.content]);
 
-  const onContentModeChange = e => {
-    setContentMode(block.id,e.target.value);
-  };
+  // const onContentModeChange = e => {
+  //   setContentMode(block.id, e.target.value);
+  // };
 
   const renderEditor = () => {
     switch (block.contentMode) {

@@ -45,8 +45,7 @@ const ContentModeSwitch = (props: Props) => {
 
   const onClickMenuItem = (moduleId, modeId) => {
     setContentMode(moduleId, modeId);
-    modeMenuClose()
-
+    modeMenuClose();
   };
 
   return (

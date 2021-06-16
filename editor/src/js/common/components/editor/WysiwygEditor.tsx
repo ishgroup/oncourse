@@ -16,7 +16,6 @@ interface Props {
   value?: string;
   onChange?: (val: any) => void;
   setParentHeight?: (val: any) => void;
-  defaultHeight?: number;
 }
 
 const config = {
@@ -80,14 +79,22 @@ const WysiwygEditor: React.FC<Props> = ({
     }
   }
 
+  // useEffect(() => {
+  //   const contentNode = document.querySelector(".ck-content") as HTMLElement;
+  //
+  //   if (contentNode) {
+  //     contentNode.onmousedown = storeDimensions;
+  //     contentNode.onmouseup = onResize;
+  //   }
+  // }, []);
+
   useEffect(() => {
     const contentNode = document.querySelector(".ck-content") as HTMLElement;
 
     if (contentNode) {
-      contentNode.onmousedown = storeDimensions;
-      contentNode.onmouseup = onResize;
+      contentNode.style.height = `${height}px`;
     }
-  }, []);
+  }, [height])
 
   useEffect(() => {
     if (editorRef.current) {
@@ -101,7 +108,7 @@ const WysiwygEditor: React.FC<Props> = ({
         );
       });
     }
-  },[editorRef.current]);
+  },[editorRef.current, height]);
   // },[previewHeight, editorRef.current]);
 
   return <CKEditor

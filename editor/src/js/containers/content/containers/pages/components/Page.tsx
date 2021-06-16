@@ -24,7 +24,8 @@ interface PageProps {
   clearBlockRenderHtml: () => void;
   toggleEditMode: (flag: boolean) => any;
   clearRenderHtml?: (id: number) => void;
-  setContentMode?: (id: number, contentMode: ContentMode) => any;
+  setPageContentMode?: (id: number, contentMode: ContentMode) => any;
+  setBlockContentMode?: (id: number, contentMode: ContentMode) => any;
   editMode?: any;
 }
 
@@ -48,11 +49,12 @@ export const Page: React.FC<PageProps> = ({
   onSave,
   onSaveBlock,
   blocks,
-  setContentMode,
+  setPageContentMode,
+  setBlockContentMode
 }) => {
   const [draftContent, setDraftContent] = useState('');
   const [scrollValue, setScrollValue] = useState(0);
-  const [blockId, setBlockId] = useState(0);
+  const [blockId, setBlockId] = useState(null);
   const [DOMNode, setDOMNode] = useState(null);
   const [position, setPosition] = useState({
     height: 230,
@@ -65,6 +67,7 @@ export const Page: React.FC<PageProps> = ({
   const classes = useStyles();
 
   useEffect(() => {
+    toggleEditMode(false);
     return () => toggleEditMode(false);
   }, [])
 
@@ -75,6 +78,7 @@ export const Page: React.FC<PageProps> = ({
 
   const onClickArea = (e, pageNode) => {
     e.preventDefault();
+
     setDOMNode(pageNode);
     setScrollValue(0);
     setBlockId(0);
@@ -88,6 +92,7 @@ export const Page: React.FC<PageProps> = ({
   const onClickBlock = (e, DOMBlock, id) => {
     e.preventDefault();
     const block = blocks.filter(elem => elem.id === id)[0];
+
     if (!block) return null
     setDOMNode(DOMBlock);
 
@@ -95,7 +100,7 @@ export const Page: React.FC<PageProps> = ({
 
     setBlockId(id);
     setPosition(getEditorSize(DOMBlock.getBoundingClientRect()));
-    setDraftContent(block.contentMode === "md" ? block.content : marked(block.content || ""));
+    setDraftContent(block.contentMode === "html" ? marked(block.content || "") : block.content);
 
     toggleEditMode(true);
   }
@@ -237,7 +242,8 @@ export const Page: React.FC<PageProps> = ({
     toggleEditMode(false);
 
     if (blockId) {
-      onSaveBlock(blockId, addContentMarker(draftContent, page.contentMode));
+      const block = blocks.filter(elem => elem.id === blockId)[0]
+      onSaveBlock(blockId, addContentMarker(draftContent, block.contentMode));
     } else {
       onSave(page.id, addContentMarker(draftContent, page.contentMode));
     }
@@ -249,7 +255,9 @@ export const Page: React.FC<PageProps> = ({
   };
 
   const renderEditor = (height) => {
-    switch (page.contentMode) {
+    const contentMode = blockId ? blocks.filter(elem => elem.id === blockId)[0].contentMode : page.contentMode;
+
+    switch (contentMode) {
       case "md": {
         return (
           <MarkdownEditor
@@ -267,7 +275,7 @@ export const Page: React.FC<PageProps> = ({
             height={`${height - 67 - 44}px`}
             value={draftContent}
             onChange={onChangeArea}
-            mode={page.contentMode}
+            mode={contentMode}
           />
         );
       }
@@ -275,6 +283,8 @@ export const Page: React.FC<PageProps> = ({
   };
 
   const reverse = getReverseValue(position.height, position.top);
+
+  const block = blockId ? blocks.filter(elem => elem.id === blockId)[0] : null;
 
   return (
     <div style={{width: `${position.width}px`, height: `${position.height}px`, position: "absolute",
@@ -284,12 +294,13 @@ export const Page: React.FC<PageProps> = ({
       {editMode && (
         <Paper className={clsx("p-1 h-100", classes.paperWrapper)}>
           <div className={
-            clsx("editor-wrapper", (page.contentMode === "html" || page.contentMode === "textile") && "ace-wrapper")
+            clsx("editor-wrapper", ((blockId && (block.contentMode === "html" || block.contentMode === "textile"))
+              || (!blockId && (page.contentMode === "html" || page.contentMode === "textile"))) && "ace-wrapper")
           }>
             <ContentModeSwitch
-                contentModeId={page.contentMode}
-                moduleId={page.id}
-                setContentMode={setContentMode}
+                contentModeId={blockId && block ? block.contentMode : page.contentMode}
+                moduleId={blockId && block ? blockId : page.id}
+                setContentMode={blockId && block ? setBlockContentMode : setPageContentMode}
             />
             {renderEditor(position.height)}
           </div>

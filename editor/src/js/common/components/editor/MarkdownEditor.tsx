@@ -63,7 +63,7 @@ const MarkdownEditor = props => {
             value={markdown}
             onChange={onChange}
             // defaultHeight={previewHeight}
-            defaultHeight={height}
+            // defaultHeight={height}
             height={height}
             setParentHeight={setPreviewHeight}
           />,

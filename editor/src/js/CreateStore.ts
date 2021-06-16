@@ -1,6 +1,6 @@
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
-import {applyMiddleware, compose, createStore, Store, StoreEnhancer} from "redux";
+import {applyMiddleware, compose, createStore, Store} from "redux";
 import {EpicRoot} from "./EpicRoot";
 import { persistReducer } from 'redux-persist'
 import {combinedReducers} from "./reducers";
@@ -11,7 +11,7 @@ import {State} from "./reducers/state";
 const persistConfig = {
   key: 'root',
   storage: localforage,
-  blacklist: ["form", "notifications"]
+  blacklist: ["form", "notifications"],
 }
 
 const persistedReducer = persistReducer(persistConfig, combinedReducers);

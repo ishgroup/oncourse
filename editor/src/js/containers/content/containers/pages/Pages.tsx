@@ -6,7 +6,7 @@ import {clearRenderHtml, getPages, savePage, setPageContentMode, toggleEditMode}
 import {Block, ContentMode, Page as PageModel} from "../../../../model";
 import {Page} from "./components/Page";
 import {State} from "../../../../reducers/state";
-import {clearBlockRenderHtml, getBlocks, saveBlock} from "../blocks/actions";
+import { clearBlockRenderHtml, getBlocks, saveBlock, setBlockContentMode } from "../blocks/actions";
 
 interface Props {
   pages: PageModel[];
@@ -16,7 +16,8 @@ interface Props {
   toggleEditMode: (flag: boolean) => any;
   clearRenderHtml: (pageId: number) => any;
   clearBlockRenderHtml: () => any;
-  setContentMode?: (id: number, contentMode: ContentMode) => any;
+  setPageContentMode?: (id: number, contentMode: ContentMode) => any;
+  setBlockContentMode?: (id: number, contentMode: ContentMode) => any;
   onSaveBlock: (id, html) => any;
   history: any;
   editMode: any;
@@ -34,8 +35,8 @@ export class Pages extends React.Component<Props, any> {
   }
 
   render() {
-    const {match, pages, blocks, onEditHtml, onSaveBlock, toggleEditMode,
-      clearRenderHtml, clearBlockRenderHtml, editMode, fetching, setContentMode} = this.props;
+    const {match, pages, blocks, onEditHtml, onSaveBlock, toggleEditMode, clearRenderHtml, clearBlockRenderHtml,
+      editMode, fetching, setPageContentMode, setBlockContentMode} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
@@ -51,7 +52,8 @@ export class Pages extends React.Component<Props, any> {
               clearRenderHtml={clearRenderHtml}
               clearBlockRenderHtml={clearBlockRenderHtml}
               editMode={editMode}
-              setContentMode={setContentMode}
+              setPageContentMode={setPageContentMode}
+              setBlockContentMode={setBlockContentMode}
               blocks={blocks}
             />
           </div>
@@ -79,7 +81,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     toggleEditMode: flag => dispatch(toggleEditMode(flag)),
     clearRenderHtml: id => dispatch(clearRenderHtml(id)),
     clearBlockRenderHtml: () => dispatch(clearBlockRenderHtml()),
-    setContentMode: (id: number, contentMode: ContentMode) => dispatch(setPageContentMode(id,contentMode)),
+    setPageContentMode: (id: number, contentMode: ContentMode) => dispatch(setPageContentMode(id,contentMode)),
+    setBlockContentMode: (id: number, contentMode: ContentMode) => dispatch(setBlockContentMode(id,contentMode))
   };
 };
 
