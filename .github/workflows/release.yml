@@ -8,6 +8,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      VERSION: ${GITHUB_REF##*v}
     steps:
       - uses: actions/checkout@v2
 
@@ -31,12 +33,12 @@ jobs:
           restore-keys: 11-
 
       - name: Build artifacts
-        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${GITHUB_REF##*v}
+        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${{ env.VERSION }}
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          name: onCourse ${{ GITHUB_REF##*v }}
+          name: onCourse ${{ env.VERSION }}
           artifacts: "server/build/distributions/onCourseServer-*.zip", "server/build/distributions/onCourseServer-*.sha256"
-          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{ GITHUB_REF##*v }}/release-notes.html"
+          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{ env.VERSION }}/release-notes.html"
           token: ${{ secrets.GITHUB_TOKEN }}
