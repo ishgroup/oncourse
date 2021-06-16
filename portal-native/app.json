@@ -19,7 +19,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ish.portal.native.test"
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"

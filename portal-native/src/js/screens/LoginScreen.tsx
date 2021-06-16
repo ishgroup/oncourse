@@ -5,15 +5,19 @@ import { LoginRequest } from '@api/model';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import {
-  Image, View, StyleSheet, Animated,
+  Image, View, StyleSheet, Animated, TouchableHighlight
 } from 'react-native';
 import {
   Card, Switch, Caption, Button, TextInput
 } from 'react-native-paper';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
 import { cs, spacing, theme } from '../styles';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TextField from '../components/fields/TextField';
 import { signIn } from '../actions/LoginActions';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const styles = StyleSheet.create({
   topPart: {
@@ -74,6 +78,20 @@ const SignInContent = (
 ) => {
   const [hidePassword, setHidePassword] = useState(true);
 
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    // TODO Replace with real credentials for production
+    expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
+    webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com'
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+
+      console.log({ authentication });
+    }
+  }, [response]);
+
   return (
     <>
       <TextField
@@ -115,10 +133,12 @@ const SignInContent = (
         </Caption>
       </View>
       <View style={[cs.flexRow, cs.justifyContentCenter]}>
-        <Image
-          style={styles.socialNetworkImage}
-          source={require('../../assets/images/google-color.png')}
-        />
+        <TouchableHighlight disabled={!request} onPress={() => promptAsync()}>
+          <Image
+            style={styles.socialNetworkImage}
+            source={require('../../assets/images/google-color.png')}
+          />
+        </TouchableHighlight>
         <Image
           style={styles.socialNetworkImage}
           source={require('../../assets/images/facebook-square-color.png')}
