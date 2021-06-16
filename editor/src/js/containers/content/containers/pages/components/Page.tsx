@@ -51,7 +51,7 @@ export const Page: React.FC<PageProps> = ({
   setContentMode,
 }) => {
   const [draftContent, setDraftContent] = useState('');
-  const [topValue, setTopValue] = useState(0);
+  const [scrollValue, setScrollValue] = useState(0);
   const [blockId, setBlockId] = useState(0);
   const [DOMNode, setDOMNode] = useState(null);
   const [position, setPosition] = useState({
@@ -76,7 +76,7 @@ export const Page: React.FC<PageProps> = ({
   const onClickArea = (e, pageNode) => {
     e.preventDefault();
     setDOMNode(pageNode);
-    setTopValue(0);
+    setScrollValue(0);
     setBlockId(0);
     setPosition(getEditorSize(pageNode.getBoundingClientRect()));
 
@@ -91,7 +91,7 @@ export const Page: React.FC<PageProps> = ({
     if (!block) return null
     setDOMNode(DOMBlock);
 
-    setTopValue(0);
+    setScrollValue(0);
 
     setBlockId(id);
     setPosition(getEditorSize(DOMBlock.getBoundingClientRect()));
@@ -113,7 +113,7 @@ export const Page: React.FC<PageProps> = ({
 
     const reverse = getReverseValue(position.height, DOMNodeElementData.top);
 
-    DOMNodeElementData && reverse ? setTopValue(DOMNodeElementData.bottom) : setTopValue(DOMNodeElementData.top);
+    DOMNodeElementData && reverse ? setScrollValue(DOMNodeElementData.bottom) : setScrollValue(DOMNodeElementData.top);
   }
 
   useEffect(() => {
@@ -136,13 +136,13 @@ export const Page: React.FC<PageProps> = ({
     }
 
     return () => {
-      toggleEditMode(false);
+      // toggleEditMode(false);
 
       if (pageNode) {
         pageNode.removeEventListener('click', (e) => onClickArea(e, pageNode));
       }
     };
-  }, [page]);
+  }, [page.id]);
 
   const replacePageHtml = html => {
     const pageNode = DOM.findPage(page.title);
@@ -203,7 +203,7 @@ export const Page: React.FC<PageProps> = ({
     needClining && clearBlockRenderHtml();
 
     return () => {
-      toggleEditMode(false);
+      // toggleEditMode(false);
 
       if (DOMBlocks) {
         for (let key in DOMBlocks) {
@@ -278,8 +278,8 @@ export const Page: React.FC<PageProps> = ({
 
   return (
     <div style={{width: `${position.width}px`, height: `${position.height}px`, position: "absolute",
-      top: reverse ? "auto" : `${topValue || position.top}px`, left: `${position.left}px`,
-      bottom: reverse ? `${(topValue && window.innerHeight - topValue) || window.innerHeight - position.bottom}px` : "auto"}}
+      top: reverse ? "auto" : `${scrollValue || position.top}px`, left: `${position.left}px`,
+      bottom: reverse ? `${(scrollValue && window.innerHeight - scrollValue) || window.innerHeight - position.bottom}px` : "auto"}}
     >
       {editMode && (
         <Paper className={clsx("p-1 h-100", classes.paperWrapper)}>
