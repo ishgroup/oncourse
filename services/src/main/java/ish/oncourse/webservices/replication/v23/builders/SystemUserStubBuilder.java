@@ -28,6 +28,9 @@ public class SystemUserStubBuilder extends AbstractWillowStubBuilder<SystemUser,
 		stub.setModified(entity.getModified());
 		stub.setToken(entity.getToken());
 		stub.setTokenScratchCodes(entity.getTokenScratchCodes());
+		// update sessionId only in one direction angel->willow
+		// since user can not logout on through willow
+		// stub.setSessionId()
 		return stub;
 	}
 }
