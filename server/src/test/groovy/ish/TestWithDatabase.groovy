@@ -143,9 +143,6 @@ abstract class TestWithDatabase extends TestWithBootique {
             final ResultSet rs = stmt.executeQuery(createSchema)
             rs.close()
             stmt.close()
-        } catch (Exception e) {
-            logger.error("Can't create mariadb/mysql schema.")
-            throw e
         } finally {
             if (connection != null) {
                 try {
