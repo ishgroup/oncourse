@@ -8,7 +8,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/payslip'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
         * def ishPathMarking = 'list/entity/payslip/marking'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         

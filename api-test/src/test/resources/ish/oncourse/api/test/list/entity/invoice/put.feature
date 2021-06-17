@@ -7,7 +7,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         * def ishPath = 'list/entity/invoice'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         * def invoiceToDefault = {"id":11,"contactId":3,"contactName":"stud2","customerReference":"invoice for update","invoiceNumber":12,"billToAddress":"address str.1","shippingAddress":"shipping address1","invoiceDate":"2022-08-01","dateDue":"2022-08-11","overdue":0.00,"invoiceLines":[{"id":112,"title":"Invoice for UPD","quantity":1.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":300.00,"discountEachExTax":0.00,"taxEach":0.00,"taxId":2,"taxName":"GST exempt","description":"some description","courseClassId":1,"courseName":"Course1","courseCode":"course1","classCode":"1","enrolmentId":1,"enrolledStudent":"stud1"}],"total":300.00,"amountOwing":300.00,"publicNotes":"some public notes","paymentPlans":[{"id":11,"date":"2019-07-03","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],"source":"office","createdByUser":"admin","sendEmail":false}

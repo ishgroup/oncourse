@@ -4,7 +4,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
     Background: Authorize first
         * callonce read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPathForm = 'datacollection/form'
         * def ishPathRule = 'datacollection/rule'
 
@@ -25,7 +25,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 17
+        And match karate.sizeOf(response) == 20
         And match response[*].name contains 'Survey#9'
 
         * def id = get[0] response[?(@.name == 'Survey#9')].id
@@ -35,7 +35,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
+        And match karate.sizeOf(response) == 19
         And match response[*].name !contains 'Survey#9'
 
 
@@ -52,12 +52,7 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         When method DELETE
         Then status 400
         And match response.errorMessage == "The data collection form 100000 is not exist"
-
-
-    Scenario: (-) Delete DataCollectionForm without ID
-        Given path ishPathForm
-        When method DELETE
-        Then status 405
+        
 
 
     Scenario: (-) Delete DataCollectionForm with null ID
@@ -116,18 +111,17 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 22
         And match response[*].name contains ['Enrolment#123', 'Application#123', 'WaitingList#123', 'Survey#123', 'Payer#123', 'Parent#123']
 
         * def someDataCollectionRuleArray =
         """
         [
-        {"name":"someRule#1","enrolmentFormName":"Enrolment#123","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
-        {"name":"someRule#2","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Application#123","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
-        {"name":"someRule#3","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"WaitingList#123"},
-        {"name":"someRule#4","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","surveyForms":["Survey#123"]},
-        {"name":"someRule#5","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#123"},
-        {"name":"someRule#6","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","parentFormName":"Parent#123"}
+        {"name":"someRule#1","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Enrolment#123","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
+        {"name":"someRule#2","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Application#123","waitingListFormName":"Accredited course enrolment form (Waiting List)"},
+        {"name":"someRule#3","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"WaitingList#123"},
+        {"name":"someRule#4","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","surveyForms":["Survey#123"]},
+        {"name":"someRule#5","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#123"},
+        {"name":"someRule#6","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","parentFormName":"Parent#123"}
         ]
         """
 
@@ -164,7 +158,6 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathRule
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 8
         And match response[*].name contains ['someRule#1', 'someRule#2', 'someRule#3', 'someRule#4', 'someRule#5', 'someRule#6']
 #       <--->
 
@@ -222,7 +215,6 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathRule
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains ['someRule#1', 'someRule#2', 'someRule#3', 'someRule#4', 'someRule#5', 'someRule#6']
 
         * call read('../../removeEntity.feature') {path: '#(ishPathForm)', entityName: 'Enrolment#123'}
@@ -235,6 +227,5 @@ Feature: Main feature for all DELETE requests with path 'datacollection/form'
         Given path ishPathForm
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
         And match response[*].name !contains ['Enrolment#123', 'Application#123', 'WaitingList#123', 'Survey#123', 'Payer#123', 'Parent#123']
 #       <--->

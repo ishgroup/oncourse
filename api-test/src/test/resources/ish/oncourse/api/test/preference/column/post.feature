@@ -5,7 +5,7 @@ Feature: Main feature for all POST requests with path 'preference/column'
         * callonce read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/column'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
         * def ishPath = 'list/entity/outcome'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -92,7 +92,8 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "actualStartDate":"2027-02-01",
-        "actualEndDate":"2027-02-05"
+        "actualEndDate":"2027-02-05",
+        "progression":"#ignore"
         }
         """
 
@@ -196,7 +197,8 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "actualStartDate":"2027-02-01",
-        "actualEndDate":"2027-02-05"
+        "actualEndDate":"2027-02-05",
+        "progression":"#ignore"
         }
         """
 

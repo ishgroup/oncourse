@@ -32,9 +32,10 @@ const styles = (theme: AppTheme) =>
       }
     },
     dayMenu: {
-      "& > div > button": {
-        padding: 0
-      }
+      position: "absolute",
+      left: "-22px",
+      bottom: "-12px",
+      transform: "rotate(60deg)"
     },
     assessmentLink: {
       fontSize: "0.8em"
@@ -95,28 +96,28 @@ const AttendanceDayBase: React.FC<DayBaseProps> = ({
           )}
         </Typography>
         <Typography variant="caption">{sessionStartOrAssessmentCode}</Typography>
-      </div>
-      <div className={classes.dayMenu}>
-        {type === "Training plan" ? (
-          <AttendanceActionsMenu
-            className="invisible"
-            onChange={changeSessionRow}
-            type="Training plan"
-            label="Mark ALL modules for this sessions as..."
-          />
-        ) : id && start && hasStudentAttendance && (
-          <AttendanceActionsMenu
-            className="invisible"
-            onChange={changeSessionRow}
-            type="Student"
-            label="Mark ALL attendances for this session as..."
-          />
-        )}
-        {dueDate && (
-          <IconButton className="p-0" onClick={scrollToAssessment}>
-            <Launch color="secondary" className={classes.assessmentLink} />
-          </IconButton>
-        )}
+        <div className={classes.dayMenu}>
+          {type === "Training plan" ? (
+            <AttendanceActionsMenu
+              className="invisible"
+              onChange={changeSessionRow}
+              type="Training plan"
+              label="Mark ALL modules for this sessions as..."
+            />
+          ) : id && start && hasStudentAttendance && (
+            <AttendanceActionsMenu
+              className="invisible"
+              onChange={changeSessionRow}
+              type="Student"
+              label="Mark ALL attendances for this session as..."
+            />
+          )}
+          {dueDate && (
+            <IconButton className="p-0" onClick={scrollToAssessment}>
+              <Launch color="secondary" className={classes.assessmentLink} />
+            </IconButton>
+          )}
+        </div>
       </div>
     </Grid>
   );

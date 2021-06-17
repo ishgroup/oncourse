@@ -9,7 +9,6 @@
 import React, { useEffect, useState } from "react";
 import { FormControlLabel, Grid } from "@material-ui/core";
 import { change } from "redux-form";
-import { format } from "date-fns";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/form-fields/FormField";
@@ -43,7 +42,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
 
   const onChangeMarked = (e: any, value: boolean) => {
     if (value) {
-      dispatch(change(form, "markedOn", format(new Date(), 'yyyy-MM-dd')));
+      dispatch(change(form, "markedOn", new Date().toISOString()));
     } else {
       dispatch(change(form, "markedOn", null));
       if (typeof values.markedById === "number") {
@@ -126,7 +125,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           <FormField
             label="Submitted on"
             name="submittedOn"
-            type="date"
+            type="dateTime"
             placeholder={twoColumn ? "Submitted On" : undefined}
             fullWidth
             required
@@ -137,7 +136,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           <FormField
             label="Marked on"
             name="markedOn"
-            type="date"
+            type="dateTime"
             placeholder={twoColumn ? "Marked On" : undefined}
             fullWidth
           />

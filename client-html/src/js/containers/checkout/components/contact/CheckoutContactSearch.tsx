@@ -8,11 +8,10 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import { CheckoutSummary } from "../../../../model/checkout";
-import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
+import { CHECKOUT_CONTACT_COLUMNS, CheckoutPage } from "../../constants";
 import SelectedContactRenderer from "./SelectedContactRenderer";
 import HeaderField from "../HeaderField";
-import { CheckoutPage } from "../CheckoutSelection";
-import {getCommonPlainRecords, setCommonPlainSearch} from "../../../../common/actions/CommonPlainRecordsActions";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
 
 export interface Props {
   setActiveField: (field: string) => void;
@@ -86,7 +85,6 @@ const CheckoutContactSearch = React.memo<Props>(props => {
     />
   );
 });
-
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContacts: (offset?: number) => dispatch(getCommonPlainRecords("Contact", offset, CHECKOUT_CONTACT_COLUMNS, true, "lastName,firstName", 65000)),

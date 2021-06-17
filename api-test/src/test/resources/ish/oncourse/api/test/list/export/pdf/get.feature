@@ -8,7 +8,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         * def ishPathLogin = 'login'
         * def ishPathPdfTemplate = 'list/export/pdf/template'
         * def ishPathControl = 'control'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 #       <---> Gives reports id's which we will use in requests
         Given path ishPathPdfTemplate

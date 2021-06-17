@@ -14,6 +14,8 @@ module.exports = {
     ".+\\.(css|styl|less|sass|scss|png|jpg|gif|svg|ttf|woff|woff2)$": "jest-transform-stub",
   },
   reporters: ["default"],
+  collectCoverage: true,
+  coverageDirectory: "build/reports/test",
   moduleDirectories: ["node_modules", "src"],
   moduleNameMapper: {
     '@api/model': resolve(__dirname, './build/generated-sources/swagger-js/api.ts'),

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 public class CertificateApiTest {
     @Test
     public void test() {
-        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/entity/certificate/delete.feature",
+        Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path(  "classpath:ish/oncourse/api/test/list/entity/certificate/delete.feature",
                 "classpath:ish/oncourse/api/test/list/entity/certificate/get.feature",
                 "classpath:ish/oncourse/api/test/list/entity/certificate/post.feature",
                 "classpath:ish/oncourse/api/test/list/entity/certificate/put.feature").tags("~@ignore").parallel(1);

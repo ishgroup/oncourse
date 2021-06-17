@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/paymentIn/rev
         * def ishPath = 'list/entity/paymentIn/reverse'
         * def ishPathPaymentIn = 'list/entity/paymentIn'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

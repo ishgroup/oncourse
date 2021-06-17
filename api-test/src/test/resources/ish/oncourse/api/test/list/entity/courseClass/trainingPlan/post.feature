@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         * def ishPath = 'list/entity/courseClass/trainingPlan'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         * def trainingPlanToDefault = [{"moduleId":3,"moduleName":"AUM1001A","sessionIds":[39,40,41,42],"temporarySessionIds":[],"assessmentIds":[],"temporaryAssessmentIds":[]}]

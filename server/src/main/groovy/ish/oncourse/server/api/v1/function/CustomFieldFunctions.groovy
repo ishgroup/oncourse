@@ -37,6 +37,7 @@ class CustomFieldFunctions {
                     }
             cf.value = trimToNull(v)
         }
+        dbObject.modifiedOn = new Date()
     }
 
     static List<CustomFieldType> getCustomFieldTypes(ObjectContext objectContext, String entityName) {

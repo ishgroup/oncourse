@@ -9,7 +9,7 @@ Feature: Main feature for all POST requests with path 'list/export'
         * def ishPathControl = 'control'
         * def ishPathCsvTemplate = 'list/export/template'
         * def ishPathXmlTemplate = 'list/export/template'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Get CSV processId by admin

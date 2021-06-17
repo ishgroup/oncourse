@@ -6,7 +6,7 @@ Feature: Main feature for all PUT requests with path 'login'
         * def ishPath = 'login'
         * def ishPathPreference = 'preference'
         * def ishPathPass = 'user/updatePassword'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

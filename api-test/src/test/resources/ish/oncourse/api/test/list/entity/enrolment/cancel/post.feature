@@ -9,7 +9,7 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment/canc
         * def ishPathEnrolment = 'list/entity/enrolment'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -704,7 +704,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
     const renderedDays = useCallback(
       (attendanceType?: string) => (
         <Grid container>
-          <Grid item xs={10} className={clsx("overflow-hidden", classes.attendanceDayBase)}>
+          <Grid item xs={10} className={classes.attendanceDayBase}>
             <Grid container className={clsx(checkAnimationClass())}>
               {selectedItems.map((sd, si) => (
                 <AttendanceDayBase

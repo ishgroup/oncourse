@@ -6,7 +6,7 @@ Feature: Main feature for all DELETE requests with path 'role'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'role'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -105,15 +105,4 @@ Feature: Main feature for all DELETE requests with path 'role'
         When method DELETE
         Then status 400
         And match response.errorMessage == "ACLRole with id:100000 doesn't exist"
-
-
-    Scenario: (-) Delete Role without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete Role with null ID
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
+        

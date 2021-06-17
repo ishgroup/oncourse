@@ -219,12 +219,9 @@ class SessionValidatorTest extends TestWithDatabase {
         dto3.end = LocalDateTime.parse('2120-12-04T02:15:00') //UTC time
         warnings = validator.validate([dto1, dto2, dto3], 200l)
 
-        Assertions.assertEquals(2, warnings.size())
-        Assertions.assertEquals(ClashTypeDTO.SESSION, warnings[0].type)
-        Assertions.assertEquals(200, warnings[0].sessionId)
+        // no wornings since we allow to sessions with no gap between them |00:15:00---01:15:00| no gap here |01:15:00---02:15:00| 
+        Assertions.assertEquals(0, warnings.size())
 
-        Assertions.assertEquals(ClashTypeDTO.SESSION, warnings[1].type)
-        Assertions.assertEquals('tmp', warnings[1].temporaryId)
     }
 
 

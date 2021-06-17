@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/outcome'
         * def ishPath = 'list/entity/outcome'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -76,6 +76,7 @@ Feature: Main feature for all GET requests with path 'list/entity/outcome'
         "isPriorLearning":false,
         "hasCertificate":true,
         "printed":true,
+        "progression":{"attended":0,"marked":0,"notMarked":0,"submitted":0,"futureTimetable":4.0,"absent":0,"notReleased":0,"released":0},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "actualStartDate":"2027-02-01",
@@ -133,7 +134,8 @@ Feature: Main feature for all GET requests with path 'list/entity/outcome'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "actualStartDate":"2018-12-01",
-        "actualEndDate":"2027-12-01"
+        "actualEndDate":"2027-12-01",
+        "progression":"#ignore"
         }
         """
 

@@ -100,9 +100,8 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                 onBlur: stubFunction,
                 value: elem.submission.submittedOn
               }}
-              type="date"
+              type="datetime"
               formatting="inline"
-              formatDate={D_MMM_YYYY}
               inlineMargin
             />
           )
@@ -123,9 +122,8 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     onBlur: stubFunction,
                     value: elem.submission.markedOn
                   }}
-                  type="date"
+                  type="datetime"
                   formatting="inline"
-                  formatDate={D_MMM_YYYY}
                   inlineMargin
                 />
               </div>

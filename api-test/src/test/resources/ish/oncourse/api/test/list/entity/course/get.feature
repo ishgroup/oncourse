@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
         * def ishPath = 'list/entity/course'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -51,14 +51,6 @@ Feature: Main feature for all GET requests with path 'list/entity/course'
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
-
-
-
-    Scenario: (-) Get Course without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
 
 
 

@@ -6,19 +6,21 @@ updates:
     directory: "client-html"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
     assignees:
       - "yuryyas"
-      
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
     assignees:
       - "ari"
-      
+
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 0
     assignees:
       - "ArtyomKravchenko"

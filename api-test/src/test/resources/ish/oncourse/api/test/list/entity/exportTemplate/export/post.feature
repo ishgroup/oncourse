@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/entity/exportTemplat
         * def ishPathExportTemplate = 'list/entity/exportTemplate'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

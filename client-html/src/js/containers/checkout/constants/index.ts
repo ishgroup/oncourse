@@ -41,4 +41,32 @@ export const CheckoutCurrentStep = createStringEnum([
   "payment"
 ]);
 
-export type CheckoutCurrentStep = keyof typeof CheckoutCurrentStep;
+export type CheckoutCurrentStepType = keyof typeof CheckoutCurrentStep;
+
+export const CheckoutPage = createStringEnum([
+  "default",
+  "contacts",
+  "items",
+  "promocodes",
+  "summary",
+  "payments",
+  "previousCredit",
+  "previousOwing",
+  "fundingInvoiceCompanies",
+  "fundingInvoiceSummary"
+]);
+
+export type CheckoutPageType = keyof typeof CheckoutPage;
+
+export const titles = {
+  [CheckoutPage.default]: "Type in student name or code in order to search",
+  [CheckoutPage.contacts]: "Search for a contact by name.",
+  [CheckoutPage.items]: "Search for a course, product, membership or voucher by name or code.",
+  [CheckoutPage.promocodes]: "Search for a promotional discount by code",
+  [CheckoutPage.summary]: "Summary",
+  [CheckoutPage.payments]: "",
+  [CheckoutPage.previousCredit]: "Previous credit notes",
+  [CheckoutPage.previousOwing]: "Previous owing invoices",
+  [CheckoutPage.fundingInvoiceCompanies]: "Search for a company by name",
+  [CheckoutPage.fundingInvoiceSummary]: "Funding invoice"
+};

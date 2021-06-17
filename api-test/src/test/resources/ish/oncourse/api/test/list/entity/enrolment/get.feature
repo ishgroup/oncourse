@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
         * def ishPath = 'list/entity/enrolment'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -98,7 +98,8 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "assessments":[{"modifiedOn":"#ignore","code":"code1","documents":[],"name":"assessment 1","active":true,"description":"some description","id":1000,"createdOn":"#ignore","tags":[],"gradingTypeId":1}],
-        "submissions":[]
+        "submissions":[],
+        "feeHelpClass":false
         }
         """
 
@@ -180,7 +181,8 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "assessments":[{"modifiedOn":"#ignore","code":"code1","documents":[],"name":"assessment 1","active":true,"description":"some description","id":1000,"createdOn":"#ignore","tags":[],"gradingTypeId":1}],
-        "submissions":[]
+        "submissions":[],
+        "feeHelpClass":false
         }
         """
 
