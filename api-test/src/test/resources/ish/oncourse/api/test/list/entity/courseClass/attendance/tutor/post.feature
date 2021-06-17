@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/courseClass/attendance/tutor'
 
     Background: Authorize first
-        * call read('../../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/attendance/tutor'
         * def ishPathLogin = 'login'
@@ -53,15 +53,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
     Scenario: (+) Update CourseClass tutor attendance by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def attendanceToUpdate =   [{"id":14,"sessionId":20,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Confirmed for payroll","note":null,"durationMinutes":30,"hasPayslip":false},{"id":19,"sessionId":15,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Not confirmed for payroll","note":"notes","durationMinutes":null,"hasPayslip":false},{"id":17,"sessionId":13,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Rejected for payroll","note":null,"durationMinutes":null,"hasPayslip":false},{"id":12,"sessionId":18,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Confirmed for payroll","note":null,"durationMinutes":null,"hasPayslip":false}]
@@ -101,15 +95,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
     Scenario: (-) Update CourseClass tutor attendance by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def attendanceToUpdate =   [{"id":14,"sessionId":20,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Confirmed for payroll","note":null,"durationMinutes":30,"hasPayslip":false},{"id":19,"sessionId":15,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Not confirmed for payroll","note":"notes","durationMinutes":null,"hasPayslip":false},{"id":17,"sessionId":13,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Rejected for payroll","note":null,"durationMinutes":null,"hasPayslip":false},{"id":12,"sessionId":18,"courseClassTutorId":2,"contactName":"tutor1","attendanceType":"Confirmed for payroll","note":null,"durationMinutes":null,"hasPayslip":false}]

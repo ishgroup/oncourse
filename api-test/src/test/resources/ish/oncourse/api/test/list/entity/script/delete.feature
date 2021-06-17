@@ -2,7 +2,7 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/script' without license
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/script'
         * def ishPathLogin = 'login'

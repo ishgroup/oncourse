@@ -100,16 +100,9 @@ Feature: Main feature for all POST requests with path 'list/entity/priorLearning
     Scenario: (+) Create PriorLearning by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newPriorLearning = {"title":"post2","contactId":18,"externalReference":"qwerty","qualificationId":3,"qualificationLevel":"Certificate I in","qualificationNationalCode":"10218NAT","qualificationName":"Aboriginal Language/s v2","outcomeIdTrainingOrg":"123","notes":"some notes","outcomes":[{"id":null,"contactId":null,"enrolmentId":null,"studentName":null,"moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","startDate":"2020-02-01","endDate":"2020-02-18","reportableHours":30,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":false,"hasCertificate":null,"printed":false,"createdOn":null}],"documents":[{"id":200}]}
@@ -120,13 +113,9 @@ Feature: Main feature for all POST requests with path 'list/entity/priorLearning
         Then status 204
 
 #       <--->
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPathList
         And param entity = 'PriorLearning'
@@ -172,16 +161,9 @@ Feature: Main feature for all POST requests with path 'list/entity/priorLearning
     Scenario: (-) Create PriorLearning by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newPriorLearning = {"title":"post3","contactId":18,"externalReference":"qwerty","qualificationId":3,"qualificationLevel":"Certificate I in","qualificationNationalCode":"10218NAT","qualificationName":"Aboriginal Language/s v2","outcomeIdTrainingOrg":"123","notes":"some notes","outcomes":[{"id":null,"contactId":null,"enrolmentId":null,"studentName":null,"moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","startDate":"2020-02-01","endDate":"2020-02-18","reportableHours":30,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":false,"hasCertificate":null,"printed":false,"createdOn":null}],"documents":[]}

@@ -2,7 +2,7 @@
 Feature: Main feature for all PUT requests with path 'list/entity/courseClass/assessment'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/assessment'
         * def ishPathClass = 'list/entity/courseClass'
@@ -33,15 +33,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
         * print "assessmentId = " + assessmentId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def assessmentToUpdate =
@@ -86,15 +80,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
         """
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPath + '/' + assessmentId
         When method DELETE
@@ -123,15 +111,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
         * print "assessmentId = " + assessmentId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def assessmentToUpdate =
@@ -156,12 +138,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/as
         And match $.errorMessage == "Sorry, you have no permissions to edit Assessment Class. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPath + '/' + assessmentId
         When method DELETE

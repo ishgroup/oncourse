@@ -1309,15 +1309,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         * print "tutorId = " + tutorId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def contactToUpdate =
@@ -1428,12 +1422,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         """
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -1444,15 +1435,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
     Scenario: (-) Update Contact by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/1'

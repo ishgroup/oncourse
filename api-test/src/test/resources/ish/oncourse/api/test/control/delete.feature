@@ -2,7 +2,7 @@
 Feature: Main feature for all DELETE requests with path 'control'
 
     Background: Authorize first
-        * call read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'control'
         * def ishPathLogin = 'login'
@@ -37,19 +37,7 @@ Feature: Main feature for all DELETE requests with path 'control'
 
 
     Scenario: (+) Interrupt by id under notadmin with access rights
-        
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
-        
-
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
-#       <--->
+        * configure headers = { Authorization: 'UserWithRightsDelete'}
 
         * def filtersSettings = {"flavour":"NCVER (Standard AVETMISS)","fee":["Fee for service VET (non-funded)","Queensland","New South Wales","Victoria","Tasmania","Australian Capital Territory","Western Australia","South Australia","Northern Territory","No Australian state defined","Non VET"],"outcomesStart":"2016-12-31","outcomesEnd":"2017-12-31","includeLinkedOutcomes":false,"fundingContracts":[]}
 
@@ -77,16 +65,7 @@ Feature: Main feature for all DELETE requests with path 'control'
 
         
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 #       <--->
 
         * def filtersSettings = {"flavour":"NCVER (Standard AVETMISS)","fee":["Fee for service VET (non-funded)","Queensland","New South Wales","Victoria","Tasmania","Australian Capital Territory","Western Australia","South Australia","Northern Territory","No Australian state defined","Non VET"],"outcomesStart":"2016-12-31","outcomesEnd":"2017-12-31","includeLinkedOutcomes":false,"fundingContracts":[]}

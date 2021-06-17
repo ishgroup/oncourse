@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/certificate/revoke'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/certificate/revoke'
         * def ishPathCertificate = 'list/entity/certificate'
@@ -130,16 +130,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/r
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -182,13 +175,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/r
         And match $.privateNotes contains "some reason"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPathCertificate + '/' + id
         When method DELETE
@@ -322,16 +311,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/r
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -341,13 +323,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/r
         And match $.errorMessage == "Sorry, you have no permissions to revoke certificate. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPathCertificate + '/' + id
         When method DELETE
@@ -398,13 +376,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/r
         And match $.errorMessage == "Reason for revoking is required."
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPathCertificate + '/' + id
         When method DELETE

@@ -98,16 +98,9 @@ Feature: Main feature for all POST requests with path 'list/entity/accountTransa
         
 #       Note: Permission 'Create' is always enabled for notadmin.
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newTransaction =
@@ -130,13 +123,9 @@ Feature: Main feature for all POST requests with path 'list/entity/accountTransa
         When method PUT
         
 #       <--->  Login as admin to view created entities:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPathPlain
