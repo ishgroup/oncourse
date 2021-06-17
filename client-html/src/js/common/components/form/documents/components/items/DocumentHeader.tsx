@@ -20,7 +20,6 @@ import React, { MouseEvent } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { Grid, Popover } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -43,8 +42,7 @@ import { AppTheme } from "../../../../../../model/common/Theme";
 import { formatRelativeDate } from "../../../../../utils/dates/formatRelative";
 import DocumentIconsChooser from "./DocumentIconsChooser";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../utils/dates/format";
-import { getDocumentShareSummary, getDocumentVersion } from "../utils";
-import Button from "../../../../buttons/Button";
+import { getDocumentShareSummary, getLatestDocumentItem } from "../utils";
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile);
 
@@ -172,10 +170,8 @@ class DocumentHeader extends React.PureComponent<Props, any> {
     const { classes, item, entity } = this.props;
     const { popoverAnchor, openMoreMenu } = this.state;
 
-    const validUrl = item
-      && (item.versionId
-        ? item.versions.find(v => v.id === item.versionId).url
-        : item.versions[0].url);
+    const latestItem = item && getLatestDocumentItem(item.versions);
+    const validUrl = latestItem && latestItem.url;
 
     return (
       <Grid container justify="space-between" className="mb-1">
@@ -187,7 +183,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
               className={classes.documentChooserButton}
             >
               <DocumentIconsChooser
-                type={getDocumentVersion(item).mimeType}
+                type={getLatestDocumentItem(item.versions).mimeType}
                 thumbnail={item.thumbnail || (item.versions && item.versions[0] && item.versions[0].thumbnail)}
                 isHeader
               />
@@ -197,7 +193,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
           <DocumentInfo
             name={item.name}
             date={item.added || (item.versions && item.versions[0] && item.versions[0].added)}
-            size={getDocumentVersion(item).size}
+            size={getLatestDocumentItem(item.versions).size}
             classes={classes}
           />
 

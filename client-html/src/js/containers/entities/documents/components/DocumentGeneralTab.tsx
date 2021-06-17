@@ -47,7 +47,10 @@ import SimpleTagList from "../../../../common/components/form/simpleTagListCompo
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
-import { getDocumentVersion, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
+import {
+  getLatestDocumentItem,
+  iconSwitcher
+} from "../../../../common/components/form/documents/components/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -179,7 +182,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
   //   setVersionMenu(null);
   // };
 
-  const documentVersion = getDocumentVersion(values);
+  const documentVersion = getLatestDocumentItem(values.versions);
 
   const currentIcon = iconSwitcher(documentVersion.mimeType);
 
