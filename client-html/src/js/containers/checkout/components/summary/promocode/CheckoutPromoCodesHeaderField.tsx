@@ -18,7 +18,7 @@ import {
   checkoutUpdateSummaryClassesDiscounts
 } from "../../../actions/checkoutSummary";
 import SelectedPromoCodesRenderer from "./SelectedPromoCodesRenderer";
-import { CheckoutPage } from "../../CheckoutSelection";
+import { CheckoutPage } from "../../../constants";
 
 export interface Props {
   setActiveField?: (field: any) => void;

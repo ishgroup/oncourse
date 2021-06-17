@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/entity/reportOverlay
         * def ishPathList = 'list/plain'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

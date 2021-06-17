@@ -11,7 +11,8 @@ import {
   ClassCostTypes,
   Classes,
   CourseClassStatus,
-  CourseClassTutorExtended
+  CourseClassTutorExtended,
+  TutorAttendanceExtended
 } from "../../../../model/entities/CourseClass";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
@@ -24,8 +25,6 @@ import { getClassCostFee } from "../components/budget/utils";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { TimetableSession } from "../../../../model/timetable";
 import CourseClassAttendanceService from "../components/attendance/services/CourseClassAttendanceService";
-
-export const courseClassLabelCondition = (data: any) => data && `${data["course.name"]} ${data["course.code"]}-${data.code}`;
 
 export const openCourseClassLink = (classId: number) => openInternalLink(`/${Classes.path}/${classId}`);
 
@@ -94,7 +93,8 @@ export const getClassCostTypes = (
   successAndQueuedEnrolmentsCount: number,
   sessions: TimetableSession[],
   tutors: CourseClassTutorExtended[],
-  tutorRoles: any[]
+  tutorRoles: any[],
+  tutorAttendance: TutorAttendanceExtended[]
 ) => {
   const types: ClassCostTypes = {
     income: {
@@ -134,7 +134,14 @@ export const getClassCostTypes = (
         actual: 0
       };
 
-      const fee = getClassCostFee(value, maximumPlaces, budgetedPlaces, successAndQueuedEnrolmentsCount, sessions);
+      const fee = getClassCostFee(
+        value,
+        maximumPlaces,
+        budgetedPlaces,
+        successAndQueuedEnrolmentsCount,
+        sessions,
+        tutorAttendance
+      );
 
       item.max = fee.max;
       item.projected = fee.projected;

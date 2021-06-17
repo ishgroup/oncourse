@@ -4,7 +4,7 @@ Feature: Try to GET entities without access rights
     Background: Authorize first
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
     
 #    Scenario: (-) Try to GET entities without access rights

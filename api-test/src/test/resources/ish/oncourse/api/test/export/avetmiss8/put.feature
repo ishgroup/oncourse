@@ -8,7 +8,7 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathOutcomes = 'export/avetmiss8/outcomes'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -6,7 +6,7 @@ Feature: Main feature for all DELETE requests with path 'preference/fundingcontr
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/fundingcontract'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -100,15 +100,3 @@ Feature: Main feature for all DELETE requests with path 'preference/fundingcontr
         When method DELETE
         Then status 400
         And match response.errorMessage == "Entity with id = '100000' doesn't exist"
-
-
-    Scenario: (-) Delete Funding Contract without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete Funding Contract with null ID
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404

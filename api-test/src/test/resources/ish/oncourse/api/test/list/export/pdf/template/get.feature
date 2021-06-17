@@ -6,7 +6,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf/template'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/export/pdf/template'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Get templates by admin

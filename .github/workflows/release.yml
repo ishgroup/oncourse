@@ -8,6 +8,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      VERSION: ${GITHUB_REF##*v}
     steps:
       - uses: actions/checkout@v2
 
@@ -27,14 +29,16 @@ jobs:
             **/node_modules
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ matrix.java }}-
+          key: 11-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: 11-
 
       - name: Build artifacts
-        run: ./gradlew clean server:distZip -x server:test -x client-html:test
+        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${{ env.VERSION }}
 
-      - uses: ncipollo/release-action@v1
-          with:
-            artifact: "server/build/distributions/onCourseServer-*.zip"
-            body: "onCourse"
-            token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          name: onCourse ${{ env.VERSION }}
+          artifacts: "server/build/distributions/onCourseServer-*.zip", "server/build/distributions/onCourseServer-*.sha256"
+          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{ env.VERSION }}/release-notes.html"
+          token: ${{ secrets.GITHUB_TOKEN }}

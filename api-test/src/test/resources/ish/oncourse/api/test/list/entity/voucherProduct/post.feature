@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         * def ishPath = 'list/entity/voucherProduct'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -26,7 +26,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -66,7 +68,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "dataCollectionRuleId":null
+        "dataCollectionRuleId":null,
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -87,7 +91,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[],
         "description":"some description",
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -127,7 +133,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "dataCollectionRuleId":null
+        "dataCollectionRuleId":null,
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -148,7 +156,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[],
         "description":"some description",
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -188,7 +198,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "dataCollectionRuleId":null
+        "dataCollectionRuleId":null,
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -222,7 +234,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[],
         "description":"some description",
         "status":"Can be purchased in office & online",
-        "corporatePasses":[{"id":1001}]
+        "corporatePasses":[{"id":1001}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -262,7 +276,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "relatedSellables":[],
-        "dataCollectionRuleId":null
+        "dataCollectionRuleId":null,
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -323,7 +339,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -350,7 +368,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -377,7 +397,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -404,7 +426,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -431,7 +455,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":99999}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -458,7 +484,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -485,7 +513,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 
@@ -512,7 +542,9 @@ Feature: Main feature for all POST requests with path 'list/entity/voucherProduc
         "courses":[{"id":1}],
         "description":"some description",
         "status":"Can be purchased in office",
-        "corporatePasses":[{"id":1002}]
+        "corporatePasses":[{"id":1002}],
+        "underpaymentAccountId":11,
+        "dataCollectionRuleId":103
         }
         """
 

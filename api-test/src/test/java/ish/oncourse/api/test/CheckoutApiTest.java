@@ -17,7 +17,7 @@ public class CheckoutApiTest {
 
     @Test
     public void test() {
-        Results results = Runner.path( "classpath:ish/oncourse/api/test/checkout/post.feature",
+        Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path( "classpath:ish/oncourse/api/test/checkout/post.feature",
                 "classpath:ish/oncourse/api/test/checkout/discount/get.feature",
                 "classpath:ish/oncourse/api/test/checkout/postPaymentWithCreditsAndOwings.feature",
                 "classpath:ish/oncourse/api/test/checkout/postValidateAmountsOfProducts.feature").tags("~@ignore").parallel(1);

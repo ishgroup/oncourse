@@ -7,7 +7,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/payslip'
         * def ishPath = 'list/entity/payslip'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

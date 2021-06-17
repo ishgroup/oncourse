@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/banking'
         * def ishPath = 'list/entity/banking'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -159,10 +159,3 @@ Feature: Main feature for all GET requests with path 'list/entity/banking'
         Then status 400
         And match $.errorMessage == "Banking with id:9999 doesn't exist"
 
-
-
-    Scenario: (-) Get Banking without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405

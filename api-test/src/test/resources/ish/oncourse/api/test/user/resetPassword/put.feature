@@ -4,7 +4,7 @@ Feature: Main feature for all PUT requests with path 'user/resetPassword'
     Background: Authorize first
         * call read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPath = 'user/resetPassword'
         * def ishPathUser = 'user'
         * def ishPathLogin = 'login'
@@ -50,8 +50,7 @@ Feature: Main feature for all PUT requests with path 'user/resetPassword'
         Given path ishPath + '/' + id
         And request {}
         When method PUT
-        Then status 400
-        And match response.errorMessage contains "Could not connect to SMTP"
+        Then status 204
 
 
 

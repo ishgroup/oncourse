@@ -16,6 +16,9 @@ export const summaryListStyles = (theme: AppTheme) => createStyles({
   itemTotal: {
     paddingRight: "50px !important"
   },
+  topRightlabel: {
+    paddingRight: "38px"
+  },
   root: {
     paddingTop: "10px",
     paddingBottom: "10px"

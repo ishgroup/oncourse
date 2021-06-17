@@ -5,10 +5,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
-import { AppBarTitle } from "../../CheckoutSelection";
 import EnrolClassListView from "./EnrolClassListView";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { State } from "../../../../../reducers/state";
+import CheckoutAppBar from "../../CheckoutAppBar";
 
 const EnrolCourseClassView = React.memo<any>(props => {
   const {
@@ -24,7 +24,7 @@ const EnrolCourseClassView = React.memo<any>(props => {
   return (
     <div className="flex-column w-100">
       <CustomAppBar>
-        <AppBarTitle
+        <CheckoutAppBar
           type="course"
           title={course && course.name}
           link={course && course.courseId}

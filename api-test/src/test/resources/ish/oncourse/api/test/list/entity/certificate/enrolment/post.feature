@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/e
         * def ishPathCertificate = 'list/entity/certificate'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

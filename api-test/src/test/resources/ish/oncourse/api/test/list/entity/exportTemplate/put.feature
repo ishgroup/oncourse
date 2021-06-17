@@ -7,7 +7,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         * def ishPath = 'list/entity/exportTemplate'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

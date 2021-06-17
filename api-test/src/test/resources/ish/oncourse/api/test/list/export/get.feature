@@ -8,7 +8,7 @@ Feature: Main feature for all GET requests with path 'list/export'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathTemplate = 'list/export/template'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 #       <---> Gives CSV reports id's which we will use in requests:
         Given path ishPathTemplate
@@ -306,7 +306,7 @@ Feature: Main feature for all GET requests with path 'list/export'
         When method GET
         Then status 200
         * def surveyXmlExportId = get[0] response[?(@.name == 'StudentFeedback XML export')].id
-        * print "id = " + surveyXmlExportIxx
+        * print "id = " + surveyXmlExportId 
 
         Given path ishPathTemplate
         And param entityName = 'Audit'

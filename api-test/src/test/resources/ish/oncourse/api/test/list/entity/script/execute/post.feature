@@ -6,7 +6,7 @@ Feature: Main feature for all POST requests with path 'list/entity/script/execut
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/script/execute'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Execute script by admin

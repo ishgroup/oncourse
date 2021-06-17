@@ -6,7 +6,7 @@ Feature: Main feature for all DELETE requests with path 'tag'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
         
     Scenario: (+) Delete not system tag group by admin
@@ -355,28 +355,3 @@ Feature: Main feature for all DELETE requests with path 'tag'
         When method DELETE
         Then status 400
         And match response.errorMessage == "Tag with id:99999 doesn't exist"
-
-
-
-    Scenario: (-) Delete tag group without any ID
-
-            Given path ishPath + '/'
-            When method DELETE
-            Then status 405
-
-
-
-    Scenario: (-) Delete tag group with NULL as ID
-
-            Given path ishPath + '/null'
-            When method DELETE
-            Then status 404
-
-
-
-    Scenario: (-) Delete tag group without path
-
-            Given path ishPath
-            When method DELETE
-            Then status 405
-

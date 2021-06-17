@@ -9,7 +9,7 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
         * def ishPathList = 'list'
         * def ishPathPayslip = 'list/entity/payslip'
         * def ishPathControl = 'control'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

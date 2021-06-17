@@ -6,7 +6,7 @@ Feature: Main feature for all PUT requests with path 'logout'
         * def ishPathLogin = 'login'
         * def ishPath = 'logout'
         * def ishPathContact = 'list/entity/contact'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

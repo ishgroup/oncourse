@@ -9,6 +9,7 @@ jobs:
 
   client-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v2
@@ -42,3 +43,11 @@ jobs:
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew client-html:test
+
+      - name: Upload coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: jest
+          directory: client-html/build/reports/test
