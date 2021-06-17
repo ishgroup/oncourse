@@ -12,11 +12,13 @@ import {
 } from "../../../../model/checkout";
 import { State } from "../../../../reducers/state";
 import { getContactName } from "../../../entities/contacts/utils";
-import { AppBarTitle, CheckoutPage, RestartButton } from "../CheckoutSelection";
 import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
 import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
 import CreditCardPaymentPage from "./components/payment-methods/CreditCardPaymentPage";
 import PaymentPage from "./components/payment-methods/PaymentPage";
+import CheckoutAppBar from "../CheckoutAppBar";
+import RestartButton from "../RestartButton";
+import { CheckoutPage } from "../../constants";
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;
@@ -60,7 +62,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         : (
           <div className="root">
             <CustomAppBar>
-              <AppBarTitle title={title} />
+              <CheckoutAppBar title={title} />
               {payment.process.status === "success" && <RestartButton />}
             </CustomAppBar>
             <LoadingIndicator customLoading={isPaymentProcessing} />

@@ -6,7 +6,7 @@ Feature: Main feature for all PUT requests with path 'list/option/payroll'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/option/payroll'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

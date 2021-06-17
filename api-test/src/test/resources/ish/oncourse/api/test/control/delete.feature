@@ -9,7 +9,7 @@ Feature: Main feature for all DELETE requests with path 'control'
         * def ishPathControl = 'control'
         * def ishPathOutcomes = 'export/avetmiss8/outcomes'
         * def ishPathRole = 'role'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

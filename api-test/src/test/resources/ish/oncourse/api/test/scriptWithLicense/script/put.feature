@@ -5,7 +5,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/script'
     Background: Authorize first
         * call read('../../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPath = 'list/entity/script'
         * def ishPathList = 'list'
         * def ishPathLogin = 'login'

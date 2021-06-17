@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         * def ishPath = 'list/entity/voucherProduct'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -119,11 +119,3 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '9999' doesn't exist."
-
-
-
-    Scenario: (-) Get VoucherProduct without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405

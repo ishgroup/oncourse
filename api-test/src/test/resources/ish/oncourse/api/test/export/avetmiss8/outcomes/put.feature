@@ -7,7 +7,7 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8/outcomes'
         * def ishPath = 'export/avetmiss8/outcomes'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Get outcomes/enrolments by admin

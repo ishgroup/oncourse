@@ -17,8 +17,8 @@ import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { State } from "../../../../reducers/state";
 import { formatFundingSourceId } from "../../../entities/common/utils";
-import { AppBarTitle, } from "../CheckoutSelection";
 import CheckoutFundingInvoiceSummaryList, { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
+import CheckoutAppBar from "../CheckoutAppBar";
 
 const styles = createStyles(() => ({
   fundingInvoiceSourceId: {
@@ -65,7 +65,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
   return (
     <div className="appFrame flex-fill root">
       <CustomAppBar>
-        <AppBarTitle title={titles[activeField]} />
+        <CheckoutAppBar title={titles[activeField]} />
       </CustomAppBar>
       <div className="appBarContainer w-100">
         <form autoComplete="off">

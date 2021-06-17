@@ -120,6 +120,20 @@
   <CustomField id="3" entityIdentifier="Contact" foreignId="2" customFieldTypeId="2" value="value3"
                createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
 
+  <CustomFieldType id="3" isMandatory="0" createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"
+                   defaultValue="someDefaultText"
+                   name="Customer Code" fieldKey="customerCode" entityIdentifier="Contact" sortOrder="2"/>
+  <CustomField id="4" entityIdentifier="Contact" foreignId="1" customFieldTypeId="3" value="valueContact1"
+               createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
+  <CustomField id="5" entityIdentifier="Contact" foreignId="2" customFieldTypeId="3" value="valueContact2"
+               createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
+
+  <CustomFieldType id="4" isMandatory="0" createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"
+                   defaultValue="someDefaultText" dataType="2"
+                   name="Some date" fieldKey="someDate" entityIdentifier="Contact" sortOrder="2"/>
+  <CustomField id="6" entityIdentifier="Contact" foreignId="1" customFieldTypeId="4" value="dateContact1"
+               createdOn="2017-04-17 19:22:59" modifiedOn="2017-04-17 19:23:29"/>
+
   <Node id="1" isVocabulary="1" isWebVisible="1" name="ContactTag" nodeType="1"/>
   <NodeRequirement id="1" entityIdentifier="8" isRequired="0" manyTermsAllowed="1" nodeId="1"/>
   <NodeRelation id="1" entityIdentifier="8" entityRecordId="1" nodeId="1"/>

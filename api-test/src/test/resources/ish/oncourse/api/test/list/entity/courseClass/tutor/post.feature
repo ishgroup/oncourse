@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         * def ishPath = 'list/entity/courseClass/tutor'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

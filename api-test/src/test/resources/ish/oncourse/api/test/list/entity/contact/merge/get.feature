@@ -6,7 +6,7 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/contact/merge'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

@@ -6,7 +6,7 @@
 import React from "react";
 import LoadingIndicator from "../../../../../common/components/layout/LoadingIndicator";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import { AppBarTitle } from "../../CheckoutSelection";
+import CheckoutAppBar from "../../CheckoutAppBar";
 
 interface Props {
   activeField?: any;
@@ -19,7 +19,7 @@ const CheckoutPromocodePage = React.memo<Props>(props => {
     <div className="appFrame flex-fill root">
       <LoadingIndicator />
       <CustomAppBar>
-        <AppBarTitle title={activeField && titles[activeField]} />
+        <CheckoutAppBar title={activeField && titles[activeField]} />
       </CustomAppBar>
 
       <div className="appBarContainer w-100 p-3" />

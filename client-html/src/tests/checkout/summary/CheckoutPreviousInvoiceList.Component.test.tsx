@@ -2,7 +2,7 @@ import * as React from "react";
 import { defaultComponents } from "../../common/Default.Components";
 import CheckoutPreviousInvoiceList
   from "../../../js/containers/checkout/components/summary/CheckoutPreviousInvoiceList";
-import { CheckoutPage, titles } from "../../../js/containers/checkout/components/CheckoutSelection";
+import { CheckoutPage, titles } from "../../../js/containers/checkout/constants";
 import { decimalPlus } from "../../../js/common/utils/numbers/decimalCalculation";
 
 describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
@@ -12,7 +12,6 @@ describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
     record: mockedApi => mockedApi.db.getAmountOwing(true),
     defaultProps: ({ initialValues }) => {
       let invoiceTotal = 0;
-
       const updatedValues = initialValues.map(item => {
         invoiceTotal = decimalPlus(invoiceTotal, parseFloat(item.amountOwing));
         return { ...item, checked: true };
@@ -21,7 +20,8 @@ describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
       const previousInvoices = {
         invoices: updatedValues,
         invoiceTotal,
-        unCheckAll: false
+        unCheckAll: false,
+        payDueAmounts: true
       };
 
       return {
@@ -39,7 +39,7 @@ describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
       const count = initialValues.length;
       let i;
 
-      expect(wrapper.find("input[type='checkbox']").at(0).props().checked).toEqual(false);
+      expect(wrapper.find("input[type='checkbox']").at(0).props().checked).toEqual(true);
 
       for (i = 1; i <= count; i++) {
         expect(wrapper.find("input[type='checkbox']").at(i).props().checked).toEqual(true);

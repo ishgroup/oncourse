@@ -6,7 +6,7 @@ Feature: Main feature for all POST requests with path 'list'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -49,6 +49,17 @@ Feature: Main feature for all POST requests with path 'list'
         | 'PriorLearning'       |
 
       * call read('postListOfEntity.feature') getListOfEntity
+
+
+  Scenario: (+) Get list for each entity with filters
+
+    * table getListOfEntity
+
+      | entity                | request                                                                          |
+      | 'Contact'             | {search: "isStudent == true", pageSize: 50, offset: 0, filter: "", tagGroups: []}|
+      | 'Contact'             | {search: "cf1 not is null and cf2 is null", pageSize: 50, offset: 0, filter: "", tagGroups: []}|
+
+    * call read('postListOfEntityWithFilters.feature') getListOfEntity
 
 
 

@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
         * def ishPath = 'list/entity/script'
         * def ishPathList = 'list'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
   
         
     Scenario: (+) Get list of all scripts by admin
@@ -41,28 +41,6 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
         When method GET
         Then status 400
         And match response.errorMessage == "Record with id = '111111' doesn't exist."
-        
-        
-    Scenario: (-) Get script without any ID
-    
-        Given path ishPath + '/'
-        When method GET
-        Then status 405
-        
-            
-    Scenario: (-) Get script with NULL as ID
-        
-        Given path ishPath + '/null'
-        When method GET
-        Then status 404
-        
-        
-    Scenario: (-) Get script without path
-        
-        Given path ishPath
-        When method GET
-        Then status 405
-
 
     Scenario: (+) Get list of all scripts by notadmin with rights
 

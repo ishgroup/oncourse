@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 public class AssessmentApiTest {
     @Test
     public void test() {
-        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/entity/assessment").tags("~@ignore").parallel(1);
+        Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path(  "classpath:ish/oncourse/api/test/list/entity/assessment").tags("~@ignore").parallel(1);
         Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }
 }

@@ -203,6 +203,8 @@ task integration(type: Test) {
 	testLogging {
 		exceptionFormat = 'full'
 	}
+	
+	jvmArgs = ['-Xmx3000m','-Xms3000m']
 	dependsOn "expandConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
@@ -224,6 +226,7 @@ task startDaemon(dependsOn: [classes], type: JavaExecFork) {
 }
 
 tasks.withType(CreateStartScripts).each { task ->
+	task.outputs.files("build/scripts/*")
 	task.doLast {
 		String text = task.windowsScript.text
 		text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, "set CLASSPATH=%APP_HOME%\\\\onCourseServer.jar;%APP_HOME%\\\\lib\\\\*;%APP_HOME%\\\\plugins\\\\*" )
@@ -240,30 +243,32 @@ tasks.withType(CreateStartScripts).each { task ->
 	}
 }
 
-task installer_unix(dependsOn: [jar, assembleDist], type: Zip) {
-	description "Create the Unix/Linux package (zip)."
+task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
+	from('../client-html/build/assets') {
+		include '**/*.*'
+	}
+	into 'build/resources/main/static'
+}
+
+task addVersion {
+	outputs.files("build/resources/VERSION")
 	doFirst {
+		mkdir "build/resources"
 		file("build/resources/VERSION").text = project.version
 	}
+}
 
-	from (configurations.runtimeClasspath) {
-		into 'onCourseServer/lib'
-	}
-	from (configurations.runtime.artifacts.files) {
-		into 'onCourseServer'
-	}
-	from (file("src/packaging/unix/")) {
-		into 'onCourseServer'
-	}
-	from (file("build/resources/VERSION")) {
-		into 'onCourseServer'
-	}
-	from (file("build/scripts/")) {
-		into 'onCourseServer/bin/'
-	}
+distZip.dependsOn(copyWebApp,addVersion)
 
-	archiveFileName = 'onCourseServer.zip'
-	destinationDirectory = file("${buildDir}/distributions/unix")
+distributions {
+	main {
+		distributionBaseName = 'onCourseServer'
+		contents {
+			from configurations.runtime.artifacts.files
+			from "src/packaging/"
+			from addVersion.outputs.files
+		}
+	}
 }
 
 // DSL asciidoc documentation
@@ -303,24 +308,11 @@ publishing {
 			}
 		}
 		executables(MavenPublication) {
-			artifact(installer_unix) {
+			artifact(distZip) {
 				classifier "executable"
 				extension "zip"
 			}
 		}
-	}
-}
-
-String sha256(String filename) {
-	if (! file(filename).exists()) return "missing file"
-
-	new ByteArrayOutputStream().withStream { result ->
-		exec {
-			executable = 'shasum' // this is only going to work on OSX
-			args = ['-a', '256', filename]
-			standardOutput = result
-		}
-		return result.toString().split()[0]
 	}
 }
 
@@ -347,17 +339,9 @@ cgen {
 	}
 }
 
-task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
-	from('../client-html/build/assets') {
-		include '**/*.*'
-	}
-	into 'build/resources/main/static'
-}
-
 compileJava {
 	dependsOn queryGrammar, cgen
 }
-assembleDist.dependsOn(copyWebApp)
 
 task runServer(dependsOn: [classes], type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath

@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'datacollection/rule'
         * def datacollectionForm = 'datacollection/form'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
         
     Scenario: (+) Create datacollection rule
@@ -45,12 +45,11 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Then status 204
 #       <--->
 
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#1","parentFormName":"Parent#1","surveyForms":["Survey#1", 'Survey#2']}
+        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#1","parentFormName":"Parent#1","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)", "surveyForms":["Survey#1", 'Survey#2']}
 
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains 'someRule#1'
 
         Given path ishPath
@@ -61,7 +60,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 3
         And match response[?(@.name=='someRule#1')].enrolmentFormName contains "Waiting list form (Enrolment)"
         And match response[?(@.name=='someRule#1')].applicationFormName contains "Default Field form (Application)"
         And match response[?(@.name=='someRule#1')].waitingListFormName contains "Accredited course enrolment form (Waiting List)"
@@ -76,7 +74,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains 'someRule#1'
 
         Given path 'datacollection/form'
@@ -94,300 +91,11 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         * call read('../../removeEntityById.feature') {path: '#(datacollectionForm)', entityId: '#(id004)'}
 #       <--->
 
-
-    Scenario: (-) Create new invalid (empty) DataCollectionRule
-
-        * def rule = {}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Rule name can not be empty"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid ('Name' field is empty) DataCollectionRule
-
-        * def rule = {"name":"","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#1","parentFormName":"Parent#1","surveyForms":["Survey#1", "Survey#2"]}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Rule name can not be empty"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-    Scenario: (-) Create new invalid ('Name' field is null) DataCollectionRule
-
-        * def rule = {"name":null,"enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"Payer#1","parentFormName":"Parent#1","surveyForms":["Survey#1", "Survey#2"]}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Rule name can not be empty"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create DataCollectionRule with not unique name
-
-#       Prepare new DataCollectionRule
-#       <--->
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 204
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 3
-        And match response[*].name contains 'someRule#1'
-#       <--->
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Rule name should be unique"
-
-#       Scenario have been finished. Now find and remove created objects from DB
-#       <--->
-        * call read('../../removeEntity.feature') {path: '#(ishPath)', entityName: 'someRule#1'}
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-        And match response[*].name !contains 'someRule#1'
-#       <--->
-
-
-
-    Scenario: (-) Create new invalid ('Enrolment' field is empty) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Enrolment form name can not be empty"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-    Scenario: (-) Create new invalid ('Enrolment' field is null) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":null,"applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Enrolment form name can not be empty"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid (not existing'Enrolment' value) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"notExisting","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Enrolment form notExisting is not exist"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid ('Application' field is empty) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
-
-         Given path ishPath
-         And request rule
-         When method POST
-         Then status 400
-         And match response.errorMessage == "Application form name can not be empty"
-
-         Given path ishPath
-         When method GET
-         Then status 200
-         And match karate.sizeOf(response) == 2
-
-
-    Scenario: (-) Create new invalid ('Application' field is null) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":null,"waitingListFormName":"Accredited course enrolment form (Waiting List)"}
-
-         Given path ishPath
-         And request rule
-         When method POST
-         Then status 400
-         And match response.errorMessage == "Application form name can not be empty"
-
-         Given path ishPath
-         When method GET
-         Then status 200
-         And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid (not existing 'Application' value) DataCollectionRule
-
-         * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"notExisting","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
-
-         Given path ishPath
-         And request rule
-         When method POST
-         Then status 400
-         And match response.errorMessage == "Application form notExisting is not exist"
-
-         Given path ishPath
-         When method GET
-         Then status 200
-         And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid ('Waiting List' field is empty) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":""}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Waiting list form name can not be empty"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-    Scenario: (-) Create new invalid ('Waiting List' field is null) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":null}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Waiting list form name can not be empty"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid (not existing 'Waiting List' value) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"notExisting"}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Waiting list form notExisting is not exist"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid (not existing 'Survey' value) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","surveyForms":["notExisting#1", "notExisting#2"]}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Survey form notExisting#1 is not exist"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid (not existing 'Payer' value) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","payerFormName":"notExisting"}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Payer form notExisting is not exist"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
-    Scenario: (-) Create new invalid (not existing 'Parent' value) DataCollectionRule
-
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)","parentFormName":"notExisting"}
-
-        Given path ishPath
-        And request rule
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Parent form notExisting is not exist"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 2
-
-
-
     Scenario: (-) Update existing DataCollectionRule
 
 #       Prepare new DataCollectionForm
 #       <--->
-        * def rule = {"name":"someRule#1","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
+        * def rule = {"name":"someRule#1","productFormName":"Default Field form (Product)", "voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
 
         Given path ishPath
         And request rule
@@ -397,7 +105,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 3
         And match response[*].name contains 'someRule#1'
 #       <--->
 
@@ -406,7 +113,7 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Then status 200
 
         * def id = get[0] response[?(@.name == 'someRule#1')].id
-        * def someDataCollectionFormToUpdate = {id: '#(id)',"name":"someRule#2","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
+        * def someDataCollectionFormToUpdate = {id: '#(id)',"name":"someRule#2","productFormName":"Default Field form (Product)","voucherFormName":"Default Field form (Voucher)","membershipFormName":"Default Field form (Membership)","enrolmentFormName":"Waiting list form (Enrolment)","applicationFormName":"Default Field form (Application)","waitingListFormName":"Accredited course enrolment form (Waiting List)"}
 
         Given path ishPath
         And request someDataCollectionFormToUpdate
@@ -419,7 +126,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 4
         * def id1 = get[0] response[?(@.name == 'someRule#1')].id
         * def id2 = get[0] response[?(@.name == 'someRule#2')].id
 
@@ -429,7 +135,6 @@ Feature: Main feature for all POST requests with path '/datacollection/rule'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 2
         And match response[*].name !contains ['someRule#1', 'someRule#2']
 
 

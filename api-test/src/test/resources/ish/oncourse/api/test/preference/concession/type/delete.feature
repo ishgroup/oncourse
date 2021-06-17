@@ -6,7 +6,7 @@ Feature: Main feature for all DELETE requests with path 'preference/concession/t
         * callonce read('../../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/concession/type/'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
         
     Scenario: (+) Delete existing concession type 
@@ -34,13 +34,6 @@ Feature: Main feature for all DELETE requests with path 'preference/concession/t
         When method DELETE
         Then status 400
         And match response.errorMessage == "Concession type id is incorrect. It must consist of only numbers"
-        
-        
-    Scenario: (-) Delete concession type without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-        
         
     Scenario: (-) Delete not existing concession type 
         Given path ishPath + '100000'

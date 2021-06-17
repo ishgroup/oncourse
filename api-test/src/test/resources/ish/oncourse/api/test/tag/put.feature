@@ -6,7 +6,7 @@ Feature: Main feature for all PUT requests with path 'tag'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
         * def newTagGroupCreatedForNotadmin = {"name":"tagName500","status":"Show on website","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","urlPath":"urlPath2","content":"Any text2","weight":2,}]}
         * def newTagGroupUpdatedByNotadmin = {"name":"tagName501","status":"Show on website","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","urlPath":"urlPath2","content":"Any text2","weight":2,}]}

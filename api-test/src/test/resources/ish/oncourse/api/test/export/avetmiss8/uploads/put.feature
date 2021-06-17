@@ -6,7 +6,7 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8/uploads'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'export/avetmiss8/uploads'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
