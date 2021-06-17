@@ -3,7 +3,7 @@
 Feature: Main feature for all GET requests with path 'list/entity/script'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/script'
         * def ishPathList = 'list'
@@ -21,19 +21,7 @@ Feature: Main feature for all GET requests with path 'list/entity/script'
 
 
     Scenario: (+) Get list of all scripts by notadmin with rights
-
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-#       <--->
+        * configure headers = { Authorization: 'UserWithRightsView'}
 
         Given path ishPathList
         And param entity = 'Script'
@@ -45,16 +33,9 @@ Feature: Main feature for all GET requests with path 'list/entity/script'
     Scenario: (+) Get list of all scripts by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+
 #       <--->
 
         Given path ishPathList
@@ -73,20 +54,8 @@ Feature: Main feature for all GET requests with path 'list/entity/script'
 
 
     Scenario: (+) Get existing script by notadmin
-
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-#       <--->
-
+        * configure headers = { Authorization: 'UserWithRightsHide'}
+        
         Given path ishPath + '/2'
         When method GET
         Then status 200

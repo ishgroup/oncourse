@@ -2,7 +2,7 @@
 Feature: Main feature for all PUT requests with path 'list/entity/room'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/room'
@@ -184,16 +184,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         * def id = get[0] response.rows[?(@.values == ["testRoom104","site1","5"])].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       <--->
         * def roomToUpdate =
@@ -224,16 +217,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         And match $.facilities == "someFacilities_upd"
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -270,16 +256,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         * def id = get[0] response.rows[?(@.values == ["testRoom105","site1","5"])].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def roomToUpdate =
@@ -302,16 +281,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         And match $.errorMessage == "Sorry, you have no permissions to edit room. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE

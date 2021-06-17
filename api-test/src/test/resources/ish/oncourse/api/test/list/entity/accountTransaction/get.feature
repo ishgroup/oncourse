@@ -2,7 +2,7 @@
 Feature: Main feature for all GET requests with path 'list/entity/accountTransaction'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/accountTransaction'
         * def ishPathLogin = 'login'
@@ -24,21 +24,7 @@ Feature: Main feature for all GET requests with path 'list/entity/accountTransac
 
     Scenario: (+) Get list of all account transactions by notadmin with access rights
 
-        Given path '/logout'
-        And request {}
-        When method PUT
-        
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
-#       <--->
+        * configure headers = { Authorization: 'UserWithRightsView' }
 
         Given path ishPathList
         And param pageSize = 1000
@@ -59,22 +45,7 @@ Feature: Main feature for all GET requests with path 'list/entity/accountTransac
 
 
     Scenario: (+) Get account transaction by notadmin with access rights
-
-        Given path '/logout'
-        And request {}
-        When method PUT
-        
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
-#       <--->
+        * configure headers = { Authorization: 'UserWithRightsView' }
 
         Given path ishPath + '/3'
         When method GET
@@ -84,22 +55,9 @@ Feature: Main feature for all GET requests with path 'list/entity/accountTransac
 
 
     Scenario: (-) Get list of all account transactions by notadmin without access rights
-
-        Given path '/logout'
-        And request {}
-        When method PUT
         
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'UserWithRightsHide' }
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
-#       <--->
 
         Given path ishPathList
         And param entity = 'AccountTransaction'
@@ -111,21 +69,8 @@ Feature: Main feature for all GET requests with path 'list/entity/accountTransac
 
     Scenario: (-) Get account transaction by notadmin without access rights
 
-        Given path '/logout'
-        And request {}
-        When method PUT
-        
-#       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
-#       <--->
+       
+        * configure headers = { Authorization: 'UserWithRightsHide' }
 
         Given path ishPath + "/5"
         When method GET

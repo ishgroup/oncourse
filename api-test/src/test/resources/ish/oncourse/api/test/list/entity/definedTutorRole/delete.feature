@@ -2,7 +2,7 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/definedTutorRole'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/definedTutorRole'
         * def ishPathLogin = 'login'
@@ -79,16 +79,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/definedTuto
         * print "id = " + id
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/' + id
@@ -96,13 +89,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/definedTuto
         Then status 403
 
 #       <---->  Scenario have been finished. Now delete created entity:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE

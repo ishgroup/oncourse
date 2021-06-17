@@ -2,45 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/exportTemplate'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/exportTemplate'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
         
-
-
-#       <------------------> List for this entity is not supported.
-
-#    Scenario: (+) Get list of all Templates by admin
-#
-#        Given path ishPathList
-#        And param entity = 'ExportTemplate'
-#        When method GET
-#        Then status 200
-#        And match $.rows[*].id contains ["1", "2"]
-#
-#
-#
-#    Scenario: (+) Get list of all Templates by notadmin with access rights
-#
-##       <--->  Login as notadmin
-#        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-#
-#        Given path '/login'
-#        And request loginBody
-#        When method PUT
-#        Then status 200
-##       <--->
-#
-#        Given path ishPathList
-#        And param entity = 'ExportTemplate'
-#        When method GET
-#        Then status 200
-#        And match $.rows[*].id contains ["1", "2"]
-
-#       <-------------------------------------------->
-
 
     Scenario: (+) Get Template by admin
 
@@ -79,15 +46,9 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
     Scenario: (+) Get Template by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList

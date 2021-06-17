@@ -56,15 +56,9 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
     Scenario: (+) Get list of all Assessments by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -78,15 +72,9 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
     Scenario: (+) Get Assessment by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/1001'
@@ -125,39 +113,4 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         }
         """
 
-
-
-#    Scenario: (-) Get list of all Assessments by notadmin without access rights
-#
-##       <--->  Login as notadmin
-#        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-#
-#        Given path '/login'
-#        And request loginBody
-#        When method PUT
-#        Then status 200
-##       <--->
-#
-#        Given path ishPathList
-#        And param entity = 'Assessment'
-#        When method GET
-#        Then status 403
-#        And match $.errorMessage == "Sorry, you have no permissions to view this entity. Please contact your administrator"
-
-
-
-#    Scenario: (-) Get Assessment by notadmin without access rights
-#
-##       <--->  Login as notadmin
-#        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-#
-#        Given path '/login'
-#        And request loginBody
-#        When method PUT
-#        Then status 200
-##       <--->
-#
-#        Given path ishPath + '/1000'
-#        When method GET
-#        Then status 403
-#        And match $.errorMessage == "Sorry, you have no permissions to get assessment. Please contact your administrator"
+        

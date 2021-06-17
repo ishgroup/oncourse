@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'preference/fundingcontract'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/fundingcontract'
@@ -127,16 +127,9 @@ Feature: Main feature for all POST requests with path 'preference/fundingcontrac
     Scenario: (-) Add new Funding Contract by notadmin
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+
 #       <--->
 
         * def newFundingContract = [{"active":false,"flavour":"WA RAPT","name":"FC-01"}]
@@ -334,16 +327,9 @@ Feature: Main feature for all POST requests with path 'preference/fundingcontrac
         * print "id = " + id
 
 #       <--->  Login as notadmin and change entity:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+
 
         * def fundingContractToUpdate = [{"id":"#(id)","active":true,"flavour":"AVETARS (ACT)","name":"FC-09_UPD"}]
 
@@ -353,14 +339,8 @@ Feature: Main feature for all POST requests with path 'preference/fundingcontrac
         Then status 403
 
 #       <---> Scenario have been finished. Now remove created entity from db:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-
+        * configure headers = { Authorization: 'admin'}
+        
         Given path ishPath + '/' + id
         When method DELETE
         Then status 204

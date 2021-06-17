@@ -2,7 +2,7 @@
 Feature: Main feature for all GET requests with path 'export/avetmiss8/outcomes'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'export/avetmiss8/outcomes'
         * def ishPathLogin = 'login'

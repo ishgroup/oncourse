@@ -10,15 +10,9 @@ Feature: Re-usable feature to get Document with access rights
         * def userWithPermission = user
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: '#(user)', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  '#(user)'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + "/201"

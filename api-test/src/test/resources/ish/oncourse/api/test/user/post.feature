@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'user'
 
     Background: Authorize first
-        * call read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'user'
         * def ishPathLogin = 'login'
@@ -93,75 +93,9 @@ Feature: Main feature for all POST requests with path 'user'
 #       <----->
 
 
-    Scenario: (+) Create a new password for user who was invited
-
-        Given path ishPathInvite + "/abracadabra"
-        And params {"password":"password"}
-        And request {}
-        When method POST
-        Then status 204
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match response[*].email contains "invited@gmail.com"
-
-        * def list = karate.jsonPath(response, "[?(@.email=='invited@gmail.com')]")
-        * match each list[*].firstName == 'invited'
-        * match each list[*].lastName == 'user'
-        * match each list[*].email == 'invited@gmail.com'
-        * match each list[*].admin == true
-        * match each list[*].accessEditor == false
-        * match each list[*].role == null
-        * match each list[*].administrationCentre == 200
-        * match each list[*].active == true
-        * match each list[*].tfaEnabled == false
-        * match each list[*].passwordUpdateRequired == false
-        * match each list[*].password == null
-        * match each list[*].inviteAgain == false
-
-
-#       <----->  Check Log in
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: "invited@gmail.com", password: 'password', kickOut: 'true', skipTfa: 'true'}
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
 #       <----->
 
 
-    Scenario: (-) Add new active User with "passwordUpdateRequired":true
-
-        * def someUser = {"id":"310","active":true,"firstName":"invited","lastName":"user","administrationCentre":200,"email":"invited@gmail.com","admin":true,"accessEditor":false,"tfaEnabled":false,"passwordUpdateRequired":true }
-
-        Given path ishPath
-        And request someUser
-        When method POST
-        Then status 204
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match response[*].email contains "invited@gmail.com"
-
-        * def list = karate.jsonPath(response, "[?(@.login=='invited@gmail.com')]")
-        * match each list[*].passwordUpdateRequired == true
-
-#       <----->  Check Log in
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: "invited@gmail.com", password: 'password', kickOut: 'true', skipTfa: 'true'}
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 401
-        And match response.loginStatus == "Forced password update"
-#       <----->
 
 
     Scenario: (-) Create new User with not unique 'email'
