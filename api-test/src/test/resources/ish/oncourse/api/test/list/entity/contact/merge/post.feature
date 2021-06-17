@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/contact/merge'
 
     Background: Authorize first
-        * callonce read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/contact/merge'
         * def ishPathContact = 'list/entity/contact'
