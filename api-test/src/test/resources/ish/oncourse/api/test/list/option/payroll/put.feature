@@ -76,16 +76,9 @@ Feature: Main feature for all PUT requests with path 'list/option/payroll'
     Scenario: (+) Get wages by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def getWages = {"untilDate":"2040-03-05","entityName":null,"recordIds":null}
@@ -110,16 +103,9 @@ Feature: Main feature for all PUT requests with path 'list/option/payroll'
     Scenario: (-) Get wages by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def getWages = {"untilDate":"2040-03-05","entityName":null,"recordIds":null}

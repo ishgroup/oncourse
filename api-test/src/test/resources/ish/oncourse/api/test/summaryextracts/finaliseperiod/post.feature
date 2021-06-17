@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'summaryextracts/finaliseperiod'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'summaryextracts/finaliseperiod'
         * def ishPathLogin = 'login'
@@ -41,16 +41,9 @@ Feature: Main feature for all POST requests with path 'summaryextracts/finalisep
     Scenario: (+) Finalise period by notadmin with access rights
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/2016-01-03'
@@ -83,16 +76,9 @@ Feature: Main feature for all POST requests with path 'summaryextracts/finalisep
     Scenario: (-) Finalise period by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #        <--->
 
         Given path ishPath + '/2016-01-04'

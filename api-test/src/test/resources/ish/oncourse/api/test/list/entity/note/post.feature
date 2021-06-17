@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/note'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/note'
         * def ishPathCourse = 'list/entity/course'
@@ -44,16 +44,9 @@ Feature: Main feature for all POST requests with path 'list/entity/note'
     Scenario: (+) Create new note by notadmin with access rights
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newNote = {"message":"create note2","entityName":"Course"}
@@ -86,16 +79,9 @@ Feature: Main feature for all POST requests with path 'list/entity/note'
     Scenario: (-) Create new note by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newNote = {"message":"create note3","entityName":"Course"}

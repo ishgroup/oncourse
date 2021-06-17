@@ -3,7 +3,7 @@ Feature: Main feature for all GET requests with path 'list/plain'
 
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/plain'
         * def ishPathLogin = 'login'
@@ -61,16 +61,9 @@ Feature: Main feature for all GET requests with path 'list/plain'
     Scenario: (+) Get plain list for each entity by notadmin with access rights Delete
 
 #       <---> Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * table getListOfEntity
@@ -121,16 +114,9 @@ Feature: Main feature for all GET requests with path 'list/plain'
     Scenario: (+) Get plain list for each entity by notadmin with access rights Hide
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * table getListOfEntity
@@ -164,16 +150,9 @@ Feature: Main feature for all GET requests with path 'list/plain'
     Scenario: (-) Get plain list for each entity by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * table getListOfEntity

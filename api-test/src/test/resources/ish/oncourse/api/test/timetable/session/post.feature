@@ -33,15 +33,9 @@ Feature: Main feature for all POST requests with path 'timetable/session'
     Scenario: (+) Search Sessions by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def searchSession = {"from":"2018-10-30T13:00:00.000Z","to":"2019-10-31T12:59:59.999Z","search":"room.site.id=201"}

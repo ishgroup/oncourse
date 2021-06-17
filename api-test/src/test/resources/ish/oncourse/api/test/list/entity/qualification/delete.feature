@@ -2,7 +2,7 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/qualification'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/qualification'
         * def ishPathLogin = 'login'
@@ -54,16 +54,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         Then status 204
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPathList
@@ -86,13 +79,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         And match $.rows[*].values[*] !contains ["CODE01"]
 
 #       <---->  Scenario have been finished. Now delete created entity:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 
 
@@ -107,16 +96,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         Then status 204
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPathList
@@ -133,13 +115,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         And match $.errorMessage == "Sorry, you have no permissions to delete qualification. Please contact your administrator"
 
 #       <---->  Scenario have been finished. Now change back permissions and delete created entity:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
