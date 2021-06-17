@@ -16,11 +16,11 @@ import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import FormField from "../../../form-fields/FormField";
 import DocumentIconsChooser from "../items/DocumentIconsChooser";
-import { formatRelativeDate } from "../../../../../utils/dates/formatRelative";
+// import { formatRelativeDate } from "../../../../../utils/dates/formatRelative";
 import { dialogStyles } from "./dialogStyles";
 import Button from "../../../../buttons/Button";
-import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../../utils/dates/format";
-import { getDocumentVersion } from "../utils";
+// import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../../utils/dates/format";
+import { getLatestDocumentItem } from "../utils";
 import DocumentShare from "../items/DocumentShare";
 
 export type DocumentDialogType = "edit" | "create" | "view";
@@ -151,21 +151,21 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
     }));
   };
 
-  getVersions = () => {
-    const { item } = this.props;
-
-    return item.versions.map(v => ({
-      value: String(v.id),
-      label: (
-        <div className="centeredFlex">
-          <Typography>{v.createdBy}</Typography>
-          <Typography className="ml-1" color="textSecondary">
-            {formatRelativeDate(new Date(v.added), new Date(), DD_MMM_YYYY_AT_HH_MM_A_SPECIAL)}
-          </Typography>
-        </div>
-      )
-    }));
-  };
+  // getVersions = () => {
+  //   const { item } = this.props;
+  //
+  //   return item.versions.map(v => ({
+  //     value: String(v.id),
+  //     label: (
+  //       <div className="centeredFlex">
+  //         <Typography>{v.createdBy}</Typography>
+  //         <Typography className="ml-1" color="textSecondary">
+  //           {formatRelativeDate(new Date(v.added), new Date(), DD_MMM_YYYY_AT_HH_MM_A_SPECIAL)}
+  //         </Typography>
+  //       </div>
+  //     )
+  //   }));
+  // };
 
   openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
     e.stopPropagation();
@@ -184,12 +184,9 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
     const { loading } = this.state;
 
-    const lastVersion = item && getDocumentVersion(item);
+    const lastVersion = item && getLatestDocumentItem(item.versions);
 
-    const validUrl = item
-      && (item.versionId
-        ? item.versions.find(v => v.id === item.versionId).url
-        : item.versions[item.versions.length - 1].url);
+    const validUrl = lastVersion && lastVersion.url;
 
     return (
       <Dialog
