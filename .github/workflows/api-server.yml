@@ -52,7 +52,7 @@ jobs:
 
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:3306/angel_api_test?user=root
+        run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_api_test?user=root
 
       - name: Build coverage report
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
