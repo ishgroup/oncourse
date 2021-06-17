@@ -6,7 +6,7 @@ Feature: Main feature for all DELETE requests with path 'filter'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'filter'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

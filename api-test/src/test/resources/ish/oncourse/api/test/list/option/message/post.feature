@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/option/message'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/option/message'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
         #       <---> Get template id:
         Given path ishPathPlain

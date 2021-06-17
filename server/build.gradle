@@ -203,6 +203,8 @@ task integration(type: Test) {
 	testLogging {
 		exceptionFormat = 'full'
 	}
+	
+	jvmArgs = ['-Xmx3000m','-Xms3000m']
 	dependsOn "expandConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
@@ -311,19 +313,6 @@ publishing {
 				extension "zip"
 			}
 		}
-	}
-}
-
-String sha256(String filename) {
-	if (! file(filename).exists()) return "missing file"
-
-	new ByteArrayOutputStream().withStream { result ->
-		exec {
-			executable = 'shasum' // this is only going to work on OSX
-			args = ['-a', '256', filename]
-			standardOutput = result
-		}
-		return result.toString().split()[0]
 	}
 }
 

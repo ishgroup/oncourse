@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         * def ishPath = 'list/entity/qualification'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
         
 
@@ -161,25 +161,3 @@ Feature: Main feature for all DELETE requests with path 'list/entity/qualificati
         When method DELETE
         Then status 400
         And match response.errorMessage == "Entity with id = '99999' doesn't exist"
-
-
-    Scenario: (-) Delete Qualification without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete Qualification with NULL as ID
-
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
-
-
-    Scenario: (-) Delete Qualification without path
-
-        Given path ishPath
-        When method DELETE
-        Then status 405
-

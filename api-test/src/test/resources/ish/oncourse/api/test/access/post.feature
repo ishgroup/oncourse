@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'access'
         * def ishPathLogin = 'login'
         * def ishPathLogout = 'logout'
 
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 #       <---> Users and Roles that are used in tests:
 #       UserWithRightsDelete with RoleWithRightsDelete (all checkboxes are checked)

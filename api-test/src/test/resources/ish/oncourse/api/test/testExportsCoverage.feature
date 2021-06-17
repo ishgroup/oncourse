@@ -9,7 +9,7 @@ Feature: Feature which checks exports implementation and their coverage
         * def xmlImportPath = 'template'
         * def pdfImportPath = 'pdf/template'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def JavaFunctions = Java.type('ish.oncourse.api.test.ExportsCoverageTest')
         * def excludedForCsvXml = excludedForCsvXml: ["contact", "articleProduct", "assessment", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "outcome", "sales", "report", "reportOverlay", "note", "import", "priorLearning"]
         * def csvXmlEntities = JavaFunctions.getListEntitiesAndExclude(excludedForCsvXml)

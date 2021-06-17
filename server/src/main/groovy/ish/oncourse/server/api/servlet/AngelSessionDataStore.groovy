@@ -202,7 +202,7 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
         return ObjectSelect.query(SystemUser)
                 .where(SystemUser.SESSION_ID.eq(id))
                 .and(SystemUser.LAST_ACCESS.gt(preferenceController.timeoutThreshold))
-                .selectOne(context) != null
+                .selectFirst(context) != null
     }
 
     /**

@@ -9,7 +9,7 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice/duplic
         * def ishPathLogin = 'login'
         * def ishPathInvoice = 'list/entity/invoice'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

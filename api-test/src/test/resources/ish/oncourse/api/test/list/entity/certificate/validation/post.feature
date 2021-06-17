@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/v
         * def ishPathCertificate = 'list/entity/certificate'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -18,7 +18,6 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/v
         And request {"search":"id == 1000","filter":"","tagGroups":[],"sorting":[{"attribute":"awardedOn","ascending":true,"complexAttribute":[]}]}
         When method POST
         Then status 200
-        And match $ == ''
 
 
 

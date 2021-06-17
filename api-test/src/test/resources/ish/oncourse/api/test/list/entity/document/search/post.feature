@@ -8,7 +8,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document/sear
         * def ishPathDoc = 'list/entity/document'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
