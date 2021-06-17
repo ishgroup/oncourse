@@ -3,7 +3,7 @@
 Feature: Main feature for all GET requests with path 'list/entity/enrolment/cancel'
 
     Background: Authorize first
-        * callonce read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/enrolment/cancel'
         * def ishPathEnrolment = 'list/entity/enrolment'

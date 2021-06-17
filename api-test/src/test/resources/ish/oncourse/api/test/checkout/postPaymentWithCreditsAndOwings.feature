@@ -2,7 +2,7 @@
 Feature: performance of payment with previous credits and previous owings
 
   Background: Authorize first, create checkoutModel
-    * callonce read('../signIn.feature')
+    * configure headers = { Authorization: 'admin' }
     * url 'https://127.0.0.1:8182/a/v1'
     * def ishPath = 'checkout'
     * table checkoutModelTable
