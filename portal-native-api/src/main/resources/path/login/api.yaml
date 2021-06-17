@@ -12,6 +12,8 @@ put:
   responses:
     '200':
       description: Success response.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
     '400':
       description: Bad request
       schema:
@@ -33,6 +35,8 @@ post:
   responses:
     '200':
       description: Success response.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
     '400':
       description: Bad request
       schema:

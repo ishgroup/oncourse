@@ -1,0 +1,22 @@
+put:
+  summary: Connect with third party SSO
+  operationId: connect
+  tags:
+    - Authentication
+  parameters:
+    - name: tokenResponse
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/TokenResponse.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
+    '400':
+      description: Bad request
+      schema:
+        $ref: './def/entity/ErrorResponse.yaml'
+    default:
+      description: Unexpected error

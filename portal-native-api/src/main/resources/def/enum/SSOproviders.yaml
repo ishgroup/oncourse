@@ -1,0 +1,5 @@
+type: string
+description: List of supported SSO service providers
+enum:
+  - Google
+  - Facebook

@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { LoginRequest, LoginResponse } from '@api/model';
+import { TokenResponse, LoginResponse } from '@api/model';
 import { createRequest, Request } from '../../utils/EpicUtils';
-import { SIGN_UP, signInFulfilled } from '../../actions/LoginActions';
+import { CONNECT, signInFulfilled } from '../../actions/LoginActions';
 import LoginService from '../../services/LoginService';
 
-const request: Request<LoginRequest, LoginResponse> = {
-  type: SIGN_UP,
-  getData: (req) => LoginService.signUp(req),
+const request: Request<TokenResponse, LoginResponse> = {
+  type: CONNECT,
+  getData: (tokenResponse) => LoginService.connect(tokenResponse),
   processData: (response) => [signInFulfilled(response)]
 };
 

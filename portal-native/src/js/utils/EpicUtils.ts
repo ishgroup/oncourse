@@ -16,14 +16,14 @@ import { FETCH_FINISH, FETCH_START } from '../actions/FetchActions';
 import { REJECTED } from './ActionUtils';
 import { FetchErrorHandler } from './ApiUtils';
 
-export interface Request<V = any, P = any> {
+export interface Request<P = any, V = any> {
   type: string;
   delay?: number;
   hideLoadIndicator?: boolean;
   getData: (payload: P, state: State) => Promise<V>;
   retrieveData?: (payload: any, state: State) => Promise<V>;
-  processData: (value: V, state: State, payload?: P) => IAction<any>[] | Observable<any>;
-  processError?: (data: any, payload?: P) => IAction<any>[] | Observable<any>;
+  processData: (value: V, state: State, payload?: P) => IAction[] | Observable<any>;
+  processError?: (data: any, payload?: P) => IAction[] | Observable<any>;
 }
 
 export const processError = (
@@ -31,7 +31,7 @@ export const processError = (
   type: string,
   processError: any,
   payload: any,
-): IAction<any>[] => [
+): IAction[] => [
   ...(__DEV__
     ? [
       {
@@ -43,7 +43,7 @@ export const processError = (
   ...(processError ? processError(data, payload) : FetchErrorHandler(data)),
 ];
 
-export const createRequest = <V, P>(request: Request<V, P>): Epic<IAction<P>> => (
+export const createRequest = <P, V>(request: Request<P, V>): Epic<IAction<P>> => (
   action$: ActionsObservable<any>,
   state$: StateObservable<State>,
 ): Observable<any> => action$.pipe(

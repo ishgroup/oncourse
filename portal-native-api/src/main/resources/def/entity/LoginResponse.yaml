@@ -1,0 +1,9 @@
+type: object
+properties:
+  user:
+    description: User entity
+    $ref: './User.yaml'
+  isNew:
+    type: boolean
+    description: is newly added user
+

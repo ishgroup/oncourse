@@ -15,7 +15,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import { cs, spacing, theme } from '../styles';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TextField from '../components/fields/TextField';
-import { signIn } from '../actions/LoginActions';
+import { connect, signIn } from '../actions/LoginActions';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -73,7 +73,8 @@ const SignInContent = (
     isValid,
     loading,
     onPressSign,
-    handleSubmit
+    handleSubmit,
+    dispatch
   }
 ) => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -87,8 +88,7 @@ const SignInContent = (
   React.useEffect(() => {
     if (response?.type === 'success') {
       const { authentication } = response;
-
-      console.log({ authentication });
+      dispatch(connect(authentication));
     }
   }, [response]);
 
@@ -352,6 +352,7 @@ const LoginScreen = () => {
                         handleSubmit={handleSubmit}
                         isValid={isValid}
                         loading={loading}
+                        dispatch={dispatch}
                       />
                     )
                     : (

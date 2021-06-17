@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int32
+  firstName:
+    type: string
+    requred: false
+    description: User's first name
+  lastName:
+    type: string
+    requred: false
+    description: User's last name
+  companyName:
+    type: string
+    requred: false
+    description: User's company name
+  email:
+    type: string
+    requred: true
+    description: User's email
