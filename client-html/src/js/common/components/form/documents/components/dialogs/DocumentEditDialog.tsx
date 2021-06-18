@@ -16,10 +16,8 @@ import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import FormField from "../../../form-fields/FormField";
 import DocumentIconsChooser from "../items/DocumentIconsChooser";
-// import { formatRelativeDate } from "../../../../../utils/dates/formatRelative";
 import { dialogStyles } from "./dialogStyles";
 import Button from "../../../../buttons/Button";
-// import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../../utils/dates/format";
 import { getLatestDocumentItem } from "../utils";
 import DocumentShare from "../items/DocumentShare";
 
@@ -150,22 +148,6 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
       loading: !prevState.loading
     }));
   };
-
-  // getVersions = () => {
-  //   const { item } = this.props;
-  //
-  //   return item.versions.map(v => ({
-  //     value: String(v.id),
-  //     label: (
-  //       <div className="centeredFlex">
-  //         <Typography>{v.createdBy}</Typography>
-  //         <Typography className="ml-1" color="textSecondary">
-  //           {formatRelativeDate(new Date(v.added), new Date(), DD_MMM_YYYY_AT_HH_MM_A_SPECIAL)}
-  //         </Typography>
-  //       </div>
-  //     )
-  //   }));
-  // };
 
   openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
     e.stopPropagation();
