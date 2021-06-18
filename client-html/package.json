@@ -6,7 +6,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "build:prod": "webpack --progress --node-env production",
-    "test": "jest",
+    "test": "jest --ci",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx",
     "start:prod": "webpack serve --history-api-fallback --port 8100 --progress --env NODE_ENV=production",
     "start:mock": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/dev/app.tsx",
