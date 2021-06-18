@@ -17,7 +17,7 @@ Feature: Main feature for all GET requests with path 'preference/messagequeued'
         And assert response >= 4
         
         
-    Scenario: (+) Get messages count with type 'email', using fak smtp so the queue is empty
+    Scenario: (+) Get messages count with type 'email', using fake smtp so the queue is empty
         Given path messagePath
         And param type = 'email'
         When method GET
