@@ -64,7 +64,6 @@ jobs:
           flags: types
           directory: types/build/reports/jacoco/test
 
-
       - name: Server unit tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
@@ -80,6 +79,13 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: junit
           directory: server/build/reports/jacoco/test
+
+      - name: Upload coverage to codeclimate
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+        with:
+          coverageLocations: ${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
 
 
   server-integrations:
@@ -143,3 +149,10 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: integration
           directory: server/build/reports/jacoco/test
+
+      - name: Upload coverage to codeclimate
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+        with:
+          coverageLocations: ${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
