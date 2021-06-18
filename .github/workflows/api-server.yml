@@ -53,10 +53,17 @@ jobs:
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_api_test?user=root
+        continue-on-error: true
 
       - name: Build coverage report
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew api-test:jacocoTestReport server:jacocoTestReport
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        with:
+          files: '**/test-results/**/*.xml'
 
       - name: Upload coverage to Codecov
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
@@ -65,3 +72,11 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: api
           files: server/build/reports/jacoco/test/jacocoTestReport.xml,api-test/build/reports/jacoco/test/jacocoTestReport.xml
+#
+#      - name: Upload coverage to codeclimate
+#        uses: paambaati/codeclimate-action@v2.7.5
+#        env:
+#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+#        with:
+#          workingDirectory: '${{github.workspace}}/server/src/main/java'
+#          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'

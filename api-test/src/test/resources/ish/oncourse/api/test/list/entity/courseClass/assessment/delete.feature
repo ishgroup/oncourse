@@ -2,7 +2,7 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/courseClass/assessment'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/assessment'
         * def ishPathClass = 'list/entity/courseClass'
@@ -123,15 +123,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         * print "assessmentId = " + assessmentId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/' + assessmentId
@@ -198,15 +192,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         * print "assessmentId = " + assessmentId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/' + assessmentId
@@ -215,12 +203,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/courseClass
         And match $.errorMessage == "Sorry, you have no permissions to delete Assessment Class. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now remove created class from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPathClass + '/' + classId
         When method DELETE

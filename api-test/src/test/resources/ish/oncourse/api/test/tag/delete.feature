@@ -2,7 +2,7 @@
 Feature: Main feature for all DELETE requests with path 'tag'
 
     Background: Authorize first
-        * call read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
         * def ishPathLogin = 'login'
@@ -33,16 +33,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
     Scenario: (+) Delete not system tag group by notadmin with permissions: Hide-View-Print-Edit-Create-Delete
 
 #       <--->  Login as notadmin with max permissions and create new tag group for deleting:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         * def newTagGroup = {"name":"tagName600","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
@@ -72,16 +65,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
     Scenario: (-) Delete not system tag group by notadmin with permissions: Hide-View-Print-Edit-Create
 
 #       <--->  Login as admin and create new tag group for deleting:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         * def newTagGroup = {"name":"tagName601","status":"Private","system":false,"urlPath":null,"content":null,"weight":1,"requirements":[{"type":"Assessment","mandatory":false,"limitToOneTag":true,"system":false}],"childTags":[]}
 
@@ -91,16 +77,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Delete created tag group by notadmin with permissions: Hide-View-Print-Edit-Create:
         Given path ishPath
@@ -113,16 +92,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now find and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -142,16 +114,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Delete created tag group by notadmin with permissions Hide-View-Print-Edit:
         Given path ishPath
@@ -164,16 +129,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -193,16 +151,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Delete created tag group by notadmin with permissions Hide-View-Print:
         Given path ishPath
@@ -215,16 +166,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -244,16 +188,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Delete created tag group by notadmin with permissions Hide-View:
         Given path ishPath
@@ -266,16 +203,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -295,16 +225,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 204
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Delete created tag group by notadmin with permission Hide:
         Given path ishPath
@@ -317,16 +240,9 @@ Feature: Main feature for all DELETE requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE

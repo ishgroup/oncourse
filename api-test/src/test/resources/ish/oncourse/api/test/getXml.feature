@@ -4,7 +4,6 @@ Feature: re-usable feature to check access
 
     Background: Configure url, ssl and httpClientClass
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure headers = null
         * def ishPath = 'access'
 
     Scenario:

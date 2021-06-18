@@ -2,7 +2,7 @@
 Feature: Main feature for all GET requests with path '/datacollection/rule'
 
     Background: Authorize first
-        * callonce read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'datacollection/rule'
         

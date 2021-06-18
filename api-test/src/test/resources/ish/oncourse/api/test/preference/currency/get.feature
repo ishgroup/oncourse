@@ -2,11 +2,11 @@
 Feature: Main feature for all GET requests with path 'preference/currency'
 
     Background: Authorize first
-        * callonce read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/currency'
-        
+
 
 
 
@@ -22,17 +22,7 @@ Feature: Main feature for all GET requests with path 'preference/currency'
     Scenario: (+) Get currency by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-#       <--->
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
         Given path ishPath
         When method GET

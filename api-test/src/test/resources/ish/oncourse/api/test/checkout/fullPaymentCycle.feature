@@ -3,7 +3,7 @@
 Feature: re-usable feature to performance of full payment cycle and delete all object after
 
   Background: Authorize first
-    * call read('../signIn.feature')
+    * configure headers = { Authorization: 'admin' }
     * url 'https://127.0.0.1:8182/a/v1'
     * def ishPath = 'checkout'
     * def ishPathList = 'list'

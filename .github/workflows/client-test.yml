@@ -19,7 +19,7 @@ jobs:
         with:
           cancel_others: 'true'
           skip_after_successful_duplicate: 'true'
-          paths_ignore: '["server/**", "server-api/**", "types/**"]'
+          paths_ignore: '["server/**", "server-api/**", "api-doc/**", "api-test/**", "types/**"]'
 
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -43,6 +43,13 @@ jobs:
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew client-html:test
+        continue-on-error: true
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        with:
+          files: '**/test-results/**/*.xml'
 
       - name: Upload coverage to Codecov
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
@@ -51,3 +58,11 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: jest
           directory: client-html/build/reports/test
+
+#      - name: Upload coverage to codeclimate
+#        uses: paambaati/codeclimate-action@v2.7.5
+#        env:
+#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+#        with:
+#          workingDirectory: '${{github.workspace}}/client-html/src/js'
+#          coverageLocations: '${{github.workspace}}/client-html/build/reports/**/*.lcov:lcov'

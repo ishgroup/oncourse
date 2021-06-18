@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/outcome'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/outcome'
         * def ishPathLogin = 'login'
@@ -107,15 +107,9 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
     Scenario: (+) Create Outcome by notadmin with access rights
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def newOutcome =
@@ -203,12 +197,9 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
         """
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -219,15 +210,9 @@ Feature: Main feature for all POST requests with path 'list/entity/outcome'
     Scenario: (-) Create Outcome by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def newOutcome = {"id":null,"contactId":10,"enrolmentId":"107","studentName":"stud4, stud4","moduleId":1,"moduleCode":"AUM1602A","moduleName":"Install plant, equipment or systems - Advanced","startDate":"2020-02-01","endDate":"2020-02-29","reportableHours":22,"deliveryMode":"Classroom","fundingSource":"Domestic full fee paying student","status":"Not set","hoursAttended":50,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"state","specificProgramIdentifier":"pi3","isPriorLearning":false,"hasCertificate":null,"printed":false,"createdOn":null}

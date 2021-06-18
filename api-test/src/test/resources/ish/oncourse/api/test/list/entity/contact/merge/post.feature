@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/contact/merge'
 
     Background: Authorize first
-        * callonce read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/contact/merge'
         * def ishPathContact = 'list/entity/contact'
@@ -289,15 +289,9 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
     Scenario: (-) Merge contacts by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
         * def mergeRequest = {}
 
@@ -312,15 +306,9 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
     Scenario: (+) Merge tutor and tutor by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def mergeRequest = {"contactA":"24","contactB":"25","data":{"Contact.abn":"B","Contact.birthDate":"B","Contact.email":"B","Contact.fax":"B","Contact.firstName":"B","Contact.homePhone":"B","Contact.honorific":"B","Contact.invoiceTerms":"B","Contact.isMale":"B","Contact.lastName":"B","Contact.message":"B","Contact.mobilePhone":"B","Contact.postcode":"B","Contact.state":"B","Contact.street":"B","Contact.suburb":"B","Contact.tfn":"B","Contact.title":"B","Contact.workPhone":"B","Contact.taxOverride":"B","Contact.country":"B","tags":"B","customField.cf2":"B","customField.cf1":"B","Tutor.dateFinished":"B","Tutor.dateStarted":"B","Tutor.payrollRef":"B","Tutor.resume":"B","Tutor.wwChildrenCheckedOn":"B","Tutor.wwChildrenExpiry":"B","Tutor.wwChildrenRef":"B","Tutor.wwChildrenStatus":"B"}}
