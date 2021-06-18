@@ -54,6 +54,7 @@ Feature: Main feature for all PUT requests with path 'user/resetPassword'
 
 
     Scenario: (-) Reset password for non-existing user
+        * configure headers = { Authorization: 'admin' }
 
         Given path ishPath + '/99999'
         And request {}
