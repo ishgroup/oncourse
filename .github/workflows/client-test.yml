@@ -43,6 +43,13 @@ jobs:
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew client-html:test
+        continue-on-error: true
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        with:
+          files: **/test-results/**/*.xml
 
       - name: Upload coverage to Codecov
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
