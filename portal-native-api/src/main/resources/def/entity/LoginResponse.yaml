@@ -3,6 +3,9 @@ properties:
   user:
     description: User entity
     $ref: './User.yaml'
+  token:
+    type: string
+    description: Authorization token for request's Authorization header
   isNew:
     type: boolean
     description: is newly added user

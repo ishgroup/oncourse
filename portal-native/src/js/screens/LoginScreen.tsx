@@ -5,13 +5,14 @@ import { LoginRequest } from '@api/model';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import {
-  Image, View, StyleSheet, Animated, TouchableHighlight
+  Image, View, StyleSheet, Animated, TouchableOpacity
 } from 'react-native';
 import {
   Card, Switch, Caption, Button, TextInput
 } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import * as Facebook from 'expo-auth-session/providers/facebook';
 import { cs, spacing, theme } from '../styles';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TextField from '../components/fields/TextField';
@@ -68,6 +69,52 @@ const styles = StyleSheet.create({
   },
 });
 
+const GoogleConnect = ({ onSuccsess }) => {
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    // TODO Replace with real credentials for production
+    expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
+    webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com'
+  });
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      onSuccsess(authentication);
+    }
+  }, [response]);
+
+  return (
+    <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
+      <Image
+        style={styles.socialNetworkImage}
+        source={require('../../assets/images/google-color.png')}
+      />
+    </TouchableOpacity>
+  );
+};
+
+const FacebookConnect = ({ onSuccsess }) => {
+  const [request, response, promptAsync] = Facebook.useAuthRequest({
+    clientId: '837945397102277',
+  });
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      onSuccsess(authentication);
+    }
+  }, [response]);
+
+  return (
+    <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
+      <Image
+        style={styles.socialNetworkImage}
+        source={require('../../assets/images/facebook-square-color.png')}
+      />
+    </TouchableOpacity>
+  );
+};
+
 const SignInContent = (
   {
     isValid,
@@ -79,18 +126,9 @@ const SignInContent = (
 ) => {
   const [hidePassword, setHidePassword] = useState(true);
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    // TODO Replace with real credentials for production
-    expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
-    webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com'
-  });
-
-  React.useEffect(() => {
-    if (response?.type === 'success') {
-      const { authentication } = response;
-      dispatch(connect(authentication));
-    }
-  }, [response]);
+  const onConnectSuccsess = (authentication) => {
+    dispatch(connect(authentication));
+  };
 
   return (
     <>
@@ -133,15 +171,11 @@ const SignInContent = (
         </Caption>
       </View>
       <View style={[cs.flexRow, cs.justifyContentCenter]}>
-        <TouchableHighlight disabled={!request} onPress={() => promptAsync()}>
-          <Image
-            style={styles.socialNetworkImage}
-            source={require('../../assets/images/google-color.png')}
-          />
-        </TouchableHighlight>
-        <Image
-          style={styles.socialNetworkImage}
-          source={require('../../assets/images/facebook-square-color.png')}
+        <GoogleConnect
+          onSuccsess={onConnectSuccsess}
+        />
+        <FacebookConnect
+          onSuccsess={onConnectSuccsess}
         />
       </View>
       <View style={[cs.flexCenter, cs.mt1]}>
