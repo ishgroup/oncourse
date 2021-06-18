@@ -6,7 +6,7 @@ Feature: Main feature for all GET requests with path 'preference/'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference'
         * def ishPathLogin = 'login'
-        
+
 
 
 
@@ -87,18 +87,16 @@ Feature: Main feature for all GET requests with path 'preference/'
 
 
 
-    Scenario: (-) Get password value
+    Scenario: (-) Admin should not be able to get password fields
+
+        * configure headers = { Authorization: 'admin' }
 
         * table passwordPreferences
             | name                  | code                  |
             | 'LDAP_BIND_USER_PASS' | 'ldap.bind.user.pass' |
-            | 'AUSKEY_PASSWORD'     | 'auskey.password'     |
             | 'EMAIL_POP3PASSWORD'  | 'email.pop3.password' |
-            | 'AUSKEY_CERTIFICATE'  | 'auskey.certificate'  |
-            | 'AUSKEY_PRIVATE_KEY'  | 'auskey.privatekey'   |
-            | 'AUSKEY_SALT'         | 'auskey.salt'         |
 
-         * call read('getPassword.feature') passwordPreferences
+        * call read('getPassword.feature') passwordPreferences
 
 
 
