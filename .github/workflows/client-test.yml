@@ -46,7 +46,7 @@ jobs:
         continue-on-error: true
 
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action/composite@v1
+        uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         with:
           files: '**/test-results/**/*.xml'
