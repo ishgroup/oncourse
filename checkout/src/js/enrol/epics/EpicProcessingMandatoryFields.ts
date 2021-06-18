@@ -43,7 +43,7 @@ export const EpicProcessingMandatoryFields = (action$, store: Store<IshState>): 
           let toPayment = true;
 
           value.map(val => {
-            if (val.data.headings.length > 0) {
+            if (val?.data?.headings?.length > 0) {
               result.push(setFieldsToState(val.data));
               result.push(updateContactAddProcess(val.contact, state.checkout.phase, null));
               result.push(changePhase(Phase.ComplementEditContact));
