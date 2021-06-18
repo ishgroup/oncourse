@@ -6,9 +6,9 @@ Feature: Main feature for all GET requests with path 'preference/language'
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/language'
-        
 
-        
+
+
 
     Scenario: (+) Get languages by admin
 
@@ -31,9 +31,6 @@ Feature: Main feature for all GET requests with path 'preference/language'
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsHide'}
-
-
-#       <--->
 
         Given path ishPath
         When method GET
