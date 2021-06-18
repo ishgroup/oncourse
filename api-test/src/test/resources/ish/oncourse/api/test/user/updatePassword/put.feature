@@ -2,7 +2,6 @@
 Feature: Main feature for all PUT requests with path 'user/updatePassword'
 
     Background: Authorize first
-        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         
         * def ishPath = 'user/updatePassword'
@@ -11,6 +10,7 @@ Feature: Main feature for all PUT requests with path 'user/updatePassword'
 
 
     Scenario: (+) Change password by admin to new valid (5 chars) value
+        * configure headers = { Authorization: 'admin' }
 
 #       Change password to new value
         Given path ishPath + '/' + '123aB'
@@ -19,9 +19,9 @@ Feature: Main feature for all PUT requests with path 'user/updatePassword'
         Then status 204
 
 #       <-----> Scenario have been finished. Now verificate new password and then change to default value:
-        Given path '/logout'
-        And request {}
-        When method PUT
+
+        * configure headers = null
+
         * def loginBody = {login: 'admin', password: '123aB', kickOut: 'true', skipTfa: 'true'}
         Given path ishPathLogin
         And request loginBody
