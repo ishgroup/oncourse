@@ -246,7 +246,7 @@ const mapStateToProps = (state: IshState) => {
   const corporatePassError = state.checkout.error &&
     state.checkout.error.fieldsErrors && state.checkout.error.fieldsErrors.find(er => er.name === 'code');
   return {
-    contacts: Object.values(state.checkout.contacts.entities.contact),
+    contacts: Object.values(state?.checkout?.contacts?.entities?.contact || {}),
     amount: state.checkout.amount,
     payerId: state.checkout.payerId,
     voucherPayerEnabled: CheckoutService.hasActiveVoucherPayer(state.checkout),
