@@ -84,14 +84,14 @@ PIN: %s\n
         String result = null
         apiData.collect { it.pin }.toSet().each {pin ->
             logger.warn("pin:$pin, voucherCode:$voucherCode, voucherId:$voucher.id")
-            result = sendValidateRequest(pin)
-            if (result == "Voucher is valid.") {
+            result = sendValidateRequest(pin).toLowerCase()
+            if (result == "voucher is valid.") {
                 return
-            } else if (result != "Invalid pin.") {
+            } else if (result != "invalid pin.") {
                 sendEmail(getStandartErrorMessage(result))
             }
         }
-        if (result == "Invalid pin.") {
+        if (result == "invalid pin.") {
             sendEmail(invalidPinErrorMessage)
         }
     }
@@ -115,7 +115,7 @@ PIN: %s\n
                 throw new ServiceNswException(result.toString())
             }
             response.success = { resp, result ->
-                return "Voucher is valid."
+                return "voucher is valid."
             }
         }
     }
@@ -123,15 +123,15 @@ PIN: %s\n
     void redeem() {
         def result = null
         apiData.each {data ->
-            result = sendRedeemRequest(data.pin, data.postcode)
-            if (result == "Voucher was redeemed.") {
+            result = sendRedeemRequest(data.pin, data.postcode).toLowerCase()
+            if (result == "voucher was redeemed.") {
                 return
-            } else if (result != "Invalid pin.") {
+            } else if (result != "invalid pin.") {
                 sendEmail(getStandartErrorMessage(result))
             }
         }
 
-        if (result == "Invalid pin.") {
+        if (result == "invalid pin.") {
             sendEmail(invalidPinErrorMessage)
         } else {
             Map<String, String> customFields = voucher.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
