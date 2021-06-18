@@ -29,7 +29,7 @@ Feature: Try to GET entities without access rights
     Scenario: (-) Try to DELETE entities without access rights
 #       Prepare new entities to update them
 #       <--->
-        * configure headers = { Authorization: 'UserWithRightsEdit'}
+        * configure headers = { Authorization: 'admin'}
 
         * def concessionTypeArray = [{name: 'SomeName', requireExpary: false, requireNumber: false, allowOnWeb: true}]
         * def someContactRelationType = [{"relationName":"relationName","reverseRelationName":"reverseRelationName#1","portalAccess":true}]
@@ -87,7 +87,7 @@ Feature: Try to GET entities without access rights
 
 #       Scenario have been finished. Now find and remove created object from DB
 #       <--->
-        * configure headers = { Authorization: 'UserWithRightsEdit'}
+        * configure headers = { Authorization: 'admin'}
 
         * call read('removeEntityById.feature') dataToDelete
 #       <--->
