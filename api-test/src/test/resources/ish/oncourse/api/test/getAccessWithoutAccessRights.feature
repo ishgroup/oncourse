@@ -3,7 +3,6 @@ Feature: Try to GET entities without access rights
 
     Background: Authorize first
         * url 'https://127.0.0.1:8182/a/v1'
-        * def ishPath = 'login'
         
 
     Scenario: (-) Try to POST entities without access rights
@@ -30,7 +29,7 @@ Feature: Try to GET entities without access rights
     Scenario: (-) Try to DELETE entities without access rights
 #       Prepare new entities to update them
 #       <--->
-        * call read('signIn.feature')
+        * configure headers = { Authorization: 'UserWithRightsEdit'}
 
         * def concessionTypeArray = [{name: 'SomeName', requireExpary: false, requireNumber: false, allowOnWeb: true}]
         * def someContactRelationType = [{"relationName":"relationName","reverseRelationName":"reverseRelationName#1","portalAccess":true}]
@@ -88,6 +87,7 @@ Feature: Try to GET entities without access rights
 
 #       Scenario have been finished. Now find and remove created object from DB
 #       <--->
-        * call read('signIn.feature')
+        * configure headers = { Authorization: 'UserWithRightsEdit'}
+
         * call read('removeEntityById.feature') dataToDelete
 #       <--->
