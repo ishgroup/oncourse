@@ -164,7 +164,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const [moreDetailcollapsed, setMoreDetailcollapsed] = React.useState(false);
   const [loadingDocVersion, setLoadingDocVersion] = React.useState(false);
-  // const [versionMenu, setVersionMenu] = React.useState(null);
 
   const showMoreDetails = () => {
     setMoreDetailcollapsed(!moreDetailcollapsed);
@@ -173,14 +172,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
   const restoreDocument = () => {
     dispatch(change(form, "removed", false));
   };
-
-  // const versionMenuOpen = e => {
-  //   setVersionMenu(e.currentTarget);
-  // };
-  //
-  // const versionMenuClose = () => {
-  //   setVersionMenu(null);
-  // };
 
   const documentVersion = getLatestDocumentItem(values.versions);
 
