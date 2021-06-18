@@ -7,7 +7,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
         * def ishPath = 'list/entity/qualification'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        
+
 
 
 
@@ -188,9 +188,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        
-
-#       <--->
         * def qualificationToUpdate =
 
         """
@@ -232,7 +229,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 #       <--->  Scenario have been finished. Now find and remove created object from DB
         * configure headers = { Authorization: 'admin'}
 
-        
+
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -336,9 +333,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
 
-        
-
-#       <--->
         * def qualificationToUpdate =
 
         """
@@ -363,7 +357,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/qualification'
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         * configure headers = { Authorization: 'admin'}
 
-        
+
 
         Given path ishPath + '/' + id
         When method DELETE
