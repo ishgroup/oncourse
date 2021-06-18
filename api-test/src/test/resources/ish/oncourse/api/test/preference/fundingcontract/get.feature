@@ -6,7 +6,7 @@ Feature: Main feature for all GET requests with path 'preference/fundingcontract
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/fundingcontract'
-        
+
 
 
 
@@ -37,9 +37,6 @@ Feature: Main feature for all GET requests with path 'preference/fundingcontract
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsHide'}
-
-
-#       <--->
 
         Given path ishPath
         When method GET

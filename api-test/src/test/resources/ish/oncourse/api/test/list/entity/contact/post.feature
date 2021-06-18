@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         * def ishPath = 'list/entity/contact'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        
+
 
 
   Scenario: (+) Create Contact (student) by admin
@@ -3208,8 +3208,6 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
 
 #       <--->  Login as notadmin
     * configure headers = { Authorization:  'UserWithRightsEdit'}
-
-#       <--->
 
     * def newContact = {}
 

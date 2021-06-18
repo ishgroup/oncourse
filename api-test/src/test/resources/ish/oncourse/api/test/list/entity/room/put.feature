@@ -7,8 +7,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/room'
         * def ishPathList = 'list'
-        
-        
+
+
 
 
     Scenario: (+) Update room by admin
@@ -186,9 +186,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        
-
-#       <--->
         * def roomToUpdate =
         """
         {
@@ -219,7 +216,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         * configure headers = { Authorization:  'admin'}
 
-        
+
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -258,7 +255,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
 
-        
+
 #       <--->
 
         * def roomToUpdate =
@@ -283,7 +280,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         * configure headers = { Authorization:  'admin'}
 
-        
+
 
         Given path ishPath + '/' + id
         When method DELETE

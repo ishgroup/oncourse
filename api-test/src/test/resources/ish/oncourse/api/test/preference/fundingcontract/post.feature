@@ -6,7 +6,7 @@ Feature: Main feature for all POST requests with path 'preference/fundingcontrac
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/fundingcontract'
-        
+
 
 
 
@@ -128,9 +128,6 @@ Feature: Main feature for all POST requests with path 'preference/fundingcontrac
 
 #       <--->  Login as notadmin:
         * configure headers = { Authorization:  'UserWithRightsDelete'}
-
-
-#       <--->
 
         * def newFundingContract = [{"active":false,"flavour":"WA RAPT","name":"FC-01"}]
 
@@ -340,7 +337,7 @@ Feature: Main feature for all POST requests with path 'preference/fundingcontrac
 
 #       <---> Scenario have been finished. Now remove created entity from db:
         * configure headers = { Authorization: 'admin'}
-        
+
         Given path ishPath + '/' + id
         When method DELETE
         Then status 204

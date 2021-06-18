@@ -8,9 +8,9 @@ Feature: Main feature for all GET requests with path 'list/entity/script'
         * def ishPath = 'list/entity/script'
         * def ishPathList = 'list'
         * def ishPathLogin = 'login'
-        
-  
-        
+
+
+
     Scenario: (+) Get list of all scripts by admin
 
         Given path ishPathList
@@ -35,9 +35,6 @@ Feature: Main feature for all GET requests with path 'list/entity/script'
 #       <--->  Login as notadmin
         * configure headers = { Authorization: 'UserWithRightsHide'}
 
-
-#       <--->
-
         Given path ishPathList
         And param entity = 'Script'
         When method GET
@@ -55,7 +52,7 @@ Feature: Main feature for all GET requests with path 'list/entity/script'
 
     Scenario: (+) Get existing script by notadmin
         * configure headers = { Authorization: 'UserWithRightsHide'}
-        
+
         Given path ishPath + '/2'
         When method GET
         Then status 200
@@ -68,4 +65,3 @@ Feature: Main feature for all GET requests with path 'list/entity/script'
         When method GET
         Then status 400
         And match response.errorMessage == "Script with id:111111 doesn't exist"
-        

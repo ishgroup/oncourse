@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/option/message'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/option/message'
         * def ishPathPlain = 'list/plain'
-        
+
 
         #       <---> Get template id:
         Given path ishPathPlain
@@ -181,7 +181,6 @@ Feature: Main feature for all POST requests with path 'list/option/message'
 
     Scenario: (-) Send email when recipientsCount is wrong
 
-#       <--->
         * def sendMessageRequest =
         """
         {"sendToStudents":true,"sendToTutors":true,"sendToOtherContacts":true,"sendToSuppressStudents":false,"sendToSuppressTutors":false,"sendToSuppressOtherContacts":false,"entity":"WaitingList","templateId":#(~~emailTemplateId),"fromAddress":"sales@gmail.com","searchQuery":{"search":"id in (1000,1001)","pageSize":2,"offset":2,"filter":"","tagGroups":[]},"variables":{"subjectTxt":"hello","body":"world"}}
@@ -200,7 +199,6 @@ Feature: Main feature for all POST requests with path 'list/option/message'
 
     Scenario: (-) Send email with not existing template
 
-#       <--->
         * def templateId = 10000
         * def sendMessageRequest =
         """
@@ -214,14 +212,14 @@ Feature: Main feature for all POST requests with path 'list/option/message'
         When method POST
         Then status 400
         And match $.errorMessage == "The message template didn't find out."
-        
+
 
     Scenario: (-) Send email by notadmin without access rights
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        
+
 #       <--->
 
         * def sendMessageRequest =
