@@ -88,13 +88,13 @@ jobs:
           flags: junit
           directory: server/build/reports/jacoco/test
 
-      - name: Upload coverage to codeclimate
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        with:
-          workingDirectory: '${{github.workspace}}/server/src/main/java'
-          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'
+#      - name: Upload coverage to codeclimate
+#        uses: paambaati/codeclimate-action@v2.7.5
+#        env:
+#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+#        with:
+#          workingDirectory: '${{github.workspace}}/server/src/main/java'
+#          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'
 
 
   server-integrations:
@@ -166,10 +166,10 @@ jobs:
           flags: integration
           directory: server/build/reports/jacoco/test
 
-      - name: Upload coverage to codeclimate
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        with:
-          workingDirectory: '${{github.workspace}}/server/src/main/java'
-          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'
+#      - name: Upload coverage to codeclimate
+#        uses: paambaati/codeclimate-action@v2.7.5
+#        env:
+#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+#        with:
+#          workingDirectory: '${{github.workspace}}/server/src/main/java'
+#          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'
