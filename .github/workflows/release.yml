@@ -35,5 +35,4 @@ jobs:
       - name: Build artifacts
         run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${{ env.VERSION }}
 
-      - name: Release
-        uses: ncipollo/release-action@v1
+      - uses: ncipollo/release-action@v1
