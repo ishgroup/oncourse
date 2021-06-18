@@ -94,7 +94,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
           workingDirectory: server
-          coverageLocations: ${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
+          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'
 
 
   server-integrations:
@@ -172,4 +172,4 @@ jobs:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
           workingDirectory: server
-          coverageLocations: ${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
+          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'

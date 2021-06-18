@@ -65,4 +65,4 @@ jobs:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
           workingDirectory: client-html
-          coverageLocations: ${{github.workspace}}/client-html/build/reports/**/*.lcov:lcov
+          coverageLocations: '${{github.workspace}}/client-html/build/reports/**/*.lcov:lcov'
