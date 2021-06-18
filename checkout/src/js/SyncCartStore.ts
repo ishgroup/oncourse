@@ -1,8 +1,8 @@
 import 'rxjs';
-import {extendPrototype} from "localforage-observable";
 import {Observable} from "rxjs/Observable";
 import {persistStore} from "redux-persist";
-import {localForage} from './constants/LocalForage';
+import { localForage } from './constants/LocalForage';
+import { extendPrototype } from 'localforage-observable';
 
 const localForageEx = extendPrototype(localForage);
 
@@ -42,6 +42,6 @@ export function syncCartStore(store) {
     });
   })
   .catch(e => {
-    console.error(e);
+    console.error("!!!!!",e);
   });
 }

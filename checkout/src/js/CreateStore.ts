@@ -1,6 +1,5 @@
 import {createEpicMiddleware} from "redux-observable";
 import {createLogger} from "redux-logger";
-import * as localforage from "localforage";
 import {ConfigConstants} from "./config/ConfigConstants";
 import {applyMiddleware, compose, createStore, StoreEnhancer, Store} from "redux";
 import {IshState} from "./services/IshState";
@@ -10,6 +9,7 @@ import {EnvironmentConstants} from "./config/EnvironmentConstants";
 import {autoRehydrate, OnComplete, persistStore} from "redux-persist";
 import {syncCartStore} from "./SyncCartStore";
 import {createBlacklistFilter} from 'redux-persist-transform-filter';
+import { localForage } from "./constants/LocalForage";
 
 const getMiddleware = (): StoreEnhancer<IshState> => {
   const logger = createLogger({
@@ -47,23 +47,29 @@ export const RestoreState = (store: Store<IshState>, onComplete: OnComplete<any>
   const persistStoreWrapper = () => {
     persistStore(store,
       {
-        storage: localforage,
+        storage: localForage,
         blacklist: ["phase", "page", "contactAddProcess", "config"],
         transforms: [formBlacklistFilter],
       },
                  onComplete);
-    localforage.setItem('appVersion', ConfigConstants.APP_VERSION);
+    localForage.setItem('appVersion', ConfigConstants.APP_VERSION).catch(e => {
+      console.error(e);
+    });
   };
 
 
-  localforage.getItem('appVersion').then(val => {
+  localForage.getItem('appVersion').then(val => {
     if (val && val != ConfigConstants.APP_VERSION) {
-      localforage.clear().then(() => {
+      localForage.clear().then(() => {
         persistStoreWrapper();
+      }).catch(e => {
+        console.error(e);
       });
     } else {
       persistStoreWrapper();
     }
+  }).catch(e => {
+    console.error(e);
   });
 
 };

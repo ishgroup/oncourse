@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as localforage from "localforage";
 import {render} from "react-dom";
 import {Provider} from "react-redux";
 import {Store} from "redux";
@@ -17,6 +16,7 @@ import {ConfigConstants} from "../../config/ConfigConstants";
 import { ErrorBoundary} from "../../constants/Bugsnag";
 import bugsnagClient from "@bugsnag/js";
 import {initGAEvent} from "../../services/GoogleAnalyticsService";
+import { localForage } from "../../constants/LocalForage";
 
 export class Bootstrap {
   private components: { [key: string]: HTMLMarker } = {};
@@ -61,8 +61,10 @@ export class Bootstrap {
       Logger.log(new LogMessage(Level.INFO, `State`, [this.store.getState()]));
       Logger.log(new LogMessage(Level.INFO, `App version`, [ConfigConstants.APP_VERSION]));
 
-      localforage.clear().then(() => {
+      localForage.clear().then(() => {
         Logger.log(new LogMessage(Level.INFO, `Local storage cleared`));
+      }).catch(e => {
+        console.error(e);
       });
     }
   }

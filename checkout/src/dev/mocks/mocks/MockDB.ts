@@ -1,7 +1,6 @@
 import * as L from "lodash";
 import faker from "faker";
 import { v4 as uuid } from "uuid";
-
 import {
   CourseClass, Enrolment, Contact, Field, DataType, FieldHeading, Item,
   Voucher, Product, Membership, Article, Application,
@@ -16,7 +15,7 @@ import {
 } from "../../../js/NormalizeSchema";
 import {WaitingList} from "../../../js/model/checkout/WaitingList";
 import {Course} from "../../../js/model/web/Course";
-import { localForage } from "../../../js/constants/LocalForage";
+import { localForage } from "../../constants/LocalForage";
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
@@ -32,6 +31,8 @@ export const CreateMockDB = (): MockDB => {
     } else {
       localForage.setItem("MockDB", result);
     }
+  }).catch(e => {
+    console.error(e);
   });
   return result;
 };
@@ -791,7 +792,9 @@ export class MockDB {
     const nc = normalize([contact], ContactsSchema);
     this.contacts.result = [...this.contacts.result, ...nc.result];
     this.contacts.entities.contact = {...this.contacts.entities.contact, ...nc.entities.contact};
-    localForage.setItem("MockDB", this);
+    localForage.setItem("MockDB", this).catch(e => {
+      console.error(e);
+    });
     return contact.id;
   }
 

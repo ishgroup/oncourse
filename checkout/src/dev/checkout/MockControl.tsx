@@ -8,7 +8,7 @@ import {NAME} from "../../js/enrol/containers/payment/components/PaymentForm";
 import {NAME as ContactEditFormName} from "../../js/enrol/containers/contact-edit/ContactEditForm";
 import {NAME as ConcessionAddForm} from "../../js/enrol/containers/concession/Concession";
 import {GABuilder} from "../../js/services/GoogleAnalyticsService";
-import {localForage} from "../../js/constants/LocalForage";
+import { localForage } from "../constants/LocalForage";
 
 interface Props {
   config: MockConfig;
@@ -17,7 +17,9 @@ interface Props {
 export class MockControl extends React.Component<Props, any> {
 
   private resetLocalForage = () => {
-    localForage.clear();
+    localForage.clear().catch(e => {
+      console.error(e);
+    });
   }
 
   private loadBatchCourseClasses = (numbers: number[]) => {

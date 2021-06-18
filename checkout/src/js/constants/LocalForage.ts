@@ -1,16 +1,9 @@
-import localforage from "localforage";
-import * as memoryDriver from 'localforage-driver-memory';
+import * as localforage from "localforage";
 
-export const configLocalStorage = () => {
-  localforage.defineDriver(memoryDriver);
-  localforage.config({
-    driver: [localforage.LOCALSTORAGE, localforage.INDEXEDDB, localforage.WEBSQL, memoryDriver._driver]
-  });
-
-  localforage.ready().catch(e => {
-    console.error(e);
-  });
-}
+localforage.ready(() => {
+  console.log("localforage ready");
+}).catch(e => {
+  console.error(e);
+});
 
 export const localForage = localforage;
-

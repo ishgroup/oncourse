@@ -18,9 +18,7 @@ import {SearchApiMock} from "../SearchApiMock";
 import {PreferenceApiMock} from "../PreferenceApiMock";
 import {CreateStore, RestoreState} from "../../../js/CreateStore";
 import {ValidationError} from "../../../js/model";
-import {configLocalStorage,localForage} from "../../../js/constants/LocalForage";
-
-configLocalStorage();
+import { localForage } from '../../../js/constants/LocalForage';
 
 export interface Props {
   commonError: boolean;
@@ -95,7 +93,9 @@ export class MockConfig {
   }
 
   public save(): void {
-    localForage.setItem("MockConfig", this.props);
+    localForage.setItem("MockConfig", this.props).catch(e => {
+      console.error(e);
+    });
   }
 
   public load(callback: () => void): void {
@@ -107,7 +107,9 @@ export class MockConfig {
         callback();
       }
     },
-    );
+    ).catch(e => {
+      console.error(e);
+    });
   }
 
   public init(callback: (config: MockConfig) => void) {

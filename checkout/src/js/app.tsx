@@ -13,7 +13,6 @@ import {v4 as uuid} from "uuid";
 import moment from "moment-timezone";
 import BrowserDetector from "./common/utils/Browser";
 import {LegacyModal} from "./web/components/modal/LegacyModal";
-import {configLocalStorage} from "./constants/LocalForage";
 import "../scss/index.scss";
 
 // Babel polyfill
@@ -81,8 +80,6 @@ const appStart = () => {
       uuid().replace(/-/g,"").substring(0,30)
     );
   }
-
-  configLocalStorage();
 
   const store = CreateStore();
 
