@@ -22,7 +22,7 @@ jobs:
         with:
           cancel_others: 'true'
           skip_after_successful_duplicate: 'true'
-          paths_ignore: '["client-html/**", "api-doc/**"]'
+          paths_ignore: '["client-html/**", "api-doc/**", "api-test/**"]'
 
       - name: Setup timezone
         uses: zcong1993/setup-timezone@v1.1.1
@@ -102,7 +102,7 @@ jobs:
         with:
           cancel_others: 'true'
           skip_after_successful_duplicate: 'true'
-          paths_ignore: '["client-html/**", "api-doc/**"]'
+          paths_ignore: '["client-html/**", "api-doc/**", "api-test/**"]'
 
       - name: Setup timezone
         uses: zcong1993/setup-timezone@v1.1.1

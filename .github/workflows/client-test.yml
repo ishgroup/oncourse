@@ -19,7 +19,7 @@ jobs:
         with:
           cancel_others: 'true'
           skip_after_successful_duplicate: 'true'
-          paths_ignore: '["server/**", "server-api/**", "types/**"]'
+          paths_ignore: '["server/**", "server-api/**", "api-doc/**", "api-test/**", "types/**"]'
 
       - name: Set up JDK
         uses: actions/setup-java@v2
