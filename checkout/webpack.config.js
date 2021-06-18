@@ -26,7 +26,6 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   return {
     entry: {
       dynamic: [
-        'babel-polyfill',
         'url-polyfill',
         'custom-event-polyfill',
         'react',

@@ -12,10 +12,14 @@ import {getCookie, setCookie} from "./common/utils/Cookie";
 import {v4 as uuid} from "uuid";
 import moment from "moment-timezone";
 import BrowserDetector from "./common/utils/Browser";
-import "../scss/index.scss";
 import {LegacyModal} from "./web/components/modal/LegacyModal";
 import {configLocalStorage} from "./constants/LocalForage";
+import "../scss/index.scss";
 
+// Babel polyfill
+if (!(global as any)._babelPolyfill) {
+  require('babel-polyfill');
+}
 
 // Intersection Observer polyfill
 require('intersection-observer');
