@@ -131,8 +131,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     marginTop: theme.spacing(-2)
   },
   label: {
-    fontSize: "12px",
     color: theme.palette.text.secondary,
+    fontSize: "12px",
     margin: 0,
   }
 }));
