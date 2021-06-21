@@ -2,7 +2,7 @@
 Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/paymentOut'
         * def ishPathLogin = 'login'
@@ -97,16 +97,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
     Scenario: (+) Update Payment Out by notadmin with access rights Hide
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -115,13 +108,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/paymentOut'
         Then status 204
 
 #       <---> Assertion under admin:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/1000'
         When method GET

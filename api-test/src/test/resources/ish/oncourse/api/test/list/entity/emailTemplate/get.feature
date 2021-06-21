@@ -2,7 +2,7 @@
 Feature: Main feature for all GET requests with path 'list/entity/emailTemplate'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/emailTemplate'
         * def ishPathLogin = 'login'
@@ -25,15 +25,9 @@ Feature: Main feature for all GET requests with path 'list/entity/emailTemplate'
     Scenario: (+) Get list of all EmailTemplates by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -57,15 +51,9 @@ Feature: Main feature for all GET requests with path 'list/entity/emailTemplate'
     Scenario: (+) Get EmailTemplate by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/2'

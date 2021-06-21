@@ -3,7 +3,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/script'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/script'
         * def ishPathList = 'list'
@@ -74,16 +74,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script'
     Scenario: (+) Add new valid script by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def script = {name: 'scriptName33', enabled: false, content: 'def run(args) {\n \n}', trigger: {type: 'Schedule', cron: {scheduleType: 'Hourly'}}}
@@ -110,13 +103,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script'
         And match response.trigger.cron.scheduleType == 'Hourly'
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB and change permissions back:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -127,16 +116,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script'
     Scenario: (-) Add new valid script by notadmin without rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def script = {name: 'scriptName34', enabled: false, content: 'def run(args) {\n \n}', trigger: {type: 'Schedule', cron: {scheduleType: 'Hourly'}}}

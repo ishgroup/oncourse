@@ -2,7 +2,7 @@
 Feature: Main feature for all GET requests with path 'tag'
 
     Background: Authorize first
-        * call read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
         * def ishPathLogin = 'login'
@@ -42,16 +42,9 @@ Feature: Main feature for all GET requests with path 'tag'
     Scenario: (+) Get list of all tags by notadmin with maximum permissions: Hide-View-Print-Edit-Create-Delete
 
 #       <--->  Login as notadmin with access rights Delete:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -84,16 +77,9 @@ Feature: Main feature for all GET requests with path 'tag'
     Scenario: (+) Get all tags by notadmin with maximum permissions: Hide-View-Print-Edit-Create
 
 #       <--->  Login as notadmin with access rights Create:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -126,16 +112,9 @@ Feature: Main feature for all GET requests with path 'tag'
     Scenario: (+) Get list of all tags by notadmin with permissions: Hide-View-Print-Edit
 
 #       <--->  Login as notadmin with access rights Edit:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -168,16 +147,9 @@ Feature: Main feature for all GET requests with path 'tag'
     Scenario: (+) Get list of all tags by notadmin with permissions: Hide-View-Print
 
 #       <--->  Login as notadmin with access rights Print:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -210,16 +182,9 @@ Feature: Main feature for all GET requests with path 'tag'
     Scenario: (+) Get list of all tags by notadmin with permissions: Hide-View
 
 #       <--->  Login as notadmin with access rights View:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -252,16 +217,9 @@ Feature: Main feature for all GET requests with path 'tag'
     Scenario: (+) Get list of all tags by notadmin with minimum permissions: Hide
 
 #       <--->  Login as notadmin with access rights Hide:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath

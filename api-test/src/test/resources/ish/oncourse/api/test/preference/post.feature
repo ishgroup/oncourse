@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'preference/'
 
     Background: Authorize first
-        * callonce read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference'
         
@@ -188,15 +188,7 @@ Feature: Main feature for all POST requests with path 'preference/'
 
 
     Scenario: (-) Change Security settings by notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
-        Given path 'login'
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == 'Login successful'
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
         Given path ishPath
         And request [{ uniqueKey: 'security.auto.disable.inactive.account', valueString: 'false' }]

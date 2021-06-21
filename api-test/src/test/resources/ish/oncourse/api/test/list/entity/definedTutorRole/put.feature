@@ -2,7 +2,7 @@
 Feature: Main feature for all PUT requests with path 'list/entity/definedTutorRole'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/definedTutorRole'
         * def ishPathLogin = 'login'
@@ -92,16 +92,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/definedTutorRo
     Scenario: (-) Update Tutor Role by notadmin
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
        * def newTutorRoleToUpdate = {"id":0,"name":"Tutor","description":"Tutor","active":false,"payRates":[]}

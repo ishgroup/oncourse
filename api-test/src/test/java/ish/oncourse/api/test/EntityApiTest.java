@@ -18,8 +18,7 @@ public class EntityApiTest {
                 "classpath:ish/oncourse/api/test/getEntityWithoutAccessRights.feature",
                 "classpath:ish/oncourse/api/test/postEntityWithoutAccessRights.feature",
                 "classpath:ish/oncourse/api/test/removeEntity.feature",
-                "classpath:ish/oncourse/api/test/removeEntityById.feature",
-                "classpath:ish/oncourse/api/test/signIn.feature").tags("~@ignore").parallel(1);
+                "classpath:ish/oncourse/api/test/removeEntityById.feature").tags("~@ignore").parallel(1);
         Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }
 }

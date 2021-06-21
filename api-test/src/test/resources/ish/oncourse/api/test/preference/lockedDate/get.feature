@@ -2,11 +2,11 @@
 Feature: Main feature for all GET requests with path 'preference/lockedDate'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/lockedDate'
-        
+
 
 
 
@@ -22,17 +22,7 @@ Feature: Main feature for all GET requests with path 'preference/lockedDate'
     Scenario: (+) Get lockedDate by notadmin with access rights
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-#       <--->
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
         Given path ishPath
         When method GET
@@ -44,16 +34,9 @@ Feature: Main feature for all GET requests with path 'preference/lockedDate'
     Scenario: (+) Get lockedDate by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+
 #       <--->
 
         Given path ishPath

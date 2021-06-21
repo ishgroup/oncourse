@@ -2,7 +2,6 @@
 Feature: Main feature for all PUT requests with path 'user/resetPassword'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
         * url 'https://127.0.0.1:8182/a/v1'
         
         * def ishPath = 'user/resetPassword'
@@ -55,6 +54,7 @@ Feature: Main feature for all PUT requests with path 'user/resetPassword'
 
 
     Scenario: (-) Reset password for non-existing user
+        * configure headers = { Authorization: 'admin' }
 
         Given path ishPath + '/99999'
         And request {}

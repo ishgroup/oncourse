@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/courseClass/trainingPlan'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/trainingPlan'
         * def ishPathLogin = 'login'
@@ -39,15 +39,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
     Scenario: (+) Update CourseClass tutor attendance by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def trainingPlanToUpdate = [{"moduleId":3,"moduleName":"AUM1001A","sessionIds":[43],"temporarySessionIds":[],"assessmentIds":[],"temporaryAssessmentIds":[]}]
@@ -73,15 +67,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
     Scenario: (-) Update CourseClass tutor attendance by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def trainingPlanToUpdate = [{"moduleId":3,"moduleName":"AUM1001A","sessionIds":[43],"temporarySessionIds":[],"assessmentIds":[],"temporaryAssessmentIds":[]}]

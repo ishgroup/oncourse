@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/entity/courseClass/budget'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/budget'
         * def ishPathClass = 'list/entity/courseClass'
@@ -106,15 +106,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/b
         * print "courseClassTutorId = " + courseClassTutorId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         # Add Expense:
@@ -134,15 +128,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/b
         Then status 204
 
         # Add Wage for tutor:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         * def newWage = {"id":null,"courseClassid":"#(~~id)","taxId":1,"accountId":null,"invoiceId":null,"description":"Wage for tutor1","invoiceToStudent":null,"payableOnEnrolment":null,"isSunk":false,"maximumCost":null,"minimumCost":null,"onCostRate":null,"perUnitAmountExTax":200,"perUnitAmountIncTax":0,"actualAmount":0,"unitCount":null,"contactId":1,"contactName":"tutor1","flowType":"Wages","repetitionType":"Fixed","courseClassDiscount":null,"paymentPlan":[],"courseClassTutorId":"#(~~courseClassTutorId)","isOverriden":true}
 
@@ -196,15 +184,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/b
         * print "courseClassTutorId = " + courseClassTutorId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         # Add Expense:
@@ -235,12 +217,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/b
         And match $.errorMessage == "Sorry, you have no permissions to create class badget item. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPathClass + '/' + id
         When method DELETE

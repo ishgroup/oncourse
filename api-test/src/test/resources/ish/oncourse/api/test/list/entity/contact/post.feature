@@ -2,12 +2,12 @@
 Feature: Main feature for all POST requests with path 'list/entity/contact'
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/contact'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        
+
 
 
   Scenario: (+) Create Contact (student) by admin
@@ -3048,16 +3048,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
   Scenario: (+) Create Contact by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+    * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-    Given path '/login'
-    And request loginBody
-    When method PUT
-    Then status 200
-#       <--->
 
     * def newContact =
         """
@@ -3204,12 +3196,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         """
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-    * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-    Given path '/login'
-    And request loginBody
-    When method PUT
-    Then status 200
+    * configure headers = { Authorization: 'admin'}
 
     Given path ishPath + '/' + id
     When method DELETE
@@ -3220,16 +3207,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
   Scenario: (-) Create new Contact by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-    Given path '/login'
-    And request loginBody
-    When method PUT
-    Then status 200
-#       <--->
+    * configure headers = { Authorization:  'UserWithRightsEdit'}
 
     * def newContact = {}
 

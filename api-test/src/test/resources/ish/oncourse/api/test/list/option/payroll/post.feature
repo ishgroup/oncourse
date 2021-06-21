@@ -2,7 +2,7 @@
 Feature: Main feature for all POST requests with path 'list/option/payroll'
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/option/payroll'
@@ -79,16 +79,9 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
     Scenario: (+) Generate tutor pay with confirmation by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def getWages = {"untilDate":"2020-01-01","entityName":null,"recordIds":null}
@@ -144,13 +137,9 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
         And match $.paylines[*].value == [15.0,15.0]
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         * print "Scenario have been finished. Now find and remove created object from DB"
 
@@ -163,16 +152,9 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
     Scenario: (+) Generate tutor pay without confirmation by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def getWages = {"untilDate":"2021-01-01","entityName":null,"recordIds":null}
@@ -228,13 +210,9 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
         And match $.paylines[*].value == [15.00,15.00]
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         * print "Scenario have been finished. Now find and remove created object from DB"
 
@@ -247,16 +225,9 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
     Scenario: (-) Generate tutor pay by notadmin without access rights to payroll
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def getWages = {"untilDate":"2021-01-01","entityName":null,"recordIds":null}
@@ -273,16 +244,9 @@ Feature: Main feature for all POST requests with path 'list/option/payroll'
     Scenario: (-) Generate tutor pay with confirmation by notadmin without access rights to confirmation
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def getWages = {"untilDate":"2021-01-01","entityName":null,"recordIds":null}

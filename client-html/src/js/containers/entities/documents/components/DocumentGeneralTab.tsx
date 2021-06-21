@@ -47,7 +47,10 @@ import SimpleTagList from "../../../../common/components/form/simpleTagListCompo
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
-import { getDocumentVersion, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
+import {
+  getLatestDocumentItem,
+  iconSwitcher
+} from "../../../../common/components/form/documents/components/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
@@ -161,7 +164,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const [moreDetailcollapsed, setMoreDetailcollapsed] = React.useState(false);
   const [loadingDocVersion, setLoadingDocVersion] = React.useState(false);
-  // const [versionMenu, setVersionMenu] = React.useState(null);
 
   const showMoreDetails = () => {
     setMoreDetailcollapsed(!moreDetailcollapsed);
@@ -171,15 +173,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     dispatch(change(form, "removed", false));
   };
 
-  // const versionMenuOpen = e => {
-  //   setVersionMenu(e.currentTarget);
-  // };
-  //
-  // const versionMenuClose = () => {
-  //   setVersionMenu(null);
-  // };
-
-  const documentVersion = getDocumentVersion(values);
+  const documentVersion = getLatestDocumentItem(values.versions);
 
   const currentIcon = iconSwitcher(documentVersion.mimeType);
 
@@ -197,7 +191,9 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         setLoadingDocVersion(false);
       }).catch(error => {
         setLoadingDocVersion(false);
-        dispatch(showMessage({ message: error.data.errorMessage, success: false }));
+        if (error && error.data) {
+          dispatch(showMessage({ message: error.data.errorMessage, success: false }));
+        }
       });
     }
   }, [form]);
