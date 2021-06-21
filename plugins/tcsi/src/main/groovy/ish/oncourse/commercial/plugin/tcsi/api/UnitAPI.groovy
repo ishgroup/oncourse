@@ -115,10 +115,18 @@ class UnitAPI extends TCSI_API {
         if (clazz.startDateTime && clazz.endDateTime) {
             unit["unit_of_study_year_long_indicator"] = (Duration.between(clazz.startDateTime.toInstant(), clazz.endDateTime.toInstant()).toDays() > 300)
         }
-        LocalDate strtDate = enrolment.outcomes.findAll {it.startDate}*.startDate.sort().first()
-        if (strtDate) {
-            unit["unit_of_study_commencement_date"] = strtDate.format(DATE_FORMAT)
+
+        if (!enrolment.outcomes.empty) {
+            LocalDate strtDate = enrolment.outcomes.findAll {it.startDate}*.startDate.sort().first()
+            if (strtDate) {
+                unit["unit_of_study_commencement_date"] = strtDate.format(DATE_FORMAT)
+            }
+            LocalDate endDate = enrolment.outcomes.findAll {it.endDate}*.endDate.sort().last()
+            if (endDate) {
+                unit["unit_of_study_outcome_date"] = endDate.format(DATE_FORMAT) //E601 
+            }
         }
+        
         if (clazz.course.fullTimeLoad) {
             try {
                 unit['eftsl'] = new BigDecimal(clazz.course.fullTimeLoad)
@@ -127,7 +135,7 @@ class UnitAPI extends TCSI_API {
             }
         }
 
-        if (enrolment.status == EnrolmentStatus.CANCELLED) {
+        if (enrolment.status in [EnrolmentStatus.CANCELLED, EnrolmentStatus.REFUNDED]) {
             unit["unit_of_study_status_code"] = "1"
         } else {
             if (enrolment.outcomes.any {(it.endDate?.isAfter(LocalDate.now())) || !(it.status in OutcomeStatus.STATUSES_VALID_FOR_CERTIFICATE)}) {
@@ -137,12 +145,7 @@ class UnitAPI extends TCSI_API {
             }
         }
 
-
-        LocalDate endDate = enrolment.outcomes.findAll {it.endDate}*.endDate.sort().last()
-        if (endDate) {
-            unit["unit_of_study_outcome_date"] = endDate.format(DATE_FORMAT) //E601 
-        }
-
+        
         unit["course_assurance_indicator"] = false
 
         if (clazz.deliveryMode) { //E329
