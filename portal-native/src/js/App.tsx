@@ -12,6 +12,7 @@ import { theme } from './styles';
 import store from './reducers/Store';
 import { useAppSelector } from './hooks/redux';
 import Navigation from './components/navigation';
+import { ErrorBoundary } from './constants/Bugsnag';
 
 if (__DEV__) {
   initMockDB();
@@ -34,13 +35,15 @@ const App = () => {
 
   if (isLoadingComplete) {
     return (
-      <SafeAreaProvider>
-        <PaperProvider theme={theme}>
-          <Provider store={store}>
-            <RootResolver />
-          </Provider>
-        </PaperProvider>
-      </SafeAreaProvider>
+      <ErrorBoundary>
+        <SafeAreaProvider>
+          <PaperProvider theme={theme}>
+            <Provider store={store}>
+              <RootResolver />
+            </Provider>
+          </PaperProvider>
+        </SafeAreaProvider>
+      </ErrorBoundary>
     );
   }
   return null;

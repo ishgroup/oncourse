@@ -25,6 +25,30 @@
     "web": {
       "favicon": "./src/assets/images/favicon.png"
     },
-    "description": ""
+    "description": "",
+    "extra": {
+      "bugsnag": {
+        "apiKey": "Add real API key here"
+      }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {
+            /*
+
+            For Bugsnag On-premise, the endpoints for each of
+            the hook's components will need to be set:
+
+            "sourceMapUploader": { "endpoint": "https://bugsnag-upload.example.com" },
+            "buildReporter": { "endpoint": "https://bugsnag-builds.example.com" }
+
+            */
+          }
+        }
+      ]
+    }
+  }
   }
 }
