@@ -12,6 +12,12 @@ task webpack(type: YarnTask, dependsOn: 'yarn_install') {
     args = ['expo', 'build:web']
 }
 
+task jest(type: YarnTask, dependsOn: 'yarn_install') {
+    args = ['test']
+}
+
+test.dependsOn(jest)
+
 build.dependsOn(webpack)
 
 
