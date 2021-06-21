@@ -13,10 +13,13 @@ package ish.oncourse.server.api.servlet
 
 
 import groovy.transform.CompileStatic
+import ish.common.types.SystemEventType
+import ish.oncourse.common.SystemEvent
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.ACLRole
 import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.integration.EventService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -42,11 +45,13 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
     private CayenneService cayenneService
     private PreferenceController preferenceController
     private ObjectContext context
+    private EventService eventService
 
-    AngelSessionDataStore(CayenneService cayenneService, PreferenceController preferenceController) {
+    AngelSessionDataStore(CayenneService cayenneService, PreferenceController preferenceController, EventService eventService) {
         this.cayenneService = cayenneService
         this.context = cayenneService.getNewNonReplicatingContext()
         this.preferenceController = preferenceController
+        this.eventService = eventService
         this._savePeriodSec = 60
     }
 
@@ -96,6 +101,9 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
                 }
                 user.setLastAccess(new Date())
                 context.commitChanges()
+                if (isLogin) {
+                    eventService.postEvent(SystemEvent.valueOf(SystemEventType.USER_LOGGED_IN, user))
+                }
             } catch (Exception e) {
                 logger.catching(e)
             }
@@ -222,8 +230,9 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
             users.each { user ->
                 user.sessionId = null
                 user.lastAccess = null
+                context.commitChanges()
+                eventService.postEvent(SystemEvent.valueOf(SystemEventType.USER_LOGGED_OUT, user))
             }
-            context.commitChanges()
             return true
         }
         logger.info("Tried to log out session which was already gone.")
