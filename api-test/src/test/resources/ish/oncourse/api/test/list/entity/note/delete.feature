@@ -2,12 +2,12 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/note'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/note'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -69,16 +69,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/note'
         * print "noteId = " + noteId
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/' + noteId
@@ -117,16 +110,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/note'
         * print "noteId = " + noteId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/' + noteId
@@ -135,16 +121,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/note'
         And match $.errorMessage == "Sorry, you have no permissions to delete note. Please contact your administrator"
 
 #       <---->  Scenario have been finished. Now delete created entity:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + noteId
         When method DELETE

@@ -2,11 +2,11 @@
 Feature: Main feature for all DELETE requests with path 'role'
 
     Background: Authorize first
-        * call read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'role'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -71,15 +71,8 @@ Feature: Main feature for all DELETE requests with path 'role'
         * def id = get[0] response[?(@.name == 'someUserRole111')].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -87,12 +80,8 @@ Feature: Main feature for all DELETE requests with path 'role'
         And match $.errorMessage == "Only users with admin rights can do it. Please contact your administrator"
 
 #       <---> Scenario have been finished. Now find and remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        * configure headers = { Authorization: 'admin'}
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -105,15 +94,4 @@ Feature: Main feature for all DELETE requests with path 'role'
         When method DELETE
         Then status 400
         And match response.errorMessage == "ACLRole with id:100000 doesn't exist"
-
-
-    Scenario: (-) Delete Role without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete Role with null ID
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
+        

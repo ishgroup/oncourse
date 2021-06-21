@@ -2,14 +2,14 @@
 Feature: Main feature for all POST requests with path 'list/entity/courseClass/duplicate'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/duplicate'
         * def ishPathCourseClass = 'list/entity/courseClass'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -59,16 +59,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
     Scenario: (+) Duplicate CourseClass by notadmin with access rights
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "copyPayableTimeForSessions":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}
@@ -105,13 +98,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
         * match site == "site1"
 
 #       <---->  Scenario have been finished. Now delete created entity:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPathCourseClass + '/' + id
         When method DELETE
@@ -122,16 +111,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/d
     Scenario: (-) Duplicate CourseClass by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def duplicateCourseClass = {"classIds":[6], "daysTo":1, "copyTutors":true, "copyTrainingPlans":true, "applyDiscounts":true, "copyCosts":true, "copySitesAndRooms":true, "copyPayableTimeForSessions":true, "copyVetData":true, "copyNotes":false, "copyAssessments":true, "copyOnlyMandatoryTags":true}

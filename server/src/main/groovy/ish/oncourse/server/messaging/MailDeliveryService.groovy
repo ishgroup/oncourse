@@ -57,7 +57,9 @@ class MailDeliveryService {
         message.setHeader(EMAIL_HEADER, "onCourse ${angelVersion}".toString())
         message.sentDate = param.sentDate
         message.content = param.getContent.get()
-
-        Transport.send(message)
+        
+        if (SMTPService.Mode.mock != smtpService.mode) {
+            Transport.send(message)
+        }
     }
 }

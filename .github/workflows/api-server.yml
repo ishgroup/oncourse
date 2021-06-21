@@ -9,18 +9,14 @@ jobs:
 
   api-tests:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mariadb:10.4
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: angel_api_test
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    timeout-minutes: 60
 
     steps:
+      - uses: ankane/setup-mariadb@v1
+        with:
+          mariadb-version: 10.5
+          database: angel_api_test
+
       - uses: actions/checkout@v2
 
       - id: skip_check
@@ -56,4 +52,31 @@ jobs:
 
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://127.0.0.1:${{ job.services.mysql.ports[3306] }}/angel_api_test?user=root
+        run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_api_test?user=root
+        continue-on-error: true
+
+      - name: Build coverage report
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew api-test:jacocoTestReport server:jacocoTestReport
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        with:
+          files: '**/test-results/**/*.xml'
+
+      - name: Upload coverage to Codecov
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: api
+          files: server/build/reports/jacoco/test/jacocoTestReport.xml,api-test/build/reports/jacoco/test/jacocoTestReport.xml
+#
+#      - name: Upload coverage to codeclimate
+#        uses: paambaati/codeclimate-action@v2.7.5
+#        env:
+#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+#        with:
+#          workingDirectory: '${{github.workspace}}/server/src/main/java'
+#          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'

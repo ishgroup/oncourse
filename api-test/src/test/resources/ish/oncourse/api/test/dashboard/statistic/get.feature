@@ -2,13 +2,13 @@
 Feature: Main feature for all GET requests with path 'dashboard/statistic'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'dashboard/statistic'
         * def ishPathWaitingList = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -87,16 +87,9 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -105,13 +98,7 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
         And match $.latestWaitingLists == [{"title":"Course2","info":"1","link":"/waitingList?search=course.id=2"}]
 
 #       <---> Scenario have been finished. Now find and remove created Waiting List from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        * configure headers = { Authorization: 'admin'}
 
         Given path ishPathWaitingList + '/' + id
         When method DELETE

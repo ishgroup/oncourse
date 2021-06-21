@@ -2,13 +2,13 @@
 Feature: Main feature for all POST requests with path 'list/entity/banking/reconcile'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/banking/reconcile'
         * def ishPathBanking = 'list/entity/banking'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -158,16 +158,9 @@ Feature: Main feature for all POST requests with path 'list/entity/banking/recon
     Scenario: (+) Reconcile banking deposit by notadmin with access rights
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #      <---> Create new banking deposit to reconcile it and get id:
         * def newBanking =
@@ -258,16 +251,9 @@ Feature: Main feature for all POST requests with path 'list/entity/banking/recon
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #      <---> Reconcile banking deposit:
         * def bankingToReconcile = ["#(id)"]
@@ -279,13 +265,9 @@ Feature: Main feature for all POST requests with path 'list/entity/banking/recon
         And match $.errorMessage == "Sorry, you have no permission to reconcile banking deposits. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now remove banking deposit by admin:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPathBanking + '/' + id
         When method DELETE

@@ -2,12 +2,12 @@
 Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/priorLearning'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -76,7 +76,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
         "qualificationNationalCode":"UEE30807",
         "qualificationLevel":"Certificate III in",
         "qualificationName":"Certificate III in Electrotechnology Electrician",
-        "outcomes":[{"id":"#(~~outcomeId)","contactId":16,"enrolmentId":null,"studentName":"stud10","moduleId":4,"moduleCode":"AUM1002A","moduleName":"Select and use tools and equipment in an automotive manufacturing environment","trainingPlanStartDate":null,"startDate":"2021-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2022-02-18","endDateOverridden":true,"reportableHours":62.0,"deliveryMode":"WA: Workplace (6)","fundingSource":"International full fee paying student","status":"Satisfactorily completed (81)","hoursAttended":40,"vetPurchasingContractID":"456","vetPurchasingContractScheduleID":"456","vetFundingSourceStateID":"456","specificProgramIdentifier":"456","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "outcomes":[{"id":"#(~~outcomeId)","progression":null,"contactId":16,"enrolmentId":null,"studentName":"stud10","moduleId":4,"moduleCode":"AUM1002A","moduleName":"Select and use tools and equipment in an automotive manufacturing environment","trainingPlanStartDate":null,"startDate":"2021-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2022-02-18","endDateOverridden":true,"reportableHours":62.0,"deliveryMode":"WA: Workplace (6)","fundingSource":"International full fee paying student","status":"Satisfactorily completed (81)","hoursAttended":40,"vetPurchasingContractID":"456","vetPurchasingContractScheduleID":"456","vetFundingSourceStateID":"456","specificProgramIdentifier":"456","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
         "documents":"#ignore",
         "notes":"some notes UPD",
         "contactId":16,
@@ -300,16 +300,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
         * print "outcomeId = " + outcomeId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def priorLearningToUpdate =
@@ -350,7 +343,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
         "qualificationNationalCode":"UEE30807",
         "qualificationLevel":"Certificate III in",
         "qualificationName":"Certificate III in Electrotechnology Electrician",
-        "outcomes":[{"id":"#(~~outcomeId)","contactId":16,"enrolmentId":null,"studentName":"stud10","moduleId":4,"moduleCode":"AUM1002A","moduleName":"Select and use tools and equipment in an automotive manufacturing environment","trainingPlanStartDate":null,"startDate":"2021-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2022-02-18","endDateOverridden":true,"reportableHours":62.0,"deliveryMode":"WA: Workplace (6)","fundingSource":"International full fee paying student","status":"Satisfactorily completed (81)","hoursAttended":40,"vetPurchasingContractID":"456","vetPurchasingContractScheduleID":"456","vetFundingSourceStateID":"456","specificProgramIdentifier":"456","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "outcomes":[{"id":"#(~~outcomeId)","progression":null,"contactId":16,"enrolmentId":null,"studentName":"stud10","moduleId":4,"moduleCode":"AUM1002A","moduleName":"Select and use tools and equipment in an automotive manufacturing environment","trainingPlanStartDate":null,"startDate":"2021-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2022-02-18","endDateOverridden":true,"reportableHours":62.0,"deliveryMode":"WA: Workplace (6)","fundingSource":"International full fee paying student","status":"Satisfactorily completed (81)","hoursAttended":40,"vetPurchasingContractID":"456","vetPurchasingContractScheduleID":"456","vetFundingSourceStateID":"456","specificProgramIdentifier":"456","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
         "documents":"#ignore",
         "notes":"some notes UPD",
         "contactId":16,
@@ -360,13 +353,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
         """
 
 #       <----->  Scenario have been finished. Now find and remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -377,16 +366,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/priorLearning'
     Scenario: (-) Update PriorLearning by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def priorLearningToUpdate = {}

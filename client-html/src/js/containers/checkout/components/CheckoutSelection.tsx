@@ -10,20 +10,15 @@ import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import {
-  change, getFormValues, initialize, isDirty, isInvalid, reduxForm, reset
+  change, getFormValues, initialize, isDirty, isInvalid, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import {
-  Category, CheckoutSaleRelation, ColumnWidth, createStringEnum
+  Category, CheckoutSaleRelation, ColumnWidth
 } from "@api/model";
 import debounce from "lodash.debounce";
-
-import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
-import { openInternalLink } from "../../../common/utils/links";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 import history from "../../../constants/History";
 import {
@@ -53,7 +48,8 @@ import {
   CHECKOUT_CONTACT_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS,
-  CheckoutCurrentStep
+  CheckoutCurrentStep,
+  CheckoutPage, titles, CheckoutCurrentStepType, CheckoutPageType
 } from "../constants";
 import {
   checkoutCourseMap,
@@ -83,7 +79,6 @@ import {
   addItem,
   removeItem,
   updateClassItem,
-  checkoutClearState,
   checkoutUpdateRelatedItems
 } from "../actions";
 import {
@@ -119,26 +114,10 @@ import {
 } from "../../../common/actions/CommonPlainRecordsActions";
 import uniqid from "../../../common/utils/uniqid";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import CheckoutAppBar from "./CheckoutAppBar";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
-export const CONTACT_ENTITY_NAME: string = "Contact";
-
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
-
-export const CheckoutPage = createStringEnum([
-  "default",
-  "contacts",
-  "items",
-  "promocodes",
-  "summary",
-  "payments",
-  "previousCredit",
-  "previousOwing",
-  "fundingInvoiceCompanies",
-  "fundingInvoiceSummary"
-]);
-
-export type CheckoutPage = keyof typeof CheckoutPage;
 
 const styles = (theme: AppTheme) => createStyles({
   sideBar: {
@@ -206,7 +185,7 @@ interface Props extends Partial<EditViewProps> {
   selectedItems?: any[];
   addSelectedItem?: (item: any) => void;
   removeItem?: (itemId: number, itemType: string) => void;
-  onChangeStep?: (step: CheckoutCurrentStep) => void;
+  onChangeStep?: (step: CheckoutCurrentStepType) => void;
   checkoutStep?: number;
   courseClasses?: any[];
   itemEditRecord?: any;
@@ -235,19 +214,6 @@ interface Props extends Partial<EditViewProps> {
   };
   salesRelations?: CheckoutSaleRelation[];
 }
-
-export const titles = {
-  [CheckoutPage.default]: "Type in student name or code in order to search",
-  [CheckoutPage.contacts]: "Search for a contact by name.",
-  [CheckoutPage.items]: "Search for a course, product, membership or voucher by name or code.",
-  [CheckoutPage.promocodes]: "Search for a promotional discount by code",
-  [CheckoutPage.summary]: "Summary",
-  [CheckoutPage.payments]: "",
-  [CheckoutPage.previousCredit]: "Previous credit notes",
-  [CheckoutPage.previousOwing]: "Previous owing invoices",
-  [CheckoutPage.fundingInvoiceCompanies]: "Search for a company by name",
-  [CheckoutPage.fundingInvoiceSummary]: "Funding invoice"
-};
 
 const createConfirmMessage = "Please first save or cancel the new contact you are creating.";
 
@@ -344,7 +310,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   } = props;
 
   const [sidebarWidth, setSidebarWidth] = React.useState(SIDEBAR_DEFAULT_WIDTH);
-  const [activeField, setActiveField] = React.useState<CheckoutPage>(CheckoutPage.default);
+  const [activeField, setActiveField] = React.useState<CheckoutPageType>(CheckoutPage.default);
   const [listContacts, setListContacts] = React.useState(contacts);
   const [selectedContact, setSelectedContact] = React.useState(undefined);
   const [openContactEditView, setOpenContactEditView] = React.useState(false);
@@ -393,7 +359,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
   }, []);
 
   const handleChangeStep = React.useCallback(
-    (step: CheckoutCurrentStep) => {
+    (step: CheckoutCurrentStepType) => {
       const currentStep = getCheckoutCurrentStep(step);
       onChangeStep(step);
       if (currentStep > 0) {
@@ -1132,7 +1098,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               && !selectedContact && (
                 <>
                   <CustomAppBar>
-                    <AppBarTitle
+                    <CheckoutAppBar
                       title={
                         activeField === CheckoutPage.contacts && noContactMsg !== null
                         ? noContactMsg
@@ -1234,48 +1200,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
   );
 });
-
-export const AppBarTitle: React.FC<any> = ({ title, type, link }) => (
-  <>
-    <div className="overflow-hidden">
-      <Typography className="appHeaderFontSize" variant="body2">
-        <span className="text-truncate text-nowrap d-block">
-          {title}
-        </span>
-      </Typography>
-    </div>
-    {link && (
-    <LinkAdornment
-      linkColor="inherit"
-      linkHandler={() => openInternalLink(`/${type}/${link}`)}
-      link={link}
-      className="appHeaderFontSize ml-1"
-    />
-  )}
-    <div className="flex-fill" />
-  </>
-);
-
-const RestartBase: React.FC<any> = ({ dispatch }) => (
-  <Button
-    classes={{
-      root: "whiteAppBarButton",
-      disabled: "whiteAppBarButtonDisabled"
-    }}
-    onClick={() => {
-      dispatch(checkoutClearState());
-      dispatch(checkoutGetActivePaymentMethods());
-      dispatch(reset(SUMMARRY_FORM));
-      dispatch(reset(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM));
-    }}
-  >
-    Start new checkout
-  </Button>
-);
-
-export const RestartButton = connect<any, any, any>(null, dispatch => ({ dispatch }))(
-  RestartBase
-);
 
 const mapStateToProps = (state: State) => ({
   value: getFormValues(FORM)(state),

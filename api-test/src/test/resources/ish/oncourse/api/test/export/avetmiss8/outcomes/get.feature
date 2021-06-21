@@ -2,16 +2,16 @@
 Feature: Main feature for all GET requests with path 'export/avetmiss8/outcomes'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'export/avetmiss8/outcomes'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
-    Scenario: (+) Get passed outcomes/enrolments by admin
+    Scenario: (+) Get passed outcomes/enrolments by admin, commenced outcomes now 'Started not assessed'
 
         * def filtersSettings =
         """
@@ -43,7 +43,7 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8/outcomes'
         And match $ contains
         """
         [
-        {"ids":"#present","type":"outcome","status":"in progress","category":"Commenced"},
+        {"ids":"#present","type":"outcome","status":"in progress","category":"Started (not assessed)"},
         {"ids":"#present","type":"enrolment","status":"in progress","category":"Commenced"}
         ]
         """

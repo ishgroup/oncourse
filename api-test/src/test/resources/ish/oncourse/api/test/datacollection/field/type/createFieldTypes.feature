@@ -4,7 +4,6 @@ Feature: re-usable feature create one Field type for every entity .e.g Enrolment
     
     Background: Configure url, ssl and httpClientClass
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure headers = null
 
     Scenario:
         * def fields = 

@@ -6,7 +6,7 @@ Feature: Sign in as Admin
     * url 'https://127.0.0.1:8182'
     * configure headers = null
     * configure ssl = true
-    * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+    
 
 
   Scenario: logout any current user

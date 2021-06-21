@@ -2,13 +2,13 @@
 Feature: Main feature for all GET requests with path 'list/export'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/export'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathTemplate = 'list/export/template'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 #       <---> Gives CSV reports id's which we will use in requests:
         Given path ishPathTemplate
@@ -306,7 +306,7 @@ Feature: Main feature for all GET requests with path 'list/export'
         When method GET
         Then status 200
         * def surveyXmlExportId = get[0] response[?(@.name == 'StudentFeedback XML export')].id
-        * print "id = " + surveyXmlExportIxx
+        * print "id = " + surveyXmlExportId 
 
         Given path ishPathTemplate
         And param entityName = 'Audit'
@@ -486,16 +486,9 @@ Feature: Main feature for all GET requests with path 'list/export'
     Scenario: (+) Export CSV by notadmin with access rights
 
 #       <---> Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * table getEntityCsv
@@ -536,16 +529,9 @@ Feature: Main feature for all GET requests with path 'list/export'
     Scenario: (+) Export XML by notadmin with access rights
 
 #       <---> Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * table getEntityXml
@@ -587,16 +573,9 @@ Feature: Main feature for all GET requests with path 'list/export'
     Scenario: (-) Export CSV by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * table getEntityCsv
@@ -634,16 +613,9 @@ Feature: Main feature for all GET requests with path 'list/export'
     Scenario: (-) Export XML by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * table getEntityXml

@@ -2,12 +2,12 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/banking'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/banking'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -59,16 +59,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/banking'
     Scenario: (+) Delete existing Banking deposit by notadmin with access rights
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       <----->  Add a new entity for deleting and get id:
         * def newBanking =
@@ -149,16 +142,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/banking'
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/' + id
@@ -167,13 +153,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/banking'
         And match $.errorMessage == "Sorry, you have no permissions to delete banking. Please contact your administrator"
 
 #       <---->  Scenario have been finished. Now delete created entity:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -187,19 +169,4 @@ Feature: Main feature for all DELETE requests with path 'list/entity/banking'
         When method DELETE
         Then status 400
         And match response.errorMessage == "Banking with id:99999 doesn't exist"
-
-
-
-    Scenario: (-) Delete Banking deposit without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
-
-
-
-    Scenario: (-) Delete Banking deposit with NULL as ID
-
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404
+        

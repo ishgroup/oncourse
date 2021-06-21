@@ -13,7 +13,7 @@ jdbc:
     validationQuery: SELECT 1
     validationInterval: 30000
     timeBetweenEvictionRunsMillis: 3000
-    maxActive: 100
+    maxActive: 200
     maxIdle: 5
     minIdle: 2
     removeAbandonedTimeout: 300
@@ -29,7 +29,7 @@ jdbc:
     validationQuery: SELECT 1
     validationInterval: 30000
     timeBetweenEvictionRunsMillis: 3000
-    maxActive: 100
+    maxActive: 200
     maxIdle: 5
     minIdle: 2
     removeAbandonedTimeout: 300

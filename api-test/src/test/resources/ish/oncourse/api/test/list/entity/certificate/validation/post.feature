@@ -2,13 +2,13 @@
 Feature: Main feature for all POST requests with path 'list/entity/certificate/validation'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/certificate/validation'
         * def ishPathCertificate = 'list/entity/certificate'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -18,7 +18,6 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/v
         And request {"search":"id == 1000","filter":"","tagGroups":[],"sorting":[{"attribute":"awardedOn","ascending":true,"complexAttribute":[]}]}
         When method POST
         Then status 200
-        And match $ == ''
 
 
 
@@ -35,16 +34,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/v
     Scenario: (+) Verify revoked certificate by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -69,16 +61,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/v
     Scenario: (+) Verify certificate without USI status by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath
@@ -92,16 +77,9 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/v
     Scenario: (-) Verify valid certificate by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath

@@ -10,16 +10,16 @@ import { Dispatch } from "redux";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { State } from "../../../../reducers/state";
 import { getContactName } from "../../../entities/contacts/utils";
-import { CheckoutPage } from "../CheckoutSelection";
 import { HeaderFieldTypo } from "../HeaderField";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
+import { CheckoutPage } from "../../constants";
 
 interface Props {
   currencySymbol?: any;
   dispatch?: Dispatch;
   selectedCompanies?: any[];
   trackAmountOwing?: boolean;
-  fundingInvoiceValues?: { fundingInvoices: CheckoutFundingInvoice[]};
+  fundingInvoiceValues?: { fundingInvoices: CheckoutFundingInvoice[] };
 }
 
 const CheckoutFundingThisInvoice: React.FC<Props> = (

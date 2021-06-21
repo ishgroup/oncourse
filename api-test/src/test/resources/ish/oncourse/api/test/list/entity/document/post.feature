@@ -2,13 +2,13 @@
 Feature: Main feature for all POST requests with path 'list/entity/document'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/document'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -73,15 +73,9 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
     Scenario: (+) Upload private document by notadmin with rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc4.png')
@@ -114,15 +108,9 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
     Scenario: (+) Upload public document by notadmin with rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc5.csv')
@@ -155,15 +143,9 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
     Scenario: (-) Upload public document by notadmin without rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc6.xml')
@@ -181,15 +163,9 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
     Scenario: (-) Upload private document by notadmin without rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc4.png')

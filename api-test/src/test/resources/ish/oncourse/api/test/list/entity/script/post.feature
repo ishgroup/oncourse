@@ -2,12 +2,12 @@
 Feature: Main feature for all POST requests with path 'list/entity/script' without license
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/script'
         * def ishPathPlain = 'list/plain'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -152,16 +152,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
     Scenario: (+) Add script without panels by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def script = {"keyCode":"test.script_5","enabled":true,"name":"script_5","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {}"}
@@ -201,16 +194,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         """
 
 #       <----->  Scenario have been finished. Now find and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -221,16 +207,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
     Scenario: (+) Add script with Query panel by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def script = {"keyCode":"test.script_6","name":"script_6","enabled":true,"content":"\n// Query closure start \n  def result = query {\n    entity \"Room\"\n    query \"createdOn is last month \"\n    context args.context\n  }      \n  // Query closure end\n","trigger":{"type":"On create","entityName":"Site"}, "entity":"Site"}
@@ -270,16 +249,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         """
 
 #       <----->  Scenario have been finished. Now find and remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -290,16 +262,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
     Scenario: (-) Add script with Query panel by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def script = {"keyCode":"test.script_7","enabled":true,"name":"script_5","trigger":{"type":"On create","entityName":"Site"},"description":"some description","content":"\ndef run(args) {\n\n// Query closure start \n  def result = query {\n    entity Site\n    query \"createdOn last month \"\n    context args.context\n  }      \n  // Query closure end\n}"}
@@ -315,16 +280,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
     Scenario: (-) Add script with Import panel by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def script = {"keyCode":"test.script_8","enabled":true,"name":"script_8","trigger":{"type":"On demand"},"description":"some description","content":"import ish.integrations.*\ndef run(args) {\n}"}
@@ -343,13 +301,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         * def id = response.rows[0].id
 
 #       <----->  Scenario have been finished. Now find and remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -360,16 +314,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
     Scenario: (-) Add script with Script panel by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def script = {"keyCode":"test.script_9","enabled":true,"name":"script_9","trigger":{"type":"On demand"},"description":"some description","content":"def run(args) {\n new Date() \n}"}
@@ -388,13 +335,9 @@ Feature: Main feature for all POST requests with path 'list/entity/script' witho
         * def id = response.rows[0].id
 
 #       <----->  Scenario have been finished. Now find and remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE

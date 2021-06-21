@@ -2,12 +2,12 @@
 Feature: Main feature for all POST requests with path 'list/entity/paymentIn/reverse'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/paymentIn/reverse'
         * def ishPathPaymentIn = 'list/entity/paymentIn'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -29,16 +29,9 @@ Feature: Main feature for all POST requests with path 'list/entity/paymentIn/rev
     Scenario: (+) Reverse Payment In by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/11'
@@ -47,16 +40,9 @@ Feature: Main feature for all POST requests with path 'list/entity/paymentIn/rev
         Then status 204
 
 #       <---> Assertion under admin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPathPaymentIn + '/11'
         When method GET

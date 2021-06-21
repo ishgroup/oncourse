@@ -2,12 +2,12 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/application'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/application'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -95,16 +95,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         When method PUT
         
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/' + id
@@ -157,16 +150,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         When method PUT
         
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath + '/' + id
@@ -179,13 +165,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         When method PUT
         
 #       <---->  Scenario have been finished. Now delete created entity:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -360,14 +342,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/application
         When method DELETE
         Then status 400
         And match response.errorMessage == "Record with id = '99999' doesn't exist."
-
-
-
-    Scenario: (-) Delete Application without any ID
-
-        Given path ishPath + '/'
-        When method DELETE
-        Then status 405
 
 
 
