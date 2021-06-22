@@ -4,12 +4,18 @@ import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.Product
 import ish.oncourse.model.Voucher
+import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.checkout.functions.EnrolmentNode
+import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.VoucherPayment
 import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
+
+import javax.ws.rs.BadRequestException
+import javax.ws.rs.core.Response
 
 class ProcessRedeemedVouchers {
 
@@ -19,6 +25,7 @@ class ProcessRedeemedVouchers {
     private List<EnrolmentNode> enrolmentNodes
 
     private List<Voucher> vouchers
+    private Map<VoucherProduct, ish.oncourse.willow.model.checkout.Voucher> purchasedVouchersWithProducts
 
     Money leftToPay = Money.ZERO
     Money vouchersTotal = Money.ZERO
@@ -35,10 +42,11 @@ class ProcessRedeemedVouchers {
 
 
     ProcessRedeemedVouchers process() {
-        if (checkoutModelRequest.redeemedVoucherIds.empty) {
+        if (checkoutModelRequest.redeemedVoucherIds.empty && checkoutModelRequest.redeemedVoucherProductIds.empty) {
             return this
         }
         vouchers = checkoutModelRequest.redeemedVoucherIds.collect { id -> new GetVoucher(context, college, id).get() }
+        purchasedVouchersWithProducts = fillPurchasedVouchersWithProducts()
 
         if (validate()) {
             processCourseVouchers()
@@ -85,21 +93,61 @@ class ProcessRedeemedVouchers {
 
     private void processMoneyVouchers() {
         List<Voucher> moneyVouchers = vouchers.findAll { it.voucherProduct.maxCoursesRedemption == null }.sort { it.valueRemaining }
+        Map<VoucherProduct, ish.oncourse.willow.model.checkout.Voucher> moneyPurchasedVouchers = purchasedVouchersWithProducts
+                .findAll { it.key.maxCoursesRedemption == null }
+                .sort { it.key.value != null ? it.key.value : it.key.priceExTax }
+
+        moneyPurchasedVouchers.each {purchasedVoucher ->
+            ish.oncourse.willow.model.checkout.Voucher buyingVoucher = purchasedVoucher.value
+            for (int i = 0; i < buyingVoucher.quantity && leftToPay.isGreaterThan(Money.ZERO); i++) {
+                VoucherPayment payment = new VoucherPayment(redeemVoucherProductId: purchasedVoucher.key.id.toString(), name: purchasedVoucher.key.name)
+                applyPayment(payment, Money.valueOf(buyingVoucher.value.toBigDecimal()))
+            }
+        }
 
         moneyVouchers.each { voucher ->
             VoucherPayment payment = new VoucherPayment(redeemVoucherId: voucher.id.toString(), name: voucher.voucherProduct.name)
-            Money amount = Money.ZERO
-            
-            if (leftToPay.isGreaterThan(Money.ZERO)) {
-                amount = amount.add(voucher.valueRemaining.min(leftToPay))
-                leftToPay = leftToPay.subtract(amount)
-            }
-            
-            payment.amount = amount.doubleValue()
-            vouchersTotal = vouchersTotal.add(amount)
-
-            voucherPayments << payment
+            applyPayment(payment, voucher.valueRemaining)
         }
+    }
+
+    private void applyPayment(VoucherPayment payment, Money availableValue) {
+        Money amount = Money.ZERO
+
+        if (leftToPay.isGreaterThan(Money.ZERO)) {
+            amount = amount.add(availableValue.min(leftToPay))
+            leftToPay = leftToPay.subtract(amount)
+        }
+
+        payment.amount = amount.doubleValue()
+        vouchersTotal = vouchersTotal.add(amount)
+
+        voucherPayments << payment
+    }
+
+    private Map<VoucherProduct, ish.oncourse.willow.model.checkout.Voucher> fillPurchasedVouchersWithProducts() {
+        Map<VoucherProduct, ish.oncourse.willow.model.checkout.Voucher> purchasedVouchersWithProducts = [:]
+
+        List<ish.oncourse.willow.model.checkout.Voucher> purchasedVouchers = checkoutModelRequest.contactNodes*.vouchers.flatten() as List<ish.oncourse.willow.model.checkout.Voucher>
+        checkoutModelRequest.redeemedVoucherProductIds.each {voucherProductId ->
+            Product voucherProduct = new GetProduct(context, college, voucherProductId).get()
+            if (!(voucherProduct instanceof VoucherProduct)) {
+                throw new BadRequestException(Response.status(400)
+                        .entity(new CommonError(message: 'Specify a voucher product id which should be redeemed.'))
+                        .build())
+            }
+
+            ish.oncourse.willow.model.checkout.Voucher purchasedVoucher = purchasedVouchers.find {voucherProductId == it.productId }
+            if (!purchasedVoucher) {
+                throw new BadRequestException(Response.status(400)
+                        .entity(new CommonError(message: 'The specified voucher product id is not being purchased.'))
+                        .build())
+            }
+
+            purchasedVouchersWithProducts.put(voucherProduct as VoucherProduct, purchasedVoucher)
+        }
+
+        return purchasedVouchersWithProducts
     }
 
     private boolean validate() {
