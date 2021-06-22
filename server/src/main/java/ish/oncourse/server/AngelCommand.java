@@ -21,6 +21,7 @@ import ish.oncourse.server.api.servlet.AngelSessionDataStoreFactory;
 import ish.oncourse.server.bugsnag.BugsnagFactory;
 import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.http.HttpFactory;
+import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
@@ -50,6 +51,7 @@ public class AngelCommand extends CommandWithMetadata {
     final private Provider<LicenseService> licenseServiceProvider;
     final private Provider<PluginService> pluginServiceProvider;
     final private Provider<MailDeliveryService> mailDeliveryServiceProvider;
+    final private Provider<EventService> eventServiceProvider;
 
     private static final Logger logger = LoggerFactory.getLogger(AngelCommand.class);
 
@@ -65,7 +67,9 @@ public class AngelCommand extends CommandWithMetadata {
                         Provider<BugsnagFactory> bugsnagFactoryProvider,
                         Provider<HttpFactory> httpFactoryProvider,
                         Provider<LicenseService> licenseServiceProvider,
-                        Provider<PluginService> pluginServiceProvider, Provider<MailDeliveryService> mailDeliveryServiceProvider) {
+                        Provider<PluginService> pluginServiceProvider,
+                        Provider<MailDeliveryService> mailDeliveryServiceProvider,
+                        Provider<EventService> eventServiceProvider) {
         super(CommandMetadata.builder(AngelCommand.class).description("Run onCourse server.").build());
         this.serverProvider = serverProvider;
         this.cayenneServiceProvider = cayenneServiceProvider;
@@ -80,6 +84,7 @@ public class AngelCommand extends CommandWithMetadata {
         this.licenseServiceProvider = licenseServiceProvider;
         this.pluginServiceProvider = pluginServiceProvider;
         this.mailDeliveryServiceProvider = mailDeliveryServiceProvider;
+        this.eventServiceProvider = eventServiceProvider; 
     }
 
     @Override
@@ -101,7 +106,7 @@ public class AngelCommand extends CommandWithMetadata {
                     mailDeliveryServiceProvider.get(),
                     httpFactory);
 
-            server.addBean(new AngelSessionDataStoreFactory(cayenneService, prefControllerProvider.get()));
+            server.addBean(new AngelSessionDataStoreFactory(cayenneService, prefControllerProvider.get(), eventServiceProvider.get()));
             server.addBean(new MBeanContainer(ManagementFactory.getPlatformMBeanServer()));
             bugsnagFactoryProvider.get().init();
             httpFactory.init();

@@ -13,6 +13,7 @@ package ish.oncourse.server.api.servlet
 
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.integration.EventService
 import org.eclipse.jetty.server.session.AbstractSessionDataStoreFactory
 import org.eclipse.jetty.server.session.SessionDataStore
 import org.eclipse.jetty.server.session.SessionHandler
@@ -21,16 +22,18 @@ class AngelSessionDataStoreFactory extends AbstractSessionDataStoreFactory {
 
     private CayenneService cayenneService
     private PreferenceController preferenceController
+    private EventService eventService
 
-    AngelSessionDataStoreFactory(CayenneService cayenneService, PreferenceController preferenceController) {
+    AngelSessionDataStoreFactory(CayenneService cayenneService, PreferenceController preferenceController, EventService eventService) {
         this.cayenneService = cayenneService
         this.preferenceController = preferenceController
+        this.eventService = eventService
     }
 
     @Override
     SessionDataStore getSessionDataStore(SessionHandler handler) throws Exception {
         handler.getSessionCache().setEvictionPolicy(60)
 
-        return new AngelSessionDataStore(cayenneService, preferenceController)
+        return new AngelSessionDataStore(cayenneService, preferenceController, eventService)
     }
 }
