@@ -83,7 +83,8 @@ class ProcessCheckoutModel {
             return this
         }
 
-        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, productsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden).calculate()
+        CalculateEnrolmentsPrice enrolmentsPrice = new CalculateEnrolmentsPrice(context, college, totalAmount, model, enrolmentsToProceed, productsToProceed, checkoutModelRequest.promotionIds, corporatePass, taxOverridden)
+                .calculate()
         Money subTotal = totalAmount.subtract( enrolmentsPrice.totalDiscount)
         
         if (!corporatePass) {
@@ -97,7 +98,8 @@ class ProcessCheckoutModel {
             Money ccPayment = ZERO
             Money usedCredit = ZERO
                     
-            ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNow, enrolmentsPrice.enrolmentNodes).process()
+            ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNow, enrolmentsPrice.enrolmentNodes)
+                    .process()
             if (redeemedVouchers.error) {
                 model.error = redeemedVouchers.error
                 return this
@@ -351,6 +353,7 @@ class ProcessCheckoutModel {
 
                     ValidateFormFields validateCustomFields = ValidateFormFields
                             .valueOf(a.fieldHeadings, processProduct.article.fieldHeadings, processProduct.persistentProduct.name, 'Article', context, college)
+                            .withQuantity(a.quantity)
                     validateCustomFields.validate()
                     if (validateCustomFields.commonError) {
                         model.error = validateCustomFields.commonError
@@ -425,6 +428,7 @@ class ProcessCheckoutModel {
 
                     ValidateFormFields validateCustomFields = ValidateFormFields
                             .valueOf(v.fieldHeadings, processProduct.voucher.fieldHeadings, processProduct.persistentProduct.name, 'Voucher', context, college)
+                            .withQuantity(v.quantity)
                     validateCustomFields.validate()
                     if (validateCustomFields.commonError) {
                         model.error = validateCustomFields.commonError

@@ -15,6 +15,7 @@ class ValidateFormFields {
     private List<FieldHeading> expected
     private String className
     private String formName
+    private int quantity
     private ObjectContext context
     private College college
 
@@ -29,10 +30,17 @@ class ValidateFormFields {
         validate.expected = expected
         validate.actual = actual
         validate.formName = formName
+        validate.quantity = 1
         validate.context = context
         validate.college = college
         validate
     }
+
+    ValidateFormFields withQuantity(int quantity) {
+        this.quantity = quantity
+        return this
+    }
+
 
 
     ValidateFormFields validate() {
@@ -42,21 +50,21 @@ class ValidateFormFields {
             if (correspondingFields.empty) {
                 commonError = new CommonError(message: "$formName form for $className doesn't contain followed field: $f.key")
                 return this
-            } else if (correspondingFields.size() > 1) {
-                commonError = new CommonError(message: "$formName form for $className contains more than one followed fields: $f.key")
+            } else if (correspondingFields.size() > quantity) {
+                commonError = new CommonError(message: "$formName form for $className contains more than $quantity followed fields: $f.key")
                 return this
             }
-            Field correspondingField = correspondingFields[0]
-            String value = StringUtils.trimToNull(correspondingField.value)
-            if (!value && f.mandatory) {
-                fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
-            } else if (value) {
-                FieldError error = new FieldValueValidator(FieldProperty.getByKey(f.key), f.key, context, college).validate(value)
-                if (error) {
-                    fieldErrors << error
+            for (Field correspondingField : correspondingFields) {
+                String value = StringUtils.trimToNull(correspondingField.value)
+                if (!value && f.mandatory) {
+                    fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
+                } else if (value) {
+                    FieldError error = new FieldValueValidator(FieldProperty.getByKey(f.key), f.key, context, college).validate(value)
+                    if (error) {
+                        fieldErrors << error
+                    }
                 }
             }
-            
         }
         return this
     }
