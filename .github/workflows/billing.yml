@@ -1,0 +1,52 @@
+name: Billing
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'billing/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'billing/**'
+
+jobs:
+  billing-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        java: [11]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.java }}-node-${{ hashFiles('billing/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ matrix.java }}-
+
+      - name: Install sass
+        run: sudo snap install sassc
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: ${{ matrix.java }}
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: jest
+        run: ./gradlew billing:test
+        continue-on-error: true
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: '**/test-results/**/*.xml'

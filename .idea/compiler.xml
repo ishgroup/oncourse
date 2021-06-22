@@ -154,6 +154,7 @@
       <module name="Willow.common.waCommon" target="1.8" />
       <module name="Willow.common.waCommon.main" target="1.8" />
       <module name="Willow.common.waCommon.test" target="1.8" />
+      <module name="Willow.portal-api" target="11" />
       <module name="Willow.portal-api.main" target="11" />
       <module name="Willow.portal-api.test" target="11" />
       <module name="Willow_buildSrc" target="11" />
