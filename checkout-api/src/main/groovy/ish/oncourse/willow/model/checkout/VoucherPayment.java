@@ -3,9 +3,27 @@ package ish.oncourse.willow.model.checkout;
 
 public class VoucherPayment  {
   
+    private String redeemVoucherProductId = null;
     private String redeemVoucherId = null;
     private String name = null;
     private Double amount = null;
+
+    /**
+     * Get redeemVoucherProductId
+     * @return redeemVoucherProductId
+     */
+    public String getRedeemVoucherProductId() {
+        return redeemVoucherProductId;
+    }
+
+    public void setRedeemVoucherProductId(String redeemVoucherProductId) {
+       this.redeemVoucherProductId = redeemVoucherProductId;
+    }
+
+    public VoucherPayment redeemVoucherProductId(String redeemVoucherProductId) {
+      this.redeemVoucherProductId = redeemVoucherProductId;
+      return this;
+    }
 
     /**
      * Get redeemVoucherId
@@ -64,6 +82,7 @@ public class VoucherPayment  {
       StringBuilder sb = new StringBuilder();
       sb.append("class VoucherPayment {\n");
       
+      sb.append("    redeemVoucherProductId: ").append(toIndentedString(redeemVoucherProductId)).append("\n");
       sb.append("    redeemVoucherId: ").append(toIndentedString(redeemVoucherId)).append("\n");
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
       sb.append("    amount: ").append(toIndentedString(amount)).append("\n");

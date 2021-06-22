@@ -1773,6 +1773,8 @@ definitions:
   checkout.VoucherPayment:
     type: object
     properties:
+      redeemVoucherProductId:
+        type: string
       redeemVoucherId:
         type: string
       name:
