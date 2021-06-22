@@ -15,7 +15,13 @@ import ish.oncourse.model.PaymentInLine
 import ish.oncourse.model.ProductItem
 import ish.oncourse.model.Voucher
 import ish.oncourse.model.VoucherPaymentIn
+import ish.oncourse.model.VoucherProduct
+import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.PersistenceState
+
+import javax.ws.rs.BadRequestException
+import javax.ws.rs.core.Response
 
 class VoucherRedemptionHelper {
 
@@ -24,6 +30,7 @@ class VoucherRedemptionHelper {
     private College college
 
     private Map<Voucher, Money> vouchers
+    private Map<VoucherProduct, Money> voucherProducts
     private List<InvoiceLine> invoiceLines
     private Map<Invoice, Money> paymentPlan
 
@@ -33,6 +40,7 @@ class VoucherRedemptionHelper {
     VoucherRedemptionHelper(ObjectContext context, College college, Contact payer) {
         this.context = context
         this.vouchers = new HashMap<>()
+        this.voucherProducts = new HashMap<>()
         this.invoiceLines = new ArrayList<>()
         this.paymentMap = new HashMap<>()
         this.paymentPlan = new HashMap<>()
@@ -141,27 +149,33 @@ class VoucherRedemptionHelper {
 
 
         Map.Entry<Invoice, Money> entry = queue.poll()
-        Invoice invoice = entry.key
-        Money leftToPay = entry.value
+        if (entry) {
+            Invoice invoice = entry.key
+            Money leftToPay = entry.value
 
 
-        for (Voucher voucher : moneyVouchers) {
-            // redeem voucher against invoices while we can, then switch to next voucher
-            while (!voucher.fullyRedeemed && vouchers.get(voucher).isGreaterThan(Money.ZERO)) {
-                if (!leftToPay.isGreaterThan(Money.ZERO)) {
-                    if (queue.empty) {
-                        // all paid...  finish processing
-                        break
+            for (Voucher voucher : moneyVouchers) {
+                // redeem voucher against invoices while we can, then switch to next voucher
+                while (!voucher.fullyRedeemed && vouchers.get(voucher).isGreaterThan(Money.ZERO)) {
+                    if (!leftToPay.isGreaterThan(Money.ZERO)) {
+                        if (queue.empty) {
+                            // all paid...  finish processing
+                            break
+                        }
+                        entry = queue.poll()
+                        invoice = entry.key
+                        leftToPay = entry.value
+
                     }
-                    entry = queue.poll()
-                    invoice = entry.key
-                    leftToPay = entry.value
-                   
+                    leftToPay = leftToPay.subtract(
+                            redeemVoucherForMoney(voucher, invoice, leftToPay))
                 }
-                leftToPay = leftToPay.subtract(
-                        redeemVoucherForMoney(voucher, invoice, leftToPay))
+
             }
-            
+        } else {
+            throw new BadRequestException(Response.status(400)
+                    .entity(new CommonError(message: 'Impossible to pay for new vouchers by the existed voucher.'))
+                    .build())
         }
     }
 
@@ -189,7 +203,7 @@ class VoucherRedemptionHelper {
     }
 
     private Money redeemVoucherForMoney(Voucher voucher, Invoice invoice, Money amountLeft) {
-        if (!ProductStatus.ACTIVE.equals(voucher.getStatus()) || voucher.getValueRemaining() == null) {
+        if ((!ProductStatus.ACTIVE.equals(voucher.getStatus()) && PersistenceState.NEW != voucher.persistenceState) || voucher.getValueRemaining() == null) {
             throw new IllegalStateException("Voucher is void.")
         }
 
