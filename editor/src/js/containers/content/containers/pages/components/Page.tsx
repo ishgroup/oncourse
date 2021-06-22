@@ -147,7 +147,7 @@ export const Page: React.FC<PageProps> = ({
         pageNode.removeEventListener('click', (e) => onClickArea(e, pageNode));
       }
     };
-  }, [page.id]);
+  }, [page]);
 
   const replacePageHtml = html => {
     const pageNode = DOM.findPage(page.title);
