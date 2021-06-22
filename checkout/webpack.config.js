@@ -7,8 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
 const { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development';
@@ -47,6 +46,13 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         "node_modules"
       ],
       extensions: [".ts", ".tsx", ".js", ".css", ".scss"]
+    },
+    optimization: {
+      minimizer: [
+        new TerserPlugin({
+          parallel: 4,
+        }),
+      ],
     },
     module: {
       rules: [
@@ -115,9 +121,6 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 
 const plugins = (NODE_ENV, BUILD_NUMBER) => {
   const plugins = [
-    new UglifyJsPlugin({
-      sourceMap: true
-    }),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
     new MiniCssExtractPlugin({ filename: "main.css" }),
     new webpack.optimize.ModuleConcatenationPlugin(),
