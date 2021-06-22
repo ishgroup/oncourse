@@ -1798,7 +1798,7 @@ definitions:
         description: min amount that user need to pay for invoice/invoices (can be less than subTotal if payment plan invoices precented)
       payNow:
         type: number
-        description: aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
+        description: actual amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
       isEditable:
         type: boolean
         description: true if minPayNow less that subTotal
@@ -1812,7 +1812,7 @@ definitions:
         description: credit amount that will be used to pay for current invoice/invoices (students credit notes)
       ccPayment:
         type: number
-        description: amount of CC payment
+        description: amount paid by card
       owing:
         type: number
         description: outstanding owing amount
