@@ -11,18 +11,17 @@ import ish.oncourse.enrol.checkout.model.PaymentPlanBuilder
 import ish.oncourse.enrol.checkout.model.UpdateInvoiceAmount
 import ish.oncourse.model.*
 import ish.oncourse.services.preference.GetPreference
-import ish.oncourse.util.payment.CreditCardValidator
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInModelFromPaymentInBuilder
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.checkout.persistent.*
 import ish.oncourse.willow.functions.voucher.GetVoucher
+import ish.oncourse.willow.functions.voucher.GetPurchasedVouchersInCurrentTransaction
 import ish.oncourse.willow.functions.voucher.VoucherRedemptionHelper
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.persistence.Preferences
-import ish.util.CreditCardUtil
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -153,11 +152,21 @@ class CreatePaymentModel {
 
         VoucherRedemptionHelper voucherRedemptionHelper = new VoucherRedemptionHelper(context, college, payer)
 
-        List<Voucher> vouchers = checkoutModel.amount.voucherPayments
-                .findAll { it.amount.toMoney().isGreaterThan(Money.ZERO) }
+        List<Voucher> appliedVouchers = checkoutModel.amount.voucherPayments
+                .findAll { it.amount.toMoney().isGreaterThan(Money.ZERO) && it.redeemVoucherId }
                 .collect { new GetVoucher(context, college, it.redeemVoucherId).get() }
                 
-        for (Voucher voucher : vouchers) {
+        for (Voucher voucher : appliedVouchers) {
+            voucherRedemptionHelper.addVoucher(voucher, voucher.valueRemaining)
+        }
+
+        List<Voucher> purchasedVouchers = new GetPurchasedVouchersInCurrentTransaction(
+                checkoutModel.amount.voucherPayments
+                        .findAll { it.amount.toMoney().isGreaterThan(Money.ZERO) && it.redeemVoucherProductId },
+                mainInvoice.invoiceLines.findAll {it.productItems != null && !it.productItems.empty }
+        ).get()
+
+        for (Voucher voucher : purchasedVouchers) {
             voucherRedemptionHelper.addVoucher(voucher, voucher.valueRemaining)
         }
 
