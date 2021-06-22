@@ -1,6 +1,5 @@
 package ish.oncourse.willow.model.checkout;
 
-import ish.oncourse.willow.model.checkout.ContactNode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,7 @@ public class CheckoutModelRequest  {
     private List<ContactNode> contactNodes = new ArrayList<ContactNode>();
     private List<String> promotionIds = new ArrayList<String>();
     private List<String> redeemedVoucherIds = new ArrayList<String>();
+    private List<String> redeemedVoucherProductIds = new ArrayList<String>();
     private String payerId = null;
     private Boolean applyCredit = null;
     private Double payNow = null;
@@ -77,6 +77,28 @@ public class CheckoutModelRequest  {
 
     public CheckoutModelRequest addRedeemedVoucherIdsItem(String redeemedVoucherIdsItem) {
       this.redeemedVoucherIds.add(redeemedVoucherIdsItem);
+      return this;
+    }
+
+    /**
+     * Get redeemedVoucherProductIds
+     * @return redeemedVoucherProductIds
+     */
+    public List<String> getRedeemedVoucherProductIds() {
+        return redeemedVoucherProductIds;
+    }
+
+    public void setRedeemedVoucherProductIds(List<String> redeemedVoucherProductIds) {
+       this.redeemedVoucherProductIds = redeemedVoucherProductIds;
+    }
+
+    public CheckoutModelRequest redeemedVoucherProductIds(List<String> redeemedVoucherProductIds) {
+      this.redeemedVoucherProductIds = redeemedVoucherProductIds;
+      return this;
+    }
+
+    public CheckoutModelRequest addRedeemedVoucherProductIdsItem(String redeemedVoucherProductIdsItem) {
+      this.redeemedVoucherProductIds.add(redeemedVoucherProductIdsItem);
       return this;
     }
 
@@ -157,6 +179,7 @@ public class CheckoutModelRequest  {
       sb.append("    contactNodes: ").append(toIndentedString(contactNodes)).append("\n");
       sb.append("    promotionIds: ").append(toIndentedString(promotionIds)).append("\n");
       sb.append("    redeemedVoucherIds: ").append(toIndentedString(redeemedVoucherIds)).append("\n");
+      sb.append("    redeemedVoucherProductIds: ").append(toIndentedString(redeemedVoucherProductIds)).append("\n");
       sb.append("    payerId: ").append(toIndentedString(payerId)).append("\n");
       sb.append("    applyCredit: ").append(toIndentedString(applyCredit)).append("\n");
       sb.append("    payNow: ").append(toIndentedString(payNow)).append("\n");

@@ -1847,6 +1847,10 @@ definitions:
         type: array
         items:
           type: string
+      redeemedVoucherProductIds:
+        type: array
+        items:
+          type: string
       payerId:
         type: string
       applyCredit:
