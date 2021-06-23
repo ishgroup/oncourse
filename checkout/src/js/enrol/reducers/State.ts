@@ -1,8 +1,10 @@
-import {ValidationError, Contact, ContactFields, Amount} from "../../model";
+import { ValidationError, Contact, ContactFields, Amount, RedeemVoucher } from "../../model";
 import {State as SummaryState} from "../containers/summary/reducers/State";
 import {State as PaymentState} from "../containers/payment/reducers/State";
 import {ContactsState} from "../../NormalizeSchema";
 import {ContactState} from "../../services/IshState";
+import { RedeemVoucherProduct } from '../../model/checkout/RedeemVoucherProduct';
+
 
 export interface CheckoutState {
   newContact: boolean;
@@ -16,7 +18,8 @@ export interface CheckoutState {
   summary: SummaryState;
   payment: PaymentState;
   concession: any;
-  redeemVouchers: any;
+  redeemVouchers: RedeemVoucher[];
+  redeemedVoucherProducts: RedeemVoucherProduct[];
   contactAddProcess: ContactAddProcessState;
   fetching?: boolean;
   isCartModified: boolean;

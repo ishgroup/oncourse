@@ -26,8 +26,8 @@ export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObserv
       const headings = state.checkout.summary.entities[type][form]?.fieldHeadings || [];
 
       headings.forEach(h => {
-        h.fields.forEach((f: Field) => {
-          const formKey = toFormKey(f.key);
+        h.fields.forEach((f: Field, i) => {
+          const formKey = toFormKey(f.key) + i;
 
           f.value = values[formKey] && values[formKey].key || values[formKey] || null;
           if (f.value == null && f.dataType === DataType.BOOLEAN) {
@@ -38,7 +38,6 @@ export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObserv
 
       const newState = L.cloneDeep(state.checkout.summary);
       newState.entities[type][form].fieldHeadings = headings;
-
 
       result.push({
         type: REWRITE_CONTACT_NODE_TO_STATE,

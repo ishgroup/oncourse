@@ -35,6 +35,7 @@ export class HeadingComp extends React.Component<Prop, any> {
         {heading.fields.map((field, i) => <FieldFactory
           key={i}
           field={field}
+          index={i}
           onBlurSelect={touch}
           onChangeSuburb={onChangeSuburb}
           form={form}

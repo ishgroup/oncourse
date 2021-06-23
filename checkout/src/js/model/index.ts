@@ -1,6 +1,6 @@
 // Web models
 import {WaitingList} from "./checkout/WaitingList";
-
+export * from './checkout/RedeemVoucherProduct';
 export {ContactId} from './web/ContactId';
 export {Contact} from './web/Contact';
 export {ContactParams} from './web/ContactParams';

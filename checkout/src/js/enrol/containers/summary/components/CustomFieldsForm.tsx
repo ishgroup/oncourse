@@ -64,9 +64,9 @@ const CustomFieldsForm = reduxForm({
 
     if (props.headings && props.headings.length) {
       props.headings.map(headings =>
-        headings.fields.map(field =>
-          (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[toFormKey(field.key)])
-            ? errors[toFormKey(field.key)] = `Field '${field.name}' is required`
+        headings.fields.map((field, index) =>
+          (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[toFormKey(field.key) + index])
+            ? errors[toFormKey(field.key) + index] = `Field '${field.name}' is required`
             : field,
         ),
       );

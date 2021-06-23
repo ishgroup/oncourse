@@ -74,11 +74,10 @@ export class Fields extends React.Component<any, any> {
         <div className="modal-body">
           <div dangerouslySetInnerHTML={{__html: model.message}}/>
           <form onSubmit={handleSubmit}>
-
-            {model.fields.map(f => {
+            {model.fields.map((f,i) => {
               switch (f.dataType) {
                 default:
-                  return <Field {...toFormFieldProps(f)} component={RadioGroupField}
+                  return <Field {...toFormFieldProps(f,i)} component={RadioGroupField}
                                 items={[{key: "true", value: "Yes"}, {key: "false", value: "No"}]}/>;
               }
             })}

@@ -19,7 +19,7 @@ import {proceedToPayment, replaceItem, selectItem, updateEnrolmentFields, update
 import {submitPaymentForWaitingCourses} from "../payment/actions/Actions";
 import {
   changePhase, addCode, getCheckoutModelFromBackend, toggleRedeemVoucher, updatePayNow, updateContactAddProcess,
-  epicRemoveContact,
+  epicRemoveContact, toggleRedeemVoucherProduct,
 } from "../../actions/Actions";
 import {updateConcessionContact, getContactConcessions, getConcessionTypes} from "../concession/actions/Actions";
 import {Phase} from "../../reducers/State";
@@ -125,6 +125,7 @@ export const SummaryPropsBy = (state: IshState): any => {
       contacts: contactsArray,
       promotions:  Object.values(state.cart.promotions.entities),
       redeemVouchers: state.checkout.redeemVouchers,
+      redeemedVoucherProducts: state.checkout.redeemedVoucherProducts,
       hasSelected: SummaryService.hasSelected(state.checkout.summary),
       concessions: state.checkout.concession.concessions,
       memberships: state.checkout.concession.memberships,
@@ -215,9 +216,12 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => {
     onToggleVoucher: (redeemVoucher, enabled) => {
       dispatch(toggleRedeemVoucher(redeemVoucher, enabled));
     },
+    onToggleVoucherProduct: (redeemVoucher, enabled) => {
+      dispatch(toggleRedeemVoucherProduct(redeemVoucher, enabled));
+    },
     onChangeCustomFields: (form, type) => {
       // added min delay until redux-form will changed
-      // TODO: figure out correct way to dispatch redux-dorm change action before form-blur
+      // TODO: figure out correct way to dispatch redux-dom change action before form-blur
       setTimeout(() => dispatch(updateEnrolmentFields(form, type)), 30);
     },
   };

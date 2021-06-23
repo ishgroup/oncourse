@@ -1,7 +1,7 @@
 import * as React from "react";
 import AmountComp from "../../../components/AmountComp";
 import {FormDecorator} from "redux-form";
-import {Promotion, RedeemVoucher, Amount} from "../../../../model";
+import { Promotion, RedeemVoucher, Amount, RedeemVoucherProduct } from "../../../../model";
 import {Tabs} from "../reducers/State";
 import {scrollToTop} from "../../../../common/utils/DomUtils";
 
@@ -11,7 +11,9 @@ export interface Props {
   onAddCode:(code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: RedeemVoucher[];
+  redeemedVoucherProducts?: RedeemVoucherProduct[];
   onToggleVoucher?: (redeemVoucher, enabled) => void;
+  onToggleVoucherProduct?: (redeemVoucher, enabled) => void;
   onUpdatePayNow?: (val, validate?: boolean) => void;
   onInit?: () => void;
   currentTab: Tabs;
@@ -23,7 +25,8 @@ export class PaymentComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher, redeemVouchers, currentTab} = this.props;
+    const {amount,onAddCode, paymentForm, promotions, onUpdatePayNow, onToggleVoucher,
+      redeemVouchers, redeemedVoucherProducts, onToggleVoucherProduct, currentTab} = this.props;
     return (
       <div>
         <div className="row">
@@ -35,7 +38,9 @@ export class PaymentComp extends React.Component<Props, any> {
                 promotions={promotions}
                 onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
                 onToggleVoucher={onToggleVoucher}
+                onToggleVoucherProduct={onToggleVoucherProduct}
                 redeemVouchers={redeemVouchers}
+                redeemedVoucherProducts={redeemedVoucherProducts}
                 currentTab={currentTab}
               />
             </div>

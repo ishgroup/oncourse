@@ -14,6 +14,8 @@ export class PromotionApiMock extends PromotionApi {
     const voucherMock: RedeemVoucher = {
       name: `${code} voucher`,
       id: `${code}-100`,
+      code,
+      enabled: false,
       payer: this.config.db.contacts.entities.contact[this.config.db.contacts.result[code]],
     };
     const promotionMock = {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import debounce from "debounce-promise";
-import {Promotion} from "../../model";
+import { Promotion, RedeemVoucher, RedeemVoucherProduct } from "../../model";
 import AddCodeComp from "./AddCodeComp";
 import {Tabs} from "../containers/payment/reducers/State";
 import {AmountState} from "../reducers/State";
@@ -10,9 +10,11 @@ interface Props {
   amount: AmountState;
   onAddCode: (code: string) => void;
   promotions: Promotion[];
-  redeemVouchers?: any;
+  redeemVouchers?: RedeemVoucher[];
+  redeemedVoucherProducts?: RedeemVoucherProduct[];
   onUpdatePayNow?: (val, validate?: boolean) => void;
   onToggleVoucher?: (redeemVoucher, enabled) => void;
+  onToggleVoucherProduct?: (redeemVoucher, enabled) => void;
   currentTab?: Tabs;
 }
 
@@ -34,8 +36,8 @@ class AmountComp extends React.Component<Props> {
   }
 
   render(): JSX.Element {
-    const {amount, onAddCode, promotions, redeemVouchers, onToggleVoucher, currentTab} = this.props;
-    const activeVoucherWithPayer = redeemVouchers && redeemVouchers.find(v => v.payer && v.enabled);
+    const {amount, onAddCode, promotions, redeemVouchers, redeemedVoucherProducts, onToggleVoucherProduct, onToggleVoucher, currentTab} = this.props;
+    const activeVoucherWithPayer = redeemVouchers?.find(v => v.payer && v.enabled);
 
     return (
       <div className="row">
@@ -45,16 +47,28 @@ class AmountComp extends React.Component<Props> {
           {amount && amount.discount !== 0 && <Discount discount={amount.discount}/>}
 
           {amount && redeemVouchers &&
-          redeemVouchers.map(v => (
-            <RedeemVoucher
-              key={v.id}
-              redeemVoucher={v}
-              voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
-                vp => vp.redeemVoucherId === v.id,
-              )}
-              disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
-              onChange={onToggleVoucher}
-            />
+            redeemVouchers.map(v => (
+              <RedeemVoucherComp
+                key={v.id}
+                redeemVoucher={v}
+                voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
+                  vp => vp.redeemVoucherId === v.id,
+                )}
+                disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
+                onChange={onToggleVoucher}
+              />
+          ))}
+
+          {amount && redeemedVoucherProducts &&
+            redeemedVoucherProducts.map(v => (
+              <RedeemVoucherComp
+                key={v.id}
+                redeemVoucher={v}
+                voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
+                  vp => vp.redeemVoucherProductId === v.id,
+                )}
+                onChange={onToggleVoucherProduct}
+              />
           ))}
 
           {(amount && currentTab !== Tabs.corporatePass) && amount.credit !== 0 && <Credit credit={amount.credit}/> }
@@ -64,11 +78,11 @@ class AmountComp extends React.Component<Props> {
 
           {(amount && currentTab !== Tabs.corporatePass) &&
           (amount.payNow || amount.payNow === 0) && amount.payNowVisibility &&
-          <PayNow
-            payNow={amount.payNow}
-            onChange={amount.isEditable ? this.handleChange : null}
-            onBlur={this.handleBlur}
-          />
+            <PayNow
+              payNow={amount.payNow}
+              onChange={amount.isEditable ? this.handleChange : null}
+              onBlur={this.handleBlur}
+            />
           }
         </div>
       </div>
@@ -113,7 +127,7 @@ const CCPayment = props => {
   );
 };
 
-const RedeemVoucher = props => {
+const RedeemVoucherComp = props => {
   const {redeemVoucher, voucherPayment, onChange, disabled} = props;
 
   return (

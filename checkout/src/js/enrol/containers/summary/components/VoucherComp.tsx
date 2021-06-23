@@ -6,7 +6,6 @@ import NumberFormat from "react-number-format";
 import CustomFieldsForm from "./CustomFieldsForm";
 import {getFormInitialValues} from "../../../../components/form/FieldFactory";
 
-
 export interface Props {
   contact: Contact;
   voucher: Voucher;
@@ -19,17 +18,14 @@ export interface Props {
   readonly?: boolean;
 }
 
-
 export interface State {
   price: number;
   quantity: number;
 }
 
 class VoucherComp extends React.PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
-
     this.state = {
       price: props.voucher.price || 0,
       quantity: props.voucher.quantity || 1,
@@ -45,19 +41,16 @@ class VoucherComp extends React.PureComponent<Props, State> {
 
   private updateValue = val => {
     const price = parseFloat(val);
-
     if (!isNaN(price) && price > 0) {
       this.setState({
         price
       });
     }
-
     return false;
   }
 
   private updateQuantity = val => {
     const reg = (/^[0-9]+/);
-
     if (val === '' || (val > 0 && reg.test(val))) {
       this.setState({
         quantity: Number(val),

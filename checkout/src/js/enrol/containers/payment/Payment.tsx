@@ -4,7 +4,7 @@ import {Dispatch} from "redux";
 import {IshState} from "../../../services/IshState";
 import {PaymentComp} from "./components/PaymentComp";
 import PaymentForm from "./components/PaymentForm";
-import {addCode, toggleRedeemVoucher, updatePayNow} from "../../actions/Actions";
+import { addCode, toggleRedeemVoucher, toggleRedeemVoucherProduct, updatePayNow } from "../../actions/Actions";
 
 const PropsBy = (state: IshState): any => {
   return {
@@ -12,6 +12,7 @@ const PropsBy = (state: IshState): any => {
     amount: state.checkout.amount,
     currentTab: state.checkout.payment.currentTab,
     redeemVouchers: state.checkout.redeemVouchers,
+    redeemedVoucherProducts: state.checkout.redeemedVoucherProducts,
     paymentForm: <PaymentForm/>,
     promotions:  Object.values(state?.cart?.promotions?.entities || {}),
   };
@@ -27,6 +28,9 @@ export const ActionsBy = (dispatch: Dispatch<any>): any => {
     },
     onToggleVoucher: (voucher, enabled) => {
       dispatch(toggleRedeemVoucher(voucher, enabled));
+    },
+    onToggleVoucherProduct: (redeemVoucher, enabled) => {
+      dispatch(toggleRedeemVoucherProduct(redeemVoucher, enabled));
     },
   };
 };

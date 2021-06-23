@@ -2,9 +2,10 @@ import {_toRequestType, FULFILLED} from "../../common/actions/ActionUtils";
 import {AmountState, Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
-import {Amount, Preferences} from "../../model";
+import {Amount} from "../../model";
 import {IAction} from "../../actions/IshAction";
 import {GABuilder} from "../../services/GoogleAnalyticsService";
+import { RedeemVoucherProduct } from '../../model/checkout/RedeemVoucherProduct';
 
 // initialize checkout application
 export const SHOW_MESSAGES: string = "checkout/messages/show";
@@ -33,10 +34,15 @@ export const ADD_CODE_REQUEST: string = _toRequestType(ADD_CODE);
 export const GET_CHECKOUT_MODEL_FROM_BACKEND: string = "checkout/get/model/from/backend";
 
 export const ADD_REDEEM_VOUCHER_TO_STATE: string = "checkout/add/redeemVoucher";
+export const ADD_REDEEM_VOUCHER_PRODUCTS_TO_STATE: string = "checkout/add/redeemVoucherProducts";
 
 export const SET_REDEEM_VOUCHER_ACTIVITY: string = "checkout/set/voucher/activity";
 export const TOGGLE_REDEEM_VOUCHER: string = "checkout/toggle/redeemVoucher";
 export const REMOVE_REDEEM_VOUCHER: string = "checkout/remove/redeemVoucher";
+
+export const SET_REDEEM_VOUCHER_PRODUCT_ACTIVITY: string = "checkout/set/voucherProduct/activity";
+export const TOGGLE_REDEEM_VOUCHER_PRODUCT: string = "checkout/toggle/redeemVoucherProduct";
+export const REMOVE_REDEEM_VOUCHER_PRODUCT: string = "checkout/remove/redeemVoucherProduct";
 
 export const UPDATE_CONTACT_ADD_PROCESS: string = "checkout/update/process/contact-add";
 
@@ -48,6 +54,14 @@ export const TOGGLE_PAYNOW_VISIBILITY: string = "checkout/update/payNow/visibili
 export const EPIC_REMOVE_CONTACT: string = "epic/checkout/remove/contact";
 export const REMOVE_CONTACT: string = "checkout/remove/contact";
 export const SET_CONTACT_WARNING_MESSAGE: string = "checkout/contact/warning/message";
+
+
+export const addRedeemVoucherProductsToState = (vouchers: RedeemVoucherProduct[]) => {
+  return {
+    type: ADD_REDEEM_VOUCHER_PRODUCTS_TO_STATE,
+    payload: vouchers,
+  };
+};
 
 export const addCode = (code: string): { type: string, payload: string } => {
   return {
@@ -123,6 +137,21 @@ export const setRedeemVoucherActivity = (id: string, enabled: boolean): IAction<
   return {
     type: SET_REDEEM_VOUCHER_ACTIVITY,
     payload: {id, enabled},
+  };
+};
+
+
+export const setRedeemVoucherProductActivity = (id: string, enabled: boolean): IAction<any> => {
+  return {
+    type: SET_REDEEM_VOUCHER_PRODUCT_ACTIVITY,
+    payload: {id, enabled},
+  };
+};
+
+export const toggleRedeemVoucherProduct = (voucher, enabled: boolean): IAction<any> => {
+  return {
+    type: TOGGLE_REDEEM_VOUCHER_PRODUCT,
+    payload: {voucher, enabled},
   };
 };
 

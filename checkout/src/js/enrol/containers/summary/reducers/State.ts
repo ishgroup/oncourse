@@ -1,5 +1,4 @@
 import {normalize, schema} from "normalizr";
-
 import {
   Enrolment,
   Application,

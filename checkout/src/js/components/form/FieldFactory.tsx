@@ -25,7 +25,7 @@ class FieldFactory extends React.Component<any, any> {
   private validatePatternInner = val => validatePattern(val,this.props?.field?.pattern)
 
   private getComponent = (field: Field): any => {
-    const props: any = toFormFieldProps(field);
+    const props: any = toFormFieldProps(field, this.props?.index);
     props.onBlurSelect = this.props.onBlurSelect;
     props.onChangeSuburb = this.props.onChangeSuburb;
 
@@ -143,10 +143,10 @@ class FieldFactory extends React.Component<any, any> {
   }
 }
 
-export const toFormFieldProps = (field: Field): any => {
+export const toFormFieldProps = (field: Field, index: number): any => {
   return {
     key: field.id,
-    name: toFormKey(field.key),
+    name: toFormKey(field.key) + index,
     label: replaceWithNl(field.name),
     type: "text",
     required: field.mandatory,

@@ -4,6 +4,7 @@ export class CheckoutModelRequest {
   contactNodes?: ContactNode[];
   promotionIds?: string[];
   redeemedVoucherIds?: string[];
+  redeemedVoucherProductIds?: string[];
   payerId?: string;
   applyCredit?: boolean;
 

@@ -1,9 +1,9 @@
 import {Contact} from "./../web/Contact";
 
 export class RedeemVoucher {
-  id?: string;
-  payer?: Contact;
-  name?: string;
-  code?: string;
+  id: string;
+  enabled: boolean;
+  payer: Contact;
+  name: string;
+  code: string;
 }
-

@@ -9,7 +9,7 @@ import {
   PurchaseItem,
   ConcessionType,
   Voucher,
-  Article
+  Article, RedeemVoucherProduct
 } from "../../../../model";
 import {StudentMembership} from "../../../../model";
 import {Concession} from "../../../../model";
@@ -27,7 +27,9 @@ export interface Props {
   onAddCode: (code: string) => void;
   promotions: Promotion[];
   redeemVouchers?: RedeemVoucher[];
+  redeemedVoucherProducts?: RedeemVoucherProduct[];
   onToggleVoucher?: (redeemVoucher: RedeemVoucher, enabled) => void;
+  onToggleVoucherProduct?: (redeemVoucher: RedeemVoucherProduct, enabled) => void;
   onProceedToPayment?: (forms) => void;
   onProceedToJoin?: (forms) => void;
   onSelect?: (item: PurchaseItem, selected: boolean) => void;
@@ -117,7 +119,7 @@ export class SummaryComp extends React.Component<Props, any> {
     const {
       contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent, forms, onProceedToJoin,
       redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent, isOnlyWaitingLists,
-      successLink
+      successLink, redeemedVoucherProducts, onToggleVoucherProduct
     } = this.props;
 
     const { previewMode } = this.state;
@@ -154,7 +156,9 @@ export class SummaryComp extends React.Component<Props, any> {
                     onUpdatePayNow={amount.isEditable ? onUpdatePayNow : undefined}
                     onAddCode={onAddCode}
                     onToggleVoucher={onToggleVoucher}
+                    onToggleVoucherProduct={onToggleVoucherProduct}
                     redeemVouchers={redeemVouchers}
+                    redeemedVoucherProducts={redeemedVoucherProducts}
                     promotions={promotions}
                   />
                 }

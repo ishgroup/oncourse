@@ -415,6 +415,7 @@ export class BuildCheckoutModelRequest {
     result.payerId = state.checkout.payerId;
     result.promotionIds = state.cart.promotions.result;
     result.redeemedVoucherIds = state.checkout.redeemVouchers.filter(v => v.enabled).map(v => v.id);
+    result.redeemedVoucherProductIds = state.checkout.redeemedVoucherProducts.filter(v => v.enabled).map(v => v.id);
     result.contactNodes = BuildContactNodes.fromState(state.checkout.summary, state);
     result.corporatePassId = (state.checkout.payment.corporatePass && state.checkout.payment.corporatePass.id) || null;
     result.payNow = (state.checkout.amount && state.checkout.amount.isEditable && state.checkout.amount.payNow !== state.checkout.amount.minPayNow) ? state.checkout.amount.payNow : null;

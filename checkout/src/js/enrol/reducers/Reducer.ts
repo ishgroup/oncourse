@@ -7,7 +7,7 @@ import * as ContactAddActions from "../containers/contact-add/actions/Actions";
 
 import {Actions as WebActions} from "../../web/actions/Actions";
 
-import {ValidationError, ContactFields, Amount, RedeemVoucher} from "../../model";
+import { ValidationError, ContactFields, Amount, RedeemVoucher, Voucher } from "../../model";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
 import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer";
 import {Reducer as ConcessionReducer} from "../containers/concession/reducers/Reducer";
@@ -16,6 +16,7 @@ import {IAction} from "../../actions/IshAction";
 import {normalize} from "normalizr";
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {CHANGE_TAB} from "../containers/payment/actions/Actions";
+import { RedeemVoucherProduct } from '../../model/checkout/RedeemVoucherProduct';
 
 // Checking if cart has been modified.
 const IsCartModified = (state: boolean = false, action: IAction<boolean>): boolean => {
@@ -266,6 +267,29 @@ const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: IAction<any>
   }
 };
 
+const RedeemVoucherProductsReducer = (state: RedeemVoucherProduct[] = [], action: IAction<any>): RedeemVoucherProduct[] => {
+  switch (action.type) {
+
+    case Actions.ADD_REDEEM_VOUCHER_PRODUCTS_TO_STATE:
+      return action.payload;
+
+    case Actions.SET_REDEEM_VOUCHER_PRODUCT_ACTIVITY:
+      const {id, enabled} = action.payload;
+      return state.map(v => v.id === id ? {...v, enabled} : v);
+
+    case Actions.REMOVE_REDEEM_VOUCHER_PRODUCT: {
+      const {voucher} = action.payload;
+      return state.filter(v => voucher && voucher.id !== v.id );
+    }
+
+    case Actions.RESET_CHECKOUT_STATE:
+      return [];
+
+    default:
+      return state;
+  }
+};
+
 const ContactAddProcess = (state: any = {}, action: IAction<any>): any => {
   switch (action.type) {
 
@@ -314,6 +338,7 @@ export const Reducer = combineReducers<CheckoutState>({
   contacts: ContactsReducer,
   concession: ConcessionReducer,
   redeemVouchers: RedeemVouchersReducer,
+  redeemedVoucherProducts: RedeemVoucherProductsReducer,
   contactAddProcess: ContactAddProcess,
   isCartModified: IsCartModified,
 });

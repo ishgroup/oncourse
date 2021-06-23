@@ -1,6 +1,5 @@
 import {combineEpics} from "redux-observable";
 import {Observable} from "rxjs";
-
 import {IshActions} from "../../constants/IshActions";
 import {Injector} from "../../injector";
 import {normalize} from "normalizr";
@@ -31,7 +30,8 @@ import {EpicUpdateEnrolmentFields} from "./EpicUpdateEnrolmentFields";
 import {EpicProcessingMandatoryFields} from "./EpicProcessingMandatoryFields";
 import {EpicRemoveContact} from "./EpicRemoveContact";
 import {EpicStoreCartState} from "./EpicStoreCartState";
-
+import EpicRefreshRedeemVouchers from './EpicRefreshRedeemVouchers';
+import EpicToggleRedeemVoucherProduct from './EpicToggleRedeemVoucherProduct';
 
 const {
   contactApi,
@@ -52,12 +52,14 @@ export const EpicCheckout = combineEpics(
   EpicUpdateAmount,
   EpicChangePayNow,
   EpicUpdateSummary,
+  EpicRefreshRedeemVouchers,
   EpicProceedToPayment,
   EpicPayment,
   EpicGetConcessionTypes, GetContactConcessions,
   FinishCheckoutProcess,
   EpicResult,
   EpicToggleRedeemVoucher,
+  EpicToggleRedeemVoucherProduct,
   EpicUpdateParentChilds,
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT),
   EpicUpdateEnrolmentFields,
