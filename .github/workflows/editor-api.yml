@@ -12,7 +12,7 @@ on:
 jobs:
   editor-api-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     strategy:
       matrix:
         java: [11]
@@ -27,7 +27,7 @@ jobs:
             **/node_modules
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ matrix.java }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ matrix.java }}-
 
       - name: Set up JDK
