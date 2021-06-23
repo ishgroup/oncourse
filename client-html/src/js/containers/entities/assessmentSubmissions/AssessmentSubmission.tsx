@@ -50,7 +50,7 @@ const nameCondition = (val: AssessmentSubmissionModel) => val.studentName;
 
 const AssessmentSubmission = (props: any) => {
   const {
-    clearListState, getAssessmentSubmissionsItem, getFilters, getTags, onDelete, onSave, selection, dispatch
+    clearListState, getAssessmentSubmissionsItem, getFilters, getTags, onDelete, onSave, selection, dispatch,
   } = props;
 
   useEffect(() => {
@@ -144,4 +144,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDelete: (id: number) => dispatch(removeAssessmentSubmissionsItem(id))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(AssessmentSubmission);
+export default connect(mapStateToProps, mapDispatchToProps)(AssessmentSubmission);
