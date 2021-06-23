@@ -45,12 +45,13 @@ class ValidateFormFields {
 
     ValidateFormFields validate() {
         List<Field> actualFields = actual.fields.flatten() as List<Field>
-        for (Field f : expected.fields.flatten() as List<Field>) { 
+        List<Field> expectedFields = expected.fields.flatten() as List<Field>
+        for (Field f : expectedFields) {
             List<Field> correspondingFields = actualFields.findAll { it.key == f.key }
             if (correspondingFields.empty) {
                 commonError = new CommonError(message: "$formName form for $className doesn't contain followed field: $f.key")
                 return this
-            } else if (correspondingFields.size() > quantity) {
+            } else if (correspondingFields.size() > quantity && actualFields.size() == expectedFields.size()) {
                 commonError = new CommonError(message: "$formName form for $className contains more than $quantity followed fields: $f.key")
                 return this
             }

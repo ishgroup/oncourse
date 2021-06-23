@@ -30,6 +30,7 @@ import ish.oncourse.willow.model.checkout.Voucher
 import ish.oncourse.willow.model.checkout.WaitingList
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
+import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.FieldHeading
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
@@ -362,6 +363,7 @@ class ProcessCheckoutModel {
                         model.validationErrors.formErrors << fieldError.error
                         model.validationErrors.fieldsErrors << fieldError
                     }
+                    actualizeCustomFields(a.fieldHeadings, processProduct.voucher.fieldHeadings)
                 } else {
                     a.selected = false
                 }
@@ -413,7 +415,7 @@ class ProcessCheckoutModel {
         v.errors.clear()
         v.warnings.clear()
         if (v.selected) {
-            ProcessProduct processProduct = new ProcessProduct(context, contact, college, v.productId, 1, model.payerId, taxOverridden).process()
+            ProcessProduct processProduct = new ProcessProduct(context, contact, college, v.productId, v.quantity, model.payerId, taxOverridden).process()
             if (processProduct.voucher == null) {
                 v.errors << "Purchase is wrong"
             } else {
@@ -437,7 +439,7 @@ class ProcessCheckoutModel {
                         model.validationErrors.formErrors << fieldError.error
                         model.validationErrors.fieldsErrors << fieldError
                     }
-
+                    actualizeCustomFields(v.fieldHeadings, processProduct.voucher.fieldHeadings)
                 } else {
                     v.selected = false
                 }
@@ -479,6 +481,26 @@ class ProcessCheckoutModel {
     }
     CorporatePass getCorporatePass() {
         return corporatePass
+    }
+
+    private static void actualizeCustomFields(List<FieldHeading> actual, List<FieldHeading> expected) {
+        if (actual*.fields.flatten().size() != expected*.fields.flatten().size()) {
+            actual.each {actualFieldHeading ->
+                FieldHeading expectedFieldHeading = expected.find {actualFieldHeading.name == it.name }
+                int currentHeadingSize = actualFieldHeading.fields.size()
+                int productHeadingSize = expectedFieldHeading.fields.size()
+
+                if (productHeadingSize > currentHeadingSize) {
+                    for (int i = currentHeadingSize; i < productHeadingSize ; i++) {
+                        actualFieldHeading.fields.add(expectedFieldHeading.fields.get(i))
+                    }
+                } else {
+                    for (int i = currentHeadingSize; i > productHeadingSize ; ) {
+                        actualFieldHeading.fields.remove(--i)
+                    }
+                }
+            }
+        }
     }
     
 }
