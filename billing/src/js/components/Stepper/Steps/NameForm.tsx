@@ -86,11 +86,13 @@ const NameForm = (props: any) => {
 
   const setNewCollegeName = (e) => {
     const name: string = e.target.innerText;
-    const matches = name.match(/([a-z0-9*-]+)/gi);
+    const matches = name.match(/([a-z0-9*]+)/gi);
     const validName = name && matches && matches[0] === name;
 
-    if (!validName) {
-      setErrorMessage('You can only use letters, numbers and dashes');
+    if (name.length > 40) {
+      setErrorMessage('Maximum length of college name is 40 characters');
+    } else if (!validName) {
+      setErrorMessage('You can only use letters and numbers');
     } else {
       if (errorMessage) setErrorMessage("");
     }
@@ -164,6 +166,7 @@ const NameForm = (props: any) => {
         steps={steps}
         handleBack={handleBack}
         handleNext={handleNextCustom}
+        disabled={errorMessage}
       />
     </form>
   )
