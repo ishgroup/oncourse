@@ -62,7 +62,7 @@ const SubmissionModal = (
         <Grid container>
           <Grid item xs={6}>
             <EditInPlaceDateTimeField
-              type="date"
+              type="datetime"
               label={`${type} date`}
               input={{
                 onChange: setDateVal,
