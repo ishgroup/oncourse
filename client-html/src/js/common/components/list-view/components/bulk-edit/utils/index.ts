@@ -235,6 +235,14 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Marked On",
           name: "Marked On",
           type: "Date"
+        },
+        {
+          keyCode: "markedById",
+          label: "Assessor",
+          name: "Assessor",
+          type: "Select",
+          items: [],
+          defaultValue: "Not set",
         }
       ];
     }
