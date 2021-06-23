@@ -24,4 +24,9 @@ test {
 	initTestDBConfig(project, test)
 }
 
+task start(type: JavaExec) {
+	main = 'ish.oncourse.website.WebApp'
+	classpath = sourceSets.main.runtimeClasspath
+	args  = []
+}
 
