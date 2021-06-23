@@ -79,7 +79,8 @@ const _common = (dirname, options) => {
       new webpack.SourceMapDevToolPlugin({}),
     ],
     devServer: {
-      inline: false
+      inline: false,
+      port: 8100
     },
     devtool: false,
   };
