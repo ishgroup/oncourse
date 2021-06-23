@@ -23,8 +23,10 @@ public enum SystemEventType implements DisplayableExtendedEnumeration<Integer> {
 	CLASS_PUBLISHED(4, "Class published"),
 	PAYSLIP_APPROVED(5, "Payslip approved"),
 	VALIDATE_CHECKOUT(6, "Validate checkout"),
-	PAYSLIP_PAID(7, "Payslip paid");
-
+	PAYSLIP_PAID(7, "Payslip paid"),
+	USER_LOGGED_IN(8, "System user logged in"),
+	USER_LOGGED_OUT(9, "System user logged out");
+	
 	private int value;
 	private String displayName;
 
