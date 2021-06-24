@@ -54,13 +54,13 @@ jobs:
         with:
           files: '**/test-results/**/*.xml'
 
-      - name: Upload coverage to Codecov
-        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: jest
-          directory: client-html/build/reports/test
+#      - name: Upload coverage to Codecov
+#        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+#        uses: codecov/codecov-action@v1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          flags: jest
+#          directory: client-html/build/reports/test
 
 #      - name: Upload coverage to codeclimate
 #        uses: paambaati/codeclimate-action@v2.7.5
