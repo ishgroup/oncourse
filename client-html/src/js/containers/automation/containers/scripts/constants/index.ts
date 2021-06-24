@@ -73,8 +73,8 @@ export const getMessageTemplate = component => {
         : "\n\t\t"}`), "");
 
   return `\nmessage {
-    ${parsedString}${component.hasOwnProperty("template") ? "record records" : ""}
-    attachment file
+    ${parsedString}${component.hasOwnProperty("template") && !parsedString.includes("record records") ? "\n\t\trecord records" : ""}
+    ${!parsedString.includes("attachment file") ? "attachment file" : ""}
   }\n\n`;
 };
 

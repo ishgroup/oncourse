@@ -231,7 +231,6 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
-        prefController.updateReleaseNotesMap(user)
 
         user.lastLoginOn = new Date()
         user.passwordUpdateRequired = false

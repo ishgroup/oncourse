@@ -117,7 +117,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   buttonWrapper: {
     display: "flex",
     alignItems: "center",
-    height: "60px",
+    height: "40px",
   },
   deleteIcon: {
     padding: theme.spacing(0.5),
@@ -129,6 +129,11 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   tooltip: {
     marginTop: theme.spacing(-2)
+  },
+  label: {
+    color: theme.palette.text.secondary,
+    fontSize: "12px",
+    margin: 0,
   }
 }));
 
@@ -401,7 +406,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       name={getFieldName("startDate")}
                       validate={validateStartDate}
                       disabled={!isPriorLearningBinded && !values.startDateOverridden}
-                      placeholder={(!isPriorLearningBinded && !values.startDateOverridden) ? null : "Leave empty to calculate date from class"}
+                      placeholder={(!isPriorLearningBinded && !values.startDateOverridden)
+                        ? null : "Leave empty to calculate date from class"}
                       label="Start date"
                     />
                     <IconButton className={classes.deleteIcon} size="small" onClick={onLockStartDate}>
@@ -409,9 +415,14 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                     </IconButton>
                   </>
                 ) : (
-                  <Grid item className={classes.buttonWrapper}>
-                    <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
-                  </Grid>
+                  <div>
+                    <p className={classes.label}>
+                      Start date
+                    </p>
+                    <div className={classes.buttonWrapper}>
+                      <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
+                    </div>
+                  </div>
                 )}
               </Grid>
               <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
@@ -422,7 +433,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                       name={getFieldName("endDate")}
                       validate={validateEndtDate}
                       disabled={!isPriorLearningBinded && !values.endDateOverridden}
-                      placeholder={(!isPriorLearningBinded && !values.endDateOverridden) ? null : "Leave empty to calculate date from class"}
+                      placeholder={(!isPriorLearningBinded && !values.endDateOverridden)
+                        ? null : "Leave empty to calculate date from class"}
                       label="End date"
                     />
                     <IconButton className={classes.deleteIcon} size="small" onClick={onLockEndDate}>
@@ -430,9 +442,14 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                     </IconButton>
                   </>
                 ) : (
-                  <Grid item className={classes.buttonWrapper}>
-                    <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
-                  </Grid>
+                  <div>
+                    <p className={classes.label}>
+                      End date
+                    </p>
+                    <div className={classes.buttonWrapper}>
+                      <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
+                    </div>
+                  </div>
                 )}
               </Grid>
             </Grid>

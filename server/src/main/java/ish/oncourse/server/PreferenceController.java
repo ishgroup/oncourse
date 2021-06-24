@@ -49,7 +49,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 	private final LicenseService licenseService;
 	private ObjectContext objectContext;
 
-	private Map<String, Boolean> showReleaseNotes = new HashMap<>();
 
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,LicenseService licenseService) {
@@ -229,22 +228,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 		logger.debug("committing changes to prefs with value: {}", value);
 
 		context.commitChanges();
-	}
-
-	public boolean isFirstTimeLoginAfterUpdate(String username) {
-		if (showReleaseNotes.containsKey(username)) {
-			showReleaseNotes.remove(username);
-			return true;
-		}
-		return false;
-	}
-
-	public void updateReleaseNotesMap(SystemUser systemUser) {
-		var preference = getPreference(Preferences.DATA_WED_VERSION, false);
-
-		if (systemUser.getLastLoginOn() == null || systemUser.getLastLoginOn().compareTo(preference.getModifiedOn()) < 0) {
-			showReleaseNotes.put(systemUser.getEmail(), true);
-		}
 	}
 
 	public boolean hasSurveyForm() {
