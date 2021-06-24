@@ -33,6 +33,8 @@ class SystemUserStubBuilder extends AbstractAngelStubBuilder<SystemUser, SystemU
 		stub.setLastLoginOn(entity.getLastLoginOn())
 		stub.setToken(entity.getToken())
 		stub.setTokenScratchCodes(entity.getTokenScratchCodes())
+		stub.sessionId = entity.sessionId
+
 		return stub
 	}
 

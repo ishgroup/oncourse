@@ -14,6 +14,7 @@ import ish.common.types.SystemEventType
 import ish.oncourse.commercial.replication.builders.AngelStubBuilderImpl
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.commercial.replication.event.CheckoutEventListener
+import ish.oncourse.commercial.replication.event.SystemUserEventListener
 import ish.oncourse.commercial.replication.event.WillowValidator
 import ish.oncourse.commercial.replication.handler.InboundReplicationHandler
 import ish.oncourse.commercial.replication.handler.InstructionHandler
@@ -67,6 +68,9 @@ class ReplicationPlugin {
         binder.bind(ISoapPortLocator).to(SoapPortLocatorImpl).asEagerSingleton()
         binder.bind(ReplicationJob)
         binder.bind(WillowValidator)
+        binder.bind(CheckoutEventListener)
+        binder.bind(SystemUserEventListener)
+
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Outbound")).to(OutboundReplicationHandler)
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Inbound")).to(InboundReplicationHandler)
         binder.bind(ReplicationHandler).annotatedWith(Names.named("Instruction")).to(InstructionHandler)
@@ -89,14 +93,14 @@ class ReplicationPlugin {
         LicenseService licenseService = injector.getInstance(LicenseService)
         ISchedulerService schedulerService = injector.getInstance(ISchedulerService)
 
-        WillowValidator willowValidator = injector.getInstance(WillowValidator)
-
-        CheckoutEventListener checkoutEventListener = new CheckoutEventListener(licenseService, willowValidator)
-        injector.getInstance(EventService).registerListener(checkoutEventListener, SystemEventType.VALIDATE_CHECKOUT)
-
-        // every 4 hours
-        if (!licenseService.isReplicationDisabled()) {
-
+        
+        if (!licenseService.replicationDisabled) {
+            
+            EventService eventService = injector.getInstance(EventService)
+            eventService.registerListener(injector.getInstance(CheckoutEventListener), SystemEventType.VALIDATE_CHECKOUT)
+            eventService.registerListener(injector.getInstance(SystemUserEventListener), SystemEventType.USER_LOGGED_IN, SystemEventType.USER_LOGGED_OUT)
+            
+            // every 4 hours
             int referenceJobScheduleInterval = PRODUCTION_REFERENCE_JOB_INTERVAL
             schedulerService.schedulePeriodicJob(ReferenceJob.class, REFERENCE_HANDLER_JOB_ID,
                     REPLICATION_JOBS_GROUP_ID, referenceJobScheduleInterval, true, false)
