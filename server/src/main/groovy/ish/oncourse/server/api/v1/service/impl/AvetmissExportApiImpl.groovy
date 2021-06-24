@@ -148,7 +148,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
             context = cayenneService.newContext
             fundingUpload = context.localObject(fundingUpload)
             outcomeIds.each { id ->
-                Outcome outcome = SelectById.query(Outcome, id).selectOne(cayenneService.newContext)
+                Outcome outcome = SelectById.query(Outcome, id).selectOne(context)
                 FundingUploadOutcome fundingUploadOutcome = context.newObject(FundingUploadOutcome)
                 fundingUploadOutcome.fundingUpload = fundingUpload
                 fundingUploadOutcome.outcome = outcome
