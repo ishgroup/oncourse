@@ -158,7 +158,7 @@ jar {
 	manifest {
 		from sharedManifest
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
-		attributes 'Class-Path': configurations.runtimeClasspath.collect { "lib/" + it.name }.join(' ')
+		attributes 'Class-Path': configurations.runtimeClasspath.collect { "./" + it.name }.join(' ')
 	}
 	archiveFileName = 'onCourseServer.jar'
 }
@@ -229,16 +229,11 @@ tasks.withType(CreateStartScripts).each { task ->
 	task.outputs.files("build/scripts/*")
 	task.doLast {
 		String text = task.windowsScript.text
-		text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, "set CLASSPATH=%APP_HOME%\\\\onCourseServer.jar;%APP_HOME%\\\\lib\\\\*;%APP_HOME%\\\\plugins\\\\*" )
+		text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, "set CLASSPATH=%APP_HOME%\\\\lib\\\\onCourseServer.jar;%APP_HOME%\\\\lib\\\\*;%APP_HOME%\\\\plugins\\\\*" )
 		task.windowsScript.write text
 
 		text = task.unixScript.text
-		text = text.replaceFirst(/(APP_HOME\/lib\/).*/, "APP_HOME/onCourseServer.jar\n\n" +
-				"for entry in \"\\\$APP_HOME/plugins\"/*; do\n" +
-				"    if [ -f \\\$entry ] ; then\n" +
-				"        CLASSPATH=\\\$CLASSPATH:\\\$entry\n" +
-				"    fi;\n" +
-				"done;")
+		text = text.replaceFirst(/(APP_HOME\/lib\/).*/, "APP_HOME/lib/onCourseServer.jar:\\\$APP_HOME/plugins/*\n\n")
 		task.unixScript.write text
 	}
 }
@@ -264,7 +259,6 @@ distributions {
 	main {
 		distributionBaseName = 'onCourseServer'
 		contents {
-			from configurations.runtime.artifacts.files
 			from "src/packaging/"
 			from addVersion.outputs.files
 		}
