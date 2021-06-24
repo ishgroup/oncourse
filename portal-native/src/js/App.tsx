@@ -3,7 +3,7 @@ import { registerRootComponent } from 'expo';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { StatusBar } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import { initMockDB } from '../dev/MockAdapter';
@@ -24,8 +24,11 @@ const RootResolver = () => {
 
   return isLogged ? (
     <>
+      <StatusBar
+        backgroundColor="#666666"
+        style="light"
+      />
       <Navigation colorScheme={colorScheme} />
-      <StatusBar hidden />
     </>
   ) : <LoginScreen />;
 };

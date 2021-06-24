@@ -1,9 +1,9 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer';
-import { MonoText } from '../components/StyledText';
+import Navigation from '../components/navigation';
 
 it('renders correctly', () => {
-  const tree = renderer.create(<MonoText>Snapshot test!</MonoText>).toJSON();
+  const tree = renderer.create(<Navigation />).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

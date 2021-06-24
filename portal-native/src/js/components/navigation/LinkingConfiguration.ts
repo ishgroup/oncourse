@@ -6,8 +6,8 @@ export default {
     screens: {
       Root: {
         screens: {
-          Feed: "feed",
-          Notifications: "notifications",
+          Dashboard: 'dashboard',
+          Notifications: 'notifications',
         },
       },
       NotFound: '*',

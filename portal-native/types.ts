@@ -1,6 +1,11 @@
+export type RootDrawerParamList = {
+  Dashboard: undefined;
+  Notifications: undefined;
+};
+
 export type RootStackParamList = {
-  Root: undefined;
   NotFound: undefined;
+  Root: RootDrawerParamList;
 };
 
 export type BottomTabParamList = {
