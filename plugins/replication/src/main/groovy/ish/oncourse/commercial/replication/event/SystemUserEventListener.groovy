@@ -6,6 +6,7 @@
 package ish.oncourse.commercial.replication.event
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.common.SystemEvent
@@ -20,6 +21,7 @@ import ish.oncourse.webservices.v23.stubs.replication.TransactionGroup
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+@CompileStatic
 class SystemUserEventListener implements OnCourseEventListener {
     
     private static final String TRANSACTION_KEY = 'system_user_event'
@@ -36,10 +38,10 @@ class SystemUserEventListener implements OnCourseEventListener {
         try {
             
             SystemUser user = systemEvent.getValue() as SystemUser
-            var group = new TransactionGroup()
+            TransactionGroup group = new TransactionGroup()
             group.transactionKeys << TRANSACTION_KEY
 
-            var replicationRequest = new ReplicationRecords()
+            ReplicationRecords replicationRequest = new ReplicationRecords()
             group.replicationStub << (stubBuilder.convert(user) as ReplicationStub)
 
             replicationRequest.genericGroups << group
