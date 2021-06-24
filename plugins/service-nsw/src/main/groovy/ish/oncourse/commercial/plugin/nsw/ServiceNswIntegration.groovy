@@ -184,7 +184,7 @@ PIN: %s\n
         StringBuilder message = new StringBuilder(getStandartErrorMessage('The PIN is not valid.'))
                 .append(PINS_ARE_NOT_APPROPRIATE_TEMPLATE)
         apiData.each {data ->
-            message.append(String.format(STUDENT_INFO_TEMPLATE, "${licenseService.currentHostName}/contact/$apiData.contactId", apiData.pin))
+            message.append(String.format(STUDENT_INFO_TEMPLATE, "${licenseService.currentHostName}/contact/$data.contactId", data.pin))
         }
         message.toString()
     }
