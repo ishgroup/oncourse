@@ -45,6 +45,7 @@ class ProcessCheckoutModel {
     private CheckoutModelRequest checkoutModelRequest
 
     private Money totalAmount = ZERO
+    private Money totalVouchersAmount = ZERO
     private Money totalProductsAmount = ZERO
 
     private Map<Contact, List<CourseClass>> enrolmentsToProceed  = [:]
@@ -99,7 +100,7 @@ class ProcessCheckoutModel {
             Money ccPayment = ZERO
             Money usedCredit = ZERO
                     
-            ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNow, enrolmentsPrice.enrolmentNodes)
+            ProcessRedeemedVouchers redeemedVouchers = new ProcessRedeemedVouchers(context, college, checkoutModelRequest, payNow.subtract(totalVouchersAmount), enrolmentsPrice.enrolmentNodes)
                     .process()
             if (redeemedVouchers.error) {
                 model.error = redeemedVouchers.error
@@ -426,6 +427,7 @@ class ProcessCheckoutModel {
                     productsToProceed[contact] << processProduct.persistentProduct
 
                     totalAmount = totalAmount.add(v.total.toMoney())
+                    totalVouchersAmount = totalVouchersAmount.add(v.total.toMoney())
                     totalProductsAmount = totalProductsAmount.add(v.total.toMoney())
 
                     ValidateFormFields validateCustomFields = ValidateFormFields
