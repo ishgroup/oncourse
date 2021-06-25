@@ -125,4 +125,21 @@ class FieldHelper {
             }
         }
     }
+
+    static List<FieldHeading> separateFields(List<FieldHeading> actualHeadings, Integer quantity) {
+        List<FieldHeading> newHeadings = []
+        actualHeadings.each {actualFieldHeading ->
+            Map<String, List<ish.oncourse.willow.model.field.Field>> groupsOfFields = actualFieldHeading.fields.groupBy {it.key }
+
+            for (int i = 0; i < quantity; i++) {
+                FieldHeading newFieldHeading =
+                        new FieldHeading(name: actualFieldHeading.name, description: actualFieldHeading.description, ordering: actualFieldHeading.ordering)
+                groupsOfFields.values().each { List<ish.oncourse.willow.model.field.Field> groupOfField ->
+                    newFieldHeading.fields.add(groupOfField.get(i))
+                }
+                newHeadings << newFieldHeading
+            }
+        }
+        return newHeadings
+    }
 }

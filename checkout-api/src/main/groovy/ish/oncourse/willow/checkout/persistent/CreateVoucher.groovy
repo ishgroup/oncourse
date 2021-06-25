@@ -16,9 +16,12 @@ import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.checkout.functions.GetProduct
 import ish.oncourse.willow.checkout.payment.ProductsItemInvoiceLine
 import ish.oncourse.willow.functions.field.FieldHelper
+import ish.oncourse.willow.model.field.FieldHeading
 import ish.util.ProductUtil
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
+
+import static ish.oncourse.willow.functions.field.FieldHelper.separateFields
 
 class CreateVoucher {
 
@@ -46,6 +49,8 @@ class CreateVoucher {
 
         Money price = null
 
+        List<FieldHeading> separatedFieldHeadings = separateFields(v.fieldHeadings, v.quantity)
+
         List<ProductItem> vouchers = new ArrayList<>()
         if (voucherProduct.redemptionCourses.empty && voucherProduct.priceExTax == null) {
             price = v.value.toMoney()
@@ -53,7 +58,7 @@ class CreateVoucher {
                 Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
                 voucher.redemptionValue = price
                 voucher.valueOnPurchase = price
-                FieldHelper.valueOf([] as Set).populateFields(v.fieldHeadings, voucher)
+                FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), voucher)
                 vouchers << voucher
             }
         } else if (voucherProduct.priceExTax != null) {
@@ -62,7 +67,7 @@ class CreateVoucher {
                 Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
                 voucher.redemptionValue = voucherProduct.value != null ? voucherProduct.value : price
                 voucher.valueOnPurchase = voucherProduct.value != null ? voucherProduct.value : price
-                FieldHelper.valueOf([] as Set).populateFields(v.fieldHeadings, voucher)
+                FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), voucher)
                 vouchers << voucher
             }
         }
