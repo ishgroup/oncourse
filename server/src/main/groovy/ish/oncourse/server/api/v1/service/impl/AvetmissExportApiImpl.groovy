@@ -35,12 +35,8 @@ import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import ish.oncourse.server.export.avetmiss8.Avetmiss8ExportRunner
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.FundingStatus
-import ish.persistence.GetInExpression
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.access.DataContext
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.apache.cayenne.tx.TransactionalOperation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -50,7 +46,6 @@ import java.time.LocalDate
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.Future
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -148,7 +143,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
             context = cayenneService.newContext
             fundingUpload = context.localObject(fundingUpload)
             outcomeIds.each { id ->
-                Outcome outcome = SelectById.query(Outcome, id).selectOne(cayenneService.newContext)
+                Outcome outcome = SelectById.query(Outcome, id).selectOne(context)
                 FundingUploadOutcome fundingUploadOutcome = context.newObject(FundingUploadOutcome)
                 fundingUploadOutcome.fundingUpload = fundingUpload
                 fundingUploadOutcome.outcome = outcome
