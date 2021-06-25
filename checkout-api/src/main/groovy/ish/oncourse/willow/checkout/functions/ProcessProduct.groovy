@@ -62,7 +62,7 @@ class ProcessProduct {
                     a.quantity = quantityVal
                     a.total = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, new BigDecimal(quantityVal)).calculate().finalPriceToPayIncTax.doubleValue()
                     a.price = new CalculatePrice(persistentProduct.priceExTax, Money.ZERO, taxOverridden, persistentProduct, BigDecimal.ONE).calculate().finalPriceToPayIncTax.doubleValue()
-                    a.fieldHeadings = new GetProductFields(persistentProduct, productType, quantityVal).get()
+                    a.fieldHeadings = new GetProductFields(persistentProduct, productType).get(quantityVal)
                     a
                 }
                 ValidateArticle validate = new ValidateArticle(context, college, taxOverridden).validate(article)
@@ -111,7 +111,7 @@ class ProcessProduct {
                         v.classes += voucher.redemptionCourses.collect{c -> c.name}
                         v.isEditablePrice = false
                     }
-                    v.fieldHeadings = new GetProductFields(persistentProduct, productType, quantityVal).get()
+                    v.fieldHeadings = new GetProductFields(persistentProduct, productType).get(quantityVal)
 
                     ValidateVoucher validateVoucher = new ValidateVoucher(context, college, payerId).validate(voucher as VoucherProduct, v.price, v.total, v.contactId,  quantityVal)
                     v.errors += validateVoucher.errors

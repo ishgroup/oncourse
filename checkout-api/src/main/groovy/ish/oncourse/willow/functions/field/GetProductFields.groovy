@@ -16,24 +16,15 @@ class GetProductFields {
 
     private Product product
     private ProductType productType
-    private int quantity
 
     GetProductFields(Product product) {
         this.product = product
         this.productType = TypesUtil.getEnumForDatabaseValue(product.type, ProductType.class)
-        this.quantity = 1
     }
 
     GetProductFields(Product product, ProductType productType) {
         this.product = product
         this.productType = productType
-        this.quantity = 1
-    }
-
-    GetProductFields(Product product, ProductType productType, int quantity) {
-        this.product = product
-        this.productType = productType
-        this.quantity = quantity
     }
 
     FieldConfiguration getConfiguration() {
@@ -67,15 +58,17 @@ class GetProductFields {
                             .toSet()
                     break
             }
-            List<FieldHeading> headingList = FieldHelper.valueOf(customFields).buildFieldHeadings()
-            headingList.each {heading ->
-                List<Field> fields = heading.fields.clone() as List<Field>
-                for (int i = 1; i < quantity; i++) {
-                    heading.fields.addAll(fields)
-                }
-            }
-            return headingList
+            return FieldHelper.valueOf(customFields).buildFieldHeadings()
         }
         return null
+    }
+
+    List<FieldHeading> get(Integer quantity) {
+        get().each {heading ->
+            List<Field> fields = heading.fields.clone() as List<Field>
+            for (int i = 1; i < quantity; i++) {
+                heading.fields.addAll(fields)
+            }
+        }
     }
 }
