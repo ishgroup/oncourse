@@ -55,5 +55,4 @@ generateQueryLanguageModel {
 
     destinationDir = file("$buildDir/generated-sources/aql-model")
 }
-
 processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
