@@ -114,7 +114,7 @@ const SubmissionModal = (
         </Button>
       </DialogActions>
     </Dialog>
-);
+  );
 };
 
 export default SubmissionModal;
