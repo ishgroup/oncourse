@@ -10,6 +10,7 @@ import groovy.transform.CompileStatic
 import ish.oncourse.commercial.replication.builders.IAngelStubBuilder
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.common.SystemEvent
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.integration.OnCourseEventListener
 import ish.oncourse.webservices.soap.v23.ReplicationPortType
@@ -18,6 +19,8 @@ import ish.oncourse.webservices.util.GenericReplicationStub
 import ish.oncourse.webservices.v23.stubs.replication.ReplicationRecords
 import ish.oncourse.webservices.v23.stubs.replication.ReplicationStub
 import ish.oncourse.webservices.v23.stubs.replication.TransactionGroup
+import org.apache.cayenne.ObjectId
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -28,6 +31,9 @@ class SystemUserEventListener implements OnCourseEventListener {
     
     @Inject
     ISoapPortLocator soapPortLocator
+
+    @Inject
+    private ICayenneService cayenneService
     
     @Inject
     IAngelStubBuilder stubBuilder
@@ -36,8 +42,9 @@ class SystemUserEventListener implements OnCourseEventListener {
     @Override
     void dispatchEvent(SystemEvent systemEvent) {
         try {
-            
-            SystemUser user = systemEvent.getValue() as SystemUser
+
+            ObjectId id = systemEvent.getValue() as ObjectId
+            SystemUser user = SelectById.query(SystemUser, id).selectOne(cayenneService.newContext)
             TransactionGroup group = new TransactionGroup()
             group.transactionKeys << TRANSACTION_KEY
 
