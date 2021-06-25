@@ -113,7 +113,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
                 ZipOutputStream zipFile = new ZipOutputStream(new FileOutputStream(zipName))
                 result.files.each { filename, data ->
                     ZipEntry entry = new ZipEntry(filename)
-                    def databytes= data.toByteArray()
+                    def databytes = data.toByteArray()
                     entry.size = databytes.length
                     zipFile.putNextEntry(entry)
                     zipFile.write(databytes)
@@ -125,7 +125,6 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
             }
         })
     }
-
 
 
     void createFundingUploadRecords(Long systemUserId, List<Long> outcomeIds, String settings) {
