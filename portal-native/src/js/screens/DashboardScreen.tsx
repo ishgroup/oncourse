@@ -25,7 +25,7 @@ export function DashboardScreen({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.root}>
-        {data.map(d => <CardBase title={d.title} content={""} />)}
+        {data.map(d => <CardBase title={d.title} content={null} />)}
       </View>
     </ScrollView>
   );

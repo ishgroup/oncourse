@@ -1,5 +1,5 @@
 import React from 'react';
-import { Appbar, Badge } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { useRootNavigation } from '../../hooks/navigation';
@@ -33,10 +33,6 @@ const Header = ({ scene }) => {
         onPress={() => navigation.openDrawer()}
       />
       <Appbar.Content title={title} color="white" />
-      <Appbar.Action icon="account-circle" />
-      <Appbar.Action icon="message-reply-text" />
-      <Badge style={styles.badge}>5</Badge>
-      <Appbar.Action icon="dots-vertical" />
     </Appbar.Header>
   );
 };
