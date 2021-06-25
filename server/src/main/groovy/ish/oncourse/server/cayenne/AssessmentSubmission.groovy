@@ -28,6 +28,7 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 	public static final String STUDENT_NAME_PROPERTY = "studentName"
 	public static final String CLASS_NAME_PROPERTY = "courseClassName"
 	public static final String ASSESSMENT_NAME_PROPERTY = "assessmentName"
+	public static final String MARKED_BY_ID_PROPERTY = "markedById"
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {

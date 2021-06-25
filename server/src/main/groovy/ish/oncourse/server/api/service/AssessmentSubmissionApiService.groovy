@@ -13,6 +13,8 @@ import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.AssessmentSubmissionAttachmentRelation
+import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.document.DocumentService
 import ish.util.DateFormatter
 import ish.util.LocalDateUtils
@@ -71,6 +73,8 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
         cayenneModel.grade = dto.grade
         if (dto.markedById) {
             cayenneModel.markedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.markedById)
+        } else {
+            cayenneModel.markedBy = null
         }
 
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)
@@ -101,6 +105,20 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             case AssessmentSubmission.MARKED_ON.name:
                 action = { AssessmentSubmission submission ->
                     submission.markedOn = DateFormatter.parseDate(value, TimeZone.getTimeZone(UTC))
+                }
+                break
+            case AssessmentSubmission.MARKED_BY_ID_PROPERTY:
+                action = { AssessmentSubmission submission ->
+                    Long assessorId = Long.valueOf(value)
+                    List<Tutor> availableAssessors = submission.assessmentClass.assessmentClassTutors*.tutor.flatten() as List<Tutor>
+                    if (availableAssessors*.contact*.id.contains(assessorId)) {
+                        submission.markedBy = contactService.getEntityAndValidateExistence(submission.context, assessorId)
+                    } else {
+                        Contact assessor = contactService.getEntityAndValidateExistence(submission.context, assessorId)
+                        validator.throwClientErrorException(key,
+                                "Assessor ${assessor.fullName} is not acceptable for task ${submission.assessmentName} of class ${submission.courseClassName}, student ${submission.studentName}.".toString())
+                    }
+
                 }
                 break
             default:

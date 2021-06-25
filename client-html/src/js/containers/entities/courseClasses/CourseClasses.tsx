@@ -103,7 +103,7 @@ interface CourseClassesProps {
   initialValues?: CourseClass;
   userPreferences?: UserPreferencesState;
   setListCreatingNew?: BooleanArgFunction;
-  updateSelection?: AnyArgFunction<string[]>;
+  updateSelection?: (selection: string[]) => void;
 }
 
 export const classCostInitial: ClassCost = {
@@ -755,7 +755,7 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(LIST_EDIT_VIEW_FORM_NAME)(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onFirstRender: () => {
     dispatch(getFilters("CourseClass"));
@@ -800,7 +800,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onCreate: (courseClass: CourseClass) => dispatch(createCourseClass(courseClass)),
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
-  updateSelection: selection => dispatch(setListSelection(selection))
+  updateSelection: selection => dispatch(setListSelection(selection)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClasses);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseClasses);
