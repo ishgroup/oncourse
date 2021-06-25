@@ -74,7 +74,7 @@ const SubmissionModal = (
             />
           </Grid>
           <Grid item xs={6}>
-            {type === "Marked" && modalProps[2] !== "all" && (
+            {type === "Marked" && (
               (
                 <EditInPlaceField
                   label="Assessor"
