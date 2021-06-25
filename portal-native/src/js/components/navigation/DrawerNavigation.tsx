@@ -7,7 +7,7 @@ import {
 import { View, Text } from 'react-native';
 import Header from './Header';
 import { RootDrawerParamList } from '../../../../types';
-import { Dashboard } from '../dashboard/Dashboard';
+import { DashboardScreen } from '../../screens/DashboardScreen';
 
 function Notifications({ navigation }) {
   return (
@@ -39,7 +39,7 @@ export default function DrawerNavigation() {
         ),
       }}
     >
-      <Drawer.Screen name="Dashboard" component={Dashboard} />
+      <Drawer.Screen name="Dashboard" component={DashboardScreen} />
       <Drawer.Screen name="Notifications" component={Notifications} />
     </Drawer.Navigator>
   );

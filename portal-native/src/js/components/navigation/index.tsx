@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import DrawerNavigation from './DrawerNavigation';
-import LinkingConfiguration from './LinkingConfiguration';
+import LinkingConfiguration from '../../constants/LinkingConfiguration';
 import NotFoundScreen from '../../screens/NotFoundScreen';
 import { RootStackParamList } from '../../../../types';
 

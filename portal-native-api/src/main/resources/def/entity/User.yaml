@@ -19,3 +19,10 @@ properties:
     type: string
     requred: true
     description: User's email
+  relatedUserIds:
+    type: array
+    requred: false
+    items:
+      type: integer
+      format: int32
+
