@@ -7,7 +7,8 @@ import {
   CheckoutArticle,
   CheckoutEnrolment,
   CheckoutMembership,
-  CheckoutModel, CheckoutPaymentPlan,
+  CheckoutModel,
+  CheckoutPaymentPlan,
   CheckoutVoucher,
   ContactNode,
   Invoice,
@@ -19,14 +20,15 @@ import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
 import {
   CheckoutCourse,
-  CheckoutCourseClass, CheckoutDiscount,
+  CheckoutCourseClass,
+  CheckoutDiscount,
   CheckoutEntity,
   CheckoutItem,
-  CheckoutState,
+  CheckoutState, CheckoutSummary,
   CheckoutSummaryListItem
 } from "../../../model/checkout";
 import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
-import { CheckoutCurrentStep } from "../constants";
+import { CheckoutCurrentStep, CheckoutCurrentStepType } from "../constants";
 import { getFundingInvoices } from "./fundingInvoice";
 
 export const filterPastClasses = courseClasses => {
@@ -54,12 +56,29 @@ export const isPromotionalCodeExist = (code, checkout) => {
   return !!(inDiscounts || inVouchers);
 };
 
+export interface ListPreviousInvoicesArgs {
+  summary: CheckoutSummary;
+  type: "previousCredit" | "previousOwing";
+  itemIndex: number;
+  isUnCheckAll: boolean;
+  payDueAmounts: boolean;
+}
+
 export const listPreviousInvoices = ({
-  summary, type, itemIndex, isUnCheckAll
-}) => {
-  const previousInvoiceList = { [type]: { invoices: [], invoiceTotal: 0, unCheckAll: summary[type].unCheckAll } };
+  summary, type, itemIndex, isUnCheckAll, payDueAmounts
+}: ListPreviousInvoicesArgs) => {
+  const previousInvoiceList = {
+    [type]: {
+      ...summary[type],
+      payDueAmounts,
+      invoices: [],
+      invoiceTotal: 0,
+    }
+  };
 
   let total = 0;
+
+  const totalMarker = payDueAmounts ? "nextDue" : "amountOwing";
 
   previousInvoiceList[type].invoices = summary[type].invoices.map((item, i) => {
     const checked = isUnCheckAll
@@ -69,7 +88,7 @@ export const listPreviousInvoices = ({
         : item.checked;
 
     if (checked) {
-      total = decimalPlus(total, parseFloat(item.amountOwing));
+      total = decimalPlus(total, item[totalMarker]);
     }
 
     return { ...item, checked };
@@ -132,18 +151,21 @@ export const mergeInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => 
     .filter(p => p.entityName === "PaymentIn" && p.successful)
     .reduce((p, c) => decimalPlus(p, c.amount), 0);
 
-  const filteredPaymentPlans = paymentPlans.filter(p => p.entityName === "InvoiceDueDate");
+  const filteredPaymentPlans = paymentPlans
+    .filter(p => p.entityName === "InvoiceDueDate")
+    .sort((a, b) => (a.date > b.date ? 1 : -1));
 
   for (let i = 0; i < filteredPaymentPlans.length; i++) {
     const amount = filteredPaymentPlans[i].amount;
 
     if (paidAmount >= amount) {
       filteredPaymentPlans[i].amount = 0;
+      paidAmount = decimalMinus(paidAmount, amount);
     } else if (paidAmount > 0) {
-      filteredPaymentPlans[i].amount = paidAmount;
+      filteredPaymentPlans[i].amount = decimalMinus(filteredPaymentPlans[i].amount, paidAmount);
+      paidAmount = 0;
+      break;
     }
-
-    paidAmount = decimalMinus(paidAmount, amount);
   }
 
   return filteredPaymentPlans.filter(({ amount }) => amount)
@@ -177,21 +199,19 @@ export const getCheckoutModel = (
 
   const absCredit = Math.abs(summary.previousCredit.invoiceTotal);
 
-  let payForThisInvoice = decimalMinus(
-    summary.payNowTotal || 0, summary.previousCredit.invoiceTotal,
-    -vouchersTotal,
-    summary.previousOwing.invoiceTotal
-  );
+  const paymentPlansTotal = paymentPlans.reduce((p, c) => decimalPlus(p, c.amount), 0);
 
-  if (payForThisInvoice < 0) {
-    payForThisInvoice = 0;
-  }
+  let payForThisInvoice = decimalMinus(
+    summary.payNowTotal || 0,
+    summary.previousCredit.invoiceTotal,
+    -vouchersTotal
+  );
 
   if (payForThisInvoice > summary.finalTotal) {
     payForThisInvoice = summary.finalTotal;
   }
 
-  if (pricesOnly) {
+  if (pricesOnly || payForThisInvoice < 0 || paymentPlansTotal >= summary.finalTotal) {
     payForThisInvoice = 0;
   }
 
@@ -208,10 +228,16 @@ export const getCheckoutModel = (
   const previousInvoices = pricesOnly ? {} : [...summary.previousOwing.invoices, ...summary.previousCredit.invoices]
     .filter(i => i.checked)
     .reduce((p, c) => {
-      const amount = parseFloat(c.amountOwing);
+      const amount = c.amountOwing;
       const absAmount = Math.abs(amount);
 
-      p[c.id] = amount > 0 ? (invoicesCover > amount ? amount : invoicesCover) : (appliedCredit > absAmount ? amount : -appliedCredit);
+      const pAmount = amount > 0
+        ? (invoicesCover > amount ? amount : invoicesCover)
+        : (appliedCredit > absAmount ? amount : -appliedCredit);
+
+      if (pAmount !== 0) {
+        p[c.id] = pAmount;
+      }
 
       if (amount > 0) {
         if (invoicesCover > amount) {
@@ -298,7 +324,9 @@ export const getCheckoutModel = (
 
     payForThisInvoice,
 
-    invoiceDueDate: summary.invoiceDueDate,
+    invoiceDueDate: (paymentPlans.length
+      && paymentPlans.reduce((p, c) => (new Date(p.date) < new Date(c.date) ? p : c))?.date)
+      || summary.invoiceDueDate,
 
     invoiceCustomerReference: summaryValues.invoiceCustomerReference,
 
@@ -553,7 +581,7 @@ export const processCheckoutSale = (row, type) => {
   calculateVoucherOrMembershipExpiry(row);
 };
 
-export const getCheckoutCurrentStep = (step: CheckoutCurrentStep): number => {
+export const getCheckoutCurrentStep = (step: CheckoutCurrentStepType): number => {
   switch (step) {
     case CheckoutCurrentStep.shoppingCart:
       return 0;

@@ -4,36 +4,39 @@
  */
 package ish.oncourse.server.services
 
-import ish.CayenneIshTestCase
+
+import groovy.transform.CompileStatic
+import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.oncourse.common.ResourceType
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.upgrades.DataPopulation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import static org.junit.Assert.assertNotEquals
-import static org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-class DataPopulationTest extends CayenneIshTestCase {
-	
-	private static final Logger logger = LogManager.getLogger()
+@CompileStatic
+class DataPopulationTest extends TestWithDatabase {
 
+    private static final Logger logger = LogManager.getLogger()
+
+    
     @Test
     void testImportResources() {
 
         for (ResourceType type : ResourceType.values()) {
             def count = PluginService.getPluggableResources(type.resourcePath, type.filePattern).size()
-            assertNotEquals(0, count)
+            Assertions.assertNotEquals(0, count)
         }
-		
-		DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
+
+        DataPopulation dataPopulation = injector.getInstance(DataPopulation.class)
 
         try {
-			// can only really test export templates, the other imports require window server...
-			dataPopulation.run()
+            // can only really test export templates, the other imports require window server...
+            dataPopulation.run()
         } catch (Exception e) {
-			logger.warn("fail", e)
-            fail("could not import one of the resources " + e)
+            Assertions.fail("could not import one of the resources " + e)
         }
-	}
+    }
 }

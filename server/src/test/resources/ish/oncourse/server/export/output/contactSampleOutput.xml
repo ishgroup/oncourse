@@ -19,7 +19,7 @@
     <message />
     <mobilePhone>331110000</mobilePhone>
     <notes>first note1
-second note1</notes>
+      second note1</notes>
     <postcode>1001</postcode>
     <state>NSW</state>
     <street>Main</street>
@@ -61,7 +61,7 @@ second note1</notes>
     <message />
     <mobilePhone>331110001</mobilePhone>
     <notes>first note2
-second note2</notes>
+      second note2</notes>
     <postcode>1002</postcode>
     <state>NSW</state>
     <street>1st</street>

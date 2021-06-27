@@ -2,12 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/courseClass/budget'
 
     Background: Authorize first
-        * callonce read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/budget'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -32,15 +32,9 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/bu
     Scenario: (+) Get CourseClass budget by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/6'
@@ -59,15 +53,9 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass/bu
     Scenario: (-) Get CourseClass budget by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/6'

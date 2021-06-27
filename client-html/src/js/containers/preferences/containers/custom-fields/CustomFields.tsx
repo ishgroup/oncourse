@@ -13,7 +13,6 @@ import { State } from "../../../../reducers/state";
 import { Fetch } from "../../../../model/common/Fetch";
 import CustomFieldsForm from "./components/CustomFieldsForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
-import { showConfirm } from "../../../../common/actions";
 
 interface Props {
   getFields: () => void;
@@ -23,7 +22,6 @@ interface Props {
   data: CustomFieldType[];
   timestamps: Date[];
   fetch: Fetch;
-  openConfirm?: (onConfirm: any, confirmMessage?: string) => void;
 }
 
 class CustomFields extends React.Component<Props, any> {
@@ -33,7 +31,7 @@ class CustomFields extends React.Component<Props, any> {
 
   render() {
     const {
-      customFields, data, updateCustomFields, deleteCustomField, fetch, timestamps, openConfirm
+      customFields, data, updateCustomFields, deleteCustomField, fetch, timestamps
     } = this.props;
 
     const created = timestamps && timestamps[0];
@@ -44,7 +42,6 @@ class CustomFields extends React.Component<Props, any> {
     const componentForm = React.cloneElement(form, {
       created,
       modified,
-      openConfirm,
       customFields,
       data,
       fetch,
@@ -66,8 +63,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFields: () => dispatch(getCustomFields()),
   updateCustomFields: (customFields: CustomFieldType[]) => dispatch(updateCustomFields(customFields)),
-  deleteCustomField: (id: string) => dispatch(deleteCustomField(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage))
+  deleteCustomField: (id: string) => dispatch(deleteCustomField(id))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CustomFields);

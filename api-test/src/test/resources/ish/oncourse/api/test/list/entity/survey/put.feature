@@ -2,12 +2,12 @@
 Feature: Main feature for all PUT requests with path 'list/entity/survey'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/survey'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         * def surveyToDefault = {"id":1004,"studentContactId":10,"studentName":"stud4","netPromoterScore":1,"venueScore":5,"courseScore":5,"tutorScore":5,"visibility":"Public testimonial","testimonial":"5 stars","comment":"Course is nice schedule but Tutor need to be more friendly and informative.","customFields":{},"siteId":201,"siteName":"site1","roomId":2,"roomName":"room2","classId":6,"className":"course4-1 Course4","tutors":{"6":"tutor3"}}

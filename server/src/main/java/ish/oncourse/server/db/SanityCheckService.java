@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 import ish.common.types.AccountType;
 import ish.oncourse.DefaultAccount;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.PreferenceController;
+import ish.oncourse.server.IPreferenceController;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.cayenne.Tax;
@@ -40,7 +40,7 @@ public class SanityCheckService {
 	private static final Logger logger = LogManager.getLogger();
 
 	private final ICayenneService cayenneService;
-	private final PreferenceController pref;
+	private final IPreferenceController pref;
 	private final EmailService emailService;
 
 	/**
@@ -48,7 +48,7 @@ public class SanityCheckService {
 	 * @param pref instance of PreferenceController
 	 */
 	@Inject
-	public SanityCheckService(ICayenneService cayenneService, PreferenceController pref, EmailService emailService) {
+	public SanityCheckService(ICayenneService cayenneService, IPreferenceController pref, EmailService emailService) {
 		super();
 		this.cayenneService = cayenneService;
 		this.pref = pref;

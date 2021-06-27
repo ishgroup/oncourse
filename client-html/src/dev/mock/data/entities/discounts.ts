@@ -219,6 +219,29 @@ export function mockDiscounts() {
     this.discounts = removeItemByEntity(this.discounts, id);
   };
 
+  this.getPlainDiscounts = () => {
+    const rows = generateArraysOfRecords(1, [
+      { name: "id", type: "number" },
+      { name: "name", type: "string" },
+      { name: "code", type: "string" },
+      { name: "discountType", type: "string" },
+      { name: "rounding", type: "string" },
+      { name: "discountDollar", type: "string" },
+      { name: "discountPercent", type: "number" },
+      { name: "validFrom", type: "Datetime" },
+      { name: "validTo", type: "Datetime" }
+    ]).map(l => ({
+      id: l.id,
+      values: [l.id, l.name, l.code, "Percent", "No Rounding", null, 0.2, null, null]
+    }));
+
+    return getEntityResponse({
+      entity: "Discount",
+      rows,
+      plain: true
+    });
+  };
+
   const rows = generateArraysOfRecords(20, [
     { name: "id", type: "number" },
     { name: "validFrom", type: "Datetime" },

@@ -2,12 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/voucherProduct'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/voucherProduct'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -24,15 +24,9 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
     Scenario: (+) Get list of all VoucherProducts by notadmin with access rights Hide
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -65,7 +59,8 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "soldVouchersCount": "#number",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 
@@ -74,15 +69,9 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
     Scenario: (+) Get VoucherProduct by notadmin with access rights Hide
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/1002'
@@ -105,7 +94,8 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         "corporatePasses":[{"id":1002,"contactFullName":"company #2"}],
         "soldVouchersCount": "#number",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "dataCollectionRuleId":null
         }
         """
 
@@ -117,11 +107,3 @@ Feature: Main feature for all GET requests with path 'list/entity/voucherProduct
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '9999' doesn't exist."
-
-
-
-    Scenario: (-) Get VoucherProduct without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405

@@ -7,14 +7,15 @@ import { Epic } from "redux-observable";
 import { Script } from "@api/model";
 import { initialize } from "redux-form";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_SCRIPT_ENTITY_FULFILLED, GET_SCRIPT_ENTITY_REQUEST } from "../actions/index";
+import { GET_SCRIPT_ENTITY_FULFILLED, GET_SCRIPT_ENTITY_REQUEST } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getEntityItemById } from "../../../../entities/common/entityItemsService";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../constants";
+import ScriptsService from "../services/ScriptsService";
+import { ParseScriptBody } from "../utils";
 
-const request: EpicUtils.Request<any, any> = {
+const request: EpicUtils.Request = {
   type: GET_SCRIPT_ENTITY_REQUEST,
-  getData: id => getEntityItemById("Script", id),
+  getData: id => ScriptsService.getScriptItem(id).then(response => ParseScriptBody(response)),
   processData: (editRecord: Script) => [
     { type: GET_SCRIPT_ENTITY_FULFILLED },
     initialize(SCRIPT_EDIT_VIEW_FORM_NAME, editRecord)

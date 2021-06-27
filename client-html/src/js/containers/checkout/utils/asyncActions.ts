@@ -9,8 +9,12 @@ import { getCustomColumnsMap } from "../../../common/utils/common";
 import { CheckoutContact, CheckoutCourse, CheckoutEnrolmentCustom } from "../../../model/checkout";
 import { addContact, checkoutAddEnrolments } from "../actions";
 import { checkoutUpdateSummaryPrices } from "../actions/checkoutSummary";
-import { CheckoutPage } from "../components/CheckoutSelection";
-import { CHECKOUT_CONTACT_COLUMNS, CHECKOUT_COURSE_CLASS_COLUMNS, CheckoutCurrentStep } from "../constants";
+import {
+  CHECKOUT_CONTACT_COLUMNS,
+  CHECKOUT_COURSE_CLASS_COLUMNS,
+  CheckoutCurrentStep,
+  CheckoutPage
+} from "../constants";
 import CheckoutService from "../services/CheckoutService";
 import { checkoutCourseClassMap, checkoutCourseMap } from "./index";
 import uniqid from "../../../common/utils/uniqid";
@@ -106,8 +110,8 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
 export const processCheckoutContactId = (contactId, onSelectHandler, dispatch) => {
   EntityService.getPlainRecords("Contact", CHECKOUT_CONTACT_COLUMNS, `id is ${contactId}`)
     .then(res => {
-      const contact = res.rows.map(getCustomColumnsMap(CHECKOUT_CONTACT_COLUMNS))[0];
-      onSelectHandler(contact, "contact");
+      const contact = res.rows.map(getCustomColumnsMap(CHECKOUT_CONTACT_COLUMNS));
+      if (contact && contact.length > 0) onSelectHandler(contact[0], "contact");
     })
     .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to get related contact"));
 };

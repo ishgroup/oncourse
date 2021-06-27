@@ -18,7 +18,8 @@ import ContactEditView from "../../../entities/contacts/components/ContactEditVi
 import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
 import { getContactName } from "../../../entities/contacts/utils";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
-import { AppBarTitle } from "../CheckoutSelection";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import CheckoutAppBar from "../CheckoutAppBar";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
 
@@ -27,7 +28,7 @@ interface Props extends Partial<InjectedFormProps> {
   values?: any;
   syncErrors?: any;
   dispatch?: Dispatch<any>;
-  showConfirm: any;
+  showConfirm: ShowConfirmCaller;
   openNestedEditView: any;
   onSave: (record, dispatch, formProps) => void;
   onContactSave?: (id: string, contact: Contact) => void;
@@ -92,7 +93,7 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
     <>
       <form className="flex-column w-100" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <CustomAppBar>
-          <AppBarTitle title={values && getContactName(values)} />
+          <CheckoutAppBar title={values && getContactName(values)} />
           <div>
             {creatingNew && (
               <Button onClick={onClose} className="closeAppBarButton">
@@ -144,9 +145,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onContactSave: (id: string, contact: Contact) => dispatch(checkoutUpdateContact(id, contact)),
-    onContactCreate: (contact: Contact) => dispatch(checkoutCreateContact(contact))
-  });
+  onContactSave: (id: string, contact: Contact) => dispatch(checkoutUpdateContact(id, contact)),
+  onContactCreate: (contact: Contact) => dispatch(checkoutCreateContact(contact))
+});
 
 const CheckoutContactEditView = reduxForm({
   form: CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME,

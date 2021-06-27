@@ -507,6 +507,11 @@ const globalStyles = (theme: AppTheme) =>
           }
         }
       },
+      ".selectItmeIcon": {
+        fontSize: "16px",
+        position: "relative",
+        bottom: "-3px"
+      },
       ".hoverIconContainer": {
         "&:hover .hoverIcon": {
           color: "inherit"

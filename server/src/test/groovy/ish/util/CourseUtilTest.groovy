@@ -1,18 +1,23 @@
 package ish.util
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.messaging.ICourse
 import ish.messaging.ICourseClass
 import ish.messaging.ICourseModule
 import ish.messaging.IModule
 import org.apache.cayenne.ObjectContext
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Matchers
 import org.mockito.Mockito
+
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
+@CompileStatic
 class CourseUtilTest {
 
+    @CompileDynamic
     @Test
     void testAddModule() throws Exception {
         IModule module = Mockito.mock(IModule.class)
@@ -32,7 +37,7 @@ class CourseUtilTest {
         ICourse course = Mockito.mock(ICourse.class)
         when(course.getContext()).thenReturn(context)
         when(course.getModules()).thenReturn(Collections.emptyList())
-        when(course.getCourseClasses()).thenReturn(courseClasses)
+        when(course.getCourseClasses()).thenReturn(courseClasses as List<? extends ICourseClass>)
         when(course.isModifiedRecord()).thenReturn(false)
 
         CourseUtil.addModule(course, module, ICourseModule.class)

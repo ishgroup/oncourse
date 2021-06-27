@@ -28,14 +28,16 @@ class MailchimpBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, appBarContent, dirty, form
+     handleSubmit, onSubmit, AppBarContent, dirty, form
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
 
         <FormField name="fields.apiKey" label="API key" type="text" fullWidth />
         <FormField name="fields.listId" label="Audience ID" type="text" fullWidth />

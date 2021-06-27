@@ -1,5 +1,6 @@
 package ish.oncourse.server.accounting.builder
 
+import groovy.transform.CompileStatic
 import ish.common.types.AccountTransactionType
 import ish.math.Money
 import ish.oncourse.server.accounting.AccountTransactionDetail
@@ -8,21 +9,22 @@ import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Tax
-import static junit.framework.TestCase.assertEquals
-import static junit.framework.TestCase.assertTrue
-import org.junit.Before
-import org.junit.Test
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 import java.time.Month
 
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
+@CompileStatic
 class InvoiceLineTransactionsBuilderTest {
 
     private InvoiceLine invoiceLine
     private Long invLineId
-    
+
     private Account taxAccount
     private Account debtorsAccount
     private Account liabilityAccount
@@ -33,10 +35,8 @@ class InvoiceLineTransactionsBuilderTest {
     private Money amount3
     private Money amount4
     private LocalDate transactionDate
-    
-    
-    
-    @Before
+
+    @BeforeEach
     void prepareData() {
         taxAccount = mock(Account)
         when(taxAccount.id).thenReturn(32L)
@@ -48,21 +48,21 @@ class InvoiceLineTransactionsBuilderTest {
         when(incomeAccount.id).thenReturn(58L)
         discountAccount = mock(Account)
         when(discountAccount.id).thenReturn(93L)
-        
+
         Tax tax = mock(Tax)
         when(tax.receivableFromAccount).thenReturn(taxAccount)
 
         transactionDate = LocalDate.of(2017, Month.MAY, 28)
-        
+
         Invoice invoice = mock(Invoice)
         when(invoice.debtorsAccount).thenReturn(debtorsAccount)
         when(invoice.invoiceDate).thenReturn(transactionDate)
-        
+
         invLineId = 22L
-        amount1 = new Money(30)
-        amount2 = new Money(200)
-        amount4 = new Money(25)
-        Money total = new Money(300)
+        amount1 = new Money(30.0)
+        amount2 = new Money(200.0)
+        amount4 = new Money(25.0)
+        Money total = new Money(300.0)
         invoiceLine = mock(InvoiceLine)
         when(invoiceLine.invoice).thenReturn(invoice)
         when(invoiceLine.tax).thenReturn(tax)
@@ -74,44 +74,44 @@ class InvoiceLineTransactionsBuilderTest {
         when(invoiceLine.finalPriceToPayExTax).thenReturn(total)
         when(invoiceLine.prepaidFeesRemaining).thenReturn(amount2)
         when(invoiceLine.discountTotalExTax).thenReturn(amount4)
-        amount3 = new Money(100)
+        amount3 = new Money(100.0)
     }
-    
+
     @Test
     void test() {
         TransactionSettings settings = InvoiceLineTransactionsBuilder.valueOf(invoiceLine).build()
-        assertTrue(settings.isInitialTransaction)
-        assertEquals(4, settings.details.size())
+        Assertions.assertTrue(settings.isInitialTransaction)
+        Assertions.assertEquals(4, settings.details.size())
         AccountTransactionDetail detail = settings.details[0]
-        assertEquals(taxAccount.id, detail.primaryAccount.id)
-        assertEquals(debtorsAccount.id, detail.secondaryAccount.id)
-        assertEquals(amount1, detail.amount)
-        assertEquals(invLineId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(taxAccount.id, detail.primaryAccount.id)
+        Assertions.assertEquals(debtorsAccount.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amount1, detail.amount)
+        Assertions.assertEquals(invLineId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
 
         detail = settings.details[1]
-        assertEquals(liabilityAccount.id, detail.primaryAccount.id)
-        assertEquals(debtorsAccount.id, detail.secondaryAccount.id)
-        assertEquals(amount2, detail.amount)
-        assertEquals(invLineId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(liabilityAccount.id, detail.primaryAccount.id)
+        Assertions.assertEquals(debtorsAccount.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amount2, detail.amount)
+        Assertions.assertEquals(invLineId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
 
         detail = settings.details[2]
-        assertEquals(incomeAccount.id, detail.primaryAccount.id)
-        assertEquals(debtorsAccount.id, detail.secondaryAccount.id)
-        assertEquals(amount3, detail.amount)
-        assertEquals(invLineId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(incomeAccount.id, detail.primaryAccount.id)
+        Assertions.assertEquals(debtorsAccount.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amount3, detail.amount)
+        Assertions.assertEquals(invLineId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
 
         detail = settings.details[3]
-        assertEquals(incomeAccount.id, detail.primaryAccount.id)
-        assertEquals(discountAccount.id, detail.secondaryAccount.id)
-        assertEquals(amount4, detail.amount)
-        assertEquals(invLineId, detail.foreignRecordId)
-        assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
-        assertEquals(transactionDate, detail.transactionDate)
+        Assertions.assertEquals(incomeAccount.id, detail.primaryAccount.id)
+        Assertions.assertEquals(discountAccount.id, detail.secondaryAccount.id)
+        Assertions.assertEquals(amount4, detail.amount)
+        Assertions.assertEquals(invLineId, detail.foreignRecordId)
+        Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, detail.tableName)
+        Assertions.assertEquals(transactionDate, detail.transactionDate)
     }
 }

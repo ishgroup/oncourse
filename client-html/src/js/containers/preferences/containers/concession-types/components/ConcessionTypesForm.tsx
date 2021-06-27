@@ -21,9 +21,10 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErro
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { concessionTypesStyles } from "./styles";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { cardsFormStyles } from "../../../styles/formCommonStyles";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualLink = getManualLink("generalPrefs_concessionTypes");
 
@@ -40,7 +41,7 @@ interface Props {
   onDelete: (id: string) => void;
   form: string;
   onUpdate: (concessionTypes: ConcessionType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   history?: any,
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
@@ -157,7 +158,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from types list", confirmButtonText: "DELETE" });
   };
 
   render() {
@@ -236,6 +237,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const ConcessionTypesForm = reduxForm({
   onSubmitFail,
   form: "ConcessionTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(concessionTypesStyles)(withRouter(ConcessionTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ConcessionTypesBaseForm)) as any));
 
 export default ConcessionTypesForm;

@@ -8,12 +8,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { PayrollRequest } from "@api/model";
+import { initialize, isDirty } from "redux-form";
+import { format as formatDate } from "date-fns";
 import PayslipGenerateDialog from "./PayslipGenerateDialog";
 import { State } from "../../../../reducers/state";
 import { clearPayrollPreparedWages, executePayroll, preparePayroll } from "../../payrolls/actions";
 import { interruptProcess } from "../../../../common/actions";
-import { initialize, isDirty } from "redux-form";
-import { format as formatDate } from "date-fns";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { usePrevious } from "../../../../common/utils/hooks";
@@ -80,9 +80,11 @@ const PayslipGenerateCogwheelAction: React.FC<Props> = ({
 
   const checkDirtyBeforePreparePayslip = useCallback(() => {
     if (isDirty) {
-      showConfirm(() => {
-        resetEditView(listEditRecord);
-        preparePayslip();
+      showConfirm({
+        onConfirm: () => {
+          resetEditView(listEditRecord);
+          preparePayslip();
+        }
       });
       return;
     }
@@ -134,16 +136,16 @@ const PayslipGenerateCogwheelAction: React.FC<Props> = ({
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
   confirmNowIsAllowed:
-    state.access.hasOwnProperty(`/a/v1/list/option/payroll?entity=${ownProps.entity}&bulkConfirmTutorWages=true`) &&
-    state.access[`/a/v1/list/option/payroll?entity=${ownProps.entity}&bulkConfirmTutorWages=true`]["POST"],
+    state.access.hasOwnProperty(`/a/v1/list/option/payroll?entity=${ownProps.entity}&bulkConfirmTutorWages=true`)
+    && state.access[`/a/v1/list/option/payroll?entity=${ownProps.entity}&bulkConfirmTutorWages=true`]["POST"],
   preparedWages: state.payrolls.preparedWages,
   processRunning: state.process && state.process.status === "In progress",
   processId: state.process && state.process.processId,
   isDirty: isDirty(LIST_EDIT_VIEW_FORM_NAME)(state),
   listEditRecord: state.list.editRecord,
   generateIsAllowed:
-    state.access.hasOwnProperty(`/a/v1/list/option/payroll?entity=${ownProps.entity}`) &&
-    state.access[`/a/v1/list/option/payroll?entity=${ownProps.entity}`]["PUT"]
+    state.access.hasOwnProperty(`/a/v1/list/option/payroll?entity=${ownProps.entity}`)
+    && state.access[`/a/v1/list/option/payroll?entity=${ownProps.entity}`]["PUT"]
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps: Props) => ({

@@ -18,12 +18,13 @@ import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { concessionTypesStyles } from "../../concession-types/components/styles";
 import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import { cardsFormStyles } from "../../../styles/formCommonStyles";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualLink = getManualLink("generalPrefs_contactRelationTypes");
 
@@ -40,7 +41,7 @@ interface Props {
   form: string;
   onDelete: (id: string) => void;
   onUpdate: (contactRelationTypes: ContactRelationType[]) => void;
-  openConfirm?: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => void;
+  openConfirm?: ShowConfirmCaller;
   history?: any,
   nextLocation?: string,
   setNextLocation?: (nextLocation: string) => void,
@@ -157,7 +158,7 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
         });
     };
 
-    openConfirm(onConfirm, "This item will be removed from types list", "DELETE");
+    openConfirm({ onConfirm, confirmMessage: "This item will be removed from types list", confirmButtonText: "DELETE" });
   };
 
   render() {
@@ -236,6 +237,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
   form: "ContactRelationTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(concessionTypesStyles)(withRouter(ContactRelationTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any));
 
 export default ContactRelationTypesForm;

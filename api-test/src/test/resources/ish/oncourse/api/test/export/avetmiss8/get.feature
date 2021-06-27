@@ -2,13 +2,13 @@
 Feature: Main feature for all GET requests with path 'export/avetmiss8'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'export/avetmiss8'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathOutcomes = 'export/avetmiss8/outcomes'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Get avetmiss8 export result by admin

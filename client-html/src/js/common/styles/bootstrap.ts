@@ -190,6 +190,12 @@ export const bootstrap = (theme: AppTheme) => ({
   ".mr-1": {
     marginRight: theme.spacing(1)
   },
+  ".mr-auto": {
+    marginRight: "auto"
+  },
+  ".ml-auto": {
+    marginLeft: "auto"
+  },
   ".mb-1": {
     marginBottom: theme.spacing(1)
   },
@@ -426,6 +432,9 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".vert-align-mid": {
     verticalAlign: "middle"
+  },
+  ".vert-align-bl": {
+    verticalAlign: "baseline"
   },
   ".grid-temp-col-3-fr": {
     gridTemplateColumns: "1fr 1fr 1fr"

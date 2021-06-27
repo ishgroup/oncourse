@@ -1,73 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Account id="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="01.24.2801.000/NV1CB0P01" description="Test debtors account" isEnabled="1" type="1"/>
-	<Account id="2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="41000" description="Test income account" isEnabled="1" type="4" taxId="1"/>
-	<Account id="3" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="11600" description="Test tax asset account" isEnabled="1" type="1"/>
-	<Account id="4" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="21600" description="Test tax liability account" isEnabled="1" type="2"/>
-	<Account id="5" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="21010" description="Test prepaid fees account" isEnabled="1" type="2"/>
-	<Account id="6" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="50050" description="Test discount account" isEnabled="1" type="5"/>
-	<Account id="7" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="accBank" description="Test bank account" isEnabled="1" type="1"/>
-	<Account id="8" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="vLability" description="Test voucher liability acc" isEnabled="1" type="2"/>
-	<Account id="9" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="vUnderpay" description="Test voucher underpay acc" isEnabled="1" type="6"/>
+  <Account id="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"
+           accountCode="01.24.2801.000/NV1CB0P01" description="Test debtors account" isEnabled="1" type="1"/>
+  <Account id="2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="41000"
+           description="Test income account" isEnabled="1" type="4" taxId="1"/>
+  <Account id="3" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="11600"
+           description="Test tax asset account" isEnabled="1" type="1"/>
+  <Account id="4" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="21600"
+           description="Test tax liability account" isEnabled="1" type="2"/>
+  <Account id="5" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="21010"
+           description="Test prepaid fees account" isEnabled="1" type="2"/>
+  <Account id="6" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="50050"
+           description="Test discount account" isEnabled="1" type="5"/>
+  <Account id="7" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="accBank"
+           description="Test bank account" isEnabled="1" type="1"/>
+  <Account id="8" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="vLability"
+           description="Test voucher liability acc" isEnabled="1" type="2"/>
+  <Account id="9" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" accountCode="vUnderpay"
+           description="Test voucher underpay acc" isEnabled="1" type="6"/>
 
-	<PaymentMethod id="2" name="Credit card" accountId="1" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
+  <PaymentMethod id="2" name="Credit card" accountId="1" active="1" bankedAutomatically="1" reconcilable="1" type="2"/>
 
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<Course id="1"  code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1" isSufficientForQualification="0" isVET="0" isTraineeship="0" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
+  <Course id="1" code="ATT1" willowId="1" name="Test 1" allowWaitingLists="1" currentlyOffered="1" isShownOnWeb="1"
+          isSufficientForQualification="0" isVET="0" isTraineeship="0" createdOn="2013-01-01 00:00:00"
+          modifiedOn="2013-02-01" reportableHours="3.0" enrolmentType="1" fieldConfigurationSchemaId="1"
+          feeHelpClass="0"/>
 
-	<Site id="1" name="Site 1" isAdministrationCentre="0" latitude="53.90" longitude="27.62" postcodeNew="1001" state="NSW" street="Main" suburb="Sydney" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" isShownOnWeb="1" isVirtual="0" localTimezone="Australia/Sydney"/>
+  <Site id="1" name="Site 1" isAdministrationCentre="0" latitude="53.90" longitude="27.62" postcodeNew="1001"
+        state="NSW" street="Main" suburb="Sydney" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"
+        isShownOnWeb="1" isVirtual="0" localTimezone="Australia/Sydney"/>
 
-	<Room id="1" siteId="1" name="Room 1" seatedCapacity="20" directions="Some directions..." facilities="Some facilities..." createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
+  <Room id="1" siteId="1" name="Room 1" seatedCapacity="20" directions="Some directions..."
+        facilities="Some facilities..." createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
 
-	<Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST" taxrate="0.1"/>
+  <Tax id="1" isGSTTaxType="1" payableToSupplierAccountId="3" receivableFromStudentAccountId="4" taxCode="GST"
+       taxrate="0.1"/>
 
-	<CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
-                 createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-                 taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-                 isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
-                 incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
-                 suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
-                 attendanceType="0"/>
+  <CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
+               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
+               suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
+               attendanceType="0"/>
 
-    <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="firstName1" lastName="lastName" email="test@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="2abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2" lastName="name" email="test2@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="3abc" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="firstName3" lastName="lastName" email="test3@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Contact id="1" isCompany="0" isStudent="1" isTutor="0" uniqueCode="1abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="firstName1" lastName="lastName"
+           email="test@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Contact id="2" isCompany="0" isStudent="1" isTutor="0" uniqueCode="2abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name2" lastName="name"
+           email="test2@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Contact id="3" isCompany="0" isStudent="1" isTutor="0" uniqueCode="3abc" deliveryStatusSms="1" deliveryStatusPost="0"
+           deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="firstName3" lastName="lastName"
+           email="test3@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-	<Contact id="11" isCompany="0" isStudent="0" isTutor="1" uniqueCode="1abct" deliveryStatusSms="1" deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1" lastName="name" email="test@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <Contact id="11" isCompany="0" isStudent="0" isTutor="1" uniqueCode="1abct" deliveryStatusSms="1"
+           deliveryStatusPost="0" deliveryStatusEmail="0" allowSms="1" allowPost="1" allowEmail="1" firstName="name1"
+           lastName="name" email="test@test.te" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
 
-	<Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="1" usiStatus="0" createdOn="2013-01-01 00:00:00"
-             modifiedOn="2013-01-01 00:00:00" citizenship="9" feeHelpEligible="0"/>
-	<Student id="2" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="2" usiStatus="0" createdOn="2013-01-01 00:00:00"
-             modifiedOn="2013-01-01 00:00:00" citizenship="9" feeHelpEligible="0"/>
-	<Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
-             highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
-             studentNumber="3" usiStatus="0" createdOn="2013-01-01 00:00:00"
-             modifiedOn="2013-01-01 00:00:00" citizenship="9" feeHelpEligible="0"/>
+  <Student id="1" contactId="1" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="1" usiStatus="0" createdOn="2013-01-01 00:00:00"
+           modifiedOn="2013-01-01 00:00:00" citizenship="9" feeHelpEligible="0"/>
+  <Student id="2" contactId="2" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="2" usiStatus="0" createdOn="2013-01-01 00:00:00"
+           modifiedOn="2013-01-01 00:00:00" citizenship="9" feeHelpEligible="0"/>
+  <Student id="3" contactId="3" disabilityType="0" employmentCategoryId="0" englishProficiency="0"
+           highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
+           studentNumber="3" usiStatus="0" createdOn="2013-01-01 00:00:00"
+           modifiedOn="2013-01-01 00:00:00" citizenship="9" feeHelpEligible="0"/>
 
-	<Enrolment id="1" courseClass_id="1" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0" vetFeeIndicator="0" vetIsFullTime="0" status="3" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
+  <Enrolment id="1" courseClass_id="1" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0"
+             vetFeeIndicator="0" vetIsFullTime="0" status="3" createdOn="2013-01-01 00:00:00"
+             modifiedOn="2013-01-01 00:00:00" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
 
-	<Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" amoutOwing="0.00" contactId="3" dateDue="2013-01-01 00:00:00" debtorsAccountId="1" invoiceDate="2013-01-01 00:00:00" source="O" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" confirmationStatus="2"/>
+  <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" invoiceNumber="1" amoutOwing="0.00" contactId="3"
+           dateDue="2013-01-01 00:00:00" debtorsAccountId="1" invoiceDate="2013-01-01 00:00:00" source="O"
+           createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00" confirmationStatus="2"/>
 
-    <InvoiceLine id="1" invoiceId="1" accountId="2" enrolmentId="[null]" prepaidFeesAccountId="5" prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline" description="Student withdrew from class 5/2" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
-    <InvoiceLine id="2" invoiceId="1" accountId="2" enrolmentId="1" prepaidFeesAccountId="5" prepaidFeesRemaining="33.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1" title="test invoiceline" description="Course: French Level 2 (LGFR3-1)" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="1" invoiceId="1" accountId="2" enrolmentId="[null]" prepaidFeesAccountId="5"
+               prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00"
+               taxId="1" title="test invoiceline" description="Student withdrew from class 5/2"
+               createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <InvoiceLine id="2" invoiceId="1" accountId="2" enrolmentId="1" prepaidFeesAccountId="5" prepaidFeesRemaining="33.00"
+               discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00" taxId="1"
+               title="test invoiceline" description="Course: French Level 2 (LGFR3-1)" createdOn="2013-01-01 00:00:00"
+               modifiedOn="2013-01-01 00:00:00"/>
 
-	<PaymentIn paymentDate="2010-10-14 22:04:34.551" id="1" payerId="1" accountInId="1" amount="20.0" reconciled="0" source="W" paymentMethodId="2" status="3" dateBankedNew="2013-01-01 00:00:00" creditCardExpiry="01/2013" creditCardName="TEST PAYER" creditCardNumber="0000000000000000" creditCardType="V" gatewayReference="000000" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00" confirmationStatus="3"/>
-	<PaymentInLine id="1" accountOutId="2" amount="20.00" invoiceId="1" paymentInId="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-01-01 00:00:00"/>
+  <PaymentIn paymentDate="2010-10-14 22:04:34.551" id="1" payerId="1" accountInId="1" amount="20.0" reconciled="0"
+             source="W" paymentMethodId="2" status="3" dateBankedNew="2013-01-01 00:00:00" creditCardExpiry="01/2013"
+             creditCardName="TEST PAYER" creditCardNumber="0000000000000000" creditCardType="V"
+             gatewayReference="000000" createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
+             confirmationStatus="3"/>
+  <PaymentInLine id="1" accountOutId="2" amount="20.00" invoiceId="1" paymentInId="1" createdOn="2013-01-01 00:00:00"
+                 modifiedOn="2013-01-01 00:00:00"/>
 
-	<AccountTransaction id="1" accountId="1" amount="10.0" tableName="I" foreignRecordId="1" transactionDate="2013-02-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
-    <AccountTransaction id="2" accountId="1" amount="20.0" tableName="P" foreignRecordId="1" transactionDate="2013-02-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
-    <AccountTransaction id="3" accountId="1" amount="-20.0" tableName="I" foreignRecordId="2" transactionDate="2013-02-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
+  <AccountTransaction id="1" accountId="1" amount="10.0" tableName="I" foreignRecordId="1"
+                      transactionDate="2013-02-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
+  <AccountTransaction id="2" accountId="1" amount="20.0" tableName="P" foreignRecordId="1"
+                      transactionDate="2013-02-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
+  <AccountTransaction id="3" accountId="1" amount="-20.0" tableName="I" foreignRecordId="2"
+                      transactionDate="2013-02-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
 </dataset>

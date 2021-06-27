@@ -9,12 +9,10 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import {
-  Form, reduxForm, initialize, getFormValues
-} from "redux-form";
+import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
-import { AccountType, Account } from "@api/model";
+import { AccountType } from "@api/model";
 import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import * as Model from "../../../../../model/preferences/Financial";
@@ -25,24 +23,11 @@ import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { State } from "../../../../../reducers/state";
-import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import { getAccountsList } from "../../../utils";
 
 const manualUrl = getManualLink("generalPrefs_financial");
-
-const getList = (accounts: Account[], type: AccountType) => {
-  const list = accounts
-    .filter(acc => type === acc.type)
-    .map(acc => ({
-      value: String(acc.id),
-      label: `${acc.description} ${acc.accountCode}`
-    }));
-
-  list.sort(sortDefaultSelectItems);
-
-  return list;
-};
 
 class FinancialBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
@@ -126,7 +111,7 @@ class FinancialBaseForm extends React.Component<any, any> {
               type="select"
               name={this.formModel.AccountDebtors.uniqueKey}
               label="Debtors (Asset)"
-              items={getList(accounts, AccountType.asset)}
+              items={getAccountsList(accounts, AccountType.asset)}
               fullWidth
             />
           </Grid>
@@ -136,7 +121,7 @@ class FinancialBaseForm extends React.Component<any, any> {
               type="select"
               name={this.formModel.AccountBank.uniqueKey}
               label="Bank (Asset)"
-              items={getList(accounts, AccountType.asset)}
+              items={getAccountsList(accounts, AccountType.asset)}
               fullWidth
             />
           </Grid>
@@ -150,7 +135,7 @@ class FinancialBaseForm extends React.Component<any, any> {
               type="select"
               name={this.formModel.AccountTax.uniqueKey}
               label="Tax (Liability)"
-              items={getList(accounts, AccountType.liability)}
+              items={getAccountsList(accounts, AccountType.liability)}
               fullWidth
             />
           </Grid>
@@ -160,7 +145,7 @@ class FinancialBaseForm extends React.Component<any, any> {
               type="select"
               name={this.formModel.AccountStudentEnrolments.uniqueKey}
               label="Student enrolments (Income)"
-              items={getList(accounts, AccountType.income)}
+              items={getAccountsList(accounts, AccountType.income)}
               fullWidth
             />
           </Grid>
@@ -174,7 +159,7 @@ class FinancialBaseForm extends React.Component<any, any> {
               type="select"
               name={this.formModel.AccountPrepaidFees.uniqueKey}
               label="Prepaid fees account (Liability)"
-              items={getList(accounts, AccountType.liability)}
+              items={getAccountsList(accounts, AccountType.liability)}
               fullWidth
             />
           </Grid>
@@ -198,7 +183,7 @@ class FinancialBaseForm extends React.Component<any, any> {
               type="select"
               name={this.formModel.AccountVoucherLiability.uniqueKey}
               label="Voucher liability account (Liability)"
-              items={getList(accounts, AccountType.liability)}
+              items={getAccountsList(accounts, AccountType.liability)}
               helperText=""
               fullWidth
             />
@@ -208,8 +193,8 @@ class FinancialBaseForm extends React.Component<any, any> {
             <FormField
               type="select"
               name={this.formModel.AccountVoucherUnderpayment.uniqueKey}
-              label="Voucher underpayment expense (Expense)"
-              items={getList(accounts, AccountType.expense)}
+              label="Default voucher underpayment account"
+              items={getAccountsList(accounts, AccountType.expense)}
               fullWidth
             />
           </Grid>

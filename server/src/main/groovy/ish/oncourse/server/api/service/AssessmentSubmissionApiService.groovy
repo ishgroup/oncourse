@@ -13,12 +13,16 @@ import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.AssessmentSubmissionAttachmentRelation
+import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.document.DocumentService
+import ish.util.DateFormatter
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
+import static ish.util.LocalDateUtils.UTC
 
 class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissionDTO, AssessmentSubmission, AssessmentSubmissionDao> {
 
@@ -53,8 +57,9 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.assessmentId = cayenneModel.assessmentClass.assessment.id
             dtoModel.markedById = cayenneModel.markedBy?.id
             dtoModel.tutorName = cayenneModel.markedBy?.fullName
-            dtoModel.submittedOn = cayenneModel.submittedOn
-            dtoModel.markedOn = cayenneModel.markedOn
+            dtoModel.submittedOn = LocalDateUtils.dateToTimeValue(cayenneModel.submittedOn)
+            dtoModel.markedOn = LocalDateUtils.dateToTimeValue(cayenneModel.markedOn)
+            dtoModel.grade = cayenneModel.grade
             dtoModel.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             dtoModel
@@ -63,10 +68,13 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
 
     @Override
     AssessmentSubmission toCayenneModel(AssessmentSubmissionDTO dto, AssessmentSubmission cayenneModel) {
-        cayenneModel.submittedOn = dto.submittedOn
-        cayenneModel.markedOn = dto.markedOn
+        cayenneModel.submittedOn = LocalDateUtils.timeValueToDate(dto.submittedOn)
+        cayenneModel.markedOn = LocalDateUtils.timeValueToDate(dto.markedOn)
+        cayenneModel.grade = dto.grade
         if (dto.markedById) {
             cayenneModel.markedBy = contactService.getEntityAndValidateExistence(cayenneModel.context, dto.markedById)
+        } else {
+            cayenneModel.markedBy = null
         }
 
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, AssessmentSubmissionAttachmentRelation, cayenneModel.context)
@@ -91,12 +99,26 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
         switch (key) {
             case AssessmentSubmission.SUBMITTED_ON.name:
                 action = { AssessmentSubmission submission ->
-                    submission.submittedOn = LocalDateUtils.stringToValue(value)
+                    submission.submittedOn = DateFormatter.parseDate(value, TimeZone.getTimeZone(UTC))
                 }
                 break
             case AssessmentSubmission.MARKED_ON.name:
                 action = { AssessmentSubmission submission ->
-                    submission.markedOn = LocalDateUtils.stringToValue(value)
+                    submission.markedOn = DateFormatter.parseDate(value, TimeZone.getTimeZone(UTC))
+                }
+                break
+            case AssessmentSubmission.MARKED_BY_ID_PROPERTY:
+                action = { AssessmentSubmission submission ->
+                    Long assessorId = Long.valueOf(value)
+                    List<Tutor> availableAssessors = submission.assessmentClass.assessmentClassTutors*.tutor.flatten() as List<Tutor>
+                    if (availableAssessors*.contact*.id.contains(assessorId)) {
+                        submission.markedBy = contactService.getEntityAndValidateExistence(submission.context, assessorId)
+                    } else {
+                        Contact assessor = contactService.getEntityAndValidateExistence(submission.context, assessorId)
+                        validator.throwClientErrorException(key,
+                                "Assessor ${assessor.fullName} is not acceptable for task ${submission.assessmentName} of class ${submission.courseClassName}, student ${submission.studentName}.".toString())
+                    }
+
                 }
                 break
             default:

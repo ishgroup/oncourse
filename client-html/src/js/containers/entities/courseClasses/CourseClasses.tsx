@@ -16,7 +16,15 @@ import { getFormInitialValues, getFormValues, initialize } from "redux-form";
 
 import { format } from "date-fns";
 import {
-  TableModel, CourseClass, Course, ClassCost, Account, ClassFundingSource, DeliveryMode, Enrolment, Outcome
+  Account,
+  ClassCost,
+  ClassFundingSource,
+  Course,
+  CourseClass,
+  DeliveryMode,
+  Enrolment,
+  Outcome,
+  TableModel
 } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "../../../common/components/buttons/Button";
@@ -29,21 +37,23 @@ import {
   clearListState,
   getFilters,
   setListCreatingNew,
-  setListEditRecord, setListSelection,
+  setListEditRecord,
+  setListSelection,
 } from "../../../common/components/list-view/actions";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
+import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
 import {
-  createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass
-} from "./actions";
-import {
- AnyArgFunction, BooleanArgFunction, NoArgFunction, NumberArgFunction
+  AnyArgFunction,
+  BooleanArgFunction,
+  NoArgFunction,
+  NumberArgFunction
 } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getTutorRoles } from "../../preferences/actions";
+import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
@@ -66,12 +76,14 @@ import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
   DEFAULT_MAXIMUM_PLACES_KEY,
-  DEFAULT_MINIMUM_PLACES_KEY
+  DEFAULT_MINIMUM_PLACES_KEY,
+  PLAIN_LIST_MAX_PAGE_SIZE
 } from "../../../constants/Config";
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../common/utils/uniqid";
+import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 
 const manualLink = getManualLink("classes");
 
@@ -91,7 +103,7 @@ interface CourseClassesProps {
   initialValues?: CourseClass;
   userPreferences?: UserPreferencesState;
   setListCreatingNew?: BooleanArgFunction;
-  updateSelection?: AnyArgFunction<string[]>;
+  updateSelection?: (selection: string[]) => void;
 }
 
 export const classCostInitial: ClassCost = {
@@ -613,7 +625,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
     }
 
     setChangedFields([]);
-    onUpdate(values.id, preformatBeforeSubmit(values));
+    if (values) onUpdate(values.id, preformatBeforeSubmit(values));
   };
 
   return (
@@ -743,7 +755,7 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(LIST_EDIT_VIEW_FORM_NAME)(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onFirstRender: () => {
     dispatch(getFilters("CourseClass"));
@@ -764,8 +776,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     );
     dispatch(getFilters("CourseClass"));
     dispatch(getVirtualSites());
-    dispatch(getPlainAccounts());
+    getPlainAccounts(dispatch);
     dispatch(getPlainTaxes());
+    dispatch(getGradingTypes());
     dispatch(getActiveFundingContracts(true));
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));
@@ -779,6 +792,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         DEFAULT_MINIMUM_PLACES_KEY
       ])
     );
+    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
@@ -786,7 +800,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onCreate: (courseClass: CourseClass) => dispatch(createCourseClass(courseClass)),
   clearListState: () => dispatch(clearListState()),
   setListCreatingNew: creatingNew => dispatch(setListCreatingNew(creatingNew)),
-  updateSelection: selection => dispatch(setListSelection(selection))
+  updateSelection: selection => dispatch(setListSelection(selection)),
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClasses);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseClasses);

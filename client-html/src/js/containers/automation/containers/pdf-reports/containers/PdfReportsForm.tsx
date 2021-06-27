@@ -32,6 +32,7 @@ import FilePreview from "../../../../../common/components/form/FilePreview";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { EntityItems } from "../../../../../model/entities/common";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -45,7 +46,7 @@ interface Props extends InjectedFormProps<Report> {
   onUpdate: (report: Report) => void;
   onDelete: NumberArgFunction;
   pdfBackgrounds: CommonListItem[];
-  openConfirm: (onConfirm: any, confirmMessage?: string) => void;
+  openConfirm: ShowConfirmCaller;
   history: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
@@ -175,7 +176,11 @@ const PdfReportsForm = React.memo<Props>(
     const handleUploadClick = useCallback(() => fileRef.current.click(), []);
 
     const handleClearPreview = useCallback(() => {
-      openConfirm(() => dispatch(change(form, "preview", null)), "Report preview will be deleted permanently");
+      openConfirm({
+        onConfirm: () => dispatch(change(form, "preview", null)),
+        confirmMessage: "Report preview will be deleted permanently"
+      }
+    );
     }, [form]);
 
     const onBackgroundIdChange = useCallback(

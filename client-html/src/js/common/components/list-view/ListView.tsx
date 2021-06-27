@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -19,7 +22,6 @@ import {
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ErrorOutline from "@material-ui/icons/ErrorOutline";
 import Button from "@material-ui/core/Button";
-import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
 import SideBar from "./components/side-bar/SideBar";
@@ -74,7 +76,7 @@ import {
 import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
 import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../constants/Config";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { ListProps } from "./components/list/ReactTableList";
@@ -128,7 +130,6 @@ interface Props extends Partial<ListState> {
   aqlEntity?: string;
   selection?: string[];
   editRecord?: any;
-  records?: any;
   onSave?: any;
   onBeforeSave?: any;
   onDelete?: any;
@@ -202,13 +203,13 @@ interface Props extends Partial<ListState> {
   deleteDisabledCondition?: (props) => boolean;
   noListTags?: boolean;
   setEntity?: (entity: EntityName) => void;
-  getCustomFieldTypes?: NoArgFunction;
   getListViewPreferences?: () => void;
   preferences?: UserPreferencesState;
   setListviewMainContentWidth?: (value: string) => void;
   submitForm?: any;
   closeConfirm?: () => void;
   deleteWithoutConfirmation?: boolean;
+  getCustomBulkEditFields?: any;
 }
 
 interface ComponentState {
@@ -257,7 +258,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       setEntity,
       match: { url },
       filterGroupsInitial = [],
-      getCustomFieldTypes,
       getListViewPreferences
     } = this.props;
 
@@ -267,7 +267,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     window.performance.mark("ListViewStart");
 
     getScripts();
-    getCustomFieldTypes();
     getListViewPreferences();
 
     if (this.props.location.search) {
@@ -579,13 +578,17 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     if ((isDirty || (creatingNew && selection[0] === "new")) && !this.ignoreCheckDirtyOnSelection) {
       this.setState({ newSelection });
-      this.showConfirm(() => {
-        this.ignoreCheckDirtyOnSelection = true;
-        this.onSelection(newSelection);
-        if (isDirty) {
-          resetEditView();
-        }
-      });
+      this.showConfirm(
+        {
+          onConfirm: () => {
+            this.ignoreCheckDirtyOnSelection = true;
+            this.onSelection(newSelection);
+            if (isDirty) {
+              resetEditView();
+            }
+          }
+        },
+        );
       return;
     }
 
@@ -600,7 +603,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
     if (
       threeColumn
-      && newSelection.length
+      && newSelection && newSelection.length
       && (!editRecord || !editRecord.id || editRecord.id.toString() !== newSelection[0])
     ) {
       this.updateHistory(params.id ? url.replace(`/${params.id}`, `/${newSelection[0]}`) : url + `/${newSelection[0]}`, search);
@@ -610,7 +613,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       this.ignoreCheckDirtyOnSelection = false;
     }
 
-    updateSelection(newSelection);
+    if (newSelection) updateSelection(newSelection);
   };
 
   onChangeFilters = (filters: FilterGroup[] | MenuTag[], type: string) => {
@@ -682,10 +685,15 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const { openConfirm, onDelete, deleteWithoutConfirmation } = this.props;
 
     if (!deleteWithoutConfirmation) {
-      openConfirm(() => {
+      openConfirm(
+        {
+          onConfirm: () => {
             onDelete(id);
-          }, "Record will be permanently deleted. This action can not be undone",
-          "DELETE");
+          },
+          confirmMessage: "Record will be permanently deleted. This action can not be undone",
+          confirmButtonText: "DELETE"
+        }
+      );
     } else {
       onDelete(id);
     }
@@ -748,24 +756,24 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   checkDirty = (handler, args, reset?: boolean) => {
     const { isDirty, selection, creatingNew } = this.props;
-
     if (isDirty || (creatingNew && selection[0] === "new")) {
-      this.showConfirm(() => {
-        handler(...args);
-        if (reset && this.props.isDirty) {
-          this.props.resetEditView();
+      this.showConfirm({
+        onConfirm: () => {
+          handler(...args);
+          if (reset && this.props.isDirty) {
+            this.props.resetEditView();
+          }
         }
       });
       return;
     }
-
     handler(...args);
   };
 
-  showConfirm = (handler, confirmMessage?: string, confirmText?: string, ...rest) => {
+  showConfirm = (props: ConfirmProps) => {
     const {
- closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
-} = this.props;
+     closeConfirm, openConfirm, isInvalid, fullScreenEditView, submitForm
+    } = this.props;
 
     const afterSubmitButtonHandler = () => {
       fullScreenEditView ? this.toggleFullWidthView() : this.onSelection(this.state.newSelection);
@@ -792,24 +800,16 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       </Button>
     );
 
-    if (!confirmMessage && !confirmText) {
+    if (!props.confirmMessage && !props.cancelButtonText) {
       openConfirm(
-        undefined,
-        "You have unsaved changes. Do you want to discard them and proceed?",
-        "SAVE",
-        undefined,
-        "ARE YOU SURE",
-        "DISCARD CHANGES",
-        handler,
-        confirmButton
+        {
+          cancelButtonText: "DISCARD CHANGES",
+          confirmCustomComponent: confirmButton,
+          onCancel: props.onConfirm
+        },
       );
     } else {
-      openConfirm(
-        handler,
-        confirmMessage,
-        confirmText,
-        ...rest
-      );
+      openConfirm(props);
     }
   };
 
@@ -950,13 +950,17 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   onDeleteFilterWithDirtyCheck = (...args) => {
     const { openConfirm } = this.props;
 
-    const message = args.length >= 4 && args[3]
+    const confirmMessage = args.length >= 4 && args[3]
       ? "The filter will be permanently deleted. This action cannot be undone"
       : "This filter is currently being shared with other users. The filter will be permanently deleted. This action cannot be undone";
 
-    openConfirm(() => {
-      this.checkDirty(this.onDeleteFilter, args, true);
-    }, message, 'DELETE');
+    openConfirm(
+      {
+        onConfirm: () => this.checkDirty(this.onDeleteFilter, args, true),
+        confirmMessage,
+        cancelButtonText: 'DELETE'
+      }
+);
   };
 
   onChangeFiltersWithDirtyCheck = (...args) => this.checkDirty(this.onChangeFilters, args, true);
@@ -1032,6 +1036,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       creatingNew,
       fullScreenEditView,
       searchQuery,
+      getCustomBulkEditFields,
     } = this.props;
 
     const {
@@ -1081,6 +1086,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             rootEntity={rootEntity}
             sidebarWidth={hasFilters ? sidebarWidth : 0}
             manualLink={editViewProps.manualLink}
+            getCustomBulkEditFields={getCustomBulkEditFields}
           />
           <Grid container className={clsx("flex-fill relative overflow-hidden", classes.gridWithEditColumn)}>
             <LoadingIndicator transparentBackdrop allowInteractions />
@@ -1127,7 +1133,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             toggleExportDrawer={this.toggleExportDrawer}
             showBulkEditDrawer={showBulkEditDrawer}
             toggleBulkEditDrawer={this.toggleBulkEditDrawer}
-            count={records.count}
             filteredCount={records.filteredCount}
             rootEntity={rootEntity}
             aqlEntity={aqlEntity}
@@ -1214,15 +1219,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch)),
   getScripts: () => dispatch(getScripts(ownProps.rootEntity)),
   openNestedEditView: (entity: string, id: number, threeColumn: boolean) => dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
-  openConfirm: (onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent) => dispatch(
-    showConfirm(onConfirm, confirmMessage, confirmButtonText, onCancel, title, cancelButtonText, onCancelCustom, confirmCustomComponent)
-),
+  openConfirm: props => dispatch(showConfirm(props)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
   onLoadMore: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => dispatch(getRecords(ownProps.rootEntity, true, false, startIndex, stopIndex, resolve)),
   onSearch: search => dispatch(setSearch(search, ownProps.rootEntity)),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes(ownProps.rootEntity)),
   setListEditRecordFetching: () => dispatch(setListEditRecordFetching()),
   onSwipeableDrawerDirtyForm: (isDirty: boolean, resetEditView: any) => dispatch(setSwipeableDrawerDirtyForm(isDirty, resetEditView)),
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),

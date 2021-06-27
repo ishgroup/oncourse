@@ -44,7 +44,8 @@ const styles = theme =>
       overflow: "visible"
     },
     summaryRoot: {
-      borderBottom: "1px solid transparent"
+      borderBottom: "1px solid transparent",
+      padding: theme.spacing(0, 0, 0, 2)
     },
     summaryExpanded: {
       borderBottomColor: `${theme.palette.divider}`
@@ -80,15 +81,6 @@ const CardBase = props => {
       }}
       className={className}
       defaultExpanded={expanded}
-      // TransitionComponent={
-      //   (
-      //     <Collapse
-      //       classes={{
-      //         entered: classes.collapse
-      //       }}
-      //     />
-      //   ) as any
-      // }
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}

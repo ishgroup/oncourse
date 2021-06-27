@@ -2,13 +2,13 @@
 Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/priorLearning'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -64,7 +64,7 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         "qualificationNationalCode":"10218NAT",
         "qualificationLevel":"Certificate I in",
         "qualificationName":"Certificate I in Aboriginal Language/s v2",
-        "outcomes":[{"id":"#number","contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "outcomes":[{"id":"#number","progression":null,"contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
         "documents":"#ignore",
         "notes":"some notes",
         "contactId":18,
@@ -86,16 +86,6 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
-
-
-
-    Scenario: (-) Get PriorLearning without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
-
-
 
     Scenario: (+) Get PriorLearning by notadmin
 
@@ -124,15 +114,9 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         * print "outcomeId = " + outcomeId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/' + id
@@ -150,7 +134,7 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         "qualificationNationalCode":"10218NAT",
         "qualificationLevel":"Certificate I in",
         "qualificationName":"Certificate I in Aboriginal Language/s v2",
-        "outcomes":[{"id":"#number","contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "outcomes":[{"id":"#number","progression":null,"contactId":18,"enrolmentId":null,"studentName":"stud12","moduleId":2,"moduleCode":"AUM1503A","moduleName":"Create new product designs","trainingPlanStartDate":null,"startDate":"2020-02-01","startDateOverridden":true,"actualStartDate":null,"actualEndDate":null,"trainingPlanEndDate":null,"endDate":"2020-02-18","endDateOverridden":true,"reportableHours":30.0,"deliveryMode":"Classroom and online","fundingSource":"State - specific","status":"Competency achieved/pass (20)","hoursAttended":20,"vetPurchasingContractID":"123","vetPurchasingContractScheduleID":"123","vetFundingSourceStateID":"123","specificProgramIdentifier":"123","isPriorLearning":true,"hasCertificate":false,"printed":false,"createdOn":"#ignore","modifiedOn":"#ignore"}],
         "documents":"#ignore",
         "notes":"some notes",
         "contactId":18,
@@ -160,12 +144,9 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
         """
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -176,15 +157,9 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
     Scenario: (+) Get list of all PriorLearnings by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -198,15 +173,9 @@ Feature: Main feature for all GET requests with path 'list/entity/priorLearning'
     Scenario: (-) Get list of all PriorLearnings by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList

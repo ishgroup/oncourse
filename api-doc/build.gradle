@@ -1,0 +1,45 @@
+apply plugin: 'com.github.node-gradle.node'
+
+node {
+    version = '12.19.0'
+    yarnVersion = '1.22.10'
+    download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
+    workDir = file("${project.buildDir}/nodejs")
+}
+
+yarn.outputs.cacheIf { true }
+
+clean {
+    delete "${projectDir}/node_modules"
+}
+
+task apiDoc(type: YarnTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'yarn']) {
+    def swagger_file = tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first()
+    inputs.file(swagger_file)
+    inputs.dir('src')
+    inputs.files('webpack.api.doc.config.js', 'yarn.lock', 'tsconfig.json')
+    inputs.property('version', version)
+
+    group = "documentation"
+    args = ['build', '--env', 'schema', swagger_file.toString()]
+
+    outputs.dir("${buildDir}/api-docs")
+}
+
+build.dependsOn(apiDoc)
+
+task packageApiDoc (type: Zip, dependsOn: apiDoc) {
+    group = "documentation"
+    from apiDoc.outputs.files
+    archiveClassifier = 'documentation'
+}
+
+publishing {
+    publications {
+        docs(MavenPublication) {
+            artifact(packageApiDoc) {
+                artifactId "apiDoc"
+            }
+        }
+    }
+}

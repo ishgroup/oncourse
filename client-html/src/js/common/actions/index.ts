@@ -129,27 +129,7 @@ export const clearActionsQueue = () => ({
   type: CLEAR_ACTIONS_QUEUE
 });
 
-export const showConfirm: ShowConfirmCaller = (
-  onConfirm,
-  confirmMessage,
-  confirmButtonText,
-  onCancel,
-  title,
-  cancelButtonText,
-  onCancelCustom,
-  confirmCustomComponent
-) => {
-  const payload = {
-    title,
-    onCancel,
-    onConfirm,
-    confirmMessage,
-    confirmButtonText,
-    cancelButtonText,
-    onCancelCustom,
-    confirmCustomComponent
-  };
-
+export const showConfirm: ShowConfirmCaller = (payload) => {
   return {
     type: OPEN_CONFIRM,
     payload

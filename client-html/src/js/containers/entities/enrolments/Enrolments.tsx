@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { Dialog } from "@material-ui/core";
@@ -37,7 +40,6 @@ import OutcomeService from "../outcomes/services/OutcomeService";
 import { getEnrolment, updateEnrolment } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { ManualType } from "../../../model/common/Manual";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getListTags } from "../../tags/actions";
@@ -45,11 +47,11 @@ import ContactEditView from "../contacts/components/ContactEditView";
 import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
 import EnrolmentEditView from "./components/EnrolmentEditView";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../../common/utils/links";
 import { checkPermissions } from "../../../common/actions";
 import { Classes } from "../../../model/entities/CourseClass";
+import { getGradingTypes } from "../../preferences/actions";
 
 const nameCondition = (val: Enrolment) => defaultContactName(val.studentName);
 
@@ -62,9 +64,9 @@ interface EnrolmentsProps {
   getFilters?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
+  getGradingTypes?: () => void;
   getPermissions?: () => void;
   getFundingContracts?: () => void;
-  getCustomFieldTypes?: () => void;
   customFieldTypesUpdating?: boolean;
   customFieldTypes?: CustomFieldType[];
   hasQePermissions?: boolean;
@@ -194,7 +196,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     clearListState,
     getTags,
     getFundingContracts,
-    getCustomFieldTypes,
+    getGradingTypes,
     customFieldTypesUpdating,
     customFieldTypes,
     hasQePermissions,
@@ -208,11 +210,11 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
   const [changedFields, setChangedFields] = useState([]);
 
   useEffect(() => {
-    getCustomFieldTypes();
     getFilters();
     getTags();
     getFundingContracts();
     getPermissions();
+    getGradingTypes();
 
     return clearListState;
   }, []);
@@ -280,7 +282,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
   const onConfirm = () => {
     const outcomeFieldsToUpdate = changedFields.filter(f => f.update);
 
-    if (outcomeFieldsToUpdate.length) {
+    if (outcomeFieldsToUpdate.length && values) {
       EntityService.getPlainRecords("Outcome", "id", `enrolment.id is ${values.id}`)
         .then(res => {
           const ids = res.rows.map(r => Number(r.id));
@@ -296,7 +298,8 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     }
 
     setChangedFields([]);
-    onSave(values.id, values);
+
+    if (values) onSave(values.id, values);
   };
 
   return (
@@ -414,12 +417,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(setListEditRecord(initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
   },
-  getTags: () => {
-    dispatch(getListTags("Enrolment"));
-  },
+  getTags: () => dispatch(getListTags("Enrolment")),
+  getGradingTypes: () => dispatch(getGradingTypes()),
   getFilters: () => dispatch(getFilters("Enrolment")),
   getFundingContracts: () => dispatch(getActiveFundingContracts(true)),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Enrolment")),
   clearListState: () => dispatch(clearListState()),
   getEnrolmentRecord: (id: string) => dispatch(getEnrolment(id)),
   onSave: (id: number, enrolment: Enrolment) => dispatch(updateEnrolment(id, enrolment)),

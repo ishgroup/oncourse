@@ -73,7 +73,7 @@ dependencies {
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 
-	implementation "org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715"
+	implementation "com.nulab-inc:zxcvbn:1.4.1"
 
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
 	api ("org.liquibase:liquibase-core:4.1.0") {
@@ -97,7 +97,6 @@ dependencies {
 	api 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 	implementation 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
 
-	implementation 'com.nulab-inc:zxcvbn:1.2.5'
 	implementation 'com.warrenstrange:googleauth:0.4.5'
 	implementation 'net.glxn.qrgen:javase:2.0'
 
@@ -136,15 +135,10 @@ dependencies {
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
-	testImplementation "org.apache.derby:derbytools:$derbyVersion"
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
 	testImplementation 'xmlunit:xmlunit:1.6' //used for xml export validation tests
 	testImplementation 'org.kohsuke:wordnet-random-name:1.3'
 	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
-	testImplementation "org.testng:testng:6.13.1"
-	testImplementation "org.apache.derby:derbyclient:$derbyVersion"
-	testImplementation "org.apache.derby:derbynet:$derbyVersion"
-
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -164,24 +158,29 @@ jar {
 	manifest {
 		from sharedManifest
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
-		attributes 'Class-Path': configurations.runtimeClasspath.collect { "lib/" + it.name }.join(' ')
+		attributes 'Class-Path': configurations.runtimeClasspath.collect { "./" + it.name }.join(' ')
 	}
 	archiveFileName = 'onCourseServer.jar'
 }
 
 task expandConfig(type: Copy) {
-	def dbUrl = project.hasProperty('dbUrl') ?
-			project.getProperty('dbUrl') :
-			'jdbc:mariadb://127.0.0.1:3306/angelTest_trunk'
+	def dbUrl = project.findProperty('dbUrl') ?: ''
 
-	from("$rootDir/server/src/main/resources/") {
-		include 'application-test-local-mariadb.yml'
+	from("$rootDir/server/src/test/resources/") {
+		include 'application-test.txt'
 	}
-	into "$rootDir/server/build/resources/main"
+	rename { String fileName ->
+		fileName.replace("txt", "yml")
+	}
+	into "$rootDir/server/build/resources/test"
 	expand(dbUrl: dbUrl)
 }
 
 test {
+	description = "Run unit tests which don't require a database."
+	useJUnitPlatform {
+		excludeTags "integration"
+	}
 	testLogging {
 		exceptionFormat = 'full'
 	}
@@ -191,12 +190,24 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
+	dependsOn "expandConfig"
 
+	maxParallelForks = 8
+}
+
+task integration(type: Test) {
+	description = "Run integration tests requiring a database."
+	useJUnitPlatform {
+		includeTags "integration"
+	}
+	testLogging {
+		exceptionFormat = 'full'
+	}
+	
+	jvmArgs = ['-Xmx3000m','-Xms3000m']
+	dependsOn "expandConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
-	dependsOn "expandConfig"
-	boolean local = project.hasProperty('local') ? project.getProperty('local') : true
-	systemProperty 'yamlTestConfig', local ? 'application-test-local-mariadb.yml' : 'application-test-mariadb.yml'
 }
 
 task startDaemon(dependsOn: [classes], type: JavaExecFork) {
@@ -215,46 +226,43 @@ task startDaemon(dependsOn: [classes], type: JavaExecFork) {
 }
 
 tasks.withType(CreateStartScripts).each { task ->
+	task.outputs.files("build/scripts/*")
 	task.doLast {
 		String text = task.windowsScript.text
-		text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, "set CLASSPATH=%APP_HOME%\\\\onCourseServer.jar;%APP_HOME%\\\\lib\\\\*;%APP_HOME%\\\\plugins\\\\*" )
+		text = text.replaceFirst(/(set CLASSPATH=%APP_HOME%\\lib\\).*/, "set CLASSPATH=%APP_HOME%\\\\lib\\\\onCourseServer.jar;%APP_HOME%\\\\lib\\\\*;%APP_HOME%\\\\plugins\\\\*" )
 		task.windowsScript.write text
 
 		text = task.unixScript.text
-		text = text.replaceFirst(/(APP_HOME\/lib\/).*/, "APP_HOME/onCourseServer.jar\n\n" +
-				"for entry in \"\\\$APP_HOME/plugins\"/*; do\n" +
-				"    if [ -f \\\$entry ] ; then\n" +
-				"        CLASSPATH=\\\$CLASSPATH:\\\$entry\n" +
-				"    fi;\n" +
-				"done;")
+		text = text.replaceFirst(/(APP_HOME\/lib\/).*/, "APP_HOME/lib/onCourseServer.jar:\\\$APP_HOME/plugins/*\n\n")
 		task.unixScript.write text
 	}
 }
 
-task installer_unix(dependsOn: [jar, assembleDist], type: Zip) {
-	description "Create the Unix/Linux package (zip)."
+task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
+	from('../client-html/build/assets') {
+		include '**/*.*'
+	}
+	into 'build/resources/main/static'
+}
+
+task addVersion {
+	outputs.files("build/resources/VERSION")
 	doFirst {
+		mkdir "build/resources"
 		file("build/resources/VERSION").text = project.version
 	}
+}
 
-	from (configurations.runtimeClasspath) {
-		into 'onCourseServer/lib'
-	}
-	from (configurations.runtime.artifacts.files) {
-		into 'onCourseServer'
-	}
-	from (file("src/packaging/unix/")) {
-		into 'onCourseServer'
-	}
-	from (file("build/resources/VERSION")) {
-		into 'onCourseServer'
-	}
-	from (file("build/scripts/")) {
-		into 'onCourseServer/bin/'
-	}
+distZip.dependsOn(copyWebApp,addVersion)
 
-	archiveFileName = 'onCourseServer.zip'
-	destinationDirectory = file("${buildDir}/distributions/unix")
+distributions {
+	main {
+		distributionBaseName = 'onCourseServer'
+		contents {
+			from "src/packaging/"
+			from addVersion.outputs.files
+		}
+	}
 }
 
 // DSL asciidoc documentation
@@ -294,24 +302,11 @@ publishing {
 			}
 		}
 		executables(MavenPublication) {
-			artifact(installer_unix) {
+			artifact(distZip) {
 				classifier "executable"
 				extension "zip"
 			}
 		}
-	}
-}
-
-String sha256(String filename) {
-	if (! file(filename).exists()) return "missing file"
-
-	new ByteArrayOutputStream().withStream { result ->
-		exec {
-			executable = 'shasum' // this is only going to work on OSX
-			args = ['-a', '256', filename]
-			standardOutput = result
-		}
-		return result.toString().split()[0]
 	}
 }
 
@@ -338,17 +333,9 @@ cgen {
 	}
 }
 
-task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
-	from('../client-html/build/assets') {
-		include '**/*.*'
-	}
-	into 'build/resources/main/static'
-}
-
 compileJava {
 	dependsOn queryGrammar, cgen
 }
-assembleDist.dependsOn(copyWebApp)
 
 task runServer(dependsOn: [classes], type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath

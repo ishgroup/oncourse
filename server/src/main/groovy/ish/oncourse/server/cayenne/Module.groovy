@@ -18,13 +18,8 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Module
 import org.apache.cayenne.query.SelectById
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
-
 import javax.annotation.Nonnull
-import java.math.BigDecimal
-import java.util.Date
-import java.util.List
+import javax.annotation.Nullable
 
 /**
  * The Module class contains records from both modules (state based) and units of competetency (national)
@@ -37,8 +32,6 @@ import java.util.List
 class Module extends _Module implements Queueable, IModule {
 
 
-	private static final Logger logger = LogManager.getLogger()
-
 	@Override
 	void postAdd() {
 		super.postAdd()
@@ -50,8 +43,7 @@ class Module extends _Module implements Queueable, IModule {
 	/**
 	 * @return the date and time this record was created
 	 */
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
 	}
@@ -59,19 +51,16 @@ class Module extends _Module implements Queueable, IModule {
 	/**
 	 * @return the NCVER 'Subject field of education' identifer code
 	 */
-	@API
-	@Override
+	@Nullable @API @Override
 	String getFieldOfEducation() {
 		return super.getFieldOfEducation()
 	}
 
 
 	/**
-	 * @return the ModuleType of this outcome
+	 * @return the educational accreditation type of module
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	ModuleType getType() {
 		return super.getType()
 	}
@@ -79,9 +68,7 @@ class Module extends _Module implements Queueable, IModule {
 	/**
 	 * @return true if this module is offered by the college
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	Boolean getIsOffered() {
 		return super.getIsOffered()
 	}
@@ -89,26 +76,25 @@ class Module extends _Module implements Queueable, IModule {
 	/**
 	 * @return the date and time this record was modified
 	 */
-	@API
-	@Override
+	@Nonnull @API @Override
 	Date getModifiedOn() {
 		return super.getModifiedOn()
 	}
 
 	/**
-	 * @return national code
+	 * @return a unique code which could be issued by an educational governing body or created by the college
 	 */
-	@API
-	@Override
+	@API @Override
 	String getNationalCode() {
 		return super.getNationalCode()
 	}
 
 	/**
+	 * A number of hours in which this module is expected to be delivered.
+	 *
 	 * @return nominal hours
 	 */
-	@API
-	@Override
+	@API @Override
 	BigDecimal getNominalHours() {
 		return super.getNominalHours()
 	}
@@ -116,60 +102,17 @@ class Module extends _Module implements Queueable, IModule {
 	/**
 	 * @return title
 	 */
-	@API
-	@Override
+	@API @Override
 	String getTitle() {
 		return super.getTitle()
 	}
 
-
-
 	/**
 	 * @return a list of courses linked to this module
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API @Override
 	List<Course> getCourses() {
 		return super.getCourses()
-	}
-
-	/**
-	 * @return
-	 */
-	@Nonnull
-	@Override
-	Qualification getDefaultQualification() {
-		return super.getDefaultQualification()
-	}
-
-	/**
-	 * @return
-	 */
-	@Nonnull
-	@Override
-	List<Outcome> getOutcomes() {
-		return super.getOutcomes()
-	}
-
-	/**
-	 * @return
-	 */
-	@Nonnull
-	@Override
-	TrainingPackage getTrainingPackage() {
-		return super.getTrainingPackage()
-	}
-
-	/**
-	 * Setting this field reduces the choices available to users in the UI of onCourse to
-	 * only those modules which are offered.
-	 *
-	 * @param isOffered true if this college offers the module
-	 */
-	@API
-	void setIsOffered(Boolean isOffered) {
-	    writeProperty("isOffered", isOffered)
 	}
 
 	@Override
@@ -177,16 +120,40 @@ class Module extends _Module implements Queueable, IModule {
 		return Boolean.TRUE == getIsCustom()
 	}
 
-	@Override
+	@Nonnull @Override
 	String getSummaryDescription() {
 		return getTitle()
 	}
 
 	/**
+	 * Credit points may be issued for the award of this module.
+	 *
+	 * @return number of credit points as a decimal
+	 */
+	@Nullable @Override @API
+	BigDecimal getCreditPoints() {
+		return super.getCreditPoints()
+	}
+
+	/**
+	 * Some modules are valid only for a certain period of time before they need to be renewed.
+	 *
+	 * @return Number of days after award before expiry
+	 */
+	@Nullable @Override @API
+	Integer getExpiryDays() {
+		return super.getExpiryDays()
+	}
+
+
+	@Nullable @Override @API
+	String getSpecialization() {
+		return super.getSpecialization()
+	}
+/**
 	 * @return courses related to this module
 	 */
-	@Nonnull
-	@API
+	@Nonnull @API
 	List<Course> getRelatedCourses() {
 		List<Course> courses = new ArrayList<>()
 		EntityRelationDao.getRelatedFrom(context, Module.simpleName, id)

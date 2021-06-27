@@ -1,0 +1,13 @@
+name: mailchimp subscribe on attribute changing
+keyCode: ish.script.mailchimpSubcribeOnAttributeChanging
+body: ish.script.mailchimpSubcribeOnAttributeChanging.groovy
+enabled: false
+triggerType: ENTITY_EVENT
+entityClass: Contact
+entityAttribute: allowEmail
+entityEventType: UPDATE
+description: Subscribe\unsubscribe user to Mailchimp upon specified attribute changing
+options:
+  - name: nameOfIntegration
+    dataType: TEXT
+    value: ""

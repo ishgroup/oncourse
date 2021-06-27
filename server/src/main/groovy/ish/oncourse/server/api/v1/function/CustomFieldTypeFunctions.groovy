@@ -11,6 +11,8 @@
 
 package ish.oncourse.server.api.v1.function
 
+import ish.oncourse.server.api.v1.model.DataTypeDTO
+
 import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
 import ish.oncourse.server.api.v1.model.CustomFieldTypeDTO
 import ish.oncourse.server.api.v1.model.EntityTypeDTO
@@ -108,6 +110,9 @@ class CustomFieldTypeFunctions {
         if (!type.dataType) {
             return new ValidationErrorDTO(type.id, 'dataType', "Custom field data type should be specified")
         }
+        if (DataTypeDTO.PATTERN_TEXT == type.dataType && !type.pattern) {
+            return new ValidationErrorDTO(type.id, 'pattern', "Custom field with 'pattern text' data type should have a regular expression")
+        }
         if (dbType) {
             CustomFieldType duplicate = ObjectSelect.query(CustomFieldType).where(CustomFieldType.NAME.eq(type.name)).selectOne(context)
             if (duplicate && duplicate.id != dbType.id && !types.find {duplicate.id == Long.valueOf(it.id)}) {
@@ -117,7 +122,7 @@ class CustomFieldTypeFunctions {
             if (dbType.key != type.fieldKey) {
                 return new ValidationErrorDTO(type.id, 'fieldKey', "Custom field key can not be changed")
             }
-            if (dbType.entityIdentifier != type.entityType.toString()) {
+            if (dbType.entityIdentifierExtended != type.entityType.toString()) {
                 return new ValidationErrorDTO(type.id, 'entityType', "Custom field entity type can not be changed")
             }
             if (dbType.dataType != type.dataType.dbType) {
@@ -149,13 +154,14 @@ class CustomFieldTypeFunctions {
 
         if (dbType.newRecord) {
             dbType.key = type.fieldKey
-            dbType.entityIdentifier = type.entityType.toString()
+            dbType.entityIdentifierExtended = type.entityType.toString()
         }
         dbType.name = type.name
         dbType.defaultValue = type.defaultValue
         dbType.isMandatory = type.mandatory
         dbType.sortOrder = type.sortOrder
         dbType.dataType = type.dataType.dbType
+        dbType.pattern = type.pattern
         dbType
     }
 

@@ -143,8 +143,8 @@ class SessionValidator {
             return sessionWarning
         }
 
-        Expression sessionFilter = Session.START_DATETIME.between(start, end)
-                .orExp(Session.END_DATETIME.between(start, end))
+        Expression sessionFilter = Session.START_DATETIME.gt(start).andExp(Session.START_DATETIME.lt(end))
+                .orExp(Session.END_DATETIME.gt(start).andExp(Session.END_DATETIME.lt(end)))
                 .orExp(Session.START_DATETIME.lte(start).andExp(Session.END_DATETIME.gte(end)))
                 .orExp(Session.START_DATETIME.gte(start).andExp(Session.END_DATETIME.lte(end)))
         if (classId != null) {
@@ -251,8 +251,8 @@ class SessionValidator {
         return classSessions.findAll { it ->
             ((it.getId() != null && it.getId() != self.getId()) || (it.getTemporaryId() != null && it.getTemporaryId() != self.getTemporaryId())) &&
                     (
-                            (self.getStart() >= it.getStart() && self.getStart() <= it.getEnd()) ||
-                                    (self.getEnd() >= it.getStart()   && self.getEnd() <= it.getEnd()) ||
+                            (self.getStart() >= it.getStart() && self.getStart() < it.getEnd()) ||
+                                    (self.getEnd() > it.getStart()   && self.getEnd() <= it.getEnd()) ||
                                     (self.getStart() <= it.getStart() && self.getEnd() >= it.getEnd()) ||
                                     (self.getStart() >= it.getStart() && self.getEnd() <= it.getEnd())
                     )

@@ -2,15 +2,15 @@
 Feature: Main feature for all POST requests with path 'preference/field/type'
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/field/type'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Create new valid fieldType
 
-        * def someFieldType = [{"dataType":"Text","name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"Enrolment"}]
+        * def someFieldType = [{"dataType":"Pattern text","name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"Enrolment", "pattern":"^\d{4}\*{8}\d{4}&"}]
 
         Given path ishPath
         And request someFieldType
@@ -27,7 +27,7 @@ Feature: Main feature for all POST requests with path 'preference/field/type'
         * def fieldType = get[0] response[?(@.name == 'fieldType#1')]
         * print "fieldType = " + fieldType
 
-        And match fieldType == {"dataType":"Text","id":"#(id)","name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"Enrolment","created":"#ignore","modified":"#ignore"}
+        And match fieldType == {"dataType":"Pattern text","id":"#(id)","name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"Enrolment","created":"#ignore","modified":"#ignore","pattern":"^\d{4}\*{8}\d{4}&"}
 
 #       <---> Scenario have been finished. Now find and remove created object from DB:
 
@@ -304,7 +304,7 @@ Feature: Main feature for all POST requests with path 'preference/field/type'
     Scenario: (+) Update existing fieldType to valid
 
 #       Prepare new fieldType to update it:
-        * def someFieldType = [{"dataType":"Text","name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"WaitingList"}]
+        * def someFieldType = [{"dataType":"Text","name":"fieldType#1","defaultValue":"someValue","fieldKey":"fieldKey1","mandatory":false,"sortOrder":0,"entityType":"WaitingList", "pattern":null}]
 
         Given path ishPath
         And request someFieldType
@@ -319,7 +319,7 @@ Feature: Main feature for all POST requests with path 'preference/field/type'
         * def id = get[0] response[?(@.name == 'fieldType#1')].id
         * print "id = " + id
 
-        * def someFieldTypeToUpdate = [{"dataType":"Text",id: '#(id)',"name":"fieldType#upd","defaultValue":"someValueUpd","fieldKey":"fieldKey1","mandatory":true,"sortOrder":1,"entityType":"WaitingList"}]
+        * def someFieldTypeToUpdate = [{"dataType":"Text",id: '#(id)',"name":"fieldType#upd","defaultValue":"someValueUpd","fieldKey":"fieldKey1","mandatory":true,"sortOrder":1,"entityType":"WaitingList","pattern":null}]
 
         Given path ishPath
         And request someFieldTypeToUpdate
@@ -336,7 +336,7 @@ Feature: Main feature for all POST requests with path 'preference/field/type'
         * def fieldType = get[0] response[?(@.name == 'fieldType#upd')]
         * print "fieldType = " + fieldType
 
-        And match fieldType == {"dataType":"Text","id":"#(id)","name":"fieldType#upd","defaultValue":"someValueUpd","fieldKey":"fieldKey1","mandatory":true,"sortOrder":1,"entityType":"WaitingList","created":"#ignore","modified":"#ignore"}
+        And match fieldType == {"dataType":"Text","id":"#(id)","name":"fieldType#upd","defaultValue":"someValueUpd","fieldKey":"fieldKey1","mandatory":true,"sortOrder":1,"entityType":"WaitingList","created":"#ignore","modified":"#ignore","pattern":null}
 
 #       <---> Scenario have been finished. Now find and remove created object from DB:
         * call read('../../../removeEntityById.feature') {path: '#(ishPath)', entityId: '#(id)'}

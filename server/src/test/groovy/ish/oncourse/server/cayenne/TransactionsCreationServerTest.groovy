@@ -3,62 +3,36 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.CayenneIshTestCase
-import ish.common.types.AccountTransactionType
-import ish.common.types.CreditCardType
-import ish.common.types.PaymentSource
-import ish.common.types.PaymentStatus
-import ish.common.types.VoucherPaymentStatus
+
+import groovy.transform.CompileStatic
+import ish.TestWithDatabase
+import ish.DatabaseSetup
+import ish.common.types.*
 import ish.math.Money
 import ish.oncourse.common.BankingType
 import ish.oncourse.entity.services.SetPaymentMethod
-import ish.oncourse.server.ICayenneService
 import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
-import static junit.framework.TestCase.assertEquals
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.dbunit.dataset.ReplacementDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSet
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder
-import org.junit.Before
-import org.junit.Test
-import static org.testng.Assert.assertFalse
-import static org.testng.Assert.assertNotNull
-import static org.testng.Assert.assertNull
-import static org.testng.Assert.assertTrue
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
 import java.time.LocalDate
 
-class TransactionsCreationServerTest extends CayenneIshTestCase {
-
-	private ICayenneService cayenneService
-
-    @Before
-    void setup() throws Exception {
-		wipeTables()
-        this.cayenneService = injector.getInstance(ICayenneService.class)
-
-        InputStream st = DoublePrefetchTest.class.getClassLoader().getResourceAsStream("ish/oncourse/server/cayenne/TransactionsCreationServertTestDataSet.xml")
-        FlatXmlDataSet dataSet = new FlatXmlDataSetBuilder().build(st)
-        ReplacementDataSet rDataSet = new ReplacementDataSet(dataSet)
-
-        executeDatabaseOperation(rDataSet)
-
-        super.setup()
-    }
-	
-	@Test
+@CompileStatic
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/TransactionsCreationServertTestDataSet.xml")
+class TransactionsCreationServerTest extends TestWithDatabase {
+    
+    @Test
     void testAutoBank() {
-		ObjectContext context = cayenneService.getNewContext()
+        Invoice invoice = SelectById.query(Invoice.class, 1L).selectOne(cayenneContext)
 
-        Invoice invoice = SelectById.query(Invoice.class, 1L).selectOne(context)
-
-        PaymentIn paymentIn = context.newObject(PaymentIn.class)
+        PaymentIn paymentIn = cayenneContext.newObject(PaymentIn.class)
         paymentIn.setStatus(PaymentStatus.IN_TRANSACTION)
         paymentIn.setSource(PaymentSource.SOURCE_ONCOURSE)
-        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod.class), paymentIn).set()
+        SetPaymentMethod.valueOf(PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(cayenneContext, PaymentMethod.class), paymentIn).set()
         paymentIn.setCreditCardName("test name")
         paymentIn.setCreditCardNumber("test number")
         paymentIn.setCreditCardExpiry("01/01")
@@ -67,58 +41,59 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         paymentIn.setPayer(invoice.getContact())
         paymentIn.setPaymentDate(LocalDate.now())
 
-        PaymentInLine line = context.newObject(PaymentInLine.class)
+        PaymentInLine line = cayenneContext.newObject(PaymentInLine.class)
         line.setAmount(invoice.getAmountOwing())
         line.setPayment(paymentIn)
         line.setInvoice(invoice)
         line.setAccountOut(invoice.getDebtorsAccount())
 
-        context.commitChanges()
-        context.invalidateObjects(line)
+        cayenneContext.commitChanges()
+        cayenneContext.invalidateObjects(line)
 
 
         List<AccountTransaction> select = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
-				.select(context)
-        assertTrue(select.isEmpty())
-        assertNull(paymentIn.getBanking())
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
+                .select(cayenneContext)
+        Assertions.assertTrue(select.isEmpty())
+        Assertions.assertNull(paymentIn.getBanking())
 
         paymentIn.setStatus(PaymentStatus.SUCCESS)
 
-        context.commitChanges()
+        cayenneContext.commitChanges()
 
-        assertNotNull(paymentIn.getBanking())
+        Assertions.assertNotNull(paymentIn.getBanking())
 
-        List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(2,transactions.size())
+        List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(cayenneContext)
+        Assertions.assertEquals(2, transactions.size())
 
         AccountTransaction deposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn()))
-				.and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.selectOne(context)
+                .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .selectOne(cayenneContext)
 
-        assertNotNull(deposit)
-        assertEquals(new Money("100.00"), deposit.getAmount())
+        Assertions.assertNotNull(deposit)
+        Assertions.assertEquals(new Money("100.00"), deposit.getAmount())
 
 
         AccountTransaction undeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount()))
-				.and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.selectOne(context)
+                .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .selectOne(cayenneContext)
 
-        assertNull(undeposit)
+        Assertions.assertNull(undeposit)
 
         AccountTransaction debtor = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(line.getInvoice().getDebtorsAccount()))
-				.and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.selectOne(context)
+                .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .selectOne(cayenneContext)
 
-        assertNotNull(debtor)
-        assertEquals(new Money("-100.00"), debtor.getAmount())
+        Assertions.assertNotNull(debtor)
+        Assertions.assertEquals(new Money("-100.00"), debtor.getAmount())
     }
 
 
-	@Test
+    
+    @Test
     void testChangeBanking() {
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Invoice invoice = SelectById.query(Invoice.class, 1L).selectOne(context)
 
@@ -141,47 +116,47 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         line.setAccountOut(invoice.getDebtorsAccount())
 
         //bank automatically and check transactions
-		context.commitChanges()
+        context.commitChanges()
 
         List<AccountTransaction> select = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
-				.select(context)
-        assertFalse(select.isEmpty())
-        assertNotNull(paymentIn.getBanking())
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
+                .select(context)
+        Assertions.assertFalse(select.isEmpty())
+        Assertions.assertNotNull(paymentIn.getBanking())
 
-        assertTrue(ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount())).select(context).isEmpty())
+        Assertions.assertTrue(ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount())).select(context).isEmpty())
 
         AccountTransaction deposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn()))
-				.and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.selectOne(context)
+                .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .selectOne(context)
 
-        assertNotNull(deposit)
-        assertEquals(new Money("100.00"), deposit.getAmount())
+        Assertions.assertNotNull(deposit)
+        Assertions.assertEquals(new Money("100.00"), deposit.getAmount())
 
         AccountTransaction debtor = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(line.getInvoice().getDebtorsAccount()))
-				.and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.selectOne(context)
+                .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .selectOne(context)
 
-        assertNotNull(debtor)
-        assertEquals(new Money("-100.00"), debtor.getAmount())
+        Assertions.assertNotNull(debtor)
+        Assertions.assertEquals(new Money("-100.00"), debtor.getAmount())
 
         //unbank and check transactions
-		paymentIn.setBanking(null)
+        paymentIn.setBanking(null)
         context.commitChanges()
 
         AccountTransaction undeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount())).selectOne(context)
-        assertNotNull(undeposit)
-        assertEquals(new Money("100.00"), undeposit.getAmount())
+        Assertions.assertNotNull(undeposit)
+        Assertions.assertEquals(new Money("100.00"), undeposit.getAmount())
 
         List<AccountTransaction> deposits = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn())).select(context)
-        assertEquals(2, deposits.size())
-        Money depositsSumm = deposits.collect{it.amount}.inject(Money.ZERO) {a, b -> a.add(b)}
-        assertEquals(Money.ZERO, depositsSumm)
+        Assertions.assertEquals(2, deposits.size())
+        Money depositsSumm = deposits.collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) }
+        Assertions.assertEquals(Money.ZERO, depositsSumm)
 
 
         //bank again to another banking and check transactions (final state)
-		LocalDate newSettlementDate = LocalDate.of(2016,6,12)
+        LocalDate newSettlementDate = LocalDate.of(2016, 6, 12)
         Banking banking = context.newObject(Banking.class)
         banking.setSettlementDate(newSettlementDate)
         banking.setType(BankingType.AUTO_MCVISA)
@@ -190,36 +165,37 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         AccountTransaction undepositNew = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount()))
-				.and(AccountTransaction.TRANSACTION_DATE.eq(newSettlementDate))
-				.selectOne(context)
+                .and(AccountTransaction.TRANSACTION_DATE.eq(newSettlementDate))
+                .selectOne(context)
 
-        assertNotNull(undepositNew)
-        assertEquals(new Money("-100.00"), undepositNew.getAmount())
+        Assertions.assertNotNull(undepositNew)
+        Assertions.assertEquals(new Money("-100.00"), undepositNew.getAmount())
 
         AccountTransaction depositNew = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn()))
-				.and(AccountTransaction.TRANSACTION_DATE.eq(newSettlementDate))
-				.selectOne(context)
+                .and(AccountTransaction.TRANSACTION_DATE.eq(newSettlementDate))
+                .selectOne(context)
 
-        assertNotNull(depositNew)
-        assertEquals(new Money("100.00"), depositNew.getAmount())
+        Assertions.assertNotNull(depositNew)
+        Assertions.assertEquals(new Money("100.00"), depositNew.getAmount())
 
-        List<AccountTransaction>  allUndeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount()))
-				.select(context)
+        List<AccountTransaction> allUndeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount()))
+                .select(context)
         List<AccountTransaction> allDeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn()))
-				.select(context)
+                .select(context)
 
-        assertEquals(2, allUndeposit.size())
+        Assertions.assertEquals(2, allUndeposit.size())
 
-        assertEquals(3, allDeposit.size())
+        Assertions.assertEquals(3, allDeposit.size())
 
-        assertEquals(Money.ZERO, allUndeposit.collect{it.amount}.inject(Money.ZERO) {a, b -> a.add(b)})
-        assertEquals(new Money("100.00"), allDeposit.collect{it.amount}.inject(Money.ZERO) {a, b -> a.add(b)})
+        Assertions.assertEquals(Money.ZERO, allUndeposit.collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) })
+        Assertions.assertEquals(new Money("100.00"), allDeposit.collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) })
 
     }
 
-	@Test
+    
+    @Test
     void testZeroPaymentInLineUseCase() {
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
         Invoice invoice = SelectById.query(Invoice.class, 1L).selectOne(context)
         Invoice invoice3 = SelectById.query(Invoice.class, 3L).selectOne(context)
@@ -252,47 +228,47 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.invalidateObjects(line, line2)
 
         List<AccountTransaction> select1 = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
-				.select(context)
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
+                .select(context)
         List<AccountTransaction> select2 = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line2.getId()))
-				.select(context)
-        assertTrue(select1.isEmpty())
-        assertTrue(select2.isEmpty())
-        assertNull(paymentIn.getBanking())
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line2.getId()))
+                .select(context)
+        Assertions.assertTrue(select1.isEmpty())
+        Assertions.assertTrue(select2.isEmpty())
+        Assertions.assertNull(paymentIn.getBanking())
 
         paymentIn.setStatus(PaymentStatus.SUCCESS)
 
         context.commitChanges()
 
         select1 = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
-				.select(context)
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
+                .select(context)
         select2 = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line2.getId()))
-				.select(context)
-        assertFalse(select1.isEmpty())
-        assertTrue(select2.isEmpty())
-        assertNotNull(paymentIn.getBanking())
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line2.getId()))
+                .select(context)
+        Assertions.assertFalse(select1.isEmpty())
+        Assertions.assertTrue(select2.isEmpty())
+        Assertions.assertNotNull(paymentIn.getBanking())
 
         paymentIn.setBanking(null)
 
         context.commitChanges()
 
         select1 = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
-				.select(context)
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line.getId()))
+                .select(context)
         select2 = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
-				.and(AccountTransaction.FOREIGN_RECORD_ID.eq(line2.getId()))
-				.select(context)
-        assertFalse(select1.isEmpty())
-        assertTrue(select2.isEmpty())
+                .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
+                .and(AccountTransaction.FOREIGN_RECORD_ID.eq(line2.getId()))
+                .select(context)
+        Assertions.assertFalse(select1.isEmpty())
+        Assertions.assertTrue(select2.isEmpty())
     }
 
 
@@ -300,11 +276,12 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
     //Redemption : 3 enrolments
     //1)Class cost for redemption : $100
     //2)Class cost for redemption : $30
-	@Test
+    
+    @Test
     void testPaymentTransactionWithVoucherEnrolment1() {
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
-        Account assetAccount =  SelectById.query(Account.class, 1000L).selectOne(context)
+        Account assetAccount = SelectById.query(Account.class, 1000L).selectOne(context)
         Account liabilityAccount = AccountUtil.getDefaultVoucherLiabilityAccount(context, Account.class)
         Account expenseAccount = AccountUtil.getDefaultVoucherExpenseAccount(context, Account.class)
 
@@ -352,29 +329,29 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
-        assertEquals(1, assetTransactions.size())
-        assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, assetTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
-        assertEquals(1, liabilityTransactions.size())
-        assertEquals(new Money("-10.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, liabilityTransactions.size())
+        Assertions.assertEquals(new Money("-10.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
-        assertEquals(2, expenseTransactions.size())
+        Assertions.assertEquals(2, expenseTransactions.size())
 
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        assertEquals(new Money("100.00"), asset_expense.getAmount())
-        assertEquals(new Money("-10.00"), liability_expense.getAmount())
+        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(new Money("-10.00"), liability_expense.getAmount())
 
 
         //redeem next time this voucher
 
-		Invoice secondInvoice = SelectById.query(Invoice.class, 8L).selectOne(context)
+        Invoice secondInvoice = SelectById.query(Invoice.class, 8L).selectOne(context)
 
         PaymentIn secondPaymentIn = context.newObject(PaymentIn.class)
         secondPaymentIn.setStatus(PaymentStatus.SUCCESS)
@@ -416,28 +393,29 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         List<AccountTransaction> secondTransactions = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
-				.select(context)
-        assertEquals(2, secondTransactions.size())
+                .where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
+                .select(context)
+        Assertions.assertEquals(2, secondTransactions.size())
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
-        assertEquals(1, asset2Transactions.size())
-        assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, asset2Transactions.size())
+        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
-        assertEquals(1, expense2Transactions.size())
-        assertEquals(new Money("30.00"), expense2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, expense2Transactions.size())
+        Assertions.assertEquals(new Money("30.00"), expense2Transactions.get(0).getAmount())
     }
 
     //VoucherProduct Purchase price: $120
     //Redemption : 3 enrolments
     //1)Class cost for redemption : $100
     //2)Class cost for redemption : $30
+    
     @Test
     void testPaymentTransactionWithVoucherEnrolment2() {
         ObjectContext context = cayenneService.getNewContext()
 
-        Account assetAccount =  SelectById.query(Account.class, 1000L).selectOne(context)
+        Account assetAccount = SelectById.query(Account.class, 1000L).selectOne(context)
         Account liabilityAccount = AccountUtil.getDefaultVoucherLiabilityAccount(context, Account.class)
         Account expenseAccount = AccountUtil.getDefaultVoucherExpenseAccount(context, Account.class)
 
@@ -485,24 +463,24 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
-        assertEquals(1, assetTransactions.size())
-        assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, assetTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
-        assertEquals(1, liabilityTransactions.size())
-        assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, liabilityTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
-        assertEquals(2, expenseTransactions.size())
+        Assertions.assertEquals(2, expenseTransactions.size())
 
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        assertEquals(new Money("100.00"), asset_expense.getAmount())
-        assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
 
 
         //redeem next time this voucher
@@ -551,34 +529,35 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         List<AccountTransaction> secondTransactions = ObjectSelect.query(AccountTransaction.class)
                 .where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
                 .select(context)
-        assertEquals(4, secondTransactions.size())
+        Assertions.assertEquals(4, secondTransactions.size())
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
-        assertEquals(1, asset2Transactions.size())
-        assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, asset2Transactions.size())
+        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> liability2Transactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(secondTransactions)
-        assertEquals(1, liability2Transactions.size())
-        assertEquals(new Money("-20.00"), liability2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, liability2Transactions.size())
+        Assertions.assertEquals(new Money("-20.00"), liability2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
-        assertEquals(2, expense2Transactions.size())
+        Assertions.assertEquals(2, expense2Transactions.size())
 
         AccountTransaction asset_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(1) : expense2Transactions.get(0)
         AccountTransaction liability_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(0) : expense2Transactions.get(1)
 
-        assertEquals(new Money("30.00"), asset_expense2.getAmount())
-        assertEquals(new Money("-20.00"), liability_expense2.getAmount())
+        Assertions.assertEquals(new Money("30.00"), asset_expense2.getAmount())
+        Assertions.assertEquals(new Money("-20.00"), liability_expense2.getAmount())
     }
 
     //VoucherProduct Purchase price: $120
     //Redemption : 1 enrolments
     //1)Class cost for redemption : $100
+    
     @Test
     void testPaymentTransactionWithVoucherEnrolment3() {
         ObjectContext context = cayenneService.getNewContext()
 
-        Account assetAccount =  SelectById.query(Account.class, 1000L).selectOne(context)
+        Account assetAccount = SelectById.query(Account.class, 1000L).selectOne(context)
         Account liabilityAccount = AccountUtil.getDefaultVoucherLiabilityAccount(context, Account.class)
         Account expenseAccount = AccountUtil.getDefaultVoucherExpenseAccount(context, Account.class)
 
@@ -626,35 +605,36 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
-        assertEquals(1, assetTransactions.size())
-        assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, assetTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
-        assertEquals(1, liabilityTransactions.size())
-        assertEquals(new Money("-120.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, liabilityTransactions.size())
+        Assertions.assertEquals(new Money("-120.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
-        assertEquals(2, expenseTransactions.size())
+        Assertions.assertEquals(2, expenseTransactions.size())
 
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        assertEquals(new Money("100.00"), asset_expense.getAmount())
-        assertEquals(new Money("-120.00"), liability_expense.getAmount())
+        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(new Money("-120.00"), liability_expense.getAmount())
     }
 
     //VoucherProduct Purchase price: $30
     //Redemption : $150
     //1)Class cost for redemption : $100
     //2)Class cost for redemption : $30
+    
     @Test
     void testPaymentTransactionWithVoucherValue1() {
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
-        Account assetAccount =  SelectById.query(Account.class, 1000L).selectOne(context)
+        Account assetAccount = SelectById.query(Account.class, 1000L).selectOne(context)
         Account liabilityAccount = AccountUtil.getDefaultVoucherLiabilityAccount(context, Account.class)
         Account expenseAccount = AccountUtil.getDefaultVoucherExpenseAccount(context, Account.class)
 
@@ -702,28 +682,28 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
 
 
         List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
-        assertEquals(1, assetTransactions.size())
-        assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, assetTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
-        assertEquals(1, liabilityTransactions.size())
-        assertEquals(new Money("-30.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, liabilityTransactions.size())
+        Assertions.assertEquals(new Money("-30.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
-        assertEquals(2, expenseTransactions.size())
+        Assertions.assertEquals(2, expenseTransactions.size())
 
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        assertEquals(new Money("100.00"), asset_expense.getAmount())
-        assertEquals(new Money("-30.00"), liability_expense.getAmount())
+        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(new Money("-30.00"), liability_expense.getAmount())
 
         //redeem next time this voucher
 
-		Invoice secondInvoice = SelectById.query(Invoice.class, 8L).selectOne(context)
+        Invoice secondInvoice = SelectById.query(Invoice.class, 8L).selectOne(context)
 
         PaymentIn secondPaymentIn = context.newObject(PaymentIn.class)
         secondPaymentIn.setStatus(PaymentStatus.SUCCESS)
@@ -765,28 +745,29 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         List<AccountTransaction> secondTransactions = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
-				.select(context)
-        assertEquals(2, secondTransactions.size())
+                .where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
+                .select(context)
+        Assertions.assertEquals(2, secondTransactions.size())
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
-        assertEquals(1, asset2Transactions.size())
-        assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, asset2Transactions.size())
+        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
-        assertEquals(1, expense2Transactions.size())
-        assertEquals(new Money("30.00"), expense2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, expense2Transactions.size())
+        Assertions.assertEquals(new Money("30.00"), expense2Transactions.get(0).getAmount())
     }
 
     //VoucherProduct Purchase price: $120
     //Redemption : $120
     //1)Class cost for redemption : $100
     //2)Class cost for redemption : $30
+    
     @Test
     void testPaymentTransactionWithVoucherValue2() {
         ObjectContext context = cayenneService.getNewContext()
 
-        Account assetAccount =  SelectById.query(Account.class, 1000L).selectOne(context)
+        Account assetAccount = SelectById.query(Account.class, 1000L).selectOne(context)
         Account liabilityAccount = AccountUtil.getDefaultVoucherLiabilityAccount(context, Account.class)
         Account expenseAccount = AccountUtil.getDefaultVoucherExpenseAccount(context, Account.class)
 
@@ -834,24 +815,24 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
 
 
         List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
-        assertEquals(1, assetTransactions.size())
-        assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, assetTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
-        assertEquals(1, liabilityTransactions.size())
-        assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, liabilityTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
-        assertEquals(2, expenseTransactions.size())
+        Assertions.assertEquals(2, expenseTransactions.size())
 
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        assertEquals(new Money("100.00"), asset_expense.getAmount())
-        assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
 
         //redeem next time this voucher
 
@@ -897,35 +878,36 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         List<AccountTransaction> secondTransactions = ObjectSelect.query(AccountTransaction.class)
                 .where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
                 .select(context)
-        assertEquals(4, secondTransactions.size())
+        Assertions.assertEquals(4, secondTransactions.size())
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
-        assertEquals(1, asset2Transactions.size())
-        assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, asset2Transactions.size())
+        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> liability2Transactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(secondTransactions)
-        assertEquals(1, liability2Transactions.size())
-        assertEquals(new Money("-20.00"), liability2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, liability2Transactions.size())
+        Assertions.assertEquals(new Money("-20.00"), liability2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
-        assertEquals(2, expense2Transactions.size())
+        Assertions.assertEquals(2, expense2Transactions.size())
 
         AccountTransaction asset_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(1) : expense2Transactions.get(0)
         AccountTransaction liability_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(0) : expense2Transactions.get(1)
 
-        assertEquals(new Money("30.00"), asset_expense2.getAmount())
-        assertEquals(new Money("-20.00"), liability_expense2.getAmount())
+        Assertions.assertEquals(new Money("30.00"), asset_expense2.getAmount())
+        Assertions.assertEquals(new Money("-20.00"), liability_expense2.getAmount())
 
     }
 
     //VoucherProduct Purchase price: $180
     //Redemption : $100
     //1)Class cost for redemption : $100
+    
     @Test
     void testPaymentTransactionWithVoucherValue3() {
         ObjectContext context = cayenneService.getNewContext()
 
-        Account assetAccount =  SelectById.query(Account.class, 1000L).selectOne(context)
+        Account assetAccount = SelectById.query(Account.class, 1000L).selectOne(context)
         Account liabilityAccount = AccountUtil.getDefaultVoucherLiabilityAccount(context, Account.class)
         Account expenseAccount = AccountUtil.getDefaultVoucherExpenseAccount(context, Account.class)
 
@@ -973,35 +955,36 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
 
 
         List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
-        assertEquals(1, assetTransactions.size())
-        assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, assetTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
-        assertEquals(1, liabilityTransactions.size())
-        assertEquals(new Money("-180.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, liabilityTransactions.size())
+        Assertions.assertEquals(new Money("-180.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
-        assertEquals(2, expenseTransactions.size())
+        Assertions.assertEquals(2, expenseTransactions.size())
 
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        assertEquals(new Money("100.00"), asset_expense.getAmount())
-        assertEquals(new Money("-180.00"), liability_expense.getAmount())
+        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(new Money("-180.00"), liability_expense.getAmount())
     }
 
     //VoucherProduct Purchase price: $200
     //Redemption : $200
     //1)Class cost for redemption : $100
     //2)Class cost for redemption : $30
-	@Test
+    
+    @Test
     void testPaymentTransactionWithVoucherPurchaseValue() {
-		ObjectContext context = cayenneService.getNewContext()
+        ObjectContext context = cayenneService.getNewContext()
 
-        Account assetAccount =  SelectById.query(Account.class, 1000L).selectOne(context)
+        Account assetAccount = SelectById.query(Account.class, 1000L).selectOne(context)
         Account liabilityAccount = AccountUtil.getDefaultVoucherLiabilityAccount(context, Account.class)
         Account expenseAccount = AccountUtil.getDefaultVoucherExpenseAccount(context, Account.class)
 
@@ -1049,29 +1032,29 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
 
 
         List<AccountTransaction> transactions = ObjectSelect.query(AccountTransaction.class).select(context)
-        assertEquals(4, transactions.size())
+        Assertions.assertEquals(4, transactions.size())
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
-        assertEquals(1, assetTransactions.size())
-        assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, assetTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
-        assertEquals(1, liabilityTransactions.size())
-        assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(1, liabilityTransactions.size())
+        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
-        assertEquals(2, expenseTransactions.size())
+        Assertions.assertEquals(2, expenseTransactions.size())
 
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        assertEquals(new Money("100.00"), asset_expense.getAmount())
-        assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
 
 
         //redeem next time this voucher
 
-		Invoice secondInvoice = SelectById.query(Invoice.class, 8L).selectOne(context)
+        Invoice secondInvoice = SelectById.query(Invoice.class, 8L).selectOne(context)
 
         PaymentIn secondPaymentIn = context.newObject(PaymentIn.class)
         secondPaymentIn.setStatus(PaymentStatus.SUCCESS)
@@ -1115,25 +1098,25 @@ class TransactionsCreationServerTest extends CayenneIshTestCase {
         context.commitChanges()
 
         List<AccountTransaction> secondTransactions = ObjectSelect.query(AccountTransaction.class)
-				.where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
-				.select(context)
-        assertEquals(4, secondTransactions.size())
+                .where(AccountTransaction.FOREIGN_RECORD_ID.eq(secondLineVoucher.getId()))
+                .select(context)
+        Assertions.assertEquals(4, secondTransactions.size())
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
-        assertEquals(1, asset2Transactions.size())
-        assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, asset2Transactions.size())
+        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> liability2Transactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(secondTransactions)
-        assertEquals(1, liability2Transactions.size())
-        assertEquals(new Money("-30.00"), liability2Transactions.get(0).getAmount())
+        Assertions.assertEquals(1, liability2Transactions.size())
+        Assertions.assertEquals(new Money("-30.00"), liability2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
-        assertEquals(2, expense2Transactions.size())
+        Assertions.assertEquals(2, expense2Transactions.size())
 
         AccountTransaction asset_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(1) : expense2Transactions.get(0)
         AccountTransaction liability_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(0) : expense2Transactions.get(1)
 
-        assertEquals(new Money("30.00"), asset_expense2.getAmount())
-        assertEquals(new Money("-30.00"), liability_expense2.getAmount())
+        Assertions.assertEquals(new Money("30.00"), asset_expense2.getAmount())
+        Assertions.assertEquals(new Money("-30.00"), liability_expense2.getAmount())
     }
 }

@@ -2,14 +2,13 @@
 Feature: Feature which checks exports implementation and their coverage
 
     Background: Authorize first
-        * call read('./signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/export'
         * def csvImportPath = 'template'
         * def xmlImportPath = 'template'
         * def pdfImportPath = 'pdf/template'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
         * def JavaFunctions = Java.type('ish.oncourse.api.test.ExportsCoverageTest')
         * def excludedForCsvXml = excludedForCsvXml: ["contact", "articleProduct", "assessment", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "outcome", "sales", "report", "reportOverlay", "note", "import", "priorLearning"]
         * def csvXmlEntities = JavaFunctions.getListEntitiesAndExclude(excludedForCsvXml)

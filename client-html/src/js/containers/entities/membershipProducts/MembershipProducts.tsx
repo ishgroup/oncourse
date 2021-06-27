@@ -3,33 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Account, MembershipProduct, Tax } from "@api/model";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
-import {
-  createMembershipProduct,
-  getMembershipProduct,
-  updateMembershipProduct
-} from "./actions";
+import { createMembershipProduct, getMembershipProduct, updateMembershipProduct } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import MembershipProductEditView from "./components/MembershipProductEditView";
 import { FilterGroup } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getPlainTaxes } from "../taxes/actions";
 import { State } from "../../../reducers/state";
-import { getIncomeAccounts } from "../accounts/actions";
+import { getPlainAccounts } from "../accounts/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { getEntityRelationTypes } from "../../preferences/actions";
+import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
+import { Dispatch } from "redux";
 
 interface MembershipProductsProps {
   getMembershipProductRecord?: () => void;
@@ -42,6 +35,7 @@ interface MembershipProductsProps {
   getAccounts?: () => void;
   getTaxes?: () => void;
   clearListState?: () => void;
+  getDataCollectionRules?: () => void;
   getDefaultIncomeAccount?: () => void;
   accounts?: Account[];
   taxes?: Tax[];
@@ -135,7 +129,8 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     preferences,
     getMembershipProductContactRelationTypes,
     checkPermissions,
-    getRelationTypes
+    getRelationTypes,
+    getDataCollectionRules
   } = props;
 
   useEffect(() => {
@@ -144,7 +139,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
       const defaultId = preferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID];
       const account = accounts.find(item => item.id === Number(defaultId));
       if (account) {
-        onInit({ ...Initial, incomeAccountId: account.id, taxId: account.tax.id });
+        onInit({ ...Initial, incomeAccountId: account.id, taxId: account.tax?.id });
       } else {
         onInit(Initial);
       }
@@ -159,6 +154,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     getFilters();
     checkPermissions();
     getRelationTypes();
+    getDataCollectionRules();
     return () => {
       clearListState();
     };
@@ -201,21 +197,22 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
   getTaxes: () => dispatch(getPlainTaxes()),
-  getAccounts: () => dispatch(getIncomeAccounts()),
+  getAccounts: () => getPlainAccounts(dispatch,"income"),
   getFilters: () => dispatch(getFilters("MembershipProduct")),
   clearListState: () => dispatch(clearListState()),
   getMembershipProductRecord: (id: string) => dispatch(getMembershipProduct(id)),
   onSave: (id: string, membershipProduct: MembershipProduct) => dispatch(updateMembershipProduct(id, membershipProduct)),
   onCreate: (membershipProduct: MembershipProduct) => dispatch(createMembershipProduct(membershipProduct)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" })),
-  getRelationTypes: () => dispatch(getEntityRelationTypes())
+  getRelationTypes: () => dispatch(getEntityRelationTypes()),
+  getDataCollectionRules: () => dispatch(getDataCollectionRules()),
 });
 
 const mapStateToProps = (state: State) => ({
   updatingTaxes: state.taxes.updatingItems,
   taxes: state.taxes.items,
-  updatingAccounts: state.accounts.updatingIncomeItems,
-  accounts: state.accounts.incomeItems,
+  updatingAccounts: state.plainSearchRecords.Account.loading,
+  accounts: state.plainSearchRecords.Account.items,
   preferences: state.userPreferences
 });
 

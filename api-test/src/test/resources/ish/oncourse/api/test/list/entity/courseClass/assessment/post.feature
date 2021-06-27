@@ -2,13 +2,13 @@
 Feature: Main feature for all POST requests with path 'list/entity/courseClass/assessment'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/assessment'
         * def ishPathClass = 'list/entity/courseClass'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -39,6 +39,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
             "assessmentId":1000,
             "assessmentCode":"code1",
             "assessmentName":"assessment 1",
+            "gradingTypeId":1,
             "contactIds":[],
             "moduleIds":[],
             "releaseDate":"2019-01-01T00:00:00.000Z",
@@ -56,7 +57,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         Given path ishPath + '/' + classId
         When method GET
         Then status 200
-        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
+        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","gradingTypeId":1,"contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPathClass + '/' + classId
@@ -85,15 +86,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         * print "classId = " + classId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def newAssessment =
@@ -120,18 +115,12 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         Given path ishPath + '/' + classId
         When method GET
         Then status 200
-        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
+        And match $ == [{"id":"#number","assessmentId":1000,"courseClassId":"#(~~classId)","assessmentCode":"code1","assessmentName":"assessment 1","gradingTypeId":1,"contactIds":[],"moduleIds":[],"releaseDate":"2019-01-01T00:00:00.000Z","dueDate":"2020-02-01T03:10:00.000Z","submissions":[]}]
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPathClass + '/' + classId
         When method DELETE
@@ -159,15 +148,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         * print "classId = " + classId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def newAssessment =
@@ -192,15 +175,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/a
         And match $.errorMessage == "Sorry, you have no permissions to create Assessment Class. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPathClass + '/' + classId
         When method DELETE

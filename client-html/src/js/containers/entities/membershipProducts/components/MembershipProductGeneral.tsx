@@ -5,13 +5,7 @@
 
 import React from "react";
 import { change } from "redux-form";
-import {
-  Account,
-  ExpiryType,
-  MembershipProduct,
-  ProductStatus,
-  Tax
-} from "@api/model";
+import { Account, ExpiryType, MembershipProduct, ProductStatus, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
 import { Decimal } from "decimal.js-light";
@@ -22,6 +16,8 @@ import { State } from "../../../../reducers/state";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { PreferencesState } from "../../../preferences/reducers/state";
+import { normalizeString } from "../../../../common/utils/strings";
 
 interface MembershipProductGeneralProps {
   twoColumn?: boolean;
@@ -31,6 +27,7 @@ interface MembershipProductGeneralProps {
   values?: MembershipProduct;
   dispatch?: any;
   form?: string;
+  dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
 const validateNonNegative = value => (value < 0 ? "Must be non negative" : undefined);
@@ -116,7 +113,7 @@ const handleChangeTax = (values: MembershipProduct, taxes: Tax[], dispatch, form
 
 const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
   const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === account.tax.id);
+  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
   if (tax.id !== values.taxId) {
     const taxRate = tax ? tax.rate : 0;
     dispatch(change(form, "taxId", tax.id));
@@ -126,7 +123,7 @@ const handleChangeAccount = (values: MembershipProduct, taxes: Tax[], accounts: 
 
 const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form
+    twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
   return (
@@ -170,68 +167,84 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
         />
       </div>
-      <div className="mr-2">
-        <Grid container>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="feeExTax"
-              validate={[validateSingleMandatoryField, validateNonNegative]}
-              onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
-              props={{
-                label: "Fee ex tax"
-              }}
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="money"
-              name="totalFee"
-              validate={validateNonNegative}
-              onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
-              props={{
-                label: "Total fee"
-              }}
-            />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 4}>
-            <FormField
-              type="select"
-              name="taxId"
-              onChange={handleChangeTax(values, taxes, dispatch, form)}
-              required
-              props={{
-                label: "Tax",
-                items: taxes,
-                selectValueMark: "id",
-                selectLabelCondition: tax => tax.code
-              }}
-            />
-          </Grid>
+      <Grid container className="mr-2 mb-2">
+        <Grid item xs={twoColumn ? 2 : 4}>
+          <FormField
+            type="money"
+            name="feeExTax"
+            validate={[validateSingleMandatoryField, validateNonNegative]}
+            onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+            props={{
+              label: "Fee ex tax"
+            }}
+          />
         </Grid>
-      </div>
-      <FormField
-        type="select"
-        name="status"
-        label="Status"
-        items={productStatusItems}
-        selectLabelMark="value"
-      />
-      <div className="mb-2">
-        <CustomSelector
-          caption="Expires"
-          options={expiryOptions}
-          onSelect={onSelectExpiry(props)}
-          initialIndex={initialIndexExpiry}
-        />
-      </div>
+        <Grid item xs={twoColumn ? 2 : 4}>
+          <FormField
+            type="money"
+            name="totalFee"
+            validate={validateNonNegative}
+            onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+            props={{
+              label: "Total fee"
+            }}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 2 : 4}>
+          <FormField
+            type="select"
+            name="taxId"
+            onChange={handleChangeTax(values, taxes, dispatch, form)}
+            required
+            props={{
+              label: "Tax",
+              items: taxes,
+              selectValueMark: "id",
+              selectLabelCondition: tax => tax.code
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="status"
+            label="Status"
+            items={productStatusItems}
+            selectLabelMark="value"
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <FormField
+            type="select"
+            name="dataCollectionRuleId"
+            label="Data collection rule"
+            selectValueMark="id"
+            selectLabelMark="name"
+            items={dataCollectionRules || []}
+            format={normalizeString}
+            fullWidth
+            required
+            sort
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <CustomSelector
+            caption="Expires"
+            options={expiryOptions}
+            onSelect={onSelectExpiry(props)}
+            initialIndex={initialIndexExpiry}
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 };
 
 const mapStateToProps = (state: State) => ({
-  accounts: state.accounts.incomeItems,
+  dataCollectionRules: state.preferences.dataCollectionRules,
+  accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(MembershipProductGeneral);
+export default connect<any, any, any>(mapStateToProps)(MembershipProductGeneral);

@@ -1,0 +1,37 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 84-1
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Product
+              columnName: underpaymentAccountId
+      changes:
+        - addColumn:
+            tableName: Product
+            columns:
+              - column:
+                  name: underpaymentAccountId
+                  type: BIGINT
+        - addForeignKeyConstraint:
+            baseColumnNames: underpaymentAccountId
+            baseTableName: Product
+            constraintName: fk_Voucher_UnderpaymentAccount_Id
+            referencedColumnNames: id
+            referencedTableName: Account
+
+  - changeSet:
+      id: 84-2
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Product
+            columnName: underpaymentAccountId
+      changes:
+        - sql:
+            comment: populate Voucher.underpaymentAccountId with preference value
+            sql: update Product set underpaymentAccountId = (select CAST(valueString AS UNSIGNED INTEGER)  from Preference where name='account.default.voucherUnderpayment.id') where type=3;

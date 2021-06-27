@@ -12,7 +12,7 @@ import { validateSingleMandatoryField } from "../../../../common/utils/validatio
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 
 const qualificationTypes = Object.keys(QualificationType)
-  .filter(i => isNaN(Number(i)))
+  .filter(i => Number.isNaN(Number(i)))
   .map(j => ({
     label: j,
     value: j
@@ -20,16 +20,20 @@ const qualificationTypes = Object.keys(QualificationType)
 
 qualificationTypes.sort(sortDefaultSelectItems);
 
-const QualificationsEditView = (props: any) => {
+const QualificationsEditView: React.FC<any> = (props: any) => {
   const {
     isNew, values, updateDeleteCondition, twoColumn
   } = props;
 
-  const isCustom = values && values.isCustom === true;
+  const [isCustom, setIsCustom] = React.useState<boolean>(false);
 
-  if (updateDeleteCondition) {
-    updateDeleteCondition(isCustom);
-  }
+  React.useEffect(() => {
+    const isCustomDelete = values && values.isCustom === true;
+    setIsCustom(isCustomDelete);
+    if (updateDeleteCondition) {
+      updateDeleteCondition(isCustomDelete);
+    }
+  }, [values && values.isCustom, updateDeleteCondition]);
 
   const isDisabled = isNew ? false : !isCustom;
 

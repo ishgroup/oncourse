@@ -15,10 +15,10 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
 
 import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
-import ish.oncourse.server.CayenneService
 
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
@@ -40,7 +40,7 @@ class SessionManager implements ISessionManager {
     private Provider<Server> serverProvider
 
     @Inject
-    private CayenneService cayenneService
+    private ICayenneService cayenneService
 
     @Inject
     DefaultServletEnvironment defaultServletEnvironment
@@ -55,7 +55,7 @@ class SessionManager implements ISessionManager {
         if (token) {
             return (token as ApiToken).systemUser
         }
-        
+
         Session session = request?.session as Session
         if (session) {
             return (SystemUser) session.getAttribute(USER_ATTRIBUTE)
@@ -115,19 +115,14 @@ class SessionManager implements ISessionManager {
     }
 
     private void remove(Session session) {
+        if (!session) {
+            return
+        }
         SessionIdManager manager = serverProvider.get().sessionIdManager
-        if (session != null) {
-
-            try {
-                SystemUser user = session.getAttribute(USER_ATTRIBUTE) as SystemUser
-                SESSION_ATTRIBUTES.remove(user.id)
-                logger.warn("User {} logged out.", user?.email?:user?.login)
-
-            } catch (Exception e) {
-                logger.catching(e)
-            }
-
-            logger.debug("found session {}", session)
+        SystemUser user = session.getAttribute(USER_ATTRIBUTE) as SystemUser
+        if (user) {
+            SESSION_ATTRIBUTES.remove(user.id)
+            logger.warn("User {} logged out.", user?.email ?: user?.login)
 
             session.invalidate()
             manager.invalidateAll(session.id)

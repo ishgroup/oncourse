@@ -21,7 +21,8 @@ import {
   EmailTemplate,
   ImportModel,
   EntityRelationType,
-  Language
+  Language,
+  GradingType
 } from "@api/model";
 import { mockPreferences } from "./data/preferences";
 import { mockIntegrations } from "./data/integrations";
@@ -50,7 +51,6 @@ import { mockSites } from "./data/entities/sites";
 import { mockRooms } from "./data/entities/rooms";
 import { mockCourseClasses } from "./data/entities/courseClasses";
 import { mockTimetable } from "./data/timetable";
-
 import { mockCurrency } from "./data/currency";
 import { mockColumnsSettings } from "./data/columns";
 import { mockTimezones } from "./data/timezones";
@@ -91,8 +91,10 @@ import { mockDocuments } from "./data/entities/documents";
 import { mockPriorLearnings } from "./data/entities/priorLearnings";
 import { mockTutorRoles } from "./data/preference/tutorRoles";
 import { mockFundingContracts } from "./data/preference/fundingContracts";
-
-export const CreateMockDB = (): MockDB => new MockDB();
+import { mockCheckout } from "./data/checkout";
+import { mockGradingTypes } from "./data/preference/grading";
+import { mockSecurityRoles } from "./data/security/roles";
+import { mockSecurityUsers } from "./data/security/users";
 
 export class MockDB {
   integrations: any;
@@ -233,6 +235,14 @@ export class MockDB {
 
   fundingContracts: any;
 
+  checkout: any;
+
+  gradingTypes: GradingType[];
+
+  securityRoles: any;
+
+  securityUsers: any;
+
   constructor() {
     this.init();
   }
@@ -257,6 +267,7 @@ export class MockDB {
     this.languages = mockLanguages.call(this);
     this.tutorRoles = mockTutorRoles.call(this);
     this.fundingContracts = mockFundingContracts.call(this);
+    this.gradingTypes = mockGradingTypes.call(this);
 
     //  Automation
     this.scripts = mockScripts.call(this);
@@ -333,9 +344,18 @@ export class MockDB {
 
     // Timetable
     this.timetable = mockTimetable.call(this);
+
+    // Checkout
+    this.checkout = mockCheckout.call(this);
+
+    // Secutiry
+    this.securityRoles = mockSecurityRoles.call(this);
+    this.securityUsers = mockSecurityUsers.call(this);
   }
 
   getList(entity: string) {
     return this[entity];
   }
 }
+
+export const CreateMockDB = (): MockDB => new MockDB();

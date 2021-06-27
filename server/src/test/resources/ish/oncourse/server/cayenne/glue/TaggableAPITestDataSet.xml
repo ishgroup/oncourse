@@ -1,86 +1,188 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
 
-	<FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="2" type="2" name="fkname2" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfiguration id="3" type="3" name="fkname3" createdOn="2017-06-20 12:00:00.0"
+                      modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationScheme id="1" name="fkname" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-	<FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	<FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-	
-	<Course feeHelpClass="0" fieldConfigurationSchemaId="1" enrolmentType="1" CODE="TENV" CREATEDON="2010-10-12 15:25:04.777" ID="360" ISSHOWNONWEB="0" ISVET="0" MODIFIEDON="2012-05-08 16:39:51.019" ALLOWWAITINGLISTS="1" ISSUFFICIENTFORQUALIFICATION="0" CURRENTLYOFFERED="1" WEBDESCRIPTION="This course focuses on the essential knowledge and skills required to successfully work in a vocational educational learning environment. You will learn how to manage your OH&amp;S responsibilities, discover how the VET sector operates, be able to unpack training packages to meet client needs and ensure your learning and assessment demonstrates inclusive practice.&#xA;&#xA;Please Note: In order to successfully complete this qualification you will need to deliver training for a group of learners in your workplace. If you are not currently employed as a trainer we will ask you to either volunteer your services to a community organisation OR we will provide a simulated workplace on your behalf.&#xA;&#xA;h2. Agenda&#xA;&#xA;During this course the intention is that the following topics will be covered, but not necessarily in the order given. Due to the variable nature of Adult Education classes, parts of the curriculum may be adapted to suit the needs of the class.&#xA;&#xA;Content:&#xA;&#xA;    * The VET Sector &#8211; an overview&#xA;    * Expectation of Trainer and Assessors in the VET sector&#xA;    * Meet clients&#8217; needs with training packages&#xA;    * OH&amp;S responsibilities and legislation&#xA;    * Your role in ensuring a safe and healthy learning environment&#xA;    * Identify hazards in the learning environment&#xA;    * Assess risks&#xA;    * Develop action plans and monitoring the learning environment&#xA;    * What is inclusivity?&#xA;    * Relevant legislation to support inclusivity&#xA;    * Resources to support inclusivity&#xA;    * Your role in practicing and promoting inclusivity&#xA;    * Work practices to support an inclusive culture&#xA;&#xA;h2. Objectives&#xA;&#xA;The intended Learning Outcomes for this course are as follows.&#xA;&#xA;By the end of this course, students will be able to:&#xA;&#xA;    * Explain the components of Vocational Education &amp; Training Sector (VET)&#xA;    * Discuss and identify relevant workplace standards or benchmarks&#xA;    * Identify and unpack the different parts of a training package in particular a unit of competency&#xA;    * Define and discuss the concept of inclusivity in a learning/assessment environment&#xA;    * Select appropriate solutions, which could assist with different inclusivity issues in a learning context&#xA;    * Identify the OH&amp;S responsibilities of trainers and assessors&#xA;    * Complete an OH&amp;S hazard/ risk assessment in a simulated environment&#xA;&#xA;Any student attending an accredited course must present photo ID at their first class to receive their qualification.&#xA;&#xA;PLS NOTE: All classes need a minimum number of students to go ahead. If your course does not have enough students it will be cancelled and you will be informed. ***Please be aware that you maybe be informed of a cancellation &amp;/or change via SMS or E-mail." ISTRAINEESHIP="0" NAME="Training and Assessment: Environment Units"/>
+  <FieldConfigurationLink id="1" configurationId="1" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="2" configurationId="2" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+  <FieldConfigurationLink id="3" configurationId="3" schemeId="1" createdOn="2017-06-20 12:00:00.0"
+                          modifiedOn="2017-06-20 12:00:00.0"/>
+
+  <Course feeHelpClass="0" fieldConfigurationSchemaId="1" enrolmentType="1" CODE="TENV"
+          CREATEDON="2010-10-12 15:25:04.777" ID="360" ISSHOWNONWEB="0" ISVET="0" MODIFIEDON="2012-05-08 16:39:51.019"
+          ALLOWWAITINGLISTS="1" ISSUFFICIENTFORQUALIFICATION="0" CURRENTLYOFFERED="1"
+          WEBDESCRIPTION="This course focuses on the essential knowledge and skills required to successfully work in a vocational educational learning environment. You will learn how to manage your OH&amp;S responsibilities, discover how the VET sector operates, be able to unpack training packages to meet client needs and ensure your learning and assessment demonstrates inclusive practice.&#xA;&#xA;Please Note: In order to successfully complete this qualification you will need to deliver training for a group of learners in your workplace. If you are not currently employed as a trainer we will ask you to either volunteer your services to a community organisation OR we will provide a simulated workplace on your behalf.&#xA;&#xA;h2. Agenda&#xA;&#xA;During this course the intention is that the following topics will be covered, but not necessarily in the order given. Due to the variable nature of Adult Education classes, parts of the curriculum may be adapted to suit the needs of the class.&#xA;&#xA;Content:&#xA;&#xA;    * The VET Sector &#8211; an overview&#xA;    * Expectation of Trainer and Assessors in the VET sector&#xA;    * Meet clients&#8217; needs with training packages&#xA;    * OH&amp;S responsibilities and legislation&#xA;    * Your role in ensuring a safe and healthy learning environment&#xA;    * Identify hazards in the learning environment&#xA;    * Assess risks&#xA;    * Develop action plans and monitoring the learning environment&#xA;    * What is inclusivity?&#xA;    * Relevant legislation to support inclusivity&#xA;    * Resources to support inclusivity&#xA;    * Your role in practicing and promoting inclusivity&#xA;    * Work practices to support an inclusive culture&#xA;&#xA;h2. Objectives&#xA;&#xA;The intended Learning Outcomes for this course are as follows.&#xA;&#xA;By the end of this course, students will be able to:&#xA;&#xA;    * Explain the components of Vocational Education &amp; Training Sector (VET)&#xA;    * Discuss and identify relevant workplace standards or benchmarks&#xA;    * Identify and unpack the different parts of a training package in particular a unit of competency&#xA;    * Define and discuss the concept of inclusivity in a learning/assessment environment&#xA;    * Select appropriate solutions, which could assist with different inclusivity issues in a learning context&#xA;    * Identify the OH&amp;S responsibilities of trainers and assessors&#xA;    * Complete an OH&amp;S hazard/ risk assessment in a simulated environment&#xA;&#xA;Any student attending an accredited course must present photo ID at their first class to receive their qualification.&#xA;&#xA;PLS NOTE: All classes need a minimum number of students to go ahead. If your course does not have enough students it will be cancelled and you will be informed. ***Please be aware that you maybe be informed of a cancellation &amp;/or change via SMS or E-mail."
+          ISTRAINEESHIP="0" NAME="Training and Assessment: Environment Units"/>
 
 
-	<Node CREATEDON="2010-05-05 13:41:35.183" ISVOCABULARY="1" MODIFIEDON="2010-05-05 13:41:35.183" NAME="Payroll wage intervals" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" SPECIALTYPE="4" ID="421"/>
-	<Node CREATEDON="2010-05-05 13:41:35.184" ISVOCABULARY="0" MODIFIEDON="2010-05-05 13:41:35.184" NAME="Monthly" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="422" PARENTID="421"/>
-	<Node CREATEDON="2010-05-05 13:41:35.184" ISVOCABULARY="0" MODIFIEDON="2010-05-05 13:41:35.184" NAME="Fortnightly" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="420" PARENTID="421"/>
-	<Node CREATEDON="2010-05-05 13:41:35.184" ISVOCABULARY="0" MODIFIEDON="2010-05-05 13:41:35.184" NAME="Weekly" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="423" PARENTID="421"/>
-	<Node CREATEDON="2011-03-04 13:31:48.467" ISVOCABULARY="1" MODIFIEDON="2011-03-04 13:31:48.467" NAME="Employment Status" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="461"/>
-	<Node CREATEDON="2011-03-04 13:31:48.469" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.469" NAME="Casual" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="460" PARENTID="461"/>
-	<Node CREATEDON="2011-03-04 13:31:48.469" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.469" NAME="Part time" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="463" PARENTID="461"/>
-	<Node CREATEDON="2011-03-04 13:31:48.468" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.468" NAME="Full time" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="464" PARENTID="461"/>
-	<Node CREATEDON="2011-03-04 13:31:48.469" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.469" NAME="Contractor" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="462" PARENTID="461"/>
-	<Node CREATEDON="2008-10-21 09:22:33.106" ISVOCABULARY="1" MODIFIEDON="2011-07-18 15:34:58.779" NAME="Mailing lists" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" SPECIALTYPE="3" ID="400"/>
-	<Node CREATEDON="2007-07-17 14:22:43.32" ISVOCABULARY="1" MODIFIEDON="2008-03-31 12:44:29.521" NAME="Subjects" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" SPECIALTYPE="1" ID="200"/>
-	<Node CREATEDON="2007-07-17 14:22:43.32" ISVOCABULARY="1" MODIFIEDON="2011-07-18 15:34:58.779" NAME="Home web page" NodeTYPE="2" SHORTNAME="Home" ISWEBVISIBLE="1" WEIGHT="1" SPECIALTYPE="2" CONTENTS="This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse." ID="209"/>
-	<Node CREATEDON="2007-07-17 14:22:43.323" ISVOCABULARY="0" MODIFIEDON="2007-11-20 18:35:05.486" NAME="Creative Arts" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Creative Arts comprises of a whole host of activities and hobbies that are related to making things with one&apos;s own hands and skill." ID="215" PARENTID="200"/>
-	<Node CREATEDON="2007-07-17 14:22:43.378" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254" NAME="Computing, Business &amp; Professional" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Business is the social science of managing people to organize and maintain collective productivity toward accomplishing particular creative and productive goals, usually to generate profit." ID="217" PARENTID="200"/>
-	<Node CREATEDON="2007-07-17 14:22:43.385" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="The Law &amp; You" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Know the Law and where you stand." ID="212" PARENTID="217"/>
-	<Node CREATEDON="2007-07-17 14:22:43.388" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Internet" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Learn the tricks of the trade: and stop being scared of the technical buzzwords you may not be familiar with." ID="207" PARENTID="217"/>
-	<Node CREATEDON="2007-07-17 14:22:43.386" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Design &amp; Publishing" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Desktop publishing skills are extremely useful: for small business, clubs and groups, and even for creating family newsletters." ID="216" PARENTID="217"/>
-	<Node CREATEDON="2007-07-17 14:22:43.373" ISVOCABULARY="0" MODIFIEDON="2007-11-21 15:11:33.265" NAME="Painting &amp; Drawing" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Release your inner artist! Express yourself via the paintbrush or the pencil. Paint yourself out of a corner." ID="202" PARENTID="215"/>
-	<Node CREATEDON="2007-07-17 14:22:43.37" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254" NAME="General Arts" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="We offer a range of exciting general visual arts courses." ID="206" PARENTID="215"/>
-	<Node CREATEDON="2007-07-17 14:22:43.335" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254" NAME="Photography" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Express yourself and the world around you through the camera lens." ID="213" PARENTID="215"/>
-	<Node CREATEDON="2007-07-17 14:22:43.369" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254" NAME="Jewellery" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Make your own beautiful jewellery. Impress your friends and family with beautiful hand-made one-off pieces." ID="205" PARENTID="215"/>
-	<Node CREATEDON="2007-07-17 14:22:43.383" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Business" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Learn accounting or general business fundamentals, and increase your efficiency, productivity and bank balance." ID="214" PARENTID="217"/>
-	<Node CREATEDON="2007-07-17 14:22:43.381" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Investments" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Learn to invest your hard-earned money wisely." ID="203" PARENTID="217"/>
-	<Node CREATEDON="2007-08-01 16:14:24.954" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Computers" NodeTYPE="1" SHORTNAME="Computers" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="In a fast-moving and innovative technological domain, one has to keep abeast of the latest advancements." ID="240" PARENTID="217"/>
-	<Node CREATEDON="2007-08-07 13:09:45.428" ISVOCABULARY="0" MODIFIEDON="2008-03-31 12:37:24.012" NAME="St. Trinians College" NodeTYPE="2" SHORTNAME="About" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="St. Trinians College has been serving the inner city area for over thirty years and is a non-profit incorporated organisation, partly funded by the NSW Board of Adult and Community Education (BACE).&#xA;&#xA;We offer a wide range of day and evening courses. You must be 15 years old to join a class, but there is no upper limit.&#xA;&#xA;We accept people from any suburb. The College has a voluntary Management Committee who are listed below.&#xA;&#xA;h3. Mission Statement&#xA;&#xA;To provide the people in the inner city region with equitable opportunities to access quality adult vocational and personal enrichment education.&#xA;&#xA;h3. Quality Policy&#xA;&#xA;St. Trinians College is an established Adult Education provider committed to giving customers quality training and service which meets or exceeds their expectations. The College adheres to the Standards of the Australian Quality Framework. Our objective is to maintain a quality system which will enable us to continuously monitor and improve our proceedures, programs and services. Commitment to quality is the responsibility of every member of the organisation." ID="280" PARENTID="209"/>
-	<Node CREATEDON="2007-08-07 13:12:21.168" ISVOCABULARY="0" MODIFIEDON="2008-03-31 12:37:24.012" NAME="Principal&apos;s Message" NodeTYPE="2" SHORTNAME="Principal&apos;s Message" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#xA;&#xA;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#xA;&#xA;*Jim Smith*&#xA;Principal" ID="281" PARENTID="280"/>
-	<Node CREATEDON="2007-11-16 18:25:14.84" ISVOCABULARY="1" MODIFIEDON="2007-11-20 14:01:18.254" NAME="Regions" NodeTYPE="1" SHORTNAME="Regions" ISWEBVISIBLE="1" WEIGHT="1" ID="304"/>
-	<Node CREATEDON="2007-11-19 11:58:05.481" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="For the mind" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="333" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.504" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Online Learning" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="335" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.511" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Sport, Exercise &amp; The Outdoors" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="340" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.514" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Travel, Treks &amp; Study Tours" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="337" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.499" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Nature, Science &amp; Technical" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="338" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.494" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Country Areas" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="336" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.53" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Health &amp; Wellbeing" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="334" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.497" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Special Events" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="342" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.507" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Home &amp; Lifestyle" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="341" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.509" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Writing" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="332" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 11:58:05.502" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Music, Dance &amp; Drama" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="339" PARENTID="200"/>
-	<Node CREATEDON="2007-11-19 12:00:29.731" ISVOCABULARY="0" MODIFIEDON="2012-05-08 16:39:30.11" NAME="South" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="345" PARENTID="304"/>
-	<Node CREATEDON="2007-11-19 12:00:29.726" ISVOCABULARY="0" MODIFIEDON="2012-05-08 16:39:42.346" NAME="North" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="343" PARENTID="304"/>
-	<Node CREATEDON="2007-11-19 12:00:29.728" ISVOCABULARY="0" MODIFIEDON="2012-05-08 16:40:45.752" NAME="North West" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="344" PARENTID="304"/>
-	<Node CREATEDON="2007-11-19 12:09:51.667" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Digital Imaging" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="348" PARENTID="217"/>
-	<Node CREATEDON="2007-11-19 12:09:51.569" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Needles, Threads &amp; Textiles" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="347" PARENTID="215"/>
-	<Node CREATEDON="2007-11-19 12:25:10.222" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Singing" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="357" PARENTID="339"/>
-	<Node CREATEDON="2007-11-19 12:25:10.143" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Personal-Development" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="350" PARENTID="334"/>
-	<Node CREATEDON="2007-11-19 12:25:10.212" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="General" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="356" PARENTID="341"/>
-	<Node CREATEDON="2007-11-19 12:25:10.202" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Historical Walks" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="369" PARENTID="337"/>
-	<Node CREATEDON="2007-11-19 12:25:10.199" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Weekend Getaways" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="351" PARENTID="337"/>
-	<Node CREATEDON="2007-11-19 12:25:10.19" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Mechanical &amp; Technical" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="361" PARENTID="338"/>
-	<Node CREATEDON="2007-11-19 12:25:10.146" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="First Aid" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="364" PARENTID="334"/>
-	<Node CREATEDON="2007-11-19 12:25:10.136" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="University Tasters" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="363" PARENTID="333"/>
-	<Node CREATEDON="2007-11-19 12:25:10.141" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Natural Therapies" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="362" PARENTID="334"/>
-	<Node CREATEDON="2007-11-19 12:25:10.217" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Drama" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="349" PARENTID="339"/>
-	<Node CREATEDON="2007-11-19 12:25:10.153" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Sport &amp; Games" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="366" PARENTID="340"/>
-	<Node CREATEDON="2007-11-19 12:25:10.139" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="School for Seniors" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="358" PARENTID="333"/>
-	<Node CREATEDON="2007-11-19 12:25:10.187" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Animals" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="365" PARENTID="338"/>
-	<Node CREATEDON="2007-11-19 12:25:10.207" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Food &amp; Wine" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="352" PARENTID="341"/>
-	<Node CREATEDON="2007-11-19 12:25:10.15" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Outdoor &amp; Adventure" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="355" PARENTID="340"/>
-	<Node CREATEDON="2007-11-19 12:25:10.204" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="DIY - Do it yourself!" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="359" PARENTID="341"/>
-	<Node CREATEDON="2007-11-19 12:25:10.214" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Dance" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="360" PARENTID="339"/>
-	<Node CREATEDON="2007-11-19 12:25:10.219" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Instrumental" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="354" PARENTID="339"/>
-	<Node CREATEDON="2007-11-19 12:25:10.193" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Science &amp; the Environment" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="368" PARENTID="338"/>
-	<Node CREATEDON="2007-11-19 12:25:10.148" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Boats and Marine" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="367" PARENTID="340"/>
-	<Node CREATEDON="2007-11-19 12:25:10.21" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Gardening" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="353" PARENTID="341"/>
+  <Node CREATEDON="2010-05-05 13:41:35.183" ISVOCABULARY="1" MODIFIEDON="2010-05-05 13:41:35.183"
+        NAME="Payroll wage intervals" NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" SPECIALTYPE="4" ID="421"/>
+  <Node CREATEDON="2010-05-05 13:41:35.184" ISVOCABULARY="0" MODIFIEDON="2010-05-05 13:41:35.184" NAME="Monthly"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="422" PARENTID="421"/>
+  <Node CREATEDON="2010-05-05 13:41:35.184" ISVOCABULARY="0" MODIFIEDON="2010-05-05 13:41:35.184" NAME="Fortnightly"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="420" PARENTID="421"/>
+  <Node CREATEDON="2010-05-05 13:41:35.184" ISVOCABULARY="0" MODIFIEDON="2010-05-05 13:41:35.184" NAME="Weekly"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="423" PARENTID="421"/>
+  <Node CREATEDON="2011-03-04 13:31:48.467" ISVOCABULARY="1" MODIFIEDON="2011-03-04 13:31:48.467"
+        NAME="Employment Status" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="461"/>
+  <Node CREATEDON="2011-03-04 13:31:48.469" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.469" NAME="Casual"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="460" PARENTID="461"/>
+  <Node CREATEDON="2011-03-04 13:31:48.469" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.469" NAME="Part time"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="463" PARENTID="461"/>
+  <Node CREATEDON="2011-03-04 13:31:48.468" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.468" NAME="Full time"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="464" PARENTID="461"/>
+  <Node CREATEDON="2011-03-04 13:31:48.469" ISVOCABULARY="0" MODIFIEDON="2011-03-04 13:31:48.469" NAME="Contractor"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="462" PARENTID="461"/>
+  <Node CREATEDON="2008-10-21 09:22:33.106" ISVOCABULARY="1" MODIFIEDON="2011-07-18 15:34:58.779" NAME="Mailing lists"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" SPECIALTYPE="3" ID="400"/>
+  <Node CREATEDON="2007-07-17 14:22:43.32" ISVOCABULARY="1" MODIFIEDON="2008-03-31 12:44:29.521" NAME="Subjects"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" SPECIALTYPE="1" ID="200"/>
+  <Node CREATEDON="2007-07-17 14:22:43.32" ISVOCABULARY="1" MODIFIEDON="2011-07-18 15:34:58.779" NAME="Home web page"
+        NodeTYPE="2" SHORTNAME="Home" ISWEBVISIBLE="1" WEIGHT="1" SPECIALTYPE="2"
+        CONTENTS="This is the home page for your college web site. ish onCourse is able to synchronise not only your course and enrolment information with your web site, but also any other pages you wish to create. This content management system is managed completely from within ish onCourse."
+        ID="209"/>
+  <Node CREATEDON="2007-07-17 14:22:43.323" ISVOCABULARY="0" MODIFIEDON="2007-11-20 18:35:05.486" NAME="Creative Arts"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Creative Arts comprises of a whole host of activities and hobbies that are related to making things with one&apos;s own hands and skill."
+        ID="215" PARENTID="200"/>
+  <Node CREATEDON="2007-07-17 14:22:43.378" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254"
+        NAME="Computing, Business &amp; Professional" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Business is the social science of managing people to organize and maintain collective productivity toward accomplishing particular creative and productive goals, usually to generate profit."
+        ID="217" PARENTID="200"/>
+  <Node CREATEDON="2007-07-17 14:22:43.385" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472"
+        NAME="The Law &amp; You" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Know the Law and where you stand."
+        ID="212" PARENTID="217"/>
+  <Node CREATEDON="2007-07-17 14:22:43.388" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Internet"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Learn the tricks of the trade: and stop being scared of the technical buzzwords you may not be familiar with."
+        ID="207" PARENTID="217"/>
+  <Node CREATEDON="2007-07-17 14:22:43.386" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472"
+        NAME="Design &amp; Publishing" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Desktop publishing skills are extremely useful: for small business, clubs and groups, and even for creating family newsletters."
+        ID="216" PARENTID="217"/>
+  <Node CREATEDON="2007-07-17 14:22:43.373" ISVOCABULARY="0" MODIFIEDON="2007-11-21 15:11:33.265"
+        NAME="Painting &amp; Drawing" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Release your inner artist! Express yourself via the paintbrush or the pencil. Paint yourself out of a corner."
+        ID="202" PARENTID="215"/>
+  <Node CREATEDON="2007-07-17 14:22:43.37" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254" NAME="General Arts"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="We offer a range of exciting general visual arts courses."
+        ID="206" PARENTID="215"/>
+  <Node CREATEDON="2007-07-17 14:22:43.335" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254" NAME="Photography"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Express yourself and the world around you through the camera lens." ID="213" PARENTID="215"/>
+  <Node CREATEDON="2007-07-17 14:22:43.369" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:18.254" NAME="Jewellery"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Make your own beautiful jewellery. Impress your friends and family with beautiful hand-made one-off pieces."
+        ID="205" PARENTID="215"/>
+  <Node CREATEDON="2007-07-17 14:22:43.383" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Business"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Learn accounting or general business fundamentals, and increase your efficiency, productivity and bank balance."
+        ID="214" PARENTID="217"/>
+  <Node CREATEDON="2007-07-17 14:22:43.381" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Investments"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" CONTENTS="Learn to invest your hard-earned money wisely." ID="203"
+        PARENTID="217"/>
+  <Node CREATEDON="2007-08-01 16:14:24.954" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Computers"
+        NodeTYPE="1" SHORTNAME="Computers" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="In a fast-moving and innovative technological domain, one has to keep abeast of the latest advancements."
+        ID="240" PARENTID="217"/>
+  <Node CREATEDON="2007-08-07 13:09:45.428" ISVOCABULARY="0" MODIFIEDON="2008-03-31 12:37:24.012"
+        NAME="St. Trinians College" NodeTYPE="2" SHORTNAME="About" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="St. Trinians College has been serving the inner city area for over thirty years and is a non-profit incorporated organisation, partly funded by the NSW Board of Adult and Community Education (BACE).&#xA;&#xA;We offer a wide range of day and evening courses. You must be 15 years old to join a class, but there is no upper limit.&#xA;&#xA;We accept people from any suburb. The College has a voluntary Management Committee who are listed below.&#xA;&#xA;h3. Mission Statement&#xA;&#xA;To provide the people in the inner city region with equitable opportunities to access quality adult vocational and personal enrichment education.&#xA;&#xA;h3. Quality Policy&#xA;&#xA;St. Trinians College is an established Adult Education provider committed to giving customers quality training and service which meets or exceeds their expectations. The College adheres to the Standards of the Australian Quality Framework. Our objective is to maintain a quality system which will enable us to continuously monitor and improve our proceedures, programs and services. Commitment to quality is the responsibility of every member of the organisation."
+        ID="280" PARENTID="209"/>
+  <Node CREATEDON="2007-08-07 13:12:21.168" ISVOCABULARY="0" MODIFIEDON="2008-03-31 12:37:24.012"
+        NAME="Principal&apos;s Message" NodeTYPE="2" SHORTNAME="Principal&apos;s Message" ISWEBVISIBLE="1" WEIGHT="1"
+        CONTENTS="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#xA;&#xA;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#xA;&#xA;*Jim Smith*&#xA;Principal"
+        ID="281" PARENTID="280"/>
+  <Node CREATEDON="2007-11-16 18:25:14.84" ISVOCABULARY="1" MODIFIEDON="2007-11-20 14:01:18.254" NAME="Regions"
+        NodeTYPE="1" SHORTNAME="Regions" ISWEBVISIBLE="1" WEIGHT="1" ID="304"/>
+  <Node CREATEDON="2007-11-19 11:58:05.481" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="For the mind"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="333" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.504" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Online Learning"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="335" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.511" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Sport, Exercise &amp; The Outdoors" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="340" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.514" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Travel, Treks &amp; Study Tours" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="337" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.499" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Nature, Science &amp; Technical" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="338" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.494" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Country Areas"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="336" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.53" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Health &amp; Wellbeing" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="334" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.497" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Special Events"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="342" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.507" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Home &amp; Lifestyle" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="341" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.509" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:55:48.472" NAME="Writing"
+        NodeTYPE="1" ISWEBVISIBLE="0" WEIGHT="1" ID="332" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 11:58:05.502" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Music, Dance &amp; Drama" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="339" PARENTID="200"/>
+  <Node CREATEDON="2007-11-19 12:00:29.731" ISVOCABULARY="0" MODIFIEDON="2012-05-08 16:39:30.11" NAME="South"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="345" PARENTID="304"/>
+  <Node CREATEDON="2007-11-19 12:00:29.726" ISVOCABULARY="0" MODIFIEDON="2012-05-08 16:39:42.346" NAME="North"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="343" PARENTID="304"/>
+  <Node CREATEDON="2007-11-19 12:00:29.728" ISVOCABULARY="0" MODIFIEDON="2012-05-08 16:40:45.752" NAME="North West"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="344" PARENTID="304"/>
+  <Node CREATEDON="2007-11-19 12:09:51.667" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Digital Imaging"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="348" PARENTID="217"/>
+  <Node CREATEDON="2007-11-19 12:09:51.569" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Needles, Threads &amp; Textiles" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="347" PARENTID="215"/>
+  <Node CREATEDON="2007-11-19 12:25:10.222" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Singing"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="357" PARENTID="339"/>
+  <Node CREATEDON="2007-11-19 12:25:10.143" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Personal-Development" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="350" PARENTID="334"/>
+  <Node CREATEDON="2007-11-19 12:25:10.212" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="General"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="356" PARENTID="341"/>
+  <Node CREATEDON="2007-11-19 12:25:10.202" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465"
+        NAME="Historical Walks" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="369" PARENTID="337"/>
+  <Node CREATEDON="2007-11-19 12:25:10.199" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465"
+        NAME="Weekend Getaways" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="351" PARENTID="337"/>
+  <Node CREATEDON="2007-11-19 12:25:10.19" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Mechanical &amp; Technical" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="361" PARENTID="338"/>
+  <Node CREATEDON="2007-11-19 12:25:10.146" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="First Aid"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="364" PARENTID="334"/>
+  <Node CREATEDON="2007-11-19 12:25:10.136" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="University Tasters" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="363" PARENTID="333"/>
+  <Node CREATEDON="2007-11-19 12:25:10.141" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Natural Therapies" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="362" PARENTID="334"/>
+  <Node CREATEDON="2007-11-19 12:25:10.217" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Drama"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="349" PARENTID="339"/>
+  <Node CREATEDON="2007-11-19 12:25:10.153" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Sport &amp; Games" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="366" PARENTID="340"/>
+  <Node CREATEDON="2007-11-19 12:25:10.139" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="School for Seniors" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="358" PARENTID="333"/>
+  <Node CREATEDON="2007-11-19 12:25:10.187" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043" NAME="Animals"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="365" PARENTID="338"/>
+  <Node CREATEDON="2007-11-19 12:25:10.207" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Food &amp; Wine"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="352" PARENTID="341"/>
+  <Node CREATEDON="2007-11-19 12:25:10.15" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Outdoor &amp; Adventure" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="355" PARENTID="340"/>
+  <Node CREATEDON="2007-11-19 12:25:10.204" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465"
+        NAME="DIY - Do it yourself!" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="359" PARENTID="341"/>
+  <Node CREATEDON="2007-11-19 12:25:10.214" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Dance"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="360" PARENTID="339"/>
+  <Node CREATEDON="2007-11-19 12:25:10.219" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Instrumental"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="354" PARENTID="339"/>
+  <Node CREATEDON="2007-11-19 12:25:10.193" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465"
+        NAME="Science &amp; the Environment" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="368" PARENTID="338"/>
+  <Node CREATEDON="2007-11-19 12:25:10.148" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:23.043"
+        NAME="Boats and Marine" NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="367" PARENTID="340"/>
+  <Node CREATEDON="2007-11-19 12:25:10.21" ISVOCABULARY="0" MODIFIEDON="2007-11-20 14:01:26.465" NAME="Gardening"
+        NodeTYPE="1" ISWEBVISIBLE="1" WEIGHT="1" ID="353" PARENTID="341"/>
 
-	<NodeRelation CREATEDON="2008-10-21 10:28:37.057" ENTITYIDENTIFIER="1" MODIFIEDON="2008-10-21 10:28:37.057" ID="425" NodeID="350" ENTITYRECORDID="360"/>
-	
-	<NodeRequirement CREATEDON="2007-07-17 14:22:43.32" ENTITYIDENTIFIER="1" ISREQUIRED="0" MANYTERMSALLOWED="1" MODIFIEDON="2007-11-20 14:01:30.399" ID="200" NodeID="200"/>
+  <NodeRelation CREATEDON="2008-10-21 10:28:37.057" ENTITYIDENTIFIER="1" MODIFIEDON="2008-10-21 10:28:37.057" ID="425"
+                NodeID="350" ENTITYRECORDID="360"/>
+
+  <NodeRequirement CREATEDON="2007-07-17 14:22:43.32" ENTITYIDENTIFIER="1" ISREQUIRED="0" MANYTERMSALLOWED="1"
+                   MODIFIEDON="2007-11-20 14:01:30.399" ID="200" NodeID="200"/>
 
 </dataset>

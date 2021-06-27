@@ -14,13 +14,10 @@ import com.google.inject.Inject;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
-import ish.oncourse.server.PreferenceController;
+import ish.oncourse.server.IPreferenceController;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
-import ish.oncourse.server.cayenne.VoucherPaymentIn;
 import ish.util.AccountUtil;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,10 +30,10 @@ public class PaymentInLifecycleListener {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private final PreferenceController prefController;
+	private final IPreferenceController prefController;
 
 	@Inject
-	public PaymentInLifecycleListener(PreferenceController prefController) {
+	public PaymentInLifecycleListener(IPreferenceController prefController) {
 		this.prefController = prefController;
 	}
 

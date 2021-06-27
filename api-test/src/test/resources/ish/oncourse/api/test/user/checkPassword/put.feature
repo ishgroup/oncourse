@@ -2,9 +2,9 @@
 Feature: Main feature for all PUT requests with path 'user/checkPassword'
 
     Background: Authorize first
-        * callonce read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPath = 'user/checkPassword'
 
 
@@ -17,9 +17,9 @@ Feature: Main feature for all PUT requests with path 'user/checkPassword'
         And match response.score == 2
 
 
-    Scenario: (+) Check valid password: special symbols: "§!@#$%^&*()_+=-[];:|><?{}±/\"
+    Scenario: (+) Check valid password: special symbols: "§!@#$%^&*()_+=-[];:|><?{}±\"
 
-        Given path ishPath + '/' + '%C2%A7!%40%23%24%25%5E%26*()_%2B%3D-%5B%5D%3B%3A%7C%3E%3C%3F%7B%7D%C2%B1%2F%5C'
+        Given path ishPath + '/' + '%C2%A7!%40%23%24%25%5E%26*()_%2B%3D-%5B%5D%3B%3A%7C%3E%3C%3F%7B%7D%C2%B1%5C'
         And request {}
         When method PUT
         Then status 200

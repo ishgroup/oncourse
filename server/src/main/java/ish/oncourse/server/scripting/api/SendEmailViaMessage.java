@@ -11,10 +11,9 @@
 
 package ish.oncourse.server.scripting.api;
 
-import ish.oncourse.server.PreferenceController;
+import ish.oncourse.server.IPreferenceController;
 import ish.oncourse.server.cayenne.AutomationBinding;
 import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.EmailTemplate;
 import org.apache.cayenne.ObjectContext;
 
 import java.util.Map;
@@ -26,18 +25,18 @@ public class SendEmailViaMessage {
     private EmailSpec spec;
     private TemplateService templateService;
     private ObjectContext context;
-    private PreferenceController preferenceController;
+    private IPreferenceController preferenceController;
     private Function<Contact, Boolean> collision;
 
 
     private SendEmailViaMessage(){}
 
 
-    public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, PreferenceController preferenceController){
+    public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, IPreferenceController preferenceController){
         return valueOf(spec, context, templateService, preferenceController, (c) -> true);
     }
 
-    public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, PreferenceController preferenceController, Function<Contact, Boolean> collision){
+    public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, IPreferenceController preferenceController, Function<Contact, Boolean> collision){
         var creator = new SendEmailViaMessage();
         creator.spec = spec;
         creator.templateService = templateService;

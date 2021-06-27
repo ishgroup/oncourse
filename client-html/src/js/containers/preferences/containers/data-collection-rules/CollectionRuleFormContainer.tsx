@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { DataCollectionForm, DataCollectionRule } from "@api/model";
+import { getFormValues, initialize, SubmissionError } from "redux-form";
 import { State } from "../../../../reducers/state";
 import CollectionRulesForm from "./components/CollectionRulesForm";
 import { updateDataCollectionRule, removeDataCollectionRule, createDataCollectionRule } from "../../actions";
 import { setNextLocation } from "../../../../common/actions";
-import { getFormValues, initialize, SubmissionError } from "redux-form";
 import { Fetch } from "../../../../model/common/Fetch";
 
 interface Params {
@@ -30,11 +30,14 @@ interface Props extends RouteComponentProps <Params> {
 
 class CollectionRuleFormContainer extends React.Component<Props, any> {
   private skipValidation: boolean;
+
   private promisePending: boolean = false;
+
   private resolvePromise;
+
   private rejectPromise;
 
-  componentWillReceiveProps(nextProps: any) {
+  UNSAFE_componentWillReceiveProps(nextProps: any) {
     if (this.rejectPromise && nextProps.fetch && nextProps.fetch.success === false) {
       this.rejectPromise(nextProps.fetch.formError);
     }
@@ -44,9 +47,7 @@ class CollectionRuleFormContainer extends React.Component<Props, any> {
     }
   }
 
-  getForm = (rules: DataCollectionRule[], match) => {
-    return rules.find(rule => rule.id === decodeURIComponent(match.params.id));
-  };
+  getForm = (rules: DataCollectionRule[], match) => rules.find(rule => rule.id === decodeURIComponent(match.params.id));
 
   onSave = (value: DataCollectionRule) => {
     const {
@@ -89,7 +90,9 @@ class CollectionRuleFormContainer extends React.Component<Props, any> {
   };
 
   render() {
-    const { onUpdate, onDelete, onAddNew, collectionRules, collectionForms, match, value, fetch, history } = this.props;
+    const {
+ onUpdate, onDelete, onAddNew, collectionRules, collectionForms, match, value, fetch, history
+} = this.props;
 
     const item = collectionRules && this.getForm(collectionRules, match);
 
@@ -119,15 +122,13 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onUpdate: (id: string, rule: DataCollectionRule) => dispatch(updateDataCollectionRule(id, rule)),
     onDelete: (id: string) => dispatch(removeDataCollectionRule(id)),
     onAddNew: (rule: DataCollectionRule) => dispatch(createDataCollectionRule(rule)),
     initialize: initData => dispatch(initialize("CollectionRulesForm", initData)),
     setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-  };
-};
+  });
 
 export default connect<any, any, any>(
   mapStateToProps,

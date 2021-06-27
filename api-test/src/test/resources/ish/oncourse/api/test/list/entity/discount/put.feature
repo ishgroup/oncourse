@@ -2,12 +2,12 @@
 Feature: Main feature for all PUT requests with path 'list/entity/discount'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/discount'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -516,16 +516,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def discountToUpdate =
@@ -612,13 +605,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         """
 
 #       <--->  Scenario have been finished. Now remove relations and then remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         * def discountToUpdate = {"id":"#(id)","name":"testDiscount203upd","discountType":"Percent","rounding":"Nearest 50 cents","discountValue":0,"discountPercent":0.2,"discountMin":100,"discountMax":300,"cosAccount":null,"predictedStudentsPercentage":0.2,"availableOnWeb":false,"code":"CUBE123UPD","validFrom":null,"validFromOffset":null,"validTo":"2028-07-11","validToOffset":null,"hideOnWeb":false,"description":"some description upd","studentEnrolledWithinDays":10,"studentAgeUnder":false,"studentAge":3,"studentPostcode":"123456upd","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":2,"minValue":5,"corporatePassDiscounts":[]}
 
@@ -685,16 +674,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def discountToUpdate =
@@ -739,13 +721,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         And match $.errorMessage == "Sorry, you have no permissions to edit discount. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE

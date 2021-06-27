@@ -2,12 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/assessment'
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/assessment'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -32,6 +32,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         "id":1000,
         "code":"code1",
         "name":"assessment 1",
+        "gradingTypeId":1,
         "tags":[],
         "active":true,
         "description":"some description",
@@ -55,15 +56,9 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
     Scenario: (+) Get list of all Assessments by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -77,15 +72,9 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
     Scenario: (+) Get Assessment by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/1001'
@@ -97,6 +86,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         "id":1001,
         "code":"code2",
         "name":"assessment 2",
+        "gradingTypeId":1,
         "tags":[],
         "active":true,
         "description":"some description",
@@ -123,39 +113,4 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         }
         """
 
-
-
-#    Scenario: (-) Get list of all Assessments by notadmin without access rights
-#
-##       <--->  Login as notadmin
-#        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-#
-#        Given path '/login'
-#        And request loginBody
-#        When method PUT
-#        Then status 200
-##       <--->
-#
-#        Given path ishPathList
-#        And param entity = 'Assessment'
-#        When method GET
-#        Then status 403
-#        And match $.errorMessage == "Sorry, you have no permissions to view this entity. Please contact your administrator"
-
-
-
-#    Scenario: (-) Get Assessment by notadmin without access rights
-#
-##       <--->  Login as notadmin
-#        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-#
-#        Given path '/login'
-#        And request loginBody
-#        When method PUT
-#        Then status 200
-##       <--->
-#
-#        Given path ishPath + '/1000'
-#        When method GET
-#        Then status 403
-#        And match $.errorMessage == "Sorry, you have no permissions to get assessment. Please contact your administrator"
+        

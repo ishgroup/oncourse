@@ -73,6 +73,8 @@ export const ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID: PreferenceEnum = "account.de
 
 export const ACCOUNT_DEFAULT_VOUCHER_LIABILITY_ID: PreferenceEnum = "account.default.voucherLiability.id";
 
+export const ACCOUNT_DEFAULT_VOUCHER_UNDERPAYMENT_ID: PreferenceEnum = "account.default.voucherUnderpayment.id";
+
 export const REPLICATION_ENABLED_KEY: PreferenceEnum = "replication.enabled";
 
 export const FAVORITE_SCRIPTS_KEY: PreferenceEnum = "dashboard.scripts.favorite.id";
@@ -91,7 +93,6 @@ export const LISTVIEW_MAIN_CONTENT_WIDTH: PreferenceEnum = "listview.main.conten
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
 // extending String with capitalize method
-
 const stringProto = String.prototype as any;
 
 stringProto.capitalize = function () {

@@ -1,0 +1,58 @@
+get:
+  operationId: get
+  description: Get grading types
+  tags:
+    - Grading
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/GradingType.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
+post:
+  operationId: update
+  description: Update grading types
+  tags:
+    - Grading
+  parameters:
+    - name: gradingTypes
+      in: body
+      description: grading types for update
+      required: true
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/GradingType.yaml'
+  responses:
+    '204':
+      description: Success response.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
+delete:
+  operationId: remove
+  description: Remove grading type
+  tags:
+    - Grading
+  parameters:
+    - name: id
+      in: path
+      description: Identifier of grading type which will be deleted.
+      required: true
+      type: integer
+      format: int64
+  responses:
+    '204':
+      description: The grading type is successfully deleted
+    default:
+      description: Unexpected error
+    x-permission:
+      keyCode: UNDEFINED

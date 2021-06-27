@@ -11,7 +11,7 @@ import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../reducers/state";
-import { setNextLocation, showConfirm } from "../../../../common/actions";
+import { setNextLocation } from "../../../../common/actions";
 import PdfReportsForm from "./containers/PdfBackgroundsForm";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
@@ -60,7 +60,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (fileName: string, id: number, overlay: File) =>
     dispatch(updateAutomationPdfBackground(fileName, id, overlay)),
   onDelete: (id: number) => dispatch(removeAutomationPdfBackground(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
   getPdfBackground: (id: number) => dispatch(getAutomationPdfBackground(id)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
 });

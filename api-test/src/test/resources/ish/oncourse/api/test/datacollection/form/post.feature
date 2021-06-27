@@ -2,9 +2,9 @@
 Feature: Main feature for all POST requests with path 'datacollection/form'
 
     Background: Authorize first
-        * callonce read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPath = 'datacollection/form'
 
 
@@ -29,7 +29,6 @@ Feature: Main feature for all POST requests with path 'datacollection/form'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
         And match response[*].name !contains ['Enrolment#1', 'Application#1', 'Waiting List#1', 'Survey#1', 'Survey#2', 'Survey#3', 'Survey#4', 'Survey#5', 'Payer#1', 'Parent#1']
 
 
@@ -87,7 +86,6 @@ Feature: Main feature for all POST requests with path 'datacollection/form'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 26
         And match response[*].name contains ['Enrolment#1', 'Application#1', 'Waiting List#1', 'Survey#1', 'Survey#2', 'Survey#3', 'Survey#4', 'Survey#5', 'Payer#1', 'Parent#1']
 
         * def list = get response[?(@.name == 'Survey#5')]
@@ -128,214 +126,4 @@ Feature: Main feature for all POST requests with path 'datacollection/form'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 16
         And match response[*].name !contains ['Enrolment#1', 'Application#1', 'Waiting List#1', 'Survey#1', 'Survey#2', 'Survey#3', 'Survey#4', 'Survey#5', 'Payer#1', 'Parent#1']
-
-
-    Scenario: (-) Create new invalid (empty) DataCollectionForm
-#       Array will be added
-#       <--->
-        * def someDataCollectionFormArray = [{}]
-
-        Given path ishPath
-        And request someDataCollectionFormArray
-        When method POST
-        Then status 500
-
-#       Object will be added
-#       <--->
-        * def someDataCollectionForm = {}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Form name can not be empty"
-
-
-    Scenario: (-) Create new invalid ('Type' field is empty) DataCollectionForm
-
-        * def someDataCollectionForm = {"name":"Enrolment#1","type":"","fields":[],"headings":[{"name":"Contact Details","description":"We require a few more details to create the contact record. It is important that we have correct contact information in case we need to let you know about course changes. Please enter the details as you would like them to appear on a certificate or invoice.","fields":[{"type":{"uniqueKey":"street","label":"Street"},"label":"Street","helpText":"Enter your street address","mandatory":false},{"type":{"uniqueKey":"suburb","label":"Suburb"},"label":"Suburb","helpText":"Enter your residential suburb","mandatory":false},{"type":{"uniqueKey":"country","label":"Country"},"label":"Country","helpText":"Enter your residential country","mandatory":false},{"type":{"uniqueKey":"postcode","label":"Postcode"},"label":"Postcode","helpText":"Enter your residential postcode","mandatory":false},{"type":{"uniqueKey":"state","label":"State"},"label":"State","helpText":"Enter your residential state","mandatory":false},{"type":{"uniqueKey":"homePhoneNumber","label":"Home phone number"},"label":"Home phone number","helpText":"Enter your home phone number number","mandatory":false},{"type":{"uniqueKey":"businessPhoneNumber","label":"Business phone number"},"label":"Business phone number","helpText":"Enter your work phone number number","mandatory":false},{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"Enter your fax number number","mandatory":false},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"Enter a 10 digit mobile phone number number","mandatory":false},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"Enter your date of birth in the format dd/mm/yyyy","mandatory":false},{"type":{"uniqueKey":"isMale","label":"Gender"},"label":"Gender","helpText":"Enter your Gender","mandatory":false},{"type":{"uniqueKey":"abn","label":"ABN"},"label":"ABN","helpText":"Enter your ABN","mandatory":false},{"type":{"uniqueKey":"specialNeeds","label":"Special needs"},"label":"Special dietary requirements, allergies, accessibility or medical considerations","helpText":"Special dietary requirements, allergies, accessibility or medical considerations","mandatory":false}]},{"name":"Marketing","description":"I would like to receive information and offers via:","fields":[{"type":{"uniqueKey":"isMarketingViaEmailAllowed","label":"E-mail"},"label":"E-mail","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaPostAllowed","label":"Post"},"label":"Post","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaSMSAllowed","label":"SMS"},"label":"SMS","helpText":null,"mandatory":true}]}],"deliverySchedule":null}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Form type should be specified"
-
-
-    Scenario: (-) Create new invalid ('Type' field is null) DataCollectionForm
-
-        * def someDataCollectionForm = {"name":"Enrolment#1","type":null,"fields":[],"headings":[{"name":"Contact Details","description":"We require a few more details to create the contact record. It is important that we have correct contact information in case we need to let you know about course changes. Please enter the details as you would like them to appear on a certificate or invoice.","fields":[{"type":{"uniqueKey":"street","label":"Street"},"label":"Street","helpText":"Enter your street address","mandatory":false},{"type":{"uniqueKey":"suburb","label":"Suburb"},"label":"Suburb","helpText":"Enter your residential suburb","mandatory":false},{"type":{"uniqueKey":"country","label":"Country"},"label":"Country","helpText":"Enter your residential country","mandatory":false},{"type":{"uniqueKey":"postcode","label":"Postcode"},"label":"Postcode","helpText":"Enter your residential postcode","mandatory":false},{"type":{"uniqueKey":"state","label":"State"},"label":"State","helpText":"Enter your residential state","mandatory":false},{"type":{"uniqueKey":"homePhoneNumber","label":"Home phone number"},"label":"Home phone number","helpText":"Enter your home phone number number","mandatory":false},{"type":{"uniqueKey":"businessPhoneNumber","label":"Business phone number"},"label":"Business phone number","helpText":"Enter your work phone number number","mandatory":false},{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"Enter your fax number number","mandatory":false},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"Enter a 10 digit mobile phone number number","mandatory":false},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"Enter your date of birth in the format dd/mm/yyyy","mandatory":false},{"type":{"uniqueKey":"isMale","label":"Gender"},"label":"Gender","helpText":"Enter your Gender","mandatory":false},{"type":{"uniqueKey":"abn","label":"ABN"},"label":"ABN","helpText":"Enter your ABN","mandatory":false},{"type":{"uniqueKey":"specialNeeds","label":"Special needs"},"label":"Special dietary requirements, allergies, accessibility or medical considerations","helpText":"Special dietary requirements, allergies, accessibility or medical considerations","mandatory":false}]},{"name":"Marketing","description":"I would like to receive information and offers via:","fields":[{"type":{"uniqueKey":"isMarketingViaEmailAllowed","label":"E-mail"},"label":"E-mail","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaPostAllowed","label":"Post"},"label":"Post","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaSMSAllowed","label":"SMS"},"label":"SMS","helpText":null,"mandatory":true}]}],"deliverySchedule":null}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Form type should be specified"
-
-
-    Scenario: (-) Create new invalid (not existing value in 'Type' field) DataCollectionForm
-
-        * def someDataCollectionForm = {"name":"Enrolment#1","type":"notExisting","fields":[],"headings":[{"name":"Contact Details","description":"We require a few more details to create the contact record. It is important that we have correct contact information in case we need to let you know about course changes. Please enter the details as you would like them to appear on a certificate or invoice.","fields":[{"type":{"uniqueKey":"street","label":"Street"},"label":"Street","helpText":"Enter your street address","mandatory":false},{"type":{"uniqueKey":"suburb","label":"Suburb"},"label":"Suburb","helpText":"Enter your residential suburb","mandatory":false},{"type":{"uniqueKey":"country","label":"Country"},"label":"Country","helpText":"Enter your residential country","mandatory":false},{"type":{"uniqueKey":"postcode","label":"Postcode"},"label":"Postcode","helpText":"Enter your residential postcode","mandatory":false},{"type":{"uniqueKey":"state","label":"State"},"label":"State","helpText":"Enter your residential state","mandatory":false},{"type":{"uniqueKey":"homePhoneNumber","label":"Home phone number"},"label":"Home phone number","helpText":"Enter your home phone number number","mandatory":false},{"type":{"uniqueKey":"businessPhoneNumber","label":"Business phone number"},"label":"Business phone number","helpText":"Enter your work phone number number","mandatory":false},{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"Enter your fax number number","mandatory":false},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"Enter a 10 digit mobile phone number number","mandatory":false},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"Enter your date of birth in the format dd/mm/yyyy","mandatory":false},{"type":{"uniqueKey":"isMale","label":"Gender"},"label":"Gender","helpText":"Enter your Gender","mandatory":false},{"type":{"uniqueKey":"abn","label":"ABN"},"label":"ABN","helpText":"Enter your ABN","mandatory":false},{"type":{"uniqueKey":"specialNeeds","label":"Special needs"},"label":"Special dietary requirements, allergies, accessibility or medical considerations","helpText":"Special dietary requirements, allergies, accessibility or medical considerations","mandatory":false}]},{"name":"Marketing","description":"I would like to receive information and offers via:","fields":[{"type":{"uniqueKey":"isMarketingViaEmailAllowed","label":"E-mail"},"label":"E-mail","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaPostAllowed","label":"Post"},"label":"Post","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaSMSAllowed","label":"SMS"},"label":"SMS","helpText":null,"mandatory":true}]}],"deliverySchedule":null}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Form type should be specified"
-
-
-    Scenario: (-) Create new invalid ('Name' field is empty) DataCollectionForm
-
-        * def someDataCollectionForm = {"name":"","type":"Enrolment","fields":[],"headings":[{"name":"Contact Details","description":"We require a few more details to create the contact record. It is important that we have correct contact information in case we need to let you know about course changes. Please enter the details as you would like them to appear on a certificate or invoice.","fields":[{"type":{"uniqueKey":"street","label":"Street"},"label":"Street","helpText":"Enter your street address","mandatory":false},{"type":{"uniqueKey":"suburb","label":"Suburb"},"label":"Suburb","helpText":"Enter your residential suburb","mandatory":false},{"type":{"uniqueKey":"country","label":"Country"},"label":"Country","helpText":"Enter your residential country","mandatory":false},{"type":{"uniqueKey":"postcode","label":"Postcode"},"label":"Postcode","helpText":"Enter your residential postcode","mandatory":false},{"type":{"uniqueKey":"state","label":"State"},"label":"State","helpText":"Enter your residential state","mandatory":false},{"type":{"uniqueKey":"homePhoneNumber","label":"Home phone number"},"label":"Home phone number","helpText":"Enter your home phone number number","mandatory":false},{"type":{"uniqueKey":"businessPhoneNumber","label":"Business phone number"},"label":"Business phone number","helpText":"Enter your work phone number number","mandatory":false},{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"Enter your fax number number","mandatory":false},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"Enter a 10 digit mobile phone number number","mandatory":false},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"Enter your date of birth in the format dd/mm/yyyy","mandatory":false},{"type":{"uniqueKey":"isMale","label":"Gender"},"label":"Gender","helpText":"Enter your Gender","mandatory":false},{"type":{"uniqueKey":"abn","label":"ABN"},"label":"ABN","helpText":"Enter your ABN","mandatory":false},{"type":{"uniqueKey":"specialNeeds","label":"Special needs"},"label":"Special dietary requirements, allergies, accessibility or medical considerations","helpText":"Special dietary requirements, allergies, accessibility or medical considerations","mandatory":false}]},{"name":"Marketing","description":"I would like to receive information and offers via:","fields":[{"type":{"uniqueKey":"isMarketingViaEmailAllowed","label":"E-mail"},"label":"E-mail","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaPostAllowed","label":"Post"},"label":"Post","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaSMSAllowed","label":"SMS"},"label":"SMS","helpText":null,"mandatory":true}]}],"deliverySchedule":null}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Form name can not be empty"
-
-
-    Scenario: (-) Create new invalid ('Name' field is null) DataCollectionForm
-
-        * def someDataCollectionForm = {"name":null,"type":"Enrolment","fields":[],"headings":[{"name":"Contact Details","description":"We require a few more details to create the contact record. It is important that we have correct contact information in case we need to let you know about course changes. Please enter the details as you would like them to appear on a certificate or invoice.","fields":[{"type":{"uniqueKey":"street","label":"Street"},"label":"Street","helpText":"Enter your street address","mandatory":false},{"type":{"uniqueKey":"suburb","label":"Suburb"},"label":"Suburb","helpText":"Enter your residential suburb","mandatory":false},{"type":{"uniqueKey":"country","label":"Country"},"label":"Country","helpText":"Enter your residential country","mandatory":false},{"type":{"uniqueKey":"postcode","label":"Postcode"},"label":"Postcode","helpText":"Enter your residential postcode","mandatory":false},{"type":{"uniqueKey":"state","label":"State"},"label":"State","helpText":"Enter your residential state","mandatory":false},{"type":{"uniqueKey":"homePhoneNumber","label":"Home phone number"},"label":"Home phone number","helpText":"Enter your home phone number number","mandatory":false},{"type":{"uniqueKey":"businessPhoneNumber","label":"Business phone number"},"label":"Business phone number","helpText":"Enter your work phone number number","mandatory":false},{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"Enter your fax number number","mandatory":false},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"Enter a 10 digit mobile phone number number","mandatory":false},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"Enter your date of birth in the format dd/mm/yyyy","mandatory":false},{"type":{"uniqueKey":"isMale","label":"Gender"},"label":"Gender","helpText":"Enter your Gender","mandatory":false},{"type":{"uniqueKey":"abn","label":"ABN"},"label":"ABN","helpText":"Enter your ABN","mandatory":false},{"type":{"uniqueKey":"specialNeeds","label":"Special needs"},"label":"Special dietary requirements, allergies, accessibility or medical considerations","helpText":"Special dietary requirements, allergies, accessibility or medical considerations","mandatory":false}]},{"name":"Marketing","description":"I would like to receive information and offers via:","fields":[{"type":{"uniqueKey":"isMarketingViaEmailAllowed","label":"E-mail"},"label":"E-mail","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaPostAllowed","label":"Post"},"label":"Post","helpText":null,"mandatory":true},{"type":{"uniqueKey":"isMarketingViaSMSAllowed","label":"SMS"},"label":"SMS","helpText":null,"mandatory":true}]}],"deliverySchedule":null}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Form name can not be empty"
-
-
-    Scenario: (-) Create new invalid ('Delivery schedule' field is empty) Survey DataCollectionForm
-
-        * def someDataCollectionForm = {"name":"Survey#6","type":"Survey","fields":[{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"120","mandatory":true},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"121","mandatory":true},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"122","mandatory":true}],"headings":[{"name":"Heading#1","description":"Description#1"}],"deliverySchedule":""}
-
-         Given path ishPath
-         And request someDataCollectionForm
-         When method POST
-         Then status 400
-         And match response.errorMessage == "Delivery schedule required for Survey form"
-
-
-    Scenario: (-) Create new invalid ('Delivery schedule' field is null) Survey DataCollectionForm
-
-        * def someDataCollectionForm = {"name":"Survey#6","type":"Survey","fields":[{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"120","mandatory":true},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"121","mandatory":true},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"122","mandatory":true}],"headings":[{"name":"Heading#1","description":"Description#1"}],"deliverySchedule":null}
-
-         Given path ishPath
-         And request someDataCollectionForm
-         When method POST
-         Then status 400
-         And match response.errorMessage == "Delivery schedule required for Survey form"
-
-
-    Scenario: (-) Create new invalid (not existing value in 'Delivery schedule' field) Survey DataCollectionForm
-
-        * def someDataCollectionForm = {"name":"Survey#6","type":"Survey","fields":[{"type":{"uniqueKey":"faxNumber","label":"Fax number"},"label":"Fax number","helpText":"120","mandatory":true},{"type":{"uniqueKey":"dateOfBirth","label":"Date of Birth"},"label":"Date of Birth","helpText":"121","mandatory":true},{"type":{"uniqueKey":"mobilePhoneNumber","label":"Mobile phone number"},"label":"Mobile phone number","helpText":"122","mandatory":true}],"headings":[{"name":"Heading#1","description":"Description#1"}],"deliverySchedule":"notExisting"}
-
-         Given path ishPath
-         And request someDataCollectionForm
-         When method POST
-         Then status 400
-         And match response.errorMessage == "Delivery schedule required for Survey form"
-
-
-    Scenario: (-) Create DataCollectionForm with not unique name
-
-#       Prepare new DataCollectionForm
-#       <--->
-        * def someDataCollectionForm = {"name":"Enrolment#1","type":"Enrolment","fields":[],"headings":[]}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 204
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 17
-        And match response[*].name contains 'Enrolment#1'
-#       <--->
-
-        * def someDataCollectionForm = {"name":"Enrolment#1","type":"Application","fields":[],"headings":[]}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 400
-        And match response.errorMessage == "Form name should be unique"
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 17
-        And match response[*].name contains 'Enrolment#1'
-
-#       Scenario have been finished. Now find and remove created object from DB
-#       <--->
-        * print "Scenario have been finished. Now find and remove created object from DB"
-        Given path ishPath
-        When method GET
-        Then status 200
-
-        * def id = get[0] response[?(@.name == 'Enrolment#1')].id
-
-        * call read('../../removeEntityById.feature') {path: '#(ishPath)', entityId: '#(id)'}
-#       <--->
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 16
-        And match response[*].name !contains 'Enrolment#1'
-
-
-    Scenario: (-) Update existing DataCollectionForm
-
-#       Prepare new DataCollectionForm
-#       <--->
-        * def someDataCollectionForm = {"name":"Survey#6","type":"Survey","fields":[],"headings":[{"name":"Heading#1","description":"Description#1"}],"deliverySchedule":"On demand"}
-
-        Given path ishPath
-        And request someDataCollectionForm
-        When method POST
-        Then status 204
-
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 17
-        And match response[*].name contains 'Survey#6'
-#       <--->
-
-#       Creating a duplicate
-        Given path ishPath
-        When method GET
-        Then status 200
-
-        * def id = get[0] response[?(@.name == 'Survey#6')].id
-        * def someDataCollectionFormToUpdate = {id: '#(id)',"name":"Survey#6_UPD","type":"Survey","fields":[],"headings":[{"name":"Heading#1_UPD","description":"Description#1_UPD"}],"deliverySchedule":"On start"}
-
-        Given path ishPath
-        And request someDataCollectionFormToUpdate
-        When method POST
-        Then status 204
-
-#       Scenario have been finished. Now find and remove created object from DB
-#       <--->
-        * print "Scenario have been finished. Now find and remove created object from DB"
-        Given path ishPath
-        When method GET
-        Then status 200
-        * def id1 = get[0] response[?(@.name == 'Survey#6')].id
-        * def id2 = get[0] response[?(@.name == 'Survey#6_UPD')].id
-
-        * call read('../../removeEntityById.feature') {path: '#(ishPath)', entityId: '#(id1)'}
-        * call read('../../removeEntityById.feature') {path: '#(ishPath)', entityId: '#(id2)'}
-#       <--->
-        Given path ishPath
-        When method GET
-        Then status 200
-        And match karate.sizeOf(response) == 16
-        And match response[*].name !contains ['Survey#6', 'Survey#6_UPD']

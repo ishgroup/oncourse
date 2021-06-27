@@ -2,12 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/script' without license
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/script'
         * def ishPathList = 'list'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
   
         
     Scenario: (+) Get list of all scripts by admin
@@ -41,42 +41,13 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
         When method GET
         Then status 400
         And match response.errorMessage == "Record with id = '111111' doesn't exist."
-        
-        
-    Scenario: (-) Get script without any ID
-    
-        Given path ishPath + '/'
-        When method GET
-        Then status 405
-        
-            
-    Scenario: (-) Get script with NULL as ID
-        
-        Given path ishPath + '/null'
-        When method GET
-        Then status 404
-        
-        
-    Scenario: (-) Get script without path
-        
-        Given path ishPath
-        When method GET
-        Then status 405
-
 
     Scenario: (+) Get list of all scripts by notadmin with rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPathList
@@ -89,16 +60,9 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
     Scenario: (+) Get list of all scripts by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPathList
@@ -111,16 +75,9 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
     Scenario: (+) Get existing script by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPathList

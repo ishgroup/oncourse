@@ -6,11 +6,7 @@ package ish.oncourse.api.test;
 // uncomment class and run for test all features at one time
 
 import com.intuit.karate.KarateOptions;
-import com.intuit.karate.junit4.Karate;
-import org.junit.runner.RunWith;
 
-//@RunWith(Karate.class)
-@KarateOptions(tags = "~@ignore", features = {"classpath:ish/oncourse/api/test/checkout/discount"
-})
+@KarateOptions(tags = "~@ignore", features = {"classpath:ish/oncourse/api/test/checkout/discount"})
 public class ApiTest {
 }

@@ -1,5 +1,6 @@
+records = record.tutorRoles*.tutor.unique()
 message {
     template classCancellationTemplate
-    records record.tutorRoles*.tutor.unique()
+    record records
     courseClass record
 }

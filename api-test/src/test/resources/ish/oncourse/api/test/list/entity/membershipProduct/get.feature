@@ -2,12 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/membershipProduct'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/membershipProduct'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -24,15 +24,9 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
     Scenario: (+) Get list of all MembershipProducts by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -66,7 +60,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -75,15 +70,9 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
     Scenario: (+) Get MembershipProduct by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/1003'
@@ -107,7 +96,8 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         "membershipDiscounts":[{"discountId":1002,"discountName":"discount2","applyToMemberOnly":true,"contactRelationTypes":[]}],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "relatedSellables":[]
+        "relatedSellables":[],
+        "dataCollectionRuleId":null
         }
         """
 
@@ -120,10 +110,3 @@ Feature: Main feature for all GET requests with path 'list/entity/membershipProd
         Then status 400
         And match $.errorMessage == "Record with id = '9999' doesn't exist."
 
-
-
-    Scenario: (-) Get MembershipProduct without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405

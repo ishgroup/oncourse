@@ -1,36 +1,34 @@
 package ish.oncourse.server.quality
 
-import ish.oncourse.types.Severity
+
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Outcome
+import ish.oncourse.types.Severity
 import ish.quality.QualityResult
 import ish.util.LocalDateUtils
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotNull
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import org.junit.jupiter.api.Assertions
 
 import java.time.LocalDate
 
-/**
- * Created by akoiro on 17/03/2016.
- */
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
 class OutcomeResultData {
 
-    def testData = { ->
-        return [enrolment(1, LocalDate.now().minusDays(30)),
-                enrolment(2, LocalDate.now().minusDays(31)),
-                enrolment(3, LocalDate.now().minusDays(27)),
-                enrolment(4, LocalDate.now().minusDays(8)),
-                enrolment(5, LocalDate.now().minusDays(6)),
-                enrolment(6, LocalDate.now().minusDays(1)),
+    Closure<ArrayList<Enrolment>> testData = { ->
+        return [enrolment(1l, LocalDate.now().minusDays(30)),
+                enrolment(2l, LocalDate.now().minusDays(31)),
+                enrolment(3l, LocalDate.now().minusDays(27)),
+                enrolment(4l, LocalDate.now().minusDays(8)),
+                enrolment(5l, LocalDate.now().minusDays(6)),
+                enrolment(6l, LocalDate.now().minusDays(1)),
         ]
 
     }
 
-    def enrolment = { long id, LocalDate endDate ->
+    Closure<Enrolment> enrolment = { Long id, LocalDate endDate ->
         def module = mock(Module)
 
         def outcome = mock(Outcome)
@@ -51,31 +49,31 @@ class OutcomeResultData {
         return enrolment
     }
 
-    def assetResults(Collection<QualityResult> result) {
-        assertEquals(3, result.size())
+    Object assetResults(Collection<QualityResult> result) {
+        Assertions.assertEquals(3, result.size())
 
-        def qr28 = result.getAt(0)
+        def qr28 = result[0]
 
-        assertEquals('Enrolment', qr28.entity)
-        assertEquals(2, qr28.records.size())
-        assertEquals(Severity.ERROR.level, qr28.severity)
-        assertNotNull(qr28.records.find { it == 1L })
-        assertNotNull(qr28.records.find { it == 2L })
+        Assertions.assertEquals('Enrolment', qr28.entity)
+        Assertions.assertEquals(2, qr28.records.size())
+        Assertions.assertEquals(Severity.ERROR.level, qr28.severity)
+        Assertions.assertNotNull(qr28.records.find { it == 1L })
+        Assertions.assertNotNull(qr28.records.find { it == 2L })
 
-        def qr7 = result.getAt(1)
-        assertEquals('Enrolment', qr7.entity)
-        assertEquals(Severity.WARNING.level, qr7.severity)
-        assertEquals(2, qr7.records.size())
-        assertNotNull(qr7.records.find { it == 3L })
-        assertNotNull(qr7.records.find { it == 4L })
+        def qr7 = result[1]
+        Assertions.assertEquals('Enrolment', qr7.entity)
+        Assertions.assertEquals(Severity.WARNING.level, qr7.severity)
+        Assertions.assertEquals(2, qr7.records.size())
+        Assertions.assertNotNull(qr7.records.find { it == 3L })
+        Assertions.assertNotNull(qr7.records.find { it == 4L })
 
 
-        def qr0 = result.getAt(2)
-        assertEquals('Enrolment', qr0.entity)
-        assertEquals(Severity.ADVICE.level, qr0.severity)
-        assertEquals(2, qr0.records.size())
-        assertNotNull(qr0.records.find { it == 5L })
-        assertNotNull(qr0.records.find { it == 6L })
+        def qr0 = result[2]
+        Assertions.assertEquals('Enrolment', qr0.entity)
+        Assertions.assertEquals(Severity.ADVICE.level, qr0.severity)
+        Assertions.assertEquals(2, qr0.records.size())
+        Assertions.assertNotNull(qr0.records.find { it == 5L })
+        Assertions.assertNotNull(qr0.records.find { it == 6L })
 
     }
 

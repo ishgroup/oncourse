@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { FormControlLabel } from "@material-ui/core";
@@ -8,18 +11,27 @@ import React, { useEffect, useMemo, useState } from "react";
 import { change, Field as FormField } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { CheckboxField } from "../../../../common/components/form/form-fields/CheckboxField";
 import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
-import { validateEmail, validateSingleMandatoryField, validateURL } from "../../../../common/utils/validation";
+import {
+  validateEmail,
+  validateSingleMandatoryField,
+  validateURL,
+  validatePattern
+} from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
 import EditInPlaceSearchSelect from "../../../../common/components/form/form-fields/EditInPlaceSearchSelect";
+import { getCustomFieldTypes } from "../actions";
+import { EntityName } from "../../../../model/entities/common";
 
 const Field: any = FormField;
 
 const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
   const validate = type.mandatory ? validateSingleMandatoryField : undefined;
+  const validateFieldPattern = val => validatePattern(val, type.pattern);
 
   let component = EditInPlaceField;
   let componentProps: any = { validate };
@@ -116,6 +128,13 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
       };
       break;
     }
+    case "Pattern text": {
+      component = EditInPlaceField;
+      componentProps = {
+        validate: type.mandatory ? [validateSingleMandatoryField, validateFieldPattern] : validateFieldPattern
+      };
+      break;
+    }
   }
 
   return { component, componentProps };
@@ -140,29 +159,33 @@ const CustomField: React.FC<CustomFieldProps> = ({
 }) => {
   const [items, setItems] = useState([]);
 
-  const getItems = (type: CustomFieldType, value: string) => {
-    let items = [];
+  const getItems = (cfType: CustomFieldType, val: string) => {
+    let result = [];
 
-    if (type.dataType) {
-      switch (type.dataType) {
-        case "Map": {
-          items = type.defaultValue
-            ? JSON.parse(type.defaultValue).map(v => ({ ...v, label: `${v.label} (${v.value})` }))
-            : [];
-          break;
+    if (cfType.dataType) {
+      try {
+        switch (cfType.dataType) {
+          case "Map": {
+            result = cfType.defaultValue
+              ? JSON.parse(cfType.defaultValue).map(v => ({ ...v, label: `${v.label} (${v.value})` }))
+              : [];
+            break;
+          }
+          case "List": {
+            result = cfType.defaultValue ? JSON.parse(cfType.defaultValue)
+              .filter(v => v && !v.value.includes("*"))
+              .map(v => (v.label ? v : { ...v, label: v.value })) : [];
+          }
         }
-        case "List": {
-          items = type.defaultValue ? JSON.parse(type.defaultValue)
-            .filter(v => v && !v.value.includes("*"))
-            .map(v => (v.label ? v : { ...v, label: v.value })) : [];
-        }
+      } catch (e) {
+        console.error(e);
       }
     }
-    if (value && Array.isArray(items) && items.findIndex(item => item.value === value) < 0) {
-      items.unshift({ label: value, value });
+    if (val && Array.isArray(result) && result.findIndex(item => item.value === val) < 0) {
+      result.unshift({ label: val, value: val });
     }
 
-    return items;
+    return result;
   };
 
   useEffect(() => {
@@ -192,7 +215,8 @@ const CustomField: React.FC<CustomFieldProps> = ({
 
 interface CustomFieldsProps {
   customFieldTypes?: { key: string; value: CustomFieldType[] };
-  entityName: string;
+  getCustomFieldTypes?: (entity: EntityName) => void;
+  entityName: EntityName;
   fieldName: string;
   entityValues: any;
   dispatch?: any;
@@ -202,6 +226,7 @@ interface CustomFieldsProps {
 
 const CustomFieldsTypes = React.memo<CustomFieldsProps>(
   ({
+     getCustomFieldTypes,
      entityName,
      customFieldTypes,
      fieldName,
@@ -209,23 +234,35 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
      dispatch,
      form,
      fullWidth
-  }) => (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
-    ? customFieldTypes[entityName].map((type, i) => (
-      <CustomField
-        key={i}
-        type={type}
-        value={entityValues[fieldName][type.fieldKey]}
-        fieldName={fieldName}
-        dispatch={dispatch}
-        form={form}
-        fullWidth={fullWidth}
-      />
-    ))
-    : null)
+  }) => {
+    useEffect(() => {
+      if (!customFieldTypes || !customFieldTypes[entityName]) {
+        getCustomFieldTypes(entityName);
+      }
+    }, [entityName, customFieldTypes]);
+
+    return (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
+      ? customFieldTypes[entityName].map((type, i) => (
+        <CustomField
+          key={i}
+          type={type}
+          value={entityValues[fieldName][type.fieldKey]}
+          fieldName={fieldName}
+          dispatch={dispatch}
+          form={form}
+          fullWidth={fullWidth}
+        />
+      ))
+      : null);
+  }
 );
 
 const mapStateToProps = (state: State) => ({
   customFieldTypes: state.customFieldTypes.types
 });
 
-export default connect<any, any, any>(mapStateToProps)(CustomFieldsTypes);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getCustomFieldTypes: entity => dispatch(getCustomFieldTypes(entity))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomFieldsTypes);

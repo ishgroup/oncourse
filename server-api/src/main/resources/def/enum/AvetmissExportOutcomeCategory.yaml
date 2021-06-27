@@ -1,6 +1,7 @@
 type: string
 enum:
 - Not yet started
+- Started (not assessed)
 - Commenced
 - Delivered
 - Final Status

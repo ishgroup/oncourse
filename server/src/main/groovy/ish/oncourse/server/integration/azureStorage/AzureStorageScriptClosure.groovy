@@ -29,11 +29,11 @@ import ish.oncourse.server.scripting.ScriptClosureTrait
  * azurestorage {
  *     name "integration name"
  *     blob bytes
- *     filName "transactions.csv"
+ *     fileName "transactions.csv"
  * }
  * ```
  *
- * If you pass the FileData object in the blob attribute, you can skip the name.
+ * If you pass the DocumentParam object as the blob attribute, you can skip the name.
  *
  *
  * ```

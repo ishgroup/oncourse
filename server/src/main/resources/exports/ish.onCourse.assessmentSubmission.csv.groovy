@@ -7,6 +7,7 @@ records.each { AssessmentSubmission submission ->
             "Class name"            : submission.courseClassName,
             "Assessment name"       : submission.assessmentName,
             "Submitted on"          : submission.submittedOn?.format("d-M-y"),
-            "Marked on"             : submission.markedOn?.format("d-M-y")
+            "Marked on"             : submission.markedOn?.format("d-M-y"),
+            "Grade"                 : submission.grade
     ]
 }

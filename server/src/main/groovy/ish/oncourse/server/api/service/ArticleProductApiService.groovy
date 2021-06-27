@@ -19,8 +19,10 @@ import ish.oncourse.server.api.dao.ArticleProductDao
 import ish.oncourse.server.api.dao.CorporatePassDao
 import ish.oncourse.server.api.dao.CorporatePassProductDao
 import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
+import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
@@ -56,6 +58,9 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
     private CorporatePassProductDao corporatePassProductDao
 
     @Inject
+    private FieldConfigurationSchemeDao fieldConfigurationSchemeDao
+
+    @Inject
     private TaxDao taxDao
 
     @Inject
@@ -89,6 +94,7 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                                         EntityRelationDao.getRelatedTo(articleProduct.context, Product.simpleName, articleProduct.id).collect { toRestToEntityRelation(it) })
             articleProductDTO.createdOn = articleProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            articleProductDTO.dataCollectionRuleId = articleProduct.fieldConfigurationScheme?.id
             articleProductDTO
         }
     }
@@ -104,6 +110,9 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
         articleProduct.taxAdjustment = calculateTaxAdjustment(toMoneyValue(articleProductDTO.totalFee), articleProduct.priceExTax, articleProduct.tax.rate)
         articleProduct.isOnSale = articleProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE || articleProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE
         articleProduct.isWebVisible = articleProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE
+        articleProduct.fieldConfigurationScheme = articleProductDTO.dataCollectionRuleId ?
+                fieldConfigurationSchemeDao.getById(articleProduct.context, articleProductDTO.dataCollectionRuleId) :
+                null as FieldConfigurationScheme
         updateCorporatePassesByIds(articleProduct, articleProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         articleProduct
     }

@@ -5,27 +5,27 @@
 
 package ish.oncourse.api.test.list;
 
-import com.intuit.karate.KarateOptions;
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
-import com.intuit.karate.junit4.Karate;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
-import static org.junit.Assert.assertEquals;
+
 
 public class ListApiTest {
 
     @Test
     public void test() {
-        Results results = Runner.path(  "classpath:ish/oncourse/api/test/list/column",
+        Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path(  "classpath:ish/oncourse/api/test/list/column",
                 "classpath:ish/oncourse/api/test/list/plain",
                 "classpath:ish/oncourse/api/test/list/get.feature",
                 "classpath:ish/oncourse/api/test/list/getListOfEntity.feature",
                 "classpath:ish/oncourse/api/test/list/getListOfEntityWithoutRights.feature",
                 "classpath:ish/oncourse/api/test/list/post.feature",
                 "classpath:ish/oncourse/api/test/list/postListOfEntity.feature",
-                "classpath:ish/oncourse/api/test/list/postListOfEntityWithoutRights.feature").tags("~@ignore").parallel(1);
-        assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
+                "classpath:ish/oncourse/api/test/list/postListOfEntityWithoutRights.feature",
+                "classpath:ish/oncourse/api/test/list/postListOfEntityWithFilters.feature"
+                ).tags("~@ignore").parallel(1);
+        Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }
 }

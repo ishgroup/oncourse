@@ -8,7 +8,7 @@ import {
   Course,
   CourseClass,
   Discount,
-  EnrolmentStudyReason, EntityRelationCartAction,
+  EnrolmentStudyReason, EntityRelationCartAction, Invoice,
   MembershipProduct,
   PaymentMethod, Sale,
   VoucherProduct
@@ -40,6 +40,7 @@ export type CheckoutDiscount = Discount & VoucherProduct & {
   productId?: number;
   courseIds?: number[];
   redeemableById?: number;
+  statusValue?: string;
 }
 
 export interface CheckoutCourseClass extends CourseClass {
@@ -177,10 +178,16 @@ export interface CheckoutPayment {
   }
 }
 
+export interface CheckoutPreviousInvoice extends Invoice {
+  checked: boolean;
+  nextDue?: number;
+}
+
 export interface PreviousInvoiceState {
-  invoices?: any[];
-  invoiceTotal?: number;
-  unCheckAll?: boolean;
+  invoices: CheckoutPreviousInvoice[];
+  invoiceTotal: number;
+  unCheckAll: boolean;
+  payDueAmounts?: boolean
 }
 
 export interface CheckoutEnrolmentCustom {

@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     onInit: () => dispatch(getFundingContracts()),
     onSave: (items: FundingSource[], method: ApiMethods) => dispatch(saveFundingContracts(items, method)),
     onDelete: (id: number) => dispatch(deleteFundingContract(id)),
-    openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) => dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText))
+    openConfirm: props => dispatch(showConfirm(props))
   };
 };
 

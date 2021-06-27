@@ -2,14 +2,14 @@
 Feature: Main feature for all PUT requests with path 'list/entity/courseClass/budget'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/budget'
         * def ishPathClass = 'list/entity/courseClass'
         * def ishPathTutor = 'list/entity/courseClass/tutor'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -179,15 +179,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/bu
         * print "tutorWageId = " + tutorWageId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def expenseToUpdate = {"id":"#(expenseId)","courseClassid":"#(classId)","taxId":2,"accountId":null,"invoiceId":null,"description":"putExpense2 upd","invoiceToStudent":false,"payableOnEnrolment":false,"isSunk":false,"maximumCost":10000,"minimumCost":1000,"onCostRate":null,"perUnitAmountExTax":1000,"perUnitAmountIncTax":1000,"actualAmount":800,"unitCount":null,"contactId":18,"contactName":"stud9","flowType":"Expense","repetitionType":"Per session","isOverriden":false,"courseClassDiscount":null,"paymentPlan":[],"courseClassTutorId":null}
@@ -205,15 +199,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/bu
         Then status 204
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def tutorWageToUpdate = {"id":"#(tutorWageId)","courseClassid":"#(classId)","taxId":1,"accountId":null,"invoiceId":null,"description":"putWageForTutor2","invoiceToStudent":false,"payableOnEnrolment":false,"isSunk":true,"maximumCost":10000,"minimumCost":100,"onCostRate":0.1,"perUnitAmountExTax":100,"perUnitAmountIncTax":null,"actualAmount":200,"unitCount":null,"contactId":1,"contactName":"tutor1","flowType":"Wages","repetitionType":"Per session","isOverriden":true,"courseClassDiscount":null,"paymentPlan":[],"courseClassTutorId":"#(~~courseClassTutorId)"}
@@ -306,15 +294,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/bu
         * print "tutorWageId = " + tutorWageId
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def expenseToUpdate = {"id":"#(expenseId)","courseClassid":"#(classId)","taxId":2,"accountId":null,"invoiceId":null,"description":"putExpense3 upd","invoiceToStudent":false,"payableOnEnrolment":false,"isSunk":false,"maximumCost":10000,"minimumCost":1000,"onCostRate":null,"perUnitAmountExTax":1000,"perUnitAmountIncTax":1000,"actualAmount":800,"unitCount":null,"contactId":18,"contactName":"stud9","flowType":"Expense","repetitionType":"Per session","isOverriden":false,"courseClassDiscount":null,"paymentPlan":[],"courseClassTutorId":null}
@@ -342,15 +324,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/courseClass/bu
         And match $.errorMessage == "Sorry, you have no permissions to edit class budget. Please contact your administrator"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPathClass + '/' + classId
         When method DELETE

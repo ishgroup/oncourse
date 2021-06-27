@@ -38,7 +38,7 @@ class Avetmiss85Parser extends AbstractAvetmissParser {
     ]
 
     @Override
-    def parse() {
+    Map<String, String> parse() {
 
         // ------------------
         // client identifier p9
@@ -61,7 +61,7 @@ class Avetmiss85Parser extends AbstractAvetmissParser {
         // client last name p13
         result.lastName = line.readString(40)
 
-        def names = service.parseNames("${result.lastName}, $result.firstName", lineNumber)
+        def names = service.parseNames("${result.lastName}, ${result.firstName}", lineNumber)
         result = result << names
 
         // ------------------

@@ -17,7 +17,7 @@ describe("Create script epic tests", () => {
       nextRun: new Date().toISOString()
     };
     return DefaultEpic({
-      action: createScriptItem(script),
+      action: createScriptItem(script, "Code"),
       epic: EpicCreateScriptItem,
       processData: () => [
         {

@@ -15,6 +15,7 @@ import RouteChangeConfirm from "../../../../../../common/components/dialog/confi
 import Button from "../../../../../../common/components/buttons/Button";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../../../reducers/state";
+import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 
 class CanvasBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -26,11 +27,10 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     // Initializing form with values
     props.dispatch(initialize("CanvasForm", props.item));
-    this.props.canSave(false);
   }
 
   componentDidMount() {
-    const { location: { search }, dispatch, canSave } = this.props;
+    const { location: { search }, dispatch } = this.props;
 
     if (search) {
       const params = new URLSearchParams(search);
@@ -43,8 +43,6 @@ class CanvasBaseForm extends React.Component<any, any> {
 
         dispatch(initialize("CanvasForm", newValues));
         dispatch(change("CanvasForm", "fields.verificationCode", code));
-
-        canSave(true);
       }
     }
   }
@@ -53,12 +51,7 @@ class CanvasBaseForm extends React.Component<any, any> {
     if (prevProps.item.id !== this.props.item.id) {
       // Reinitializing form with values
       this.props.dispatch(initialize("CanvasForm", this.props.item));
-      this.props.canSave(false);
     }
-  }
-
-  componentWillUnmount(): void {
-    this.props.canSave(false);
   }
 
   configure = () => {
@@ -76,7 +69,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, appBarContent, dirty, item, values, form
+     handleSubmit, onSubmit, AppBarContent, dirty, item, values, form
     } = this.props;
 
     const { loading } = this.state;
@@ -86,7 +79,19 @@ class CanvasBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>{appBarContent}</CustomAppBar>
+        <CustomAppBar>
+          <AppBarContent />
+        </CustomAppBar>
+
+        {
+          !values?.id && (
+            <FormField
+              type="stub"
+              name="fields.verificationCode"
+              validate={validateSingleMandatoryField}
+            />
+          )
+        }
 
         <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" fullWidth />
         <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" fullWidth />

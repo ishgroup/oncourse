@@ -31,7 +31,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class Voucher extends _Voucher {
+class Voucher extends _Voucher implements ExpandableTrait {
 
 
 
@@ -228,5 +228,10 @@ class Voucher extends _Voucher {
 			return getClassesRemaining() <= 0
 		}
 		return !getValueRemaining().isGreaterThan(Money.ZERO);
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return VoucherCustomField
 	}
 }

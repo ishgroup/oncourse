@@ -199,16 +199,16 @@ class UserFunctions {
     static String sendInvitationEmailToNewSystemUser(SystemUser currentUser, SystemUser newUser,
                                                      PreferenceController preferenceController,
                                                      MailDeliveryService mailDeliveryService,
-                                                     String collegeKey, String host, Integer port) throws MessagingException {
-        if (host == null) {
-            host = '0.0.0.0'
+                                                     String hostName, String ipAddress, Integer port) throws MessagingException {
+        if (ipAddress == null) {
+            ipAddress = '0.0.0.0'
         }
         
         if (port == null) {
             port = 8182
         }
         
-        String serverAddress = collegeKey ? "https://${collegeKey}.cloud.oncourse.cc" : "https://${host}:${port}"
+        String serverAddress = hostName ?: "https://${ipAddress}:${port}"
                 
         String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You were provided access"
         String invitationToken = generateUserInvitationToken()

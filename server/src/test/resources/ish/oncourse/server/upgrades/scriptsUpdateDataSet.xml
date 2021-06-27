@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <Script id="1" triggerType="1" name="script1" enabled="1" schedule="0 * * * * ?" script="def run(args) { return context != null }"/>
-    <Script id="2" triggerType="1" name="script2" enabled="0" schedule="0 0 * * * ?" script='def run ( args ) { return test == "{test}{" }'/>
+  <Script id="1" triggerType="1" name="script1" enabled="1" schedule="0 * * * * ?"
+          script="def run(args) { return context != null }"/>
+  <Script id="2" triggerType="1" name="script2" enabled="0" schedule="0 0 * * * ?"
+          script='def run ( args ) { return test == "{test}{" }'/>
 </dataset>

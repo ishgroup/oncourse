@@ -89,7 +89,6 @@
 		 ish.oncourse.server.services.DataPopulationService  (startup database upgrades)
 		 ish.oncourse.server.CayenneServlet  (the connector between the client and server)
 		 org.apache.cayenne  (the entire data model layer)
-		 org.apache.derby  (the built-in database)
 		 ish.oncourse.server.DatabaseConnector  (requests sent from the application to the database)
 
 		 Possible log levels to try:

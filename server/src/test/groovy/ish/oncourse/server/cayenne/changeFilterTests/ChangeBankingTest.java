@@ -1,29 +1,24 @@
 package ish.oncourse.server.cayenne.changeFilterTests;
 
+import ish.TestWithDatabase;
+import ish.DatabaseSetup;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
 import ish.oncourse.entity.services.SetPaymentMethod;
-import ish.oncourse.server.cayenne.Banking;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.PaymentMethod;
-import ish.oncourse.server.cayenne.PaymentOut;
-import ish.oncourse.server.cayenne.PaymentOutLine;
+import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.lifecycle.BankingChangeHandler;
 import ish.oncourse.server.lifecycle.ChangeFilter;
 import ish.util.PaymentMethodUtil;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.annotation.PrePersist;
 import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.query.SelectById;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-/**
- * This class needs to be Java as of October 2019 since groovy doesn't handle the @PreUpdate annotation properly
- */
-public class ChangeBankingTest extends ChangeFilterTest {
+@DatabaseSetup(value = "ish/oncourse/server/cayenne/ChangeFilterTestDataSet.xml")
+public class ChangeBankingTest extends TestWithDatabase {
     @Test
     public void testChangeBanking() {
         cayenneService.addListener(new Object() {
@@ -33,10 +28,10 @@ public class ChangeBankingTest extends ChangeFilterTest {
                 ChangeFilter.preCommitGraphDiff(paymentOut.getObjectContext()).apply(changeHandler);
 
                 Banking oldValue = changeHandler.getOldValueFor(paymentOut.getObjectId());
-                Assert.assertNull(oldValue);
+                Assertions.assertNull(oldValue);
 
                 Banking newValue = changeHandler.getNewValueFor(paymentOut.getObjectId());
-                Assert.assertEquals(Long.valueOf(100L), newValue.getId());
+                Assertions.assertEquals(Long.valueOf(100L), newValue.getId());
 
             }
 
@@ -46,20 +41,18 @@ public class ChangeBankingTest extends ChangeFilterTest {
                 ChangeFilter.preCommitGraphDiff(paymentOut.getObjectContext()).apply(changeHandler);
 
                 Banking oldValue = changeHandler.getOldValueFor(paymentOut.getObjectId());
-                Assert.assertEquals(Long.valueOf(100L), oldValue.getId());
+                Assertions.assertEquals(Long.valueOf(100L), oldValue.getId());
 
                 Banking newValue = changeHandler.getNewValueFor(paymentOut.getObjectId());
-                Assert.assertEquals(Long.valueOf(200L), newValue.getId());
+                Assertions.assertEquals(Long.valueOf(200L), newValue.getId());
             }
 
         });
 
-        DataContext context = cayenneService.getNewContext();
+        Invoice invoice = SelectById.query(Invoice.class, 200L).selectOne(cayenneContext);
 
-        Invoice invoice = SelectById.query(Invoice.class, 200L).selectOne(context);
-
-        PaymentOut payment = context.newObject(PaymentOut.class);
-        PaymentOutLine outLine = context.newObject(PaymentOutLine.class);
+        PaymentOut payment = cayenneContext.newObject(PaymentOut.class);
+        PaymentOutLine outLine = cayenneContext.newObject(PaymentOutLine.class);
 
         outLine.setPaymentOut(payment);
         outLine.setAccount(invoice.getDebtorsAccount());
@@ -70,17 +63,17 @@ public class ChangeBankingTest extends ChangeFilterTest {
         payment.setPayee(invoice.getContact());
         payment.setAmount(invoice.getAmountOwing().negate());
         payment.setPaymentDate(LocalDate.now());
-        SetPaymentMethod.valueOf(PaymentMethodUtil.getCustomPaymentMethod(context, PaymentMethod.class, PaymentType.CASH), payment).set();
+        SetPaymentMethod.valueOf(PaymentMethodUtil.getCustomPaymentMethod(cayenneContext, PaymentMethod.class, PaymentType.CASH), payment).set();
 
-        Banking b1 = SelectById.query(Banking.class, 100L).selectOne(context);
+        Banking b1 = SelectById.query(Banking.class, 100L).selectOne(cayenneContext);
         payment.setBanking(b1);
 
-        context.commitChanges();
+        cayenneContext.commitChanges();
 
-        Banking b2 = SelectById.query(Banking.class, 200L).selectOne(context);
+        Banking b2 = SelectById.query(Banking.class, 200L).selectOne(cayenneContext);
         payment.setBanking(b2);
 
-        context.commitChanges();
+        cayenneContext.commitChanges();
 
         cayenneService.getServerRuntime().getChannel().getEntityResolver().getCallbackRegistry().clear();
     }

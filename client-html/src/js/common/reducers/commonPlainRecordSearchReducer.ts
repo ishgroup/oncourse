@@ -10,36 +10,7 @@ import {
   GET_COMMON_PLAIN_RECORDS_FULFILLED,
   SET_COMMON_PLAIN_RECORD_SEARCH
 } from "../actions/CommonPlainRecordsActions";
-
-export interface CommonPlainSearchEntity {
-  items?: any[];
-  search?: string;
-  loading?: boolean;
-  rowsCount?: number;
-}
-
-export interface CommonPlainRecordSearchState {
-  [key: string]: CommonPlainSearchEntity;
-}
-
-const availableEntities = [
-  "Assessment",
-  "ArticleProduct",
-  "Discount",
-  "Qualification",
-  "Module",
-  "MembershipProduct",
-  "Contact",
-  "Site",
-  "Room",
-  "Course",
-  "CourseClass",
-  "Enrolment",
-  "ConcessionType",
-  "CorporatePass",
-  "ContactRelationType",
-  "VoucherProduct"
-];
+import { availableEntities, CommonPlainRecordSearchState } from "../../model/common/Plain";
 
 const initial = availableEntities.reduce((p, c) => {
   p[c] = {

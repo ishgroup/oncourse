@@ -10,6 +10,7 @@ xml.data() {
             assessmentName(submission.assessmentName)
             submittedOn(submission.submittedOn?.format("d-M-y"))
             markedOn(submission.markedOn?.format("d-M-y"))
+            grade(submission.grade)
         }
     }
 }

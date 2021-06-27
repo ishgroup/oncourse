@@ -2,12 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/sales'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/sales'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -24,15 +24,9 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
     Scenario: (+) Get list of all productItems by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -66,7 +60,8 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -74,28 +69,29 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
 
     Scenario: (+) Get productItem (Voucher) by admin
 
-        Given path ishPath + '/1001'
+        Given path ishPath + '/1015'
         When method GET
         Then status 200
         And match $ ==
         """
         {
-        "id":1001,
-        "productId":1002,
+        "id":1015,
+        "productId":1005,
         "productType":"Voucher",
-        "productName":"voucherType1",
-        "purchasedById":14,
-        "purchasedByName":"stud8",
-        "purchasedOn":"2019-07-22",
-        "expiresOn":"2029-07-21",
-        "purchasePrice":50.00,
+        "productName":"voucherType2",
+        "purchasedById":32,
+        "purchasedByName":"voucher customField",
+        "purchasedOn":"2019-08-30",
+        "expiresOn":"2120-08-29",
+        "purchasePrice":170.00,
         "status":"Active",
         "payments":[],
         "validFrom":null,
         "valueRemaining":"1 classes",
-        "voucherCode":"2zMEaTEz",
-        "redeemableById":14,
-        "redeemableByName":"stud8"
+        "voucherCode":"g3zEmUdf",
+        "redeemableById":null,
+        "redeemableByName":null,
+        "customFields":{"vcf1":"ABCDEF"}
         }
         """
 
@@ -124,7 +120,8 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 
@@ -133,15 +130,9 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
     Scenario: (+) Get productItem by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/1002'
@@ -165,7 +156,8 @@ Feature: Main feature for all GET requests with path 'list/entity/sales'
         "valueRemaining":null,
         "voucherCode":null,
         "redeemableById":null,
-        "redeemableByName":null
+        "redeemableByName":null,
+        "customFields":{}
         }
         """
 

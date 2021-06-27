@@ -11,7 +11,7 @@ properties:
     format: date-time
   submittedOn:
     type: string
-    format: date
+    format: date-time
   markedById:
     type: integer
     format: int64
@@ -19,7 +19,7 @@ properties:
     type: string
   markedOn:
     type: string
-    format: date
+    format: date-time
   enrolmentId:
     type: integer
     format: int64
@@ -38,6 +38,8 @@ properties:
     format: int64
   assessment:
     type: string
+  grade:
+    type: number
   documents:
     type: array
     items:

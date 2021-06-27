@@ -13,7 +13,6 @@ export default (theme: AppTheme) =>
   createStyles({
     rowWrapper: {
       minHeight: "36px",
-      padding: "0 8px",
     },
     items: {
       marginLeft: -8,
@@ -30,6 +29,7 @@ export default (theme: AppTheme) =>
       marginRight: -8,
     },
     center: {
+      textAlign: "center",
       display: "flex",
       justifyContent: "center",
       "&:hover $hiddenIcon, &:hover $hiddenTitleIcon": {
@@ -39,8 +39,9 @@ export default (theme: AppTheme) =>
     hiddenIcon: {
       visibility: "hidden",
       position: "absolute",
-      transform: "translate(calc(100% + 2px),-2px)",
-      padding: 0
+      transform: "translate(calc(100% + 2px),0)",
+      padding: 0,
+      right: 0
     },
     hiddenTitleIcon: {
       visibility: "hidden",

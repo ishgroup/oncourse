@@ -21,12 +21,21 @@ const records = Object.keys(Entities)
 
 const QueryCardContent = props => {
   const {
-    field, name, classes, onValidateQuery, isValidQuery
+    field, name, classes, disabled
   } = props;
 
   const [queryResultsPending, setQueryResultsPending] = useState(false);
   const [hideQueryResults, setQueryHideResults] = useState(false);
   const [queryResults, setQueryResults] = useState(0);
+  const [isValidQuery, setIsValidQuery] = useState(true);
+
+  const onValidateQuery = (isValid, input?) => {
+    if (input && input.includes("${")) {
+      setIsValidQuery(true);
+      return;
+    }
+    setIsValidQuery(isValid);
+  };
 
   const debounseSearch = useCallback<any>(
     debounce((isValid, entity, query, queryResultsPending) => {
@@ -68,6 +77,7 @@ const QueryCardContent = props => {
           label="Entity"
           items={records}
           className="d-flex mt-2"
+          disabled={disabled}
           required
         />
 
@@ -83,11 +93,12 @@ const QueryCardContent = props => {
                 type="aql"
                 name={`${name}.query`}
                 label="Query"
+                placeholder="All records"
                 rootEntity={field.entity}
-                disabled={!field.entity}
+                disabled={!field.entity || disabled}
                 onValidateQuery={onValidateQuery}
                 validate={validateExpression}
-                required
+                isValidQuery={isValidQuery}
               />
             </div>
           </Collapse>
@@ -97,7 +108,7 @@ const QueryCardContent = props => {
           <Grid xs={6}>
             <Uneditable
               value={field.queryClosureReturnValue}
-              label="Returned Results Name"
+              label="Returned results name"
             />
           </Grid>
 

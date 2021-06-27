@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { isBefore } from "date-fns";
@@ -35,7 +38,6 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import {
  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
 } from "../../preferences/actions";
-import { getCustomFieldTypes } from "../customFieldTypes/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
@@ -66,7 +68,6 @@ interface ContactsProps {
   getLanguages?: () => void;
   getContactsRelationTypes?: () => void;
   getContactsConcessionTypes?: () => void;
-  getCustomFieldTypes?: () => void;
   getTaxTypes?: () => void;
   getDefaultTerms?: () => void;
   getGenerateAccessForContact?: () => void;
@@ -261,7 +262,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     getLanguages,
     getContactsRelationTypes,
     getContactsConcessionTypes,
-    getCustomFieldTypes,
     getTaxTypes,
     getDefaultTerms,
     getGenerateAccessForContact,
@@ -328,7 +328,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     getLanguages();
     getContactsRelationTypes();
     getContactsConcessionTypes();
-    getCustomFieldTypes();
     getTaxTypes();
     getDefaultTerms();
     getGenerateAccessForContact();
@@ -416,7 +415,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getLanguages: () => dispatch(getLanguages()),
   getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes("Contact")),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
   getContactRecord: (id: number) => dispatch(getContact(id)),

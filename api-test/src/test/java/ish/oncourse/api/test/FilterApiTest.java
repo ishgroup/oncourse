@@ -2,17 +2,15 @@ package ish.oncourse.api.test;
 
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
-import com.intuit.karate.junit4.Karate;
-import cucumber.api.CucumberOptions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
-import static org.junit.Assert.assertEquals;
+
 
 public class FilterApiTest {
     @Test
     public void test() {
-        Results results = Runner.path(  "classpath:ish/oncourse/api/test/filter").tags("~@ignore").parallel(1);
-        assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
+        Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path(  "classpath:ish/oncourse/api/test/filter").tags("~@ignore").parallel(1);
+        Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }
 }

@@ -66,6 +66,8 @@ properties:
     type: number
   feeHelpAmount:
     type: number
+  feeHelpClass:
+    type: boolean
   invoicesCount:
     type: integer
   outcomesCount:

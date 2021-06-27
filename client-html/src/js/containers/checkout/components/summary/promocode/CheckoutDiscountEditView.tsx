@@ -22,8 +22,8 @@ import { CheckoutDiscount, CheckoutSummary } from "../../../../../model/checkout
 import { State } from "../../../../../reducers/state";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
-import { AppBarTitle } from "../../CheckoutSelection";
 import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
+import CheckoutAppBar from "../../CheckoutAppBar";
 
 const styles = () => createStyles({
     history: {
@@ -270,7 +270,7 @@ const CheckoutDiscountEditView = React.memo<any>(props => {
   return (
     <div className="appFrame flex-fill root">
       <CustomAppBar>
-        <AppBarTitle title={`${selectedDiscount.name} (${selectedDiscount.code})`} />
+        <CheckoutAppBar title={`${selectedDiscount.name} (${selectedDiscount.code})`} />
       </CustomAppBar>
       <div className="appBarContainer w-100 p-3">
         {type === "discount" && <DiscountPromoView {...props} />}

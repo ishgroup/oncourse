@@ -6,7 +6,7 @@
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import {
- getFormInitialValues, getFormValues, initialize, reduxForm 
+ getFormInitialValues, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { withRouter } from "react-router";
 import { Dispatch } from "redux";
@@ -64,7 +64,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onCreate: report => dispatch(createAutomationPdfReport(report)),
   onUpdate: report => dispatch(updateAutomationPdfReport(report)),
   onDelete: (id: number) => dispatch(removeAutomationPdfReport(id)),
-  openConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
+  openConfirm: props => dispatch(showConfirm(props)),
   getPdfReport: (id: number) => dispatch(getAutomationPdfReport(id)),
   onUpdateInternal: report => dispatch(updateInternalAutomationPdfReport(report)),
   setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),

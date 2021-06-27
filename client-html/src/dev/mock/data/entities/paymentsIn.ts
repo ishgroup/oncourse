@@ -91,6 +91,20 @@ export function mockPaymentsIn() {
           l.privateNotes
         ]
       }));
+    } if (columns.includes("creditCardNumber")) {
+      rows = generateArraysOfRecords(1, [
+        { name: "id", type: "number" },
+        { name: "creditCardNumber", type: "string" },
+        { name: "creditCardType", type: "string" },
+        { name: "createdOn", type: "Datetime" }
+      ]).map(l => ({
+        id: l.id,
+        values: [
+          "424242......4242",
+          "VISA",
+          "2020-05-08T07:39:42.000Z"
+        ]
+      }));
     } else {
       rows = generateArraysOfRecords(20, [
         { name: "id", type: "number" },

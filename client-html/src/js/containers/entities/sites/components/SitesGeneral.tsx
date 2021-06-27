@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Room } from "@api/model";
+import { Room, Site } from "@api/model";
 import * as React from "react";
 import Grid, { GridSize } from "@material-ui/core/Grid";
 import {
@@ -28,6 +28,7 @@ import { validateDeleteRoom } from "../../rooms/actions";
 import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { openRoomLink } from "../../rooms/utils";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -70,7 +71,14 @@ const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
     ? [{ xs: 12 }, { xs: 12 }, { xs: 4 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 8 }, { xs: 12 }]
     : [{ xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }]);
 
-class SitesGeneral extends React.PureComponent<any, any> {
+interface Props {
+  tags: any;
+  countries: any;
+  timezones: any;
+  validateDeleteRoom: any;
+}
+
+class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any> {
   state = {
     addressString: null
   };
@@ -99,11 +107,11 @@ class SitesGeneral extends React.PureComponent<any, any> {
 
     const callback = () => dispatch(arrayRemove(form, "rooms", index));
 
-    showConfirm(
-      id ? () => validateDeleteRoom(id, callback) : callback,
-      "Room entity will be deleted. This action can not be undone",
-      "AGREE"
-    );
+    showConfirm({
+      onConfirm: id ? () => validateDeleteRoom(id, callback) : callback,
+      confirmMessage: "Room entity will be deleted. This action can not be undone",
+      confirmButtonText: "Delete"
+    });
   };
 
   validateTagList = (value, allValues, props) => {
@@ -263,24 +271,24 @@ class SitesGeneral extends React.PureComponent<any, any> {
                   size={twoColumn ? [600, 207] : [600, 300]}
                 />
               </Grid>
-
-              <Grid item xs={layoutArray[8].xs}>
-                <MinifiedEntitiesList
-                  name="rooms"
-                  header="Rooms"
-                  oneItemHeader="Room"
-                  entity="Room"
-                  FieldsContent={SitesRoomFields}
-                  onAdd={this.addRoom}
-                  onDelete={this.deleteRoom}
-                  onViewMore={openRoom}
-                  count={values.rooms && values.rooms.length}
-                  validate={validateRooms}
-                  syncErrors={syncErrors}
-                />
-              </Grid>
             </Grid>
           </Collapse>
+
+          <Grid item xs={layoutArray[8].xs}>
+            <MinifiedEntitiesList
+              name="rooms"
+              header="Rooms"
+              oneItemHeader="Room"
+              entity="Room"
+              FieldsContent={SitesRoomFields}
+              onAdd={this.addRoom}
+              onDelete={this.deleteRoom}
+              onViewMore={openRoom}
+              count={values.rooms && values.rooms.length}
+              validate={validateRooms}
+              syncErrors={syncErrors}
+            />
+          </Grid>
         </Grid>
       </>
     );

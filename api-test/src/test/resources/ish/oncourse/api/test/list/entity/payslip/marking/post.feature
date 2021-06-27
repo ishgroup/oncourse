@@ -2,13 +2,13 @@
 Feature: Main feature for all POST requests with path 'list/entity/payslip/marking'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathPayslip = 'list/entity/payslip'
         * def ishPath = 'list/entity/payslip/marking'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -65,16 +65,9 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
     Scenario: (+) Change status from Approved to Paid/Exported by admin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newStatus = {"ids":[1002], "status":"Paid/Exported"}
@@ -95,16 +88,9 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
     Scenario: (+) Change status from Completed to Approved by notadmin
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newStatus = {"ids":[1001], "status":"Approved"}

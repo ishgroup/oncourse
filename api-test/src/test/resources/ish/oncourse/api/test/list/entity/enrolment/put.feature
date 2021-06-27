@@ -2,12 +2,12 @@
 Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/enrolment'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
         * def enrolmentToDefault = {"id":2,"tags":[],"studentContactId":2,"studentName":"stud1","courseClassId":3,"courseClassName":"Course1 course1-3","confirmationStatus":"Do not send","eligibilityExemptionIndicator":false,"outcomeIdTrainingOrg":null,"studentIndustryANZSICCode":null,"vetClientID":null,"vetFundingSourceStateID":null,"vetIsFullTime":false,"vetTrainingContractID":null,"status":"Active","source":"office","relatedFundingSourceId":5,"studyReason":"Not stated","vetFeeExemptionType":"Not set","fundingSource":"Domestic full fee paying student","associatedCourseIdentifier":null,"vetInSchools":null,"suppressAvetmissExport":false,"vetPurchasingContractID":null,"cricosConfirmation":null,"vetFeeIndicator":false,"trainingPlanDeveloped":null,"feeCharged":700,"feeHelpAmount":0,"invoicesCount":1,"outcomesCount":1,"feeStatus":null,"attendanceType":"No information","creditOfferedValue":null,"creditUsedValue":null,"creditFOEId":null,"creditProvider":null,"creditProviderType":null,"creditTotal":null,"creditType":null,"creditLevel":null,"documents":[],"customFields":{}}
 
@@ -75,7 +75,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "assessments":[],
-        "submissions":[]
+        "submissions":[],
+        "feeHelpClass":false
         }
         """
 
@@ -90,16 +91,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
     Scenario: (+) Update Enrolment by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def enrolmentToUpdate = {"id":2,"tags":[{"id":236}],"studentContactId":2,"studentName":"stud1","courseClassId":3,"courseClassName":"Course1 course1-3","confirmationStatus":"Do not send","eligibilityExemptionIndicator":true,"outcomeIdTrainingOrg":"qwe","studentIndustryANZSICCode":null,"vetClientID":"qwerty","vetFundingSourceStateID":"qwe","vetIsFullTime":true,"vetTrainingContractID":"qwerty","status":"Active","source":"office","relatedFundingSourceId":5,"studyReason":"To get a job","vetFeeExemptionType":"Yes (Y)","fundingSource":"Commonwealth - specific","associatedCourseIdentifier":"qwerty","vetInSchools":true,"suppressAvetmissExport":true,"vetPurchasingContractID":"qwerty","cricosConfirmation":"qwerty","vetFeeIndicator":true,"trainingPlanDeveloped":true,"feeCharged":700,"feeHelpAmount":100,"invoicesCount":1,"outcomesCount":1,"feeStatus":"Restricted Access Arrangement","attendanceType":"Part-time attendance","creditOfferedValue":"qwer","creditUsedValue":"qwer","creditFOEId":"qwer","creditProvider":"qwer","creditProviderType":"TAFE","creditTotal":"Unit of study is NOT an RPL unit of study","creditType":"Other","creditLevel":"Certificate IV","documents":[{"id":201}],"customFields":{}}
@@ -162,18 +156,15 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "assessments":[],
-        "submissions":[]
+        "submissions":[],
+        "feeHelpClass":false
         }
         """
 
 #       <----->  Scenario have been finished. Now find and change back object:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/2'
         And request enrolmentToDefault
@@ -185,16 +176,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
     Scenario: (-) Update Enrolment Enrolment by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def enrolmentToUpdate = {}

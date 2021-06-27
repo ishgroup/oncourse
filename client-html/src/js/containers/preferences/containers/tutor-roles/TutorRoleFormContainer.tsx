@@ -12,7 +12,7 @@ import { DefinedTutorRole } from "@api/model";
 import { State } from "../../../../reducers/state";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
- createTutorRole, getTutorRole, removeTutorRole, updateTutorRole 
+ createTutorRole, getTutorRole, removeTutorRole, updateTutorRole
 } from "../../actions";
 import TutorRolesForm from "./components/TutorRolesForm";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
@@ -79,7 +79,7 @@ const TutorRoleFormContainer = React.memo<any>(props => {
     },
     [isNew]
   );
-  
+
   return (
     <TutorRolesForm
       dispatch={dispatch}
@@ -102,12 +102,13 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onUpdate: (role: DefinedTutorRole) => dispatch(updateTutorRole(role)),
-    onDelete: (id: string, tutorRoles: DefinedTutorRole[]) => dispatch(removeTutorRole(id, tutorRoles)),
-    onCreate: (role: DefinedTutorRole) => dispatch(createTutorRole(role)),
-    getTutorRole: (id: string) => dispatch(getTutorRole(id)),
-    showConfirm: (onConfirm: any, confirmMessage?: string) => dispatch(showConfirm(onConfirm, confirmMessage)),
-    setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-  });
+  dispatch,
+  onUpdate: (role: DefinedTutorRole) => dispatch(updateTutorRole(role)),
+  onDelete: (id: string, tutorRoles: DefinedTutorRole[]) => dispatch(removeTutorRole(id, tutorRoles)),
+  onCreate: (role: DefinedTutorRole) => dispatch(createTutorRole(role)),
+  getTutorRole: (id: string) => dispatch(getTutorRole(id)),
+  showConfirm: props => dispatch(showConfirm(props)),
+  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(TutorRoleFormContainer));

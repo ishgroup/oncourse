@@ -4,13 +4,12 @@
  */
 
 import * as React from "react";
-import Card from "@material-ui/core/Card";
 import clsx from "clsx";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Button from "@material-ui/core/Button";
 import { change, Field } from "redux-form";
-import { FormControlLabel } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import {
+ FormControlLabel, Grid, Button, Collapse, Card
+} from "@material-ui/core";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
 import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
@@ -19,7 +18,7 @@ import EditInPlaceField from "../../../../../common/components/form/form-fields/
 import EditInPlaceMoneyField from "../../../../../common/components/form/form-fields/EditInPlaceMoneyField";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
 import {
- validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray
+  validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validateRegex
 } from "../../../../../common/utils/validation";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import ListMapRenderer from "./ListMapRenderer";
@@ -78,7 +77,13 @@ const onDragEnd = (result, items, dispatch) => {
 
 const validateListMap = (value, dataType) => {
   let error;
-  const fields = JSON.parse(value);
+  let fields = [];
+
+  try {
+    fields = JSON.parse(value);
+  } catch (e) {
+    console.error(e);
+  }
 
   if (Array.isArray(fields)) {
     fields.forEach(f => {
@@ -127,7 +132,6 @@ const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: str
       case "Money":
         return <EditInPlaceMoneyField {...props} />;
       case "URL":
-        return <EditInPlaceField {...props} />;
       case "Text":
       default:
         return <EditInPlaceField {...props} />;
@@ -182,8 +186,8 @@ const renderCustomFields = props => {
       <Droppable droppableId="droppableCustomFields">
         {provided => (
           <div ref={provided.innerRef} className={classes.container}>
-            {fields.map((item: CustomFieldType, index) => {
-              const field = fields.get(index);
+            {fields.map((item: string, index) => {
+              const field: CustomFieldType = fields.get(index);
 
               const isListOrMap = ["List", "Map"].includes(field.dataType);
 
@@ -281,23 +285,22 @@ const renderCustomFields = props => {
                                 />
 
                                 {field.dataType === "List" && (
-
-                                <FormControlLabel
-                                  className={classes.checkbox}
-                                  control={(
-                                    <StyledCheckbox
-                                      checked={field.defaultValue && field.defaultValue.includes("*")}
-                                      onChange={(e, checked) => onAddOther(index, checked)}
-                                      color="primary"
-                                    />
-                                  )}
-                                  label="Add 'other' option"
-                                />
+                                  <FormControlLabel
+                                    className={classes.checkbox}
+                                    control={(
+                                      <StyledCheckbox
+                                        checked={field.defaultValue && field.defaultValue.includes("*")}
+                                        onChange={(e, checked) => onAddOther(index, checked)}
+                                        color="primary"
+                                      />
+                                    )}
+                                    label="Add 'other' option"
+                                  />
                                 )}
                               </Grid>
 
                               <Grid item xs={5}>
-                                {isListOrMap && (
+                                <Collapse in={isListOrMap} mountOnEnter unmountOnExit>
                                   <Field
                                     name={`${item}.defaultValue`}
                                     label="Default value"
@@ -307,7 +310,18 @@ const renderCustomFields = props => {
                                     classes={classes}
                                     validate={validateResolver}
                                   />
-                                )}
+                                </Collapse>
+                                <Collapse in={field.dataType === "Pattern text"} mountOnEnter unmountOnExit>
+                                  <FormField
+                                    type="text"
+                                    name={`${item}.pattern`}
+                                    label="Pattern"
+                                    disabled={field.id}
+                                    className={classes.field}
+                                    validate={validateRegex}
+                                    required
+                                  />
+                                </Collapse>
                               </Grid>
                             </Grid>
                           </Grid>

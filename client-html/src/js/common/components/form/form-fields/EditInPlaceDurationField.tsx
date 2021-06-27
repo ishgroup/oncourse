@@ -33,7 +33,9 @@ const parseDurationString = (duration: string): number => {
 };
 
 const EditInPlaceDurationField: React.FunctionComponent<any> = props => {
-  const { input, type, ...restProps } = props;
+  const {
+ input, type, defaultValue, ...restProps
+} = props;
 
   const [textValue, setTextValue] = useState(formatDurationMinutes(input.value || 0));
 
@@ -54,12 +56,13 @@ const EditInPlaceDurationField: React.FunctionComponent<any> = props => {
   );
 
   useEffect(() => {
-    setTextValue(formatDurationMinutes(input.value || 0));
-  }, [input.value]);
+    setTextValue(formatDurationMinutes(input.value || defaultValue || 0));
+  }, [input.value, defaultValue]);
 
   return (
     <EditInPlaceField
       {...restProps}
+      defaultValue={defaultValue}
       input={{
         value: textValue,
         onBlur,

@@ -2,12 +2,12 @@
 Feature: Main feature for all POST requests with path 'list/entity/courseClass/tutor'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/courseClass/tutor'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -56,15 +56,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
     Scenario: (+) Create Tutor by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def newTutor =
@@ -96,12 +90,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         Then status 200
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -112,15 +103,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
     Scenario: (+) Create Tutor by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         * def newTutor =

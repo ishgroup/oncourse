@@ -1,6 +1,9 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2021.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import React from "react";
@@ -16,8 +19,7 @@ import {
   getContactsTaxTypes,
   getContactTags
 } from "../entities/contacts/actions";
-import { checkPermissions, showConfirm } from "../../common/actions";
-import { getCustomFieldTypes } from "../entities/customFieldTypes/actions";
+import { checkPermissions } from "../../common/actions";
 import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
 import { changeStep, checkoutClearState } from "./actions";
 import CheckoutSelection from "./components/CheckoutSelection";
@@ -32,7 +34,6 @@ interface Props {
   getLanguages?: NoArgFunction;
   getContactsRelationTypes?: NoArgFunction;
   getContactsConcessionTypes?: NoArgFunction;
-  getCustomFieldTypes?: NoArgFunction;
   getActiveFundingContracts?: NoArgFunction;
   getQePermissions?: () => void;
   getTaxTypes?: NoArgFunction;
@@ -50,7 +51,6 @@ const Checkout = React.memo<Props>(props => {
     getLanguages,
     getContactsRelationTypes,
     getContactsConcessionTypes,
-    getCustomFieldTypes,
     getTaxTypes,
     changeStep,
     checkoutStep,
@@ -68,7 +68,6 @@ const Checkout = React.memo<Props>(props => {
     getLanguages();
     getContactsRelationTypes();
     getContactsConcessionTypes();
-    getCustomFieldTypes();
     getTaxTypes();
     getDefaultTerms();
     getActiveFundingContracts();
@@ -105,11 +104,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getLanguages: () => dispatch(getLanguages()),
   getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
-  getCustomFieldTypes: () => dispatch(getCustomFieldTypes(CONTACT_ENTITY_NAME)),
   getDefaultTerms: () => dispatch(getDefaultInvoiceTerms()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  openConfirm: (onConfirm: any, confirmMessage?: string, confirmButtonText?: string) =>
-    dispatch(showConfirm(onConfirm, confirmMessage, confirmButtonText)),
   changeStep: (step: number) => dispatch(changeStep(step)),
   clearState: () => {
     dispatch(checkoutClearState());
@@ -122,6 +118,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
   },
-  });
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Checkout);
