@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 88-1
+      author: artyom
+      validCheckSum: ANY
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+          - sqlCheck:
+              expectedResult: 0
+              sql: 'select count(*) from Enrolment where fundingSource is null'
+      changes:
+        - sql: 'update Enrolment e join CourseClass cc on e.courseClass_Id = cc.id set e.fundingSource =cc.fundingSource where e.fundingSource is null'
+
+  - changeSet:
+      id: 88-2
+      author: artyom
+      validCheckSum: ANY
+      changes:
+        - addNotNullConstraint:
+            columnDataType: SMALLINT
+            columnName: fundingSource
+            tableName: Enrolment
