@@ -9,7 +9,7 @@
  * See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.integration.surveygizmo
+package ish.oncourse.server.integration.alchemer
 
 import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
@@ -22,13 +22,13 @@ import org.apache.logging.log4j.Logger
 
 @CompileDynamic
 @Plugin(type = 4)
-class SurveyGizmoIntegration implements PluginTrait {
-	public static final String SURVEYGIZMO_USER = "user"
-	public static final String SURVEYGIZMO_PASSWORD = "password"
-	public static final String SURVEYGIZMO_SURVEY_ID = "surveyId"
-	public static final String SURVEYGIZMO_COURSE_TAG = "courseTag"
-	public static final String SURVEYGIZMO_SEND_ON_ENROLMENT_SUCCESS = "sendOnEnrolmentSuccess"
-	public static final String SURVEYGIZMO_SEND_ON_ENROLMENT_COMPLETION = "sendOnEnrolmentCompletion"
+class AlchemerIntegration implements PluginTrait {
+	public static final String ALCHEMER_USER = "user"
+	public static final String ALCHEMER_PASSWORD = "password"
+	public static final String ALCHEMER_SURVEY_ID = "surveyId"
+	public static final String ALCHEMER_COURSE_TAG = "courseTag"
+	public static final String ALCHEMER_SEND_ON_ENROLMENT_SUCCESS = "sendOnEnrolmentSuccess"
+	public static final String ALCHEMER_SEND_ON_ENROLMENT_COMPLETION = "sendOnEnrolmentCompletion"
 
 	static final String BASE_URL = "https://restapi.surveygizmo.com/v4/"
 
@@ -38,12 +38,12 @@ class SurveyGizmoIntegration implements PluginTrait {
 
 	private static Logger logger = LogManager.logger
 
-	SurveyGizmoIntegration(Map args) {
+	AlchemerIntegration(Map args) {
 		loadConfig(args)
 
-		this.user = configuration.getIntegrationProperty(SURVEYGIZMO_USER).value
-		this.password = configuration.getIntegrationProperty(SURVEYGIZMO_PASSWORD).value
-		this.surveyId = configuration.getIntegrationProperty(SURVEYGIZMO_SURVEY_ID).value
+		this.user = configuration.getIntegrationProperty(ALCHEMER_USER).value
+		this.password = configuration.getIntegrationProperty(ALCHEMER_PASSWORD).value
+		this.surveyId = configuration.getIntegrationProperty(ALCHEMER_SURVEY_ID).value
 	}
 
 	/**
