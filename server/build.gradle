@@ -12,6 +12,8 @@
 import au.com.ish.Aql
 import com.github.psxpaul.task.JavaExecFork
 
+import java.security.MessageDigest
+
 apply plugin: 'groovy'
 apply plugin: 'apidoc'
 apply plugin: 'org.apache.cayenne'
@@ -203,7 +205,7 @@ task integration(type: Test) {
 	testLogging {
 		exceptionFormat = 'full'
 	}
-	
+
 	jvmArgs = ['-Xmx3000m','-Xms3000m']
 	dependsOn "expandConfig"
 	// the database tests interfere with each other if run in parallel
@@ -254,6 +256,22 @@ task addVersion {
 }
 
 distZip.dependsOn(copyWebApp,addVersion)
+
+task createChecksums(dependsOn: distZip) {
+	inputs.files(distZip.outputs.files)
+	outputs.files(inputs.files.collect({ it.path + ".sha256"}))
+	doLast {
+		inputs.files.each { f ->
+			def messageDigest = MessageDigest.getInstance("SHA-256")
+			f.eachByte(1024 * 1024) { byte[] buf, int bytesRead ->
+				messageDigest.update(buf, 0, bytesRead);
+			}
+			def hash = messageDigest.digest().encodeHex().toString()
+			file(f.path + ".sha256").text = hash
+		}
+	}
+}
+distZip.finalizedBy(createChecksums)
 
 distributions {
 	main {

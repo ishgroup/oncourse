@@ -165,22 +165,6 @@ subprojects {
 			html.enabled false
 		}
 	}
-
-	task createChecksums(dependsOn: distZip) {
-		inputs.files(distZip.outputs.files)
-		outputs.files(inputs.files.collect({ it.path + ".sha256"}))
-		doLast {
-			inputs.files.each { f ->
-				def messageDigest = MessageDigest.getInstance("SHA-256")
-				f.eachByte(1024 * 1024) { byte[] buf, int bytesRead ->
-					messageDigest.update(buf, 0, bytesRead);
-				}
-				def hash = messageDigest.digest().encodeHex().toString()
-				file(f.path + ".sha256").text = hash
-			}
-		}
-	}
-	distZip.finalizedBy(createChecksums)
 }
 
 task testReport(type: TestReport) {
