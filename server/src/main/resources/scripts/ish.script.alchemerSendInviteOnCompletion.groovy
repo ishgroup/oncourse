@@ -5,7 +5,7 @@ def enrolmentsJustEnded = query {
 
 enrolmentsJustEnded.each { enrolment ->
     if (tagName == null || tagName == "" || enrolment.courseClass.course.hasTag(tagName)) {
-        surveyGizmo {
+        alchemer {
             template surveyInvitationTemplate
             reply preference.email.from
             contact enrolment.student.contact

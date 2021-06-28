@@ -1,0 +1,14 @@
+name: Alchemer send invite on enrolment completion
+keyCode: ish.script.alchemerSendInviteOnCompletion
+body: ish.script.alchemerSendInviteOnCompletion.groovy
+enabled: false
+triggerType: CRON
+schedule: 0 0 9 * * ?
+description: Send Alchemer invite upon enrolment completion
+options:
+  - name: surveyInvitationTemplate
+    dataType: MESSAGE_TEMPLATE
+    value: "ish.email.surveyInvitation"
+  - name: tagName
+    dataType: TEXT
+    value: ""

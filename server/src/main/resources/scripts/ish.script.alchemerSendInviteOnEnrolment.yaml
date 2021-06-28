@@ -1,10 +1,10 @@
-name: SurveyGizmo send invite on enrolment
-keyCode: ish.script.surveygizmoSendInviteOnEnrolment
-body: ish.script.surveygizmoSendInviteOnEnrolment.groovy
+name: Alchemer send invite on enrolment
+keyCode: ish.script.alchemerSendInviteOnEnrolment
+body: ish.script.alchemerSendInviteOnEnrolment.groovy
 enabled: false
 triggerType: ONCOURSE_EVENT
 onCourseEventType: ENROLMENT_SUCCESSFUL
-description: Send SurveyGizmo invite upon enrolment
+description: Send Alchemer invite upon enrolment
 options:
   - name: surveyInvitationTemplate
     dataType: MESSAGE_TEMPLATE
