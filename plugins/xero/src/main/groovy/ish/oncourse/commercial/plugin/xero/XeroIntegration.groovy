@@ -120,7 +120,7 @@ Review all the other employee settings and ensure they are correct.
 
 				response.failure = { resp, body ->
 					logger.error(body.toString())
-					throw new RuntimeException("Xero app authentication error: $body.toString()")
+					throw new RuntimeException("Xero app authentication error: ${body.toString()}")
 				}
 			}
 
@@ -184,8 +184,10 @@ Review all the other employee settings and ensure they are correct.
 				name =  body['Organisations'][0]['Name']
 			}
 			response.failure = { resp, body ->
+				logger.error('Can not determine xero organisation name')
 				logger.error(body.toString())
-				throw new RuntimeException("Xero app authentication error: $body.toString()")
+
+				name = ''
 			}
 		}
 		
