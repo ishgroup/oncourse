@@ -35,13 +35,13 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.38.0' // adds the task 'dependencyUpdates -Drevision=release'
 	id 'com.github.node-gradle.node' version '3.0.1' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
-	id 'com.dorongold.task-tree' version '1.5' // adds the task 'taskTree [some task]'
+
+	// adds the task 'tiTree [some task]'
+	// adds the task 'tiOrder [some task]'
+	id 'org.barfuin.gradle.taskinfo' version '1.2.0'
+
 	id 'application'
 	id 'jacoco'
-}
-
-taskTree{
-	noRepeat = true  //do not print a sub-tree in the task-tree more than once
 }
 
 apply plugin: 'idea'
