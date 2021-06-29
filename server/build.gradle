@@ -82,7 +82,7 @@ dependencies {
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
-	implementation ('net.sf.jasperreports:jasperreports:6.17.0') 
+	implementation 'net.sf.jasperreports:jasperreports:6.17.0' 
 
 	implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
 	implementation "org.bouncycastle:bcmail-jdk15on:$bouncycastleVersion"

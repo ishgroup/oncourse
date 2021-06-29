@@ -37,7 +37,6 @@ dependencies {
     api 'org.apache.bval:org.apache.bval.bundle:1.1.2'
     api 'net.java.dev.textile-j:textile-j:2.2.864'
 
-    //latest jackson 2.9.9 conflicts with spring AbstractApplicationContext
     api "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"
