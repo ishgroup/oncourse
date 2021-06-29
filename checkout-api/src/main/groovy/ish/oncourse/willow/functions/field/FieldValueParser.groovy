@@ -147,7 +147,7 @@ class FieldValueParser {
 
         } else if (field.mandatory) {
             logger.error("${field.name} required: ${field}")
-            result.error = new FieldError(name: field.key, error: "${field.name} is required")
+            result.fieldError = new FieldError(name: field.key, error: "${field.name} is required")
         }
         result
     }
