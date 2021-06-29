@@ -23,6 +23,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * 
+ * Since  2.7 version the jackson lib do not support LocalDate/LocalDateTime types searelization by default
+ * To support it jasckson has JavaTimeModule saparate module
+ * The reason of ObjectMapperContextResolver class - register JavaTimeModule only
+ * For usage see ish.oncourse.server.api.v1.service.impl.PreferenceApiImpl.getLockedDate()
+ */
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
