@@ -45,6 +45,6 @@ function showWarning({meta: {touched, valid, warning}}: ValidateTextProps) {
   return (!touched && warning) || (valid && warning);
 }
 
-interface ValidateTextProps extends Partial<WrappedFieldProps<{}>>, WrappedMouseHoverProps {
+interface ValidateTextProps extends Partial<WrappedFieldProps>, WrappedMouseHoverProps {
 }
 

@@ -9,6 +9,7 @@ import {TextField} from "../../../js/components/form/TextField";
 import {CheckboxField} from "../../../js/components/form/CheckboxField";
 import {ComboboxField} from "../../../js/components/form/ComboboxField";
 import {TextAreaField} from "../../../js/components/form/TextAreaField";
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 
 const store = createStore(
@@ -28,7 +29,7 @@ const options = [
 /**
  *  application for all components to test how they work inside redux-form
  */
-class AllComponentsFrom extends React.Component<any, any> {
+class AllComponentsFrom extends React.Component<InjectedFormProps, any> {
 
   render() {
     const {handleSubmit, pristine, submitting} = this.props;
@@ -52,10 +53,7 @@ class AllComponentsFrom extends React.Component<any, any> {
   }
 }
 
-const validate = values => {
-  const errors = Object.assign({}, values);
-  return errors;
-};
+const validate = values => Object.assign({}, values);
 
 const Form = reduxForm({
   validate,

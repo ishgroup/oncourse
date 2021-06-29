@@ -41,5 +41,5 @@ export const checkboxFieldComponent = (props: CheckboxFieldProps) => {
   );
 };
 
-export interface CheckboxFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
+export interface CheckboxFieldProps extends Partial<WrappedFieldProps>, CommonFieldProps, WrappedMouseHoverProps {
 }

@@ -1,8 +1,7 @@
-import {FormProps, reduxForm, change} from "redux-form";
+import {reduxForm, change} from "redux-form";
 import * as React from "react";
 import {connect} from "react-redux";
 import classnames from 'classnames';
-
 import {Contact, ValidationError, ContactFields} from "../../../model";
 import {IshState} from "../../../services/IshState";
 import {ContactEdit} from "./components/ContactEdit";
@@ -12,6 +11,7 @@ import {submitEditContact} from "./actions/Actions";
 import {toFormKey} from "../../../components/form/FieldFactory";
 import {scrollToTop, scrollToValidation} from "../../../common/utils/DomUtils";
 import {ContactAddProcessState, Phase} from "../../reducers/State";
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 export const NAME = "ContactEditForm";
 
@@ -67,7 +67,7 @@ class ContactEditForm extends React.Component<Props, any> {
   }
 }
 
-interface Props extends FormProps<FormData, Props, any> {
+interface Props extends InjectedFormProps {
   contactAddProcess: ContactAddProcessState;
   fields: ContactFields;
   errors: ValidationError;

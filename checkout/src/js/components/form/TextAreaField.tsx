@@ -44,7 +44,7 @@ function inputComponent(props: any) {
   );
 }
 
-export interface TextAreaFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
+export interface TextAreaFieldProps extends Partial<WrappedFieldProps>, CommonFieldProps, WrappedMouseHoverProps {
   required: boolean;
   rows: number;
 }

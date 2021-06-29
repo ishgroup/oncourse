@@ -1,5 +1,5 @@
 import * as React from "react";
-import {reduxForm, FormProps, FormErrors, DataShape, getFormSyncErrors, getFormValues} from "redux-form";
+import {reduxForm, FormErrors, getFormSyncErrors, getFormValues} from "redux-form";
 import classnames from "classnames";
 import CreditCardV2Comp from "./CreditCardV2Comp";
 import CorporatePassComp from "./CorporatePassComp";
@@ -21,12 +21,13 @@ import {IshState} from "../../../../services/IshState";
 import {Tabs} from "../reducers/State";
 import {PaymentStatus, CorporatePass, Contact, Amount, ValidationError} from "../../../../model";
 import {setResultDetailsCorporatePass} from "../../summary/actions/Actions";
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 /**
  * @Deprecated will be remove, now it is used only as example
  */
 
-interface Props extends FormProps<DataShape, any, any> {
+interface Props extends InjectedFormProps {
   contacts: Contact[];
   amount: Amount;
   onSubmit: (data, dispatch, props) => any;
@@ -216,7 +217,7 @@ const validateCorporatePass = (data, props) => {
 
 const Form = reduxForm({
   form: NAME,
-  validate: (data:CorporatePassFormValues, props: Props): FormErrors<FormData> => {
+  validate: (data:CorporatePassFormValues, props: Props) => {
     const errors = {};
 
     if (props.currentTab === Tabs.corporatePass) {

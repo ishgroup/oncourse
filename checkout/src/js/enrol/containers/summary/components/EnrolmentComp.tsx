@@ -173,8 +173,8 @@ class ClassDetails extends React.PureComponent<ClassDetailsProps, any>{
             onChangeClass(result.id,availableClasses)
           },
           value: courseClass
-        }}
-        meta={{}}
+        } as any}
+        meta={{} as any}
         optionRenderer={ClassDetailsLabel}
         valueRenderer={ClassDetailsLabel}
         loadOptions={() => Promise.resolve(availableClasses)}

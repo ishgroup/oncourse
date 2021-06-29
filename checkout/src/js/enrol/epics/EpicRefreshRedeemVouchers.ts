@@ -22,12 +22,13 @@ function createEpicRefreshRedeemVouchers() {
       if (notOnlyVouchers) {
         Object.keys(action.payload?.entities?.vouchers || {}).forEach(key => {
           const voucher: Voucher = action.payload?.entities?.vouchers[key];
-          const stateVoucher = state.products.entities[voucher?.productId]
-          if (voucher && stateVoucher && voucher.selected && !voucher.classes.length) {
+          const stateProduct = state.products.entities[voucher?.productId];
+          const stateVoucher = state.checkout.redeemedVoucherProducts.find(v => v.id === voucher?.productId);
+          if (voucher && stateProduct && voucher.selected && !voucher.classes.length) {
             vouchers.push({
               id: voucher.productId,
-              enabled: false,
-              name: stateVoucher.name,
+              enabled: stateVoucher?.enabled,
+              name: stateProduct.name,
               amount: voucher.total
             })
           }

@@ -14,6 +14,7 @@ import Checkbox from "../../../js/components/form-new/Checkbox";
 import SelectField from "../../../js/components/form-new/SelectField";
 import TextArea from "../../../js/components/form-new/TextArea";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 
 const store = createStore(
@@ -26,7 +27,7 @@ const stub: SearchApiMock = new SearchApiMock(config);
 /**
  *  application for all components to test how they work inside redux-form
  */
-class AllComponentsFrom extends React.Component<any, any> {
+class AllComponentsFrom extends React.Component<InjectedFormProps, any> {
   render() {
     const {handleSubmit, pristine, submitting} = this.props;
     return (

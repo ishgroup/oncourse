@@ -11,7 +11,7 @@ export const DateTimeField: React.SFC<DateTimeFieldProps> = props => (
   />
 );
 
-export interface DateTimeFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
+export interface DateTimeFieldProps extends Partial<WrappedFieldProps>, CommonFieldProps, WrappedMouseHoverProps {
   type: string;
   required: boolean;
   hint: string;

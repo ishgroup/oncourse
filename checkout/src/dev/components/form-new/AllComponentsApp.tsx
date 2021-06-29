@@ -15,6 +15,7 @@ import RadioGroup from "../../../js/components/form-new/RadioGroup";
 import TextArea from "../../../js/components/form-new/TextArea";
 
 import "../../../scss/index.scss";
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 const store = createStore(
   combineReducers({form: formReducer}), applyMiddleware(createLogger())
@@ -25,7 +26,6 @@ const options = [
   {key: 'two', value: 'Two'},
   {key: 'three', value: 'Three'},
   {key: 'five', value: 'Five'},
-
 ];
 
 
@@ -39,7 +39,7 @@ const loadOptions = (text) => {
 /**
  * All components application, to test styling
  */
-class AllComponentsFrom extends React.Component<any, any> {
+class AllComponentsFrom extends React.Component<InjectedFormProps, any> {
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
@@ -59,11 +59,11 @@ class AllComponentsFrom extends React.Component<any, any> {
           <Checkbox name="email2" label="E-mail" required={true} meta={{}}/>
         </fieldset>
         <fieldset>
-          <SelectField name="suburb" label="Suburb" required={true} meta={{error: "Error message", touched: true}}
-                       input={{}}/>
-          <SelectField name="suburb1" label="Suburb" required={true} meta={{warning: "Warning message", touched: true}}
-                       input={{}}/>
-          <SelectField name="suburb2" label="Suburb" required={true} meta={{}} input={{}}/>
+          <SelectField options={options} labelKey="key" valueKey="value" label="Suburb" required={true} meta={{error: "Error message", touched: true} as any}
+                       input={{ } as any}/>
+          <SelectField options={options} labelKey="key" valueKey="value" label="Suburb" required={true} meta={{warning: "Warning message", touched: true} as any}
+                       input={{ name: "suburb1"} as any}/>
+          <SelectField options={options} labelKey="key" valueKey="value" label="Suburb" required={true} meta={{} as any} input={{ name: "suburb2"} as any}/>
         </fieldset>
         <fieldset>
           <TextArea name="needs" label="Special Needs" required={true} meta={{error: "Error message", touched: true}}/>

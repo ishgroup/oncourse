@@ -4,10 +4,8 @@ import * as L from "lodash";
 import * as Actions from "../actions/Actions";
 import * as ContactEditActions from "../containers/contact-edit/actions/Actions";
 import * as ContactAddActions from "../containers/contact-add/actions/Actions";
-
 import {Actions as WebActions} from "../../web/actions/Actions";
-
-import { ValidationError, ContactFields, Amount, RedeemVoucher, Voucher } from "../../model";
+import { ValidationError, ContactFields, Amount, RedeemVoucher } from "../../model";
 import {Reducer as SummaryReducer} from "../containers/summary/reducers/Reducer";
 import {Reducer as PaymentReducer} from "../containers/payment/reducers/Reducer";
 import {Reducer as ConcessionReducer} from "../containers/concession/reducers/Reducer";
@@ -277,10 +275,9 @@ const RedeemVoucherProductsReducer = (state: RedeemVoucherProduct[] = [], action
       const {id, enabled} = action.payload;
       return state.map(v => v.id === id ? {...v, enabled} : v);
 
-    case Actions.REMOVE_REDEEM_VOUCHER_PRODUCT: {
+    case Actions.REMOVE_REDEEM_VOUCHER_PRODUCT:
       const {voucher} = action.payload;
       return state.filter(v => voucher && voucher.id !== v.id );
-    }
 
     case Actions.RESET_CHECKOUT_STATE:
       return [];

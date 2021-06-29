@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as L from "lodash";
 import {Dialog} from "./EstimateFeeDialog";
-
 import {Field, CourseClassPrice} from "../../../model";
 import {FeesComponent, Props as FeesCompProps} from "./FeesComponent";
+import { DecoratedFormProps } from 'redux-form/lib/reduxForm';
 
 
 export interface Model {
@@ -13,18 +13,14 @@ export interface Model {
   price: CourseClassPrice;
 }
 
-export interface Values {
-
-}
-
 export interface Props {
   model: Model;
   estimatedDiscountIndex?: number;
-  onSubmit?: (Values) => void;
   onClose?: () => void;
+  onSubmit?: any;
 }
 
-export class FeesRangeComponent extends React.Component<Props, any> {
+export class FeesRangeComponent extends React.Component<Props & DecoratedFormProps, any> {
   private dialog: Dialog;
 
   render() {

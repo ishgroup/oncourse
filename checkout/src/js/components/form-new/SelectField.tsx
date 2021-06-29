@@ -1,32 +1,26 @@
 import * as React from "react";
 import classnames from "classnames";
 import debounce from "debounce-promise";
-
 import Select from "react-select";
 import "react-select/dist/react-select.css";
-
 import {MouseHover} from "../form/MouseHover";
 import {showError, ValidateText} from "../form/ValidateText";
 import {HintText} from "../form/HintText";
 import {FieldLabel} from "../form/FieldLabel";
-
-
 import {Item} from "../../model";
 import {inputFrom, metaFrom} from "./FieldsUtils";
-import {WrappedFieldInputProps, WrappedFieldMetaProps} from "redux-form";
+import { WrappedFieldInputProps, WrappedFieldProps } from "redux-form";
 
 
-interface Props {
-  input: WrappedFieldInputProps;
+interface Props extends WrappedFieldProps {
   placeholder?: string;
   returnType?: string;
-  meta: WrappedFieldMetaProps<any>;
   labelKey: string;
   valueKey: string;
-  newOptionEnable: boolean;
+  newOptionEnable?: boolean;
   showOnFocus?: boolean;
-  required: boolean;
-  label: string;
+  required?: boolean;
+  label?: string;
   hint?: string;
   allowEditSelected?: boolean;
   autocomplete?: string;
@@ -35,13 +29,15 @@ interface Props {
   onBlurSelect?: (field) => void;
   optionRenderer?: (option) => void;
   valueRenderer?: (option) => void;
+  loadOptions?: any;
+  options?: any;
 }
 
 /**
  *
  */
 
-class SelectField extends React.Component<any, any> {
+class SelectField extends React.Component<Props, any> {
   private selectComponent: any;
 
   private loadOptions = (input: string): Promise<any> => {

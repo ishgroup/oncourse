@@ -1,6 +1,6 @@
 import React from "react";
 import SelectField from "../../../../components/form-new/SelectField";
-import * as Form from "redux-form";
+import { Field } from "redux-form";
 import {DateField} from "../../../../components/form/DateField";
 import {TextField} from "../../../../components/form/TextField";
 import Checkbox from "../../../../components/form-new/Checkbox";
@@ -41,23 +41,25 @@ class ConcessionForm extends React.Component<Props, any> {
 
     return (
       <div>
-        <Form.Field
-          component={SelectField}
+        <Field
           name="concessionType"
-          label="New Concession"
-          returnType="object"
-          searchable={false}
           required={false}
           onChange={result => this.handleChange(result.key)}
-          loadOptions={() => Promise.resolve(concessionTypes.map(t => ({key: t.id, value: t.name})))}
+          component={SelectField as any}
+          props={{
+            label: "New Concession",
+            returnType: "object",
+            searchable: false,
+            loadOptions: () => Promise.resolve(concessionTypes.map(t => ({key: t.id, value: t.name})))
+          }}
         />
 
         {hasExpireDate &&
-        <Form.Field name="expiryDate" type="text" label="Expiry Date" required component={DateField}/>
+        <Field name="expiryDate" type="text" label="Expiry Date" required component={DateField}/>
         }
 
         {hasNumber &&
-        <Form.Field name="number" label="Number" required component={TextField} type="text"/>
+        <Field name="number" label="Number" required component={TextField} type="text"/>
         }
 
         {hasValue &&
@@ -71,7 +73,7 @@ class ConcessionForm extends React.Component<Props, any> {
 const ConcessionText = () => {
   return (
     <div className="clearfix conditions">
-      <Form.Field
+      <Field
         component={Checkbox}
         type="checkbox"
         name="concessionAgree"

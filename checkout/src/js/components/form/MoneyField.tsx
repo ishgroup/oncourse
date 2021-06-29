@@ -51,7 +51,7 @@ function inputComponent(props: any) {
   );
 }
 
-export interface MoneyFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps, WrappedMouseHoverProps {
+export interface MoneyFieldProps extends Partial<WrappedFieldProps>, CommonFieldProps, WrappedMouseHoverProps {
   type: string;
   required: boolean;
 }

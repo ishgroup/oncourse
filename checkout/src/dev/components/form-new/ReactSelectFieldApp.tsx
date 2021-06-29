@@ -13,6 +13,7 @@ import {SearchApiMock} from "../../mocks/SearchApiMock";
 import SelectField from "../../../js/components/form-new/SelectField";
 import {TextField} from "../../../js/components/form-new/TextField";
 import {MockConfig} from "../../mocks/mocks/MockConfig";
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 const store = createStore(
   combineReducers({form: formReducer}), applyMiddleware(createLogger()),
@@ -27,7 +28,7 @@ const loadOptions = (text) => {
   return stub.getSuburbs(text);
 };
 
-class ReactSelectForm extends React.Component<any, any> {
+class ReactSelectForm extends React.Component<InjectedFormProps, any> {
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (

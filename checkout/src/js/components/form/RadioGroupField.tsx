@@ -56,7 +56,7 @@ export class RadioGroupField extends React.Component<RadioGroupFieldProps, Radio
   }
 }
 
-export interface RadioGroupFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps {
+export interface RadioGroupFieldProps extends Partial<WrappedFieldProps>, CommonFieldProps {
   items: Item[];
 }
 

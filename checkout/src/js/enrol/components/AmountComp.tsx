@@ -39,6 +39,15 @@ class AmountComp extends React.Component<Props> {
     const {amount, onAddCode, promotions, redeemVouchers, redeemedVoucherProducts, onToggleVoucherProduct, onToggleVoucher, currentTab} = this.props;
     const activeVoucherWithPayer = redeemVouchers?.find(v => v.payer && v.enabled);
 
+    const voucherProductsPaymentsMerged = [];
+
+    amount?.voucherPayments?.forEach(vp => {
+      if (vp.redeemVoucherProductId) {
+        const added = voucherProductsPaymentsMerged.find(av => av.redeemVoucherProductId === vp.redeemVoucherProductId);
+        added ? added.amount += vp.amount : voucherProductsPaymentsMerged.push({...vp});
+      }
+    })
+
     return (
       <div className="row">
         <AddCodeComp onAdd={onAddCode} promotions={promotions}/>
@@ -51,7 +60,7 @@ class AmountComp extends React.Component<Props> {
               <RedeemVoucherComp
                 key={v.id}
                 redeemVoucher={v}
-                voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
+                voucherPayment={amount?.voucherPayments.find(
                   vp => vp.redeemVoucherId === v.id,
                 )}
                 disabled={!!(activeVoucherWithPayer && activeVoucherWithPayer.id !== v.id)}
@@ -59,12 +68,12 @@ class AmountComp extends React.Component<Props> {
               />
           ))}
 
-          {amount && redeemedVoucherProducts &&
-            redeemedVoucherProducts.map(v => (
+          {amount && amount &&
+            redeemedVoucherProducts.map((v) => (
               <RedeemVoucherComp
                 key={v.id}
                 redeemVoucher={v}
-                voucherPayment={amount.voucherPayments && amount.voucherPayments.find(
+                voucherPayment={voucherProductsPaymentsMerged.find(
                   vp => vp.redeemVoucherProductId === v.id,
                 )}
                 onChange={onToggleVoucherProduct}
@@ -128,7 +137,7 @@ const CCPayment = props => {
 };
 
 const RedeemVoucherComp = props => {
-  const {redeemVoucher, voucherPayment, onChange, disabled} = props;
+  const {redeemVoucher, voucherPayment, onChange, disabled } = props;
 
   return (
     <div className="row">

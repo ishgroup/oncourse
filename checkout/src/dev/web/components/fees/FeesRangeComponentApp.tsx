@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {FeesRangeComponent, Props, Values} from "../../../../js/web/components/fees/FeesRangeComponent";
+import {FeesRangeComponent, Props} from "../../../../js/web/components/fees/FeesRangeComponent";
 import {mockCourseClassWithFeesRange, mockField} from "../../../mocks/mocks/MockFunctions";
 import {DataType} from "../../../../js/model";
 import {connect, Provider} from "react-redux";

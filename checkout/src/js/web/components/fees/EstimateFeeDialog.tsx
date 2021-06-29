@@ -1,10 +1,11 @@
 import * as React from "react";
 import Rodal from "rodal";
 import "rodal/lib/rodal.css";
-import {Props as FeeProps, Values} from "./FeesRangeComponent";
+import {Props as FeeProps} from "./FeesRangeComponent";
 import {toFormFieldProps} from "../../../components/form/FieldFactory";
-import {Field, FormProps, reduxForm} from "redux-form";
+import {Field, reduxForm} from "redux-form";
 import {RadioGroupField} from "../../../components/form/RadioGroupField";
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 
 interface State {
@@ -48,7 +49,7 @@ export class Dialog extends React.Component<FeeProps, State> {
   }
 
   questions() {
-    const onSubmit = (values: Values): void => {
+    const onSubmit = (values): void => {
       this.props.onSubmit(values);
       this.hide();
     };
@@ -58,11 +59,8 @@ export class Dialog extends React.Component<FeeProps, State> {
   }
 }
 
-export interface Props extends FormProps<FormData, any, any>, FeeProps {
 
-}
-
-export class Fields extends React.Component<any, any> {
+export class Fields extends React.Component<InjectedFormProps & { model?: any }, any> {
   render() {
     const {model, handleSubmit} = this.props;
     return (

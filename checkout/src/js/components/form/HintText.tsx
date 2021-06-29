@@ -25,7 +25,7 @@ function hintText(hint) {
     );
 }
 
-interface HintTextProps extends Partial<WrappedFieldProps<{}>>, WrappedMouseHoverProps {
+interface HintTextProps extends Partial<WrappedFieldProps>, WrappedMouseHoverProps {
     hint?: string;
 }
 

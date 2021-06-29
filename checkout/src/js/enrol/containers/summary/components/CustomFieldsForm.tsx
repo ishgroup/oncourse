@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from 'react-redux';
-import {reduxForm} from "redux-form";
+import {reduxForm, Form} from "redux-form";
 import {isNil} from "lodash";
 import HeadingComp from "../../../components/HeadingComp";
 import {toFormKey} from "../../../../components/form/FieldFactory";
@@ -34,22 +34,22 @@ class CustomFields extends React.Component<any, any> {
   }
 
   render() {
-    const {headings, selected, onUpdate, form, handleSubmit} = this.props;
+    const {headings, selected, onUpdate, form, handleSubmit, dispatch} = this.props;
 
     const headingsComp = isNil(headings) ? [] : headings.map((h, index) => (
-      <HeadingComp heading={h} key={index} touch={() => onUpdate(form)}/>
+      <HeadingComp heading={h} key={index} touch={() => onUpdate(form)} form={form} dispatch={dispatch}/>
     ));
 
     return (
       <div className="course-fields col-sm-24">
         {headings && selected &&
-        <form
+        <Form
           onSubmit={handleSubmit}
           onBlur={() => onUpdate(form)}
         >
           {this.getFormErrors()}
           {headingsComp}
-        </form>
+        </Form>
         }
       </div>
     );
@@ -57,6 +57,7 @@ class CustomFields extends React.Component<any, any> {
 }
 
 const CustomFieldsForm = reduxForm({
+  destroyOnUnmount: false,
   validate: (data, props: any) => {
     const errors = {};
 
@@ -71,10 +72,8 @@ const CustomFieldsForm = reduxForm({
         ),
       );
     }
-
     return errors;
   },
-  destroyOnUnmount: false,
 })(CustomFields);
 
 export default connect<any, any, any, IshState>((state: any) => ({forms: state.form}))(CustomFieldsForm) as any;

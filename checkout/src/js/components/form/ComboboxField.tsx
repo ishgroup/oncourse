@@ -72,13 +72,7 @@ function selectInput(props: SelectInputProps) {
   );
 }
 
-function requiredText() {
-  return (
-    <em title="This field is required">*</em>
-  );
-}
-
-interface SelectInputProps extends ComboboxFieldProps, Partial<WrappedFieldProps<{}>>, WrappedMouseHoverProps,
+interface SelectInputProps extends ComboboxFieldProps, Partial<WrappedFieldProps>, WrappedMouseHoverProps,
   BaseProps {
 }
 

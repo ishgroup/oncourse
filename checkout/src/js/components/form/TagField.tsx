@@ -56,7 +56,7 @@ export class TagField extends React.Component<TagFieldProps, TagFieldState> {
   }
 }
 
-export interface TagFieldProps extends Partial<WrappedFieldProps<{}>>, CommonFieldProps {
+export interface TagFieldProps extends Partial<WrappedFieldProps>, CommonFieldProps {
   items: Item[];
 }
 

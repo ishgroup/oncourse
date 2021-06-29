@@ -19,8 +19,16 @@ import {replaceWithNl} from "../../common/utils/HtmlUtils";
 import {DateTimeField} from "./DateTimeField";
 import {MoneyField} from "./MoneyField";
 import moment from "moment";
+import { unregisterField } from 'redux-form';
 
 class FieldFactory extends React.Component<any, any> {
+  componentWillUnmount() {
+    const { field, index, dispatch, form } = this.props;
+    const props: any = toFormFieldProps(field, index);
+
+    // Force field uregister to remove errors from state
+    dispatch(unregisterField(form, props.name))
+  }
 
   private validatePatternInner = val => validatePattern(val,this.props?.field?.pattern)
 

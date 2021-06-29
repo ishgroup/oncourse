@@ -1115,13 +1115,13 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/redux-form@6.6.3":
-  version "6.6.3"
-  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-6.6.3.tgz#ef6be78542e7362195fca1a20aceab745dc04c4b"
-  integrity sha512-ygHUoZ0YVhYCKrQp3JeBrOGzIfVnc19Os8lFj2UiEcTfdFm1jvMcsSvq/hKMMVQAxN5LVLLtn0gTxWNqUsfD7A==
+"@types/redux-form@^8.3.1":
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-8.3.1.tgz#a5e67396fb86cf58d511bed7e4c0c9c65d01042a"
+  integrity sha512-8lmJFxHtUBMWoI7lLX8Q+lhz9/nmkerEtrxgHZzhRwhQzD73MWkP9EA9w6Gx7cc02Fz3FkpYlfTN+9ELGUXZQQ==
   dependencies:
     "@types/react" "*"
-    redux "^3.6.0"
+    redux "^3.6.0 || ^4.0.0"
 
 "@types/scheduler@*":
   version "0.16.1"
@@ -7597,7 +7597,7 @@ redux-persist@4.8.3:
     lodash "^4.17.4"
     lodash-es "^4.17.4"
 
-redux@^3.4.0, redux@^3.6.0:
+redux@^3.4.0:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
   integrity sha512-pNqnf9q1hI5HHZRBkj3bAngGZW/JMCmexDlOxw4XagXY2o1327nHH54LoTjiPJ0gizoqPDRqWyX/00g0hD6w+A==
@@ -7606,6 +7606,13 @@ redux@^3.4.0, redux@^3.6.0:
     lodash-es "^4.2.1"
     loose-envify "^1.1.0"
     symbol-observable "^1.0.3"
+
+"redux@^3.6.0 || ^4.0.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.1.0.tgz#eb049679f2f523c379f1aff345c8612f294c88d4"
+  integrity sha512-uI2dQN43zqLWCt6B/BMGRMY6db7TTY4qeHHfGeKb3EOhmOKjU3KdWvNLJyqaHRksv/ErdNH7cFZWg9jXtewy4g==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
 
 redux@^4.0.0, redux@^4.0.5:
   version "4.0.5"

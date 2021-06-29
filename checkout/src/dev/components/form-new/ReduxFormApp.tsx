@@ -6,12 +6,13 @@ import {createLogger} from "redux-logger";
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {Field, reducer as formReducer, reduxForm} from "redux-form";
 import { Values } from 'redux-form-website-template';
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
 
 const store = createStore(
   combineReducers({form: formReducer}), applyMiddleware(createLogger())
 );
 
-class RadioGroupForm extends React.Component<any, any> {
+class RadioGroupForm extends React.Component<InjectedFormProps, any> {
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
@@ -49,7 +50,7 @@ const Form = reduxForm({
 
 function showResults(values) {
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-};
+}
 
 const render = () => ReactDOM.render(
   <Provider store={store}>
