@@ -13,6 +13,7 @@ package ish.oncourse.server.api.cxf
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
+import org.apache.cxf.jaxrs.provider.JavaTimeTypesParamConverterProvider
 
 import javax.ws.rs.core.Application
 
@@ -31,7 +32,7 @@ class CXFApplication extends Application{
         singletons.addAll(features)
         classes.add(JacksonJsonProvider.class)
         classes.add(JacksonJaxbJsonProvider.class)
-
+        classes.add(ObjectMapperContextResolver.class)
         props.putAll(props)
     }
 
