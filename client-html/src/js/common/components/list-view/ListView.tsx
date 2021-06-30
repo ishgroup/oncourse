@@ -209,6 +209,7 @@ interface Props extends Partial<ListState> {
   submitForm?: any;
   closeConfirm?: () => void;
   deleteWithoutConfirmation?: boolean;
+  getCustomBulkEditFields?: any;
 }
 
 interface ComponentState {
@@ -1035,6 +1036,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       creatingNew,
       fullScreenEditView,
       searchQuery,
+      getCustomBulkEditFields,
     } = this.props;
 
     const {
@@ -1084,6 +1086,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             rootEntity={rootEntity}
             sidebarWidth={hasFilters ? sidebarWidth : 0}
             manualLink={editViewProps.manualLink}
+            getCustomBulkEditFields={getCustomBulkEditFields}
           />
           <Grid container className={clsx("flex-fill relative overflow-hidden", classes.gridWithEditColumn)}>
             <LoadingIndicator transparentBackdrop allowInteractions />
