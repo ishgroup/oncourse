@@ -5,11 +5,11 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import AppEntry from "./AppEntry";
 import { ErrorBoundary } from "./constants/Bugsnag";
 import { DEFAULT_CONFIG } from "./constants/Config";
 import store from "./constants/Store";
-import { Provider } from "react-redux";
 import { EnvironmentConstants } from "./constants/EnvironmentConstants";
 
 if (process.env.NODE_ENV === EnvironmentConstants.production) {
@@ -27,7 +27,21 @@ if (process.env.NODE_ENV === EnvironmentConstants.production) {
   }
 }
 
-const start = () => {
+const start = async () => {
+  if ((window as any)?.location.pathname === "/provisioning") {
+    (window as any)?.setBaseURL("https://provisioning.ish.com.au/b/v1/");
+
+    let index = await fetch("https://provisioning.ish.com.au/index.html").then(r => r.text());
+    index = index.replace("/billing.js", "https://provisioning.ish.com.au/billing.js");
+    index = index.replace("/billing.css", "https://provisioning.ish.com.au/billing.css");
+
+    const newHTML = document.open("text/html", "replace");
+    newHTML.write(index);
+    newHTML.close();
+
+    return;
+  }
+
   ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store as any}>
