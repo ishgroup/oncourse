@@ -81,12 +81,6 @@ paths:
         - Billing
       x-filter:
         - ish.oncourse.api.access.AuthFilter
-      parameters:
-        - name: userId
-          in: path
-          description: College unique key
-          required: true
-          type: string
       responses:
         '200':
           description: college key responce
@@ -102,12 +96,6 @@ paths:
         - Billing
       x-filter:
         - ish.oncourse.api.access.AuthFilter
-      parameters:
-        - name: userId
-          in: path
-          description: College unique key
-          required: true
-          type: string
       responses:
         '200':
           description: college key responce
@@ -126,7 +114,7 @@ paths:
       parameters:
         - name: sites
           in: body
-          description: College unique key
+          description: Updated sites
           required: true
           schema:
             type: array
@@ -147,8 +135,6 @@ definitions:
       key:
         type: string
       name:
-        type: string
-      prefix:
         type: string
       domains:
         type: array

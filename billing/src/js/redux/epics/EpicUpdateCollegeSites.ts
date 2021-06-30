@@ -5,13 +5,18 @@ import BillingService from "../../api/services/BillingApi";
 
 const request: EpicUtils.Request = {
   type: UPDATE_COLLEGE_SITES,
-  getData: sites => BillingService.updateSites(sites),
-  processData: (v, s) => [
+  getData: sites => {
+    const updated = sites.map(({prefix, key, ...rest}) =>  ({
+      ...rest,
+      key: `${prefix}-${key}`
+    }))
+    return BillingService.updateSites(updated)
+  },
+  processData: () => [
     showMessage({
-      message: "Websites updated",
-      error: false
+      message: "Websites updated", success: true
     }),
-    getSites(s.user.userKey),
+    getSites(),
     setLoadingValue(false)
   ]
 };

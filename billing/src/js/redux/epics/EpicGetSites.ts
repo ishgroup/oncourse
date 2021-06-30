@@ -5,7 +5,7 @@ import BillingService from "../../api/services/BillingApi";
 
 const request: EpicUtils.Request = {
   type: GET_SITES,
-  getData: userId => BillingService.getSites(userId),
+  getData: () => BillingService.getSites(),
   processData: sites => [{ type: GET_SITES_FULFILLED, payload: sites }]
 };
 

@@ -12,11 +12,10 @@ import {
 import { darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme } from "../themes/ishTheme";
 import { ThemeContext} from "../themes/ThemeContext";
 import MessageProvider from "./common/message/MessageProvider";
-import LoadingIndicator from "./common/Loading";
-import {useDispatch, useSelector} from "react-redux";
-import {getSites, getUser, setUserChecked} from "../redux/actions";
-import {State} from "../redux/reducers";
-import {getCookie, setCookie} from "../utils";
+import {useDispatch} from "react-redux";
+import { getCollegeKey, getSites } from "../redux/actions";
+import {getCookie} from "../utils";
+import { defaultAxios } from '../api/services/DefaultHttpClient';
 
 
 export const useStyles = makeStyles(() =>
@@ -31,22 +30,21 @@ export const useStyles = makeStyles(() =>
 );
 
 const Billing = () => {
-  const checked = useSelector<State, any>(state => state.user.checked);
   const dispatch = useDispatch();
 
   const classes = useStyles();
 
   React.useEffect(() => {
-    const search = new URLSearchParams(window.location.search);
-    const user = search.get("user") || getCookie("JSESSIONID");
+    const token =  getCookie("JSESSIONID");
 
-    if (user) {
-      dispatch(getUser(user));
-      dispatch(getSites(user));
-      setCookie("JSESSIONID", user);
-      window.history.replaceState({}, document.title, location.protocol + '//' + location.host + location.pathname);
-    } else {
-      dispatch(setUserChecked(true));
+    if (token) {
+      defaultAxios.defaults.withCredentials = true;
+      defaultAxios.defaults.baseURL = "https://provisioning.ish.com.au/b/v1";
+      defaultAxios.defaults.headers = {
+        'Authorization': token
+      }
+      dispatch(getCollegeKey());
+      dispatch(getSites());
     }
   },[]);
 
@@ -108,7 +106,7 @@ const Billing = () => {
       <ThemeProvider theme={theme}>
         <Header/>
         <div className={classes.root}>
-          {checked ? <Stepper /> : <LoadingIndicator />}
+          <Stepper />
         </div>
         <MessageProvider />
       </ThemeProvider>

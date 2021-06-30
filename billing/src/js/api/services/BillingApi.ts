@@ -11,12 +11,12 @@ class BillingService {
     return this.defaultHttpService.GET(`/v1/college/${name}`, { headers: { xGRecaptcha,  } });
   }
 
-  public getUser(userId: string): Promise<string> {
-    return this.billingApi.getCollegeKey(userId);
+  public getCollegeKey(): Promise<string> {
+    return this.billingApi.getCollegeKey();
   }
 
-  public getSites(userId: string): Promise<SiteDTO[]> {
-    return this.billingApi.getCollegeSites(userId);
+  public getSites(): Promise<SiteDTO[]> {
+    return this.billingApi.getCollegeSites();
   }
 
   public updateSites(sites: SiteDTO[]): Promise<any> {

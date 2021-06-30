@@ -23,6 +23,7 @@ import {ExistingCustomerSteps, NewCustomerSteps, Step} from "../../models/User";
 import {Dispatch} from "redux";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
 import {AppTheme} from "../../models/Theme";
+import { getCookie } from '../../utils';
 
 export const useStyles = makeStyles((theme: AppTheme) =>
   createStyles({
@@ -76,20 +77,20 @@ interface Props {
 
 const Stepper: React.FC<Props> = (
   {
-    serverError,
-    userKey
+    serverError
   }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [steps, setSteps] = React.useState<Step[]>([]);
 
   useEffect(() => {
-    if (userKey) {
+    const token =  getCookie("JSESSIONID");
+    if (token) {
       setSteps([...ExistingCustomerSteps]);
     } else {
       setSteps([...NewCustomerSteps]);
     }
-  }, [userKey]);
+  }, []);
 
   useEffect(() => {
     const loadScriptByURL = (id, url) => {
@@ -139,8 +140,7 @@ const Stepper: React.FC<Props> = (
 }
 
 const mapStateToProps = (state: State) => ({
-  serverError: state.serverError,
-  userKey: state.user.userKey
+  serverError: state.serverError
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

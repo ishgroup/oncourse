@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { connect } from "react-redux";
 import Navigation from "../Navigations";
-import { checkSiteName, setLoadingValue, setSitenameValue } from "../../../redux/actions";
+import { checkSiteName, setLoadingValue, setCollegeKey } from "../../../redux/actions";
 import { usePrevious } from "../../Hooks/usePrevious";
 import { SITE_KEY } from "../../../constant/common";
 import {State} from "../../../redux/reducers";
@@ -180,7 +180,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setSitenameValue: (name: string) => dispatch(setSitenameValue(name)),
+  setSitenameValue: (name: string) => dispatch(setCollegeKey(name)),
   setLoadingValue: (value) => dispatch(setLoadingValue(value)),
   checkSiteName: ({ name, token }) => dispatch(checkSiteName({ name, token })),
 });

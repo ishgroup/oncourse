@@ -112,7 +112,8 @@ export const SitesPage: React.FC<any> = (
   }) => {
 
   const loading = useSelector<State, any>(state => state.loading);
-  const { userKey, sites } = useSelector<State, any>(state => state.user);
+  const sites  = useSelector<State, any>(state => state.sites);
+  const collegeKey  = useSelector<State, any>(state => state.collegeKey);
   const dispatch = useDispatch();
 
   const { handleSubmit, setValues, dirty, handleChange, values, errors, setFieldValue, isValid, resetForm } = useFormik({
@@ -142,7 +143,7 @@ export const SitesPage: React.FC<any> = (
             setValues({
               sites: [
                 {
-                  prefix: userKey,
+                  prefix: collegeKey,
                   domains: []
                 },
                 ...values.sites
@@ -222,7 +223,7 @@ export const SitesPage: React.FC<any> = (
                                           positionStart: classes.zeroMargin
                                         }}
                                       >
-                                        {userKey}-
+                                        {collegeKey}-
                                       </InputAdornment>,
                                   }}
                                 />
@@ -252,9 +253,6 @@ export const SitesPage: React.FC<any> = (
                             multiple
                             freeSolo
                           />
-                          <Typography className={classes.caption} component="p" variant="caption" color="textSecondary">
-                            Press "Enter" to add new domains
-                          </Typography>
                         </Grid>
                       </Grid>
                     </AccordionDetails>

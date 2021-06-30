@@ -2,13 +2,13 @@ import {MockAdapter, promiseResolve} from "../MockAdapter";
 import {SiteDTO} from "@api/model";
 
 export function BillingApiMock(this: MockAdapter) {
-  this.api.onGet(new RegExp(`/v1/college/[^/]+$`))
+  this.api.onGet(new RegExp(`v1/college/(?!sites)[^/]+$`))
     .reply(config => promiseResolve(config, true))
 
-  this.api.onGet(new RegExp(`/v1/collegeKey/[^/]+$`))
+  this.api.onGet("/v1/collegeKey")
     .reply(config => promiseResolve(config, "nida"))
 
-  this.api.onGet(new RegExp(`/v1/college/sites/[^/]+$`))
+  this.api.onGet("/v1/college/sites")
     .reply(config => promiseResolve<SiteDTO[]>(config, [
       {
         id: 1,

@@ -10,7 +10,7 @@ export const SHOW_MESSAGE = "SHOW_MESSAGE";
 export const SET_CAPTCHA_TOKEN = "SET_CAPTCHA_TOKEN";
 export const CHECK_SITENAME = "CHECK_SITENAME";
 export const SET_SITENAME_VALID_VALUE = "SET_SITENAME_VALID_VALUE";
-export const SET_SITENAME_VALUE = "SET_SITENAME_VALUE";
+export const SET_COLLEGE_KEY = "SET_COLLEGE_KEY";
 export const CREATE_COLLEGE = "CREATE_COLLEGE";
 export const SET_TEMPLATE_VALUE = "SET_TEMPLATE_VALUE";
 export const SET_CONTACT_FORM_VALUES = "SET_CONTACT_FORM_VALUES";
@@ -21,14 +21,10 @@ export const SET_SEND_TOKEN_AGAIN_VALUE = "SET_SEND_TOKEN_AGAIN_VALUE";
 export const SET_SERVER_ERROR_VALUE = "SET_SERVER_ERROR_VALUE";
 export const RESET_STORE = "RESET_STORE";
 export const SET_LOADING_VALUE = "SET_LOADING_VALUE";
-
-export const SET_USER_CHECKED = "SET_USER_CHECKED";
+export const GET_COLLEGE_KEY = "GET_COLLEGE_KEY";
 
 export const GET_SITES = "GET_SITES";
 export const GET_SITES_FULFILLED = FULFILLED(GET_SITES);
-
-export const GET_USER = "GET_USER";
-export const GET_USER_FULFILLED = FULFILLED(GET_USER);
 
 export const UPDATE_COLLEGE_SITES = "UPDATE_COLLEGE_SITES";
 
@@ -37,19 +33,12 @@ export const updateCollegeSites = (sites: SiteDTO[]) => ({
   payload: sites
 });
 
-export const setUserChecked = (checked: boolean) => ({
-  type: SET_USER_CHECKED,
-  payload: checked
+export const getCollegeKey = () => ({
+  type: GET_COLLEGE_KEY
 });
 
-export const getUser = (userId: string) => ({
-  type: GET_USER,
-  payload: userId
-});
-
-export const getSites = (userId: string) => ({
-  type: GET_SITES,
-  payload: userId
+export const getSites = () => ({
+  type: GET_SITES
 });
 
 export const setCaptchaToken = (token: string) => ({
@@ -67,8 +56,8 @@ export const setSitenameValidValue = (payload: boolean) => ({
   payload
 });
 
-export const setSitenameValue = (payload: string) => ({
-  type: SET_SITENAME_VALUE,
+export const setCollegeKey = (payload: string) => ({
+  type: SET_COLLEGE_KEY,
   payload
 })
 
@@ -97,7 +86,7 @@ export const createCollege = (data: any) => ({
   payload: data
 })
 
-export const showMessage = (payload: { message: string, error: boolean }) => ({
+export const showMessage = (payload: { message: string, success: boolean }) => ({
   type: SHOW_MESSAGE,
   payload
 });

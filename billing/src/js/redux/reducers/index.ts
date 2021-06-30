@@ -10,17 +10,13 @@ import {
   SET_SITENAME_VALID_VALUE,
   COLLEGE_WAS_CREATED,
   SET_SEND_TOKEN_AGAIN_VALUE,
-  SET_SITENAME_VALUE,
   SET_SERVER_ERROR_VALUE,
   RESET_STORE,
   SET_LOADING_VALUE,
   GET_SITES,
   GET_SITES_FULFILLED,
-  GET_USER,
-  GET_USER_FULFILLED,
-  SET_USER_CHECKED,
   FETCH_FAIL,
-  UPDATE_COLLEGE_SITES,
+  UPDATE_COLLEGE_SITES, GET_COLLEGE_KEY, SET_COLLEGE_KEY,
 } from "../actions";
 import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
 import {SiteDTO} from "@api/model";
@@ -34,14 +30,10 @@ export interface State {
   sendTokenAgain: boolean;
   serverError: boolean;
   loading: boolean;
-  user: {
-    checked: boolean,
-    userKey: string,
-    sites: SiteDTO[];
-  },
+  sites: SiteDTO[];
   message: {
     message: string;
-    error: boolean;
+    success: boolean;
   },
   contactForm: {
     userFirstName: string;
@@ -71,14 +63,10 @@ const initState: State = {
   sendTokenAgain: true,
   serverError: false,
   loading: false,
-  user: {
-    checked: false,
-    userKey: null,
-    sites: null
-  },
+  sites: null,
   message: {
     message: "",
-    error: false
+    success: false
   },
   contactForm: contactFormInitialValue,
   organisationForm: organisationFormInitialValue,
@@ -103,7 +91,7 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         isValidName: action.payload
       };
 
-    case SET_SITENAME_VALUE:
+    case SET_COLLEGE_KEY:
       return {
         ...state,
         collegeKey: action.payload
@@ -133,7 +121,7 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         sendTokenAgain: action.payload
       };
 
-    case GET_USER:
+    case GET_COLLEGE_KEY:
     case GET_SITES:
     case CREATE_COLLEGE:
     case UPDATE_COLLEGE_SITES:
@@ -158,7 +146,7 @@ export const createCollegeReducer = (state: State = initState, action): State =>
     case CLEAR_MESSAGE:
       return {
         ...state,
-        message: { message: "", error: false }
+        message: { message: "", success: false }
       };
 
     case SET_SERVER_ERROR_VALUE:
@@ -178,33 +166,10 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         loading: action.payload
       }
 
-    case SET_USER_CHECKED:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          checked: action.payload
-        }
-      }
-
-    case GET_USER_FULFILLED:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          checked: true,
-          userKey: action.payload
-        },
-        loading: false
-      }
-
     case GET_SITES_FULFILLED:
       return {
         ...state,
-        user: {
-          ...state.user,
-          sites: action.payload
-        },
+        sites: action.payload,
         loading: false
       }
 
