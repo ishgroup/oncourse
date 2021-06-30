@@ -1,8 +1,12 @@
 
 export class FieldError {
+  /**
+   * index of field with error
+   */
+  index: number;
 
   /**
-   * Name of fiels with error
+   * Name of field with error
    */
   name: string;
 

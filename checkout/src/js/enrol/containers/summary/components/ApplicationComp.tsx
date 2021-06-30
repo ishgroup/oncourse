@@ -22,9 +22,9 @@ class ApplicationComp extends React.Component<Props, any> {
 
     if (headings && headings.length) {
       headings
-        .map(h => h.fields
+        .map((h,i) => h.fields
           .filter(f => f.defaultValue)
-          .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+          .map(f => (initialValues[toFormKey(f.key,i)] = f.defaultValue)),
         );
 
       return initialValues;

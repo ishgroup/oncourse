@@ -27,7 +27,7 @@ export const EpicUpdateEnrolmentFields: Epic<any, any> = (action$: ActionsObserv
 
       headings.forEach(h => {
         h.fields.forEach((f: Field, i) => {
-          const formKey = toFormKey(f.key) + i;
+          const formKey = toFormKey(f.key,i);
 
           f.value = values[formKey] && values[formKey].key || values[formKey] || null;
           if (f.value == null && f.dataType === DataType.BOOLEAN) {

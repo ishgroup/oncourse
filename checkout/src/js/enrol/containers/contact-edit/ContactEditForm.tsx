@@ -12,6 +12,7 @@ import {toFormKey} from "../../../components/form/FieldFactory";
 import {scrollToTop, scrollToValidation} from "../../../common/utils/DomUtils";
 import {ContactAddProcessState, Phase} from "../../reducers/State";
 import { InjectedFormProps } from 'redux-form/lib/reduxForm';
+import { Dispatch } from 'redux';
 
 export const NAME = "ContactEditForm";
 
@@ -25,7 +26,7 @@ class ContactEditForm extends React.Component<Props, any> {
   }
 
   render() {
-    const {handleSubmit, touch, submitting, isNewContact, onCancel, page, form, onChangeSuburb} = this.props;
+    const {handleSubmit, touch, submitting, isNewContact, onCancel, page, dispatch, form, onChangeSuburb} = this.props;
     const contact: Contact = this.props.contactAddProcess.contact;
     const fields: ContactFields = this.props.fields;
 
@@ -38,6 +39,7 @@ class ContactEditForm extends React.Component<Props, any> {
             fields={fields}
             onChangeSuburb={item => onChangeSuburb(form, item)}
             form={form}
+            dispatch={dispatch}
           />
 
           <div className="form-controls flex">
@@ -77,6 +79,7 @@ interface Props extends InjectedFormProps {
   isNewContact: boolean;
   page: number;
   onChangeSuburb?: (form, item) => void;
+  dispatch?: Dispatch;
 }
 
 const Form = reduxForm({
@@ -84,9 +87,9 @@ const Form = reduxForm({
   validate: (data, props: Props) => {
     const errors = {};
     props.fields && props.fields.headings.map(headings =>
-      headings.fields.map(field =>
-        (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[toFormKey(field.key)])
-          ? errors[toFormKey(field.key)] = `Field '${field.name}' is required`
+      headings.fields.map((field, index) =>
+        (field.mandatory && (field.dataType !== "BOOLEAN" || field.key === "isMale") && !data[toFormKey(field.key, index)])
+          ? errors[toFormKey(field.key, index)] = `Field '${field.name}' is required`
           : field,
       ),
     );
@@ -140,7 +143,7 @@ const getInitialValues = fields => {
   fields && fields.headings
     .map(h => h.fields
       .filter(f => f.defaultValue)
-      .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+      .map((f,index) => (initialValues[toFormKey(f.key,index)] = f.defaultValue)),
     );
 
   return initialValues;

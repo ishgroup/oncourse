@@ -31,7 +31,7 @@ class EnrolmentComp extends React.Component<Props, any> {
       headings
         .map(h => h.fields
           .filter(f => f.defaultValue)
-          .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+          .map((f,i) => (initialValues[toFormKey(f.key,i)] = f.defaultValue)),
         );
 
       return initialValues;

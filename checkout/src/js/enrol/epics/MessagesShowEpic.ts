@@ -14,7 +14,7 @@ const MessagesShowEpic: Epic<any, any> = (action$: ActionsObservable<any>): Obse
     const form: string = action.meta.form;
     const _formErrors = {};
     messages.fieldsErrors?.forEach(e => {
-      _formErrors[toFormKey(e.name)] = e.error;
+      _formErrors[toFormKey(e.name,e.index)] = e.error;
     });
     return [stopSubmit(form, _formErrors), {type: SHOW_MESSAGES, payload: messages}];
   });

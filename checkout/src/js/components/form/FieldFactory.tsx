@@ -154,7 +154,7 @@ class FieldFactory extends React.Component<any, any> {
 export const toFormFieldProps = (field: Field, index: number): any => {
   return {
     key: field.id,
-    name: toFormKey(field.key) + index,
+    name: toFormKey(field.key, index),
     label: replaceWithNl(field.name),
     type: "text",
     required: field.mandatory,
@@ -164,12 +164,12 @@ export const toFormFieldProps = (field: Field, index: number): any => {
 };
 
 // replace all dots to slashes, b/c redux form converts it to object
-export const toFormKey = name => (name.replace(/\./g, '/'));
+export const toFormKey = (name: string, index: number) => name.replace(/\./g, '/') + index;
 
 // format fields values to valid for server side
 export const toServerValues = (fields: Field[], values: { [key: string]: any }) => {
-  fields.forEach(f => {
-    const formKey = toFormKey(f.key);
+  fields.forEach((f, index) => {
+    const formKey = toFormKey(f.key,index);
     const value = values[formKey];
 
     f.value = value && value.key || value || null;
@@ -290,7 +290,7 @@ export const getFormInitialValues = (headings) => {
     headings
       .map(h => h.fields
         .filter(f => f.defaultValue)
-        .map(f => (initialValues[toFormKey(f.key)] = f.defaultValue)),
+        .map((f, index) => (initialValues[toFormKey(f.key, index)] = f.defaultValue)),
       );
 
     return initialValues;

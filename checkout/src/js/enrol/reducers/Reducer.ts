@@ -279,6 +279,10 @@ const RedeemVoucherProductsReducer = (state: RedeemVoucherProduct[] = [], action
       const {voucher} = action.payload;
       return state.filter(v => voucher && voucher.id !== v.id );
 
+    case FULFILLED(WebActions.REMOVE_PRODUCT_FROM_CART):
+      const {result} = action.payload;
+      return state.filter(v => result !== v.id );
+
     case Actions.RESET_CHECKOUT_STATE:
       return [];
 
