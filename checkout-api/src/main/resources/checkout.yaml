@@ -1278,9 +1278,14 @@ definitions:
           title: common.FieldError
           type: object
           required:
+          - index
           - name
           - error
           properties:
+            index:
+              type: integer
+              format: int32
+              description: order position
             name:
               type: string
               description: Name of fiels with error

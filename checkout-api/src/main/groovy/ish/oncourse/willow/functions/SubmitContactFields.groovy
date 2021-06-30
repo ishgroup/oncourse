@@ -52,11 +52,11 @@ class SubmitContactFields {
             isDefaultCountry = true
         }
         
-        fields.each { f ->
-            if (isTagProperty(f)) {
-                applyTagsField(f)
+        fields.eachWithIndex { field , index ->
+            if (isTagProperty(field)) {
+                applyTagsField(field)
             } else {
-                applyContactField(f)
+                applyContactField(field, index)
             }
         }
 
@@ -70,7 +70,7 @@ class SubmitContactFields {
         this
     }
 
-    private void applyContactField(Field f) {
+    private void applyContactField(Field f, Integer index) {
         
         FieldProperty  property = FieldProperty.getByKey(f.key)
         FieldValueParser.ParseResult parseResult = new FieldValueParser(f, objectContext).parse() 
@@ -80,6 +80,7 @@ class SubmitContactFields {
             errors.formErrors << parseResult.error
         }
         if (parseResult.fieldError) {
+            parseResult.fieldError.index = index
             errors.fieldsErrors << parseResult.fieldError
         }
         if (parseResult.postcodeAutoFill) {

@@ -3,8 +3,26 @@ package ish.oncourse.willow.model.common;
 
 public class FieldError  {
   
+    private Integer index = null;
     private String name = null;
     private String error = null;
+
+    /**
+     * order position
+     * @return index
+     */
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+       this.index = index;
+    }
+
+    public FieldError index(Integer index) {
+      this.index = index;
+      return this;
+    }
 
     /**
      * Name of fiels with error
@@ -46,6 +64,7 @@ public class FieldError  {
       StringBuilder sb = new StringBuilder();
       sb.append("class FieldError {\n");
       
+      sb.append("    index: ").append(toIndentedString(index)).append("\n");
       sb.append("    name: ").append(toIndentedString(name)).append("\n");
       sb.append("    error: ").append(toIndentedString(error)).append("\n");
       sb.append("}");
