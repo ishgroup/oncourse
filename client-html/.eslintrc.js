@@ -123,6 +123,7 @@ module.exports = {
         "react/prop-types": "off",
         "react/state-in-constructor": "off",
         "react/sort-comp": "off",
+        "react/require-default-props": "off",
         "react/destructuring-assignment": "off",
         "react/no-did-update-set-state": "off",
         "react/jsx-props-no-spreading": "off",

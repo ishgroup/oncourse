@@ -5,7 +5,6 @@
 
 import React, { useCallback } from "react";
 import { addDays, compareAsc, format as formatDate } from "date-fns";
-import { PaymentIn } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import { FieldArray, getFormInitialValues } from "redux-form";
 import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
@@ -19,8 +18,8 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import { State } from "../../../../reducers/state";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { SiteState } from "../../sites/reducers/state";
 import { defaultContactName, openContactLink } from "../../contacts/utils";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -50,18 +49,6 @@ const openRow = value => {
   openInternalLink(`/invoice/${value.id}`);
 };
 
-interface PaymentInEditViewProps {
-  classes?: any;
-  twoColumn?: boolean;
-  manualLink?: string;
-  values?: PaymentIn;
-  initialValues?: PaymentIn;
-  dispatch?: any;
-  form?: string;
-  adminSites?: SiteState["adminSites"];
-  lockedDate?: any;
-}
-
 const isDateLocked = (lockedDate: any, settlementDate: any) => {
   if (!lockedDate) {
     return true;
@@ -77,10 +64,10 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   );
 };
 
-const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
+const PaymentInEditView: React.FC<EditViewProps & ReturnType<typeof mapStateToProps>> = props => {
   const {
- twoColumn, values, lockedDate, initialValues, adminSites
-} = props;
+   twoColumn, values, lockedDate, initialValues, adminSites
+  } = props;
 
   const validateSettlementDate = useCallback(
     settlementDate => {
@@ -90,7 +77,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       if (!initialValues || initialValues.dateBanked === settlementDate) {
         return undefined;
       }
-      const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const date = new Date(lockedDate);
       return compareAsc(addDays(date, 1), new Date(settlementDate)) > 0
         ? `Date must be after ${formatDate(date, D_MMM_YYYY)}`
         : undefined;
@@ -206,7 +193,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               validate={validateSettlementDate}
               minDate={
                 lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                  ? addDays(new Date(lockedDate), 1)
                   : undefined
               }
             />
@@ -235,4 +222,4 @@ const mapStateToProps = (state: State, props) => ({
   adminSites: state.sites.adminSites
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(PaymentInEditView);
+export default connect(mapStateToProps)(PaymentInEditView);

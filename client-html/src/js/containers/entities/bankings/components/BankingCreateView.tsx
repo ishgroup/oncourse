@@ -4,16 +4,14 @@
  */
 
 import * as React from "react";
-import { connect } from "react-redux";
-import {
- change, FieldArray, getFormInitialValues, initialize
-} from "redux-form";
+import { change, FieldArray, getFormInitialValues, initialize } from "redux-form";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { addDays, format as formatDate } from "date-fns";
 import { Report } from "@api/model";
+import { connect } from "react-redux";
 import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
@@ -32,6 +30,8 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -70,7 +70,11 @@ const paymentColumns: NestedTableColumn[] = [
   }
 ];
 
-class BankingCreateView extends React.PureComponent<any, any> {
+interface Props {
+  openNestedView: AnyArgFunction;
+}
+
+class BankingCreateView extends React.PureComponent<Props & EditViewProps & ReturnType<typeof mapStateToProps>, any> {
   private paymentsAreSet;
 
   constructor(props) {
@@ -81,8 +85,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
   componentDidUpdate() {
     const {
- accounts, adminSites, dispatch, adminCenterName, form, values
-} = this.props;
+     accounts, adminSites, dispatch, adminCenterName, form, values
+    } = this.props;
 
     if (!values) {
       return;
@@ -90,7 +94,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
     if (!this.paymentsAreSet && accounts && accounts.length && values.administrationCenterId) {
       this.paymentsAreSet = true;
-      dispatch(getDepositPayments(accounts[0].id, values.administrationCenterId));
+      dispatch(getDepositPayments(Number(accounts[0]?.id), values.administrationCenterId));
     }
 
     if (!values.administrationCenterId && !values.adminSite && adminCenterName && adminSites && adminSites.length) {
@@ -153,7 +157,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
     if (!lockedDate || !editRecord || editRecord.settlementDate === value) {
       return undefined;
     }
-    const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+    const date = new Date(lockedDate);
     const dateString = date.toISOString();
     return validateMinMaxDate(
       value,
@@ -176,8 +180,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
     }
     return "Payment" + (payments.length !== 1 ? "s" : "");
   };
-
-  isReportAvailable = (): boolean => !!this.props.report;
 
   hasNoAccounts = () => {
     const { accounts, values } = this.props;
@@ -279,7 +281,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
                 validate={this.validateSettlementDate}
                 minDate={
                   lockedDate
-                    ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
+                    ? addDays(new Date(lockedDate), 1)
                     : undefined
                 }
                 fullWidth
@@ -337,4 +339,4 @@ const mapStateToProps = (state: State) => ({
   adminCenterName: state.userPreferences[SYSTEM_USER_ADMINISTRATION_CENTER]
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(BankingCreateView);
+export default connect(mapStateToProps)(BankingCreateView);

@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import { change, FieldArray, initialize } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import { compareAsc, format as formatDate } from "date-fns";
-import { Currency, PaymentMethod } from "@api/model";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
@@ -21,8 +20,6 @@ import { greaterThanNullValidation, validateSingleMandatoryField } from "../../.
 import { getActivePaymentOutMethods } from "../actions";
 import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
 import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
-import { PaymentOutModel } from "../reducers/state";
-import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 
@@ -60,21 +57,6 @@ const openRow = value => {
   openInternalLink(`/invoice/${value.id}`);
 };
 
-interface AddPaymentOutEditViewProps extends EditViewProps {
-  classes?: any;
-  values: PaymentOutModel;
-  formInitialValues: PaymentOutModel;
-  currency?: Currency;
-  postPaymentOut?: () => void;
-  onInit?: any;
-  paymentOutMethods: PaymentMethod[];
-  refundablePayments?: any;
-  accountItems?: any;
-  adminSites?: SiteState["adminSites"];
-  lockedDate?: any;
-  selection?: string[];
-}
-
 const getTotalOwing = invoices => invoices.reduce((acc, invoice) => Math.round(acc * 100 + invoice.amountOwing * 100) / 100, 0);
 
 const getTotalOutstanding = invoices => invoices.reduce((acc, invoice) => Math.round(acc * 100 + invoice.outstanding * 100) / 100, 0);
@@ -101,7 +83,9 @@ const getAmountToAllocate = (invoices, amount) => {
   return Math.round(amount * 100 + checkedSum * 100) / 100;
 };
 
-const AddPaymentOutWrapper = props => {
+type Props = EditViewProps & ReturnType<typeof mapStateToProps>;
+
+const AddPaymentOutWrapper = (props: Props) => {
   const {
     values,
     formInitialValues,
@@ -127,7 +111,7 @@ const AddPaymentOutWrapper = props => {
   return values ? <AddPaymentOutEditView {...props} /> : null;
 };
 
-const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps> = props => {
+const AddPaymentOutEditView: React.FunctionComponent<Props> = props => {
   const {
     values,
     currency,
@@ -164,7 +148,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate) return undefined;
-      const lockedDateValue = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const lockedDateValue = new Date(lockedDate);
       return compareAsc(lockedDateValue, new Date(settlementDate)) === 1
         ? `You must choose date after "Transaction locked" date (${formatDate(lockedDateValue, D_MMM_YYYY)})`
         : undefined;
@@ -474,4 +458,4 @@ const mapStateToProps = (state: State) => ({
   selection: state.list.selection
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(AddPaymentOutWrapper);
+export default connect(mapStateToProps)(AddPaymentOutWrapper);
