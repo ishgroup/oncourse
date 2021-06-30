@@ -25,23 +25,14 @@ import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import store from "../constants/Store";
 import { loginRoute, routes } from "../routes";
 import MessageProvider from "../common/components/dialog/message/MessageProvider";
-import {
-  darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme
-} from "../common/themes/ishTheme";
+import { currentTheme, defaultTheme, getTheme } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_THEME_KEY,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
-import {
-  DarkThemeKey,
-  DefaultThemeKey,
-  MonochromeThemeKey,
-  HighcontrastThemeKey,
-  ChristmasThemeKey,
-  ThemeValues
-} from "../model/common/Theme";
+import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
 import { State } from "../reducers/state";
 import { AnyArgFunction } from "../model/common/CommonFunctions";
 import GlobalStylesProvider from "../common/styles/GlobalStylesProvider";
@@ -108,29 +99,6 @@ const RouteWithSubRoutes = route => (
   />
 );
 
-const currentTheme = themeName => {
-  switch (themeName) {
-    case DarkThemeKey: {
-      return darkTheme;
-    }
-    case DefaultThemeKey: {
-      return defaultTheme;
-    }
-    case MonochromeThemeKey: {
-      return monochromeTheme;
-    }
-    case HighcontrastThemeKey: {
-      return highcontrastTheme;
-    }
-    case ChristmasThemeKey: {
-      return christmasTheme;
-    }
-    default: {
-      return defaultTheme;
-    }
-  }
-};
-
 interface Props {
   getPreferencesTheme: AnyArgFunction;
   history: any;
@@ -147,30 +115,19 @@ export class MainBase extends React.PureComponent<Props, any> {
 
     this.state = {
       themeName: DefaultThemeKey,
-      theme: this.getTheme(defaultTheme),
+      theme: getTheme(defaultTheme),
       showMessage: false,
       successMessage: false,
       messageText: ""
     };
   }
 
-  getTheme = theme => {
-    let actualTheme = theme;
-
-    const storageThemeName = LSGetItem(APPLICATION_THEME_STORAGE_NAME);
-    if (storageThemeName) {
-      actualTheme = currentTheme(storageThemeName);
-    }
-
-    return actualTheme;
-  };
-
   updateStateFromStorage = () => {
     this.setState({
       themeName: LSGetItem(APPLICATION_THEME_STORAGE_NAME)
         ? LSGetItem(APPLICATION_THEME_STORAGE_NAME)
         : DefaultThemeKey,
-      theme: this.getTheme(defaultTheme)
+      theme: getTheme(defaultTheme)
     });
   };
 
