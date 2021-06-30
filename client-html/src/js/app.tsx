@@ -29,8 +29,6 @@ if (process.env.NODE_ENV === EnvironmentConstants.production) {
 
 const start = async () => {
   if ((window as any)?.location.pathname === "/provisioning") {
-    (window as any)?.setBaseURL("https://provisioning.ish.com.au/b/v1/");
-
     let index = await fetch("https://provisioning.ish.com.au/index.html").then(r => r.text());
     index = index.replace("/billing.js", "https://provisioning.ish.com.au/billing.js");
     index = index.replace("/billing.css", "https://provisioning.ish.com.au/billing.css");
@@ -38,6 +36,10 @@ const start = async () => {
     const newHTML = document.open("text/html", "replace");
     newHTML.write(index);
     newHTML.close();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      (window as any)?.setBaseURL("https://provisioning.ish.com.au/b/");
+    });
 
     return;
   }
