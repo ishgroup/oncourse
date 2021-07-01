@@ -32,6 +32,11 @@ import ish.util.MapsUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+import net.sf.jasperreports.engine.export.type.PdfFieldBorderStyleEnum;
+import net.sf.jasperreports.export.PdfExporterConfiguration;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.Ordering;
@@ -49,6 +54,8 @@ import java.rmi.server.UID;
 import java.util.*;
 
 import static ish.util.ImageHelper.generatePdfPreview;
+import static net.sf.jasperreports.engine.export.JRPdfExporter.PDF_FIELD_BORDER_STYLE;
+import static net.sf.jasperreports.engine.style.PropertyStyleProvider.STYLE_PROPERTY_PEN_LINE_WIDTH;
 
 /**
  * Worker which is serving specific {@link PrintRequest} identified by unique id.
@@ -380,11 +387,13 @@ public class PrintWorker implements Runnable {
 			var exportOutput = new ByteArrayOutputStream();
 
 			var exporter = new JRPdfExporter();
-			exporter.setParameter(JRExporterParameter.JASPER_PRINT_LIST, printJobs);
-			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, exportOutput);
-			exporter.setParameter(JRPdfExporterParameter.IS_COMPRESSED, Boolean.TRUE);
+			exporter.setExporterInput(SimpleExporterInput.getInstance(printJobs));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(exportOutput));
 
-
+			SimplePdfExporterConfiguration conf = new SimplePdfExporterConfiguration();
+			conf.setCompressed(true);
+			exporter.setConfiguration(conf);
+		
 			exporter.exportReport();
 			if (overlay != null) {
 				exportOutput = PdfUtil.overlayPDFs(exportOutput, overlay.getOverlay());
