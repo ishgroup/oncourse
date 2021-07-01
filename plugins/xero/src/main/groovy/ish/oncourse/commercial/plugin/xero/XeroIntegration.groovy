@@ -217,9 +217,8 @@ Review all the other employee settings and ensure they are correct.
 	}
 
 	void refreshXeroAccessToken()  {
-		String oldRefreshToken = this.configuration.getIntegrationProperty(XERO_REFRESH_TOKEN).value
-
-		AuthentificationContext authContext = new AuthentificationContext(oldRefreshToken)
+		
+		AuthentificationContext authContext = new AuthentificationContext(this.configuration)
 		authContext.init()
 		
 		//save actual refresh token
