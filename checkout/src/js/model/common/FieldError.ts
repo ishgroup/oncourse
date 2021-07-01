@@ -3,7 +3,7 @@ export class FieldError {
   /**
    * index of field with error
    */
-  index: number;
+  index?: number;
 
   /**
    * Name of field with error
