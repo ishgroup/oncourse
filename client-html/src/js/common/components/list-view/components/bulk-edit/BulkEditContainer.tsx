@@ -57,10 +57,12 @@ interface BulkEditProps {
   entityTags?: {[key: string]: Tag[]};
   getEntityTags?: (entity: string) => void;
   showConfirm?: any;
+  getCustomBulkEditFields?: any;
 }
 
 const BulkEditForm: React.FC<BulkEditProps> = props => {
   const {
+    getCustomBulkEditFields,
     showBulkEditDrawer,
     toggleBulkEditDrawer,
     sidebarWidth,
@@ -97,6 +99,18 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       setSelectedKeyCode(fields[0].keyCode);
     }
   }, [rootEntity]);
+
+  useEffect(() => {
+    if (showBulkEditDrawer && getCustomBulkEditFields) {
+      const getCustomFields = async () => {
+        const fields = await getCustomBulkEditFields();
+
+        setBulkEditFields(fields);
+      };
+
+      getCustomFields();
+    }
+  }, [selection, showBulkEditDrawer]);
 
   const onClose = useCallback(() => {
     setSelectAll(false);

@@ -81,15 +81,6 @@ const CardBase = props => {
       }}
       className={className}
       defaultExpanded={expanded}
-      // TransitionComponent={
-      //   (
-      //     <Collapse
-      //       classes={{
-      //         entered: classes.collapse
-      //       }}
-      //     />
-      //   ) as any
-      // }
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
