@@ -121,7 +121,7 @@ class ContactApiServiceImpl implements ContactApi{
     }
     
     @Override
-    ContactId submitContactDetails(SubmitFieldsRequest contactFields) {
+    ContactId submitContactDetails(ContactFields contactFields) {
         
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
@@ -129,7 +129,10 @@ class ContactApiServiceImpl implements ContactApi{
         ish.oncourse.model.Contact contact = new GetContact(context, college, contactFields.contactId).get(false)
         ValidationError errors = new ValidationError()
         
-        SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors, college: college, webSite: webSite, contact: contact).submitContactFields(contact, contactFields.fields)
+        SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors, college: college, webSite: webSite, contact: contact)
+        contactFields.headings.each {it ->
+            submit.submitContactFields(contact, it.fields)
+        }
         ContactId response = new ContactId().id(contact.id.toString()).newContact(false).parentRequired(false)
         
         if (!contact.isCompany) {
