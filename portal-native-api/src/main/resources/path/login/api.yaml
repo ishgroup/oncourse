@@ -8,12 +8,12 @@ put:
       in: body
       required: true
       schema:
-        $ref: './def/entity/LoginRequest.yaml'
+        $ref: './def/entity/login/LoginRequest.yaml'
   responses:
     '200':
       description: Success response.
       schema:
-        $ref: './def/entity/LoginResponse.yaml'
+        $ref: './def/entity/login/LoginResponse.yaml'
     '400':
       description: Bad request
       schema:
@@ -31,12 +31,12 @@ post:
       in: body
       required: true
       schema:
-        $ref: './def/entity/LoginRequest.yaml'
+        $ref: './def/entity/login/LoginRequest.yaml'
   responses:
     '200':
       description: Success response.
       schema:
-        $ref: './def/entity/LoginResponse.yaml'
+        $ref: './def/entity/login/LoginResponse.yaml'
     '400':
       description: Bad request
       schema:

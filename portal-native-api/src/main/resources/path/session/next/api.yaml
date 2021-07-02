@@ -1,0 +1,16 @@
+get:
+  summary: Get next session
+  operationId: getNextSession
+  tags:
+    - Session
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/session/Session.yaml'
+    '400':
+      description: Bad request
+      schema:
+        $ref: './def/entity/ErrorResponse.yaml'
+    default:
+      description: Unexpected error

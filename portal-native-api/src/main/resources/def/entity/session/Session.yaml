@@ -1,0 +1,73 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+    description: unique identifier of record in onCourse
+  name:
+    type: string
+    required: true
+    description: Course name
+    example: Adobe protohop course for beginers
+  code:
+    type: string
+    required: true
+    description: Class code
+    example: adobe-1
+  room:
+    type: string
+    required: false
+    description: Room name
+    example: 201
+  site:
+    type: string
+    required: false
+    description: Site name
+    example: Burwood campus
+  tutors:
+    type: array
+    items:
+      type: string
+    description: Tutor's names
+    required: false
+    example: John Smith, Devid Smith
+  classId:
+    type: integer
+    format: int64
+    required: true
+    description: unique identifier of course class record in onCourse
+  courseId:
+    type: integer
+    format: int64
+    required: true
+    description: need for clash validation only (validate new class sessions by course unavailable rule criteria)
+  roomId:
+    type: integer
+    format: int64
+    required: false
+    description: Room id
+    example: 201
+  siteId:
+    type: integer
+    format: int64
+    required: false
+    description: Site id
+    example: 201
+  siteTimezone:
+    type: string
+    required: false
+    description: Site timezone
+    example: Australia/Brisbane
+  start:
+    type: string
+    format: date-time
+    description: Session start date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  end:
+    type: string
+    format: date-time
+    description: Session end date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'

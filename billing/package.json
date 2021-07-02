@@ -51,7 +51,7 @@
   "scripts": {
     "dependencies:outdated": "npm outdated",
     "clean": "rm -rf ./build",
-    "build:prod": "webpack -p --progress --env.NODE_ENV production",
+    "build:prod": "webpack --progress --env NODE_ENV=production",
     "build:prod:watch": "webpack --watch --progress -p --env.NODE_ENV production",
     "build:dev": "webpack --progress",
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",

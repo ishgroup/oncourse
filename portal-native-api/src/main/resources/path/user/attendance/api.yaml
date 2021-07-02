@@ -1,19 +1,18 @@
-put:
-  summary: Connect with third party SSO
-  operationId: connect
+get:
+  summary: Get user attendance
+  operationId: getUserAttendance
   tags:
-    - Authentication
+    - User
   parameters:
-    - name: tokenResponse
-      in: body
+    - name: id
+      in: path
       required: true
-      schema:
-        $ref: './def/entity/login/TokenResponse.yaml'
+      type: number
   responses:
     '200':
       description: Success response.
       schema:
-        $ref: './def/entity/login/LoginResponse.yaml'
+        type: number
     '400':
       description: Bad request
       schema:

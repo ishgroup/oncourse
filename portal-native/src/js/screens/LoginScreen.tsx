@@ -5,7 +5,7 @@ import { LoginRequest } from '@api/model';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import {
-  Image, View, StyleSheet, Animated, TouchableOpacity
+  Image, View, Animated, TouchableOpacity
 } from 'react-native';
 import {
   Card, Switch, Caption, Button, TextInput
@@ -13,14 +13,14 @@ import {
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import * as Facebook from 'expo-auth-session/providers/facebook';
-import { cs, spacing, theme } from '../styles';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TextField from '../components/fields/TextField';
 import { connect, signIn } from '../actions/LoginActions';
+import { createStyles, useCommonStyles } from '../hooks/styles';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const styles = StyleSheet.create({
+const useStyles = createStyles((theme) => ({
   topPart: {
     flex: 3,
     backgroundColor: '#fbf9f0',
@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     width: 340,
-    borderRadius: spacing(3),
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-    paddingBottom: spacing(2),
+    borderRadius: theme.spacing(3),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
   input: {
-    marginTop: spacing(2),
+    marginTop: theme.spacing(2),
     backgroundColor: '#fff',
   },
   headline: {
@@ -55,19 +55,19 @@ const styles = StyleSheet.create({
     width: 140,
   },
   submit: {
-    marginTop: spacing(4),
-    marginBottom: spacing(2),
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(2),
   },
   caption: {
-    paddingTop: spacing(3),
+    paddingTop: theme.spacing(3),
     width: 340,
   },
   socialNetworkImage: {
-    margin: spacing(1),
+    margin: theme.spacing(1),
     height: 30,
     width: 30,
   },
-});
+}));
 
 const GoogleConnect = ({ onSuccsess }) => {
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -75,6 +75,8 @@ const GoogleConnect = ({ onSuccsess }) => {
     expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
     webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com'
   });
+
+  const styles = useStyles();
 
   useEffect(() => {
     if (response?.type === 'success') {
@@ -97,6 +99,8 @@ const FacebookConnect = ({ onSuccsess }) => {
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     clientId: '837945397102277',
   });
+
+  const styles = useStyles();
 
   useEffect(() => {
     if (response?.type === 'success') {
@@ -125,6 +129,8 @@ const SignInContent = (
   }
 ) => {
   const [hidePassword, setHidePassword] = useState(true);
+  const styles = useStyles();
+  const cs = useCommonStyles();
 
   const onConnectSuccsess = (authentication) => {
     dispatch(connect(authentication));
@@ -204,6 +210,9 @@ const SignUpContent = (
   const [showCompany, setShowCompany] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
+
+  const cs = useCommonStyles();
+  const styles = useStyles();
 
   useEffect(() => {
     if (!touched.confirmPassword && values.password) {
@@ -324,6 +333,9 @@ const LoginScreen = () => {
   const loading = useAppSelector((state) => state.login.loading);
 
   const dispatch = useAppDispatch();
+
+  const styles = useStyles();
+  const cs = useCommonStyles();
 
   const validationSchema = useMemo<yup.SchemaOf<LoginRequest & { confirmPassword: string }>>(() => yup.object({
     confirmPassword: isSignIn ? yup.string().notRequired() : yup.string().when('password', {

@@ -1,6 +1,12 @@
 export type RootDrawerParamList = {
   Dashboard: undefined;
-  Notifications: undefined;
+  Timetable: undefined;
+  Resourses: undefined;
+  'My profile': undefined;
+  Subscriptions: undefined;
+  History: undefined;
+  Approvals: undefined;
+  Logout: undefined;
 };
 
 export type RootStackParamList = {

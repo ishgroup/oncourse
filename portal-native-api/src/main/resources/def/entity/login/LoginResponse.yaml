@@ -2,7 +2,7 @@ type: object
 properties:
   user:
     description: User entity
-    $ref: './User.yaml'
+    $ref: '../User.yaml'
   token:
     type: string
     description: Authorization token for request's Authorization header

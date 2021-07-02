@@ -2,45 +2,64 @@ import React from 'react';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList,
 } from '@react-navigation/drawer';
+import { Drawer } from 'react-native-paper';
+import { DrawerContentComponentProps } from '@react-navigation/drawer/src/types';
 import { View, Text } from 'react-native';
 import Header from './Header';
 import { RootDrawerParamList } from '../../../../types';
 import { DashboardScreen } from '../../screens/DashboardScreen';
 
-function Notifications({ navigation }) {
+function StubScreen({ route }) {
   return (
     <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Notifications Screen</Text>
+        <Text>
+          {route.name}
+          {' '}
+          screen
+        </Text>
       </View>
     </View>
   );
 }
 
-function CustomDrawerContent(props) {
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-    </DrawerContentScrollView>
-  );
-}
+const CustomDrawerContent = (props: DrawerContentComponentProps) => (
+  <DrawerContentScrollView {...props}>
+    <Drawer.Section>
+      {props.state.routes.map((r, index) => (
+        <Drawer.Item
+          label={r.name}
+          key={r.key}
+          active={index === props.state.index}
+          onPress={() => props.navigation.navigate(r.name)}
+        />
+      ))}
+    </Drawer.Section>
+  </DrawerContentScrollView>
+);
 
-const Drawer = createDrawerNavigator<RootDrawerParamList>();
+const DrawerNav = createDrawerNavigator<RootDrawerParamList>();
 
 export default function DrawerNavigation() {
   return (
-    <Drawer.Navigator
+    <DrawerNav.Navigator
       screenOptions={{
         headerShown: true,
         header: (headerProps) => (
           <Header {...headerProps} />
         ),
       }}
+      drawerContent={CustomDrawerContent}
     >
-      <Drawer.Screen name="Dashboard" component={DashboardScreen} />
-      <Drawer.Screen name="Notifications" component={Notifications} />
-    </Drawer.Navigator>
+      <DrawerNav.Screen name="Dashboard" component={DashboardScreen} />
+      <DrawerNav.Screen name="Timetable" component={StubScreen} />
+      <DrawerNav.Screen name="Resourses" component={StubScreen} />
+      <DrawerNav.Screen name="My profile" component={StubScreen} />
+      <DrawerNav.Screen name="Subscriptions" component={StubScreen} />
+      <DrawerNav.Screen name="History" component={StubScreen} />
+      <DrawerNav.Screen name="Approvals" component={StubScreen} />
+      <DrawerNav.Screen name="Logout" component={StubScreen} />
+    </DrawerNav.Navigator>
   );
 }

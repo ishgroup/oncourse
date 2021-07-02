@@ -24,3 +24,9 @@ paths:
     $ref: './path/login/api.yaml'
   /login/connect:
     $ref: './path/login/connect/api.yaml'
+  /session/next:
+    $ref: './path/session/next/api.yaml'
+  /user/payment:
+    $ref: './path/user/payment/api.yaml'
+  /user/attendance:
+    $ref: './path/user/attendance/api.yaml'

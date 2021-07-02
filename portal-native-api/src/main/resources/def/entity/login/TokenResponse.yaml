@@ -3,7 +3,7 @@ type: object
 properties:
   provider:
     description: SSO service provider
-    $ref: '../enum/SSOproviders.yaml'
+    $ref: '../../enum/SSOproviders.yaml'
   accessToken:
     type: string
     description: The access token issued by the authorization server
