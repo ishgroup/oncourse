@@ -455,7 +455,7 @@ paths:
         description: Contact fields
         required: true
         schema:
-            $ref: '#/definitions/field.SubmitFieldsRequest'
+            $ref: '#/definitions/field.ContactFields'
       responses:
         200:
           description: ContactId object
@@ -1412,20 +1412,6 @@ definitions:
         type: integer
         format: int32
         description: order position
-  field.SubmitFieldsRequest:
-    type: object
-    requred:
-    - contactId
-    - fields
-    properties:
-      contactId:
-        type: string
-        description: Submited contact id
-      fields:
-        type: array
-        items:
-          $ref: '#/definitions/field.Field'
-        description: Array of fields
   field.FieldHeading:
     type: object
     requred:

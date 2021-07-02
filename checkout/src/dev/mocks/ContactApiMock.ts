@@ -1,8 +1,7 @@
 import {ContactApi} from "../../js/http/ContactApi";
-import {Contact, CreateContactParams, ContactFieldsRequest, ContactFields, SubmitFieldsRequest,
+import {Contact, CreateContactParams, ContactFieldsRequest, ContactFields,
   ConcessionType as ConcessionTypeModel, ContactId, CreateParentChildrenRequest} from "../../js/model";
-
-import {CreatePromiseReject, MockConfig} from "./mocks/MockConfig";
+import {MockConfig} from "./mocks/MockConfig";
 import uuid from "uuid";
 import {mockContact} from "./mocks/MockFunctions";
 import {Concession} from "../../js/model/checkout/concession/Concession";
@@ -107,7 +106,7 @@ export class ContactApiMock extends ContactApi {
   }
 
 
-  submitContactDetails(submit: SubmitFieldsRequest): Promise<ContactId> {
+  submitContactDetails(submit: ContactFields): Promise<ContactId> {
     const contactId = new ContactId();
     contactId.id = submit.contactId;
     contactId.parentRequired = false;

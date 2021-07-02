@@ -28,7 +28,6 @@ export {DataType} from "./field/DataType";
 export {Field} from "./field/Field";
 export {FieldHeading} from "./field/FieldHeading";
 export {FieldSet} from "./field/FieldSet";
-export {SubmitFieldsRequest} from "./field/SubmitFieldsRequest";
 export {Suburb} from "./field/Suburb";
 
 // Common models

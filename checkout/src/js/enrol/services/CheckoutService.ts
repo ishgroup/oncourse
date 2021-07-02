@@ -2,7 +2,6 @@ import * as L from "lodash";
 import {
   ContactFields,
   ContactFieldsRequest,
-  SubmitFieldsRequest,
   CreateContactParams,
   CheckoutModel,
   Amount,
@@ -345,13 +344,13 @@ export class BuildConcessionRequest {
 }
 
 export class BuildSubmitFieldsRequest {
-  static fromValues = (fields: ContactFields, values: { [key: string]: any }): SubmitFieldsRequest => {
-    const result: SubmitFieldsRequest = new SubmitFieldsRequest();
+  static fromValues = (fields: ContactFields, values: { [key: string]: any }): ContactFields => {
+    const result: ContactFields = new ContactFields();
     result.contactId = fields.contactId;
-    result.fields = L.flatMap(fields.headings, h => {
-      return h.fields;
-    });
-    toServerValues(result.fields, values);
+    fields.headings.forEach(fh => {
+      toServerValues(fh.fields,values)
+    })
+    result.headings = fields.headings;
     return result;
   }
 }
