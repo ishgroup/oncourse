@@ -33,12 +33,7 @@ import java.time.ZoneOffset
 
 class PreferenceFunctions {
 
-    public static final List<String> PRIVATE_PREFERENCES = [LDAP_BIND_USER_PASS,
-                                                             AUSKEY_PASSWORD,
-                                                             AUSKEY_CERTIFICATE,
-                                                             AUSKEY_PRIVATE_KEY,
-                                                             AUSKEY_SALT,
-                                                             EMAIL_POP3PASSWORD]
+    public static final List<String> PRIVATE_PREFERENCES = [LDAP_BIND_USER_PASS, EMAIL_POP3PASSWORD]
 
     public static final List<String> READONLY_PREFERENCES = [  LICENSE_ACCESS_CONTROL,
                                                                LICENSE_LDAP,
@@ -53,11 +48,8 @@ class PreferenceFunctions {
                                                                LICENSE_ATTENDANCE,
                                                                LICENSE_SCRIPTING,
                                                                LICENSE_FEE_HELP_EXPORT,
-                                                               LICENSE_FUNDING_CONTRACT,
-                                                               AUSKEY_CERTIFICATE,
-                                                               AUSKEY_PRIVATE_KEY,
-                                                               AUSKEY_SALT
-                                                             /*USI_SOFTWARE_ID*/]
+                                                               LICENSE_FUNDING_CONTRACT
+    ]
 
     static String toString(String key, PreferenceController controller) {
 
@@ -110,25 +102,20 @@ class PreferenceFunctions {
             case LDAP_SSL:
             case LDAP_GROUP_POSIX_STYLE:
             case LOGOUT_ENABLED:
-            case BACKUP_ENABLED:
             case AVETMISS_SHOW_GUI:
             case TOOLBAR_COLLAPSE_STATE:
             case LASTLOGIN_SERVER_ISSSL:
-            case QE_DEFAULTS_TO_ZERO:
             case AUTO_DISABLE_INACTIVE_ACCOUNT:
             case PASSWORD_COMPLEXITY:
                 return Boolean.valueOf(value)
             case DATA_SVNVERSION:
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:
-            case BACKUP_MAX_HISTORY:
-            case BACKUP_NEXT_NUMBER:
             case PAY_PERIOD_DAYS:
             case LASTLOGIN_SERVER_PORT:
             case CLASS_DEFAULTS_MAXIMUM_PLACES:
             case CLASS_DEFAULTS_MINIMUM_PLACES:
             case ACCOUNT_INVOICE_TERMS:
-            case BACKUP_TIMEOFDAY:
             case PASSWORD_EXPIRY_PERIOD:
             case TFA_EXPIRY_PERIOD:
             case NUMBER_OF_LOGIN_ATTEMPTS:

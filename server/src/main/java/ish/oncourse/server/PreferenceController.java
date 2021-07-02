@@ -126,8 +126,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 				return getLicenseFeeHelpExport();
 			case LICENSE_FUNDING_CONTRACT:
 				return getLicenseFundingContract();
-			case DATABASE_USED:
-				return getDatabaseUsed();
 			case USI_SOFTWARE_ID:
 				return getUsiSoftwareId();
 			default:
@@ -228,13 +226,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 		logger.debug("committing changes to prefs with value: {}", value);
 
 		context.commitChanges();
-	}
-
-	public boolean hasSurveyForm() {
-		return !ObjectSelect.query(SurveyFieldConfiguration.class)
-				.where(SurveyFieldConfiguration.INT_TYPE.eq(4))
-				.and(SurveyFieldConfiguration.DELIVERY_SCHEDULE.eq(DeliverySchedule.ON_ENROL))
-				.select(cayenneService.getNewContext()).isEmpty();
 	}
 
 }

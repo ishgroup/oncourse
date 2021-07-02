@@ -166,9 +166,4 @@ public class CollegePreferenceService {
 	public Object getPrefHelper() {
 		return preferenceHelper.pref();
 	}
-
-	@API
-	public boolean hasSurveyForm() {
-		return preferenceController.hasSurveyForm();
-	}
 }

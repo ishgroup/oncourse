@@ -14,19 +14,15 @@ import ish.common.types.*;
 import ish.math.Country;
 import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
-import ish.util.SecurityUtil;
 import ish.validation.PreferenceValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.io.*;
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import static ish.persistence.Preferences.*;
@@ -39,7 +35,6 @@ public abstract class CommonPreferenceController {
 	private static final Logger logger = LogManager.getLogger();
 
 	private static final java.util.prefs.Preferences FILE_PREFS = java.util.prefs.Preferences.userNodeForPackage(CommonPreferenceController.class);
-	public static final Pattern NO_WHITESPACE_PATTERN = Pattern.compile("^[^\\s]+$");
 	public static final Pattern WRAPPING_QUOTATION_MARKS =  Pattern.compile("^[\\\"].*[\\\"]$");
 
 	// use US locale so months in English
@@ -163,15 +158,6 @@ public abstract class CommonPreferenceController {
 		setValue(COLLEGE_PAYMENT_INFO, false, value);
 	}
 
-	/**
-	 * Gets the url to redirect after the successful enrolment.
-	 *
-	 * @return URL string
-	 */
-	public String getEnrolSuccessUrl() {
-		return getValue(COLLEGE_ENROL_SUCCESS_URL, false);
-	}
-
 
 	public  String getPaymentGatewayPass() {
 		String apiKey = getValue(PAYMENT_GATEWAY_PASS, false);
@@ -179,18 +165,6 @@ public abstract class CommonPreferenceController {
 			throw new IllegalArgumentException();
 		}
 		return apiKey;
-	}
-
-	public Boolean isPurchaseWithoutAuth() {
-		return Boolean.parseBoolean(getValue(PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, false));
-	}
-	/**
-	 * Sets the url to redirect after the successful enrolment.
-	 *
-	 * @param value URL string
-	 */
-	public void setEnrolSuccessUrl(String value) {
-		setValue(COLLEGE_ENROL_SUCCESS_URL, false, value);
 	}
 
 	/**
@@ -233,15 +207,6 @@ public abstract class CommonPreferenceController {
 
 	public boolean getServicesAmexEnabled() {
 		return Boolean.parseBoolean(getValue(SERVICES_CC_AMEX_ENABLED, false));
-	}
-
-	public BigInteger getReplicationRequeueId() {
-		String value = getValue(SERVICES_REPLICATION_REQUEUE_ID, false);
-		return value == null ? null : new BigInteger(value);
-	}
-
-	public void setReplicationRequeueId(BigInteger value) {
-		setValue(SERVICES_REPLICATION_REQUEUE_ID, false, value.toString());
 	}
 
 	public int getDataSVN() {
@@ -442,14 +407,6 @@ public abstract class CommonPreferenceController {
 	}
 
 	public void setLicenseFundingContract(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-	}
-
-	public boolean getLicenseAutopay() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_AUTO_PAY, false));
-	}
-
-	public void setLicenseAutopay(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
@@ -670,35 +627,6 @@ public abstract class CommonPreferenceController {
 		setValue(LDAP_USERNAME_ATTRIBUTE, false, value);
 	}
 
-	public synchronized boolean getBackupEnabled() {
-		String aPref = getValue(BACKUP_ENABLED, false);
-		if (aPref == null) {
-			setBackupEnabled(true);
-			setBackupOnMinuteOfDay(60);
-			setBackupNextNumber(1);
-			setBackupMaxNumber(7);
-			setBackupDir(""); // sets backup warning to empty string also.
-		}
-
-		return Boolean.parseBoolean(aPref);
-	}
-
-	public void setBackupEnabled(boolean value) {
-		setValue(BACKUP_ENABLED, false, Boolean.toString(value));
-	}
-
-	public Integer getBackupOnMinuteOfDay() {
-		try {
-			return Integer.parseInt(getValue(BACKUP_TIMEOFDAY, false));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setBackupOnMinuteOfDay(int value) {
-		setValue(BACKUP_TIMEOFDAY, false, String.valueOf(value));
-	}
-
 	public boolean getLogoutEnabled() {
 		String aPref = getValue(LOGOUT_ENABLED, false);
 		if (aPref == null) {
@@ -736,55 +664,6 @@ public abstract class CommonPreferenceController {
 
 	public void setLogoutTimeout(String value) {
 		setValue(LOGOUT_TIMEOUT, false, value);
-	}
-
-	public String getBackupDir() {
-		return getValue(BACKUP_DIR, false);
-	}
-
-	public synchronized void setBackupDir(String value) {
-		setValue(BACKUP_DIR, false, value);
-		setBackupDirWarning(""); // clear warning message
-	}
-
-	public String getBackupDirWarning() {
-		return getValue(BACKUP_DIR_WARNING, false);
-	}
-
-	public void setBackupDirWarning(String message) {
-		setValue(BACKUP_DIR_WARNING, false, message);
-	}
-
-	public Integer getBackupNextNumber() {
-		try {
-			return Integer.parseInt(getValue(BACKUP_NEXT_NUMBER, false));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setBackupNextNumber(int value) {
-		setValue(BACKUP_NEXT_NUMBER, false, String.valueOf(value));
-	}
-
-	public Integer getBackupMaxNumber() {
-		try {
-			return Integer.parseInt(getValue(BACKUP_MAX_HISTORY, false));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setBackupMaxNumber(int value) {
-		setValue(BACKUP_MAX_HISTORY, false, String.valueOf(value));
-	}
-
-	public String getDatabaseUsed() {
-		return getValue(DATABASE_USED, false);
-	}
-
-	public void setDatabaseUsed(String value) {
-		setValue(DATABASE_USED, false, value);
 	}
 
 	public Long getDefaultAccountId(String preferenceName) {
@@ -1130,44 +1009,6 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public boolean getQEDefaultsToZeroPayment() {
-		String aPref = getValue(QE_DEFAULTS_TO_ZERO, false);
-		return aPref != null && Boolean.parseBoolean(aPref);
-
-	}
-
-	public void setQEDefaultsToZeroPayment(boolean value) {
-		setValue(QE_DEFAULTS_TO_ZERO, false, Boolean.toString(value));
-	}
-
-	public synchronized String getDefaultQEEnrolmentReportKeycode() {
-		String result = getValue(QE_DEFAULT_REPORT_ENROLMENT_KEYCODE, false);
-		if (StringUtils.isEmpty(result)) {
-			String defaultValue = QE_DEFAULT_REPORT_ENROLMENT;
-			setDefaultQEEnrolmentReportKeycode(defaultValue);
-			return defaultValue;
-		}
-		return result;
-	}
-
-	public void setDefaultQEEnrolmentReportKeycode(String value) {
-		setValue(QE_DEFAULT_REPORT_ENROLMENT_KEYCODE, false, value);
-	}
-
-	public synchronized String getDefaultQEInvoiceReportKeycode() {
-		String result = getValue(QE_DEFAULT_REPORT_INVOICE_KEYCODE, false);
-		if (StringUtils.isEmpty(result)) {
-			String defaultValue = QE_DEFAULT_REPORT_INVOICE;
-			setDefaultQEEnrolmentReportKeycode(defaultValue);
-			return defaultValue;
-		}
-		return result;
-	}
-
-	public void setDefaultQEInvoiceReportKeycode(String value) {
-		setValue(QE_DEFAULT_REPORT_INVOICE_KEYCODE, false, value);
-	}
-
 	public boolean getGravatarEnabled() {
 		String value = getValue(GRAVATAR, false);
 		if (StringUtils.isEmpty(value)) {
@@ -1192,26 +1033,6 @@ public abstract class CommonPreferenceController {
 		setValue(EULA_AGREEMENT + userLogin, true, revision);
 	}
 
-	public Rectangle getFramePosition(String frameIdentifier) {
-		String pref = getValue(FRAME_BOUNDS + frameIdentifier, true);
-		if (pref != null && !pref.equals("")) {
-			String[] elements = commaExplode.split(pref);
-			if (elements.length == 4) {
-				int x = Integer.valueOf(elements[0]);
-				int y = Integer.valueOf(elements[1]);
-				int w = Integer.valueOf(elements[2]);
-				int h = Integer.valueOf(elements[3]);
-				return new Rectangle(x, y, w, h);
-			}
-		}
-		return null;
-	}
-
-	public void setFramePosition(String frameIdentifier, Rectangle value) {
-		String prefValue = (int) value.getX() + "," + (int) value.getY() + "," + (int) value.getWidth() + "," + (int) value.getHeight();
-		setValue(FRAME_BOUNDS + frameIdentifier, true, prefValue);
-	}
-
 	public boolean getToolbarCollapsed() {
 		String value = getValue(TOOLBAR_COLLAPSE_STATE, true);
 		if (value == null) {
@@ -1222,102 +1043,6 @@ public abstract class CommonPreferenceController {
 
 	public void setToolbarCollapsed(boolean value) {
 		setValue(TOOLBAR_COLLAPSE_STATE, true, Boolean.toString(value));
-	}
-
-	/**
-	 * Get the list view column order and sizing.
-	 *
-	 * @param frameIdentifier a unique string identifier for this view
-	 * @return this is a map of column property keys and widths (in pixels)
-	 */
-	public Map<String, Integer> getListViewColumns(String frameIdentifier) {
-		String pref = getValue(LISTVIEW_COLUMNS + frameIdentifier, true);
-		// data is stored like this "COLKEY1:12,COLKEY2:13"
-
-		if (pref != null && !pref.equals("")) {
-			String[] elements = commaExplode.split(pref);
-			Map<String, Integer> result = new LinkedHashMap<>();
-			for (String col : elements) {
-				// now split each one around the colon
-				String[] colElements = colonExplode.split(col);
-				Integer width = colElements.length == 2 ? Integer.valueOf(colElements[1]) : null;
-				result.put(colElements[0], width);
-			}
-			return result;
-		}
-		return null;
-	}
-
-	/**
-	 * Set the list view column order and sizing.
-	 *
-	 * @param frameIdentifier a unique string identifier for this view
-	 * @param value this is a map of column property keys and widths (in pixels)
-	 */
-	public void setListViewColumns(String frameIdentifier, Map<String, Integer> value) {
-		StringBuilder prefValue = new StringBuilder();
-		for (Map.Entry<String, Integer> col : value.entrySet()) {
-			prefValue.append(col.getKey()).append(":").append(col.getValue()).append(",");
-		}
-		prefValue.deleteCharAt(prefValue.length() - 1);
-		setValue(LISTVIEW_COLUMNS + frameIdentifier, true, prefValue.toString());
-	}
-
-	public void setListViewDividerPosition(String frameIdentifier, int value) {
-		setValue(LISTVIEW_DIVIDER + frameIdentifier, true, String.valueOf(value));
-	}
-
-	public Integer getListViewDividerPosition(String frameIdentifier) {
-		try {
-			return Integer.parseInt(getValue(LISTVIEW_DIVIDER + frameIdentifier, true));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setQEViewDividerPosition(String frameIdentifier, int value) {
-		setValue(QEVIEW_DIVIDER + frameIdentifier, true, String.valueOf(value));
-	}
-
-	public Integer getQEViewDividerPosition(String frameIdentifier) {
-		try {
-			return Integer.parseInt(getValue(QEVIEW_DIVIDER + frameIdentifier, true));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setFilterCollapsingState(String filterIdentifier, boolean value) {
-		setValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true, String.valueOf(value));
-	}
-
-
-	public boolean getFilterCollapsingState(String filterIdentifier) {
-		return Boolean.parseBoolean(getValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true));
-	}
-
-	public void setListViewSortedColumns(String frameIdentifier, Map<String, Boolean> sortedColumns) {
-		StringBuilder prefValue = new StringBuilder();
-		for (Map.Entry<String, Boolean> col : sortedColumns.entrySet()) {
-			prefValue.append(String.format("%s:%b,", col.getKey(), col.getValue()));
-		}
-		setValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true, prefValue.toString());
-	}
-
-	public Map<String, Boolean> getListViewSortedColumns(String frameIdentifier) {
-		String value = getValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true);
-		if (StringUtils.trimToNull(value) != null) {
-			String[] elements = commaExplode.split(value);
-			Map<String, Boolean> sortedColumn  = new LinkedHashMap<>(elements.length);
-			for (String col : elements) {
-				String[] colIndexSorting = colonExplode.split(col);
-				if (colIndexSorting.length == 2) {
-					sortedColumn.put(colIndexSorting[0], Boolean.parseBoolean(colIndexSorting[1]));
-				}
-			}
-			return sortedColumn;
-		}
-		return null;
 	}
 
 	/**
@@ -1393,25 +1118,6 @@ public abstract class CommonPreferenceController {
 		setFilePreference(LASTLOGIN_USERNAME, value);
 	}
 
-	public static String getSHA1Fingerprint(String host) {
-		return getFilePreference(host, "");
-	}
-
-	public static void setSHA1Fingerprint(String host, String value) {
-		setFilePreference(host, value);
-	}
-
-	public File getExportMailingListDestination() {
-		String dir = getFilePreference(MAILINGLIST_EXPORT_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportMailingListDestination(File value) {
-		setFilePreference(MAILINGLIST_EXPORT_FOLDER, value.getAbsolutePath());
-	}
 
 	public File getExportPdfDestination() {
 		String dir = getFilePreference(REPORT_PDF_FOLDER, null);
@@ -1485,38 +1191,6 @@ public abstract class CommonPreferenceController {
 		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
 	}
 
-	public void setAuskeyPassword(String value) {
-		setValue(AUSKEY_PASSWORD, false, value);
-	}
-
-	public String getAuskeyPassword() {
-		return getValue(AUSKEY_PASSWORD, false);
-	}
-
-	public void setAuskeyCertificate(String value) {
-		setValue(AUSKEY_CERTIFICATE, false, value);
-	}
-
-	public String getAuskeyCertificate() {
-		return getValue(AUSKEY_CERTIFICATE, false);
-	}
-
-	public void setAuskeyPrivateKey(String value) {
-		setValue(AUSKEY_PRIVATE_KEY, false, value);
-	}
-
-	public String getAuskeyPrivateKey() {
-		return getValue(AUSKEY_PRIVATE_KEY, false);
-	}
-
-	public void setAuskeySalt(String value) {
-		setValue(AUSKEY_SALT, false, value);
-	}
-
-	public String getAuskeySalt() {
-		return getValue(AUSKEY_SALT, false);
-	}
-
 	public boolean getUseOnlyOfferedModulesAndQualifications() {
 		return Boolean.parseBoolean(getValue(USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS, false));
 	}
@@ -1539,22 +1213,7 @@ public abstract class CommonPreferenceController {
 	public void setMYOBLastExportDate(Date value) {
 		setValue(MYOB_LAST_EXPORT_DATE, false, dateFormat.format(value));
 	}
-	/*
-	 * Utility methods
-	 */
-	public boolean hasEmailBeenConfigured() {
-		String fromAddress = getEmailFromAddress();
-		return fromAddress != null && fromAddress.length() != 0;
-	}
 
-	public boolean hasSMSBeenConfigured() {
-		boolean enableSMSDelivery = getLicenseSms();
-		String smsFrom = getSMSFromAddress();
-		if (enableSMSDelivery && smsFrom != null && NO_WHITESPACE_PATTERN.matcher(smsFrom).matches()) {
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * Gets value for given key.
@@ -1638,18 +1297,6 @@ public abstract class CommonPreferenceController {
 			return getLogoutEnabled();
 		} else if (LOGOUT_TIMEOUT.equals(key)) {
 			return getLogoutTimeout();
-		} else if (BACKUP_ENABLED.equals(key)) {
-			return getBackupEnabled();
-		} else if (BACKUP_DIR.equals(key)) {
-			return getBackupDir();
-		} else if (BACKUP_DIR_WARNING.equals(key)) {
-			return getBackupDirWarning();
-		} else if (BACKUP_MAX_HISTORY.equals(key)) {
-			return getBackupMaxNumber();
-		} else if (BACKUP_NEXT_NUMBER.equals(key)) {
-			return getBackupNextNumber();
-		} else if (BACKUP_TIMEOFDAY.equals(key)) {
-			return getBackupOnMinuteOfDay();
 		} else if (ACCOUNT_CURRENCY.equals(key)) {
 			return getCountry();
 		} else if (ACCOUNT_TAXPK.equals(key)) {
@@ -1714,8 +1361,6 @@ public abstract class CommonPreferenceController {
 			return getAvetmissJurisdiction();
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
 			return getPaymentInfo();
-		} else if (QE_DEFAULTS_TO_ZERO.equals(key)) {
-			return getQEDefaultsToZeroPayment();
 		} else if (key.startsWith(EULA_AGREEMENT)) {
 			return getEulaAgreement(key);
 		} else if (key.equals(TOOLBAR_ACTIVE_TAB)) {
@@ -1738,10 +1383,6 @@ public abstract class CommonPreferenceController {
 			return getCourseClassDefaultMinimumPlaces();
 		} else if (MYOB_LAST_EXPORT_DATE.equals(key)) {
 			return getMYOBLastExportDate();
-		} else if (QE_DEFAULT_REPORT_INVOICE_KEYCODE.equals(key)) {
-			return getDefaultQEInvoiceReportKeycode();
-		} else if (QE_DEFAULT_REPORT_ENROLMENT_KEYCODE.equals(key)) {
-			return getDefaultQEEnrolmentReportKeycode();
 		} else if (GRAVATAR.equals(key)) {
 			return getGravatarEnabled();
 		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
@@ -1857,18 +1498,6 @@ public abstract class CommonPreferenceController {
 			setLogoutEnabled((Boolean) value);
 		} else if (LOGOUT_TIMEOUT.equals(key)) {
 			setLogoutTimeout((String) value);
-		} else if (BACKUP_ENABLED.equals(key)) {
-			setBackupEnabled((Boolean) value);
-		} else if (BACKUP_DIR.equals(key)) {
-			setBackupDir((String) value);
-		} else if (BACKUP_DIR_WARNING.equals(key)) {
-			setBackupDirWarning((String) value);
-		} else if (BACKUP_MAX_HISTORY.equals(key)) {
-			setBackupMaxNumber((Integer) value);
-		} else if (BACKUP_NEXT_NUMBER.equals(key)) {
-			setBackupNextNumber((Integer) value);
-		} else if (BACKUP_TIMEOFDAY.equals(key)) {
-			setBackupOnMinuteOfDay((Integer) value);
 		} else if (ACCOUNT_CURRENCY.equals(key)) {
 			setCountry((Country) value);
 		} else if (ACCOUNT_TAXPK.equals(key)) {
@@ -1929,8 +1558,6 @@ public abstract class CommonPreferenceController {
 			setAvetmissExportPath((File) value);
 		} else if (AVETMISS_JURISDICTION.equals(key)) {
 			setAvetmissJurisdiction((ExportJurisdiction) value);
-		} else if (QE_DEFAULTS_TO_ZERO.equals(key)) {
-			setQEDefaultsToZeroPayment((Boolean) value);
 		} else if (key.startsWith(EULA_AGREEMENT)) {
 			setEulaAgreement(key, (String) value);
 		} else if (key.equals(TOOLBAR_ACTIVE_TAB)) {
@@ -1951,10 +1578,6 @@ public abstract class CommonPreferenceController {
 			setCourseClassDefaultMinimumPlaces((Integer) value);
 		} else if (MYOB_LAST_EXPORT_DATE.equals(key)) {
 			setMYOBLastExportDate((Date) value);
-		} else if (QE_DEFAULT_REPORT_INVOICE_KEYCODE.equals(key)) {
-			setDefaultQEInvoiceReportKeycode((String)value);
-		} else if (QE_DEFAULT_REPORT_ENROLMENT_KEYCODE.equals(key)) {
-			setDefaultQEEnrolmentReportKeycode((String)value);
 		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
 			setDocumentImportPath((File) value);
 		} else  if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {

@@ -251,19 +251,6 @@ public interface Preferences {
 	String LOGOUT_TIMEOUT = "logout.timeout";
 
 	String DATABASE_USED = "database.used";
-	String DATABASE_USED_MYSQL = "database.mysql";
-	String DATABASE_USED_MSSQL = "database.mssql";
-	String DATABASE_USED_POSTGRE = "database.postgre";
-
-	String BACKUP_ENABLED = "backup.enabled";
-	String BACKUP_DIR = "backup.destination";
-	String BACKUP_DIR_WARNING = "backup.destination.warning";
-
-	String BACKUP_MAX_HISTORY = "backup.maxhistory";
-	String BACKUP_NEXT_NUMBER = "backup.nextnumber";
-	String BACKUP_TIMEOFDAY = "backup.minuteofday";
-
-
 
 	// **************************************
 	// Account defaults
@@ -454,27 +441,14 @@ public interface Preferences {
 	// **************************************
 	// Other
 	// **************************************
-	String QE_DEFAULTS_TO_ZERO = "qe.payment.default.zero";
-	String QE_DEFAULT_REPORT_ENROLMENT_KEYCODE = "qe.default.report.enrolment.keycode";
-	String QE_DEFAULT_REPORT_INVOICE_KEYCODE = "qe.default.report.invoice.keycode";
-
 	String GRAVATAR = "gravatar.enabled";
-
-
 
 	// **************************************
 	// Frame preferences
 	// **************************************
 	String TOOLBAR_COLLAPSE_STATE = "toolbar.collapse";
-	String FRAME_BOUNDS = "frame.bounds.";
-	String LISTVIEW_COLUMNS = "listview.columns.";
-	String LISTVIEW_DIVIDER = "listview.divider.";
-	String QEVIEW_DIVIDER = "qeview.divider.";
 	String EULA_AGREEMENT = "eula.agreement.";
 	String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
-	String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
-	String LISTVIEW_COLUMN_SORTED = "listview.column.sorted.";
-
 
 
 	// **************************************
@@ -485,13 +459,6 @@ public interface Preferences {
 	String LASTLOGIN_SERVER_PORT = "oncourse.login.last.port";
 	String LASTLOGIN_SERVER_ISSSL = "oncourse.login.last.isssl";
 
-
-
-
-	String AUSKEY_PASSWORD = "auskey.password";
-	String AUSKEY_CERTIFICATE = "auskey.certificate";
-	String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
-	String AUSKEY_SALT = "auskey.salt";
 	String USI_SOFTWARE_ID = "usi.softwareid";
 
 
@@ -529,16 +496,9 @@ public interface Preferences {
 	String REPLICATION_ENABLED = "replication.enabled";
 
 
-
-
-	String QE_DEFAULT_REPORT_ENROLMENT = "ish.onCourse.enrolmentConfirmation";
-	String QE_DEFAULT_REPORT_INVOICE = "ish.onCourse.invoiceReport";
-
-
 	// **************************************
 	// File destinations
 	// **************************************
-	String MAILINGLIST_EXPORT_FOLDER = "report.mailingListExport";
 	String REPORT_PDF_FOLDER = "report.pdfSaveFolder";
 	String REPORT_XLS_FOLDER = "report.xlsSaveFolder";
 	String REPORT_IMPORT_FOLDER = "report.jasperImportFolder";
