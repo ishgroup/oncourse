@@ -23,9 +23,6 @@ import java.util.function.BiFunction;
 
 public class DateAmountConverter implements Converter<AqlParser.DateAmountTermContext> {
 
-    private final Map<TypeClassifier, Converter<AqlParser.IdContext>> classifierMap
-            = new EnumMap<>(TypeClassifier.class);
-
     private final Map<TypeClassifier, DateAmountConverter.UnitConverter> unitConverters
             = new EnumMap<>(TypeClassifier.class);
 
