@@ -33,6 +33,9 @@ export class Messages extends React.Component<Props, any> {
       if (!L.isEmpty(error.formErrors)) {
         errors = errors.concat(error.formErrors);
       }
+      if (!L.isEmpty(error.fieldsErrors)) {
+        errors = errors.concat(error.fieldsErrors.map(fr => fr.error));
+      }
 
       return (
         <div>

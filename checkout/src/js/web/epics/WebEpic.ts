@@ -15,7 +15,7 @@ import {
   PromotionsSchema, WaitingCoursesListSchema, WaitingCoursesSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
-import {PromotionParams, ContactParams} from "../../model";
+import { PromotionParams, ContactParams, Application, Enrolment } from "../../model";
 import {IshState} from "../../services/IshState";
 import {mapError, mapPayload} from "../../common/epics/EpicUtils";
 import {rewriteContactNodeToState} from "../../enrol/containers/summary/actions/Actions";
@@ -223,41 +223,48 @@ function createAddClassToSummaryEpic() {
       const contacts = state.checkout.summary.result;
       const classItem = state.courses.entities[action.payload.id]
       return contacts.map(node => {
+        let injected = {};
+
+        if (classItem.isAllowByApplication) {
+          const application: Application = {
+            contactId: node,
+            classId: classItem.id,
+            errors: [],
+            fieldHeadings: [],
+            selected: true,
+            warnings: []
+          };
+          injected = {
+            applications: [
+              ...state.checkout.summary.entities.contactNodes[node].applications,
+              application
+            ]
+          }
+        } else {
+          const enrolment: Enrolment = {
+            contactId: node,
+            classId: classItem.id,
+            allowRemove: null,
+            courseId: null,
+            errors: [],
+            fieldHeadings: [],
+            price: {...classItem.price},
+            relatedClassId: null,
+            relatedProductId: null,
+            selected: true,
+            warnings: []
+          };
+          injected = {
+            enrolments: [
+              ...state.checkout.summary.entities.contactNodes[node].enrolments,
+              enrolment
+            ]
+          }
+        }
+
         return rewriteContactNodeToState({
          ...state.checkout.summary.entities.contactNodes[node],
-         ...classItem.isAllowByApplication
-          ? {applications: [
-               ...state.checkout.summary.entities.contactNodes[node].applications,
-               {
-                 contactId: node,
-                 classId: classItem.id,
-                 allowRemove: null,
-                 courseId: null,
-                 errors: [],
-                 fieldHeadings: [],
-                 price: {...classItem.price},
-                 relatedClassId: null,
-                 relatedProductId: null,
-                 selected: true,
-                 warnings: []
-               }
-             ]}
-          : {enrolments: [
-               ...state.checkout.summary.entities.contactNodes[node].enrolments,
-               {
-                 contactId: node,
-                 classId: classItem.id,
-                 allowRemove: null,
-                 courseId: null,
-                 errors: [],
-                 fieldHeadings: [],
-                 price: {...classItem.price},
-                 relatedClassId: null,
-                 relatedProductId: null,
-                 selected: true,
-                 warnings: []
-               }
-             ]}
+         ...injected
         } as any)
       })
     });
