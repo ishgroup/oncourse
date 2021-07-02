@@ -364,7 +364,7 @@ class ProcessCheckoutModel {
                         model.validationErrors.formErrors << fieldError.error
                         model.validationErrors.fieldsErrors << fieldError
                     }
-                    actualizeCustomFields(a.fieldHeadings, processProduct.voucher.fieldHeadings)
+                    actualizeCustomFields(a.fieldHeadings, processProduct.article.fieldHeadings)
                 } else {
                     a.selected = false
                 }
