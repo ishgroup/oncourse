@@ -97,7 +97,7 @@ class SubmitContactFields {
                 return
             }
 
-            FieldError error = new FieldValueValidator(property, f.key, objectContext, college, isDefaultCountry).validate(value)
+            FieldError error = new FieldValueValidator(property, f.key, objectContext, college, isDefaultCountry).validate(value, index)
             if (error) {
                 errors.fieldsErrors << error
             } else {

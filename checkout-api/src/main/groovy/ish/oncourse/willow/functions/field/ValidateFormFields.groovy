@@ -55,12 +55,12 @@ class ValidateFormFields {
                 commonError = new CommonError(message: "$formName form for $className contains more than $quantity followed fields: $f.key")
                 return this
             }
-            for (Field correspondingField : correspondingFields) {
+            correspondingFields.eachWithIndex{ Field correspondingField, int index ->
                 String value = StringUtils.trimToNull(correspondingField.value)
                 if (!value && f.mandatory) {
                     fieldErrors << new FieldError(name: f.key, error: "${f.name} for $className is required")
                 } else if (value) {
-                    FieldError error = new FieldValueValidator(FieldProperty.getByKey(f.key), f.key, context, college).validate(value)
+                    FieldError error = new FieldValueValidator(FieldProperty.getByKey(f.key), f.key, context, college).validate(value, index)
                     if (error) {
                         fieldErrors << error
                     }

@@ -42,10 +42,9 @@ class FieldValueValidator {
         this.context = context
         this.isDefaultCountry = isDefaultCountry
         this.college = college
-        
     }
 
-    FieldError validate(Object value) {
+    FieldError validate(Object value, Integer index = null) {
         String stringError = null
         switch (property) {
             case FieldProperty.STREET:
@@ -118,7 +117,7 @@ class FieldValueValidator {
         }
 
         if (stringError) {
-            return new FieldError(name: fieldKey, error: stringError)
+            return new FieldError(index: index, name: fieldKey, error: stringError)
         }
         null
     }
