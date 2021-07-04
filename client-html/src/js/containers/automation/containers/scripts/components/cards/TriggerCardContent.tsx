@@ -43,7 +43,7 @@ const TriggerCardContent = props => {
           ? [{ label: "On demand", value: "On demand" }, { label: "Schedule", value: "Schedule" }]
           : TriggerTypeItems
         }
-        disabled={isInternal && !isScheduleOrOnDemand}
+        disabled={(isInternal && !isScheduleOrOnDemand) || (values?.trigger?.type === "On demand" && values.entity)}
         required
         autoWidth
       />
@@ -82,7 +82,6 @@ const TriggerCardContent = props => {
             name="trigger.cron.scheduleType"
             label="Schedule type"
             items={ScheduleTypeItems}
-            disabled={isInternal}
             required
             className="pl-2"
             autoWidth
@@ -94,7 +93,6 @@ const TriggerCardContent = props => {
               name="trigger.cron.custom"
               label="Cron Schedule"
               className="pl-2"
-              disabled={isInternal}
               labelAdornment={(
                 <span>
                   <a target="_blank" href="http://www.cronmaker.com/" rel="noreferrer">

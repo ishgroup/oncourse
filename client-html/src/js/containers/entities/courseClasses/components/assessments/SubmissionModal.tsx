@@ -62,7 +62,7 @@ const SubmissionModal = (
         <Grid container>
           <Grid item xs={6}>
             <EditInPlaceDateTimeField
-              type="date"
+              type="datetime"
               label={`${type} date`}
               input={{
                 onChange: setDateVal,
@@ -74,7 +74,7 @@ const SubmissionModal = (
             />
           </Grid>
           <Grid item xs={6}>
-            {type === "Marked" && modalProps[2] !== "all" && (
+            {type === "Marked" && (
               (
                 <EditInPlaceField
                   label="Assessor"
@@ -114,7 +114,7 @@ const SubmissionModal = (
         </Button>
       </DialogActions>
     </Dialog>
-);
+  );
 };
 
 export default SubmissionModal;
