@@ -24,12 +24,17 @@ class MetaclassCleaner {
 
     @CompileDynamic
     @Synchronized
-    static void clearGroovyCashe(final Template template) {
+    static void clearGroovyCache(final Template template) {
         try {
             Script script = template.@script as Script
             ClassLoader classLoader = script.metaClass.theClass.classLoader
-            if (classLoader?.parent  instanceof GroovyClassLoader) {
-                (classLoader.parent as GroovyClassLoader).clearCache()
+            if (classLoader) {
+                if  (classLoader instanceof GroovyClassLoader.InnerLoader) {
+                    (classLoader as GroovyClassLoader.InnerLoader).clearCache()
+                }
+                if (classLoader?.parent instanceof GroovyClassLoader) {
+                    (classLoader.parent as GroovyClassLoader).clearCache()
+                }
             }
         } catch(Exception e) {
             logger.catching(e)
