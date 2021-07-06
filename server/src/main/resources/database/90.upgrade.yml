@@ -1,0 +1,168 @@
+databaseChangeLog:
+  - changeSet:
+      id: 90-1
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: Lead
+      changes:
+        - createTable:
+            tableName: Lead
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  name: contactId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    referencedTableName: Contact
+                    referencedColumnNames: id
+                    foreignKeyName: Lead_Contact_FK
+              - column:
+                  name: studentCount
+                  type: SMALLINT
+              - column:
+                  name: estimatedValue
+                  type: DECIMAL(10,2)
+              - column:
+                  name: nextActionOn
+                  type: datetime
+              - column:
+                  name: notify
+                  type: TINYINT
+              - column:
+                  name: status
+                  type: TINYINT
+              - column:
+                  name: studentNotes
+                  type: CLOB
+              - column:
+                  name: assignedToUserId
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    referencedTableName: SystemUser
+                    referencedColumnNames: id
+                    foreignKeyName: Lead_SystemUser_FK
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
+  - changeSet:
+      id: 90-2
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: LeadItem
+      changes:
+        - createTable:
+            tableName: LeadItem
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  name: leadId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    referencedTableName: Lead
+                    referencedColumnNames: id
+                    foreignKeyName: LeadItem_Lead_FK
+              - column:
+                  name: courseId
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    referencedTableName: Course
+                    referencedColumnNames: id
+                    foreignKeyName: LeadItem_Course_FK
+              - column:
+                  name: productId
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    referencedTableName: Product
+                    referencedColumnNames: id
+                    foreignKeyName: LeadItem_Product_FK
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
+  - changeSet:
+      id: 90-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: Lead_Site
+      changes:
+        - createTable:
+            tableName: Lead_Site
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  name: leadId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    referencedTableName: Lead
+                    referencedColumnNames: id
+                    foreignKeyName: LeadSite_Lead_FK
+              - column:
+                  name: siteId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    referencedTableName: Site
+                    referencedColumnNames: id
+                    foreignKeyName: LeadSite_Site_FK
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
