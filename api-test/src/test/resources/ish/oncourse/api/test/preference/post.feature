@@ -5,17 +5,13 @@ Feature: Main feature for all POST requests with path 'preference/'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference'
-        
+
 
     Scenario: (-) Edit 'readOnly' preferences
 
         * table readOnlyPreferences
             | name                       | code                      | value  |
             | 'LICENSE_ACCESS_CONTROL'   | 'license.accesscontrol'   | 'true' |
-            | 'LICENSE_LDAP'             | 'license.ldap'            | 'true' |
-            | 'LICENSE_BUDGET'           | 'license.budget'          | 'true' |
-            | 'LICENSE_EXTENRNAL_DB'     | 'license.externaldb'      | 'true' |
-            | 'LICENSE_SSL'              | 'license.ssl'             | 'true' |
             | 'LICENSE_SMS'              | 'license.sms'             | 'true' |
             | 'LICENSE_CC_PROCESSING'    | 'license.ccprocessing'    | 'true' |
             | 'LICENSE_PAYROLL'          | 'license.payroll'         | 'true' |

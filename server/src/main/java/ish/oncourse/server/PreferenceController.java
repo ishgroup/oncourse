@@ -100,14 +100,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 				}
 			case LICENSE_ACCESS_CONTROL:
 				return getLicenseAccessControl();
-			case LICENSE_LDAP:
-				return getLicenseLdap();
-			case LICENSE_BUDGET :
-				return getLicenseBudget();
-			case LICENSE_EXTENRNAL_DB:
-				return getLicenseExternalDB();
-			case LICENSE_SSL:
-				return null;
 			case LICENSE_SMS:
 				return getLicenseSms();
 			case LICENSE_CC_PROCESSING:

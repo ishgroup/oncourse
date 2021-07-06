@@ -8,8 +8,6 @@
 
 package ish.oncourse.server;
 
-import ish.math.Country;
-
 public interface IPreferenceController {
 
     String getOncourseServerDefaultTimezone();
@@ -27,6 +25,4 @@ public interface IPreferenceController {
     Object getValueForKey(String key);
 
     void setValueForKey(String key, Object value);
-
-    boolean hasSurveyForm();
 }

@@ -26,10 +26,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import static ish.persistence.Preferences.*;
-/**
- * This abstract class is implemented in each of the client and the server. This is needed because the persistent object classes are different in those two
- * places and access to them needs to be implemented separately.
- */
+
 public abstract class CommonPreferenceController {
 
 	private static final Logger logger = LogManager.getLogger();
@@ -209,27 +206,6 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(getValue(SERVICES_CC_AMEX_ENABLED, false));
 	}
 
-	public int getDataSVN() {
-		String result = getValue(DATA_SVNVERSION, false);
-		if (result == null) {
-			return -1;
-		}
-		return Integer.parseInt(result);
-	}
-
-	public void setDataSVN(int value) {
-		setValue(DATA_SVNVERSION, false, Integer.toString(value));
-	}
-
-	/** this is not a wed version anymore, but I dont wanna change the preferences. marcin **/
-	public String getDataVersion() {
-		return getValue(DATA_WED_VERSION, false);
-	}
-
-	public void setDataVersion(String value) {
-		setValue(DATA_WED_VERSION, false, value);
-	}
-
 	public Long getReferenceDataVersion() {
 		String result = getValue(SERVICES_INFO_REPLICATION_VERSION, false);
 		if (result == null) {
@@ -293,50 +269,6 @@ public abstract class CommonPreferenceController {
 	public void setLicenseAccessControl(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseLdap() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_LDAP, false));
-	}
-
-	public void setLicenseLdap(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_LDAP, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseBudget() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_BUDGET, false));
-	}
-
-	public void setLicenseBudget(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_BUDGET, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseExternalDB() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_EXTENRNAL_DB, false));
-	}
-
-	public void setLicenseExternalDB(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_EXTENRNAL_DB, false, Boolean.toString(value));
-	}
-
-	/**
-	 * @deprecated - not used since angel 4.1
-	 */
-	@Deprecated
-	public boolean getLicenseSSL() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SSL, false));
-	}
-
-	/**
-	 * @deprecated - not used since angel 4.1
-	 */
-	@Deprecated
-	public void setLicenseSSL(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_SSL, false, Boolean.toString(value));
 	}
 
 	public boolean getLicenseSms() {
@@ -1237,10 +1169,6 @@ public abstract class CommonPreferenceController {
 			return getServicesLdapAuthorisation();
 		} else if (SERVICES_CC_ENABLED.equals(key)) {
 			return getServicesCCEnabled();
-		} else if (DATA_SVNVERSION.equals(key)) {
-			return getDataSVN();
-		} else if (DATA_WED_VERSION.equals(key)) {
-			return getDataVersion();
 		} else if (SERVICES_INFO_REPLICATION_VERSION.equals(key)) {
 			return getReferenceDataVersion();
 		} else if (DEDUPE_LASTRUN.equals(key)) {
@@ -1438,10 +1366,6 @@ public abstract class CommonPreferenceController {
 			setServicesLdapAuthorisation((Boolean) value);
 		} else if (SERVICES_CC_ENABLED.equals(key)) {
 			setServicesCCEnabled((Boolean) value);
-		} else if (DATA_SVNVERSION.equals(key)) {
-			setDataSVN((Integer) value);
-		} else if (DATA_WED_VERSION.equals(key)) {
-			setDataVersion((String) value);
 		} else if (SERVICES_INFO_REPLICATION_VERSION.equals(key)) {
 			setReferenceDataVersion((Integer) value);
 		} else if (DEDUPE_LASTRUN.equals(key)) {
@@ -1652,18 +1576,6 @@ public abstract class CommonPreferenceController {
 		setValue(FEATURE_CONCESSION_USERS_CREATE, false, Boolean.toString(value));
 	}
 
-	public boolean getFeatureConcessionsUsersCreate() {
-		return Boolean.parseBoolean(getValue(FEATURE_CONCESSION_USERS_CREATE, false));
-	}
-
-	public String getFeatureEnrolmentDisclosure() {
-		return getValue(FEATURE_ENROLMENT_DISCLOSURE, false);
-	}
-
-	public void setFeatureEnrolmentDisclosure(String value) {
-		setValue(FEATURE_ENROLMENT_DISCLOSURE, false, value);
-	}
-
 	// **************************************
 	// Internal mechanics: the stuff that makes it work
 	// **************************************
@@ -1706,42 +1618,6 @@ public abstract class CommonPreferenceController {
 			}
 		}
 		return object;
-	}
-
-	/**
-	 * Convenience method to serialize Object to byte[]
-	 *
-	 * @param object
-	 * @return the bytes representing the serialized object
-	 */
-	public static byte[] serializeObject(Object object) {
-		byte[] data = null;
-		logger.debug("serializeObject:" + object);
-		if (object != null) {
-			try {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				ObjectOutputStream s = new ObjectOutputStream(out);
-				s.writeObject(object);
-				s.flush();
-				s.close();
-
-				data = out.toByteArray();
-			} catch (Exception e) {
-				throw new IllegalStateException("Error while serializing the object", e);
-			}
-		}
-		logger.debug("serializeObject result:" + (data == null ? "null" : "length=" + data.length));
-		return data;
-	}
-
-	public static Map<String, CreditCardType> getCCAvailableTypes(CommonPreferenceController pref) {
-		LinkedHashMap<String, CreditCardType> map = new LinkedHashMap<>();
-		for (CreditCardType t : CreditCardType.values()) {
-			if (!CreditCardType.BANKCARD.equals(t) && (!CreditCardType.AMEX.equals(t) || CreditCardType.AMEX.equals(t) && pref.getServicesAmexEnabled())) {
-				map.put(t.getDisplayName(), t);
-			}
-		}
-		return map;
 	}
 
 	/**

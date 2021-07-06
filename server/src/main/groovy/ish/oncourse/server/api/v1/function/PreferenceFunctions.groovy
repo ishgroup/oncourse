@@ -36,10 +36,6 @@ class PreferenceFunctions {
     public static final List<String> PRIVATE_PREFERENCES = [LDAP_BIND_USER_PASS, EMAIL_POP3PASSWORD]
 
     public static final List<String> READONLY_PREFERENCES = [  LICENSE_ACCESS_CONTROL,
-                                                               LICENSE_LDAP,
-                                                               LICENSE_BUDGET,
-                                                               LICENSE_EXTENRNAL_DB,
-                                                               LICENSE_SSL,
                                                                LICENSE_SMS,
                                                                LICENSE_CC_PROCESSING,
                                                                LICENSE_PAYROLL,
@@ -108,7 +104,6 @@ class PreferenceFunctions {
             case AUTO_DISABLE_INACTIVE_ACCOUNT:
             case PASSWORD_COMPLEXITY:
                 return Boolean.valueOf(value)
-            case DATA_SVNVERSION:
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:
             case PAY_PERIOD_DAYS:

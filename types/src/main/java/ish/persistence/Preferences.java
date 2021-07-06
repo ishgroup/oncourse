@@ -92,10 +92,6 @@ public interface Preferences {
 
 	String SERVICES_CC_AMEX_ENABLED = "services.cc.amex";
 
-	String DATA_SVNVERSION = "data.svnversion";
-
-	String DATA_WED_VERSION = "data.wed.version";
-
 	String SERVICES_INFO_REPLICATION_VERSION = "data.referencedataversion";
 
 	String DEDUPE_LASTRUN = "services.dedupelastrun";
@@ -104,23 +100,11 @@ public interface Preferences {
 
 	String SERVICES_ANGEL_REPLICATION_LASTRUN = "services.angeloreplicationlastrun";
 
-	String SERVICES_REPLICATION_REQUEUE_ID = "server.soap.requeueid";
-
-
-
 	// **************************************
 	// Licensing
 	// **************************************
 
 	String LICENSE_ACCESS_CONTROL = "license.accesscontrol";
-
-	String LICENSE_LDAP = "license.ldap";
-
-	String LICENSE_BUDGET = "license.budget";
-
-	String LICENSE_EXTENRNAL_DB = "license.externaldb";
-
-	String LICENSE_SSL = "license.ssl";
 
 	String LICENSE_SMS = "license.sms";
 
@@ -249,8 +233,6 @@ public interface Preferences {
 	// **************************************
 	String LOGOUT_ENABLED = "logout.enabled";
 	String LOGOUT_TIMEOUT = "logout.timeout";
-
-	String DATABASE_USED = "database.used";
 
 	// **************************************
 	// Account defaults
