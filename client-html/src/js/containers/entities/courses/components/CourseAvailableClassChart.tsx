@@ -264,7 +264,7 @@ const CourseAvailableClassChart = (props: any) => {
       {hasOverlay && (
         <div className={classes.overlay}>
           <Typography>
-            Waiting for classes
+            Create a class to see projection
           </Typography>
         </div>
       )}
