@@ -212,7 +212,6 @@ const CourseAvailableClassChart = (props: any) => {
             if (elem.dayNumber === 1) {
               different = newGraphDataWithEnrolments[index - 1 - END_DAY_VALUE].availablePlaces
                 - newGraphDataWithEnrolments[index - 1].availablePlaces;
-              console.log("different", different);
             }
 
             if (newGraphDataWithEnrolments[index - 1 - END_DAY_VALUE].classCreated.length) {
