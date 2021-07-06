@@ -8,34 +8,31 @@
 
 package ish.oncourse.server.scripting.api
 
-import groovy.text.SimpleTemplateEngine
 import groovy.text.Template
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.codehaus.groovy.runtime.InvokerHelper
 
-import groovy.transform.Synchronized
 
 @CompileStatic
 class MetaclassCleaner {
     private static final Logger logger = LogManager.logger
 
     @CompileDynamic
-    @Synchronized
     static void clearGroovyCache(final Template template) {
+        if (!template) {
+            return
+        }
         try {
             Script script = template.@script as Script
-            ClassLoader classLoader = script.metaClass.theClass.classLoader
-            if (classLoader) {
-                if  (classLoader instanceof GroovyClassLoader.InnerLoader) {
-                    (classLoader as GroovyClassLoader.InnerLoader).clearCache()
-                }
-                if (classLoader?.parent instanceof GroovyClassLoader) {
-                    (classLoader.parent as GroovyClassLoader).clearCache()
-                }
+            Class theClass = script.metaClass.theClass
+            ClassLoader classLoader = theClass.classLoader
+            if (classLoader.parent &&  classLoader.parent instanceof GroovyClassLoader) {
+                (classLoader.parent as GroovyClassLoader).removeClassCacheEntry(theClass.name)
+                (classLoader.parent as GroovyClassLoader).removeClassCacheEntry(theClass.name+ '$_run_closure1')
             }
+            
         } catch(Exception e) {
             logger.catching(e)
         }
