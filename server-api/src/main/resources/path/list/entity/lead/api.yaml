@@ -1,0 +1,126 @@
+get:
+  operationId: get
+  description: Returns a lead record
+  tags:
+    - Lead
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of lead record to fetch
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/lead/Lead.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to get waitingList. Please contact your administrator
+
+post:
+  operationId: create
+  description: Creates a lead record
+  tags:
+    - Lead
+  parameters:
+    - name: lead
+      in: body
+      description: lead to create
+      required: true
+      schema:
+        $ref: './def/entity/lead/Lead.yaml'
+  responses:
+    '200':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to create lead. Please contact your administrator
+
+put:
+  operationId: update
+  description: Updates an existing lead record
+  tags:
+    - Lead
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of lead record to fetch
+    - name: lead
+      in: body
+      schema:
+        $ref: './def/entity/lead/Lead.yaml'
+      required: true
+      description: lead for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: deletes a existing lead record
+  tags:
+    - Lead
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of lead record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to delete lead. Please contact your administrator
+
+patch:
+  operationId: bulkChange
+  tags:
+    - Lead
+  parameters:
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: lead for update
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: WAITING_LIST
+    errorMessage: Sorry, you have no permissions to edit lead. Please contact your administrator.
