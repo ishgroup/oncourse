@@ -1,0 +1,52 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  studentNotes:
+    type: string
+  studentCount:
+    type: integer
+  contactId:
+    type: integer
+    format: int64
+  studentName:
+    type: string
+  estimatedValue:
+    type: number
+  nextActionOn:
+    type: string
+    format: date-time
+  notify:
+    type: boolean
+  active:
+    type: boolean
+    required: true
+  assignTo:
+    type: string
+  sellables:
+    type: array
+    items:
+      $ref: '../Sale.yaml'
+  tags:
+    type: array
+    items:
+      $ref: '../Tag.yaml'
+  sites:
+    type: array
+    items:
+      $ref: '../Site.yml'
+  documents:
+    type: array
+    items:
+      $ref: '../Document.yaml'
+  customFields:
+    type: object
+    additionalProperties:
+      type: string
