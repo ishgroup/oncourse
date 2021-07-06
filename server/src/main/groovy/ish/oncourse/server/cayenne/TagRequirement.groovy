@@ -57,6 +57,7 @@ class TagRequirement extends _TagRequirement implements ITagRequirement, Queueab
 		taggableClasses.put(Enrolment.class, TaggableClasses.ENROLMENT)
 		taggableClasses.put(Payslip.class, TaggableClasses.PAYSLIP)
 		taggableClasses.put(WaitingList.class, TaggableClasses.WAITING_LIST)
+		taggableClasses.put(Lead.class, TaggableClasses.LEAD)
 		taggableClasses.put(Assessment.class, TaggableClasses.ASSESSMENT)
 		TAGGABLE_CLASSES = Collections.unmodifiableMap(taggableClasses)
 	}
