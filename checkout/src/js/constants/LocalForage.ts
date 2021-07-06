@@ -9,8 +9,8 @@ if (!IS_JEST) {
   });
 }
 
-export const localForage = IS_JEST ? {
+export const localForage: LocalForage = IS_JEST ? {
   getItem: jest.fn(),
   setItem: jest.fn(),
   clear: jest.fn()
-} : localforage;
+} as any : localforage;
