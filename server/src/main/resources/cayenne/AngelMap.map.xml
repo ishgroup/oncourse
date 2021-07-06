@@ -4,6 +4,7 @@
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
 	 project-version="10">
 	<property name="defaultPackage" value="ish.oncourse.server.cayenne"/>
+	<property name="quoteSqlIdentifiers" value="true"/>
 	<db-entity name="ACLAccessKey">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
