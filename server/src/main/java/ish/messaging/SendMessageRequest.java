@@ -10,6 +10,8 @@
  */
 package ish.messaging;
 
+import ish.oncourse.server.cayenne.SystemUser;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +90,7 @@ public class SendMessageRequest implements Serializable {
 		return createdById;
 	}
 
-	public void setCreatedBy(ISystemUser createdById) {
+	public void setCreatedBy(SystemUser createdById) {
 		this.createdById = (Long) createdById.getObjectId().getIdSnapshot().get(ID_PROPERTY);
 	}
 
