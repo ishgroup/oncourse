@@ -399,7 +399,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                     message.emailBody     = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
                     message.emailHtmlBody = htmlTemplate ? htmlTemplate.make(htmlBindings).toString() : null
                     message.emailFrom = request.fromAddress
-            		MetaclassCleaner.clearGroovyCashe(plainTemplate)
+            		MetaclassCleaner.clearGroovyCache(plainTemplate)
                     message
                 }
                 break
