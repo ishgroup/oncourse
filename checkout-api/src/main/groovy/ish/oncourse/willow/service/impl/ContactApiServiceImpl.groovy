@@ -130,6 +130,7 @@ class ContactApiServiceImpl implements ContactApi{
         ValidationError errors = new ValidationError()
         
         SubmitContactFields submit = new SubmitContactFields(objectContext: context, errors: errors, college: college, webSite: webSite, contact: contact)
+                .setDefaultCountry(contactFields.headings*.fields.flatten() as List<ish.oncourse.willow.model.field.Field>)
         contactFields.headings.each {it ->
             submit.submitContactFields(contact, it.fields)
         }

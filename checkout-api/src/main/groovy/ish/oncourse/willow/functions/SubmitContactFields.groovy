@@ -44,13 +44,16 @@ class SubmitContactFields {
     private String postcodeAutoFill
     private String stateAutoFill
 
-
-    SubmitContactFields submitContactFields(Contact contact, List<Field> fields) {
-
+    SubmitContactFields setDefaultCountry(List<Field> fields) {
         Field country = fields.find { FieldProperty.COUNTRY.key == it.key }
         if (!country || !country.value || CommonContactValidator.DEFAULT_COUNTRY_NAME == country.value) {
             isDefaultCountry = true
         }
+
+        this
+    }
+
+    SubmitContactFields submitContactFields(Contact contact, List<Field> fields) {
         
         fields.eachWithIndex { field , index ->
             if (isTagProperty(field)) {
