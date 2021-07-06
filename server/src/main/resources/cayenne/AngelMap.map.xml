@@ -879,6 +879,37 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="50"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
+	<db-entity name="Lead">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="studentCount" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="estimatedValue" type="DECIMAL" length="10" scale="2"/>
+		<db-attribute name="assignedToUserId" type="BIGINT"/>
+		<db-attribute name="nextActionOn" type="TIMESTAMP"/>
+		<db-attribute name="notify" type="TINYINT"/>
+		<db-attribute name="status" type="TINYINT" isMandatory="true"/>
+		<db-attribute name="studentNotes" type="CLOB" length="32000"/>
+		<db-attribute name="willowId" type="BIGINT"/>
+	</db-entity>
+	<db-entity name="LeadItem">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="leadId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="courseId" type="BIGINT"/>
+		<db-attribute name="productId" type="BIGINT"/>
+		<db-attribute name="willowId" type="BIGINT"/>
+	</db-entity>
+	<db-entity name="Lead_Site">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="leadId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="siteId" type="BIGINT"/>
+		<db-attribute name="willowId" type="BIGINT"/>
+	</db-entity>
 	<db-entity name="Message">
 		<db-attribute name="createdByUserId" type="BIGINT"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -2443,6 +2474,42 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
+	<obj-entity name="Lead" className="ish.oncourse.server.cayenne.Lead" dbEntityName="Lead" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="studentCount" type="java.lang.Integer" db-attribute-path="studentCount"/>
+		<obj-attribute name="studentNotes" type="java.lang.String" db-attribute-path="studentNotes"/>
+		<obj-attribute name="estimatedValue" type="ish.math.Money" db-attribute-path="estimatedValue"/>
+		<obj-attribute name="nextActionOn" type="java.time.LocalDateTime" db-attribute-path="nextActionOn"/>
+		<obj-attribute name="notify" type="java.lang.Boolean" db-attribute-path="notify"/>
+		<obj-attribute name="status" type="java.lang.Boolean" db-attribute-path="status"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="LeadItem" className="ish.oncourse.server.cayenne.LeadItem" dbEntityName="LeadItem" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="LeadSite" className="ish.oncourse.server.cayenne.LeadSite" dbEntityName="Lead_Site" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="LeadAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.LeadAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "Lead"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="LeadCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.LeadCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Lead"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="LeadNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.LeadNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "Lead"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="LeadTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.LeadTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 18]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Membership" superEntityName="ProductItem" className="ish.oncourse.server.cayenne.Membership" clientClassName="ish.oncourse.cayenne.Membership">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
@@ -3377,6 +3444,9 @@
 	<db-relationship name="attachedInvoice" source="BinaryRelation" target="Invoice">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
+	<db-relationship name="attachedLead" source="BinaryRelation" target="Lead">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
 	<db-relationship name="attachedPriorLearning" source="BinaryRelation" target="PriorLearning">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -3480,6 +3550,9 @@
 		<db-attribute-pair source="id" target="toContactId"/>
 	</db-relationship>
 	<db-relationship name="invoices" source="Contact" target="Invoice" toMany="true">
+		<db-attribute-pair source="id" target="contactId"/>
+	</db-relationship>
+	<db-relationship name="leads" source="Contact" target="Lead" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="messages" source="Contact" target="Message_Person" toMany="true">
@@ -3601,6 +3674,9 @@
 	</db-relationship>
 	<db-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme">
 		<db-attribute-pair source="fieldConfigurationSchemaId" target="id"/>
+	</db-relationship>
+	<db-relationship name="leads" source="Course" target="LeadItem" toMany="true">
+		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
 	<db-relationship name="modules" source="Course" target="Module_Course" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
@@ -3729,6 +3805,9 @@
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedEnrolment" source="CustomField" target="Enrolment">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedLead" source="CustomField" target="Lead">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedArticle" source="CustomField" target="ProductItem">
@@ -4034,6 +4113,45 @@
 	<db-relationship name="students" source="Language" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="languageId"/>
 	</db-relationship>
+	<db-relationship name="attachmentRelations" source="Lead" target="BinaryRelation" toMany="true">
+		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customer" source="Lead" target="Contact">
+		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Lead" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
+	<db-relationship name="items" source="Lead" target="LeadItem" toMany="true">
+		<db-attribute-pair source="id" target="leadId"/>
+	</db-relationship>
+	<db-relationship name="sites" source="Lead" target="Lead_Site" toMany="true">
+		<db-attribute-pair source="id" target="leadId"/>
+	</db-relationship>
+	<db-relationship name="taggingRelations" source="Lead" target="NodeRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="noteRelations" source="Lead" target="NoteRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="assignedTo" source="Lead" target="SystemUser">
+		<db-attribute-pair source="assignedToUserId" target="id"/>
+	</db-relationship>
+	<db-relationship name="course" source="LeadItem" target="Course">
+		<db-attribute-pair source="courseId" target="id"/>
+	</db-relationship>
+	<db-relationship name="lead" source="LeadItem" target="Lead">
+		<db-attribute-pair source="leadId" target="id"/>
+	</db-relationship>
+	<db-relationship name="product" source="LeadItem" target="Product">
+		<db-attribute-pair source="productId" target="id"/>
+	</db-relationship>
+	<db-relationship name="lead" source="Lead_Site" target="Lead">
+		<db-attribute-pair source="leadId" target="id"/>
+	</db-relationship>
+	<db-relationship name="site" source="Lead_Site" target="Site">
+		<db-attribute-pair source="siteId" target="id"/>
+	</db-relationship>
 	<db-relationship name="createdBy" source="Message" target="SystemUser">
 		<db-attribute-pair source="createdByUserId" target="id"/>
 	</db-relationship>
@@ -4112,6 +4230,9 @@
 	<db-relationship name="taggedEnrolment" source="NodeRelation" target="Enrolment">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
+	<db-relationship name="taggedLead" source="NodeRelation" target="Lead">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
 	<db-relationship name="taggedMessage" source="NodeRelation" target="Message">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -4173,6 +4294,9 @@
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="notedInvoice" source="NoteRelation" target="Invoice">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="notedLead" source="NoteRelation" target="Lead">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="notedRoom" source="NoteRelation" target="Room">
@@ -4361,6 +4485,9 @@
 	<db-relationship name="underpaymentAccount" source="Product" target="Account">
 		<db-attribute-pair source="underpaymentAccountId" target="id"/>
 	</db-relationship>
+	<db-relationship name="leads" source="Product" target="LeadItem" toMany="true">
+		<db-attribute-pair source="id" target="productId"/>
+	</db-relationship>
 	<db-relationship name="productItems" source="Product" target="ProductItem" toMany="true">
 		<db-attribute-pair source="id" target="productId"/>
 	</db-relationship>
@@ -4466,6 +4593,9 @@
 	<db-relationship name="country" source="Site" target="Country">
 		<db-attribute-pair source="countryId" target="id"/>
 	</db-relationship>
+	<db-relationship name="leads" source="Site" target="Lead_Site" toMany="true">
+		<db-attribute-pair source="id" target="siteId"/>
+	</db-relationship>
 	<db-relationship name="noteRelations" source="Site" target="NoteRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
@@ -4558,6 +4688,9 @@
 	</db-relationship>
 	<db-relationship name="audits" source="SystemUser" target="Audit" toMany="true">
 		<db-attribute-pair source="id" target="systemUserId"/>
+	</db-relationship>
+	<db-relationship name="leads" source="SystemUser" target="Lead" toMany="true">
+		<db-attribute-pair source="id" target="assignedToUserId"/>
 	</db-relationship>
 	<db-relationship name="changedNotes" source="SystemUser" target="Note" toMany="true">
 		<db-attribute-pair source="id" target="changedById"/>
@@ -4853,6 +4986,7 @@
 	<obj-relationship name="customFields" source="Contact" target="ContactCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Cascade" db-relationship-path="invoices"/>
+	<obj-relationship name="leads" source="Contact" target="Lead" deleteRule="Cascade" db-relationship-path="leads"/>
 	<obj-relationship name="messages" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messages"/>
 	<obj-relationship name="noteRelations" source="Contact" target="ContactNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
@@ -4903,6 +5037,7 @@
 	<obj-relationship name="customFields" source="Course" target="CourseCustomField" deleteRule="Cascade" db-relationship-path="customFileds"/>
 	<obj-relationship name="enrolments" source="Course" target="Enrolment" deleteRule="Deny" db-relationship-path="courseClasses.enrolments"/>
 	<obj-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationSchema"/>
+	<obj-relationship name="leads" source="Course" target="LeadItem" deleteRule="Nullify" db-relationship-path="leads"/>
 	<obj-relationship name="modules" source="Course" target="Module" deleteRule="Nullify" db-relationship-path="modules.module"/>
 	<obj-relationship name="noteRelations" source="Course" target="CourseNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
@@ -5045,6 +5180,23 @@
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="notedInvoice" source="InvoiceNoteRelation" target="Invoice" deleteRule="Nullify" db-relationship-path="notedInvoice"/>
 	<obj-relationship name="students" source="Language" target="Student" deleteRule="Deny" db-relationship-path="students"/>
+	<obj-relationship name="customer" source="Lead" target="Contact" deleteRule="Nullify" db-relationship-path="customer"/>
+	<obj-relationship name="attachmentRelations" source="Lead" target="LeadAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="customFields" source="Lead" target="LeadCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+	<obj-relationship name="items" source="Lead" target="LeadItem" deleteRule="Cascade" db-relationship-path="items"/>
+	<obj-relationship name="noteRelations" source="Lead" target="LeadNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="sites" source="Lead" target="LeadSite" deleteRule="Cascade" db-relationship-path="sites"/>
+	<obj-relationship name="taggingRelations" source="Lead" target="LeadTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="assignedTo" source="Lead" target="SystemUser" deleteRule="Nullify" db-relationship-path="assignedTo"/>
+	<obj-relationship name="attachedLead" source="LeadAttachmentRelation" target="Lead" deleteRule="Nullify" db-relationship-path="attachedLead"/>
+	<obj-relationship name="relatedLead" source="LeadCustomField" target="Lead" deleteRule="Nullify" db-relationship-path="relatedLead"/>
+	<obj-relationship name="course" source="LeadItem" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
+	<obj-relationship name="lead" source="LeadItem" target="Lead" deleteRule="Nullify" db-relationship-path="lead"/>
+	<obj-relationship name="product" source="LeadItem" target="Product" deleteRule="Nullify" db-relationship-path="product"/>
+	<obj-relationship name="notedLead" source="LeadNoteRelation" target="Lead" deleteRule="Nullify" db-relationship-path="notedLead"/>
+	<obj-relationship name="lead" source="LeadSite" target="Lead" deleteRule="Nullify" db-relationship-path="lead"/>
+	<obj-relationship name="site" source="LeadSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
+	<obj-relationship name="taggedLead" source="LeadTagRelation" target="Lead" deleteRule="Nullify" db-relationship-path="taggedLead"/>
 	<obj-relationship name="discountMemberships" source="MembershipProduct" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
 	<obj-relationship name="discountsAvailable" source="MembershipProduct" target="Discount" deleteRule="Deny" db-relationship-path="discountMembershipProducts.discount"/>
 	<obj-relationship name="contacts" source="Message" target="Contact" deleteRule="Nullify" db-relationship-path="messagePerson.contact"/>
@@ -5126,6 +5278,7 @@
 	<obj-relationship name="corporatePassProducts" source="Product" target="CorporatePassProduct" deleteRule="Deny" db-relationship-path="corporatePassProduct"/>
 	<obj-relationship name="incomeAccount" source="Product" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
 	<obj-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
+	<obj-relationship name="leads" source="Product" target="LeadItem" deleteRule="Nullify" db-relationship-path="leads"/>
 	<obj-relationship name="underpaymentAccount" source="VoucherProduct" target="Account" deleteRule="Deny" db-relationship-path="underpaymentAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
@@ -5179,6 +5332,7 @@
 	<obj-relationship name="attachmentRelations" source="Site" target="SiteAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="bankings" source="Site" target="Banking" deleteRule="Deny" db-relationship-path="bankings"/>
 	<obj-relationship name="country" source="Site" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
+	<obj-relationship name="leads" source="Site" target="Lead" deleteRule="Nullify" db-relationship-path="leads"/>
 	<obj-relationship name="noteRelations" source="Site" target="SiteNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentsIn" source="Site" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Site" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
