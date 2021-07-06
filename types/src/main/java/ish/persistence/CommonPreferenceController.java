@@ -947,180 +947,6 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(value);
 	}
 
-	public String getToolbarActiveTab() {
-		return getValue(TOOLBAR_ACTIVE_TAB, true);
-	}
-
-	public void setToolbarActiveTab(String toolbarActiveTab) {
-		setValue(TOOLBAR_ACTIVE_TAB, true, toolbarActiveTab);
-	}
-
-	public String getEulaAgreement(String userLogin) {
-		return getValue(EULA_AGREEMENT + userLogin, true);
-	}
-
-	public void setEulaAgreement(String userLogin, String revision) {
-		setValue(EULA_AGREEMENT + userLogin, true, revision);
-	}
-
-	public boolean getToolbarCollapsed() {
-		String value = getValue(TOOLBAR_COLLAPSE_STATE, true);
-		if (value == null) {
-			return false;
-		}
-		return Boolean.parseBoolean(value);
-	}
-
-	public void setToolbarCollapsed(boolean value) {
-		setValue(TOOLBAR_COLLAPSE_STATE, true, Boolean.toString(value));
-	}
-
-	/**
-	 * Get the server host name used for the last login of the client on this workstation.
-	 *
-	 * @return host name
-	 */
-	public static String getLastLoginServerHost() {
-		return getFilePreference(LASTLOGIN_SERVER_HOST, "localhost");
-	}
-
-	/**
-	 * Set the server host name to be used for the next login of the client on this workstation.
-	 *
-	 * @param value host name
-	 */
-	public static void setLastLoginServerHost(String value) {
-		setFilePreference(LASTLOGIN_SERVER_HOST, value);
-	}
-
-	/**
-	 * Get the server port used for the last login of the client on this workstation.
-	 *
-	 * @return TCP port
-	 */
-	public static int getLastLoginServerPort() {
-		String value = getFilePreference(LASTLOGIN_SERVER_PORT, "443");
-		if (value == null) {
-			return 0;
-		}
-		return Integer.parseInt(value);
-	}
-
-	/**
-	 * Set the server port to be used for the next login of the client on this workstation.
-	 *
-	 * @param value TCP port
-	 */
-	public static void setLastLoginServerPort(int value) {
-		setFilePreference(LASTLOGIN_SERVER_PORT, Integer.toString(value));
-	}
-
-	/**
-	 * Returns weather the last connection to the server was a secure one (SSL)
-	 */
-	public static Boolean getLastLoginServerIsSsl() {
-		String value = getFilePreference(LASTLOGIN_SERVER_ISSSL, "false");
-		if (value == null) {
-			return false;
-		}
-		return Boolean.parseBoolean(value);
-	}
-
-	public static void setLastLoginServerIsSsl(Boolean value) {
-		setFilePreference(LASTLOGIN_SERVER_ISSSL, String.valueOf(value));
-	}
-
-	/**
-	 * Get the user name used for the last login of the client on this workstation.
-	 *
-	 * @return user name
-	 */
-	public static String getLastLoginServerUserName() {
-		return getFilePreference(LASTLOGIN_USERNAME, "");
-	}
-
-	/**
-	 * Set the user name to be used for the next login of the client on this workstation.
-	 *
-	 * @param value user name
-	 */
-	public static void setLastLoginServerUserName(String value) {
-		setFilePreference(LASTLOGIN_USERNAME, value);
-	}
-
-
-	public File getExportPdfDestination() {
-		String dir = getFilePreference(REPORT_PDF_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportPdfDestination(File value) {
-		setFilePreference(REPORT_PDF_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getExportExcelDestination() {
-		String dir = getFilePreference(REPORT_XLS_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportExcelDestination(File value) {
-		setFilePreference(REPORT_XLS_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getReportImportSource() {
-		String dir = getFilePreference(REPORT_IMPORT_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setReportImportSource(File value) {
-		setFilePreference(REPORT_IMPORT_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getExportTemplateImportSource() {
-		String dir = getFilePreference(EXPORTTEMPLATE_IMPORT_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportTemplateImportSource(File value) {
-		setFilePreference(EXPORTTEMPLATE_IMPORT_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getAvetmissExportPath() {
-		String dir = getFilePreference(AVETMISS_EXPORT_PATH, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setAvetmissExportPath(File value) {
-		setFilePreference(AVETMISS_EXPORT_PATH, value.getAbsolutePath());
-	}
-
-	public File getDocumentImportPath() {
-		String dir = getFilePreference(DOCUMENT_IMPORT_PATH, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setDocumentImportPath(File value) {
-		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
-	}
-
 	public boolean getUseOnlyOfferedModulesAndQualifications() {
 		return Boolean.parseBoolean(getValue(USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS, false));
 	}
@@ -1263,34 +1089,10 @@ public abstract class CommonPreferenceController {
 			return getAvetmissCertSignatoryName();
 		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
 			return getAvetmissQldIdentifier();
-		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
-			return getToolbarCollapsed();
-		} else if (LASTLOGIN_USERNAME.equals(key)) {
-			return getLastLoginServerUserName();
-		} else if (LASTLOGIN_SERVER_HOST.equals(key)) {
-			return getLastLoginServerHost();
-		} else if (LASTLOGIN_SERVER_PORT.equals(key)) {
-			return getLastLoginServerPort();
-		} else if (LASTLOGIN_SERVER_ISSSL.equals(key)) {
-			return getLastLoginServerIsSsl();
-		} else if (REPORT_PDF_FOLDER.equals(key)) {
-			return getExportPdfDestination();
-		} else if (REPORT_XLS_FOLDER.equals(key)) {
-			return getExportExcelDestination();
-		} else if (REPORT_IMPORT_FOLDER.equals(key)) {
-			return getReportImportSource();
-		} else if (EXPORTTEMPLATE_IMPORT_FOLDER.equals(key)) {
-			return getExportTemplateImportSource();
-		} else if (AVETMISS_EXPORT_PATH.equals(key)) {
-			return getAvetmissExportPath();
 		} else if (AVETMISS_JURISDICTION.equals(key)) {
 			return getAvetmissJurisdiction();
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
 			return getPaymentInfo();
-		} else if (key.startsWith(EULA_AGREEMENT)) {
-			return getEulaAgreement(key);
-		} else if (key.equals(TOOLBAR_ACTIVE_TAB)) {
-			return getToolbarActiveTab();
 		} else if (PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE.equals(key)) {
 			return getPortalHideClassRollContactPhone();
 		} else if (PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL.equals(key)) {
@@ -1311,8 +1113,6 @@ public abstract class CommonPreferenceController {
 			return getMYOBLastExportDate();
 		} else if (GRAVATAR.equals(key)) {
 			return getGravatarEnabled();
-		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
-			return getDocumentImportPath();
 		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			return getOncourseServerDefaultTimezone();
 		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
@@ -1458,32 +1258,8 @@ public abstract class CommonPreferenceController {
 			setAvetmissCertSignatoryName((String) value);
 		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
 			setAvetmissQldIdentifier((String) value);
-		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
-			setToolbarCollapsed((Boolean) value);
-		} else if (LASTLOGIN_USERNAME.equals(key)) {
-			setLastLoginServerUserName((String) value);
-		} else if (LASTLOGIN_SERVER_HOST.equals(key)) {
-			setLastLoginServerHost((String) value);
-		} else if (LASTLOGIN_SERVER_PORT.equals(key)) {
-			setLastLoginServerPort((Integer) value);
-		} else if (LASTLOGIN_SERVER_ISSSL.equals(key)) {
-			setLastLoginServerIsSsl((Boolean) value);
-		} else if (REPORT_PDF_FOLDER.equals(key)) {
-			setExportPdfDestination((File) value);
-		} else if (REPORT_XLS_FOLDER.equals(key)) {
-			setExportExcelDestination((File) value);
-		} else if (REPORT_IMPORT_FOLDER.equals(key)) {
-			setReportImportSource((File) value);
-		} else if (EXPORTTEMPLATE_IMPORT_FOLDER.equals(key)) {
-			setExportTemplateImportSource((File) value);
-		} else if (AVETMISS_EXPORT_PATH.equals(key)) {
-			setAvetmissExportPath((File) value);
 		} else if (AVETMISS_JURISDICTION.equals(key)) {
 			setAvetmissJurisdiction((ExportJurisdiction) value);
-		} else if (key.startsWith(EULA_AGREEMENT)) {
-			setEulaAgreement(key, (String) value);
-		} else if (key.equals(TOOLBAR_ACTIVE_TAB)) {
-			setToolbarActiveTab((String) value);
 		} else if (key.equals(PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE)) {
 			setPortalHideClassRollContactPhone((String) value);
 		} else if (key.equals(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL)) {
@@ -1500,8 +1276,6 @@ public abstract class CommonPreferenceController {
 			setCourseClassDefaultMinimumPlaces((Integer) value);
 		} else if (MYOB_LAST_EXPORT_DATE.equals(key)) {
 			setMYOBLastExportDate((Date) value);
-		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
-			setDocumentImportPath((File) value);
 		} else  if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			setOncourseServerDefaultTimezone((String) value);
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {

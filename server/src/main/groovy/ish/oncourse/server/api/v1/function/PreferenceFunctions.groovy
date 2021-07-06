@@ -99,15 +99,12 @@ class PreferenceFunctions {
             case LDAP_GROUP_POSIX_STYLE:
             case LOGOUT_ENABLED:
             case AVETMISS_SHOW_GUI:
-            case TOOLBAR_COLLAPSE_STATE:
-            case LASTLOGIN_SERVER_ISSSL:
             case AUTO_DISABLE_INACTIVE_ACCOUNT:
             case PASSWORD_COMPLEXITY:
                 return Boolean.valueOf(value)
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:
             case PAY_PERIOD_DAYS:
-            case LASTLOGIN_SERVER_PORT:
             case CLASS_DEFAULTS_MAXIMUM_PLACES:
             case CLASS_DEFAULTS_MINIMUM_PLACES:
             case ACCOUNT_INVOICE_TERMS:

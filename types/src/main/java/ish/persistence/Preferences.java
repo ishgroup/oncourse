@@ -64,12 +64,7 @@ public interface Preferences {
 	@API
 	String COLLEGE_PAYMENT_INFO = "college.paymentInfo";
 
-	String COLLEGE_ENROL_SUCCESS_URL = "enrol.postSuccessURL";
-
 	String PAYMENT_GATEWAY_PASS = "payment.gateway.api.key";
-
-	String PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH = "payment.gateway.purchase-without-auth";
-
 
 
 	// **************************************
@@ -418,46 +413,17 @@ public interface Preferences {
 	String CLASS_DEFAULTS_DELIVERY_MODE = "courseclass_default_deliveryMode";
 	String CLASS_DEFAULTS_FUNDING_SOURCE = "courseclass_default_fundingSource";
 
-
-
 	// **************************************
 	// Other
 	// **************************************
 	String GRAVATAR = "gravatar.enabled";
-
-	// **************************************
-	// Frame preferences
-	// **************************************
-	String TOOLBAR_COLLAPSE_STATE = "toolbar.collapse";
-	String EULA_AGREEMENT = "eula.agreement.";
-	String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
-
-
-	// **************************************
-	// Login preferences
-	// **************************************
-	String LASTLOGIN_USERNAME = "oncourse.login.last.username";
-	String LASTLOGIN_SERVER_HOST = "oncourse.login.last.host";
-	String LASTLOGIN_SERVER_PORT = "oncourse.login.last.port";
-	String LASTLOGIN_SERVER_ISSSL = "oncourse.login.last.isssl";
-
 	String USI_SOFTWARE_ID = "usi.softwareid";
-
-
-
-	// **************************************
-	// Other preferences
-	// **************************************
 	String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
 	String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
 
 
-
 	String FEATURE_CONCESSIONS_IN_ENROLMENT = "feature.concessionsInEnrolment";
 	String FEATURE_CONCESSION_USERS_CREATE = "feature.concession.existing.users.create";
-	String FEATURE_ENROLMENT_DISCLOSURE = "feature.enrolmentDisclosure";
-
-
 
 	// **************************************
 	// portal
@@ -476,18 +442,6 @@ public interface Preferences {
 
 	String SERVICES_COMMUNICATION_KEY = "services.soap.communication.key";
 	String REPLICATION_ENABLED = "replication.enabled";
-
-
-	// **************************************
-	// File destinations
-	// **************************************
-	String REPORT_PDF_FOLDER = "report.pdfSaveFolder";
-	String REPORT_XLS_FOLDER = "report.xlsSaveFolder";
-	String REPORT_IMPORT_FOLDER = "report.jasperImportFolder";
-	String EXPORTTEMPLATE_IMPORT_FOLDER = "exporttemplate.xslImportFolder";
-	String AVETMISS_EXPORT_PATH = "avetmiss.lastpath";
-
-	String DOCUMENT_IMPORT_PATH = "document.lastpath";
 
 
 	// **************************************
