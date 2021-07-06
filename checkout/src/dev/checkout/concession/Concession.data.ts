@@ -3,7 +3,7 @@ import faker from "faker";
 
 const mockContact = () : Contact => {
 	return {
-		id: faker.random.number() as string,
+		id: faker.datatype.number().toString(),
 		firstName: faker.name.firstName(),
 		lastName: faker.name.lastName(),
 		email: faker.internet.email(),

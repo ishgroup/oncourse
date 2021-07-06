@@ -85,7 +85,7 @@ export const contactPropses: ContactProps[] = contacts.map(createContactProps);
 
 
 contactPropses[1].enrolments[0].enrolment.selected = false;
-contactPropses[1].enrolments[1].courseClass.start = faker.date.past();
+contactPropses[1].enrolments[1].courseClass.start = faker.date.past().toString();
 
 export const amount: Amount = mockAmount();
 

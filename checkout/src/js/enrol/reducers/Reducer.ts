@@ -265,7 +265,7 @@ const RedeemVouchersReducer = (state: RedeemVoucher[] = [], action: IAction<any>
   }
 };
 
-const RedeemVoucherProductsReducer = (state: RedeemVoucherProduct[] = [], action: IAction<any>): RedeemVoucherProduct[] => {
+export const RedeemVoucherProductsReducer = (state: RedeemVoucherProduct[] = [], action: IAction<any>): RedeemVoucherProduct[] => {
   switch (action.type) {
 
     case Actions.ADD_REDEEM_VOUCHER_PRODUCTS_TO_STATE:

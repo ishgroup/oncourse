@@ -1,10 +1,11 @@
 import React from "react";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import Bugsnag from '@bugsnag/js';
+import { IS_JEST } from './Config';
 
 // workaround for jest failing tests
 let bugsnagClientBase;
-if (typeof jest === 'undefined' && window.location.protocol !== "file:" && process.env.NODE_ENV === "production") {
+if (!IS_JEST && window.location.protocol !== "file:" && process.env.NODE_ENV === "production") {
   bugsnagClientBase = Bugsnag;
 
   bugsnagClientBase.start({
@@ -28,5 +29,8 @@ if (typeof jest === 'undefined' && window.location.protocol !== "file:" && proce
     notify:() => null,
   };
 }
+export const bugsnagClient  = bugsnagClientBase;
 
-export const ErrorBoundary = bugsnagClientBase.getPlugin('react').createErrorBoundary(React);
+export const ErrorBoundary = IS_JEST
+  ? props => <>{props.children}</>
+  : bugsnagClientBase.getPlugin('react').createErrorBoundary(React);

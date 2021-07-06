@@ -81,3 +81,5 @@ import {Article} from "./checkout/Article";
 import {Voucher} from "./checkout/Voucher";
 
 export type PurchaseItem = Enrolment | Application | Membership | Article | Voucher | WaitingList;
+
+export type Writable<T> = { -readonly [K in keyof T]: T[K] };

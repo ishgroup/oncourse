@@ -5,3 +5,5 @@ export const DefaultConfig = {
   TERMS_AND_CONDITIONS: null,
   FEATURE_ENROLMENT_DISCLOSURE: null,
 };
+
+export const IS_JEST = process.env.NODE_ENV === 'test';

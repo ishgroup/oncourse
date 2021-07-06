@@ -1,24 +1,19 @@
 import {CheckoutModel, ContactNode, Contact, CourseClass, Enrolment} from "../../../../js/model";
-import {CHANGE_PHASE, SHOW_MESSAGES} from "../../../../js/enrol/actions/Actions";
+import {CHANGE_PHASE} from "../../../../js/enrol/actions/Actions";
 import {Phase} from "../../../../js/enrol/reducers/State";
 import {ADD_CONTACT_NODE_TO_STATE} from "../../../../js/enrol/containers/summary/actions/Actions";
 import {ProcessCheckoutModel} from "../../../../js/enrol/epics/EpicProceedToPayment";
-
 import {MockDB} from "../../../../dev/mocks/mocks/MockDB";
-
 import {mockAmount} from "../../../../dev/mocks/mocks/MockFunctions";
-
 
 const db: MockDB = new MockDB();
 const contact1: Contact = db.getContactByIndex(0);
-const contact2: Contact = db.getContactByIndex(1);
 
 const courseClass1: CourseClass = db.getCourseClassByIndex(0);
 const courseClass2: CourseClass = db.getCourseClassByIndex(1);
 
 const enrolment11: Enrolment = db.createEnrolment(contact1.id, courseClass1.id);
 const enrolment12: Enrolment = db.createEnrolment(contact1.id, courseClass2.id);
-
 
 const node1: ContactNode = {
   contactId: contact1.id,
@@ -30,9 +25,7 @@ const node1: ContactNode = {
   waitingLists: [],
 };
 
-
-test('test CheckoutModel processing', () => {
-
+it('test CheckoutModel processing', () => {
   const model: CheckoutModel = new CheckoutModel();
   model.contactNodes = [];
   model.error = {

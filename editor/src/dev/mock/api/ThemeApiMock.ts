@@ -17,7 +17,7 @@ export function themeApiMock() {
 
     if (!request.id) {
 
-      request.id = faker.random.number();
+      request.id = faker.datatype.number();
       this.db.addTheme(request);
 
     } else {

@@ -148,10 +148,17 @@ export const setRedeemVoucherProductActivity = (id: string, enabled: boolean): I
   };
 };
 
-export const toggleRedeemVoucherProduct = (voucher, enabled: boolean): IAction<any> => {
+export const toggleRedeemVoucherProduct = (voucher: RedeemVoucherProduct, enabled: boolean): IAction<any> => {
   return {
     type: TOGGLE_REDEEM_VOUCHER_PRODUCT,
     payload: {voucher, enabled},
+  };
+};
+
+export const removeRedeemVoucherProduct = (voucher: RedeemVoucherProduct): IAction<any> => {
+  return {
+    type: REMOVE_REDEEM_VOUCHER_PRODUCT,
+    payload: {voucher},
   };
 };
 

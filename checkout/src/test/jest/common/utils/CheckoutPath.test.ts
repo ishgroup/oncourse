@@ -3,7 +3,7 @@ import {CreateStore} from "../../../../js/CreateStore";
 import {HTMLMarkers} from "../../../../js/common/services/HTMLMarker";
 import {DefaultConfig} from "../../../../js/constants/Config";
 
-test('reading checkout path from cart element', () => {
+it('reading checkout path from cart element', () => {
   const container: HTMLElement = document.createElement('div');
   container.innerHTML = '<div id="root"><div data-cid="cart" data-prop-checkout-path="/checkout"/></div>';
 
@@ -17,7 +17,7 @@ test('reading checkout path from cart element', () => {
 });
 
 
-test('reading checkout path from checkout element', () => {
+it('reading checkout path from checkout element', () => {
   const container: HTMLElement = document.createElement('div');
   container.innerHTML = '<div id="root"><div data-cid="checkout" data-prop-checkout-path="/checkout"/></div>';
   document.body.innerHTML = container.innerHTML;

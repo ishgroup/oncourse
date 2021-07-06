@@ -1,14 +1,10 @@
-import * as L from "lodash"
 import {Mocker} from "mocker-data-generator";
-import * as util from "util";
 
 test('test', () => {
-
-
   const ContactSchema = {
     id: {
       function: function() {
-        return `${this.faker.random.number()}`;
+        return `${this.faker.datatype.number()}`;
       }
     },
     firstName: {

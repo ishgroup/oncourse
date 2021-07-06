@@ -38,6 +38,11 @@ export class Amount {
   voucherPayments?: VoucherPayment[];
 
   /**
+   * voucher product payments list - appears if redeem any kind of vouchers on purchase
+   */
+  voucherProductPayments?: VoucherPayment[];
+
+  /**
    * credit amount that will be used to pay for current invoice/invoices (students credit notes)
    */
   credit?: number;

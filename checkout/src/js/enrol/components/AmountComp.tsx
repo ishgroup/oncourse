@@ -68,7 +68,7 @@ class AmountComp extends React.Component<Props> {
               />
           ))}
 
-          {amount && amount &&
+          {amount &&
             redeemedVoucherProducts.map((v) => (
               <RedeemVoucherComp
                 key={v.id}
