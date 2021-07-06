@@ -14,9 +14,15 @@ package ish.oncourse.server.api.v1.function
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
+import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.Qualification
 import ish.oncourse.server.entity.mixins.CourseClassMixin
+import org.apache.cayenne.Cayenne
+import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.Persistent
 
 class SaleFunctions {
 
@@ -46,5 +52,41 @@ class SaleFunctions {
             sale.active = true
             sale
         }
+    }
+
+    static SaleDTO toRestSale(Course course) {
+        new SaleDTO().with { s ->
+            s.active =  course.currentlyOffered || course.isShownOnWeb
+            s.code = course.code
+            s.name = course.with { "$it.name $it.code" }
+            s.type = SaleTypeDTO.COURSE
+            s
+        }
+    }
+
+    static SaleDTO toRestSale(Module module) {
+        new SaleDTO().with { s ->
+            s.name = module.title
+            s.code = module.nationalCode
+            s.active = module.isOffered
+            s.type = SaleTypeDTO.MODULE
+            s
+        }
+    }
+
+    static SaleDTO toRestSale(Qualification qualification) {
+        new SaleDTO().with { s ->
+            s.name = qualification.title
+            s.code = qualification.nationalCode
+            s.active = qualification.isOffered
+            s.type = SaleTypeDTO.QUALIFICATION
+            s
+        }
+    }
+
+    static void deleteNotActualSellables(ObjectContext context, List<Persistent> actual, List<SaleDTO> expected) {
+        List<Persistent> objectsToDelete =
+                actual.findAll {object -> !expected*.id.contains(Cayenne.longPKForObject(object)) }
+        context.deleteObject(objectsToDelete)
     }
 }
