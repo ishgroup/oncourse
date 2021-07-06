@@ -25,7 +25,7 @@ import org.apache.cayenne.access.ValidationFilter;
 public class CayenneListenersService {
 
     @Inject
-    public CayenneListenersService(ICayenneService cayenneService, IPreferenceController pref,
+    public CayenneListenersService(ICayenneService cayenneService, PreferenceController pref,
                                    InvoiceLineInitHelper invoiceLineInitHelper,
                                    GroovyScriptService scriptService, OutcomeService outcomeService, EventService eventService,
                                    TransactionLockedService transactionLockedService, AuditListener auditListener, AccountTransactionService accountTransactionService) {

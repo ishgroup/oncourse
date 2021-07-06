@@ -12,16 +12,12 @@ package ish.oncourse.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import ish.common.types.DeliverySchedule;
 import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.server.cayenne.Preference;
-import ish.oncourse.server.cayenne.SurveyFieldConfiguration;
-import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.services.ISystemUserService;
 import ish.persistence.CommonPreferenceController;
-import ish.persistence.Preferences;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -30,14 +26,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
 import static ish.persistence.Preferences.*;
 
 @Singleton
-public class PreferenceController extends CommonPreferenceController implements IPreferenceController {
+public class PreferenceController extends CommonPreferenceController {
 
 	public static final Integer DEFAULT_TIMEOUT_SEC = 3600;
 	public static final Long DEFAULT_TIMEOUT_MS = DEFAULT_TIMEOUT_SEC * 1000L;
@@ -84,7 +78,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 		return  new Date(timeoutThresholdMs);
 	}
 
-	@Override
 	public Object getValueForKey(String key) {
 		if (defaultAccountPreferences.contains(key)) {
 			return getDefaultAccountId(key);

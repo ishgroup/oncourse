@@ -12,7 +12,7 @@ package ish.oncourse.server.scripting.api;
 
 import com.google.inject.Inject;
 import ish.oncourse.API;
-import ish.oncourse.server.IPreferenceController;
+import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Student;
 import ish.oncourse.server.license.LicenseService;
 import ish.persistence.Preferences;
@@ -34,7 +34,7 @@ public class CollegePreferenceService {
 
 	private static final int DEFAULT_PORTAL_URL_SIGNATURE_TIMEOUT = 7; // 6 days, link expires at 12am on the seventh day
 
-	private IPreferenceController preferenceController;
+	private PreferenceController preferenceController;
 	private PreferenceHelper preferenceHelper;
 	private LicenseService licenseService;
 
@@ -43,7 +43,7 @@ public class CollegePreferenceService {
 
 
 	@Inject
-	public CollegePreferenceService(IPreferenceController preferenceController, LicenseService licenseService) {
+	public CollegePreferenceService(PreferenceController preferenceController, LicenseService licenseService) {
 		this.preferenceController = preferenceController;
 		this.preferenceHelper = new PreferenceHelper(preferenceController);
 		this.licenseService = licenseService;
