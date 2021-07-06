@@ -16,13 +16,14 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.codehaus.groovy.runtime.InvokerHelper
 
-import java.lang.reflect.Field
+import groovy.transform.Synchronized
 
 @CompileStatic
 class MetaclassCleaner {
     private static final Logger logger = LogManager.logger
 
     @CompileDynamic
+    @Synchronized
     static void clearGroovyCashe(final Template template) {
         try {
             Script script = template.@script as Script
