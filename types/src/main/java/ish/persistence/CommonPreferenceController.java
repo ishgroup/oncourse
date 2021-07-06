@@ -260,10 +260,8 @@ public abstract class CommonPreferenceController {
 		setValue(SERVICES_ANGEL_REPLICATION_LASTRUN, false, dateFormat.format(value));
 	}
 
-	public static boolean LICENSE_BYPASS_MODE = false;
-
 	public boolean getLicenseAccessControl() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_ACCESS_CONTROL, false));
+		return Boolean.parseBoolean(getValue(LICENSE_ACCESS_CONTROL, false));
 	}
 
 	public void setLicenseAccessControl(boolean value) {
@@ -290,7 +288,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicensePayroll() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_PAYROLL, false));
+		return Boolean.parseBoolean(getValue(LICENSE_PAYROLL, false));
 	}
 
 	public void setLicensePayroll(boolean value) {
@@ -299,7 +297,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseVoucher() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_VOUCHER, false));
+		return Boolean.parseBoolean(getValue(LICENSE_VOUCHER, false));
 	}
 
 	public void setLicenseVoucher(boolean value) {
@@ -307,7 +305,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseMembership() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_MEMBERSHIP, false));
+		return Boolean.parseBoolean(getValue(LICENSE_MEMBERSHIP, false));
 	}
 
 	public void setLicenseMembership(boolean value) {
@@ -315,7 +313,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseAttendance() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_ATTENDANCE, false));
+		return Boolean.parseBoolean(getValue(LICENSE_ATTENDANCE, false));
 	}
 
 	public void setLicenseAttendance(boolean value) {
@@ -323,11 +321,11 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseScripting() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
+		return Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
 	}
 
 	public boolean getLicenseFeeHelpExport () {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_FEE_HELP_EXPORT, false));
+		return Boolean.parseBoolean(getValue(LICENSE_FEE_HELP_EXPORT, false));
 	}
 
 	public void setLicenseScripting(boolean value) {
@@ -335,7 +333,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseFundingContract() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_FUNDING_CONTRACT, false));
+		return Boolean.parseBoolean(getValue(LICENSE_FUNDING_CONTRACT, false));
 	}
 
 	public void setLicenseFundingContract(boolean value) {
