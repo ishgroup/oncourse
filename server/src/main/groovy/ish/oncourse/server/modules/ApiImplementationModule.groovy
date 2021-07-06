@@ -58,6 +58,7 @@ import ish.oncourse.server.api.v1.service.HolidayApi
 import ish.oncourse.server.api.v1.service.ImportApi
 import ish.oncourse.server.api.v1.service.IntegrationApi
 import ish.oncourse.server.api.v1.service.InvoiceApi
+import ish.oncourse.server.api.v1.service.LeadApi
 import ish.oncourse.server.api.v1.service.MembershipProductApi
 import ish.oncourse.server.api.v1.service.MessageApi
 import ish.oncourse.server.api.v1.service.ModuleApi
@@ -137,6 +138,7 @@ import ish.oncourse.server.api.v1.service.impl.HolidayApiImpl
 import ish.oncourse.server.api.v1.service.impl.ImportApiImpl
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.api.v1.service.impl.InvoiceApiImpl
+import ish.oncourse.server.api.v1.service.impl.LeadApiImpl
 import ish.oncourse.server.api.v1.service.impl.MembershipProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.MessageApiImpl
 import ish.oncourse.server.api.v1.service.impl.ModuleApiImpl
@@ -221,6 +223,7 @@ class ApiImplementationModule implements Module {
         binder.bind(ImportApi).to(ImportApiImpl)
         binder.bind(IntegrationApi).to(IntegrationApiImpl)
         binder.bind(InvoiceApi).to(InvoiceApiImpl)
+        binder.bind(LeadApi).to(LeadApiImpl)
         binder.bind(MessageApi).to(MessageApiImpl)
         binder.bind(MembershipProductApi).to(MembershipProductApiImpl)
         binder.bind(ModuleApi).to(ModuleApiImpl)
