@@ -19,10 +19,9 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Qualification
+import ish.oncourse.server.cayenne.Sellable
 import ish.oncourse.server.entity.mixins.CourseClassMixin
-import org.apache.cayenne.Cayenne
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.Persistent
 
 class SaleFunctions {
 
@@ -56,6 +55,7 @@ class SaleFunctions {
 
     static SaleDTO toRestSale(Course course) {
         new SaleDTO().with { s ->
+            s.id = course.id
             s.active =  course.currentlyOffered || course.isShownOnWeb
             s.code = course.code
             s.name = course.with { "$it.name $it.code" }
@@ -66,6 +66,7 @@ class SaleFunctions {
 
     static SaleDTO toRestSale(Module module) {
         new SaleDTO().with { s ->
+            s.id = module.id
             s.name = module.title
             s.code = module.nationalCode
             s.active = module.isOffered
@@ -76,6 +77,7 @@ class SaleFunctions {
 
     static SaleDTO toRestSale(Qualification qualification) {
         new SaleDTO().with { s ->
+            s.id = qualification.id
             s.name = qualification.title
             s.code = qualification.nationalCode
             s.active = qualification.isOffered
@@ -84,9 +86,8 @@ class SaleFunctions {
         }
     }
 
-    static void deleteNotActualSellables(ObjectContext context, List<Persistent> actual, List<SaleDTO> expected) {
-        List<Persistent> objectsToDelete =
-                actual.findAll {object -> !expected*.id.contains(Cayenne.longPKForObject(object)) }
-        context.deleteObject(objectsToDelete)
+    static void deleteNotActualSellables(ObjectContext context, List<? extends Sellable> actual, List<SaleDTO> expected) {
+        List<? extends Sellable> objectsToDelete = actual.findAll {!expected*.id.contains(it.id) }
+        context.deleteObjects(objectsToDelete)
     }
 }
