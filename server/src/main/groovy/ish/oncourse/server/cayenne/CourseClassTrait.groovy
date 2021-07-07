@@ -52,6 +52,7 @@ trait CourseClassTrait {
            discountCourseClass.discount = objectContext.localObject(discount)
            
            ClassCost classCost = objectContext.newObject(ClassCost)
+           classCost.courseClass = this as CourseClass
            classCost.discountCourseClass = discountCourseClass
            classCost.description = discount.name
            classCost.flowType = ClassCostFlowType.DISCOUNT
