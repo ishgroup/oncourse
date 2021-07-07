@@ -3675,7 +3675,7 @@
 	<db-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme">
 		<db-attribute-pair source="fieldConfigurationSchemaId" target="id"/>
 	</db-relationship>
-	<db-relationship name="leads" source="Course" target="LeadItem" toMany="true">
+	<db-relationship name="leadItems" source="Course" target="LeadItem" toMany="true">
 		<db-attribute-pair source="id" target="courseId"/>
 	</db-relationship>
 	<db-relationship name="modules" source="Course" target="Module_Course" toMany="true">
@@ -4125,7 +4125,7 @@
 	<db-relationship name="items" source="Lead" target="LeadItem" toMany="true">
 		<db-attribute-pair source="id" target="leadId"/>
 	</db-relationship>
-	<db-relationship name="sites" source="Lead" target="Lead_Site" toMany="true">
+	<db-relationship name="leadSites" source="Lead" target="Lead_Site" toMany="true">
 		<db-attribute-pair source="id" target="leadId"/>
 	</db-relationship>
 	<db-relationship name="taggingRelations" source="Lead" target="NodeRelation" toMany="true">
@@ -4485,7 +4485,7 @@
 	<db-relationship name="underpaymentAccount" source="Product" target="Account">
 		<db-attribute-pair source="underpaymentAccountId" target="id"/>
 	</db-relationship>
-	<db-relationship name="leads" source="Product" target="LeadItem" toMany="true">
+	<db-relationship name="leadItems" source="Product" target="LeadItem" toMany="true">
 		<db-attribute-pair source="id" target="productId"/>
 	</db-relationship>
 	<db-relationship name="productItems" source="Product" target="ProductItem" toMany="true">
@@ -4593,7 +4593,7 @@
 	<db-relationship name="country" source="Site" target="Country">
 		<db-attribute-pair source="countryId" target="id"/>
 	</db-relationship>
-	<db-relationship name="leads" source="Site" target="Lead_Site" toMany="true">
+	<db-relationship name="siteLeads" source="Site" target="Lead_Site" toMany="true">
 		<db-attribute-pair source="id" target="siteId"/>
 	</db-relationship>
 	<db-relationship name="noteRelations" source="Site" target="NoteRelation" toMany="true">
@@ -5037,7 +5037,8 @@
 	<obj-relationship name="customFields" source="Course" target="CourseCustomField" deleteRule="Cascade" db-relationship-path="customFileds"/>
 	<obj-relationship name="enrolments" source="Course" target="Enrolment" deleteRule="Deny" db-relationship-path="courseClasses.enrolments"/>
 	<obj-relationship name="fieldConfigurationSchema" source="Course" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationSchema"/>
-	<obj-relationship name="leads" source="Course" target="LeadItem" deleteRule="Nullify" db-relationship-path="leads"/>
+	<obj-relationship name="leadItems" source="Course" target="LeadItem" deleteRule="Cascade" db-relationship-path="leadItems"/>
+	<obj-relationship name="leads" source="Course" target="Lead" deleteRule="Nullify" db-relationship-path="leadItems.lead"/>
 	<obj-relationship name="modules" source="Course" target="Module" deleteRule="Nullify" db-relationship-path="modules.module"/>
 	<obj-relationship name="noteRelations" source="Course" target="CourseNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="qualification" source="Course" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
@@ -5184,8 +5185,11 @@
 	<obj-relationship name="attachmentRelations" source="Lead" target="LeadAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="customFields" source="Lead" target="LeadCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="items" source="Lead" target="LeadItem" deleteRule="Cascade" db-relationship-path="items"/>
+	<obj-relationship name="courses" source="Lead" target="Course" db-relationship-path="items.course"/>
+	<obj-relationship name="products" source="Lead" target="Product" db-relationship-path="items.product"/>
 	<obj-relationship name="noteRelations" source="Lead" target="LeadNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
-	<obj-relationship name="sites" source="Lead" target="LeadSite" deleteRule="Cascade" db-relationship-path="sites"/>
+	<obj-relationship name="leadSites" source="Lead" target="LeadSite" deleteRule="Cascade" db-relationship-path="leadSites"/>
+	<obj-relationship name="sites" source="Lead" target="Site" db-relationship-path="leadSites.site"/>
 	<obj-relationship name="taggingRelations" source="Lead" target="LeadTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="assignedTo" source="Lead" target="SystemUser" deleteRule="Nullify" db-relationship-path="assignedTo"/>
 	<obj-relationship name="attachedLead" source="LeadAttachmentRelation" target="Lead" deleteRule="Nullify" db-relationship-path="attachedLead"/>
@@ -5278,7 +5282,8 @@
 	<obj-relationship name="corporatePassProducts" source="Product" target="CorporatePassProduct" deleteRule="Deny" db-relationship-path="corporatePassProduct"/>
 	<obj-relationship name="incomeAccount" source="Product" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
 	<obj-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
-	<obj-relationship name="leads" source="Product" target="LeadItem" deleteRule="Nullify" db-relationship-path="leads"/>
+	<obj-relationship name="leadItems" source="Product" target="LeadItem" deleteRule="Cascade" db-relationship-path="leadItems"/>
+	<obj-relationship name="leads" source="Product" target="Lead" deleteRule="Nullify" db-relationship-path="leadItems.lead"/>
 	<obj-relationship name="underpaymentAccount" source="VoucherProduct" target="Account" deleteRule="Deny" db-relationship-path="underpaymentAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
@@ -5332,7 +5337,8 @@
 	<obj-relationship name="attachmentRelations" source="Site" target="SiteAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="bankings" source="Site" target="Banking" deleteRule="Deny" db-relationship-path="bankings"/>
 	<obj-relationship name="country" source="Site" target="Country" deleteRule="Nullify" db-relationship-path="country"/>
-	<obj-relationship name="leads" source="Site" target="Lead" deleteRule="Nullify" db-relationship-path="leads"/>
+	<obj-relationship name="siteLeads" source="Site" target="LeadSite" deleteRule="Cascade" db-relationship-path="siteLeads"/>
+	<obj-relationship name="leads" source="Site" target="Lead" deleteRule="Nullify" db-relationship-path="siteLeads.lead"/>
 	<obj-relationship name="noteRelations" source="Site" target="SiteNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentsIn" source="Site" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Site" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
