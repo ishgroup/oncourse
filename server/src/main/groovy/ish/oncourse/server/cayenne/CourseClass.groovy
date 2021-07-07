@@ -199,8 +199,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	}
 
 	/**
-	 * This is a faked flattened relationship via discountCourseClasses.discount.
-	 *
+	 * Return the immutable list of discounts available for class
+	 * to add more discoounts in propper way see {@link ish.oncourse.server.cayenne.CourseClassTrait#addDiscount(Discount)}
 	 * @return the discounts for this class
 	 */
 	@Nonnull
