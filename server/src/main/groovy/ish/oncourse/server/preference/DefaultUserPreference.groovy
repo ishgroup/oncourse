@@ -39,6 +39,7 @@ import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
+import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Module
@@ -368,6 +369,26 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Student requirements', attribute: WaitingList.STUDENT_NOTES.name, sortable: true, width: W200, visible: true)
         ]
         it.sortings = [new SortingDTO(attribute: WaitingList.CREATED_ON.name, ascending: false)]
+        it.layout = LayoutTypeDTO.THREE_COLUMN
+        it.filterColumnWidth = W200
+        it
+    }
+
+    private static final TableModelDTO LEAD_MODEL = new TableModelDTO().with {
+        it.columns = [
+                new ColumnDTO(title: 'Created', attribute: Lead.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Customer', attribute: Lead.CUSTOMER.dot(Contact.FULL_NAME_KEY).name, sortable: true,
+                        width: W300, visible: true, sortFields: [Lead.CUSTOMER.dot(Contact.LAST_NAME).name,
+                                                                 Lead.CUSTOMER.dot(Contact.FIRST_NAME).name,
+                                                                 Lead.CUSTOMER.dot(Contact.MIDDLE_NAME).name]),
+                new ColumnDTO(title: 'Estimated value', attribute: Lead.ESTIMATED_VALUE.dot(Course.NAME).name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Next action on', attribute: Lead.NEXT_ACTION_ON.dot(Course.CODE).name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Notification', attribute: Lead.NOTIFY.dot(Course.CODE).name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Active', attribute: Lead.STATUS.dot(Course.CODE).name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Student requirements', attribute: Lead.STUDENT_NOTES.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Assigned to', attribute: Lead.ASSIGNED_TO.name, sortable: true, width: W200, visible: true)
+        ]
+        it.sortings = [new SortingDTO(attribute: Lead.CREATED_ON.name, ascending: false)]
         it.layout = LayoutTypeDTO.THREE_COLUMN
         it.filterColumnWidth = W200
         it
@@ -834,6 +855,7 @@ class DefaultUserPreference {
             (Site.ENTITY_NAME)                 : SITE_MODEL,
             (Qualification.ENTITY_NAME)        : QUAL_MODEL,
             (WaitingList.ENTITY_NAME)          : WAIT_LIST_MODEL,
+            (Lead.ENTITY_NAME)                 : LEAD_MODEL,
             (Application.ENTITY_NAME)          : APPLICATION_MODEL,
             (ArticleProduct.ENTITY_NAME)       : ARTICLE_PRODUCT_MODEL,
             (Course.ENTITY_NAME)               : COURSE_MODEL,
