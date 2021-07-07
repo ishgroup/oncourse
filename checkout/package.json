@@ -152,6 +152,7 @@
     "usePathForSuiteName": "true"
   },
   "resolutions": {
-    "webpack-bugsnag-plugins/bugsnag-build-reporter/meow/trim-newlines": "^3.0.1"
+    "webpack-bugsnag-plugins/bugsnag-build-reporter/meow/trim-newlines": "^3.0.1",
+    "webpack-dev-server/chokidar/glob-parent": "^5.1.2"
   }
 }
