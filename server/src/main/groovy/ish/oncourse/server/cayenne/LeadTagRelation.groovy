@@ -8,7 +8,28 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.oncourse.cayenne.Taggable
+import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.cayenne.glue._LeadTagRelation
 
+import javax.annotation.Nonnull
+
 class LeadTagRelation extends _LeadTagRelation {
+
+    @Nonnull
+    @Override
+    TaggableClasses getTaggableClassesIdentifier() {
+        return TaggableClasses.LEAD
+    }
+
+    @Nonnull
+    @Override
+    Taggable getTaggedRelation() {
+        return super.getTaggedLead()
+    }
+
+    @Override
+    void setTaggedRelation(Taggable object) {
+        super.setTaggedLead((Lead) object)
+    }
 }
