@@ -4114,7 +4114,7 @@
 		<db-attribute-pair source="id" target="languageId"/>
 	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Lead" target="BinaryRelation" toMany="true">
-		<db-attribute-pair source="contactId" target="id"/>
+		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
 	<db-relationship name="customer" source="Lead" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
