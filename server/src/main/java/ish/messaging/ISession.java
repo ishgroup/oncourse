@@ -12,6 +12,7 @@ package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.cayenne.SessionInterface;
+import ish.oncourse.server.cayenne.Room;
 
 import java.util.List;
 import java.util.TimeZone;
@@ -20,7 +21,7 @@ public interface ISession extends PersistentObjectI, SessionInterface {
 
 	String COURSE_CLASS_KEY = "courseClass";
 
-	IRoom getRoom();
+	Room getRoom();
 
 	List<? extends ISessionModule> getSessionModules();
 

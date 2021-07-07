@@ -18,6 +18,7 @@ import ish.messaging.*;
 import ish.oncourse.cayenne.CourseClassUtil;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.function.CalculateClassroomHours;
+import ish.oncourse.server.cayenne.Room;
 import ish.util.*;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
@@ -269,7 +270,7 @@ public class CourseClassService {
 				summary.append(RuntimeUtil.HTML_LINE_SEPARATOR);
 			}
 		}
-		IRoom aRoom = getRoomForAllSessions(courseClass);
+		Room aRoom = getRoomForAllSessions(courseClass);
 		if (aRoom != null && aRoom.getSite() != null) {
 			summary.append("All sessions held in ");
 			summary.append(aRoom.getName());
@@ -304,8 +305,8 @@ public class CourseClassService {
 	 * @return the room for all the sessions (if all sessions have the same room), or the room for the class if all sessions have no room, or null if any
 	 *         sessions have a different room.
 	 */
-	public IRoom getRoomForAllSessions(ICourseClass courseClass) {
-		IRoom aRoom = null;
+	public Room getRoomForAllSessions(ICourseClass courseClass) {
+		Room aRoom = null;
 
 		List<? extends ISession> sessions = courseClass.getSessions();
 
@@ -329,13 +330,13 @@ public class CourseClassService {
 	/**
 	 * @return Room of first class session if current class room is not set
 	 */
-	public IRoom getFirstRoomSpecified(ICourseClass courseClass) {
+	public Room getFirstRoomSpecified(ICourseClass courseClass) {
 		if (courseClass.getRoom() != null) {
 			return null;
 		}
 		List<? extends ISession> theSessions = courseClass.getSessions();
 		for (ISession session : theSessions) {
-			IRoom aRoom = session.getRoom();
+			Room aRoom = session.getRoom();
 			if (aRoom != null) {
 				return aRoom;
 			}
