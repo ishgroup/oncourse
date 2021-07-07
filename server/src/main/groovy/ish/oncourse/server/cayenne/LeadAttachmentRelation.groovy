@@ -24,6 +24,6 @@ class LeadAttachmentRelation extends _LeadAttachmentRelation {
 
     @Override
     void setAttachedRelation(AttachableTrait attachable) {
-        super.setAttachedRelation((Lead) attachable)
+        super.setAttachedLead((Lead) attachable)
     }
 }
