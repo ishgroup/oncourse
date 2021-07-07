@@ -92,14 +92,31 @@ const _styleModule = (dirname) => {
   return [
     {
       test: /\.css$/,
-      use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      use: [
+        MiniCssExtractPlugin.loader,
+        {
+          loader: "css-loader",
+          options: {
+            url: false
+          },
+        }
+      ],
       include: [
         path.resolve(dirname, 'node_modules')
       ]
     },
     {
       test: /\.scss$/,
-      use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      use: [
+        MiniCssExtractPlugin.loader,
+        {
+          loader: "css-loader",
+          options: {
+            url: false
+          },
+        },
+        'sass-loader'
+      ],
       include: [
         path.resolve(dirname, "src/scss"),
       ]
