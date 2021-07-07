@@ -54,6 +54,9 @@ export const getSystemRouteUrl = (title: Category) => {
     case "Classes": {
       return `/${Classes.path}?filter=@Classes,@Current_classes,@Future_classes,@Self_paced_classes`;
     }
+    // case "Website setup": {
+    //   return "/provisioning";
+    // }
 
     default:
       throw `No URL found for category ${title}`;
