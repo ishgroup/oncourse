@@ -29,6 +29,7 @@ class DashboardCategoryFunctions {
                     (CHECKOUT_QUICK_ENROL_) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.ENROLMENT, Mask.CREATE)},
                     (CERTIFICATES) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.CERTIFICATE, Mask.VIEW)},
                     (WAITING_LISTS) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.WAITING_LIST, Mask.VIEW)},
+                    (LEADS) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.WAITING_LIST, Mask.VIEW)},
                     (ENROLMENTS) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.ENROLMENT, Mask.VIEW)},
                     (INVOICES) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.INVOICE, Mask.VIEW)},
                     (PAYMENTS_IN) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.PAYMENT_IN, Mask.VIEW)},
