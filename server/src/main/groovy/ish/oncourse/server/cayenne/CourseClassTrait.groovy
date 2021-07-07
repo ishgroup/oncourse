@@ -13,6 +13,8 @@ package ish.oncourse.server.cayenne
 
 import groovy.time.TimeCategory
 import groovy.transform.CompileDynamic
+import ish.common.types.ClassCostFlowType
+import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.function.CalculateClassroomHours
@@ -36,7 +38,31 @@ trait CourseClassTrait {
     abstract Date getEndDateTime()
     abstract Long getId()
     abstract ObjectContext getObjectContext()
+    abstract List<Discount> getDiscounts()
 
+
+    /**
+     * Add given discount to available class discounts list
+     */
+    @API
+    void addDiscount(Discount discount) {
+       if (discount && !(discount.id in  discounts*.id)) {
+           DiscountCourseClass discountCourseClass = objectContext.newObject(DiscountCourseClass)
+           discountCourseClass.courseClass = this as CourseClass
+           discountCourseClass.discount = objectContext.localObject(discount)
+           
+           ClassCost classCost = objectContext.newObject(ClassCost)
+           classCost.discountCourseClass = discountCourseClass
+           classCost.description = discount.name
+           classCost.flowType = ClassCostFlowType.DISCOUNT
+           classCost.repetitionType = ClassCostRepetitionType.DISCOUNT
+           classCost.taxAdjustment = Money.ZERO
+           classCost.invoiceToStudent = false
+           classCost.payableOnEnrolment = true
+           classCost.isSunk = false
+       }
+    }
+    
     @API
     BigDecimal getQualificationHours() {
         getCourse().qualification?.nominalHours
