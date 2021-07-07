@@ -16,7 +16,6 @@ import ish.oncourse.server.api.v1.model.LeadDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.v1.model.SiteDTO
-import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.LeadAttachmentRelation
 import ish.oncourse.server.cayenne.LeadCustomField
@@ -28,9 +27,7 @@ import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
-import org.apache.cayenne.Cayenne
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.Persistent
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
@@ -38,6 +35,7 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocume
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.SaleFunctions.deleteNotActualSellables
 import static ish.oncourse.server.api.v1.function.SaleFunctions.toRestSale
+import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSiteMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 
@@ -80,6 +78,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             dtoModel.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
             dtoModel.sellables = cayenneModel.items.collect {item -> item.course ? toRestSale(item.course) : toRestSale(item.product) }
+            dtoModel.sites =  cayenneModel.sites.collect {toRestSiteMinimized(it) }
             dtoModel
         }
     }
@@ -98,7 +97,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             cayenneModel.assignedTo = context.localObject(systemUserService.currentUser)
         }
 
-        updateLeadItems(dtoModel.sellables, cayenneModel)
+        updateLeadItems(cayenneModel, dtoModel.sellables)
         updateSites(dtoModel.sites, cayenneModel)
         updateTags(cayenneModel, cayenneModel.taggingRelations, dtoModel.tags*.id, LeadTagRelation.class, context)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dtoModel.documents, LeadAttachmentRelation.class, context)
@@ -106,42 +105,39 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
         return cayenneModel
     }
 
-    private static void updateLeadItems(List<SaleDTO> saleItemsDto, Lead lead) {
-        ObjectContext context = lead.context
-        actualizeSellables(context, lead, Course.class,
-                lead.items.collect {it.course },
-                saleItemsDto.findAll { SaleTypeDTO.COURSE == it.type } as List<SaleDTO>)
-
-        actualizeSellables(context, lead, Product.class,
-                lead.items.collect {it.product },
-                saleItemsDto.findAll { SaleFunctions.saleTypeMap.values().contains(it.type) } as List<SaleDTO>)
+    private void updateLeadItems(Lead lead, List<SaleDTO> saleItemsDto) {
+        actualizeCourses(lead, saleItemsDto.findAll { SaleTypeDTO.COURSE == it.type } as List<SaleDTO>)
+        actualizeProducts(lead, saleItemsDto.findAll { SaleFunctions.saleTypeMap.values().contains(it.type) } as List<SaleDTO>)
     }
 
-    static void actualizeSellables(ObjectContext context,
-                                   Lead lead,
-                                   Class<? extends Persistent> dbClass,
-                                   List<? extends Persistent> actual,
-                                   List<SaleDTO> expected) {
+    private void actualizeCourses(Lead lead, List<SaleDTO> expectedCourses) {
+        ObjectContext context = lead.context
+        deleteNotActualSellables(lead.context, lead.courses, expectedCourses)
 
-        deleteNotActualSellables(context, actual, expected)
-
-        expected.findAll {saleItem -> !actual.collect {Cayenne.longPKForObject(it) }.contains(saleItem.id) }
+        expectedCourses.findAll {!lead.courses*.id.contains(it.id) }
                 .each {saleItem ->
                     LeadItem leadItem = context.newObject(LeadItem.class)
                     leadItem.lead = lead
-                    Persistent object = getRecordById(context, dbClass, saleItem.id)
-                    if (Course.class == dbClass) {
-                        leadItem.course = object as Course
-                    } else if (Product.class == dbClass) {
-                        leadItem.product = object as Product
-                    }
+                    leadItem.course = courseApiService.getEntityAndValidateExistence(context, saleItem.id)
+                }
+    }
+
+    private void actualizeProducts(Lead lead, List<SaleDTO> expectedProducts) {
+        ObjectContext context = lead.context
+        deleteNotActualSellables(context, lead.products, expectedProducts)
+
+        expectedProducts.findAll {!lead.products*.id.contains(it.id) }
+                .each {saleItem ->
+                    LeadItem leadItem = context.newObject(LeadItem.class)
+                    leadItem.lead = lead
+                    leadItem.product = getRecordById(context, Product.class, saleItem.id) as Product
                 }
     }
 
     private static void updateSites(List<SiteDTO> sites, Lead lead) {
         ObjectContext context = lead.context
         List<Long> sitesToSave = sites*.id ?: [] as List<Long>
-        context.deleteObjects(lead.sites.findAll { !sitesToSave.contains(it.site.id) })
+        context.deleteObjects(lead.sites.findAll { !sitesToSave.contains(it.id) })
         sites.findAll { !lead.sites*.id.contains(it.id) }
                 .collect { getRecordById(context, Site, it.id)}
                 .each {site ->
