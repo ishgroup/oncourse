@@ -7,15 +7,15 @@ import {FULFILLED} from "../../common/actions/ActionUtils";
 import {Actions} from "../../web/actions/Actions";
 import CheckoutService, {BuildContactNodeRequest} from "../services/CheckoutService";
 import {ContactNodeRequest} from "../../model";
+import { DEFAULT_CONFIG_KEY, DefaultConfig } from '../../constants/Config';
+import { StoreCartRequest } from '../../model/checkout/request/StoreCart';
+import { UPDATE_AMOUNT } from '../actions/Actions';
 
 export const EpicStoreCartState = (function () {
   return (action$, store: Store<IshState>) => action$
     .ofType(
-      REMOVE_ITEM_FROM_SUMMARY,
-      REWRITE_CONTACT_NODE_TO_STATE,
-      FULFILLED(Actions.ADD_PRODUCT_TO_CART),
-      FULFILLED(Actions.ADD_CLASS_TO_CART),
-      FULFILLED(Actions.ADD_WAITING_COURSE_TO_CART)
+      UPDATE_AMOUNT,
+      REWRITE_CONTACT_NODE_TO_STATE
     )
     .map(action => ({
       timestamp: new Date().getTime(),
@@ -27,7 +27,11 @@ export const EpicStoreCartState = (function () {
       const cartId = getCookie("cartId");
       if (cartId) {
         const {checkout, cart} = store.getState();
-        const storedCartData: { [key: string]: ContactNodeRequest } & { payerId?: string } = {};
+
+        const storedCartData: StoreCartRequest = {
+          checkoutURL: location.origin + (window[DEFAULT_CONFIG_KEY]?.checkoutPath || DefaultConfig.CHECKOUT_PATH),
+          total: String(checkout?.amount?.total || '0.00')
+        };
         const contactNodes = checkout.summary.entities.contactNodes;
 
         if (CheckoutService.cartIsEmpty(cart)) {
@@ -42,6 +46,7 @@ export const EpicStoreCartState = (function () {
               storedCartData[key] = BuildContactNodeRequest.fromContact(checkout.contacts.entities.contact[key], checkout.summary, cart, checkout.payerId);
             }
           })
+
           storedCartData.payerId = checkout.payerId;
           CartService.create(cartId, JSON.stringify(storedCartData))
             .catch(() => {

@@ -1,7 +1,5 @@
 import {Actions} from "./common/actions/Actions";
-import {DefaultConfig} from "./constants/Config";
-
-const DEFAULT_CONFIG_KEY = 'checkout_config';
+import { DEFAULT_CONFIG_KEY, DefaultConfig } from "./constants/Config";
 
 export class WillowConfig {
   public checkoutPath?: string;
