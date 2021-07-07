@@ -50,7 +50,6 @@
     "babel-loader": "^8.1.0",
     "compression-webpack-plugin": "^7.1.2",
     "css-loader": "0.28.7",
-    "enzyme": "3.3.0",
     "extract-text-webpack-plugin": "3.0.0",
     "faker": "^5.5.3",
     "html-webpack-plugin": "2.30.1",
@@ -151,5 +150,8 @@
     "titleTemplate": "{classname}-{title}",
     "ancestorSeparator": " › ",
     "usePathForSuiteName": "true"
+  },
+  "resolutions": {
+    "webpack-bugsnag-plugins/bugsnag-build-reporter/meow/trim-newlines": "^3.0.1"
   }
 }
