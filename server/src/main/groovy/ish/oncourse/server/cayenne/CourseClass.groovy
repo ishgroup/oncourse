@@ -200,8 +200,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 
 	/**
 	 * Return the immutable list of discounts available for class
-	 * to add more discoounts in propper way see {@link ish.oncourse.server.cayenne.CourseClassTrait#addDiscount(Discount)}
-	 * @return the discounts for this class
+	 * To add more available discounts for the class see {@link ish.oncourse.server.cayenne.CourseClassTrait#addDiscount(Discount)}
+	 * @return available discounts list for this class
 	 */
 	@Nonnull
 	@API
