@@ -40,7 +40,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         And match $.description == "some description"
         And match $.access == "Private"
         And match $.shared == true
-        And match $.versions[*].id == [202]
+        And match $.versions[*].id == [203]
 
 #       <-----> Upload public document:
         * def someStream = read('testDoc3.zip')
