@@ -13,6 +13,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.codehaus.groovy.runtime.InvokerHelper
 
 
 @CompileStatic
@@ -29,8 +30,14 @@ class MetaclassCleaner {
             Class theClass = script.metaClass.theClass
             ClassLoader classLoader = theClass.classLoader
             if (classLoader.parent &&  classLoader.parent instanceof GroovyClassLoader) {
-                (classLoader.parent as GroovyClassLoader).removeClassCacheEntry(theClass.name)
-                (classLoader.parent as GroovyClassLoader).removeClassCacheEntry(theClass.name+ '$_run_closure1')
+                Class aClass = (classLoader.parent as GroovyClassLoader).@classCache.remove(theClass.name)
+                if (aClass) {
+                    InvokerHelper.removeClass(aClass)
+                }
+                aClass = (classLoader.parent as GroovyClassLoader).@classCache.remove(theClass.name+ '$_run_closure1')
+                if (aClass) {
+                    InvokerHelper.removeClass(aClass)
+                }
             }
             
         } catch(Exception e) {
