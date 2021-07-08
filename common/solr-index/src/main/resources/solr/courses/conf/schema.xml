@@ -42,9 +42,7 @@
             <analyzer type="index">
                 <!-- Creates tokens of characters separated by splitting on whitespace -->
                 <tokenizer class="solr.WhitespaceTokenizerFactory" />
-
-                <charFilter class="solr.HTMLStripCharFilterFactory"/>
-
+                
                 <!-- Discards common words -->
                 <filter class="solr.StopFilterFactory" ignoreCase="true"
                         words="stopwords.txt"/>

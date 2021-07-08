@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-    <luceneMatchVersion>8.9.0</luceneMatchVersion>
+    <luceneMatchVersion>7.0.0</luceneMatchVersion>
 
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
     <schemaFactory class="ClassicIndexSchemaFactory"/>
