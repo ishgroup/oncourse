@@ -40,9 +40,7 @@
          <filter class="solr.LimitTokenCountFilterFactory" maxTokenCount="10000"/>
         -->
     </indexConfig>
-
-    <jmx/>
-
+    
     <!-- the default high-performance update handler -->
     <updateHandler class="solr.DirectUpdateHandler2">
 
