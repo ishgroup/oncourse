@@ -56,7 +56,6 @@
     "identity-obj-proxy": "3.0.0",
     "jest": "^27.0.6",
     "jest-junit": "3.0.0",
-    "jsdoc": "3.5.4",
     "mini-css-extract-plugin": "^2.1.0",
     "mocker-data-generator": "2.2.0",
     "null-loader": "0.1.1",
