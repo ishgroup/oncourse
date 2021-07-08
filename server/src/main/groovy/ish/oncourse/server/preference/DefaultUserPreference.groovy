@@ -381,12 +381,12 @@ class DefaultUserPreference {
                         width: W300, visible: true, sortFields: [Lead.CUSTOMER.dot(Contact.LAST_NAME).name,
                                                                  Lead.CUSTOMER.dot(Contact.FIRST_NAME).name,
                                                                  Lead.CUSTOMER.dot(Contact.MIDDLE_NAME).name]),
-                new ColumnDTO(title: 'Estimated value', attribute: Lead.ESTIMATED_VALUE.dot(Course.NAME).name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
-                new ColumnDTO(title: 'Next action on', attribute: Lead.NEXT_ACTION_ON.dot(Course.CODE).name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Notification', attribute: Lead.NOTIFY.dot(Course.CODE).name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
-                new ColumnDTO(title: 'Active', attribute: Lead.STATUS.dot(Course.CODE).name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Estimated value', attribute: Lead.ESTIMATED_VALUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Next action on', attribute: Lead.NEXT_ACTION_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
+                new ColumnDTO(title: 'Notification', attribute: Lead.NOTIFY.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Active', attribute: Lead.STATUS.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Student requirements', attribute: Lead.STUDENT_NOTES.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Assigned to', attribute: Lead.ASSIGNED_TO.name, sortable: true, width: W200, visible: true)
+                new ColumnDTO(title: 'Assigned to', attribute: Lead.ASSIGNED_TO.dot(SystemUser.EMAIL).name, sortable: true, width: W200, visible: true)
         ]
         it.sortings = [new SortingDTO(attribute: Lead.CREATED_ON.name, ascending: false)]
         it.layout = LayoutTypeDTO.THREE_COLUMN
