@@ -161,6 +161,11 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
     [paymentOutMethods]
   );
 
+  const selectedPaymentType = useMemo(
+    () => paymentOutMethods?.find(p => p.id === values.paymentMethodId)?.type,
+    [paymentOutMethods, values.paymentMethodId]
+  );
+
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate) return undefined;
@@ -377,7 +382,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             defaultDisplayValue={values.administrationCenterName}
             selectLabelCondition={getAdminCenterLabel}
             validate={
-              typeof values.paymentMethodId === "number" && values.paymentMethodId !== 2
+              typeof values.paymentMethodId === "number" && selectedPaymentType !== "Credit card"
                 ? validateSingleMandatoryField
                 : undefined
             }
@@ -388,7 +393,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         <Grid item xs={4} />
 
-        {values.paymentMethodId === 2 && Boolean(refundablePaymentRecords && refundablePaymentRecords.length) && (
+        {selectedPaymentType === "Credit card" && Boolean(refundablePaymentRecords && refundablePaymentRecords.length) && (
           <Grid item xs={12}>
             <FormField
               type="select"
@@ -400,7 +405,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           </Grid>
         )}
 
-        {values.paymentMethodId === 1 && <ChequeSummaryRenderer />}
+        {selectedPaymentType === "Cheque" && <ChequeSummaryRenderer />}
 
         <Grid item xs={4}>
           <FormField
