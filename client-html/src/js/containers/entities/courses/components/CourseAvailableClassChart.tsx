@@ -53,7 +53,12 @@ const CustomizedTooltip = (props: any) => {
             <span className="fontWeight600">{format(parseISO(classStarted.startDateTime), III_DD_MMM_YYYY_HH_MM)}</span>
           </Typography>
           <Typography component="div" variant="body2" noWrap>
-            <span>{classStarted.availablePlacesOnStartDate} unfilled places lost</span>
+            {classStarted.availablePlacesOnStartDate === 0 ? (<span>No unfilled places</span>) : (
+              <span>
+                {`${classStarted.availablePlacesOnStartDate} unfilled 
+                ${classStarted.availablePlacesOnStartDate === 1 ? "place" : "places"} lost`}
+              </span>
+            )}
           </Typography>
         </div>
       ));
@@ -121,7 +126,7 @@ const CourseAvailableClassChart = (props: any) => {
     EntityService.getPlainRecords(
       "CourseClass",
       "createdOn,startDateTime,maximumPlaces,uniqueCode",
-      `course.id is ${courseId} and startDateTime >= (now - 180 day) and isActive = true and endDateTime > (now - 180 day)`,
+      `course.id is ${courseId} and startDateTime >= (now - 180 day) and isActive = true and isCancelled = false and endDateTime > (now - 180 day)`,
       65000,
       null,
       "createdOn",
@@ -130,9 +135,12 @@ const CourseAvailableClassChart = (props: any) => {
       const classIds = courseClasses.rows.map(e => e.id);
 
       if (!classIds.length) {
+        setGraphData(initDataForGraph());
         setHasOverlay(true);
         return null;
       }
+
+      setHasOverlay(false);
 
       EntityService.getPlainRecords(
         "Enrolment",
@@ -191,7 +199,7 @@ const CourseAvailableClassChart = (props: any) => {
         });
 
         const enrlomentsResult = {};
-        enrolments.rows.forEach(enrolment => {
+        filteredEnrolments.forEach(enrolment => {
           const key = format(parseISO(enrolment.values[0]), "yyyy-MM-dd");
           enrlomentsResult[key] = enrlomentsResult[key] ? enrlomentsResult[key] + 1 : 1;
         });
@@ -226,9 +234,14 @@ const CourseAvailableClassChart = (props: any) => {
               });
             }
 
-            const availablePlacesResult = newGraphDataWithEnrolments[index - 1 - END_DAY_VALUE].availablePlaces
-              - different - newPlaceToRemove >= 0 ? newGraphDataWithEnrolments[index - 1
-              - END_DAY_VALUE].availablePlaces - different - newPlaceToRemove : 0;
+            const valueToDecrease = newGraphDataWithEnrolments[index - 1 - END_DAY_VALUE].availablePlaces
+              - different - newPlaceToRemove;
+
+            index > 0 && newGraphDataWithEnrolments[index].classStarted.forEach(courseClass => {
+              newPlaceToRemove += courseClass.availablePlacesOnStartDate;
+            });
+
+            const availablePlacesResult = valueToDecrease >= 0 ? valueToDecrease : 0;
 
             return {
               ...elem,
@@ -240,7 +253,7 @@ const CourseAvailableClassChart = (props: any) => {
         setGraphData(newGraphDataWithFuture);
       });
     });
-  }, []);
+  }, [courseId]);
 
   const renderDot = dotProps => {
     const {
@@ -277,16 +290,18 @@ const CourseAvailableClassChart = (props: any) => {
             top: 5,
             right: 30,
             left: 20,
-            bottom: 5,
+            bottom: 20,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <YAxis
+            allowDecimals={false}
             dataKey="availablePlaces"
             label={{ value: "Available places", angle: -90, position: "insideBottomLeft" }}
           />
           <XAxis
             dataKey="dayNumber"
+            height={50}
             interval={9}
             label={{ value: "Days", position: "insideBottom" }}
             tick={<CustomizedAxisTick />}
