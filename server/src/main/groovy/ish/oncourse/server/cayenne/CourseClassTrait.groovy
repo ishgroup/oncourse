@@ -39,6 +39,7 @@ trait CourseClassTrait {
     abstract Long getId()
     abstract ObjectContext getObjectContext()
     abstract List<Discount> getDiscounts()
+    abstract List<DiscountCourseClass> getDiscountCourseClasses()
 
 
     /**
@@ -62,6 +63,19 @@ trait CourseClassTrait {
            classCost.payableOnEnrolment = true
            classCost.isSunk = false
        }
+    }
+
+    /**
+     * Remove given discount from available class discounts list
+     */
+    @API
+    void removeDiscount(Discount discount) {
+        discount = objectContext.localObject()
+        if (discount) {
+            List<DiscountCourseClass> discountCourseClasses =  discountCourseClasses.findAll {it.discount.id == discount.id }
+            objectContext.deleteObjects(discountCourseClasses*.classCost)
+            objectContext.deleteObjects(discountCourseClasses)
+        }
     }
     
     @API
