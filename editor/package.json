@@ -142,6 +142,7 @@
   },
   "resolutions": {
     "@ckeditor/ckeditor5-dev-utils/**/is-svg": "^4.2.2",
+    "@ckeditor/ckeditor5-markdown-gfm/**/marked": "^2.0.0",
     "webpack-dev-server/**/ws": "^7.4.6"
   }
 }
