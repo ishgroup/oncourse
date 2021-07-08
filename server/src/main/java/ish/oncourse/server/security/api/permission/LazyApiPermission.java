@@ -77,6 +77,7 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(VoucherProduct.class.getSimpleName().toLowerCase(), KeyCode.VOUCHER);
         KEY_CODE_MAP.put(VoucherProductCourse.class.getSimpleName().toLowerCase(), KeyCode.VOUCHER);
         KEY_CODE_MAP.put(WaitingList.class.getSimpleName().toLowerCase(), KeyCode.WAITING_LIST);
+        KEY_CODE_MAP.put(Lead.class.getSimpleName().toLowerCase(), KeyCode.WAITING_LIST);
         KEY_CODE_MAP.put(Application.class.getSimpleName().toLowerCase(), KeyCode.APPLICATION);
         KEY_CODE_MAP.put(ArticleProduct.class.getSimpleName().toLowerCase(), KeyCode.PRODUCT);
         KEY_CODE_MAP.put(Course.class.getSimpleName().toLowerCase(), KeyCode.COURSE);
