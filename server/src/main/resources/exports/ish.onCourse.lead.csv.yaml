@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.lead.csv
+entityClass: Lead
+body: ish.onCourse.lead.csv.groovy
+name: Lead CSV export
+outputType: csv
