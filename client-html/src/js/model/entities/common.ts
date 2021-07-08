@@ -40,6 +40,7 @@ export const ENTITIES = stringLiterals(
   "Enrolment",
   "Invoice",
   "InvoiceLine",
+  "Lead",
   "Membership",
   "MembershipProduct",
   "Message",

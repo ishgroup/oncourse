@@ -50,6 +50,9 @@ export const getEntityDisplayName = (entity: string): Category => {
     case "Enrolment": {
       return "Enrolments";
     }
+    // case "Lead": {
+    //   return "Lead";
+    // }
     case "WaitingList": {
       return "Waiting lists";
     }
@@ -129,6 +132,9 @@ export const getSingleEntityDisplayName = (entity: string): string => {
     }
     case "CourseClass": {
       return "Class";
+    }
+    case "Lead": {
+      return "Lead";
     }
     case "WaitingList": {
       return "Waiting list";

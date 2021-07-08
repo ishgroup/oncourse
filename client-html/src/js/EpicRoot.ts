@@ -37,6 +37,7 @@ import { EpicCourseClass } from "./containers/entities/courseClasses/epics";
 import { EpicDiscounts } from "./containers/entities/discounts/epics";
 import { EpicEditDocument } from "./containers/entities/documents/epics";
 import { EpicSales } from "./containers/entities/sales/epics";
+import { EpicLead } from "./containers/entities/leads/epics";
 import { EpicWaitingList } from "./containers/entities/waitingLists/epics";
 import { EpicTimetable } from "./containers/timetable/epics";
 import { EpicApplication } from "./containers/entities/applications/epics";
@@ -102,6 +103,7 @@ const importSet = new Set([
   EpicDiscounts,
   EpicEditDocument,
   EpicSales,
+  EpicLead,
   EpicWaitingList,
   EpicApplication,
   EpicArticleProduct,

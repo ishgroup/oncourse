@@ -42,6 +42,7 @@ export type ManualType =
   | "importExport"
   | "invoice"
   | "kiosk"
+  | "leads"
   | "payroll"
   | "processingEnrolments"
   | "processingEnrolments_PaymentIn"

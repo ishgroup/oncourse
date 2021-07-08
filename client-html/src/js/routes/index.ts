@@ -33,6 +33,7 @@ import PayslipsApp from "../containers/entities/payslips/index";
 import AccountsApp from "../containers/entities/accounts/index";
 import BankingApp from "../containers/entities/bankings/index";
 import Dashboard from "../containers/dashboard/index";
+import LeadsApp from "../containers/entities/leads/index";
 import WaitingListsApp from "../containers/entities/waitingLists/index";
 import ApplicationApp from "../containers/entities/applications/index";
 import ArticleProductApp from "../containers/entities/articleProducts/index";
@@ -330,6 +331,13 @@ export const routes: MainRoute[] = [
     path: "/room/:id?",
     url: "/room",
     main: RoomsApp,
+    group: "Training"
+  },
+  {
+    title: "Leads",
+    path: "/lead/:id?",
+    url: "/lead",
+    main: LeadsApp,
     group: "Training"
   },
   {
