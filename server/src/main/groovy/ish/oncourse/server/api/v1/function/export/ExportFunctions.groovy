@@ -18,6 +18,7 @@ import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.DiscountCourseClass
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.cayenne.PaymentInterface
+import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.TrainingPackage
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
@@ -122,7 +123,8 @@ class ExportFunctions {
             (AssessmentSubmission.simpleName.toLowerCase()):[AssessmentSubmission.simpleName],
             (TRAINEESHIP_CLASSES_ENTITY)                 : [CourseClass.simpleName],
             (PriorLearning.simpleName.toLowerCase())     : [PriorLearning.simpleName],
-            (Document.simpleName.toLowerCase())          : [Document.simpleName]
+            (Document.simpleName.toLowerCase())          : [Document.simpleName],
+            (Lead.simpleName.toLowerCase())              : [Lead.simpleName]
     ]
 
     private static ObjectSelect<? extends CayenneDataObject> getSelectedRecordsObjectSelect(String entityName, String search, String filter, List<TagGroupDTO> tagGroups, List<SortingDTO> sorting, AqlService aqlService, ObjectContext context) {
