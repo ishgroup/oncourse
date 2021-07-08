@@ -41,7 +41,7 @@
 
             <analyzer type="index">
                 <!-- Creates tokens of characters separated by splitting on whitespace -->
-                <tokenizer class="solr.StandardTokenizerFactory" />
+                <tokenizer class="solr.WhitespaceTokenizerFactory" />
 
                 <charFilter class="solr.HTMLStripCharFilterFactory"/>
 
@@ -103,7 +103,7 @@
             </analyzer>
 
             <analyzer type="query">
-                <tokenizer class="solr.StandardTokenizerFactory" />
+                <tokenizer class="solr.WhitespaceTokenizerFactory" />
                 <!--
                 Matches strings of tokens and replaces them with other strings of tokens.
 
@@ -132,7 +132,7 @@
         <fieldType name="textgen" class="solr.TextField"
                    positionIncrementGap="100">
             <analyzer type="index">
-                <tokenizer class="solr.StandardTokenizerFactory" />
+                <tokenizer class="solr.WhitespaceTokenizerFactory" />
                 <!--
                 Filters out any tokens which are at the same logical position in the tokenstream as a previous token with the same text.
                 This situation can arise from a number of situations depending on what the "up stream" token filters are - notably when stemming synonyms with similar roots.
@@ -150,7 +150,7 @@
             </analyzer>
 
             <analyzer type="query">
-                <tokenizer class="solr.StandardTokenizerFactory" />
+                <tokenizer class="solr.WhitespaceTokenizerFactory" />
                 <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt"
                         ignoreCase="true" expand="true" />
                 <filter class="solr.StopFilterFactory" ignoreCase="true"
