@@ -376,13 +376,13 @@ class DefaultUserPreference {
 
     private static final TableModelDTO LEAD_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Created', attribute: Lead.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Created', attribute: Lead.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Customer', attribute: Lead.CUSTOMER.dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W300, visible: true, sortFields: [Lead.CUSTOMER.dot(Contact.LAST_NAME).name,
                                                                  Lead.CUSTOMER.dot(Contact.FIRST_NAME).name,
                                                                  Lead.CUSTOMER.dot(Contact.MIDDLE_NAME).name]),
-                new ColumnDTO(title: 'Estimated value', attribute: Lead.ESTIMATED_VALUE.dot(Course.NAME).name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Next action on', attribute: Lead.NEXT_ACTION_ON.dot(Course.CODE).name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Estimated value', attribute: Lead.ESTIMATED_VALUE.dot(Course.NAME).name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Next action on', attribute: Lead.NEXT_ACTION_ON.dot(Course.CODE).name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Notification', attribute: Lead.NOTIFY.dot(Course.CODE).name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Active', attribute: Lead.STATUS.dot(Course.CODE).name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Student requirements', attribute: Lead.STUDENT_NOTES.name, sortable: true, width: W200, visible: true),
