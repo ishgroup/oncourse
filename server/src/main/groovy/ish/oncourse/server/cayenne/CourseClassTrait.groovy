@@ -70,8 +70,8 @@ trait CourseClassTrait {
      */
     @API
     void removeDiscount(Discount discount) {
-        discount = objectContext.localObject()
         if (discount) {
+            discount = objectContext.localObject(discount)
             List<DiscountCourseClass> discountCourseClasses =  discountCourseClasses.findAll {it.discount.id == discount.id }
             objectContext.deleteObjects(discountCourseClasses*.classCost)
             objectContext.deleteObjects(discountCourseClasses)
