@@ -13,6 +13,8 @@ package ish.oncourse.server.cayenne
 
 import groovy.time.TimeCategory
 import groovy.transform.CompileDynamic
+import ish.common.types.ClassCostFlowType
+import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.function.CalculateClassroomHours
@@ -36,7 +38,46 @@ trait CourseClassTrait {
     abstract Date getEndDateTime()
     abstract Long getId()
     abstract ObjectContext getObjectContext()
+    abstract List<Discount> getDiscounts()
+    abstract List<DiscountCourseClass> getDiscountCourseClasses()
 
+
+    /**
+     * Add given discount to available class discounts list
+     */
+    @API
+    void addDiscount(Discount discount) {
+       if (discount && !(discount.id in  discounts*.id)) {
+           DiscountCourseClass discountCourseClass = objectContext.newObject(DiscountCourseClass)
+           discountCourseClass.courseClass = this as CourseClass
+           discountCourseClass.discount = objectContext.localObject(discount)
+           
+           ClassCost classCost = objectContext.newObject(ClassCost)
+           classCost.courseClass = this as CourseClass
+           classCost.discountCourseClass = discountCourseClass
+           classCost.description = discount.name
+           classCost.flowType = ClassCostFlowType.DISCOUNT
+           classCost.repetitionType = ClassCostRepetitionType.DISCOUNT
+           classCost.taxAdjustment = Money.ZERO
+           classCost.invoiceToStudent = false
+           classCost.payableOnEnrolment = true
+           classCost.isSunk = false
+       }
+    }
+
+    /**
+     * Remove given discount from available class discounts list
+     */
+    @API
+    void removeDiscount(Discount discount) {
+        discount = objectContext.localObject()
+        if (discount) {
+            List<DiscountCourseClass> discountCourseClasses =  discountCourseClasses.findAll {it.discount.id == discount.id }
+            objectContext.deleteObjects(discountCourseClasses*.classCost)
+            objectContext.deleteObjects(discountCourseClasses)
+        }
+    }
+    
     @API
     BigDecimal getQualificationHours() {
         getCourse().qualification?.nominalHours
