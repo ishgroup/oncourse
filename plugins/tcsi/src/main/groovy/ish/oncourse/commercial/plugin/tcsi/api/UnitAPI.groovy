@@ -201,9 +201,7 @@ class UnitAPI extends TCSI_API {
             }
         }
 
-        BigDecimal feeCharged =  enrolment.invoiceLines.empty ?
-                Money.ZERO.toBigDecimal() :
-                enrolment.originalInvoiceLine.priceTotalIncTax.toBigDecimal()
+        BigDecimal feeCharged =  enrolment.feeCharged.toBigDecimal()
         BigDecimal helpLoanAmount =  enrolment.feeHelpAmount?enrolment.feeHelpAmount.toBigDecimal():BigDecimal.ZERO
         
         if ( clazz.censusDate.plusDays(14).isAfter(LocalDate.now())) {
