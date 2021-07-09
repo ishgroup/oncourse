@@ -21,9 +21,6 @@ Feature: Main feature for all POST requests with path 'preference/'
             | 'LICENSE_SCRIPTING'        | 'license.scripting'       | 'true' |
             | 'LICENSE_FEE_HELP_EXPORT'  | 'license.feeHelpExport'   | 'true' |
             | 'LICENSE_FUNDING_CONTRACT' | 'license.fundingContract' | 'true' |
-            | 'AUSKEY_CERTIFICATE'       | 'auskey.certificate'      | 'true' |
-            | 'AUSKEY_PRIVATE_KEY'       | 'auskey.privatekey'       | 'true' |
-            | 'AUSKEY_SALT'              | 'auskey.salt'             | 'true' |
 
         * call read('postReadOnlyPreferences.feature') readOnlyPreferences
 
