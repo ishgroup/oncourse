@@ -29,10 +29,9 @@ const getSessionPayable = (
     if (tutotAttendance) {
       isApplied = false;
 
-      const attendance = tutotAttendance.find(a => a.attendanceType === "Confirmed for payroll"
+      const attendance = tutotAttendance.find(a => a.attendanceType !== "Rejected for payroll"
         && a.sessionId === s.id
-        && a.courseClassTutorId === item.courseClassTutorId
-      );
+        && a.courseClassTutorId === item.courseClassTutorId);
 
       if (attendance) {
         isApplied = true;
@@ -68,8 +67,7 @@ const getSessionPayable = (
       return decimalPlus(decimalDivide(differenceInMinutes(end, start), 60), p);
     }
   }
-
-}
+};
 
 export const getClassCostFee = (
   item: ClassCostExtended,
