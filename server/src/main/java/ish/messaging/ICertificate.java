@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  */
-public interface ICertimove ficate extends PersistentObjectI {
+public interface ICertificate extends PersistentObjectI {
 
 	String SUCCESSFUL_OUTCOMES_PROPERTY = "successful_outcomes";
 
