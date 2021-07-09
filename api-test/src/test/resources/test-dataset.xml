@@ -311,12 +311,6 @@
     <Preference CREATEDON="2018-11-29 00:43:17.468000000" MODIFIEDON="2018-11-29 00:43:17.468000000" NAME="account.invoice.terms"   UNIQUEKEY="account.invoice.terms" VALUESTRING="0" ID="637"/>
     <Preference CREATEDON="2018-11-29 00:52:42.937000000" MODIFIEDON="2018-11-29 00:52:42.937000000" NAME="courseclass_default_minimumPlaces"   UNIQUEKEY="courseclass_default_minimumPlaces" VALUESTRING="1" ID="638"/>
     <Preference CREATEDON="2018-11-29 00:52:42.966000000" MODIFIEDON="2018-11-29 00:52:42.966000000" NAME="courseclass_default_maximumPlaces"   UNIQUEKEY="courseclass_default_maximumPlaces" VALUESTRING="999" ID="639"/>
-    <Preference CREATEDON="2018-11-29 01:00:00.2000000" MODIFIEDON="2018-11-29 01:00:00.2000000" NAME="backup.enabled"   UNIQUEKEY="backup.enabled" VALUESTRING="true" ID="640"/>
-    <Preference CREATEDON="2018-11-29 01:00:00.12000000" MODIFIEDON="2018-11-29 01:00:00.12000000" NAME="backup.minuteofday"   UNIQUEKEY="backup.minuteofday" VALUESTRING="60" ID="641"/>
-    <Preference CREATEDON="2018-11-29 01:00:00.14000000" MODIFIEDON="2018-11-29 01:00:00.14000000" NAME="backup.nextnumber"   UNIQUEKEY="backup.nextnumber" VALUESTRING="1" ID="642"/>
-    <Preference CREATEDON="2018-11-29 01:00:00.16000000" MODIFIEDON="2018-11-29 01:00:00.16000000" NAME="backup.maxhistory"   UNIQUEKEY="backup.maxhistory" VALUESTRING="7" ID="643"/>
-    <Preference CREATEDON="2018-11-29 01:00:00.19000000" MODIFIEDON="2018-11-29 01:00:00.19000000" NAME="backup.destination"   UNIQUEKEY="backup.destination" VALUESTRING="" ID="644"/>
-    <Preference CREATEDON="2018-11-29 01:00:00.23000000" MODIFIEDON="2018-11-29 01:00:00.23000000" NAME="backup.destination.warning"   UNIQUEKEY="backup.destination.warning" VALUESTRING="" ID="645"/>
     <Preference CREATEDON="2018-11-29 01:01:18.253000000" MODIFIEDON="2018-11-29 01:01:18.346000000" NAME="qe.default.report.enrolment.keycode"   UNIQUEKEY="qe.default.report.enrolment.keycode" VALUESTRING="ish.onCourse.invoiceReport" ID="646"/>
     <Preference CREATEDON="2018-11-29 01:01:18.282000000" MODIFIEDON="2018-11-29 01:01:18.282000000" NAME="report_overlay_ish.onCourse.enrolmentConfirmation"   UNIQUEKEY="report_overlay_ish.onCourse.enrolmentConfirmation" ID="647"/>
     <Preference CREATEDON="2018-11-29 01:01:18.363000000" MODIFIEDON="2018-11-29 01:01:18.363000000" NAME="qe.default.report.invoice.keycode"   UNIQUEKEY="qe.default.report.invoice.keycode" VALUESTRING="ish.onCourse.invoiceReport" ID="648"/>
