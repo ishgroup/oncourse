@@ -17,6 +17,7 @@ export function mockCourseClasses() {
       roomSite: value[7],
       validEnrolmentCount: value[8],
       placesLeft: value[9],
+      createdOn: value[10],
       attendanceType: "No information",
       censusDate: "",
       deliveryMode: "Classroom",
@@ -80,6 +81,7 @@ export function mockCourseClasses() {
         { name: "sessionsId", type: "number" },
         { name: "fundingProviderId", type: "number" },
         { name: "vetPurchasingContractID", type: "number" },
+        { name: "createdOn", type: "Datetime" },
       ]).map(l => ({
         id: l.id,
         values: [
@@ -103,7 +105,24 @@ export function mockCourseClasses() {
           null,
           l.sessionsId,
           null,
-          null
+          null,
+          l.createdOn
+        ]
+      }));
+    } else if (columns.includes("createdOn,startDateTime,maximumPlaces,uniqueCode")) {
+      rows = generateArraysOfRecords(20, [
+        { name: "id", type: "number" },
+        { name: "createdOn", type: "Datetime" },
+        { name: "startDateTime", type: "Datetime" },
+        { name: "maximumPlaces", type: "number" },
+        { name: "uniqueCode", type: "string" },
+      ]).map(l => ({
+        id: l.id,
+        values: [
+          l.createdOn,
+          l.startDateTime,
+          l.maximumPlaces,
+          l.uniqueCode,
         ]
       }));
     } else {
@@ -111,10 +130,11 @@ export function mockCourseClasses() {
         { name: "id", type: "number" },
         { name: "courseName", type: "string" },
         { name: "code", type: "string" },
-        { name: "price", type: "number" }
+        { name: "price", type: "number" },
+        { name: "createdOn", type: "Datetime" },
       ]).map(l => ({
         id: l.id,
-        values: [l.courseName, l.code, l.code, l.price]
+        values: [l.courseName, l.code, l.code, l.price, l.createdOn]
       }));
     }
 
@@ -595,7 +615,8 @@ export function mockCourseClasses() {
     { name: "tutorsAbridged", type: "string" },
     { name: "roomSite", type: "string" },
     { name: "validEnrolmentCount", type: "number" },
-    { name: "placesLeft", type: "number" }
+    { name: "placesLeft", type: "number" },
+    { name: "createdOn", type: "Datetime" }
   ]).map(l => ({
     id: l.id,
     values: [
@@ -608,7 +629,8 @@ export function mockCourseClasses() {
       "not set",
       "ish.oncourse.server.entity.mixins.SiteMixin@e41ab61",
       10,
-      20
+      20,
+      l.createdOn,
     ]
   }));
 
@@ -705,7 +727,16 @@ export function mockCourseClasses() {
         visible: true,
         width: 200,
         sortFields: []
-      }
+      },
+      {
+        title: "Created",
+        attribute: "createdOn",
+        type: "Datetime",
+        sortable: true,
+        visible: true,
+        width: 200,
+        sortFields: []
+      },
     ],
     res: {
       sort: [
