@@ -714,7 +714,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
         this.updateAutocomplete(inputValue);
         this.setCaret();
         this.closePicker();
-        this.props.performSearch();
+        this.props.performSearch && this.props.performSearch();
       }
     );
   };
