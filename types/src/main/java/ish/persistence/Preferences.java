@@ -78,6 +78,7 @@ public interface Preferences {
 	 */
 	@API
 	String ONCOURSE_SERVER_DEFAULT_TZ = "oncourse.server.timezone.default";
+	String PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH = "payment.gateway.purchase-without-auth";
 
 	String SERVICES_LDAP_AUTHENTICATION = "services.ldap.authentication";
 

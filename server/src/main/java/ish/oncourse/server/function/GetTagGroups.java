@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.function;
 
+import ish.messaging.ITag;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.function.GetTagGroupsInterface;
 import ish.oncourse.server.cayenne.Tag;
@@ -23,9 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by anarut on 11/21/16.
- */
 public class GetTagGroups implements GetTagGroupsInterface {
 
     private List<TaggableClasses> taggableClasses;

@@ -177,7 +177,9 @@ public abstract class CommonPreferenceController {
 	public void setOncourseServerDefaultTimezone(String timezoneID) {
 		setValue(ONCOURSE_SERVER_DEFAULT_TZ, false, timezoneID);
 	}
-
+	public Boolean isPurchaseWithoutAuth() {
+		return Boolean.parseBoolean(getValue(PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, false));
+	}
 	public boolean getServicesLdapAuthentication() {
 		return Boolean.parseBoolean(getValue(SERVICES_LDAP_AUTHENTICATION, false));
 	}

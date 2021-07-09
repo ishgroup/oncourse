@@ -11,6 +11,7 @@
 package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Tag;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public interface ICourse extends PersistentObjectI {
 
 	String getName();
 
-	List<? extends ITag> getTags();
+	List<? extends Tag> getTags();
 
 	List<? extends ICourseClass> getCourseClasses();
 

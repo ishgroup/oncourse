@@ -11,15 +11,16 @@
 package ish.messaging;
 
 import ish.oncourse.cayenne.Taggable;
+import ish.oncourse.server.cayenne.Tag;
 
 import java.util.List;
 
 /**
- * Entities which implement this interface may be tagged with a Node
+ * Entities which implement this interface may be tagged
  */
 
 public interface ITaggableObject extends Taggable {
 
-	List<? extends ITag> getTags();
+	List<? extends Tag> getTags();
 
 }

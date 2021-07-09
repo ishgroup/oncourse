@@ -17,8 +17,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.common.NodeInterface
 import ish.oncourse.server.cayenne.glue._Tag
-import ish.validation.TagNameValidator
-import ish.validation.TagValidateForDelete
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.query.ObjectSelect
@@ -194,7 +192,6 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	 * @return true if multiple tags from the same group are allowed
 	 */
 	@API
-	@Override
 	boolean isMultipleFor(final Class<? extends Taggable> entity) {
 		return getTagRequirement(entity) != null && getTagRequirement(entity).getManyTermsAllowed() != null && getTagRequirement(entity).getManyTermsAllowed()
 	}
@@ -205,7 +202,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	 * @param anotherTag - the node to search is ancestors on.
 	 * @return true if this object is an ancestor of {@code anotherNode}
 	 */
-	@Override
+	@API
 	boolean isTagAncestor(Tag anotherTag) {
 		if (!anotherTag) {
 			return false
@@ -229,7 +226,6 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	 * @return true if this tag is the top of the tree (the tag group)
 	 */
 	@API
-	@Override
 	boolean isRoot() {
 		return getParentTag() == null
 	}
@@ -248,7 +244,6 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	 * @return true if a tag is required from the tag group this tag is part of
 	 */
 	@API
-	@Override
 	boolean isRequiredFor(final Class<? extends Taggable> entity) {
 		final TagRequirement nr = getTagRequirement(entity)
 		if (nr == null) {
@@ -257,9 +252,25 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		return getTagRequirement(entity) != null && getTagRequirement(entity).getIsRequired() != null && getTagRequirement(entity).getIsRequired()
 	}
 
-	@Override
 	void validateForDelete(@Nonnull ValidationResult validationResult) {
-		TagValidateForDelete.valueOf(this, validationResult).validate()
+		if (getSpecialType() != null) {
+			String message;
+			switch (getSpecialType()) {
+				case NodeSpecialType.SUBJECTS:
+					message = "This tag group represents the categories of courses on your web site and cannot be deleted.";
+					break;
+				case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
+					message = "This tag group is required for the onCourse tutor pay feature.";
+					break;
+				case NodeSpecialType.ASSESSMENT_METHOD:
+					message = "This tag group is required for the assessments.";
+					break;
+				default:
+					throw new IllegalArgumentException("Unknown special type for tag");
+			}
+
+			validationResult.addFailure(ValidationFailure.validationFailure(this, NAME_KEY, message));
+		}
 	}
 
 	@Override
@@ -270,17 +281,14 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		}
 	}
 
-	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
 		addToAttachmentRelations((TagAttachmentRelation) relation)
 	}
 
-	@Override
 	void removeFromAttachmentRelations(AttachmentRelation relation) {
 		removeFromAttachmentRelations((TagAttachmentRelation) relation)
 	}
 
-	@Override
 	Class<? extends AttachmentRelation> getRelationClass() {
 		return TagAttachmentRelation.class
 	}
@@ -415,7 +423,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	/**
 	 * @return the parent of this tag
 	 */
-	@Nonnull
+	@Nullable
 	@API
 	@Override
 	Tag getParentTag() {
@@ -436,8 +444,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	 * This method gets all tags with the same parent as the current tag
 	 * @return siblings of this tag
 	 */
-	@Override
-	@API
+	@API @Nonnull
 	List<Tag> getSiblings() {
 		List<Tag> siblings
 

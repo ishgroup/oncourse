@@ -180,7 +180,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		var rootExpression = Tag.NAME.eq(tagNames[0])
 				.andExp(Tag.PARENT_TAG.isNull());
 		var selectQuery = new SelectQuery<>(Tag.class, rootExpression);
-		List<? extends ITag> rootTags = getContext().select(selectQuery);
+		List<? extends Tag> rootTags = getContext().select(selectQuery);
 
 		if (rootTags.isEmpty()) {
 			return null;
