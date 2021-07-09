@@ -163,7 +163,7 @@ class CreatePaymentModel {
         List<Voucher> purchasedVouchers = new GetPurchasedVouchersInCurrentTransaction(
                 checkoutModel.amount.voucherPayments
                         .findAll { it.amount.toMoney().isGreaterThan(Money.ZERO) && it.redeemVoucherProductId },
-                mainInvoice.invoiceLines.findAll {it.productItems != null && !it.productItems.empty }
+                mainInvoice ? mainInvoice.invoiceLines.findAll {it.productItems != null && !it.productItems.empty } : []
         ).get()
 
         for (Voucher voucher : purchasedVouchers) {
