@@ -20,6 +20,8 @@ dependencies {
     implementation project(':common:common-bootique')
     implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
+    testImplementation(testFixtures(project(":common:test-functions")))
+
     swagger project(':common:codegen:jaxrs')
 }
 test {
