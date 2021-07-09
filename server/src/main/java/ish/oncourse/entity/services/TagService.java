@@ -11,7 +11,6 @@
 package ish.oncourse.entity.services;
 
 import ish.common.types.NodeSpecialType;
-import ish.messaging.ITag;
 import ish.messaging.ITaggableObject;
 import ish.oncourse.server.cayenne.Course;
 import ish.oncourse.server.cayenne.Tag;

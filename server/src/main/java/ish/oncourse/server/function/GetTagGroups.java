@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.function;
 
-import ish.messaging.ITag;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.function.GetTagGroupsInterface;
 import ish.oncourse.server.cayenne.Tag;

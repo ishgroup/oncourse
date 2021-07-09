@@ -10,6 +10,7 @@
  */
 package ish.oncourse.cayenne;
 
+import ish.oncourse.server.cayenne.Tag;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
@@ -33,13 +34,13 @@ public final class TagUtil {
 	 * @param entity to generate the expressions for
 	 * @return Expression
 	 */
-	public static <T extends TagInterface> Expression createExpressionForTagsWithinOneTagTree(String alias, List<T> tags, TaggableClasses entity) {
+	public static Expression createExpressionForTagsWithinOneTagTree(String alias, List<Tag> tags, TaggableClasses entity) {
 		if (tags == null || tags.size() == 0 || entity == null) {
 			return null;
 		}
 
-		TagInterface root = null;
-		for (TagInterface tag : tags) {
+		Tag root = null;
+		for (Tag tag : tags) {
 			if (root == null) {
 				root = getRoot(tag);
 			} else if (!root.equals(getRoot(tag))) {
@@ -48,7 +49,7 @@ public final class TagUtil {
 		}
 
 		Expression result = null;
-		for (TagInterface tag : tags) {
+		for (Tag tag : tags) {
 
 			Expression expression = createExpressionForTag(alias, tag, entity);
 			if (result == null) {
@@ -68,19 +69,19 @@ public final class TagUtil {
 	 * @param entity for which the expression is to be created
 	 * @return Expression
 	 */
-	public static <T extends TagInterface> Expression createExpressionForTag(String alias, T tag, TaggableClasses entity) {
-		Expression expression = ExpressionFactory.matchExp(ALIAS + alias + "+." + TagRelationInterface.TAG_PROPERTY + "." + TagInterface.ID_PROPERTY, tag.getId());
-		expression = expression.andExp(ExpressionFactory.matchExp(ALIAS + alias + "+." + TagRelationInterface.ENTITY_IDENTIFIER_PROPERTY, entity));
+	public static Expression createExpressionForTag(String alias, Tag tag, TaggableClasses entity) {
+		Expression expression = ExpressionFactory.matchExp(ALIAS + alias + "+." + Tag.TAG_PROPERTY + "." + Tag.ID.getName(), tag.getId());
+		expression = expression.andExp(ExpressionFactory.matchExp(ALIAS + alias + "+." + Tag.ENTITY_IDENTIFIER_PROPERTY, entity));
 		return expression;
 	}
 
 	/**
 	 * @return top-most parent of the given tag
 	 */
-	public static <T extends TagInterface> T getRoot(T tag) {
+	public static Tag getRoot(Tag tag) {
 		if (tag.getParentTag() == null) {
 			return tag;
 		}
-		return (T) getRoot(tag.getParentTag());
+		return getRoot(tag.getParentTag());
 	}
 }

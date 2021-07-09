@@ -12,7 +12,6 @@ package ish.oncourse.server.cayenne.glue;
 
 
 import com.google.inject.Inject;
-import ish.messaging.ITag;
 import ish.messaging.ITaggableObject;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
