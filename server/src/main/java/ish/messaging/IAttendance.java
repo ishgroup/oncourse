@@ -14,10 +14,11 @@ package ish.messaging;
 import ish.common.types.AttendanceType;
 import ish.oncourse.cayenne.AttendanceInterface;
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Student;
 
 public interface IAttendance extends PersistentObjectI, AttendanceInterface {
 
-	IStudent getStudent();
+	Student getStudent();
 
 	ISession getSession();
 

@@ -23,7 +23,6 @@ import ish.common.types.ClientIndustryEmploymentType
 import ish.common.types.ClientOccupationIdentifierType
 import ish.common.types.StudentCitizenship
 import ish.common.types.UsiStatus
-import ish.messaging.IStudent
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -47,11 +46,12 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Student extends _Student implements StudentTrait, IStudent, Queueable, Taggable, AttachableTrait {
+class Student extends _Student implements StudentTrait, Queueable, Taggable, AttachableTrait {
 
-	/**
-	 *
-	 */
+	public static final String CONTACT_KEY = "contact";
+	public static final String OUTCOMES = "outcomes";
+
+	public static final int MIN_SCHOOL_COMPLETION_YEAR = 1940;
 
 	private static Logger logger = LogManager.getLogger()
 

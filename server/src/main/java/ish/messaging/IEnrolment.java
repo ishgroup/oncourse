@@ -13,6 +13,7 @@ package ish.messaging;
 import ish.common.payable.EnrolmentInterface;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Student;
 
 import java.util.Date;
 import java.util.List;
@@ -30,7 +31,7 @@ public interface IEnrolment extends EnrolmentInterface, PersistentObjectI {
 
     IInvoiceLine getOriginalInvoiceLine();
 
-	IStudent getStudent();
+	Student getStudent();
 
 	EnrolmentStatus getStatus();
 

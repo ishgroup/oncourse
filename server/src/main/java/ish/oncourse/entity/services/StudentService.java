@@ -14,7 +14,7 @@ import ish.common.types.EnrolmentStatus;
 import ish.messaging.IEnrolment;
 import ish.messaging.IOutcome;
 import ish.messaging.IPriorLearning;
-import ish.messaging.IStudent;
+import ish.oncourse.server.cayenne.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class StudentService {
 
-	public List<? extends IEnrolment> getValidAndCancelledEnrolments(IStudent student) {
+	public List<? extends IEnrolment> getValidAndCancelledEnrolments(Student student) {
 		List<IEnrolment> result = new ArrayList<>();
 		if (student.getEnrolments() != null) {
 			for (IEnrolment e : student.getEnrolments()) {
@@ -39,7 +39,7 @@ public class StudentService {
 	 * @param vetOnly
 	 * @return Outcomes
 	 */
-	public List<? extends IOutcome> getOutcomes(IStudent student, boolean vetOnly) {
+	public List<? extends IOutcome> getOutcomes(Student student, boolean vetOnly) {
 		List<IOutcome> result = new ArrayList<>();
 		for (IEnrolment e : getValidAndCancelledEnrolments(student)) {
 			if (e.getCourseClass() != null && !e.getCourseClass().getIsCancelled()) {

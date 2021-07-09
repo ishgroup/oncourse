@@ -12,7 +12,6 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.QualificationType
-import ish.messaging.IQualification
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.dao.EntityRelationDao
@@ -22,10 +21,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.Date
-import java.util.List
 
 /**
  * The Qualification class contains records from both accredited courses (state based) and qualifications (national)
@@ -35,7 +31,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class Qualification extends _Qualification implements Queueable, IQualification {
+class Qualification extends _Qualification implements Queueable {
 
 
 	private static final Logger logger = LogManager.getLogger()

@@ -11,6 +11,8 @@
 package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Qualification;
+import ish.oncourse.server.cayenne.Student;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,8 +31,8 @@ public interface ICertificate extends PersistentObjectI {
 
 	LocalDate getPrintedOn();
 
-	IQualification getQualification();
+	Qualification getQualification();
 
-	IStudent getStudent();
+	Student getStudent();
 
 }

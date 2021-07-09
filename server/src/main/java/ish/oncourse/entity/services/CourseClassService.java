@@ -18,7 +18,10 @@ import ish.messaging.*;
 import ish.oncourse.cayenne.CourseClassUtil;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.function.CalculateClassroomHours;
+import ish.oncourse.server.cayenne.CourseClassTrait;
 import ish.oncourse.server.cayenne.Room;
+import ish.oncourse.server.cayenne.Student;
+import ish.oncourse.server.cayenne.Tutor;
 import ish.util.*;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
@@ -150,7 +153,7 @@ public class CourseClassService {
 	}
 
 	public String getTutorNamesAbriged(ICourseClass courseClass) {
-		List<? extends ITutor> tutors = getTutors(courseClass);
+		List<? extends Tutor> tutors = getTutors(courseClass);
 		if (tutors == null || tutors.size() == 0) {
 			return "not set";
 		} else if (tutors.size() == 1) {
@@ -159,9 +162,9 @@ public class CourseClassService {
 		return tutors.get(0).getContact().getName() + " et al";
 	}
 
-	public List<? extends ITutor> getTutors(ICourseClass courseClass) {
+	public List<? extends Tutor> getTutors(ICourseClass courseClass) {
 		List<? extends ICourseClassTutor> avalableTutorRoles = courseClass.getTutorRoles();
-		List<ITutor> tutors = new ArrayList<>();
+		List<Tutor> tutors = new ArrayList<>();
 		if (avalableTutorRoles != null) {
 			for (ICourseClassTutor aRole : avalableTutorRoles) {
 				if (aRole.getTutor() != null) {
@@ -367,13 +370,13 @@ public class CourseClassService {
 		if (list.isEmpty()) {
 			return 0;
 		}
-		Expression e = ExpressionFactory.matchExp(IEnrolment.STUDENT_KEY + "." + IStudent.CONTACT_KEY + "." + IContact.IS_MALE_KEY, true);
+		Expression e = ExpressionFactory.matchExp(IEnrolment.STUDENT_KEY + "." + Student.CONTACT_KEY + "." + IContact.IS_MALE_KEY, true);
 
 		return e.filterObjects(list).size();
 	}
 
 	/**
-	 * @see ish.oncourse.server.cayenne.CourseClassTrait.getClassroomHours()
+	 * @see CourseClassTrait#getClassroomHours()
 	 */
 	@Deprecated
 	public BigDecimal getClassroomHours(ICourseClass courseClass) {

@@ -11,11 +11,12 @@
 package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Tutor;
 
 /**
  */
 public interface ICourseClassTutor extends PersistentObjectI {
-	ITutor getTutor();
+	Tutor getTutor();
 
 	ICourseClass getCourseClass();
 

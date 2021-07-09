@@ -12,7 +12,6 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.PayslipPayType
-import ish.messaging.ITutor
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -38,9 +37,9 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Tutor extends _Tutor implements ITutor, Queueable, Taggable, AttachableTrait {
+class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait {
 
-
+	String CONTACT_KEY = "contact";
 	private static Logger logger = LogManager.getLogger()
 
 	@Override
