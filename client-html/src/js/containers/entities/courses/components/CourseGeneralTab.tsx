@@ -11,6 +11,7 @@ import { change } from "redux-form";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
@@ -26,6 +27,7 @@ import TimetableButton from "../../../../common/components/buttons/TimetableButt
 import { CourseExtended } from "../../../../model/entities/Course";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
+import CourseAvailableClassChart from "./CourseAvailableClassChart";
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
@@ -36,6 +38,12 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   dispatch: any;
   form: string;
 }
+
+const useStyles = makeStyles(() => ({
+  chartWrapper: {
+    height: "250px",
+  },
+}));
 
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
@@ -53,6 +61,8 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
+    const classes = useStyles();
+
     const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
 
     const onCalendarClick = useCallback(() => {
@@ -157,6 +167,10 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               tags={tags}
               validate={tags && tags.length ? validateTagList : undefined}
             />
+          </Grid>
+
+          <Grid item xs={12} className={classes.chartWrapper}>
+            <CourseAvailableClassChart courseId={values.id} isNew={isNew} />
           </Grid>
 
           <Grid item xs={12} className="mb-2">
