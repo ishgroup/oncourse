@@ -41,7 +41,7 @@ class TestModule implements Module {
 
     private static final Logger logger = LogManager.getLogger()
 
-    
+
     @Override
     void configure(Binder binder) {
 
@@ -71,7 +71,6 @@ class TestModule implements Module {
         binder.bind(StudentConcessionService.class).in(Scopes.SINGLETON)
         binder.bind(TagService.class).in(Scopes.SINGLETON)
         binder.bind(SessionService.class).in(Scopes.SINGLETON)
-        binder.bind(OutcomeService.class).in(Scopes.SINGLETON)
         binder.bind(CourseService.class).in(Scopes.SINGLETON)
         binder.bind(CertificateService.class).in(Scopes.SINGLETON)
         binder.bind(StudentService.class).in(Scopes.SINGLETON)

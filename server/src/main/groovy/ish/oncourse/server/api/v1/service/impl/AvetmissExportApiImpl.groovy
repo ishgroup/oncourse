@@ -16,7 +16,6 @@ import com.google.inject.Inject
 import ish.common.types.OutcomeStatus
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.entity.services.CertificateService
-import ish.oncourse.entity.services.OutcomeService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.function.avetmiss.AvetmissExportPreviewBuilder
@@ -58,9 +57,6 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
 
     @Inject
     private PreferenceController preferenceController
-
-    @Inject
-    private OutcomeService outcomeService
 
     @Inject
     private CertificateService certificateService
