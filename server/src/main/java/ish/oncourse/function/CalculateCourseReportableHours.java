@@ -12,7 +12,7 @@
 package ish.oncourse.function;
 
 import ish.messaging.ICourse;
-import ish.messaging.IModule;
+import ish.oncourse.server.cayenne.Module;
 
 import java.math.BigDecimal;
 
@@ -31,7 +31,7 @@ public class CalculateCourseReportableHours {
     public BigDecimal calculate() {
         BigDecimal sum = BigDecimal.ZERO;
         if (course != null && course.getModules() != null) {
-            for (IModule m : course.getModules()) {
+            for (Module m : course.getModules()) {
                 if (m.getNominalHours() != null) {
                     sum = sum.add(m.getNominalHours());
                 }

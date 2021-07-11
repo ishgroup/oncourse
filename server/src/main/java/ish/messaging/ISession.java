@@ -31,7 +31,7 @@ public interface ISession extends PersistentObjectI, SessionInterface {
 
 	Integer getPayAdjustment();
 
-	boolean hasModule(IModule module);
+	boolean hasModule(Module module);
 
 	List<? extends IAttendance> getAttendance();
 

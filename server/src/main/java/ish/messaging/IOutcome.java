@@ -13,12 +13,11 @@ package ish.messaging;
 import ish.common.types.DeliveryMode;
 import ish.common.types.OutcomeStatus;
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Module;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  */
@@ -27,7 +26,7 @@ public interface IOutcome extends PersistentObjectI {
 	String CODE = "code";
 	String NAME = "name";
 
-	IModule getModule();
+	Module getModule();
 
 	IEnrolment getEnrolment();
 

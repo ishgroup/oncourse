@@ -11,21 +11,16 @@
 
 package ish.oncourse.server.cayenne
 
-
 import ish.budget.ClassCostUtil
-import ish.common.types.ClassCostFlowType
-import ish.common.types.ClassFundingSource
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.SessionRepetitionType
+import ish.common.types.*
 import ish.math.Money
 import ish.messaging.ICourseClass
-import ish.messaging.IModule
 import ish.oncourse.API
 import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseClassReportableHours
+import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.glue._CourseClass
 import ish.oncourse.server.cayenne.glue._Session
 import ish.util.MoneyUtil
@@ -686,7 +681,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	String getFinalDETexport() {
 		return super.getFinalDETexport()
 	}
-	
+
 
 	/**
 	 * Returns a value mapped to funding source. Used for AVETMISS reporting.
@@ -854,7 +849,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	BigDecimal getReportableHours() {
 		return super.getReportableHours()
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -1010,7 +1005,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	}
 
 	@Override
-	void addModuleToAllSessions(IModule module) {
+	void addModuleToAllSessions(Module module) {
 		CourseClassUtil.addModuleToAllSessions(this, module, SessionModule.class)
 	}
 

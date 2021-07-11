@@ -12,9 +12,6 @@
 package ish.oncourse.function;
 
 import ish.messaging.ICourseClass;
-import ish.messaging.IModule;
-import ish.messaging.ISession;
-import ish.util.DurationFormatter;
 
 import java.math.BigDecimal;
 

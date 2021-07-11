@@ -17,6 +17,7 @@ import ish.oncourse.cayenne.CourseClassInterface;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.server.cayenne.Room;
+import ish.oncourse.server.cayenne.Module;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -107,7 +108,7 @@ public interface ICourseClass extends PersistentObjectI, CourseClassInterface {
 
 	List<? extends DiscountCourseClassInterface> getDiscountCourseClasses();
 
-	void addModuleToAllSessions(IModule module);
+	void addModuleToAllSessions(Module module);
 
 	DeliveryMode getDeliveryMode();
 }

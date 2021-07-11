@@ -16,10 +16,10 @@ import ish.math.Money;
 import ish.messaging.IDiscount;
 import ish.messaging.IEnrolment;
 import ish.messaging.IInvoiceLine;
-import ish.messaging.IPayRate;
 import ish.oncourse.cayenne.ClassCostInterface;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.DiscountInterface;
+import ish.oncourse.server.cayenne.PayRate;
 import ish.util.DiscountUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -407,7 +407,7 @@ public class ClassCostUtil {
 			// if class has no start date assigned then calculating pay rate for current date
 			Date payRateDate = cost.getCourseClass().getStartDateTime() != null ? cost.getCourseClass().getStartDateTime() : new Date();
 
-			IPayRate pr = cost.getTutorRole().getDefinedTutorRole().getPayRateForDate(payRateDate);
+			PayRate pr = cost.getTutorRole().getDefinedTutorRole().getPayRateForDate(payRateDate);
 			if (pr != null) {
 				return pr.getRate();
 			} else {

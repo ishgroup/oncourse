@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.messaging.IModule
 import ish.messaging.IOutcome
 import ish.messaging.ISession
 import ish.messaging.ISessionModule
@@ -19,6 +18,7 @@ import ish.oncourse.cayenne.AttendanceInterface
 import ish.oncourse.cayenne.OutcomeInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.entity.delegator.OutcomeDelegator
+import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.glue._SessionModule
 
 import javax.annotation.Nonnull
@@ -29,8 +29,6 @@ import javax.annotation.Nonnull
 @API
 @QueueableEntity
 class SessionModule extends _SessionModule implements ISessionModule, Queueable {
-
-
 
 	/**
 	 * @return the date and time this record was created
@@ -86,7 +84,7 @@ class SessionModule extends _SessionModule implements ISessionModule, Queueable 
 	}
 
 	@Override
-	void setModule(IModule module) {
+	void setModule(Module module) {
 		super.setModule((Module) module)
 	}
 }

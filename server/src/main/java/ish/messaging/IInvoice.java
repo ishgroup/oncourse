@@ -12,6 +12,7 @@ package ish.messaging;
 
 import ish.math.Money;
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Contact;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,21 +20,13 @@ import java.util.List;
 /**
  */
 public interface IInvoice extends PersistentObjectI {
-	String CONTACT_KEY = "contact";
-	String INVOICE_DATE_KEY = "invoiceDate";
-	String TOTAL_KEY = "total";
-	String TOTAL_TAX_KEY = "totalTax";
-	String TOTAL_INC_TAX_KEY = "totalIncTax";
-	String AMOUNT_OWING_KEY = "amountOwing";
-	String AMOUNT_PAID_KEY = "amountPaid";
 
-	String TOTAL_INC_TAX_PROPERTY = "invoice_total_inc_property";
 
 	Money getAmountOwing();
 
 	Money getAmountPaid();
 
-	IContact getContact();
+	Contact getContact();
 
 	LocalDate getInvoiceDate();
 

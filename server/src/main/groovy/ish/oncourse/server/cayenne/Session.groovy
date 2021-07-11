@@ -12,7 +12,6 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.EnrolmentStatus
-import ish.messaging.IModule
 import ish.messaging.ISession
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -36,7 +35,6 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 
 	public static String DISPLAY_START_DATETIME = 'displayStartDateTime'
 	public static String DISPLAY_END_DATETIME = 'displayEndDateTime'
-
 
 
 	@Override
@@ -119,13 +117,8 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 	 * @param module module to search
 	 * @return if session linked to specified module
 	 */
-	@API
+	@API @Override
 	boolean hasModule(Module module) {
-		return hasModule(module as IModule)
-	}
-
-	@Override
-	boolean hasModule(IModule module) {
 		Expression exp = ExpressionFactory.matchExp(SessionModule.MODULE_PROPERTY, module)
 
 		return !exp.filterObjects(getSessionModules()).isEmpty()
@@ -189,7 +182,7 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 		return super.getPayAdjustment()
 	}
 
-	/**
+/**
 	 * @return private notes for this session
 	 */
 	@API

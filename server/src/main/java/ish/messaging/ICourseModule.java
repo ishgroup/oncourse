@@ -11,11 +11,13 @@
 
 package ish.messaging;
 
+import ish.oncourse.server.cayenne.Module;
+
 public interface ICourseModule {
 
     void setCourse(ICourse course);
-    void setModule(IModule module);
+    void setModule(Module module);
 
     ICourse getCourse();
-    IModule getModule();
+    Module getModule();
 }

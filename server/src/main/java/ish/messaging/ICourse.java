@@ -12,6 +12,7 @@ package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.server.cayenne.Tag;
+import ish.oncourse.server.cayenne.Module;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public interface ICourse extends PersistentObjectI {
 
 	List<? extends ICourseClass> getCourseClasses();
 
-	List<? extends IModule> getModules();
+	List<Module> getModules();
 
 	void setModifiedOn(Date modifiedOn);
 }

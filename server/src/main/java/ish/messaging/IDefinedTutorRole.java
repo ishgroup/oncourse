@@ -12,10 +12,11 @@
 package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.PayRate;
 
 import java.util.Date;
 
 public interface IDefinedTutorRole extends PersistentObjectI {
 
-	IPayRate getPayRateForDate(Date date);
+	PayRate getPayRateForDate(Date date);
 }

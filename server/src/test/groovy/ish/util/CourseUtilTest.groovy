@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 import ish.messaging.ICourse
 import ish.messaging.ICourseClass
 import ish.messaging.ICourseModule
-import ish.messaging.IModule
+import ish.oncourse.server.cayenne.Module
 import org.apache.cayenne.ObjectContext
 import org.junit.jupiter.api.Test
 import org.mockito.Matchers
@@ -20,7 +20,7 @@ class CourseUtilTest {
     @CompileDynamic
     @Test
     void testAddModule() throws Exception {
-        IModule module = Mockito.mock(IModule.class)
+        Module module = Mockito.mock(IModule.class)
         when(module.getNationalCode()).thenReturn("nationalCode")
 
         ICourseModule courseModule = Mockito.mock(ICourseModule.class)

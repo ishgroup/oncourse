@@ -18,11 +18,12 @@ import ish.messaging.*;
 import ish.oncourse.cayenne.CourseClassUtil;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.function.CalculateClassroomHours;
-import ish.oncourse.server.cayenne.CourseClassTrait;
-import ish.oncourse.server.cayenne.Room;
-import ish.oncourse.server.cayenne.Student;
-import ish.oncourse.server.cayenne.Tutor;
-import ish.util.*;
+import ish.oncourse.server.cayenne.Module;
+import ish.oncourse.server.cayenne.*;
+import ish.util.DateTimeFormatter;
+import ish.util.DiscountUtils;
+import ish.util.DurationFormatter;
+import ish.util.RuntimeUtil;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -370,7 +371,7 @@ public class CourseClassService {
 		if (list.isEmpty()) {
 			return 0;
 		}
-		Expression e = ExpressionFactory.matchExp(IEnrolment.STUDENT_KEY + "." + Student.CONTACT_KEY + "." + IContact.IS_MALE_KEY, true);
+		Expression e = ExpressionFactory.matchExp(IEnrolment.STUDENT_KEY + "." + Student.CONTACT_KEY + "." + Contact.IS_MALE_KEY, true);
 
 		return e.filterObjects(list).size();
 	}
@@ -410,7 +411,7 @@ public class CourseClassService {
 	}
 
 	/**
-	 * Returns one {@link ISessionModule} instance for each {@link IModule} class has. <br>
+	 * Returns one {@link ISessionModule} instance for each {@link Module} class has. <br>
 	 * This is needed to provide Training Plan table with records list without duplicated modules for each session.
 	 *
 	 * @return list of SessionModules for each Module class has
@@ -419,7 +420,7 @@ public class CourseClassService {
 
 		List<ISessionModule> uniqueSessionModules = new ArrayList<>();
 
-		Set<IModule> classModules = new HashSet<>();
+		Set<Module> classModules = new HashSet<>();
 		for (ISession s : courseClass.getSessions()) {
 			for (ISessionModule sm : s.getSessionModules()) {
 				classModules.add(sm.getModule());
@@ -428,7 +429,7 @@ public class CourseClassService {
 
 		List<? extends ISessionModule> allSessionModules = getSessionModules(courseClass);
 
-		for (IModule module : classModules) {
+		for (Module module : classModules) {
 			Expression exp = ExpressionFactory.matchExp(ISessionModule.MODULE_KEY, module);
 			List<? extends ISessionModule> sessionModules = exp.filterObjects(allSessionModules);
 			if (!sessionModules.isEmpty()) {

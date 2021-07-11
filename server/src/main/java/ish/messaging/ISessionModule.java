@@ -12,6 +12,7 @@ package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.cayenne.SessionModuleInterface;
+import ish.oncourse.server.cayenne.Module;
 
 /**
  */
@@ -20,11 +21,11 @@ public interface ISessionModule extends PersistentObjectI, SessionModuleInterfac
 	String SESSION_KEY = "session";
 	String MODULE_KEY = "module";
 
-	IModule getModule();
+	Module getModule();
 
 	ISession getSession();
 
 	void setSession(ISession session);
-	void setModule(IModule module);
+	void setModule(Module module);
 
 }
