@@ -12,6 +12,7 @@ package ish.messaging;
 
 import ish.math.Money;
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Tax;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface IInvoiceLine extends PersistentObjectI {
 
 	IInvoice getInvoice();
 
-	ITax getTax();
+	Tax getTax();
 
 	Money getPriceTotalExTax();
 

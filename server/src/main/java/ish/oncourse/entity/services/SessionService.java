@@ -12,8 +12,8 @@ package ish.oncourse.entity.services;
 
 import ish.messaging.ICourseClassTutor;
 import ish.messaging.ISession;
-import ish.messaging.ITutorAttendance;
 import ish.oncourse.server.cayenne.Session;
+import ish.oncourse.server.cayenne.TutorAttendance;
 import ish.util.DurationFormatter;
 
 import java.math.BigDecimal;
@@ -43,11 +43,11 @@ public class SessionService {
 	 * @param tutorRole
 	 * @return the TutorAttendance (used to be called SessionCourseClassTutor) for this tutor role (CourseClassTutor) for this session
 	 */
-	public ITutorAttendance getTutorAttendanceForRole(ISession session, ICourseClassTutor tutorRole) {
+	public TutorAttendance getTutorAttendanceForRole(ISession session, ICourseClassTutor tutorRole) {
 		if (tutorRole == null) {
 			return null;
 		}
-		for (ITutorAttendance attendance : session.getSessionTutors()) {
+		for (TutorAttendance attendance : session.getSessionTutors()) {
 			if (tutorRole.equals(attendance.getCourseClassTutor())) {
 				return attendance;
 			}

@@ -15,7 +15,7 @@ import ish.common.types.ClassCostRepetitionType;
 import ish.math.Money;
 import ish.messaging.ICourseClass;
 import ish.messaging.ICourseClassTutor;
-import ish.messaging.ITax;
+import ish.oncourse.server.cayenne.Tax;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -68,7 +68,7 @@ public interface ClassCostInterface<C extends ICourseClass, D extends IDiscountC
 
 	void setDiscountCourseClass(D discountCourseClass);
 
-	ITax getTax();
+	Tax getTax();
 
 	ICourseClassTutor getTutorRole();
 

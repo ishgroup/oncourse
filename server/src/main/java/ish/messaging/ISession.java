@@ -13,6 +13,7 @@ package ish.messaging;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.cayenne.SessionInterface;
 import ish.oncourse.server.cayenne.Room;
+import ish.oncourse.server.cayenne.TutorAttendance;
 
 import java.util.List;
 import java.util.TimeZone;
@@ -25,7 +26,7 @@ public interface ISession extends PersistentObjectI, SessionInterface {
 
 	List<? extends ISessionModule> getSessionModules();
 
-	List<? extends ITutorAttendance> getSessionTutors();
+	List<TutorAttendance> getSessionTutors();
 
 	TimeZone getTimeZone();
 
