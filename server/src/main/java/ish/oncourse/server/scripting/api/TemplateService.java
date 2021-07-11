@@ -76,7 +76,10 @@ public class TemplateService {
 		template.getOptions().forEach(opt ->
 				bindings.put(opt.getName(), opt.getValue())
 		);
-		var html = createHtmlTemplate(template).make(putBaseBindings(bindings)).toString();
+		Template htmlTemplate = createHtmlTemplate(template);
+		var html = htmlTemplate.make(putBaseBindings(bindings)).toString();
+		MetaclassCleaner.clearGroovyCache(htmlTemplate);
+		
 		return html
 				.replaceAll(JAVA_POUND, HTML_POUND)
 				.replaceAll(JAVA_EURO, HTML_EURO);
@@ -96,7 +99,11 @@ public class TemplateService {
 		template.getOptions().forEach(opt ->
 				bindings.put(opt.getName(), opt.getValue())
 		);
-		return createPlainTemplate(template).make(putBaseBindings(bindings)).toString();
+		Template htmlTemplate = createPlainTemplate(template);
+		String result =  htmlTemplate.make(putBaseBindings(bindings)).toString();
+		MetaclassCleaner.clearGroovyCache(htmlTemplate);
+
+		return result;
 	}
 
 	public Template createSubjectTemplate(EmailTemplate template) {
@@ -113,6 +120,8 @@ public class TemplateService {
 		}
 		putBaseBindings(plainBindings);
 		String subject = subjectTemplate.make(plainBindings).toString();
+		MetaclassCleaner.clearGroovyCache(subjectTemplate);
+
 		plainBindings.put(SUBJECT, subject);
 		if (htmlBindings != null) {
 			htmlBindings.put(SUBJECT, subject);

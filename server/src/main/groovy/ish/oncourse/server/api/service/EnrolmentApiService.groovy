@@ -125,9 +125,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.vetFeeIndicator = enrolment.vetFeeIndicator
             enrolmentDTO.trainingPlanDeveloped = enrolment.trainingPlanDeveloped
 
-            enrolmentDTO.feeCharged = enrolment.invoiceLines.empty ?
-                    new BigDecimal(0) :
-                    enrolment.originalInvoiceLine.priceTotalIncTax.toBigDecimal()
+            enrolmentDTO.feeCharged = enrolment.feeCharged.toBigDecimal()
 
             enrolmentDTO.feeHelpAmount = enrolment.feeHelpAmount?.toBigDecimal()
             enrolmentDTO.creditOfferedValue = enrolment.creditOfferedValue

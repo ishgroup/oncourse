@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
+import ish.math.Money
 import ish.messaging.IAttendance
 import ish.oncourse.API
 import ish.oncourse.entity.services.EnrolmentService
@@ -29,7 +30,8 @@ trait EnrolmentTrait {
     abstract CourseClass getCourseClass()
 
     abstract Student getStudent()
-
+    
+    abstract List<InvoiceLine> getInvoiceLines()
 
     /**
      * @return display status name
@@ -42,6 +44,19 @@ trait EnrolmentTrait {
             getStatus() ? getStatus().displayName : null
         }
     }
+
+    /**
+     * @return total amount of all related invoices
+     */
+    @API
+    Money getFeeCharged() {
+        if (invoiceLines?.empty)  {
+            return Money.ZERO
+        } else {
+            return invoiceLines*.priceTotalIncTax.inject { a, b -> a.add(b) }
+        }
+    }
+    
 
 
     /**
