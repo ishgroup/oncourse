@@ -19,10 +19,6 @@ import java.time.LocalDate;
  */
 public interface IContact extends ContactInterface, PersistentObjectI {
 
-	String FULL_NAME_KEY = "fullName";
-	String IS_MALE_KEY = "isMale";
-	String PHONES_PROP = "phones";
-	String MESSAGE_KEY = "message";
 
     String getFullName();
 

@@ -17,6 +17,7 @@ import ish.common.types.Gender
 import ish.math.Money
 import ish.messaging.IContact
 import ish.oncourse.API
+import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.InvoiceInterface
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.QueueableEntity
@@ -45,8 +46,13 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContact, Queueable, NotableTrait, AttachableTrait {
+class Contact extends _Contact implements ContactTrait, ExpandableTrait, ContactInterface, Queueable, NotableTrait, AttachableTrait {
 
+
+	public static final String FULL_NAME_KEY = "fullName"
+	public static final String IS_MALE_KEY = "isMale"
+	public static final String PHONES_PROP = "phones"
+	public static final String MESSAGE_KEY = "message"
 
 	private static final Logger logger = LogManager.getLogger()
 

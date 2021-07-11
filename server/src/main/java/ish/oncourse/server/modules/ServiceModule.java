@@ -73,7 +73,6 @@ public class ServiceModule implements Module {
 		binder.bind(GoogleGuiceInjector.class).asEagerSingleton();
 
 		// entity service classes
-		binder.bind(ContactService.class).in(Scopes.SINGLETON);
 		binder.bind(CourseClassService.class).in(Scopes.SINGLETON);
 		binder.bind(StudentConcessionService.class).in(Scopes.SINGLETON);
 		binder.bind(TagService.class).in(Scopes.SINGLETON);
