@@ -13,7 +13,7 @@ package ish.oncourse.entity.services;
 import ish.common.types.EnrolmentStatus;
 import ish.messaging.IEnrolment;
 import ish.messaging.IOutcome;
-import ish.messaging.IPriorLearning;
+import ish.oncourse.server.cayenne.PriorLearning;
 import ish.oncourse.server.cayenne.Student;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class StudentService {
 			}
 		}
 
-		for (IPriorLearning pl : student.getPriorLearnings()) {
+		for (PriorLearning pl : student.getPriorLearnings()) {
 			result.addAll(pl.getOutcomes());
 		}
 

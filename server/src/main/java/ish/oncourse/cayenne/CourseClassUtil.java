@@ -11,8 +11,11 @@
 package ish.oncourse.cayenne;
 
 import ish.common.types.EnrolmentStatus;
-import ish.messaging.*;
+import ish.messaging.ICourseClass;
+import ish.messaging.IEnrolment;
 import ish.oncourse.server.cayenne.Module;
+import ish.oncourse.server.cayenne.Session;
+import ish.oncourse.server.cayenne.SessionModule;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
@@ -54,11 +57,11 @@ public final class CourseClassUtil {
 
 
 	/**
-	 * Adds module to all existing sessions of the class creating SessionModule records.
+	 * Adds module to all existing sessions of the class
 	 */
-	public static void addModuleToAllSessions(ICourseClass courseClass, Module module, Class<? extends ISessionModule> sessionModuleClass) {
-		for (ISession session : courseClass.getSessions()) {
-			ISessionModule sessionModule =  courseClass.getContext().newObject(sessionModuleClass);
+	public static void addModuleToAllSessions(ICourseClass courseClass, Module module) {
+		for (Session session : courseClass.getSessions()) {
+			SessionModule sessionModule =  courseClass.getContext().newObject(SessionModule.class);
 			sessionModule.setSession(session);
 			sessionModule.setModule(module);
 		}

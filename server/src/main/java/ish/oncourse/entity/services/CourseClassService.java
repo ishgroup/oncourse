@@ -143,7 +143,7 @@ public class CourseClassService {
 	public String getTutorNames(ICourseClass courseClass) {
 		StringBuilder result = new StringBuilder();
 		if (courseClass.getTutorRoles() != null) {
-			for (ICourseClassTutor t : courseClass.getTutorRoles()) {
+			for (CourseClassTutor t : courseClass.getTutorRoles()) {
 				result.append(t.getTutor().getContact().getName());
 				if (result.length() > 0) {
 					result.append("; ");
@@ -164,10 +164,10 @@ public class CourseClassService {
 	}
 
 	public List<? extends Tutor> getTutors(ICourseClass courseClass) {
-		List<? extends ICourseClassTutor> avalableTutorRoles = courseClass.getTutorRoles();
+		List<CourseClassTutor> avalableTutorRoles = courseClass.getTutorRoles();
 		List<Tutor> tutors = new ArrayList<>();
 		if (avalableTutorRoles != null) {
-			for (ICourseClassTutor aRole : avalableTutorRoles) {
+			for (CourseClassTutor aRole : avalableTutorRoles) {
 				if (aRole.getTutor() != null) {
 					tutors.add(aRole.getTutor());
 				}
@@ -215,7 +215,7 @@ public class CourseClassService {
 	public String getTimetableSummaryForClass(ICourseClass courseClass) {
 		StringBuilder summary = new StringBuilder("<html>");
 
-		List<? extends ISession> sessions = courseClass.getSessions();
+		List<Session> sessions = courseClass.getSessions();
 
 		int scount = courseClass.getSessions().size();
 		if (sessions.size() > 0) {
@@ -226,7 +226,7 @@ public class CourseClassService {
 				summary.append("One session");
 			}
 			Long duration = null;
-			for (ISession session : sessions) {
+			for (Session session : sessions) {
 				if (duration == null) {
 					duration = sessionService.getDuration(session);
 				} else if (duration.equals(sessionService.getDuration(session))) {
@@ -282,7 +282,7 @@ public class CourseClassService {
 			summary.append(aRoom.getSite().getName());
 			summary.append(RuntimeUtil.HTML_LINE_SEPARATOR);
 		} else if (sessions.size() > 0) {
-			ISession firstSession = getFirstSession(courseClass);
+			Session firstSession = getFirstSession(courseClass);
 
 			if (firstSession.getRoom() != null && firstSession.getRoom().getSite() != null) {
 				aRoom = sessions.get(0).getRoom();
@@ -312,14 +312,14 @@ public class CourseClassService {
 	public Room getRoomForAllSessions(ICourseClass courseClass) {
 		Room aRoom = null;
 
-		List<? extends ISession> sessions = courseClass.getSessions();
+		List<Session> sessions = courseClass.getSessions();
 
 		if (sessions != null && sessions.size() > 0) {
 			aRoom = sessions.get(0).getRoom();
 		}
 
 		if (sessions != null) {
-			for (ISession session : sessions) {
+			for (Session session : sessions) {
 				if (session.getRoom() != null && !session.getRoom().equals(aRoom) || session.getRoom() == null && aRoom != null) {
 					return null;
 				}
@@ -338,8 +338,8 @@ public class CourseClassService {
 		if (courseClass.getRoom() != null) {
 			return null;
 		}
-		List<? extends ISession> theSessions = courseClass.getSessions();
-		for (ISession session : theSessions) {
+		List<Session> theSessions = courseClass.getSessions();
+		for (Session session : theSessions) {
 			Room aRoom = session.getRoom();
 			if (aRoom != null) {
 				return aRoom;
@@ -351,12 +351,12 @@ public class CourseClassService {
 	/**
 	 * @return first session by start time for specified class.
 	 */
-	public ISession getFirstSession(ICourseClass courseClass) {
-		List<? extends ISession> sessions = courseClass.getSessions();
+	public Session getFirstSession(ICourseClass courseClass) {
+		List<Session> sessions = courseClass.getSessions();
 
 		if (!sessions.isEmpty()) {
 			Ordering.orderList(sessions, Collections.singletonList(
-					new Ordering(ISession.START_DATETIME_PROPERTY, SortOrder.ASCENDING)));
+					new Ordering(Session.START_DATETIME_PROPERTY, SortOrder.ASCENDING)));
 			return sessions.get(0);
 		}
 
@@ -411,27 +411,27 @@ public class CourseClassService {
 	}
 
 	/**
-	 * Returns one {@link ISessionModule} instance for each {@link Module} class has. <br>
+	 * Returns one {@link SessionModule} instance for each {@link Module} class has. <br>
 	 * This is needed to provide Training Plan table with records list without duplicated modules for each session.
 	 *
 	 * @return list of SessionModules for each Module class has
 	 */
-	public List<? extends ISessionModule> getUniqueSessionModules(ICourseClass courseClass) {
+	public List<SessionModule> getUniqueSessionModules(ICourseClass courseClass) {
 
-		List<ISessionModule> uniqueSessionModules = new ArrayList<>();
+		List<SessionModule> uniqueSessionModules = new ArrayList<>();
 
 		Set<Module> classModules = new HashSet<>();
-		for (ISession s : courseClass.getSessions()) {
-			for (ISessionModule sm : s.getSessionModules()) {
+		for (Session s : courseClass.getSessions()) {
+			for (SessionModule sm : s.getSessionModules()) {
 				classModules.add(sm.getModule());
 			}
 		}
 
-		List<? extends ISessionModule> allSessionModules = getSessionModules(courseClass);
+		List<SessionModule> allSessionModules = getSessionModules(courseClass);
 
 		for (Module module : classModules) {
-			Expression exp = ExpressionFactory.matchExp(ISessionModule.MODULE_KEY, module);
-			List<? extends ISessionModule> sessionModules = exp.filterObjects(allSessionModules);
+			Expression exp = ExpressionFactory.matchExp(SessionModule.MODULE_KEY, module);
+			List<SessionModule> sessionModules = exp.filterObjects(allSessionModules);
 			if (!sessionModules.isEmpty()) {
 				uniqueSessionModules.add(sessionModules.get(0));
 			}
@@ -440,10 +440,10 @@ public class CourseClassService {
 		return uniqueSessionModules;
 	}
 
-	public List<? extends ISessionModule> getSessionModules(ICourseClass courseClass) {
-		List<ISessionModule> sessionModules = new ArrayList<>();
+	public List<SessionModule> getSessionModules(ICourseClass courseClass) {
+		List<SessionModule> sessionModules = new ArrayList<>();
 
-		for (ISession s : courseClass.getSessions()) {
+		for (Session s : courseClass.getSessions()) {
 			sessionModules.addAll(s.getSessionModules());
 		}
 

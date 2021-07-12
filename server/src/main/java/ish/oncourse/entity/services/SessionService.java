@@ -10,8 +10,7 @@
  */
 package ish.oncourse.entity.services;
 
-import ish.messaging.ICourseClassTutor;
-import ish.messaging.ISession;
+import ish.oncourse.server.cayenne.CourseClassTutor;
 import ish.oncourse.server.cayenne.Session;
 import ish.oncourse.server.cayenne.TutorAttendance;
 import ish.util.DurationFormatter;
@@ -22,7 +21,7 @@ import java.math.BigDecimal;
  */
 public class SessionService {
 
-	public Long getDuration(ISession session) {
+	public Long getDuration(Session session) {
 		if (session.getEndDatetime() == null || session.getStartDatetime() == null) {
 			return 0L;
 		}
@@ -32,7 +31,7 @@ public class SessionService {
 	/**
 	 * @return session duration in hours
 	 */
-	public BigDecimal getDurationInHours(ISession session) {
+	public BigDecimal getDurationInHours(Session session) {
 		if (session.getEndDatetime() == null || session.getStartDatetime() == null) {
 			return new BigDecimal("0");
 		}
@@ -43,7 +42,7 @@ public class SessionService {
 	 * @param tutorRole
 	 * @return the TutorAttendance (used to be called SessionCourseClassTutor) for this tutor role (CourseClassTutor) for this session
 	 */
-	public TutorAttendance getTutorAttendanceForRole(ISession session, ICourseClassTutor tutorRole) {
+	public TutorAttendance getTutorAttendanceForRole(Session session, CourseClassTutor tutorRole) {
 		if (tutorRole == null) {
 			return null;
 		}

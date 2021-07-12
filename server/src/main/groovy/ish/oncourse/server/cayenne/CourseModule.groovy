@@ -12,7 +12,6 @@
 package ish.oncourse.server.cayenne
 
 import ish.messaging.ICourse
-import ish.messaging.ICourseModule
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._CourseModule
@@ -24,9 +23,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class CourseModule extends _CourseModule implements Queueable, ICourseModule {
-
-
+class CourseModule extends _CourseModule implements Queueable {
 
 	/**
 	 * @return the date and time this record was created

@@ -13,6 +13,7 @@ package ish.messaging;
 import ish.math.Money;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.server.cayenne.Contact;
+import ish.oncourse.server.cayenne.CorporatePass;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,7 +45,7 @@ public interface IInvoice extends PersistentObjectI {
 
 	String getDescription();
 
-	ICorporatePass getCorporatePassUsed();
+	CorporatePass getCorporatePassUsed();
 
 	String getCustomerReference();
 }

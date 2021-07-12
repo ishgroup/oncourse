@@ -12,7 +12,7 @@
 package ish.oncourse.function;
 
 import ish.messaging.ICourseClass;
-import ish.messaging.ISession;
+import ish.oncourse.server.cayenne.Session;
 import ish.util.DurationFormatter;
 
 import java.math.BigDecimal;
@@ -32,7 +32,7 @@ public class CalculateClassroomHours {
     public BigDecimal calculate() {
         BigDecimal sum = BigDecimal.ZERO;
         if (courseClass.getSessions() != null && courseClass.getSessions().size() > 0) {
-            for (ISession s : courseClass.getSessions()) {
+            for (Session s : courseClass.getSessions()) {
                 sum = sum.add(getDurationInHours(s));
             }
         } else if (courseClass.getSessionsCount() != null && courseClass.getMinutesPerSession() != null) {
@@ -41,7 +41,7 @@ public class CalculateClassroomHours {
         return sum;
     }
 
-    private BigDecimal getDurationInHours(ISession session) {
+    private BigDecimal getDurationInHours(Session session) {
         if (session.getEndDatetime() == null || session.getStartDatetime() == null) {
             return new BigDecimal("0");
         }

@@ -20,7 +20,6 @@ import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseClassReportableHours
-import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.glue._CourseClass
 import ish.oncourse.server.cayenne.glue._Session
 import ish.util.MoneyUtil
@@ -1006,7 +1005,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 
 	@Override
 	void addModuleToAllSessions(Module module) {
-		CourseClassUtil.addModuleToAllSessions(this, module, SessionModule.class)
+		CourseClassUtil.addModuleToAllSessions(this, module)
 	}
 
 	/**
@@ -1055,7 +1054,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	@Nonnull
 	@API
 	@Override
-	List<Session> getSessions() {
+	List<? extends Session> getSessions() {
 		return super.getSessions()
 	}
 

@@ -13,7 +13,9 @@ package ish.messaging;
 import ish.common.types.DeliveryMode;
 import ish.common.types.OutcomeStatus;
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.CertificateOutcome;
 import ish.oncourse.server.cayenne.Module;
+import ish.oncourse.server.cayenne.PriorLearning;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,16 +25,13 @@ import java.util.List;
  */
 public interface IOutcome extends PersistentObjectI {
 
-	String CODE = "code";
-	String NAME = "name";
-
 	Module getModule();
 
 	IEnrolment getEnrolment();
 
-	IPriorLearning getPriorLearning();
+	PriorLearning getPriorLearning();
 
-	List<? extends ICertificateOutcome> getCertificateOutcomes();
+	List<? extends CertificateOutcome> getCertificateOutcomes();
 
 	OutcomeStatus getStatus();
 

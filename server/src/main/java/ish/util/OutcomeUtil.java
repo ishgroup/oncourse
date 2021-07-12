@@ -11,17 +11,15 @@
 
 package ish.util;
 
-import ish.messaging.ICertificateOutcome;
 import ish.messaging.IOutcome;
+import ish.oncourse.server.cayenne.CertificateOutcome;
 
-/**
- * Created by anarut on 11/14/16.
- */
+
 public class OutcomeUtil {
 
     public static boolean isEditableStatus(IOutcome outcome) {
         return !outcome.getCertificateOutcomes().stream()
-                .map(ICertificateOutcome::getCertificate)
+                .map(CertificateOutcome::getCertificate)
                 .filter(c -> c.getPrintedOn() != null && c.getRevokedOn() == null)
                 .findAny()
                 .isPresent();

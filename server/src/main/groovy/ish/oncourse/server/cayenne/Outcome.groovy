@@ -49,6 +49,9 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 	public static final String TRAINING_PLAN_START_DATE_PROPERTY = "trainingPlanStartDate"
 	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
 
+	public static final String CODE = "code";
+	public static final String NAME = "name";
+
 	@Override
 	void postAdd() {
 		super.postAdd()

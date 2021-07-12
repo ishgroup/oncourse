@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.IAssessment
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Assessment
@@ -21,12 +21,16 @@ import org.apache.cayenne.validation.ValidationResult
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+
 //TODO docs
 @API
 @QueueableEntity
-class Assessment extends _Assessment  implements IAssessment, Queueable, NotableTrait, AttachableTrait {
+class Assessment extends _Assessment  implements Queueable, NotableTrait, AttachableTrait {
 
 
+	public static final String NAME_KEY = "name";
+	public static final String CODE_KEY = "code";
+	public static final String ACTIVE_KEY = "active";
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {

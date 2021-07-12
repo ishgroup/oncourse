@@ -14,12 +14,7 @@ package ish.oncourse.server.cayenne
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
-import ish.messaging.IAttendance
 import ish.oncourse.API
-import ish.oncourse.entity.services.EnrolmentService
-import static ish.oncourse.server.entity.mixins.MixinHelper.getService
-
-import javax.annotation.Nonnull
 
 trait EnrolmentTrait {
 
@@ -30,7 +25,7 @@ trait EnrolmentTrait {
     abstract CourseClass getCourseClass()
 
     abstract Student getStudent()
-    
+
     abstract List<InvoiceLine> getInvoiceLines()
 
     /**
@@ -56,7 +51,7 @@ trait EnrolmentTrait {
             return invoiceLines*.priceTotalIncTax.inject { a, b -> a.add(b) }
         }
     }
-    
+
 
 
     /**

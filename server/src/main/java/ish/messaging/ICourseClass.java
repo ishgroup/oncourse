@@ -16,9 +16,8 @@ import ish.oncourse.cayenne.ClassCostInterface;
 import ish.oncourse.cayenne.CourseClassInterface;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.PersistentObjectI;
-import ish.oncourse.server.cayenne.Room;
+import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.cayenne.Module;
-import ish.oncourse.server.cayenne.Tax;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -67,7 +66,7 @@ public interface ICourseClass extends PersistentObjectI, CourseClassInterface {
 
     Room getRoom();
 
-	List<? extends ICourseClassTutor> getTutorRoles();
+	List<CourseClassTutor> getTutorRoles();
 
 	String getUniqueCode();
 
@@ -75,7 +74,7 @@ public interface ICourseClass extends PersistentObjectI, CourseClassInterface {
 
 	BigDecimal getPayableClassroomHours();
 
-	List<? extends ISession> getSessions();
+	List<Session> getSessions();
 
 	List<? extends IEnrolment> getEnrolments();
 

@@ -13,7 +13,7 @@ package ish.util;
 
 import ish.messaging.ICourse;
 import ish.messaging.ICourseClass;
-import ish.messaging.ICourseModule;
+import ish.oncourse.server.cayenne.CourseModule;
 import ish.oncourse.server.cayenne.Module;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -31,7 +31,7 @@ public class CourseUtil {
     private CourseUtil() {
     }
 
-    public static void addModule(ICourse course, Module module, Class<? extends ICourseModule> courseModuleClass) {
+    public static void addModule(ICourse course, Module module, Class<CourseModule> courseModuleClass) {
         // this is a many to many relation, it was not solving the duplication problems well in cayenne some time ago. The code below is to ensuse that
         String nationalCode = module.getNationalCode();
         if (nationalCode != null && !nationalCode.isEmpty()) {
@@ -41,7 +41,7 @@ public class CourseUtil {
             if (currentModules.size() == 0) {
                 Module localModule = course.getContext().localObject(module);
 
-                ICourseModule courseModule = course.getContext().newObject(courseModuleClass);
+                CourseModule courseModule = course.getContext().newObject(courseModuleClass);
                 courseModule.setCourse(course);
                 courseModule.setModule(localModule);
 

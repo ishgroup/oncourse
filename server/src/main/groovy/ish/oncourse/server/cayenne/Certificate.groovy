@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ICertificate
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Certificate
@@ -25,10 +25,9 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import java.time.LocalDate
 
 import static ish.oncourse.cayenne.MappedSelectParams.*
-
-import java.time.LocalDate
 
 /**
  * A certificate is an object describing a qualification or set of outcomes issued to a student.
@@ -42,9 +41,10 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Certificate extends _Certificate implements ICertificate, Queueable, AttachableTrait {
+class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	private static final Logger logger = LogManager.getLogger()
 
+	public static final SUCCESSFUL_OUTCOMES_PROPERTY = "successful_outcomes";
 
 	/**
 	 * @return
@@ -259,7 +259,7 @@ class Certificate extends _Certificate implements ICertificate, Queueable, Attac
 	 */
 	@Nonnull
 	@Override
-	List<CertificateOutcome> getCertificateOutcomes() {
+    List<? extends CertificateOutcome> getCertificateOutcomes() {
 		return super.getCertificateOutcomes()
 	}
 
