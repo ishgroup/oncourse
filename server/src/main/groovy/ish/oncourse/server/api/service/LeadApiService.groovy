@@ -13,9 +13,11 @@ import ish.math.Money
 import ish.oncourse.server.api.dao.LeadDao
 import ish.oncourse.server.api.v1.function.SaleFunctions
 import ish.oncourse.server.api.v1.model.LeadDTO
+import ish.oncourse.server.api.v1.model.LeadStatusDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.v1.model.SiteDTO
+import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.LeadAttachmentRelation
 import ish.oncourse.server.cayenne.LeadCustomField
@@ -24,6 +26,7 @@ import ish.oncourse.server.cayenne.LeadSite
 import ish.oncourse.server.cayenne.LeadTagRelation
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Site
+import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
@@ -68,10 +71,11 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.contactId = cayenneModel.customer.id
             dtoModel.studentName = cayenneModel.customer.fullName
             dtoModel.studentNotes = cayenneModel.studentNotes
-            dtoModel.estimatedValue = cayenneModel.estimatedValue
+            dtoModel.estimatedValue = cayenneModel.estimatedValue.toBigDecimal()
             dtoModel.nextActionOn = cayenneModel.nextActionOn
             dtoModel.notify = cayenneModel.notify
-            dtoModel.active = cayenneModel.status
+            dtoModel.status = LeadStatusDTO.values()[0].fromDbType(cayenneModel.status)
+            dtoModel.assignToId = cayenneModel.assignedTo?.id
             dtoModel.assignTo = cayenneModel.assignedTo?.email
 
             dtoModel.customFields = cayenneModel.customFields.collectEntries {[(it.customFieldType.key): it.value] }
@@ -89,12 +93,18 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
         cayenneModel.studentCount = dtoModel.studentCount
         cayenneModel.customer = contactApiService.getEntityAndValidateExistence(context, dtoModel.contactId)
         cayenneModel.estimatedValue = Money.valueOf(dtoModel.estimatedValue)
+        if (dtoModel.estimatedValue == null) {
+            cayenneModel.estimatedValue = calculateEstimatedValue(context, dtoModel.studentCount,
+                    dtoModel.relatedSellables.findAll {SaleTypeDTO.COURSE == it.type } as List<SaleDTO>)
+        }
         cayenneModel.nextActionOn = dtoModel.nextActionOn
         cayenneModel.notify = dtoModel.notify
-        cayenneModel.status = dtoModel.active
+        cayenneModel.status = dtoModel.status.getDbType()
 
-        if (cayenneModel.newRecord) {
+        if (dtoModel.assignToId ==  null) {
             cayenneModel.assignedTo = context.localObject(systemUserService.currentUser)
+        } else {
+            cayenneModel.assignedTo = getRecordById(context, SystemUser.class, dtoModel.assignToId)
         }
 
         updateLeadItems(cayenneModel, dtoModel.relatedSellables)
@@ -157,8 +167,8 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             validator.throwClientErrorException(id, 'studentCount', "A number of students should be more than zero.")
         }
 
-        if (!dtoModel.active) {
-            validator.throwClientErrorException(id, 'active', "Need to specify a lead status.")
+        if (dtoModel.status == null) {
+            validator.throwClientErrorException(id, 'status', "Need to specify a lead status.")
         }
 
         if (dtoModel.relatedSellables.empty) {
@@ -178,5 +188,16 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             validator.throwClientErrorException(key, "Unsupported attribute")
         }
         action
+    }
+
+    private Money calculateEstimatedValue(ObjectContext context, Integer studentCounts, List<SaleDTO> relatedCourses) {
+        List<Course> dbCourses = relatedCourses.collect {courseApiService.getEntityAndValidateExistence(context, it.id) }
+        Money estimatedValue = dbCourses.findAll {!it.courseClasses.empty }
+                .collect {dbCourse ->
+                    // take a last class of course
+                    return dbCourse.courseClasses.sort { it.startDateTime }.last()
+                }*.feeExGst.sum() as Money
+
+        return estimatedValue.multiply(studentCounts.toBigDecimal())
     }
 }
