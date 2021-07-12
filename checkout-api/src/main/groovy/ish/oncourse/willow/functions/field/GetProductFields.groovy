@@ -60,7 +60,7 @@ class GetProductFields {
             }
             return FieldHelper.valueOf(customFields).buildFieldHeadings()
         }
-        return null
+        return []
     }
 
     List<FieldHeading> get(Integer quantity) {
