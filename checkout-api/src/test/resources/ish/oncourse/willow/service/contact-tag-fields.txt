@@ -7,6 +7,7 @@ class ContactFields {
             id: 103
             key: multipleTag//Tag1/Tag1C1
             name: /Tag1/Tag1C1
+            pattern: null
             description: Tag Field 1 description
             mandatory: false
             dataType: TAGGROUP_M
@@ -20,6 +21,7 @@ class ContactFields {
             id: 103
             key: multipleTag//Tag1/Tag1C2/Tag1C2C1
             name: /Tag1/Tag1C2/Tag1C2C1
+            pattern: null
             description: Tag Field 1 description
             mandatory: false
             dataType: TAGGROUP_M
@@ -33,6 +35,7 @@ class ContactFields {
             id: 103
             key: multipleTag//Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
             name: /Tag1/Tag1C2/Tag1C2C2/Tag1C2C2C1
+            pattern: null
             description: Tag Field 1 description
             mandatory: false
             dataType: TAGGROUP_M
@@ -46,6 +49,7 @@ class ContactFields {
             id: 104
             key: singleTag/Tag Field 2
             name: Tag Field 2
+            pattern: null
             description: Tag Field 2 description
             mandatory: true
             dataType: TAGGROUP_S

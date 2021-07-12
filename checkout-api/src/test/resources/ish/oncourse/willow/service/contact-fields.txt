@@ -7,6 +7,7 @@ class ContactFields {
             id: 126
             key: specialNeeds
             name: Favorite car maker26
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: LONG_STRING
@@ -25,6 +26,7 @@ class ContactFields {
             id: 4
             key: street
             name: Favorite car maker4
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: STRING
@@ -38,6 +40,7 @@ class ContactFields {
             id: 5
             key: suburb
             name: Favorite car maker5
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: SUBURB
@@ -51,6 +54,7 @@ class ContactFields {
             id: 6
             key: postcode
             name: Favorite car maker6
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: POSTCODE
@@ -64,6 +68,7 @@ class ContactFields {
             id: 9
             key: businessPhoneNumber
             name: Favorite car maker9
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: PHONE
@@ -77,6 +82,7 @@ class ContactFields {
             id: 10
             key: faxNumber
             name: Favorite car maker10
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: PHONE
@@ -90,6 +96,7 @@ class ContactFields {
             id: 11
             key: mobilePhoneNumber
             name: Favorite car maker11
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: PHONE
@@ -103,6 +110,7 @@ class ContactFields {
             id: 12
             key: dateOfBirth
             name: Favorite car maker12
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: DATE
@@ -116,6 +124,7 @@ class ContactFields {
             id: 14
             key: isMale
             name: Favorite car maker14
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -138,6 +147,7 @@ class ContactFields {
             id: 15
             key: citizenship
             name: Favorite car maker15
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -172,6 +182,7 @@ class ContactFields {
             id: 16
             key: countryOfBirth
             name: Favorite car make16r
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: COUNTRY
@@ -185,6 +196,7 @@ class ContactFields {
             id: 17
             key: languageHome
             name: Favorite car mak17er
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: LANGUAGE
@@ -198,6 +210,7 @@ class ContactFields {
             id: 18
             key: yearSchoolCompleted
             name: Favorite car maker18
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: INTEGER
@@ -211,6 +224,7 @@ class ContactFields {
             id: 19
             key: englishProficiency
             name: Favorite car maker19
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -239,6 +253,7 @@ class ContactFields {
             id: 20
             key: indigenousStatus
             name: Favorite car make20r
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -267,6 +282,7 @@ class ContactFields {
             id: 21
             key: highestSchoolLevel
             name: Favorite car maker21
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -301,6 +317,7 @@ class ContactFields {
             id: 22
             key: isStillAtSchool
             name: Favorite car maker22
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -323,6 +340,7 @@ class ContactFields {
             id: 23
             key: priorEducationCode
             name: Favorite car maker23
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -366,6 +384,7 @@ class ContactFields {
             id: 24
             key: labourForceStatus
             name: Favorite car 24
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -406,6 +425,7 @@ class ContactFields {
             id: 25
             key: disabilityType
             name: Favorite car maker25
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: ENUM
@@ -452,6 +472,7 @@ class ContactFields {
             id: 27
             key: country
             name: Favorite car 27
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: COUNTRY
@@ -465,6 +486,7 @@ class ContactFields {
             id: 28
             key: customField.contact.carMaker
             name: Favorite car maker
+            pattern: null
             description: Favorite car maker28
             mandatory: true
             dataType: STRING
@@ -483,6 +505,7 @@ class ContactFields {
             id: 7
             key: state
             name: Favorite car maker7
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: STRING
@@ -496,6 +519,7 @@ class ContactFields {
             id: 8
             key: homePhoneNumber
             name: Favorite car maker8
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: PHONE
@@ -508,12 +532,13 @@ class ContactFields {
         }]
         ordering: 2
     }, class FieldHeading {
-        name: Trhread Heading_2
+        name: Third Heading_2
         description: description
         fields: [class Field {
             id: 113
             key: abn
             name: Favorite car maker13
+            pattern: null
             description: Favorite car maker
             mandatory: true
             dataType: STRING

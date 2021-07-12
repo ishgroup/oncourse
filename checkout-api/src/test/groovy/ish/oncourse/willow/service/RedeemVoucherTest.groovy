@@ -36,7 +36,7 @@ class RedeemVoucherTest extends ApiTest {
                         new Enrolment(contactId: '1001', classId: '1003', selected: true)
                 ]
                 if (addProduct) {
-                    n.articles = [new Article(contactId: '1001', productId: '1003', selected: true,quantity: 1, price: 100.00, total: 100.00)]
+                    n.articles = [new Article(contactId: '1001', productId: '1003', selected: true,quantity: 1, price: 100.00, total: 100.00, fieldHeadings: [])]
                 }
                 n
             }

@@ -129,7 +129,7 @@
     <FieldHeading id="4"  collegeId="1"  angelId="4" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Second Heading_2"
                   description="description" fieldConfigurationId="2" />
 
-    <FieldHeading id="5"  collegeId="1"  angelId="5" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Trhread Heading_2"
+    <FieldHeading id="5"  collegeId="1"  angelId="5" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Third Heading_2"
                   description="description" fieldConfigurationId="2" />
     
     <Field id="1"  collegeId="1"  angelId="1"
@@ -495,6 +495,10 @@
 
     <CourseClass isActive="1" id="1002" code="2" collegeId="1"  courseId="1002" deliveryMode="1" detail="Test Course Class 5-2" feeExGst="20.00" feeGst="1.25"  maximumPlaces="3"
                  startDate="2012-01-03 00:00:00" endDate="2102-01-03 00:00:00" isCancelled="0" isDistantLearningCourse="0"/>
+
+    <Product collegeId="1" SKU="23456" createdOn="2012-05-10 17:59:42.384" description="Course voucher" expiryType="4" id="1001" isOnSale="1"
+             isWebVisible="1" modifiedOn="2012-05-15 16:29:23.13" name="Course voucher" type="3" angelId="7"
+             taxAdjustment="0.00" feeGST="0.00" maxCoursesRedemption="3" priceExTax="100.00"/>
 
 
 

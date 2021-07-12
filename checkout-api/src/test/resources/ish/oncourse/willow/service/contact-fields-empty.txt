@@ -7,6 +7,7 @@ class ContactFields {
             id: 28
             key: customField.contact.carMaker
             name: Favorite car maker
+            pattern: null
             description: Favorite car maker28
             mandatory: true
             dataType: STRING

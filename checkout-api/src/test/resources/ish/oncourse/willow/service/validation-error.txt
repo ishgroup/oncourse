@@ -1,57 +1,75 @@
 class ValidationError {
     formErrors: []
     fieldsErrors: [class FieldError {
+        index: 0
         name: street
         error: The Street cannot exceed 200 characters.
     }, class FieldError {
+        index: 1
         name: suburb
         error: A suburb name cannot contain numeric digits.
     }, class FieldError {
+        index: 2
         name: postcode
         error: Enter 4 digit postcode for Australian postcodes.
     }, class FieldError {
+        index: 4
         name: homePhoneNumber
         error: Enter 10 digit Home phone number including area code for Australian numbers
     }, class FieldError {
+        index: 5
         name: businessPhoneNumber
         error: Enter 10 digit Business phone number including area code for Australian numbers
     }, class FieldError {
+        index: 6
         name: faxNumber
         error: Enter 10 digit Fax phone number including area code for Australian numbers
     }, class FieldError {
+        index: 7
         name: mobilePhoneNumber
         error: Enter 10 digit mobile phone number including 04 area code for Australian numbers
     }, class FieldError {
+        index: 8
         name: dateOfBirth
         error: Only date of birth in format DD/MM/YYYY and after 01/01/1900 are valid
     }, class FieldError {
+        index: 14
         name: citizenship
         error: citizenship is incorrect
     }, class FieldError {
+        index: 15
         name: countryOfBirth
         error: Incorrect format of countryOfBirth
     }, class FieldError {
+        index: 16
         name: languageHome
         error: Language name languageHome is incorrect
     }, class FieldError {
+        index: 17
         name: yearSchoolCompleted
         error: Enter numeric value for yearSchoolCompleted
     }, class FieldError {
+        index: 18
         name: englishProficiency
         error: englishProficiency is incorrect
     }, class FieldError {
+        index: 19
         name: indigenousStatus
         error: indigenousStatus is incorrect
     }, class FieldError {
+        index: 20
         name: highestSchoolLevel
         error: highestSchoolLevel is incorrect
     }, class FieldError {
+        index: 22
         name: priorEducationCode
         error: priorEducationCode is incorrect
     }, class FieldError {
+        index: 23
         name: labourForceStatus
         error: labourForceStatus is incorrect
     }, class FieldError {
+        index: 24
         name: disabilityType
         error: disabilityType is incorrect
     }]
