@@ -16,12 +16,12 @@ Feature: Main feature for all POST requests with path 'list/entity/lead'
         {
         "studentName":"student for lead",
         "contactId": 33,
-        "estimatedValue": 350,
-        "active":true,
+        "estimatedValue": null,
+        "status": "Open",
         "studentCount":1,
         "nextActionOn":"2021-07-10T12:30:00.000Z",
         "notify":false,
-        "sellables":[
+        "relatedSellables":[
           {"id":112,"active":true,"name":"FirstLeadCourse","code":"lead1","type":"Course"},
           {"id":1010,"active":true,"name":"Exclusive Lead Voucher","code":"LFV1","type":"Voucher"}
         ],
@@ -61,11 +61,11 @@ Feature: Main feature for all POST requests with path 'list/entity/lead'
     When method GET
     Then status 200
     And match $.contactId == 33
-    And match $.active == true
-    And match $.estimatedValue == "$350.00"
+    And match $.status == 'Open'
+    And match $.estimatedValue == 350.0
     And match $.assignTo == "admin@gmail.com"
     And match $.tags == "#[1]"
-    And match $.sellables == "#[2]"
+    And match $.relatedSellables == "#[2]"
     And match $.sites == "#[1]"
     And match $.documents == "#[1]"
 
