@@ -286,7 +286,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   const validatePaymentMethodField = useCallback(
     (value, allValues) => {
-      if (value === 2) {
+      if (selectedPaymentType === "Credit card") {
         if (!refundablePayments) {
           return "There are no refundable payments. Choose another payment method.";
         }
@@ -297,7 +297,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
       }
       return undefined;
     },
-    [refundablePaymentRecords]
+    [refundablePaymentRecords, selectedPaymentType]
   );
 
   const validateInvoices = useCallback(

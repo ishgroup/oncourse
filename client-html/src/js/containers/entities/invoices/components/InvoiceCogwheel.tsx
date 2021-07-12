@@ -3,17 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useMemo, memo, useCallback, useEffect, useState
-} from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { isDirty, reset } from "redux-form";
-import { PaymentOut } from "@api/model";
+import { PaymentMethod, PaymentOut } from "@api/model";
 import { format } from "date-fns";
 import { State } from "../../../../reducers/state";
-import { setContraInvoices, duplicateAndReverseInvoice, getAmountOwing } from "../actions";
+import { duplicateAndReverseInvoice, getAmountOwing, setContraInvoices } from "../actions";
 import ContraInvoiceModal from "./ContraInvoiceModal";
 import { getAddPaymentOutContact, postPaymentOut } from "../../paymentsOut/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
@@ -34,6 +32,7 @@ interface Props extends CogwhelAdornmentProps {
   resetEditView: any;
   openAddPaymentOutEditView: any;
   hasQePermissions: any;
+  paymentOutMethods: PaymentMethod[];
 }
 
 const InvoiceCogwheel = memo<Props>(props => {
@@ -52,7 +51,8 @@ const InvoiceCogwheel = memo<Props>(props => {
     isFormDirty,
     resetEditView,
     openAddPaymentOutEditView,
-    hasQePermissions
+    hasQePermissions,
+    paymentOutMethods
   } = props;
 
   const [dialogOpened, setDialogOpened] = useState(false);
@@ -95,11 +95,13 @@ const InvoiceCogwheel = memo<Props>(props => {
       administrationCenterId
     };
 
-    if (paymentMethodId === 1) {
+    const selectedPaymentMethod = paymentOutMethods.find(p => p.id === paymentMethodId)?.type;
+
+    if (selectedPaymentMethod === "Cheque") {
       paymentOut.chequeSummary = chequeSummary;
     }
 
-    if (paymentMethodId === 2) {
+    if (selectedPaymentMethod === "Credit card") {
       paymentOut.refundableId = refundableId;
     }
 
@@ -194,7 +196,7 @@ const InvoiceCogwheel = memo<Props>(props => {
   );
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   resetEditView: () => dispatch(reset(LIST_EDIT_VIEW_FORM_NAME)),
   getAmountOwing: (id: number) => dispatch(getAmountOwing(id)),
   getAddPaymentOutContact: (id: number) => dispatch(getAddPaymentOutContact(id)),
@@ -208,7 +210,8 @@ const mapStateToProps = (state: State) => ({
   contraInvoices: state.invoices.contraInvoices,
   selectedInvoiceAmountOwing: state.invoices.selectedInvoiceAmountOwing,
   isFormDirty: isDirty(LIST_EDIT_VIEW_FORM_NAME)(state),
-  hasQePermissions: state.access["ENROLMENT_CREATE"]
+  hasQePermissions: state.access["ENROLMENT_CREATE"],
+  paymentOutMethods: state.paymentsOut.paymentOutMethods
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(InvoiceCogwheel);
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceCogwheel);
