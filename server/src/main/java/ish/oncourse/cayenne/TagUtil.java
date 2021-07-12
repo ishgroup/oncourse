@@ -42,8 +42,8 @@ public final class TagUtil {
 		Tag root = null;
 		for (Tag tag : tags) {
 			if (root == null) {
-				root = getRoot(tag);
-			} else if (!root.equals(getRoot(tag))) {
+				root = tag.getRoot();
+			} else if (!root.equals(tag.getRoot())) {
 				throw new IllegalArgumentException("The tags have to belong to the same tag tree");
 			}
 		}
@@ -73,15 +73,5 @@ public final class TagUtil {
 		Expression expression = ExpressionFactory.matchExp(ALIAS + alias + "+." + Tag.TAG_PROPERTY + "." + Tag.ID.getName(), tag.getId());
 		expression = expression.andExp(ExpressionFactory.matchExp(ALIAS + alias + "+." + Tag.ENTITY_IDENTIFIER_PROPERTY, entity));
 		return expression;
-	}
-
-	/**
-	 * @return top-most parent of the given tag
-	 */
-	public static Tag getRoot(Tag tag) {
-		if (tag.getParentTag() == null) {
-			return tag;
-		}
-		return getRoot(tag.getParentTag());
 	}
 }

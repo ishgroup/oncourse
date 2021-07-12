@@ -40,6 +40,9 @@ import java.awt.datatransfer.UnsupportedFlavorException
 @QueueableEntity
 class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 
+	public static final String ALIAS = "alias";
+	public static final String TAG_PATH = "taggingRelations";
+
 	public static final String NAME_KEY = "name"
 	public static final String SHORT_NAME_KEY = "shortName"
 	public static final String PARENT_TAG_KEY = "parentTag"
