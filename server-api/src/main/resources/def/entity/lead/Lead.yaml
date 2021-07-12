@@ -25,9 +25,11 @@ properties:
     format: date-time
   notify:
     type: boolean
-  active:
-    type: boolean
-    required: true
+  status:
+    $ref: '../../enum/LeadStatus.yaml'
+  assignToId:
+    type: integer
+    format: int64
   assignTo:
     type: string
   relatedSellables:
