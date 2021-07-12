@@ -193,7 +193,7 @@
         <field name="tutor" type="textgen" indexed="true" stored="true"
                omitNorms="false" multiValued="true"/>
 
-        <field name="when" type="string" indexed="true" stored="true"
+        <field name="when" type="textgen" indexed="true" stored="true"
                omitNorms="false" multiValued="true"/>
 
         <field name="startDate" type="date" indexed="true" stored="true"
