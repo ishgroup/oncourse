@@ -24,7 +24,7 @@ import { contactLabelCondition, defaultContactName, openContactLink } from "../.
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { setSelectedContact } from "../../invoices/actions";
 
-const items = [{ label: "Open", value: true }, { label: "Close", value: false }];
+const items = [{ label: "Open", value: "Open" }, { label: "Close", value: "Close" }];
 
 const LeadGeneral = (props: any) => {
   const {
@@ -99,7 +99,7 @@ const LeadGeneral = (props: any) => {
       />
       <FormField
         type="select"
-        name="active"
+        name="status"
         label="Status"
         items={items}
         required

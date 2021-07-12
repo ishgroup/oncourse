@@ -35,7 +35,7 @@ import { FilterGroup } from "../../../model/common/ListView";
 
 const Initial: Lead = {
   id: null,
-  active: true,
+  status: "Open",
   relatedSellables: [],
   studentNotes: null,
   studentCount: 1,
@@ -49,8 +49,8 @@ const filterGroups: FilterGroup[] = [
     title: "CORE FILTER",
     filters: [
       {
-        name: "Active",
-        expression: "status == true",
+        name: "Status",
+        expression: "(status == OPEN)",
         active: false
       },
     ]
