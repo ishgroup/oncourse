@@ -77,7 +77,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.customFields = cayenneModel.customFields.collectEntries {[(it.customFieldType.key): it.value] }
             dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             dtoModel.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
-            dtoModel.sellables = cayenneModel.items.collect {item -> item.course ? toRestSale(item.course) : toRestSale(item.product) }
+            dtoModel.relatedSellables = cayenneModel.items.collect {item -> item.course ? toRestSale(item.course) : toRestSale(item.product) }
             dtoModel.sites =  cayenneModel.sites.collect {toRestSiteMinimized(it) }
             dtoModel
         }
@@ -97,7 +97,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             cayenneModel.assignedTo = context.localObject(systemUserService.currentUser)
         }
 
-        updateLeadItems(cayenneModel, dtoModel.sellables)
+        updateLeadItems(cayenneModel, dtoModel.relatedSellables)
         updateSites(dtoModel.sites, cayenneModel)
         updateTags(cayenneModel, cayenneModel.taggingRelations, dtoModel.tags*.id, LeadTagRelation.class, context)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dtoModel.documents, LeadAttachmentRelation.class, context)
@@ -161,7 +161,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             validator.throwClientErrorException(id, 'active', "Need to specify a lead status.")
         }
 
-        if (dtoModel.sellables.empty) {
+        if (dtoModel.relatedSellables.empty) {
             validator.throwClientErrorException(id, 'active', "A lead should consist of at least one sale item.")
         }
     }

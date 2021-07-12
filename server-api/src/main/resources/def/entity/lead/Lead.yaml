@@ -30,7 +30,7 @@ properties:
     required: true
   assignTo:
     type: string
-  sellables:
+  relatedSellables:
     type: array
     items:
       $ref: '../Sale.yaml'
