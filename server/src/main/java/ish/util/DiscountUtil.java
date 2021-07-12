@@ -12,7 +12,6 @@ package ish.util;
 
 import ish.common.types.ClassCostFlowType;
 import ish.common.types.ClassCostRepetitionType;
-import ish.messaging.ICourseClass;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.DiscountInterface;
 import ish.oncourse.server.cayenne.ClassCost;
@@ -46,7 +45,7 @@ public class DiscountUtil {
 	/**
 	 * Checks if class is linked to the given discount.
 	 */
-	public static boolean hasDiscount(ICourseClass courseClass, DiscountInterface discount) {
+	public static boolean hasDiscount(CourseClass courseClass, DiscountInterface discount) {
 		for (DiscountCourseClassInterface dcc : courseClass.getDiscountCourseClasses()) {
 			if (discount.equals(dcc.getDiscount())) {
 				return true;

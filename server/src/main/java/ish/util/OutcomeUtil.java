@@ -11,13 +11,13 @@
 
 package ish.util;
 
-import ish.messaging.IOutcome;
 import ish.oncourse.server.cayenne.CertificateOutcome;
+import ish.oncourse.server.cayenne.Outcome;
 
 
 public class OutcomeUtil {
 
-    public static boolean isEditableStatus(IOutcome outcome) {
+    public static boolean isEditableStatus(Outcome outcome) {
         return !outcome.getCertificateOutcomes().stream()
                 .map(CertificateOutcome::getCertificate)
                 .filter(c -> c.getPrintedOn() != null && c.getRevokedOn() == null)

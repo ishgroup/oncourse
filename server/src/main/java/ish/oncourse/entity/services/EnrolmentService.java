@@ -11,7 +11,7 @@
 
 package ish.oncourse.entity.services;
 
-import ish.messaging.IEnrolment;
+import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.InvoiceLine;
 
 import java.util.Comparator;
@@ -19,7 +19,7 @@ import java.util.Comparator;
 public class EnrolmentService {
 
 
-	public InvoiceLine getOriginalInvoiceLine(IEnrolment self) {
+	public InvoiceLine getOriginalInvoiceLine(Enrolment self) {
 		return self.getInvoiceLines().stream()
 				.sorted(Comparator.comparing(il -> il.getInvoice().getInvoiceNumber()))
 				.findFirst()

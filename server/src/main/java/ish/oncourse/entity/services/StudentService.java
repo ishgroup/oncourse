@@ -11,8 +11,8 @@
 package ish.oncourse.entity.services;
 
 import ish.common.types.EnrolmentStatus;
-import ish.messaging.IEnrolment;
-import ish.messaging.IOutcome;
+import ish.oncourse.server.cayenne.Enrolment;
+import ish.oncourse.server.cayenne.Outcome;
 import ish.oncourse.server.cayenne.PriorLearning;
 import ish.oncourse.server.cayenne.Student;
 
@@ -23,10 +23,10 @@ import java.util.List;
  */
 public class StudentService {
 
-	public List<? extends IEnrolment> getValidAndCancelledEnrolments(Student student) {
-		List<IEnrolment> result = new ArrayList<>();
+	public List<Enrolment> getValidAndCancelledEnrolments(Student student) {
+		List<Enrolment> result = new ArrayList<>();
 		if (student.getEnrolments() != null) {
-			for (IEnrolment e : student.getEnrolments()) {
+			for (Enrolment e : student.getEnrolments()) {
 				if (EnrolmentStatus.STATUSES_LEGIT.contains(e.getStatus()) || EnrolmentStatus.STATUSES_CANCELLATIONS.contains(e.getStatus())) {
 					result.add(e);
 				}
@@ -39,9 +39,9 @@ public class StudentService {
 	 * @param vetOnly
 	 * @return Outcomes
 	 */
-	public List<? extends IOutcome> getOutcomes(Student student, boolean vetOnly) {
-		List<IOutcome> result = new ArrayList<>();
-		for (IEnrolment e : getValidAndCancelledEnrolments(student)) {
+	public List<Outcome> getOutcomes(Student student, boolean vetOnly) {
+		List<Outcome> result = new ArrayList<>();
+		for (Enrolment e : getValidAndCancelledEnrolments(student)) {
 			if (e.getCourseClass() != null && !e.getCourseClass().getIsCancelled()) {
 				result.addAll(e.getOutcomes());
 			}
@@ -52,8 +52,8 @@ public class StudentService {
 		}
 
 		if (vetOnly) {
-			List<IOutcome> finalresult = new ArrayList<>();
-			for (IOutcome o : result) {
+			List<Outcome> finalresult = new ArrayList<>();
+			for (Outcome o : result) {
 				if (o.getModule() != null) {
 					finalresult.add(o);
 				}

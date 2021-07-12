@@ -14,7 +14,6 @@ package ish.oncourse.server.cayenne
 import ish.budget.ClassCostUtil
 import ish.common.types.*
 import ish.math.Money
-import ish.messaging.ICourseClass
 import ish.oncourse.API
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.CourseClassUtil
@@ -49,7 +48,33 @@ import java.time.ZoneId
  */
 @API
 @QueueableEntity
-class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, CourseClassInterface {
+class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, CourseClassInterface {
+	public static final String END_DATE_TIME_KEY = "endDateTime";
+	public static final String FEE_INC_GST = "feeIncGst";
+	public static final String START_DATE_TIME_KEY = "startDateTime";
+	public static final String IS_CANCELLED_KEY = "isCancelled";
+	public static final String DISCOUNT_FEES_PROPERTY = "discount_fees";
+	public static final String ENROLMENTS_TO_PROCEED_MESSAGE = "enrolments_to_proceed";
+	public static final String ENROLMENTS_TO_PROFIT_MESSAGE = "enrolments_to_profit";
+	public static final String REFUNDED_AND_CANCELLED_ENROLMENTS_COUNT_PROPERTY = "refunded_and_cancelled_enrolments_count";
+	public static final String MALE_ENROLMENTS_COUNT_PROPERTY = "male_enrolments_count";
+	public static final String OUTCOMES_PROPERTY = "outcomes";
+	public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
+	public static final String TUTOR_NAMES_PROP = "tutor_names";
+	public static final String TUTOR_NAMES_ABRIDGED_PROP = "tutor_names_abridged";
+	public static final String SUCCESS_AND_QUEUED_ENROLMENTS_PROPERTY = "successAndQueuedEnrolments";
+	public static final String TIMETABLE_SUMMARY_PROPERTY = "timetableSummary";
+
+	// hours fields
+	public static final String STUDENT_CONTACT_HOURS_PROP = "studentContactHoursProp";
+
+	// + reportable hours from model
+	public static final String CLASSROOM_HOURS = "classroomHoursProp";
+	public static final String NOMINAL_HOURS_PROP = "nominalHoursProp";
+	public static final String PLACES_LEFT_PROPERTY = "places_left";
+	public static final String UNIQUE_SESSION_MODULES_PROPERTY = "unique_session_modules";
+	public static final String SESSION_MODULES_PROPERTY = "session_modules";
+	public static final String FULL_NAME_OF_CLASS_WITH_CODE = "full_name_of_class_with_code";
 
 
 	public static final String EXPORT_DISCOUNT_RELATION = "discount"

@@ -10,8 +10,8 @@
  */
 package ish.oncourse.entity.services;
 
-import ish.messaging.ICourse;
-import ish.messaging.ICourseClass;
+import ish.oncourse.server.cayenne.Course;
+import ish.oncourse.server.cayenne.CourseClass;
 import ish.persistence.CommonExpressionFactory;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -23,15 +23,15 @@ import java.util.Date;
 public class CourseService {
 
 	public static Expression getExpressionForNotCancelledClasses() {
-		return ExpressionFactory.noMatchExp(ICourseClass.IS_CANCELLED_KEY, Boolean.TRUE);
+		return ExpressionFactory.noMatchExp(CourseClass.IS_CANCELLED_KEY, Boolean.TRUE);
 	}
 
 	public static Expression getExpressionForClassesWhichNotEnded() {
-		return ExpressionFactory.greaterOrEqualExp(ICourseClass.END_DATE_TIME_KEY, CommonExpressionFactory.previousMidnight(new Date()));
+		return ExpressionFactory.greaterOrEqualExp(CourseClass.END_DATE_TIME_KEY, CommonExpressionFactory.previousMidnight(new Date()));
 	}
 
 	public static Expression getExpressionForClassesWhichNotEndedOrHaveNoEndDate() {
-		Expression result = ExpressionFactory.matchExp(ICourseClass.END_DATE_TIME_KEY, null);
+		Expression result = ExpressionFactory.matchExp(CourseClass.END_DATE_TIME_KEY, null);
 		result = result.orExp(getExpressionForClassesWhichNotEnded());
 		result = result.andExp(getExpressionForNotCancelledClasses());
 		return result;
@@ -42,7 +42,7 @@ public class CourseService {
 	 * deprecated, use CourseTrait.
 	 */
 	@Deprecated
-	public Integer getCurrentClassesCount(ICourse course) {
+	public Integer getCurrentClassesCount(Course course) {
 		if (course.getCourseClasses() == null || course.getCourseClasses().size() == 0) {
 			return 0;
 		}

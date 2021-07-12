@@ -11,8 +11,8 @@
 
 package ish.util;
 
-import ish.messaging.ICourse;
-import ish.messaging.ICourseClass;
+import ish.oncourse.server.cayenne.Course;
+import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.CourseModule;
 import ish.oncourse.server.cayenne.Module;
 import org.apache.cayenne.exp.Expression;
@@ -31,7 +31,7 @@ public class CourseUtil {
     private CourseUtil() {
     }
 
-    public static void addModule(ICourse course, Module module, Class<CourseModule> courseModuleClass) {
+    public static void addModule(Course course, Module module, Class<CourseModule> courseModuleClass) {
         // this is a many to many relation, it was not solving the duplication problems well in cayenne some time ago. The code below is to ensuse that
         String nationalCode = module.getNationalCode();
         if (nationalCode != null && !nationalCode.isEmpty()) {
@@ -46,7 +46,7 @@ public class CourseUtil {
                 courseModule.setModule(localModule);
 
                 // propagate module changes to all sessions of classes linked to course
-                for (ICourseClass courseClass : course.getCourseClasses()) {
+                for (CourseClass courseClass : course.getCourseClasses()) {
                     courseClass.addModuleToAllSessions(localModule);
                 }
 

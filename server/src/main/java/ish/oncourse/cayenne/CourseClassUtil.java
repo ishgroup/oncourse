@@ -11,11 +11,8 @@
 package ish.oncourse.cayenne;
 
 import ish.common.types.EnrolmentStatus;
-import ish.messaging.ICourseClass;
-import ish.messaging.IEnrolment;
 import ish.oncourse.server.cayenne.Module;
-import ish.oncourse.server.cayenne.Session;
-import ish.oncourse.server.cayenne.SessionModule;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
@@ -30,13 +27,13 @@ public final class CourseClassUtil {
 	/**
 	 * @return the list of enrolments which are considered as valid, that is the one which have status success or which are queued.
 	 */
-	public static List<? extends IEnrolment> getSuccessAndQueuedEnrolments(List<? extends IEnrolment> theEnrolments) {
+	public static List<Enrolment> getSuccessAndQueuedEnrolments(List<Enrolment> theEnrolments) {
 		if (theEnrolments == null || theEnrolments.size() == 0) {
 			return theEnrolments;
 		}
-		Expression validEnrolmentExpr = ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, null);
+		Expression validEnrolmentExpr = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, null);
 		for (EnrolmentStatus es : EnrolmentStatus.STATUSES_LEGIT) {
-			validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, es));
+			validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, es));
 		}
 
 		return validEnrolmentExpr.filterObjects(theEnrolments);
@@ -45,12 +42,12 @@ public final class CourseClassUtil {
 	/**
 	 * @return the list of enrolments which are considered as REFUNDED.
 	 */
-	public static List<? extends IEnrolment> getRefundedAndCancelledEnrolments(List<? extends IEnrolment> theEnrolments) {
+	public static List<Enrolment> getRefundedAndCancelledEnrolments(List<Enrolment> theEnrolments) {
 		if (theEnrolments == null || theEnrolments.size() == 0) {
 			return theEnrolments;
 		}
-		Expression validEnrolmentExpr = ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, EnrolmentStatus.REFUNDED);
-		validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, EnrolmentStatus.CANCELLED));
+		Expression validEnrolmentExpr = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.REFUNDED);
+		validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, EnrolmentStatus.CANCELLED));
 
 		return validEnrolmentExpr.filterObjects(theEnrolments);
 	}
@@ -59,7 +56,7 @@ public final class CourseClassUtil {
 	/**
 	 * Adds module to all existing sessions of the class
 	 */
-	public static void addModuleToAllSessions(ICourseClass courseClass, Module module) {
+	public static void addModuleToAllSessions(CourseClass courseClass, Module module) {
 		for (Session session : courseClass.getSessions()) {
 			SessionModule sessionModule =  courseClass.getContext().newObject(SessionModule.class);
 			sessionModule.setSession(session);

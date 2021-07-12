@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.messaging.IOutcome
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.AttendanceInterface
 import ish.oncourse.cayenne.OutcomeInterface
@@ -75,7 +75,7 @@ class SessionModule extends _SessionModule implements SessionModuleInterface, Qu
 
 	@Override
 	AttendanceInterface getAttendanceForOutcome(OutcomeInterface outcomeInterface) {
-		IOutcome outcome = ((OutcomeDelegator) outcomeInterface).getOutcome()
+		Outcome outcome = ((OutcomeDelegator) outcomeInterface).getOutcome()
 		Student student = (Student) outcome.getEnrolment().getStudent()
 		this.session.attendance.find{it.student.id == student.id}
 	}

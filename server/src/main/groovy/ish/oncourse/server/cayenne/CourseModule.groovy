@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ICourse
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._CourseModule
@@ -66,7 +66,7 @@ class CourseModule extends _CourseModule implements Queueable {
 	}
 
 	@Override
-	void setCourse(ICourse course) {
+	void setCourse(Course course) {
 		super.setCourse((Course) course)
 	}
 

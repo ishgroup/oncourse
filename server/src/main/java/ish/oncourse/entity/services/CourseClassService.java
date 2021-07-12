@@ -14,7 +14,6 @@ import com.google.inject.Inject;
 import ish.budget.ClassBudgetUtil;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
-import ish.messaging.*;
 import ish.oncourse.cayenne.CourseClassUtil;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.function.CalculateClassroomHours;
@@ -50,16 +49,16 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return list of enrolments
 	 */
-	public List<? extends IEnrolment> getSuccessfulAndQueuedEnrolments(ICourseClass courseClass) {
+	public List<Enrolment> getSuccessfulAndQueuedEnrolments(CourseClass courseClass) {
 
-		List<? extends IEnrolment> theEnrolments = courseClass.getEnrolments();
+		List<Enrolment> theEnrolments = courseClass.getEnrolments();
 
 		if (theEnrolments == null || theEnrolments.size() == 0) {
 			return theEnrolments;
 		}
-		Expression validEnrolmentExpr = ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, null);
+		Expression validEnrolmentExpr = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, null);
 		for (EnrolmentStatus es : EnrolmentStatus.STATUSES_LEGIT) {
-			validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, es));
+			validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, es));
 		}
 
 		return validEnrolmentExpr.filterObjects(theEnrolments);
@@ -72,14 +71,14 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return count of successful and queued enrolments
 	 */
-	public int getValidEnrolmentsCount(ICourseClass courseClass) {
+	public int getValidEnrolmentsCount(CourseClass courseClass) {
 		return getSuccessfulAndQueuedEnrolments(courseClass).size();
 	}
 
 	/**
 	 * @return number of places are left for enrolments in the class
 	 */
-	public int getPlacesLeft(ICourseClass courseClass) {
+	public int getPlacesLeft(CourseClass courseClass) {
 		if (courseClass.getMaximumPlaces() == null) {
 			// can happen when initializing new controller
 			return 0;
@@ -93,7 +92,7 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return required number of enrolments
 	 */
-	public Integer getEnrolmentsToProfit(ICourseClass courseClass) {
+	public Integer getEnrolmentsToProfit(CourseClass courseClass) {
 		if (courseClass.getFeeExGst().isZero()) {
 			return 0;
 		}
@@ -108,7 +107,7 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return required number of enrolments
 	 */
-	public Integer getEnrolmentsToProceed(ICourseClass courseClass) {
+	public Integer getEnrolmentsToProceed(CourseClass courseClass) {
 		if (courseClass.getFeeExGst().isZero()) {
 			return 0;
 		}
@@ -122,7 +121,7 @@ public class CourseClassService {
 	 *
 	 * @return unique code for class
 	 */
-	public String getUniqueCode(ICourseClass courseClass) {
+	public String getUniqueCode(CourseClass courseClass) {
 		StringBuilder buff = new StringBuilder();
 		if (courseClass.getCourse() != null && courseClass.getCourse().getCode() != null) {
 			buff.append(courseClass.getCourse().getCode());
@@ -140,7 +139,7 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return tutor names
 	 */
-	public String getTutorNames(ICourseClass courseClass) {
+	public String getTutorNames(CourseClass courseClass) {
 		StringBuilder result = new StringBuilder();
 		if (courseClass.getTutorRoles() != null) {
 			for (CourseClassTutor t : courseClass.getTutorRoles()) {
@@ -153,7 +152,7 @@ public class CourseClassService {
 		return result.toString();
 	}
 
-	public String getTutorNamesAbriged(ICourseClass courseClass) {
+	public String getTutorNamesAbriged(CourseClass courseClass) {
 		List<? extends Tutor> tutors = getTutors(courseClass);
 		if (tutors == null || tutors.size() == 0) {
 			return "not set";
@@ -163,7 +162,7 @@ public class CourseClassService {
 		return tutors.get(0).getContact().getName() + " et al";
 	}
 
-	public List<? extends Tutor> getTutors(ICourseClass courseClass) {
+	public List<? extends Tutor> getTutors(CourseClass courseClass) {
 		List<CourseClassTutor> avalableTutorRoles = courseClass.getTutorRoles();
 		List<Tutor> tutors = new ArrayList<>();
 		if (avalableTutorRoles != null) {
@@ -182,9 +181,9 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return class outcomes
 	 */
-	public List<? extends IOutcome> getOutcomes(ICourseClass courseClass) {
-		List<IOutcome> outcomes = new ArrayList<>();
-		for (IEnrolment e : courseClass.getEnrolments()) {
+	public List<Outcome> getOutcomes(CourseClass courseClass) {
+		List<Outcome> outcomes = new ArrayList<>();
+		for (Enrolment e : courseClass.getEnrolments()) {
 			outcomes.addAll(e.getOutcomes());
 		}
 
@@ -197,9 +196,9 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return total fee income ex tax for refunded and cancelled classes
 	 */
-	public Money getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(ICourseClass courseClass) {
+	public Money getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass courseClass) {
 		Money result = Money.ZERO;
-		List<IEnrolment> canceledRefundedEnrolmentList = (List<IEnrolment>) CourseClassUtil.getRefundedAndCancelledEnrolments(courseClass.getEnrolments());
+		List<Enrolment> canceledRefundedEnrolmentList = (List<Enrolment>) CourseClassUtil.getRefundedAndCancelledEnrolments(courseClass.getEnrolments());
 
 		if (canceledRefundedEnrolmentList != null) {
 			result = canceledRefundedEnrolmentList.stream().flatMap(e -> e.getInvoiceLines().stream())
@@ -309,7 +308,7 @@ public class CourseClassService {
 	 * @return the room for all the sessions (if all sessions have the same room), or the room for the class if all sessions have no room, or null if any
 	 *         sessions have a different room.
 	 */
-	public Room getRoomForAllSessions(ICourseClass courseClass) {
+	public Room getRoomForAllSessions(CourseClass courseClass) {
 		Room aRoom = null;
 
 		List<Session> sessions = courseClass.getSessions();
@@ -334,7 +333,7 @@ public class CourseClassService {
 	/**
 	 * @return Room of first class session if current class room is not set
 	 */
-	public Room getFirstRoomSpecified(ICourseClass courseClass) {
+	public Room getFirstRoomSpecified(CourseClass courseClass) {
 		if (courseClass.getRoom() != null) {
 			return null;
 		}
@@ -351,7 +350,7 @@ public class CourseClassService {
 	/**
 	 * @return first session by start time for specified class.
 	 */
-	public Session getFirstSession(ICourseClass courseClass) {
+	public Session getFirstSession(CourseClass courseClass) {
 		List<Session> sessions = courseClass.getSessions();
 
 		if (!sessions.isEmpty()) {
@@ -366,12 +365,12 @@ public class CourseClassService {
 	/**
 	 * @return number of successful male enrolments in the class
 	 */
-	public Integer getMaleCount(ICourseClass courseClass) {
-		List<? extends IEnrolment> list = getSuccessfulAndQueuedEnrolments(courseClass);
+	public Integer getMaleCount(CourseClass courseClass) {
+		List<Enrolment> list = getSuccessfulAndQueuedEnrolments(courseClass);
 		if (list.isEmpty()) {
 			return 0;
 		}
-		Expression e = ExpressionFactory.matchExp(IEnrolment.STUDENT_KEY + "." + Student.CONTACT_KEY + "." + Contact.IS_MALE_KEY, true);
+		Expression e = ExpressionFactory.matchExp(Enrolment.STUDENT_KEY + "." + Student.CONTACT_KEY + "." + Contact.IS_MALE_KEY, true);
 
 		return e.filterObjects(list).size();
 	}
@@ -380,14 +379,14 @@ public class CourseClassService {
 	 * @see CourseClassTrait#getClassroomHours()
 	 */
 	@Deprecated
-	public BigDecimal getClassroomHours(ICourseClass courseClass) {
+	public BigDecimal getClassroomHours(CourseClass courseClass) {
 		return CalculateClassroomHours.valueOf(courseClass).calculate();
 	}
 
 	/**
 	 * @return '/' separated list of discounts for this class and their values
 	 */
-	public String getDiscountFees(ICourseClass courseClass) {
+	public String getDiscountFees(CourseClass courseClass) {
 		StringBuilder result = new StringBuilder();
 		for (Discount d : courseClass.getDiscounts()) {
 			if (result.length() > 0) {
@@ -416,7 +415,7 @@ public class CourseClassService {
 	 *
 	 * @return list of SessionModules for each Module class has
 	 */
-	public List<SessionModule> getUniqueSessionModules(ICourseClass courseClass) {
+	public List<SessionModule> getUniqueSessionModules(CourseClass courseClass) {
 
 		List<SessionModule> uniqueSessionModules = new ArrayList<>();
 
@@ -440,7 +439,7 @@ public class CourseClassService {
 		return uniqueSessionModules;
 	}
 
-	public List<SessionModule> getSessionModules(ICourseClass courseClass) {
+	public List<SessionModule> getSessionModules(CourseClass courseClass) {
 		List<SessionModule> sessionModules = new ArrayList<>();
 
 		for (Session s : courseClass.getSessions()) {
@@ -457,11 +456,11 @@ public class CourseClassService {
 	 * @return new code
 	 */
 	@Deprecated
-	public String getNextAvailableCode(ICourseClass courseClass) {
+	public String getNextAvailableCode(CourseClass courseClass) {
 		String oldCode = courseClass.getCode();
 		if (oldCode == null) {
 			if (courseClass.getCourse() != null) {
-				ICourseClass latestClass = getLatestSavedClass(courseClass.getCourse());
+				CourseClass latestClass = getLatestSavedClass(courseClass.getCourse());
 				if (latestClass != null) {
 					return getNextAvailableCode(latestClass);
 				}
@@ -501,11 +500,11 @@ public class CourseClassService {
 	 * @return
 	 */
 	@Deprecated
-	public int timesClassCodeRepeatsWithinCourse(String aCode, ICourseClass courseClass) {
+	public int timesClassCodeRepeatsWithinCourse(String aCode, CourseClass courseClass) {
 		if (courseClass.getCourse() != null && courseClass.getCourse().getCourseClasses() != null) {
 			int result = 0;
-			for (ICourseClass iCourseClass : courseClass.getCourse().getCourseClasses()) {
-				if (!iCourseClass.equals(courseClass) && iCourseClass.getCode() != null && iCourseClass.getCode().equalsIgnoreCase(aCode)) {
+			for (CourseClass CourseClass : courseClass.getCourse().getCourseClasses()) {
+				if (!CourseClass.equals(courseClass) && CourseClass.getCode() != null && CourseClass.getCode().equalsIgnoreCase(aCode)) {
 					result++;
 				}
 			}
@@ -518,7 +517,7 @@ public class CourseClassService {
 	/**
 	 * @return the CourseClass within this Course which was created most recently
 	 */
-	private ICourseClass getLatestSavedClass(ICourse course) {
+	private CourseClass getLatestSavedClass(Course course) {
 		if (course.getCourseClasses() == null || course.getCourseClasses().size() == 0) {
 			return null;
 		}
@@ -526,10 +525,10 @@ public class CourseClassService {
 		Ordering o = new Ordering("createdOn", SortOrder.DESCENDING);
 		ArrayList<Ordering> orderings = new ArrayList<>();
 		orderings.add(o);
-		ArrayList<ICourseClass> classesSorted = new ArrayList<>(course.getCourseClasses());
+		ArrayList<CourseClass> classesSorted = new ArrayList<>(course.getCourseClasses());
 		Ordering.orderList(classesSorted, orderings);
 
-		for (ICourseClass cc : classesSorted) {
+		for (CourseClass cc : classesSorted) {
 			if (cc.getPersistenceState() != PersistenceState.NEW) {
 				return cc;
 			}

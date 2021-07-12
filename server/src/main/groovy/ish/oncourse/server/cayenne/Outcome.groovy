@@ -17,7 +17,6 @@ import ish.common.CalculateStartDate
 import ish.common.types.ClassFundingSource
 import ish.common.types.DeliveryMode
 import ish.common.types.OutcomeStatus
-import ish.messaging.IOutcome
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.entity.delegator.OutcomeDelegator
@@ -40,7 +39,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
+class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 	public static final String STUDENT_NAME = "studentName"

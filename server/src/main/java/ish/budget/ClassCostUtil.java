@@ -13,13 +13,9 @@ package ish.budget;
 import ish.common.types.ClassCostFlowType;
 import ish.common.types.ClassCostRepetitionType;
 import ish.math.Money;
-import ish.messaging.IEnrolment;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.DiscountInterface;
-import ish.oncourse.server.cayenne.ClassCost;
-import ish.oncourse.server.cayenne.Discount;
-import ish.oncourse.server.cayenne.InvoiceLine;
-import ish.oncourse.server.cayenne.PayRate;
+import ish.oncourse.server.cayenne.*;
 import ish.util.DiscountUtils;
 
 import java.math.BigDecimal;
@@ -149,7 +145,7 @@ public class ClassCostUtil {
 					if (ClassCostFlowType.INCOME.equals(classCost.getFlowType()) && classCost.getInvoiceToStudent()) {
 						Money result = Money.ZERO;
 						if (classCost.getCourseClass().getSuccessAndQueuedEnrolments() != null) {
-							for (IEnrolment e : classCost.getCourseClass().getSuccessAndQueuedEnrolments()) {
+							for (Enrolment e : classCost.getCourseClass().getSuccessAndQueuedEnrolments()) {
                                 result = result.add(e.getOriginalInvoiceLine().getPriceTotalExTax());
 							}
 						}
@@ -334,8 +330,8 @@ public class ClassCostUtil {
 		if (ClassCostFlowType.DISCOUNT.equals(cost.getFlowType()) && (ClassCostRepetitionType.DISCOUNT.equals(cost.getRepetitionType()))) {
 
 			Money discounted = Money.ZERO;
-			List<? extends IEnrolment> enrolments = cost.getCourseClass().getSuccessAndQueuedEnrolments();
-			for (IEnrolment e : enrolments) {
+			List<Enrolment> enrolments = cost.getCourseClass().getSuccessAndQueuedEnrolments();
+			for (Enrolment e : enrolments) {
 				for (InvoiceLine invoiceLine : e.getInvoiceLines()) {
 					List<Discount> discounts = invoiceLine.getDiscounts();
 					Money currentTotalDiscountAmount = Money.ZERO;

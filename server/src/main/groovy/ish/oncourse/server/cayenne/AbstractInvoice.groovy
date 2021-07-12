@@ -18,7 +18,6 @@ import ish.common.types.EnrolmentStatus
 import ish.common.types.InvoiceType
 import ish.common.types.PaymentSource
 import ish.math.Money
-import ish.messaging.IInvoice
 import ish.oncourse.API
 import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.InvoiceInterface
@@ -38,7 +37,7 @@ import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
 
-class AbstractInvoice extends _AbstractInvoice implements IInvoice, PayableInterface, InvoiceInterface, Queueable, NotableTrait, AttachableTrait {
+class AbstractInvoice extends _AbstractInvoice implements PayableInterface, InvoiceInterface, Queueable, NotableTrait, AttachableTrait {
 
 	private static final String CONTACT_KEY = "contact";
 	private static final String INVOICE_DATE_KEY = "invoiceDate";
