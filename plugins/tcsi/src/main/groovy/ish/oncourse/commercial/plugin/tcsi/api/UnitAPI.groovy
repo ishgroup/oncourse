@@ -21,6 +21,7 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.scripting.api.EmailService
 
+import java.math.RoundingMode
 import java.time.Duration
 import java.time.LocalDate
 
@@ -210,7 +211,7 @@ class UnitAPI extends TCSI_API {
             unit["amount_charged"] = feeCharged //E384
             unit["help_loan_amount"] = helpLoanAmount // E558
             unit["amount_paid_upfront"] = feeCharged.subtract(helpLoanAmount) //E381
-            unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)) // E529
+            unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)).setScale(2, RoundingMode.UP)// E529
         }
 
         if (enrolment.creditTotal) {
