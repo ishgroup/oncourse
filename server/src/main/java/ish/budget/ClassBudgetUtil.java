@@ -15,8 +15,8 @@ import ish.common.types.ClassCostRepetitionType;
 import ish.math.Money;
 import ish.messaging.ICourseClass;
 import ish.messaging.IEnrolment;
-import ish.messaging.IInvoiceLine;
-import ish.oncourse.cayenne.ClassCostInterface;
+import ish.oncourse.server.cayenne.ClassCost;
+import ish.oncourse.server.cayenne.InvoiceLine;
 import org.apache.cayenne.PersistenceState;
 
 import java.util.ArrayList;
@@ -170,7 +170,7 @@ public class ClassBudgetUtil {
 		// way to calculate it is by summing up all discount amounts in invoice lines for successful enrolments.
 		if (ACTUAL.equals(type)) {
 			List<? extends IEnrolment> enrolments = cclass.getSuccessAndQueuedEnrolments();
-			return enrolments.stream().flatMap(e -> e.getInvoiceLines().stream()).map(IInvoiceLine::getDiscountTotalExTax).reduce(Money.ZERO, (a, b) -> a.add(b));
+			return enrolments.stream().flatMap(e -> e.getInvoiceLines().stream()).map(InvoiceLine::getDiscountTotalExTax).reduce(Money.ZERO, (a, b) -> a.add(b));
 		}
 
 		return calculateCostsFor(cclass, false, Collections.singletonList(ClassCostRepetitionType.DISCOUNT), false, type);
@@ -301,8 +301,7 @@ public class ClassBudgetUtil {
 			return result;
 		}
 
-		for (Object object : cclass.getCosts()) {
-			ClassCostInterface cost = (ClassCostInterface) object;
+		for (ClassCost cost : cclass.getCosts()) {
 			if (cost.getPersistenceState() == PersistenceState.DELETED) {
 				continue;
 			}
@@ -330,9 +329,9 @@ public class ClassBudgetUtil {
 	private static Money getClassCustomInvoicesExTax(ICourseClass cclass) {
 		Money result = Money.ZERO;
 
-		List<? extends IInvoiceLine> invoiceLines = cclass.getInvoiceLines();
+		List<InvoiceLine> invoiceLines = cclass.getInvoiceLines();
 		if (invoiceLines != null && invoiceLines.size() != 0) {
-			for (IInvoiceLine invoiceLine : invoiceLines) {
+			for (InvoiceLine invoiceLine : invoiceLines) {
 				result = result.add(invoiceLine.getPriceTotalExTax());
 			}
 		}

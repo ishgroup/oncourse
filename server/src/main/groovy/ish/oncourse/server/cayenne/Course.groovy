@@ -18,7 +18,6 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseReportableHours
-import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Course
 import ish.util.CourseUtil
@@ -287,7 +286,7 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	@Nonnull
 	@API
 	@Override
-	List<CourseClass> getCourseClasses() {
+    List<CourseClass> getCourseClasses() {
 		return super.getCourseClasses()
 	}
 

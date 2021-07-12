@@ -14,6 +14,7 @@ import ish.common.types.DeliveryMode;
 import ish.common.types.OutcomeStatus;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.server.cayenne.CertificateOutcome;
+import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.PriorLearning;
 
@@ -27,11 +28,11 @@ public interface IOutcome extends PersistentObjectI {
 
 	Module getModule();
 
-	IEnrolment getEnrolment();
+	Enrolment getEnrolment();
 
 	PriorLearning getPriorLearning();
 
-	List<? extends CertificateOutcome> getCertificateOutcomes();
+	List<CertificateOutcome> getCertificateOutcomes();
 
 	OutcomeStatus getStatus();
 

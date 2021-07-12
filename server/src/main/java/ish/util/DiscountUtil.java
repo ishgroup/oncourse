@@ -13,11 +13,12 @@ package ish.util;
 import ish.common.types.ClassCostFlowType;
 import ish.common.types.ClassCostRepetitionType;
 import ish.messaging.ICourseClass;
-import ish.messaging.IDiscount;
-import ish.oncourse.cayenne.ClassCostInterface;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.DiscountInterface;
-import ish.oncourse.cayenne.IDiscountCourseClass;
+import ish.oncourse.server.cayenne.ClassCost;
+import ish.oncourse.server.cayenne.CourseClass;
+import ish.oncourse.server.cayenne.Discount;
+import ish.oncourse.server.cayenne.DiscountCourseClass;
 import ish.persistence.CommonExpressionFactory;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -32,12 +33,12 @@ public class DiscountUtil {
 	/**
 	 * Returns list of discounts applied by default localized in the given context.
 	 */
-	public static List<? extends IDiscount> getDefaultDiscounts(ObjectContext context, Class<? extends IDiscount> discountClass) {
+	public static List<Discount> getDefaultDiscounts(ObjectContext context) {
 		Date now = new Date();
 
-		return ObjectSelect.query(discountClass).where(ExpressionFactory.matchExp(IDiscount.ADD_BY_DEFAULT_PROPERTY, true))
-				.and(ExpressionFactory.matchExp(IDiscount.VALID_FROM_PROPERTY, null).orExp(ExpressionFactory.lessOrEqualExp(IDiscount.VALID_FROM_PROPERTY, CommonExpressionFactory.previousMidnight(now))))
-				.and(ExpressionFactory.matchExp(IDiscount.VALID_TO_PROPERTY, null).orExp(ExpressionFactory.greaterOrEqualExp(IDiscount.VALID_TO_PROPERTY, CommonExpressionFactory.nextMidnightMinusOne(now))))
+		return ObjectSelect.query(Discount.class).where(ExpressionFactory.matchExp(Discount.ADD_BY_DEFAULT_PROPERTY, true))
+				.and(ExpressionFactory.matchExp(Discount.VALID_FROM_PROPERTY, null).orExp(ExpressionFactory.lessOrEqualExp(Discount.VALID_FROM_PROPERTY, CommonExpressionFactory.previousMidnight(now))))
+				.and(ExpressionFactory.matchExp(Discount.VALID_TO_PROPERTY, null).orExp(ExpressionFactory.greaterOrEqualExp(Discount.VALID_TO_PROPERTY, CommonExpressionFactory.nextMidnightMinusOne(now))))
 				.select(context);
 
 	}
@@ -57,21 +58,18 @@ public class DiscountUtil {
 	/**
 	 * Links given class to the default discounts defined in the system.
 	 */
-	public static void assignDefaultDiscounts(ICourseClass courseClass,
-											  Class<? extends IDiscount>  discountClass,
-											  Class<? extends IDiscountCourseClass>  discountCourseClassClass,
-											  Class<? extends ClassCostInterface> classCostClass) {
+	public static void assignDefaultDiscounts(CourseClass courseClass) {
 
 		ObjectContext context = courseClass.getObjectContext();
 
-		DiscountUtil.getDefaultDiscounts(context, discountClass).stream()
+		DiscountUtil.getDefaultDiscounts(context).stream()
 				.filter(discount -> !DiscountUtil.hasDiscount(courseClass, discount))
 				.forEach(discount -> {
-			IDiscountCourseClass dcc = context.newObject(discountCourseClassClass);
+			DiscountCourseClass dcc = context.newObject(DiscountCourseClass.class);
 			dcc.setCourseClass(courseClass);
 			dcc.setDiscount(discount);
 
-			ClassCostInterface cc = context.newObject(classCostClass);
+			ClassCost cc = context.newObject(ClassCost.class);
 			cc.setFlowType(ClassCostFlowType.DISCOUNT);
 			cc.setRepetitionType(ClassCostRepetitionType.DISCOUNT);
 			cc.setCourseClass(courseClass);

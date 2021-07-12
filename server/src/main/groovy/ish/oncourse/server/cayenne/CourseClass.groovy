@@ -16,6 +16,7 @@ import ish.common.types.*
 import ish.math.Money
 import ish.messaging.ICourseClass
 import ish.oncourse.API
+import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
@@ -46,10 +47,9 @@ import java.time.ZoneId
  * the instance of the Course which is sold and delivered.
  *
  */
-//TODO docs
 @API
 @QueueableEntity
-class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, CourseClassInterface {
 
 
 	public static final String EXPORT_DISCOUNT_RELATION = "discount"
@@ -1054,7 +1054,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	@Nonnull
 	@API
 	@Override
-	List<? extends Session> getSessions() {
+	List<Session> getSessions() {
 		return super.getSessions()
 	}
 

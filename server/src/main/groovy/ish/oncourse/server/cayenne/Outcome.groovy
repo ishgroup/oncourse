@@ -310,7 +310,7 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 	@Nullable
 	@API
 	@Override
-	Enrolment getEnrolment() {
+    Enrolment getEnrolment() {
 		return super.getEnrolment()
 	}
 

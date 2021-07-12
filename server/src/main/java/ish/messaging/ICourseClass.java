@@ -12,7 +12,6 @@ package ish.messaging;
 
 import ish.common.types.DeliveryMode;
 import ish.math.Money;
-import ish.oncourse.cayenne.ClassCostInterface;
 import ish.oncourse.cayenne.CourseClassInterface;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.PersistentObjectI;
@@ -23,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.TimeZone;
 
-public interface ICourseClass extends PersistentObjectI, CourseClassInterface {
+public interface ICourseClass extends PersistentObjectI {
 
     String END_DATE_TIME_KEY = "endDateTime";
 	String FEE_INC_GST = "feeIncGst";
@@ -76,15 +75,15 @@ public interface ICourseClass extends PersistentObjectI, CourseClassInterface {
 
 	List<Session> getSessions();
 
-	List<? extends IEnrolment> getEnrolments();
+	List<Enrolment> getEnrolments();
 
 	int getValidEnrolmentCount();
 
 	Integer getBudgetedPlaces();
 
-	List<? extends ClassCostInterface> getCosts();
+	List<ClassCost> getCosts();
 
-	List<? extends IEnrolment> getSuccessAndQueuedEnrolments();
+	List<Enrolment> getSuccessAndQueuedEnrolments();
 
 	Money getFeeExGst();
 
@@ -92,7 +91,7 @@ public interface ICourseClass extends PersistentObjectI, CourseClassInterface {
 
 	Integer getMinutesPerSession();
 
-	List<? extends IDiscount> getDiscounts();
+	List<Discount> getDiscounts();
 
 	Tax getTax();
 
@@ -104,9 +103,9 @@ public interface ICourseClass extends PersistentObjectI, CourseClassInterface {
 
 	BigDecimal getExpectedHours();
 
-	List<? extends IInvoiceLine> getInvoiceLines();
+	List<InvoiceLine> getInvoiceLines();
 
-	List<? extends DiscountCourseClassInterface> getDiscountCourseClasses();
+	List<DiscountCourseClass> getDiscountCourseClasses();
 
 	void addModuleToAllSessions(Module module);
 

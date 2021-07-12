@@ -17,11 +17,7 @@ import java.math.BigDecimal;
 
 /**
  */
-public interface IDiscount extends DiscountInterface, PersistentObjectI {
-
-	String ADD_BY_DEFAULT_PROPERTY = "addByDefault";
-	String VALID_FROM_PROPERTY = "validFrom";
-	String VALID_TO_PROPERTY = "validTo";
+public interface IDiscount extends PersistentObjectI {
 
 	String getName();
 	BigDecimal getPredictedStudentsPercentage();

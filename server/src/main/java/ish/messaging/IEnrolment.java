@@ -13,12 +13,13 @@ package ish.messaging;
 import ish.common.payable.EnrolmentInterface;
 import ish.common.types.EnrolmentStatus;
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.InvoiceLine;
 import ish.oncourse.server.cayenne.Student;
 
 import java.util.Date;
 import java.util.List;
 
-public interface IEnrolment extends EnrolmentInterface, PersistentObjectI {
+public interface IEnrolment extends PersistentObjectI {
 
     String STUDENT_KEY = "student";
 	String STATUS_PROPERTY = "status";
@@ -27,9 +28,9 @@ public interface IEnrolment extends EnrolmentInterface, PersistentObjectI {
 
 	ICourseClass getCourseClass();
 
-	List<? extends IInvoiceLine> getInvoiceLines();
+	List<InvoiceLine> getInvoiceLines();
 
-    IInvoiceLine getOriginalInvoiceLine();
+    InvoiceLine getOriginalInvoiceLine();
 
 	Student getStudent();
 

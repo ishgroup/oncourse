@@ -212,7 +212,7 @@ public class CourseClassService {
 	/**
 	 * @return a sentence describing the timetable, html formatted. Used in activity bubble and mouse hover effect.
 	 */
-	public String getTimetableSummaryForClass(ICourseClass courseClass) {
+	public String getTimetableSummaryForClass(CourseClass courseClass) {
 		StringBuilder summary = new StringBuilder("<html>");
 
 		List<Session> sessions = courseClass.getSessions();
@@ -389,7 +389,7 @@ public class CourseClassService {
 	 */
 	public String getDiscountFees(ICourseClass courseClass) {
 		StringBuilder result = new StringBuilder();
-		for (IDiscount d : courseClass.getDiscounts()) {
+		for (Discount d : courseClass.getDiscounts()) {
 			if (result.length() > 0) {
 				result.append(" / ");
 			}

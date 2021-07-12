@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.payable.EnrolmentInterface
 import ish.common.types.*
 import ish.math.Money
 import ish.messaging.IEnrolment
@@ -49,7 +50,7 @@ import static java.lang.String.format
 //TODO docs
 @API
 @QueueableEntity
-class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, EnrolmentInterface, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
 
 	public static final String IS_VET_PROPERTY = 'vet'
 	static final String DISPLAY_STATUS_PROP = 'displayStatus'
@@ -635,7 +636,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, Queuea
 	 */
 	@Nonnull
 	@Override
-	List<InvoiceLine> getInvoiceLines() {
+    List<InvoiceLine> getInvoiceLines() {
 		return super.getInvoiceLines()
 	}
 

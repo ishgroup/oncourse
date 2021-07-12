@@ -11,6 +11,7 @@
 package ish.messaging;
 
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.Module;
 
@@ -32,7 +33,7 @@ public interface ICourse extends PersistentObjectI {
 
 	List<? extends Tag> getTags();
 
-	List<? extends ICourseClass> getCourseClasses();
+	List<CourseClass> getCourseClasses();
 
 	List<Module> getModules();
 

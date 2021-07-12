@@ -22,8 +22,6 @@ import javax.annotation.Nonnull
 @QueueableEntity
 class CertificateOutcome extends _CertificateOutcome implements Queueable {
 
-
-
 	/**
 	 * @return the date and time this record was created
 	 */

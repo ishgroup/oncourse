@@ -11,7 +11,6 @@
 
 package ish.validation;
 
-import ish.messaging.IContact;
 import ish.oncourse.server.cayenne.Contact;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

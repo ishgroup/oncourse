@@ -12,13 +12,14 @@
 package ish.oncourse.entity.services;
 
 import ish.messaging.IEnrolment;
-import ish.messaging.IInvoiceLine;
+import ish.oncourse.server.cayenne.InvoiceLine;
+
 import java.util.Comparator;
 
 public class EnrolmentService {
 
 
-	public IInvoiceLine getOriginalInvoiceLine(IEnrolment self) {
+	public InvoiceLine getOriginalInvoiceLine(IEnrolment self) {
 		return self.getInvoiceLines().stream()
 				.sorted(Comparator.comparing(il -> il.getInvoice().getInvoiceNumber()))
 				.findFirst()

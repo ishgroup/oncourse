@@ -14,6 +14,7 @@ import ish.math.Money;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.CorporatePass;
+import ish.oncourse.server.cayenne.InvoiceLine;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,7 +34,7 @@ public interface IInvoice extends PersistentObjectI {
 
 	LocalDate getDateDue();
 
-	List<? extends IInvoiceLine> getInvoiceLines();
+	List<InvoiceLine> getInvoiceLines();
 
 	Long getInvoiceNumber();
 

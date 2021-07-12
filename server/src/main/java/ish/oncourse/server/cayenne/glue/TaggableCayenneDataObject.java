@@ -12,7 +12,6 @@ package ish.oncourse.server.cayenne.glue;
 
 
 import com.google.inject.Inject;
-import ish.messaging.ITaggableObject;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.entity.services.TagService;
@@ -29,7 +28,7 @@ import java.util.Set;
 /**
  * Entities which can be tagged. Some helper methods here are useful for manipulating tags.
  */
-public abstract class TaggableCayenneDataObject extends CayenneDataObject implements ITaggableObject {
+public abstract class TaggableCayenneDataObject extends CayenneDataObject implements Taggable {
 
 	public static final String BULK_TAG_PROPERTY = "bulkTag";
 	public static final String BULK_UNTAG_PROPERTY = "bulkUntag";

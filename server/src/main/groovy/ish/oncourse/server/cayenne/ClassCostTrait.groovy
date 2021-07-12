@@ -14,9 +14,8 @@ package ish.oncourse.server.cayenne
 import ish.budget.ClassCostUtil
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.cayenne.ClassCostInterface
 
-trait ClassCostTrait implements ClassCostInterface<CourseClass, DiscountCourseClass> {
+trait ClassCostTrait {
 
     @API
     Money getCalcPerUnitAmountExTax() {

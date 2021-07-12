@@ -358,7 +358,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 	@Nonnull
 	@API
 	@Override
-	DiscountCourseClass getDiscountCourseClass() {
+    DiscountCourseClass getDiscountCourseClass() {
 		return super.getDiscountCourseClass()
 	}
 

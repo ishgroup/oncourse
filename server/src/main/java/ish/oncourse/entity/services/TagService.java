@@ -11,7 +11,7 @@
 package ish.oncourse.entity.services;
 
 import ish.common.types.NodeSpecialType;
-import ish.messaging.ITaggableObject;
+import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.server.cayenne.Course;
 import ish.oncourse.server.cayenne.Tag;
 import org.apache.cayenne.query.Ordering;
@@ -49,7 +49,7 @@ public class TagService {
      * @param isSearchWithChildren define if method will be searching for tag in parents of taggable's tags
      * @return
      */
-	public boolean hasTag(ITaggableObject taggable, String path, boolean isSearchWithChildren) {
+	public boolean hasTag(Taggable taggable, String path, boolean isSearchWithChildren) {
 
 		path = trimPath(path);
 
