@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { isDirty, reset } from "redux-form";
-import { PaymentMethod, PaymentOut } from "@api/model";
+import { PaymentOut } from "@api/model";
 import { format } from "date-fns";
 import { State } from "../../../../reducers/state";
 import { duplicateAndReverseInvoice, getAmountOwing, setContraInvoices } from "../actions";
@@ -32,7 +32,6 @@ interface Props extends CogwhelAdornmentProps {
   resetEditView: any;
   openAddPaymentOutEditView: any;
   hasQePermissions: any;
-  paymentOutMethods: PaymentMethod[];
 }
 
 const InvoiceCogwheel = memo<Props>(props => {
@@ -51,8 +50,7 @@ const InvoiceCogwheel = memo<Props>(props => {
     isFormDirty,
     resetEditView,
     openAddPaymentOutEditView,
-    hasQePermissions,
-    paymentOutMethods
+    hasQePermissions
   } = props;
 
   const [dialogOpened, setDialogOpened] = useState(false);
@@ -83,7 +81,8 @@ const InvoiceCogwheel = memo<Props>(props => {
       refundableId,
       paymentMethodId,
       privateNotes,
-      administrationCenterId
+      administrationCenterId,
+      selectedPaymentMethod
     } = model;
     const datePayed = format(new Date(unformattedDatePayed), YYYY_MM_DD_MINUSED);
     const paymentOut: PaymentOut = {
@@ -94,8 +93,6 @@ const InvoiceCogwheel = memo<Props>(props => {
       privateNotes,
       administrationCenterId
     };
-
-    const selectedPaymentMethod = paymentOutMethods.find(p => p.id === paymentMethodId)?.type;
 
     if (selectedPaymentMethod === "Cheque") {
       paymentOut.chequeSummary = chequeSummary;
@@ -210,8 +207,7 @@ const mapStateToProps = (state: State) => ({
   contraInvoices: state.invoices.contraInvoices,
   selectedInvoiceAmountOwing: state.invoices.selectedInvoiceAmountOwing,
   isFormDirty: isDirty(LIST_EDIT_VIEW_FORM_NAME)(state),
-  hasQePermissions: state.access["ENROLMENT_CREATE"],
-  paymentOutMethods: state.paymentsOut.paymentOutMethods
+  hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvoiceCogwheel);
