@@ -1,36 +1,27 @@
 package ish.oncourse.willow.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import ish.common.types.StudentCitizenship
-import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.Contact
 import ish.oncourse.model.FieldHeading
 import ish.oncourse.util.FormatUtils
 import ish.oncourse.willow.filters.RequestFilter
-import ish.oncourse.willow.functions.field.FieldBuilder
 import ish.oncourse.willow.model.checkout.request.ProductContainer
 import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.Field
-import ish.oncourse.willow.model.field.SubmitFieldsRequest
 import ish.oncourse.willow.model.field.FieldSet
 
 import ish.oncourse.willow.service.impl.CollegeService
 import ish.oncourse.willow.service.impl.ContactApiServiceImpl
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
-import org.apache.commons.lang3.RandomUtils
 import org.apache.commons.lang3.time.DateUtils
 import org.junit.*
-import org.mockito.Mockito
 
 import javax.ws.rs.BadRequestException
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
 
 
 class ContactDetailsTest extends  ApiTest{
@@ -56,7 +47,7 @@ class ContactDetailsTest extends  ApiTest{
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
         ContactApi api = new ContactApiServiceImpl(cayenneService, new CollegeService(cayenneService))
 
-        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', products: [[productId:'131',quantity:1] as ProductContainer ], classIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
+        ContactFields fields = api.getContactFields(new ContactFieldsRequest(contactId: '1001', products: [[productId:'1001',quantity:1] as ProductContainer ], classIds: ['1001', '1002'], fieldSet: FieldSet.ENROLMENT))
         
         def file = new File(getClass().getResource('/ish/oncourse/willow/service/contact-fields.txt').toURI())
 
@@ -98,7 +89,6 @@ class ContactDetailsTest extends  ApiTest{
         assertEquals(contact.suburb, 'Parramata')
         assertEquals(contact.postcode, '6797')
         assertEquals(contact.country.name, 'Australia')
-        assertEquals(contact.homePhoneNumber, '02 5551 5678')
         assertEquals(contact.businessPhoneNumber, '02 5551 5678')
         assertEquals(contact.faxNumber, '02 5551 5678')
         assertEquals(contact.mobilePhoneNumber, '0491 570 156')
@@ -123,10 +113,11 @@ class ContactDetailsTest extends  ApiTest{
         
     }
     
-    private SubmitFieldsRequest wrongRequest() {
-        new SubmitFieldsRequest().with {
+    private ContactFields wrongRequest() {
+        new ContactFields().with {
             it.contactId = '1001'
-            it.fields << new Field().with { f ->
+            List<Field> fields = []
+            fields << new Field().with { f ->
                 f.key = 'street'
                 f.name = 'Street'
                 f.dataType = DataType.STRING
@@ -134,7 +125,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'suburb'
                 f.name = 'Suburb'
                 f.dataType = DataType.SUBURB
@@ -142,7 +133,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'postcode'
                 f.name = 'postcode'
                 f.dataType = DataType.POSTCODE
@@ -150,7 +141,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'country'
                 f.name = 'country'
                 f.dataType = DataType.COUNTRY
@@ -158,7 +149,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'homePhoneNumber'
                 f.name = 'homePhoneNumber'
                 f.dataType = DataType.PHONE
@@ -166,7 +157,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'businessPhoneNumber'
                 f.name = 'businessPhoneNumber'
                 f.dataType = DataType.PHONE
@@ -174,7 +165,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'faxNumber'
                 f.name = 'faxNumber'
                 f.dataType = DataType.PHONE
@@ -182,7 +173,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'mobilePhoneNumber'
                 f.name = 'mobilePhoneNumber'
                 f.dataType = DataType.PHONE
@@ -190,7 +181,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'dateOfBirth'
                 f.name = 'dateOfBirth'
                 f.dataType = DataType.DATE
@@ -198,7 +189,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'abn'
                 f.name = 'abn'
                 f.dataType = DataType.STRING
@@ -206,7 +197,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMale'
                 f.name = 'isMale'
                 f.dataType = DataType.ENUM
@@ -215,7 +206,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMarketingViaEmailAllowed'
                 f.name = 'isMarketingViaEmailAllowed'
                 f.dataType = DataType.BOOLEAN
@@ -223,7 +214,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMarketingViaPostAllowed'
                 f.name = 'isMarketingViaPostAllowed'
                 f.dataType = DataType.BOOLEAN
@@ -231,7 +222,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMarketingViaSMSAllowed'
                 f.name = 'isMarketingViaSMSAllowed'
                 f.dataType = DataType.BOOLEAN
@@ -239,7 +230,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'citizenship'
                 f.name = 'citizenship'
                 f.dataType = DataType.ENUM
@@ -248,7 +239,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'countryOfBirth'
                 f.name = 'countryOfBirth'
                 f.dataType = DataType.COUNTRY
@@ -256,7 +247,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'languageHome'
                 f.name = 'languageHome'
                 f.dataType = DataType.LANGUAGE
@@ -264,7 +255,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'yearSchoolCompleted'
                 f.name = 'yearSchoolCompleted'
                 f.dataType = DataType.INTEGER
@@ -273,7 +264,7 @@ class ContactDetailsTest extends  ApiTest{
                 f
             }
 
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'englishProficiency'
                 f.name = 'englishProficiency'
                 f.dataType = DataType.ENUM
@@ -283,7 +274,7 @@ class ContactDetailsTest extends  ApiTest{
                 f
             }
 
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'indigenousStatus'
                 f.name = 'indigenousStatus'
                 f.dataType = DataType.ENUM
@@ -292,7 +283,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'highestSchoolLevel'
                 f.name = 'highestSchoolLevel'
                 f.dataType = DataType.ENUM
@@ -301,7 +292,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isStillAtSchool'
                 f.name = 'isStillAtSchool'
                 f.dataType = DataType.BOOLEAN
@@ -309,7 +300,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'priorEducationCode'
                 f.name = 'priorEducationCode'
                 f.dataType = DataType.ENUM
@@ -318,7 +309,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'labourForceStatus'
                 f.name = 'labourForceStatus'
                 f.dataType = DataType.ENUM
@@ -327,7 +318,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'disabilityType'
                 f.name = 'disabilityType'
                 f.dataType = DataType.ENUM
@@ -336,7 +327,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'specialNeeds'
                 f.name = 'specialNeeds'
                 f.dataType = DataType.STRING
@@ -346,7 +337,7 @@ class ContactDetailsTest extends  ApiTest{
                 f
             }
 
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'customField.contact.carMaker'
                 f.name = 'carMaker'
                 f.dataType = DataType.STRING
@@ -355,15 +346,26 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
+            
+            it.headings << new ish.oncourse.willow.model.field.FieldHeading(name: "Wrong", description: "description", ordering: 1, fields: fields)
 
             it
         }
     }
 
-    private SubmitFieldsRequest propperRequest() {
-        new SubmitFieldsRequest().with {
+    private ContactFields propperRequest() {
+        new ContactFields().with {
             it.contactId = '1001'
-            it.fields << new Field().with { f ->
+            List<Field> fields = []
+            fields << new Field().with { f ->
+                f.key = 'specialNeeds'
+                f.name = 'specialNeeds'
+                f.dataType = DataType.STRING
+                f.value = 'special needs'
+                f.mandatory = true
+                f
+            }
+            fields << new Field().with { f ->
                 f.key = 'street'
                 f.name = 'Street'
                 f.dataType = DataType.STRING
@@ -371,7 +373,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'suburb'
                 f.name = 'Suburb'
                 f.dataType = DataType.SUBURB
@@ -379,7 +381,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'postcode'
                 f.name = 'postcode'
                 f.dataType = DataType.POSTCODE
@@ -387,7 +389,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'country'
                 f.name = 'country'
                 f.dataType = DataType.COUNTRY
@@ -395,15 +397,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
-                f.key = 'homePhoneNumber'
-                f.name = 'homePhoneNumber'
-                f.dataType = DataType.PHONE
-                f.value = '02 5551 5678'
-                f.mandatory = true
-                f
-            }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'businessPhoneNumber'
                 f.name = 'businessPhoneNumber'
                 f.dataType = DataType.PHONE
@@ -411,7 +405,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'faxNumber'
                 f.name = 'faxNumber'
                 f.dataType = DataType.PHONE
@@ -419,7 +413,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'mobilePhoneNumber'
                 f.name = 'mobilePhoneNumber'
                 f.dataType = DataType.PHONE
@@ -427,7 +421,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'dateOfBirth'
                 f.name = 'dateOfBirth'
                 f.dataType = DataType.DATE
@@ -435,15 +429,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
-                f.key = 'abn'
-                f.name = 'abn'
-                f.dataType = DataType.STRING
-                f.value = '1234'
-                f.mandatory = true
-                f
-            }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMale'
                 f.name = 'isMale'
                 f.dataType = DataType.ENUM
@@ -452,7 +438,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMarketingViaEmailAllowed'
                 f.name = 'isMarketingViaEmailAllowed'
                 f.dataType = DataType.BOOLEAN
@@ -460,7 +446,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMarketingViaPostAllowed'
                 f.name = 'isMarketingViaPostAllowed'
                 f.dataType = DataType.BOOLEAN
@@ -468,7 +454,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isMarketingViaSMSAllowed'
                 f.name = 'isMarketingViaSMSAllowed'
                 f.dataType = DataType.BOOLEAN
@@ -476,7 +462,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'citizenship'
                 f.name = 'citizenship'
                 f.dataType = DataType.ENUM
@@ -485,7 +471,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'countryOfBirth'
                 f.name = 'countryOfBirth'
                 f.dataType = DataType.COUNTRY
@@ -493,7 +479,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'languageHome'
                 f.name = 'languageHome'
                 f.dataType = DataType.LANGUAGE
@@ -501,7 +487,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'yearSchoolCompleted'
                 f.name = 'yearSchoolCompleted'
                 f.dataType = DataType.INTEGER
@@ -510,7 +496,7 @@ class ContactDetailsTest extends  ApiTest{
                 f
             }
 
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'englishProficiency'
                 f.name = 'englishProficiency'
                 f.dataType = DataType.ENUM
@@ -520,7 +506,7 @@ class ContactDetailsTest extends  ApiTest{
                 f
             }
 
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'indigenousStatus'
                 f.name = 'indigenousStatus'
                 f.dataType = DataType.ENUM
@@ -530,7 +516,7 @@ class ContactDetailsTest extends  ApiTest{
                 f
             }
             
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'highestSchoolLevel'
                 f.name = 'highestSchoolLevel'
                 f.dataType = DataType.ENUM
@@ -539,7 +525,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'isStillAtSchool'
                 f.name = 'isStillAtSchool'
                 f.dataType = DataType.BOOLEAN
@@ -547,7 +533,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'priorEducationCode'
                 f.name = 'priorEducationCode'
                 f.dataType = DataType.ENUM
@@ -556,7 +542,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'labourForceStatus'
                 f.name = 'labourForceStatus'
                 f.dataType = DataType.ENUM
@@ -565,7 +551,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'disabilityType'
                 f.name = 'disabilityType'
                 f.dataType = DataType.ENUM
@@ -574,16 +560,7 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
-                f.key = 'specialNeeds'
-                f.name = 'specialNeeds'
-                f.dataType = DataType.STRING
-                f.value = 'special needs'
-                f.mandatory = true
-                f
-            }
-
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'customField.contact.carMaker'
                 f.name = 'carMaker'
                 f.dataType = DataType.STRING
@@ -591,7 +568,15 @@ class ContactDetailsTest extends  ApiTest{
                 f.mandatory = true
                 f
             }
-
+            fields << new Field().with { f ->
+                f.key = 'abn'
+                f.name = 'abn'
+                f.dataType = DataType.STRING
+                f.value = '1234'
+                f.mandatory = true
+                f
+            }
+            it.headings << new ish.oncourse.willow.model.field.FieldHeading(name: "Test heading", description: "description", ordering: 1, fields: fields)
             it
         }
     }

@@ -7,6 +7,7 @@ import ish.oncourse.willow.model.field.ContactFields
 import ish.oncourse.willow.model.field.ContactFieldsRequest
 import ish.oncourse.willow.model.field.DataType
 import ish.oncourse.willow.model.field.Field
+import ish.oncourse.willow.model.field.FieldHeading
 import ish.oncourse.willow.model.field.FieldSet
 import ish.oncourse.willow.model.field.SubmitFieldsRequest
 import ish.oncourse.willow.service.impl.CollegeService
@@ -126,14 +127,14 @@ class ContactDetailsTagTest extends ApiTest {
         assertFalse(isContactLinkedWith.call(tag4C5))
     }
 
-    private SubmitFieldsRequest properRequest() {
-        new SubmitFieldsRequest().with {
+    private ContactFields properRequest() {
+        new ContactFields().with {
             it.contactId = '1001'
 
             // tag properties
-
+            List<Field> fields = []
             // non mandatory multiple
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'multipleTag/Tag1/Tag1C1'
                 f.name = 'Tag1'
                 f.dataType = DataType.TAGGROUP_M
@@ -141,7 +142,7 @@ class ContactDetailsTagTest extends ApiTest {
                 f.mandatory = false
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'multipleTag/Tag1/Tag1C2/Tag1C2C1'
                 f.name = 'Tag1'
                 f.dataType = DataType.TAGGROUP_M
@@ -150,7 +151,7 @@ class ContactDetailsTagTest extends ApiTest {
                 f
             }
             // non mandatory single
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'singleTag/Tag2/Tag2C1'
                 f.name = 'Tag2'
                 f.dataType = DataType.TAGGROUP_S
@@ -159,7 +160,7 @@ class ContactDetailsTagTest extends ApiTest {
                 f
             }
             // mandatory multiple
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'multipleTag/Tag3/Tag3C2/Tag3C2C1/'
                 f.name = 'Tag3'
                 f.dataType = DataType.TAGGROUP_M
@@ -167,7 +168,7 @@ class ContactDetailsTagTest extends ApiTest {
                 f.mandatory = true
                 f
             }
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'multipleTag/Tag3/Tag3C2/Tag3C2C2/Tag3C2C2C1'
                 f.name = 'Tag3'
                 f.dataType = DataType.TAGGROUP_M
@@ -176,7 +177,7 @@ class ContactDetailsTagTest extends ApiTest {
                 f
             }
             // mandatory single
-            it.fields << new Field().with { f ->
+            fields << new Field().with { f ->
                 f.key = 'singleTag/Tag4/Tag4C1'
                 f.name = 'Tag4'
                 f.dataType = DataType.TAGGROUP_S
@@ -184,6 +185,8 @@ class ContactDetailsTagTest extends ApiTest {
                 f.mandatory = true
                 f
             }
+
+            it.headings << new FieldHeading(name: "First Heading", description: "description", ordering: 1, fields: fields)
 
             it
         }
