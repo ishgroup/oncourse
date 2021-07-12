@@ -58,7 +58,9 @@ class CreateVoucher {
                 Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
                 voucher.redemptionValue = price
                 voucher.valueOnPurchase = price
-                FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), voucher)
+                if (!separatedFieldHeadings.empty) {
+                    FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), voucher)
+                }
                 vouchers << voucher
             }
         } else if (voucherProduct.priceExTax != null) {
@@ -67,7 +69,9 @@ class CreateVoucher {
                 Voucher voucher = createVoucher(college, status, voucherProduct, confirmationStatus)
                 voucher.redemptionValue = voucherProduct.value != null ? voucherProduct.value : price
                 voucher.valueOnPurchase = voucherProduct.value != null ? voucherProduct.value : price
-                FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), voucher)
+                if (!separatedFieldHeadings.empty) {
+                    FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), voucher)
+                }
                 vouchers << voucher
             }
         }

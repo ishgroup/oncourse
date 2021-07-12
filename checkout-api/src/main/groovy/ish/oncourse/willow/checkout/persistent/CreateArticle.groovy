@@ -45,7 +45,9 @@ class CreateArticle {
         List<ProductItem> articles = new ArrayList<>()
         (1..a.quantity).each {
             Article article = createArticle(context, college, contact, ap, status)
-            FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), article)
+            if (!separatedFieldHeadings.empty) {
+                FieldHelper.valueOf([] as Set).populateFields(Arrays.asList(separatedFieldHeadings.get(it - 1)), article)
+            }
             articles << article
         }
         InvoiceLine invoiceLine = new ProductsItemInvoiceLine(context, articles, contact, ap.priceExTax, taxOverride).create()
