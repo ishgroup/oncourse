@@ -6,63 +6,75 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import clsx from "clsx";
+import { Dispatch } from "redux";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { change } from "redux-form";
+import Grid from "@material-ui/core/Grid";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import RelationsCommon from "../../common/components/RelationsCommon";
+import { setSelectedContact } from "../../invoices/actions";
 
 const items = [{ label: "Open", value: true }, { label: "Close", value: false }];
 
 const LeadGeneral = (props: any) => {
-  const validateTagList = (value, allValues) => {
-    const { tags } = props;
-    return validateTagsList(tags, value, allValues, props);
-  };
-
-  const changeValue = (e, checked) => {
-    const { form, dispatch } = props;
-
-    dispatch(change(form, "notify", checked));
-  };
-
   const {
     values,
     tags,
     dispatch,
-    form
+    form,
+    rootEntity,
+    submitSucceeded,
+    twoColumn,
+    isNew,
+    setSelectedContact,
   } = props;
+
+  const validateTagList = (value, allValues) => {
+    return validateTagsList(tags, value, allValues, props);
+  };
+
+  const changeValue = (e, checked) => {
+    dispatch(change(form, "notify", checked));
+  };
+
+  const onContactChange = useCallback( value => {
+      setSelectedContact(value);
+  }, [form]);
 
   return (
     <div className="generalRoot">
       <div className="pt-2">
+        {values.assignedTo && <FormField type="text" name="assignedTo" label="Assigned to" disabled />}
+      </div>
+      <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Contact"
-          aqlFilter="isStudent is true"
           name="contactId"
-          label="Student"
+          label="Contact"
           selectValueMark="id"
           selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values && defaultContactName(values.studentName)}
+          defaultDisplayValue={values && defaultContactName(values.contactName)}
           labelAdornment={
             <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
           }
+          onInnerValueChange={onContactChange}
           itemRenderer={ContactSelectItemRenderer}
+          disabled={!isNew}
           rowHeight={55}
           required
         />
-      </div>
+      </Grid>
       <div>
         <FormField
           type="tags"
@@ -90,20 +102,6 @@ const LeadGeneral = (props: any) => {
         name="active"
         label="Status"
         items={items}
-      />
-      <FormField
-        type="remoteDataSearchSelect"
-        entity="Course"
-        // aqlFilter="allowLeads is true"
-        name="courseId"
-        label="Course"
-        selectValueMark="id"
-        selectLabelCondition={v => v.name}
-        selectFilterCondition={courseFilterCondition}
-        defaultDisplayValue={values && values.courseName}
-        labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
-        itemRenderer={CourseItemRenderer}
-        rowHeight={55}
         required
       />
       <CustomFields
@@ -113,6 +111,14 @@ const LeadGeneral = (props: any) => {
         dispatch={dispatch}
         form={form}
       />
+      <RelationsCommon
+        values={values}
+        dispatch={dispatch}
+        form={form}
+        submitSucceeded={submitSucceeded}
+        rootEntity={rootEntity}
+        customAqlEntities={["Course", "Product"]}
+      />
     </div>
   );
 };
@@ -121,4 +127,8 @@ const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Lead"],
 });
 
-export default connect<any, any, any>(mapStateToProps)(LeadGeneral);
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact))
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(LeadGeneral);

@@ -31,16 +31,31 @@ import LeadCogWheel from "./components/LeadCogWheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { checkPermissions } from "../../../common/actions";
 import LeadEditView from "./components/LeadEditView";
+import { FilterGroup } from "../../../model/common/ListView";
 
 const Initial: Lead = {
   id: null,
-  // privateNotes: null,
+  active: true,
+  relatedSellables: [],
   studentNotes: null,
   studentCount: 1,
   tags: [],
   sites: [],
   customFields: {}
 };
+
+const filterGroups: FilterGroup[] = [
+  {
+    title: "CORE FILTER",
+    filters: [
+      {
+        name: "Active",
+        expression: "status == true",
+        active: false
+      },
+    ]
+  }
+];
 
 const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Lead and entityId" },
@@ -56,6 +71,10 @@ const manualLink = getManualLink("leads");
 // const nameCondition = (value: Lead) => value.courseName;
 
 const Leads = props => {
+  const {
+    getLeadRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+  } = props;
+
   useEffect(() => {
     props.getTags();
     props.getFilters();
@@ -65,9 +84,17 @@ const Leads = props => {
     return () => props.clearListState();
   }, []);
 
-  const {
-    getLeadRecord, onCreate, onDelete, onSave, updateTableModel, onInit
-  } = props;
+  const preformatBeforeSubmit = (value: Lead): Lead => {
+    if (value.relatedSellables.length) {
+      value.relatedSellables.forEach((s: any) => {
+        if (s.tempId) {
+          delete s.tempId;
+        }
+      });
+    }
+
+    return value;
+  };
 
   return (
     <div>
@@ -90,7 +117,9 @@ const Leads = props => {
         onDelete={onDelete}
         onSave={onSave}
         findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
         CogwheelAdornment={LeadCogWheel}
+        preformatBeforeSubmit={preformatBeforeSubmit}
       />
     </div>
   );

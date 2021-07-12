@@ -9,9 +9,8 @@
 import * as React from "react";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import LeadGeneral from "./LeadGeneral";
-import LeadNotes from "./LeadNotes";
 import LeadSites from "./LeadSites";
-import LeadDocuments from "./LeadDocuments";
+import LeadAttachmentsTab from "./LeadAttachmentsTab";
 
 const items: TabsListItem[] = [
   {
@@ -23,13 +22,9 @@ const items: TabsListItem[] = [
     component: props => <LeadSites {...props} />
   },
   {
-    label: "DOCUMENTS",
-    component: props => <LeadDocuments {...props} />
+    label: "Attachments",
+    component: props => <LeadAttachmentsTab {...props} />
   },
-  {
-    label: "Notes",
-    component: props => <LeadNotes {...props} />
-  }
 ];
 
 class LeadEditView extends React.Component<any, any> {

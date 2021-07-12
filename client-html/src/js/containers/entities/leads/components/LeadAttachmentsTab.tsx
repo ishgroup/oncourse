@@ -11,6 +11,7 @@ import { FieldArray } from "redux-form";
 import { Lead } from "@api/model";
 import { EditViewProps } from "../../../../model/common/ListView";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
 interface LeadDocumentsProps {
   classes?: any;
@@ -21,27 +22,34 @@ interface LeadDocumentsProps {
   form?: string;
 }
 
-const LeadDocuments: React.FC<EditViewProps<LeadDocumentsProps>> = ({
-  twoColumn,
-  dispatch,
-  form,
-  showConfirm
-}) => (
-  <div className="pl-3 pr-3 pb-2 mb-3">
-    <FieldArray
-      name="documents"
-      label="Documents"
-      entity="Lead"
-      component={DocumentsRenderer}
-      xsGrid={12}
-      mdGrid={twoColumn ? 6 : 12}
-      lgGrid={twoColumn ? 4 : 12}
-      dispatch={dispatch}
-      form={form}
-      showConfirm={showConfirm}
-      rerenderOnEveryChange
-    />
-  </div>
-);
+const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) => {
+  const {
+    twoColumn,
+      dispatch,
+      form,
+      showConfirm
+  } = props;
 
-export default LeadDocuments;
+  return (
+    <div className="pr-3 saveButtonTableOffset">
+      <div className="pb-3 pl-3">
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="Lead"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
+        />
+      </div>
+      <OwnApiNotes {...props} />
+    </div>
+  );
+};
+
+export default LeadAttachmentsTab;

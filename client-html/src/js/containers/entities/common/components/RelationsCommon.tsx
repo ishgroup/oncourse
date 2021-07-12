@@ -29,6 +29,7 @@ interface Props {
   submitSucceeded: boolean;
   form: string;
   rootEntity: EntityName;
+  customAqlEntities?: string[];
   name?: string;
   validate?: Validator;
   courses?: Course[];
@@ -80,7 +81,8 @@ const RelationsCommon: React.FC<Props> = (
     modules,
     modulesPending,
     rootEntity,
-    relationTypesFilter
+    relationTypesFilter,
+    customAqlEntities
   }
 ) => {
   const relationTypes = useMemo<EntityRelationTypeRendered[]>(() =>
@@ -175,6 +177,8 @@ const RelationsCommon: React.FC<Props> = (
     />
   );
 
+  const aqlEntities = ["Course", "Product", "Module", "Qualification"];
+
   return (
     <NestedList
       name={name}
@@ -222,7 +226,7 @@ const RelationsCommon: React.FC<Props> = (
       sort={salesSort}
       resetSearch={submitSucceeded}
       dataRowClass="grid-temp-col-3-fr"
-      aqlEntities={["Course", "Product", "Module", "Qualification"]}
+      aqlEntities={customAqlEntities || aqlEntities}
       CustomCell={relationCell}
     />
 );
