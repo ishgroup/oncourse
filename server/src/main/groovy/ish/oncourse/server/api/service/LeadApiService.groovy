@@ -187,13 +187,16 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
     }
 
     private Money calculateEstimatedValue(ObjectContext context, Integer studentCounts, List<SaleDTO> relatedCourses) {
-        List<Course> dbCourses = relatedCourses.collect {courseApiService.getEntityAndValidateExistence(context, it.id) }
-        Money estimatedValue = dbCourses.findAll {!it.courseClasses.empty }
-                .collect {dbCourse ->
-                    // take a last class of course
-                    return dbCourse.courseClasses.sort { it.startDateTime }.last()
-                }*.feeExGst.sum() as Money
+        if (!relatedCourses.empty) {
+            List<Course> dbCourses = relatedCourses.collect {courseApiService.getEntityAndValidateExistence(context, it.id) }
+            Money estimatedValue = dbCourses.findAll {!it.courseClasses.empty }
+                    .collect {dbCourse ->
+                        // take a last class of course
+                        return dbCourse.courseClasses.sort { it.startDateTime }.last()
+                    }*.feeExGst.sum() as Money
 
-        return estimatedValue.multiply(studentCounts.toBigDecimal())
+            return estimatedValue.multiply(studentCounts.toBigDecimal())
+        }
+        return Money.ZERO
     }
 }
