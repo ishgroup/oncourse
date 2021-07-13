@@ -1,4 +1,4 @@
 type: string
 enum:
   - Open
-  - Close
+  - Closed

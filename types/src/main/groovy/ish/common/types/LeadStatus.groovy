@@ -11,7 +11,12 @@ package ish.common.types
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.API
 
-enum LeadStatus implements DisplayableExtendedEnumeration<Integer> {
+/**
+ * There are various states of the lead object, which are described below.
+ *
+ */
+@API
+public enum LeadStatus implements DisplayableExtendedEnumeration<Integer> {
 
     /**
      * Database value: 0
@@ -19,7 +24,7 @@ enum LeadStatus implements DisplayableExtendedEnumeration<Integer> {
      * Lead isn't active.
      */
     @API
-    CLOSE(0, "Close"),
+    CLOSED(0, "Closed"),
 
     /**
      * Database value: 1

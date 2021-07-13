@@ -9,8 +9,8 @@ trait LeadStatusDTOTrait {
         switch (this as LeadStatusDTO) {
             case LeadStatusDTO.OPEN:
                 return LeadStatus.OPEN
-            case LeadStatusDTO.CLOSE:
-                return LeadStatus.CLOSE
+            case LeadStatusDTO.CLOSED:
+                return LeadStatus.CLOSED
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -23,8 +23,8 @@ trait LeadStatusDTOTrait {
         switch (leadStatus) {
             case LeadStatus.OPEN:
                 return LeadStatusDTO.OPEN
-            case LeadStatus.CLOSE:
-                return LeadStatusDTO.CLOSE
+            case LeadStatus.CLOSED:
+                return LeadStatusDTO.CLOSED
             default:
                 throw new IllegalArgumentException("$leadStatus.displayName")
         }
