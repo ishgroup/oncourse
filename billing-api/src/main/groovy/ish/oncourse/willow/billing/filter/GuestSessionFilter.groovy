@@ -5,79 +5,56 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import ish.oncourse.api.access.GuestFilter
-import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.api.request.RequestService
 import ish.util.SecurityUtil
 import org.apache.zookeeper.CreateMode
 
-import javax.ws.rs.ClientErrorException
-import javax.ws.rs.container.ContainerRequestContext
-import javax.ws.rs.container.ContainerRequestFilter
-import javax.ws.rs.core.Response
-
 @GuestFilter
 @CompileDynamic
-class GuestSessionFilter  implements ContainerRequestFilter {
-
-    RequestService requestService
-    ZKSessionManager sessionManager
+class GuestSessionFilter extends BillingSessionFilter {
+    
     private static final String RE_CAPTCHA_TOKEN = 'xGRecaptcha'
     private static final String RE_CAPTCHA_HOST = 'https://www.google.com'
     private static final String RE_CAPTCHA_PATH = '/recaptcha/api/siteverify'
     private static final String RE_CAPTCHA_SECRET = '6LenRkYaAAAAAKhZKrYLzuEcy5W6Qspj_NgZJ0yy'
     private static final String GUEST_ID = "Guest-1"
-    private static final Integer SESSION_MAX_AGE = 3600
+    
     @Inject
-    AuthenticationFilter(RequestService requestService, ZKSessionManager sessionManager) {
-        this.requestService = requestService
-        this.sessionManager = sessionManager
+    GuestSessionFilter(RequestService requestService, ZKSessionManager sessionManager) {
+        super(requestService, sessionManager)
+    }
+
+    @Override
+    protected String authentificate(String token) {
+        HTTPBuilder builder =  new HTTPBuilder()
+        builder.handler['failure'] = { response, body ->
+            return 'Request rejected, reCaptcha check failed'
+        }
+        builder.handler['success'] = { response, body ->
+            if (body.success) {
+                return null
+            } else {
+                return 'Request rejected, reCaptcha check failed'
+            }
+        }
+        builder.post(
+                [uri: RE_CAPTCHA_HOST,
+                 path: RE_CAPTCHA_PATH,
+                 contentType: ContentType.JSON,
+                 requestContentType: ContentType.JSON,
+                 query: [
+                         secret: RE_CAPTCHA_SECRET,
+                         response: token
+                 ]
+                ])
+    }
+
+    @Override
+    protected String getAuthToken() {
+        return requestService.request.getHeader(RE_CAPTCHA_TOKEN)
     }
     
     @Override
-    void filter(ContainerRequestContext requestContext) throws IOException {
-        SessionCookie sessionCookie = SessionCookie.valueOf(requestService.request)
-        if (sessionCookie.exist) {
-            verifySession(sessionCookie.sessionNode)
-        } else  {
-            String reCaptcha = requestService.request.getHeader(RE_CAPTCHA_TOKEN)
-            if  (reCaptcha) {
-                HTTPBuilder builder =  new HTTPBuilder()
-                builder.handler['failure'] = { response, body ->
-                    throw new ClientErrorException('Request rejected, reCaptcha check failed', Response.Status.NOT_ACCEPTABLE)
-                }
-                builder.handler['success'] = { response, body ->
-                    if (body.success) {
-                        createSession()
-                    } else {
-                        throw new ClientErrorException('Request rejected, reCaptcha check failed', Response.Status.NOT_ACCEPTABLE)
-                    }
-                }
-                builder.post(
-                        [uri: RE_CAPTCHA_HOST,
-                         path: RE_CAPTCHA_PATH,
-                         contentType: ContentType.JSON,
-                         requestContentType: ContentType.JSON,
-                         query: [
-                                 secret: RE_CAPTCHA_SECRET,
-                                 response: reCaptcha
-                                ]
-                        ])
-               
-            } else {
-                throw new ClientErrorException('Request rejected, no reCaptcha token provided', Response.Status.NOT_ACCEPTABLE)
-            }
-            
-        }
-
-    }
-
-    void verifySession(String sessionNode) {
-        if (!sessionManager.sessionExist(sessionNode)) {
-            requestService.setSessionToken(null,0)
-            requestService.response.sendError(Response.Status.UNAUTHORIZED.statusCode,  "User session invalid")
-        }
-    }
-
     void createSession() {
         String sessionId = SecurityUtil.generateRandomPassword(20)
         sessionManager.persistSession(GUEST_ID, sessionId, CreateMode.EPHEMERAL)
