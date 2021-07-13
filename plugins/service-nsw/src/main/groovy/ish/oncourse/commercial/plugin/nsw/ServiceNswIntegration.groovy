@@ -8,7 +8,7 @@ package ish.oncourse.commercial.plugin.nsw
 import groovy.transform.CompileDynamic
 import groovyx.net.http.RESTClient
 import ish.common.types.DataType
-import ish.oncourse.commercial.plugin.nsw.ServiceNswException
+import ish.common.types.EnrolmentStatus
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.integration.OnSave
 import ish.oncourse.server.integration.Plugin
@@ -208,7 +208,7 @@ PIN: %s\n
             PaymentInLine paymentInLine = voucher.voucherPaymentsIn*.paymentIn*.paymentInLines.flatten()[0] as PaymentInLine
             if (paymentInLine) {
                 paymentInLine.invoice.invoiceLines
-                        .findAll {it.enrolment != null } //
+                        .findAll {it.enrolment != null && !EnrolmentStatus.STATUSES_CANCELLATIONS.contains(it.enrolment.status) } //
                         .each { invoiceLine ->
                             Contact contact = invoiceLine.enrolment.student.contact
                             LocalDate birthDate = contact.birthDate
