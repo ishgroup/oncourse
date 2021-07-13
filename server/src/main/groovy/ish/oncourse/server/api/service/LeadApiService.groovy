@@ -76,7 +76,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.notify = cayenneModel.notify
             dtoModel.status = LeadStatusDTO.values()[0].fromDbType(cayenneModel.status)
             dtoModel.assignToId = cayenneModel.assignedTo?.id
-            dtoModel.assignTo = cayenneModel.assignedTo?.email
+            dtoModel.assignTo = cayenneModel.assignedTo?.fullName
 
             dtoModel.customFields = cayenneModel.customFields.collectEntries {[(it.customFieldType.key): it.value] }
             dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
