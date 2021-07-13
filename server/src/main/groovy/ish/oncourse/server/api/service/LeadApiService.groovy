@@ -69,7 +69,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             dtoModel.studentCount = cayenneModel.studentCount
             dtoModel.contactId = cayenneModel.customer.id
-            dtoModel.studentName = cayenneModel.customer.fullName
+            dtoModel.contactName = cayenneModel.customer.fullName
             dtoModel.studentNotes = cayenneModel.studentNotes
             dtoModel.estimatedValue = cayenneModel.estimatedValue.toBigDecimal()
             dtoModel.nextActionOn = cayenneModel.nextActionOn
@@ -169,10 +169,6 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
 
         if (dtoModel.status == null) {
             validator.throwClientErrorException(id, 'status', "Need to specify a lead status.")
-        }
-
-        if (dtoModel.relatedSellables.empty) {
-            validator.throwClientErrorException(id, 'active', "A lead should consist of at least one sale item.")
         }
     }
 

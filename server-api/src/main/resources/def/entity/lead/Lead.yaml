@@ -16,7 +16,7 @@ properties:
   contactId:
     type: integer
     format: int64
-  studentName:
+  contactName:
     type: string
   estimatedValue:
     type: number
