@@ -130,21 +130,8 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	 */
 	@Nullable
 	@API
-	@Override
 	String getFullName() {
 		return GetContactFullName.valueOf(this).get()
-	}
-
-	/**
-	 * @return the webcal:// URL for a student or tutor to subscribe to their personal calendar
-	 */
-	@Deprecated
-	@Override
-	String getCalendarUrl() {
-		// TODO: shouldn't this point to the skillsOnCourse URL?
-		// TODO: this isn't used anywhere and should be removed from ContactInterface and from here after update to newer waCommon version
-
-		throw new UnsupportedOperationException()
 	}
 
 	/**
