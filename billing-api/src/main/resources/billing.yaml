@@ -29,7 +29,7 @@ paths:
       tags:
         - Billing
       x-filter:
-        - ish.oncourse.api.access.AuthFilter
+        - ish.oncourse.api.access.GuestFilter
       parameters:
         - name: collegeKey
           in: path
@@ -54,7 +54,7 @@ paths:
       tags:
         - Billing
       x-filter:
-        - ish.oncourse.api.access.AuthFilter
+        - ish.oncourse.api.access.GuestFilter
       consumes:
         - application/json
       parameters:

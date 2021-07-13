@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
-import ish.oncourse.api.access.AuthFilter
+import ish.oncourse.api.access.GuestFilter
 import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.api.request.RequestService
 import ish.util.SecurityUtil
@@ -15,9 +15,9 @@ import javax.ws.rs.container.ContainerRequestContext
 import javax.ws.rs.container.ContainerRequestFilter
 import javax.ws.rs.core.Response
 
-@AuthFilter
+@GuestFilter
 @CompileDynamic
-class SessionFilter  implements ContainerRequestFilter {
+class GuestSessionFilter  implements ContainerRequestFilter {
 
     RequestService requestService
     ZKSessionManager sessionManager

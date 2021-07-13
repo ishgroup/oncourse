@@ -16,6 +16,7 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.util.PreferenceUtil
 import ish.oncourse.willow.billing.v1.model.CollegeDTO
+import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.service.BillingApi
 import ish.oncourse.willow.billing.website.CreateNewWebSite
 import ish.persistence.Preferences
@@ -190,6 +191,21 @@ class BillingApiImpl implements BillingApi {
             //destroy session after process finished
             requestService.setSessionToken(null, 0)
         }
+    }
+
+    @Override
+    String getCollegeKey() {
+        return null
+    }
+
+    @Override
+    List<SiteDTO> getCollegeSites() {
+        return null
+    }
+
+    @Override
+    void updateCollegeSites(List<SiteDTO> sites) {
+
     }
 
     private static void sendEmail(String subject, String message) {

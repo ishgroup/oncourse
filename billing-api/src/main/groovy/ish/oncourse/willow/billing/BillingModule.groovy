@@ -11,7 +11,7 @@ import ish.oncourse.configuration.Configuration
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.services.s3.S3Service
-import ish.oncourse.willow.billing.filter.SessionFilter
+import ish.oncourse.willow.billing.filter.GuestSessionFilter
 import ish.oncourse.willow.billing.filter.ZKSessionManager
 import ish.oncourse.willow.billing.service.impl.BillingApiImpl
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
@@ -28,7 +28,7 @@ class BillingModule extends ConfigModule {
         binder.bind(ICayenneService).to(CayenneService)
 
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
-        CXFModule.contributeResources(binder).addBinding().to(SessionFilter)
+        CXFModule.contributeResources(binder).addBinding().to(GuestSessionFilter)
         CXFModule.contributeResources(binder).addBinding().to(BillingApiImpl)
         CXFModule.contributeFeatures(binder)
     }

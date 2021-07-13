@@ -33,7 +33,7 @@ dependencies {
     testImplementation(testFixtures(project(":common:test-functions")))
     testImplementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
     testImplementation "com.google.code.gson:gson:2.8.4"
-    testImplementation 'rg.hamcrest:hamcrest-all:2.2'
+    testImplementation 'org.hamcrest:hamcrest-all:1.3'
     testImplementation 'org.apache.lucene:lucene-analyzers-common:7.1.0'
     testImplementation 'org.apache.lucene:lucene-test-framework:7.1.0'
     testImplementation 'com.vividsolutions:jts:1.13'
