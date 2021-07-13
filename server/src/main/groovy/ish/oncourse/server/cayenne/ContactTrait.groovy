@@ -13,12 +13,10 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.ProductStatus
 import ish.oncourse.API
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.util.RuntimeUtil
 import org.apache.commons.lang3.StringUtils
 
-import javax.annotation.Nullable
 import java.time.LocalDate
 import java.time.Period
 
@@ -26,16 +24,6 @@ trait ContactTrait {
 
     abstract List<Membership> getMemberships()
     abstract LocalDate getBirthDate()
-
-    @Deprecated
-    String getFull_name() {
-        GetContactFullName.valueOf(this as Contact, true).get()
-    }
-
-    String getFullName(Boolean firstNameFirst) {
-        GetContactFullName.valueOf(this as Contact, firstNameFirst).get()
-    }
-
 
     boolean hasMembership(MembershipProduct membership) {
         memberships.any { it.status == ProductStatus.ACTIVE && it.expiryDate > new Date() && it.product.id == membership.id  }

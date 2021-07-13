@@ -13,57 +13,38 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import ish.common.types.ConfirmationStatus
-import ish.oncourse.server.api.dao.DiscountDao
-import ish.oncourse.server.cayenne.Discount
-import ish.oncourse.server.cayenne.InvoiceLineDiscount
-
-import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
 import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.DefaultAccount
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.PaymentLineInterface
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.dao.AccountDao
-import ish.oncourse.server.api.dao.ContactDao
-import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.EnrolmentDao
-import ish.oncourse.server.api.dao.InvoiceDao
-import ish.oncourse.server.api.dao.InvoiceDueDateDao
-import ish.oncourse.server.api.dao.InvoiceLineDao
-import ish.oncourse.server.api.dao.PaymentInDao
-import ish.oncourse.server.api.dao.TaxDao
-import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
-import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoiceLineModel
-import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.InvoiceDTO
 import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
 import ish.oncourse.server.api.v1.model.InvoicePaymentPlanDTO
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceDueDate
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
 import ish.oncourse.server.services.IAutoIncrementService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.InvoiceUtil
-import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
-import static ish.util.LocalDateUtils.dateToTimeValue
 import ish.util.MoneyUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.isNotBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.LocalDate
+
+import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
+import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
+import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoiceLineModel
+import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
+import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
+import static ish.util.LocalDateUtils.dateToTimeValue
+import static org.apache.commons.lang3.StringUtils.*
 
 class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao> {
 
@@ -122,7 +103,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
         new InvoiceDTO().with { invoiceDTO ->
             invoiceDTO.id = invoice.id
             invoiceDTO.contactId = invoice.contact.id
-            invoiceDTO.contactName = invoice.contact.with { GetContactFullName.valueOf(it, true).get() }
+            invoiceDTO.contactName = invoice.contact.with {it.getFullName() }
             invoiceDTO.customerReference = invoice.customerReference
             invoiceDTO.invoiceNumber = invoice.invoiceNumber
             invoiceDTO.billToAddress = invoice.billToAddress

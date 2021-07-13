@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.function.GetContactFullName
+
 import org.apache.commons.lang3.StringUtils
 
 trait OutcomeTrait {
@@ -19,13 +19,13 @@ trait OutcomeTrait {
     abstract Enrolment getEnrolment()
 
     abstract PriorLearning getPriorLearning()
-    
+
     abstract Module getModule()
 
     String getStudentName() {
         Contact contact = (enrolment) ? enrolment?.student?.contact : priorLearning?.student?.contact
         if (contact) {
-            return GetContactFullName.valueOf(contact, true).get()
+            return contact.getFullName()
         } else {
             return StringUtils.EMPTY
         }

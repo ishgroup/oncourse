@@ -128,10 +128,19 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	/***
 	 * @return the full name for this contact including the middle name, or just the name of the company
 	 */
-	@Nullable
+	@Nonnull
 	@API
 	String getFullName() {
-		return GetContactFullName.valueOf(this).get()
+		if (isCompany || StringUtils.equals(firstName, lastName)) {
+			return StringUtils.trimToEmpty(lastName);
+		}
+		StringBuilder builder = new StringBuilder();
+
+		if (StringUtils.isNotBlank(firstName)) { builder.append(firstName); }
+		if (StringUtils.isNotBlank(middleName)) { builder.append(StringUtils.SPACE).append(middleName); }
+		if (StringUtils.isNotBlank(lastName)) { builder.append(StringUtils.SPACE).append(lastName); }
+
+		return builder.toString();
 	}
 
 	/**
@@ -249,14 +258,10 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	}
 
 	/**
-	 * A method for returning a formatted contact name. See also fullName() if you want the middle name as well.
-	 * This method works for companies.
-	 *
-	 * @param firstNameFirst - true for "John Smith", false for "Smith, John"
-	 * @return formatted name
+	 * Use getFullName() instead
 	 */
 	@Nullable
-	@API
+	@Deprecated
 	@Override
 	String getName(boolean firstNameFirst) {
 		return GetContactFullName.valueOf(this, firstNameFirst).get()
@@ -406,9 +411,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 		return super.getDeliveryStatusSms()
 	}
 
-	/**
-	 * @return the contact's main email address
-	 */
 	@API
 	@Nullable
 	@Override
