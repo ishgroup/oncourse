@@ -150,7 +150,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * @return class fee including GST
 	 */
 	@API
-	@Override
 	Money getFeeIncGst() {
 		if (getTax() != null) {
 			return MoneyUtil.getPriceIncTax(getFeeExGst(), getTax().getRate(), getTaxAdjustment())
@@ -335,7 +334,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 
 	private void updateOverriddenFields() {
 		if (getReportableHours() == null) {
-			setReportableHours(CalculateCourseClassReportableHours.valueOf(this).calculate());
+			setReportableHours(CalculateCourseClassReportableHours.valueOf(this).calculate())
 		}
 		if (getEnrolments() != null && getEnrolments().size() > 0) {
 
@@ -407,7 +406,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * @return sum of payable hours in all sessions of this courseClass
 	 */
 	@API
-	@Override
 	BigDecimal getPayableClassroomHours() {
 		BigDecimal sum = BigDecimal.ZERO
 		if (getSessions() != null && getSessions().size() > 0) {
@@ -439,7 +437,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * @return number of successful and in transaction enrolments made to this class
 	 */
 	@API
-	@Override
 	int getValidEnrolmentCount() {
 		List<Enrolment> list = getSuccessAndQueuedEnrolments()
 		if (list == null) {
@@ -1028,7 +1025,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return super.getDiscountCourseClasses()
 	}
 
-	@Override
 	void addModuleToAllSessions(Module module) {
 		CourseClassUtil.addModuleToAllSessions(this, module)
 	}

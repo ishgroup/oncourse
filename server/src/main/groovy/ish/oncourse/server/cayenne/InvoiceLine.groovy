@@ -322,9 +322,7 @@ class InvoiceLine extends _InvoiceLine implements IInvoiceLineInterface, Queueab
 	/**
 	 * @return list of discounts linked to this invoice line
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API
 	List<Discount> getDiscounts() {
 		List<Discount> discounts = new ArrayList<>()
 		for (InvoiceLineDiscount id : getInvoiceLineDiscounts()) {

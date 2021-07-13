@@ -61,7 +61,6 @@ class Student extends _Student implements StudentTrait, Queueable, Taggable, Att
 	@Override
 	void postAdd() {
 		super.postAdd()
-		// FIXME: (ari) are these correct values
 		if (getLabourForceStatus() == null) {
 			setLabourForceStatus(AvetmissStudentLabourStatus.DEFAULT_POPUP_OPTION)
 		}
