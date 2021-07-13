@@ -4,6 +4,7 @@
  */
 
 import { Epic } from "redux-observable";
+import { isSameDay } from "date-fns";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import InvoiceService from "../../../entities/invoices/services/InvoiceService";
 import { CHECKOUT_GET_PREVIOUS_OWING, CHECKOUT_SET_PREVIOUS_OWING } from "../../actions/checkoutSummary";
@@ -20,7 +21,7 @@ const request: EpicUtils.Request = {
     items.forEach(i => {
       const merged = mergeInvoicePaymentPlans(i.paymentPlans) as any;
       i.paymentPlans = merged;
-      i.nextDue = i.overdue || merged.find(m => m.date > today)?.amount || i.amountOwing;
+      i.nextDue = i.overdue || merged.find(m => isSameDay(new Date(m.date), today))?.amount || i.amountOwing;
     });
 
     return [

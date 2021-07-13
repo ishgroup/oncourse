@@ -15,7 +15,6 @@ import { isAfter, isBefore, isEqual } from 'date-fns';
 import { ClassCost, CourseClassTutor, Discount, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
-
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
 import { stubFunction } from "../../../../../common/utils/common";
 import { stopEventPropagation } from "../../../../../common/utils/events";
