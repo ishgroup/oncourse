@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.lead.xml
+entityClass: Lead
+body: ish.onCourse.lead.xml.groovy
+name: Lead XML export
+outputType: xml
