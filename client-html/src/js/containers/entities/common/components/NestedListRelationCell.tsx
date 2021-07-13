@@ -53,7 +53,7 @@ export default (
 
   return (
     <div className="ml-2">
-      {relationTypes.length && (
+      {Boolean(relationTypes.length) && (
         <EditInPlaceField
           meta={{
             error: hasError && "No available relation types",

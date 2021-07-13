@@ -47,8 +47,6 @@ module.exports = {
         "@typescript-eslint/type-annotation-spacing": "off",
         "no-param-reassign": "off",
         "no-nested-ternary": "off",
-        "no-await-in-loop": "off",
-        "no-restricted-syntax": "off",
         "arrow-parens": [
             "error",
             "as-needed"
@@ -120,6 +118,7 @@ module.exports = {
         "quote-props": "off",
         "radix": "error",
         "react/no-this-in-sfc": "off",
+        "react/require-default-props": "off",
         "react/prop-types": "off",
         "react/state-in-constructor": "off",
         "react/sort-comp": "off",

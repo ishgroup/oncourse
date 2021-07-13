@@ -9,9 +9,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Popper from "@material-ui/core/Popper";
-import React, {
-  useContext, useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { withStyles } from "@material-ui/core";
 import clsx from "clsx";
@@ -24,10 +22,7 @@ import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
-import {
-  selectStyles,
-  ListboxComponent
-} from "./SelectCustomComponents";
+import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import { stubComponent } from "../../../utils/common";
 
 const searchStyles = theme => createStyles({
@@ -120,7 +115,7 @@ const ListBoxAdapter = React.forwardRef<any, any>(({ children, ...other }, ref) 
     remoteRowCount,
     loadMoreRows,
     classes,
-    fieldClasses,
+    fieldClasses = {},
   } = useContext(SelectContext);
 
   return (
@@ -175,7 +170,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   selectLabelCondition,
   selectFilterCondition,
   defaultDisplayValue,
-  items,
+  items= [],
   rowHeight,
   remoteRowCount,
   loadMoreRows,
@@ -527,7 +522,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           )}
             popupIcon={
               loading
-                ? <CircularProgress size={24} thickness={4} className={fieldClasses ? fieldClasses.loading : undefined} />
+                ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
                 : stubComponent()
             }
             classes={{
@@ -567,16 +562,16 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
               <>
                 <ButtonBase
                   onFocus={onEditButtonFocus}
-                  className={clsx(classes.editable, "overflow-hidden d-flex hoverIconContainer", {
+                  className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
                     "pointer-events-none": disabled
                   })}
                   component="div"
                 >
-                  <span className={clsx("text-truncate", classes.editable, fieldClasses && fieldClasses.text)}>
+                  <span className={clsx("text-truncate", classes.editable, fieldClasses.text)}>
                     {displayedValue}
                   </span>
                   {!disabled && (
-                    <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses && fieldClasses.editIcon)} />
+                    <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
                   )}
                 </ButtonBase>
                 {endAdornment}

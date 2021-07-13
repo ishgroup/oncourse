@@ -52,7 +52,8 @@ interface Props {
   relationTypesFilter?: {
     entities: EntityName[];
     filter: (relation: EntityRelationTypeRendered) => boolean;
-  }
+  },
+  dataRowClass?: string;
 }
 
 const RelationsCommon: React.FC<Props> = (
@@ -82,7 +83,8 @@ const RelationsCommon: React.FC<Props> = (
     modulesPending,
     rootEntity,
     relationTypesFilter,
-    customAqlEntities
+    customAqlEntities,
+    dataRowClass = "grid-temp-col-3-fr"
   }
 ) => {
   const relationTypes = useMemo<EntityRelationTypeRendered[]>(() =>
@@ -183,7 +185,7 @@ const RelationsCommon: React.FC<Props> = (
     <NestedList
       name={name}
       validate={validate ? [validate, validateRelations] : validateRelations}
-      title={`${listValues.length || ""} relations`}
+      title={`${listValues.length || ""} relation${listValues.length === 1 ? "" : "s"}`}
       formId={values.id}
       values={listValues}
       searchValues={searchValues}
@@ -225,7 +227,7 @@ const RelationsCommon: React.FC<Props> = (
       }}
       sort={salesSort}
       resetSearch={submitSucceeded}
-      dataRowClass="grid-temp-col-3-fr"
+      dataRowClass={dataRowClass}
       aqlEntities={customAqlEntities || aqlEntities}
       CustomCell={relationCell}
     />

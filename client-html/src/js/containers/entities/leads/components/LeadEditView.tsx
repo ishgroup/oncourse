@@ -27,45 +27,13 @@ const items: TabsListItem[] = [
   },
 ];
 
-class LeadEditView extends React.Component<any, any> {
-  render() {
-    const {
-      values,
-      isNew,
-      isNested,
-      classes,
-      dispatch,
-      dirty,
-      form,
-      nestedIndex,
-      rootEntity,
-      twoColumn,
-      showConfirm,
-      openNestedEditView,
-      manualLink
-    } = this.props;
-
-    return values ? (
-      <TabsList
-        items={items}
-        itemProps={{
-          isNew,
-          isNested,
-          values,
-          classes,
-          dispatch,
-          dirty,
-          form,
-          nestedIndex,
-          rootEntity,
-          twoColumn,
-          showConfirm,
-          openNestedEditView,
-          manualLink
-        }}
-      />
-    ) : null;
-  }
-}
+const LeadEditView = props => props.values ? (
+  <TabsList
+    items={items}
+    itemProps={{
+      ...props
+    }}
+  />
+) : null;
 
 export default LeadEditView;

@@ -14,6 +14,7 @@ import { GET_LEAD_ITEM, GET_LEAD_ITEM_FULFILLED } from "../actions";
 import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
 import LeadService from "../services/LeadService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
 
 const request: EpicUtils.Request = {
   type: GET_LEAD_ITEM,
@@ -25,9 +26,10 @@ const request: EpicUtils.Request = {
       },
       {
         type: SET_LIST_EDIT_RECORD,
-        payload: { editRecord: lead }
+        payload: { editRecord: lead, name: lead.contactName }
       },
-      initialize(LIST_EDIT_VIEW_FORM_NAME, lead)
+      getNoteItems("Lead", lead.id, LIST_EDIT_VIEW_FORM_NAME),
+      initialize(LIST_EDIT_VIEW_FORM_NAME, lead),
     ];
   }
 };

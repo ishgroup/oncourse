@@ -5,9 +5,7 @@
 
 import React, { useCallback, useState } from "react";
 import { Grid, withStyles } from "@material-ui/core";
-import {
- arrayInsert, change, FieldArray
-} from "redux-form";
+import { arrayInsert, change, FieldArray } from "redux-form";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
@@ -29,7 +27,7 @@ interface Props {
   showConfirm: ShowConfirmCaller;
   twoColumn?: any;
   className?: string;
-  form: string;
+  form?: string;
   dispatch: any;
   values: any;
   leftOffset?: boolean;
@@ -90,7 +88,7 @@ const OwnApiNotes = React.memo<Props>(
 
     const addNote = useCallback(() => {
       if (isNew) {
-        showConfirm({ confirmMessage: `Please save record before adding notes`, cancelButtonText: "OK" });
+        showConfirm({ title: null, confirmMessage: `Please save new record before adding notes`, cancelButtonText: "OK" });
       } else {
         const temporaryId = uniqid();
         const newNote: Note = { message: "", entityName: rootEntity, entityId: values.id };
@@ -134,4 +132,4 @@ const mapStateToProps = (state: State) => ({
   queuedActions: state.actionsQueue.queuedActions
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(OwnApiNotes));
+export default connect(mapStateToProps)(withStyles(styles)(OwnApiNotes));

@@ -17,13 +17,16 @@ import { FETCH_SUCCESS } from "../../../../common/actions";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import LeadService from "../services/LeadService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
-const request: EpicUtils.Request<any, { id: number; lead: Lead }> = {
+const request: EpicUtils.Request<any, { id: number; lead: Lead & { notes: any } }> = {
   type: UPDATE_LEAD_ITEM,
   getData: ({ id, lead }) => {
+    delete lead.notes;
     processCustomFields(lead);
     return LeadService.updateLead(id, lead);
   },
+  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
     {
       type: UPDATE_LEAD_ITEM_FULFILLED

@@ -13,18 +13,9 @@ import { Dispatch } from "redux";
 import { Lead } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import {
-  createLead,
-  getLead,
-  removeLead,
-  updateLead
-} from "./actions";
+import { createLead, getLead, removeLead, updateLead } from "./actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
 import LeadCogWheel from "./components/LeadCogWheel";
@@ -32,6 +23,8 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import { checkPermissions } from "../../../common/actions";
 import LeadEditView from "./components/LeadEditView";
 import { FilterGroup } from "../../../model/common/ListView";
+import { getUsers } from "../../security/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 
 const Initial: Lead = {
   id: null,
@@ -46,20 +39,46 @@ const Initial: Lead = {
 
 const filterGroups: FilterGroup[] = [
   {
-    title: "CORE FILTER",
+    title: "Status",
     filters: [
       {
-        name: "Status",
+        name: "Open",
         expression: "(status == OPEN)",
         active: false
       },
+      {
+        name: "Closed",
+        expression: "(status == CLOSED)",
+        active: false
+      }
     ]
   }
 ];
 
 const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Lead and entityId" },
-  { title: "Contacts", list: "contact", expression: "student.leads.id" }
+  { title: "Contacts", list: "contact", expression: "student.leads.id" },
+  { title: "Courses", list: "course", expression: "leadItems.lead.id" },
+  {
+    title: "Related products...",
+    items: [
+      {
+        title: "Related articles",
+        list: "product",
+        expression: "leadItems.lead.id"
+      },
+      {
+        title: "Related memberships",
+        list: "membership",
+        expression: "leadItems.lead.id"
+      },
+      {
+        title: "Related vouchers",
+        list: "voucher",
+        expression: "leadItems.lead.id"
+      }
+    ]
+  },
 ];
 
 const nestedEditFields = {
@@ -80,6 +99,7 @@ const Leads = props => {
     props.getFilters();
     props.getQePermissions();
     props.getTagsForSitesSearch();
+    props.getUsers();
 
     return () => props.clearListState();
   }, []);
@@ -100,12 +120,13 @@ const Leads = props => {
     <div>
       <ListView
         listProps={{
-          primaryColumn: "student.contact.fullName",
-          secondaryColumn: "course.name"
+          primaryColumn: "estimatedValue",
+          secondaryColumn: "customer.fullName"
         }}
         editViewProps={{
           manualLink,
-          // nameCondition
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"]
         }}
         updateTableModel={updateTableModel}
         nestedEditFields={nestedEditFields}
@@ -130,7 +151,7 @@ const mapStateToProps = (state: State) => ({
   customFieldTypes: state.customFieldTypes.types["Lead"]
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   onInit: () => {
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
@@ -141,6 +162,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getTagsForSitesSearch: () => {
     dispatch(getEntityTags("Site"));
   },
+  getUsers: () => dispatch(getUsers()),
   getFilters: () => dispatch(getFilters("Lead")),
   getTags: () => dispatch(getListTags("Lead")),
   clearListState: () => dispatch(clearListState()),
@@ -150,4 +172,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDelete: (id: string) => dispatch(removeLead(id))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Leads);
+export default connect(mapStateToProps, mapDispatchToProps)(Leads);

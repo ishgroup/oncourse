@@ -34,8 +34,8 @@ class LeadSites extends React.PureComponent<any, any> {
 
   onAddSite = (items: NestedListItem[]): void => {
     const {
- dispatch, form, values, foundQuickSearchSites
-} = this.props;
+     dispatch, form, values, foundQuickSearchSites
+    } = this.props;
     const updated = (values.sites ? values.sites : []).concat(
       items.map(item => foundQuickSearchSites.find(site => site.id === item.entityId))
     );
@@ -70,7 +70,7 @@ class LeadSites extends React.PureComponent<any, any> {
     } = this.props;
 
     return (
-      <Grid container className="pl-3 pr-3 pb-2">
+      <Grid container className="pl-3 pr-3">
         <Grid item xs={twoColumn ? 6 : 12}>
           <NestedList
             formId={values && values.id}

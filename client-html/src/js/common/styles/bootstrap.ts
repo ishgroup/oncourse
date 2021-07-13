@@ -438,5 +438,8 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".grid-temp-col-3-fr": {
     gridTemplateColumns: "1fr 1fr 1fr"
+  },
+  ".grid-temp-col-2-fr": {
+    gridTemplateColumns: "1fr 1fr"
   }
 });

@@ -19,7 +19,7 @@ const items = [
   },
   {
     label: "NOTES",
-    component: ({ ...props }) => <OwnApiNotes {...props} />
+    component: ({ ...props }) => <OwnApiNotes {...props as any} />
   },
   {
     label: "DOCUMENTS",
