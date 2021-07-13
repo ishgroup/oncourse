@@ -15,6 +15,7 @@ import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -199,8 +200,8 @@ PIN: %s\n
     }
 
     boolean init(Voucher voucher, String emailAddress) {
-        if (voucher.getCustomFieldValue("serviceNswVoucher") && voucher.getCustomFieldValue("serviceNswRedeemedOn") == null) {
-            this.voucherCode = voucher.getCustomFieldValue("serviceNswVoucher")
+        if (voucher.getCustomFieldValue(VOUCHER_CODE_TYPE_KEY) && voucher.getCustomFieldValue(VOUCHER_REDEEMED_DATE_TYPE_KEY) == null) {
+            this.voucherCode = voucher.getCustomFieldValue(VOUCHER_CODE_TYPE_KEY)
             this.voucher = voucher
             this.emailAddress = emailAddress ?: preferenceController.emailAdminAddress
 
@@ -244,24 +245,32 @@ PIN: %s\n
     }
 
     private static void createVoucherCodeCustomFieldType(ObjectContext context) {
-        context.newObject(CustomFieldType).with {type ->
-            type.key = VOUCHER_CODE_TYPE_KEY
-            type.name = "Creative Kids Voucher Number"
-            type.entityIdentifier = Voucher.class.simpleName
-            type.dataType = DataType.PATTERN_TEXT
-            type.pattern = "9[0-9a-zA-Z]{15}"
-            type.isMandatory = false
+        if (!searchCustomFieldType(context, VOUCHER_CODE_TYPE_KEY)) {
+            context.newObject(CustomFieldType).with { type ->
+                type.key = VOUCHER_CODE_TYPE_KEY
+                type.name = "Creative Kids Voucher Number"
+                type.entityIdentifier = Voucher.class.simpleName
+                type.dataType = DataType.PATTERN_TEXT
+                type.pattern = "9[0-9a-zA-Z]{15}"
+                type.isMandatory = false
+            }
         }
     }
 
     private static void createVoucherRedeemedOnCustomFieldType(ObjectContext context) {
-        context.newObject(CustomFieldType).with {type ->
-            type.key = VOUCHER_REDEEMED_DATE_TYPE_KEY
-            type.name = "Service NSW Redeemed On"
-            type.entityIdentifier = Voucher.class.simpleName
-            type.dataType = DataType.DATE_TIME
-            type.isMandatory = false
+        if (!searchCustomFieldType(context, VOUCHER_REDEEMED_DATE_TYPE_KEY)) {
+            context.newObject(CustomFieldType).with {type ->
+                type.key = VOUCHER_REDEEMED_DATE_TYPE_KEY
+                type.name = "Service NSW Redeemed On"
+                type.entityIdentifier = Voucher.class.simpleName
+                type.dataType = DataType.DATE_TIME
+                type.isMandatory = false
+            }
         }
+    }
+
+    private static CustomFieldType searchCustomFieldType(ObjectContext context, String key) {
+        return ObjectSelect.query(CustomFieldType.class).where(CustomFieldType.KEY.eq(key)).selectOne(context)
     }
 
     private void setAmount(float amount) {
