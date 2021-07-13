@@ -17,6 +17,7 @@ import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
 import ish.util.LocalDateUtils
+import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate
@@ -32,7 +33,9 @@ trait DiscountTrait {
     abstract List<CorporatePassDiscount> getCorporatePassDiscount()
     abstract Integer getMinEnrolments()
     abstract Money getMinValue()
-        /**
+    abstract ObjectContext getObjectContext()
+
+    /**
      * Determines if the given student is eligible for this Discount. Note that this checks just the student attributes
      * and not whether enrolment, time or other restrictions of the discount might prevent its application.
      *
@@ -154,6 +157,25 @@ trait DiscountTrait {
             }
 
             return false
+        }
+    }
+    /**
+     * Add the discount to given  class available discounts list
+     */
+    @API
+    void addCourseClass(CourseClass courseClass) {
+        if (courseClass) {
+            objectContext.localObject(courseClass).addDiscount(this as Discount)
+        }
+    }
+
+    /**
+     * Remove the discount from given class available discounts list
+     */
+    @API
+    void removeCourseClass(CourseClass courseClass) {
+        if (courseClass) {
+            objectContext.localObject(courseClass).removeDiscount(this as Discount)
         }
     }
 

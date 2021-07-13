@@ -22,6 +22,7 @@ import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
+import ish.oncourse.server.scripting.api.MetaclassCleaner
 import org.apache.cayenne.validation.ValidationException
 
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
@@ -41,6 +42,8 @@ import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.WaitingList
 import static ish.oncourse.server.messaging.MessageService.createMessagePerson
 import org.apache.commons.lang3.StringUtils
+
+
 import static org.apache.commons.lang3.StringUtils.EMPTY
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getRecipientsListFromEntity
@@ -385,23 +388,35 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             }
         }
 
-        Template plainTemplate = templateService.createPlainTemplate(template)
-        Template htmlTemplate = templateService.createHtmlTemplate(template)
+        Template plainTemplate
+        Template htmlTemplate
 
         Closure<Message> fillMessage
         switch(messageTypeDTO) {
             case MessageTypeDTO.EMAIL:
                 fillMessage = { Message message ->
-                    message.emailSubject  = templateService.addSubject(template, plainBindings, htmlBindings)
-                    message.emailBody     = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
+                    plainTemplate = templateService.createPlainTemplate(template)
+                    htmlTemplate = templateService.createHtmlTemplate(template)
+                    
+                    message.emailSubject = templateService.addSubject(template, plainBindings, htmlBindings)
+                    
+                    message.emailBody = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
+                    MetaclassCleaner.clearGroovyCache(plainTemplate);
+
                     message.emailHtmlBody = htmlTemplate ? htmlTemplate.make(htmlBindings).toString() : null
+                    MetaclassCleaner.clearGroovyCache(htmlTemplate);
+
                     message.emailFrom = request.fromAddress
                     message
                 }
                 break
             case MessageTypeDTO.SMS:
                 fillMessage = { Message message ->
+                    plainTemplate = templateService.createPlainTemplate(template)
+                    
                     message.smsText = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
+                    MetaclassCleaner.clearGroovyCache(plainTemplate)
+
                     message
                 }
                 break

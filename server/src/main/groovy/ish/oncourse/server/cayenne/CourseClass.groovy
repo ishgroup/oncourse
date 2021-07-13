@@ -199,9 +199,9 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	}
 
 	/**
-	 * This is a faked flattened relationship via discountCourseClasses.discount.
-	 *
-	 * @return the discounts for this class
+	 * Return the immutable list of discounts available for class
+	 * To add more available discounts for the class see CourseClass.addDiscount(Discount)
+	 * @return available discounts list for this class
 	 */
 	@Nonnull
 	@API
