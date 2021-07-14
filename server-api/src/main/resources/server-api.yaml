@@ -295,6 +295,8 @@ paths:
     $ref: './path/token/api.yaml'
   /user:
     $ref: './path/user/api.yaml'
+  /user/active:
+    $ref: './path/user/active/api.yaml'
   /user/preference:
     $ref: './path/user/preference/api.yaml'
   /user/preference/category:

@@ -44,7 +44,7 @@ class UserFunctions {
 
     private static final Logger logger = LogManager.getLogger(UserFunctions)
 
-    static UserDTO toRestUser(SystemUser systemUser) {
+    static UserDTO toRestUserMinimized(SystemUser systemUser) {
         new UserDTO().with { user ->
             user.id = systemUser.id
             user.active = systemUser.isActive
@@ -52,6 +52,12 @@ class UserFunctions {
             user.firstName = systemUser.firstName
             user.lastName = systemUser.lastName
             user.email = systemUser.email
+            user
+        }
+    }
+
+    static UserDTO toRestUser(SystemUser systemUser) {
+        return toRestUserMinimized(systemUser).with {user ->
             Site centre = systemUser.defaultAdministrationCentre
             user.administrationCentre = centre.id
             user.lastLoggedIn = systemUser.lastLoginOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()

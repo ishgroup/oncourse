@@ -28,6 +28,7 @@ import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toDbSystemUser
 import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUser
+import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUserMinimized
 import static ish.oncourse.server.api.v1.function.UserFunctions.validateForUpdate
 import static ish.oncourse.server.api.v1.function.UserFunctions.validateUserPassword
 import ish.oncourse.server.api.v1.model.PasswordComplexityDTO
@@ -63,6 +64,12 @@ class UserApiImpl implements UserApi {
     List<UserDTO> get() {
         UserDao.getList(cayenneService.newContext)
                 .collect { toRestUser(it) }
+    }
+
+    @Override
+    List<UserDTO> getActive() {
+        UserDao.getActive(cayenneService.newContext)
+                .collect { toRestUserMinimized(it) }
     }
 
     String getUserEmailByInvitation(String invitationToken) {
