@@ -23,7 +23,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import { checkPermissions } from "../../../common/actions";
 import LeadEditView from "./components/LeadEditView";
 import { FilterGroup } from "../../../model/common/ListView";
-import { getUsers } from "../../security/actions";
+import { getActiveUsers } from "../../security/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 
 const Initial: Lead = {
@@ -99,7 +99,7 @@ const Leads = props => {
     props.getFilters();
     props.getQePermissions();
     props.getTagsForSitesSearch();
-    props.getUsers();
+    props.getActiveUsers();
 
     return () => props.clearListState();
   }, []);
@@ -162,7 +162,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getTagsForSitesSearch: () => {
     dispatch(getEntityTags("Site"));
   },
-  getUsers: () => dispatch(getUsers()),
+  getActiveUsers: () => dispatch(getActiveUsers()),
   getFilters: () => dispatch(getFilters("Lead")),
   getTags: () => dispatch(getListTags("Lead")),
   clearListState: () => dispatch(clearListState()),

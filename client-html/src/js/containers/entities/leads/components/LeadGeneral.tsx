@@ -260,7 +260,7 @@ const LeadGeneral = (props: Props) => {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Lead"],
-  users: state.security.users,
+  users: state.security.activeUsers,
 });
 
 export default connect(mapStateToProps)(LeadGeneral);

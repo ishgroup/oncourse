@@ -1,14 +1,14 @@
 import { IAction } from "../../../common/actions/IshAction";
 import { SecurityState } from "./state";
 import {
-  GET_USER_ROLES_FULFILLED,
-  POST_USER_ROLES_FULFILLED,
   DELETE_USER_ROLES_FULFILLED,
+  DISABLE_USER_2FA_FULFILLED,
+  GET_ACTIVE_USERS_REQUEST_FULFILLED,
+  GET_USER_ROLES_FULFILLED,
   GET_USERS_REQUEST_FULFILLED,
   POST_USER_REQUEST_FULFILLED,
-  RESET_USER_PASSWORD_FULFILLED,
-  CLEAR_USER_PASSWORD,
-  DISABLE_USER_2FA_FULFILLED
+  POST_USER_ROLES_FULFILLED,
+  RESET_USER_PASSWORD_FULFILLED
 } from "../actions";
 
 export const securityReducer = (state: SecurityState = {}, action: IAction<any>): any => {
@@ -19,6 +19,7 @@ export const securityReducer = (state: SecurityState = {}, action: IAction<any>)
     case GET_USERS_REQUEST_FULFILLED:
     case POST_USER_REQUEST_FULFILLED:
     case RESET_USER_PASSWORD_FULFILLED:
+    case GET_ACTIVE_USERS_REQUEST_FULFILLED:
     case DISABLE_USER_2FA_FULFILLED: {
       return {
         ...state,

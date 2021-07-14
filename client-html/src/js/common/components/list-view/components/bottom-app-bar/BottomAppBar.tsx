@@ -14,7 +14,7 @@ import Settings from "@material-ui/icons/Settings";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Tooltip from "@material-ui/core/Tooltip";
-import { fade, darken } from "@material-ui/core/styles/colorManipulator";
+import { darken, fade } from "@material-ui/core/styles/colorManipulator";
 import FindInPage from "@material-ui/icons/FindInPage";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -41,7 +41,8 @@ const SendMessageEntities = [
   "PaymentOut",
   "Payslip",
   "ProductItem",
-  "WaitingList"
+  "WaitingList",
+  "Lead"
 ];
 
 const EntitiesToMessageTemplateEntitiesMap = {
@@ -54,7 +55,8 @@ const EntitiesToMessageTemplateEntitiesMap = {
   PaymentOut: ["Contact", "PaymentOut"],
   Payslip: ["Contact", "Payslip"],
   ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
-  WaitingList: ["Contact", "WaitingList"]
+  WaitingList: ["Contact", "WaitingList"],
+  Lead: ["Contact", "Lead"]
 };
 
 const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMap[entity] || [entity];
