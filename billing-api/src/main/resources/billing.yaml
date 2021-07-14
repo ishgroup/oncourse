@@ -72,11 +72,11 @@ paths:
           schema:
             $ref: '#/definitions/ErrorDTO'
 
-  /collegeKey:
+  /college/key:
     get:
       operationId: getCollegeKey
       description: |
-        Get existing college key
+        Get college key
       tags:
         - Billing
       x-filter:
@@ -87,43 +87,79 @@ paths:
           schema:
             type: string
 
-  /college/sites:
+  /college/site:
     get:
-      operationId: getCollegeSites
+      operationId: getSites
       description: |
         Get existing college sites
       tags:
-        - Billing
+        - WebSite
       x-filter:
         - ish.oncourse.api.access.AuthFilter
       responses:
         '200':
-          description: college key responce
+          description: list of college sites
           schema:
             type: array
             items:
               $ref: '#/definitions/SiteDTO'
+              
     post:
-      operationId: updateCollegeSites
+      operationId: crateSite
       description: |
-        Update existing college sites
+        crate new web site
       tags:
-        - Billing
+        - WebSite
       x-filter:
         - ish.oncourse.api.access.AuthFilter
       parameters:
-        - name: sites
+        - name: site
           in: body
-          description: Updated sites
+          description: new site object to create
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/SiteDTO'
+            $ref: '#/definitions/SiteDTO'
       responses:
         '200':
           description: college sites responce
+          
+    put:
+      operationId: updateSite
+      description: |
+        Update existing college site
+      tags:
+        - WebSite
+      x-filter:
+        - ish.oncourse.api.access.AuthFilter
+      parameters:
+        - name: site
+          in: body
+          description: site to update
+          required: true
+          schema:
+            $ref: '#/definitions/SiteDTO'
+      responses:
+        '200':
+          description: success responce
 
+    delete:
+      operationId: deleteSite
+      description: |
+        delete existing college site
+      tags:
+        - WebSite
+      x-filter:
+        - ish.oncourse.api.access.AuthFilter
+      parameters:
+        - name: id
+          in: path
+          description: unique cart identifier
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: success responce
 
 definitions:
   SiteDTO:
@@ -131,11 +167,14 @@ definitions:
     properties:
       id:
         type: integer
-        format: int32
+        format: int64
       key:
         type: string
       name:
         type: string
+      webSiteTemplate:
+        description: web site template, neew to create new site only
+        $ref: '#/definitions/SiteTemplate'
       domains:
         type: array
         items:

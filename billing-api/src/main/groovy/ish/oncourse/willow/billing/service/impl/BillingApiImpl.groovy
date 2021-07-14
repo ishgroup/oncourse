@@ -195,17 +195,7 @@ class BillingApiImpl implements BillingApi {
 
     @Override
     String getCollegeKey() {
-        return null
-    }
-
-    @Override
-    List<SiteDTO> getCollegeSites() {
-        return null
-    }
-
-    @Override
-    void updateCollegeSites(List<SiteDTO> sites) {
-
+        return requestService.college.collegeKey
     }
 
     private static void sendEmail(String subject, String message) {

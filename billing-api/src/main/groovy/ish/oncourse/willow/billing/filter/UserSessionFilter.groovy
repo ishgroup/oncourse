@@ -2,7 +2,7 @@ package ish.oncourse.willow.billing.filter
 
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
-import ish.oncourse.api.access.GuestFilter
+import ish.oncourse.api.access.AuthFilter
 import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.request.RequestService
@@ -13,7 +13,7 @@ import org.apache.cayenne.query.SelectById
 import org.apache.zookeeper.CreateMode
 
 
-@GuestFilter
+@AuthFilter
 @CompileDynamic
 class UserSessionFilter extends BillingSessionFilter {
     

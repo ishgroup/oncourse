@@ -2,7 +2,9 @@ package ish.oncourse.api.request
 
 import com.google.inject.Singleton
 import ish.oncourse.api.access.SessionCookie
+import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
+import ish.oncourse.model.WebSite
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.Response
 
@@ -27,6 +29,12 @@ class RequestService {
     SystemUser getSystemUser() {
         ThreadLocalUser.get()
     }
+    
+    College getCollege() {
+        ThreadLocalUser.get()?.college
+    }
+    
+
 
     void setSessionToken(String value, int maxAge) {
         Cookie cookie = new Cookie(SessionCookie.SESSION_ID, value)
@@ -40,5 +48,5 @@ class RequestService {
 
         response.addCookie(cookie)
     }
-
+    
 }
