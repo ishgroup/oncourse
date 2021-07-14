@@ -67,6 +67,7 @@ class UserDao implements CayenneLayer<SystemUser> {
 
     static List<SystemUser> getActive(ObjectContext context) {
         ObjectSelect.query(SystemUser)
+                .where(SystemUser.IS_ACTIVE.isTrue())
                 .orderBy(SystemUser.LAST_NAME.asc())
                 .select(context)
     }
