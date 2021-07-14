@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 90-1
+      id: 92-1
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -65,7 +65,7 @@ databaseChangeLog:
                   name: willowId
                   type: BIGINT
   - changeSet:
-      id: 90-2
+      id: 92-2
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
@@ -120,7 +120,7 @@ databaseChangeLog:
                   name: willowId
                   type: BIGINT
   - changeSet:
-      id: 90-3
+      id: 92-3
       author: rostislav
       preConditions:
         - onFail: MARK_RAN
