@@ -10,6 +10,7 @@ export const LightTheme = {
     ...DefaultTheme.colors,
     primary: '#fbb619',
     secondary: '#37caad',
+    background: '#fbf9f0'
   },
   spacing
 };

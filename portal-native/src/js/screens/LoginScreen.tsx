@@ -1,29 +1,24 @@
-import React, {
-  useEffect, useMemo, useRef, useState
-} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { LoginRequest } from '@api/model';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import {
-  Image, View, Animated, TouchableOpacity
-} from 'react-native';
-import {
-  Card, Switch, Caption, Button, TextInput
-} from 'react-native-paper';
+import { Animated, Image, TouchableOpacity, View } from 'react-native';
+import { Button, Caption, Card, Switch, TextInput } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import * as Facebook from 'expo-auth-session/providers/facebook';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TextField from '../components/fields/TextField';
 import { connect, signIn } from '../actions/LoginActions';
 import { createStyles, useCommonStyles } from '../hooks/styles';
+import useGoogleConnect from '../hooks/useGoogleConnect';
+import useFacebookConnect from '../hooks/useFacebookConnect';
+import useMicrosoftConnect from '../hooks/useMicrosoftConnect';
 
 WebBrowser.maybeCompleteAuthSession();
 
 const useStyles = createStyles((theme) => ({
   topPart: {
     flex: 3,
-    backgroundColor: '#fbf9f0',
+    backgroundColor: theme.colors.background,
   },
   bottomPart: {
     flex: 2,
@@ -70,21 +65,8 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const GoogleConnect = ({ onSuccsess }) => {
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    // TODO Replace with real credentials for production
-    expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
-    webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com'
-  });
-
+  const [request, promptAsync] = useGoogleConnect({ onSuccsess });
   const styles = useStyles();
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { authentication } = response;
-      onSuccsess(authentication);
-    }
-  }, [response]);
-
   return (
     <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
       <Image
@@ -96,24 +78,26 @@ const GoogleConnect = ({ onSuccsess }) => {
 };
 
 const FacebookConnect = ({ onSuccsess }) => {
-  const [request, response, promptAsync] = Facebook.useAuthRequest({
-    clientId: '837945397102277',
-  });
-
+  const [request, promptAsync] = useFacebookConnect({ onSuccsess });
   const styles = useStyles();
-
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { authentication } = response;
-      onSuccsess(authentication);
-    }
-  }, [response]);
-
   return (
     <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
       <Image
         style={styles.socialNetworkImage}
         source={require('../../assets/images/facebook-square-color.png')}
+      />
+    </TouchableOpacity>
+  );
+};
+
+const MicrosoftConnect = ({ onSuccsess }) => {
+  const [request, promptAsync] = useMicrosoftConnect({ onSuccsess });
+  const styles = useStyles();
+  return (
+    <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
+      <Image
+        style={styles.socialNetworkImage}
+        source={require('../../assets/images/microsoft.png')}
       />
     </TouchableOpacity>
   );
@@ -168,7 +152,7 @@ const SignInContent = (
           disabled={!isValid}
           loading={loading}
         >
-          Log in
+          Log in?
         </Button>
       </View>
       <View style={[cs.flexCenter, cs.mt3, cs.mb1]}>
@@ -178,6 +162,9 @@ const SignInContent = (
       </View>
       <View style={[cs.flexRow, cs.justifyContentCenter]}>
         <GoogleConnect
+          onSuccsess={onConnectSuccsess}
+        />
+        <MicrosoftConnect
           onSuccsess={onConnectSuccsess}
         />
         <FacebookConnect
