@@ -2,26 +2,22 @@ package ish.oncourse.willow.billing.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.api.request.RequestService
-import ish.oncourse.model.College
-import ish.oncourse.model.WebHostName
-import ish.oncourse.model.WebSite
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.service.WebSiteApi
-import org.apache.cayenne.query.ObjectSelect
+import ish.oncourse.willow.billing.website.WebSiteService
+
+import javax.ws.rs.BadRequestException
 
 class WebSiteApiImpl implements WebSiteApi {
     
+    
     @Inject
-    private ICayenneService cayenneService
-
-    @Inject
-    private RequestService requestService
+    private WebSiteService webSiteService
     
     @Override
     void crateSite(SiteDTO site) {
-
+        webSiteService.createWebSite(site)
     }
 
     @Override
@@ -31,23 +27,11 @@ class WebSiteApiImpl implements WebSiteApi {
     
     @Override
     List<SiteDTO> getSites() {
-        return requestService.college.webSites.collect {
-            SiteDTO dto = new SiteDTO()
-            dto.id = it.id
-            dto.name = it.name
-            dto.key = it.siteKey
-            ObjectSelect.query(WebHostName)
-                    .where(WebHostName.WEB_SITE.eq(it))
-                    .select(cayenneService.newContext())
-                    .each {host->
-                dto.domains << host.name
-            }
-            dto
-        }
+        webSiteService.getCollegeSites()
     }
 
     @Override
     void updateSite(SiteDTO site) {
-
+        
     }
 }

@@ -16,6 +16,7 @@ import ish.oncourse.willow.billing.filter.UserSessionFilter
 import ish.oncourse.willow.billing.filter.ZKSessionManager
 import ish.oncourse.willow.billing.service.impl.BillingApiImpl
 import ish.oncourse.willow.billing.service.impl.WebSiteApiImpl
+import ish.oncourse.willow.billing.website.WebSiteService
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.STORAGE_ACCESS_ID
@@ -32,8 +33,10 @@ class BillingModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(JAXRSBeanValidationFeature)
         CXFModule.contributeResources(binder).addBinding().to(GuestSessionFilter)
         CXFModule.contributeResources(binder).addBinding().to(UserSessionFilter)
+        CXFModule.contributeResources(binder).addBinding().to(WebSiteService)
         CXFModule.contributeResources(binder).addBinding().to(BillingApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(WebSiteApiImpl)
+        
 
         CXFModule.contributeFeatures(binder)
     }

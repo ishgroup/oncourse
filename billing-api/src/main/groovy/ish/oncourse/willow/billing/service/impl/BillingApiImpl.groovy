@@ -19,6 +19,7 @@ import ish.oncourse.willow.billing.v1.model.CollegeDTO
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.service.BillingApi
 import ish.oncourse.willow.billing.website.CreateNewWebSite
+import ish.oncourse.willow.billing.website.WebSiteService
 import ish.persistence.Preferences
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
@@ -54,6 +55,9 @@ class BillingApiImpl implements BillingApi {
     @Inject
     private RequestService requestService
     
+    @Inject
+    private WebSiteService webSiteService
+    
     private static final String BUCKET_NAME_FORMAT = "ish-oncourse-%s"
     private static final String AWS_USER_NAME_FORMAT = "college.%s"
     private static final String svnRepo =  Configuration.getValue(SVN_URL)
@@ -74,7 +78,6 @@ class BillingApiImpl implements BillingApi {
         Boolean dbDone = false
         
         ObjectContext context = cayenneService.newContext()
-        Map<String, String>  errors = [:]
 
         try {
 
@@ -144,35 +147,15 @@ class BillingApiImpl implements BillingApi {
 
                 context.commitChanges()
 
-
                 if (collegeDTO.webSiteTemplate) {
-                    context = cayenneService.newNonReplicatingContext()
-
-                    WebSite template = ObjectSelect.query(WebSite)
-                            .where(WebSite.SITE_KEY.eq("template-$collegeDTO.webSiteTemplate".toString()))
-                            .selectOne(context)
-
-                    CreateNewWebSite createNewWebSite = CreateNewWebSite.valueOf(collegeDTO.organisationName,
-                            collegeDTO.collegeKey,
-                            template,
-                            Configuration.getValue(S_ROOT),
-                            context.localObject(college), context)
-                    createNewWebSite.create()
-
-                    errors = createNewWebSite.errors
+                    webSiteService.createWebSite(college, collegeDTO.webSiteTemplate, collegeDTO.organisationName, collegeDTO.collegeKey)
                 }
             }
             
-            dbDone = true 
-            
-            if (errors) {
-                errors.each { k, v ->
-                    logger.error("$k: $v")
-                }
-            }
+            dbDone = true
             
             logger.warn("College was created:$collegeDTO.collegeKey")
-            sendEmail('College was created', "college info: $collegeDTO \n errors: $errors")
+            sendEmail('College was created', "college info: $collegeDTO")
 
         } catch (Exception e) {
             context.rollbackChanges()
