@@ -119,7 +119,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	 * @param module module to search
 	 * @return if session linked to specified module
 	 */
-	@API @Override
+	@API
 	boolean hasModule(Module module) {
 		Expression exp = ExpressionFactory.matchExp(SessionModule.MODULE_PROPERTY, module)
 

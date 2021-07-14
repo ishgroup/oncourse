@@ -171,7 +171,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 */
 	@Nonnull
 	@API
-	@Override
 	String getUniqueCode() {
 		StringBuilder buff = new StringBuilder()
 		if (getCourse() != null && getCourse().getCode() != null) {

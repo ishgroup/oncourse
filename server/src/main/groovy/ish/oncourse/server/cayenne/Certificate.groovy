@@ -259,7 +259,7 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	 */
 	@Nonnull
 	@Override
-    List<? extends CertificateOutcome> getCertificateOutcomes() {
+    List<CertificateOutcome> getCertificateOutcomes() {
 		return super.getCertificateOutcomes()
 	}
 

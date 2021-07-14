@@ -45,7 +45,6 @@ import static java.lang.String.format
  * the relation to Outcomes for this Enrolment.
  *
  */
-//TODO docs
 @API
 @QueueableEntity
 class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
@@ -725,7 +724,6 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	 * uses by customers in reports, exports and other components.
 	 */
 	@API
-    @Override
 	InvoiceLine getOriginalInvoiceLine() {
 		List<InvoiceLine> lines = new LinkedList<>(getInvoiceLines())
 
