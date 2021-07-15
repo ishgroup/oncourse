@@ -13,16 +13,17 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.16",
     "@types/yup": "^0.29.13",
-    "compression-webpack-plugin": "^1.1.11",
+    "compression-webpack-plugin": "^8.0.1",
     "css-loader": "^5.2.0",
     "file-loader": "5.*",
     "html-webpack-plugin": "^5.3.1",
     "jest": "^26.6.3",
     "jest-junit": "^12.0.0",
-    "mini-css-extract-plugin": "^1.4.0",
+    "mini-css-extract-plugin": "^2.1.0",
     "sass": "^1.35.2",
     "sass-loader": "^11.0.1",
     "source-map-loader": "^2.0.1",
+    "terser-webpack-plugin": "^5.1.4",
     "ts-loader": "^9.1.2",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
     "webpack": "^5.28.0",
@@ -57,6 +58,10 @@
     "build:dev:watch": "webpack --debug --watch --env.SOURCE_MAP eval-source-map",
     "test": "jest --ci --testResultsProcessor=jest-junit",
     "start": "webpack serve --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx",
+    "start:prod": "webpack serve --history-api-fallback --progress --open --env NODE_ENV=production",
     "start:mock": "webpack serve --progress --open --config webpack.dev.config.js --entry ./src/dev/app.tsx"
+  },
+  "resolutions": {
+    "webpack-dev-server/chokidar/glob-parent": "^5.1.2"
   }
 }
