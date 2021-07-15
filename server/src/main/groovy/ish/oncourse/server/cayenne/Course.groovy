@@ -40,7 +40,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Course extends _Course implements ICourse, Queueable, NotableTrait, ExpandableTrait, CourseTrait, AttachableTrait, Sellable {
+class Course extends _Course implements ICourse, Queueable, NotableTrait, ExpandableTrait, CourseTrait, AttachableTrait {
 
 
 	private static final Logger logger = LogManager.getLogger()

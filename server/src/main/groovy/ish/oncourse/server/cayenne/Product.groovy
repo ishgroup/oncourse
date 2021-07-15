@@ -34,7 +34,7 @@ import javax.swing.text.DefaultFormatter
  */
 @API
 @QueueableEntity
-class Product extends _Product implements Queueable, Sellable {
+class Product extends _Product implements Queueable {
 
 	private static final Logger logger = LogManager.getLogger()
 

@@ -36,7 +36,6 @@ import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.SaleFunctions.deleteNotActualSellables
 import static ish.oncourse.server.api.v1.function.SaleFunctions.toRestSale
 import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSiteMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
@@ -122,7 +121,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
 
     private void actualizeCourses(Lead lead, List<SaleDTO> expectedCourses) {
         ObjectContext context = lead.context
-        deleteNotActualSellables(lead.context, lead.courses, expectedCourses)
+        context.deleteObjects(lead.courses.findAll {!expectedCourses*.id.contains(it.id) })
 
         expectedCourses.findAll {!lead.courses*.id.contains(it.id) }
                 .each {saleItem ->
@@ -134,7 +133,7 @@ class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
 
     private void actualizeProducts(Lead lead, List<SaleDTO> expectedProducts) {
         ObjectContext context = lead.context
-        deleteNotActualSellables(context, lead.products, expectedProducts)
+        context.deleteObjects(lead.products.findAll {!expectedProducts*.id.contains(it.id) })
 
         expectedProducts.findAll {!lead.products*.id.contains(it.id) }
                 .each {saleItem ->

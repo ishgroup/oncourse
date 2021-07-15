@@ -19,9 +19,7 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Qualification
-import ish.oncourse.server.cayenne.Sellable
 import ish.oncourse.server.entity.mixins.CourseClassMixin
-import org.apache.cayenne.ObjectContext
 
 class SaleFunctions {
 
@@ -84,10 +82,5 @@ class SaleFunctions {
             s.type = SaleTypeDTO.QUALIFICATION
             s
         }
-    }
-
-    static void deleteNotActualSellables(ObjectContext context, List<? extends Sellable> actual, List<SaleDTO> expected) {
-        List<? extends Sellable> objectsToDelete = actual.findAll {!expected*.id.contains(it.id) }
-        context.deleteObjects(objectsToDelete)
     }
 }
