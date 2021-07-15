@@ -12,12 +12,6 @@ export const LicenseAttendance: PreferenceSchema = {
   editable: false
 };
 
-export const LicenseBudget: PreferenceSchema = {
-  uniqueKey: "license.budget",
-  mandatory: false,
-  editable: false
-};
-
 export const LicenseCreditCard: PreferenceSchema = {
   uniqueKey: "license.ccprocessing",
   mandatory: false,
@@ -32,12 +26,6 @@ export const LicenseFundingContract: PreferenceSchema = {
 
 export const LicenseGravatar: PreferenceSchema = {
   uniqueKey: "gravatar.enabled",
-  mandatory: false,
-  editable: false
-};
-
-export const LicenseLDAP: PreferenceSchema = {
-  uniqueKey: "license.ldap",
   mandatory: false,
   editable: false
 };
@@ -74,12 +62,6 @@ export const LicenseFeeHelpExport: PreferenceSchema = {
 
 export const LicenseVoucher: PreferenceSchema = {
   uniqueKey: "license.voucher",
-  mandatory: false,
-  editable: false
-};
-
-export const LicenseExternalDB: PreferenceSchema = {
-  uniqueKey: "license.externaldb",
   mandatory: false,
   editable: false
 };

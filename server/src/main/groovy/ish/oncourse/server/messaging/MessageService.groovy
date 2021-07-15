@@ -17,7 +17,7 @@ import ish.common.types.MessageStatus
 import ish.common.types.MessageType
 import ish.messaging.SendMessageRequest
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.IPreferenceController
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.scripting.api.MessageBuilder
 import ish.oncourse.server.scripting.api.NeedToSendEmail
 import ish.oncourse.server.scripting.api.SendEmailViaSmtp
@@ -49,13 +49,13 @@ import javax.mail.MessagingException
 class MessageService {
 
 	ICayenneService cayenneService
-	IPreferenceController preferenceController
+	PreferenceController preferenceController
 	TemplateService templateService
 	MailDeliveryService mailDeliveryService
 	AuditService auditService
 
     @Inject
-    MessageService(ICayenneService cayenneService, IPreferenceController preferenceController, TemplateService templateService,
+    MessageService(ICayenneService cayenneService, PreferenceController preferenceController, TemplateService templateService,
 				   MailDeliveryService mailDeliveryService, AuditService auditService) {
 		this.cayenneService = cayenneService
         this.preferenceController = preferenceController

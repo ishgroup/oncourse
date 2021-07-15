@@ -11,16 +11,11 @@
 
 package ish.oncourse.server.cayenne
 
-
 import ish.common.types.ContactType
 import ish.common.types.Gender
 import ish.math.Money
-import ish.messaging.IContact
 import ish.oncourse.API
-import ish.oncourse.cayenne.InvoiceInterface
-import ish.oncourse.cayenne.PaymentInterface
-import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.cayenne.Taggable
+import ish.oncourse.cayenne.*
 import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.cayenne.glue._Contact
 import ish.util.LocalDateUtils
@@ -28,8 +23,6 @@ import ish.util.SecurityUtil
 import ish.validation.AngelContactValidator
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.BeanValidationFailure
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.commons.lang3.StringUtils
@@ -39,14 +32,20 @@ import org.apache.logging.log4j.Logger
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
+
 /**
  * Contacts are at the heart of onCourse. A Contact might be an individual or a company. Contacts can be extended by
  * Student or Tutor classes, however a Contact can also exist on its own.
  */
 @API
 @QueueableEntity
-class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContact, Queueable, NotableTrait, AttachableTrait {
+class Contact extends _Contact implements ContactTrait, ExpandableTrait, ContactInterface, Queueable, NotableTrait, AttachableTrait {
 
+
+	public static final String FULL_NAME_KEY = "fullName"
+	public static final String IS_MALE_KEY = "isMale"
+	public static final String PHONES_PROP = "phones"
+	public static final String MESSAGE_KEY = "message"
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -129,23 +128,19 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	/***
 	 * @return the full name for this contact including the middle name, or just the name of the company
 	 */
-	@Nullable
+	@Nonnull
 	@API
-	@Override
 	String getFullName() {
-		return GetContactFullName.valueOf(this).get()
-	}
+		if (isCompany || StringUtils.equals(firstName, lastName)) {
+			return StringUtils.trimToEmpty(lastName);
+		}
+		StringBuilder builder = new StringBuilder();
 
-	/**
-	 * @return the webcal:// URL for a student or tutor to subscribe to their personal calendar
-	 */
-	@Deprecated
-	@Override
-	String getCalendarUrl() {
-		// TODO: shouldn't this point to the skillsOnCourse URL?
-		// TODO: this isn't used anywhere and should be removed from ContactInterface and from here after update to newer waCommon version
+		if (StringUtils.isNotBlank(firstName)) { builder.append(firstName); }
+		if (StringUtils.isNotBlank(middleName)) { builder.append(StringUtils.SPACE).append(middleName); }
+		if (StringUtils.isNotBlank(lastName)) { builder.append(StringUtils.SPACE).append(lastName); }
 
-		throw new UnsupportedOperationException()
+		return builder.toString();
 	}
 
 	/**
@@ -263,14 +258,10 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	}
 
 	/**
-	 * A method for returning a formatted contact name. See also fullName() if you want the middle name as well.
-	 * This method works for companies.
-	 *
-	 * @param firstNameFirst - true for "John Smith", false for "Smith, John"
-	 * @return formatted name
+	 * Use getFullName() instead
 	 */
 	@Nullable
-	@API
+	@Deprecated
 	@Override
 	String getName(boolean firstNameFirst) {
 		return GetContactFullName.valueOf(this, firstNameFirst).get()
@@ -420,9 +411,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 		return super.getDeliveryStatusSms()
 	}
 
-	/**
-	 * @return the contact's main email address
-	 */
 	@API
 	@Nullable
 	@Override

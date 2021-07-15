@@ -12,17 +12,9 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
-import ish.messaging.ITutorAttendance
-import ish.oncourse.server.api.dao.SurveyDao
 import ish.oncourse.server.api.dao.TutorAttendanceDao
-import ish.oncourse.server.api.v1.model.AttendanceTypeDTO
-import ish.oncourse.server.api.v1.model.StudentAttendanceDTO
-import ish.oncourse.server.api.v1.model.SurveyItemDTO
 import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
 import ish.oncourse.server.api.v1.model.TutorAttendanceTypeDTO
-import ish.oncourse.server.cayenne.Attendance
-import ish.oncourse.server.cayenne.PayLine
-import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext

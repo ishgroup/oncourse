@@ -15,58 +15,34 @@ import com.google.inject.Inject
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.duplicate.CourseDuplicationRequest
-import ish.messaging.ICourse
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.CourseModuleDao
-import ish.oncourse.server.api.dao.EntityRelationDao
-import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
-import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.api.dao.ProductDao
-import ish.oncourse.server.api.dao.QualificationDao
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
-import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
-import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.validateFoUpdate
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.bidiModuleType
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.function.TagFunctions
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import ish.oncourse.server.api.v1.model.CourseDTO
-import ish.oncourse.server.api.v1.model.CourseEnrolmentTypeDTO
-import ish.oncourse.server.api.v1.model.CourseStatusDTO
-import static ish.oncourse.server.api.v1.model.CourseStatusDTO.COURSE_DISABLED
-import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED
-import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED_AND_VISIBLE_ONLINE
-import ish.oncourse.server.api.v1.model.HolidayDTO
-import ish.oncourse.server.api.v1.model.ModuleDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseAttachmentRelation
-import ish.oncourse.server.cayenne.CourseCustomField
-import ish.oncourse.server.cayenne.CourseTagRelation
-import ish.oncourse.server.cayenne.CourseUnavailableRuleRelation
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.duplicate.DuplicateCourseService
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.isNotBlank
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.CourseFunctions.ENROLMENT_TYPE_MAP
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
+import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
+import static ish.oncourse.server.api.v1.function.ModuleFunctions.bidiModuleType
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.oncourse.server.api.v1.model.CourseStatusDTO.*
+import static org.apache.commons.lang3.StringUtils.*
 
 class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao>  {
 
@@ -267,9 +243,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             validator.throwClientErrorException(id, 'name', 'Name is required.')
         }
 
-        if(courseDTO.name.length() > ICourse.COURSE_NAME_MAX_LENGTH) {
+        if(courseDTO.name.length() > Course.COURSE_NAME_MAX_LENGTH) {
             validator.throwClientErrorException(id, 'name',
-                    "Course name cannot be greater than " + ICourse.COURSE_NAME_MAX_LENGTH + " characters.")
+                    "Course name cannot be greater than " + Course.COURSE_NAME_MAX_LENGTH + " characters.")
         }
 
         if (courseDTO.isSufficientForQualification == null) {

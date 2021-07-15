@@ -32,7 +32,7 @@ class AttendanceApiService  extends EntityApiService<StudentAttendanceDTO, Atten
         StudentAttendanceDTO dto = new StudentAttendanceDTO()
         dto.id = cayenneModel.id
         dto.contactId = cayenneModel.student.contact.id
-        dto.contactName = cayenneModel.student.contact.getFullName(true)
+        dto.contactName = cayenneModel.student.contact.getFullName()
         dto.sessionId = cayenneModel.session.id
         dto.attendanceType = AttendanceTypeDTO.values()[0].fromDbType(cayenneModel.attendanceType)
         dto.note = cayenneModel.note

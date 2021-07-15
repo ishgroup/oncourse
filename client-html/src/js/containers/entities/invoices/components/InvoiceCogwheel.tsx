@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useMemo, memo, useCallback, useEffect, useState
-} from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -13,7 +11,7 @@ import { isDirty, reset } from "redux-form";
 import { PaymentOut } from "@api/model";
 import { format } from "date-fns";
 import { State } from "../../../../reducers/state";
-import { setContraInvoices, duplicateAndReverseInvoice, getAmountOwing } from "../actions";
+import { duplicateAndReverseInvoice, getAmountOwing, setContraInvoices } from "../actions";
 import ContraInvoiceModal from "./ContraInvoiceModal";
 import { getAddPaymentOutContact, postPaymentOut } from "../../paymentsOut/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
@@ -83,7 +81,8 @@ const InvoiceCogwheel = memo<Props>(props => {
       refundableId,
       paymentMethodId,
       privateNotes,
-      administrationCenterId
+      administrationCenterId,
+      selectedPaymentMethod
     } = model;
     const datePayed = format(new Date(unformattedDatePayed), YYYY_MM_DD_MINUSED);
     const paymentOut: PaymentOut = {
@@ -95,11 +94,11 @@ const InvoiceCogwheel = memo<Props>(props => {
       administrationCenterId
     };
 
-    if (paymentMethodId === 1) {
+    if (selectedPaymentMethod === "Cheque") {
       paymentOut.chequeSummary = chequeSummary;
     }
 
-    if (paymentMethodId === 2) {
+    if (selectedPaymentMethod === "Credit card") {
       paymentOut.refundableId = refundableId;
     }
 
@@ -194,7 +193,7 @@ const InvoiceCogwheel = memo<Props>(props => {
   );
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   resetEditView: () => dispatch(reset(LIST_EDIT_VIEW_FORM_NAME)),
   getAmountOwing: (id: number) => dispatch(getAmountOwing(id)),
   getAddPaymentOutContact: (id: number) => dispatch(getAddPaymentOutContact(id)),
@@ -211,4 +210,4 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(InvoiceCogwheel);
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceCogwheel);

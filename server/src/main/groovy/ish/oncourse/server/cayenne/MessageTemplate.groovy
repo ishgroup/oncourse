@@ -12,21 +12,21 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.MessageTemplateType
-import ish.messaging.IMessageTemplate
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._MessageTemplate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  */
 @QueueableEntity
-class MessageTemplate extends _MessageTemplate implements Queueable, IMessageTemplate {
+class MessageTemplate extends _MessageTemplate implements Queueable {
 
-
+	public static final String NAME_KEY = "name";
+	public static final String MESSAGE_KEY = "message";
+	public static final String SUBJECT_KEY = "subject";
 	private static final Logger logger = LogManager.getLogger()
 
 	/**

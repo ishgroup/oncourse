@@ -10,20 +10,17 @@
  */
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ICertificateOutcome
+
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._CertificateOutcome
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * This object represents the link between an outcome and a courseclass.
  */
 @QueueableEntity
-class CertificateOutcome extends _CertificateOutcome implements ICertificateOutcome, Queueable {
-
-
+class CertificateOutcome extends _CertificateOutcome implements Queueable {
 
 	/**
 	 * @return the date and time this record was created

@@ -12,10 +12,9 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.EnrolmentStatus
-import ish.messaging.IModule
-import ish.messaging.ISession
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.cayenne.SessionInterface
 import ish.oncourse.server.cayenne.glue._Session
 import ish.util.DurationFormatter
 import org.apache.cayenne.exp.Expression
@@ -24,6 +23,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
+import javax.annotation.Nullable
 
 /**
  * Sessions represent the classroom sessions a student attends when enrolled in a class. Sessions are a timetabled event. Not all classes have sessions.
@@ -31,13 +31,13 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Session extends _Session implements SessionTrait, ISession, Queueable, AttachableTrait {
+class Session extends _Session implements SessionTrait, SessionInterface, Queueable, AttachableTrait {
 	private static final Logger logger = LogManager.getLogger()
 
-	public static String DISPLAY_START_DATETIME = 'displayStartDateTime'
-	public static String DISPLAY_END_DATETIME = 'displayEndDateTime'
+	public static final String DISPLAY_START_DATETIME = 'displayStartDateTime'
+	public static final String DISPLAY_END_DATETIME = 'displayEndDateTime'
 
-
+	public static final String COURSE_CLASS_KEY = "courseClass";
 
 	@Override
 	void onEntityCreation() {
@@ -121,11 +121,6 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 	 */
 	@API
 	boolean hasModule(Module module) {
-		return hasModule(module as IModule)
-	}
-
-	@Override
-	boolean hasModule(IModule module) {
 		Expression exp = ExpressionFactory.matchExp(SessionModule.MODULE_PROPERTY, module)
 
 		return !exp.filterObjects(getSessionModules()).isEmpty()
@@ -189,7 +184,7 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 		return super.getPayAdjustment()
 	}
 
-	/**
+/**
 	 * @return private notes for this session
 	 */
 	@API
@@ -284,7 +279,7 @@ class Session extends _Session implements SessionTrait, ISession, Queueable, Att
 	/**
 	 * @return the room in which the session is held
 	 */
-	@Nonnull
+	@Nullable
 	@API
 	@Override
 	Room getRoom() {

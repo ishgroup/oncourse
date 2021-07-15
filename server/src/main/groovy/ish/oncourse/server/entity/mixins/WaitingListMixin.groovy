@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.entity.mixins
 
-import ish.messaging.ISite
+import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.WaitingList
 
 class WaitingListMixin {
@@ -24,7 +24,7 @@ class WaitingListMixin {
     @Deprecated
 	static getSiteNames(WaitingList self) {
         StringBuilder sitesNameConcatenated = new StringBuilder();
-        for (ISite site : self.getSites()) {
+        for (Site site : self.getSites()) {
             if (sitesNameConcatenated.length() > 0) {
                 sitesNameConcatenated.append(",");
             }
