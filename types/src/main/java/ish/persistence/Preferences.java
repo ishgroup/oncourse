@@ -64,12 +64,7 @@ public interface Preferences {
 	@API
 	String COLLEGE_PAYMENT_INFO = "college.paymentInfo";
 
-	String COLLEGE_ENROL_SUCCESS_URL = "enrol.postSuccessURL";
-
 	String PAYMENT_GATEWAY_PASS = "payment.gateway.api.key";
-
-	String PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH = "payment.gateway.purchase-without-auth";
-
 
 
 	// **************************************
@@ -83,6 +78,7 @@ public interface Preferences {
 	 */
 	@API
 	String ONCOURSE_SERVER_DEFAULT_TZ = "oncourse.server.timezone.default";
+	String PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH = "payment.gateway.purchase-without-auth";
 
 	String SERVICES_LDAP_AUTHENTICATION = "services.ldap.authentication";
 
@@ -92,10 +88,6 @@ public interface Preferences {
 
 	String SERVICES_CC_AMEX_ENABLED = "services.cc.amex";
 
-	String DATA_SVNVERSION = "data.svnversion";
-
-	String DATA_WED_VERSION = "data.wed.version";
-
 	String SERVICES_INFO_REPLICATION_VERSION = "data.referencedataversion";
 
 	String DEDUPE_LASTRUN = "services.dedupelastrun";
@@ -104,23 +96,11 @@ public interface Preferences {
 
 	String SERVICES_ANGEL_REPLICATION_LASTRUN = "services.angeloreplicationlastrun";
 
-	String SERVICES_REPLICATION_REQUEUE_ID = "server.soap.requeueid";
-
-
-
 	// **************************************
 	// Licensing
 	// **************************************
 
 	String LICENSE_ACCESS_CONTROL = "license.accesscontrol";
-
-	String LICENSE_LDAP = "license.ldap";
-
-	String LICENSE_BUDGET = "license.budget";
-
-	String LICENSE_EXTENRNAL_DB = "license.externaldb";
-
-	String LICENSE_SSL = "license.ssl";
 
 	String LICENSE_SMS = "license.sms";
 
@@ -249,21 +229,6 @@ public interface Preferences {
 	// **************************************
 	String LOGOUT_ENABLED = "logout.enabled";
 	String LOGOUT_TIMEOUT = "logout.timeout";
-
-	String DATABASE_USED = "database.used";
-	String DATABASE_USED_MYSQL = "database.mysql";
-	String DATABASE_USED_MSSQL = "database.mssql";
-	String DATABASE_USED_POSTGRE = "database.postgre";
-
-	String BACKUP_ENABLED = "backup.enabled";
-	String BACKUP_DIR = "backup.destination";
-	String BACKUP_DIR_WARNING = "backup.destination.warning";
-
-	String BACKUP_MAX_HISTORY = "backup.maxhistory";
-	String BACKUP_NEXT_NUMBER = "backup.nextnumber";
-	String BACKUP_TIMEOFDAY = "backup.minuteofday";
-
-
 
 	// **************************************
 	// Account defaults
@@ -449,66 +414,17 @@ public interface Preferences {
 	String CLASS_DEFAULTS_DELIVERY_MODE = "courseclass_default_deliveryMode";
 	String CLASS_DEFAULTS_FUNDING_SOURCE = "courseclass_default_fundingSource";
 
-
-
 	// **************************************
 	// Other
 	// **************************************
-	String QE_DEFAULTS_TO_ZERO = "qe.payment.default.zero";
-	String QE_DEFAULT_REPORT_ENROLMENT_KEYCODE = "qe.default.report.enrolment.keycode";
-	String QE_DEFAULT_REPORT_INVOICE_KEYCODE = "qe.default.report.invoice.keycode";
-
 	String GRAVATAR = "gravatar.enabled";
-
-
-
-	// **************************************
-	// Frame preferences
-	// **************************************
-	String TOOLBAR_COLLAPSE_STATE = "toolbar.collapse";
-	String FRAME_BOUNDS = "frame.bounds.";
-	String LISTVIEW_COLUMNS = "listview.columns.";
-	String LISTVIEW_DIVIDER = "listview.divider.";
-	String QEVIEW_DIVIDER = "qeview.divider.";
-	String EULA_AGREEMENT = "eula.agreement.";
-	String TOOLBAR_ACTIVE_TAB = "toolbar.tab.active";
-	String LISTVIEW_FILTERS_COLLAPSING = "listview.filters.collapsing.";
-	String LISTVIEW_COLUMN_SORTED = "listview.column.sorted.";
-
-
-
-	// **************************************
-	// Login preferences
-	// **************************************
-	String LASTLOGIN_USERNAME = "oncourse.login.last.username";
-	String LASTLOGIN_SERVER_HOST = "oncourse.login.last.host";
-	String LASTLOGIN_SERVER_PORT = "oncourse.login.last.port";
-	String LASTLOGIN_SERVER_ISSSL = "oncourse.login.last.isssl";
-
-
-
-
-	String AUSKEY_PASSWORD = "auskey.password";
-	String AUSKEY_CERTIFICATE = "auskey.certificate";
-	String AUSKEY_PRIVATE_KEY = "auskey.privatekey";
-	String AUSKEY_SALT = "auskey.salt";
 	String USI_SOFTWARE_ID = "usi.softwareid";
-
-
-
-	// **************************************
-	// Other preferences
-	// **************************************
 	String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
 	String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
 
 
-
 	String FEATURE_CONCESSIONS_IN_ENROLMENT = "feature.concessionsInEnrolment";
 	String FEATURE_CONCESSION_USERS_CREATE = "feature.concession.existing.users.create";
-	String FEATURE_ENROLMENT_DISCLOSURE = "feature.enrolmentDisclosure";
-
-
 
 	// **************************************
 	// portal
@@ -527,25 +443,6 @@ public interface Preferences {
 
 	String SERVICES_COMMUNICATION_KEY = "services.soap.communication.key";
 	String REPLICATION_ENABLED = "replication.enabled";
-
-
-
-
-	String QE_DEFAULT_REPORT_ENROLMENT = "ish.onCourse.enrolmentConfirmation";
-	String QE_DEFAULT_REPORT_INVOICE = "ish.onCourse.invoiceReport";
-
-
-	// **************************************
-	// File destinations
-	// **************************************
-	String MAILINGLIST_EXPORT_FOLDER = "report.mailingListExport";
-	String REPORT_PDF_FOLDER = "report.pdfSaveFolder";
-	String REPORT_XLS_FOLDER = "report.xlsSaveFolder";
-	String REPORT_IMPORT_FOLDER = "report.jasperImportFolder";
-	String EXPORTTEMPLATE_IMPORT_FOLDER = "exporttemplate.xslImportFolder";
-	String AVETMISS_EXPORT_PATH = "avetmiss.lastpath";
-
-	String DOCUMENT_IMPORT_PATH = "document.lastpath";
 
 
 	// **************************************

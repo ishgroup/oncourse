@@ -3266,20 +3266,6 @@
               NAME="account.default.expenses.id" VALUESTRING="30" UNIQUEKEY="account.default.expenses.id"/>
   <Preference CREATEDON="2013-03-21 14:31:45.674" ID="38" MODIFIEDON="2013-03-21 14:31:45.674" NAME="tax.default.pk"
               VALUESTRING="2" UNIQUEKEY="tax.default.pk"/>
-  <Preference CREATEDON="2013-03-21 15:00:00.005" ID="39" MODIFIEDON="2013-03-21 15:00:00.005" NAME="backup.enabled"
-              VALUESTRING="true" UNIQUEKEY="backup.enabled"/>
-  <Preference CREATEDON="2013-03-21 15:00:00.015" ID="40" MODIFIEDON="2013-03-21 15:00:00.015" NAME="backup.minuteofday"
-              VALUESTRING="60" UNIQUEKEY="backup.minuteofday"/>
-  <Preference CREATEDON="2013-03-21 15:00:00.053" ID="41" MODIFIEDON="2013-04-08 01:00:00.079" NAME="backup.nextnumber"
-              VALUESTRING="5" UNIQUEKEY="backup.nextnumber"/>
-  <Preference CREATEDON="2013-03-21 15:00:00.063" ID="42" MODIFIEDON="2013-03-21 15:00:00.063" NAME="backup.maxhistory"
-              VALUESTRING="7" UNIQUEKEY="backup.maxhistory"/>
-  <Preference CREATEDON="2013-03-21 15:00:00.075" ID="43" MODIFIEDON="2013-03-21 15:00:00.075" NAME="backup.destination"
-              VALUESTRING="" UNIQUEKEY="backup.destination"/>
-  <Preference CREATEDON="2013-03-21 15:00:00.08" ID="44" MODIFIEDON="2013-04-08 01:00:09.806"
-              NAME="backup.destination.warning"
-              VALUESTRING="Backup successfully completed to /Volumes/MacBook Pro HDD/Users/natalie/Documents/RTOProjects/ISH/Latest build/AVETMISS test file 4.1b3/. at Mon 8 Apr 2013"
-              UNIQUEKEY="backup.destination.warning"/>
   <Preference CREATEDON="2013-03-22 20:33:05.35" ID="45" MODIFIEDON="2013-04-15 08:15:29.245"
               NAME="data.referencedataversion" VALUESTRING="946" UNIQUEKEY="data.referencedataversion"/>
   <Preference CREATEDON="2013-03-25 12:03:35.164" ID="46" MODIFIEDON="2013-03-25 12:03:35.164" NAME="avetmiss.email"

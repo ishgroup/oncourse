@@ -11,17 +11,11 @@
 
 package ish.oncourse.server.cayenne
 
-
 import ish.budget.ClassCostUtil
-import ish.common.types.ClassCostFlowType
-import ish.common.types.ClassFundingSource
-import ish.common.types.CourseClassAttendanceType
-import ish.common.types.DeliveryMode
-import ish.common.types.SessionRepetitionType
+import ish.common.types.*
 import ish.math.Money
-import ish.messaging.ICourseClass
-import ish.messaging.IModule
 import ish.oncourse.API
+import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
@@ -52,10 +46,35 @@ import java.time.ZoneId
  * the instance of the Course which is sold and delivered.
  *
  */
-//TODO docs
 @API
 @QueueableEntity
-class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, NotableTrait, ExpandableTrait, AttachableTrait, CourseClassInterface {
+	public static final String END_DATE_TIME_KEY = "endDateTime";
+	public static final String FEE_INC_GST = "feeIncGst";
+	public static final String START_DATE_TIME_KEY = "startDateTime";
+	public static final String IS_CANCELLED_KEY = "isCancelled";
+	public static final String DISCOUNT_FEES_PROPERTY = "discount_fees";
+	public static final String ENROLMENTS_TO_PROCEED_MESSAGE = "enrolments_to_proceed";
+	public static final String ENROLMENTS_TO_PROFIT_MESSAGE = "enrolments_to_profit";
+	public static final String REFUNDED_AND_CANCELLED_ENROLMENTS_COUNT_PROPERTY = "refunded_and_cancelled_enrolments_count";
+	public static final String MALE_ENROLMENTS_COUNT_PROPERTY = "male_enrolments_count";
+	public static final String OUTCOMES_PROPERTY = "outcomes";
+	public static final String UNIQUE_CODE_PROPERTY = "uniqueCode";
+	public static final String TUTOR_NAMES_PROP = "tutor_names";
+	public static final String TUTOR_NAMES_ABRIDGED_PROP = "tutor_names_abridged";
+	public static final String SUCCESS_AND_QUEUED_ENROLMENTS_PROPERTY = "successAndQueuedEnrolments";
+	public static final String TIMETABLE_SUMMARY_PROPERTY = "timetableSummary";
+
+	// hours fields
+	public static final String STUDENT_CONTACT_HOURS_PROP = "studentContactHoursProp";
+
+	// + reportable hours from model
+	public static final String CLASSROOM_HOURS = "classroomHoursProp";
+	public static final String NOMINAL_HOURS_PROP = "nominalHoursProp";
+	public static final String PLACES_LEFT_PROPERTY = "places_left";
+	public static final String UNIQUE_SESSION_MODULES_PROPERTY = "unique_session_modules";
+	public static final String SESSION_MODULES_PROPERTY = "session_modules";
+	public static final String FULL_NAME_OF_CLASS_WITH_CODE = "full_name_of_class_with_code";
 
 
 	public static final String EXPORT_DISCOUNT_RELATION = "discount"
@@ -131,7 +150,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	 * @return class fee including GST
 	 */
 	@API
-	@Override
 	Money getFeeIncGst() {
 		if (getTax() != null) {
 			return MoneyUtil.getPriceIncTax(getFeeExGst(), getTax().getRate(), getTaxAdjustment())
@@ -153,7 +171,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	 */
 	@Nonnull
 	@API
-	@Override
 	String getUniqueCode() {
 		StringBuilder buff = new StringBuilder()
 		if (getCourse() != null && getCourse().getCode() != null) {
@@ -316,7 +333,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 
 	private void updateOverriddenFields() {
 		if (getReportableHours() == null) {
-			setReportableHours(CalculateCourseClassReportableHours.valueOf(this).calculate());
+			setReportableHours(CalculateCourseClassReportableHours.valueOf(this).calculate())
 		}
 		if (getEnrolments() != null && getEnrolments().size() > 0) {
 
@@ -388,7 +405,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	 * @return sum of payable hours in all sessions of this courseClass
 	 */
 	@API
-	@Override
 	BigDecimal getPayableClassroomHours() {
 		BigDecimal sum = BigDecimal.ZERO
 		if (getSessions() != null && getSessions().size() > 0) {
@@ -420,7 +436,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	 * @return number of successful and in transaction enrolments made to this class
 	 */
 	@API
-	@Override
 	int getValidEnrolmentCount() {
 		List<Enrolment> list = getSuccessAndQueuedEnrolments()
 		if (list == null) {
@@ -686,7 +701,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	String getFinalDETexport() {
 		return super.getFinalDETexport()
 	}
-	
+
 
 	/**
 	 * Returns a value mapped to funding source. Used for AVETMISS reporting.
@@ -854,7 +869,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 	BigDecimal getReportableHours() {
 		return super.getReportableHours()
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -1009,9 +1024,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, ICourseClass
 		return super.getDiscountCourseClasses()
 	}
 
-	@Override
-	void addModuleToAllSessions(IModule module) {
-		CourseClassUtil.addModuleToAllSessions(this, module, SessionModule.class)
+	void addModuleToAllSessions(Module module) {
+		CourseClassUtil.addModuleToAllSessions(this, module)
 	}
 
 	/**

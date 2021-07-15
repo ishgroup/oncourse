@@ -18,7 +18,6 @@ import ish.common.types.EnrolmentStatus
 import ish.common.types.InvoiceType
 import ish.common.types.PaymentSource
 import ish.math.Money
-import ish.messaging.IInvoice
 import ish.oncourse.API
 import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.InvoiceInterface
@@ -38,10 +37,13 @@ import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
 
-class AbstractInvoice extends _AbstractInvoice implements IInvoice, PayableInterface, InvoiceInterface, Queueable, NotableTrait, AttachableTrait {
-
+class AbstractInvoice extends _AbstractInvoice implements PayableInterface, InvoiceInterface, Queueable, NotableTrait, AttachableTrait {
 
 	private static final Logger logger = LogManager.getLogger()
+
+	public static final String TOTAL_INC_TAX_KEY = "totalIncTax"
+
+	public static final String TOTAL_INC_TAX_PROPERTY = "invoice_total_inc_property"
 	public static final String AMOUNT_OWING_PROPERTY = "amountOwing"
 	public static final String AMOUNT_PAID_PROPERTY = "amountPaid"
 

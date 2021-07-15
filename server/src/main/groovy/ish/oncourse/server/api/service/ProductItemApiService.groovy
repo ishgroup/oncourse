@@ -19,44 +19,12 @@ import ish.common.types.ProductStatus
 import ish.common.types.ProductType
 import ish.common.types.TypesUtil
 import ish.math.Money
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.ProductItemDAO
 import ish.oncourse.server.api.dao.TaxDao
-import ish.oncourse.server.api.v1.model.ProductItemCancelDTO
-import ish.oncourse.server.api.v1.model.ProductItemDTO
-import ish.oncourse.server.api.v1.model.ProductItemPaymentDTO
-import ish.oncourse.server.api.v1.model.ProductItemStatusDTO
-import ish.oncourse.server.api.v1.model.ProductTypeDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.ArticleCustomField
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CustomField
-import ish.oncourse.server.cayenne.Discount
-import ish.oncourse.server.cayenne.DiscountMembership
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.InvoiceLineDiscount
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipCustomField
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.ProductItem
-
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tax
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherCustomField
-import ish.oncourse.server.cayenne.VoucherProduct
-
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
-import static ish.util.LocalDateUtils.dateToValue
-import static ish.util.LocalDateUtils.valueToDate
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationResult
@@ -66,6 +34,11 @@ import org.apache.logging.log4j.Logger
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.stream.Collectors
+
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
+import static ish.util.LocalDateUtils.dateToValue
+import static ish.util.LocalDateUtils.valueToDate
 
 class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem, ProductItemDAO> {
 
@@ -113,7 +86,7 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             productItemDTO.valueRemaining = type == ProductTypeDTO.VOUCHER ? getValueRemaining(productItem as Voucher) : null
             productItemDTO.voucherCode = type == ProductTypeDTO.VOUCHER ? (productItem as Voucher).code : null
             productItemDTO.redeemableById = type == ProductTypeDTO.VOUCHER ? (productItem as Voucher).redeemableBy?.id : null
-            productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? GetContactFullName.valueOf((productItem as Voucher).redeemableBy, true).get() : null
+            productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? (productItem as Voucher).redeemableBy.getFullName() : null
             productItemDTO.payments = getPayments(type, productItem)
             switch (type) {
                 case ProductTypeDTO.PRODUCT:
@@ -240,7 +213,7 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
                 contact = productItem.contact
         }
         if (contact != null) {
-            return GetContactFullName.valueOf(contact, true).get()
+            return contact.getFullName()
         }
         return null
     }
@@ -286,7 +259,7 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
             if (productItem == null) {
                 validator.throwClientErrorException(id, "id", "ProductItem with id=$id doesn't exist.")
             }
-            
+
             def expiryDate = dateToValue(productItem.expiryDate)
             if (productItemDTO.expiresOn != expiryDate && LocalDate.now().isAfter(expiryDate)) {
                 validator.throwClientErrorException(id, "expiresOn", "Only ProductItem with active status can be modified.")

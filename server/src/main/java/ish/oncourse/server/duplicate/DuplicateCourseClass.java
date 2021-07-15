@@ -292,7 +292,7 @@ public class DuplicateCourseClass {
             }
         }
 
-        DiscountUtil.assignDefaultDiscounts(newClass, Discount.class, DiscountCourseClass.class, ClassCost.class);
+        DiscountUtil.assignDefaultDiscounts(newClass);
 
         if (request.isCopyVetData()) {
             newClass.setDeliveryMode(oldClass.getDeliveryMode());

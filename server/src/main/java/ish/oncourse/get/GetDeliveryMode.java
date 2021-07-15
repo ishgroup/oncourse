@@ -12,19 +12,16 @@
 package ish.oncourse.get;
 
 import ish.common.types.DeliveryMode;
-import ish.messaging.IOutcome;
+import ish.oncourse.server.cayenne.Outcome;
 
-/**
- * Created by anarut on 8/10/16.
- */
 public class GetDeliveryMode {
 
-    private IOutcome outcome;
+    private Outcome outcome;
 
     private GetDeliveryMode() {
     }
 
-    public static GetDeliveryMode valueOf(IOutcome outcome) {
+    public static GetDeliveryMode valueOf(Outcome outcome) {
         GetDeliveryMode getDeliveryMode = new GetDeliveryMode();
         getDeliveryMode.outcome = outcome;
         return getDeliveryMode;

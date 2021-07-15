@@ -14,8 +14,8 @@ package ish.oncourse.server.cayenne
 import ish.common.types.DiscountType
 import ish.math.Money
 import ish.math.MoneyRounding
-import ish.messaging.IDiscount
 import ish.oncourse.API
+import ish.oncourse.cayenne.DiscountInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Discount
 import ish.persistence.CommonExpressionFactory
@@ -28,9 +28,6 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.math.BigDecimal
-import java.time.LocalDate
-import java.util.*
 import java.util.regex.Pattern
 
 /**
@@ -39,9 +36,13 @@ import java.util.regex.Pattern
  */
 @API
 @QueueableEntity
-class Discount extends _Discount implements DiscountTrait, IDiscount, Queueable {
+class Discount extends _Discount implements DiscountTrait, DiscountInterface, Queueable {
 
 	private static final Logger logger = LogManager.getLogger()
+
+	public static final String ADD_BY_DEFAULT_PROPERTY = "addByDefault";
+	public static final String VALID_FROM_PROPERTY = "validFrom";
+	public static final String VALID_TO_PROPERTY = "validTo";
 
 	public static final String AGE_UNDER = "<"
 	public static final String AGE_OVER = ">"
