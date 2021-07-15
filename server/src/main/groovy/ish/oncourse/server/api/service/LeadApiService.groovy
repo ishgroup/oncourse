@@ -71,7 +71,7 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.contactName = cayenneModel.customer.fullName
             dtoModel.studentNotes = cayenneModel.studentNotes
             dtoModel.estimatedValue = cayenneModel.estimatedValue.toBigDecimal()
-            dtoModel.nextActionOn = cayenneModel.nextActionOn
+            dtoModel.nextActionOn = LocalDateUtils.dateToTimeValue(cayenneModel.nextActionOn)
             dtoModel.notify = cayenneModel.notify
             dtoModel.status = LeadStatusDTO.values()[0].fromDbType(cayenneModel.status)
             dtoModel.assignToId = cayenneModel.assignedTo?.id
@@ -91,12 +91,8 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
         ObjectContext context = cayenneModel.context
         cayenneModel.studentCount = dtoModel.studentCount
         cayenneModel.customer = contactApiService.getEntityAndValidateExistence(context, dtoModel.contactId)
-        cayenneModel.estimatedValue = Money.valueOf(dtoModel.estimatedValue)
-        if (dtoModel.estimatedValue == null) {
-            cayenneModel.estimatedValue = calculateEstimatedValue(context, dtoModel.studentCount,
-                    dtoModel.relatedSellables.findAll {SaleTypeDTO.COURSE == it.type } as List<SaleDTO>)
-        }
-        cayenneModel.nextActionOn = dtoModel.nextActionOn
+        cayenneModel.estimatedValue = dtoModel.estimatedValue != null ? Money.valueOf(dtoModel.estimatedValue) : null as Money
+        cayenneModel.nextActionOn = LocalDateUtils.timeValueToDate(dtoModel.nextActionOn)
         cayenneModel.notify = dtoModel.notify
         cayenneModel.status = dtoModel.status.getDbType()
 

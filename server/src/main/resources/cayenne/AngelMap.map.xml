@@ -2481,7 +2481,7 @@
 		<obj-attribute name="studentCount" type="java.lang.Integer" db-attribute-path="studentCount"/>
 		<obj-attribute name="studentNotes" type="java.lang.String" db-attribute-path="studentNotes"/>
 		<obj-attribute name="estimatedValue" type="ish.math.Money" db-attribute-path="estimatedValue"/>
-		<obj-attribute name="nextActionOn" type="java.time.LocalDateTime" db-attribute-path="nextActionOn"/>
+		<obj-attribute name="nextActionOn" type="java.util.Date" db-attribute-path="nextActionOn"/>
 		<obj-attribute name="notify" type="java.lang.Boolean" db-attribute-path="notify"/>
 		<obj-attribute name="status" type="ish.common.types.LeadStatus" db-attribute-path="status"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
