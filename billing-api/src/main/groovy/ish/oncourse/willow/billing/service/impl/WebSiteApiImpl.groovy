@@ -1,13 +1,10 @@
 package ish.oncourse.willow.billing.service.impl
 
 import com.google.inject.Inject
-import ish.oncourse.api.request.RequestService
-import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.service.WebSiteApi
 import ish.oncourse.willow.billing.website.WebSiteService
 
-import javax.ws.rs.BadRequestException
 
 class WebSiteApiImpl implements WebSiteApi {
     
@@ -22,16 +19,16 @@ class WebSiteApiImpl implements WebSiteApi {
 
     @Override
     void deleteSite(Long id) {
-
+        webSiteService.deleteWebSite(id)
     }
     
     @Override
     List<SiteDTO> getSites() {
-        webSiteService.getCollegeSites()
+        webSiteService.getCollegeWebSites()
     }
 
     @Override
     void updateSite(SiteDTO site) {
-        
+        webSiteService.updateWebSite(site)
     }
 }
