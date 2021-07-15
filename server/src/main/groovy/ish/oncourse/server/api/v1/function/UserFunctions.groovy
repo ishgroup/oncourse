@@ -47,17 +47,17 @@ class UserFunctions {
     static UserDTO toRestUserMinimized(SystemUser systemUser) {
         new UserDTO().with { user ->
             user.id = systemUser.id
-            user.active = systemUser.isActive
-            user.login = systemUser.login
             user.firstName = systemUser.firstName
             user.lastName = systemUser.lastName
-            user.email = systemUser.email
             user
         }
     }
 
     static UserDTO toRestUser(SystemUser systemUser) {
         return toRestUserMinimized(systemUser).with {user ->
+            user.active = systemUser.isActive
+            user.login = systemUser.login
+            user.email = systemUser.email
             Site centre = systemUser.defaultAdministrationCentre
             user.administrationCentre = centre.id
             user.lastLoggedIn = systemUser.lastLoginOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
