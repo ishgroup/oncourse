@@ -11,8 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-
-import ish.messaging.IRoom
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Room
@@ -33,7 +31,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Room extends _Room implements IRoom, Queueable, NotableTrait, AttachableTrait {
+class Room extends _Room implements Queueable, NotableTrait, AttachableTrait {
 
 	public static final String DEFAULT_ROOM_NAME = "Default room"
 	public static final Integer DEFAULT_ROOM_CAPACITY = 10

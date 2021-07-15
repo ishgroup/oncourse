@@ -43,7 +43,7 @@ public class PropertyGetSetFactory {
 	public static final String TAG_S_PATTERN = "singleTag/";
 	public static final String TAG_M_PATTERN = "multipleTag/";
 	public static final String MAILING_LIST_FIELD_PATTERN = "mailingList/";
-	private String packageName;
+	private final String packageName;
 
 
 	public PropertyGetSetFactory(String packageName) {

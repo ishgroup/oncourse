@@ -16,42 +16,25 @@ import ish.cancel.CancelationResult
 import ish.cancel.EnrolmentCancelationRequest
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.document.DocumentService
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
 import ish.oncourse.server.api.v1.function.DocumentFunctions
 import ish.oncourse.server.api.v1.function.TagFunctions
-
-import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_LEVEL_MAP
-import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_PROVIDER_TYPE_MAP
-import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_TOTAL_MAP
-import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.CREDIT_TYPE_MAP
-import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.FEE_STATUS_MAP
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import ish.oncourse.server.api.v1.model.CancelEnrolmentDTO
-import ish.oncourse.server.api.v1.model.ClassFundingSourceDTO
-import ish.oncourse.server.api.v1.model.ConfirmationStatusDTO
-import ish.oncourse.server.api.v1.model.CourseClassAttendanceTypeDTO
-import ish.oncourse.server.api.v1.model.EnrolmentDTO
-import ish.oncourse.server.api.v1.model.EnrolmentExemptionTypeDTO
-import ish.oncourse.server.api.v1.model.EnrolmentStatusDTO
-import ish.oncourse.server.api.v1.model.EnrolmentStudyReasonDTO
-import ish.oncourse.server.api.v1.model.PaymentSourceDTO
-import static ish.oncourse.server.api.validation.EntityValidator.validateLength
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cancel.CancelEnrolmentService
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.EnrolmentAttachmentRelation
-import ish.oncourse.server.cayenne.EnrolmentCustomField
-import ish.oncourse.server.cayenne.EnrolmentTagRelation
-import ish.oncourse.server.cayenne.Student
+import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.EnrolmentFunctions.*
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.validation.EntityValidator.validateLength
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, EnrolmentDao> {
@@ -89,7 +72,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.tags = enrolment.tags.collect { toRestTagMinimized(it) }
             enrolment.student.contact.with { contact ->
                 enrolmentDTO.studentContactId = contact.id
-                enrolmentDTO.studentName = GetContactFullName.valueOf(contact, true).get()
+                enrolmentDTO.studentName = contact.getFullName()
             }
             enrolment.courseClass.with { courseClass ->
                 enrolmentDTO.courseClassId = courseClass.id

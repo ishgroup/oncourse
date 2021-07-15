@@ -5,17 +5,13 @@ Feature: Main feature for all POST requests with path 'preference/'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference'
-        
+
 
     Scenario: (-) Edit 'readOnly' preferences
 
         * table readOnlyPreferences
             | name                       | code                      | value  |
             | 'LICENSE_ACCESS_CONTROL'   | 'license.accesscontrol'   | 'true' |
-            | 'LICENSE_LDAP'             | 'license.ldap'            | 'true' |
-            | 'LICENSE_BUDGET'           | 'license.budget'          | 'true' |
-            | 'LICENSE_EXTENRNAL_DB'     | 'license.externaldb'      | 'true' |
-            | 'LICENSE_SSL'              | 'license.ssl'             | 'true' |
             | 'LICENSE_SMS'              | 'license.sms'             | 'true' |
             | 'LICENSE_CC_PROCESSING'    | 'license.ccprocessing'    | 'true' |
             | 'LICENSE_PAYROLL'          | 'license.payroll'         | 'true' |
@@ -25,9 +21,6 @@ Feature: Main feature for all POST requests with path 'preference/'
             | 'LICENSE_SCRIPTING'        | 'license.scripting'       | 'true' |
             | 'LICENSE_FEE_HELP_EXPORT'  | 'license.feeHelpExport'   | 'true' |
             | 'LICENSE_FUNDING_CONTRACT' | 'license.fundingContract' | 'true' |
-            | 'AUSKEY_CERTIFICATE'       | 'auskey.certificate'      | 'true' |
-            | 'AUSKEY_PRIVATE_KEY'       | 'auskey.privatekey'       | 'true' |
-            | 'AUSKEY_SALT'              | 'auskey.salt'             | 'true' |
 
         * call read('postReadOnlyPreferences.feature') readOnlyPreferences
 

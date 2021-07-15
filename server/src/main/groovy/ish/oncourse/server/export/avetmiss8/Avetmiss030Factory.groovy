@@ -13,7 +13,6 @@ package ish.oncourse.server.export.avetmiss8
 
 import groovy.transform.CompileStatic
 import ish.common.types.QualificationType
-import ish.messaging.IQualification
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Qualification

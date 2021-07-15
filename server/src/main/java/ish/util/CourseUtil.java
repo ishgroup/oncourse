@@ -11,10 +11,10 @@
 
 package ish.util;
 
-import ish.messaging.ICourse;
-import ish.messaging.ICourseClass;
-import ish.messaging.ICourseModule;
-import ish.messaging.IModule;
+import ish.oncourse.server.cayenne.Course;
+import ish.oncourse.server.cayenne.CourseClass;
+import ish.oncourse.server.cayenne.CourseModule;
+import ish.oncourse.server.cayenne.Module;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.logging.log4j.LogManager;
@@ -31,22 +31,22 @@ public class CourseUtil {
     private CourseUtil() {
     }
 
-    public static void addModule(ICourse course, IModule module, Class<? extends ICourseModule> courseModuleClass) {
+    public static void addModule(Course course, Module module, Class<CourseModule> courseModuleClass) {
         // this is a many to many relation, it was not solving the duplication problems well in cayenne some time ago. The code below is to ensuse that
         String nationalCode = module.getNationalCode();
         if (nationalCode != null && !nationalCode.isEmpty()) {
-            Expression anExpression = ExpressionFactory.matchExp(IModule.NATIONAL_CODE_KEY, nationalCode);
-            List<IModule> currentModules = anExpression.filterObjects(new ArrayList<>(course.getModules()));
+            Expression anExpression = ExpressionFactory.matchExp(Module.NATIONAL_CODE_KEY, nationalCode);
+            List<Module> currentModules = anExpression.filterObjects(new ArrayList<>(course.getModules()));
             logger.debug("current modules {}", currentModules.size());
             if (currentModules.size() == 0) {
-                IModule localModule = course.getContext().localObject(module);
+                Module localModule = course.getContext().localObject(module);
 
-                ICourseModule courseModule = course.getContext().newObject(courseModuleClass);
+                CourseModule courseModule = course.getContext().newObject(courseModuleClass);
                 courseModule.setCourse(course);
                 courseModule.setModule(localModule);
 
                 // propagate module changes to all sessions of classes linked to course
-                for (ICourseClass courseClass : course.getCourseClasses()) {
+                for (CourseClass courseClass : course.getCourseClasses()) {
                     courseClass.addModuleToAllSessions(localModule);
                 }
 

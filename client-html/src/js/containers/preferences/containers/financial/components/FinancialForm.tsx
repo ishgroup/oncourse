@@ -231,33 +231,6 @@ class FinancialBaseForm extends React.Component<any, any> {
               fullWidth
             />
           </Grid>
-
-          <Hidden smDown>
-            <Grid item md={4} />
-          </Hidden>
-
-          <Grid item xs={12}>
-            <FormControlLabel
-              classes={{
-                root: "checkbox"
-              }}
-              control={(
-                <FormField
-                  type="checkbox"
-                  name={this.formModel.QePaymentDefaultZero.uniqueKey}
-                  color="primary"
-                  value="true"
-                  stringValue
-                  fullWidth
-                />
-              )}
-              label={`Quick Enrol payment defaults to ${
-                values
-                  ? currency.find(i => i.value === values[this.formModel.AccountDefaultCurrency.uniqueKey]).symbol
-                  : ""
-              }0`}
-            />
-          </Grid>
         </Grid>
       </Form>
     );
