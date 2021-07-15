@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import MuiButton from "@material-ui/core/Button";
-import clsx from "clsx";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React from 'react';
+import MuiButton from '@material-ui/core/Button';
+import clsx from 'clsx';
+import { createStyles, withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme: any) => createStyles({
   leftIcon: {
@@ -22,17 +22,17 @@ const styles = (theme: any) => createStyles({
     fontSize: 20
   },
   loading: {
-    color: "transparent"
+    color: 'transparent'
   },
   loadingIndicatorContainer: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    left: "0",
-    top: "0",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    left: '0',
+    top: '0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
@@ -42,9 +42,9 @@ const Button = (props: any) => {
     leftIcon,
     rightIcon,
     text,
-    size = "medium",
-    variant = "contained",
-    color = "default",
+    size = 'medium',
+    variant = 'contained',
+    color = 'default',
     onClick,
     type,
     disabled,
@@ -61,7 +61,7 @@ const Button = (props: any) => {
       datatype={datatype}
       size={size}
       variant={variant}
-      color={loading ? "default" : color}
+      color={loading ? 'default' : color}
       classes={{
         root: clsx(rootClasses, className),
         disabled: disabledClasses,

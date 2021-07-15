@@ -6,23 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Autocomplete } from "@material-ui/lab";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { connect } from "react-redux";
-import CustomTextField from "../../common/TextField";
-import { createCollege, setOrganisationFormValues } from "../../../redux/actions";
-import Navigation from "../Navigations";
-import { countries, countriesTimeZone } from "../../../utils";
-import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
-import {State} from "../../../redux/reducers";
-import {Dispatch} from "redux";
+import React, { useCallback, useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Autocomplete } from '@material-ui/lab';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import CustomTextField from '../../common/TextField';
+import { createCollege, setOrganisationFormValues } from '../../../redux/actions';
+import Navigation from '../Navigations';
+import { countries, countriesTimeZone } from '../../../utils';
+import { State } from '../../../redux/reducers';
+import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
-    minHeight: "66px",
+    minHeight: '66px',
   },
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color,
@@ -30,18 +30,18 @@ const useStyles = makeStyles((theme: any) => ({
 }));
 
 const validationSchema = yup.object({
-  organisationName: yup.string().required("Required"),
-  address: yup.string().required("Required"),
-  suburb: yup.string().required("Required"),
-  state: yup.string().required("Required"),
-  postcode: yup.string().required("Required"),
-  country: yup.string().required("Required").nullable(),
-  timeZone: yup.string().required("Required").nullable(),
+  organisationName: yup.string().required('Required'),
+  address: yup.string().required('Required'),
+  suburb: yup.string().required('Required'),
+  state: yup.string().required('Required'),
+  postcode: yup.string().required('Required'),
+  country: yup.string().required('Required').nullable(),
+  timeZone: yup.string().required('Required').nullable(),
 });
 
 const OrganisationForm = (props: any) => {
   const classes = useStyles();
-  const [ validState, setValidState ] = useState(false);
+  const [validState, setValidState] = useState(false);
   const {
     activeStep,
     steps,
@@ -58,18 +58,20 @@ const OrganisationForm = (props: any) => {
 
   useEffect(() => {
     if (collegeWasCreated) handleNext();
-  }, [collegeWasCreated])
+  }, [collegeWasCreated]);
 
-  const { handleSubmit, handleChange, values, errors, setFieldValue, isValid, touched, dirty, handleBlur } = useFormik({
+  const {
+    handleSubmit, handleChange, values, errors, setFieldValue, isValid, touched, dirty, handleBlur
+  } = useFormik({
     initialValues: organisationForm,
     validationSchema,
-    onSubmit: values => {},
+    onSubmit: (values) => {},
   });
 
   const handleBackCustom = () => {
     setOrganisationFormValues(values);
     handleBack();
-  }
+  };
 
   const handleNextCustom = () => {
     setOrganisationFormValues(values);
@@ -78,24 +80,24 @@ const OrganisationForm = (props: any) => {
       webSiteTemplate,
       ...contactForm,
       ...values,
-    })
-  }
+    });
+  };
 
   const keyPressHandler = useCallback((e) => {
     if (e.keyCode === 13 && !((dirty && !isValid) || (!dirty && !validState))) {
       handleNextCustom();
     }
-  }, [dirty, isValid, validState])
+  }, [dirty, isValid, validState]);
 
   addEventListenerWithDeps([keyPressHandler], keyPressHandler);
 
   useEffect(() => {
     validationSchema.validate(organisationForm).then(() => {
-      setValidState(true)
+      setValidState(true);
     }).catch(() => {
-      setValidState(false)
-    })
-  }, organisationForm)
+      setValidState(false);
+    });
+  }, organisationForm);
 
   return (
     <form>
@@ -105,7 +107,7 @@ const OrganisationForm = (props: any) => {
           placeholder="Name"
           label="Name"
           id="organisationName"
-          autoFocus={true}
+          autoFocus
           onChange={handleChange}
           value={values.organisationName}
           error={touched.organisationName && errors.organisationName}
@@ -129,7 +131,7 @@ const OrganisationForm = (props: any) => {
           id="tradingName"
           onChange={handleChange}
           value={values.tradingName}
-          helperText={"(if different to organisation name)"}
+          helperText="(if different to organisation name)"
         />
       </div>
       <div className={classes.textFieldWrapper}>
@@ -185,7 +187,7 @@ const OrganisationForm = (props: any) => {
           id="country"
           options={countries}
           getOptionLabel={(option: string) => option}
-          onChange={ (_, value) => setFieldValue("country", value) }
+          onChange={(_, value) => setFieldValue('country', value)}
           value={values.country}
           renderInput={(params) => (
             <CustomTextField
@@ -204,7 +206,7 @@ const OrganisationForm = (props: any) => {
           id="timeZone"
           options={countriesTimeZone}
           getOptionLabel={(option: string) => option}
-          onChange={ (_, value) => setFieldValue("timeZone", value) }
+          onChange={(_, value) => setFieldValue('timeZone', value)}
           value={values.timeZone}
           renderInput={(params) => (
             <CustomTextField
@@ -226,8 +228,8 @@ const OrganisationForm = (props: any) => {
         disabled={(dirty && !isValid) || (!dirty && !validState)}
       />
     </form>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: State) => ({
   collegeWasCreated: state.collegeWasCreated,

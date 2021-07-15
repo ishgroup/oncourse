@@ -3,30 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  ActionsObservable, Epic, StateObservable, ofType
-} from "redux-observable";
-import { Observable, concat, from } from "rxjs";
-import {
-  delay, mergeMap, flatMap, catchError
-} from "rxjs/operators";
-import { IAction } from "../actions/IshAction";
-import { FETCH_FINISH, FETCH_START } from "../actions";
-import FetchErrorHandler from "../../api/fetch-errors-handlers/FetchErrorHandler";
-import { REJECTED } from "../actions/ActionUtils";
-import { EnvironmentConstants } from "../../constant/EnvironmentConstants";
-import {State} from "../reducers";
+import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observable';
+import { concat, from, Observable } from 'rxjs';
+import { catchError, delay, flatMap, mergeMap } from 'rxjs/operators';
+import { IAction } from '../actions/IshAction';
+import { FETCH_FINISH, FETCH_START } from '../actions';
+import FetchErrorHandler from '../../api/fetch-errors-handlers/FetchErrorHandler';
+import { REJECTED } from '../actions/ActionUtils';
+import { EnvironmentConstants } from '../../constant/EnvironmentConstants';
+import { State } from '../reducers';
 
-export interface Request<V = any, S = State, P = any> {
+export interface Request<V = any, P = any> {
   type: string;
   hideLoadIndicator?: boolean;
-  getData: (payload: P, state: S) => Promise<V>;
-  retrieveData?: (payload: any, state: S) => Promise<V>;
-  processData: (value: V, state: S, payload?: P) => IAction<any>[] | Observable<any>;
+  getData: (payload: P, state: State) => Promise<V>;
+  retrieveData?: (payload: any, state: State) => Promise<V>;
+  processData: (value: V, state: State, payload?: P) => IAction<any>[] | Observable<any>;
   processError?: (data: any, payload?: P) => IAction<any>[] | Observable<any>;
 }
 
-export interface DelayedRequest<V, S, P> extends Request<V, S, P> {
+export interface DelayedRequest<V, P> extends Request<V, P> {
   delay: number;
 }
 
@@ -42,53 +38,51 @@ export const processError = (data: any, type: string, processError: any, payload
   ...(processError ? processError(data, payload) : FetchErrorHandler(data))
 ];
 
-export const CreateWithTimeout = <V, S, P>(request: DelayedRequest<V, S, P>): Epic<any, any, any> => (action$: ActionsObservable<any>, state$: StateObservable<S>): Observable<any> => action$.pipe(
+export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any, any> => (action$: ActionsObservable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
   ofType(request.type),
   delay(request.delay),
-  mergeMap(action =>
-    concat(
-      [
-        {
-          type: FETCH_START,
-          payload: {
-            hideIndicator: request.hideLoadIndicator
-          }
+  mergeMap((action) => concat(
+    [
+      {
+        type: FETCH_START,
+        payload: {
+          hideIndicator: request.hideLoadIndicator
         }
-      ],
-      from(request.getData(action.payload, state$.value)).pipe(
-        flatMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
-        flatMap(data => request.processData(data, state$.value, action.payload)),
-        catchError(data => processError(data, request.type, request.processError, action.payload))
-      ),
-      [
-        {
-          type: FETCH_FINISH
-        }
-      ]
-    ))
+      }
+    ],
+    from(request.getData(action.payload, state$.value)).pipe(
+      flatMap((data) => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
+      flatMap((data) => request.processData(data, state$.value, action.payload)),
+      catchError((data) => processError(data, request.type, request.processError, action.payload))
+    ),
+    [
+      {
+        type: FETCH_FINISH
+      }
+    ]
+  ))
 );
 
-export const Create = <V, S, P>(request: Request<V, S, P>): Epic<any, any, any, any> => (action$: ActionsObservable<any>, state$: StateObservable<S>): Observable<any> => action$.pipe(
+export const Create = <V, P>(request: Request<V, P>): Epic<any, any, any, any> => (action$: ActionsObservable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
   ofType(request.type),
-  mergeMap(action =>
-    concat(
-      [
-        {
-          type: FETCH_START,
-          payload: {
-            hideIndicator: request.hideLoadIndicator
-          }
+  mergeMap((action) => concat(
+    [
+      {
+        type: FETCH_START,
+        payload: {
+          hideIndicator: request.hideLoadIndicator
         }
-      ],
-      from(request.getData(action.payload, state$.value)).pipe(
-        flatMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
-        flatMap(data => request.processData(data, state$.value, action.payload)),
-        catchError(data => processError(data, request.type, request.processError, action.payload))
-      ),
-      [
-        {
-          type: FETCH_FINISH
-        }
-      ]
-    ))
+      }
+    ],
+    from(request.getData(action.payload, state$.value)).pipe(
+      flatMap((data) => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
+      flatMap((data) => request.processData(data, state$.value, action.payload)),
+      catchError((data) => processError(data, request.type, request.processError, action.payload))
+    ),
+    [
+      {
+        type: FETCH_FINISH
+      }
+    ]
+  ))
 );

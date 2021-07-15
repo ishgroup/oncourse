@@ -13,7 +13,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
-    "project": "tsconfig.json",
+    "project": ["./portal-native/tsconfig.json", "./billing/tsconfig.json", "./checkout/tsconfig.json", "./editor/tsconfig.json"],
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true

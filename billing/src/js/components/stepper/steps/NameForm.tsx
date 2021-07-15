@@ -6,48 +6,49 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState, useRef } from 'react';
-import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import { connect } from "react-redux";
-import Navigation from "../Navigations";
-import { checkSiteName, setLoadingValue, setCollegeKey } from "../../../redux/actions";
-import { usePrevious } from "../../Hooks/usePrevious";
-import { SITE_KEY } from "../../../constant/common";
-import {State} from "../../../redux/reducers";
-import {Dispatch} from "redux";
-import clsx from "clsx";
+import React, { useEffect, useRef, useState } from 'react';
+import moment from 'moment';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import clsx from 'clsx';
+import Navigation from '../Navigations';
+import { checkSiteName, setCollegeKey, setLoadingValue } from '../../../redux/actions';
+import { SITE_KEY } from '../../../constant/common';
+import { State } from '../../../redux/reducers';
+import { usePrevious } from '../../../hooks/usePrevious';
 
 const useStyles = makeStyles((theme:any) => ({
   root: {
-    minWidth: "400px"
+    minWidth: '400px'
   },
   textFieldWrapper: {
-    minHeight: "61px"
+    minHeight: '61px'
   },
   mainWrapper: {
-    minHeight: "50px",
-    marginTop: "20px",
+    minHeight: '50px',
+    marginTop: '20px',
   },
   textFieldWrapper2: {
-    display: "flex",
-    alignItems: "baseline"
+    display: 'flex',
+    alignItems: 'baseline'
   },
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color
   },
   errorMessage: {
-    fontSize: "12px",
-    color: "#f44336"
+    fontSize: '12px',
+    color: '#f44336'
   },
   input: {
-    minWidth: "70px"
+    minWidth: '70px'
   }
 }));
 
 const NameForm = (props: any) => {
-  const { activeStep,
+  const {
+    activeStep,
     steps,
     handleBack,
     handleNext,
@@ -60,13 +61,13 @@ const NameForm = (props: any) => {
     setLoadingValue
   } = props;
 
-  const [collegeKey, setCollegeKey] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [collegeKey, setCollegeKey] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef(collegeKeyFromState);
 
   const prevProps: {
     loading: boolean,
-  } = usePrevious({ loading })
+  } = usePrevious({ loading });
 
   const classes = useStyles();
 
@@ -82,7 +83,7 @@ const NameForm = (props: any) => {
 
   useEffect(() => {
     if (!collegeKey && collegeKeyFromState) inputRef.current.innerText = collegeKeyFromState;
-  }, [])
+  }, []);
 
   const setNewCollegeName = (e) => {
     const name: string = e.target.innerText;
@@ -93,12 +94,10 @@ const NameForm = (props: any) => {
       setErrorMessage('Maximum length of college name is 40 characters');
     } else if (!validName) {
       setErrorMessage('You can only use letters and numbers');
-    } else {
-      if (errorMessage) setErrorMessage("");
-    }
+    } else if (errorMessage) setErrorMessage('');
 
     setCollegeKey(name);
-  }
+  };
 
   const createCollege = (token?: string | null) => {
     checkSiteName({
@@ -114,32 +113,31 @@ const NameForm = (props: any) => {
     if ((collegeKey === collegeKeyFromState || !collegeKey && collegeKeyFromState) && isValidName) return handleNext();
 
     if (sendTokenAgain) {
-      (window as any).grecaptcha.execute(SITE_KEY, { action: 'submit' }).then(token => {
+      (window as any).grecaptcha.execute(SITE_KEY, { action: 'submit' }).then((token) => {
         // setCaptchaToken(token);
         createCollege(token);
       });
     } else {
       createCollege(null);
     }
-  }
+  };
 
   const keyPress = (e: any) => {
     if (e.charCode === 13) {
       e.preventDefault();
       handleNextCustom();
     }
-  }
+  };
 
   const getDate = () => {
     const currentDate = moment(new Date());
     const currentDay = currentDate.date();
 
     if (currentDay < 15) {
-      return currentDate.add(1, 'months').startOf('month').format("D MMMM");
-    } else {
-      return currentDate.add(2, 'months').startOf('month').format("D MMMM");
+      return currentDate.add(1, 'months').startOf('month').format('D MMMM');
     }
-  }
+    return currentDate.add(2, 'months').startOf('month').format('D MMMM');
+  };
 
   return (
     <form className={classes.root}>
@@ -150,8 +148,10 @@ const NameForm = (props: any) => {
         <div className={classes.textFieldWrapper2}>
           <Typography>https://</Typography>
           <span
-            className={clsx(classes.input, "input")}
-            onInput={(e) => setNewCollegeName(e)} ref={inputRef} contentEditable
+            className={clsx(classes.input, 'input')}
+            onInput={(e) => setNewCollegeName(e)}
+            ref={inputRef}
+            contentEditable
             onKeyPress={(e) => keyPress(e)}
           />
           <Typography>.oncourse.cc</Typography>
@@ -160,7 +160,11 @@ const NameForm = (props: any) => {
       </div>
 
       <Typography>- No credit card required</Typography>
-      <Typography>- Free until {getDate()}, then $10/month</Typography>
+      <Typography>
+        - Free until
+        {getDate()}
+        , then $10/month
+      </Typography>
       <Navigation
         activeStep={activeStep}
         steps={steps}
@@ -169,8 +173,8 @@ const NameForm = (props: any) => {
         disabled={errorMessage}
       />
     </form>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: State) => ({
   collegeKeyFromState: state.collegeKey,

@@ -6,22 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { useFormik } from "formik";
-import { connect } from "react-redux";
-import * as yup from "yup";
-import CustomTextField from "../../common/TextField";
-import { setContactFormValues } from "../../../redux/actions";
-import Navigation from "../Navigations";
-import { phoneRegExp } from "../../../constant/common";
-import { addEventListenerWithDeps } from "../../Hooks/addEventListnerWithDeps";
-import {State} from "../../../redux/reducers";
-import {Dispatch} from "redux";
+import React, { useCallback, useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { useFormik } from 'formik';
+import { connect } from 'react-redux';
+import * as yup from 'yup';
+import { Dispatch } from 'redux';
+import CustomTextField from '../../common/TextField';
+import { setContactFormValues } from '../../../redux/actions';
+import Navigation from '../Navigations';
+import { phoneRegExp } from '../../../constant/common';
+import { State } from '../../../redux/reducers';
+import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
-    minHeight: "66px"
+    minHeight: '66px'
   },
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color
@@ -29,20 +29,24 @@ const useStyles = makeStyles((theme: any) => ({
 }));
 
 const validationSchema = yup.object({
-  userFirstName: yup.string().required("Required"),
-  userLastName: yup.string().required("Required"),
-  userPhone: yup.string().required("Required").matches(phoneRegExp, "Phone number is not valid"),
-  userEmail: yup.string().required("Required").email("Email is not valid"),
+  userFirstName: yup.string().required('Required'),
+  userLastName: yup.string().required('Required'),
+  userPhone: yup.string().required('Required').matches(phoneRegExp, 'Phone number is not valid'),
+  userEmail: yup.string().required('Required').email('Email is not valid'),
 });
 
 const ContactForm = (props: any) => {
-  const [ validState, setValidState ] = useState(false);
+  const [validState, setValidState] = useState(false);
 
-  const { contactForm, activeStep, steps, handleBack, handleNext, setContactFormValues } = props;
+  const {
+    contactForm, activeStep, steps, handleBack, handleNext, setContactFormValues
+  } = props;
 
   const classes = useStyles();
 
-  const { handleSubmit, handleChange, values, errors, isValid, dirty, touched, handleBlur } = useFormik({
+  const {
+    handleSubmit, handleChange, values, errors, isValid, dirty, touched, handleBlur
+  } = useFormik({
     initialValues: contactForm,
     validationSchema,
     onSubmit: (values) => {},
@@ -51,28 +55,28 @@ const ContactForm = (props: any) => {
   const handleBackCustom = () => {
     setContactFormValues(values);
     handleBack();
-  }
+  };
 
   const handleNextCustom = () => {
     setContactFormValues(values);
     handleNext();
-  }
+  };
 
   const keyPressHandler = useCallback((e) => {
     if (e.keyCode === 13 && !((dirty && !isValid) || (!dirty && !validState))) {
       handleNextCustom();
     }
-  }, [dirty, isValid, validState])
+  }, [dirty, isValid, validState]);
 
   addEventListenerWithDeps([keyPressHandler], keyPressHandler);
 
   useEffect(() => {
     validationSchema.validate(contactForm).then(() => {
-      setValidState(true)
+      setValidState(true);
     }).catch(() => {
-      setValidState(false)
-    })
-  }, contactForm)
+      setValidState(false);
+    });
+  }, contactForm);
 
   return (
     <form>
@@ -82,7 +86,7 @@ const ContactForm = (props: any) => {
           placeholder="First Name"
           label="First Name"
           id="userFirstName"
-          autoFocus={true}
+          autoFocus
           onChange={handleChange}
           value={values.userFirstName}
           error={touched.userFirstName && errors.userFirstName}
@@ -126,7 +130,7 @@ const ContactForm = (props: any) => {
           onBlur={handleBlur}
         />
       </div>
-      {/*{ console.log(222, "dirty", dirty) }*/}
+      {/* { console.log(222, "dirty", dirty) } */}
       <Navigation
         activeStep={activeStep}
         steps={steps}
@@ -135,7 +139,7 @@ const ContactForm = (props: any) => {
         disabled={(dirty && !isValid) || (!dirty && !validState)}
       />
     </form>
-  )
+  );
 };
 
 const mapStateToProps = (state: State) => ({
