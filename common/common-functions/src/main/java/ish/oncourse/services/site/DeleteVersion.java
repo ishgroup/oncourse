@@ -12,19 +12,20 @@ public class DeleteVersion {
 	private boolean deleteRelatedObjectsOnly;
 
 	public void delete() {
-		if (deleteRelatedObjectsOnly) {
-			deleteAllWebTemplates(context, version);
-			deleteAllWebContents(context, version);
+		
+		deleteAllWebTemplates(context, version);
+		deleteAllWebContents(context, version);
 
-			context.deleteObjects(version.getMenus());
-			context.deleteObjects(version.getWebURLAliases());
-			context.deleteObjects(version.getWebNodes());
-			context.deleteObjects(version.getWebLayoutPaths());
-			context.deleteObjects(version.getWebNodeTypes());
-			context.deleteObjects(version.getLayouts());
-		} else {
+		context.deleteObjects(version.getMenus());
+		context.deleteObjects(version.getWebURLAliases());
+		context.deleteObjects(version.getWebNodes());
+		context.deleteObjects(version.getWebLayoutPaths());
+		context.deleteObjects(version.getWebNodeTypes());
+		context.deleteObjects(version.getLayouts());
+		
+		if (!deleteRelatedObjectsOnly) {
 			context.invalidateObjects(version);
-			context.deleteObject(version);		// delete version record and related with ON CASCADE DELETE;
+			context.deleteObject(version);        // delete version record and related with ON CASCADE DELETE;
 		}
 
 		context.commitChanges();

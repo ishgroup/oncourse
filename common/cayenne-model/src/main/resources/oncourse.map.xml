@@ -4943,8 +4943,8 @@
 	<obj-relationship name="logs" source="WillowUser" target="Log" deleteRule="Deny" db-relationship-path="logs"/>
 	<obj-relationship name="webSiteVersion" source="WebLayoutPath" target="WebSiteVersion" deleteRule="Nullify" db-relationship-path="webSiteVersion"/>
 	<obj-relationship name="webNodeType" source="WebLayoutPath" target="WebNodeType" deleteRule="Nullify" db-relationship-path="webNodeType"/>
-	<obj-relationship name="webLayoutPaths" source="WebSiteVersion" target="WebLayoutPath" deleteRule="Nullify" db-relationship-path="webLayoutPaths"/>
-	<obj-relationship name="webLayoutPaths" source="WebNodeType" target="WebLayoutPath" deleteRule="Nullify" db-relationship-path="webLayoutPaths"/>
+	<obj-relationship name="webLayoutPaths" source="WebSiteVersion" target="WebLayoutPath" deleteRule="Cascade" db-relationship-path="webLayoutPaths"/>
+	<obj-relationship name="webLayoutPaths" source="WebNodeType" target="WebLayoutPath" deleteRule="Cascade" db-relationship-path="webLayoutPaths"/>
 
 
 </data-map>
