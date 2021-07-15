@@ -12,7 +12,6 @@
 package ish.oncourse.server.api.dao
 
 import ish.common.types.AttendanceType
-import ish.messaging.ICourseClassTutor
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.Session

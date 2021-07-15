@@ -50,7 +50,7 @@ class CourseClassTutorApiService extends EntityApiService<CourseClassTutorDTO, C
             dto.confirmedOn = LocalDateUtils.dateToValue(cayenneModel.confirmedOn)
             dto.isInPublicity = cayenneModel.inPublicity
             dto.contactId = cayenneModel.tutor.contact.id
-            dto.tutorName = cayenneModel.tutor.contact.getFullName(true)
+            dto.tutorName = cayenneModel.tutor.contact.getFullName()
             dto.classId = cayenneModel.courseClass.id
             dto
         }

@@ -12,15 +12,12 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.NodeSpecialType
-import ish.common.types.NodeType
-import ish.messaging.ITag
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.common.NodeInterface
 import ish.oncourse.server.cayenne.glue._Tag
-import ish.validation.AngelTagValidator
-import ish.validation.TagValidateForDelete
+import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationResult
@@ -30,6 +27,7 @@ import javax.annotation.Nullable
 import javax.swing.tree.MutableTreeNode
 import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.UnsupportedFlavorException
+
 /**
  * A tag is a piece of arbitrary information which can be attached to many other types of objects.
  * Tags are arranged hierarchically, and each tree of tags has a root node also called a "tag group"
@@ -40,7 +38,18 @@ import java.awt.datatransfer.UnsupportedFlavorException
  */
 @API
 @QueueableEntity
-class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrait {
+class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
+
+	public static final String ALIAS = "alias";
+	public static final String TAG_PATH = "taggingRelations";
+
+	public static final String NAME_KEY = "name"
+	public static final String SHORT_NAME_KEY = "shortName"
+	public static final String PARENT_TAG_KEY = "parentTag"
+	public static final String TAG_REQUIREMENTS_KEY = "tagRequirements"
+	public static final String ENTITY_IDENTIFIER_PROPERTY = "entityIdentifier";
+	public static final String TAG_PROPERTY = "tag";
+
 
 	public static final String ROOT_NODE = "root_node" // root node
 	public static final String ADD_NODE_ACTION = "add_node_action"
@@ -188,7 +197,6 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 	 * @return true if multiple tags from the same group are allowed
 	 */
 	@API
-	@Override
 	boolean isMultipleFor(final Class<? extends Taggable> entity) {
 		return getTagRequirement(entity) != null && getTagRequirement(entity).getManyTermsAllowed() != null && getTagRequirement(entity).getManyTermsAllowed()
 	}
@@ -199,8 +207,8 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 	 * @param anotherTag - the node to search is ancestors on.
 	 * @return true if this object is an ancestor of {@code anotherNode}
 	 */
-	@Override
-	boolean isTagAncestor(ITag anotherTag) {
+	@API
+	boolean isTagAncestor(Tag anotherTag) {
 		if (!anotherTag) {
 			return false
 		}
@@ -208,7 +216,7 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 			return true
 		}
 
-		ITag ancestor = anotherTag
+		Tag ancestor = anotherTag
 
 		while ((ancestor = ancestor.getParentTag()) != null) {
 			if (this.equalsIgnoreContext(ancestor)) {
@@ -223,7 +231,6 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 	 * @return true if this tag is the top of the tree (the tag group)
 	 */
 	@API
-	@Override
 	boolean isRoot() {
 		return getParentTag() == null
 	}
@@ -242,7 +249,6 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 	 * @return true if a tag is required from the tag group this tag is part of
 	 */
 	@API
-	@Override
 	boolean isRequiredFor(final Class<? extends Taggable> entity) {
 		final TagRequirement nr = getTagRequirement(entity)
 		if (nr == null) {
@@ -251,28 +257,43 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 		return getTagRequirement(entity) != null && getTagRequirement(entity).getIsRequired() != null && getTagRequirement(entity).getIsRequired()
 	}
 
-	@Override
 	void validateForDelete(@Nonnull ValidationResult validationResult) {
-		TagValidateForDelete.valueOf(this, validationResult).validate()
+		if (getSpecialType() != null) {
+			String message;
+			switch (getSpecialType()) {
+				case NodeSpecialType.SUBJECTS:
+					message = "This tag group represents the categories of courses on your web site and cannot be deleted.";
+					break;
+				case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
+					message = "This tag group is required for the onCourse tutor pay feature.";
+					break;
+				case NodeSpecialType.ASSESSMENT_METHOD:
+					message = "This tag group is required for the assessments.";
+					break;
+				default:
+					throw new IllegalArgumentException("Unknown special type for tag");
+			}
+
+			validationResult.addFailure(ValidationFailure.validationFailure(this, NAME_KEY, message));
+		}
 	}
 
 	@Override
 	void validateForSave(@Nonnull ValidationResult result) {
 		super.validateForSave(result)
-		AngelTagValidator.valueOf(this, result).validate()
+		if (getTagRequirements().size() > 0 && !getIsVocabulary()) {
+			result.addFailure(new ValidationFailure(this, TAG_REQUIREMENTS.getName(), "Only parent tags cann have requirements."));
+		}
 	}
 
-	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
 		addToAttachmentRelations((TagAttachmentRelation) relation)
 	}
 
-	@Override
 	void removeFromAttachmentRelations(AttachmentRelation relation) {
 		removeFromAttachmentRelations((TagAttachmentRelation) relation)
 	}
 
-	@Override
 	Class<? extends AttachmentRelation> getRelationClass() {
 		return TagAttachmentRelation.class
 	}
@@ -362,15 +383,6 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 	}
 
 	/**
-	 * @return
-	 */
-	@Nonnull
-	@Override
-	NodeType getNodeType() {
-		return super.getNodeType()
-	}
-
-	/**
 	 * Tags can have a shorter name which is used in URLs on a website
 	 * The short name must be unique amongst siblings. If the short name is null, then
 	 * the long name is used for the URL.
@@ -416,7 +428,7 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 	/**
 	 * @return the parent of this tag
 	 */
-	@Nonnull
+	@Nullable
 	@API
 	@Override
 	Tag getParentTag() {
@@ -437,8 +449,7 @@ class Tag extends _Tag implements NodeInterface, ITag, Queueable, AttachableTrai
 	 * This method gets all tags with the same parent as the current tag
 	 * @return siblings of this tag
 	 */
-	@Override
-	@API
+	@API @Nonnull
 	List<Tag> getSiblings() {
 		List<Tag> siblings
 

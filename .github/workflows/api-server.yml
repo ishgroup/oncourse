@@ -10,6 +10,9 @@ jobs:
   api-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    strategy:
+      matrix:
+        java: [11]
 
     steps:
       - uses: ankane/setup-mariadb@v1
@@ -35,7 +38,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: ${{ matrix.java }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -55,9 +58,9 @@ jobs:
         run: ./gradlew api-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_api_test?user=root
         continue-on-error: true
 
-      - name: Build coverage report
-        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew api-test:jacocoTestReport server:jacocoTestReport
+#      - name: Build coverage report
+#        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+#        run: ./gradlew api-test:jacocoTestReport server:jacocoTestReport
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1
@@ -65,13 +68,13 @@ jobs:
         with:
           files: '**/test-results/**/*.xml'
 
-      - name: Upload coverage to Codecov
-        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: api
-          files: server/build/reports/jacoco/test/jacocoTestReport.xml,api-test/build/reports/jacoco/test/jacocoTestReport.xml
+#      - name: Upload coverage to Codecov
+#        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+#        uses: codecov/codecov-action@v1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          flags: api
+#          files: server/build/reports/jacoco/test/jacocoTestReport.xml,api-test/build/reports/jacoco/test/jacocoTestReport.xml
 #
 #      - name: Upload coverage to codeclimate
 #        uses: paambaati/codeclimate-action@v2.7.5

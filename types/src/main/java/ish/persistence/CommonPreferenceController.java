@@ -14,32 +14,24 @@ import ish.common.types.*;
 import ish.math.Country;
 import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
-import ish.util.SecurityUtil;
 import ish.validation.PreferenceValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.io.*;
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import static ish.persistence.Preferences.*;
-/**
- * This abstract class is implemented in each of the client and the server. This is needed because the persistent object classes are different in those two
- * places and access to them needs to be implemented separately.
- */
+
 public abstract class CommonPreferenceController {
 
 	private static final Logger logger = LogManager.getLogger();
 
 	private static final java.util.prefs.Preferences FILE_PREFS = java.util.prefs.Preferences.userNodeForPackage(CommonPreferenceController.class);
-	public static final Pattern NO_WHITESPACE_PATTERN = Pattern.compile("^[^\\s]+$");
 	public static final Pattern WRAPPING_QUOTATION_MARKS =  Pattern.compile("^[\\\"].*[\\\"]$");
 
 	// use US locale so months in English
@@ -163,15 +155,6 @@ public abstract class CommonPreferenceController {
 		setValue(COLLEGE_PAYMENT_INFO, false, value);
 	}
 
-	/**
-	 * Gets the url to redirect after the successful enrolment.
-	 *
-	 * @return URL string
-	 */
-	public String getEnrolSuccessUrl() {
-		return getValue(COLLEGE_ENROL_SUCCESS_URL, false);
-	}
-
 
 	public  String getPaymentGatewayPass() {
 		String apiKey = getValue(PAYMENT_GATEWAY_PASS, false);
@@ -179,18 +162,6 @@ public abstract class CommonPreferenceController {
 			throw new IllegalArgumentException();
 		}
 		return apiKey;
-	}
-
-	public Boolean isPurchaseWithoutAuth() {
-		return Boolean.parseBoolean(getValue(PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, false));
-	}
-	/**
-	 * Sets the url to redirect after the successful enrolment.
-	 *
-	 * @param value URL string
-	 */
-	public void setEnrolSuccessUrl(String value) {
-		setValue(COLLEGE_ENROL_SUCCESS_URL, false, value);
 	}
 
 	/**
@@ -206,7 +177,9 @@ public abstract class CommonPreferenceController {
 	public void setOncourseServerDefaultTimezone(String timezoneID) {
 		setValue(ONCOURSE_SERVER_DEFAULT_TZ, false, timezoneID);
 	}
-
+	public Boolean isPurchaseWithoutAuth() {
+		return Boolean.parseBoolean(getValue(PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, false));
+	}
 	public boolean getServicesLdapAuthentication() {
 		return Boolean.parseBoolean(getValue(SERVICES_LDAP_AUTHENTICATION, false));
 	}
@@ -233,36 +206,6 @@ public abstract class CommonPreferenceController {
 
 	public boolean getServicesAmexEnabled() {
 		return Boolean.parseBoolean(getValue(SERVICES_CC_AMEX_ENABLED, false));
-	}
-
-	public BigInteger getReplicationRequeueId() {
-		String value = getValue(SERVICES_REPLICATION_REQUEUE_ID, false);
-		return value == null ? null : new BigInteger(value);
-	}
-
-	public void setReplicationRequeueId(BigInteger value) {
-		setValue(SERVICES_REPLICATION_REQUEUE_ID, false, value.toString());
-	}
-
-	public int getDataSVN() {
-		String result = getValue(DATA_SVNVERSION, false);
-		if (result == null) {
-			return -1;
-		}
-		return Integer.parseInt(result);
-	}
-
-	public void setDataSVN(int value) {
-		setValue(DATA_SVNVERSION, false, Integer.toString(value));
-	}
-
-	/** this is not a wed version anymore, but I dont wanna change the preferences. marcin **/
-	public String getDataVersion() {
-		return getValue(DATA_WED_VERSION, false);
-	}
-
-	public void setDataVersion(String value) {
-		setValue(DATA_WED_VERSION, false, value);
 	}
 
 	public Long getReferenceDataVersion() {
@@ -319,59 +262,13 @@ public abstract class CommonPreferenceController {
 		setValue(SERVICES_ANGEL_REPLICATION_LASTRUN, false, dateFormat.format(value));
 	}
 
-	public static boolean LICENSE_BYPASS_MODE = false;
-
 	public boolean getLicenseAccessControl() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_ACCESS_CONTROL, false));
+		return Boolean.parseBoolean(getValue(LICENSE_ACCESS_CONTROL, false));
 	}
 
 	public void setLicenseAccessControl(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 // setValue(LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseLdap() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_LDAP, false));
-	}
-
-	public void setLicenseLdap(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_LDAP, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseBudget() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_BUDGET, false));
-	}
-
-	public void setLicenseBudget(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_BUDGET, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseExternalDB() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_EXTENRNAL_DB, false));
-	}
-
-	public void setLicenseExternalDB(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_EXTENRNAL_DB, false, Boolean.toString(value));
-	}
-
-	/**
-	 * @deprecated - not used since angel 4.1
-	 */
-	@Deprecated
-	public boolean getLicenseSSL() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SSL, false));
-	}
-
-	/**
-	 * @deprecated - not used since angel 4.1
-	 */
-	@Deprecated
-	public void setLicenseSSL(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_SSL, false, Boolean.toString(value));
 	}
 
 	public boolean getLicenseSms() {
@@ -393,7 +290,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicensePayroll() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_PAYROLL, false));
+		return Boolean.parseBoolean(getValue(LICENSE_PAYROLL, false));
 	}
 
 	public void setLicensePayroll(boolean value) {
@@ -402,7 +299,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseVoucher() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_VOUCHER, false));
+		return Boolean.parseBoolean(getValue(LICENSE_VOUCHER, false));
 	}
 
 	public void setLicenseVoucher(boolean value) {
@@ -410,7 +307,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseMembership() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_MEMBERSHIP, false));
+		return Boolean.parseBoolean(getValue(LICENSE_MEMBERSHIP, false));
 	}
 
 	public void setLicenseMembership(boolean value) {
@@ -418,7 +315,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseAttendance() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_ATTENDANCE, false));
+		return Boolean.parseBoolean(getValue(LICENSE_ATTENDANCE, false));
 	}
 
 	public void setLicenseAttendance(boolean value) {
@@ -426,11 +323,11 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseScripting() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
+		return Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
 	}
 
 	public boolean getLicenseFeeHelpExport () {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_FEE_HELP_EXPORT, false));
+		return Boolean.parseBoolean(getValue(LICENSE_FEE_HELP_EXPORT, false));
 	}
 
 	public void setLicenseScripting(boolean value) {
@@ -438,18 +335,10 @@ public abstract class CommonPreferenceController {
 	}
 
 	public boolean getLicenseFundingContract() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_FUNDING_CONTRACT, false));
+		return Boolean.parseBoolean(getValue(LICENSE_FUNDING_CONTRACT, false));
 	}
 
 	public void setLicenseFundingContract(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-	}
-
-	public boolean getLicenseAutopay() {
-		return LICENSE_BYPASS_MODE || Boolean.parseBoolean(getValue(LICENSE_AUTO_PAY, false));
-	}
-
-	public void setLicenseAutopay(boolean value) {
 		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
@@ -670,35 +559,6 @@ public abstract class CommonPreferenceController {
 		setValue(LDAP_USERNAME_ATTRIBUTE, false, value);
 	}
 
-	public synchronized boolean getBackupEnabled() {
-		String aPref = getValue(BACKUP_ENABLED, false);
-		if (aPref == null) {
-			setBackupEnabled(true);
-			setBackupOnMinuteOfDay(60);
-			setBackupNextNumber(1);
-			setBackupMaxNumber(7);
-			setBackupDir(""); // sets backup warning to empty string also.
-		}
-
-		return Boolean.parseBoolean(aPref);
-	}
-
-	public void setBackupEnabled(boolean value) {
-		setValue(BACKUP_ENABLED, false, Boolean.toString(value));
-	}
-
-	public Integer getBackupOnMinuteOfDay() {
-		try {
-			return Integer.parseInt(getValue(BACKUP_TIMEOFDAY, false));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setBackupOnMinuteOfDay(int value) {
-		setValue(BACKUP_TIMEOFDAY, false, String.valueOf(value));
-	}
-
 	public boolean getLogoutEnabled() {
 		String aPref = getValue(LOGOUT_ENABLED, false);
 		if (aPref == null) {
@@ -736,55 +596,6 @@ public abstract class CommonPreferenceController {
 
 	public void setLogoutTimeout(String value) {
 		setValue(LOGOUT_TIMEOUT, false, value);
-	}
-
-	public String getBackupDir() {
-		return getValue(BACKUP_DIR, false);
-	}
-
-	public synchronized void setBackupDir(String value) {
-		setValue(BACKUP_DIR, false, value);
-		setBackupDirWarning(""); // clear warning message
-	}
-
-	public String getBackupDirWarning() {
-		return getValue(BACKUP_DIR_WARNING, false);
-	}
-
-	public void setBackupDirWarning(String message) {
-		setValue(BACKUP_DIR_WARNING, false, message);
-	}
-
-	public Integer getBackupNextNumber() {
-		try {
-			return Integer.parseInt(getValue(BACKUP_NEXT_NUMBER, false));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setBackupNextNumber(int value) {
-		setValue(BACKUP_NEXT_NUMBER, false, String.valueOf(value));
-	}
-
-	public Integer getBackupMaxNumber() {
-		try {
-			return Integer.parseInt(getValue(BACKUP_MAX_HISTORY, false));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setBackupMaxNumber(int value) {
-		setValue(BACKUP_MAX_HISTORY, false, String.valueOf(value));
-	}
-
-	public String getDatabaseUsed() {
-		return getValue(DATABASE_USED, false);
-	}
-
-	public void setDatabaseUsed(String value) {
-		setValue(DATABASE_USED, false, value);
 	}
 
 	public Long getDefaultAccountId(String preferenceName) {
@@ -1130,391 +941,12 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public boolean getQEDefaultsToZeroPayment() {
-		String aPref = getValue(QE_DEFAULTS_TO_ZERO, false);
-		return aPref != null && Boolean.parseBoolean(aPref);
-
-	}
-
-	public void setQEDefaultsToZeroPayment(boolean value) {
-		setValue(QE_DEFAULTS_TO_ZERO, false, Boolean.toString(value));
-	}
-
-	public synchronized String getDefaultQEEnrolmentReportKeycode() {
-		String result = getValue(QE_DEFAULT_REPORT_ENROLMENT_KEYCODE, false);
-		if (StringUtils.isEmpty(result)) {
-			String defaultValue = QE_DEFAULT_REPORT_ENROLMENT;
-			setDefaultQEEnrolmentReportKeycode(defaultValue);
-			return defaultValue;
-		}
-		return result;
-	}
-
-	public void setDefaultQEEnrolmentReportKeycode(String value) {
-		setValue(QE_DEFAULT_REPORT_ENROLMENT_KEYCODE, false, value);
-	}
-
-	public synchronized String getDefaultQEInvoiceReportKeycode() {
-		String result = getValue(QE_DEFAULT_REPORT_INVOICE_KEYCODE, false);
-		if (StringUtils.isEmpty(result)) {
-			String defaultValue = QE_DEFAULT_REPORT_INVOICE;
-			setDefaultQEEnrolmentReportKeycode(defaultValue);
-			return defaultValue;
-		}
-		return result;
-	}
-
-	public void setDefaultQEInvoiceReportKeycode(String value) {
-		setValue(QE_DEFAULT_REPORT_INVOICE_KEYCODE, false, value);
-	}
-
 	public boolean getGravatarEnabled() {
 		String value = getValue(GRAVATAR, false);
 		if (StringUtils.isEmpty(value)) {
 			return Boolean.TRUE;
 		}
 		return Boolean.parseBoolean(value);
-	}
-
-	public String getToolbarActiveTab() {
-		return getValue(TOOLBAR_ACTIVE_TAB, true);
-	}
-
-	public void setToolbarActiveTab(String toolbarActiveTab) {
-		setValue(TOOLBAR_ACTIVE_TAB, true, toolbarActiveTab);
-	}
-
-	public String getEulaAgreement(String userLogin) {
-		return getValue(EULA_AGREEMENT + userLogin, true);
-	}
-
-	public void setEulaAgreement(String userLogin, String revision) {
-		setValue(EULA_AGREEMENT + userLogin, true, revision);
-	}
-
-	public Rectangle getFramePosition(String frameIdentifier) {
-		String pref = getValue(FRAME_BOUNDS + frameIdentifier, true);
-		if (pref != null && !pref.equals("")) {
-			String[] elements = commaExplode.split(pref);
-			if (elements.length == 4) {
-				int x = Integer.valueOf(elements[0]);
-				int y = Integer.valueOf(elements[1]);
-				int w = Integer.valueOf(elements[2]);
-				int h = Integer.valueOf(elements[3]);
-				return new Rectangle(x, y, w, h);
-			}
-		}
-		return null;
-	}
-
-	public void setFramePosition(String frameIdentifier, Rectangle value) {
-		String prefValue = (int) value.getX() + "," + (int) value.getY() + "," + (int) value.getWidth() + "," + (int) value.getHeight();
-		setValue(FRAME_BOUNDS + frameIdentifier, true, prefValue);
-	}
-
-	public boolean getToolbarCollapsed() {
-		String value = getValue(TOOLBAR_COLLAPSE_STATE, true);
-		if (value == null) {
-			return false;
-		}
-		return Boolean.parseBoolean(value);
-	}
-
-	public void setToolbarCollapsed(boolean value) {
-		setValue(TOOLBAR_COLLAPSE_STATE, true, Boolean.toString(value));
-	}
-
-	/**
-	 * Get the list view column order and sizing.
-	 *
-	 * @param frameIdentifier a unique string identifier for this view
-	 * @return this is a map of column property keys and widths (in pixels)
-	 */
-	public Map<String, Integer> getListViewColumns(String frameIdentifier) {
-		String pref = getValue(LISTVIEW_COLUMNS + frameIdentifier, true);
-		// data is stored like this "COLKEY1:12,COLKEY2:13"
-
-		if (pref != null && !pref.equals("")) {
-			String[] elements = commaExplode.split(pref);
-			Map<String, Integer> result = new LinkedHashMap<>();
-			for (String col : elements) {
-				// now split each one around the colon
-				String[] colElements = colonExplode.split(col);
-				Integer width = colElements.length == 2 ? Integer.valueOf(colElements[1]) : null;
-				result.put(colElements[0], width);
-			}
-			return result;
-		}
-		return null;
-	}
-
-	/**
-	 * Set the list view column order and sizing.
-	 *
-	 * @param frameIdentifier a unique string identifier for this view
-	 * @param value this is a map of column property keys and widths (in pixels)
-	 */
-	public void setListViewColumns(String frameIdentifier, Map<String, Integer> value) {
-		StringBuilder prefValue = new StringBuilder();
-		for (Map.Entry<String, Integer> col : value.entrySet()) {
-			prefValue.append(col.getKey()).append(":").append(col.getValue()).append(",");
-		}
-		prefValue.deleteCharAt(prefValue.length() - 1);
-		setValue(LISTVIEW_COLUMNS + frameIdentifier, true, prefValue.toString());
-	}
-
-	public void setListViewDividerPosition(String frameIdentifier, int value) {
-		setValue(LISTVIEW_DIVIDER + frameIdentifier, true, String.valueOf(value));
-	}
-
-	public Integer getListViewDividerPosition(String frameIdentifier) {
-		try {
-			return Integer.parseInt(getValue(LISTVIEW_DIVIDER + frameIdentifier, true));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setQEViewDividerPosition(String frameIdentifier, int value) {
-		setValue(QEVIEW_DIVIDER + frameIdentifier, true, String.valueOf(value));
-	}
-
-	public Integer getQEViewDividerPosition(String frameIdentifier) {
-		try {
-			return Integer.parseInt(getValue(QEVIEW_DIVIDER + frameIdentifier, true));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void setFilterCollapsingState(String filterIdentifier, boolean value) {
-		setValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true, String.valueOf(value));
-	}
-
-
-	public boolean getFilterCollapsingState(String filterIdentifier) {
-		return Boolean.parseBoolean(getValue(LISTVIEW_FILTERS_COLLAPSING + filterIdentifier, true));
-	}
-
-	public void setListViewSortedColumns(String frameIdentifier, Map<String, Boolean> sortedColumns) {
-		StringBuilder prefValue = new StringBuilder();
-		for (Map.Entry<String, Boolean> col : sortedColumns.entrySet()) {
-			prefValue.append(String.format("%s:%b,", col.getKey(), col.getValue()));
-		}
-		setValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true, prefValue.toString());
-	}
-
-	public Map<String, Boolean> getListViewSortedColumns(String frameIdentifier) {
-		String value = getValue(LISTVIEW_COLUMN_SORTED + frameIdentifier, true);
-		if (StringUtils.trimToNull(value) != null) {
-			String[] elements = commaExplode.split(value);
-			Map<String, Boolean> sortedColumn  = new LinkedHashMap<>(elements.length);
-			for (String col : elements) {
-				String[] colIndexSorting = colonExplode.split(col);
-				if (colIndexSorting.length == 2) {
-					sortedColumn.put(colIndexSorting[0], Boolean.parseBoolean(colIndexSorting[1]));
-				}
-			}
-			return sortedColumn;
-		}
-		return null;
-	}
-
-	/**
-	 * Get the server host name used for the last login of the client on this workstation.
-	 *
-	 * @return host name
-	 */
-	public static String getLastLoginServerHost() {
-		return getFilePreference(LASTLOGIN_SERVER_HOST, "localhost");
-	}
-
-	/**
-	 * Set the server host name to be used for the next login of the client on this workstation.
-	 *
-	 * @param value host name
-	 */
-	public static void setLastLoginServerHost(String value) {
-		setFilePreference(LASTLOGIN_SERVER_HOST, value);
-	}
-
-	/**
-	 * Get the server port used for the last login of the client on this workstation.
-	 *
-	 * @return TCP port
-	 */
-	public static int getLastLoginServerPort() {
-		String value = getFilePreference(LASTLOGIN_SERVER_PORT, "443");
-		if (value == null) {
-			return 0;
-		}
-		return Integer.parseInt(value);
-	}
-
-	/**
-	 * Set the server port to be used for the next login of the client on this workstation.
-	 *
-	 * @param value TCP port
-	 */
-	public static void setLastLoginServerPort(int value) {
-		setFilePreference(LASTLOGIN_SERVER_PORT, Integer.toString(value));
-	}
-
-	/**
-	 * Returns weather the last connection to the server was a secure one (SSL)
-	 */
-	public static Boolean getLastLoginServerIsSsl() {
-		String value = getFilePreference(LASTLOGIN_SERVER_ISSSL, "false");
-		if (value == null) {
-			return false;
-		}
-		return Boolean.parseBoolean(value);
-	}
-
-	public static void setLastLoginServerIsSsl(Boolean value) {
-		setFilePreference(LASTLOGIN_SERVER_ISSSL, String.valueOf(value));
-	}
-
-	/**
-	 * Get the user name used for the last login of the client on this workstation.
-	 *
-	 * @return user name
-	 */
-	public static String getLastLoginServerUserName() {
-		return getFilePreference(LASTLOGIN_USERNAME, "");
-	}
-
-	/**
-	 * Set the user name to be used for the next login of the client on this workstation.
-	 *
-	 * @param value user name
-	 */
-	public static void setLastLoginServerUserName(String value) {
-		setFilePreference(LASTLOGIN_USERNAME, value);
-	}
-
-	public static String getSHA1Fingerprint(String host) {
-		return getFilePreference(host, "");
-	}
-
-	public static void setSHA1Fingerprint(String host, String value) {
-		setFilePreference(host, value);
-	}
-
-	public File getExportMailingListDestination() {
-		String dir = getFilePreference(MAILINGLIST_EXPORT_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportMailingListDestination(File value) {
-		setFilePreference(MAILINGLIST_EXPORT_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getExportPdfDestination() {
-		String dir = getFilePreference(REPORT_PDF_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportPdfDestination(File value) {
-		setFilePreference(REPORT_PDF_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getExportExcelDestination() {
-		String dir = getFilePreference(REPORT_XLS_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportExcelDestination(File value) {
-		setFilePreference(REPORT_XLS_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getReportImportSource() {
-		String dir = getFilePreference(REPORT_IMPORT_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setReportImportSource(File value) {
-		setFilePreference(REPORT_IMPORT_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getExportTemplateImportSource() {
-		String dir = getFilePreference(EXPORTTEMPLATE_IMPORT_FOLDER, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setExportTemplateImportSource(File value) {
-		setFilePreference(EXPORTTEMPLATE_IMPORT_FOLDER, value.getAbsolutePath());
-	}
-
-	public File getAvetmissExportPath() {
-		String dir = getFilePreference(AVETMISS_EXPORT_PATH, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setAvetmissExportPath(File value) {
-		setFilePreference(AVETMISS_EXPORT_PATH, value.getAbsolutePath());
-	}
-
-	public File getDocumentImportPath() {
-		String dir = getFilePreference(DOCUMENT_IMPORT_PATH, null);
-		if (dir == null || dir.length() == 0) {
-			dir = System.getProperty("user.dir");
-		}
-		return new File(dir);
-	}
-
-	public void setDocumentImportPath(File value) {
-		setFilePreference(DOCUMENT_IMPORT_PATH, value.getAbsolutePath());
-	}
-
-	public void setAuskeyPassword(String value) {
-		setValue(AUSKEY_PASSWORD, false, value);
-	}
-
-	public String getAuskeyPassword() {
-		return getValue(AUSKEY_PASSWORD, false);
-	}
-
-	public void setAuskeyCertificate(String value) {
-		setValue(AUSKEY_CERTIFICATE, false, value);
-	}
-
-	public String getAuskeyCertificate() {
-		return getValue(AUSKEY_CERTIFICATE, false);
-	}
-
-	public void setAuskeyPrivateKey(String value) {
-		setValue(AUSKEY_PRIVATE_KEY, false, value);
-	}
-
-	public String getAuskeyPrivateKey() {
-		return getValue(AUSKEY_PRIVATE_KEY, false);
-	}
-
-	public void setAuskeySalt(String value) {
-		setValue(AUSKEY_SALT, false, value);
-	}
-
-	public String getAuskeySalt() {
-		return getValue(AUSKEY_SALT, false);
 	}
 
 	public boolean getUseOnlyOfferedModulesAndQualifications() {
@@ -1539,22 +971,7 @@ public abstract class CommonPreferenceController {
 	public void setMYOBLastExportDate(Date value) {
 		setValue(MYOB_LAST_EXPORT_DATE, false, dateFormat.format(value));
 	}
-	/*
-	 * Utility methods
-	 */
-	public boolean hasEmailBeenConfigured() {
-		String fromAddress = getEmailFromAddress();
-		return fromAddress != null && fromAddress.length() != 0;
-	}
 
-	public boolean hasSMSBeenConfigured() {
-		boolean enableSMSDelivery = getLicenseSms();
-		String smsFrom = getSMSFromAddress();
-		if (enableSMSDelivery && smsFrom != null && NO_WHITESPACE_PATTERN.matcher(smsFrom).matches()) {
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * Gets value for given key.
@@ -1578,10 +995,6 @@ public abstract class CommonPreferenceController {
 			return getServicesLdapAuthorisation();
 		} else if (SERVICES_CC_ENABLED.equals(key)) {
 			return getServicesCCEnabled();
-		} else if (DATA_SVNVERSION.equals(key)) {
-			return getDataSVN();
-		} else if (DATA_WED_VERSION.equals(key)) {
-			return getDataVersion();
 		} else if (SERVICES_INFO_REPLICATION_VERSION.equals(key)) {
 			return getReferenceDataVersion();
 		} else if (DEDUPE_LASTRUN.equals(key)) {
@@ -1638,18 +1051,6 @@ public abstract class CommonPreferenceController {
 			return getLogoutEnabled();
 		} else if (LOGOUT_TIMEOUT.equals(key)) {
 			return getLogoutTimeout();
-		} else if (BACKUP_ENABLED.equals(key)) {
-			return getBackupEnabled();
-		} else if (BACKUP_DIR.equals(key)) {
-			return getBackupDir();
-		} else if (BACKUP_DIR_WARNING.equals(key)) {
-			return getBackupDirWarning();
-		} else if (BACKUP_MAX_HISTORY.equals(key)) {
-			return getBackupMaxNumber();
-		} else if (BACKUP_NEXT_NUMBER.equals(key)) {
-			return getBackupNextNumber();
-		} else if (BACKUP_TIMEOFDAY.equals(key)) {
-			return getBackupOnMinuteOfDay();
 		} else if (ACCOUNT_CURRENCY.equals(key)) {
 			return getCountry();
 		} else if (ACCOUNT_TAXPK.equals(key)) {
@@ -1690,36 +1091,10 @@ public abstract class CommonPreferenceController {
 			return getAvetmissCertSignatoryName();
 		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
 			return getAvetmissQldIdentifier();
-		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
-			return getToolbarCollapsed();
-		} else if (LASTLOGIN_USERNAME.equals(key)) {
-			return getLastLoginServerUserName();
-		} else if (LASTLOGIN_SERVER_HOST.equals(key)) {
-			return getLastLoginServerHost();
-		} else if (LASTLOGIN_SERVER_PORT.equals(key)) {
-			return getLastLoginServerPort();
-		} else if (LASTLOGIN_SERVER_ISSSL.equals(key)) {
-			return getLastLoginServerIsSsl();
-		} else if (REPORT_PDF_FOLDER.equals(key)) {
-			return getExportPdfDestination();
-		} else if (REPORT_XLS_FOLDER.equals(key)) {
-			return getExportExcelDestination();
-		} else if (REPORT_IMPORT_FOLDER.equals(key)) {
-			return getReportImportSource();
-		} else if (EXPORTTEMPLATE_IMPORT_FOLDER.equals(key)) {
-			return getExportTemplateImportSource();
-		} else if (AVETMISS_EXPORT_PATH.equals(key)) {
-			return getAvetmissExportPath();
 		} else if (AVETMISS_JURISDICTION.equals(key)) {
 			return getAvetmissJurisdiction();
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
 			return getPaymentInfo();
-		} else if (QE_DEFAULTS_TO_ZERO.equals(key)) {
-			return getQEDefaultsToZeroPayment();
-		} else if (key.startsWith(EULA_AGREEMENT)) {
-			return getEulaAgreement(key);
-		} else if (key.equals(TOOLBAR_ACTIVE_TAB)) {
-			return getToolbarActiveTab();
 		} else if (PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE.equals(key)) {
 			return getPortalHideClassRollContactPhone();
 		} else if (PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL.equals(key)) {
@@ -1738,14 +1113,8 @@ public abstract class CommonPreferenceController {
 			return getCourseClassDefaultMinimumPlaces();
 		} else if (MYOB_LAST_EXPORT_DATE.equals(key)) {
 			return getMYOBLastExportDate();
-		} else if (QE_DEFAULT_REPORT_INVOICE_KEYCODE.equals(key)) {
-			return getDefaultQEInvoiceReportKeycode();
-		} else if (QE_DEFAULT_REPORT_ENROLMENT_KEYCODE.equals(key)) {
-			return getDefaultQEEnrolmentReportKeycode();
 		} else if (GRAVATAR.equals(key)) {
 			return getGravatarEnabled();
-		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
-			return getDocumentImportPath();
 		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			return getOncourseServerDefaultTimezone();
 		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
@@ -1797,10 +1166,6 @@ public abstract class CommonPreferenceController {
 			setServicesLdapAuthorisation((Boolean) value);
 		} else if (SERVICES_CC_ENABLED.equals(key)) {
 			setServicesCCEnabled((Boolean) value);
-		} else if (DATA_SVNVERSION.equals(key)) {
-			setDataSVN((Integer) value);
-		} else if (DATA_WED_VERSION.equals(key)) {
-			setDataVersion((String) value);
 		} else if (SERVICES_INFO_REPLICATION_VERSION.equals(key)) {
 			setReferenceDataVersion((Integer) value);
 		} else if (DEDUPE_LASTRUN.equals(key)) {
@@ -1857,18 +1222,6 @@ public abstract class CommonPreferenceController {
 			setLogoutEnabled((Boolean) value);
 		} else if (LOGOUT_TIMEOUT.equals(key)) {
 			setLogoutTimeout((String) value);
-		} else if (BACKUP_ENABLED.equals(key)) {
-			setBackupEnabled((Boolean) value);
-		} else if (BACKUP_DIR.equals(key)) {
-			setBackupDir((String) value);
-		} else if (BACKUP_DIR_WARNING.equals(key)) {
-			setBackupDirWarning((String) value);
-		} else if (BACKUP_MAX_HISTORY.equals(key)) {
-			setBackupMaxNumber((Integer) value);
-		} else if (BACKUP_NEXT_NUMBER.equals(key)) {
-			setBackupNextNumber((Integer) value);
-		} else if (BACKUP_TIMEOFDAY.equals(key)) {
-			setBackupOnMinuteOfDay((Integer) value);
 		} else if (ACCOUNT_CURRENCY.equals(key)) {
 			setCountry((Country) value);
 		} else if (ACCOUNT_TAXPK.equals(key)) {
@@ -1907,34 +1260,8 @@ public abstract class CommonPreferenceController {
 			setAvetmissCertSignatoryName((String) value);
 		} else if (AVETMISS_QLD_IDENTIFIER.equals(key)) {
 			setAvetmissQldIdentifier((String) value);
-		} else if (TOOLBAR_COLLAPSE_STATE.equals(key)) {
-			setToolbarCollapsed((Boolean) value);
-		} else if (LASTLOGIN_USERNAME.equals(key)) {
-			setLastLoginServerUserName((String) value);
-		} else if (LASTLOGIN_SERVER_HOST.equals(key)) {
-			setLastLoginServerHost((String) value);
-		} else if (LASTLOGIN_SERVER_PORT.equals(key)) {
-			setLastLoginServerPort((Integer) value);
-		} else if (LASTLOGIN_SERVER_ISSSL.equals(key)) {
-			setLastLoginServerIsSsl((Boolean) value);
-		} else if (REPORT_PDF_FOLDER.equals(key)) {
-			setExportPdfDestination((File) value);
-		} else if (REPORT_XLS_FOLDER.equals(key)) {
-			setExportExcelDestination((File) value);
-		} else if (REPORT_IMPORT_FOLDER.equals(key)) {
-			setReportImportSource((File) value);
-		} else if (EXPORTTEMPLATE_IMPORT_FOLDER.equals(key)) {
-			setExportTemplateImportSource((File) value);
-		} else if (AVETMISS_EXPORT_PATH.equals(key)) {
-			setAvetmissExportPath((File) value);
 		} else if (AVETMISS_JURISDICTION.equals(key)) {
 			setAvetmissJurisdiction((ExportJurisdiction) value);
-		} else if (QE_DEFAULTS_TO_ZERO.equals(key)) {
-			setQEDefaultsToZeroPayment((Boolean) value);
-		} else if (key.startsWith(EULA_AGREEMENT)) {
-			setEulaAgreement(key, (String) value);
-		} else if (key.equals(TOOLBAR_ACTIVE_TAB)) {
-			setToolbarActiveTab((String) value);
 		} else if (key.equals(PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE)) {
 			setPortalHideClassRollContactPhone((String) value);
 		} else if (key.equals(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL)) {
@@ -1951,12 +1278,6 @@ public abstract class CommonPreferenceController {
 			setCourseClassDefaultMinimumPlaces((Integer) value);
 		} else if (MYOB_LAST_EXPORT_DATE.equals(key)) {
 			setMYOBLastExportDate((Date) value);
-		} else if (QE_DEFAULT_REPORT_INVOICE_KEYCODE.equals(key)) {
-			setDefaultQEInvoiceReportKeycode((String)value);
-		} else if (QE_DEFAULT_REPORT_ENROLMENT_KEYCODE.equals(key)) {
-			setDefaultQEEnrolmentReportKeycode((String)value);
-		} else if (DOCUMENT_IMPORT_PATH.equals(key)) {
-			setDocumentImportPath((File) value);
 		} else  if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			setOncourseServerDefaultTimezone((String) value);
 		} else if (COLLEGE_PAYMENT_INFO.equals(key)) {
@@ -2029,18 +1350,6 @@ public abstract class CommonPreferenceController {
 		setValue(FEATURE_CONCESSION_USERS_CREATE, false, Boolean.toString(value));
 	}
 
-	public boolean getFeatureConcessionsUsersCreate() {
-		return Boolean.parseBoolean(getValue(FEATURE_CONCESSION_USERS_CREATE, false));
-	}
-
-	public String getFeatureEnrolmentDisclosure() {
-		return getValue(FEATURE_ENROLMENT_DISCLOSURE, false);
-	}
-
-	public void setFeatureEnrolmentDisclosure(String value) {
-		setValue(FEATURE_ENROLMENT_DISCLOSURE, false, value);
-	}
-
 	// **************************************
 	// Internal mechanics: the stuff that makes it work
 	// **************************************
@@ -2083,42 +1392,6 @@ public abstract class CommonPreferenceController {
 			}
 		}
 		return object;
-	}
-
-	/**
-	 * Convenience method to serialize Object to byte[]
-	 *
-	 * @param object
-	 * @return the bytes representing the serialized object
-	 */
-	public static byte[] serializeObject(Object object) {
-		byte[] data = null;
-		logger.debug("serializeObject:" + object);
-		if (object != null) {
-			try {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				ObjectOutputStream s = new ObjectOutputStream(out);
-				s.writeObject(object);
-				s.flush();
-				s.close();
-
-				data = out.toByteArray();
-			} catch (Exception e) {
-				throw new IllegalStateException("Error while serializing the object", e);
-			}
-		}
-		logger.debug("serializeObject result:" + (data == null ? "null" : "length=" + data.length));
-		return data;
-	}
-
-	public static Map<String, CreditCardType> getCCAvailableTypes(CommonPreferenceController pref) {
-		LinkedHashMap<String, CreditCardType> map = new LinkedHashMap<>();
-		for (CreditCardType t : CreditCardType.values()) {
-			if (!CreditCardType.BANKCARD.equals(t) && (!CreditCardType.AMEX.equals(t) || CreditCardType.AMEX.equals(t) && pref.getServicesAmexEnabled())) {
-				map.put(t.getDisplayName(), t);
-			}
-		}
-		return map;
 	}
 
 	/**

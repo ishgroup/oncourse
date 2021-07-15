@@ -169,7 +169,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         return !dateVal && modalProps[0] === "Submitted" ? null : {
           id: submission?.id,
           submittedOn: modalProps[0] === "Submitted" ? dateVal : submission ? submission.submittedOn : dateVal,
-          markedById: submission?.markedById,
+          markedById: selectVal || submission?.markedById,
           markedOn: modalProps[0] === "Marked" ? dateVal : submission ? submission.markedOn : null,
           enrolmentId: Number(elem.id),
           studentId: Number(elem.contactId),

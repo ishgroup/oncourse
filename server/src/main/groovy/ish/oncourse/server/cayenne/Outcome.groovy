@@ -17,7 +17,6 @@ import ish.common.CalculateStartDate
 import ish.common.types.ClassFundingSource
 import ish.common.types.DeliveryMode
 import ish.common.types.OutcomeStatus
-import ish.messaging.IOutcome
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.entity.delegator.OutcomeDelegator
@@ -40,7 +39,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
+class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 	public static final String STUDENT_NAME = "studentName"
@@ -48,6 +47,9 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 	public static final String ENDDATE = "endDate"
 	public static final String TRAINING_PLAN_START_DATE_PROPERTY = "trainingPlanStartDate"
 	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
+
+	public static final String CODE = "code";
+	public static final String NAME = "name";
 
 	@Override
 	void postAdd() {
@@ -307,7 +309,7 @@ class Outcome extends _Outcome implements IOutcome, Queueable, OutcomeTrait {
 	@Nullable
 	@API
 	@Override
-	Enrolment getEnrolment() {
+    Enrolment getEnrolment() {
 		return super.getEnrolment()
 	}
 

@@ -19,8 +19,6 @@ import ish.oncourse.server.cayenne.glue._Payslip
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
-import java.util.List
 
 /**
  * A payslip is a collection of paylines for a specific tutor, generated at one time. They can be altered until exported
@@ -123,7 +121,7 @@ class Payslip extends _Payslip {
 		if(getContact() == null) {
 			return super.getSummaryDescription()
 		}
-		return "pay for " + getContact().getName(true)
+		return "pay for " + getContact().getFullName()
 	}
 
 	/**

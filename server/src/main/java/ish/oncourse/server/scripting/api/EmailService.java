@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.IPreferenceController;
+import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.AuditService;
@@ -27,14 +27,14 @@ public class EmailService {
 
 	private TemplateService templateService;
 	private ICayenneService cayenneService;
-	private IPreferenceController preferenceController;
+	private PreferenceController preferenceController;
 	private MailDeliveryService mailDeliveryService;
 	private AuditService auditService;
 
 	@Inject
 	public EmailService(TemplateService templateService, ICayenneService cayenneService,
-						IPreferenceController preferenceController, MailDeliveryService mailDeliveryService,
-						AuditService auditService) {
+                        PreferenceController preferenceController, MailDeliveryService mailDeliveryService,
+                        AuditService auditService) {
 		this.templateService = templateService;
 		this.cayenneService = cayenneService;
 		this.preferenceController = preferenceController;

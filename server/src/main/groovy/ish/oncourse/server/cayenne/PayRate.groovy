@@ -13,19 +13,16 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
-import ish.messaging.IPayRate
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._PayRate
 
 import javax.annotation.Nonnull
-import java.math.BigDecimal
-import java.util.Date
 
 /**
  * A persistent class mapped as "PayRate" Cayenne entity.
  */
 @API
-class PayRate extends _PayRate implements IPayRate {
+class PayRate extends _PayRate {
 
 
 

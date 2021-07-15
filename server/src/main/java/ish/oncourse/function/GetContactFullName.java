@@ -11,7 +11,7 @@
 
 package ish.oncourse.function;
 
-import ish.messaging.IContact;
+import ish.oncourse.server.cayenne.Contact;
 import ish.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,11 +27,11 @@ public class GetContactFullName {
 
     }
 
-    public static GetContactFullName valueOf(IContact contact) {
+    public static GetContactFullName valueOf(Contact contact) {
         return valueOf(contact, true);
     }
 
-    public static GetContactFullName valueOf(IContact contact, boolean firstNameFirst) {
+    public static GetContactFullName valueOf(Contact contact, boolean firstNameFirst) {
         return valueOf(contact.getFirstName(), contact.getMiddleName(), contact.getLastName(), contact.getIsCompany(), firstNameFirst);
     }
 

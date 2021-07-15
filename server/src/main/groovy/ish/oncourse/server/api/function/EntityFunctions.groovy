@@ -14,26 +14,18 @@ package ish.oncourse.server.api.function
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.aql.impl.ExpressionUtil
-import ish.oncourse.cayenne.TagUtil
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.v1.function.TagFunctions
-import ish.oncourse.server.api.v1.model.SearchQueryDTO
 import ish.oncourse.server.api.v1.model.TagGroupDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionException
-import org.apache.cayenne.exp.parser.ASTAnd
-import org.apache.cayenne.exp.parser.ASTEqual
-import org.apache.cayenne.exp.parser.ASTIn
-import org.apache.cayenne.exp.parser.ASTList
-import org.apache.cayenne.exp.parser.ASTObjPath
-import org.apache.cayenne.exp.parser.SimpleNode
+import org.apache.cayenne.exp.parser.*
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -116,9 +108,9 @@ class EntityFunctions {
 
         tagGroups.each { tagGroup ->
 
-            String alias = "${TagUtil.ALIAS}${aliasCounter++}"
+            String alias = "${Tag.ALIAS}${aliasCounter++}"
 
-            String path = tagGroup.path != null ? "${tagGroup.path}+.${TagUtil.TAG_PATH}" : TagUtil.TAG_PATH
+            String path = tagGroup.path != null ? "${tagGroup.path}+.${Tag.TAG_PATH}" : Tag.TAG_PATH
 
             Expression expr = createTagGroupExpression(alias, path, tagGroup.tagIds, tagGroup.entity?:entity)
 

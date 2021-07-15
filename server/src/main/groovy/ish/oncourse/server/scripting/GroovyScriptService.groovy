@@ -18,7 +18,6 @@ import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.IPreferenceController
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
@@ -125,7 +124,7 @@ class GroovyScriptService {
 
     private ICayenneService cayenneService
     private ISchedulerService schedulerService
-    private IPreferenceController preferenceController
+    private PreferenceController preferenceController
     private AuditService auditService
     private SystemUserService systemUserService
     private TemplateService templateService
@@ -142,7 +141,7 @@ class GroovyScriptService {
 
     @Inject
     GroovyScriptService(ICayenneService cayenneService, ISchedulerService schedulerService,
-                        IPreferenceController preferenceController, Injector injector, SystemUserService systemUserService, TemplateService templateService) {
+                        PreferenceController preferenceController, Injector injector, SystemUserService systemUserService, TemplateService templateService) {
         GroovySystem.getMetaClassRegistry().getMetaClassCreationHandler().setDisableCustomMetaClassLookup(true)
         this.injector = injector
         auditService = injector.getInstance(AuditService.class)
