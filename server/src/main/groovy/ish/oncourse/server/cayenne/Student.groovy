@@ -517,4 +517,22 @@ class Student extends _Student implements StudentTrait, Queueable, Taggable, Att
 		return super.getWaitingLists()
 	}
 
+
+	/**
+	 * @return a list of all the tags for this student
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<Tag> getTags() {
+		List<ContactTagRelation> contactTagRelations = getContact().getTaggingRelations()
+		List<Tag> tagList = new ArrayList<>(contactTagRelations.size())
+		for (ContactTagRelation relation : contactTagRelations) {
+			if (relation.getTag() != null && relation.getTag().getTagRequirement(Student.class) != null) {
+				tagList.add(relation.getTag())
+			}
+		}
+		return tagList
+	}
+
 }

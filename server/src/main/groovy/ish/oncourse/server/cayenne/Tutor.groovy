@@ -316,4 +316,21 @@ class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait {
 	PayslipPayType getPayType() {
 		return super.getPayType()
 	}
+
+	/**
+	 * @return a list of all the tags for this tutor
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<Tag> getTags() {
+		List<ContactTagRelation> contactTagRelations = getContact().getTaggingRelations()
+		List<Tag> tagList = new ArrayList<>(contactTagRelations.size())
+		for (ContactTagRelation relation : contactTagRelations) {
+			if (relation.getTag() != null && relation.getTag().getTagRequirement(Tutor.class) != null) {
+				tagList.add(relation.getTag())
+			}
+		}
+		return tagList
+	}
 }
