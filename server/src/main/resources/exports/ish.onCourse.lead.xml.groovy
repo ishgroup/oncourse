@@ -9,13 +9,13 @@ def tags = []
 xml.data() {
     records.each { Lead ld ->
         lead(id: ld.id) {
-            modifiedOn(ld.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
-            createdOn(ld.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
+            modifiedOn(ld.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
+            createdOn(ld.createdOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
             studentCount(ld.studentCount)
             contacts << ld.customer
             contact(id: ld.customer.id)
             estimatedValue(ld.estimatedValue)
-            nextActionOn(ld.nextActionOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
+            nextActionOn(ld.nextActionOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
             notification(ld.notify)
             status(ld.status)
             notes(ld.notes)
@@ -37,8 +37,8 @@ xml.data() {
 
     courses.unique().each { Course co ->
         course(id: co.id) {
-            modifiedOn(co.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
-            createdOn(co.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
+            modifiedOn(co.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
+            createdOn(co.createdOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
             allowWaitingLists(co.allowWaitingLists)
             code(co.code)
             currentlyOffered(co.currentlyOffered)
@@ -58,8 +58,8 @@ xml.data() {
 
     products.unique().each { Product pr ->
         product(id: pr.id) {
-            modifiedOn(pr.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
-            createdOn(pr.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
+            modifiedOn(pr.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
+            createdOn(pr.createdOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
             isWebVisible(pr.isWebVisible)
             isOnSale(pr.isOnSale)
             name(pr.name)
@@ -70,8 +70,8 @@ xml.data() {
 
     sites.unique().each { Site s ->
         site(id: s.id) {
-            modifiedOn(s.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
-            createdOn(s.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
+            modifiedOn(s.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
+            createdOn(s.createdOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
             drivingDirections(s.drivingDirections)
             isAdministrationCentre(s.isAdministrationCentre)
             latitude(s.latitude?.toBigDecimal()?.setScale(8)?.toPlainString())
@@ -87,8 +87,8 @@ xml.data() {
 
     contacts.unique().each { Contact c ->
         contact(id: c.id) {
-            modifiedOn(c.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
-            createdOn(c.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
+            modifiedOn(c.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
+            createdOn(c.createdOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
             allowEmail(c.allowEmail)
             allowPost(c.allowPost)
             allowSms(c.allowSms)
@@ -136,8 +136,8 @@ xml.data() {
 
     tags.unique().each { Tag t ->
         tag(id: t.id) {
-            modifiedOn(t?.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
-            createdOn(t?.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"))
+            modifiedOn(t?.modifiedOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
+            createdOn(t?.createdOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
             name(t?.name)
             shortName(t?.shortName)
             isWebVisible(t?.isWebVisible)

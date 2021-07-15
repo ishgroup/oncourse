@@ -2,12 +2,12 @@ import org.apache.commons.lang3.StringUtils
 
 records.each { Lead lead ->
     csv << [
-            "created"        : lead.createdOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"),
+            "created"        : lead.createdOn?.format("yyyy-MM-dd'T'HH:mm:ss"),
             "Student count"  : lead.studentCount,
             "Notes"          : lead.notes,
             "Student notes"  : lead.studentNotes,
             "Estimated value": lead.estimatedValue,
-            "Next action on" : lead.nextActionOn?.format("yyyy-MM-dd'T'HH:mm:ssXXX"),
+            "Next action on" : lead.nextActionOn?.format("yyyy-MM-dd'T'HH:mm:ss"),
             "Notification"   : lead.notify,
             "Status"         : lead.status,
             "Title"          : lead.customer.title,
