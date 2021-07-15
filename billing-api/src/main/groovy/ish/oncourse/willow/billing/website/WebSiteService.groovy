@@ -13,6 +13,7 @@ import ish.oncourse.willow.billing.v1.model.SiteTemplate
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+import org.apache.commons.io.FileUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -152,11 +153,19 @@ class WebSiteService {
     void deleteWebSite(Long id) {
         WebSite webSite = getWebSite(id)
         try {
+            String key = webSite.siteKey
             WebSiteDelete.valueOf(webSite, webSite.objectContext).delete()
+            File webSiteDir = new File(Configuration.getValue(S_ROOT), key)
+
+            try {
+                FileUtils.deleteDirectory(webSiteDir)
+            } catch (IOException e) {
+                logger.error("Cannot delete {} to {}", webSiteDir, e)
+            }
+        
         } catch (Exception e) {
             logger.error("Web site could not be deleted", e)
             throw new InternalServerErrorException("Something unexpected has happened while deleting web site.\nContact ish support, please.")
-
         }
 
     }
