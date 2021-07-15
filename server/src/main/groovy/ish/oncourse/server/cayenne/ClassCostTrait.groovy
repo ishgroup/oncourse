@@ -19,18 +19,18 @@ trait ClassCostTrait {
 
     @API
     Money getCalcPerUnitAmountExTax() {
-        return ClassCostUtil.getPerUnitAmountExTax(this)
+        return ClassCostUtil.getPerUnitAmountExTax(this as ClassCost)
     }
 
 
     @API
     Money getCalcMaximumCost() {
-        return ClassCostUtil.getMaximumCost(this)
+        return ClassCostUtil.getMaximumCost(this as ClassCost)
     }
 
     @API
     Money getCalcActualCost() {
-        return ClassCostUtil.getActualCost(this)
+        return ClassCostUtil.getActualCost(this as ClassCost)
     }
 
 
