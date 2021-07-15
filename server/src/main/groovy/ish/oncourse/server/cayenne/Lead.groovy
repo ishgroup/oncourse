@@ -10,7 +10,7 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.server.cayenne.glue._Lead
 
-class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTrait {
+class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTrait, LeadTrait {
 
     @Override
     void addToAttachmentRelations(AttachmentRelation relation) {
@@ -30,5 +30,20 @@ class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTra
     @Override
     Class<? extends CustomField> getCustomFieldClass() {
         return LeadCustomField.class
+    }
+
+    @Override
+    List<Site> getSites() {
+        return super.getSites()
+    }
+
+    @Override
+    List<Course> getCourses() {
+        return super.getCourses()
+    }
+
+    @Override
+    List<Product> getProducts() {
+        return super.getProducts()
     }
 }
