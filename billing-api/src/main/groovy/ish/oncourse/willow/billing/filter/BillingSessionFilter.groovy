@@ -23,7 +23,7 @@ abstract class BillingSessionFilter implements ContainerRequestFilter {
     }
     
     @Override
-    final void filter(ContainerRequestContext requestContext) throws IOException {
+    void filter(ContainerRequestContext requestContext) throws IOException {
         SessionCookie sessionCookie = SessionCookie.valueOf(requestService.request)
         if (sessionCookie.exist) {
             String error = verifySession(sessionCookie)

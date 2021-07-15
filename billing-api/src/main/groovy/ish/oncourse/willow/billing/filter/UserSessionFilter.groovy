@@ -13,6 +13,8 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.zookeeper.CreateMode
 
+import javax.ws.rs.container.ContainerRequestContext
+
 
 @AuthFilter
 @CompileDynamic
@@ -27,7 +29,13 @@ class UserSessionFilter extends BillingSessionFilter {
         super(requestService, sessionManager)
         this.cayenneService = cayenneService
     }
-
+    @Override
+    final void filter(ContainerRequestContext requestContext) throws IOException {
+        super.filter(requestContext)
+        requestService.response.addHeader('Access-Control-Allow-Origin', '*')
+        requestService.response.addHeader('Access-Control-Allow-Methods', 'PUT, GET, OPTIONS, POST, DELETE')
+        requestService.response.addHeader('Access-Control-Allow-Headers', '*')
+    }
     @Override
     protected String authentificate(String token) {
         if (token.contains('.')) {
