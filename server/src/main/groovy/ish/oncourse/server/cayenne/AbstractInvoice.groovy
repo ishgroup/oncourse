@@ -39,17 +39,11 @@ import java.time.LocalDate
 
 class AbstractInvoice extends _AbstractInvoice implements PayableInterface, InvoiceInterface, Queueable, NotableTrait, AttachableTrait {
 
-	private static final String CONTACT_KEY = "contact";
-	private static final String INVOICE_DATE_KEY = "invoiceDate";
-	private static final String TOTAL_KEY = "total";
-	private static final String TOTAL_TAX_KEY = "totalTax";
-	private static final String TOTAL_INC_TAX_KEY = "totalIncTax";
-	private static final String AMOUNT_OWING_KEY = "amountOwing";
-	private static final String AMOUNT_PAID_KEY = "amountPaid";
-
-	String TOTAL_INC_TAX_PROPERTY = "invoice_total_inc_property";
-
 	private static final Logger logger = LogManager.getLogger()
+
+	public static final String TOTAL_INC_TAX_KEY = "totalIncTax"
+
+	public static final String TOTAL_INC_TAX_PROPERTY = "invoice_total_inc_property"
 	public static final String AMOUNT_OWING_PROPERTY = "amountOwing"
 	public static final String AMOUNT_PAID_PROPERTY = "amountPaid"
 
