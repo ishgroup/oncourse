@@ -41,7 +41,7 @@ import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSiteMinimi
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 
-class LeadApiService extends EntityApiService<LeadDTO, Lead, LeadDao> {
+class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
     @Inject
     private CourseApiService courseApiService
