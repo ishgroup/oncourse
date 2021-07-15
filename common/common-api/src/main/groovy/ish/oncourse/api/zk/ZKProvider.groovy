@@ -48,7 +48,6 @@ class ZKProvider {
                     }
                 }
             })
-            zkMap[(rootNode)] = zk
             return zk
         } catch (IOException e) {
             logger.catching(e)
