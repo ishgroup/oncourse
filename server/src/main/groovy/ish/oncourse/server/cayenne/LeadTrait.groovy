@@ -8,9 +8,20 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.annotation.Nonnull
 
-interface Sellable {
-    @Nonnull
-    abstract Long getId();
+trait LeadTrait {
+
+    abstract List<Site> getSites()
+
+    String getSiteNames() {
+        StringBuilder sitesNameConcatenated = new StringBuilder()
+        sites.each {site ->
+            if (sitesNameConcatenated.length() > 0) {
+                sitesNameConcatenated.append(",")
+            }
+            sitesNameConcatenated.append(site.name)
+        }
+        return sitesNameConcatenated.toString()
+    }
+
 }
