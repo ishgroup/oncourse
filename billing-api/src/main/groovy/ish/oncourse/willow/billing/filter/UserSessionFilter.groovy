@@ -7,6 +7,7 @@ import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.model.SystemUser
+import ish.oncourse.services.persistence.ICayenneService
 import ish.util.SecurityUtil
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -17,17 +18,21 @@ import org.apache.zookeeper.CreateMode
 @CompileDynamic
 class UserSessionFilter extends BillingSessionFilter {
     
-    private CayenneService cayenneService
+    private ICayenneService cayenneService
     
     private static final String AUTH_HEADER = 'Authorization'
 
     @Inject
-    UserSessionFilter(RequestService requestService, ZKSessionManager sessionManager, CayenneService cayenneService) {
+    UserSessionFilter(RequestService requestService, ZKSessionManager sessionManager, ICayenneService cayenneService) {
         super(requestService, sessionManager)
+        this.cayenneService = cayenneService
     }
 
     @Override
     protected String authentificate(String token) {
+        if (token.contains('.')) {
+            token = token.split("\\.")[0]
+        }
         SystemUser user = ObjectSelect.query(SystemUser)
                 .where(SystemUser.SESSION_ID.eq(token))
                 .and(SystemUser.IS_ADMIN.isTrue())
