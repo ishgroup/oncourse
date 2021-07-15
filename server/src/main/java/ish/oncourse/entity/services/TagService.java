@@ -11,9 +11,9 @@
 package ish.oncourse.entity.services;
 
 import ish.common.types.NodeSpecialType;
-import ish.messaging.ICourse;
-import ish.messaging.ITag;
-import ish.messaging.ITaggableObject;
+import ish.oncourse.cayenne.Taggable;
+import ish.oncourse.server.cayenne.Course;
+import ish.oncourse.server.cayenne.Tag;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 import org.apache.commons.lang3.StringUtils;
@@ -28,15 +28,15 @@ public class TagService {
 	/**
 	 * @return List of Tags in subject category, alphabetically sorted.
 	 */
-	public List<? extends ITag> getSubjectTagsForCourse(ICourse course) {
-		List<ITag> result = new ArrayList<>();
+	public List<? extends Tag> getSubjectTagsForCourse(Course course) {
+		List<Tag> result = new ArrayList<>();
 
-		for (ITag n : course.getTags()) {
+		for (Tag n : course.getTags()) {
 			if (NodeSpecialType.SUBJECTS.equals(n.getRoot().getSpecialType())) {
 				result.add(n);
 			}
 		}
-		Ordering o = new Ordering(ITag.NAME_KEY, SortOrder.ASCENDING);
+		Ordering o = new Ordering(Tag.NAME_KEY, SortOrder.ASCENDING);
 		o.orderList(result);
 		return result;
 	}
@@ -49,7 +49,7 @@ public class TagService {
      * @param isSearchWithChildren define if method will be searching for tag in parents of taggable's tags
      * @return
      */
-	public boolean hasTag(ITaggableObject taggable, String path, boolean isSearchWithChildren) {
+	public boolean hasTag(Taggable taggable, String path, boolean isSearchWithChildren) {
 
 		path = trimPath(path);
 
@@ -60,7 +60,7 @@ public class TagService {
 		if (path.contains("/")) {
 			// we can say that if a user specifies a string which contains the "/" char,
 			// then it must be a full path (eg. starts with 'Subjects')
-			for (ITag tag : taggable.getTags()) {
+			for (Tag tag : taggable.getTags()) {
 			    String tagPathName = getPathName(tag);
 
 			    if (isSearchWithChildren) {
@@ -73,7 +73,7 @@ public class TagService {
                 }
 			}
 		} else {
-			for (ITag tag : taggable.getTags()) {
+			for (Tag tag : taggable.getTags()) {
                 String tagPathName = getPathName(tag);
 
 			    if (isSearchWithChildren){
@@ -90,7 +90,7 @@ public class TagService {
 		return false;
 	}
 
-	public ITag getTagBy(ITag rootTag, String[] fullPath) {
+	public Tag getTagBy(Tag rootTag, String[] fullPath) {
 
 		if (rootTag != null) {
 			for (int i = 1; i < fullPath.length; i++) {
@@ -113,9 +113,9 @@ public class TagService {
 		return path;
 	}
 
-	private ITag getChildWithName(ITag parent, String childName) {
+	private Tag getChildWithName(Tag parent, String childName) {
 
-		for (ITag child : parent.getChildTags()) {
+		for (Tag child : parent.getChildTags()) {
 			if (childName.equals(child.getName())) {
 				return child;
 			}
@@ -123,7 +123,7 @@ public class TagService {
 		return null;
 	}
 
-	private String getPathName(ITag tag) {
+	private String getPathName(Tag tag) {
 		String result = tag.getName();
 		if (tag.getParentTag() != null) {
 			result = getPathName(tag.getParentTag()) + "/" + result;

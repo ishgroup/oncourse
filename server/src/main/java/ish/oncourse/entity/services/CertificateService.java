@@ -11,9 +11,9 @@
 package ish.oncourse.entity.services;
 
 import ish.common.types.OutcomeStatus;
-import ish.messaging.ICertificate;
-import ish.messaging.ICertificateOutcome;
-import ish.messaging.IOutcome;
+import ish.oncourse.server.cayenne.Certificate;
+import ish.oncourse.server.cayenne.CertificateOutcome;
+import ish.oncourse.server.cayenne.Outcome;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,10 +25,10 @@ import java.util.List;
  */
 public class CertificateService {
 
-	public boolean isQualification(ICertificate certificate) {
+	public boolean isQualification(Certificate certificate) {
 		if (certificate.getIsQualification() != null && certificate.getIsQualification()) {
-			for (ICertificateOutcome certificateOutcome : certificate.getCertificateOutcomes()) {
-				IOutcome outcome = certificateOutcome.getOutcome();
+			for (CertificateOutcome certificateOutcome : certificate.getCertificateOutcomes()) {
+				Outcome outcome = certificateOutcome.getOutcome();
 				if (outcome == null || outcome.getStatus() == null) {
 					return false;
 				}
@@ -40,11 +40,11 @@ public class CertificateService {
 		return false;
 	}
 
-	public List<? extends IOutcome> getSuccessfulOutcomes(ICertificate certificate) {
-		List<IOutcome> result = null;
+	public List<Outcome> getSuccessfulOutcomes(Certificate certificate) {
+		List<Outcome> result = null;
 		if (certificate.getCertificateOutcomes() != null) {
 			result = new ArrayList<>();
-			for (ICertificateOutcome certificateOutcome : certificate.getCertificateOutcomes()) {
+			for (CertificateOutcome certificateOutcome : certificate.getCertificateOutcomes()) {
 				if (certificateOutcome.getOutcome() != null &&
 						certificateOutcome.getOutcome().getStatus() != null &&
 						certificateOutcome.getOutcome().getStatus().isAssessable()) {
@@ -60,11 +60,11 @@ public class CertificateService {
 	 *
 	 * @return the list of outcomes across the join CertificateOutcome
 	 */
-	public List<? extends IOutcome> getOutcomes(ICertificate certificate) {
-		List<IOutcome> result = null;
+	public List<Outcome> getOutcomes(Certificate certificate) {
+		List<Outcome> result = null;
 		if (certificate.getCertificateOutcomes() != null) {
 			result = new ArrayList<>();
-			for (ICertificateOutcome certificateOutcome : certificate.getCertificateOutcomes()) {
+			for (CertificateOutcome certificateOutcome : certificate.getCertificateOutcomes()) {
 				if (certificateOutcome.getOutcome() != null) {
 					result.add(certificateOutcome.getOutcome());
 				}
@@ -73,11 +73,11 @@ public class CertificateService {
 		return result;
 	}
 
-	public LocalDate getCompletedOn(ICertificate certificate) {
+	public LocalDate getCompletedOn(Certificate certificate) {
 		// making sure outcomes with null end date do not cause exceptions, filtering them out
-		List<IOutcome> filteredOutcomes = new ArrayList<>();
+		List<Outcome> filteredOutcomes = new ArrayList<>();
 
-		for (IOutcome outcome : getOutcomes(certificate)) {
+		for (Outcome outcome : getOutcomes(certificate)) {
 			if (outcome.getEndDate() != null) {
 				filteredOutcomes.add(outcome);
 			}
@@ -85,9 +85,9 @@ public class CertificateService {
 
 		if (!filteredOutcomes.isEmpty()) {
 			// sort outcomes by end date in DESCENDING order
-			Collections.sort(filteredOutcomes, new Comparator<IOutcome>() {
+			Collections.sort(filteredOutcomes, new Comparator<Outcome>() {
 				@Override
-				public int compare(IOutcome o1, IOutcome o2) {
+				public int compare(Outcome o1, Outcome o2) {
 					return o2.getEndDate().compareTo(o1.getEndDate());
 				}
 			});
@@ -96,10 +96,10 @@ public class CertificateService {
 		return null;
 	}
 
-	public LocalDate getCommencedOn(ICertificate certificate) {
+	public LocalDate getCommencedOn(Certificate certificate) {
 		LocalDate commencementDate = null;
 
-		for (IOutcome outcome : getOutcomes(certificate)) {
+		for (Outcome outcome : getOutcomes(certificate)) {
 			LocalDate outcomeCommencement = outcome.getStartDate();
 
 			if (outcomeCommencement == null) {

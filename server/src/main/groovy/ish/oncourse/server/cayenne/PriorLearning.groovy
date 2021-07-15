@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.IPriorLearning
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._PriorLearning
@@ -27,7 +27,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class PriorLearning extends _PriorLearning implements IPriorLearning, Queueable, AttachableTrait {
+class PriorLearning extends _PriorLearning implements Queueable, AttachableTrait {
 
 
 

@@ -116,11 +116,9 @@ export function mockPreferences() {
     // Licences preferences
     [Model.LicenseAccessControl.uniqueKey]: true,
     [Model.LicenseAttendance.uniqueKey]: true,
-    [Model.LicenseBudget.uniqueKey]: true,
     [Model.LicenseCreditCard.uniqueKey]: true,
     [Model.LicenseFundingContract.uniqueKey]: true,
     [Model.LicenseGravatar.uniqueKey]: true,
-    [Model.LicenseLDAP.uniqueKey]: true,
     [Model.LicenseMembership.uniqueKey]: true,
     [Model.LicensePayroll.uniqueKey]: true,
     [Model.LicenseScripting.uniqueKey]: false,
@@ -164,13 +162,6 @@ export function mockPreferences() {
     [Model.LdapUserSearchFilter.uniqueKey]: "test",
 
     // Maintenance preferences
-    [Model.BackupDir.uniqueKey]: "/var/etc/backup",
-    [Model.BackupDirWarning.uniqueKey]: "test",
-    [Model.BackupEnabled.uniqueKey]: false,
-    [Model.BackupMaxHistory.uniqueKey]: 512,
-    [Model.BackupNextNumber.uniqueKey]: 2055,
-    [Model.BackupTimeOfDay.uniqueKey]: "2018-04-25T04:30:40.067Z",
-    [Model.DatabaseUsed.uniqueKey]: "derby",
     [Model.LogoutEnabled.uniqueKey]: "test",
     [Model.LogoutTimeout.uniqueKey]: 360,
 
@@ -208,7 +199,6 @@ export function mockPreferences() {
     [Model.AccountDefaultCurrency.uniqueKey]: "AUD",
     [Model.AccountInvoiceTerms.uniqueKey]: "7",
     [Model.PaymentInfo.uniqueKey]: "Some payment info",
-    [Model.QePaymentDefaultZero.uniqueKey]: false,
 
     // Security
     [Model.SecurityAutoDisableInactiveAccount.uniqueKey]: true,

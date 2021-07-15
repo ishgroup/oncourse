@@ -12,20 +12,17 @@
 package ish.oncourse.entity.delegator;
 
 import ish.common.payable.EnrolmentInterface;
-import ish.messaging.IOutcome;
 import ish.oncourse.cayenne.ModuleInterface;
 import ish.oncourse.cayenne.OutcomeInterface;
+import ish.oncourse.server.cayenne.Outcome;
 import ish.util.LocalDateUtils;
 
 import java.time.LocalDate;
 import java.util.Date;
 
-/**
- * Created by anarut on 11/8/16.
- */
 public class OutcomeDelegator implements OutcomeInterface {
 
-    private IOutcome outcome;
+    private Outcome outcome;
 
     private OutcomeDelegator() {
 
@@ -53,13 +50,13 @@ public class OutcomeDelegator implements OutcomeInterface {
         return LocalDateUtils.valueToDateAtNoon(endDate);
     }
 
-    public static OutcomeDelegator valueOf(IOutcome outcome) {
+    public static OutcomeDelegator valueOf(Outcome outcome) {
         OutcomeDelegator outcomeDelegator = new OutcomeDelegator();
         outcomeDelegator.outcome = outcome;
         return outcomeDelegator;
     }
 
-    public IOutcome getOutcome() {
+    public Outcome getOutcome() {
         return outcome;
     }
 }

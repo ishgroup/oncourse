@@ -11,13 +11,13 @@
 
 package ish.validation;
 
-import ish.messaging.IStudent;
+import ish.oncourse.server.cayenne.Student;
 
 import java.util.Calendar;
 
 public class StudentYearCompletedValidator {
 
-    private IStudent student;
+    private Student student;
     private String propertyKey;
 
     private static final String TEMPLATE_NOT_EARLIER = "Year school completed if supplied should be within not earlier than %d.";
@@ -25,7 +25,7 @@ public class StudentYearCompletedValidator {
 
     private StudentYearCompletedValidator() {}
 
-    public static StudentYearCompletedValidator valueOf(IStudent student, String propertyKey) {
+    public static StudentYearCompletedValidator valueOf(Student student, String propertyKey) {
         StudentYearCompletedValidator validator = new StudentYearCompletedValidator();
         validator.student = student;
         validator.propertyKey = propertyKey;
@@ -35,10 +35,10 @@ public class StudentYearCompletedValidator {
     public ValidationResult validate() {
         ValidationResult validationResult = new ValidationResult();
         if (student.getYearSchoolCompleted() != null) {
-            if (student.getYearSchoolCompleted() < IStudent.MIN_SCHOOL_COMPLETION_YEAR) {
+            if (student.getYearSchoolCompleted() < Student.MIN_SCHOOL_COMPLETION_YEAR) {
                 validationResult.addFailure(new ValidationFailure(student,
                         propertyKey,
-                        String.format(TEMPLATE_NOT_EARLIER, IStudent.MIN_SCHOOL_COMPLETION_YEAR)));
+                        String.format(TEMPLATE_NOT_EARLIER, Student.MIN_SCHOOL_COMPLETION_YEAR)));
             } else if (student.getYearSchoolCompleted() > Calendar.getInstance().get(Calendar.YEAR)) {
                 validationResult.addFailure(new ValidationFailure(student, propertyKey, MESSAGE_YEAR_IN_FUTURE));
             }

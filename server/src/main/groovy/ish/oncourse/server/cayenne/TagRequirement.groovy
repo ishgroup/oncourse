@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ITagRequirement
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -33,7 +32,7 @@ import java.util.Map
  */
 @API
 @QueueableEntity
-class TagRequirement extends _TagRequirement implements ITagRequirement, Queueable {
+class TagRequirement extends _TagRequirement implements Queueable {
 
 	private static final Logger logger = LogManager.getLogger(TagRequirement.class)
 

@@ -13,10 +13,10 @@ package ish.budget;
 import ish.common.types.ClassCostFlowType;
 import ish.common.types.ClassCostRepetitionType;
 import ish.math.Money;
-import ish.messaging.ICourseClass;
-import ish.messaging.IEnrolment;
-import ish.messaging.IInvoiceLine;
-import ish.oncourse.cayenne.ClassCostInterface;
+import ish.oncourse.server.cayenne.ClassCost;
+import ish.oncourse.server.cayenne.CourseClass;
+import ish.oncourse.server.cayenne.Enrolment;
+import ish.oncourse.server.cayenne.InvoiceLine;
 import org.apache.cayenne.PersistenceState;
 
 import java.util.ArrayList;
@@ -126,7 +126,7 @@ public class ClassBudgetUtil {
 		throw new IllegalArgumentException("key not reckognised " + key);
 	}
 
-	public static Object getValueForKey(String key, ICourseClass cclass) {
+	public static Object getValueForKey(String key, CourseClass cclass) {
 		if (key == null) {
 			return null;
 		} else if (key.endsWith(SUNK_COST_EX_TAX)) {
@@ -151,7 +151,7 @@ public class ClassBudgetUtil {
 		return null;
 	}
 
-	public static Money getClassIncomeExTax(ICourseClass cclass, String type) {
+	public static Money getClassIncomeExTax(CourseClass cclass, String type) {
 		Money feeIncome = getClassFeeIncomeExTax(cclass, type);
 		Money otherIncome = getClassOtherIncomeExTax(cclass, type);
 		Money discounts = getClassDiscountsExTax(cclass, type);
@@ -160,7 +160,7 @@ public class ClassBudgetUtil {
 		return feeIncome.add(otherIncome).add(customInvoices).subtract(discounts);
 	}
 
-	private static Money getClassDiscountsExTax(ICourseClass cclass, String type) {
+	private static Money getClassDiscountsExTax(CourseClass cclass, String type) {
 		Money result = Money.ZERO;
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
@@ -169,8 +169,8 @@ public class ClassBudgetUtil {
 		// for actual discounted amount calculation need to consider discounts entered manually in QE. The only
 		// way to calculate it is by summing up all discount amounts in invoice lines for successful enrolments.
 		if (ACTUAL.equals(type)) {
-			List<? extends IEnrolment> enrolments = cclass.getSuccessAndQueuedEnrolments();
-			return enrolments.stream().flatMap(e -> e.getInvoiceLines().stream()).map(IInvoiceLine::getDiscountTotalExTax).reduce(Money.ZERO, (a, b) -> a.add(b));
+			List<Enrolment> enrolments = cclass.getSuccessAndQueuedEnrolments();
+			return enrolments.stream().flatMap(e -> e.getInvoiceLines().stream()).map(InvoiceLine::getDiscountTotalExTax).reduce(Money.ZERO, (a, b) -> a.add(b));
 		}
 
 		return calculateCostsFor(cclass, false, Collections.singletonList(ClassCostRepetitionType.DISCOUNT), false, type);
@@ -180,7 +180,7 @@ public class ClassBudgetUtil {
 	/**
 	 * @return the projected income the class will give based on budgetedPlaces field
 	 */
-	private static Money getClassFeeIncomeExTax(ICourseClass cclass, String type) {
+	private static Money getClassFeeIncomeExTax(CourseClass cclass, String type) {
 		switch (type) {
 			case BUDGETED:
 				if (cclass.getBudgetedPlaces() == null) {
@@ -189,7 +189,7 @@ public class ClassBudgetUtil {
 				return cclass.getFeeExGst().multiply(cclass.getBudgetedPlaces());
 
 			case ACTUAL:
-				List<? extends IEnrolment> enrolments = cclass.getSuccessAndQueuedEnrolments();
+				List<Enrolment> enrolments = cclass.getSuccessAndQueuedEnrolments();
 				if (enrolments != null) {
 					return enrolments.stream().map(e -> e.getOriginalInvoiceLine().getPriceTotalExTax()).reduce(Money.ZERO, Money::add);
 				} else {
@@ -204,14 +204,14 @@ public class ClassBudgetUtil {
 		}
 	}
 
-	public static Money getClassProfitExTax(ICourseClass cclass, String type) {
+	public static Money getClassProfitExTax(CourseClass cclass, String type) {
 		Money income = getClassIncomeExTax(cclass, type);
 		Money costs = getClassCostsExTax(cclass, type);
 
 		return income.subtract(costs);
 	}
 
-	private static Money getClassOtherIncomeExTax(ICourseClass cclass, String type) {
+	private static Money getClassOtherIncomeExTax(CourseClass cclass, String type) {
 		Money result = Money.ZERO;
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
@@ -224,7 +224,7 @@ public class ClassBudgetUtil {
 		return result;
 	}
 
-	private static Money getClassSunkCostsExTax(ICourseClass cclass, String type) {
+	private static Money getClassSunkCostsExTax(CourseClass cclass, String type) {
 		Money result = Money.ZERO;
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
@@ -249,7 +249,7 @@ public class ClassBudgetUtil {
 	/**
 	 * @return the projected cost of the class based on budgetedPlaces field
 	 */
-	public static Money getClassCostsExTax(ICourseClass cclass, String type) {
+	public static Money getClassCostsExTax(CourseClass cclass, String type) {
 		Money result = Money.ZERO;
 
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
@@ -262,7 +262,7 @@ public class ClassBudgetUtil {
 		return getClassSunkCostsExTax(cclass, type).add(getClassRunningCostsExTax(cclass, type));
 	}
 
-	public static Money getClassRunningCostsExTax(ICourseClass cclass, String type) {
+	public static Money getClassRunningCostsExTax(CourseClass cclass, String type) {
 		Money result = Money.ZERO;
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
@@ -292,7 +292,7 @@ public class ClassBudgetUtil {
 	 * @param type - whether to calculate ACTUAL, BUDGETED or MAXIMUM
 	 * @return
 	 */
-	private static Money calculateCostsFor(ICourseClass cclass, boolean funding, List<ClassCostRepetitionType> costsTypes, boolean flag, String type) {
+	private static Money calculateCostsFor(CourseClass cclass, boolean funding, List<ClassCostRepetitionType> costsTypes, boolean flag, String type) {
 		Money result = Money.ZERO;
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
@@ -301,8 +301,7 @@ public class ClassBudgetUtil {
 			return result;
 		}
 
-		for (Object object : cclass.getCosts()) {
-			ClassCostInterface cost = (ClassCostInterface) object;
+		for (ClassCost cost : cclass.getCosts()) {
 			if (cost.getPersistenceState() == PersistenceState.DELETED) {
 				continue;
 			}
@@ -327,12 +326,12 @@ public class ClassBudgetUtil {
 		return result;
 	}
 
-	private static Money getClassCustomInvoicesExTax(ICourseClass cclass) {
+	private static Money getClassCustomInvoicesExTax(CourseClass cclass) {
 		Money result = Money.ZERO;
 
-		List<? extends IInvoiceLine> invoiceLines = cclass.getInvoiceLines();
+		List<InvoiceLine> invoiceLines = cclass.getInvoiceLines();
 		if (invoiceLines != null && invoiceLines.size() != 0) {
-			for (IInvoiceLine invoiceLine : invoiceLines) {
+			for (InvoiceLine invoiceLine : invoiceLines) {
 				result = result.add(invoiceLine.getPriceTotalExTax());
 			}
 		}

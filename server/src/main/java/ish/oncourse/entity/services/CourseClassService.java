@@ -14,11 +14,15 @@ import com.google.inject.Inject;
 import ish.budget.ClassBudgetUtil;
 import ish.common.types.EnrolmentStatus;
 import ish.math.Money;
-import ish.messaging.*;
 import ish.oncourse.cayenne.CourseClassUtil;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.function.CalculateClassroomHours;
-import ish.util.*;
+import ish.oncourse.server.cayenne.Module;
+import ish.oncourse.server.cayenne.*;
+import ish.util.DateTimeFormatter;
+import ish.util.DiscountUtils;
+import ish.util.DurationFormatter;
+import ish.util.RuntimeUtil;
 import org.apache.cayenne.PersistenceState;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -45,16 +49,16 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return list of enrolments
 	 */
-	public List<? extends IEnrolment> getSuccessfulAndQueuedEnrolments(ICourseClass courseClass) {
+	public List<Enrolment> getSuccessfulAndQueuedEnrolments(CourseClass courseClass) {
 
-		List<? extends IEnrolment> theEnrolments = courseClass.getEnrolments();
+		List<Enrolment> theEnrolments = courseClass.getEnrolments();
 
 		if (theEnrolments == null || theEnrolments.size() == 0) {
 			return theEnrolments;
 		}
-		Expression validEnrolmentExpr = ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, null);
+		Expression validEnrolmentExpr = ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, null);
 		for (EnrolmentStatus es : EnrolmentStatus.STATUSES_LEGIT) {
-			validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(IEnrolment.STATUS_PROPERTY, es));
+			validEnrolmentExpr = validEnrolmentExpr.orExp(ExpressionFactory.matchExp(Enrolment.STATUS_PROPERTY, es));
 		}
 
 		return validEnrolmentExpr.filterObjects(theEnrolments);
@@ -67,14 +71,14 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return count of successful and queued enrolments
 	 */
-	public int getValidEnrolmentsCount(ICourseClass courseClass) {
+	public int getValidEnrolmentsCount(CourseClass courseClass) {
 		return getSuccessfulAndQueuedEnrolments(courseClass).size();
 	}
 
 	/**
 	 * @return number of places are left for enrolments in the class
 	 */
-	public int getPlacesLeft(ICourseClass courseClass) {
+	public int getPlacesLeft(CourseClass courseClass) {
 		if (courseClass.getMaximumPlaces() == null) {
 			// can happen when initializing new controller
 			return 0;
@@ -88,7 +92,7 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return required number of enrolments
 	 */
-	public Integer getEnrolmentsToProfit(ICourseClass courseClass) {
+	public Integer getEnrolmentsToProfit(CourseClass courseClass) {
 		if (courseClass.getFeeExGst().isZero()) {
 			return 0;
 		}
@@ -103,7 +107,7 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return required number of enrolments
 	 */
-	public Integer getEnrolmentsToProceed(ICourseClass courseClass) {
+	public Integer getEnrolmentsToProceed(CourseClass courseClass) {
 		if (courseClass.getFeeExGst().isZero()) {
 			return 0;
 		}
@@ -117,7 +121,7 @@ public class CourseClassService {
 	 *
 	 * @return unique code for class
 	 */
-	public String getUniqueCode(ICourseClass courseClass) {
+	public String getUniqueCode(CourseClass courseClass) {
 		StringBuilder buff = new StringBuilder();
 		if (courseClass.getCourse() != null && courseClass.getCourse().getCode() != null) {
 			buff.append(courseClass.getCourse().getCode());
@@ -135,10 +139,10 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return tutor names
 	 */
-	public String getTutorNames(ICourseClass courseClass) {
+	public String getTutorNames(CourseClass courseClass) {
 		StringBuilder result = new StringBuilder();
 		if (courseClass.getTutorRoles() != null) {
-			for (ICourseClassTutor t : courseClass.getTutorRoles()) {
+			for (CourseClassTutor t : courseClass.getTutorRoles()) {
 				result.append(t.getTutor().getContact().getName());
 				if (result.length() > 0) {
 					result.append("; ");
@@ -148,8 +152,8 @@ public class CourseClassService {
 		return result.toString();
 	}
 
-	public String getTutorNamesAbriged(ICourseClass courseClass) {
-		List<? extends ITutor> tutors = getTutors(courseClass);
+	public String getTutorNamesAbriged(CourseClass courseClass) {
+		List<? extends Tutor> tutors = getTutors(courseClass);
 		if (tutors == null || tutors.size() == 0) {
 			return "not set";
 		} else if (tutors.size() == 1) {
@@ -158,11 +162,11 @@ public class CourseClassService {
 		return tutors.get(0).getContact().getName() + " et al";
 	}
 
-	public List<? extends ITutor> getTutors(ICourseClass courseClass) {
-		List<? extends ICourseClassTutor> avalableTutorRoles = courseClass.getTutorRoles();
-		List<ITutor> tutors = new ArrayList<>();
+	public List<? extends Tutor> getTutors(CourseClass courseClass) {
+		List<CourseClassTutor> avalableTutorRoles = courseClass.getTutorRoles();
+		List<Tutor> tutors = new ArrayList<>();
 		if (avalableTutorRoles != null) {
-			for (ICourseClassTutor aRole : avalableTutorRoles) {
+			for (CourseClassTutor aRole : avalableTutorRoles) {
 				if (aRole.getTutor() != null) {
 					tutors.add(aRole.getTutor());
 				}
@@ -177,9 +181,9 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return class outcomes
 	 */
-	public List<? extends IOutcome> getOutcomes(ICourseClass courseClass) {
-		List<IOutcome> outcomes = new ArrayList<>();
-		for (IEnrolment e : courseClass.getEnrolments()) {
+	public List<Outcome> getOutcomes(CourseClass courseClass) {
+		List<Outcome> outcomes = new ArrayList<>();
+		for (Enrolment e : courseClass.getEnrolments()) {
 			outcomes.addAll(e.getOutcomes());
 		}
 
@@ -192,9 +196,9 @@ public class CourseClassService {
 	 * @param courseClass
 	 * @return total fee income ex tax for refunded and cancelled classes
 	 */
-	public Money getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(ICourseClass courseClass) {
+	public Money getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass courseClass) {
 		Money result = Money.ZERO;
-		List<IEnrolment> canceledRefundedEnrolmentList = (List<IEnrolment>) CourseClassUtil.getRefundedAndCancelledEnrolments(courseClass.getEnrolments());
+		List<Enrolment> canceledRefundedEnrolmentList = (List<Enrolment>) CourseClassUtil.getRefundedAndCancelledEnrolments(courseClass.getEnrolments());
 
 		if (canceledRefundedEnrolmentList != null) {
 			result = canceledRefundedEnrolmentList.stream().flatMap(e -> e.getInvoiceLines().stream())
@@ -207,10 +211,10 @@ public class CourseClassService {
 	/**
 	 * @return a sentence describing the timetable, html formatted. Used in activity bubble and mouse hover effect.
 	 */
-	public String getTimetableSummaryForClass(ICourseClass courseClass) {
+	public String getTimetableSummaryForClass(CourseClass courseClass) {
 		StringBuilder summary = new StringBuilder("<html>");
 
-		List<? extends ISession> sessions = courseClass.getSessions();
+		List<Session> sessions = courseClass.getSessions();
 
 		int scount = courseClass.getSessions().size();
 		if (sessions.size() > 0) {
@@ -221,7 +225,7 @@ public class CourseClassService {
 				summary.append("One session");
 			}
 			Long duration = null;
-			for (ISession session : sessions) {
+			for (Session session : sessions) {
 				if (duration == null) {
 					duration = sessionService.getDuration(session);
 				} else if (duration.equals(sessionService.getDuration(session))) {
@@ -269,7 +273,7 @@ public class CourseClassService {
 				summary.append(RuntimeUtil.HTML_LINE_SEPARATOR);
 			}
 		}
-		IRoom aRoom = getRoomForAllSessions(courseClass);
+		Room aRoom = getRoomForAllSessions(courseClass);
 		if (aRoom != null && aRoom.getSite() != null) {
 			summary.append("All sessions held in ");
 			summary.append(aRoom.getName());
@@ -277,7 +281,7 @@ public class CourseClassService {
 			summary.append(aRoom.getSite().getName());
 			summary.append(RuntimeUtil.HTML_LINE_SEPARATOR);
 		} else if (sessions.size() > 0) {
-			ISession firstSession = getFirstSession(courseClass);
+			Session firstSession = getFirstSession(courseClass);
 
 			if (firstSession.getRoom() != null && firstSession.getRoom().getSite() != null) {
 				aRoom = sessions.get(0).getRoom();
@@ -304,17 +308,17 @@ public class CourseClassService {
 	 * @return the room for all the sessions (if all sessions have the same room), or the room for the class if all sessions have no room, or null if any
 	 *         sessions have a different room.
 	 */
-	public IRoom getRoomForAllSessions(ICourseClass courseClass) {
-		IRoom aRoom = null;
+	public Room getRoomForAllSessions(CourseClass courseClass) {
+		Room aRoom = null;
 
-		List<? extends ISession> sessions = courseClass.getSessions();
+		List<Session> sessions = courseClass.getSessions();
 
 		if (sessions != null && sessions.size() > 0) {
 			aRoom = sessions.get(0).getRoom();
 		}
 
 		if (sessions != null) {
-			for (ISession session : sessions) {
+			for (Session session : sessions) {
 				if (session.getRoom() != null && !session.getRoom().equals(aRoom) || session.getRoom() == null && aRoom != null) {
 					return null;
 				}
@@ -329,13 +333,13 @@ public class CourseClassService {
 	/**
 	 * @return Room of first class session if current class room is not set
 	 */
-	public IRoom getFirstRoomSpecified(ICourseClass courseClass) {
+	public Room getFirstRoomSpecified(CourseClass courseClass) {
 		if (courseClass.getRoom() != null) {
 			return null;
 		}
-		List<? extends ISession> theSessions = courseClass.getSessions();
-		for (ISession session : theSessions) {
-			IRoom aRoom = session.getRoom();
+		List<Session> theSessions = courseClass.getSessions();
+		for (Session session : theSessions) {
+			Room aRoom = session.getRoom();
 			if (aRoom != null) {
 				return aRoom;
 			}
@@ -346,12 +350,12 @@ public class CourseClassService {
 	/**
 	 * @return first session by start time for specified class.
 	 */
-	public ISession getFirstSession(ICourseClass courseClass) {
-		List<? extends ISession> sessions = courseClass.getSessions();
+	public Session getFirstSession(CourseClass courseClass) {
+		List<Session> sessions = courseClass.getSessions();
 
 		if (!sessions.isEmpty()) {
 			Ordering.orderList(sessions, Collections.singletonList(
-					new Ordering(ISession.START_DATETIME_PROPERTY, SortOrder.ASCENDING)));
+					new Ordering(Session.START_DATETIME_PROPERTY, SortOrder.ASCENDING)));
 			return sessions.get(0);
 		}
 
@@ -361,30 +365,30 @@ public class CourseClassService {
 	/**
 	 * @return number of successful male enrolments in the class
 	 */
-	public Integer getMaleCount(ICourseClass courseClass) {
-		List<? extends IEnrolment> list = getSuccessfulAndQueuedEnrolments(courseClass);
+	public Integer getMaleCount(CourseClass courseClass) {
+		List<Enrolment> list = getSuccessfulAndQueuedEnrolments(courseClass);
 		if (list.isEmpty()) {
 			return 0;
 		}
-		Expression e = ExpressionFactory.matchExp(IEnrolment.STUDENT_KEY + "." + IStudent.CONTACT_KEY + "." + IContact.IS_MALE_KEY, true);
+		Expression e = ExpressionFactory.matchExp(Enrolment.STUDENT_KEY + "." + Student.CONTACT_KEY + "." + Contact.IS_MALE_KEY, true);
 
 		return e.filterObjects(list).size();
 	}
 
 	/**
-	 * @see ish.oncourse.server.cayenne.CourseClassTrait.getClassroomHours()
+	 * @see CourseClassTrait#getClassroomHours()
 	 */
 	@Deprecated
-	public BigDecimal getClassroomHours(ICourseClass courseClass) {
+	public BigDecimal getClassroomHours(CourseClass courseClass) {
 		return CalculateClassroomHours.valueOf(courseClass).calculate();
 	}
 
 	/**
 	 * @return '/' separated list of discounts for this class and their values
 	 */
-	public String getDiscountFees(ICourseClass courseClass) {
+	public String getDiscountFees(CourseClass courseClass) {
 		StringBuilder result = new StringBuilder();
-		for (IDiscount d : courseClass.getDiscounts()) {
+		for (Discount d : courseClass.getDiscounts()) {
 			if (result.length() > 0) {
 				result.append(" / ");
 			}
@@ -406,27 +410,27 @@ public class CourseClassService {
 	}
 
 	/**
-	 * Returns one {@link ISessionModule} instance for each {@link IModule} class has. <br>
+	 * Returns one {@link SessionModule} instance for each {@link Module} class has. <br>
 	 * This is needed to provide Training Plan table with records list without duplicated modules for each session.
 	 *
 	 * @return list of SessionModules for each Module class has
 	 */
-	public List<? extends ISessionModule> getUniqueSessionModules(ICourseClass courseClass) {
+	public List<SessionModule> getUniqueSessionModules(CourseClass courseClass) {
 
-		List<ISessionModule> uniqueSessionModules = new ArrayList<>();
+		List<SessionModule> uniqueSessionModules = new ArrayList<>();
 
-		Set<IModule> classModules = new HashSet<>();
-		for (ISession s : courseClass.getSessions()) {
-			for (ISessionModule sm : s.getSessionModules()) {
+		Set<Module> classModules = new HashSet<>();
+		for (Session s : courseClass.getSessions()) {
+			for (SessionModule sm : s.getSessionModules()) {
 				classModules.add(sm.getModule());
 			}
 		}
 
-		List<? extends ISessionModule> allSessionModules = getSessionModules(courseClass);
+		List<SessionModule> allSessionModules = getSessionModules(courseClass);
 
-		for (IModule module : classModules) {
-			Expression exp = ExpressionFactory.matchExp(ISessionModule.MODULE_KEY, module);
-			List<? extends ISessionModule> sessionModules = exp.filterObjects(allSessionModules);
+		for (Module module : classModules) {
+			Expression exp = ExpressionFactory.matchExp(SessionModule.MODULE_KEY, module);
+			List<SessionModule> sessionModules = exp.filterObjects(allSessionModules);
 			if (!sessionModules.isEmpty()) {
 				uniqueSessionModules.add(sessionModules.get(0));
 			}
@@ -435,10 +439,10 @@ public class CourseClassService {
 		return uniqueSessionModules;
 	}
 
-	public List<? extends ISessionModule> getSessionModules(ICourseClass courseClass) {
-		List<ISessionModule> sessionModules = new ArrayList<>();
+	public List<SessionModule> getSessionModules(CourseClass courseClass) {
+		List<SessionModule> sessionModules = new ArrayList<>();
 
-		for (ISession s : courseClass.getSessions()) {
+		for (Session s : courseClass.getSessions()) {
 			sessionModules.addAll(s.getSessionModules());
 		}
 
@@ -452,11 +456,11 @@ public class CourseClassService {
 	 * @return new code
 	 */
 	@Deprecated
-	public String getNextAvailableCode(ICourseClass courseClass) {
+	public String getNextAvailableCode(CourseClass courseClass) {
 		String oldCode = courseClass.getCode();
 		if (oldCode == null) {
 			if (courseClass.getCourse() != null) {
-				ICourseClass latestClass = getLatestSavedClass(courseClass.getCourse());
+				CourseClass latestClass = getLatestSavedClass(courseClass.getCourse());
 				if (latestClass != null) {
 					return getNextAvailableCode(latestClass);
 				}
@@ -496,11 +500,11 @@ public class CourseClassService {
 	 * @return
 	 */
 	@Deprecated
-	public int timesClassCodeRepeatsWithinCourse(String aCode, ICourseClass courseClass) {
+	public int timesClassCodeRepeatsWithinCourse(String aCode, CourseClass courseClass) {
 		if (courseClass.getCourse() != null && courseClass.getCourse().getCourseClasses() != null) {
 			int result = 0;
-			for (ICourseClass iCourseClass : courseClass.getCourse().getCourseClasses()) {
-				if (!iCourseClass.equals(courseClass) && iCourseClass.getCode() != null && iCourseClass.getCode().equalsIgnoreCase(aCode)) {
+			for (CourseClass CourseClass : courseClass.getCourse().getCourseClasses()) {
+				if (!CourseClass.equals(courseClass) && CourseClass.getCode() != null && CourseClass.getCode().equalsIgnoreCase(aCode)) {
 					result++;
 				}
 			}
@@ -513,7 +517,7 @@ public class CourseClassService {
 	/**
 	 * @return the CourseClass within this Course which was created most recently
 	 */
-	private ICourseClass getLatestSavedClass(ICourse course) {
+	private CourseClass getLatestSavedClass(Course course) {
 		if (course.getCourseClasses() == null || course.getCourseClasses().size() == 0) {
 			return null;
 		}
@@ -521,10 +525,10 @@ public class CourseClassService {
 		Ordering o = new Ordering("createdOn", SortOrder.DESCENDING);
 		ArrayList<Ordering> orderings = new ArrayList<>();
 		orderings.add(o);
-		ArrayList<ICourseClass> classesSorted = new ArrayList<>(course.getCourseClasses());
+		ArrayList<CourseClass> classesSorted = new ArrayList<>(course.getCourseClasses());
 		Ordering.orderList(classesSorted, orderings);
 
-		for (ICourseClass cc : classesSorted) {
+		for (CourseClass cc : classesSorted) {
 			if (cc.getPersistenceState() != PersistenceState.NEW) {
 				return cc;
 			}

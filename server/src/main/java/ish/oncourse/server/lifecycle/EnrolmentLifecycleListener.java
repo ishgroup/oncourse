@@ -10,13 +10,12 @@
  */
 package ish.oncourse.server.lifecycle;
 
-import ish.common.types.*;
+import ish.common.types.EnrolmentStatus;
+import ish.common.types.PaymentSource;
+import ish.common.types.SystemEventType;
 import ish.oncourse.common.SystemEvent;
-import ish.oncourse.entity.services.OutcomeService;
-import ish.oncourse.function.CalculateOutcomeReportableHours;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.Module;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.integration.EventService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.PostPersist;
@@ -26,21 +25,15 @@ import org.apache.cayenne.annotation.PreRemove;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 public class EnrolmentLifecycleListener {
 
 	private static final Logger logger = LogManager.getLogger();
 
 	private ICayenneService cayenneService;
-	private OutcomeService outcomeService;
 	private EventService eventService;
 
-	public EnrolmentLifecycleListener(ICayenneService cayenneService, OutcomeService outcomeService, EventService eventService) {
+	public EnrolmentLifecycleListener(ICayenneService cayenneService, EventService eventService) {
 		this.cayenneService = cayenneService;
-		this.outcomeService = outcomeService;
 		this.eventService = eventService;
 	}
 

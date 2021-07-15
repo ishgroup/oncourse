@@ -11,17 +11,14 @@
 
 package ish.oncourse.function;
 
-import ish.messaging.ITag;
 import ish.oncourse.cayenne.TaggableClasses;
+import ish.oncourse.server.cayenne.Tag;
 
 import java.util.List;
 
-/**
- * Created by anarut on 11/21/16.
- */
 public interface GetTagGroupsInterface {
 
-    List<? extends ITag> get();
+    List<? extends Tag> get();
 
-    List<? extends ITag> get(TaggableClasses taggableClasses);
+    List<? extends Tag> get(TaggableClasses taggableClasses);
 }

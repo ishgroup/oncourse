@@ -11,15 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ICorporatePass
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._CorporatePass
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
-import java.util.List
 
 /**
  * CorporatePass allows corporate users to enrol students or purchase items without paying immediately.
@@ -27,7 +25,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class CorporatePass extends _CorporatePass implements ICorporatePass, Queueable {
+class CorporatePass extends _CorporatePass implements Queueable {
 
 
 

@@ -16,7 +16,6 @@ import com.google.inject.Inject
 import ish.common.types.OutcomeStatus
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.entity.services.CertificateService
-import ish.oncourse.entity.services.OutcomeService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.function.avetmiss.AvetmissExportPreviewBuilder
@@ -35,12 +34,8 @@ import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import ish.oncourse.server.export.avetmiss8.Avetmiss8ExportRunner
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.FundingStatus
-import ish.persistence.GetInExpression
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.access.DataContext
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.apache.cayenne.tx.TransactionalOperation
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -50,7 +45,6 @@ import java.time.LocalDate
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.Future
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -63,9 +57,6 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
 
     @Inject
     private PreferenceController preferenceController
-
-    @Inject
-    private OutcomeService outcomeService
 
     @Inject
     private CertificateService certificateService
@@ -118,7 +109,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
                 ZipOutputStream zipFile = new ZipOutputStream(new FileOutputStream(zipName))
                 result.files.each { filename, data ->
                     ZipEntry entry = new ZipEntry(filename)
-                    def databytes= data.toByteArray()
+                    def databytes = data.toByteArray()
                     entry.size = databytes.length
                     zipFile.putNextEntry(entry)
                     zipFile.write(databytes)
@@ -130,7 +121,6 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
             }
         })
     }
-
 
 
     void createFundingUploadRecords(Long systemUserId, List<Long> outcomeIds, String settings) {
@@ -148,7 +138,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
             context = cayenneService.newContext
             fundingUpload = context.localObject(fundingUpload)
             outcomeIds.each { id ->
-                Outcome outcome = SelectById.query(Outcome, id).selectOne(cayenneService.newContext)
+                Outcome outcome = SelectById.query(Outcome, id).selectOne(context)
                 FundingUploadOutcome fundingUploadOutcome = context.newObject(FundingUploadOutcome)
                 fundingUploadOutcome.fundingUpload = fundingUpload
                 fundingUploadOutcome.outcome = outcome

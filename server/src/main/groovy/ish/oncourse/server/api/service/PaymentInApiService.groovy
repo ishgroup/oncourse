@@ -17,18 +17,11 @@ import groovy.transform.TypeCheckingMode
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
-import static ish.common.types.PaymentType.*
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.PaymentInDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.PaymentInDTO
 import ish.oncourse.server.api.v1.model.PaymentInvoiceDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.AccountUtil
@@ -40,6 +33,9 @@ import org.apache.cayenne.query.SelectById
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.stream.Collectors
+
+import static ish.common.types.PaymentType.*
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 
 @CompileStatic
 class PaymentInApiService extends EntityApiService<PaymentInDTO, PaymentIn, PaymentInDao> {
@@ -71,7 +67,7 @@ class PaymentInApiService extends EntityApiService<PaymentInDTO, PaymentIn, Paym
         new PaymentInDTO().with { paymentInDTO ->
             paymentInDTO.id = paymentIn.id
             paymentInDTO.payerId = paymentIn.payer?.id
-            paymentInDTO.payerName = paymentIn.payer != null ? GetContactFullName.valueOf(paymentIn.payer, true).get() : null
+            paymentInDTO.payerName = paymentIn.payer != null ? paymentIn.payer.getFullName() : null
             paymentInDTO.status = paymentIn.statusString
             paymentInDTO.paymentInType = paymentIn.paymentMethod?.name?.toString()
             paymentInDTO.amount = paymentIn.amount.toBigDecimal()

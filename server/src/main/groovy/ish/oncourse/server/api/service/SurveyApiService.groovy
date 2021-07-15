@@ -11,10 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.dao.SurveyDao
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import ish.oncourse.server.api.v1.function.StudentFeedbackFunctions
 import ish.oncourse.server.api.v1.model.SurveyItemDTO
 import ish.oncourse.server.api.v1.model.SurveyVisibilityDTO
@@ -22,10 +19,13 @@ import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Survey
 import ish.oncourse.server.cayenne.SurveyCustomField
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.util.stream.Collectors
+
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
+import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class SurveyApiService extends EntityApiService<SurveyItemDTO, Survey, SurveyDao> {
 
@@ -39,9 +39,7 @@ class SurveyApiService extends EntityApiService<SurveyItemDTO, Survey, SurveyDao
         new SurveyItemDTO().with { feedbackDTO ->
             feedbackDTO.id = survey.id
             feedbackDTO.studentContactId = survey.enrolment.student.contact.id
-            feedbackDTO.studentName = survey.enrolment.student.contact.with {
-                GetContactFullName.valueOf(it, true).get()
-            }
+            feedbackDTO.studentName = survey.enrolment.student.contact.with {it.getFullName() }
             feedbackDTO.netPromoterScore = survey.netPromoterScore
             feedbackDTO.venueScore = survey.venueScore
             feedbackDTO.courseScore = survey.courseScore
@@ -57,7 +55,7 @@ class SurveyApiService extends EntityApiService<SurveyItemDTO, Survey, SurveyDao
             feedbackDTO.classId = survey.enrolment.courseClass.id
             feedbackDTO.className = survey.enrolment.courseClass.with { "$it.uniqueCode $it.course.name" }
             Set<Contact> set = survey.enrolment.courseClass.tutorRoles*.tutor*.contact.stream().collect(Collectors.toSet())
-            feedbackDTO.tutors = set.collectEntries {[ (it.id.toString()) :  GetContactFullName.valueOf(it, true).get() ]}
+            feedbackDTO.tutors = set.collectEntries {[ (it.id.toString()) :  it.getFullName() ]}
             feedbackDTO
         }
     }

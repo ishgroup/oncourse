@@ -12,13 +12,11 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
-import ish.messaging.ITutorAttendance
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._TutorAttendance
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * This entity represents the relationship between a tutor and the sessions that comprise
@@ -27,7 +25,7 @@ import java.util.Date
  */
 @API
 @QueueableEntity
-class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, ITutorAttendance, Queueable {
+class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, Queueable {
 
 
 

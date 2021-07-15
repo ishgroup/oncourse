@@ -13,31 +13,19 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.function.GetContactFullName
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSiteMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import static ish.oncourse.server.api.v1.function.TagFunctions.validateRelationsForSave
 import ish.oncourse.server.api.v1.model.SiteDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.model.WaitingListDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.WaitingList
-import ish.oncourse.server.cayenne.WaitingListCustomField
-import ish.oncourse.server.cayenne.WaitingListSite
-import ish.oncourse.server.cayenne.WaitingListTagRelation
+import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
-import java.time.ZoneOffset
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSiteMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.*
+import static org.apache.commons.lang3.StringUtils.*
 
 @CompileStatic
 class WaitingListFunctions {
@@ -49,7 +37,7 @@ class WaitingListFunctions {
             wl.studentNotes = dbWaitingList.studentNotes
             wl.studentCount = dbWaitingList.studentCount
             wl.contactId = dbWaitingList.student.contact.id
-            wl.studentName = dbWaitingList.student.contact.with { GetContactFullName.valueOf(it, true).get() }
+            wl.studentName = dbWaitingList.student.contact.with { it.getFullName() }
             wl.courseId = dbWaitingList.course.id
             wl.courseName = dbWaitingList.course.with { "$it.name $it.code" }
             wl.tags = dbWaitingList.tags.collect { toRestTagMinimized(it) }
