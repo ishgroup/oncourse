@@ -26,4 +26,8 @@ class LeadAttachmentRelation extends _LeadAttachmentRelation {
     void setAttachedRelation(AttachableTrait attachable) {
         super.setAttachedLead((Lead) attachable)
     }
+
+    boolean isAsyncReplicationAllowed() {
+        return false
+    }
 }
