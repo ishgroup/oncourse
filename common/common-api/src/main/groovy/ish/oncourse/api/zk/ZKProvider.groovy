@@ -29,7 +29,7 @@ class ZKProvider {
         }
     }
     
-    ZooKeeper getZk(String rootNode) throws InterruptedException {
+    synchronized ZooKeeper getZk(String rootNode) throws InterruptedException {
         return  zkMap.computeIfAbsent(rootNode, {createZk(rootNode)})
     }
 
