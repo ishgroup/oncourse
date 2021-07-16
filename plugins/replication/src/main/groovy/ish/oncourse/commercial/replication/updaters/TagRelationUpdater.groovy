@@ -65,6 +65,9 @@ class TagRelationUpdater extends AbstractAngelUpdater<TagRelationStub, TagRelati
 		} else if (ASSESSMENT_ENTITY_NAME.equalsIgnoreCase(entityName)) {
 			entityClass = Assessment.class
 			entity.setEntityIdentifier(TaggableClasses.ASSESSMENT.getDatabaseValue())
+		} else if (LEAD_ENTITY_NAME.equalsIgnoreCase(entityName)) {
+			entityClass = Lead.class
+			entity.setEntityIdentifier(TaggableClasses.LEAD.getDatabaseValue())
 		}
 		if (entityClass != null && entity.getEntityAngelId() == null) {
 			def objectContext = entity.getObjectContext()

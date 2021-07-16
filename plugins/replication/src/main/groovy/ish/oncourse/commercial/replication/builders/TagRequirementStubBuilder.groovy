@@ -66,6 +66,9 @@ class TagRequirementStubBuilder extends AbstractAngelStubBuilder<TagRequirement,
 			case ASSESSMENT:
 				stub.setEntityName(AbstractAngelUpdater.ASSESSMENT_ENTITY_NAME)
 				break
+			case LEAD:
+				stub.setEntityName(AbstractAngelUpdater.LEAD_ENTITY_NAME)
+				break
 		}
 		stub.setManyTermsAllowed(entity.getManyTermsAllowed())
 		stub.setModified(entity.getModifiedOn())

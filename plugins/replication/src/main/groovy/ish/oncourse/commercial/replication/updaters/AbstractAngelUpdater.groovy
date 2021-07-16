@@ -37,6 +37,7 @@ abstract class AbstractAngelUpdater<V extends GenericReplicationStub, T extends 
 	static final String ARTICLE_ENTITY_NAME = "Article"
 	static final String MEMBERSHIP_ENTITY_NAME = "Membership"
 	static final String VOUCHER_ENTITY_NAME = "Voucher"
+	static final String LEAD_ENTITY_NAME = "Lead"
 	/**
 	 * @see IAngelUpdater#updateEntityFromStub(GenericReplicationStub,
 	 *      Queueable, RelationShipCallback)

@@ -67,6 +67,9 @@ class TagRelationStubBuilder extends AbstractAngelStubBuilder<TagRelation, TagRe
 			case ASSESSMENT:
 				stub.setEntityName(AbstractAngelUpdater.ASSESSMENT_ENTITY_NAME)
 				break
+			case LEAD:
+				stub.setEntityName(AbstractAngelUpdater.LEAD_ENTITY_NAME)
+				break
 			default:
 				throw new IllegalStateException(taggableClasses.name() + "is not illegal for this operation")
 		}
