@@ -19,7 +19,7 @@ import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
-import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.document.DocumentService
@@ -38,6 +38,7 @@ import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.AuditAction
+import ish.persistence.Preferences
 import ish.scripting.ScriptResult
 import ish.util.TimeZoneUtil
 import org.apache.cayenne.ObjectContext
@@ -124,7 +125,6 @@ class GroovyScriptService {
 
     private ICayenneService cayenneService
     private ISchedulerService schedulerService
-    private PreferenceController preferenceController
     private AuditService auditService
     private SystemUserService systemUserService
     private TemplateService templateService
@@ -141,14 +141,13 @@ class GroovyScriptService {
 
     @Inject
     GroovyScriptService(ICayenneService cayenneService, ISchedulerService schedulerService,
-                        PreferenceController preferenceController, Injector injector, SystemUserService systemUserService, TemplateService templateService) {
+                        Injector injector, SystemUserService systemUserService, TemplateService templateService) {
         GroovySystem.getMetaClassRegistry().getMetaClassCreationHandler().setDisableCustomMetaClassLookup(true)
         this.injector = injector
         auditService = injector.getInstance(AuditService.class)
 
         this.cayenneService = cayenneService
         this.schedulerService = schedulerService
-        this.preferenceController = preferenceController
         this.systemUserService = systemUserService
         this.templateService = templateService
         this.engineManager = new ScriptEngineManager()
@@ -157,7 +156,7 @@ class GroovyScriptService {
         this.executorService = Executors.newSingleThreadExecutor()
     }
 
-    GroovyScriptService(ICayenneService iCayenneService, ISchedulerService iSchedulerService, PreferenceController preferenceController, BQRuntime bqRuntime) {}
+    GroovyScriptService(ICayenneService iCayenneService, ISchedulerService iSchedulerService, BQRuntime bqRuntime) {}
 
     void registerThreadInCayenneRuntime() {
         // since executor has just single thread in his pool - it is enough to register this thread to cayenne runtime
@@ -298,7 +297,7 @@ class GroovyScriptService {
                 def aTrigger = TriggerBuilder.newTrigger()
                         .withIdentity(script.getName() + ISchedulerService.TRIGGER_POSTFIX, ISchedulerService.CUSTOM_SCRIPT_JOBS_GROUP_ID)
                         .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
-                                .inTimeZone(TimeZoneUtil.getTimeZone(preferenceController.getOncourseServerDefaultTimezone())))
+                                .inTimeZone(TimeZoneUtil.getTimeZone(getServerDefaultTimeZone())))
                         .build()
 
                 schedulerService.scheduleJob(aJob, aTrigger)
@@ -308,6 +307,12 @@ class GroovyScriptService {
         } catch (Exception e) {
             logger.error("Couldn't schedule script execution for '{}'.", script.getName(), e)
         }
+    }
+
+    private String getServerDefaultTimeZone() {
+        return ObjectSelect.query(Preference.class)
+                .where(Preference.NAME.eq(Preferences.ONCOURSE_SERVER_DEFAULT_TZ))
+                .selectFirst(cayenneService.newContext)
     }
 
     void scriptAdded(Script script, String saveCronExp) {
