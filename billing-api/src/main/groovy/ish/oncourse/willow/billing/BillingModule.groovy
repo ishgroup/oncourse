@@ -2,15 +2,22 @@ package ish.oncourse.willow.billing
 
 import com.google.inject.Binder
 import com.google.inject.Provides
+import com.google.inject.Singleton
+import com.google.inject.TypeLiteral
 import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
+import io.bootique.jetty.JettyModule
+import io.bootique.jetty.MappedFilter
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cxf.CXFModule
+import ish.oncourse.api.request.RequestFilter
+import ish.oncourse.api.request.RequestModule
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.services.s3.S3Service
+import ish.oncourse.willow.billing.filter.CORSFilter
 import ish.oncourse.willow.billing.filter.GuestSessionFilter
 import ish.oncourse.willow.billing.filter.UserSessionFilter
 import ish.oncourse.willow.billing.filter.ZKSessionManager
@@ -23,6 +30,10 @@ import static ish.oncourse.configuration.Configuration.AdminProperty.STORAGE_ACC
 import static ish.oncourse.configuration.Configuration.AdminProperty.STORAGE_ACCESS_KEY 
 
 class BillingModule extends ConfigModule {
+
+    private static final TypeLiteral<MappedFilter<RequestFilter>> CORS_FILTER =
+            new TypeLiteral<MappedFilter<CORSFilter>>() {
+            }
     @Override
     void configure(Binder binder) {
         binder.bind(ZKSessionManager)
@@ -39,6 +50,7 @@ class BillingModule extends ConfigModule {
         
 
         CXFModule.contributeFeatures(binder)
+        JettyModule.extend(binder).addMappedFilter(CORS_FILTER)
     }
 
     @Provides
@@ -53,7 +65,13 @@ class BillingModule extends ConfigModule {
 
         return new S3Service(s3AccessId, s3AccessKey)
     }
-    
+
+    @Singleton
+    @Provides
+    MappedFilter<CORSFilter> createRequestFilter() {
+        new MappedFilter<CORSFilter>(new CORSFilter(),
+                Collections.singleton(RequestModule.ROOT_URL_PATTERN), CORSFilter.simpleName, 0)
+    }
     
 }
 

@@ -10,7 +10,7 @@ import io.bootique.jetty.MappedFilter
 
 class RequestModule extends ConfigModule {
 
-    private static final String ROOT_URL_PATTERN = '/*'
+    public static final String ROOT_URL_PATTERN = '/*'
 
     private static final TypeLiteral<MappedFilter<RequestFilter>> REQUEST_FILTER =
             new TypeLiteral<MappedFilter<RequestFilter>>() {
