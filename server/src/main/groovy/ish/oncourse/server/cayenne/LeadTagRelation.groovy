@@ -32,4 +32,8 @@ class LeadTagRelation extends _LeadTagRelation {
     void setTaggedRelation(Taggable object) {
         super.setTaggedLead((Lead) object)
     }
+
+    boolean isAsyncReplicationAllowed() {
+        return false
+    }
 }
