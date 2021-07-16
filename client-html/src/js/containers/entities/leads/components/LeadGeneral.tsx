@@ -219,11 +219,6 @@ const LeadGeneral = (props: Props) => {
         </div>
         <FormField type="number" name="studentCount" label="Number of students" />
         <FormField type="dateTime" name="nextActionOn" label="Next action on" />
-        <FormControlLabel
-          className="pr-3 mb-2"
-          control={<FormField type="checkbox" name="notify" />}
-          label="Notify student"
-        />
         <FormField
           type="money"
           name="estimatedValue"

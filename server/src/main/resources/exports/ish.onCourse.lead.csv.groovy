@@ -8,7 +8,6 @@ records.each { Lead lead ->
             "Student notes"  : lead.studentNotes,
             "Estimated value": lead.estimatedValue,
             "Next action on" : lead.nextActionOn?.format("yyyy-MM-dd'T'HH:mm:ss"),
-            "Notification"   : lead.notify,
             "Status"         : lead.status,
             "Title"          : lead.customer.title,
             "First name"     : lead.customer.firstName,

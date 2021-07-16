@@ -16,7 +16,6 @@ xml.data() {
             contact(id: ld.customer.id)
             estimatedValue(ld.estimatedValue)
             nextActionOn(ld.nextActionOn?.format("yyyy-MM-dd'T'HH:mm:ss"))
-            notification(ld.notify)
             status(ld.status)
             notes(ld.notes)
             ld.courses.each {Course c ->

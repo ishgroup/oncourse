@@ -383,8 +383,7 @@ class DefaultUserPreference {
                                                                  Lead.CUSTOMER.dot(Contact.MIDDLE_NAME).name]),
                 new ColumnDTO(title: 'Estimated value', attribute: Lead.ESTIMATED_VALUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Next action on', attribute: Lead.NEXT_ACTION_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Notification', attribute: Lead.NOTIFY.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
-                new ColumnDTO(title: 'Active', attribute: Lead.STATUS.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Status', attribute: Lead.STATUS.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Student notes', attribute: Lead.STUDENT_NOTES.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Assigned to', attribute: Lead.ASSIGNED_TO.dot(SystemUser.EMAIL).name, sortable: true, width: W200, visible: true)
         ]

@@ -23,8 +23,6 @@ properties:
   nextActionOn:
     type: string
     format: date-time
-  notify:
-    type: boolean
   status:
     $ref: '../../enum/LeadStatus.yaml'
   assignToId:

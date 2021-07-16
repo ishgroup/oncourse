@@ -44,9 +44,6 @@ databaseChangeLog:
                   name: nextActionOn
                   type: datetime
               - column:
-                  name: notify
-                  type: TINYINT
-              - column:
                   name: status
                   type: TINYINT
               - column:

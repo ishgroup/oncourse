@@ -888,7 +888,6 @@
 		<db-attribute name="estimatedValue" type="DECIMAL" length="10" scale="2"/>
 		<db-attribute name="assignedToUserId" type="BIGINT"/>
 		<db-attribute name="nextActionOn" type="TIMESTAMP"/>
-		<db-attribute name="notify" type="TINYINT"/>
 		<db-attribute name="status" type="TINYINT" isMandatory="true"/>
 		<db-attribute name="studentNotes" type="CLOB" length="32000"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -2482,7 +2481,6 @@
 		<obj-attribute name="studentNotes" type="java.lang.String" db-attribute-path="studentNotes"/>
 		<obj-attribute name="estimatedValue" type="ish.math.Money" db-attribute-path="estimatedValue"/>
 		<obj-attribute name="nextActionOn" type="java.util.Date" db-attribute-path="nextActionOn"/>
-		<obj-attribute name="notify" type="java.lang.Boolean" db-attribute-path="notify"/>
 		<obj-attribute name="status" type="ish.common.types.LeadStatus" db-attribute-path="status"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
