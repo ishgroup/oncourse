@@ -13,7 +13,6 @@ package ish.oncourse.server.cayenne
 
 import com.sun.istack.NotNull
 import ish.common.types.KeyCode
-import ish.messaging.ISystemUser
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._SystemUser
@@ -31,7 +30,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class SystemUser extends _SystemUser implements ISystemUser, Queueable {
+class SystemUser extends _SystemUser implements Queueable {
 
 
 

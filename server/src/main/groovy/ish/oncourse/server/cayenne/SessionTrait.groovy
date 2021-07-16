@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ISession
+
 import ish.util.DurationFormatter
 
 import java.time.ZoneId

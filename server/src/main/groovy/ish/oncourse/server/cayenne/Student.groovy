@@ -23,7 +23,6 @@ import ish.common.types.ClientIndustryEmploymentType
 import ish.common.types.ClientOccupationIdentifierType
 import ish.common.types.StudentCitizenship
 import ish.common.types.UsiStatus
-import ish.messaging.IStudent
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -47,11 +46,12 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Student extends _Student implements StudentTrait, IStudent, Queueable, Taggable, AttachableTrait {
+class Student extends _Student implements StudentTrait, Queueable, Taggable, AttachableTrait {
 
-	/**
-	 *
-	 */
+	public static final String CONTACT_KEY = "contact";
+	public static final String OUTCOMES = "outcomes";
+
+	public static final int MIN_SCHOOL_COMPLETION_YEAR = 1940;
 
 	private static Logger logger = LogManager.getLogger()
 
@@ -61,7 +61,6 @@ class Student extends _Student implements StudentTrait, IStudent, Queueable, Tag
 	@Override
 	void postAdd() {
 		super.postAdd()
-		// FIXME: (ari) are these correct values
 		if (getLabourForceStatus() == null) {
 			setLabourForceStatus(AvetmissStudentLabourStatus.DEFAULT_POPUP_OPTION)
 		}
@@ -516,6 +515,24 @@ class Student extends _Student implements StudentTrait, IStudent, Queueable, Tag
 	@Override
 	List<WaitingList> getWaitingLists() {
 		return super.getWaitingLists()
+	}
+
+
+	/**
+	 * @return a list of all the tags for this student
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<Tag> getTags() {
+		List<ContactTagRelation> contactTagRelations = getContact().getTaggingRelations()
+		List<Tag> tagList = new ArrayList<>(contactTagRelations.size())
+		for (ContactTagRelation relation : contactTagRelations) {
+			if (relation.getTag() != null && relation.getTag().getTagRequirement(Student.class) != null) {
+				tagList.add(relation.getTag())
+			}
+		}
+		return tagList
 	}
 
 }

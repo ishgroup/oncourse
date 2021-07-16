@@ -11,8 +11,8 @@
 
 package ish.oncourse.entity.services;
 
-import ish.messaging.IDiscount;
-import ish.messaging.IInvoiceLine;
+import ish.oncourse.server.cayenne.Discount;
+import ish.oncourse.server.cayenne.InvoiceLine;
 
 public class InvoiceLineService {
 
@@ -22,10 +22,10 @@ public class InvoiceLineService {
 	 * @param invoiceLine
 	 * @return
 	 */
-	public String getDiscountNames(IInvoiceLine invoiceLine) {
+	public String getDiscountNames(InvoiceLine invoiceLine) {
 		StringBuilder discountNames = new StringBuilder();
 
-		for (IDiscount discount : invoiceLine.getDiscounts()) {
+		for (Discount discount : invoiceLine.getDiscounts()) {
 			if (discountNames.length() > 0) {
 				discountNames.append("/");
 			}

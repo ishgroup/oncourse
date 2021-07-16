@@ -38,22 +38,30 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
 
   const onFeeIncTaxChange = useCallback(
     value => {
-      dispatch(
-        change(
-          COURSE_CLASS_COST_DIALOG_FORM,
-          "perUnitAmountExTax",
-          decimalDivide(value, decimalPlus(1, currentTax.rate))
-        )
-      );
+      if (currentTax) {
+        dispatch(
+          change(
+            COURSE_CLASS_COST_DIALOG_FORM,
+            "perUnitAmountExTax",
+            decimalDivide(value, decimalPlus(1, currentTax.rate))
+          )
+        );
+      }
     },
     [currentTax]
   );
 
   const onFeeExTaxChange = useCallback(
     value => {
-      dispatch(
-        change(COURSE_CLASS_COST_DIALOG_FORM, "perUnitAmountIncTax", decimalMul(value, decimalPlus(1, currentTax.rate)))
-      );
+      if (currentTax) {
+        dispatch(
+          change(
+            COURSE_CLASS_COST_DIALOG_FORM,
+            "perUnitAmountIncTax",
+            decimalMul(value, decimalPlus(1, currentTax.rate))
+          )
+        );
+      }
     },
     [currentTax]
   );

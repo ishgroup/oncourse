@@ -14885,18 +14885,6 @@
               VALUESTRING="trunk-SNAPSHOT" NAME="data.wed.version" UNIQUEKEY="data.wed.version"/>
   <Preference CREATEDON="2010-05-05 13:41:35.759" ID="1187" MODIFIEDON="2012-06-25 10:49:11.056"
               VALUESTRING="database.derby" NAME="database.used" UNIQUEKEY="database.used"/>
-  <Preference CREATEDON="2010-05-05 13:41:35.829" ID="1188" MODIFIEDON="2010-05-05 13:41:35.829" NAME="backup.enabled"
-              UNIQUEKEY="backup.enabled"/>
-  <Preference CREATEDON="2010-05-05 13:41:35.857" ID="1189" MODIFIEDON="2010-05-05 13:41:35.857"
-              NAME="backup.minuteofday" UNIQUEKEY="backup.minuteofday"/>
-  <Preference CREATEDON="2010-05-05 13:41:35.889" ID="1190" MODIFIEDON="2010-05-05 13:41:35.889"
-              NAME="backup.nextnumber" UNIQUEKEY="backup.nextnumber"/>
-  <Preference CREATEDON="2010-05-05 13:41:35.895" ID="1191" MODIFIEDON="2010-05-05 13:41:35.895"
-              NAME="backup.maxhistory" UNIQUEKEY="backup.maxhistory"/>
-  <Preference CREATEDON="2010-05-05 13:41:35.9" ID="1192" MODIFIEDON="2010-05-05 13:41:35.9" NAME="backup.destination"
-              UNIQUEKEY="backup.destination"/>
-  <Preference CREATEDON="2010-05-05 13:41:35.909" ID="1193" MODIFIEDON="2010-05-05 13:41:35.909"
-              NAME="backup.destination.warning" UNIQUEKEY="backup.destination.warning"/>
   <Preference CREATEDON="2010-05-05 13:41:36.024" ID="1201" MODIFIEDON="2010-05-05 13:41:36.024" VALUESTRING="false"
               NAME="email.bounce" UNIQUEKEY="email.bounce"/>
   <Preference CREATEDON="2010-05-05 13:41:36.035" ID="1202" MODIFIEDON="2010-05-05 13:41:36.035"

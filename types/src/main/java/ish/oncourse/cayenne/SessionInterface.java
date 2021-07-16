@@ -18,8 +18,6 @@ public interface SessionInterface {
 
 	List<? extends SessionModuleInterface> getSessionModules();
 
-	String START_DATETIME_PROPERTY = "startDatetime";
-
 	Date getStartDatetime();
 
 	Date getEndDatetime();
