@@ -25,6 +25,7 @@ const Billing = () => {
     if (token) {
       defaultAxios.defaults.withCredentials = true;
       defaultAxios.defaults.baseURL = 'https://provisioning.ish.com.au/b';
+      defaultAxios.defaults.withCredentials = false;
       defaultAxios.defaults.headers = {
         Authorization: token
       };
