@@ -127,7 +127,6 @@ class GroovyScriptService {
     private ISchedulerService schedulerService
     private AuditService auditService
     private SystemUserService systemUserService
-    private TemplateService templateService
 
     private Injector injector
 
@@ -141,7 +140,7 @@ class GroovyScriptService {
 
     @Inject
     GroovyScriptService(ICayenneService cayenneService, ISchedulerService schedulerService,
-                        Injector injector, SystemUserService systemUserService, TemplateService templateService) {
+                        Injector injector, SystemUserService systemUserService) {
         GroovySystem.getMetaClassRegistry().getMetaClassCreationHandler().setDisableCustomMetaClassLookup(true)
         this.injector = injector
         auditService = injector.getInstance(AuditService.class)
@@ -149,7 +148,6 @@ class GroovyScriptService {
         this.cayenneService = cayenneService
         this.schedulerService = schedulerService
         this.systemUserService = systemUserService
-        this.templateService = templateService
         this.engineManager = new ScriptEngineManager()
 
         // create single thread executor with FIFO task queue
