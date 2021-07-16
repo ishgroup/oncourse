@@ -139,7 +139,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
       const defaultId = preferences[ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID];
       const account = accounts.find(item => item.id === Number(defaultId));
       if (account) {
-        onInit({ ...Initial, incomeAccountId: account.id, taxId: account.tax.id });
+        onInit({ ...Initial, incomeAccountId: account.id, taxId: account.tax?.id });
       } else {
         onInit(Initial);
       }

@@ -2,11 +2,11 @@
 Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/contact/merge'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -117,15 +117,9 @@ Feature: Main feature for all GET requests with path 'list/entity/contact/merge'
     Scenario: (-) Get Merge data by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath

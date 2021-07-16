@@ -15,6 +15,7 @@ import ish.oncourse.aql.model.attribute.*;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -39,7 +40,7 @@ public class EntityFactory {
      * List of types that supports custom fields.
      */
     private static final List<String> ENTITIES_WITH_CUSTOM_FIELDS =
-            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Voucher");
+            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Article", "Membership", "Voucher");
 
     /**
      * List of synthetic attributes.

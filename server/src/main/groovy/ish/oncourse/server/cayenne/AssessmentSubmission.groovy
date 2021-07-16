@@ -15,7 +15,6 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.AssessmentSubmissionInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._AssessmentSubmission
-import ish.util.LocalDateUtils
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
@@ -29,6 +28,7 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 	public static final String STUDENT_NAME_PROPERTY = "studentName"
 	public static final String CLASS_NAME_PROPERTY = "courseClassName"
 	public static final String ASSESSMENT_NAME_PROPERTY = "assessmentName"
+	public static final String MARKED_BY_ID_PROPERTY = "markedById"
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
@@ -122,7 +122,7 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 
 	@Override
 	Date getSubmittedDate() {
-		return LocalDateUtils.valueToDate(submittedOn)
+		return super.getSubmittedOn()
 	}
 }
 

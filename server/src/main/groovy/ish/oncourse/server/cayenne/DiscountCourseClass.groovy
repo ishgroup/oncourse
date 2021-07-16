@@ -12,22 +12,18 @@
 package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
-import ish.oncourse.cayenne.IDiscountCourseClass
+import ish.oncourse.cayenne.DiscountCourseClassInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._DiscountCourseClass
 
 import javax.annotation.Nonnull
-import java.math.BigDecimal
-import java.util.Date
 
 /**
  * Object representing relation between discount and course class.
  */
 @API
 @QueueableEntity
-class DiscountCourseClass extends _DiscountCourseClass implements Queueable, IDiscountCourseClass<CourseClass,Discount> {
-
-
+class DiscountCourseClass extends _DiscountCourseClass implements Queueable, DiscountCourseClassInterface {
 
 	/**
 	 * @return predicted percentage of students using this discount
@@ -104,7 +100,7 @@ class DiscountCourseClass extends _DiscountCourseClass implements Queueable, IDi
 	@Nonnull
 	@API
 	@Override
-	Discount getDiscount() {
+    Discount getDiscount() {
 		return super.getDiscount()
 	}
 }

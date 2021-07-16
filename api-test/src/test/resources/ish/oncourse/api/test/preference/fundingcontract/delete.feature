@@ -2,11 +2,11 @@
 Feature: Main feature for all DELETE requests with path 'preference/fundingcontract'
     
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/fundingcontract'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -58,30 +58,17 @@ Feature: Main feature for all DELETE requests with path 'preference/fundingcontr
         * print "id = " + id
 
 #       <--->  Login as notadmin and delete entity:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+
 
         Given path ishPath + '/' + id
         When method DELETE
         Then status 403
 
 #       <---> Scenario have been finished. Now remove created entity from db:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
-
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
-
+        * configure headers = { Authorization: 'admin'}
+        
         Given path ishPath + '/' + id
         When method DELETE
         Then status 204
@@ -100,15 +87,3 @@ Feature: Main feature for all DELETE requests with path 'preference/fundingcontr
         When method DELETE
         Then status 400
         And match response.errorMessage == "Entity with id = '100000' doesn't exist"
-
-
-    Scenario: (-) Delete Funding Contract without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
-
-
-    Scenario: (-) Delete Funding Contract with null ID
-        Given path ishPath + '/null'
-        When method DELETE
-        Then status 404

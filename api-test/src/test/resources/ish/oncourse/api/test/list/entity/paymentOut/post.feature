@@ -2,13 +2,13 @@
 Feature: Main feature for all POST requests with path 'list/entity/paymentOut'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/paymentOut'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
         * def ishPathInvoice = 'list/entity/invoice'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -99,16 +99,9 @@ Feature: Main feature for all POST requests with path 'list/entity/paymentOut'
     Scenario: (+) Create Payment Out by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def newPaymentOut =
@@ -196,16 +189,9 @@ Feature: Main feature for all POST requests with path 'list/entity/paymentOut'
     Scenario: (-) Create Payment Out by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         Given path ishPath

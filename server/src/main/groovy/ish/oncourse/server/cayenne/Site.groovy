@@ -11,8 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-
-import ish.messaging.ISite
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Site
@@ -33,7 +31,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Site extends _Site implements ISite, Queueable, NotableTrait, AttachableTrait {
+class Site extends _Site implements Queueable, NotableTrait, AttachableTrait {
 
 	public static final String DEFAULT_SITE_NAME = "Default site"
 

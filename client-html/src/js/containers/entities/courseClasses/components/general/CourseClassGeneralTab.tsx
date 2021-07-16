@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -228,7 +226,8 @@ const CourseClassGeneralTab = React.memo<Props>(
         values.successAndQueuedEnrolmentsCount,
         values.sessions,
         values.tutors,
-        tutorRoles
+        tutorRoles,
+        values.tutorAttendance
       );
 
       let projected = decimalMinus(
@@ -253,7 +252,8 @@ const CourseClassGeneralTab = React.memo<Props>(
             values.successAndQueuedEnrolmentsCount,
             values.sessions,
             values.tutors,
-            tutorRoles
+            tutorRoles,
+            values.tutorAttendance
           );
 
           projected = decimalMinus(

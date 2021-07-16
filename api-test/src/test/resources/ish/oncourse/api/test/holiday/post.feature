@@ -2,10 +2,10 @@
 Feature: Main feature for all POST requests with path 'holiday'
 
     Background: Authorize first
-        * callonce read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'holiday'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -65,16 +65,21 @@ Feature: Main feature for all POST requests with path 'holiday'
         And match karate.sizeOf(response) == 6
         And match response contains
         """
-        [
-        {"id":"#ignore","description":"Description#3-3","startDate":"2020-02-12","endDate":"2020-02-12","startDateTime":null,"endDateTime":null,"repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"},
-        {"id":"#ignore","description":"Description#3-2","startDate":"2020-02-12","endDate":"2022-02-12","startDateTime":null,"endDateTime":null,"repeat":"month","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2022-02-12","created":"#ignore","modified":"#ignore"},
-        {"id":"#ignore","description":"Description#3-1","startDate":"2020-02-12","endDate":"2020-02-12","startDateTime":null,"endDateTime":null,"repeat":"day","repeatEnd":"after","repeatEndAfter":5,"repeatOn":null,"created":"#ignore","modified":"#ignore"},
-        {"id":"#ignore","description":"Description#3-6","startDate":null,"endDate":null,"startDateTime":"2020-02-12T11:41:53.042Z","endDateTime":"2022-02-12T12:41:00.000Z","repeat":"week","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2022-02-12","created":"#ignore","modified":"#ignore"},
-        {"id":"#ignore","description":"Description#3-5","startDate":null,"endDate":null,"startDateTime":"2020-02-12T11:41:56.112Z","endDateTime":"2021-02-12T12:41:00.000Z","repeat":"month","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"},
-        {"id":"#ignore","description":"Description#3-4","startDate":null,"endDate":null,"startDateTime":"2020-02-12T11:41:56.719Z","endDateTime":"2020-02-12T12:41:56.719Z","repeat":"hour","repeatEnd":"after","repeatEndAfter":8,"repeatOn":null,"created":"#ignore","modified":"#ignore"}
-        ]
+        {
+        "repeatEnd":"after",
+        "startDateTime":null,
+        "endDate":"2020-02-12",
+        "created":"#ignore",
+        "repeat":"day",
+        "description":"Description#3-1",
+        "repeatEndAfter":5,
+        "modified":"#ignore",
+        "id":"#ignore",
+        "endDateTime":null,
+        "repeatOn":null,
+        "startDate":"2020-02-12"
+        }
         """
-
 
  #      <---> Scenario have been finished. Now find and remove created object from DB:
         Given path ishPath
@@ -222,7 +227,7 @@ Feature: Main feature for all POST requests with path 'holiday'
         * print "id = " + id
 #       <--->
 
-       * def holidayToUpdateArray = [{id:"#(id)","description":"UPD#1upd","startDateTime":"2020-02-12T11:41:56.719Z","endDateTime":"2020-02-12T12:41:56.719Z","repeatEnd":"onDate","repeat":"day","repeatEndAfter":0,"repeatOn":"2021-02-12","startDate":null,"endDate":null}]
+       * def holidayToUpdateArray = [{id:"#(id)","description":"UPD#1upd","startDateTime":"2020-02-12T11:00:00.000Z","endDateTime":"2020-02-12T12:00:00.000Z","repeatEnd":"onDate","repeat":"day","repeatEndAfter":0,"repeatOn":"2021-02-12","startDate":null,"endDate":null}]
 
         Given path ishPath
         And request holidayToUpdateArray
@@ -232,8 +237,22 @@ Feature: Main feature for all POST requests with path 'holiday'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == [{"id":"#(id)","description":"UPD#1upd","startDate":null,"endDate":null,"startDateTime":"2020-02-12T11:41:56.719Z","endDateTime":"2020-02-12T12:41:56.719Z","repeat":"day","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2021-02-12","created":"#ignore","modified":"#ignore"}]
-
+        And match response == 
+        """
+            [{
+            "repeatEnd":"onDate",
+            "startDateTime":"2020-02-12T11:00:00.000Z",
+            "endDate":null,
+            "created":"#ignore",
+            "repeat":"day",
+            "description":"UPD#1upd",
+            "repeatEndAfter":null,
+            "modified":"#ignore",
+            "id":"#ignore",
+            "endDateTime":"2020-02-12T12:00:00.000Z",
+            "repeatOn":"2021-02-12",
+            "startDate":null}]
+        """
 #       <---> Scenario have been finished. Now find and remove created object from DB:
         * call read('../removeEntityById.feature') {path: '#(ishPath)', entityId: '#(id)'}
 

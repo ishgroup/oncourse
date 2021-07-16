@@ -11,15 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.IDefinedTutorRole
+
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._DefinedTutorRole
 import org.apache.cayenne.query.ObjectSelect
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
-import java.util.List
 
 /**
  * Tutor roles represent the type of engagement a tutor has in a class. They might be a 'trainer', 'assistant' or
@@ -29,7 +27,7 @@ import java.util.List
  * Each role can have a set of pay rates, although the specific pay rate can also be overridden per tutor per class.
  */
 @API
-class DefinedTutorRole extends _DefinedTutorRole implements IDefinedTutorRole {
+class DefinedTutorRole extends _DefinedTutorRole {
 
 	public static final String CURRENT_PAYRATE = "currentPayrate"
 

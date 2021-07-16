@@ -2,12 +2,12 @@
 Feature: Main feature for all PUT requests with path 'list/entity/site'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/site'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
         * def newSite =
         """

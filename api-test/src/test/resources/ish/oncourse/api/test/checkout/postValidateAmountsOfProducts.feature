@@ -2,9 +2,9 @@
 Feature: Validations on invoices amount after payment
 
   Background: Authorize first, create checkoutModel
-    * callonce read('../signIn.feature')
+    * configure headers = { Authorization: 'admin' }
     * url 'https://127.0.0.1:8182/a/v1'
-    * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+    
     * def ishPath = 'checkout'
     * def ishPathEntity = 'list/entity/'
 
@@ -31,15 +31,15 @@ Feature: Validations on invoices amount after payment
     Given path ishPathEntity + 'invoice/' + invoiceId
     When method GET
     Then status 200
-    And match response.total == checkoutModel.payForThisInvoice
+    And match response.total == 66.0
     And match response.invoiceLines[0].priceEachExTax == 60.0
     And match response.invoiceLines[0].taxEach == 6.0
 
     Given path ishPathEntity + 'paymentIn/' + paymentId
     When method GET
     Then status 200
-    And match response.amount == checkoutModel.payForThisInvoice
-    And match response.invoices[0].amount == checkoutModel.payForThisInvoice
+    And match response.amount == 66.0
+    And match response.invoices[0].amount == 66.0
 
 
   Scenario: Buy vouchers, check invoice lines amount with voucher cost
@@ -52,8 +52,8 @@ Feature: Validations on invoices amount after payment
     * set checkoutModel.paymentMethodId = 1
     * set checkoutModel.payNow = 50.0
     * set checkoutModel.payForThisInvoice = 50.0
-    * checkoutModel.contactNodes[0].vouchers.add({ "productId":1009, "validTo":"2021-05-07", "value":0, "restrictToPayer":false })
-    * checkoutModel.contactNodes[0].vouchers.add({ "productId":1002, "validTo":"2021-05-07", "value":50, "restrictToPayer":false })
+    * set checkoutModel.contactNodes[0].vouchers[0] = { "productId":1009, "validTo":"2021-05-07", "value":0, "restrictToPayer":false }
+    * set checkoutModel.contactNodes[0].vouchers[1] = { "productId":1002, "validTo":"2021-05-07", "value":50, "restrictToPayer":false }
 
     Given path ishPath
     And request checkoutModel
@@ -66,7 +66,7 @@ Feature: Validations on invoices amount after payment
     Given path ishPathEntity + 'invoice/' + invoiceId
     When method GET
     Then status 200
-    And match response.total == checkoutModel.payForThisInvoice
+    And match response.total == 50.0
     And assert karate.jsonPath(response.invoiceLines, '[?(@.priceEachExTax==0.0)]')[0].id != null
     And assert karate.jsonPath(response.invoiceLines, '[?(@.priceEachExTax==50.0)]')[0].id != null
     And match karate.sizeOf(response.invoiceLines) == 2
@@ -74,8 +74,8 @@ Feature: Validations on invoices amount after payment
     Given path ishPathEntity + 'paymentIn/' + paymentId
     When method GET
     Then status 200
-    And match response.amount == checkoutModel.payForThisInvoice
-    And match response.invoices[0].amount == checkoutModel.payForThisInvoice
+    And match response.amount == 50.0
+    And match response.invoices[0].amount == 50.0
 
 
   Scenario: Buy product, check invoice line amount with product cost
@@ -100,7 +100,7 @@ Feature: Validations on invoices amount after payment
     Given path ishPathEntity + 'invoice/' + invoiceId
     When method GET
     Then status 200
-    And match response.total == checkoutModel.payForThisInvoice
+    And match response.total == 264.0
     And match response.invoiceLines[0].priceEachExTax == 120.0
     And match response.invoiceLines[0].taxEach == 12.0
     And match response.invoiceLines[0].quantity == 2
@@ -108,8 +108,8 @@ Feature: Validations on invoices amount after payment
     Given path ishPathEntity + 'paymentIn/' + paymentId
     When method GET
     Then status 200
-    And match response.amount == checkoutModel.payForThisInvoice
-    And match response.invoices[0].amount == checkoutModel.payForThisInvoice
+    And match response.amount == 264.0
+    And match response.invoices[0].amount == 264.0
 
 
   Scenario: Buy product, check invoice line amount with product cost
@@ -134,13 +134,13 @@ Feature: Validations on invoices amount after payment
     Given path ishPathEntity + 'invoice/' + invoiceId
     When method GET
     Then status 200
-    And match (response.total - response.amountOwing) == checkoutModel.payForThisInvoice
+    And match (response.total - response.amountOwing) == 250.0
     And match response.invoiceLines[0].priceEachExTax == 1000.0
     And match response.invoiceLines[0].taxEach == 0.0
 
     Given path ishPathEntity + 'paymentIn/' + paymentId
     When method GET
     Then status 200
-    And match response.amount == checkoutModel.payForThisInvoice
-    And match response.invoices[0].amount == checkoutModel.payForThisInvoice
+    And match response.amount == 250.0
+    And match response.invoices[0].amount == 250.0
     And match response.invoices[0].amountOwing == 750.0

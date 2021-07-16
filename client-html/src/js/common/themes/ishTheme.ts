@@ -1,5 +1,14 @@
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import { theme } from "./appTheme";
+import {
+  ChristmasThemeKey,
+  DarkThemeKey,
+  DefaultThemeKey,
+  HighcontrastThemeKey,
+  MonochromeThemeKey
+} from "../../model/common/Theme";
+import { LSGetItem } from "../utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../constants/Config";
 
 const createOverrides = palette => ({
   overrides: {
@@ -282,3 +291,37 @@ export const christmasTheme = createMuiTheme({
   ...theme.christmas,
   ...createOverrides(christmasThemePalette)
 } as any);
+
+export const currentTheme = themeName => {
+  switch (themeName) {
+    case DarkThemeKey: {
+      return darkTheme;
+    }
+    case DefaultThemeKey: {
+      return defaultTheme;
+    }
+    case MonochromeThemeKey: {
+      return monochromeTheme;
+    }
+    case HighcontrastThemeKey: {
+      return highcontrastTheme;
+    }
+    case ChristmasThemeKey: {
+      return christmasTheme;
+    }
+    default: {
+      return defaultTheme;
+    }
+  }
+};
+
+export const getTheme = theme => {
+  let actualTheme = theme;
+
+  const storageThemeName = LSGetItem(APPLICATION_THEME_STORAGE_NAME);
+  if (storageThemeName) {
+    actualTheme = currentTheme(storageThemeName);
+  }
+
+  return actualTheme;
+};

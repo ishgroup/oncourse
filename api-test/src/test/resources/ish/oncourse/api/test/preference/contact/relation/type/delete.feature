@@ -2,10 +2,10 @@
 Feature: Main feature for all DELETE requests with path 'preference/contact/relation/type'
 
     Background: Authorize first
-        * callonce read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'preference/contact/relation/type'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Delete existing (not system) ContactRelationType
@@ -55,12 +55,6 @@ Feature: Main feature for all DELETE requests with path 'preference/contact/rela
         When method DELETE
         Then status 400
         And match response.errorMessage == "Contact relation type is not exist"
-
-
-    Scenario: (-) Delete ContactRelationType without ID
-        Given path ishPath
-        When method DELETE
-        Then status 405
 
 
     Scenario: (-) Delete ContactRelationType with null ID

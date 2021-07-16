@@ -2,13 +2,13 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/payslip'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/payslip'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
         * def ishPathMarking = 'list/entity/payslip/marking'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         

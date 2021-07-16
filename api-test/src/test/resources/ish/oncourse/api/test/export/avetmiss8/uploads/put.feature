@@ -2,11 +2,11 @@
 Feature: Main feature for all PUT requests with path 'export/avetmiss8/uploads'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'export/avetmiss8/uploads'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -63,15 +63,9 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8/uploads'
         When method PUT
         
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
 #       <---> Change status to 'fail':
         Given path ishPath
@@ -123,15 +117,9 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8/uploads'
         And request {}
         When method PUT
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 
 #       <---> Change status to 'fail':
         Given path ishPath

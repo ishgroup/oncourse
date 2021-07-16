@@ -13,9 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.payable.IInvoiceLineInterface
 import ish.common.payable.InvoicePayableLineWrapper
-import ish.common.payable.TaxInterface
 import ish.math.Money
-import ish.messaging.IInvoiceLine
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._InvoiceLine
@@ -36,11 +34,13 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class InvoiceLine extends _InvoiceLine implements IInvoiceLine, IInvoiceLineInterface, Queueable {
+class InvoiceLine extends _InvoiceLine implements IInvoiceLineInterface, Queueable {
 
 	private transient InvoicePayableLineWrapper waPayableLine
 
-
+	public static final String TOTAL_PRICE_INC_TAX_PROPERTY = "total_price";
+	public static final String TOTAL_PRICE_EX_TAX_PROPERTY = "total_price_ex_tax";
+	public static final String DISCOUNT_EX_TAX_PROPERTY = "discount_applied_ex_tax";
 
 	private static final Logger logger = LogManager.getLogger(InvoiceLine.class)
 
@@ -322,9 +322,7 @@ class InvoiceLine extends _InvoiceLine implements IInvoiceLine, IInvoiceLineInte
 	/**
 	 * @return list of discounts linked to this invoice line
 	 */
-	@Nonnull
-	@API
-	@Override
+	@Nonnull @API
 	List<Discount> getDiscounts() {
 		List<Discount> discounts = new ArrayList<>()
 		for (InvoiceLineDiscount id : getInvoiceLineDiscounts()) {

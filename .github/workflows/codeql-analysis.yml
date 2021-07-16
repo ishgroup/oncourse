@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: ${{ matrix.java }}
 
       - name: Cache
         uses: actions/cache@v2
@@ -39,9 +39,11 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           languages: ${{ matrix.language }}
+          queries: security-and-quality
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v1
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
+

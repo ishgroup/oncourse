@@ -662,8 +662,8 @@ class DefaultUserPreference {
                                 AssessmentSubmission.ASSESSMENT_CLASS.dot(AssessmentClass.ASSESSMENT).dot(Assessment.CODE).name
                         ]
                 ),
-                new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
+                new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
         ]
         it.sortings = [
                 new SortingDTO(attribute: AssessmentSubmission.ENROLMENT.dot(Enrolment.ID).name, ascending: true)

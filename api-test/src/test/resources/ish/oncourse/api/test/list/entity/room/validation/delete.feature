@@ -2,12 +2,12 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/room/validation'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/room/validation'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 

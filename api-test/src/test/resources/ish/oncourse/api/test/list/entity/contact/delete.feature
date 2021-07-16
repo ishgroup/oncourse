@@ -2,12 +2,12 @@
 Feature: Main feature for all DELETE requests with path 'list/entity/contact'
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/contact'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
         
@@ -135,15 +135,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/contact'
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/' + id
@@ -161,15 +155,9 @@ Feature: Main feature for all DELETE requests with path 'list/entity/contact'
     Scenario: (-) Delete existing Contact by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/2'

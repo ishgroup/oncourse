@@ -2,11 +2,11 @@
 Feature: Main feature for all PATCH requests with path 'preference/fundingcontract'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPathLogin = 'login'
         * def ishPath = 'preference/fundingcontract'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
     Scenario: (+) Update Funding Contract status by admin
@@ -71,16 +71,9 @@ Feature: Main feature for all PATCH requests with path 'preference/fundingcontra
         * print "id = " + id
 
 #       <--->  Login as notadmin:
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+
 
         Given path ishPath
         And request [{"id":"#(id)","active":true,"flavour":"WA RAPT","name":"FC-701"}]
@@ -88,13 +81,8 @@ Feature: Main feature for all PATCH requests with path 'preference/fundingcontra
         Then status 403
 
 #       <---> Scenario have been finished. Now remove created entity from db:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
 
         Given path ishPath + '/' + id
         When method DELETE

@@ -2,12 +2,12 @@
 Feature: Main feature for all GET requests with path 'list/entity/invoice'
 
     Background: Authorize first
-        * callonce read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/invoice'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -65,29 +65,14 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '9999' doesn't exist."
-
-
-
-    Scenario: (-) Get existing invoice without id in path
-
-        Given path ishPath
-        When method GET
-        Then status 405
-
-
+        
 
     Scenario: (+) Get invoice by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + '/2'
@@ -130,15 +115,9 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
     Scenario: (+) Get list of all invoices by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -152,15 +131,9 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
     Scenario: (-) Get list of all invoices by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPathList
@@ -174,15 +147,9 @@ Feature: Main feature for all GET requests with path 'list/entity/invoice'
     Scenario: (-) Get invoice by notadmin without access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path '/login'
-        And request loginBody
-        When method PUT
-        Then status 200
+        
 #       <--->
 
         Given path ishPath + "/1"

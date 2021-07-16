@@ -2,9 +2,9 @@
 Feature: Main feature for all PUT requests with path 'list/entity/script' without license
 
     Background: Authorize first
-        * call read('../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         * def ishPath = 'list/entity/script'
         * def ishPathPlain = 'list/plain'
         * def ishPathLogin = 'login'
@@ -103,16 +103,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/script' withou
 
 
     Scenario: (-) Update script (Import panel) by notadmin with access rights
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         * def scriptToUpdate = {"keyCode":"test.script_query","name":"script with Query panel_upd","description":"some description_upd","enabled":false,"trigger":{"type":"Class cancelled","entityName":null,"cron":null},"content":"import a.b.cdef\ndef run(args) {\n\n// Query closure start \n  def result = query {\n    entity \"Site\"\n    query \"createdOn today \"\n    context args.context\n  }      \n  // Query closure end\n}"}
 
@@ -170,16 +163,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/script' withou
 
 
     Scenario: (-) Update script (all panels) by notadmin with access rights
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         * def scriptToUpdate = {"keyCode":"test.script_query","name":"script with Query panel_upd","description":"some description_upd","enabled":false,"trigger":{"type":"Class cancelled","entityName":null,"cron":null},"content":"import a.b.cdef\ndef run(args) {\n\n new Date(); \n // Query closure start \n  def result = query {\n    entity \"Site\"\n    query \"createdOn today \"\n    context args.context\n  }      \n  // Query closure end\n}"}
 
@@ -197,13 +183,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/script' withou
         Then status 204
 
 #       <----->  Scenario have been finished. Now find and remove created object from DB:
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + "/" + id
         When method DELETE

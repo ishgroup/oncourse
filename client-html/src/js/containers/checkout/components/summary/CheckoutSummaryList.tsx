@@ -21,11 +21,11 @@ import { CheckoutSummary } from "../../../../model/checkout";
 import { getContactName } from "../../../entities/contacts/utils";
 import { checkoutSetDefaultPayer } from "../../actions/checkoutSummary";
 import { summaryListStyles } from "../../styles/summaryListStyles";
-import { AppBarTitle } from "../CheckoutSelection";
 import { CheckoutSummaryCogwheel } from "./CheckoutSummaryCogwheel";
 import CheckoutSummaryExpandableItemRenderer from "./CheckoutSummaryExpandableItemRenderer";
 import { toggleSendContext, toggleSummaryItem, toggleVoucherItem } from "../../actions";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import CheckoutAppBar from "../CheckoutAppBar";
 
 export const CHECKOUT_SUMMARY_FORM = "CHECKOUT_SUMMARY_FORM";
 
@@ -86,7 +86,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
     <form autoComplete="off" className="root">
       <div className="appBarContainer w-100">
         <CustomAppBar>
-          <AppBarTitle title={`${invoiceLinesCount} invoice line${invoiceLinesCount !== 1 ? "s" : ""}`} />
+          <CheckoutAppBar title={`${invoiceLinesCount} invoice line${invoiceLinesCount !== 1 ? "s" : ""}`} />
           <CheckoutSummaryCogwheel dispatch={dispatch} summary={summary} disableDiscounts={disableDiscounts} />
         </CustomAppBar>
 

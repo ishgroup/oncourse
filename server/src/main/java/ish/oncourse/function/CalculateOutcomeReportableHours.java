@@ -11,17 +11,17 @@
 
 package ish.oncourse.function;
 
-import ish.messaging.IOutcome;
+import ish.oncourse.server.cayenne.Outcome;
 
 import java.math.BigDecimal;
 
 public class CalculateOutcomeReportableHours {
 
-    IOutcome outcome;
+    Outcome outcome;
 
     private CalculateOutcomeReportableHours() {}
 
-    public static CalculateOutcomeReportableHours valueOf(IOutcome o) {
+    public static CalculateOutcomeReportableHours valueOf(Outcome o) {
         CalculateOutcomeReportableHours obj = new CalculateOutcomeReportableHours();
         obj.outcome = o;
         return obj;

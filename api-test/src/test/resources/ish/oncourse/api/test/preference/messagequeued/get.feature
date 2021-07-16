@@ -3,10 +3,10 @@ Feature: Main feature for all GET requests with path 'preference/messagequeued'
     
     
     Background: Authorize first
-        * callonce read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def messagePath = 'preference/messagequeued'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
         
         
     Scenario: (+) Get messages count with type 'sms'
@@ -17,12 +17,11 @@ Feature: Main feature for all GET requests with path 'preference/messagequeued'
         And assert response >= 4
         
         
-    Scenario: (+) Get messages count with type 'email'
+    Scenario: (+) Get messages count with type 'email', using fake smtp 
         Given path messagePath
         And param type = 'email'
         When method GET
         Then status 200
-        And assert response >= 4
         
         
     Scenario: (-) Get messages count with type 'post'

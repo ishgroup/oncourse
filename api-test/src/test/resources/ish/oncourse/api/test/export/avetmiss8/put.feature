@@ -2,13 +2,13 @@
 Feature: Main feature for all PUT requests with path 'export/avetmiss8'
 
     Background: Authorize first
-        * call read('../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'export/avetmiss8'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathOutcomes = 'export/avetmiss8/outcomes'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -63,16 +63,9 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
     Scenario: (+) Export avetmiss8 by notadmin with access rights
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def avetmissExport = {"ids":[101,1,4],"defaultStatus":false,"settings":{"flavour":"NCVER (Standard AVETMISS)","fee":["Fee for service VET (non-funded)","Queensland","New South Wales","Victoria","Tasmania","Australian Capital Territory","Western Australia","South Australia","Northern Territory","No Australian state defined","Non VET"],"outcomesStart":"2016-12-31","outcomesEnd":"2017-12-31","includeLinkedOutcomes":false,"fundingContracts":[],"classIds":[]}}
@@ -104,16 +97,9 @@ Feature: Main feature for all PUT requests with path 'export/avetmiss8'
         When method PUT
         
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 #       <--->
 
         * def avetmissExport = {"ids":[101,1,4],"defaultStatus":false,"settings":{"flavour":"NCVER (Standard AVETMISS)","fee":["Fee for service VET (non-funded)","Queensland","New South Wales","Victoria","Tasmania","Australian Capital Territory","Western Australia","South Australia","Northern Territory","No Australian state defined","Non VET"],"outcomesStart":"2016-12-31","outcomesEnd":"2017-12-31","includeLinkedOutcomes":false,"fundingContracts":[],"classIds":[]}}

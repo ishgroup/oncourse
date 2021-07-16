@@ -14,7 +14,6 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.common.types.NodeSpecialType
 import ish.common.types.NodeType
-import ish.messaging.ITag
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.function.GetTagGroupsInterface
@@ -375,11 +374,11 @@ class TagFunctions {
     }
 
     static ValidationErrorDTO validateRelationsForSave(Class clazz, ObjectContext context, List<Long> tagIds, TaggableClasses... taggableClasses) {
-        List<ITag> nonMultipleTags = new ArrayList<>()
-        Map<ITag, Integer> rootTagsUsed = new HashMap<>()
+        List<Tag> nonMultipleTags = new ArrayList<>()
+        Map<Tag, Integer> rootTagsUsed = new HashMap<>()
         GetTagGroupsInterface getTagGroups =  GetTagGroups.valueOf(context, taggableClasses)
 
-        (taggableClasses.collect { getTagGroups.get(it) }.flatten() as List<ITag>).each { ITag tag ->
+        (taggableClasses.collect { getTagGroups.get(it) }.flatten() as List<Tag>).each { Tag tag ->
 
             if (tag.isRequiredFor(clazz)) {
                 rootTagsUsed.put(tag, 0)
@@ -397,7 +396,7 @@ class TagFunctions {
                 .where(Tag.ID.in(tagIds))
                 .select(context)
                 .each { tag ->
-                        ITag root = tag.root
+                        Tag root = tag.root
                     if (!rootTagsUsed[root]) {
                         rootTagsUsed.put(root, 1)
                     } else {
@@ -407,12 +406,12 @@ class TagFunctions {
                     }
                 }
 
-        ITag unassignedRootTad = rootTagsUsed.keySet().find {root -> rootTagsUsed[root] == null || rootTagsUsed[root] == 0 }
+        Tag unassignedRootTad = rootTagsUsed.keySet().find {root -> rootTagsUsed[root] == null || rootTagsUsed[root] == 0 }
         if (unassignedRootTad) {
             return new ValidationErrorDTO(null, 'tags', "Tag $unassignedRootTad.name is mandatory. Modify your tag settings before removing this tag.")
         }
 
-        ITag duplicatedRootTad = nonMultipleTags.find {root -> !root.isMultipleFor(clazz) && rootTagsUsed[root] != null && rootTagsUsed[root] > 1 }
+        Tag duplicatedRootTad = nonMultipleTags.find {root -> !root.isMultipleFor(clazz) && rootTagsUsed[root] != null && rootTagsUsed[root] > 1 }
         if (duplicatedRootTad) {
             return new ValidationErrorDTO(null, 'tags', "The $duplicatedRootTad.name tag group can be set only once.")
         }

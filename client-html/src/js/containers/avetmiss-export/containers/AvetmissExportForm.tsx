@@ -63,6 +63,7 @@ import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
 import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
 import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
 import { AppTheme } from "../../../model/common/Theme";
+import { AvetmissExportSettingsReqired } from "../../../model/preferences";
 
 export const FORM: string = "AvetmissExportForm";
 
@@ -340,9 +341,9 @@ interface Props {
   updateFundingUpload?: (id: number, status: FundingStatus) => void;
   getFundingContracts?: () => void;
   contracts?: FundingSource[];
-  updateSettings?: (settings: AvetmissExportSettings) => void;
+  updateSettings?: (settings: AvetmissExportSettings) => AvetmissExportSettingsReqired;
   onClose?: () => void;
-  formatSettings?: (settings: AvetmissExportSettings) => AvetmissExportSettings;
+  formatSettings?: (settings: AvetmissExportSettings) => AvetmissExportSettingsReqired;
 }
 
 const avetmissStateInitial = {

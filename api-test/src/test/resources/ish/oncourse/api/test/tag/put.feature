@@ -2,11 +2,11 @@
 Feature: Main feature for all PUT requests with path 'tag'
 
     Background: Authorize first
-        * call read('../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'tag'
         * def ishPathLogin = 'login'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
         * def newTagGroupCreatedForNotadmin = {"name":"tagName500","status":"Show on website","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","urlPath":"urlPath2","content":"Any text2","weight":2,}]}
         * def newTagGroupUpdatedByNotadmin = {"name":"tagName501","status":"Show on website","urlPath":"urlPath","content":"Any text","weight":1,"requirements":[{"type":"Payslip","mandatory":true,"limitToOneTag":true,"system":false}],"childTags":[{"name":"childTag1","status":"Show on website","urlPath":"urlPath1","content":"Any text1","weight":1,},{"name":"childTag2","status":"Show on website","urlPath":"urlPath2","content":"Any text2","weight":2,}]}
@@ -365,16 +365,9 @@ Feature: Main feature for all PUT requests with path 'tag'
     Scenario: (+) Update existing tag group by notadmin with permissions: Hide-View-Print-Edit-Create-Delete
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsDelete', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>>  Add a new entity to update it and get id:
         Given path ishPath
@@ -403,16 +396,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         And match response[*].name contains "tagName501"
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -437,16 +423,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         * def id = get[0] response[?(@.name == 'tagName500')].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsCreate', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Update entity:
         Given path ishPath + '/' + id
@@ -462,16 +441,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         And match response[*].name contains "tagName501"
 
 #       <---->  Scenario have been finished. Now remove created object from DB
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -496,16 +468,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         * def id = get[0] response[?(@.name == 'tagName500')].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsEdit', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Update entity:
         Given path ishPath + '/' + id
@@ -521,16 +486,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         And match response[*].name contains "tagName501"
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -555,16 +513,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         * def id = get[0] response[?(@.name == 'tagName500')].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsPrint', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsPrint'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Update entity:
         Given path ishPath + '/' + id
@@ -573,16 +524,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -607,16 +551,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         * def id = get[0] response[?(@.name == 'tagName500')].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Update entity:
         Given path ishPath + '/' + id
@@ -625,16 +562,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE
@@ -659,16 +589,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         * def id = get[0] response[?(@.name == 'tagName500')].id
 
 #       <--->  Login as notadmin
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'UserWithRightsHide'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
 #       >>> Update entity:
         Given path ishPath + '/' + id
@@ -677,16 +600,9 @@ Feature: Main feature for all PUT requests with path 'tag'
         Then status 403
 
 #       <---->  Scenario have been finished. Now change back permissions and remove created object from DB
-        Given path '/logout'
-        And request {}
-        When method PUT
-        * def loginBody = {login: 'admin', password: 'password', kickOut: 'true', skipTfa: 'true'}
+        * configure headers = { Authorization:  'admin'}
 
-        Given path ishPathLogin
-        And request loginBody
-        When method PUT
-        Then status 200
-        And match response.loginStatus == "Login successful"
+        
 
         Given path ishPath + '/' + id
         When method DELETE

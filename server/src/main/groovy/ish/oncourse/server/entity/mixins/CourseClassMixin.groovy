@@ -17,7 +17,6 @@ import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.CourseClassUtil
-import ish.oncourse.entity.services.ContactService
 import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.entity.services.EnrolmentService
 import ish.oncourse.entity.services.InvoiceLineService
@@ -441,7 +440,6 @@ class CourseClassMixin {
 
 		Ordering.orderList(theEnrolments, orderings)
 
-		ContactService contactService = getService(ContactService)
 		EnrolmentService enrolmentService = getService(EnrolmentService)
 
 		theEnrolments.findAll { Enrolment e -> e.allowedToPrint() }.each { e ->
@@ -449,11 +447,11 @@ class CourseClassMixin {
 				theSessions.each { s ->
 					List<Attendance> attendances = Attendance.STUDENT.eq(e.student).filterObjects(s.attendance)
 
-					result.add(PrintableAttendance.valueOf(contactService, enrolmentService, e, s, attendances[0]?.attendanceType))
+					result.add(PrintableAttendance.valueOf(enrolmentService, e, s, attendances[0]?.attendanceType))
 				}
 
 			} else {
-				result.add(PrintableAttendance.valueOf(contactService, enrolmentService, e, null, null))
+				result.add(PrintableAttendance.valueOf(enrolmentService, e, null, null))
 			}
 		}
 

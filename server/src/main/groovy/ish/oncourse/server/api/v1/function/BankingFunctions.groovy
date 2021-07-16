@@ -14,7 +14,6 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.oncourse.cayenne.PaymentInterface
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.v1.model.BankingDTO
 import ish.oncourse.server.api.v1.model.PaymentDTO
 import ish.oncourse.server.api.v1.model.ReconciledStatusDTO
@@ -70,7 +69,7 @@ class BankingFunctions {
 		copyCommonProps(source, target)
 		target.id = IN_PREFIX + source.id
 		target.source = source.source.displayName
-		target.contactName = GetContactFullName.valueOf(source.payer, true).get()
+		target.contactName = source.payer.getFullName()
 		target.contactId = source.payer.id
 		target
 	}
@@ -80,7 +79,7 @@ class BankingFunctions {
 		copyCommonProps(source, target)
 		target.id = OUT_PREFIX + source.id
 		target.source = ""
-		target.contactName = GetContactFullName.valueOf(source.payee, true).get()
+		target.contactName = source.payee.getFullName()
 		target.contactId = source.payee.id
 		target
 	}

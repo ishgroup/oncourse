@@ -6,20 +6,15 @@
 import { Popover } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import React, { useCallback, useMemo } from "react";
-import { withStyles, createStyles, darken } from "@material-ui/core/styles";
+import { createStyles, darken, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import {
-  arrayInsert, arraySplice, change, initialize
-} from "redux-form";
+import { arrayInsert, arraySplice, change, initialize } from "redux-form";
 import { isAfter, isBefore, isEqual } from 'date-fns';
-import {
- ClassCost, CourseClassTutor, Discount, Tax
-} from "@api/model";
+import { ClassCost, CourseClassTutor, Discount, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
-
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
 import { stubFunction } from "../../../../../common/utils/common";
 import { stopEventPropagation } from "../../../../../common/utils/events";
@@ -298,7 +293,8 @@ const CourseClassBudgetTab = React.memo<Props>(
           values.successAndQueuedEnrolmentsCount,
           values.sessions,
           values.tutors,
-          tutorRoles
+          tutorRoles,
+          values.tutorAttendance
         ),
       [
         values.budget,
@@ -307,7 +303,8 @@ const CourseClassBudgetTab = React.memo<Props>(
         values.successAndQueuedEnrolmentsCount,
         values.sessions,
         values.tutors,
-        tutorRoles
+        tutorRoles,
+        values.tutorAttendance
       ]
     );
 
@@ -838,7 +835,7 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
   ]);
 
   return (
-    <div className="pl-3 pr-3 centeredFlex">
+    <div className="pl-2 pr-2 centeredFlex">
       <Grid container>
         <Grid item xs={5} className="centeredFlex">
           <div className="secondaryHeading">{header}</div>

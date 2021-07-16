@@ -2,13 +2,13 @@
 Feature: Main feature for all GET requests with path 'list/entity/emailTemplate/template'
 
     Background: Authorize first
-        * call read('../../../../signIn.feature')
+        * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/emailTemplate/template'
         * def ishPathTemplate = 'list/entity/emailTemplate'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        * configure httpClientClass = 'ish.oncourse.api.test.client.KarateClient'
+        
 
 
 
@@ -51,10 +51,6 @@ Feature: Main feature for all GET requests with path 'list/entity/emailTemplate/
         And param entity = 'Course'
         When method GET
         Then status 200
-#        And match $.rows[*].id contains
-#        """
-#
-#        """
 
 #       <---->  Scenario have been finished. Now delete created entity:
         Given path ishPathTemplate + '/' + id
@@ -62,57 +58,3 @@ Feature: Main feature for all GET requests with path 'list/entity/emailTemplate/
         Then status 204
 
 
-
-
-#    Scenario: (+) Get list of all EmailTemplates by notadmin with access rights
-#
-##       <--->  Login as notadmin
-#        * def loginBody = {login: 'UserWithRightsView', password: 'password', kickOut: 'true', skipTfa: 'true'}
-#
-#        Given path '/login'
-#        And request loginBody
-#        When method PUT
-#        Then status 200
-##       <--->
-#
-#        Given path ishPathList
-#        And param entity = 'EmailTemplate'
-#        When method GET
-#        Then status 200
-#        And match $.rows[*].id contains ["1"]
-
-
-
-#    Scenario: (+) Get EmailTemplate by admin
-#
-#        Given path ishPath + '/34'
-#        When method GET
-#        Then status 200
-#        And match $.id == 1
-#
-#
-#
-#    Scenario: (+) Get EmailTemplate by notadmin
-#
-##       <--->  Login as notadmin
-#        * def loginBody = {login: 'UserWithRightsHide', password: 'password', kickOut: 'true', skipTfa: 'true'}
-#
-#        Given path '/login'
-#        And request loginBody
-#        When method PUT
-#        Then status 200
-##       <--->
-#
-#        Given path ishPath + '/2'
-#        When method GET
-#        Then status 200
-#        And match $.id == 2
-#
-#
-#
-#    Scenario: (-) Get not existing EmailTemplate
-#
-#        Given path ishPath + "/99999"
-#        When method GET
-#        Then status 400
-#        And match $.errorMessage == "Record with id = '99999' doesn't exist."

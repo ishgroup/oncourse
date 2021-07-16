@@ -11,9 +11,9 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.payable.EnrolmentInterface
 import ish.common.types.*
 import ish.math.Money
-import ish.messaging.IEnrolment
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateOutcomeReportableHours
@@ -30,7 +30,6 @@ import javax.annotation.Nullable
 import static ish.common.types.EnrolmentStatus.NEW
 import static java.lang.String.format
 
-
 /**
  * An enrolment joins a student to a class. There can be only one enrolment per student per class.
  *
@@ -46,14 +45,16 @@ import static java.lang.String.format
  * the relation to Outcomes for this Enrolment.
  *
  */
-//TODO docs
 @API
 @QueueableEntity
-class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
+class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface, Queueable, NotableTrait, ExpandableTrait, AttachableTrait {
 
 	public static final String IS_VET_PROPERTY = 'vet'
 	static final String DISPLAY_STATUS_PROP = 'displayStatus'
+	public static final String STUDENT_KEY = "student";
+	public static final String STATUS_PROPERTY = "status";
 
+	public static final String IS_SUCCESSFULL_OR_QUEUED = "is_successfull_or_queued";
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -635,7 +636,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, Queuea
 	 */
 	@Nonnull
 	@Override
-	List<InvoiceLine> getInvoiceLines() {
+    List<InvoiceLine> getInvoiceLines() {
 		return super.getInvoiceLines()
 	}
 
@@ -723,7 +724,6 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, IEnrolment, Queuea
 	 * uses by customers in reports, exports and other components.
 	 */
 	@API
-    @Override
 	InvoiceLine getOriginalInvoiceLine() {
 		List<InvoiceLine> lines = new LinkedList<>(getInvoiceLines())
 
