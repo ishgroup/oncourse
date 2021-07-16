@@ -61,7 +61,7 @@ class UserSessionFilter extends BillingSessionFilter {
     @Override
     protected void createSession() {
         String sessionId = SecurityUtil.generateRandomPassword(20)
-        String userId = "SystemUser-$requestService.systemUser.id"
+        String userId = "$SystemUser.simpleName-$requestService.systemUser.id"
         String sessionToken = "$userId&$sessionId".toString()
 
         sessionManager.persistSession(userId, sessionId, CreateMode.EPHEMERAL)
@@ -75,6 +75,11 @@ class UserSessionFilter extends BillingSessionFilter {
             return result
         }
         SystemUser user = null
+        
+        if (sessionCookie.userType != SystemUser.simpleName) {
+            return 'User session invalid'
+        }
+        
         Long id = sessionCookie.getUserId()
         if (id) {
             user = SelectById.query(SystemUser,  id).selectOne(cayenneService.newContext())
