@@ -24,7 +24,7 @@ const Billing = () => {
     const token = getCookie('JSESSIONID');
     if (token) {
       defaultAxios.defaults.withCredentials = true;
-      defaultAxios.defaults.baseURL = 'https://provisioning.ish.com.au/b/v1';
+      defaultAxios.defaults.baseURL = 'https://provisioning.ish.com.au/b';
       defaultAxios.defaults.headers = {
         Authorization: token
       };
