@@ -12,6 +12,7 @@ import { Lead } from "@api/model";
 import { EditViewProps } from "../../../../model/common/ListView";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import FormField from "../../../../common/components/form/form-fields/FormField";
 
 interface LeadDocumentsProps {
   classes?: any;
@@ -48,6 +49,15 @@ const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) 
         />
       </div>
       <OwnApiNotes {...props} />
+      <div className="pb-3 pl-3">
+        <FormField
+          type="multilineText"
+          name="studentNotes"
+          disabled
+          label="Student notes"
+          fullWidth
+        />
+      </div>
     </div>
   );
 };
