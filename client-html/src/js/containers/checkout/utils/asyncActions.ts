@@ -19,6 +19,88 @@ import CheckoutService from "../services/CheckoutService";
 import { checkoutCourseClassMap, checkoutCourseMap } from "./index";
 import uniqid from "../../../common/utils/uniqid";
 
+export const processCheckoutLeadIds = async (ids: string[], onChangeStep, setActiveField, setCustomLoading, dispatch) => {
+  setCustomLoading(true);
+
+  const enrolments: CheckoutEnrolmentCustom[] = [];
+
+  const leads = await EntityService.getPlainRecords("Lead", "customer.id,items.course.id", `id in (${ids.toString()})`);
+
+  for (const lead of leads.rows) {
+    const customerId = JSON.parse(lead.values[0]);
+    const courseIds = JSON.parse(lead.values[1]);
+
+    const contact = await EntityService.getPlainRecords("Contact", CHECKOUT_CONTACT_COLUMNS, `id is ${customerId}`, 1)
+      .then(res => res.rows.map(getCustomColumnsMap(CHECKOUT_CONTACT_COLUMNS))[0]);
+
+    dispatch(addContact(contact));
+
+    const courses = await EntityService.getPlainRecords("Course", "code,name,isTraineeship", `id in (${courseIds})`)
+      .then(res => res.rows.map(row => checkoutCourseMap(getCustomColumnsMap("code,name,isTraineeship")(row))));
+
+    for (const plainCourse of courses) {
+      const enrolment: CheckoutEnrolmentCustom = {};
+      enrolment.contactId = contact.id;
+      const classResponse = await EntityService.getPlainRecords(
+        "CourseClass",
+        CHECKOUT_COURSE_CLASS_COLUMNS,
+        `course.id is ${plainCourse.courseId} and isCancelled is false and isActive is true and ( (startDateTime < tomorrow and endDateTime >= today and isCancelled is false) or (startDateTime >= tomorrow and endDateTime >= tomorrow and isCancelled is false) )`,
+        null,
+        0,
+        "startDateTime",
+        true
+      );
+      if (classResponse.rows.length) {
+        const courseClass = [classResponse.rows[0]].map(checkoutCourseClassMap)[0];
+        enrolment.courseClass = {
+          ...plainCourse,
+          courseId: plainCourse.id,
+          price: courseClass.price,
+          discount: null,
+          discounts: [],
+          discountExTax: 0,
+          studyReason: "Not stated",
+          class: { ...courseClass }
+        };
+      }
+      enrolments.push(enrolment);
+    }
+  }
+
+  const courseIds = enrolments.filter(en => en.courseClass).map(en => en.courseClass.courseId);
+  const enrolmentsCount = courseIds.length;
+
+  await enrolments.map(en => () => (en.courseClass
+      ? CheckoutService.getContactDiscounts(
+        en.contactId,
+        en.courseClass.id,
+        courseIds.toString(),
+        "",
+        "",
+        "",
+        enrolmentsCount,
+        enrolmentsCount
+      )
+        .then(res => {
+          if (res.length) {
+            const discounts = res.map(r => r.discount);
+            en.courseClass.discounts = discounts;
+            en.courseClass.discount = discounts[0];
+          }
+        })
+      : Promise.resolve()
+  )).reduce(async (a, b) => {
+    await a;
+    await b();
+  }, Promise.resolve());
+
+  dispatch(checkoutAddEnrolments(enrolments));
+  onChangeStep(CheckoutCurrentStep.summary);
+  setActiveField(CheckoutPage.summary);
+  dispatch(checkoutUpdateSummaryPrices());
+  setCustomLoading(false);
+};
+
 export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);
 
@@ -56,7 +138,6 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
               enrolment.courseClass = {
                 ...plainCourse,
                 courseId: plainCourse.id,
-                id: uniqid(),
                 price: plainClass.price,
                 discount: null,
                 discounts: [],

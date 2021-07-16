@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, memo, useCallback } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import MenuItem from "@material-ui/core/MenuItem";
 import { State } from "../../../../reducers/state";
@@ -47,5 +47,5 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(LeadCogWheel);
+export default connect(mapStateToProps)(LeadCogWheel);
 

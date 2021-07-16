@@ -9,21 +9,15 @@
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
-import {
-  change, getFormValues, initialize, isDirty, isInvalid, reduxForm
-} from "redux-form";
+import { change, getFormValues, initialize, isDirty, isInvalid, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {
-  Category, CheckoutSaleRelation, ColumnWidth
-} from "@api/model";
+import { Category, CheckoutSaleRelation, ColumnWidth } from "@api/model";
 import debounce from "lodash.debounce";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 import history from "../../../constants/History";
-import {
-  CheckoutCourse, CheckoutCourseClass, CheckoutSummary
-} from "../../../model/checkout";
+import { CheckoutCourse, CheckoutCourseClass, CheckoutSummary } from "../../../model/checkout";
 import { State } from "../../../reducers/state";
 import ResizableWrapper from "../../../common/components/layout/resizable/ResizableWrapper";
 import Drawer from "../../../common/components/layout/Drawer";
@@ -44,12 +38,15 @@ import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
 import {
-  CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_CONTACT_COLUMNS,
+  CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
-  CheckoutPage, titles, CheckoutCurrentStepType, CheckoutPageType
+  CheckoutCurrentStepType,
+  CheckoutPage,
+  CheckoutPageType,
+  titles
 } from "../constants";
 import {
   checkoutCourseMap,
@@ -60,6 +57,7 @@ import {
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
   processCheckoutInvoiceId,
+  processCheckoutLeadIds,
   processCheckoutSale,
   processCheckoutWaitingListIds
 } from "../utils";
@@ -74,16 +72,14 @@ import SelectedItemRenderer from "./items/components/SelectedItemRenderer";
 import EnrolCourseClassView from "./items/components/EnrolCourseClassView";
 import {
   addContact,
-  removeContact,
-  updateContact,
   addItem,
+  checkoutUpdateRelatedItems,
+  removeContact,
   removeItem,
   updateClassItem,
-  checkoutUpdateRelatedItems
+  updateContact
 } from "../actions";
-import {
-  checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts
-} from "../actions/checkoutContact";
+import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from "../actions/checkoutContact";
 import { ContactInitial } from "../../entities/contacts/Contacts";
 import CheckoutPaymentPage from "./payment/CheckoutPaymentPage";
 import CheckoutItemView from "./items/components/CheckoutItemView";
@@ -549,11 +545,21 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const invoiceId = query.get("invoiceId");
     const enrolmentId = query.get("enrolmentId");
     const contactId = query.get("contactId");
+    const leadIds = query.get("leadIds");
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
 
     if (window.location.search) {
       history.replace("/checkout");
+    }
+    if (leadIds) {
+      processCheckoutLeadIds(
+        leadIds.split(","),
+        onChangeStep,
+        setActiveField,
+        setCustomLoading,
+        dispatch
+      );
     }
     if (waitingListIds) {
       processCheckoutWaitingListIds(

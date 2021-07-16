@@ -9,7 +9,6 @@
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { change } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import { Lead, LeadStatus, Sale, Tag, User } from "@api/model";
@@ -59,7 +58,7 @@ const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relat
       }
       if (['Product', 'Membership', 'Voucher'].includes(sel.type)) {
         return EntityService.getPlainRecords(
-          `${sel.type}Product`,
+          `${sel.type === 'Product' ? 'Article' : sel.type}Product`,
           'priceExTax',
           `id is ${sel.id}`,
           1
@@ -187,11 +186,11 @@ const LeadGeneral = (props: Props) => {
       )}
       <div className="generalRoot">
         {!twoColumn && (
-          <Grid item xs={12}>
+          <Grid item xs={12} className="pt-2">
             {contactIdField}
           </Grid>
         )}
-        <div className="pt-2">
+        <div>
           {!isNew
             && (
             <FormField
@@ -200,11 +199,9 @@ const LeadGeneral = (props: Props) => {
               label="Assigned to"
               selectValueMark="id"
               selectLabelCondition={contactLabelCondition}
-              itemRenderer={ContactSelectItemRenderer}
               defaultDisplayValue={defaultContactName(values.assignTo)}
               disabled={!users}
               items={users}
-              rowHeight={55}
               required
             />
           )}

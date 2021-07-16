@@ -44,7 +44,7 @@ const filterGroups: FilterGroup[] = [
       {
         name: "Open",
         expression: "(status == OPEN)",
-        active: false
+        active: true
       },
       {
         name: "Closed",
@@ -87,7 +87,7 @@ const nestedEditFields = {
 
 const manualLink = getManualLink("leads");
 
-// const nameCondition = (value: Lead) => value.courseName;
+const setRowClasses = ({ status }) => (status === "Closed" ? "op05" : undefined);
 
 const Leads = props => {
   const {
@@ -120,6 +120,7 @@ const Leads = props => {
     <div>
       <ListView
         listProps={{
+          setRowClasses,
           primaryColumn: "estimatedValue",
           secondaryColumn: "customer.fullName"
         }}
