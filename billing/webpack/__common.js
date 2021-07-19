@@ -81,7 +81,9 @@ const _styleModule = () => {
       use: [{
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]'
+          name: '[name].[ext]',
+          // hardcoded pudlic path for images in case of running from angel url
+          publicPath: "https://provisioning.ish.com.au"
         },
       }]
     },
