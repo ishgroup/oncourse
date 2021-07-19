@@ -130,7 +130,10 @@ const validationSchema = yup.object({
       'Name should be unique',
       (value, context: any) => context.from[1].value.sites.filter((s) => s.name === value).length === 1
     ),
-    webSiteTemplate: yup.mixed().required('Required'),
+    webSiteTemplate: yup.string().nullable().when('id', {
+      is: (val) => !val,
+      then: yup.string().nullable().required('Required'),
+    }),
     domains: yup.array().of(yup.string().matches(/\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/, 'Domain name is invalid'))
   }))
 });
@@ -185,17 +188,20 @@ export const SitesPage: React.FC<any> = () => {
 
   const classes = useStyles();
 
-  const onKeyChange: any = (e, index, isNew) => {
+  const onKeyChange: any = (e, index, isNew, initial, initialMatchPattern) => {
     const { value } = e.target;
     const name = `sites[${index}].key`;
+    const newValue = initialMatchPattern ? `${collegeKey}-${value}` : value;
     let shouldValidte = true;
-    const current = values.sites[index];
-    const initial = !isNew && initialValues.sites.find((s) => s.id === current.id);
-    if (initial && initial.key !== value && !value.match(`${collegeKey}-`)) {
+    if (initial && initial.key !== newValue && !newValue.match(`${collegeKey}-`)) {
       shouldValidte = false;
       setFieldError(name, `Location should start with ${collegeKey}-`);
     }
-    setFieldValue(name, value, shouldValidte);
+    if (initial && initial.key !== newValue && newValue.match(`${collegeKey}-`) && !newValue.match(new RegExp(`${collegeKey}-[^\\s]`))) {
+      shouldValidte = false;
+      setFieldError(name, 'Location has invalid format');
+    }
+    setFieldValue(name, newValue, shouldValidte);
   };
 
   return (
@@ -230,6 +236,8 @@ export const SitesPage: React.FC<any> = () => {
               values?.sites?.map((site: SiteDTO, index) => {
                 const isNew = typeof site.id !== 'number';
                 const error = (errors.sites && errors.sites[index]) || {};
+                const initial = site.id && initialValues.sites.find((i) => i.id === site.id);
+                const initialMatchPattern = initial && initial.key.match(`${collegeKey}-`);
 
                 const onClickDelete = (e) => {
                   stopPropagation(e);
@@ -288,10 +296,14 @@ export const SitesPage: React.FC<any> = () => {
                           <div className={classes.textFieldWrapper2}>
                             <Typography>
                               https://
-                              {isNew ? `${collegeKey}-` : ''}
+                              {isNew || initialMatchPattern ? `${collegeKey}-` : ''}
                             </Typography>
                             <Typography variant="body1" component="span">
-                              <AutosizeInput value={site.key} error={Boolean(error.key)} onChange={(e) => onKeyChange(e, index, isNew)} />
+                              <AutosizeInput
+                                value={initialMatchPattern ? site.key.replace(`${collegeKey}-`, '') : site.key}
+                                error={Boolean(error.key)}
+                                onChange={(e) => onKeyChange(e, index, isNew, initial, initialMatchPattern)}
+                              />
                             </Typography>
                             <Typography>.oncourse.cc</Typography>
                           </div>
