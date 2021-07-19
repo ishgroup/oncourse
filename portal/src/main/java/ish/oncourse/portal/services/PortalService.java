@@ -509,37 +509,15 @@ public class PortalService implements IPortalService {
         return result.isEmpty() ? null : result.get(0);
     }
 
-    @Override
-    public List<Document> getTutorCommonResources() {
-
-        if (authenticationService.isTutor()) {
-            ObjectContext sharedContext = cayenneService.newContext();
-
-            return ObjectSelect.query(Document.class).where(Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.TUTORS))
-                    .and(Document.IS_REMOVED.isFalse())
-                    .and(Document.COLLEGE.eq(webSiteService.getCurrentCollege()))
-                    .and(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.CREATED).isNull()).select(sharedContext);
-        } else {
-            return Collections.emptyList();
-        }
-
-    }
 
     @Override
     public List<Document> getStudentAndTutorCommonResources(List<CourseClass> allowedClasses) {
-        if (getContact().getTutor() != null || getContact().getStudent() != null) {
+        if (!allowedClasses.isEmpty() && (getContact().getTutor() != null || getContact().getStudent() != null)) {
             ObjectContext sharedContext = cayenneService.newContext();
-
-            Expression expr = Document.WEB_VISIBILITY.eq(AttachmentInfoVisibility.STUDENTS)
-                    .andExp(Document.IS_REMOVED.isFalse())
-                    .andExp(Document.COLLEGE.eq(webSiteService.getCurrentCollege()))
-                    .andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.CREATED).isNull());
-
-            if (!allowedClasses.isEmpty()) {
-                List<Long> allowedCourseIds = allowedClasses.stream().map(cc -> cc.getCourse().getId()).distinct().collect(Collectors.toList());
-                expr = expr.orExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
-                        .andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_WILLOW_ID).in(allowedCourseIds)));
-            }
+            
+            List<Long> allowedCourseIds = allowedClasses.stream().map(cc -> cc.getCourse().getId()).distinct().collect(Collectors.toList());
+            Expression expr =Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_IDENTIFIER).eq(Course.class.getSimpleName())
+                        .andExp(Document.BINARY_INFO_RELATIONS.outer().dot(BinaryInfoRelation.ENTITY_WILLOW_ID).in(allowedCourseIds));
 
             return ObjectSelect.query(Document.class).where(expr)
                     .select(sharedContext);
@@ -618,11 +596,9 @@ public class PortalService implements IPortalService {
     }
 
     public List<Document> getResources() {
-        List<Document> resources = new ArrayList<>();
         List<CourseClass> courseClasses = getContactCourseClasses(CourseClassFilter.CURRENT);
 
-        resources.addAll(getTutorCommonResources());
-        resources.addAll(getStudentAndTutorCommonResources(courseClasses));
+        List<Document> resources = new ArrayList<>(getStudentAndTutorCommonResources(courseClasses));
 
         List<PCourseClass> courseClassesSessions = fillCourseClassSessions(CourseClassFilter.CURRENT);
 

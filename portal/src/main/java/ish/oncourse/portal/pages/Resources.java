@@ -53,9 +53,6 @@ public class Resources {
     private Messages messages;
 
     @Property
-    private List<Document> tutorsMaterials;
-
-    @Property
     private Document tutorsMaterial;
 
 	@Property
@@ -79,10 +76,8 @@ public class Resources {
     void setupRender() {
 
         lastLoginDate = portalService.getLastLoginTime();
-        if (portalService.getContact().getTutor() != null) {
-            tutorsMaterials = portalService.getTutorCommonResources();
-        }
         courseClasses = portalService.getContactCourseClasses(CourseClassFilter.CURRENT);
+        
         if (portalService.getContact().getStudent() != null || portalService.getContact().getTutor() != null) {
             sudentAndTutorsMaterials = portalService.getStudentAndTutorCommonResources(courseClasses);
         }

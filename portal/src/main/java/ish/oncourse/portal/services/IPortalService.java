@@ -53,9 +53,7 @@ public interface IPortalService {
 	boolean hasResult(CourseClass courseClass);
 
     public List<Outcome> getResultsBy(CourseClass courseClass);
-
-    public List<Document> getTutorCommonResources();
-
+    
 	public List<Document> getStudentAndTutorCommonResources(List<CourseClass> courseClasses);
 
 	public List<Document> getResourcesBy(CourseClass courseClass);

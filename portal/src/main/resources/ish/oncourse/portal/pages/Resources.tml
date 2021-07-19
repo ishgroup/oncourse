@@ -27,30 +27,6 @@
 			</li>
 		</t:if>
 
-		<t:if test="tutorsMaterials">
-			<li>
-				<h4><a href="#">Tutor information</a></h4>
-				<ul class="list-unstyled resources-list">
-					<t:loop source="tutorsMaterials" value="tutorsMaterial">
-						<li class="${tutorsMaterial.type}">
-							<img src="${contextPath}/img/ico-${tutorsMaterial.type}.png" alt=""/>
-							<a href="${getMaterialUrl(tutorsMaterial)}" target="_blank">
-								${tutorsMaterial.name}
-								<t:if test="tutorsMaterial.type.empty" negate="true">
-									.${tutorsMaterial.type}
-								</t:if>
-							</a>
-							${getSize(tutorsMaterial)}.
-							<t:if test="isNew(tutorsMaterial.modified)">
-								<span class="label label-primary">NEW</span>
-							</t:if>
-						</li>
-					</t:loop>
-				</ul>
-			</li>
-		</t:if>
-
-
         <t:loop source="courseClasses" value="courseClass">
 
           <t:if test="${hasResources(courseClass)}">
