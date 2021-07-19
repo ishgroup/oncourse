@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
-import Stepper from './Stepper/Stepper';
+import Stepper from './stepper/Stepper';
 import Header from './common/Header';
 import {
   ChristmasThemeKey,
