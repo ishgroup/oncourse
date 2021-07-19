@@ -6,9 +6,9 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Chip,
   Grid,
   IconButton,
-  InputAdornment,
   TextField,
   Typography
 } from '@material-ui/core';
@@ -24,6 +24,7 @@ import Loading from '../../common/Loading';
 import { State } from '../../../redux/reducers';
 import { updateCollegeSites } from '../../../redux/actions';
 import { TemplateField } from '../../common/TemplateChoser';
+import AutosizeInput from '../../common/AutosizeInput';
 
 export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   container: {
@@ -97,16 +98,40 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   },
   pr: {
     paddingRight: '20px'
+  },
+  textFieldWrapper2: {
+    display: 'flex',
+    alignItems: 'baseline'
+  },
+  floatLabel: {
+    position: 'relative',
+    bottom: theme.spacing(0.5)
+  },
+  domainsInput: {},
+  hasClearIcon: {
+    '& $domainsInput': {
+      paddingRight: 0
+    }
   }
 }));
 
 const validationSchema = yup.object({
   sites: yup.array().of(yup.object().shape({
-    key: yup.mixed().required('Required').test('uniqueKey', 'Key should be unique', (value, context: any) => context.from[1].value.sites.filter((s) => s.key === value).length === 1),
-    name: yup.mixed().required('Required').test('uniqueName', 'Name should be unique', (value, context: any) => context.from[1].value.sites.filter((s) => s.name === value).length === 1),
+    key: yup.string().nullable()
+      .required('Required')
+      .max(40, 'Maximum length is 40 characters')
+      .test('uniqueKey', 'Key should be unique', (value, context: any) => {
+        const { collegeKey, sites } = context.from[1].value;
+        return sites.filter((s) => (s.id ? s.key : `${collegeKey}-${s.key}`) === (context.parent.id ? value : `${collegeKey}-${value}`)).length === 1;
+      })
+      .matches(/^[0-9a-z-]+$/i, 'You can only use letters, numbers and "-"'),
+    name: yup.mixed().required('Required').test(
+      'uniqueName',
+      'Name should be unique',
+      (value, context: any) => context.from[1].value.sites.filter((s) => s.name === value).length === 1
+    ),
     webSiteTemplate: yup.mixed().required('Required'),
-    domains: yup.array().min(1, 'Required')
-      .of(yup.string().test('hasSpecial', 'Special symbols are forbidden', (v) => !(/[\\/]/.test(v))))
+    domains: yup.array().of(yup.string().matches(/\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/, 'Domain name is invalid'))
   }))
 });
 
@@ -116,7 +141,13 @@ const getChangedSites = (initial: SiteDTO[], current: SiteDTO[]) => {
     const initialSite = initial.find((i) => i.id === site.id);
     if (initialSite) {
       Object.keys(site).forEach((key) => {
-        if (site[key] !== initialSite[key]) {
+        if (Array.isArray(site[key])) {
+          site[key].forEach((i, index) => {
+            if (site[key][index] !== initialSite[key][index]) {
+              changed.push(site);
+            }
+          });
+        } else if (site[key] !== initialSite[key]) {
           changed.push(site);
         }
       });
@@ -132,30 +163,39 @@ export const SitesPage: React.FC<any> = () => {
   const dispatch = useDispatch();
 
   const {
-    handleSubmit, setValues, initialValues, dirty, handleChange, values, errors, setFieldValue, isValid, resetForm
+    handleSubmit, setValues, setFieldError, initialValues, dirty, handleChange, values, errors, setFieldValue, isValid, resetForm
   } = useFormik({
-    initialValues: { sites },
+    initialValues: { sites, collegeKey },
     validationSchema,
     onSubmit: (submitted) => {
+      const parsed = submitted.sites.map((s) => ({ ...s, domains: s.domains.map((d) => d.replace(/https?:\/\//, '')) }));
       dispatch(updateCollegeSites({
-        changed: getChangedSites(initialValues.sites, submitted.sites.filter((s) => s.id)),
-        created: submitted.sites.filter((s) => !s.id),
-        removed: initialValues.sites.filter((s) => s.id && !submitted.sites.some((c) => c.id === s.id))
+        changed: getChangedSites(initialValues.sites, parsed.filter((s) => s.id)),
+        created: parsed.filter((s) => !s.id).map((s) => ({ ...s, key: `${collegeKey}-${s.key}` })),
+        removed: initialValues.sites.filter((s) => s.id && !parsed.some((c) => c.id === s.id))
       }));
     },
   });
 
   useEffect(() => {
-    if (sites) {
-      resetForm({ values: { sites } });
+    if (sites || collegeKey) {
+      resetForm({ values: { sites, collegeKey } });
     }
-  }, [sites]);
+  }, [sites, collegeKey]);
 
   const classes = useStyles();
 
-  const onKeyChange: any = (e) => {
-    const updated = e.target.value.match(`${collegeKey}-`) ? e.target.value : `${collegeKey}-`;
-    setFieldValue(e.target.name, updated);
+  const onKeyChange: any = (e, index, isNew) => {
+    const { value } = e.target;
+    const name = `sites[${index}].key`;
+    let shouldValidte = true;
+    const current = values.sites[index];
+    const initial = !isNew && initialValues.sites.find((s) => s.id === current.id);
+    if (initial && initial.key !== value && !value.match(`${collegeKey}-`)) {
+      shouldValidte = false;
+      setFieldError(name, `Location should start with ${collegeKey}-`);
+    }
+    setFieldValue(name, value, shouldValidte);
   };
 
   return (
@@ -175,11 +215,11 @@ export const SitesPage: React.FC<any> = () => {
                       key: null,
                       name: null,
                       webSiteTemplate: null,
-                      prefix: collegeKey,
                       domains: []
                     },
                     ...values.sites
-                  ]
+                  ],
+                  collegeKey
                 })}
                 >
                   <AddCircle className={classes.plusButton} />
@@ -217,6 +257,7 @@ export const SitesPage: React.FC<any> = () => {
                     >
                       <Typography variant="body1">
                         https://
+                        {isNew ? `${collegeKey}-` : ''}
                         {site.key}
                         .oncourse.cc
                       </Typography>
@@ -228,7 +269,7 @@ export const SitesPage: React.FC<any> = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Grid container>
-                        <Grid item xs={6}>
+                        <Grid item xs={6} className={classes.pr}>
                           <TextField
                             name={`sites[${index}].name`}
                             value={values?.sites[index]?.name}
@@ -239,81 +280,77 @@ export const SitesPage: React.FC<any> = () => {
                             label="Site name"
                             InputLabelProps={{ shrink: true }}
                             onClick={stopPropagation}
+                            fullWidth
                           />
                         </Grid>
                         <Grid item xs={6}>
-                          <TextField
-                            label="Site location"
-                            name={`sites[${index}].key`}
-                            value={site.key}
-                            error={Boolean(error.key)}
-                            onChange={onKeyChange}
-                            helperText={error.key}
-                            InputLabelProps={{ shrink: true }}
-                            inputProps={{
-                              style: {
-                                width: `${site.key?.length || 2}ch`
-                              }
-                            }}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment
-                                  position="start"
-                                  classes={{
-                                    positionStart: classes.zeroMargin
-                                  }}
-                                >
-                                  https://
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <InputAdornment
-                                  position="end"
-                                  classes={{
-                                    positionEnd: classes.zeroMargin
-                                  }}
-                                >
-                                  .oncourse.cc
-                                </InputAdornment>
-                              )
-                            }}
-                          />
+                          <Typography variant="caption" color={error.key ? 'error' : 'textSecondary'} className={classes.floatLabel}>Site location</Typography>
+                          <div className={classes.textFieldWrapper2}>
+                            <Typography>
+                              https://
+                              {isNew ? `${collegeKey}-` : ''}
+                            </Typography>
+                            <Typography variant="body1" component="span">
+                              <AutosizeInput value={site.key} error={Boolean(error.key)} onChange={(e) => onKeyChange(e, index, isNew)} />
+                            </Typography>
+                            <Typography>.oncourse.cc</Typography>
+                          </div>
+                          {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
                         </Grid>
-                        <Grid item xs={6}>
-                          <TemplateField
-                            label="Site template"
-                            name={`sites[${index}].webSiteTemplate`}
-                            onChange={(val) => setFieldValue(`sites[${index}].webSiteTemplate`, val)}
-                            value={site.webSiteTemplate}
-                            helperText={error.webSiteTemplate}
-                            error={Boolean(error.webSiteTemplate)}
-                            variant="standard"
-                            margin="normal"
-                            InputLabelProps={{ shrink: true }}
-                          />
+                        <Grid item xs={6} className={classes.pr}>
+                          {isNew && (
+                            <TemplateField
+                              label="Site template"
+                              name={`sites[${index}].webSiteTemplate`}
+                              onChange={(val) => setFieldValue(`sites[${index}].webSiteTemplate`, val)}
+                              value={site.webSiteTemplate}
+                              helperText={error.webSiteTemplate}
+                              error={Boolean(error.webSiteTemplate)}
+                              variant="standard"
+                              margin="normal"
+                              InputLabelProps={{ shrink: true }}
+                              fullWidth
+                            />
+                          )}
                         </Grid>
                         <Grid item xs={6}>
                           <Autocomplete
                             size="small"
                             options={[]}
                             value={site.domains}
-                            renderInput={(params) => (
+                            classes={{
+                              inputRoot: classes.domainsInput,
+                              // @ts-ignore
+                              hasClearIcon: classes.hasClearIcon
+                            }}
+                            renderInput={(params: any) => (
                               <TextField
                                 {...params}
                                 error={Boolean(error.domains)}
                                 InputProps={{
                                   ...params.InputProps,
-                                  margin: 'none'
+                                  margin: 'none',
+                                  endAdornment: params.inputProps.value
+                                    ? (
+                                      <Chip
+                                        size="small"
+                                        label="Add"
+                                        onClick={() => {
+                                          setFieldValue(`sites[${index}].domains`, [...site.domains, params.inputProps.value]);
+                                        }}
+                                      />
+                                    )
+                                    : null
                                 }}
-                                helperText={Array.isArray(error.domains) ? error.domains[0] : error.domains}
+                                helperText={Array.isArray(error.domains) ? error.domains.find((d) => d) : error.domains}
                                 variant="standard"
                                 label="Site domains"
                                 margin="normal"
                                 InputLabelProps={{ shrink: true }}
                               />
                             )}
-                            filterSelectedOptions
                             onChange={(e, v) => setFieldValue(`sites[${index}].domains`, v)}
+                            filterSelectedOptions
                             multiple
                             freeSolo
                           />

@@ -30,36 +30,42 @@ const imgData = [
   {
     img: a,
     title: 'template-a',
+    host: 'https://template-a.oncourse.cc',
     link: 'https://template-a.oncourse.cc/courses/creative',
     value: 'a',
   },
   {
     img: b,
     title: 'template-b',
+    host: 'https://template-b.oncourse.cc',
     link: 'https://template-b.oncourse.cc/courses/creative',
     value: 'b',
   },
   {
     img: c,
     title: 'template-c',
+    host: 'https://template-c.oncourse.cc',
     link: 'https://template-c.oncourse.cc/courses/creative',
     value: 'c',
   },
   {
     img: d,
     title: 'template-d',
+    host: 'https://template-d.oncourse.cc',
     link: 'https://template-d.oncourse.cc/courses/creative',
     value: 'd',
   },
   {
     img: e,
     title: 'template-e',
+    host: 'https://template-e.oncourse.cc',
     link: 'https://template-e.oncourse.cc/courses/creative',
     value: 'e',
   },
   {
     img: f,
     title: 'template-f',
+    host: 'https://template-f.oncourse.cc',
     link: 'https://template-f.oncourse.cc/courses/creative',
     value: 'f',
   },
@@ -144,7 +150,7 @@ export const TemplateField = ({ onChange, value, ...rest }: TextFieldProps) => {
       </Dialog>
       <TextField
         {...rest}
-        value={value}
+        value={imgData.find(img => img.value === value)?.host}
         onClick={rest.disabled ? null : () => setOpen(true)}
       />
     </>

@@ -29,6 +29,9 @@ body {
   &:focus {
     border-bottom: 2px solid #f7941d;
   }
+  &[aria-invalid='true'] {
+    border-bottom: 2px solid #f44336;
+  }
 }
 
 .input-wrap {
