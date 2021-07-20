@@ -37,3 +37,4 @@ gradle-app.setting
 /portal-native/.expo/
 **/application.properties
 /portal-native/src/js/__tests__/__snapshots__/
+/billing-api/out/
