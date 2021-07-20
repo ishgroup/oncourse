@@ -246,6 +246,7 @@ class TestWithDatabaseExtension implements
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedPayslip"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedWaitingList"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedAssessment"))
+        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedLead"))
         for (Relationship rel : nodeRelationshipsToRemove) {
             datamap.getDbEntity("NodeRelation").removeRelationship(rel.getName())
         }
@@ -268,6 +269,7 @@ class TestWithDatabaseExtension implements
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedApplication"))
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedAssessment"))
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedAssessmentSubmission"))
+        binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedLead"))
         for (Relationship rel : binaryRelationshipsToRemove) {
             datamap.getDbEntity("BinaryRelation").removeRelationship(rel.getName())
         }
@@ -293,6 +295,7 @@ class TestWithDatabaseExtension implements
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedEnrolment"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedAssessment"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedAssessmentSubmission"))
+        noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedLead"))
         for (Relationship rel : noteRelationshipsToRemove) {
             datamap.getDbEntity("NoteRelation").removeRelationship(rel.getName())
         }
@@ -308,6 +311,7 @@ class TestWithDatabaseExtension implements
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedArticle"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedMembership"))
         customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedVoucher"))
+        customFieldRelationships.add(datamap.getDbEntity("CustomField").getRelationship("relatedLead"))
         for (Relationship rel : customFieldRelationships) {
             datamap.getDbEntity("CustomField").removeRelationship(rel.getName())
         }
