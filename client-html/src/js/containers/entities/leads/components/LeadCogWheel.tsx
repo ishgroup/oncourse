@@ -19,10 +19,10 @@ const LeadCogWheel = memo<any>(props => {
     hasQePermissions
   } = props;
 
-  const noSelectedOrNew = useMemo(() => selection.length === 0 || selection[0] === "NEW", [selection]);
+  const noSelectedOrNew = useMemo(() => selection.length !== 1 || selection[0] === "NEW", [selection]);
 
   const onQuickEnrolment = useCallback(() => {
-    window.open(`/checkout?leadIds=${selection.toString()}`, "_self");
+    window.open(`/checkout?leadId=${selection[0]}`, "_self");
   }, [selection]);
 
   return (
@@ -34,8 +34,7 @@ const LeadCogWheel = memo<any>(props => {
           {' '}
           {selection.length}
           {' '}
-          highlighted student
-          {selection.length > 1 && "s"}
+          highlighted contact
         </MenuItem>
       )}
     </>
