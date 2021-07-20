@@ -82,7 +82,12 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
   const tutorsUpdater = useRef<any>();
   const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
 
-  const submissionTutors = useMemo(() => tutors.filter(t => row.contactIds.includes(t.contactId)), [tutors, row.contactIds]);
+  const uniqueIds = new Set([]);
+  const submissionTutors = useMemo(() => tutors.filter(t => {
+    if (uniqueIds.has(t.contactId) || !row.contactIds.includes(t.contactId)) return false;
+    uniqueIds.add(t.contactId);
+    return true;
+  }), [tutors, row.contactIds]);
 
   const gradeType: GradingType = useMemo(() =>
     gradingTypes?.find(g => g.id === row.gradingTypeId),
@@ -540,7 +545,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                 classes={classes}
                 gradeType={gradeType}
                 gradeItems={gradeItems}
-                tutors={tutors.filter(t => row.contactIds.includes(t.contactId))}
+                tutors={submissionTutors}
               />
             ))}
           </Grid>

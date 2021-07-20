@@ -168,9 +168,9 @@ export const getDocumentShareSummary = (
           r.relatedContacts.map(c => c.name));
         break;
       }
-      label += attachmentRelations.length
-        ? ", some students and tutors in skillsOnCourse portal"
-        : ", all students and tutors in skillsOnCourse portal";
+      if (attachmentRelations.length) {
+        label += ", some students and tutors in skillsOnCourse portal"
+      }
       break;
     }
     case "Link": {
