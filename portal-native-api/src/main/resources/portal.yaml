@@ -22,9 +22,3 @@ basePath: /a/v1
 paths:
   /login:
     $ref: './path/login/api.yaml'
-  /session/next:
-    $ref: './path/session/next/api.yaml'
-  /user/payment:
-    $ref: './path/user/payment/api.yaml'
-  /user/attendance:
-    $ref: './path/user/attendance/api.yaml'
