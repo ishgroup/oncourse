@@ -5,7 +5,7 @@ properties:
     $ref: '../User.yaml'
   token:
     type: string
-    description: Authorization token for request's Authorization header
+    description: session token 
   isNew:
     type: boolean
     description: is newly added user

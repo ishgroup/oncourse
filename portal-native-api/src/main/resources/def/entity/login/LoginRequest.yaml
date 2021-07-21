@@ -1,5 +1,11 @@
 type: object
 properties:
+  SSOProvider:
+    description: SSO service provider
+    $ref: '../../enum/SSOproviders.yaml'
+  SSOToken:
+    type: string
+    description: one time SSO token that is needed to complite OAuth2 process
   firstName:
     type: string
     requred: false

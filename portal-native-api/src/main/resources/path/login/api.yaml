@@ -1,6 +1,24 @@
+get:
+  summary: Retrive invitetion email
+  operationId: forgotPassword
+  description: check user email address and send invitetion email with signed link inside 
+  tags:
+    - Authentication
+  parameters:
+    - name: email
+      in: query
+      required: true
+      type: string
+  responses:
+    '200':
+      description: Success response. Tells user to check email  
+    default:
+      description: Unexpected error
+  
 put:
-  summary: Get Authentication
+  summary: Login user
   operationId: signIn
+  description: make user log in and esteblish client server session
   tags:
     - Authentication
   parameters:
@@ -11,7 +29,7 @@ put:
         $ref: './def/entity/login/LoginRequest.yaml'
   responses:
     '200':
-      description: Success response.
+      description: Success response. Provide sesion token in body 
       schema:
         $ref: './def/entity/login/LoginResponse.yaml'
     '400':
@@ -24,6 +42,7 @@ put:
 post:
   summary: Create new user
   operationId: signUp
+  description: create new use and esteblish client server session
   tags:
     - Authentication
   parameters:
@@ -34,12 +53,24 @@ post:
         $ref: './def/entity/login/LoginRequest.yaml'
   responses:
     '200':
-      description: Success response.
+      description: Success response. Provide sesion token in body
       schema:
         $ref: './def/entity/login/LoginResponse.yaml'
     '400':
       description: Bad request
       schema:
         $ref: './def/entity/ErrorResponse.yaml'
+    default:
+      description: Unexpected error
+
+delete:
+  summary: Log user out
+  operationId: signOut
+  description: destroy server session 
+  tags:
+    - Authentication
+  responses:
+    '200':
+      description: Success response. User logged out
     default:
       description: Unexpected error
