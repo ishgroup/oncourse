@@ -1556,6 +1556,19 @@
 		<db-attribute name="suburb" type="VARCHAR" isMandatory="true" length="45"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 	</db-entity>
+	<db-entity name="User">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="512"/>
+		<db-attribute name="firstName" type="VARCHAR" length="128"/>
+		<db-attribute name="lastName" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="lastLogin" type="TIMESTAMP"/>
+		<db-attribute name="passwordHash" type="VARCHAR" length="512"/>
+		<db-attribute name="ssoProvider" type="INTEGER"/>
+		<db-attribute name="ssoAccessToken" type="VARCHAR"  length="1000"/>
+		<db-attribute name="ssoRefreshToken" type="VARCHAR" length="1000"/>
+	</db-entity>
 	<obj-entity name="AbstractInvoice" abstract="true" className="ish.oncourse.model.AbstractInvoice" dbEntityName="Invoice" superClassName="WillowCayenneObject">
 		<obj-attribute name="allowAutoPay" type="java.lang.Boolean" db-attribute-path="allowAutoPay"/>
 		<obj-attribute name="amountOwing" type="ish.math.Money" db-attribute-path="amountOwing"/>
@@ -2867,6 +2880,19 @@
 		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="lastName"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
+	</obj-entity>
+	<obj-entity name="User" className="ish.oncourse.model.User" dbEntityName="User" superClassName="WillowCayenneObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
+		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="firstName"/>
+		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="lastName"/>
+		<obj-attribute name="lastLogin" type="java.util.Date" db-attribute-path="lastLogin"/>
+		<obj-attribute name="passwordHash" type="java.lang.String" db-attribute-path="passwordHash"/>
+		<obj-attribute name="ssoProvider" type="ish.common.types.SSOProviderType" db-attribute-path="ssoProvider"/>
+		<obj-attribute name="ssoAccessToken" type="java.lang.String" db-attribute-path="ssoAccessToken"/>
+		<obj-attribute name="ssoRefreshToken" type="java.lang.String" db-attribute-path="ssoRefreshToken"/>
 	</obj-entity>
 	<db-relationship name="college" source="Application" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>

@@ -530,4 +530,35 @@
 		</addColumn>
 	</changeSet>
 	
+	<changeSet id="44" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="User"/>
+			</not>
+		</preConditions>
+		<createTable tableName="User">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="datetime"/>
+			<column name="modified" type="datetime"/>
+			<column name="lastLogin" type="datetime"/>
+
+			<column name="email" type="VARCHAR(512)">
+				<constraints nullable="false" unique="true" uniqueConstraintName="User_email_uniq"/>
+			</column>
+			<column name="firstName" type="VARCHAR(128)"/>
+			<column name="lastName" type="VARCHAR(128)">
+				<constraints nullable="false"/>
+			</column>
+
+			<column name="passwordHash" type="VARCHAR(512)"/>
+			<column name="ssoProvider" type="SMALLINT"/>
+			<column name="ssoAccessToken" type="VARCHAR(1000)"/>
+			<column name="ssoRefreshToken" type="VARCHAR(1000)"/>
+		</createTable>
+		
+	</changeSet>
+
+
 </databaseChangeLog>

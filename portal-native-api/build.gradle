@@ -1,10 +1,9 @@
 ext {
-    servicesPackage = 'ish.oncourse.willow.billing.v1.service'
+    servicesPackage = 'ish.oncourse.willow.portal.v1.service'
     modelPackage = 'ish.oncourse.willow.portal.v1.model'
     swaggerName = 'portal.yaml'
 }
 
-apply from: "$rootDir/gradle/functions.gradle"
 apply from: "$rootDir/gradle/build-api.gradle"
 apply from: "$rootDir/gradle/codegen.gradle"
 
@@ -16,8 +15,6 @@ dependencies {
     implementation 'javax.xml.ws:jaxws-api:2.3.1'
     implementation 'javax.jws:javax.jws-api:1.1'
     implementation project(':common:common-api')
-    implementation project(':common:common-templates')
     implementation project(':common:common-bootique')
-    implementation project(':common:common-services')
-    implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+    implementation 'com.google.api-client:google-api-client:1.31.5'
 }
