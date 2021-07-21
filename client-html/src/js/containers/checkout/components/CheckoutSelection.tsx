@@ -57,7 +57,7 @@ import {
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
   processCheckoutInvoiceId,
-  processCheckoutLeadIds,
+  processCheckoutLeadId,
   processCheckoutSale,
   processCheckoutWaitingListIds
 } from "../utils";
@@ -545,21 +545,21 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const invoiceId = query.get("invoiceId");
     const enrolmentId = query.get("enrolmentId");
     const contactId = query.get("contactId");
-    const leadIds = query.get("leadIds");
+    const leadId = query.get("leadId");
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
 
     if (window.location.search) {
       history.replace("/checkout");
     }
-    if (leadIds) {
-      processCheckoutLeadIds(
-        leadIds.split(","),
+    if (leadId) {
+      processCheckoutLeadId(
+        leadId,
         onChangeStep,
         setActiveField,
         setCustomLoading,
         dispatch
-      );
+      ).catch(e => console.error(e));
     }
     if (waitingListIds) {
       processCheckoutWaitingListIds(
@@ -568,7 +568,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      );
+      ).catch(e => console.error(e));
     }
     if (courseClassId) {
       processCheckoutCourseClassId(
@@ -580,7 +580,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         getClassPaymentPlans,
         openItem,
         dispatch
-      );
+      ).catch(e => console.error(e));
     }
     if (contactId) {
       processCheckoutContactId(contactId, onSelectHandler, dispatch);
