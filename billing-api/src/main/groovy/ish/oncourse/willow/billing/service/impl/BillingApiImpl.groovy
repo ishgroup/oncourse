@@ -129,10 +129,7 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_KEY, angelConfig.s3accessKey)
 
                 PreferenceUtil.createPreference(context, college, Preferences.LICENSE_ACCESS_CONTROL, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_LDAP, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_BUDGET, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_EXTENRNAL_DB, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_SSL, String.valueOf(false))
+              
                 PreferenceUtil.createPreference(context, college, Preferences.LICENSE_SMS, String.valueOf(false))
                 PreferenceUtil.createPreference(context, college, Preferences.LICENSE_CC_PROCESSING, String.valueOf(false))
                 PreferenceUtil.createPreference(context, college, Preferences.LICENSE_PAYROLL, String.valueOf(false))

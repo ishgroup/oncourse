@@ -17,11 +17,6 @@ public class ContactDelegator implements ContactInterface {
     private Contact contact;
 
     @Override
-    public String getCalendarUrl() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String getEmail() {
         return contact.getEmailAddress();
     }

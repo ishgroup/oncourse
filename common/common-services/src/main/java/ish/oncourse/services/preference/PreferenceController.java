@@ -65,21 +65,6 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(ish.persistence.Preferences.LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
 	}
 
-	public void setLicenseLdap(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_LDAP, false, Boolean.toString(value));
-	}
-
-	public void setLicenseBudget(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_BUDGET, false, Boolean.toString(value));
-	}
-
-	public void setLicenseExternalDB(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_EXTENRNAL_DB, false, Boolean.toString(value));
-	}
-
-	public void setLicenseSSL(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_SSL, false, Boolean.toString(value));
-	}
 
 	public void setLicenseSms(boolean value) {
 		setValue(ish.persistence.Preferences.LICENSE_SMS, false, Boolean.toString(value));
