@@ -5,28 +5,37 @@
 
 import { IAction } from "../../../common/actions/IshAction";
 import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
-import { CheckoutDiscount, CheckoutItem, CheckoutState } from "../../../model/checkout";
+import {
+  CheckoutDiscount,
+  CheckoutEnrolmentCustom,
+  CheckoutItem,
+  CheckoutProductPurchase,
+  CheckoutState
+} from "../../../model/checkout";
 import { getContactName } from "../../entities/contacts/utils";
 import {
   CHECKOUT_ADD_CONTACT,
-  CHECKOUT_ADD_ITEM, CHECKOUT_ADD_ENROLMENTS,
+  CHECKOUT_ADD_ITEM,
+  CHECKOUT_ADD_ITEMS,
   CHECKOUT_CHANGE_STEP,
   CHECKOUT_CLEAR_STATE,
   CHECKOUT_REMOVE_CONTACT,
-  CHECKOUT_REMOVE_ITEM, CHECKOUT_SET_HAS_ERRORS,
+  CHECKOUT_REMOVE_ITEM,
+  CHECKOUT_SET_HAS_ERRORS,
   CHECKOUT_SUMMARY_SEND_CONTEXT,
   CHECKOUT_TOGGLE_SUMMARY_ITEM,
   CHECKOUT_TOGGLE_SUMMARY_VOUCHER_ITEM,
   CHECKOUT_UPDATE_CLASS_ITEM,
-  CHECKOUT_UPDATE_CONTACT, CHECKOUT_UPDATE_RELATED_ITEMS
+  CHECKOUT_UPDATE_CONTACT,
+  CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../actions";
 import {
-  listPreviousInvoices,
-  setSummaryListWithDefaultPayer,
-  modifySummaryLisItem,
   getUpdatedSummaryItem,
   getUpdatedSummaryVouchers,
-  getUpdatedVoucherDiscounts
+  getUpdatedVoucherDiscounts,
+  listPreviousInvoices,
+  modifySummaryLisItem,
+  setSummaryListWithDefaultPayer
 } from "../utils";
 import {
   CHECKOUT_CLEAR_CONTACT_EDIT_RECORD,
@@ -44,40 +53,41 @@ import {
 } from "../actions/chekoutItem";
 import {
   CHECKOUT_CLEAR_CC_IFRAME_URL,
-  CHECKOUT_GET_ACTIVE_PAYMENT_TYPES_FULFILLED,
-  CHECKOUT_PROCESS_PAYMENT_FULFILLED,
-  CHECKOUT_SET_PAYMENT_SET_STATUS,
-  CHECKOUT_SET_PAYMENT_PROCESSING,
-  CHECKOUT_SET_PAYMENT_SUCCESS,
-  CHECKOUT_SET_PAYMENT_TYPE,
   CHECKOUT_CLEAR_PAYMENT_STATUS,
-  CHECKOUT_SET_PAYMENT_STATUS,
-  CHECKOUT_SET_PAYMENT_DETAILS_FETCHING,
-  CHECKOUT_PROCESS_PAYMENT,
+  CHECKOUT_GET_ACTIVE_PAYMENT_TYPES_FULFILLED,
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
+  CHECKOUT_GET_SAVED_CARD_FULFILLED,
+  CHECKOUT_PROCESS_PAYMENT,
+  CHECKOUT_PROCESS_PAYMENT_FULFILLED,
+  CHECKOUT_SET_PAYMENT_DETAILS_FETCHING,
+  CHECKOUT_SET_PAYMENT_PLANS,
+  CHECKOUT_SET_PAYMENT_PROCESSING,
+  CHECKOUT_SET_PAYMENT_SET_STATUS,
+  CHECKOUT_SET_PAYMENT_STATUS,
   CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
-  CHECKOUT_GET_SAVED_CARD_FULFILLED, CHECKOUT_SET_PAYMENT_PLANS
+  CHECKOUT_SET_PAYMENT_SUCCESS,
+  CHECKOUT_SET_PAYMENT_TYPE
 } from "../actions/checkoutPayment";
 import {
-  CHECKOUT_SET_PROMO,
+  CHECKOUT_CHANGE_SUMMARY_ITEM_FIELD,
+  CHECKOUT_CHANGE_SUMMARY_ITEM_QUANTITY,
+  CHECKOUT_REMOVE_PROMOTIONAL_CODE,
+  CHECKOUT_REMOVE_VOUCHER_PROMO,
+  CHECKOUT_SET_DEFAULT_PAYER,
+  CHECKOUT_SET_DISABLE_DISCOUNTS,
   CHECKOUT_SET_PREVIOUS_CREDIT,
   CHECKOUT_SET_PREVIOUS_OWING,
-  CHECKOUT_REMOVE_VOUCHER_PROMO,
-  CHECKOUT_REMOVE_PROMOTIONAL_CODE,
+  CHECKOUT_SET_PREVIOUS_OWING_PAY_DUE,
+  CHECKOUT_SET_PROMO,
   CHECKOUT_TOGGLE_PREVIOUS_INVOICES,
   CHECKOUT_UNCHECK_ALL_PREVIOUS_INVOICES,
-  CHECKOUT_SET_DEFAULT_PAYER,
-  CHECKOUT_CHANGE_SUMMARY_ITEM_QUANTITY,
-  CHECKOUT_CHANGE_SUMMARY_ITEM_FIELD,
-  CHECKOUT_UPDATE_SUMMARY_ITEM,
-  CHECKOUT_UPDATE_SUMMARY_FIELD,
-  CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED,
   CHECKOUT_UNCHECK_SUMMARY_ITEMS,
-  CHECKOUT_UPDATE_SUMMARY_ITEMS,
   CHECKOUT_UPDATE_PROMO,
+  CHECKOUT_UPDATE_SUMMARY_FIELD,
+  CHECKOUT_UPDATE_SUMMARY_ITEM,
+  CHECKOUT_UPDATE_SUMMARY_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS,
-  CHECKOUT_SET_DISABLE_DISCOUNTS,
-  CHECKOUT_SET_PREVIOUS_OWING_PAY_DUE
+  CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED
 } from "../actions/checkoutSummary";
 
 const initial: CheckoutState = {
@@ -223,41 +233,6 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           list
         },
         contacts
-      };
-    }
-
-    case CHECKOUT_ADD_ITEM: {
-      const { item } = action.payload;
-      const items = [...state.items, { ...item }];
-      let list = state.summary.list;
-      let voucherItems = [...state.summary.voucherItems];
-
-      if (list.length > 0 && item.type !== "voucher") {
-        list = list.map(li => {
-          if (item.type === "course" && li.contact.isCompany) {
-            return li;
-          }
-          return {
-            ...li,
-            items: [...li.items, item]
-          };
-        });
-      }
-
-      if (item.type === "voucher") {
-        voucherItems = [...voucherItems, { ...item, price: item.price === null ? 100 : item.price }];
-      }
-
-      const summary = {
-        ...state.summary,
-        list,
-        voucherItems
-      };
-
-      return {
-        ...state,
-        summary,
-        items
       };
     }
 
@@ -738,7 +713,6 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         }
       });
 
-
       return {
         ...state,
         summary: {
@@ -829,7 +803,8 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const previousInvoiceList = listPreviousInvoices({
         summary: {
           ...state.summary,
-          [type]: { ...state.summary[type], unCheckAll: value } },
+          [type]: { ...state.summary[type], unCheckAll: value }
+},
         type,
         isUnCheckAll: true,
         itemIndex: undefined,
@@ -1109,18 +1084,66 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       };
     }
 
-    case CHECKOUT_ADD_ENROLMENTS: {
-      const enrolments = action.payload;
+    case CHECKOUT_ADD_ITEM: {
+      const { item } = action.payload;
+      const items = [...state.items, { ...item }];
+      let list = state.summary.list;
+      let voucherItems = [...state.summary.voucherItems];
 
-      const addedIds = {};
+      if (list.length > 0 && item.type !== "voucher") {
+        list = list.map(li => {
+          if (item.type === "course" && li.contact.isCompany) {
+            return li;
+          }
+          return {
+            ...li,
+            items: [...li.items, item]
+          };
+        });
+      }
 
+      if (item.type === "voucher") {
+        voucherItems = [...voucherItems, item];
+      }
+
+      const summary = {
+        ...state.summary,
+        list,
+        voucherItems
+      };
+
+      return {
+        ...state,
+        summary,
+        items
+      };
+    }
+
+    case CHECKOUT_ADD_ITEMS: {
+      const { enrolments, purchases }: { enrolments?: CheckoutEnrolmentCustom[], purchases?: CheckoutProductPurchase[] } = action.payload;
+
+      const addedEnrolments = {};
+      const addedProducts = {};
       const items = [];
+      let voucherItems = [...state.summary.voucherItems];
 
       enrolments.forEach(e => {
-        if (e.courseClass && !addedIds[e.courseClass.id]) {
+        if (e.courseClass && !addedEnrolments[e.courseClass.id]) {
           items.push(e.courseClass);
-          addedIds[e.courseClass.id] = true;
+          addedEnrolments[e.courseClass.id] = true;
         }
+      });
+
+      purchases?.forEach(p => {
+        p.items.forEach(i => {
+          if (!addedProducts[i.id]) {
+            items.push(i);
+            addedProducts[i.id] = true;
+            if (i.type === "voucher") {
+              voucherItems = [...voucherItems, i];
+            }
+          }
+        });
       });
 
       return {
@@ -1130,11 +1153,22 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           ...state.summary,
           list: state.summary.list.map(li => ({
             ...li,
-            items: items.map(item => ({
+            items: items.filter(i => {
+              if (i.type === 'voucher') {
+                return false;
+              }
+              if (i.type === 'course') {
+                return !li.contact.isCompany;
+              }
+              return true;
+            }).map(item => ({
               ...item,
-              checked: Boolean(enrolments.find(en => en.contactId === li.contact.id && en.courseClass && en.courseClass.id === item.id))
+              checked: item.type === "course"
+               ? Boolean(enrolments.find(en => en.contactId === li.contact.id && en.courseClass && en.courseClass.id === item.id))
+               : true
             }))
-          }))
+          })),
+          voucherItems
         }
       };
     }

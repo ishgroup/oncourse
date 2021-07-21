@@ -4,13 +4,18 @@
  */
 
 import {
-  ArticleProduct, CheckoutPaymentPlan, CheckoutSaleRelation,
+  ArticleProduct,
+  CheckoutPaymentPlan,
+  CheckoutSaleRelation,
   Course,
   CourseClass,
   Discount,
-  EnrolmentStudyReason, EntityRelationCartAction, Invoice,
+  EnrolmentStudyReason,
+  EntityRelationCartAction,
+  Invoice,
   MembershipProduct,
-  PaymentMethod, Sale,
+  PaymentMethod,
+  Sale,
   VoucherProduct
 } from "@api/model";
 
@@ -91,6 +96,11 @@ export type CheckoutItem = CheckoutCourse & VoucherProduct & MembershipProduct &
   relationDiscount?: Discount;
   fromItemRelation?: Sale;
 };
+
+export type CheckoutProductPurchase = {
+  contactId: number;
+  items: CheckoutItem[];
+}
 
 export interface CheckoutState {
   step: number;
