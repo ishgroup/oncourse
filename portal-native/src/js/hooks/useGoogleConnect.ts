@@ -14,17 +14,9 @@ export default ({ onSuccsess }: Props): [AuthRequest | null, (options?: AuthRequ
     expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
     webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
     scopes: [
-      'https://www.googleapis.com/auth/drive.appdata',
+      'https://www.googleapis.com/auth/calendar.events',
       'https://www.googleapis.com/auth/drive.file',
-      'https://www.googleapis.com/auth/drive.install',
-      'https://www.googleapis.com/auth/drive.apps.readonly',
-      'https://www.googleapis.com/auth/drive.metadata',
-      'https://www.googleapis.com/auth/drive',
-      'https://www.googleapis.com/auth/drive.activity',
-      'https://www.googleapis.com/auth/drive.activity.readonly',
-      'https://www.googleapis.com/auth/drive.readonly',
-      'https://www.googleapis.com/auth/drive.metadata.readonly',
-      'https://www.googleapis.com/auth/drive.scripts'
+      'https://www.googleapis.com/auth/drive.metadata'
     ],
     shouldAutoExchangeCode: false,
     prompt: Prompt.Consent
