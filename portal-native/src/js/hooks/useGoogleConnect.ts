@@ -14,9 +14,12 @@ export default ({ onSuccsess }: Props): [AuthRequest | null, (options?: AuthRequ
     expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
     webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
     scopes: [
+      'openid',
       'https://www.googleapis.com/auth/calendar.events',
       'https://www.googleapis.com/auth/drive.file',
-      'https://www.googleapis.com/auth/drive.metadata'
+      'https://www.googleapis.com/auth/drive.metadata',
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.profile'
     ],
     shouldAutoExchangeCode: false,
     prompt: Prompt.Consent
