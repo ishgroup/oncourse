@@ -154,4 +154,29 @@ class Configuration {
             systemProperty
         }
     }
+
+    static enum ServicesProperty implements IProperty {
+
+        SMS_API('smsGatewayApiId', 'sms.gateway.api.id'),
+        SMS_USER('smsGatewayUser', 'sms.gateway.user'),
+        SMS_PASS('smsGatewayPass', 'sms.gateway.pass'),
+        SMS_URL('smsGatewayURL', 'sms.gateway.url')
+
+        private String key
+        private String systemProperty
+
+        private ServicesProperty(String key, String systemProperty) {
+            this.key = key
+            this.systemProperty = systemProperty
+        }
+
+        String getKey() {
+            key
+        }
+
+        String getSystemProperty() {
+            systemProperty
+        }
+
+    }
 }

@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static ish.oncourse.configuration.Configuration.AppProperty.USI_LOCATION;
+import static ish.oncourse.configuration.Configuration.ServicesProperty.*;
 import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION;
 
 /**
@@ -25,7 +26,7 @@ import static ish.oncourse.solr.SolrProperty.WEBAPP_LOCATION;
  */
 public class ServicesApp {
 	public static void main(String[] args) {
-		Configuration.configure(WEBAPP_LOCATION, USI_LOCATION);
+		Configuration.configure(WEBAPP_LOCATION, USI_LOCATION, SMS_USER, SMS_API, SMS_URL, SMS_PASS);
 		Bootique bootique = new BuildBootique().args(args).build();
 		bootique.exec();
 	}

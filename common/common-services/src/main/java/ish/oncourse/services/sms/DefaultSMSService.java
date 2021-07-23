@@ -1,6 +1,7 @@
 package ish.oncourse.services.sms;
 
 import ish.common.types.MessageStatus;
+import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+import static ish.oncourse.configuration.Configuration.ServicesProperty.*;
+
 /**
  * Default implementation of SMS service.
  */
@@ -23,15 +26,13 @@ public class DefaultSMSService implements ISMSService {
 
 	private static final Pattern NO_WHITESPACE_PATTERN = Pattern.compile("^[^\\s]+$");
 
-	private final String smsGatewayApiId = (System.getProperty("smsGatewayApiId") != null) ? System.getProperty("smsGatewayApiId")
-			: "237397";
+	private final String smsGatewayApiId = Configuration.getValue(SMS_API);
 
-	private final String smsGatewayUser = (System.getProperty("smsGatewayUser") != null) ? System.getProperty("smsGatewayUser") : "ish";
+	private final String smsGatewayUser = Configuration.getValue(SMS_USER);
 
-	private final String smsGatewayPass = (System.getProperty("smsGatewayPass") != null) ? System.getProperty("smsGatewayPass") : "8ujgdw";
+	private final String smsGatewayPass =  Configuration.getValue(SMS_PASS);
 
-	private final String smsGatewayURL = (System.getProperty("smsGatewayURL") != null) ? System.getProperty("smsGatewayURL")
-			: "https://api.clickatell.com/http/";
+	private final String smsGatewayURL =  Configuration.getValue(SMS_URL);
 
 	@Override
 	public String authenticate() {
