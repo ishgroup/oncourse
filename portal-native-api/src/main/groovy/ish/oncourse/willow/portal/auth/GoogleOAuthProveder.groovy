@@ -2,7 +2,6 @@ package ish.oncourse.willow.portal.auth
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.http.HttpTransport
@@ -10,7 +9,6 @@ import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.drive.DriveScopes
-import com.google.api.services.oauth2.Oauth2
 import com.google.api.services.oauth2.Oauth2Scopes
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
@@ -42,5 +40,6 @@ class GoogleOAuthProveder {
     GoogleTokenResponse authorize(String activationCode) {
         GoogleTokenResponse resp = flow.newTokenRequest(activationCode).execute()
     }
+
     
 }
