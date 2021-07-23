@@ -34,4 +34,7 @@
   <component name="TaskProjectConfiguration">
     <server type="JIRA" url="https://squish.ish.com.au" />
   </component>
+  <component name="WebPackConfiguration">
+    <option name="mode" value="DISABLED" />
+  </component>
 </project>

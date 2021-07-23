@@ -178,6 +178,9 @@ export const useCommonStyles = () => {
     mtAuto: {
       marginTop: 'auto'
     },
+    mbAuto: {
+      marginBottom: 'auto'
+    },
     ml0: {
       marginLeft: 0
     },
@@ -311,6 +314,5 @@ export const useCommonStyles = () => {
     colorText: {
       color: theme.colors.text
     }
-  })
+  });
 };
-

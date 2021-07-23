@@ -8,9 +8,8 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/ish-onCourse-icon-192.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./src/assets/images/splash.png",
+      "backgroundColor": "#fbf9f0"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

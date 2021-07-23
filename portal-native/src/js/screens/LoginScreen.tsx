@@ -1,10 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { LoginRequest } from '@api/model';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { Animated, Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { Button, Caption, Card, Switch, TextInput } from 'react-native-paper';
+import Collapsible from 'react-native-collapsible';
 import * as WebBrowser from 'expo-web-browser';
+import '@expo/match-media';
+import { useMediaQuery } from 'react-responsive';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import TextField from '../components/fields/TextField';
 import { connect, signIn } from '../actions/LoginActions';
@@ -38,8 +41,16 @@ const useStyles = createStyles((theme) => ({
     paddingRight: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
+  loginContainerFullScreen: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 0,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    overflow: 'scroll'
+  },
   input: {
-    marginTop: theme.spacing(2),
     backgroundColor: '#fff',
   },
   headline: {
@@ -62,6 +73,18 @@ const useStyles = createStyles((theme) => ({
     height: 30,
     width: 30,
   },
+  content: {
+    padding: theme.spacing(2),
+    justifyContent: 'center',
+    flex: 1
+  },
+  companySwitch: {
+    marginTop: theme.spacing(1),
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    zIndex: 1,
+    elevation: 1
+  }
 }));
 
 const GoogleConnect = ({ onSuccsess }) => {
@@ -152,7 +175,7 @@ const SignInContent = (
           disabled={!isValid}
           loading={loading}
         >
-          Log in?
+          Log in
         </Button>
       </View>
       <View style={[cs.flexCenter, cs.mt3, cs.mb1]}>
@@ -207,25 +230,14 @@ const SignUpContent = (
     }
   }, [values.password]);
 
-  const heightAnim = useRef(new Animated.Value(160)).current;
-
   const onSetCompany = () => {
     setIsCompany((prev) => !prev);
-    Animated.timing(
-      heightAnim,
-      {
-        toValue: isCompany ? 160 : 80,
-        duration: 200,
-        useNativeDriver: false,
-      },
-    ).start(() => {
-      setShowCompany((prev) => !prev);
-    });
+    setShowCompany((prev) => !prev);
   };
 
   return (
     <>
-      <View style={[cs.flexRow, cs.justifyContentEnd, cs.mt1]}>
+      <View style={styles.companySwitch}>
         <View style={[cs.flexRow, cs.alignItemsCenter]}>
           <Caption style={cs.pr1}>
             Is company?
@@ -233,36 +245,36 @@ const SignUpContent = (
           <Switch value={isCompany} onValueChange={onSetCompany} />
         </View>
       </View>
-      <Animated.View
-        style={{
-          height: heightAnim,
-        }}
-      >
-        {showCompany
-          ? (
-            <>
-              <TextField
-                name="companyName"
-                label="Company name"
-                style={styles.input}
-              />
-            </>
-          )
-          : (
-            <>
-              <TextField
-                name="firstName"
-                label="First name"
-                style={styles.input}
-              />
-              <TextField
-                name="lastName"
-                label="Last name"
-                style={styles.input}
-              />
-            </>
-          )}
-      </Animated.View>
+
+      {showCompany
+        ? (
+          <>
+            <TextField
+              name="companyName"
+              label="Company name"
+              style={styles.input}
+            />
+          </>
+        )
+        : (
+          <>
+            <TextField
+              name="firstName"
+              label="First name"
+              style={styles.input}
+            />
+
+          </>
+        )}
+
+      <Collapsible collapsed={isCompany}>
+        <TextField
+          name="lastName"
+          label="Last name"
+          style={styles.input}
+        />
+      </Collapsible>
+
       <TextField
         name="email"
         label="Email"
@@ -316,6 +328,7 @@ const SignUpContent = (
 
 const LoginScreen = () => {
   const [isSignIn, setIsSignIn] = useState(true);
+  const isSmallScreen = useMediaQuery({ query: '(max-device-height: 800px)' });
 
   const loading = useAppSelector((state) => state.login.loading);
 
@@ -335,11 +348,26 @@ const LoginScreen = () => {
     companyName: yup.string().notRequired(),
     email: yup.string().required('Email is required').email('Please enter valid email'),
     password: yup.string().required('Password is required'),
+    sSOToken: yup.string().nullable().notRequired(),
+    sSOProvider: yup.string().nullable().notRequired() as any,
   }), [isSignIn]);
+
+  const Logo = (
+    <Image
+      source={require('../../assets/images/ish-onCourse-icon-192.png')}
+      style={styles.logo}
+    />
+  );
+
+  const Info = (
+    <Caption style={styles.caption}>
+      Login to skillsOnCourse if you are a tutor or a student. Manage your classes, view your timetable and much more.
+    </Caption>
+  );
 
   return (
     <View
-      style={[cs.flex1, cs.overflowHidden]}
+      style={cs.flex1}
     >
       <View style={styles.topPart} />
       <View style={styles.bottomPart} />
@@ -348,65 +376,59 @@ const LoginScreen = () => {
         cs.justifyContentCenter,
       ]}
       >
-        <Image
-          source={require('../../assets/images/ish-onCourse-icon-192.png')}
-          style={styles.logo}
-        />
-        <View>
-          <Card
-            elevation={3}
-            style={styles.loginContainer}
-          >
-            <Card.Content>
-              <Formik
-                initialValues={{} as any}
-                validationSchema={validationSchema}
-                onSubmit={({ confirmPassword, ...values }) => {
-                  dispatch(signIn(values));
-                }}
-              >
-                {({
-                  resetForm,
-                  handleSubmit,
-                  isValid,
-                  touched,
-                  values,
-                  setFieldTouched
-                }) => {
-                  const onPressSign = () => {
-                    resetForm();
-                    setIsSignIn((prev) => !prev);
-                  };
+        {!isSmallScreen && Logo}
+        <Card
+          elevation={3}
+          style={isSmallScreen ? styles.loginContainerFullScreen : styles.loginContainer}
+        >
+          <View style={styles.content}>
 
-                  return (isSignIn
-                    ? (
-                      <SignInContent
-                        onPressSign={onPressSign}
-                        handleSubmit={handleSubmit}
-                        isValid={isValid}
-                        loading={loading}
-                        dispatch={dispatch}
-                      />
-                    )
-                    : (
-                      <SignUpContent
-                        onPressSign={onPressSign}
-                        handleSubmit={handleSubmit}
-                        isValid={isValid}
-                        loading={loading}
-                        values={values}
-                        touched={touched}
-                        setFieldTouched={setFieldTouched}
-                      />
-                    ));
-                }}
-              </Formik>
-            </Card.Content>
-          </Card>
-          <Caption style={styles.caption}>
-            Login to skillsOnCourse if you are a tutor or a student. Manage your classes, view your timetable and much more.
-          </Caption>
-        </View>
+            <Formik
+              initialValues={{} as any}
+              validationSchema={validationSchema}
+              onSubmit={({ confirmPassword, ...values }) => {
+                dispatch(signIn(values));
+              }}
+            >
+              {({
+                resetForm,
+                handleSubmit,
+                isValid,
+                touched,
+                values,
+                setFieldTouched
+              }) => {
+                const onPressSign = () => {
+                  resetForm();
+                  setIsSignIn((prev) => !prev);
+                };
+
+                return (isSignIn
+                  ? (
+                    <SignInContent
+                      onPressSign={onPressSign}
+                      handleSubmit={handleSubmit}
+                      isValid={isValid}
+                      loading={loading}
+                      dispatch={dispatch}
+                    />
+                  )
+                  : (
+                    <SignUpContent
+                      onPressSign={onPressSign}
+                      handleSubmit={handleSubmit}
+                      isValid={isValid}
+                      loading={loading}
+                      values={values}
+                      touched={touched}
+                      setFieldTouched={setFieldTouched}
+                    />
+                  ));
+              }}
+            </Formik>
+          </View>
+        </Card>
+        {!isSmallScreen && Info}
       </View>
     </View>
   );
