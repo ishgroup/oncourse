@@ -2,6 +2,7 @@ package ish.oncourse.willow.portal.auth
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.http.HttpTransport
@@ -12,6 +13,8 @@ import com.google.api.services.drive.DriveScopes
 import com.google.api.services.oauth2.Oauth2Scopes
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.configuration.Configuration
+import ish.oncourse.model.User
 import ish.oncourse.services.persistence.ICayenneService
 
 @CompileStatic
@@ -21,24 +24,41 @@ class GoogleOAuthProveder {
     
     private GoogleAuthorizationCodeFlow flow
     private GoogleClientSecrets clientSecrets
-
-    private ICayenneService cayenneService
+    
     
     
     @Inject
-    GoogleOAuthProveder(ICayenneService cayenneService) {
-        this.cayenneService = cayenneService
+    GoogleOAuthProveder() {
+        String userDir = System.getProperties().get(Configuration.USER_DIR) as String
+
+        FileInputStream stream
+        try {
+            stream = new FileInputStream("$userDir/client_secret.json")
+          } catch (Exception ex) {
+            throw new IllegalArgumentException("Exception during reading application.properties file", ex)
+        } 
 
         clientSecrets = GoogleClientSecrets.load(jsonFactory,
-                new InputStreamReader(this.class.getResourceAsStream('client_secrets.json')))
+                new InputStreamReader(stream))
         flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport , jsonFactory, clientSecrets, [Oauth2Scopes.OPENID, Oauth2Scopes.USERINFO_PROFILE,Oauth2Scopes.USERINFO_EMAIL, CalendarScopes.CALENDAR_EVENTS, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_METADATA])
                 .setAccessType("offline")
                 .build()
     }
 
-    GoogleTokenResponse authorize(String activationCode) {
-        GoogleTokenResponse resp = flow.newTokenRequest(activationCode).execute()
+    SSOCredantials authorize(String activationCode, String redirectUrl) {
+        //
+        GoogleTokenResponse resp = flow.newTokenRequest(activationCode)
+                .setGrantType('authorization_code')
+                .setRedirectUri(redirectUrl).execute()
+        GoogleIdToken token =  resp.parseIdToken()
+        SSOCredantials credantials = new SSOCredantials() 
+        credantials.email = token.payload.getEmail()
+        credantials.profilePicture = token.payload.get('picture')
+        credantials.accessToken = resp.getAccessToken()
+        credantials.refreshToken = resp.getRefreshToken()
+
+        return credantials
     }
 
     

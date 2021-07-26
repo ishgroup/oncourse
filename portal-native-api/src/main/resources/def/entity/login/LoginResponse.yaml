@@ -6,7 +6,7 @@ properties:
   token:
     type: string
     description: session token 
-  isNew:
+  vefiryEmail:
     type: boolean
-    description: is newly added user
+    description: verify email before proceed to portal app
 

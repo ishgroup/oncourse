@@ -34,7 +34,9 @@ class RequestService {
         ThreadLocalUser.get()?.college
     }
     
-
+    String getRequestUrl() {
+        request.requestURL
+    }
 
     void setSessionToken(String value, int maxAge) {
         Cookie cookie = new Cookie(SessionCookie.SESSION_ID, value)
