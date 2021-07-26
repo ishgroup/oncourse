@@ -11,12 +11,15 @@
 package ish.oncourse.server.scripting.api;
 
 import com.google.inject.Inject;
+import ish.common.types.DeliverySchedule;
 import ish.oncourse.API;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Student;
+import ish.oncourse.server.cayenne.SurveyFieldConfiguration;
 import ish.oncourse.server.license.LicenseService;
 import ish.persistence.Preferences;
 import ish.util.UrlUtil;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -165,5 +168,17 @@ public class CollegePreferenceService {
 
 	public Object getPrefHelper() {
 		return preferenceHelper.pref();
+	}
+
+	/**
+	 * Check if default survey form foor enrolled students configured for ncourse.
+	 * See ish.email.enrolmentConfirmation email template
+	 */
+	@API
+	public boolean hasSurveyForm() {
+		return !ObjectSelect.query(SurveyFieldConfiguration.class)
+				.where(SurveyFieldConfiguration.INT_TYPE.eq(4))
+				.and(SurveyFieldConfiguration.DELIVERY_SCHEDULE.eq(DeliverySchedule.ON_ENROL))
+				.select(preferenceController.getObjectContext()).isEmpty();
 	}
 }
