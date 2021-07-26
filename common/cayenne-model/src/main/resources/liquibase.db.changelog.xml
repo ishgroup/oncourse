@@ -550,11 +550,50 @@
 			<column name="emailVerified" type="SMALLINT"/>
 			<column name="profilePicture" type="VARCHAR(512)"/>
 			<column name="passwordHash" type="VARCHAR(512)"/>
-			<column name="ssoProvider" type="SMALLINT"/>
-			<column name="ssoAccessToken" type="VARCHAR(1000)"/>
-			<column name="ssoRefreshToken" type="VARCHAR(1000)"/>
 		</createTable>
-		
+
+		<createTable tableName="UserAccount">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="datetime"/>
+			<column name="modified" type="datetime"/>
+			<column name="type" type="SMALLINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="userId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseTableName="UserAccount"
+														 baseColumnNames="userId"
+														 constraintName="UserAccount_User_fk"
+														 referencedTableName="User"
+														 referencedColumnNames="id"
+														 validate="true"/>
+
+		<createTable tableName="UserAccountProperty">
+			<column name="id" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"/>
+			</column>
+			<column name="created" type="datetime"/>
+			<column name="modified" type="datetime"/>
+			<column name="name" type="VARCHAR(512)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="value" type="VARCHAR(512)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="userAccountId" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseTableName="UserAccountProperty"
+														 baseColumnNames="userAccountId"
+														 constraintName="UserAccountProperty_UserAccount_fk"
+														 referencedTableName="UserAccount"
+														 referencedColumnNames="id"
+														 validate="true"/>
 	</changeSet>
 
 
