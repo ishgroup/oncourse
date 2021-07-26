@@ -1561,8 +1561,8 @@
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="512"/>
-		<db-attribute name="firstName" type="VARCHAR" length="128"/>
-		<db-attribute name="lastName" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="emailVerified" type="BOOLEAN"/>
+		<db-attribute name="profilePicture" type="VARCHAR" length="512"/>
 		<db-attribute name="lastLogin" type="TIMESTAMP"/>
 		<db-attribute name="passwordHash" type="VARCHAR" length="512"/>
 		<db-attribute name="ssoProvider" type="INTEGER"/>
@@ -2886,8 +2886,8 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
-		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="firstName"/>
-		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="lastName"/>
+		<obj-attribute name="emailVerified" type="java.lang.Boolean" db-attribute-path="emailVerified"/>
+		<obj-attribute name="profilePicture" type="java.lang.String" db-attribute-path="profilePicture"/>
 		<obj-attribute name="lastLogin" type="java.util.Date" db-attribute-path="lastLogin"/>
 		<obj-attribute name="passwordHash" type="java.lang.String" db-attribute-path="passwordHash"/>
 		<obj-attribute name="ssoProvider" type="ish.common.types.SSOProviderType" db-attribute-path="ssoProvider"/>

@@ -547,11 +547,8 @@
 			<column name="email" type="VARCHAR(512)">
 				<constraints nullable="false" unique="true" uniqueConstraintName="User_email_uniq"/>
 			</column>
-			<column name="firstName" type="VARCHAR(128)"/>
-			<column name="lastName" type="VARCHAR(128)">
-				<constraints nullable="false"/>
-			</column>
-
+			<column name="emailVerified" type="SMALLINT"/>
+			<column name="profilePicture" type="VARCHAR(512)"/>
 			<column name="passwordHash" type="VARCHAR(512)"/>
 			<column name="ssoProvider" type="SMALLINT"/>
 			<column name="ssoAccessToken" type="VARCHAR(1000)"/>
