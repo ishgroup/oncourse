@@ -13,6 +13,7 @@ package ish.common.types
 
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.API
+import ish.oncourse.cayenne.PersistentObjectI
 
 @API
 enum InvoiceType implements DisplayableExtendedEnumeration<Integer> {
@@ -29,7 +30,7 @@ enum InvoiceType implements DisplayableExtendedEnumeration<Integer> {
      * Database value: 2
      */
     @API
-    SALE_ORDER(2, "Sale order")
+    QUOTE(2, "Quote")
 
 
     private String displayName
