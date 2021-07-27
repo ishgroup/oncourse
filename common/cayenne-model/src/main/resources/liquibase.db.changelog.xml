@@ -571,7 +571,10 @@
 														 referencedTableName="User"
 														 referencedColumnNames="id"
 														 validate="true"/>
-
+		<addUniqueConstraint columnNames="type, userId"
+													constraintName="User_type_uniq"
+													tableName="UserAccount"
+													validate="true"/>
 		<createTable tableName="UserAccountProperty">
 			<column name="id" type="BIGINT" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"/>
@@ -594,6 +597,10 @@
 														 referencedTableName="UserAccount"
 														 referencedColumnNames="id"
 														 validate="true"/>
+		<addUniqueConstraint columnNames="userAccountId, name"
+												 constraintName="account_property_uniq"
+												 tableName="UserAccountProperty"
+												 validate="true"/>
 	</changeSet>
 
 

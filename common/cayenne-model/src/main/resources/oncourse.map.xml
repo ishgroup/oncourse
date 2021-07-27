@@ -2906,13 +2906,13 @@
 		<obj-attribute name="ssoAccessToken" type="java.lang.String" db-attribute-path="ssoAccessToken"/>
 		<obj-attribute name="ssoRefreshToken" type="java.lang.String" db-attribute-path="ssoRefreshToken"/>
 	</obj-entity>
-	<obj-entity name="UserAccount">
+	<obj-entity name="UserAccount" className="ish.oncourse.model.UserAccount" dbEntityName="UserAccount" superClassName="WillowCayenneObject">
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="type" type="ish.common.types.SSOProviderType" db-attribute-path="type"/>
 	</obj-entity>
-	<obj-entity name="UserAccountProperty">
+	<obj-entity name="UserAccountProperty" className="ish.oncourse.model.UserAccountProperty" dbEntityName="UserAccountProperty" superClassName="WillowCayenneObject">
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
