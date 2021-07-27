@@ -7,7 +7,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cxf.CXFModule
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.services.persistence.ICayenneService
-import ish.oncourse.willow.portal.filter.ZKSessionManager
+import ish.oncourse.willow.portal.auth.ZKSessionManager
 import ish.oncourse.willow.portal.service.impl.AuthenticationApiImpl
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 

@@ -13,6 +13,7 @@ import com.google.api.services.drive.DriveScopes
 import com.google.api.services.oauth2.Oauth2Scopes
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.SSOProviderType
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.User
 import ish.oncourse.services.persistence.ICayenneService
@@ -52,7 +53,8 @@ class GoogleOAuthProveder {
                 .setGrantType('authorization_code')
                 .setRedirectUri(redirectUrl).execute()
         GoogleIdToken token =  resp.parseIdToken()
-        SSOCredantials credantials = new SSOCredantials() 
+        SSOCredantials credantials = new SSOCredantials()
+        credantials.providerType = SSOProviderType.GOOGLE
         credantials.email = token.payload.getEmail()
         credantials.profilePicture = token.payload.get('picture')
         credantials.accessToken = resp.getAccessToken()
