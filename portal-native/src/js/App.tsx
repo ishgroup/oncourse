@@ -6,10 +6,8 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
 import useCachedResources from './hooks/useCachedResources';
 import { initMockDB } from '../dev/MockAdapter';
-import LoginScreen from './screens/LoginScreen';
-import {
-  getThemeByType, ThemeContext, ThemeType
-} from './styles';
+import LoginScreen from './screens/login/LoginScreen';
+import { getThemeByType, ThemeContext, ThemeType } from './styles';
 import store from './reducers/Store';
 import { useAppSelector } from './hooks/redux';
 import Navigation from './components/navigation';

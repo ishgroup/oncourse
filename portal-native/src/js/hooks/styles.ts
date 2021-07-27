@@ -313,6 +313,9 @@ export const useCommonStyles = () => {
     },
     colorText: {
       color: theme.colors.text
-    }
+    },
+    bgTransp: {
+      backgroundColor: 'transparent',
+    },
   });
 };

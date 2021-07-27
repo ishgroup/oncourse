@@ -43,7 +43,7 @@ const TextField = (props: Props) => {
         onChangeText={handleChange(name)}
         {...rest}
       />
-      <HelperText type="error" visible={hasError}>
+      <HelperText type="error" style={{ height: 22 }}>
         {hasError && errorMessage}
       </HelperText>
     </View>

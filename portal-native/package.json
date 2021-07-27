@@ -5,7 +5,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "web:prod": "expo start --no-dev --minify --web",
-    "eject": "expo eject",
     "test": "jest"
   },
   "jest": {
@@ -40,11 +39,13 @@
     "react-native-collapsible": "^1.6.0",
     "react-native-easy-grid": "^0.2.2",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-pager-view": "5.0.12",
     "react-native-paper": "^4.9.1",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "^3.4.0",
     "react-native-status-bar-height": "^2.6.0",
+    "react-native-tab-view": "^3.0.1",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.4",

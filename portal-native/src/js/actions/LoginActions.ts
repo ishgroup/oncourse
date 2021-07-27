@@ -1,4 +1,4 @@
-import { LoginRequest, LoginResponse, TokenResponse } from '@api/model';
+import { LoginRequest, LoginResponse } from '@api/model';
 import { FULFILLED, toRequestType } from '../utils/ActionUtils';
 
 export const SIGN_IN = toRequestType('login/signIn');
@@ -8,10 +8,6 @@ export const SIGN_UP = toRequestType('login/signUp');
 
 export const CONNECT = toRequestType('login/connect');
 
-export const connect = (token: TokenResponse) => ({
-  type: CONNECT,
-  payload: token
-});
 
 export const signIn = (request: LoginRequest) => ({
   type: SIGN_IN,
