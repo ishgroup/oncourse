@@ -211,7 +211,16 @@ class UnitAPI extends TCSI_API {
             unit["amount_charged"] = feeCharged //E384
             unit["help_loan_amount"] = helpLoanAmount // E558
             unit["amount_paid_upfront"] = feeCharged.subtract(helpLoanAmount) //E381
-            unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)).setScale(2, RoundingMode.UP)// E529
+
+            LocalDate threshold_1 = LocalDate.parse('01-04-2020','dd-MM-yyyy')
+            LocalDate threshold_2 = LocalDate.parse('01-07-2021','dd-MM-yyyy')
+
+            if (clazz.censusDate.isAfter(threshold_1) && clazz.censusDate.isBefore(threshold_2)) {
+                unit["loan_fee"] = BigDecimal.ZERO
+            } else {
+                unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)).setScale(2, RoundingMode.UP)// E529
+            }
+            
         }
 
         if (enrolment.creditTotal) {
