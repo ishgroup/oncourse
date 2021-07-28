@@ -13,6 +13,7 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import ish.common.types.ConfirmationStatus
+import ish.common.types.InvoiceType
 import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.DefaultAccount
@@ -23,6 +24,7 @@ import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.InvoiceDTO
 import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
 import ish.oncourse.server.api.v1.model.InvoicePaymentPlanDTO
+import ish.oncourse.server.api.v1.model.InvoiceTypeDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
 import ish.oncourse.server.services.IAutoIncrementService
@@ -33,7 +35,6 @@ import ish.util.MoneyUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate
 
@@ -44,9 +45,12 @@ import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoice
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
 import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
 import static ish.util.LocalDateUtils.dateToTimeValue
-import static org.apache.commons.lang3.StringUtils.*
+import static org.apache.commons.lang3.StringUtils.EMPTY
+import static org.apache.commons.lang3.StringUtils.trimToNull
+import static org.apache.commons.lang3.StringUtils.isNotBlank
+import static org.apache.commons.lang3.StringUtils.isBlank
 
-class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao> {
+class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, InvoiceDao> {
 
     @Inject
     private SystemUserService systemUserService
@@ -82,6 +86,9 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
     private EnrolmentDao enrolmentDao
 
     @Inject
+    private LeadDao leadDao
+
+    @Inject
     private TaxDao taxDao
 
     @Inject
@@ -99,65 +106,107 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
     }
 
     @Override
-    InvoiceDTO toRestModel(Invoice invoice) {
-        new InvoiceDTO().with { invoiceDTO ->
-            invoiceDTO.id = invoice.id
-            invoiceDTO.contactId = invoice.contact.id
-            invoiceDTO.contactName = invoice.contact.with {it.getFullName() }
-            invoiceDTO.customerReference = invoice.customerReference
+    InvoiceDTO toRestModel(AbstractInvoice abstractInvoice) {
+        InvoiceDTO dto = new InvoiceDTO().with {invoiceDTO ->
+            invoiceDTO.id = abstractInvoice.id
+            invoiceDTO.type = InvoiceTypeDTO.values()[0].fromDbType(abstractInvoice.type)
+            invoiceDTO.contactId = abstractInvoice.contact.id
+            invoiceDTO.leadId = abstractInvoice.lead?.id
+            invoiceDTO.contactName = abstractInvoice.contact.with {it.getFullName() }
+            invoiceDTO.customerReference = abstractInvoice.customerReference
+            invoiceDTO.billToAddress = abstractInvoice.billToAddress
+            invoiceDTO.shippingAddress = abstractInvoice.shippingAddress
+            invoiceDTO.invoiceDate = abstractInvoice.invoiceDate
+            invoiceDTO.dateDue = abstractInvoice.dateDue
+            invoiceDTO.overdue = abstractInvoice.overdue?.toBigDecimal()
+            invoiceDTO.total = abstractInvoice.totalIncTax?.toBigDecimal()
+            invoiceDTO.amountOwing = abstractInvoice.amountOwing?.toBigDecimal()
+            invoiceDTO.publicNotes = abstractInvoice.publicNotes
+            invoiceDTO.source = abstractInvoice.source.displayName
+            invoiceDTO.createdByUser = abstractInvoice.createdByUser?.email
+            invoiceDTO.sendEmail = abstractInvoice.confirmationStatus == ConfirmationStatus.NOT_SENT
+            invoiceDTO.createdOn = dateToTimeValue(abstractInvoice.createdOn)
+            invoiceDTO.modifiedOn = dateToTimeValue(abstractInvoice.modifiedOn)
+            invoiceDTO.paymentPlans.addAll([toRestPaymentPlan(abstractInvoice)])
+            invoiceDTO
+        }
+        if (abstractInvoice instanceof Invoice) {
+            return toRestInvoiceModel(dto, (Invoice) abstractInvoice)
+        } else if (abstractInvoice instanceof Quote) {
+            return toRestQuoteModel(dto, (Quote) abstractInvoice)
+        }
+        return dto
+    }
+    
+    static InvoiceDTO toRestInvoiceModel(InvoiceDTO dto, Invoice invoice) {
+        dto.with {invoiceDTO ->
             invoiceDTO.invoiceNumber = invoice.invoiceNumber
-            invoiceDTO.billToAddress = invoice.billToAddress
-            invoiceDTO.shippingAddress = invoice.shippingAddress
-            invoiceDTO.invoiceDate = invoice.invoiceDate
-            invoiceDTO.dateDue = invoice.dateDue
-            invoiceDTO.overdue = invoice.overdue?.toBigDecimal()
-            invoiceDTO.invoiceLines = invoice.invoiceLines.collect { toRestInvoiceLineModel(it) }
-            invoiceDTO.total = invoice.totalIncTax?.toBigDecimal()
-            invoiceDTO.amountOwing = invoice.amountOwing?.toBigDecimal()
-            invoiceDTO.publicNotes = invoice.publicNotes
-            invoiceDTO.paymentPlans.addAll([toRestPaymentPlan(invoice)])
             invoiceDTO.paymentPlans.addAll(invoice.invoiceDueDates.collect { toRestPaymentPlan(it) }.sort { it.date })
             invoiceDTO.paymentPlans.addAll(invoice.paymentInLines.collect { toRestPaymentPlan(it) }.sort { it.date })
             invoiceDTO.paymentPlans.addAll(invoice.paymentOutLines.collect { toRestPaymentPlan(it) }.sort { it.date })
+            invoiceDTO.invoiceLines = invoice.invoiceLines.collect { toRestInvoiceLineModel(it as InvoiceLine) }
+            invoiceDTO        
+        }
+    }
 
-            invoiceDTO.source = invoice.source.displayName
-            invoiceDTO.createdByUser = invoice.createdByUser?.email
-            invoiceDTO.sendEmail = invoice.confirmationStatus == ConfirmationStatus.NOT_SENT
-            invoiceDTO.createdOn = dateToTimeValue(invoice.createdOn)
-            invoiceDTO.modifiedOn = dateToTimeValue(invoice.modifiedOn)
+    static InvoiceDTO toRestQuoteModel(InvoiceDTO dto, Quote quote) {
+        dto.with {invoiceDTO ->
+            invoiceDTO.title = quote.title
+            invoiceDTO.description = quote.description
+            invoiceDTO.invoiceLines = quote.quoteLines.collect { toRestInvoiceLineModel(it as QuoteLine) }
             invoiceDTO
         }
     }
 
     @Override
-    Invoice toCayenneModel(InvoiceDTO invoiceDTO, Invoice invoice) {
-        if (invoice.newRecord) {
-            invoice.contact = contactDao.getById(invoice.context, invoiceDTO.contactId)
-            invoice.invoiceNumber = autoIncrementService.nextInvoiceNumber
-            invoice.invoiceDate = invoiceDTO.invoiceDate
-            invoice.source = SOURCE_ONCOURSE
-            invoice.createdByUser = invoice.context.localObject(systemUserService.currentUser)
-            updateInvoiceLines(invoice, invoiceDTO.invoiceLines)
+    AbstractInvoice toCayenneModel(InvoiceDTO invoiceDTO, AbstractInvoice abstractInvoice) {
+        if (abstractInvoice == null) {
+            abstractInvoice = entityDao.newObject(cayenneService.newContext, invoiceDTO.type.getDbType())
+        }
+        if (InvoiceTypeDTO.INVOICE == invoiceDTO.type && InvoiceType.QUOTE == abstractInvoice.type) {
+            abstractInvoice = transformQuoteToInvoice(invoiceDTO, abstractInvoice)
+        }
+        if (abstractInvoice.newRecord || abstractInvoice instanceof Quote) {
+            abstractInvoice.type = invoiceDTO.type.getDbType()
+            abstractInvoice.lead = leadDao.getById(abstractInvoice.context, invoiceDTO.leadId)
+            abstractInvoice.contact = contactDao.getById(abstractInvoice.context, invoiceDTO.contactId)
+            abstractInvoice.invoiceDate = invoiceDTO.invoiceDate
+            abstractInvoice.source = SOURCE_ONCOURSE
+            abstractInvoice.createdByUser = abstractInvoice.context.localObject(systemUserService.currentUser)
+            updateInvoiceLines(abstractInvoice, invoiceDTO.invoiceLines)
         }
 
-        invoice.customerReference = trimToNull(invoiceDTO.customerReference)
-        invoice.billToAddress = trimToNull(invoiceDTO.billToAddress)
-        invoice.shippingAddress = trimToNull(invoiceDTO.shippingAddress)
-        invoice.publicNotes = trimToNull(invoiceDTO.publicNotes)
-        invoice.dateDue = invoiceDTO.dateDue
-        invoice.updateAmountOwing()
-        updateInvoiceDueDates(invoice, invoiceDTO.paymentPlans)
-        invoice.confirmationStatus = invoiceDTO.sendEmail ? ConfirmationStatus.NOT_SENT : ConfirmationStatus.DO_NOT_SEND
-        invoice
+        abstractInvoice.confirmationStatus = invoiceDTO.sendEmail ? ConfirmationStatus.NOT_SENT : ConfirmationStatus.DO_NOT_SEND
+        abstractInvoice.customerReference = trimToNull(invoiceDTO.customerReference)
+        abstractInvoice.billToAddress = trimToNull(invoiceDTO.billToAddress)
+        abstractInvoice.shippingAddress = trimToNull(invoiceDTO.shippingAddress)
+        abstractInvoice.publicNotes = trimToNull(invoiceDTO.publicNotes)
+        abstractInvoice.title = trimToNull(invoiceDTO.title)
+        abstractInvoice.description = trimToNull(invoiceDTO.description)
+        abstractInvoice.dateDue = invoiceDTO.dateDue
+        abstractInvoice.updateAmountOwing()
+        if (abstractInvoice instanceof Invoice) {
+            updateInvoiceDueDates(abstractInvoice as Invoice, invoiceDTO.paymentPlans)
+        }
+        abstractInvoice
     }
 
     @Override
     void validateModelBeforeSave(InvoiceDTO invoiceDTO, ObjectContext context, Long id) {
-        Invoice invoice = id == null ? null : entityDao.getById(context, id)
+        AbstractInvoice invoice = id == null ? null : entityDao.getById(context, id)
+
+        if (invoice instanceof Invoice && InvoiceTypeDTO.QUOTE == invoiceDTO.type) {
+            validator.throwClientErrorException(id, 'type', 'Impossible to transform an invoice to a quote.')
+        }
+
         if (!invoiceDTO.contactId) {
             validator.throwClientErrorException(id, 'contact', 'Contact id is required.')
         } else if (!contactDao.getById(context, invoiceDTO.contactId)) {
             validator.throwClientErrorException(id, 'contact', "Contact with id=$invoiceDTO.contactId not found.")
+        }
+
+        if (invoiceDTO.leadId && !leadDao.getById(context, invoiceDTO.leadId)) {
+            validator.throwClientErrorException(id, 'lead', "Lead with id=$invoiceDTO.leadId not found.")
         }
 
         if (isNotBlank(invoiceDTO.customerReference) && trimToNull(invoiceDTO.customerReference).size() > 5000) {
@@ -285,13 +334,27 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
     }
 
     @Override
-    void validateModelBeforeRemove(Invoice cayenneModel) {
+    void validateModelBeforeRemove(AbstractInvoice cayenneModel) {
         validator.throwClientErrorException(cayenneModel.id, 'id', 'Invoice cannot be deleted.')
     }
 
-    private void updateInvoiceLines(Invoice cayenneModel, List<InvoiceInvoiceLineDTO> invoiceLines) {
+    private AbstractInvoice transformQuoteToInvoice(InvoiceDTO invoiceDTO, AbstractInvoice abstractInvoice) {
+        abstractInvoice.type = InvoiceType.INVOICE //set a new type
+        abstractInvoice.context.deleteObjects(abstractInvoice.lines) // need to create new lines, otherwise account transactions won't be created
+        abstractInvoice.context.commitChanges() //commit
+
+        abstractInvoice = getEntityAndValidateExistence(abstractInvoice.context, abstractInvoice.id) // take updated
+        abstractInvoice.invoiceNumber = autoIncrementService.nextInvoiceNumber
+        updateInvoiceLines(abstractInvoice, invoiceDTO.invoiceLines)
+        abstractInvoice
+    }
+
+    private void updateInvoiceLines(AbstractInvoice cayenneModel, List<InvoiceInvoiceLineDTO> invoiceLines) {
         invoiceLines.each { il ->
-            InvoiceLine iLine = invoiceLineDao.newObject(cayenneModel.context)
+            AbstractInvoiceLine iLine = invoiceLineDao.getById(cayenneModel.context, il.id, cayenneModel.linePersistentClass)
+            if (!iLine) {
+                iLine = cayenneModel.context.newObject(cayenneModel.linePersistentClass)
+            }
             iLine.title = trimToNull(il.title)
             iLine.quantity = il.quantity
             iLine.unit = trimToNull(il.unit)
@@ -299,16 +362,20 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
             if (il.discountId) {
                 Discount discount = discountDao.getById(cayenneModel.context, il.discountId)
                 iLine.cosAccount = discount.cosAccount
-                cayenneModel.context.newObject(InvoiceLineDiscount).with { ild ->
-                    ild.discount = discount
-                    ild.invoiceLine = iLine
-                    ild
+
+                cayenneModel.context.deleteObjects(iLine.invoiceLineDiscounts.findAll {it.discount.id != discount.id })
+                if (iLine.invoiceLineDiscounts.find {it.discount.id == discount.id } == null) {
+                    cayenneModel.context.newObject(InvoiceLineDiscount).with { ild ->
+                        ild.discount = discount
+                        ild.invoiceLine = iLine
+                        ild
+                    }
                 }
             }
+            iLine.tax = taxDao.getById(cayenneModel.context, il.taxId)
             iLine.priceEachExTax = toMoneyValue(il.priceEachExTax)
             iLine.discountEachExTax = toMoneyValue(il.discountEachExTax)
             iLine.description = trimToNull(il.description)
-            iLine.tax = taxDao.getById(cayenneModel.context, il.taxId)
             if (il.courseClassId) {
                 iLine.courseClass = courseClassDao.getById(cayenneModel.context, il.courseClassId)
                 if (il.enrolmentId) {
@@ -361,8 +428,8 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
     void contraInvoice(Long id, List<Long> invoicesToPay) {
         ObjectContext context = cayenneService.newContext
 
-        Invoice currentInvoice = getEntityAndValidateExistence(context, id)
-        List<Invoice> listOfInvoices = invoicesToPay.collect { getEntityAndValidateExistence(context, it) }
+        Invoice currentInvoice = getEntityAndValidateExistence(context, id) as Invoice
+        List<Invoice> listOfInvoices = invoicesToPay.collect { getEntityAndValidateExistence(context, it) as Invoice }
 
         if (!currentInvoice.amountOwing.isLessThan(Money.ZERO)) {
             validator.throwClientErrorException(id, 'id', "Invoice with id=$id is not a credit note.")
@@ -380,7 +447,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, Invoice, InvoiceDao
         paymentInDao.newObject(context).with { PaymentIn pIn ->
             SystemUser currentUser = context.localObject(systemUserService.currentUser)
 
-            pIn.privateNotes = StringUtils.EMPTY
+            pIn.privateNotes = EMPTY
             pIn.reconciled = false
             pIn.source = SOURCE_ONCOURSE
             pIn.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
