@@ -50,20 +50,6 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 
 	abstract List<? extends AbstractInvoiceLine> getLines()
 
-	static Money amountOwingForPayer(@Nullable Contact payer) {
-		Money result = Money.ZERO
-
-		// update invoice owing
-		if (payer != null) {
-			List<Invoice> invoices = payer.getInvoices()
-
-			for (Invoice invoice : invoices) {
-				result = result.add(invoice.getAmountOwing())
-			}
-		}
-		return result
-	}
-
 	/**
 	 * @return unique invoice number
 	 */
