@@ -20,7 +20,7 @@ import ish.oncourse.server.cayenne.glue._Quote
  * Pre-invoice state
  */
 @API
-//@QueueableEntity
+@QueueableEntity
 class Quote extends _Quote {
 
 	@Override
