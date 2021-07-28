@@ -747,6 +747,7 @@
 		<db-attribute name="totalExGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="totalGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="title" type="VARCHAR" length="200"/>
 		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="InvoiceDueDate">
@@ -1601,6 +1602,7 @@
 		<obj-attribute name="totalExGst" type="ish.math.Money" db-attribute-path="totalExGst"/>
 		<obj-attribute name="totalGst" type="ish.math.Money" db-attribute-path="totalGst"/>
 		<obj-attribute name="type" type="ish.common.types.InvoiceType" db-attribute-path="type"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<post-add method-name="onPostAdd"/>
 		<pre-persist method-name="onPrePersist"/>
 		<pre-update method-name="onPreUpdate"/>

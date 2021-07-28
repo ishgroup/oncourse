@@ -41,6 +41,7 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
  *         &lt;element name="authorisedRebillingCardId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="allowAutoPay" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;
@@ -69,7 +70,8 @@ import ish.oncourse.webservices.util.GenericInvoiceStub;
     "confirmationStatus",
     "authorisedRebillingCardId",
     "type",
-    "allowAutoPay"
+    "allowAutoPay",
+    "title"
 })
 public class InvoiceStub
     extends ReplicationStub
@@ -132,6 +134,8 @@ public class InvoiceStub
     @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "boolean")
     protected Boolean allowAutoPay;
+    @XmlElement(required = true)
+    protected String title;
 
     /**
      * Gets the value of the amountOwing property.
@@ -587,6 +591,30 @@ public class InvoiceStub
      */
     public void setAllowAutoPay(Boolean value) {
         this.allowAutoPay = value;
+    }
+
+    /**
+     * Gets the value of the title property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Sets the value of the title property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTitle(String value) {
+        this.title = value;
     }
 
 }
