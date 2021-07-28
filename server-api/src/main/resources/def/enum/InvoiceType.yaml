@@ -1,0 +1,5 @@
+type: string
+description: quote status
+enum:
+  - Invoice
+  - Quote
