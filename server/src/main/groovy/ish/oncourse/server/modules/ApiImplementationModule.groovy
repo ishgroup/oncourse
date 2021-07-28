@@ -13,7 +13,6 @@ package ish.oncourse.server.modules
 
 import com.google.inject.Binder
 import com.google.inject.Module
-import ish.oncourse.server.api.v1.AssessmentSubmissionApiImpl
 import ish.oncourse.server.api.v1.service.AccessApi
 import ish.oncourse.server.api.v1.service.AccountApi
 import ish.oncourse.server.api.v1.service.ApplicationApi
@@ -101,6 +100,7 @@ import ish.oncourse.server.api.v1.service.impl.ApplicationApiImpl
 import ish.oncourse.server.api.v1.service.impl.ArticleProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentClassApiImpl
+import ish.oncourse.server.api.v1.service.impl.AssessmentSubmissionApiImpl
 import ish.oncourse.server.api.v1.service.impl.AttendanceApiImpl
 import ish.oncourse.server.api.v1.service.impl.AuditApiImpl
 import ish.oncourse.server.api.v1.service.impl.AuthenticationApiImpl
@@ -173,7 +173,6 @@ import ish.oncourse.server.api.v1.service.impl.UserPreferenceApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserRoleApiImpl
 import ish.oncourse.server.api.v1.service.impl.VoucherProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.WaitingListApiImpl
-import ish.oncourse.server.cayenne.AssessmentSubmission
 
 class ApiImplementationModule implements Module {
 

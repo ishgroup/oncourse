@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.api.v1
+package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.AssessmentSubmissionApiService
