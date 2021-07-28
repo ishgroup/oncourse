@@ -14,20 +14,26 @@ package ish.oncourse.server.cayenne
 import ish.common.types.InvoiceType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.server.cayenne.glue._SaleOrder
+import ish.oncourse.server.cayenne.glue._Quote
 
 /**
- * Sale order (in development)
+ * Pre-invoice state
  */
 @API
-@QueueableEntity
-class SaleOrder extends _SaleOrder {
-
-
+//@QueueableEntity
+class Quote extends _Quote {
 
 	@Override
 	InvoiceType getType() {
-		return InvoiceType.SALE_ORDER
+		return InvoiceType.QUOTE
+	}
+
+	Class<QuoteLine> getLinePersistentClass() {
+		return QuoteLine.class
+	}
+
+	List<QuoteLine> getLines() {
+		return this.getQuoteLines()
 	}
 }
 

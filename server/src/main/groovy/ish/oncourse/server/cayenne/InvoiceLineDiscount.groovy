@@ -78,4 +78,12 @@ class InvoiceLineDiscount extends _InvoiceLineDiscount implements Queueable {
     InvoiceLine getInvoiceLine() {
 		return super.getInvoiceLine()
     }
+
+	void setInvoiceLine(AbstractInvoiceLine abstractInvoiceLine) {
+		if (abstractInvoiceLine instanceof InvoiceLine) {
+			super.setInvoiceLine(abstractInvoiceLine)
+		} else if (abstractInvoiceLine instanceof QuoteLine) {
+			super.setQuoteLine(abstractInvoiceLine)
+		}
+	}
 }
