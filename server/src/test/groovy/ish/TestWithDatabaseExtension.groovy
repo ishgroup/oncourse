@@ -247,6 +247,7 @@ class TestWithDatabaseExtension implements
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedWaitingList"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedAssessment"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedLead"))
+        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedInvoice"))
         for (Relationship rel : nodeRelationshipsToRemove) {
             datamap.getDbEntity("NodeRelation").removeRelationship(rel.getName())
         }
@@ -290,6 +291,7 @@ class TestWithDatabaseExtension implements
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedCourse"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedCourseClass"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedInvoice"))
+        noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedQuote"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedRoom"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedSite"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedEnrolment"))
