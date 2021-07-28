@@ -63,9 +63,9 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = (
 };
 
 const mapStateToProps = (state: State, ownProps) => ({
-  items: state.plainSearchRecords[ownProps.entity].items,
-  loading: state.plainSearchRecords[ownProps.entity].loading,
-  remoteRowCount: state.plainSearchRecords[ownProps.entity].rowsCount,
+  items: state.plainSearchRecords[ownProps.entity]?.items,
+  loading: state.plainSearchRecords[ownProps.entity]?.loading,
+  remoteRowCount: state.plainSearchRecords[ownProps.entity]?.rowsCount,
 });
 
 const getDefaultColumns = entity => {
@@ -84,6 +84,8 @@ const getDefaultColumns = entity => {
       return "code,name";
     case "Module":
       return "nationalCode,title";
+    case "Lead":
+      return "id,contactName";
   }
   return "";
 };

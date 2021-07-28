@@ -10,7 +10,7 @@ import {
 } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { Account, Currency, Tax } from "@api/model";
+import { Account, Currency, InvoiceType, Tax } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { addDays } from "date-fns";
@@ -34,6 +34,8 @@ import { setSelectedContact } from "../actions";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { usePrevious } from "../../../../common/utils/hooks";
+import { mapSelectItems } from "../../../../common/utils/common";
+import { openLeadLink } from "../../leads/utils";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -63,6 +65,8 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     setSelectedContact,
     selectedContact
   } = props;
+
+  const typeItems = Object.keys(InvoiceType).map(mapSelectItems);
 
   const prevId = usePrevious(values.id);
 
@@ -243,26 +247,65 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     }
   }, [values.id]);
 
+  console.log("values", values);
+
   return (
     <Grid container className="p-3 saveButtonTableOffset defaultBackgroundColor">
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
-          type="remoteDataSearchSelect"
-          entity="Contact"
-          name="contactId"
-          label="Invoice to"
-          selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values && defaultContactName(values.contactName)}
-          labelAdornment={
-            <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
-          }
-          onInnerValueChange={onContactChange}
-          itemRenderer={ContactSelectItemRenderer}
-          disabled={!isNew}
-          rowHeight={55}
+          type="select"
+          name="type"
+          label="Type"
+          items={typeItems}
+          defaultValue={typeItems[0].value}
           required
         />
+
+        <FormField
+          type="text"
+          name="title"
+          label="Title"
+        />
+
+        {values.type === "Invoice" && (
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Contact"
+            name="contactId"
+            label="Invoice to"
+            selectValueMark="id"
+            selectLabelCondition={contactLabelCondition}
+            defaultDisplayValue={values && defaultContactName(values.contactName)}
+            labelAdornment={
+              <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+            }
+            onInnerValueChange={onContactChange}
+            itemRenderer={ContactSelectItemRenderer}
+            disabled={!isNew}
+            rowHeight={55}
+            required
+          />
+        )}
+
+        {values.type === "Quote" && (
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Lead"
+            name="leadId"
+            label="Lead"
+            selectValueMark="id"
+            // selectLabelCondition={contactLabelCondition}
+            // defaultDisplayValue={values && defaultContactName(values.contactName)}
+            labelAdornment={
+              <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
+            }
+            onInnerValueChange={onContactChange}
+            // itemRenderer={ContactSelectItemRenderer}
+            disabled={!isNew}
+            rowHeight={55}
+            required
+          />
+        )}
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>
@@ -278,7 +321,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
         </div>
       </Grid>
 
-      {!isNew && (
+      {!isNew && values.type === "Invoice" && (
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField type="text" name="invoiceNumber" label="Invoice number" disabled />
         </Grid>
@@ -315,6 +358,14 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
         <FormField type="multilineText" name="shippingAddress" label="Shipping address" fullWidth />
       </Grid>
 
+      <Grid item xs={12} className="pb-2">
+        <FormField
+          type="multilineText"
+          name="description"
+          label="Description"
+        />
+      </Grid>
+
       <Grid item xs={12}>
         <MinifiedEntitiesList
           name="invoiceLines"
@@ -349,17 +400,19 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
         </div>
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12} className="pb-2">
-        <InvoicePaymentPlans
-          name="paymentPlans"
-          currency={currency}
-          syncErrors={syncErrors}
-          id={values.id}
-          form={form}
-          dispatch={dispatch}
-          total={values.total}
-        />
-      </Grid>
+      {values.type === "Invoice" && (
+        <Grid item xs={twoColumn ? 4 : 12} className="pb-2">
+          <InvoicePaymentPlans
+            name="paymentPlans"
+            currency={currency}
+            syncErrors={syncErrors}
+            id={values.id}
+            form={form}
+            dispatch={dispatch}
+            total={values.total}
+          />
+        </Grid>
+      )}
 
       <Grid item xs={12}>
         <FormField type="multilineText" name="publicNotes" label="Public notes" fullWidth />
