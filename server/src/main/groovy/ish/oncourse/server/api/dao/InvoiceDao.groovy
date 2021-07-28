@@ -11,27 +11,40 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.common.types.InvoiceType
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Invoice
+import ish.oncourse.server.cayenne.Quote
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
-class InvoiceDao implements CayenneLayer<Invoice> {
+class InvoiceDao implements CayenneLayer<AbstractInvoice> {
 
     @Override
-    Invoice newObject(ObjectContext context) {
-        context.newObject(Invoice)
+    AbstractInvoice newObject(ObjectContext context) {
+        return null
+    }
+
+    AbstractInvoice newObject(ObjectContext context, InvoiceType invoiceType) {
+        switch (invoiceType) {
+            case InvoiceType.QUOTE:
+                return context.newObject(Quote.class)
+            default:
+                return context.newObject(Invoice.class)
+        }
     }
 
     @Override
-    Invoice getById(ObjectContext context, Long id) {
-        SelectById.query(Invoice, id)
+    AbstractInvoice getById(ObjectContext context, Long id) {
+        SelectById.query(AbstractInvoice, id)
                 .selectOne(context)
     }
 
     int getInvoicesCount(Contact c) {
-        ObjectSelect.query(Invoice.class)
-                .where(Invoice.CONTACT.eq(c)).selectCount(c.getContext())
+        ObjectSelect.query(AbstractInvoice.class)
+                .where(AbstractInvoice.CONTACT.eq(c))
+                .selectCount(c.getContext())
     }
 }

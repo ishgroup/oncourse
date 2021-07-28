@@ -11,20 +11,37 @@
 
 package ish.oncourse.server.api.dao
 
+import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.InvoiceLine
+import ish.oncourse.server.cayenne.QuoteLine
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
-class InvoiceLineDao implements CayenneLayer<InvoiceLine> {
+class InvoiceLineDao implements CayenneLayer<AbstractInvoiceLine> {
 
     @Override
-    InvoiceLine newObject(ObjectContext context) {
+    AbstractInvoiceLine newObject(ObjectContext context) {
+        context.newObject(AbstractInvoiceLine)
+    }
+
+    InvoiceLine newInvoiceLine(ObjectContext context) {
         context.newObject(InvoiceLine)
     }
 
+    QuoteLine newQuoteLine(ObjectContext context) {
+        context.newObject(QuoteLine)
+    }
+
     @Override
-    InvoiceLine getById(ObjectContext context, Long id) {
-        SelectById.query(InvoiceLine, id)
+    AbstractInvoiceLine getById(ObjectContext context, Long id) {
+        SelectById.query(AbstractInvoiceLine, id)
                 .selectOne(context)
+    }
+
+    AbstractInvoiceLine getById(ObjectContext context, Long id, Class<? extends AbstractInvoiceLine> aClass) {
+        if (id == null) {
+            return null
+        }
+        return SelectById.query(aClass, id).selectOne(context)
     }
 }

@@ -132,7 +132,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
                 cayenneModel.createdBy = cayenneModel.context.localObject(systemUserService.currentUser)
                 dto.invoices.each { invoiceDto ->
                     PaymentOutLine line = context.newObject(PaymentOutLine)
-                    Invoice invoice = invoiceDao.getById(context, invoiceDto.id)
+                    Invoice invoice = invoiceDao.getById(context, invoiceDto.id) as Invoice
                     line.accountIn = invoice.debtorsAccount
                     line.invoice = invoice
                     line.paymentOut = cayenneModel
@@ -192,7 +192,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
                 validator.throwClientErrorException("invoices", "Invoice is required")
             }
 
-            Invoice invoice = invoiceDao.getById(context, it.id)
+            Invoice invoice = invoiceDao.getById(context, it.id) as Invoice
             if (!invoice || !invoice.contact.equalsIgnoreContext(contact)) {
                 validator.throwClientErrorException("invoices", "Invoice is wrong")
             }
@@ -328,7 +328,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         if (invoices) {
             invoices.each { invoiceDto ->
                 PaymentOutLine line = context.newObject(PaymentOutLine)
-                Invoice invoice = invoiceDao.getById(context, invoiceDto.id)
+                Invoice invoice = invoiceDao.getById(context, invoiceDto.id) as Invoice
                 line.accountIn = invoice.debtorsAccount
                 line.invoice = invoice
                 line.paymentOut = paymentOut
