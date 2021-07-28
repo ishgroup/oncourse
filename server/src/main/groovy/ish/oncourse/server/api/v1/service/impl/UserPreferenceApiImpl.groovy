@@ -49,7 +49,7 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
                                                                      CategoryDTO.EXPORT_AVETMISS_8_, CategoryDTO.PAYMENTS_IN, CategoryDTO.FUNDING_CONTRACT,
                                                                      CategoryDTO.APPLICATIONS, CategoryDTO.BANKING_DEPOSITS, CategoryDTO.MESSAGES, CategoryDTO.FINALISE_PERIOD, CategoryDTO.OUTCOMES,
                                                                      CategoryDTO.TIMETABLE, CategoryDTO.PRIOR_LEARNINGS, CategoryDTO.BATCH_PAYMENT_IN, CategoryDTO.IMPORT_TEMPLATES, CategoryDTO.EXPORT_TEMPLATES, CategoryDTO.MESSAGE_TEMPLATES, CategoryDTO.SCRIPTS,
-                                                                     CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS, CategoryDTO.LEADS ]
+                                                                     CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS, CategoryDTO.LEADS, CategoryDTO.QUOTES ]
 
 
     private static final List<CategoryDTO> ADMIN_ONLY = [CategoryDTO.PREFERENCES, CategoryDTO.SECURITY, CategoryDTO.INTEGRATIONS, CategoryDTO.HOLIDAYS,

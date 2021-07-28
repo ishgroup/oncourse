@@ -54,6 +54,9 @@ export const getSystemRouteUrl = (title: Category) => {
     case "Classes": {
       return `/${Classes.path}?filter=@Classes,@Current_classes,@Future_classes,@Self_paced_classes`;
     }
+    case "Quotes": {
+      return `/invoice?filter=@Quote`;
+    }
     // case "Website setup": {
     //   return "/provisioning";
     // }

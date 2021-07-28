@@ -32,6 +32,7 @@ class DashboardCategoryFunctions {
                     (LEADS) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.WAITING_LIST, Mask.VIEW)},
                     (ENROLMENTS) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.ENROLMENT, Mask.VIEW)},
                     (INVOICES) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.INVOICE, Mask.VIEW)},
+                    (QUOTES) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.INVOICE, Mask.VIEW)},
                     (PAYMENTS_IN) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.PAYMENT_IN, Mask.VIEW)},
                     (PAYMENTS_OUT) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.PAYMENT_OUT, Mask.VIEW)},
                     (ACCOUNTS) : { IPermissionService permissionService ->  permissionService.currentUserCan(KeyCode.ACCOUNT, Mask.VIEW)},
