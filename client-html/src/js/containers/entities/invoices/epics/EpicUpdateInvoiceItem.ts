@@ -33,7 +33,7 @@ const request: EpicUtils.Request<any, { id: number; invoice: Invoice & { notes: 
       },
       {
         type: GET_RECORDS_REQUEST,
-        payload: { entity: "Invoice", listUpdate: true, savedID: id }
+        payload: { entity: "AbtractInvoice", listUpdate: true, savedID: id }
       },
       ...s.list.fullScreenEditView || s.list.records.layout === "Three column" ? [{
           type: GET_INVOICE_ITEM,

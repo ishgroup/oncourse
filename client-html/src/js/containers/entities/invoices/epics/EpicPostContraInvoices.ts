@@ -22,7 +22,7 @@ const request: EpicUtils.Request<any, { id: number; invoicesToPay: number[] }> =
       },
       {
         type: GET_RECORDS_REQUEST,
-        payload: { entity: "Invoice", listUpdate: true }
+        payload: { entity: "AbstractInvoice", listUpdate: true }
       },
       {
         type: FETCH_SUCCESS,
