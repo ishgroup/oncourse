@@ -24,6 +24,7 @@ import ish.oncourse.server.api.v1.model.TagRequirementTypeDTO
 import ish.oncourse.server.api.v1.model.TagStatusDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.TagValidation
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.Contact
@@ -62,6 +63,7 @@ class TagFunctions {
         put(TaggableClasses.COURSE, TagRequirementTypeDTO.COURSE)
         put(TaggableClasses.DOCUMENT, TagRequirementTypeDTO.DOCUMENT)
         put(TaggableClasses.ENROLMENT, TagRequirementTypeDTO.ENROLMENT)
+        put(TaggableClasses.INVOICE, TagRequirementTypeDTO.INVOICE)
         put(TaggableClasses.LEAD, TagRequirementTypeDTO.LEAD)
         put(TaggableClasses.PAYSLIP, TagRequirementTypeDTO.PAYSLIP)
         put(TaggableClasses.ROOM, TagRequirementTypeDTO.ROOM)
@@ -79,6 +81,7 @@ class TagFunctions {
         put(Course.simpleName, TaggableClasses.COURSE)
         put(Document.simpleName, TaggableClasses.DOCUMENT)
         put(Enrolment.simpleName, TaggableClasses.ENROLMENT)
+        put(AbstractInvoice.simpleName, TaggableClasses.INVOICE)
         put(Lead.simpleName, TaggableClasses.LEAD)
         put(Payslip.simpleName, TaggableClasses.PAYSLIP)
         put(Room.simpleName, TaggableClasses.ROOM)
