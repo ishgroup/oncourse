@@ -347,7 +347,9 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
 
     @Override
     void validateModelBeforeRemove(AbstractInvoice cayenneModel) {
-        validator.throwClientErrorException(cayenneModel.id, 'id', 'Invoice cannot be deleted.')
+        if (cayenneModel instanceof Invoice) {
+            validator.throwClientErrorException(cayenneModel.id, 'id', 'Invoice cannot be deleted.')
+        }
     }
 
     private AbstractInvoice transformQuoteToInvoice(InvoiceDTO invoiceDTO, AbstractInvoice abstractInvoice) {
