@@ -25,6 +25,7 @@ import ish.oncourse.server.api.v1.model.InvoiceDTO
 import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
 import ish.oncourse.server.api.v1.model.InvoicePaymentPlanDTO
 import ish.oncourse.server.api.v1.model.InvoiceTypeDTO
+import ish.oncourse.server.api.v1.model.LeadInvoiceDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
 import ish.oncourse.server.services.IAutoIncrementService
@@ -155,6 +156,17 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
             invoiceDTO.description = quote.description
             invoiceDTO.invoiceLines = quote.quoteLines.collect { toRestInvoiceLineModel(it as QuoteLine) }
             invoiceDTO
+        }
+    }
+
+    LeadInvoiceDTO toRestLeadInvoice(AbstractInvoice abstractInvoice) {
+        new LeadInvoiceDTO().with {leadInvoice ->
+            leadInvoice.id = abstractInvoice.id
+            leadInvoice.invoiceType = InvoiceTypeDTO.values()[0].fromDbType(abstractInvoice.type)
+            leadInvoice.title = abstractInvoice.title
+            leadInvoice.invoiceNumber = abstractInvoice.invoiceNumber
+            leadInvoice.total = abstractInvoice.total.toBigDecimal()
+            leadInvoice
         }
     }
 
