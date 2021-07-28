@@ -69,6 +69,7 @@ public class EntityRootSearchConverter implements Converter<AqlParser.EntityRoot
             case WaitingList.ENTITY_NAME: return new LazyWaitingListComparisionNode(Op.LIKE);
             case Message.ENTITY_NAME: return new LazyNameComparisionNode(Op.LIKE, Message.EMAIL_SUBJECT.getName());
             case PaymentOut.ENTITY_NAME: return new LazyContactAttributeComparisonNode(Op.LIKE, PaymentOut.PAYEE);
+            case Lead.ENTITY_NAME: return new LazyContactAttributeComparisonNode(Op.LIKE, Lead.CUSTOMER);
 
             default:
                 ctx.reportError(search.start.getLine(), search.start.getCharPositionInLine(),
