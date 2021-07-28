@@ -61,7 +61,9 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(Document.class.getSimpleName().toLowerCase(), KeyCode.ATTACHMENT_INFO);
         KEY_CODE_MAP.put(EmailTemplate.class.getSimpleName().toLowerCase(), KeyCode.EMAIL_TEMPLATE);
         KEY_CODE_MAP.put(FundingSource.class.getSimpleName().toLowerCase(), KeyCode.SPECIAL_AVETMISS_EXPORT);
+        KEY_CODE_MAP.put(AbstractInvoice.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
         KEY_CODE_MAP.put(Invoice.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
+        KEY_CODE_MAP.put(Quote.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
         KEY_CODE_MAP.put(InvoiceLine.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
         KEY_CODE_MAP.put(MembershipProduct.class.getSimpleName().toLowerCase(), KeyCode.MEMBERSHIP);
         KEY_CODE_MAP.put(Module.class.getSimpleName().toLowerCase(), KeyCode.NTIS_DATA);
