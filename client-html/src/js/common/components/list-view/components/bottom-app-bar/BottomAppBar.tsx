@@ -13,7 +13,7 @@ import Share from "@material-ui/icons/Share";
 import Settings from "@material-ui/icons/Settings";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from "@material-ui/core/Tooltip";
+import { List, ListItem, Tooltip } from "@material-ui/core";
 import { darken, fade } from "@material-ui/core/styles/colorManipulator";
 import FindInPage from "@material-ui/icons/FindInPage";
 import { connect } from "react-redux";
@@ -319,6 +319,14 @@ class BottomAppBar extends React.PureComponent<any, any> {
         </MenuItem>
       )].filter(i => i);
 
+    const onCreateHandler = () => {
+      if (rootEntity === "AbstractInvoice") {
+
+      } else {
+        onCreate();
+      }
+    };
+
     return (
       <>
         <ExecuteScriptModal
@@ -399,11 +407,15 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
             <div className={clsx("flex-fill text-center", { "d-none": querySearch })} />
             <div className={classes.actionArea}>
+              <List classes={{ root: classes.root }}>
+                <ListItem>Invoice</ListItem>
+                <ListItem>Quote</ListItem>
+              </List>
               <Tooltip title="Add record" disableFocusListener>
                 <div>
                   <IconButton
                     color="inherit"
-                    onClick={onCreate}
+                    onClick={onCreateHandler}
                     disabled={!onCreate || fetch.pending || createButtonDisabled}
                     classes={{
                       root: classes.actionsBarButton,
