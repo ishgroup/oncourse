@@ -4156,7 +4156,10 @@
 	<db-relationship name="customFields" source="Lead" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
-	<db-relationship name="invoice" source="Lead" target="Invoice">
+	<db-relationship name="invoices" source="Lead" target="Invoice" toMany="true">
+		<db-attribute-pair source="id" target="leadId"/>
+	</db-relationship>
+	<db-relationship name="quotes" source="Lead" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="leadId"/>
 	</db-relationship>
 	<db-relationship name="items" source="Lead" target="LeadItem" toMany="true">
@@ -5230,7 +5233,8 @@
 	<obj-relationship name="quoteLine" source="InvoiceLineDiscount" target="QuoteLine" deleteRule="Nullify" db-relationship-path="quoteLine"/>
 	<obj-relationship name="notedInvoice" source="InvoiceNoteRelation" target="Invoice" deleteRule="Nullify" db-relationship-path="notedInvoice"/>
 	<obj-relationship name="students" source="Language" target="Student" deleteRule="Deny" db-relationship-path="students"/>
-	<obj-relationship name="invoice" source="Lead" target="AbstractInvoice" deleteRule="Cascade" db-relationship-path="invoice"/>
+	<obj-relationship name="invoices" source="Lead" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
+	<obj-relationship name="quotes" source="Lead" target="Quote" deleteRule="Nullify" db-relationship-path="invoices"/>
 	<obj-relationship name="customer" source="Lead" target="Contact" deleteRule="Nullify" db-relationship-path="customer"/>
 	<obj-relationship name="attachmentRelations" source="Lead" target="LeadAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="customFields" source="Lead" target="LeadCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>

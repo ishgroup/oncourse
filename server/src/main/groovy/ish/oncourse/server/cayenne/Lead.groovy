@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.InvoiceType
 import ish.oncourse.server.cayenne.glue._Lead
 
 class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTrait, LeadTrait {
@@ -45,5 +46,13 @@ class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTra
     @Override
     List<Product> getProducts() {
         return super.getProducts()
+    }
+
+    List<Invoice> getInvoices() {
+        return super.getInvoices()
+    }
+
+    List<Quote> getQuotes() {
+        return super.getQuotes()
     }
 }
