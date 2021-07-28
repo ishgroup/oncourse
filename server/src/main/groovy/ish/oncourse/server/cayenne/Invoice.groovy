@@ -163,6 +163,30 @@ class Invoice extends _Invoice implements InvoiceInterface {
         return result
     }
 
+    /**
+     * @return
+     */
+    @Nonnull
+    @API
+    @Override
+    Account getDebtorsAccount() {
+        return super.getDebtorsAccount()
+    }
+
+    /**
+     * This is the contact to whom the invoice was issued. They are liable for the debt this invoice represents.
+     * Note that the invoice contact might not be the same contact as the person enrolled in classes linked to
+     * invoice lines.
+     *
+     * @return to whom the invoice was issued
+     */
+    @Nonnull
+    @API
+    @Override
+    Contact getContact() {
+        return super.getContact()
+    }
+
     //fixme: temporary workaround OD-12674
     @Override
     void addToPaymentOutLines(PaymentOutLine obj) {
