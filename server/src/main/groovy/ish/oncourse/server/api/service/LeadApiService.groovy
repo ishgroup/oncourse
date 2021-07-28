@@ -53,6 +53,9 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
     private DocumentService documentService
 
     @Inject
+    private InvoiceApiService invoiceApiService
+
+    @Inject
     private SystemUserService systemUserService
 
     @Override
@@ -76,6 +79,8 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.assignToId = cayenneModel.assignedTo?.id
             dtoModel.assignTo = cayenneModel.assignedTo?.fullName
 
+            dtoModel.invoices = cayenneModel.invoices.collect {invoiceApiService.toRestLeadInvoice(it) } +
+                    cayenneModel.quotes.collect {invoiceApiService.toRestLeadInvoice(it) }
             dtoModel.customFields = cayenneModel.customFields.collectEntries {[(it.customFieldType.key): it.value] }
             dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             dtoModel.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
