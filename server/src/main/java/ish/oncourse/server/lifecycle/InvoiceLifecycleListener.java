@@ -10,10 +10,9 @@
  */
 package ish.oncourse.server.lifecycle;
 
-import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.Invoice;
-import ish.util.AccountUtil;
 import org.apache.cayenne.annotation.PostAdd;
+import org.apache.cayenne.annotation.PreUpdate;
 
 
 /**
@@ -23,8 +22,19 @@ public class InvoiceLifecycleListener {
 
     @PostAdd(value = Invoice.class)
     public void postAdd(Invoice entity) {
-        var aContext = entity.getContext();
-        entity.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(aContext, Account.class));
+        setAllowAutoPay(entity);
+    }
+
+    @PreUpdate(value = Invoice.class)
+    public void preUpdate(Invoice entity) {
+        setAllowAutoPay(entity);
+        entity.updateAmountOwing();
+        entity.updateDateDue();
+        entity.updateOverdue();
+
+    }
+
+    private void setAllowAutoPay(Invoice entity) {
         if (entity.getAllowAutoPay() == null) {
             entity.setAllowAutoPay(false);
         }
