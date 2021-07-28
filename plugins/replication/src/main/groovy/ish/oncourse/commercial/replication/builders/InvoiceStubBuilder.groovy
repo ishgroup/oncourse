@@ -45,8 +45,9 @@ class InvoiceStubBuilder extends AbstractAngelStubBuilder<AbstractInvoice, Invoi
 			stub.setConfirmationStatus(inv.getConfirmationStatus().getDatabaseValue())
 		}
 		stub.setAuthorisedRebillingCardId(inv.getAuthorisedRebillingCard() != null ? inv.getAuthorisedRebillingCard().getId() : null)
-		stub.setType(inv.getType())
+		stub.setType(inv.getType().getDatabaseValue())
 		stub.setAllowAutoPay(inv.getAllowAutoPay())
+		stub.setTitle(inv.getTitle())
 		return stub
 	}
 }

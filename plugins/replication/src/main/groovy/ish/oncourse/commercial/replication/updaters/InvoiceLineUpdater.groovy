@@ -5,6 +5,7 @@
 package ish.oncourse.commercial.replication.updaters
 
 import ish.math.Money
+import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Invoice
@@ -13,13 +14,13 @@ import ish.oncourse.webservices.v23.stubs.replication.InvoiceLineStub
 
 /**
  */
-class InvoiceLineUpdater extends AbstractAngelUpdater<InvoiceLineStub, InvoiceLine> {
+class InvoiceLineUpdater extends AbstractAngelUpdater<InvoiceLineStub, AbstractInvoiceLine> {
     /**
 	 * @see AbstractAngelUpdater#updateEntity(ish.oncourse.webservices.util.GenericReplicationStub,
 	 *      ish.oncourse.server.cayenne.Queueable, RelationShipCallback)
 	 */
 	@Override
-	protected void updateEntity(InvoiceLineStub stub, InvoiceLine entity, RelationShipCallback callback) {
+	protected void updateEntity(InvoiceLineStub stub, AbstractInvoiceLine entity, RelationShipCallback callback) {
 		entity.setCreatedOn(stub.getCreated())
 		entity.setDescription(stub.getDescription())
 		entity.setDiscountEachExTax(new Money(stub.getDiscountEachExTax()))

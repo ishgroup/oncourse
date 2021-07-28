@@ -54,9 +54,8 @@ class InvoiceUpdater extends AbstractAngelUpdater<InvoiceStub, AbstractInvoice> 
 			entity.setAuthorisedRebillingCard(callback.updateRelationShip(stub.getAuthorisedRebillingCardId(), PaymentIn.class))
 		}
 
-		if (stub.getType() != null) {
-			entity.setType(stub.getType())
-		}
+		entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), InvoiceType.class))
 		entity.setAllowAutoPay(stub.isAllowAutoPay())
+		entity.setTitle(stub.getTitle())
 	}
 }
