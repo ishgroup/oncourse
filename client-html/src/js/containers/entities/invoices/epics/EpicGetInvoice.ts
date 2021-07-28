@@ -32,7 +32,7 @@ const request: EpicUtils.Request = {
         type: SET_LIST_EDIT_RECORD,
         payload: { editRecord: invoice, name: invoice.invoiceNumber }
       },
-      getNoteItems("Invoice", id, LIST_EDIT_VIEW_FORM_NAME),
+      getNoteItems(invoice.type, id, LIST_EDIT_VIEW_FORM_NAME),
       initialize(LIST_EDIT_VIEW_FORM_NAME, invoice),
       ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
     ];

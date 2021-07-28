@@ -57,6 +57,11 @@ const filterGroups: FilterGroup[] = [
         name: "Balanced (paid)",
         expression: "amountOwing == 0",
         active: false
+      },
+      {
+        name: "Quote",
+        expression: "type == 2",
+        active: false
       }
     ]
   }
@@ -146,7 +151,7 @@ const Invoices = React.memo<any>(({
         }}
         nestedEditFields={nestedEditFields}
         getEditRecord={getInvoiceRecord}
-        rootEntity="Invoice"
+        rootEntity="AbstractInvoice"
         onCreate={onCreate}
         onSave={onSave}
         onInit={onInit}
