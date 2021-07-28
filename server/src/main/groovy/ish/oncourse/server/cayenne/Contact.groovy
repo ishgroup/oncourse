@@ -686,6 +686,16 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 		return super.getInvoices()
 	}
 
+	/**
+	 * @return all the quotes linked to this contact
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<Quote> getQuotes() {
+		return super.getQuotes()
+	}
+
 
 	/**
 	 * @return the contact's date of birth as Date

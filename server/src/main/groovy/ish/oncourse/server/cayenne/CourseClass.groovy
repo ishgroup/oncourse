@@ -1049,13 +1049,23 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return
+	 * @return invoice lines related to this class
 	 */
 	@Nonnull
 	@API
 	@Override
 	List<InvoiceLine> getInvoiceLines() {
 		return super.getInvoiceLines()
+	}
+
+	/**
+	 * @return quote lines related to this class
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<QuoteLine> getQuoteLines() {
+		return super.getQuoteLines()
 	}
 
 	/**

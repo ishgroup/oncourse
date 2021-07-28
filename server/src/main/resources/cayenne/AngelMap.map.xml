@@ -807,7 +807,7 @@
 		<db-attribute name="value" type="VARCHAR" length="4096"/>
 	</db-entity>
 	<db-entity name="Invoice">
-		<db-attribute name="allowAutoPay" type="TINYINT" isMandatory="true"/>
+		<db-attribute name="allowAutoPay" type="TINYINT"/>
 		<db-attribute name="amoutOwing" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="authorisedRebillingCardId" type="BIGINT"/>
 		<db-attribute name="billToAddress" type="CLOB" length="32000"/>
@@ -822,13 +822,15 @@
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceDate" type="DATE" isMandatory="true"/>
-		<db-attribute name="invoiceNumber" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="invoiceNumber" type="BIGINT"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="overdue" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="publicNotes" type="CLOB" length="32000"/>
 		<db-attribute name="shippingAddress" type="CLOB" length="32000"/>
 		<db-attribute name="source" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="title" type="VARCHAR" length="200"/>
+		<db-attribute name="leadId" type="BIGINT"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="InvoiceDueDate">
@@ -849,7 +851,7 @@
 		<db-attribute name="discountEachexTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="enrolmentId" type="BIGINT"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="invoiceId" type="BIGINT"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="prepaidFeesAccountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="prepaidFeesRemaining" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -866,7 +868,7 @@
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="invoiceLineId" type="BIGINT"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -1612,7 +1614,7 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
-	<obj-entity name="AbstractInvoice" abstract="true" className="ish.oncourse.server.cayenne.AbstractInvoice" dbEntityName="Invoice" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+	<obj-entity name="AbstractInvoice" abstract="true" className="ish.oncourse.server.cayenne.AbstractInvoice" dbEntityName="Invoice" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="allowAutoPay" type="java.lang.Boolean" db-attribute-path="allowAutoPay"/>
 		<obj-attribute name="amountOwing" type="ish.math.Money" db-attribute-path="amoutOwing"/>
 		<obj-attribute name="billToAddress" type="java.lang.String" db-attribute-path="billToAddress"/>
@@ -1630,7 +1632,26 @@
 		<obj-attribute name="shippingAddress" type="java.lang.String" db-attribute-path="shippingAddress"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="type" type="ish.common.types.InvoiceType" db-attribute-path="type"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="AbstractInvoiceLine" abstract="true" className="ish.oncourse.server.cayenne.AbstractInvoiceLine" dbEntityName="InvoiceLine" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="discountEachExTax" type="ish.math.Money" db-attribute-path="discountEachexTax"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="prepaidFeesRemaining" type="ish.math.Money" db-attribute-path="prepaidFeesRemaining"/>
+		<obj-attribute name="priceEachExTax" type="ish.math.Money" db-attribute-path="priceEachexTax"/>
+		<obj-attribute name="quantity" type="java.math.BigDecimal" db-attribute-path="quantity"/>
+		<obj-attribute name="sortOrder" type="java.lang.Integer" db-attribute-path="sortOrder"/>
+		<obj-attribute name="taxEach" type="ish.math.Money" db-attribute-path="taxEach"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
+		<obj-attribute name="unit" type="java.lang.String" db-attribute-path="unit"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="AbstractInvoiceTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.AbstractInvoiceTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 19]]></qualifier>
 	</obj-entity>
 	<obj-entity name="Account" className="ish.oncourse.server.cayenne.Account" dbEntityName="Account" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="accountCode" type="java.lang.String" db-attribute-path="accountCode"/>
@@ -2426,8 +2447,11 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
-	<obj-entity name="Invoice" superEntityName="AbstractInvoice" className="ish.oncourse.server.cayenne.Invoice" clientClassName="ish.oncourse.cayenne.Invoice">
-		<qualifier><![CDATA[type = 1]]></qualifier>
+	<obj-entity name="Invoice" superEntityName="AbstractInvoice" className="ish.oncourse.server.cayenne.Invoice">
+		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.INVOICE]]></qualifier>
+	</obj-entity>
+	<obj-entity name="InvoiceLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.InvoiceLine">
+		<qualifier><![CDATA[invoice != null]]></qualifier>
 	</obj-entity>
 	<obj-entity name="InvoiceAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.InvoiceAttachmentRelation" clientClassName="ish.oncourse.cayenne.InvoiceAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier like "Invoice"]]></qualifier>
@@ -2438,21 +2462,6 @@
 		<obj-attribute name="dueDate" type="java.time.LocalDate" db-attribute-path="dueDate"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
-	</obj-entity>
-	<obj-entity name="InvoiceLine" className="ish.oncourse.server.cayenne.InvoiceLine" clientClassName="ish.oncourse.cayenne.InvoiceLine" dbEntityName="InvoiceLine" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.InvoicePayableLine">
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="discountEachExTax" type="ish.math.Money" db-attribute-path="discountEachexTax"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="prepaidFeesRemaining" type="ish.math.Money" db-attribute-path="prepaidFeesRemaining"/>
-		<obj-attribute name="priceEachExTax" type="ish.math.Money" db-attribute-path="priceEachexTax"/>
-		<obj-attribute name="quantity" type="java.math.BigDecimal" db-attribute-path="quantity"/>
-		<obj-attribute name="sortOrder" type="java.lang.Integer" db-attribute-path="sortOrder"/>
-		<obj-attribute name="taxEach" type="ish.math.Money" db-attribute-path="taxEach"/>
-		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
-		<obj-attribute name="unit" type="java.lang.String" db-attribute-path="unit"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="InvoiceLineDiscount" className="ish.oncourse.server.cayenne.InvoiceLineDiscount" clientClassName="ish.oncourse.cayenne.InvoiceLineDiscount" dbEntityName="InvoiceLine_Discount" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
@@ -2767,7 +2776,7 @@
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" clientClassName="ish.oncourse.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
@@ -2857,8 +2866,14 @@
 	<obj-entity name="RoomUnavailableRuleRelation" superEntityName="UnavailableRuleRelation" className="ish.oncourse.server.cayenne.RoomUnavailableRuleRelation" clientClassName="ish.oncourse.cayenne.RoomUnavailableRuleRelation">
 		<qualifier><![CDATA[entityIdentifier = "Room"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="SaleOrder" superEntityName="AbstractInvoice" className="ish.oncourse.server.cayenne.SaleOrder" clientClassName="ish.oncourse.cayenne.SaleOrder">
-		<qualifier><![CDATA[type = 2]]></qualifier>
+	<obj-entity name="Quote" superEntityName="AbstractInvoice" className="ish.oncourse.server.cayenne.Quote">
+		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.QUOTE]]></qualifier>
+	</obj-entity>
+	<obj-entity name="QuoteLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.QuoteLine">
+		<qualifier><![CDATA[quote != null]]></qualifier>
+	</obj-entity>
+	<obj-entity name="QuoteNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.QuoteNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "Quote"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="SavedFind" className="ish.oncourse.server.cayenne.SavedFind" clientClassName="ish.oncourse.cayenne.SavedFind" dbEntityName="SavedFind" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="aqlExpressionString" type="java.lang.String" db-attribute-path="aqlExpressionString"/>
@@ -3550,6 +3565,9 @@
 	<db-relationship name="invoices" source="Contact" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
+	<db-relationship name="quotes" source="Contact" target="Invoice" toMany="true">
+		<db-attribute-pair source="id" target="contactId"/>
+	</db-relationship>
 	<db-relationship name="leads" source="Contact" target="Lead" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
@@ -3725,6 +3743,9 @@
 		<db-attribute-pair source="incomeAccountId" target="id"/>
 	</db-relationship>
 	<db-relationship name="invoiceLines" source="CourseClass" target="InvoiceLine" toMany="true">
+		<db-attribute-pair source="id" target="courseClassId"/>
+	</db-relationship>
+	<db-relationship name="quoteLines" source="CourseClass" target="InvoiceLine" toMany="true">
 		<db-attribute-pair source="id" target="courseClassId"/>
 	</db-relationship>
 	<db-relationship name="noteRelations" source="CourseClass" target="NoteRelation" toMany="true">
@@ -4039,6 +4060,9 @@
 	<db-relationship name="attachmentRelations" source="Invoice" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
+	<db-relationship name="taggingRelations" source="Invoice" target="NodeRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
 	<db-relationship name="authorisedRebillingCard" source="Invoice" target="PaymentIn">
 		<db-attribute-pair source="authorisedRebillingCardId" target="id"/>
 	</db-relationship>
@@ -4059,6 +4083,12 @@
 	</db-relationship>
 	<db-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" toMany="true">
 		<db-attribute-pair source="id" target="invoiceId"/>
+	</db-relationship>
+	<db-relationship name="quoteLines" source="Invoice" target="InvoiceLine" toMany="true">
+		<db-attribute-pair source="id" target="invoiceId"/>
+	</db-relationship>
+	<db-relationship name="lead" source="Invoice" target="Lead">
+		<db-attribute-pair source="leadId" target="id"/>
 	</db-relationship>
 	<db-relationship name="noteRelations" source="Invoice" target="NoteRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -4087,6 +4117,9 @@
 	<db-relationship name="invoice" source="InvoiceLine" target="Invoice">
 		<db-attribute-pair source="invoiceId" target="id"/>
 	</db-relationship>
+	<db-relationship name="quote" source="InvoiceLine" target="Invoice">
+		<db-attribute-pair source="invoiceId" target="id"/>
+	</db-relationship>
 	<db-relationship name="invoiceline_discounts" source="InvoiceLine" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="invoiceLineId"/>
 	</db-relationship>
@@ -4108,6 +4141,9 @@
 	<db-relationship name="invoiceLine" source="InvoiceLine_Discount" target="InvoiceLine">
 		<db-attribute-pair source="invoiceLineId" target="id"/>
 	</db-relationship>
+	<db-relationship name="quoteLine" source="InvoiceLine_Discount" target="InvoiceLine">
+		<db-attribute-pair source="invoiceLineId" target="id"/>
+	</db-relationship>
 	<db-relationship name="students" source="Language" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="languageId"/>
 	</db-relationship>
@@ -4119,6 +4155,9 @@
 	</db-relationship>
 	<db-relationship name="customFields" source="Lead" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
+	<db-relationship name="invoice" source="Lead" target="Invoice">
+		<db-attribute-pair source="id" target="leadId"/>
 	</db-relationship>
 	<db-relationship name="items" source="Lead" target="LeadItem" toMany="true">
 		<db-attribute-pair source="id" target="leadId"/>
@@ -4228,6 +4267,9 @@
 	<db-relationship name="taggedEnrolment" source="NodeRelation" target="Enrolment">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
+	<db-relationship name="taggedInvoice" source="NodeRelation" target="Invoice">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
 	<db-relationship name="taggedLead" source="NodeRelation" target="Lead">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -4295,6 +4337,9 @@
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="notedLead" source="NoteRelation" target="Lead">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="notedQuote" source="NoteRelation" target="Invoice">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="notedRoom" source="NoteRelation" target="Room">
@@ -4886,14 +4931,17 @@
 	<obj-relationship name="createdByUser" source="AbstractInvoice" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="debtorsAccount" source="AbstractInvoice" target="Account" deleteRule="Nullify" db-relationship-path="debtorsAccount"/>
 	<obj-relationship name="invoiceDueDates" source="AbstractInvoice" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
-	<obj-relationship name="invoiceLines" source="AbstractInvoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="noteRelations" source="AbstractInvoice" target="InvoiceNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
-	<obj-relationship name="paymentInLines" source="AbstractInvoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
-	<obj-relationship name="paymentOutLines" source="AbstractInvoice" target="PaymentOutLine" deleteRule="Deny" db-relationship-path="paymentOutLines"/>
+	<obj-relationship name="lead" source="AbstractInvoice" target="Lead" deleteRule="Nullify" db-relationship-path="lead"/>
+	<obj-relationship name="taggingRelations" source="AbstractInvoice" target="AbstractInvoiceTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="account" source="AbstractInvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="account"/>
+	<obj-relationship name="cosAccount" source="AbstractInvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="cosAccount"/>
+	<obj-relationship name="prepaidFeesAccount" source="AbstractInvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="prepaidFeesAccount"/>
+	<obj-relationship name="tax" source="AbstractInvoiceLine" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
+	<obj-relationship name="taggedInvoice" source="AbstractInvoiceTagRelation" target="AbstractInvoice" deleteRule="Nullify" db-relationship-path="taggedInvoice"/>
 	<obj-relationship name="bankings" source="Account" target="Banking" deleteRule="Deny" db-relationship-path="bankings"/>
 	<obj-relationship name="courseClasses" source="Account" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="discounts" source="Account" target="Discount" deleteRule="Deny" db-relationship-path="discounts"/>
-	<obj-relationship name="invoiceLines" source="Account" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="invoiceLines" source="Account" target="AbstractInvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="invoices" source="Account" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="payableTaxes" source="Account" target="Tax" deleteRule="Deny" db-relationship-path="payableTaxes"/>
 	<obj-relationship name="paymentInLines" source="Account" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
@@ -4984,6 +5032,7 @@
 	<obj-relationship name="customFields" source="Contact" target="ContactCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Cascade" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Cascade" db-relationship-path="invoices"/>
+	<obj-relationship name="quotes" source="Contact" target="Quote" deleteRule="Cascade" db-relationship-path="quotes"/>
 	<obj-relationship name="leads" source="Contact" target="Lead" deleteRule="Cascade" db-relationship-path="leads"/>
 	<obj-relationship name="messages" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messages"/>
 	<obj-relationship name="noteRelations" source="Contact" target="ContactNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
@@ -5055,6 +5104,7 @@
 	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="incomeAccount" source="CourseClass" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
 	<obj-relationship name="invoiceLines" source="CourseClass" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="quoteLines" source="CourseClass" target="QuoteLine" deleteRule="Deny" db-relationship-path="quoteLines"/>
 	<obj-relationship name="noteRelations" source="CourseClass" target="CourseClassNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentPlanLines" source="CourseClass" target="CourseClassPaymentPlanLine" deleteRule="Cascade" db-relationship-path="paymentPlanLines"/>
 	<obj-relationship name="relatedFundingSource" source="CourseClass" target="FundingSource" deleteRule="Nullify" db-relationship-path="relatedFundingSource"/>
@@ -5163,22 +5213,24 @@
 	<obj-relationship name="relatedObject" source="ImportAutomationBinding" target="Import" deleteRule="Nullify" db-relationship-path="import"/>
 	<obj-relationship name="integrationProperties" source="IntegrationConfiguration" target="IntegrationProperty" deleteRule="Cascade" db-relationship-path="integrationProperties"/>
 	<obj-relationship name="integrationConfiguration" source="IntegrationProperty" target="IntegrationConfiguration" deleteRule="Nullify" db-relationship-path="integrationConfiguration"/>
+	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
+	<obj-relationship name="paymentOutLines" source="Invoice" target="PaymentOutLine" deleteRule="Deny" db-relationship-path="paymentOutLines"/>
+	<obj-relationship name="noteRelations" source="Invoice" target="InvoiceNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="attachedInvoice" source="InvoiceAttachmentRelation" target="Invoice" deleteRule="Nullify" db-relationship-path="attachedInvoice"/>
 	<obj-relationship name="invoice" source="InvoiceDueDate" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
-	<obj-relationship name="account" source="InvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="account"/>
-	<obj-relationship name="cosAccount" source="InvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="cosAccount"/>
 	<obj-relationship name="courseClass" source="InvoiceLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceline_discounts"/>
-	<obj-relationship name="prepaidFeesAccount" source="InvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="prepaidFeesAccount"/>
 	<obj-relationship name="productItems" source="InvoiceLine" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
-	<obj-relationship name="tax" source="InvoiceLine" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
 	<obj-relationship name="voucherPaymentIn" source="InvoiceLine" target="VoucherPaymentIn" deleteRule="Deny" db-relationship-path="voucherPaymentIn"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
+	<obj-relationship name="quoteLine" source="InvoiceLineDiscount" target="QuoteLine" deleteRule="Nullify" db-relationship-path="quoteLine"/>
 	<obj-relationship name="notedInvoice" source="InvoiceNoteRelation" target="Invoice" deleteRule="Nullify" db-relationship-path="notedInvoice"/>
 	<obj-relationship name="students" source="Language" target="Student" deleteRule="Deny" db-relationship-path="students"/>
+	<obj-relationship name="invoice" source="Lead" target="AbstractInvoice" deleteRule="Cascade" db-relationship-path="invoice"/>
 	<obj-relationship name="customer" source="Lead" target="Contact" deleteRule="Nullify" db-relationship-path="customer"/>
 	<obj-relationship name="attachmentRelations" source="Lead" target="LeadAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="customFields" source="Lead" target="LeadCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
@@ -5299,6 +5351,13 @@
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>
 	<obj-relationship name="priorLearnings" source="Qualification" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="trainingPackage" source="Qualification" target="TrainingPackage" deleteRule="Deny" db-relationship-path="trainingPackage"/>
+	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="quoteLines"/>
+	<obj-relationship name="noteRelations" source="Quote" target="QuoteNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
+	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="quote"/>
+	<obj-relationship name="quoteLineDiscounts" source="QuoteLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceline_discounts"/>
+	<obj-relationship name="notedQuote" source="QuoteNoteRelation" target="Quote" deleteRule="Nullify" db-relationship-path="notedQuote"/>
 	<obj-relationship name="background" source="Report" target="ReportOverlay" deleteRule="Nullify" db-relationship-path="background"/>
 	<obj-relationship name="taggingRelations" source="Report" target="ReportTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="automationBindings" source="Report" target="ReportAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>
@@ -5406,7 +5465,7 @@
 	<obj-relationship name="createdBy" source="Tax" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>
-	<obj-relationship name="invoiceLines" source="Tax" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="invoiceLines" source="Tax" target="AbstractInvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="payableToAccount" source="Tax" target="Account" deleteRule="Nullify" db-relationship-path="payableToSupplierAccount"/>
 	<obj-relationship name="receivableFromAccount" source="Tax" target="Account" deleteRule="Nullify" db-relationship-path="receivableFromStudentAccount"/>
 	<obj-relationship name="modules" source="TrainingPackage" target="Module" deleteRule="Deny" db-relationship-path="modules"/>
