@@ -17,6 +17,7 @@ import ish.oncourse.server.api.v1.model.ColumnTypeDTO
 import ish.oncourse.server.api.v1.model.LayoutTypeDTO
 import ish.oncourse.server.api.v1.model.SortingDTO
 import ish.oncourse.server.api.v1.model.TableModelDTO
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.Application
@@ -172,20 +173,21 @@ class DefaultUserPreference {
 
     private static final TableModelDTO INVOICE_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Invoice number', attribute: Invoice.INVOICE_NUMBER.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Source', attribute: Invoice.SOURCE.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Date due', attribute: Invoice.DATE_DUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Name', attribute: Invoice.CONTACT.dot(Contact.FULL_NAME_KEY).name, sortable: true,
-                        width: W200, visible: true, sortFields: [CorporatePass.CONTACT.dot(Contact.LAST_NAME).name,
-                                                                 CorporatePass.CONTACT.dot(Contact.FIRST_NAME).name,
-                                                                 CorporatePass.CONTACT.dot(Contact.MIDDLE_NAME).name]),
-                new ColumnDTO(title: 'Owing', attribute: Invoice.AMOUNT_OWING.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
-                new ColumnDTO(title: 'Total', attribute: Invoice.TOTAL_INC_TAX_KEY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
-                new ColumnDTO(title: 'Overdue', attribute: Invoice.OVERDUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
-                new ColumnDTO(title: 'Invoice Date', attribute: Invoice.INVOICE_DATE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE)
+                new ColumnDTO(title: 'Invoice type', attribute: AbstractInvoice.TYPE.name, sortable: true, width: W100, visible: true),
+                new ColumnDTO(title: 'Invoice number', attribute: AbstractInvoice.INVOICE_NUMBER.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Source', attribute: AbstractInvoice.SOURCE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Date due', attribute: AbstractInvoice.DATE_DUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Name', attribute: AbstractInvoice.CONTACT.dot(Contact.FULL_NAME_KEY).name, sortable: true,
+                        width: W200, visible: true, sortFields: [AbstractInvoice.CONTACT.dot(Contact.LAST_NAME).name,
+                                                                 AbstractInvoice.CONTACT.dot(Contact.FIRST_NAME).name,
+                                                                 AbstractInvoice.CONTACT.dot(Contact.MIDDLE_NAME).name]),
+                new ColumnDTO(title: 'Owing', attribute: AbstractInvoice.AMOUNT_OWING.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Total', attribute: AbstractInvoice.TOTAL_INC_TAX_KEY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Overdue', attribute: AbstractInvoice.OVERDUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Invoice date', attribute: AbstractInvoice.INVOICE_DATE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE)
         ]
         it.sortings = [
-                new SortingDTO(attribute: Invoice.INVOICE_NUMBER.name, ascending: true)
+                new SortingDTO(attribute: AbstractInvoice.INVOICE_NUMBER.name, ascending: true)
         ]
         it.layout = LayoutTypeDTO.THREE_COLUMN
         it.filterColumnWidth = W200
@@ -845,7 +847,7 @@ class DefaultUserPreference {
             (CorporatePass.ENTITY_NAME)        : CORPORATE_PASS_MODEL,
             (Discount.ENTITY_NAME)             : DISCOUNT_MODEL,
             (Document.ENTITY_NAME)             : DOCUMENT_MODEL,
-            (Invoice.ENTITY_NAME)              : INVOICE_MODEL,
+            (AbstractInvoice.ENTITY_NAME)      : INVOICE_MODEL,
             (Module.ENTITY_NAME)               : MODULE_MODEL,
             (PaymentIn.ENTITY_NAME)            : PAYMENT_IN_MODEL,
             (Payslip.ENTITY_NAME)              : PAYSLIP_MODEL,
