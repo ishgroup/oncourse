@@ -374,20 +374,6 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 		return super.getSource()
 	}
 
-	/**
-	 * This is the contact to whom the invoice was issued. They are liable for the debt this invoice represents.
-	 * Note that the invoice contact might not be the same contact as the person enrolled in classes linked to
-	 * invoice lines.
-	 *
-	 * @return to whom the invoice was issued
-	 */
-	@Nonnull
-	@API
-	@Override
-	Contact getContact() {
-		return super.getContact()
-	}
-
 	@Override
 	List<PaymentLineInterface> getPaymentLines() {
 		return new ArrayList<PaymentLineInterface>()
@@ -413,16 +399,6 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 	@Override
 	SystemUser getCreatedByUser() {
 		return super.getCreatedByUser()
-	}
-
-	/**
-	 * @return
-	 */
-	@Nonnull
-	@API
-	@Override
-	Account getDebtorsAccount() {
-		return super.getDebtorsAccount()
 	}
 
 	/**
