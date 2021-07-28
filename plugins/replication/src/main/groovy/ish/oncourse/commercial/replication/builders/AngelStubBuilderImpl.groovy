@@ -53,7 +53,7 @@ class AngelStubBuilderImpl implements IAngelStubBuilder {
 		builderMap.put(CourseClassTutor.class.getSimpleName(), new CourseClassTutorStubBuilder())
 		builderMap.put(Enrolment.class.getSimpleName(), new EnrolmentStubBuilder())
 		builderMap.put(Invoice.class.getSimpleName(), new InvoiceStubBuilder())
-		builderMap.put(SaleOrder.class.getSimpleName(), new InvoiceStubBuilder())
+//		builderMap.put(SaleOrder.class.getSimpleName(), new InvoiceStubBuilder())
 		builderMap.put(InvoiceLine.class.getSimpleName(), new InvoiceLineStubBuilder())
 		builderMap.put(InvoiceLineDiscount.class.getSimpleName(), new InvoiceLineDiscountStubBuilder())
 		builderMap.put(Outcome.class.getSimpleName(), new OutcomeStubBuilder())
