@@ -9,6 +9,7 @@
 package ish.oncourse.server.lifecycle;
 
 import ish.common.types.ConfirmationStatus;
+import ish.common.types.PaymentSource;
 import ish.math.Money;
 import ish.oncourse.server.cayenne.AbstractInvoice;
 import ish.oncourse.server.cayenne.Account;
@@ -36,6 +37,9 @@ public class AbstractInvoiceLifecycleListener {
         }
         if (entity.getInvoiceDate() == null) {
             entity.setInvoiceDate(LocalDate.now());
+        }
+        if (entity.getSource() == null) {
+            entity.setSource(PaymentSource.SOURCE_ONCOURSE);
         }
         if (entity.getDateDue() == null) {
             entity.setDateDue(LocalDate.now());
