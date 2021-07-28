@@ -173,7 +173,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO INVOICE_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Invoice type', attribute: AbstractInvoice.TYPE.name, sortable: true, width: W100, visible: true),
+                new ColumnDTO(title: 'Type', attribute: AbstractInvoice.TYPE.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Invoice number', attribute: AbstractInvoice.INVOICE_NUMBER.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Source', attribute: AbstractInvoice.SOURCE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Date due', attribute: AbstractInvoice.DATE_DUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
