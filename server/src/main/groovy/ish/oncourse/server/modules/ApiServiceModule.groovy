@@ -49,7 +49,6 @@ import ish.oncourse.server.api.service.TutorRoleApiService
 import ish.oncourse.server.api.service.VoucherProductApiService
 import ish.oncourse.server.api.service.WaitingListApiService
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
