@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttainmentReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="50" whenResourceMissingType="Empty" uuid="6fb605b7-2bf2-46d1-8131-f4ad03f6f727">
-	<property name="name" value="term Certificate-Attainment"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttainmentReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="28" bottomMargin="50" isSummaryNewPage="true" whenResourceMissingType="Empty" uuid="6fb605b7-2bf2-46d1-8131-f4ad03f6f727">
+	<property name="name" value="term Certificate-Attainment Compressed 2021"/>
 	<property name="entity" value="Certificate"/>
 	<property name="isSubreport" value="true"/>
 	<property name="isVisible" value="true"/>
 	<property name="versionNumber" value="1"/>
-	<property name="keyCode" value="term.onCourse.certificate.attainment"/>
+	<property name="keyCode" value="term.onCourse.certificate.attainment.compressed"/>
 	<property name="ish.oncourse.title" value="Certificate"/>
 	<property name="ish.oncourse.filePrefix" value="certificate"/>
 	<property name="ish.oncourse.description" value="onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments."/>
@@ -16,9 +16,7 @@
 	<property name="background.image.keep_ratio" value="true"/>
 	<property name="background.image.widht" value="596"/>
 	<property name="background.image.height" value="839"/>
-	<import value="ish.common.types.QualificationType"/>
-	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="java.util.*"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="org.apache.commons.lang3.time.DateUtils"/>
 	<style name="default" isDefault="true" forecolor="#000000" vTextAlign="Bottom" markup="none" fontName="Open Sans" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="OpenSans" pdfEncoding="Cp1252" isPdfEmbedded="true">
@@ -65,18 +63,22 @@
 	</style>
 	<parameter name="ReportName" class="java.lang.String"/>
 	<field name="global.print_qr_code" class="java.lang.Boolean"/>
-	<field name="certificate" class="ish.oncourse.server.cayenne.Certificate"/>
+	<field name="certificate" class="java.lang.Object"/>
 	<field name="datasource.successfulOutcomes" class="net.sf.jasperreports.engine.JRDataSource"/>
-	<field name="subreport.term.onCourse.certificate.attainment.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="subreport.term.onCourse.certificate.attainment.subreport.2021" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="image.logo-nrt" class="java.io.InputStream"/>
 	<field name="image.logo-VETAB" class="java.io.InputStream"/>
 	<field name="pref.avetmiss.address.postcode" class="java.lang.String"/>
 	<field name="pref.avetmiss.certificate.signatory.name" class="java.lang.String"/>
 	<field name="pref.avetmiss.collegename" class="java.lang.Object"/>
 	<field name="pref.avetmiss.identifier" class="java.lang.Object"/>
+	<field name="awardedOn" class="java.time.LocalDate"/>
+	<field name="issuedOn" class="java.time.LocalDate"/>
+	<field name="certificateNumber" class="java.lang.Long"/>
 	<filterExpression><![CDATA[!$F{certificate}.isQualification]]></filterExpression>
 	<pageHeader>
-		<band height="315" splitType="Stretch">
+		<band height="285" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
 				<reportElement key="staticText-5" style="header 2" x="-1" y="161" width="517" height="27" forecolor="#000000" uuid="5c18cf0b-431e-4a42-b80e-403b1f8fed6b"/>
 				<textElement textAlignment="Center">
@@ -85,85 +87,154 @@
 				<text><![CDATA[Statement of Attainment]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-9" style="header 1" x="0" y="250" width="517" height="30" forecolor="#000000" uuid="f6403fec-6767-4f63-8727-471bd549c960"/>
+				<reportElement key="textField-9" style="header 1" x="0" y="225" width="517" height="30" forecolor="#000000" uuid="f6403fec-6767-4f63-8727-471bd549c960">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center">
 					<font fontName="Open Sans" size="19"/>
 				</textElement>
 				<textFieldExpression><![CDATA[(($F{certificate}.student.contact.firstName == $F{certificate}.student.contact.lastName) ? $F{certificate}.student.contact.lastName : $F{certificate}.student.contact.fullName)]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-8" style="Footer" x="0" y="288" width="517" height="22" forecolor="#000000" uuid="8664d378-2438-4920-9989-7f78d0c377e7"/>
+				<reportElement key="staticText-8" style="Footer" x="0" y="258" width="517" height="22" forecolor="#000000" uuid="8664d378-2438-4920-9989-7f78d0c377e7">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[has attained]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" style="Footer" x="0" y="220" width="517" height="22" forecolor="#000000" uuid="c4ed02b3-78b0-4b81-97bb-cd443c39750f"/>
+				<reportElement key="staticText-8" style="Footer" x="0" y="200" width="517" height="22" forecolor="#000000" uuid="c4ed02b3-78b0-4b81-97bb-cd443c39750f">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[This is a statement that]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" style="Footer" x="0" y="194" width="517" height="22" forecolor="#000000" uuid="f9407918-081e-4daf-96a3-99ea83af58b4"/>
+				<reportElement key="staticText-8" style="Footer" x="0" y="134" width="517" height="22" forecolor="#000000" uuid="f9407918-081e-4daf-96a3-99ea83af58b4">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12"/>
+					<font size="9"/>
 				</textElement>
-				<text><![CDATA[Term Training Pty Ltd 32251]]></text>
+				<text><![CDATA[A statement of attainment is issued when an individual has completed one or more accredited units]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="29" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="517" height="29" isRemoveLineWhenBlank="true" uuid="255c13d9-944d-442f-9ecb-3dc928e54033"/>
+				<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="517" height="29" isRemoveLineWhenBlank="true" uuid="255c13d9-944d-442f-9ecb-3dc928e54033">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<dataSourceExpression><![CDATA[$F{datasource.successfulOutcomes}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$F{subreport.term.onCourse.certificate.attainment.subreport}]]></subreportExpression>
+				<subreportExpression><![CDATA[$F{subreport.term.onCourse.certificate.attainment.subreport.2021}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="317" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		<band height="237" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement style="Label" x="199" y="136" width="66" height="13" forecolor="#000000" uuid="d57ae32e-cee9-48f9-8391-f5d91431f8e7"/>
+				<reportElement style="Label" x="227" y="20" width="45" height="11" forecolor="#000000" uuid="d57ae32e-cee9-48f9-8391-f5d91431f8e7">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<text><![CDATA[Awarded]]></text>
 			</staticText>
 			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
-				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="277" y="136" width="71" height="13" uuid="0b764f68-5c5b-4460-aad5-197c244d48da"/>
-				<textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("dd MMM yyyy")]]></textFieldExpression>
+				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="265" y="20" width="71" height="11" uuid="0b764f68-5c5b-4460-aad5-197c244d48da">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{certificate}.awardedOn.format("d MMM yyyy")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="Label" x="199" y="149" width="66" height="13" forecolor="#000000" uuid="e5ada32c-7328-4062-9ba7-f649450c7c53">
+				<reportElement style="Label" x="227" y="30" width="45" height="11" forecolor="#000000" uuid="e5ada32c-7328-4062-9ba7-f649450c7c53">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<printWhenExpression><![CDATA[$F{certificate}.issuedOn != null]]></printWhenExpression>
 				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<text><![CDATA[Issued]]></text>
 			</staticText>
 			<textField evaluationTime="Report" pattern="d MMM yyyy" isBlankWhenNull="false">
-				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="277" y="149" width="71" height="13" uuid="56bbe1c2-5cc2-4c6c-ac94-d9641779daf3">
+				<reportElement key="textField" style="data field (date)" positionType="FixRelativeToBottom" isPrintRepeatedValues="false" x="265" y="30" width="71" height="11" uuid="56bbe1c2-5cc2-4c6c-ac94-d9641779daf3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<printWhenExpression><![CDATA[$F{certificate}.issuedOn != null]]></printWhenExpression>
 				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-11" style="Label" x="199" y="162" width="66" height="13" forecolor="#000000" uuid="ead876be-b401-47cc-b24a-21577df4458f"/>
+				<reportElement key="staticText-11" style="Label" x="227" y="40" width="45" height="11" forecolor="#000000" uuid="ead876be-b401-47cc-b24a-21577df4458f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<text><![CDATA[Certificate]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-17" style="data field" x="277" y="162" width="71" height="13" uuid="bbac1ff6-6e80-4511-a562-c97781841889"/>
+				<reportElement key="textField-17" style="data field" x="265" y="40" width="71" height="11" uuid="bbac1ff6-6e80-4511-a562-c97781841889">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{certificate}.certificateNumber + ($F{certificate}.successfulOutcomes.size() > 4 ? "/" + $V{PAGE_NUMBER} : "")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-11" style="Label" x="199" y="175" width="66" height="13" forecolor="#000000" uuid="70a9058b-eec7-4368-8329-94be0b9bf411"/>
+				<reportElement key="staticText-11" style="Label" x="227" y="50" width="45" height="11" forecolor="#000000" uuid="70a9058b-eec7-4368-8329-94be0b9bf411">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<text><![CDATA[Printed]]></text>
 			</staticText>
 			<textField pattern="d MMM yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-17" style="data field (date)" x="277" y="175" width="71" height="13" uuid="3ab18680-6f57-45a6-b2bd-861cb7e3d869"/>
+				<reportElement key="textField-17" style="data field (date)" x="265" y="50" width="71" height="11" uuid="3ab18680-6f57-45a6-b2bd-861cb7e3d869">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{certificate}.printedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<image hyperlinkType="Reference">
-				<reportElement x="430" y="178" width="70" height="70" uuid="08f3bdc4-b8ac-41c2-b7f2-9d0b24769003">
+				<reportElement x="430" y="70" width="70" height="70" uuid="08f3bdc4-b8ac-41c2-b7f2-9d0b24769003">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -174,7 +245,7 @@
 				<hyperlinkReferenceExpression><![CDATA["http://www.skills.courses/" + $F{certificate}.qrUniqueCode.toString()]]></hyperlinkReferenceExpression>
 			</image>
 			<staticText>
-				<reportElement x="430" y="157" width="58" height="22" uuid="6c03b11a-2a60-4b75-b2f7-95aac2ceb74e">
+				<reportElement x="430" y="49" width="58" height="22" uuid="6c03b11a-2a60-4b75-b2f7-95aac2ceb74e">
 					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -183,7 +254,7 @@
 				<text><![CDATA[Certificate verification]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="430" y="178" width="58" height="10" uuid="3be9e0a1-3f74-4bef-b95d-a4502cc3b2d8">
+				<reportElement x="430" y="70" width="58" height="10" uuid="3be9e0a1-3f74-4bef-b95d-a4502cc3b2d8">
 					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -192,13 +263,35 @@
 				<textFieldExpression><![CDATA[$F{certificate}.qrUniqueCode]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="487" y="153" width="15" height="90" forecolor="#1E1061" uuid="4506888e-654d-47a3-ba7e-fcc9d6a03b1f">
+				<reportElement x="487" y="45" width="15" height="90" forecolor="#1E1061" uuid="4506888e-654d-47a3-ba7e-fcc9d6a03b1f">
 					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="Right">
 					<font fontName="Open Sans" size="8" isBold="true" pdfFontName="Open Sans"/>
 				</textElement>
 				<text><![CDATA[www.skills.courses]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" style="header 2" x="210" y="87" width="100" height="18" forecolor="#000000" uuid="7e6d6d53-b23d-4639-862c-966bd5ab8844">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Open Sans" size="10"/>
+				</textElement>
+				<text><![CDATA[Term Training Pty Ltd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" style="header 2" x="210" y="101" width="100" height="18" forecolor="#000000" uuid="3b321ae5-31ca-466d-9883-1cf57fa946c0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Open Sans" size="11"/>
+				</textElement>
+				<text><![CDATA[RTO 32251]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
