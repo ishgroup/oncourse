@@ -55,7 +55,7 @@ class InvoiceUpdater extends AbstractAngelUpdater<InvoiceStub, AbstractInvoice> 
 		}
 
 		if (stub.getType() != null) {
-			entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), InvoiceType.class))
+			entity.setType(stub.getType())
 		}
 		entity.setAllowAutoPay(stub.isAllowAutoPay())
 	}
