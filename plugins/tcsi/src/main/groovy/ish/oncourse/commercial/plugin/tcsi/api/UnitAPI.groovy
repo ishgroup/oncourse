@@ -27,6 +27,7 @@ import java.time.LocalDate
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.*
+import static ish.common.types.StudentStatusForUnitOfStudy.*
 
 @CompileDynamic
 class UnitAPI extends TCSI_API {
@@ -169,34 +170,34 @@ class UnitAPI extends TCSI_API {
 
         if (enrolment.feeStatus) {
             switch (enrolment.feeStatus)  {
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "401"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT:
                     unit["student_status_code"] = "402"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_VICTORIAN_STATE_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_VICTORIAN_STATE_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "403"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NEW_SOUTH_WALES_STATE_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NEW_SOUTH_WALES_STATE_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "404"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_QUEENSLAND_STATE_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_QUEENSLAND_STATE_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "405"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_SOUTH_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_SOUTH_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "406"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_WESTERN_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_WESTERN_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "407"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_TASMANIA_STATE_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_TASMANIA_STATE_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "408"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NORTHERN_TERRITORY_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NORTHERN_TERRITORY_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "409"
                     break
-                case StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_AUSTRALIAN_CAPITAL_TERRITORY_GOVERNMENT_SUBSIDISED:
+                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_AUSTRALIAN_CAPITAL_TERRITORY_GOVERNMENT_SUBSIDISED:
                     unit["student_status_code"] = "410"
                     break
             }
@@ -211,16 +212,19 @@ class UnitAPI extends TCSI_API {
             unit["amount_charged"] = feeCharged //E384
             unit["help_loan_amount"] = helpLoanAmount // E558
             unit["amount_paid_upfront"] = feeCharged.subtract(helpLoanAmount) //E381
-
-            LocalDate threshold_1 = LocalDate.parse('01-04-2020','dd-MM-yyyy')
-            LocalDate threshold_2 = LocalDate.parse('01-07-2021','dd-MM-yyyy')
-
-            if (clazz.censusDate.isAfter(threshold_1) && clazz.censusDate.isBefore(threshold_2)) {
-                unit["loan_fee"] = BigDecimal.ZERO
-            } else {
-                unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)).setScale(2, RoundingMode.UP)// E529
-            }
             
+            if (enrolment.feeStatus && enrolment.feeStatus in [DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED, DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT]) {
+                LocalDate threshold_1 = LocalDate.parse('01-04-2020','dd-MM-yyyy')
+                LocalDate threshold_2 = LocalDate.parse('01-07-2021','dd-MM-yyyy')
+
+                if (clazz.censusDate.isAfter(threshold_1) && clazz.censusDate.isBefore(threshold_2)) {
+                    unit["loan_fee"] = BigDecimal.ZERO
+                } else {
+                    unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)).setScale(2, RoundingMode.UP)// E529
+                } 
+            } else  {
+                unit["loan_fee"] = BigDecimal.ZERO
+            }
         }
 
         if (enrolment.creditTotal) {
