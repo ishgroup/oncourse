@@ -35,7 +35,8 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { openLeadLink } from "../../leads/utils";
+import { leadLabelCondition, openLeadLink } from "../../leads/utils";
+import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -187,6 +188,12 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     values.invoiceLines
   ]);
 
+  const onLeadChange = value => {
+    dispatch(change(form, "leadId", value.id));
+    dispatch(change(form, "contactId", value["customer.id"]));
+    dispatch(change(form, "contactName", value["customer.fullName"]));
+  };
+
   const onContactChange = useCallback(
     value => {
       setSelectedContact(value);
@@ -247,43 +254,46 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     }
   }, [values.id]);
 
-  console.log("values", values);
-
   return (
     <Grid container className="p-3 saveButtonTableOffset defaultBackgroundColor">
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField
-          type="select"
-          name="type"
-          label="Type"
-          items={typeItems}
-          defaultValue={typeItems[0].value}
-        />
+      {/*<Grid item xs={twoColumn ? 3 : 12}>*/}
+      {/*  <FormField*/}
+      {/*    type="select"*/}
+      {/*    name="type"*/}
+      {/*    label="Type"*/}
+      {/*    items={typeItems}*/}
+      {/*    defaultValue={typeItems[0].value}*/}
+      {/*  />*/}
+      {/*</Grid>*/}
 
+      <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="text"
           name="title"
           label="Title"
         />
+      </Grid>
 
+      <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Lead"
           name="leadId"
           label="Lead"
           selectValueMark="id"
-          // selectLabelCondition={contactLabelCondition}
-          // defaultDisplayValue={values && defaultContactName(values.contactName)}
+          selectLabelCondition={leadLabelCondition}
           labelAdornment={
             <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
           }
-          onInnerValueChange={onContactChange}
-          // itemRenderer={ContactSelectItemRenderer}
+          onInnerValueChange={onLeadChange}
+          itemRenderer={LeadSelectItemRenderer}
           disabled={!isNew}
           rowHeight={55}
           required={values.type === "Quote"}
         />
+      </Grid>
 
+      <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Contact"
@@ -364,8 +374,8 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
       <Grid item xs={12}>
         <MinifiedEntitiesList
           name="invoiceLines"
-          header="Invoice Lines"
-          oneItemHeader="Invoice Line"
+          header={values.type === "Quote" ? "Quote Lines" : "Invoice Lines"}
+          oneItemHeader={values.type === "Quote" ? "Quote Line" : "Invoice Line"}
           count={invoiceLinesCount}
           FieldsContent={InvoiceLineComponent}
           HeaderContent={LineHeader}

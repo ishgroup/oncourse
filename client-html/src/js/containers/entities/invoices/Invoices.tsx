@@ -77,7 +77,6 @@ const filterGroups: FilterGroup[] = [
 ];
 
 const Initial: Invoice = {
-  type: "Invoice",
   billToAddress: null,
   createdByUser: null,
   dateDue: null,
@@ -112,7 +111,16 @@ const findRelatedGroup: any[] = [
   { title: "Voucher redeemed", list: "sale", expression: "redeemedInvoice.id" }
 ];
 
-const nameCondition = (invoice: Invoice) => (invoice.invoiceNumber ? "#" + invoice.invoiceNumber : "New");
+const nameCondition = (invoice: Invoice) => {
+  let result = "";
+  if (invoice.type === "Invoice") {
+    result = invoice.invoiceNumber ? "#" + invoice.invoiceNumber : "New";
+  } else {
+    result = invoice.leadId ? "Quote #" + invoice.leadId : "New";
+  }
+
+  return result;
+};
 
 const nestedEditFields = {
   PaymentOut: props => <AddPaymentOutEditView {...props} />,

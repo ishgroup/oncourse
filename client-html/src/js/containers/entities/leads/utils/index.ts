@@ -12,3 +12,6 @@ export const openLeadLink = (leadId: number) => {
   openInternalLink("/lead/" + leadId);
 };
 
+export const leadLabelCondition = (data: any) => {
+  return data["customer.fullName"];
+};
