@@ -2,7 +2,7 @@ type: object
 properties:
   id:
     type: integer
-    format: int32
+    format: int64
   email:
     type: string
     requred: true
@@ -15,5 +15,5 @@ properties:
     requred: false
     items:
       type: integer
-      format: int32
+      format: int64
 
