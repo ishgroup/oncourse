@@ -24,7 +24,7 @@ class InvoiceLineUpdater extends AbstractAngelUpdater<InvoiceLineStub, AbstractI
 		entity.setCreatedOn(stub.getCreated())
 		entity.setDescription(stub.getDescription())
 		entity.setDiscountEachExTax(new Money(stub.getDiscountEachExTax()))
-		entity.setInvoice(callback.updateRelationShip(stub.getInvoiceId(), Invoice.class))
+		entity.setInvoice(callback.updateRelationShip(stub.getInvoiceId(), entity.getInvoicePersistentClass()))
 		entity.setModifiedOn(stub.getModified())
 		entity.setPriceEachExTax(new Money(stub.getPriceEachExTax()))
 		entity.setQuantity(stub.getQuantity())
