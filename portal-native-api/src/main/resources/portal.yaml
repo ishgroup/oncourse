@@ -24,3 +24,14 @@ paths:
     $ref: './path/login/api.yaml'
   /sso:
     $ref: './path/sso/api.yaml'
+    
+definitions:
+  
+  LoginStage:
+    type: string
+    description: List of email verification stages
+    enum:
+      - create
+      - password
+      - authorize
+    

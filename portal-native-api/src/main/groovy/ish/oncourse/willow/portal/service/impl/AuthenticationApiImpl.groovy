@@ -10,6 +10,7 @@ import ish.oncourse.willow.portal.service.UserService
 import ish.oncourse.willow.portal.v1.model.ErrorResponse
 import ish.oncourse.willow.portal.v1.model.LoginRequest
 import ish.oncourse.willow.portal.v1.model.LoginResponse
+import ish.oncourse.willow.portal.v1.model.LoginStage
 import ish.oncourse.willow.portal.v1.model.SSOproviders
 import ish.oncourse.willow.portal.v1.service.AuthenticationApi
 import ish.security.AuthenticationUtil
@@ -18,6 +19,8 @@ import org.apache.zookeeper.CreateMode
 import ish.oncourse.willow.portal.v1.model.User as UserDTO
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.willow.portal.v1.model.LoginStage.*
 
 class AuthenticationApiImpl implements AuthenticationApi{
 
@@ -35,19 +38,19 @@ class AuthenticationApiImpl implements AuthenticationApi{
     
     @Override
     void verifyEmail(String email) {
-        String path 
+        LoginStage stage 
         User user = userService.getUserByEmail(email)
         if (user) {
-            path = '/password'
+            stage = PASSWORD
             user.emailVerified = false
             user.passwordHash = null
             user.objectContext.commitChanges()
         } else {
-            path = '/create'
+            stage = CREATE
             user = userService.createUser(email)
         }
         String sessionToken = createSession(user)
-        userService.sendVerificationEmail(email, sessionToken, path)
+        userService.sendVerificationEmail(email, sessionToken, stage)
     }
 
     @Override
@@ -91,7 +94,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
                 user.objectContext.commitChanges()
                 return new LoginResponse(user: new UserDTO(id:user.id, email: user.email, profilePicture: user.profilePicture), token: sessionToken)
             } else {
-                userService.sendVerificationEmail(credantials.email, sessionToken)
+                userService.sendVerificationEmail(credantials.email, sessionToken, AUTHORIZE)
                 return new LoginResponse(vefiryEmail: true)
             }
         }
@@ -106,7 +109,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
 
     @Override
     Map<String, String> ssoClientIds() {
-        return [SSOproviders.GOOGLE.toString() : googleOAuthProveder.clientId]
+        return [(SSOproviders.GOOGLE.toString()) : googleOAuthProveder.clientId]
     }
 
     String createSession(User user) {

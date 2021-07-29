@@ -9,6 +9,7 @@ import ish.oncourse.services.mail.SendEmail
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.willow.portal.auth.SSOCredantials
 import ish.oncourse.willow.portal.secur.SecurityUtil
+import ish.oncourse.willow.portal.v1.model.LoginStage
 import org.apache.cayenne.query.ObjectSelect
 
 import java.time.LocalDateTime
@@ -55,9 +56,9 @@ class UserService {
         return user
     }
 
-    void sendVerificationEmail(String email, String sessionToken, String path = '') {
+    void sendVerificationEmail(String email, String sessionToken, LoginStage stage) {
         String validTo = LocalDateTime.now().plusHours(2).toString()
-        String verificationUrl = "$requestService.requestUrl/login$path?email=$email&valid=$validTo"
+        String verificationUrl = "$requestService.requestUrl/login?stage=$stage&email=$email&valid=$validTo"
         verificationUrl = SecurityUtil.enrciptUrl(verificationUrl, sessionToken)
         sendEmail(String.format(VERIFiCATION_EMAIL_CONTENT, verificationUrl), email)
     }
