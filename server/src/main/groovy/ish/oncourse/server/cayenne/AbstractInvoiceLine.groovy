@@ -38,6 +38,8 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
 
     private static final Logger logger = LogManager.getLogger(InvoiceLine.class)
 
+    abstract Class<? extends AbstractInvoice> getInvoicePersistentClass()
+
     abstract <T extends AbstractInvoice> T getInvoice()
 
     abstract void setInvoice(AbstractInvoice abstractInvoice)

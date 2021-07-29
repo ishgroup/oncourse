@@ -32,6 +32,11 @@ class InvoiceLine extends _InvoiceLine {
     }
 
     @Override
+    Class<Invoice> getInvoicePersistentClass() {
+        return Invoice.class
+    }
+
+    @Override
     void setInvoice(AbstractInvoice abstractInvoice) {
         super.setInvoice((Invoice) abstractInvoice)
     }
