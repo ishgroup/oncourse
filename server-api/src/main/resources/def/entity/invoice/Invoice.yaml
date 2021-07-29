@@ -11,6 +11,8 @@ properties:
   leadId:
     type: integer
     format: int64
+  leadCustomerName:
+    type: string
   contactName:
     type: string
   customerReference:

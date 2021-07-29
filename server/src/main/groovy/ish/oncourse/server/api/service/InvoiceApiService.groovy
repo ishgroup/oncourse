@@ -115,6 +115,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
             invoiceDTO.type = InvoiceTypeDTO.values()[0].fromDbType(abstractInvoice.type)
             invoiceDTO.contactId = abstractInvoice.contact.id
             invoiceDTO.leadId = abstractInvoice.lead?.id
+            invoiceDTO.leadCustomerName = abstractInvoice.lead?.customer?.fullName
             invoiceDTO.contactName = abstractInvoice.contact.with {it.getFullName() }
             invoiceDTO.customerReference = abstractInvoice.customerReference
             invoiceDTO.billToAddress = abstractInvoice.billToAddress
