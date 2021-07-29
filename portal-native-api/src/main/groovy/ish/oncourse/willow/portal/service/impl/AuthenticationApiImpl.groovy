@@ -36,8 +36,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
     }
 
     @Override
-    LoginResponse signIn(LoginRequest details) {
-        
+    LoginResponse login(LoginRequest details) {
         if (details.ssOProvider) {
             SSOCredantials credantials
             switch (details.ssOProvider) {
@@ -48,7 +47,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
                     throw new BadRequestException('Unsupported Authorization provider')
             }
             User user = userService.getUserByEmail(credantials.email)?:userService.createUser(credantials.email)
-           
+
             userService.updateCredantials(user, credantials)
             String sessionToken = createSession(user)
             if (user.emailVerified) {
@@ -58,8 +57,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
                 return new LoginResponse(vefiryEmail: true)
             }
         }
-        
-        
+
         return null
     }
 
@@ -68,10 +66,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
 
     }
 
-    @Override
-    LoginResponse signUp(LoginRequest details) {
-        return null
-    }
+
 
     String createSession(User user) {
         String sessionId = SecurityUtil.generateRandomPassword(20)
