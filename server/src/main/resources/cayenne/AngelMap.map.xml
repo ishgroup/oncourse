@@ -4925,7 +4925,6 @@
 	<obj-relationship name="systemUsers" source="ACLRole" target="SystemUser" deleteRule="Deny" db-relationship-path="role_user_om.user_fk"/>
 	<obj-relationship name="attachmentRelations" source="AbstractInvoice" target="InvoiceAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="authorisedRebillingCard" source="AbstractInvoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
-	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="corporatePassUsed" source="AbstractInvoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
 	<obj-relationship name="createdByUser" source="AbstractInvoice" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="debtorsAccount" source="AbstractInvoice" target="Account" deleteRule="Nullify" db-relationship-path="debtorsAccount"/>
@@ -5212,6 +5211,7 @@
 	<obj-relationship name="relatedObject" source="ImportAutomationBinding" target="Import" deleteRule="Nullify" db-relationship-path="import"/>
 	<obj-relationship name="integrationProperties" source="IntegrationConfiguration" target="IntegrationProperty" deleteRule="Cascade" db-relationship-path="integrationProperties"/>
 	<obj-relationship name="integrationConfiguration" source="IntegrationProperty" target="IntegrationConfiguration" deleteRule="Nullify" db-relationship-path="integrationConfiguration"/>
+	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="paymentOutLines" source="Invoice" target="PaymentOutLine" deleteRule="Deny" db-relationship-path="paymentOutLines"/>
@@ -5351,6 +5351,7 @@
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>
 	<obj-relationship name="priorLearnings" source="Qualification" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="trainingPackage" source="Qualification" target="TrainingPackage" deleteRule="Deny" db-relationship-path="trainingPackage"/>
+	<obj-relationship name="contact" source="Quote" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="quoteLines"/>
 	<obj-relationship name="noteRelations" source="Quote" target="QuoteNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>

@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.InvoiceType
 import ish.oncourse.API
+import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Quote
 
@@ -34,6 +35,14 @@ class Quote extends _Quote {
 
 	List<QuoteLine> getLines() {
 		return this.getQuoteLines()
+	}
+
+	void setContact(ContactInterface contact) {
+		if (contact instanceof Contact) {
+			super.setContact((Contact) contact)
+		} else {
+			throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
+		}
 	}
 }
 
