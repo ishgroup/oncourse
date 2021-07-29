@@ -44,6 +44,8 @@ import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoiceLineModel
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
 import static ish.util.LocalDateUtils.dateToTimeValue
 import static org.apache.commons.lang3.StringUtils.EMPTY
@@ -129,6 +131,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
             invoiceDTO.createdOn = dateToTimeValue(abstractInvoice.createdOn)
             invoiceDTO.modifiedOn = dateToTimeValue(abstractInvoice.modifiedOn)
             invoiceDTO.paymentPlans.addAll([toRestPaymentPlan(abstractInvoice)])
+            invoiceDTO.tags = abstractInvoice.tags.collect { toRestTagMinimized(it) }
             invoiceDTO
         }
         if (abstractInvoice instanceof Invoice) {
@@ -200,6 +203,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
         if (abstractInvoice instanceof Invoice) {
             updateInvoiceDueDates(abstractInvoice as Invoice, invoiceDTO.paymentPlans)
         }
+        updateTags(abstractInvoice, abstractInvoice.taggingRelations, invoiceDTO.tags*.id, AbstractInvoiceTagRelation.class, abstractInvoice.context)
         abstractInvoice
     }
 
@@ -207,18 +211,20 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
     void validateModelBeforeSave(InvoiceDTO invoiceDTO, ObjectContext context, Long id) {
         AbstractInvoice invoice = id == null ? null : entityDao.getById(context, id)
 
-        if (invoice instanceof Invoice && InvoiceTypeDTO.QUOTE == invoiceDTO.type) {
+        if (invoice && invoice instanceof Invoice && InvoiceTypeDTO.QUOTE == invoiceDTO.type) {
             validator.throwClientErrorException(id, 'type', 'Impossible to transform an invoice to a quote.')
         }
 
         if (!invoiceDTO.contactId) {
-            validator.throwClientErrorException(id, 'contact', 'Contact id is required.')
+            validator.throwClientErrorException(id, 'contact', 'Contact is required.')
         } else if (!contactDao.getById(context, invoiceDTO.contactId)) {
             validator.throwClientErrorException(id, 'contact', "Contact with id=$invoiceDTO.contactId not found.")
         }
 
-        if (invoiceDTO.leadId && !leadDao.getById(context, invoiceDTO.leadId)) {
-            validator.throwClientErrorException(id, 'lead', "Lead with id=$invoiceDTO.leadId not found.")
+        if (InvoiceTypeDTO.QUOTE == invoiceDTO.type && invoiceDTO.leadId == null) {
+            validator.throwClientErrorException(id, 'lead', "Lead entry is required for Quotes.")
+        } else if (invoiceDTO.leadId && !leadDao.getById(context, invoiceDTO.leadId)) {
+            validator.throwClientErrorException(id, 'lead', "Lead entry with id=$invoiceDTO.leadId not found.")
         }
 
         if (isNotBlank(invoiceDTO.customerReference) && trimToNull(invoiceDTO.customerReference).size() > 5000) {
