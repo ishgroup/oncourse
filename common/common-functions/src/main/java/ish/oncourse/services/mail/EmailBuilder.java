@@ -1,10 +1,14 @@
 package ish.oncourse.services.mail;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 public class EmailBuilder {
@@ -13,8 +17,11 @@ public class EmailBuilder {
 	protected String ccs;
 	protected String bccs;
 	protected String fromEmail;
+	protected String fromName;
 	protected String subject;
 	protected StringBuilder body;
+	
+	private Logger logger = LogManager.getLogger();
 
 	public EmailBuilder() {
 		this.body = new StringBuilder();
@@ -53,7 +60,17 @@ public class EmailBuilder {
 
 	private void updateFrom(Message message) throws MessagingException {
 		if (fromEmail != null) {
-			message.setFrom(new InternetAddress(fromEmail));
+
+			InternetAddress address = new InternetAddress(fromEmail);
+			if (fromName != null) {
+				try {
+					address.setPersonal(fromName);
+				} catch (UnsupportedEncodingException e) {
+					// ignore
+					logger.catching(e);
+				}
+			}
+			message.setFrom(address);
 		}
 	}
 
@@ -101,6 +118,10 @@ public class EmailBuilder {
 
 	public void setFromEmail(String fromEmail) {
 		this.fromEmail = fromEmail;
+	}
+
+	public void setFromName(String fromName) {
+		this.fromName = fromName;
 	}
 
 	public void setSubject(String subject) {

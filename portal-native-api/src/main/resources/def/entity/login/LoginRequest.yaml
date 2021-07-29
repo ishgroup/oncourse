@@ -6,23 +6,13 @@ properties:
   SSOToken:
     type: string
     description: one time SSO token that is needed to complite OAuth2 process
-  firstName:
-    type: string
-    requred: false
-    description: User's first name
-  lastName:
-    type: string
-    requred: false
-    description: User's last name
-  companyName:
-    type: string
-    requred: false
-    description: User's company name
   email:
     type: string
-    requred: true
     description: User's email
   password:
     type: string
-    requred: true
     description: User's password
+  verificationUrl:
+    type: string
+    description: the signed url from verification email
+

@@ -15,34 +15,10 @@ get:
     default:
       description: Unexpected error
   
-put:
-  summary: Login user
-  operationId: signIn
-  description: make user log in and esteblish client server session
-  tags:
-    - Authentication
-  parameters:
-    - name: details
-      in: body
-      required: true
-      schema:
-        $ref: './def/entity/login/LoginRequest.yaml'
-  responses:
-    '200':
-      description: Success response. Provide sesion token in body 
-      schema:
-        $ref: './def/entity/login/LoginResponse.yaml'
-    '400':
-      description: Bad request
-      schema:
-        $ref: './def/entity/ErrorResponse.yaml'
-    default:
-      description: Unexpected error
-
 post:
-  summary: Create new user
-  operationId: signUp
-  description: create new use and esteblish client server session
+  summary: Create new user or authentificate existing one.
+  operationId: login
+  description: create new use or authentificate existing one. Esteblish client server session if the email verified
   tags:
     - Authentication
   parameters:
