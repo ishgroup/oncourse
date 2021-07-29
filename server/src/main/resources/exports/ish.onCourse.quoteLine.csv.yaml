@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.quoteLine.csv
+entityClass: Quote
+body: ish.onCourse.quoteLine.csv.groovy
+name: QuoteLine CSV export
+outputType: csv
