@@ -1,0 +1,16 @@
+get:
+  summary: Retrive SSO providers publick keys
+  operationId: ssoClientIds
+  description: Retrive SSO providers publick keys
+  tags:
+    - Authentication
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: object
+        additionalProperties:
+          type: string
+    default:
+      description: Unexpected error
+  

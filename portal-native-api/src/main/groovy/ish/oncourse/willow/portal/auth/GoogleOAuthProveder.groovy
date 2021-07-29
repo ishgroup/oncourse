@@ -15,8 +15,6 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.SSOProviderType
 import ish.oncourse.configuration.Configuration
-import ish.oncourse.model.User
-import ish.oncourse.services.persistence.ICayenneService
 
 @CompileStatic
 class GoogleOAuthProveder {
@@ -63,5 +61,8 @@ class GoogleOAuthProveder {
         return credantials
     }
 
+    String getClientId() {
+        clientSecrets.getWeb().getClientId()
+    }
     
 }

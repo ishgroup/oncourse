@@ -80,7 +80,10 @@ class AuthenticationApiImpl implements AuthenticationApi{
 
     }
 
-
+    @Override
+    Map<String, String> ssoClientIds() {
+        return [SSOproviders.GOOGLE.toString() : googleOAuthProveder.clientId]
+    }
 
     String createSession(User user) {
         sessionManager.removeSessions(user)
