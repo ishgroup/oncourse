@@ -15,6 +15,7 @@ import com.google.inject.Inject
 import ish.common.types.EnrolmentStatus
 import ish.common.types.InvoiceType
 import ish.oncourse.API
+import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.InvoiceInterface
 import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.cayenne.QueueableEntity
@@ -185,6 +186,14 @@ class Invoice extends _Invoice implements InvoiceInterface {
     @Override
     Contact getContact() {
         return super.getContact()
+    }
+
+    void setContact(ContactInterface contact) {
+        if (contact instanceof Contact) {
+            super.setContact((Contact) contact)
+        } else {
+            throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
+        }
     }
 
     //fixme: temporary workaround OD-12674

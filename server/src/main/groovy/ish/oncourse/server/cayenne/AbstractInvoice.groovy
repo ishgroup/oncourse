@@ -50,6 +50,10 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 
 	abstract List<? extends AbstractInvoiceLine> getLines()
 
+	abstract Contact getContact()
+
+	abstract void setContact(Contact contact)
+
 	/**
 	 * @return unique invoice number
 	 */
@@ -110,14 +114,6 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 		ArrayList<PayableLineInterface> list = new ArrayList<>()
 		list.addAll(getLines())
 		return list
-	}
-
-	void setContact(ContactInterface contact) {
-		if (contact instanceof Contact) {
-			super.setContact((Contact) contact)
-		} else {
-			throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
-		}
 	}
 
 	void updateAmountOwing() {

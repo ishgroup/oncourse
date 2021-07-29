@@ -42,9 +42,19 @@ class InvoiceDao implements CayenneLayer<AbstractInvoice> {
                 .selectOne(context)
     }
 
-    int getInvoicesCount(Contact c) {
-        ObjectSelect.query(AbstractInvoice.class)
-                .where(AbstractInvoice.CONTACT.eq(c))
-                .selectCount(c.getContext())
+    Integer getInvoicesCount(Contact contact) {
+        return getInvoiceCount(contact) + getQuoteCount(contact)
+    }
+
+    Integer getInvoiceCount(Contact contact) {
+        ObjectSelect.query(Invoice.class)
+                .where(Invoice.CONTACT.eq(contact))
+                .selectCount(contact.getContext())
+    }
+
+    Integer getQuoteCount(Contact contact) {
+        ObjectSelect.query(Quote.class)
+                .where(Quote.CONTACT.eq(contact))
+                .selectCount(contact.getContext())
     }
 }
