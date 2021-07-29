@@ -24,10 +24,6 @@ public class Overview {
 
 	private static final List<String> LICENSE_KEYS = Arrays.asList(
 			Preferences.LICENSE_ACCESS_CONTROL,
-			Preferences.LICENSE_LDAP,
-			Preferences.LICENSE_BUDGET,
-			Preferences.LICENSE_EXTENRNAL_DB,
-			Preferences.LICENSE_SSL,
 			Preferences.LICENSE_SMS,
 			Preferences.LICENSE_CC_PROCESSING,
 			Preferences.LICENSE_PAYROLL,
