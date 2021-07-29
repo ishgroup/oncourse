@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-} from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
 import { DrawerContentComponentProps } from '@react-navigation/drawer/src/types';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import Header from './Header';
 import { RootDrawerParamList } from '../../../../types';
 import { DashboardScreen } from '../../screens/DashboardScreen';
+import { TimetableScreen } from '../../screens/timetable/TimetableScreen';
 
 function StubScreen({ route }) {
   return (
@@ -53,7 +51,7 @@ export default function DrawerNavigation() {
       drawerContent={CustomDrawerContent}
     >
       <DrawerNav.Screen name="Dashboard" component={DashboardScreen} />
-      <DrawerNav.Screen name="Timetable" component={StubScreen} />
+      <DrawerNav.Screen options={{ headerShown: false }} name="Timetable" component={TimetableScreen} />
       <DrawerNav.Screen name="Resourses" component={StubScreen} />
       <DrawerNav.Screen name="My profile" component={StubScreen} />
       <DrawerNav.Screen name="Subscriptions" component={StubScreen} />

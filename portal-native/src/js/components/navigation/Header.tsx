@@ -15,7 +15,15 @@ const styles = StyleSheet.create({
   }
 });
 
-const Header = ({ scene }) => {
+export const HeaderBase = ({ children }) => {
+  return (
+    <Appbar.Header statusBarHeight={getStatusBarHeight()} style={styles.header}>
+      {children}
+    </Appbar.Header>
+  );
+};
+
+export const Header = ({ scene }) => {
   const { options } = scene.descriptor;
   const title = options.headerTitle !== undefined
     ? options.headerTitle
@@ -26,14 +34,14 @@ const Header = ({ scene }) => {
   const navigation = useRootNavigation();
 
   return (
-    <Appbar.Header statusBarHeight={getStatusBarHeight()} style={styles.header}>
+    <HeaderBase>
       <Appbar.Action
         icon="menu"
         color="white"
         onPress={() => navigation.openDrawer()}
       />
       <Appbar.Content title={title} color="white" />
-    </Appbar.Header>
+    </HeaderBase>
   );
 };
 

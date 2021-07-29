@@ -7,6 +7,7 @@ export default {
       Root: {
         screens: {
           Dashboard: 'dashboard',
+          Timetable: 'timetable',
           Notifications: 'notifications',
         },
       },
