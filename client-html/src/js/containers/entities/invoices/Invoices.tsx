@@ -4,11 +4,13 @@
  */
 
 import * as React from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Invoice } from "@api/model";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
@@ -17,7 +19,13 @@ import {
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import {
+  clearListState,
+  getFilters,
+  setListCreatingNew,
+  setListEditRecord,
+  setListSelection,
+} from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
@@ -28,6 +36,7 @@ import AddPaymentOutEditView from "../paymentsOut/components/AddPaymentOutEditVi
 import { getAdministrationSites } from "../sites/actions";
 import { checkPermissions } from "../../../common/actions";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
+import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -68,6 +77,7 @@ const filterGroups: FilterGroup[] = [
 ];
 
 const Initial: Invoice = {
+  type: "Invoice",
   billToAddress: null,
   createdByUser: null,
   dateDue: null,
@@ -122,7 +132,12 @@ const Invoices = React.memo<any>(({
   onCreate,
   onSave,
   getInvoiceRecord,
+  setListCreatingNew,
   onDelete,
+  history,
+  updateSelection,
+  location,
+  match: { params, url },
   onInit
   }) => {
   useEffect(() => {
@@ -135,6 +150,41 @@ const Invoices = React.memo<any>(({
 
     return clearListState;
   }, []);
+
+  const [createMenuOpened, setCreateMenuOpened] = useState(false);
+
+  const closeCreateMenu = () => {
+    setCreateMenuOpened(false);
+  };
+
+  const openCreateMenu = () => {
+    setCreateMenuOpened(true);
+  };
+
+  const customOnCreate = () => {
+    openCreateMenu();
+  };
+
+  const updateHistory = (pathname, search) => {
+    const newUrl = window.location.origin + pathname + search;
+
+    if (newUrl !== window.location.href) {
+      history.push({
+        pathname,
+        search
+      });
+    }
+  };
+
+  const onCreateNew = useCallback(type => {
+    closeCreateMenu();
+    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
+
+    setListCreatingNew(true);
+    updateSelection(["new"]);
+    Initial.type = type;
+    onInit();
+  }, [params, location, url]);
 
   return (
     <div>
@@ -155,6 +205,7 @@ const Invoices = React.memo<any>(({
         onCreate={onCreate}
         onSave={onSave}
         onInit={onInit}
+        customOnCreate={customOnCreate}
         onDelete={onDelete}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
@@ -163,6 +214,39 @@ const Invoices = React.memo<any>(({
         defaultDeleteDisabled
         noListTags
       />
+      <Menu
+        id="createMenu"
+        open={createMenuOpened}
+        onClose={closeCreateMenu}
+        disableAutoFocusItem
+        anchorReference="anchorPosition"
+        anchorPosition={{ top: getWindowHeight() - 80, left: getWindowWidth() - 200 }}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "center"
+        }}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "center"
+        }}
+      >
+        <MenuItem
+          onClick={() => onCreateNew("Invoice")}
+          classes={{
+            root: "listItemPadding"
+          }}
+        >
+          Create Invoice
+        </MenuItem>
+        <MenuItem
+          onClick={() => onCreateNew("Quote")}
+          classes={{
+            root: "listItemPadding"
+          }}
+        >
+          Create Quote
+        </MenuItem>
+      </Menu>
     </div>
   );
 });
@@ -188,6 +272,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, invoice: Invoice) => dispatch(updateInvoice(id, invoice)),
   onCreate: (invoice: Invoice) => dispatch(createInvoice(invoice)),
   onDelete: (id: string) => dispatch(removeInvoice(id)),
+  setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
+  updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   getQePermissions: () => dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }))
 });
 

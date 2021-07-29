@@ -258,7 +258,6 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
           label="Type"
           items={typeItems}
           defaultValue={typeItems[0].value}
-          required
         />
 
         <FormField
@@ -267,45 +266,41 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
           label="Title"
         />
 
-        {values.type === "Invoice" && (
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Contact"
-            name="contactId"
-            label="Invoice to"
-            selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={values && defaultContactName(values.contactName)}
-            labelAdornment={
-              <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
-            }
-            onInnerValueChange={onContactChange}
-            itemRenderer={ContactSelectItemRenderer}
-            disabled={!isNew}
-            rowHeight={55}
-            required
-          />
-        )}
+        <FormField
+          type="remoteDataSearchSelect"
+          entity="Lead"
+          name="leadId"
+          label="Lead"
+          selectValueMark="id"
+          // selectLabelCondition={contactLabelCondition}
+          // defaultDisplayValue={values && defaultContactName(values.contactName)}
+          labelAdornment={
+            <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
+          }
+          onInnerValueChange={onContactChange}
+          // itemRenderer={ContactSelectItemRenderer}
+          disabled={!isNew}
+          rowHeight={55}
+          required={values.type === "Quote"}
+        />
 
-        {values.type === "Quote" && (
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Lead"
-            name="leadId"
-            label="Lead"
-            selectValueMark="id"
-            // selectLabelCondition={contactLabelCondition}
-            // defaultDisplayValue={values && defaultContactName(values.contactName)}
-            labelAdornment={
-              <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
-            }
-            onInnerValueChange={onContactChange}
-            // itemRenderer={ContactSelectItemRenderer}
-            disabled={!isNew}
-            rowHeight={55}
-            required
-          />
-        )}
+        <FormField
+          type="remoteDataSearchSelect"
+          entity="Contact"
+          name="contactId"
+          label="Invoice to"
+          selectValueMark="id"
+          selectLabelCondition={contactLabelCondition}
+          defaultDisplayValue={values && defaultContactName(values.contactName)}
+          labelAdornment={
+            <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+          }
+          onInnerValueChange={onContactChange}
+          itemRenderer={ContactSelectItemRenderer}
+          disabled={!isNew}
+          rowHeight={55}
+          required={values.type === "Invoice"}
+        />
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>

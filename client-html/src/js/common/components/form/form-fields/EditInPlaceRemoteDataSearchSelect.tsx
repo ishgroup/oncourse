@@ -85,7 +85,7 @@ const getDefaultColumns = entity => {
     case "Module":
       return "nationalCode,title";
     case "Lead":
-      return "id,customer";
+      return "id,customer.fullName";
   }
   return "";
 };

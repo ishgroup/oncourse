@@ -319,14 +319,6 @@ class BottomAppBar extends React.PureComponent<any, any> {
         </MenuItem>
       )].filter(i => i);
 
-    const onCreateHandler = () => {
-      if (rootEntity === "AbstractInvoice") {
-
-      } else {
-        onCreate();
-      }
-    };
-
     return (
       <>
         <ExecuteScriptModal
@@ -407,15 +399,11 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
             <div className={clsx("flex-fill text-center", { "d-none": querySearch })} />
             <div className={classes.actionArea}>
-              <List classes={{ root: classes.root }}>
-                <ListItem>Invoice</ListItem>
-                <ListItem>Quote</ListItem>
-              </List>
               <Tooltip title="Add record" disableFocusListener>
                 <div>
                   <IconButton
                     color="inherit"
-                    onClick={onCreateHandler}
+                    onClick={onCreate}
                     disabled={!onCreate || fetch.pending || createButtonDisabled}
                     classes={{
                       root: classes.actionsBarButton,
