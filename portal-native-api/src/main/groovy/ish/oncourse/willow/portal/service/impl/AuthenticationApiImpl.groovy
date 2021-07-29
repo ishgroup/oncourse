@@ -31,12 +31,25 @@ class AuthenticationApiImpl implements AuthenticationApi{
     ZKSessionManager sessionManager
     
     @Override
-    void forgotPassword(String email) {
-
+    void verifyEmail(String email) {
+        String path 
+        User user = userService.getUserByEmail(email)
+        if (user) {
+            path = '/password'
+            user.emailVerified = false
+            user.passwordHash = null
+            user.objectContext.commitChanges()
+        } else {
+            path = '/create'
+            userService.createUser(email)
+        }
+        String sessionToken = createSession(user)
+        userService.sendVerificationEmail(email, sessionToken, path)
     }
 
     @Override
     LoginResponse login(LoginRequest details) {
+        
         if (details.ssOProvider) {
             SSOCredantials credantials
             switch (details.ssOProvider) {
@@ -47,10 +60,11 @@ class AuthenticationApiImpl implements AuthenticationApi{
                     throw new BadRequestException('Unsupported Authorization provider')
             }
             User user = userService.getUserByEmail(credantials.email)?:userService.createUser(credantials.email)
-
             userService.updateCredantials(user, credantials)
             String sessionToken = createSession(user)
             if (user.emailVerified) {
+                user.lastLogin = new Date()
+                user.objectContext.commitChanges()
                 return new LoginResponse(user: new UserDTO(id:user.id, email: user.email, profilePicture: user.profilePicture), token: sessionToken)
             } else {
                 userService.sendVerificationEmail(credantials.email, sessionToken)
@@ -69,6 +83,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
 
 
     String createSession(User user) {
+        sessionManager.removeSessions(user)
         String sessionId = SecurityUtil.generateRandomPassword(20)
         String userId = "$User.simpleName-$user.id"
         sessionManager.persistSession(userId, sessionId, CreateMode.PERSISTENT)

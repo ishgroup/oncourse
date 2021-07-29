@@ -55,19 +55,14 @@ class UserService {
         return user
     }
 
-    void sendVerificationEmail(String email, String sessionToken) {
-
+    void sendVerificationEmail(String email, String sessionToken, String path = '') {
         String validTo = LocalDateTime.now().plusHours(2).toString()
-        
-        String verificationUrl = "$requestService.requestUrl/login?email=$email&valid=$validTo"
+        String verificationUrl = "$requestService.requestUrl/login$path?email=$email&valid=$validTo"
         verificationUrl = SecurityUtil.enrciptUrl(verificationUrl, sessionToken)
-
-        sendEmail(String.format(VERIFiCATION_EMAIL_SUBJECT, verificationUrl), email)
-
-
+        sendEmail(String.format(VERIFiCATION_EMAIL_CONTENT, verificationUrl), email)
     }
     
-    private sendEmail(String content, String toEmail) {
+    private static sendEmail(String content, String toEmail) {
         EmailBuilder email = new EmailBuilder()
         email.setFromEmail(EMAIL_FROM)
         email.setFromName(EMAIL_FROM_NAME)

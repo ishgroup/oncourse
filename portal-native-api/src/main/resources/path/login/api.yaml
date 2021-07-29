@@ -1,6 +1,6 @@
 get:
   summary: Retrive invitetion email
-  operationId: forgotPassword
+  operationId: verifyEmail
   description: check user email address and send invitetion email with signed link inside 
   tags:
     - Authentication

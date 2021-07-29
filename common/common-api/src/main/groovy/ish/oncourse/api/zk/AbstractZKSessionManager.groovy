@@ -35,9 +35,15 @@ abstract class AbstractZKSessionManager {
 
     boolean sessionExist(String sessionPath) {
         zk.exists(sessionPath, false)
-
     }
 
+    protected void deleteAll(String root) throws KeeperException, InterruptedException { 
+       zk.getChildren(root, false)?.each {
+           deleteAll("$root/$it")
+       }
+       zk.delete(root, -1);
+    }
+    
     private ZooKeeper getZk() {
         return provider.getZk(getRootNode())
     }
