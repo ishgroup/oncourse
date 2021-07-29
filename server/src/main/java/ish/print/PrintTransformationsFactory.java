@@ -11,28 +11,10 @@
 
 package ish.print;
 
-import ish.print.transformations.AccountAccountTransactionTransformation;
-import ish.print.transformations.AccountTransactionTransformation;
-import ish.print.transformations.BankingPaymentInterfaceTransformation;
-import ish.print.transformations.CertificateReportTransformation;
-import ish.print.transformations.ContactAccountTransactionTransformation;
-import ish.print.transformations.CourseClassEnrolmentTransformation;
-import ish.print.transformations.CourseClassOutcomeTransformation;
-import ish.print.transformations.CourseClassSessionTransformation;
-import ish.print.transformations.CourseClassTutorAttendanceTransformation;
-import ish.print.transformations.DiscountDiscountTransformation;
-import ish.print.transformations.PaymentInterfaceTransformation;
-import ish.print.transformations.PayslipPayLineTransformation;
-import ish.print.transformations.PrintTransformation;
-import ish.print.transformations.ProductItemTransformation;
-import ish.print.transformations.RoomSessionTransformation;
-import ish.print.transformations.SiteSessionTransformation;
-import ish.print.transformations.StatementLineReportTransformation;
-import ish.print.transformations.TagContactTransformation;
+import ish.print.transformations.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  */
@@ -74,7 +56,13 @@ public class PrintTransformationsFactory {
 
 			"ProductItem", mapFromValues("Voucher", new ProductItemTransformation(),
 										"Article", new ProductItemTransformation(),
-										"Membership", new ProductItemTransformation())
+										"Membership", new ProductItemTransformation()),
+
+			"AbstractInvoice", mapFromValues("Invoice", new AbstractInvoiceTransformation(),
+											"Quote", new AbstractQuoteTransformation()),
+
+			"Invoice", mapFromValues("InvoiceLine", new InvoiceTransformation()),
+			"Quote", mapFromValues("QuoteLine", new QuoteTransformation())
 
 	);
 
