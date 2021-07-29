@@ -29,6 +29,7 @@ import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersN
 import { mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { getProductAqlType } from "../../sales/utils";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
@@ -58,7 +59,7 @@ const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relat
       }
       if (['Product', 'Membership', 'Voucher'].includes(sel.type)) {
         return EntityService.getPlainRecords(
-          `${sel.type === 'Product' ? 'Article' : sel.type}Product`,
+          getProductAqlType(sel.type),
           'priceExTax',
           `id is ${sel.id}`,
           1

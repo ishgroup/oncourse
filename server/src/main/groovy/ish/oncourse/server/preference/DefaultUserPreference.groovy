@@ -262,7 +262,9 @@ class DefaultUserPreference {
                                                              CorporatePass.CONTACT.dot(Contact.MIDDLE_NAME).name]),
                 new ColumnDTO(title: 'Payroll reference number', attribute: Payslip.CONTACT.dot(Contact.TUTOR).dot(Tutor.PAYROLL_REF).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Created', attribute: Payslip.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Status', attribute: Payslip.STATUS.name, sortable: true, width: W200, visible: true)
+                new ColumnDTO(title: 'Status', attribute: Payslip.STATUS.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Type', attribute: Payslip.PAY_TYPE.name, sortable: true, width: W200, visible: true)
+
         ]
         it.sortings = [
             new SortingDTO(attribute: Payslip.CREATED_ON.name, ascending: true)
