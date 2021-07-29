@@ -20,6 +20,11 @@ class QuoteLine extends _QuoteLine {
     }
 
     @Override
+    Class<Quote> getInvoicePersistentClass() {
+        return Quote.class
+    }
+
+    @Override
     void setInvoice(AbstractInvoice abstractInvoice) {
         super.setQuote((Quote) abstractInvoice)
     }
