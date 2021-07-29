@@ -25,7 +25,6 @@ let savedItem: Invoice;
 const request: EpicUtils.Request = {
   type: CREATE_INVOICE_ITEM,
   getData: payload => {
-    payload.invoice.type = 'Invoice';
     savedItem = payload.invoice;
     return InvoiceService.createInvoice(preformatInvoice(payload.invoice));
   },
