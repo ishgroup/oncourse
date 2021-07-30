@@ -7,12 +7,14 @@ import React from 'react';
 import Bugsnag from '@bugsnag/expo';
 import { IS_JEST } from './Environment';
 
-export const bugsnagClient = IS_JEST
+const isDisabled = IS_JEST || __DEV__;
+
+export const bugsnagClient = isDisabled
   ? {
     setUser: () => null,
   }
   : Bugsnag.start();
 
-export const ErrorBoundary = IS_JEST
+export const ErrorBoundary = isDisabled
   ? (props) => <>{props.children}</>
   : Bugsnag.getPlugin('react').createErrorBoundary(React);

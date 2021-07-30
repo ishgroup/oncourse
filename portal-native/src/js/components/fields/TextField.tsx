@@ -1,7 +1,8 @@
 // react-native-paper TextInput wrapper for Formik implementation
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import _get from 'lodash.get';
+import debounce from 'lodash.debounce';
 import { TextInputProps } from 'react-native-paper/src/components/TextInput/TextInput';
 import { useFormikContext } from 'formik';
 import { View } from 'react-native';
@@ -18,13 +19,35 @@ const TextField = (props: Props) => {
     ...rest
   } = props;
 
+  const [textValue, setTextValue] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
+
   const {
-    values, errors, touched, handleChange, setFieldTouched, isSubmitting
+    values, errors, touched, setFieldValue, setFieldTouched, isSubmitting
   } = useFormikContext();
 
   const value = _get(values, name);
   const isTouched = _get(touched, name);
   const errorMessage = _get(errors, name);
+
+  const eventHandler = (text) => {
+    setFieldValue(name, text);
+  };
+
+  const debouncedEventHandler = useMemo(
+    () => debounce(eventHandler, 300),
+    []
+  );
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      debouncedEventHandler(textValue);
+    }
+  }, [textValue]);
 
   useEffect(() => {
     if (!isTouched && (value || isSubmitting)) {
@@ -39,8 +62,8 @@ const TextField = (props: Props) => {
       <TextInput
         error={hasError}
         label={label}
-        value={value}
-        onChangeText={handleChange(name)}
+        value={textValue}
+        onChangeText={setTextValue}
         {...rest}
       />
       <HelperText type="error" style={{ height: 22 }}>
@@ -50,4 +73,4 @@ const TextField = (props: Props) => {
   );
 };
 
-export default TextField;
+export default React.memo(TextField);

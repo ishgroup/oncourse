@@ -11,6 +11,7 @@ export default {
           Notifications: 'notifications',
         },
       },
+      Login: 'login',
       NotFound: '*',
     },
   },

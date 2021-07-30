@@ -20,45 +20,17 @@ export const FetchErrorHandler = (response: AxiosResponse, customMessage?: strin
         {
           type: FETCH_FAIL,
           payload: {
-            formError: data,
-            message: data.errorMessage || customMessage,
+            message: data.errorMessage || customMessage || 'Something went wrong',
           },
         },
       ];
-
-      //  Redirect if not logged in
-      // case 401:
-      //   const state: State = store.getState();
-      //   const lastLocation = state.lastLocation || window.location.pathname;
-      //   LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
-      //   LSRemoveItem(DASHBOARD_ACTIVITY_STORAGE_NAME);
-      //   history.push("/login");
-      //
-      //   return [
-      //     {
-      //       type: SET_LAST_LOCATION,
-      //       payload: lastLocation
-      //     },
-      //     {
-      //       type: GET_IS_LOGGED_FULFILLED,
-      //       payload: false
-      //     },
-      //     ...(data["url"] && data["url"] === "/a/"
-      //       ? []
-      //       : [
-      //         {
-      //           type: FETCH_FAIL,
-      //           payload: { message: "Unauthorized" }
-      //         }
-      //       ])
-      //   ];
 
     case 403:
       return [
         {
           type: FETCH_FAIL,
           payload: {
-            message: data.errorMessage || customMessage,
+            message: data.errorMessage || customMessage || 'Something went wrong',
           },
         },
       ];

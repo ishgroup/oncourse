@@ -1,10 +1,8 @@
 import { combineEpics } from 'redux-observable';
 import EpicSignIn from './login/EpicSignIn';
-import EpicSignUp from './login/EpicSignUp';
-import EpicConnect from './login/EpicConnect';
+import EpicEmailLogin from './login/EpicEmailLogin';
 
 export const EpicRoot = combineEpics(
   EpicSignIn,
-  EpicSignUp,
-  EpicConnect
+  EpicEmailLogin
 );

@@ -17,11 +17,10 @@ export class MockApi implements MockAdapterType {
     LoginApiMock.apply(this);
 
     // Handle all other requests
-    this.api.onAny().reply((config) => {
+    this.api.onAny().reply<any>((config, data = {}, headers = {}) => {
       console.log('%c UNHANDLED REQUEST', 'color: red');
       console.log(config);
-      console.log(this.api);
-      return promiseReject(config);
+      return promiseReject(config, data, headers);
     });
   }
 }

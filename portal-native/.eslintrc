@@ -23,6 +23,7 @@
     "react-native/react-native": true
   },
   "rules": {
+    "default-case": 0,
     "react/prop-types": 0,
     "global-require": 0,
     "import/prefer-default-export": 0,

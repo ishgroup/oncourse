@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { Image, View } from 'react-native';
@@ -10,83 +10,80 @@ import { SceneMap, TabView } from 'react-native-tab-view';
 import { useCommonStyles } from '../../hooks/styles';
 import { useStyles } from './styles';
 import LoginContent from './LoginContent';
-import { LoginStages, LoginValues } from '../../model/Login';
-import { useAppDispatch } from '../../hooks/redux';
+import { LoginRoute, LoginStages, LoginValues } from '../../model/Login';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import EmaiConfirmContent from './CheckEmailContent';
 import ResetPasswordContent from './ResetPasswordContent';
+import { emailLogin, setLoginUrl, signIn } from '../../actions/LoginActions';
+import CreateAccountContent from './CreateAccountContent';
 
 WebBrowser.maybeCompleteAuthSession();
 
 const renderScene = SceneMap<any>({
-  login: LoginContent,
-  email: EmaiConfirmContent,
-  password: ResetPasswordContent
+  Login: LoginContent,
+  PasswordReset: ResetPasswordContent,
+  CreateAccount: CreateAccountContent,
+  EmaiConfirm: EmaiConfirmContent,
 });
 
 const initialValues: LoginValues = { submitBy: 'LoginEmail' };
 
-const validationSchema: yup.SchemaOf<LoginValues> = yup.object({
-  confirmPassword: yup.string().when('password', {
-    is: (val) => val,
-    then: yup.string().required('Please confirm password').oneOf([yup.ref('password')], 'Passwords should match'),
-    otherwise: yup.string().notRequired(),
-  }),
-  email: yup.string().required('Email is required').email('Please enter valid email'),
-  password: yup.string().when('submitBy', {
-    is: (val) => val !== 'LoginEmail',
-    then: yup.string().required('Password is required'),
-    otherwise: yup.string().notRequired(),
-  }),
-  firstName: yup.string().nullable().notRequired(),
-  lastName: yup.string().nullable().notRequired(),
-  companyName: yup.string().nullable().notRequired(),
-  submitBy: yup.mixed().nullable().notRequired(),
-  sSOToken: yup.string().nullable().notRequired(),
-  sSOProvider: yup.mixed().nullable().notRequired()
-});
+const routes: LoginRoute[] = [
+  { key: 'Login' },
+  { key: 'PasswordReset' },
+  { key: 'CreateAccount' },
+  { key: 'EmaiConfirm' },
+];
 
 const LoginScreen = () => {
   const isSmallScreen = useMediaQuery({ query: '(max-device-height: 800px)' });
-  const [stage, setStage] = useState<number>(0);
-  const routes = [
-    { key: 'login' },
-    { key: 'email' },
-    { key: 'password' }
-  ];
+  const stage = useAppSelector((state) => state.login.stage);
+  const verificationUrl = useAppSelector((state) => state.login.verificationUrl);
 
   const styles = useStyles();
   const cs = useCommonStyles();
   const dispatch = useAppDispatch();
 
-  // const validate = useCallback<any>((values: LoginValues): FormikErrors<LoginValues> => {
-  //   const errors: any = {};
-  //
-  //   try {
-  //     yup.string().required('Email is required').email('Please enter valid email').validateSync(values.email);
-  //   } catch (e) {
-  //     errors.email = e.message;
-  //   }
-  //
-  //   if (values.submitBy !== 'LoginEmail' && !values.password) {
-  //     errors.password = 'Password is required';
-  //   }
-  //
-  //   if ([LoginStages.PasswordConfirm, LoginStages.PasswordReset].includes(stage) && values.password) {
-  //     if (!values.confirmPassword) {
-  //       errors.confirmPassword = 'Please confirm password';
-  //     } else if (values.confirmPassword !== values.password) {
-  //       errors.confirmPassword = 'Passwords should match';
-  //     }
-  //   }
-  //
-  //   return errors;
-  // }, [stage]);
-
-  const onSubmit = useCallback(({ confirmPassword, submitBy, ...values }) => {
-    if (stage === LoginStages.Login) {
-      setStage(LoginStages.EmaiConfirm);
+  const onSubmit = useCallback(({ confirmPassword, submitBy, ...values }: LoginValues) => {
+    if ([LoginStages.PasswordReset, LoginStages.CreateAccount].includes(stage)) {
+      dispatch(signIn({
+        ...values,
+        verificationUrl
+      }));
+      dispatch(setLoginUrl(null));
+      return;
     }
-    // dispatch(signIn(values));
+    if (submitBy === 'LoginEmail') {
+      dispatch(emailLogin(values.email));
+      return;
+    }
+    if (submitBy === 'SignIn') {
+      dispatch(signIn(values));
+    }
+  }, [stage, verificationUrl]);
+
+  const validationSchema: yup.SchemaOf<LoginValues> = useMemo(() => {
+    const isPasswordScreens = [LoginStages.PasswordReset, LoginStages.CreateAccount].includes(stage);
+
+    return yup.object({
+      confirmPassword: isPasswordScreens ? yup.string().when('password', {
+        is: (val) => val,
+        then: yup.string().required('Please confirm password').oneOf([yup.ref('password')], 'Passwords should match'),
+        otherwise: yup.string().notRequired(),
+      }) : yup.string().nullable().notRequired(),
+      email: isPasswordScreens
+        ? yup.string().nullable().notRequired()
+        : yup.string().required('Email is required').email('Please enter valid email'),
+      password: isPasswordScreens ? yup.string().required('Password is required') : yup.string().when('submitBy', {
+        is: (val) => val !== 'LoginEmail',
+        then: yup.string().required('Password is required'),
+        otherwise: yup.string().notRequired(),
+      }),
+      verificationUrl: yup.string().nullable().notRequired(),
+      submitBy: yup.mixed().nullable().notRequired(),
+      sSOToken: yup.string().nullable().notRequired(),
+      sSOProvider: yup.mixed().nullable().notRequired()
+    });
   }, [stage]);
 
   const Logo = (
@@ -128,7 +125,7 @@ const LoginScreen = () => {
                 renderTabBar={() => null}
                 navigationState={{ index: stage, routes }}
                 renderScene={renderScene}
-                onIndexChange={setStage}
+                onIndexChange={() => null}
                 swipeEnabled={false}
               />
             </Formik>

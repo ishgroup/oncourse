@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, Caption, TextInput } from 'react-native-paper';
 import { useFormikContext } from 'formik';
 import { View } from 'react-native';
 import { useCommonStyles } from '../../hooks/styles';
 import TextField from '../../components/fields/TextField';
 import { LoginValues } from '../../model/Login';
 import { useAppSelector } from '../../hooks/redux';
+import { Connect } from './connect';
 
-const ResetPassword = () => {
+const CreateAccount = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
@@ -59,10 +60,16 @@ const ResetPassword = () => {
         disabled={!isValid}
         loading={loading}
       >
-        Reset password
+        Create account
       </Button>
+      <View style={[cs.flexCenter, cs.mt2, cs.mb1]}>
+        <Caption>
+          Or connect using
+        </Caption>
+      </View>
+      <Connect />
     </View>
   );
 };
 
-export default React.memo(ResetPassword);
+export default React.memo(CreateAccount);

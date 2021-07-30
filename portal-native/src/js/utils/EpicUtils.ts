@@ -3,16 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  ActionsObservable, Epic, ofType, StateObservable,
-} from 'redux-observable';
+import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observable';
 import { concat, from, Observable } from 'rxjs';
-import {
-  catchError, delay, mergeMap,
-} from 'rxjs/operators';
+import { catchError, delay, mergeMap } from 'rxjs/operators';
 import { IAction } from '../model/IshAction';
 import { State } from '../model/State';
-import { FETCH_FINISH, FETCH_START } from '../actions/FetchActions';
 import { REJECTED } from './ActionUtils';
 import { FetchErrorHandler } from './ApiUtils';
 
@@ -50,25 +45,12 @@ export const createRequest = <P, V>(request: Request<P, V>): Epic<IAction<P>> =>
   ofType(request.type),
   delay(request.delay || 0),
   mergeMap((action) => concat(
-    [
-      {
-        type: FETCH_START,
-        payload: {
-          hideIndicator: request.hideLoadIndicator,
-        },
-      },
-    ],
     from(request.getData(action.payload, state$.value)).pipe(
       mergeMap((data) => (request.retrieveData
         ? request.retrieveData(action.payload, state$.value)
         : [data])),
       mergeMap((data) => request.processData(data, state$.value, action.payload)),
       catchError((data) => processError(data, request.type, request.processError, action.payload)),
-    ),
-    [
-      {
-        type: FETCH_FINISH,
-      },
-    ],
+    )
   )),
 );

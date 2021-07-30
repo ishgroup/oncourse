@@ -11,8 +11,11 @@ export type RootDrawerParamList = {
 
 export type RootStackParamList = {
   NotFound: undefined;
+  Login: undefined;
   Root: RootDrawerParamList;
 };
+
+export type AppRoute = keyof RootStackParamList;
 
 export type BottomTabParamList = {
   TabOne: undefined;
