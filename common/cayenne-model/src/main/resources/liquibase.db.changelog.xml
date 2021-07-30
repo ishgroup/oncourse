@@ -603,5 +603,32 @@
 												 validate="true"/>
 	</changeSet>
 
+	<changeSet id="45" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="title" tableName="Invoice"/>
+				<columnExists tableName="leadId" columnName="Invoice"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="Invoice">
+			<column name="title" type="VARCHAR(200)"/>
+			<column name="leadId" type="BIGINT"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="46" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists columnName="allowAutoPay" tableName="Invoice"/>
+		</preConditions>
+		<dropNotNullConstraint tableName="Invoice" columnName="allowAutoPay" columnDataType="TINYINT"/>
+	</changeSet>
+
+	<changeSet id="47" author="rostislav" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="MARK_RAN">
+			<columnExists columnName="invoiceNumber" tableName="Invoice"/>
+		</preConditions>
+		<dropNotNullConstraint tableName="Invoice" columnName="invoiceNumber" columnDataType="BIGINT"/>
+	</changeSet>
+
 
 </databaseChangeLog>
