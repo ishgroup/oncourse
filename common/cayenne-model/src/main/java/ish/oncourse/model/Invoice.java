@@ -3,10 +3,13 @@ package ish.oncourse.model;
 import ish.common.types.InvoiceType;
 import ish.math.Money;
 import ish.oncourse.model.auto._Invoice;
+import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.query.ObjectIdQuery;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
+import java.util.List;
 
 public class Invoice extends _Invoice {
 
@@ -81,5 +84,66 @@ public class Invoice extends _Invoice {
 		invoice.setDescription(getDescription());
 
 		return invoice;
+	}
+
+	public List<InvoiceLine> getLines() {
+		return getInvoiceLines();
+	};
+
+	/**
+	 * Check if async replication is allowed on this object.
+	 *
+	 * We need the method  to not add to the async replication a payment transactions
+	 * which have not got the final status yet (DPS processing).
+	 */
+	public boolean isAsyncReplicationAllowed() {
+
+		List<PaymentInLine> lines = getPaymentInLines();
+
+		// We check linked payments, if one of them can replicate invoice can replicate too.
+		if (!lines.isEmpty()) {
+			for (PaymentInLine line : lines) {
+				PaymentIn paymentIn = line.getPaymentIn();
+				ObjectIdQuery q = new ObjectIdQuery(paymentIn.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH);
+				paymentIn = (PaymentIn) Cayenne.objectForQuery(getObjectContext(), q);
+				if (paymentIn.isAsyncReplicationAllowed()) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		return super.isAsyncReplicationAllowed();
+	}
+
+	@Override
+	public void addToLines(AbstractInvoiceLine abstractLine) {
+		super.addToInvoiceLines((InvoiceLine) abstractLine);
+	}
+
+	public Money getOverdue() {
+		if (getAmountOwing().isZero()) {
+			return Money.ZERO;
+		}
+		Date currentDate = new Date();
+
+		if (!getInvoiceDueDates().isEmpty()) {
+			List<InvoiceDueDate> dueDates = getInvoiceDueDates();
+
+			InvoiceDueDate.DUE_DATE.asc().orderList(dueDates);
+			Money overdue = Money.ZERO;
+
+			for (InvoiceDueDate dueDate : dueDates) {
+				if (currentDate.after(dueDate.getDueDate())) {
+					overdue = overdue.add(dueDate.getAmount());
+				}
+			}
+			Money amountPaid = getTotalGst().subtract(getAmountOwing());
+			overdue = overdue.subtract(amountPaid);
+			return overdue.isGreaterThan(Money.ZERO) ? overdue : Money.ZERO;
+		} else {
+			return getDateDue().after(currentDate) ? Money.ZERO : getAmountOwing();
+		}
+
 	}
 }

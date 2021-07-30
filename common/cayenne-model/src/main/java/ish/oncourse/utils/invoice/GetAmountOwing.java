@@ -6,6 +6,7 @@ package ish.oncourse.utils.invoice;
 import ish.common.types.PaymentStatus;
 import ish.math.Money;
 import ish.oncourse.model.AbstractInvoice;
+import ish.oncourse.model.AbstractInvoiceLine;
 import ish.oncourse.model.InvoiceLine;
 import ish.oncourse.model.PaymentInLine;
 
@@ -42,8 +43,8 @@ public class GetAmountOwing {
 
 	private Money getTotalInvoiced() {
 		Money result = Money.ZERO;
-		List<InvoiceLine> invoiceLines = invoice.getInvoiceLines();
-		for (InvoiceLine invoiceLine : invoiceLines) {
+		List<? extends AbstractInvoiceLine> invoiceLines = invoice.getLines();
+		for (AbstractInvoiceLine invoiceLine : invoiceLines) {
 			result = result.add(invoiceLine.getFinalPriceToPayIncTax());
 		}
 		return result;

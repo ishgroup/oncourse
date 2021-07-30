@@ -723,7 +723,7 @@
 		<db-attribute name="value" type="VARCHAR" length="1024"/>
 	</db-entity>
 	<db-entity name="Invoice">
-		<db-attribute name="allowAutoPay" type="BIT" isMandatory="true"/>
+		<db-attribute name="allowAutoPay" type="BIT"/>
 		<db-attribute name="amountOwing" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
 		<db-attribute name="authorisedRebillingCardId" type="BIGINT"/>
@@ -748,6 +748,7 @@
 		<db-attribute name="totalGst" type="DECIMAL" isMandatory="true" length="14" scale="2"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="title" type="VARCHAR" length="200"/>
+		<db-attribute name="leadId" type="BIGINT"/>
 		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="InvoiceDueDate">
@@ -769,7 +770,7 @@
 		<db-attribute name="discountEachExTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="enrolmentId" type="BIGINT" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="invoiceId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="invoiceId" type="BIGINT"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="priceEachExTax" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="quantity" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -784,7 +785,7 @@
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="discountId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="invoiceLineId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="invoiceLineId" type="BIGINT" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="Language">
@@ -1607,6 +1608,20 @@
 		<pre-persist method-name="onPrePersist"/>
 		<pre-update method-name="onPreUpdate"/>
 	</obj-entity>
+	<obj-entity name="AbstractInvoiceLine" abstract="true" className="ish.oncourse.model.AbstractInvoiceLine" dbEntityName="InvoiceLine" superClassName="ish.oncourse.model.InvoicePayableLine">
+		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="discountEachExTax" type="ish.math.Money" db-attribute-path="discountEachExTax"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="priceEachExTax" type="ish.math.Money" db-attribute-path="priceEachExTax"/>
+		<obj-attribute name="quantity" type="java.math.BigDecimal" db-attribute-path="quantity"/>
+		<obj-attribute name="sortOrder" type="java.lang.Integer" db-attribute-path="sortOrder"/>
+		<obj-attribute name="taxEach" type="ish.math.Money" db-attribute-path="taxEach"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
+		<obj-attribute name="unit" type="java.lang.String" db-attribute-path="unit"/>
+		<post-add method-name="onPostAdd"/>
+	</obj-entity>
 	<obj-entity name="Application" className="ish.oncourse.model.Application" dbEntityName="Application" superClassName="ish.oncourse.model.ExpandableCayenneDataObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
@@ -2191,26 +2206,13 @@
 	<obj-entity name="Invoice" superEntityName="AbstractInvoice" className="ish.oncourse.model.Invoice">
 		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.INVOICE]]></qualifier>
 	</obj-entity>
+	<obj-entity name="InvoiceLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.model.InvoiceLine"/>
 	<obj-entity name="InvoiceDueDate" className="ish.oncourse.model.InvoiceDueDate" dbEntityName="InvoiceDueDate" superClassName="WillowCayenneObject">
 		<obj-attribute name="amount" type="ish.math.Money" db-attribute-path="amount"/>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="dueDate" type="java.util.Date" db-attribute-path="dueDate"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-	</obj-entity>
-	<obj-entity name="InvoiceLine" className="ish.oncourse.model.InvoiceLine" dbEntityName="InvoiceLine" superClassName="ish.oncourse.model.InvoicePayableLine">
-		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
-		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
-		<obj-attribute name="discountEachExTax" type="ish.math.Money" db-attribute-path="discountEachExTax"/>
-		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
-		<obj-attribute name="priceEachExTax" type="ish.math.Money" db-attribute-path="priceEachExTax"/>
-		<obj-attribute name="quantity" type="java.math.BigDecimal" db-attribute-path="quantity"/>
-		<obj-attribute name="sortOrder" type="java.lang.Integer" db-attribute-path="sortOrder"/>
-		<obj-attribute name="taxEach" type="ish.math.Money" db-attribute-path="taxEach"/>
-		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
-		<obj-attribute name="unit" type="java.lang.String" db-attribute-path="unit"/>
-		<post-add method-name="onPostAdd"/>
 	</obj-entity>
 	<obj-entity name="InvoiceLineDiscount" className="ish.oncourse.model.InvoiceLineDiscount" dbEntityName="InvoiceLine_Discount" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2520,6 +2522,10 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="transactionKey" type="java.lang.String" db-attribute-path="transactionKey"/>
 	</obj-entity>
+	<obj-entity name="Quote" superEntityName="AbstractInvoice" className="ish.oncourse.model.Quote">
+		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.QUOTE]]></qualifier>
+	</obj-entity>
+	<obj-entity name="QuoteLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.model.QuoteLine"/>
 	<obj-entity name="Room" className="ish.oncourse.model.Room" dbEntityName="Room" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="capacity" type="java.lang.Integer" db-attribute-path="capacity"/>
@@ -2530,9 +2536,6 @@
 		<obj-attribute name="facilitiesTextile" type="java.lang.String" db-attribute-path="facilities_textile"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-	</obj-entity>
-	<obj-entity name="SaleOrder" superEntityName="AbstractInvoice" className="ish.oncourse.model.SaleOrder">
-		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.SALE_ORDER]]></qualifier>
 	</obj-entity>
 	<obj-entity name="Script" className="ish.oncourse.model.Script" dbEntityName="Script" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -4637,6 +4640,7 @@
 	<obj-relationship name="customFields" source="Contact" target="ContactCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Deny" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
+	<obj-relationship name="quotes" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
@@ -4689,6 +4693,7 @@
 	<obj-relationship name="discussions" source="CourseClass" target="Discussion" deleteRule="Deny" db-relationship-path="discussions"/>
 	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="invoiceLines" source="CourseClass" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="quoteLines" source="CourseClass" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="paymentPlanLines" source="CourseClass" target="CourseClassPaymentPlanLine" deleteRule="Deny" db-relationship-path="paymentPlanLines"/>
 	<obj-relationship name="room" source="CourseClass" target="Room" deleteRule="Nullify" db-relationship-path="room"/>
 	<obj-relationship name="sessions" source="CourseClass" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
@@ -4743,6 +4748,7 @@
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="customFields" source="Enrolment" target="EnrolmentCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="quoteLines" source="Enrolment" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="student" source="Enrolment" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
 	<obj-relationship name="surveys" source="Enrolment" target="Survey" deleteRule="Deny" db-relationship-path="surveys"/>
@@ -4804,6 +4810,7 @@
 	<obj-relationship name="college" source="InvoiceLineDiscount" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
+	<obj-relationship name="quoteLine" source="InvoiceLineDiscount" target="QuoteLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="college" source="LicenseFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="webSite" source="LicenseFee" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="Log" target="College" deleteRule="Nullify" db-relationship-path="college"/>
@@ -4866,18 +4873,19 @@
 	<obj-relationship name="college" source="QueuedStatistic" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="QueuedTransaction" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="queuedRecords" source="QueuedTransaction" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
+	<obj-relationship name="contact" source="Quote" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="college" source="Quote" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="webSite" source="Quote" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
+	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
+	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="invoice"/>
+	<obj-relationship name="quoteLineDiscounts" source="QuoteLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoicelineDiscounts"/>
+	<obj-relationship name="college" source="QuoteLine" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="college" source="Room" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="courseClasses" source="Room" target="CourseClass" deleteRule="Deny" db-relationship-path="courseClasses"/>
 	<obj-relationship name="sessions" source="Room" target="Session" deleteRule="Deny" db-relationship-path="sessions"/>
 	<obj-relationship name="site" source="Room" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
-	<obj-relationship name="authorisedRebillingCard" source="SaleOrder" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
-	<obj-relationship name="college" source="SaleOrder" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="contact" source="SaleOrder" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="corporatePassUsed" source="SaleOrder" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
-	<obj-relationship name="invoiceDueDates" source="SaleOrder" target="InvoiceDueDate" deleteRule="Nullify" db-relationship-path="invoiceDueDates"/>
-	<obj-relationship name="invoiceLines" source="SaleOrder" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="paymentInLines" source="SaleOrder" target="PaymentInLine" deleteRule="Nullify" db-relationship-path="paymentInLines"/>
-	<obj-relationship name="webSite" source="SaleOrder" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="Script" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="attendances" source="Session" target="Attendance" deleteRule="Cascade" db-relationship-path="attendances"/>
 	<obj-relationship name="college" source="Session" target="College" deleteRule="Nullify" db-relationship-path="college"/>

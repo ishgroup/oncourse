@@ -8,14 +8,17 @@ import ish.oncourse.utils.QueueableObjectUtils;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class InvoiceLine extends _InvoiceLine implements Queueable {
+public class InvoiceLine extends _InvoiceLine {
 
 	private static final long serialVersionUID = 8005646295584671217L;
+
+	public Class<Invoice> getInvoicePersistentClass() {
+		return Invoice.class;
+	}
 
 	/**
 	 * @see ish.common.payable.IInvoiceLineInterface#getInvoiceTax()
 	 */
-	@Override
 	public TaxInterface getInvoiceTax() {
 		return new FakeTax();
 	}
@@ -57,15 +60,15 @@ public class InvoiceLine extends _InvoiceLine implements Queueable {
 		return getInvoice() != null && getInvoice().isAsyncReplicationAllowed();
 	}
 
-    @Override
-    protected void onPostAdd() {
-		if (getCreated() == null) {
-			setCreated(new Date());
-		}
-		if (getModified() == null) {
-			setModified(getCreated());
-		}
-    }
+	@Override
+	public void setInvoice(AbstractInvoice abstractInvoice) {
+		super.setInvoice((Invoice) abstractInvoice);
+	}
+
+	@Override
+	public Invoice getInvoice() {
+		return super.getInvoice();
+	}
 
 	/**
 	 * Makes a copy of current InvoiceLine object.
