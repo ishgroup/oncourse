@@ -243,6 +243,9 @@
   <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1600" invoiceNumber="16" amoutOwing="0.00" contactId="10"
            dateDue="[start_date4]" debtorsAccountId="100" invoiceDate="[start_date1]" source="O"
            confirmationStatus="2"/>
+  <Invoice allowAutoPay="0" type="2" overdue="0.00" id="1700" title="This is a Quote" amoutOwing="0.00" contactId="10"
+           dateDue="[start_date4]" debtorsAccountId="100" invoiceDate="[start_date1]" source="O"
+           confirmationStatus="2"/>
 
   <InvoiceLine id="100" invoiceId="100" accountId="200" enrolmentId="[null]" prepaidFeesAccountId="500"
                prepaidFeesRemaining="0.00" discountEachExTax="0.00" priceEachExTax="100.00" quantity="1" taxEach="10.00"
@@ -298,6 +301,9 @@
   <InvoiceLine id="1800" invoiceId="1600" accountId="200" enrolmentId="[null]" courseClassId="200"
                prepaidFeesAccountId="500" prepaidFeesRemaining="-100.00" discountEachExTax="0.00"
                priceEachExTax="-100.00" quantity="1" taxEach="-10.00" taxId="100" title="test invoiceline"/>
+  <InvoiceLine id="1900" invoiceId="1700" accountId="200" enrolmentId="[null]" courseClassId="200"
+               prepaidFeesAccountId="500" prepaidFeesRemaining="350.00" discountEachExTax="0.00"
+               priceEachExTax="350.00" quantity="1" taxEach="35.00" taxId="100" title="This is a quoteLine"/>
 
   <AccountTransaction id="100" accountId="500" amount="100.0" tableName="I" foreignRecordId="200"
                       transactionDate="2013-02-01 00:00:00" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
