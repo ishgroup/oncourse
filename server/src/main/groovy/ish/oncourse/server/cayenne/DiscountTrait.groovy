@@ -24,6 +24,7 @@ import java.time.LocalDate
 
 trait DiscountTrait {
 
+    abstract Long getId()
     abstract Integer getStudentEnrolledWithinDays()
     abstract String getStudentAge()
     abstract List<DiscountConcessionType> getDiscountConcessionTypes()
@@ -43,7 +44,7 @@ trait DiscountTrait {
      * @return true if student is eligible
      */
     @API
-    boolean isStudentEligibile(Contact contact, List<MembershipProduct> newMemberships, CourseClassTrait courseClass, Integer enrolmentsCount, Money purchaseTotal ) {
+    boolean isStudentEligibile(Contact contact, List<MembershipProduct> newMemberships, CourseClassTrait courseClass, List<CourseClass> enrolledClasses, Money purchaseTotal ) {
 
         return  (enrolledWithinDaysEligibile(contact)
                 && studenAgeDateEligibile(contact)
@@ -51,7 +52,7 @@ trait DiscountTrait {
                 && postcodesEligibile(contact)
                 && membershipEligibile(contact, newMemberships)
                 && previousEnrolmentEligibile(contact, courseClass)
-                && enrolmentsCount >= minEnrolments
+                && countEnrolmentsEligible(enrolledClasses)
                 && purchaseTotal >= minValue)
 
     }
@@ -158,6 +159,17 @@ trait DiscountTrait {
 
             return false
         }
+    }
+
+    private boolean countEnrolmentsEligible(List<CourseClass> enrolledClasses) {
+        int currentAppropriateEnrolmentCount = 0
+        enrolledClasses.each {courseClass ->
+            if (courseClass.discounts*.id.contains(id)) {
+                currentAppropriateEnrolmentCount++
+            }
+        }
+
+        return currentAppropriateEnrolmentCount >= minEnrolments
     }
     /**
      * Add the discount to given  class available discounts list

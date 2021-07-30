@@ -131,8 +131,8 @@ trait CourseClassTrait {
 
 
     List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, List<Long> courseIds,
-                                                   List<Long> productIds, List<Long> promoIds,
-                                                   List<MembershipProduct> newMemberships, Integer enrolmentsCount, Money purchaseTotal ) {
+                                                   List<Long> productIds, List<Long> promoIds, List<CourseClass> classes,
+                                                   List<MembershipProduct> newMemberships, Money purchaseTotal ) {
         List<EntityRelation> relations = EntityRelationDao.getRelatedFrom(objectContext, Course.simpleName, course.id)
                 .findAll {
                     (Course.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in courseIds) ||
@@ -147,6 +147,6 @@ trait CourseClassTrait {
                     dcc.discount.entityRelationTypes.empty || dcc.discount in discountsViaRelations
                 }.
                 findAll { it.discount.code == null || it.discount.id in promoIds }.
-                findAll { it.discount.isStudentEligibile(contact, newMemberships, this, enrolmentsCount, purchaseTotal) }
+                findAll { it.discount.isStudentEligibile(contact, newMemberships, this, classes, purchaseTotal) }
     }
 }

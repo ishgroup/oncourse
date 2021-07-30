@@ -22,6 +22,10 @@ get:
       type: integer
       format: int64
       required: true
+    - name: classIds
+      in: query
+      type: string
+      description: comma separated classes ids in which students are enrolled in this checkout
     - name: promoIds
       in: query
       type: string
@@ -30,11 +34,6 @@ get:
       in: query
       type: string
       description: comma separated purchasing membership type ids for student in this checkout
-    - name: enrolmentsCount
-      in: query
-      type: integer
-      format: int32
-      description: Count of enrolments in current checkout
     - name: purchaseTotal
       in: query
       type: number
