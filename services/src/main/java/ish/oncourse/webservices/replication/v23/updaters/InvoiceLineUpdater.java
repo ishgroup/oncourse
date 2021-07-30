@@ -1,22 +1,19 @@
 package ish.oncourse.webservices.replication.v23.updaters;
 
 import ish.math.Money;
-import ish.oncourse.model.CourseClass;
-import ish.oncourse.model.Enrolment;
-import ish.oncourse.model.Invoice;
-import ish.oncourse.model.InvoiceLine;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v23.stubs.replication.InvoiceLineStub;
 
-public class InvoiceLineUpdater extends AbstractWillowUpdater<InvoiceLineStub, InvoiceLine> {
+public class InvoiceLineUpdater extends AbstractWillowUpdater<InvoiceLineStub, AbstractInvoiceLine> {
 
 	@Override
-	public void updateEntity(InvoiceLineStub stub, InvoiceLine entity, RelationShipCallback callback) {
-		entity.setCreated(stub.getCreated());
+	public void updateEntity(InvoiceLineStub stub, AbstractInvoiceLine entity, RelationShipCallback callback) {
+;		entity.setCreated(stub.getCreated());
 		entity.setDescription(stub.getDescription());
 		entity.setDiscountEachExTax(Money.valueOf(stub.getDiscountEachExTax()));
-		entity.setInvoice(callback.updateRelationShip(stub.getInvoiceId(), Invoice.class));
+		entity.setInvoice(callback.updateRelationShip(stub.getInvoiceId(), entity.getInvoicePersistentClass()));
 		entity.setModified(stub.getModified());
 		entity.setPriceEachExTax(Money.valueOf(stub.getPriceEachExTax()));
 		entity.setQuantity(stub.getQuantity());

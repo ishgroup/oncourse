@@ -31,8 +31,9 @@ public class V23UpdatersMap {
 		updaterMap.put(Enrolment.class.getSimpleName(), new EnrolmentUpdater());
 		updaterMap.put(Outcome.class.getSimpleName(), new OutcomeUpdater());
 		updaterMap.put(Invoice.class.getSimpleName(), new InvoiceUpdater());
-		updaterMap.put(SaleOrder.class.getSimpleName(), new InvoiceUpdater());
+		updaterMap.put(Quote.class.getSimpleName(), new InvoiceUpdater());
 		updaterMap.put(InvoiceLine.class.getSimpleName(), new InvoiceLineUpdater());
+		updaterMap.put(QuoteLine.class.getSimpleName(), new InvoiceLineUpdater());
 		updaterMap.put(InvoiceLineDiscount.class.getSimpleName(), new InvoiceLineDiscountUpdater());
 		updaterMap.put(Message.class.getSimpleName(), new MessageUpdater());
 		updaterMap.put(MessagePerson.class.getSimpleName(), new MessagePersonUpdater());

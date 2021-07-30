@@ -5,10 +5,7 @@ import ish.common.types.InvoiceType;
 import ish.common.types.PaymentSource;
 import ish.common.types.TypesUtil;
 import ish.math.Money;
-import ish.oncourse.model.AbstractInvoice;
-import ish.oncourse.model.Contact;
-import ish.oncourse.model.CorporatePass;
-import ish.oncourse.model.PaymentIn;
+import ish.oncourse.model.*;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v23.stubs.replication.InvoiceStub;
@@ -32,17 +29,20 @@ public class InvoiceUpdater extends AbstractWillowUpdater<InvoiceStub, AbstractI
 		entity.setTotalExGst(new Money(stub.getTotalExGst()));
 		entity.setSource(TypesUtil.getEnumForDatabaseValue(stub.getSource(), PaymentSource.class));
 		entity.setTotalGst(new Money(stub.getTotalGst()));
-		entity.setCorporatePassUsed(callback.updateRelationShip(stub.getCorporatePassId(), CorporatePass.class));
 		if (stub.getConfirmationStatus() != null) {
 			entity.setConfirmationStatus(TypesUtil.getEnumForDatabaseValue(stub.getConfirmationStatus(), ConfirmationStatus.class));
-		}
-		if (stub.getAuthorisedRebillingCardId() != null) {
-			entity.setAuthorisedRebillingCard(callback.updateRelationShip(stub.getAuthorisedRebillingCardId(), PaymentIn.class));
 		}
 		if (stub.getType() != null) {
 			entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), InvoiceType.class));
 		}
 		entity.setAllowAutoPay(stub.isAllowAutoPay());
+		entity.setTitle(stub.getTitle());
+		if (entity instanceof Invoice) {
+			((Invoice) entity).setCorporatePassUsed(callback.updateRelationShip(stub.getCorporatePassId(), CorporatePass.class));
+			if (stub.getAuthorisedRebillingCardId() != null) {
+				((Invoice) entity).setAuthorisedRebillingCard(callback.updateRelationShip(stub.getAuthorisedRebillingCardId(), PaymentIn.class));
+			}
+		}
 	}
 
 }

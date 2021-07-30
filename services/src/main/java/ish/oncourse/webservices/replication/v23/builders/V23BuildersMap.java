@@ -30,7 +30,7 @@ public class V23BuildersMap {
 		builderMap.put(Enrolment.class.getSimpleName(), new EnrolmentStubBuilder());
 		builderMap.put(Discount.class.getSimpleName(), new DiscountStubBuilder());
 		builderMap.put(Invoice.class.getSimpleName(), new InvoiceStubBuilder());
-		builderMap.put(SaleOrder.class.getSimpleName(), new InvoiceStubBuilder());
+		builderMap.put(Quote.class.getSimpleName(), new InvoiceStubBuilder());
 		builderMap.put(InvoiceLine.class.getSimpleName(), new InvoiceLineStubBuilder());
 		builderMap.put(InvoiceLineDiscount.class.getSimpleName(), new InvoiceLineDiscountStubBuilder());
 		builderMap.put(MessagePerson.class.getSimpleName(), new MessagePersonStubBuilder());
