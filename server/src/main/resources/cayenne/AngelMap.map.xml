@@ -4074,9 +4074,6 @@
 	<db-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" toMany="true">
 		<db-attribute-pair source="id" target="invoiceId"/>
 	</db-relationship>
-	<db-relationship name="quoteLines" source="Invoice" target="InvoiceLine" toMany="true">
-		<db-attribute-pair source="id" target="invoiceId"/>
-	</db-relationship>
 	<db-relationship name="lead" source="Invoice" target="Lead">
 		<db-attribute-pair source="leadId" target="id"/>
 	</db-relationship>
@@ -4107,13 +4104,7 @@
 	<db-relationship name="invoice" source="InvoiceLine" target="Invoice">
 		<db-attribute-pair source="invoiceId" target="id"/>
 	</db-relationship>
-	<db-relationship name="quote" source="InvoiceLine" target="Invoice">
-		<db-attribute-pair source="invoiceId" target="id"/>
-	</db-relationship>
 	<db-relationship name="invoiceline_discounts" source="InvoiceLine" target="InvoiceLine_Discount" toMany="true">
-		<db-attribute-pair source="id" target="invoiceLineId"/>
-	</db-relationship>
-	<db-relationship name="quoteline_discounts" source="InvoiceLine" target="InvoiceLine_Discount" toMany="true">
 		<db-attribute-pair source="id" target="invoiceLineId"/>
 	</db-relationship>
 	<db-relationship name="prepaidFeesAccount" source="InvoiceLine" target="Account">
@@ -4147,9 +4138,6 @@
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="invoices" source="Lead" target="Invoice" toMany="true">
-		<db-attribute-pair source="id" target="leadId"/>
-	</db-relationship>
-	<db-relationship name="quotes" source="Lead" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="leadId"/>
 	</db-relationship>
 	<db-relationship name="items" source="Lead" target="LeadItem" toMany="true">
@@ -5347,12 +5335,12 @@
 	<obj-relationship name="priorLearnings" source="Qualification" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="trainingPackage" source="Qualification" target="TrainingPackage" deleteRule="Deny" db-relationship-path="trainingPackage"/>
 	<obj-relationship name="contact" source="Quote" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="quoteLines"/>
+	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="noteRelations" source="Quote" target="QuoteNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
-	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="quote"/>
-	<obj-relationship name="quoteLineDiscounts" source="QuoteLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="quoteline_discounts"/>
+	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="invoice"/>
+	<obj-relationship name="quoteLineDiscounts" source="QuoteLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceline_discounts"/>
 	<obj-relationship name="notedQuote" source="QuoteNoteRelation" target="Quote" deleteRule="Nullify" db-relationship-path="notedQuote"/>
 	<obj-relationship name="background" source="Report" target="ReportOverlay" deleteRule="Nullify" db-relationship-path="background"/>
 	<obj-relationship name="taggingRelations" source="Report" target="ReportTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
