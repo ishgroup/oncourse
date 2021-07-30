@@ -69,3 +69,27 @@ put:
     mask: edit
     keyCode: INVOICE
     errorMessage: Sorry, you have no permissions to update invoice. Please contact your administrator
+
+delete:
+  operationId: remove
+  description: deletes a existing quote record
+  tags:
+    - Invoice
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of quote record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: INVOICE
+    errorMessage: Sorry, you have no permissions to delete quote. Please contact your administrator

@@ -45,4 +45,9 @@ class InvoiceApiImpl implements InvoiceApi {
     void update(Long id, InvoiceDTO invoice) {
         service.update(id, invoice)
     }
+
+    @Override
+    void remove(Long id) {
+        service.remove(id)
+    }
 }
