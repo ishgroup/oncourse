@@ -6,17 +6,19 @@ import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 
 interface Props {
   onSuccsess: (...args: any[]) => void;
+  clientId: string;
 }
 
 export const useGoogleConnect = (
-  { onSuccsess }: Props): [AuthRequest | null,
+  { onSuccsess, clientId }: Props): [
+    AuthRequest | null,
     (options?: AuthRequestPromptOptions
-    ) => Promise<AuthSessionResult>] => {
+    ) => Promise<AuthSessionResult>
+  ] => {
   const [request, response, promptAsync] = Google.useAuthRequest({
     responseType: 'code',
-    // TODO Replace with real credentials for production
-    expoClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
-    webClientId: '568692144060-nku44p171f3sar4v06g7ve0vdmf2ppen.apps.googleusercontent.com',
+    expoClientId: clientId,
+    webClientId: clientId,
     scopes: [
       'openid',
       'https://www.googleapis.com/auth/calendar.events',
@@ -38,14 +40,13 @@ export const useGoogleConnect = (
 };
 
 export const useFacebookConnect = (
-  { onSuccsess }: Props): [AuthRequest | null,
+  { onSuccsess, clientId }: Props): [AuthRequest | null,
     (options?: AuthRequestPromptOptions
     )
     => Promise<AuthSessionResult>] => {
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: 'code',
-    // TODO Replace with real credentials for production
-    clientId: '837945397102277',
+    clientId,
   });
 
   useEffect(() => {
@@ -58,15 +59,13 @@ export const useFacebookConnect = (
 };
 
 export const useMicrosoftConnect = (
-  { onSuccsess }: Props): [AuthRequest | null,
+  { onSuccsess, clientId }: Props): [AuthRequest | null,
     (options?: AuthRequestPromptOptions
     ) => Promise<AuthSessionResult>] => {
-
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: 'code',
-      // TODO Replace with real credentials for production
-      clientId: '5aa7f417-c05e-49ae-8c10-026999bd12d2',
+      clientId,
       scopes: [
         'openid',
         'profile',

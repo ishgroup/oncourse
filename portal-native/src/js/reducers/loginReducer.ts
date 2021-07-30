@@ -10,7 +10,7 @@ const initial: LoginState = {
   stage: 0
 };
 
-export default (state = initial, action: IAction) => {
+export default (state = initial, action: IAction): LoginState => {
   switch (action.type) {
     case EMAIL_LOGIN:
     case SIGN_IN:

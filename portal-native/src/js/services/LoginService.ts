@@ -15,6 +15,10 @@ class LoginService {
   public emailLogin(email: string): Promise<any> {
     return this.loginApi.verifyEmail(email);
   }
+
+  public ssoClientIds(): Promise<{ [key: string]: string; }> {
+    return this.loginApi.ssoClientIds();
+  }
 }
 
 export default new LoginService();

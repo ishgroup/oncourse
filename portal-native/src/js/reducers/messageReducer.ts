@@ -7,7 +7,7 @@ const initial: MessageState = {
   message: null
 };
 
-export default (state = initial, action: IAction) => {
+export default (state = initial, action: IAction): MessageState => {
   switch (action.type) {
     case SET_MESSAGE:
     case FETCH_FAIL:

@@ -13,6 +13,7 @@ export const Connect = () => {
   const cs = useCommonStyles();
   const styles = useStyles();
   const verificationUrl = useAppSelector((state) => state.login.verificationUrl);
+  const thirdParty = useAppSelector((state) => state.thirdParty);
 
   const dispatch = useAppDispatch();
 
@@ -30,18 +31,27 @@ export const Connect = () => {
 
   return (
     <View style={[cs.flexRow, cs.justifyContentCenter]}>
-      <GoogleConnect
-        styles={styles}
-        onSuccsess={(auth) => onConnectSuccsess(auth, 'Google')}
-      />
-      <MicrosoftConnect
-        styles={styles}
-        onSuccsess={(auth) => onConnectSuccsess(auth, 'Microsoft')}
-      />
-      <FacebookConnect
-        styles={styles}
-        onSuccsess={(auth) => onConnectSuccsess(auth, 'Facebook')}
-      />
+      {thirdParty?.Google?.clientId && (
+        <GoogleConnect
+          styles={styles}
+          clientId={thirdParty.Google.clientId}
+          onSuccsess={(auth) => onConnectSuccsess(auth, 'Google')}
+        />
+      )}
+      {thirdParty?.Microsoft?.clientId && (
+        <MicrosoftConnect
+          styles={styles}
+          clientId={thirdParty.Microsoft.clientId}
+          onSuccsess={(auth) => onConnectSuccsess(auth, 'Microsoft')}
+        />
+      )}
+      {thirdParty?.Facebook?.clientId && (
+        <FacebookConnect
+          styles={styles}
+          clientId={thirdParty.Facebook.clientId}
+          onSuccsess={(auth) => onConnectSuccsess(auth, 'Facebook')}
+        />
+      )}
     </View>
   );
 };

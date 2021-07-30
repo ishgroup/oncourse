@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useLinkingRedirects } from '../../hooks/linking';
 import { getToken, setToken } from '../../utils/SessionStorage';
 import { signInFulfilled } from '../../actions/LoginActions';
+import { getClientIds } from '../../actions/ThirdPartyActions';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -21,13 +22,14 @@ export default function Navigation() {
   const checkLogin = async () => {
     const token = await getToken();
     if (token && !isLogged) {
-      setToken(token);
       dispatch(signInFulfilled());
+      setToken(token);
     }
   };
 
   useEffect(() => {
-    checkLogin().catch((e) => console.error(e));
+    checkLogin();
+    dispatch(getClientIds());
   }, []);
 
   return (
