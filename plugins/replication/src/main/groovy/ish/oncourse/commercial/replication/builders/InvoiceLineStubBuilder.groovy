@@ -4,18 +4,19 @@
  */
 package ish.oncourse.commercial.replication.builders
 
+import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.webservices.v23.stubs.replication.InvoiceLineStub
 
 /**
  */
-class InvoiceLineStubBuilder extends AbstractAngelStubBuilder<InvoiceLine, InvoiceLineStub> {
+class InvoiceLineStubBuilder extends AbstractAngelStubBuilder<AbstractInvoiceLine, InvoiceLineStub> {
 
 	/**
 	 * @see AbstractAngelStubBuilder#createFullStub(ish.oncourse.server.cayenne.Queueable)
 	 */
 	@Override
-	protected InvoiceLineStub createFullStub(InvoiceLine entity) {
+	protected InvoiceLineStub createFullStub(AbstractInvoiceLine entity) {
 		def stub = new InvoiceLineStub()
 		stub.setCreated(entity.getCreatedOn())
 		stub.setModified(entity.getModifiedOn())

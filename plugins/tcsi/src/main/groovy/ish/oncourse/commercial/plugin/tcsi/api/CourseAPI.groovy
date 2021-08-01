@@ -13,9 +13,11 @@ import ish.oncourse.commercial.plugin.tcsi.TCSIUtils
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.CourseCustomField
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.scripting.api.EmailService
+import org.apache.commons.lang3.StringUtils
 
 import java.math.RoundingMode
 import java.time.Duration
@@ -35,7 +37,23 @@ class CourseAPI extends TCSI_API {
         this.highEducationType = highEducationType
         this.highEducation = highEducation
     }
-
+    
+    String createCourseGroup() {
+        String message = "Create course"
+        client.request(POST, JSON) {
+            uri.path = COURSES_PATH
+            body = getCourseData(true)
+            response.success = { resp, result ->
+                def course = handleResponce(result as List, message)
+                def uid = course['courses_uid'].toString()
+                return uid
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+    
 
     String getCourseGroup(String nationalCode) {
         String message = "getting course"
@@ -80,26 +98,25 @@ class CourseAPI extends TCSI_API {
 
 
     @CompileDynamic
-    private String getCourseData() {
+    private String getCourseData(Boolean create = false) {
         Map<String, Object> course = [:]
         List<Course> units = TCSIUtils.getUnitCourses(highEducation, highEducationType)
         List<CourseClass> classes = (units*.courseClasses.flatten() as List<CourseClass>).sort { CourseClass clazz -> clazz.startDateTime}
+        if (create) {
+            course["course_code"] = highEducation.qualification.nationalCode
+            course["course_name"] = "$highEducation.qualification.level $highEducation.qualification.title"
 
-//        course["course_code"] = c.code
-//        course["course_name"] = c.name
-//
-//        BigDecimal studyLoad = BigDecimal.ZERO
-//        units*.fullTimeLoad.findAll { StringUtils.trimToNull(it) && it.number}.each {
-//            studyLoad += new BigDecimal(it)
-//        }
-//
-//        if (StringUtils.trimToNull(c.fullTimeLoad) && c.fullTimeLoad.number) {
-//            studyLoad += new BigDecimal(c.fullTimeLoad)
-//        }
-//        course["course_of_study_load"] = studyLoad.setScale(2, RoundingMode.UP)
-//        course["course_effective_from_date"] = (classes.first().startDateTime?:new Date()).format(DATE_FORMAT)
-//        course["course_effective_to_date"] = (classes.last().endDateTime?:new Date()).format(DATE_FORMAT)
+            BigDecimal studyLoad = BigDecimal.ZERO
+            units*.fullTimeLoad.findAll { StringUtils.trimToNull(it) && it.number }.each {
+                studyLoad += new BigDecimal(it)
+            }
 
+            if (StringUtils.trimToNull(highEducation.fullTimeLoad) && highEducation.fullTimeLoad.number) {
+                studyLoad += new BigDecimal(highEducation.fullTimeLoad)
+            }
+            course["course_of_study_load"] = studyLoad.setScale(2, RoundingMode.UP)
+            course["course_effective_from_date"] = (classes.first().startDateTime ?: new Date()).format(DATE_FORMAT)
+        }
 
         Long durationDays = 0
         classes.groupBy {it.course}.each { k, v ->
@@ -115,8 +132,11 @@ class CourseAPI extends TCSI_API {
                 'correlation_id' : "courseData_${System.currentTimeMillis()}",
                 'course' : course
         ]
-
-        return JsonOutput.toJson(courseData)
+        if (create) {
+            return [JsonOutput.toJson(courseData)]
+        } else {
+            return JsonOutput.toJson(courseData)
+        }
 
     }
 }

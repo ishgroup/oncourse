@@ -245,7 +245,7 @@ class TCSIIntegration implements PluginTrait {
         CourseAPI courseApi = new CourseAPI(highEducation, highEducationType, getClient(), enrolment, emailService, preferenceController)
         String courseUid = courseApi.getCourseGroup(highEducation.qualification.nationalCode)
         if (!courseUid) {
-            interraptExport("Highe education course not found in TCSI")
+            courseUid = courseApi.createCourseGroup()
         } else {
             courseApi.update(courseUid)
         }
