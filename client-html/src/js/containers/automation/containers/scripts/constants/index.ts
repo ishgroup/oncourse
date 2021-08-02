@@ -1,8 +1,5 @@
-
 import { Binding } from "@api/model";
-import {
-  ScriptComponent
-} from "../../../../../model/scripts";
+import { ScriptComponent } from "../../../../../model/scripts";
 import uniqid from "../../../../../common/utils/uniqid";
 import EmailTemplateService from "../../email-templates/services/EmailTemplateService";
 import EntityService from "../../../../../common/services/EntityService";
@@ -68,7 +65,7 @@ export const getMessageTemplate = component => {
     ? result
     : `${result}${e[0]} ${variables.some(v => v.name === e[0] && v.type === "Object") 
       ? e[1] 
-      : `"${e[1]}"`}${index === (entries.length - 1) 
+      : ( e[0] === 'content' ? `"""${e[1]}"""` : `"${e[1]}"`)}${index === (entries.length - 1) 
         ? "" 
         : "\n\t\t"}`), "");
 
