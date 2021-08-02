@@ -55,8 +55,15 @@ const InvoiceCogwheel = memo<Props>(props => {
 
   const [dialogOpened, setDialogOpened] = useState(false);
   const oneSelectedAndNotNew = useMemo(() => selection.length === 1 && selection[0] !== "NEW", [selection]);
+        // && selection.type === "Invoice", [selection]);
 
   const duplicateCallback = useCallback(() => {
+    onCreate();
+    duplicateAndReverseInvoice(selection[0]);
+    closeMenu();
+  }, [selection]);
+
+  const duplicateQuote = useCallback(() => {
     onCreate();
     duplicateAndReverseInvoice(selection[0]);
     closeMenu();
@@ -150,6 +157,11 @@ const InvoiceCogwheel = memo<Props>(props => {
         closeMenu();
         break;
       }
+      // case "Delete": {
+      //   // openAddPaymentOutEditView("PaymentOut", {}, handleAddPaymentOut);
+      //   // closeMenu();
+      //   break;
+      // }
     }
   }, []);
 
@@ -189,6 +201,14 @@ const InvoiceCogwheel = memo<Props>(props => {
       <MenuItem disabled={!applyPaymentOutAllowed} className={menuItemClass} role="PaymentOut" onClick={onClick}>
         Apply payment out
       </MenuItem>
+
+      <MenuItem className={menuItemClass}>
+        Duplicate Quote
+      </MenuItem>
+
+      {/*<MenuItem className={menuItemClass} role="Delete" onClick={onClick}>*/}
+      {/*  Delete Quote*/}
+      {/*</MenuItem>*/}
     </>
   );
 });

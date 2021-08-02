@@ -10,7 +10,7 @@ import {
 } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { Account, Currency, InvoiceType, Tax } from "@api/model";
+import { Account, Currency, Tag, Tax } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { addDays } from "date-fns";
@@ -37,6 +37,7 @@ import { usePrevious } from "../../../../common/utils/hooks";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
+import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -47,6 +48,7 @@ interface Props extends EditViewProps {
   defaultTerms: number;
   setSelectedContact: AnyArgFunction;
   selectedContact: any;
+  tags?: Tag[];
 }
 
 const sortAccounts = (a: Account, b: Account) => (a.description[0].toLowerCase() > b.description[0].toLowerCase() ? 1 : -1);
@@ -64,10 +66,9 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     taxes,
     defaultTerms,
     setSelectedContact,
+    tags,
     selectedContact
   } = props;
-
-  const typeItems = Object.keys(InvoiceType).map(mapSelectItems);
 
   const prevId = usePrevious(values.id);
 
@@ -229,6 +230,8 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     [form, defaultTerms, hasPaymentDues, invoiceLinesCount]
   );
 
+  const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
+
   const updateDateDue = useCallback(() => {
     if (hasPaymentDues) {
       const closest = getInvoiceClosestPaymentDueDate(values);
@@ -256,16 +259,6 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
 
   return (
     <Grid container className="p-3 saveButtonTableOffset defaultBackgroundColor">
-      {/*<Grid item xs={twoColumn ? 3 : 12}>*/}
-      {/*  <FormField*/}
-      {/*    type="select"*/}
-      {/*    name="type"*/}
-      {/*    label="Type"*/}
-      {/*    items={typeItems}*/}
-      {/*    defaultValue={typeItems[0].value}*/}
-      {/*  />*/}
-      {/*</Grid>*/}
-
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="text"
@@ -282,6 +275,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
           label="Lead"
           selectValueMark="id"
           selectLabelCondition={leadLabelCondition}
+          defaultDisplayValue={values && values.leadCustomerName}
           labelAdornment={
             <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
           }
@@ -361,6 +355,15 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
 
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField type="multilineText" name="shippingAddress" label="Shipping address" fullWidth />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 3 : 12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+          validate={tags && tags.length ? validateTagList : undefined}
+        />
       </Grid>
 
       <Grid item xs={12} className="pb-2">
@@ -463,6 +466,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
+  tags: state.tags.entityTags["AbstractInvoice"],
   accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   taxes: state.taxes.items,

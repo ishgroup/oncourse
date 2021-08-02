@@ -5,6 +5,8 @@ import { ContraInvoice, ContraInvoiceFormData } from "../reducers/state";
 export const GET_INVOICE_ITEM = _toRequestType("get/invoice");
 export const GET_INVOICE_ITEM_FULFILLED = FULFILLED(GET_INVOICE_ITEM);
 
+export const DELETE_QUOTE_ITEM = _toRequestType("delete/banking");
+
 export const GET_DEFAULT_INVOICE_TERMS = _toRequestType("get/invoice/contra");
 export const GET_DEFAULT_INVOICE_TERMS_FULFILLED = FULFILLED(GET_DEFAULT_INVOICE_TERMS);
 
@@ -46,6 +48,11 @@ export const getDefaultInvoiceTerms = () => ({
 
 export const getAmountOwing = (id: number) => ({
   type: GET_AMOUNT_OWING,
+  payload: id
+});
+
+export const deleteQuote = (id: string) => ({
+  type: DELETE_QUOTE_ITEM,
   payload: id
 });
 
