@@ -22,6 +22,8 @@ basePath: /a/v1
 paths:
   /login:
     $ref: './path/login/api.yaml'
+  /login/pass:
+    $ref: './path/login/pass/api.yaml'
   /sso:
     $ref: './path/sso/api.yaml'
     
