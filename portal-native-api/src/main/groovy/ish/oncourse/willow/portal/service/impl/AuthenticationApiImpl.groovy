@@ -1,9 +1,12 @@
 package ish.oncourse.willow.portal.service.impl
 
 import com.google.inject.Inject
+import com.nulabinc.zxcvbn.Strength
+import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.model.User
 import ish.oncourse.willow.portal.auth.GoogleOAuthProveder
+import ish.oncourse.willow.portal.auth.LoginException
 import ish.oncourse.willow.portal.auth.SSOCredantials
 import ish.oncourse.willow.portal.auth.ZKSessionManager
 import ish.oncourse.willow.portal.service.UserService
@@ -11,6 +14,7 @@ import ish.oncourse.willow.portal.v1.model.ErrorResponse
 import ish.oncourse.willow.portal.v1.model.LoginRequest
 import ish.oncourse.willow.portal.v1.model.LoginResponse
 import ish.oncourse.willow.portal.v1.model.LoginStage
+import ish.oncourse.willow.portal.v1.model.PasswordComplexity
 import ish.oncourse.willow.portal.v1.model.SSOproviders
 import ish.oncourse.willow.portal.v1.service.AuthenticationApi
 import ish.security.AuthenticationUtil
@@ -54,10 +58,23 @@ class AuthenticationApiImpl implements AuthenticationApi{
     }
 
     @Override
+    PasswordComplexity checkPassword(String password) {
+        Strength strength = new Zxcvbn().measure(password)
+
+        return new PasswordComplexity().with { pc ->
+            pc.score = strength.score
+            if (score <= 2) {
+                pc.feedback = strength.feedback.warning ?: strength.feedback.suggestions[0]
+            }
+            pc
+        }
+    }
+
+    @Override
     LoginResponse login(LoginRequest details) {
         User user
         
-        //authentificate by password
+        //authentificate by email/password
         if (details.email && details.password) {
             user = userService.getUserByEmail(details.email)
             if (user && 
@@ -70,7 +87,26 @@ class AuthenticationApiImpl implements AuthenticationApi{
                 return new LoginResponse(user: new UserDTO(id:user.id, email: user.email, profilePicture: user.profilePicture), token: createSession(user))
 
             } else {
-                throw new BadRequestException(Response.status(400).entity(new ErrorResponse(message: 'Wrong email or password')).build())
+                throw new LoginException('Wrong email or password')
+            }
+        }
+        
+        //reset password 
+        if (details.password && details.verificationUrl) {
+
+            if (checkPassword(details.password).score < 2) {
+                throw new LoginException('Password does not satisfy complexity restrictions.')
+            }
+            
+            user = userService.getUserByVerificationUrl(details.verificationUrl) 
+            
+            if (user) {
+                user.emailVerified = true
+                user.passwordHash = AuthenticationUtil.generatePasswordHash(details.password)
+                user.objectContext.commitChanges()
+                return new LoginResponse(user: new UserDTO(id:user.id, email: user.email, profilePicture: user.profilePicture), token: createSession(user))
+            } else {
+                throw new BadRequestException('Login link has expired')
             }
         }
         
@@ -115,8 +151,6 @@ class AuthenticationApiImpl implements AuthenticationApi{
     String createSession(User user) {
         sessionManager.removeSessions(user)
         String sessionId = SecurityUtil.generateRandomPassword(20)
-        String userId = "$User.simpleName-$user.id"
-        sessionManager.persistSession(userId, sessionId, CreateMode.PERSISTENT)
-        return "$userId&$sessionId".toString()
+        return sessionManager.persistSession(user, sessionId, CreateMode.PERSISTENT)
     }
 }
