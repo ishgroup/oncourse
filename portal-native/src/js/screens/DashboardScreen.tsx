@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
 import CardBase from '../components/layout/cards/CardBase';
 
@@ -25,7 +25,7 @@ export function DashboardScreen({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.root}>
-        {data.map(d => <CardBase title={d.title} content={null} />)}
+        {data.map(d => <CardBase key={d.title} title={d.title} content={null} />)}
       </View>
     </ScrollView>
   );

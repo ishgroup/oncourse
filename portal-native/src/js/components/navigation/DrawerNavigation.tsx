@@ -7,6 +7,7 @@ import Header from './Header';
 import { RootDrawerParamList } from '../../../../types';
 import { DashboardScreen } from '../../screens/DashboardScreen';
 import { TimetableScreen } from '../../screens/timetable/TimetableScreen';
+import LogoutScreen from '../../screens/LogoutScreen';
 
 function StubScreen({ route }) {
   return (
@@ -57,7 +58,7 @@ export default function DrawerNavigation() {
       <DrawerNav.Screen name="Subscriptions" component={StubScreen} />
       <DrawerNav.Screen name="History" component={StubScreen} />
       <DrawerNav.Screen name="Approvals" component={StubScreen} />
-      <DrawerNav.Screen name="Logout" component={StubScreen} />
+      <DrawerNav.Screen name="Logout" component={LogoutScreen} />
     </DrawerNav.Navigator>
   );
 }

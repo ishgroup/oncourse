@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import LinkingConfiguration from '../../constants/LinkingConfiguration';
 import NotFoundScreen from '../../screens/NotFoundScreen';
 import { RootStackParamList } from '../../../../types';
@@ -9,8 +11,15 @@ import LoginScreen from '../../screens/login/LoginScreen';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useLinkingRedirects } from '../../hooks/linking';
 import { getToken, setToken } from '../../utils/SessionStorage';
-import { signInFulfilled } from '../../actions/LoginActions';
+import { setIsLogged } from '../../actions/LoginActions';
 import { getClientIds } from '../../actions/ThirdPartyActions';
+
+const style = StyleSheet.create({
+  loader: {
+    flex: 1,
+    justifyContent: 'center'
+  }
+});
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -19,20 +28,24 @@ export default function Navigation() {
   const isLogged = useAppSelector((state) => state.login.isLogged);
   const dispatch = useAppDispatch();
 
+  const [loginChecked, setloginChecked] = useState(false);
+
   const checkLogin = async () => {
     const token = await getToken();
     if (token && !isLogged) {
-      dispatch(signInFulfilled());
-      setToken(token);
+      dispatch(setIsLogged(true));
+      return setToken(token);
     }
   };
 
   useEffect(() => {
-    checkLogin();
     dispatch(getClientIds());
+    checkLogin().then(() => {
+      setloginChecked(true);
+    });
   }, []);
 
-  return (
+  return loginChecked ? (
     <NavigationContainer
       linking={LinkingConfiguration}
     >
@@ -47,5 +60,5 @@ export default function Navigation() {
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  ) : <View style={style.loader}><ActivityIndicator size="large" /></View>;
 }

@@ -1,6 +1,6 @@
 import { LoginState } from '../model/Login';
 import { IAction } from '../model/IshAction';
-import { EMAIL_LOGIN, SET_LOGIN_STAGE, SET_LOGIN_URL, SIGN_IN, SIGN_IN_FULFILLED } from '../actions/LoginActions';
+import { EMAIL_LOGIN, SET_IS_LOGGED, SET_LOGIN_STAGE, SET_LOGIN_URL, SIGN_IN } from '../actions/LoginActions';
 import { FETCH_FAIL } from '../actions/FetchActions';
 
 const initial: LoginState = {
@@ -19,11 +19,11 @@ export default (state = initial, action: IAction): LoginState => {
         loading: true
       };
 
-    case SIGN_IN_FULFILLED:
+    case SET_IS_LOGGED:
       return {
         ...state,
         loading: false,
-        isLogged: true
+        isLogged: action.payload
       };
 
     case SET_LOGIN_STAGE:

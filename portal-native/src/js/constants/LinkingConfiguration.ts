@@ -9,6 +9,7 @@ export default {
           Dashboard: 'dashboard',
           Timetable: 'timetable',
           Notifications: 'notifications',
+          Logout: 'logout',
         },
       },
       Login: 'login',
