@@ -20,6 +20,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.EJBQLQuery;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.cayenne.DataRow;
+import org.apache.cayenne.query.SQLTemplate;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -432,17 +434,13 @@ public class InstructionHandler implements ReplicationHandler {
         if (angelIdParam != null) {
             ejbQL += String.format(" where r.id=%s", angelIdParam);
         }
-        final var ejQuery = new EJBQLQuery(ejbQL);
-        final List<Object[]> result = context.performQuery(ejQuery);
-        if (result.isEmpty()) {
+        var sqlQuery = new SQLTemplate(ejbQL, true);
+        final List<DataRow> rows = context.performQuery(sqlQuery);
+        if (rows.isEmpty()) {
             return String.format("There is no such record with entityIdentifier = %s with angelid = %s", entityIdentifier, angelIdParam);
         }
-        Long angelId = null;
-        for (var v : result) {
-            if (angelId == null) {
-                angelId = (Long) v[0];
-            }
-        }
+        Long angelId = (Long) rows.get(0).getAt("id");
+
         if (PAYMENT_IN_ENTITY_NAME.equalsIgnoreCase(entityIdentifier)) {
             final var expr = ExpressionFactory.matchExp(PaymentIn.ID_PK_COLUMN, angelId);
             final var paymentInQuery = SelectQuery.query(PaymentIn.class, expr);
