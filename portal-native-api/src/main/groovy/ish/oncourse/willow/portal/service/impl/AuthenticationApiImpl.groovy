@@ -41,6 +41,16 @@ class AuthenticationApiImpl implements AuthenticationApi{
     ZKSessionManager sessionManager
     
     @Override
+    void signOut() {
+
+    }
+
+    @Override
+    Map<String, String> ssoClientIds() {
+        return [(SSOproviders.GOOGLE.toString()) : googleOAuthProveder.clientId]
+    }
+    
+    @Override
     void verifyEmail(String email) {
         LoginStage stage 
         User user = userService.getUserByEmail(email)
@@ -91,35 +101,43 @@ class AuthenticationApiImpl implements AuthenticationApi{
             }
         }
         
-        //reset password 
-        if (details.password && details.verificationUrl) {
-
-            if (checkPassword(details.password).score < 2) {
-                throw new LoginException('Password does not satisfy complexity restrictions.')
+        //user procced by verification URL 
+        else if (details.verificationUrl) {
+            user = userService.getUserByVerificationUrl(details.verificationUrl)
+            if (!user) {
+                throw new LoginException('Login link has expired')
             }
             
-            user = userService.getUserByVerificationUrl(details.verificationUrl) 
-            
-            if (user) {
-                user.emailVerified = true
-                user.passwordHash = AuthenticationUtil.generatePasswordHash(details.password)
-                user.objectContext.commitChanges()
-                return new LoginResponse(user: new UserDTO(id:user.id, email: user.email, profilePicture: user.profilePicture), token: createSession(user))
-            } else {
-                throw new BadRequestException('Login link has expired')
+            // reset password
+            if (details.password) {
+                if (checkPassword(details.password).score >= 2) {
+                    user.passwordHash = AuthenticationUtil.generatePasswordHash(details.password)
+                } else {
+                    throw new LoginException('Password does not satisfy complexity restrictions.')
+                }
+            } 
+            // sign up via SSO provider     
+            else if (details.ssOProvider) {
+                SSOCredantials credantials = getSSOCredantials(details)
+                if (user.email = credantials.email) {
+                    userService.updateCredantials(user, credantials)
+                } else {
+                    //do not allowe to change User email
+                    throw new LoginException('Wrong login details')
+                }
             }
+            
+            user.emailVerified = true
+            user.lastLogin = new Date()
+            user.objectContext.commitChanges()
+            
+            return new LoginResponse(user: new UserDTO(id:user.id, email: user.email, profilePicture: user.profilePicture), token: createSession(user))
         }
         
         //SSO authentification
-        if (details.ssOProvider) {
-            SSOCredantials credantials
-            switch (details.ssOProvider) {
-                case SSOproviders.GOOGLE:
-                    credantials = googleOAuthProveder.authorize(details.ssOToken, requestService.requestUrl)
-                    break
-                default:
-                    throw new BadRequestException('Unsupported Authorization provider')
-            }
+        else if (details.ssOProvider) {
+            SSOCredantials credantials = getSSOCredantials(details)
+           
             user = userService.getUserByEmail(credantials.email)?:userService.createUser(credantials.email)
             userService.updateCredantials(user, credantials)
             String sessionToken = createSession(user)
@@ -135,17 +153,20 @@ class AuthenticationApiImpl implements AuthenticationApi{
             }
         }
 
-        return null
+        throw new LoginException('Wrong login details')
     }
 
-    @Override
-    void signOut() {
-        
-    }
-
-    @Override
-    Map<String, String> ssoClientIds() {
-        return [(SSOproviders.GOOGLE.toString()) : googleOAuthProveder.clientId]
+  
+    private SSOCredantials getSSOCredantials(LoginRequest details) {
+        SSOCredantials credantials
+        switch (details.ssOProvider) {
+            case SSOproviders.GOOGLE:
+                credantials = googleOAuthProveder.authorize(details.ssOToken, requestService.requestUrl)
+                break
+            default:
+                throw new LoginException('Unsupported Authorization provider')
+        }
+        return credantials
     }
 
     String createSession(User user) {
