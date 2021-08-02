@@ -3,7 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import {
-  CheckoutApi, CheckoutModel, CheckoutResponse, CheckoutSaleRelation, CourseClassDiscount, SessionStatus
+  CheckoutApi,
+  CheckoutModel,
+  CheckoutResponse,
+  CheckoutSaleRelation,
+  CourseClassDiscount,
+  SessionStatus
 } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
@@ -14,8 +19,8 @@ class CheckoutService {
     return this.checkoutApi.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
   }
 
-  public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, promoIds: string, membershipIds: string, enrolmentsCount: number, purchaseTotal: number): Promise<CourseClassDiscount[]> {
-    return this.checkoutApi.getContactDiscounts(contactId, classId, courseIds, productIds, promoIds, membershipIds, enrolmentsCount, purchaseTotal);
+  public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number): Promise<CourseClassDiscount[]> {
+    return this.checkoutApi.getContactDiscounts(contactId, classId, courseIds, productIds, classIds, promoIds, membershipIds, purchaseTotal);
   }
 
   public getSessionStatus(sessionId: string): Promise<SessionStatus> {
