@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.zookeeper.CreateMode
 import org.apache.zookeeper.KeeperException
+import org.apache.zookeeper.KeeperException.NoNodeException
 import org.apache.zookeeper.ZooDefs
 import org.apache.zookeeper.ZooKeeper
 
@@ -38,11 +39,28 @@ abstract class AbstractZKSessionManager {
     }
 
     protected void deleteAll(String root) throws KeeperException, InterruptedException { 
-       zk.getChildren(root, false)?.each {
-           deleteAll("$root/$it")
-       }
-       zk.delete(root, -1);
+        if (!root.startsWith('/')) {
+            root = "/$root"
+        }
+        try {
+            zk.getChildren(root, false)?.each {
+               deleteAll("$root/$it")
+            }
+            zk.delete(root, -1)
+        } catch (NoNodeException ignored) {
+            //ignore
+        }
     }
+    
+    protected List<String> getChildren(String root) throws KeeperException, InterruptedException {
+        try {
+            zk.getChildren("/$root", false)
+        } catch (NoNodeException ignored) {
+            //ignore
+            return null
+        }
+    }
+    
     
     private ZooKeeper getZk() {
         return provider.getZk(getRootNode())
