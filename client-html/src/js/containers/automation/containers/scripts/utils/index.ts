@@ -5,15 +5,18 @@
 
 import { Script } from "@api/model";
 import {
+  closureSplitRegexp,
+  getMessageComponent,
+  getMessageTemplate,
   getQueryComponent,
   getQueryTemplate,
-  getScriptComponent,
-  getMessageTemplate,
-  getMessageComponent,
+  getReportComponent,
   getReportTemplate,
+  getScriptComponent,
   importsRegexp,
+  messageClosureRegexp,
   queryClosureRegexp,
-  messageClosureRegexp, getReportComponent, reportClosureRegexp, closureSplitRegexp,
+  reportClosureRegexp,
 } from "../constants";
 import { ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 
@@ -62,7 +65,7 @@ const reportFilter = body => {
 };
 
 export const ParseScriptBody = async (scriptItem: Script) => {
-  let { content } = scriptItem;
+  let content = scriptItem.content.replace(/["]{3}/g, '"');
   let imports = content.match(importsRegexp);
 
   if (imports) {
