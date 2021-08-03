@@ -30,8 +30,8 @@ dependencies {
     implementation 'org.reflections:reflections:0.9.11'
 
     //js compiler
-    implementation 'com.google.javascript:closure-compiler:v20170218'
-    closureCompiler 'com.google.javascript:closure-compiler:v20170218'
+    implementation 'com.google.javascript:closure-compiler:v20210601'
+    closureCompiler 'com.google.javascript:closure-compiler:v20210601'
 
     // JAX-B dependencies for JDK 11
     implementation 'javax.xml.ws:jaxws-api:2.3.1'
