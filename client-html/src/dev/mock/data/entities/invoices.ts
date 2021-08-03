@@ -1,13 +1,15 @@
+import { Invoice } from '@api/model';
 import { generateArraysOfRecords, getEntityResponse, removeItemByEntity } from "../../mockUtils";
 
 export function mockInvoices() {
   this.getInvoices = () => this.invoices;
 
-  this.getInvoice = id => {
+  this.getInvoice = (id): Invoice => {
     const row = this.invoices.rows.find(row => row.id == id);
 
     return {
       id: row.id,
+      type: 'Invoice',
       amountOwing: row.values[4],
       billToAddress: "",
       contactId: 323,
@@ -25,8 +27,6 @@ export function mockInvoices() {
           unit: null,
           incomeAccountId: 15,
           incomeAccountName: "Student enrolments 41000",
-          cosAccountId: null,
-          cosAccountName: null,
           priceEachExTax: 120.0,
           discountEachExTax: 0.0,
           taxEach: 12.0,
@@ -44,7 +44,6 @@ export function mockInvoices() {
       ],
       invoiceNumber: row.values[0],
       modifiedOn: "2021-01-20T05:31:37.412Z",
-      notes: [],
       overdue: row.values[6],
       paymentPlans: [
         {
@@ -160,22 +159,24 @@ export function mockInvoices() {
   };
 
   this.getPlainInvoices = params => {
-    const columnList = params.columns.split(",");
     let rows = [];
-
-    if (columnList.includes("amountOwing")) {
-      const id = params.search.replace(/\D/g, "");
-      const invoice = this.getInvoice(id);
-      rows.push({
+    if (params.columns === "contact.id,contact.lastName,contact.firstName,amountOwing") {
+      rows = generateArraysOfRecords(5, [
+        { name: "id", type: "number" },
+        { name: "contact.id", type: "number" },
+        { name: "contact.lastName", type: "string" },
+        { name: "contact.firstName", type: "string" },
+        { name: "amountOwing", type: "number" },
+      ]).map(({ id, ...values }) => ({
         id,
-        values: [invoice.contactId, `lastName ${id}`, `firstName ${id}`, invoice.overdue]
-      });
+        values
+      }));
     } else {
       rows = this.invoices.rows;
     }
 
     return getEntityResponse({
-      entity: "Invoice",
+      entity: params.entity || "Invoice",
       rows,
       plain: true
     });

@@ -6,9 +6,7 @@
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {
-  Form, reduxForm, initialize, getFormValues
-} from "redux-form";
+import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/form-fields/FormField";
@@ -32,11 +30,19 @@ class MaintenanceBaseForm extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
+
     if (!isEmpty(props.formData)) {
       props.dispatch(initialize("MaintenanceForm", props.formData));
     }
 
     this.formModel = props.formatModel(Model);
+  }
+
+  componentDidUpdate() {
+    // Initializing form with values
+    if (!isEmpty(this.props.formData) && !this.props.initialized) {
+      this.props.dispatch(initialize("MaintenanceForm", this.props.formData));
+    }
   }
 
   validateTimeoutRange(value) {

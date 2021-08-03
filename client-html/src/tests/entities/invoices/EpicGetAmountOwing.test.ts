@@ -13,7 +13,8 @@ describe("Get amount owing epic tests", () => {
     epic: EpicGetAmountOwing,
     processData: mockedApi => {
       const response = mockedApi.db.getPlainInvoices({
-        columns: "dateDue,invoiceNumber,amountOwing",
+        entity: 'AbstractInvoice',
+        columns: "contact.id,contact.lastName,contact.firstName,amountOwing",
         search: "id == 1"
       });
 

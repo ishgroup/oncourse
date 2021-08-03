@@ -54,8 +54,6 @@ describe("Virtual rendered FinancialForm", () => {
       expect(wrapper.find("#account-invoice-terms input").getDOMNode().value).toEqual(
         mockedAPI.db.preference[PreferencesModel.AccountInvoiceTerms.uniqueKey].toString()
       );
-
-      expect(wrapper.find("input[type='checkbox']").props().checked).toEqual(false);
     }
   });
 });

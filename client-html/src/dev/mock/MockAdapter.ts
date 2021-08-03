@@ -67,6 +67,7 @@ import { FundingContractsApiMock } from "./api/preference/FundingContractsApiMoc
 import { CheckoutApiMock } from "./api/checkout/CheckoutApiMock";
 import { GradingTypesApiMock } from "./api/preference/GradingTypesApiMock";
 import { SecurityApiMock } from "./api/security/SecurityApiMock";
+import { IS_JEST } from "../../js/constants/EnvironmentConstants";
 
 export const initMockDB = () => new MockAdapter();
 
@@ -166,9 +167,11 @@ export class MockAdapter {
 
     // Handle all other requests
     this.api.onAny().reply(config => {
-      console.warn("UNHANDLED REQUEST");
-      console.log(config);
-      console.log(this.api);
+      if (!IS_JEST) {
+        console.warn("UNHANDLED REQUEST");
+        console.log(config);
+        console.log(this.api);
+      }
       return promiseReject(config);
     });
   }
@@ -176,32 +179,35 @@ export class MockAdapter {
 
 // Resolve function with logger
 export const promiseResolve = (config, data = {}, headers = {}) => {
-  console.log("%c ----------------", "color: black");
-  console.log(`%c Api request to: /${config.url}`, "color: #bada55");
-  console.log(`%c Api request method: ${config.method}`, "color: #bada55");
-  console.log(`%c request params:`, "color: #bada55");
-  if (config.method === "get") {
-    console.log(config.params);
-  } else {
-    console.log(config.data && [parseJson(config.data)]);
+  if (!IS_JEST) {
+    console.log("%c ----------------", "color: black");
+    console.log(`%c Api request to: /${config.url}`, "color: #bada55");
+    console.log(`%c Api request method: ${config.method}`, "color: #bada55");
+    console.log(`%c request params:`, "color: #bada55");
+    if (config.method === "get") {
+      console.log(config.params);
+    } else {
+      console.log(config.data && [parseJson(config.data)]);
+    }
+    console.log(`%c response params:`, "color: #bada55");
+    console.log([data]);
+    console.log("%c ----------------", "color: black");
   }
-  console.log(`%c response params:`, "color: #bada55");
-  console.log([data]);
-  console.log("%c ----------------", "color: black");
-
   return [200, data, headers];
 };
 
 // Reject function with logger
 export const promiseReject = (config, data = {}, headers = {}) => {
-  console.log(`%c Api request ${config.method} to: /${config.url}`, "color: red");
-  console.log(`%c request params:`, "color: #bada55");
-  if (config.method === "get") {
-    console.log(config.params);
-  } else {
-    console.log(config.data && [parseJson(config.data)]);
+  if (!IS_JEST) {
+    console.log(`%c Api request ${config.method} to: /${config.url}`, "color: red");
+    console.log(`%c request params:`, "color: #bada55");
+    if (config.method === "get") {
+      console.log(config.params);
+    } else {
+      console.log(config.data && [parseJson(config.data)]);
+    }
+    console.log(`%c request params:`, "color: #bada55");
   }
-  console.log(`%c request params:`, "color: #bada55");
   return [400, data, headers];
 };
 
