@@ -4,16 +4,20 @@
  */
 package ish.oncourse.commercial.replication.updaters
 
+import groovy.transform.CompileStatic
 import ish.math.Money
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
+import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.webservices.v23.stubs.replication.InvoiceLineStub
 
 /**
  */
+@CompileStatic
 class InvoiceLineUpdater extends AbstractAngelUpdater<InvoiceLineStub, AbstractInvoiceLine> {
     /**
 	 * @see AbstractAngelUpdater#updateEntity(ish.oncourse.webservices.util.GenericReplicationStub,
@@ -24,7 +28,12 @@ class InvoiceLineUpdater extends AbstractAngelUpdater<InvoiceLineStub, AbstractI
 		entity.setCreatedOn(stub.getCreated())
 		entity.setDescription(stub.getDescription())
 		entity.setDiscountEachExTax(new Money(stub.getDiscountEachExTax()))
-		entity.setInvoice(callback.updateRelationShip(stub.getInvoiceId(), entity.getInvoicePersistentClass()))
+		
+		if (entity instanceof InvoiceLine) {
+			entity.setInvoice(callback.updateRelationShip(stub.getInvoiceId(), Invoice))
+		} else {
+			entity.setInvoice(callback.updateRelationShip(stub.getInvoiceId(), Quote))
+		}
 		entity.setModifiedOn(stub.getModified())
 		entity.setPriceEachExTax(new Money(stub.getPriceEachExTax()))
 		entity.setQuantity(stub.getQuantity())
