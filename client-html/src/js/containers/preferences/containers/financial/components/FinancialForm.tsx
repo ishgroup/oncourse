@@ -4,7 +4,6 @@
  */
 
 import * as React from "react";
-import { FormControlLabel } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
@@ -43,10 +42,10 @@ class FinancialBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate() {
     // Initializing form with values
-    if (!isEmpty(nextProps.formData) && !this.props.initialized) {
-      this.props.dispatch(initialize("FinancialForm", nextProps.formData));
+    if (!isEmpty(this.props.formData) && !this.props.initialized) {
+      this.props.dispatch(initialize("FinancialForm", this.props.formData));
     }
   }
 
