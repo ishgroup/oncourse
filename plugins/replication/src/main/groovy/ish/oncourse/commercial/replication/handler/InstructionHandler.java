@@ -439,7 +439,7 @@ public class InstructionHandler implements ReplicationHandler {
         if (rows.isEmpty()) {
             return String.format("There is no such record with entityIdentifier = %s with angelid = %s", entityIdentifier, angelIdParam);
         }
-        Long angelId = (Long) rows.get(0).getAt("id");
+        Long angelId = (Long) rows.get(0).get("id");
 
         if (PAYMENT_IN_ENTITY_NAME.equalsIgnoreCase(entityIdentifier)) {
             final var expr = ExpressionFactory.matchExp(PaymentIn.ID_PK_COLUMN, angelId);
