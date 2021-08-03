@@ -82,8 +82,11 @@ class StudentAPI extends TCSI_API{
                 interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
             }
         }
-            
-        if (!hasCitizenship(studentUid)) {
+
+        String citizenshipUid = getCitizenship(studentUid)
+        if (citizenshipUid) {
+            updateCitizenship(studentUid, citizenshipUid)
+        } else {
             createCitizenship(studentUid)
         }
         
@@ -97,14 +100,14 @@ class StudentAPI extends TCSI_API{
         
     }
 
-    String hasCitizenship(String studenUid) {
+    String getCitizenship(String studenUid) {
         String  message = "get student's citizenships"
         client.request(GET, JSON) {
             uri.path = STUDENTS_PATH + "/$studenUid/citizenships"
             response.success = { resp, result ->
                 def citizenships = handleResponce(result, message)
                 if (citizenships && !citizenships.empty) {
-                    return citizenships.any {it.citizenship['citizen_resident_code'] == getResidantialCode()}
+                    return citizenships.find {it.citizenship['citizen_resident_code'] == getResidantialCode()}?.citizenship?.citizenships_uid?.toString()
                 } else {
                     return false
                 }
@@ -120,7 +123,20 @@ class StudentAPI extends TCSI_API{
         String  message = "create student's citizenships"
         client.request(POST, JSON) {
             uri.path = STUDENTS_PATH + "/$studentUid/citizenships"
-            body = getCitizenshipPacket()
+            body = JsonOutput.toJson(getCitizenshipData())
+            response.success = { resp, result ->
+                handleResponce(result, message)
+            }
+            response.failure =  { resp, body ->
+                interraptExport("Something unexpected happend while $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+            }
+        }
+    }
+    String updateCitizenship(String studentUid, String citizenshipUid) {
+        String  message = "update student's citizenships"
+        client.request(PUT, JSON) {
+            uri.path = STUDENTS_PATH + "/$studentUid/citizenships/$citizenshipUid"
+            body = JsonOutput.toJson(getCitizenshipData())
             response.success = { resp, result ->
                 handleResponce(result, message)
             }
@@ -301,18 +317,16 @@ class StudentAPI extends TCSI_API{
         return studentData
     }
     
-    private String getCitizenshipPacket() {
-        Map<String, Object> citizenship = getCitizenshipData()
-        citizenship['citizenship']['citizenship_effective_from_date'] = courseAdmission.createdOn.format(DATE_FORMAT)
-        return JsonOutput.toJson(citizenship)
-    }
+
 
     @CompileDynamic
     private Map<String, Object> getCitizenshipData() {
         Map<String, Object> citizenship = [:]
         citizenship['correlation_id'] = "citizenship_${System.currentTimeMillis()}"
         String residentCode = getResidantialCode()
-        citizenship['citizenship'] = ['citizen_resident_code': residentCode]
+        citizenship['citizenship'] = [:]
+        citizenship['citizenship']['citizen_resident_code'] = residentCode
+        citizenship['citizenship']['citizenship_effective_from_date'] = courseAdmission.createdOn.format(DATE_FORMAT)
         return citizenship
     }
     

@@ -44,6 +44,9 @@ class TCSI_API {
         List<Map> errors =  response['result']['errors']
 
         errors.each {error ->
+
+            errorInfo += error["error_identifier"]
+            errorInfo += error[" : "]
             errorInfo += error["error_description"]
             errorInfo +="\n"
         }
