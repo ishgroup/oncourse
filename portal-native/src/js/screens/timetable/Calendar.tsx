@@ -1,9 +1,12 @@
 import React from 'react';
-import { ListRenderItemInfo, StyleSheet, View, VirtualizedList } from 'react-native';
+import {
+  ListRenderItemInfo, StyleSheet, View, VirtualizedList
+} from 'react-native';
 import { Caption, Divider, Title } from 'react-native-paper';
 import { getDate, getDay } from 'date-fns';
 import { Day } from '../../model/Timetable';
 import { getShortWeekDay } from '../../utils/DateUtils';
+import Session from './Session';
 
 const styles = StyleSheet.create({
   item: {
@@ -35,6 +38,7 @@ const styles = StyleSheet.create({
 
 interface Props {
   days: Day[]
+  initialScrollIndex?: number;
 }
 
 const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
@@ -53,16 +57,18 @@ const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
       </View>
       <View style={styles.sessionsColumn}>
         {item.sessions.length
-          ? item.sessions.map((s) => s)
+          ? item.sessions.map((s) => <Session key={s.id} {...s} />)
           : <Divider />}
       </View>
     </View>
   );
 };
 
-const Calendar = ({ days = [] }: Props) => (
+const Calendar = ({ days = [], initialScrollIndex }: Props, ref) => (
   <VirtualizedList
+    ref={ref}
     data={days}
+    initialScrollIndex={initialScrollIndex}
     getItem={(i, n) => days[n]}
     keyExtractor={(item) => item.date.toISOString()}
     getItemCount={() => days.length}
@@ -70,4 +76,4 @@ const Calendar = ({ days = [] }: Props) => (
   />
 );
 
-export default Calendar;
+export default React.forwardRef(Calendar);

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { DefaultTheme } from 'react-native-paper';
 import { SPACING_UNIT } from '../constants/Layout';
 
-const spacing = (unit: number) => unit * SPACING_UNIT;
+export const spacing = (unit: number) => unit * SPACING_UNIT;
 
 export const LightTheme = {
   ...DefaultTheme,
