@@ -77,7 +77,8 @@ export const useMicrosoftConnect = (
         'Files.ReadWrite.All',
         'Files.ReadWrite.AppFolder',
         'Files.Read.Selected',
-        'Files.ReadWrite.Selected'
+        'Files.ReadWrite.Selected',
+        'Calendars.ReadWrite'
       ],
       redirectUri: makeRedirectUri(),
     },

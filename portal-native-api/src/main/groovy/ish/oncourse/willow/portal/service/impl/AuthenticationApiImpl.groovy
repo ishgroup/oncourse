@@ -7,10 +7,11 @@ import ish.oncourse.api.request.RequestService
 import ish.oncourse.model.User
 import ish.oncourse.willow.portal.auth.GoogleOAuthProveder
 import ish.oncourse.willow.portal.auth.LoginException
+import ish.oncourse.willow.portal.auth.MicrosoftOAuthProvider
+import ish.oncourse.willow.portal.auth.OAuthProvider
 import ish.oncourse.willow.portal.auth.SSOCredantials
 import ish.oncourse.willow.portal.auth.ZKSessionManager
 import ish.oncourse.willow.portal.service.UserService
-import ish.oncourse.willow.portal.v1.model.ErrorResponse
 import ish.oncourse.willow.portal.v1.model.LoginRequest
 import ish.oncourse.willow.portal.v1.model.LoginResponse
 import ish.oncourse.willow.portal.v1.model.LoginStage
@@ -31,6 +32,9 @@ class AuthenticationApiImpl implements AuthenticationApi{
     @Inject
     GoogleOAuthProveder googleOAuthProveder
     
+    @Inject
+    MicrosoftOAuthProvider microsoftOAuthProvider
+    
     @Inject 
     RequestService requestService
     
@@ -47,7 +51,9 @@ class AuthenticationApiImpl implements AuthenticationApi{
 
     @Override
     Map<String, String> ssoClientIds() {
-        return [(SSOproviders.GOOGLE.toString()) : googleOAuthProveder.clientId]
+        return [(SSOproviders.GOOGLE.toString()) : googleOAuthProveder.clientId,
+                (SSOproviders.MICROSOFT.toString()): microsoftOAuthProvider.clientId]
+        
     }
     
     @Override
@@ -119,7 +125,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
             // sign up via SSO provider     
             else if (details.ssOProvider) {
                 SSOCredantials credantials = getSSOCredantials(details)
-                if (user.email = credantials.email) {
+                if (user.email == credantials.email) {
                     userService.updateCredantials(user, credantials)
                 } else {
                     //do not allowe to change User email
@@ -159,13 +165,18 @@ class AuthenticationApiImpl implements AuthenticationApi{
   
     private SSOCredantials getSSOCredantials(LoginRequest details) {
         SSOCredantials credantials
+        OAuthProvider authProvider
         switch (details.ssOProvider) {
             case SSOproviders.GOOGLE:
-                credantials = googleOAuthProveder.authorize(details.ssOToken, requestService.requestUrl)
+                authProvider = googleOAuthProveder
+                break
+            case SSOproviders.MICROSOFT:
+                authProvider = microsoftOAuthProvider
                 break
             default:
                 throw new LoginException('Unsupported Authorization provider')
         }
+        credantials = authProvider.authorize(details.ssOToken, requestService.requestUrl)
         return credantials
     }
 

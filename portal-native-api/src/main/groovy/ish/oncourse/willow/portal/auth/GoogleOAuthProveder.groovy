@@ -17,7 +17,7 @@ import ish.common.types.SSOProviderType
 import ish.oncourse.configuration.Configuration
 
 @CompileStatic
-class GoogleOAuthProveder {
+class GoogleOAuthProveder extends OAuthProvider {
     private static final JsonFactory jsonFactory = GsonFactory.defaultInstance
     private static final HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport()
     
@@ -25,20 +25,11 @@ class GoogleOAuthProveder {
     private GoogleClientSecrets clientSecrets
     
     
-    
     @Inject
     GoogleOAuthProveder() {
-        String userDir = System.getProperties().get(Configuration.USER_DIR) as String
-
-        FileInputStream stream
-        try {
-            stream = new FileInputStream("$userDir/client_secret.json")
-          } catch (Exception ex) {
-            throw new IllegalArgumentException("Exception during reading application.properties file", ex)
-        } 
 
         clientSecrets = GoogleClientSecrets.load(jsonFactory,
-                new InputStreamReader(stream))
+                new InputStreamReader(readSecret()))
         flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport , jsonFactory, clientSecrets, [Oauth2Scopes.OPENID, Oauth2Scopes.USERINFO_PROFILE,Oauth2Scopes.USERINFO_EMAIL, CalendarScopes.CALENDAR_EVENTS, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_METADATA])
                 .setAccessType("offline")
@@ -64,5 +55,9 @@ class GoogleOAuthProveder {
     String getClientId() {
         clientSecrets.getWeb().getClientId()
     }
-    
+
+    @Override
+    String getSecretFileName() {
+        return "google_secret.json"
+    }
 }
