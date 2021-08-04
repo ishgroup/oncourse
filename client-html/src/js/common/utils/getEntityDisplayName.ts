@@ -14,6 +14,9 @@ export const getEntityDisplayName = (entity: string): Category => {
     case "CorporatePass": {
       return "Corporate Pass";
     }
+    case "AbstractInvoice": {
+      return "Invoices";
+    }
     case "Invoice": {
       return "Invoices";
     }

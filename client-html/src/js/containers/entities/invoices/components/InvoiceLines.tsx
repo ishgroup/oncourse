@@ -129,7 +129,8 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
     clearInvoiceLineEnrolments,
     incomeAndCosAccounts,
     courseClasses,
-    selectedContact
+    selectedContact,
+    type
   } = props;
 
   const [postDiscounts, setPostDiscounts] = useState(false);
@@ -294,9 +295,9 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
   const onIncomeAccountChange = v => {
     if (selectedContact && selectedContact["taxOverride.id"]) return;
     const selectedAccount = incomeAndCosAccounts[0].find(item => item.id === v);
-    const selectedAccountTaxId = selectedAccount && selectedAccount.taxId;
+    const selectedAccountTaxId = selectedAccount && selectedAccount["tax.id"];
 
-    dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
+    selectedAccountTaxId && dispatch(change(form, `${item}.taxId`, Number(selectedAccountTaxId)));
   };
 
   const onDiscountIdChange = discount => {
@@ -339,7 +340,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           type="text"
           name={`${item}.title`}
           label="Title"
-          disabled={!isNew}
+          disabled={type !== "Quote" && !isNew}
           required
         />
       </Grid>
@@ -350,13 +351,13 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           label="Quantity"
           onChange={onQuantityChange}
           normalize={normalizeNumber}
-          disabled={!isNew}
+          disabled={type !== "Quote" && !isNew}
           required
         />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 6}>
-        <FormField type="text" name={`${item}.unit`} label="Unit (e.g.,kg)" disabled={!isNew} />
+        <FormField type="text" name={`${item}.unit`} label="Unit (e.g.,kg)" disabled={type !== "Quote" && !isNew} />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -364,7 +365,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           type="select"
           name={`${item}.incomeAccountId`}
           label="Income account"
-          disabled={!isNew}
+          disabled={type !== "Quote" && !isNew}
           items={incomeAndCosAccounts[0] || []}
           selectValueMark="id"
           selectLabelCondition={accountLabelCondition}
@@ -380,7 +381,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           type="multilineText"
           name={`${item}.description`}
           label="Description"
-          disabled={!isNew}
+          disabled={type !== "Quote" && !isNew}
         />
       </Grid>
 
@@ -404,7 +405,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
                 <LinkAdornment link={row.courseId} linkHandler={courseLinkHandler} disabled={!row.courseId} />
               }
               onInnerValueChange={onCourseNameChange}
-              disabled={!isNew}
+              disabled={type !== "Quote" && !isNew}
               itemRenderer={CourseItemRenderer}
               rowHeight={55}
               allowEmpty
@@ -419,7 +420,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               defaultValue={row.classCode}
               selectValueMark="id"
               selectLabelMark="code"
-              disabled={!isNew || !row.courseId}
+              disabled={(type !== "Quote" && !isNew) || !row.courseId}
               onChange={onClassCodeChange}
               items={courseClasses}
               allowEmpty
@@ -433,7 +434,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               label="Enrolled student"
               selectValueMark="id"
               defaultValue={row.enrolledStudent}
-              disabled={!isNew || !row.courseClassId}
+              disabled={(type !== "Quote" && !isNew) || !row.courseClassId}
               onChange={onEnrolmentIdChange}
               items={courseClassEnrolments}
               allowEmpty
@@ -459,7 +460,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             name={`${item}.discountId`}
             defaultDisplayValue={row.discountName}
             onInnerValueChange={onDiscountIdChange}
-            disabled={!isNew}
+            disabled={type !== "Quote" && !isNew}
             allowEmpty
           />
         </Grid>
@@ -470,7 +471,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             name={`${item}.priceEachExTax`}
             label="Price each ExTax"
             onChange={onPriceEachExTaxChange}
-            disabled={!isNew}
+            disabled={type !== "Quote" && !isNew}
           />
         </Grid>
 
@@ -480,7 +481,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             name={`${item}.discountEachExTax`}
             label="Discount each ExTax"
             onChange={onDiscountEachExTaxChange}
-            disabled={!isNew}
+            disabled={type !== "Quote" && !isNew}
           />
         </Grid>
 
@@ -492,7 +493,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
-            disabled={!isNew}
+            disabled={type !== "Quote" && !isNew}
             items={taxes || []}
             autoWidth={false}
             required
@@ -519,7 +520,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               type="money"
               name={`${item}.total`}
               formatting="inline"
-              disabled={!isNew}
+              disabled={type !== "Quote" && !isNew}
               defaultValue={total}
               onBlur={onTotalBlur}
               hidePlaceholderInEditMode

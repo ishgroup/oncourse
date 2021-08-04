@@ -1,11 +1,11 @@
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { Course, CourseClass, Invoice } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { ContraInvoice, ContraInvoiceFormData } from "../reducers/state";
 
 export const GET_INVOICE_ITEM = _toRequestType("get/invoice");
 export const GET_INVOICE_ITEM_FULFILLED = FULFILLED(GET_INVOICE_ITEM);
 
-export const DELETE_QUOTE_ITEM = _toRequestType("delete/banking");
+export const DELETE_QUOTE_ITEM = _toRequestType("delete/quote");
 
 export const GET_DEFAULT_INVOICE_TERMS = _toRequestType("get/invoice/contra");
 export const GET_DEFAULT_INVOICE_TERMS_FULFILLED = FULFILLED(GET_DEFAULT_INVOICE_TERMS);
@@ -31,6 +31,7 @@ export const CREATE_INVOICE_ITEM = _toRequestType("post/invoice");
 export const CREATE_INVOICE_ITEM_FULFILLED = FULFILLED(CREATE_INVOICE_ITEM);
 
 export const DUPLICATE_AND_REVERSE_INVOICE_ITEM = _toRequestType("get/invoice/duplicate");
+export const DUPLICATE_QUOTE = _toRequestType("get/quote/duplicate");
 
 export const GET_AMOUNT_OWING = _toRequestType("get/invoice/amountOwing");
 export const GET_AMOUNT_OWING_FULFILLED = FULFILLED(GET_AMOUNT_OWING);
@@ -113,5 +114,10 @@ export const createInvoice = (invoice: Invoice) => ({
 
 export const duplicateAndReverseInvoice = (id: number) => ({
   type: DUPLICATE_AND_REVERSE_INVOICE_ITEM,
+  payload: id
+});
+
+export const duplicateQuote = (id: number) => ({
+  type: DUPLICATE_QUOTE,
   payload: id
 });

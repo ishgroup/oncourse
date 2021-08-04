@@ -38,6 +38,8 @@ import { checkPermissions } from "../../../common/actions";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import LeadService from "../leads/services/LeadService";
+import { isInvoiceType } from "./utils";
+import { State } from "../../../reducers/state";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -122,7 +124,7 @@ const nameCondition = (invoice: Invoice) => {
   if (invoice.type === "Invoice") {
     result = invoice.invoiceNumber ? "#" + invoice.invoiceNumber : "New";
   } else {
-    result = invoice.leadId ? "Quote #" + invoice.leadId : "New";
+    result = invoice.id ? "Quote #" + invoice.id : "New";
   }
 
   return result;
@@ -148,9 +150,11 @@ const Invoices = React.memo<any>(({
   getInvoiceRecord,
   setListCreatingNew,
   onDeleteQuote,
+  selection,
   history,
   updateSelection,
   location,
+  listRecords,
   match: { params, url },
   onInit
   }) => {
@@ -214,6 +218,8 @@ const Invoices = React.memo<any>(({
     }
   };
 
+  const defaultDeleteDisabled = (selection.length !== 1) || (selection.length === 1 && isInvoiceType(selection[0], listRecords));
+
   return (
     <div>
       <ListView
@@ -235,6 +241,7 @@ const Invoices = React.memo<any>(({
         onInit={onInit}
         customOnCreate={customOnCreate}
         onDelete={onDeleteQuote}
+        defaultDeleteDisabled={defaultDeleteDisabled}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         EditViewContent={InvoicesEditView}
@@ -278,6 +285,11 @@ const Invoices = React.memo<any>(({
   );
 });
 
+const mapStateToProps = (state: State) => ({
+  listRecords: state.list.records,
+  selection: state.list.selection,
+});
+
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     const today = formatToDateOnly(new Date());
@@ -305,4 +317,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getQePermissions: () => dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }))
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(Invoices);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Invoices);
