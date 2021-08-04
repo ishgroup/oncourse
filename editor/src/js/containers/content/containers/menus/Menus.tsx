@@ -21,8 +21,8 @@ const styles = theme => ({
   deleteButton: {
     padding: `1px ${theme.spacing(1)}px`,
     fontWeight: 600,
-  }
-})
+  },
+});
 
 interface Props {
   classes: any;
@@ -98,6 +98,8 @@ class Menus extends React.Component<Props, any> {
     items.forEach((arrayItem: any) => {
       if (arrayItem.id === itemId) {
         arrayItem[type] = value;
+      } else if (arrayItem.children?.length) {
+        this.updateValue(arrayItem.children, itemId, type, value);
       }
     });
     return items;
@@ -255,12 +257,12 @@ class Menus extends React.Component<Props, any> {
 
           throw BreakException;
         }
-      })
+      });
     } catch (e) {
       if (e !== BreakException) throw e;
     }
 
-    return result
+    return result;
   }
 
   onDragEnd = (args: any) => {
