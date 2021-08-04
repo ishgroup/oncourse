@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Sorting, DataResponse } from "@api/model";
+import { DataResponse, Sorting } from "@api/model";
 import { promiseResolve } from "../../MockAdapter";
 
 export function listApiMock() {
@@ -300,6 +300,7 @@ export function listApiMock() {
         return promiseResolve(config, this.db.getPlainPaymentsOut(config.params));
       }
 
+      case "AbstractInvoice":
       case "Invoice": {
         return promiseResolve(config, this.db.getPlainInvoices(config.params));
       }

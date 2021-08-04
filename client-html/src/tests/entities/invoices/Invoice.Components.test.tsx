@@ -11,7 +11,6 @@ describe("Virtual rendered InvoicesEditView", () => {
     render: (wrapper, initialValues) => {
       expect(wrapper.find("#contactId").text()).toContain(initialValues.contactName);
       expect(wrapper.find("#customerReference").text()).toContain("No value");
-      expect(wrapper.find("#invoiceNumber").text()).toContain(initialValues.invoiceNumber);
 
       expect(wrapper.find("#invoiceDate").text()).toContain(
         format(new Date(initialValues.invoiceDate), III_DD_MMM_YYYY).toString()
