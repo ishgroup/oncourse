@@ -1,12 +1,14 @@
 import React from 'react';
 import { Appbar } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { useRootNavigation } from '../../hooks/navigation';
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#666666'
+    backgroundColor: '#666666',
+    zIndex: 1,
+    ...Platform.OS === 'android' ? { elevation: 1 } : {},
   },
   badge: {
     position: 'absolute',

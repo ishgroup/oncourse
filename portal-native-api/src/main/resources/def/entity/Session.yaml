@@ -1,0 +1,48 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Session unique id
+    requred: true
+  classId:
+    type: string
+    description: Session class id
+    requred: true
+  name:
+    type: string
+    requred: true
+    description: Session class name
+  collegeName:
+    type: string
+    requred: true
+    description: Session class college name
+  siteName:
+    type: string
+    requred: true
+    description: Session class site name
+  roomName:
+    type: string
+    requred: true
+    description: Session class room name
+  start:
+    type: string
+    format: date-time
+    description: Session start date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  end:
+    type: string
+    format: date-time
+    description: Session start date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  siteTimezone:
+    type: string
+    required: false
+    description: Site timezone
+    example: Australia/Brisbane
+  color:
+    type: string
+    requred: true
+    description: Session unique color in HEX format
+

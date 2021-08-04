@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import {
   Caption, Card, Subheading, Title
 } from 'react-native-paper';
+import '@expo/match-media';
 import { Entypo } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import { useMediaQuery } from 'react-responsive';
@@ -81,7 +82,6 @@ const SessionComp = (
             {endTime}
           </Subheading>
         )}
-
       </View>
     </Card>
   );

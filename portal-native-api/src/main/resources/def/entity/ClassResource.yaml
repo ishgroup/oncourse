@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: string
+    requred: true
+  name:
+    type: string
+    requred: true
+    description: resource name
+  link:
+    type: string
+    requred: true
+    description: resource link
+  mimeType:
+    type: string
+    requred: true
+    description: resource mime type

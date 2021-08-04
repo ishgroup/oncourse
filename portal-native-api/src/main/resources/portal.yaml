@@ -26,9 +26,15 @@ paths:
     $ref: './path/login/pass/api.yaml'
   /sso:
     $ref: './path/sso/api.yaml'
-    
+  /session:
+    $ref: './path/session/api.yaml'
+  /courseClass:
+    $ref: './path/courseClass/api.yaml'
+  /courseClass/attendance:
+    $ref: './path/courseClass/attendance/api.yaml'
+
 definitions:
-  
+
   LoginStage:
     type: string
     description: List of email verification stages
@@ -36,4 +42,3 @@ definitions:
       - create
       - password
       - authorize
-    

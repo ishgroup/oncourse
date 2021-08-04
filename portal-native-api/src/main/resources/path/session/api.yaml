@@ -1,0 +1,18 @@
+get:
+  summary: Get sessions
+  operationId: getUserSessions
+  description: Get sessions by user id
+  tags:
+    - Session
+  parameters:
+    - name: userId
+      in: query
+      required: true
+      type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/Session.yaml'
+    default:
+      description: Unexpected error

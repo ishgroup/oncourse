@@ -1,0 +1,8 @@
+type: string
+description: List of possible attendance types
+enum:
+  - Unmarked
+  - Attended
+  - Absent with reason
+  - Absent without reason
+  - Partial

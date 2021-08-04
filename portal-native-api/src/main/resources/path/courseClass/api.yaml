@@ -1,0 +1,18 @@
+get:
+  summary: Get class
+  operationId: getClass
+  description: Get class by id
+  tags:
+    - CourseClass
+  parameters:
+    - name: classId
+      in: query
+      required: true
+      type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/CourseClass.yaml'
+    default:
+      description: Unexpected error

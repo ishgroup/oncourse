@@ -1,0 +1,36 @@
+type: object
+properties:
+  id:
+    type: string
+    requred: true
+  studentName:
+    type: string
+    requred: true
+    description: Student name
+  studentEmail:
+    type: string
+    requred: true
+    description: Student email
+  studentPicture:
+    type: string
+    requred: false
+    description: Student's profile picture url
+  arriveTime:
+    type: string
+    format: date-time
+    description: Student arrive time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  departureTime:
+    type: string
+    format: date-time
+    description: Student departure time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  notes:
+    type: string
+    requred: false
+    description: attendance notes
+  attendance:
+    description: Student attendance
+    $ref: '../enum/AttendanceTypes.yaml'

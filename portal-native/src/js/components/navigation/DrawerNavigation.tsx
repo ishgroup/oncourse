@@ -51,13 +51,13 @@ export default function DrawerNavigation() {
       }}
       drawerContent={CustomDrawerContent}
     >
-      <DrawerNav.Screen name="Dashboard" component={DashboardScreen} />
+      {/*<DrawerNav.Screen name="Dashboard" component={DashboardScreen} />*/}
       <DrawerNav.Screen options={{ headerShown: false }} name="Timetable" component={TimetableScreen} />
-      <DrawerNav.Screen name="Resourses" component={StubScreen} />
-      <DrawerNav.Screen name="My profile" component={StubScreen} />
-      <DrawerNav.Screen name="Subscriptions" component={StubScreen} />
-      <DrawerNav.Screen name="History" component={StubScreen} />
-      <DrawerNav.Screen name="Approvals" component={StubScreen} />
+      {/*<DrawerNav.Screen name="Resourses" component={StubScreen} />*/}
+      {/*<DrawerNav.Screen name="My profile" component={StubScreen} />*/}
+      {/*<DrawerNav.Screen name="Subscriptions" component={StubScreen} />*/}
+      {/*<DrawerNav.Screen name="History" component={StubScreen} />*/}
+      {/*<DrawerNav.Screen name="Approvals" component={StubScreen} />*/}
       <DrawerNav.Screen name="Logout" component={LogoutScreen} />
     </DrawerNav.Navigator>
   );

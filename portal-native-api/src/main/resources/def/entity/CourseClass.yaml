@@ -1,0 +1,47 @@
+type: object
+properties:
+  id:
+    type: string
+    requred: true
+  name:
+    type: string
+    requred: true
+    description: Class name
+  start:
+    type: string
+    format: date-time
+    description: Class start date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  end:
+    type: string
+    format: date-time
+    description: Class start date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  siteTimezone:
+    type: string
+    required: false
+    description: Site timezone
+    example: Australia/Brisbane
+  classLink:
+    type: string
+    requred: true
+    description: Link to class on web site
+  description:
+    type: string
+    requred: true
+    description: class description
+  attendance:
+    description: class attendance
+    type: array
+    items:
+      $ref: './ClassAttendanceItem.yaml'
+  resources:
+    description: class resources
+    type: array
+    items:
+      $ref: './ClassResource.yaml'
+
+
+

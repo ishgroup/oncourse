@@ -8,3 +8,9 @@ export interface Session {
   end: string;
   color: string;
 }
+
+export interface CalendarDay {
+  day: number,
+  date: Date,
+  status: 'previous' | 'current' | 'next'
+}

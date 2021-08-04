@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
 
 interface Props {
   days: Day[]
-  initialScrollIndex?: number;
 }
 
 const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
@@ -64,11 +63,10 @@ const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
   );
 };
 
-const Calendar = ({ days = [], initialScrollIndex }: Props, ref) => (
+const Agenda = ({ days = [] }: Props, ref) => (
   <VirtualizedList
     ref={ref}
     data={days}
-    initialScrollIndex={initialScrollIndex}
     getItem={(i, n) => days[n]}
     keyExtractor={(item) => item.date.toISOString()}
     getItemCount={() => days.length}
@@ -76,4 +74,4 @@ const Calendar = ({ days = [], initialScrollIndex }: Props, ref) => (
   />
 );
 
-export default React.forwardRef(Calendar);
+export default React.forwardRef(Agenda);

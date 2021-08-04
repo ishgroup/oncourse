@@ -1,13 +1,15 @@
 import React, {
-  useEffect, useMemo, useRef, useState
+  useEffect, useRef, useState
 } from 'react';
 import { StyleSheet, View, VirtualizedList } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { getDaysInMonth, isSameDay, setDate } from 'date-fns';
-import Calendar from './Calendar';
+import Agenda from './Agenda';
 import { HeaderBase } from '../../components/navigation/Header';
 import { Day } from '../../model/Timetable';
 import { Session } from '../../model/Calendar';
+import Calendar from '../../components/layout/Calendar';
+import { spacing } from '../../styles';
 
 const styles = StyleSheet.create({
   root: {
@@ -15,6 +17,16 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center'
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  calendar: {
+    width: 360,
+    paddingTop: spacing(2),
+    backgroundColor: '#fff',
+    alignItems: 'center'
   }
 });
 
@@ -70,11 +82,11 @@ export const TimetableScreen = ({ navigation }) => {
     }));
 
     setDays(updatedDays);
-  }, [sessions]);
 
-  const initialScrollIndex = useMemo(
-    () => days.findIndex((d) => isSameDay(d.date, new Date())), [days]
-  );
+    setTimeout(() => {
+      ref.current.scrollToIndex({ index: days.findIndex((d) => isSameDay(d.date, new Date())) });
+    }, 500);
+  }, [sessions]);
 
   return (
     <View style={styles.root}>
@@ -87,7 +99,12 @@ export const TimetableScreen = ({ navigation }) => {
         <Appbar.Content titleStyle={styles.title} title="Timetable" color="white" />
         <Appbar.Action icon="calendar" />
       </HeaderBase>
-      <Calendar days={days} ref={ref} initialScrollIndex={initialScrollIndex} />
+      <View style={styles.content}>
+        <Agenda days={days} ref={ref} />
+        <View style={styles.calendar}>
+          <Calendar />
+        </View>
+      </View>
     </View>
   );
 };

@@ -1,0 +1,17 @@
+put:
+  summary: Update attendance item
+  operationId: markAttendance
+  description: update attendance item
+  tags:
+    - CourseClass
+  parameters:
+    - name: item
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/ClassAttendanceItem.yaml'
+  responses:
+    '200':
+      description: Success response.
+    default:
+      description: Unexpected error

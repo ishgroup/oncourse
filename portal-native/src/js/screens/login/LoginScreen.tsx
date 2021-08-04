@@ -127,6 +127,7 @@ const LoginScreen = () => {
                 renderScene={renderScene}
                 onIndexChange={() => null}
                 swipeEnabled={false}
+                lazy
               />
             </Formik>
           </View>
