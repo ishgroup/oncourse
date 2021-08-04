@@ -41,6 +41,7 @@ import LeadService from "../leads/services/LeadService";
 import { isInvoiceType } from "./utils";
 import { State } from "../../../reducers/state";
 
+
 const filterGroups: FilterGroup[] = [
   {
     title: "CORE FILTER",
@@ -179,6 +180,10 @@ const Invoices = React.memo<any>(({
     setCreateMenuOpened(true);
   };
 
+  const customOnCreate = () => {
+    openCreateMenu();
+  };
+
   const updateHistory = (pathname, search) => {
     const newUrl = window.location.origin + pathname + search;
 
@@ -207,6 +212,7 @@ const Invoices = React.memo<any>(({
     Initial.type = type;
     onInit();
   }, [params, location, url]);
+
 
   const customOnCreate = async () => {
     if (params.id === "new" && window.location.search?.includes("lead.id")) {

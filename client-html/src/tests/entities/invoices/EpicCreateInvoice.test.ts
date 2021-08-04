@@ -24,7 +24,7 @@ describe("Create invoice epic tests", () => {
       },
       {
         type: GET_RECORDS_REQUEST,
-        payload: { entity: "Invoice", listUpdate: true }
+        payload: { entity: "AbstractInvoice", listUpdate: true }
       },
       setListSelection([]),
       clearListNestedEditRecord(0),

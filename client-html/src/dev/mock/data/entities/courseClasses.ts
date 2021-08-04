@@ -57,6 +57,8 @@ export function mockCourseClasses() {
     let rows: any[];
     const columns = params.columns;
 
+
+
     if (columns.includes("course.name,course.code,code,feeIncGst,startDateTime,endDateTime")) {
       rows = generateArraysOfRecords(20, [
         { name: "id", type: "number" },
@@ -125,6 +127,19 @@ export function mockCourseClasses() {
           l.uniqueCode,
         ]
       }));
+    } else if (columns.includes("tax.id")) {
+      rows = generateArraysOfRecords(20, [
+        { name: "id", type: "number" },
+        { name: "tax.id", type: "number" },
+      ]).map(l => ({
+        id: l.id,
+        values: [
+          l.createdOn,
+          l.startDateTime,
+          l.maximumPlaces,
+          l.uniqueCode,
+        ]
+      }));
     } else {
       rows = generateArraysOfRecords(20, [
         { name: "id", type: "number" },
@@ -144,7 +159,7 @@ export function mockCourseClasses() {
       plain: true
     });
   };
-  
+
   this.getCourseClassBudget = () => [
       {
         "id": 6455,
