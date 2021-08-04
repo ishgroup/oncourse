@@ -180,10 +180,6 @@ const Invoices = React.memo<any>(({
     setCreateMenuOpened(true);
   };
 
-  const customOnCreate = () => {
-    openCreateMenu();
-  };
-
   const updateHistory = (pathname, search) => {
     const newUrl = window.location.origin + pathname + search;
 

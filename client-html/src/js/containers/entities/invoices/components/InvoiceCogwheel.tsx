@@ -24,7 +24,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import {
   getRecords,
   setListCreatingNew,
-  setListNestedEditRecord
+  setListNestedEditRecord, setListSelection
 } from "../../../../common/components/list-view/actions";
 import { PaymentOutModel } from "../../paymentsOut/reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
@@ -293,6 +293,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   duplicateAndReverseInvoice: (id: number) => dispatch(duplicateAndReverseInvoice(id)),
   duplicateQuote: (id: number) => dispatch(duplicateQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
+  updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   openAddPaymentOutEditView: (entity: string, record: any, customOnSave?: any) =>
     dispatch(setListNestedEditRecord(entity, record, customOnSave))
 });

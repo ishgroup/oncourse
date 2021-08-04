@@ -287,33 +287,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           label="Lead"
           selectValueMark="id"
           selectLabelCondition={leadLabelCondition}
-          labelAdornment={
-            <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
-          }
-          onInnerValueChange={onLeadChange}
-          itemRenderer={LeadSelectItemRenderer}
-          disabled={!isNew}
-          rowHeight={55}
-          required={values.type === "Quote"}
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField
-          type="text"
-          name="title"
-          label="Title"
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Lead"
-          name="leadId"
-          label="Lead"
-          selectValueMark="id"
-          selectLabelCondition={leadLabelCondition}
           defaultDisplayValue={values && values.leadCustomerName}
           labelAdornment={
             <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
