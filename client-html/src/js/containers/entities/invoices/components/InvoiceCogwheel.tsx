@@ -267,11 +267,11 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
       </MenuItem>
 
       <MenuItem disabled={disableActionForQuote} className={menuItemClass} role="DuplicateQuote" onClick={onClick}>
-        Duplicate Quote
+        Duplicate quote
       </MenuItem>
 
       <MenuItem disabled={disableActionForQuote} className={menuItemClass} role="ConvertingQuote" onClick={onClick}>
-        Converting quote to invoice
+        Convert quote to invoice
       </MenuItem>
     </>
   );

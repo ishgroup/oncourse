@@ -24,13 +24,8 @@ const invoiceColumns: NestedTableColumn[] = [
     width: 110
   },
   {
-    name: "amountOwing",
-    title: "Owing",
-    type: "currency"
-  },
-  {
-    name: "amount",
-    title: "Amount",
+    name: "total",
+    title: "Total (include tax)",
     type: "currency"
   }
 ];

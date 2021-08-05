@@ -169,7 +169,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
             leadInvoice.invoiceType = InvoiceTypeDTO.values()[0].fromDbType(abstractInvoice.type)
             leadInvoice.title = abstractInvoice.title
             leadInvoice.invoiceNumber = abstractInvoice.invoiceNumber
-            leadInvoice.total = abstractInvoice.total.toBigDecimal()
+            leadInvoice.total = abstractInvoice.totalIncTax.toBigDecimal()
             leadInvoice
         }
     }

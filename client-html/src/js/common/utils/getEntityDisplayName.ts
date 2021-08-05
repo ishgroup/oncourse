@@ -121,6 +121,9 @@ export const getSingleEntityDisplayName = (entity: string): string => {
     case "Module": {
       return "Unit Of Competency";
     }
+    case "AbstractInvoice": {
+      return "Invoice";
+    }
     case "PaymentIn": {
       return "Payment In";
     }
