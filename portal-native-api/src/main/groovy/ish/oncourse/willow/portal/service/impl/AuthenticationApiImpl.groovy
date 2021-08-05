@@ -5,6 +5,7 @@ import com.nulabinc.zxcvbn.Strength
 import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.model.User
+import ish.oncourse.willow.portal.auth.FacebookOAuthProvider
 import ish.oncourse.willow.portal.auth.GoogleOAuthProveder
 import ish.oncourse.willow.portal.auth.LoginException
 import ish.oncourse.willow.portal.auth.MicrosoftOAuthProvider
@@ -35,6 +36,10 @@ class AuthenticationApiImpl implements AuthenticationApi{
     @Inject
     MicrosoftOAuthProvider microsoftOAuthProvider
     
+    @Inject
+    FacebookOAuthProvider facebookOAuthProvider
+
+
     @Inject 
     RequestService requestService
     
@@ -52,8 +57,8 @@ class AuthenticationApiImpl implements AuthenticationApi{
     @Override
     Map<String, String> ssoClientIds() {
         return [(SSOproviders.GOOGLE.toString()) : googleOAuthProveder.clientId,
-                (SSOproviders.MICROSOFT.toString()): microsoftOAuthProvider.clientId]
-        
+                (SSOproviders.MICROSOFT.toString()): microsoftOAuthProvider.clientId,
+                (SSOproviders.FACEBOOK.toString()): facebookOAuthProvider.clientId]
     }
     
     @Override
@@ -143,7 +148,6 @@ class AuthenticationApiImpl implements AuthenticationApi{
         //SSO authentification
         else if (details.ssOProvider) {
             SSOCredantials credantials = getSSOCredantials(details)
-           
             user = userService.getUserByEmail(credantials.email)?:userService.createUser(credantials.email)
             userService.updateCredantials(user, credantials)
             String sessionToken = createSession(user)
@@ -172,6 +176,9 @@ class AuthenticationApiImpl implements AuthenticationApi{
                 break
             case SSOproviders.MICROSOFT:
                 authProvider = microsoftOAuthProvider
+                break
+            case SSOproviders.FACEBOOK:
+                authProvider = facebookOAuthProvider
                 break
             default:
                 throw new LoginException('Unsupported Authorization provider')

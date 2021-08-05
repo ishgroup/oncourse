@@ -8,4 +8,5 @@ class SSOCredantials {
     String profilePicture 
     String accessToken 
     String refreshToken 
+    String userId
 }

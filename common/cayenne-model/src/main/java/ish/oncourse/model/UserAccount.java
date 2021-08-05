@@ -20,7 +20,9 @@ public class UserAccount extends _UserAccount {
 
 
     public void setProperty(String name, String value) {
-        UserAccountProperty prop = getAccountProperty(name);
-        prop.setValue(value);
+        if (value != null) {
+            UserAccountProperty prop = getAccountProperty(name);
+            prop.setValue(value);
+        }
     }
 }

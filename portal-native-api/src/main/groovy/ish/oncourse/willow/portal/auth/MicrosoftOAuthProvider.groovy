@@ -68,6 +68,8 @@ class MicrosoftOAuthProvider extends OAuthProvider {
         credantials.accessToken= result.accessToken()
         credantials.accessToken= result.refreshToken()
         credantials.email= result.account().username()
+        credantials.userId= result.account().homeAccountId()
+
         credantials.providerType = SSOProviderType.MICROSOFT
 
         return credantials

@@ -17,7 +17,8 @@ dependencies {
     implementation 'javax.jws:javax.jws-api:1.1'
     implementation project(':common:common-api')
     implementation project(':common:common-bootique')
-    
+    implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+
     //google OAuthAPIs
     implementation 'com.google.api-client:google-api-client:1.31.5'
     implementation 'com.google.apis:google-api-services-drive:v3-rev197-1.25.0'

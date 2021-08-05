@@ -45,6 +45,7 @@ class GoogleOAuthProveder extends OAuthProvider {
         SSOCredantials credantials = new SSOCredantials()
         credantials.providerType = SSOProviderType.GOOGLE
         credantials.email = token.payload.getEmail()
+        credantials.userId = token.payload.getSubject()
         credantials.profilePicture = token.payload.get('picture')
         credantials.accessToken = resp.getAccessToken()
         credantials.refreshToken = resp.getRefreshToken()

@@ -50,7 +50,12 @@ class UserService {
         UserAccount account = user.getAccount(ssoCredantials.providerType)
         account.setProperty("accessToken", ssoCredantials.accessToken)
         account.setProperty("refreshToken", ssoCredantials.refreshToken)
-        user.profilePicture = ssoCredantials.profilePicture
+        account.setProperty("userId", ssoCredantials.userId)
+
+        if (ssoCredantials.profilePicture) {
+            user.profilePicture = ssoCredantials.profilePicture
+        }
+        
         user.objectContext.commitChanges()
     }
 
