@@ -209,11 +209,13 @@ const Invoices = React.memo<any>(({
     onInit();
   }, [params, location, url]);
 
-
   const customOnCreate = async () => {
     if (params.id === "new" && window.location.search?.includes("lead.id")) {
-      const leadId = window.location.search.replace( /(^.+\D)(\d+)(\D.+$)/i,'$2');
+      const matchedValue = window.location.search.match(/\d+$/);
+      const leadId = matchedValue && matchedValue[0];
+
       const lead = await LeadService.getLead(+leadId);
+
       onCreateNew("Quote", lead);
     } else {
       openCreateMenu();
