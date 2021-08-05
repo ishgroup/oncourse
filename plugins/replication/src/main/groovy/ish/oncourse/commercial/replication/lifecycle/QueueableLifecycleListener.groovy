@@ -12,8 +12,10 @@ import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.commercial.replication.cayenne.QueuedRecord
+import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.license.LicenseService
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.DataChannelSyncFilter
@@ -28,6 +30,7 @@ import org.apache.cayenne.annotation.PreRemove
 import org.apache.cayenne.graph.GraphDiff
 import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.query.ObjectIdQuery
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -142,11 +145,15 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
      *
      * @param event cayenne lifecycle event
      */
+    @CompileStatic
     void addRecordToReplicationQueue(Queueable record, final LifecycleEvent event) {
 
         def recordContext = (ISHDataContext) record.getObjectContext()
 
         if (event != LifecycleEvent.POST_REMOVE) {
+            if (record instanceof Quote) {
+                record = SelectById.query(AbstractInvoice, record.id).selectOne(recordContext)
+            }
             def query = new ObjectIdQuery(record.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH)
             record = (Queueable) Cayenne.objectForQuery(recordContext, query)
         }
