@@ -40,8 +40,9 @@ const SessionComp = (
     roomName,
     start,
     end,
-    color
-  }: Session
+    color,
+    onPress
+  }: Session & { onPress: any }
 ) => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 1200px)' });
 
@@ -50,7 +51,7 @@ const SessionComp = (
   const endTime = useMemo(() => format(new Date(end), H_MM_AAA), [end]);
 
   return (
-    <Card style={[style.root, { backgroundColor: color }]}>
+    <Card style={[style.root, { backgroundColor: color }]} onPress={onPress}>
       <View style={style.content}>
         <View style={style.description}>
           <Title numberOfLines={1} style={style.text}>{name}</Title>

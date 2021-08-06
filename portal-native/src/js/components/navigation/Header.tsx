@@ -2,7 +2,7 @@ import React from 'react';
 import { Appbar } from 'react-native-paper';
 import { Platform, StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { useRootNavigation } from '../../hooks/navigation';
+import { DrawerHeaderProps } from '@react-navigation/drawer/lib/typescript/src/types';
 
 const styles = StyleSheet.create({
   header: {
@@ -17,34 +17,21 @@ const styles = StyleSheet.create({
   }
 });
 
-export const HeaderBase = ({ children }) => {
-  return (
-    <Appbar.Header statusBarHeight={getStatusBarHeight()} style={styles.header}>
-      {children}
-    </Appbar.Header>
-  );
-};
+export const HeaderBase = ({ children }) => (
+  <Appbar.Header statusBarHeight={getStatusBarHeight()} style={styles.header}>
+    {children}
+  </Appbar.Header>
+);
 
-export const Header = ({ scene }) => {
-  const { options } = scene.descriptor;
-  const title = options.headerTitle !== undefined
-    ? options.headerTitle
-    : options.title !== undefined
-      ? options.title
-      : scene.route.name;
-
-  const navigation = useRootNavigation();
-
-  return (
-    <HeaderBase>
-      <Appbar.Action
-        icon="menu"
-        color="white"
-        onPress={() => navigation.openDrawer()}
-      />
-      <Appbar.Content title={title} color="white" />
-    </HeaderBase>
-  );
-};
+export const Header = ({ route, navigation: { openDrawer } }: DrawerHeaderProps) => (
+  <HeaderBase>
+    <Appbar.Action
+      icon="menu"
+      color="white"
+      onPress={openDrawer}
+    />
+    <Appbar.Content title={route.name} color="white" />
+  </HeaderBase>
+);
 
 export default Header;

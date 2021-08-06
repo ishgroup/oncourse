@@ -4,9 +4,10 @@ import {
   ListRenderItemInfo, StyleSheet, View
 } from 'react-native';
 import { Caption, Divider, Title } from 'react-native-paper';
-import { format, getDate } from 'date-fns';
+import { getDate, getDay } from 'date-fns';
 import { Day } from '../../model/Timetable';
 import Session from './Session';
+import { getShortWeekDay } from '../../utils/DateUtils';
 
 const styles = StyleSheet.create({
   item: {
@@ -42,8 +43,7 @@ interface Props {
 
 const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
   const day = getDate(item.date);
-  // const weekDay = getShortWeekDay(getDay(item.date));
-  const weekDay = format(item.date, 'MMM');
+  const weekDay = getShortWeekDay(getDay(item.date));
 
   return (
     <View key={item.date.toISOString()} style={styles.dayRow}>

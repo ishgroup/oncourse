@@ -5,7 +5,6 @@ import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import LinkingConfiguration from '../../constants/LinkingConfiguration';
 import NotFoundScreen from '../../screens/NotFoundScreen';
-import { RootStackParamList } from '../../../../types';
 import DrawerNavigation from './DrawerNavigation';
 import LoginScreen from '../../screens/login/LoginScreen';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -13,6 +12,7 @@ import { useLinkingRedirects } from '../../hooks/linking';
 import { getToken, setToken } from '../../utils/SessionStorage';
 import { setIsLogged } from '../../actions/LoginActions';
 import { getClientIds } from '../../actions/ThirdPartyActions';
+import { RootStackParamList } from '../../model/Navigation';
 
 const style = StyleSheet.create({
   loader: {

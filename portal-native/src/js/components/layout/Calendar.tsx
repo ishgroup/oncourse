@@ -31,14 +31,13 @@ const useStyles = createStyles((theme) => ({
   calendarCell: {
     flexBasis: '14.285%',
     minHeight: 42.84,
+    marginTop: 0,
+    marginBottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 50,
     borderWidth: 1,
     borderStyle: 'solid',
-    marginTop: 0,
-    marginBottom: 0,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
     borderColor: '#fff'
   },
   todayMark: {
@@ -48,11 +47,12 @@ const useStyles = createStyles((theme) => ({
     color: '#fff'
   },
   marks: {
+    bottom: 6,
+    paddingTop: 2,
     position: 'absolute',
-    bottom: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row'
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
   },
   mark: {
     marginHorizontal: 1,
@@ -122,14 +122,16 @@ const Calendar = ({
           icon="chevron-left"
           onPress={() => setCurrentMonth(addMonths(month, -1))}
         />
-        <Subheading style={[
-          styles.headerLabel,
-          styles.bolder,
-          styles.grayText,
-          styles.flex1]}
-        >
-          {monthLabel}
-        </Subheading>
+        <View style={[styles.headerLabel, styles.flex1]}>
+          <Subheading style={[
+            styles.bolder,
+            styles.grayText
+          ]}
+          >
+            {monthLabel}
+          </Subheading>
+        </View>
+
         <IconButton
           icon="chevron-right"
           onPress={() => setCurrentMonth(addMonths(month, 1))}
@@ -140,16 +142,20 @@ const Calendar = ({
       ]}
       >
         {week.map((d, i) => (
-          <Subheading
+          <View
             key={d + i}
-            style={[
-              styles.headerLabel,
-              styles.lightGrayText,
-              styles.calendarCell
-            ]}
+            style={styles.calendarCell}
           >
-            {d}
-          </Subheading>
+            <Subheading
+              style={[
+                styles.headerLabel,
+                styles.lightGrayText,
+              ]}
+            >
+              {d}
+            </Subheading>
+          </View>
+
         ))}
         {renderDays}
       </View>

@@ -8,7 +8,7 @@ import {
   StyleSheet, useWindowDimensions, View, VirtualizedList, Platform
 } from 'react-native';
 import {
-  Appbar, Dialog, Portal
+  Appbar, Dialog
 } from 'react-native-paper';
 import '@expo/match-media';
 import {
@@ -103,6 +103,7 @@ export const TimetableScreen = ({ navigation }) => {
   const [month, setCurrentMonth] = useState<Date>(today);
   const [firstVisible, setFirstVisible] = useState<Date>(null);
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [maintainVisibleContentPosition, setMaintainVisibleContentPosition] = useState(null);
 
   const dimensions = useWindowDimensions();
@@ -147,8 +148,9 @@ export const TimetableScreen = ({ navigation }) => {
     }, 2000);
   };
 
-  const onEndReached = () => {
-    const updated = addMonths(month, 1);
+  const onRefresh = (monthToAdd: number) => {
+    setRefreshing(true);
+    const updated = addMonths(month, monthToAdd);
     setDays(getRenderDays(updated, sessions));
 
     // TODO remove when https://github.com/facebook/react-native/pull/29466 will be merged and available
@@ -160,6 +162,15 @@ export const TimetableScreen = ({ navigation }) => {
         updateEnabled.current = true;
       }, 1000);
     }
+    setRefreshing(false);
+  };
+
+  const onEndReached = () => {
+    onRefresh(1);
+  };
+
+  const onStartReached = () => {
+    onRefresh(-1);
   };
 
   const openDialog = () => {
@@ -218,34 +229,34 @@ export const TimetableScreen = ({ navigation }) => {
   ), [dialogOpened, isSmallScreen, renderCalendar]);
 
   return (
-    <Portal.Host>
-      <View style={styles.root}>
-        <HeaderBase>
-          <Appbar.Action
-            icon="menu"
-            color="white"
-            onPress={() => navigation.openDrawer()}
-          />
-          <Appbar.Content titleStyle={styles.title} title={monthLabel} color="white" />
-          {isSmallScreen && <Appbar.Action onPress={openDialog} icon="calendar" />}
-        </HeaderBase>
-        <View style={styles.content}>
-          <Agenda
-            days={days}
-            ref={ref}
-            onEndReached={onEndReached}
-            onScrollToIndexFailed={onScrollToIndexFailed}
-            onViewableItemsChanged={onViewableItemsChanged}
-            initialNumToRender={10}
+    <View style={styles.root}>
+      <HeaderBase>
+        <Appbar.Action
+          icon="menu"
+          color="white"
+          onPress={() => navigation.openDrawer()}
+        />
+        <Appbar.Content titleStyle={isSmallScreen && styles.title} title={monthLabel} color="white" />
+        {isSmallScreen && <Appbar.Action onPress={openDialog} icon="calendar" />}
+      </HeaderBase>
+      <View style={styles.content}>
+        <Agenda
+          days={days}
+          ref={ref}
+          onRefresh={onStartReached}
+          onEndReached={onEndReached}
+          onScrollToIndexFailed={onScrollToIndexFailed}
+          onViewableItemsChanged={onViewableItemsChanged}
+          initialNumToRender={10}
             // IOS
-            maintainVisibleContentPosition={maintainVisibleContentPosition}
-            maxToRenderPerBatch={20}
-            removeClippedSubviews
-          />
-          {!isSmallScreen && renderCalendar}
-        </View>
+          maintainVisibleContentPosition={maintainVisibleContentPosition}
+          maxToRenderPerBatch={20}
+          refreshing={refreshing}
+          removeClippedSubviews
+        />
+        {!isSmallScreen && renderCalendar}
       </View>
       {portal}
-    </Portal.Host>
+    </View>
   );
 };

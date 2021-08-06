@@ -1,14 +1,15 @@
 import * as Linking from 'expo-linking';
+import { LinkingOptions } from '@react-navigation/native/lib/typescript/src/types';
+import { RootStackParamList } from '../model/Navigation';
 
-export default {
+const LinkingConfig: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
       Root: {
         screens: {
-          Dashboard: 'dashboard',
           Timetable: 'timetable',
-          Notifications: 'notifications',
+          Class: 'class/:id',
           Logout: 'logout',
         },
       },
@@ -17,3 +18,5 @@ export default {
     },
   },
 };
+
+export default LinkingConfig;

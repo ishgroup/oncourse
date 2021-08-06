@@ -12,7 +12,7 @@ export type RootDrawerParamList = {
 export type RootStackParamList = {
   NotFound: undefined;
   Login: undefined;
-  Root: RootDrawerParamList;
+  Root: undefined;
 };
 
 export type AppRoute = keyof RootStackParamList;
