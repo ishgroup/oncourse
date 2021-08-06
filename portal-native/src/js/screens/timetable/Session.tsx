@@ -7,7 +7,7 @@ import '@expo/match-media';
 import { Entypo } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import { useMediaQuery } from 'react-responsive';
-import { Session } from '../../model/Calendar';
+import { Session } from '@api/model';
 import { spacing } from '../../styles';
 import { H_MM_AAA } from '../../constants/DateTime';
 
@@ -43,7 +43,7 @@ const SessionComp = (
     color
   }: Session
 ) => {
-  const isSmallScreen = useMediaQuery({ query: '(max-device-width: 800px)' });
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 1200px)' });
 
   const startTime = useMemo(() => format(new Date(start), H_MM_AAA), [start]);
 

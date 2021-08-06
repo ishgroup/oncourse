@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  ListRenderItemInfo, StyleSheet, View, VirtualizedList
+  FlatList, FlatListProps,
+  ListRenderItemInfo, StyleSheet, View
 } from 'react-native';
 import { Caption, Divider, Title } from 'react-native-paper';
-import { getDate, getDay } from 'date-fns';
+import { format, getDate } from 'date-fns';
 import { Day } from '../../model/Timetable';
-import { getShortWeekDay } from '../../utils/DateUtils';
 import Session from './Session';
 
 const styles = StyleSheet.create({
@@ -37,15 +37,16 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  days: Day[]
+  days: Day[];
 }
 
 const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
   const day = getDate(item.date);
-  const weekDay = getShortWeekDay(getDay(item.date));
+  // const weekDay = getShortWeekDay(getDay(item.date));
+  const weekDay = format(item.date, 'MMM');
 
   return (
-    <View style={styles.dayRow}>
+    <View key={item.date.toISOString()} style={styles.dayRow}>
       <View style={styles.dayColumn}>
         <Title style={styles.dayLabel}>
           {day}
@@ -63,15 +64,39 @@ const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
   );
 };
 
-const Agenda = ({ days = [] }: Props, ref) => (
-  <VirtualizedList
+const EMPTY_ITEM_HEIGHT = 82;
+const ITEM_HEIGHT = 32;
+const SESSION_HEIGHT = 98;
+
+const getItemHeight = (item: Day) => (item.sessions.length
+  ? ITEM_HEIGHT + (item.sessions.length * SESSION_HEIGHT)
+  : EMPTY_ITEM_HEIGHT
+);
+
+const getItemLayout = (data: Day[], index) => ({
+  length: getItemHeight(data[index]),
+  offset: data.slice(0, index).reduce((p, c) => p + getItemHeight(c), 0),
+  index
+});
+
+const viewabilityConfig = {
+  waitForInteraction: false,
+  itemVisiblePercentThreshold: 25,
+};
+
+const Agenda = ({
+  days = [],
+  ...rest
+}: Props & Partial<FlatListProps<Day>>, ref) => (
+  <FlatList
     ref={ref}
     data={days}
-    getItem={(i, n) => days[n]}
     keyExtractor={(item) => item.date.toISOString()}
-    getItemCount={() => days.length}
     renderItem={renderDay}
+    getItemLayout={getItemLayout}
+    viewabilityConfig={viewabilityConfig}
+    {...rest}
   />
 );
 
-export default React.forwardRef(Agenda);
+export default React.memo(React.forwardRef(Agenda));

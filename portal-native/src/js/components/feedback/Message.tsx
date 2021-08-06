@@ -7,7 +7,7 @@ import { setMessage } from '../../actions/MessageActions';
 
 const Message = () => {
   const message = useAppSelector((state) => state.message.message);
-  const isBigScreen = useMediaQuery({ query: '(min-device-width: 420px)' });
+  const isBigScreen = useMediaQuery({ query: '(min-width: 420px)' });
   const dispatch = useAppDispatch();
 
   const onDismissSnackBar = () => {

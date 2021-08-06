@@ -36,7 +36,7 @@ const routes: LoginRoute[] = [
 ];
 
 const LoginScreen = () => {
-  const isSmallScreen = useMediaQuery({ query: '(max-device-height: 800px)' });
+  const isSmallScreen = useMediaQuery({ query: '(max-height: 800px)' });
   const stage = useAppSelector((state) => state.login.stage);
   const verificationUrl = useAppSelector((state) => state.login.verificationUrl);
 
