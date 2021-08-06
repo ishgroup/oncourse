@@ -15,7 +15,7 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
- createInvoice, getDefaultInvoiceTerms, getInvoice, removeInvoice, updateInvoice
+  createInvoice, deleteQuote, getDefaultInvoiceTerms, getInvoice, removeInvoice, updateInvoice
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
@@ -37,6 +37,10 @@ import { getAdministrationSites } from "../sites/actions";
 import { checkPermissions } from "../../../common/actions";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
+import LeadService from "../leads/services/LeadService";
+import { isInvoiceType } from "./utils";
+import { State } from "../../../reducers/state";
+
 
 const filterGroups: FilterGroup[] = [
   {
@@ -82,10 +86,15 @@ const Initial: Invoice = {
   dateDue: null,
   invoiceDate: null,
   invoiceNumber: 0,
+  leadId: null,
+  leadCustomerName: null,
+  contactId: null,
+  contactName: null,
   publicNotes: null,
   shippingAddress: null,
   customerReference: null,
   sendEmail: true,
+  tags: [],
   invoiceLines: [],
   paymentPlans: [
     {
@@ -116,7 +125,7 @@ const nameCondition = (invoice: Invoice) => {
   if (invoice.type === "Invoice") {
     result = invoice.invoiceNumber ? "#" + invoice.invoiceNumber : "New";
   } else {
-    result = invoice.leadId ? "Quote #" + invoice.leadId : "New";
+    result = invoice.id ? "Quote #" + invoice.id : "New";
   }
 
   return result;
@@ -141,10 +150,12 @@ const Invoices = React.memo<any>(({
   onSave,
   getInvoiceRecord,
   setListCreatingNew,
-  onDelete,
+  onDeleteQuote,
+  selection,
   history,
   updateSelection,
   location,
+  listRecords,
   match: { params, url },
   onInit
   }) => {
@@ -169,10 +180,6 @@ const Invoices = React.memo<any>(({
     setCreateMenuOpened(true);
   };
 
-  const customOnCreate = () => {
-    openCreateMenu();
-  };
-
   const updateHistory = (pathname, search) => {
     const newUrl = window.location.origin + pathname + search;
 
@@ -184,15 +191,38 @@ const Invoices = React.memo<any>(({
     }
   };
 
-  const onCreateNew = useCallback(type => {
+  const onCreateNew = useCallback((type, lead?) => {
     closeCreateMenu();
     updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
 
     setListCreatingNew(true);
     updateSelection(["new"]);
+
+    if (lead) {
+      Initial.leadId = lead.id;
+      Initial.leadCustomerName = lead.contactName;
+      Initial.contactId = lead.contactId;
+      Initial.contactName = lead.contactName;
+    }
+
     Initial.type = type;
     onInit();
   }, [params, location, url]);
+
+  const customOnCreate = async () => {
+    if (params.id === "new" && window.location.search?.includes("lead.id")) {
+      const matchedValue = window.location.search.match(/\d+$/);
+      const leadId = matchedValue && matchedValue[0];
+
+      const lead = await LeadService.getLead(+leadId);
+
+      onCreateNew("Quote", lead);
+    } else {
+      openCreateMenu();
+    }
+  };
+
+  const defaultDeleteDisabled = (selection.length !== 1) || (selection.length === 1 && isInvoiceType(selection[0], listRecords));
 
   return (
     <div>
@@ -214,12 +244,12 @@ const Invoices = React.memo<any>(({
         onSave={onSave}
         onInit={onInit}
         customOnCreate={customOnCreate}
-        onDelete={onDelete}
+        onDelete={onDeleteQuote}
+        defaultDeleteDisabled={defaultDeleteDisabled}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         EditViewContent={InvoicesEditView}
         CogwheelAdornment={InvoiceCogwheel}
-        defaultDeleteDisabled
         noListTags
       />
       <Menu
@@ -259,6 +289,11 @@ const Invoices = React.memo<any>(({
   );
 });
 
+const mapStateToProps = (state: State) => ({
+  listRecords: state.list.records,
+  selection: state.list.selection,
+});
+
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     const today = formatToDateOnly(new Date());
@@ -280,9 +315,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, invoice: Invoice) => dispatch(updateInvoice(id, invoice)),
   onCreate: (invoice: Invoice) => dispatch(createInvoice(invoice)),
   onDelete: (id: string) => dispatch(removeInvoice(id)),
+  onDeleteQuote: (id: string) => dispatch(deleteQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   getQePermissions: () => dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }))
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(Invoices);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Invoices);

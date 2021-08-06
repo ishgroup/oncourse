@@ -91,7 +91,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
   const all = useMemo(() => {
     const response = fields.getAll();
 
-    response.sort(sortInvoicePaymentPlans);
+    response && response.sort(sortInvoicePaymentPlans);
 
     return response;
   }, [activeStep, fields.length, id]);
@@ -123,7 +123,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
         }}
         orientation="vertical"
       >
-        {all.map((i, index) => {
+        {all && all.map((i, index) => {
           const field: InvoicePaymentPlan = fields.get(index);
 
           const isPaymentDue = field.type === "Payment due";
