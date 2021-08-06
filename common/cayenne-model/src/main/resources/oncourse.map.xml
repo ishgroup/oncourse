@@ -4791,7 +4791,7 @@
 	<obj-relationship name="parameters" source="Instruction" target="InstructionParameter" deleteRule="Cascade" db-relationship-path="parameters"/>
 	<obj-relationship name="instruction" source="InstructionParameter" target="Instruction" deleteRule="Nullify" db-relationship-path="instruction"/>
 	<obj-relationship name="authorisedRebillingCard" source="Invoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
-	<obj-relationship name="college" source="Invoice" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="college" source="AbstractInvoice" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
 	<obj-relationship name="invoiceDueDates" source="Invoice" target="InvoiceDueDate" deleteRule="Nullify" db-relationship-path="invoiceDueDates"/>
@@ -4875,7 +4875,6 @@
 	<obj-relationship name="queuedRecords" source="QueuedTransaction" target="QueuedRecord" deleteRule="Deny" db-relationship-path="queuedRecords"/>
 	<obj-relationship name="contact" source="Quote" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="college" source="Quote" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="webSite" source="Quote" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>

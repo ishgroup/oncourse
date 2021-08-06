@@ -111,8 +111,12 @@ public abstract class AbstractInvoice extends _AbstractInvoice implements Queuea
 //    public abstract PaymentIn getAuthorisedRebillingCard();
 //    public abstract void setAuthorisedRebillingCard(PaymentIn paymentIn);
 
-    public abstract College getCollege();
-    public abstract void setCollege(College college);
+    public College getCollege() {
+        return super.getCollege();
+    }
+    public void setCollege(College college) {
+        super.setCollege(college);
+    }
 
     public abstract WebSite getWebSite();
     public abstract void setWebSite(WebSite webSite);

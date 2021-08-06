@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.common.types.EntityMapping;
+import ish.common.types.InvoiceType;
 import ish.oncourse.model.*;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.persistence.ICayenneService;
@@ -16,6 +17,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.map.DeleteRule;
 import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.query.ObjectSelect;
+import org.apache.cayenne.query.SelectById;
 import org.apache.cayenne.reflect.ArcProperty;
 import org.apache.cayenne.reflect.ClassDescriptor;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -305,6 +307,15 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
                     attachmentProcessor.deletedBinaryDataBy((BinaryInfo) objectToUpdate);
 				return null;
 			} else {
+            	//handle Quote -> Invoice transformation
+            	if (objectToUpdate instanceof Quote && Invoice.class.getSimpleName().equals(currentStub.getEntityIdentifier())) {
+            		ObjectContext context = cayenneService.newNonReplicatingContext();
+					objectToUpdate = context.localObject(objectToUpdate);
+            		((AbstractInvoice) objectToUpdate).setType(InvoiceType.INVOICE);
+					context.commitChanges();
+					objectToUpdate = SelectById.query(Invoice.class, objectToUpdate.getId()).selectOne(atomicContext);
+				}
+            	
 				willowUpdater.updateEntityFromStub(currentStub, objectToUpdate, createRelationShipCallback());
 				return objectToUpdate;
 			}
