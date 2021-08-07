@@ -5,7 +5,7 @@ import React, {
   useRef, useMemo
 } from 'react';
 import {
-  StyleSheet, useWindowDimensions, View, VirtualizedList, Platform
+  StyleSheet, Platform, View, NativeSyntheticEvent, NativeScrollEvent, FlatList
 } from 'react-native';
 import {
   Appbar, Dialog
@@ -103,30 +103,18 @@ export const TimetableScreen = ({ navigation }) => {
   const [month, setCurrentMonth] = useState<Date>(today);
   const [firstVisible, setFirstVisible] = useState<Date>(null);
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(true);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [maintainVisibleContentPosition, setMaintainVisibleContentPosition] = useState(null);
 
-  const dimensions = useWindowDimensions();
-
-  const ref = useRef<VirtualizedList<Day>>();
-  const updateEnabled = useRef<boolean>(false);
-
+  const ref = useRef<FlatList<Day>>();
   const isSmallScreen = useMediaQuery({ query: '(max-width: 1024px)' });
 
   const scrollToToday = () => {
     ref.current.scrollToIndex({ index: days.findIndex((d) => isSameDay(d.date, new Date())) });
   };
 
-  const onScrollToIndexFailed = (error) => {
-    setTimeout(() => {
-      if (days.length !== 0 && ref.current !== null) {
-        ref.current.scrollToIndex({ index: error.index, animated: true });
-      }
-    }, 500);
-  };
-
   const onDayPress = (day) => {
-    updateEnabled.current = false;
     const index = days.findIndex((d) => isSameDay(d.date, day));
 
     if (!isSameMonth(firstVisible, day)) {
@@ -143,26 +131,23 @@ export const TimetableScreen = ({ navigation }) => {
         ref.current.scrollToIndex({ index: updatedDays.findIndex((d) => isSameDay(d.date, day)) });
       }, 200);
     }
-    setTimeout(() => {
-      updateEnabled.current = true;
-    }, 2000);
   };
 
   const onRefresh = (monthToAdd: number) => {
     setRefreshing(true);
-    const updated = addMonths(month, monthToAdd);
-    setDays(getRenderDays(updated, sessions));
+    const updatedMonth = addMonths(month, monthToAdd);
+    const updatedDays = getRenderDays(updatedMonth, sessions);
+    setCurrentMonth(updatedMonth);
+    setDays(updatedDays);
 
     // TODO remove when https://github.com/facebook/react-native/pull/29466 will be merged and available
     if (Platform.OS === 'android') {
-      updateEnabled.current = false;
-      ref.current.scrollToOffset({ offset: dimensions.height, animated: false });
-
-      setTimeout(() => {
-        updateEnabled.current = true;
-      }, 1000);
+      ref.current.scrollToIndex({ index: Math.round(updatedDays.length / 2), animated: false });
     }
-    setRefreshing(false);
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   };
 
   const onEndReached = () => {
@@ -181,25 +166,64 @@ export const TimetableScreen = ({ navigation }) => {
     if (viewableItems[0]) {
       setFirstVisible(viewableItems[0].item.date);
     }
-  }, 100), []);
+  }, 50), []);
+
+  const syncScroll = useCallback(debounce((scrolledPersent, onEnd, onStart) => {
+    if (scrolledPersent > 85) {
+      onEnd();
+    }
+    if (scrolledPersent < 25) {
+      onStart();
+    }
+  }, 50), []);
+
+  const onScroll = (
+    {
+      nativeEvent:
+        {
+          contentOffset,
+          layoutMeasurement,
+          contentSize
+        }
+    }: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
+    if (isMounted) {
+      const scrolledPersent = ((contentOffset.y > layoutMeasurement.height
+        ? contentOffset.y + layoutMeasurement.height
+        : contentOffset.y
+      ) / contentSize.height) * 100;
+
+      syncScroll(scrolledPersent, onEndReached, onStartReached);
+    }
+  };
+
+  const syncMonth = (isScrolling, prevMonth, newMonth) => {
+    if (!isScrolling && newMonth && !isSameMonth(prevMonth, newMonth)) {
+      setCurrentMonth(newMonth);
+    }
+  };
+
+  const updateMonth = useMemo(
+    () => debounce(syncMonth, 100),
+    []
+  );
 
   useEffect(() => {
     scrollToToday();
     // Initial scroll timeout
     setTimeout(() => {
-      updateEnabled.current = true;
+      setRefreshing(false);
       setMaintainVisibleContentPosition({
         minIndexForVisible: 0,
         autoscrollToTopThreshold: 0.4
       });
+      setIsMounted(true);
     }, 2000);
   }, []);
 
   useEffect(() => {
-    if (firstVisible && updateEnabled.current && !isSameMonth(firstVisible, month)) {
-      setCurrentMonth(firstVisible);
-    }
-  }, [firstVisible]);
+    updateMonth(refreshing, month, firstVisible);
+  }, [firstVisible, refreshing]);
 
   const monthLabel = useMemo(() => format(month, MMMM_YYYY), [month]);
 
@@ -243,15 +267,11 @@ export const TimetableScreen = ({ navigation }) => {
         <Agenda
           days={days}
           ref={ref}
-          onRefresh={onStartReached}
-          onEndReached={onEndReached}
-          onScrollToIndexFailed={onScrollToIndexFailed}
           onViewableItemsChanged={onViewableItemsChanged}
           initialNumToRender={10}
             // IOS
           maintainVisibleContentPosition={maintainVisibleContentPosition}
-          maxToRenderPerBatch={20}
-          refreshing={refreshing}
+          onScroll={onScroll}
           removeClippedSubviews
         />
         {!isSmallScreen && renderCalendar}

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import {
   Caption, Card, Subheading, Title
 } from 'react-native-paper';
@@ -13,6 +13,7 @@ import { H_MM_AAA } from '../../constants/DateTime';
 
 const style = StyleSheet.create({
   root: {
+    ...Platform.OS === 'web' ? { cursor: 'pointer' } : {},
     padding: spacing(2),
     marginBottom: spacing(1),
   },

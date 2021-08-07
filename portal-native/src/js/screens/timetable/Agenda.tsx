@@ -4,7 +4,9 @@ import {
   ListRenderItemInfo, StyleSheet, View
 } from 'react-native';
 import { Caption, Divider, Title } from 'react-native-paper';
-import { getDate, getDay } from 'date-fns';
+import {
+  getDate, getDay, isSameDay
+} from 'date-fns';
 import { Day } from '../../model/Timetable';
 import Session from './Session';
 import { getShortWeekDay } from '../../utils/DateUtils';
@@ -41,7 +43,19 @@ interface Props {
   days: Day[];
 }
 
-const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
+const isEqual = (prev: ListRenderItemInfo<Day>, next: ListRenderItemInfo<Day>) => {
+  let equal = true;
+
+  if ((!prev.item.sessions.length && next.item.sessions.length)
+    || !isSameDay(prev.item.date, next.item.date)
+  ) {
+    equal = false;
+  }
+
+  return equal;
+};
+
+const DayRow = React.memo(({ item }: ListRenderItemInfo<Day>) => {
   const day = getDate(item.date);
   const weekDay = getShortWeekDay(getDay(item.date));
 
@@ -62,7 +76,9 @@ const renderDay = ({ item }: ListRenderItemInfo<Day>) => {
       </View>
     </View>
   );
-};
+}, isEqual);
+
+const renderDay = (props) => <DayRow {...props} />;
 
 const EMPTY_ITEM_HEIGHT = 82;
 const ITEM_HEIGHT = 32;
