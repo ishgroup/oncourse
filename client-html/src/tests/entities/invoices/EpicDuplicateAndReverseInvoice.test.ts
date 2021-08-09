@@ -15,6 +15,7 @@ describe("Duplicate and reverse invoice epic tests", () => {
         l.priceEachExTax = -l.priceEachExTax;
         l.discountEachExTax = -l.discountEachExTax;
         l.taxEach = -l.taxEach;
+        l.id = null;
       });
 
       data.paymentPlans = [data.paymentPlans[0]];
