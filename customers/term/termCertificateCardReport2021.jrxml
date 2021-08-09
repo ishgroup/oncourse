@@ -141,12 +141,12 @@
 				<textFieldExpression><![CDATA[$F{certificate}.issuedOn.format("d MMM yyyy" )]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-8" style="Footer" x="0" y="30" width="160" height="11" forecolor="#000000" uuid="a38c846c-9375-4e68-ba0e-b56a10a20355">
+				<reportElement key="staticText-8" style="Footer" x="0" y="30" width="160" height="14" forecolor="#000000" uuid="a38c846c-9375-4e68-ba0e-b56a10a20355">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="3.2"/>
+					<font size="5"/>
 				</textElement>
 				<text><![CDATA[A statement of attainment is issued when an individual has completed one or more accredited units]]></text>
 			</staticText>
