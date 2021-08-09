@@ -156,6 +156,9 @@ class QueueableLifecycleListener implements DataChannelSyncFilter {
             }
             def query = new ObjectIdQuery(record.getObjectId(), false, ObjectIdQuery.CACHE_REFRESH)
             record = (Queueable) Cayenne.objectForQuery(recordContext, query)
+            if (!record) {
+                return
+            }
         }
 
         logger.debug("adding to replication queue {}", getClass())
