@@ -402,8 +402,14 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 	Queueable createObject(GenericReplicationStub currentStub) {
 
 		try {
-			Queueable objectToUpdate = atomicContext.newObject(getEntityClass(atomicContext,
-					EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier())));
+			Queueable objectToUpdate;
+			if (currentStub.getEntityIdentifier().equals(Invoice.class.getSimpleName()) ||
+					currentStub.getEntityIdentifier().equals(Quote.class.getSimpleName())) {
+				objectToUpdate= atomicContext.newObject(getEntityClass(atomicContext,currentStub.getEntityIdentifier()));
+			} else {
+				objectToUpdate = atomicContext.newObject(getEntityClass(atomicContext,
+						EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier())));
+			}
 			College currentCollege = atomicContext.localObject(webSiteService.getCurrentCollege());
 			objectToUpdate.setCollege(currentCollege);
 			willowUpdater.setCayenneService(cayenneService);
