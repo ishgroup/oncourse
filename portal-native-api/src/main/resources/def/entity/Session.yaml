@@ -8,6 +8,10 @@ properties:
     type: string
     description: Session class id
     requred: true
+  classColor:
+    type: string
+    requred: true
+    description: Class unique color in HEX format
   name:
     type: string
     requred: true
@@ -41,8 +45,4 @@ properties:
     required: false
     description: Site timezone
     example: Australia/Brisbane
-  color:
-    type: string
-    requred: true
-    description: Session unique color in HEX format
 
