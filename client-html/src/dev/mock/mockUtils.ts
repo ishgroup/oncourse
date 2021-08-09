@@ -3,8 +3,8 @@ const mockByKeys = (index, keys) => {
   keys.forEach(item => {
     let value: any = `${item.name} ${index + 1}`;
 
-    if (item.type === "Datetime") value = new Date().toISOString();
-    else if (item.type === "number") value = parseInt(`${index + 1}`, 10);
+    if (item.type === "Datetime" || item.type === "Date") value = new Date().toISOString();
+    else if (item.type === "number" || item.type === "Number") value = parseInt(`${index + 1}`, 10);
 
     obj[item.name] = value;
   });
