@@ -58,7 +58,7 @@ class InvoiceLine extends _InvoiceLine {
                 return false
             }
         }
-        return getInvoice().isAsyncReplicationAllowed()
+        return getInvoice() == null || getInvoice().isAsyncReplicationAllowed()
     }
 
     /**
