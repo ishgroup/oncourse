@@ -2,7 +2,6 @@ import React from 'react';
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
 import { DrawerContentComponentProps } from '@react-navigation/drawer/src/types';
-import { Text, View } from 'react-native';
 import Header from './Header';
 import { TimetableScreen } from '../../screens/timetable/TimetableScreen';
 import LogoutScreen from '../../screens/LogoutScreen';
@@ -29,6 +28,7 @@ const DrawerNavigation = () => (
   <DrawerNav.Navigator
     screenOptions={{
       headerShown: true,
+      unmountOnBlur: true,
       header: Header,
     }}
     drawerContent={CustomDrawerContent}

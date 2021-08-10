@@ -1,6 +1,10 @@
 import { AxiosResponse } from 'axios';
+import { Dispatch } from 'redux';
 import { IAction } from '../model/IshAction';
 import { FETCH_FAIL } from '../actions/FetchActions';
+import { SET_MESSAGE } from '../actions/MessageActions';
+import { setIsLogged } from '../actions/LoginActions';
+import { removeToken } from './SessionStorageUtils';
 
 export const FetchErrorHandler = (response: AxiosResponse, customMessage?: string): IAction<any>[] => {
   if (!response) {
@@ -17,6 +21,18 @@ export const FetchErrorHandler = (response: AxiosResponse, customMessage?: strin
   switch (status) {
     case 400:
       return [
+        {
+          type: FETCH_FAIL,
+          payload: {
+            message: data.errorMessage || customMessage || 'Something went wrong',
+          },
+        },
+      ];
+
+    case 401:
+      removeToken();
+      return [
+        setIsLogged(false),
         {
           type: FETCH_FAIL,
           payload: {
@@ -46,3 +62,42 @@ export const FetchErrorHandler = (response: AxiosResponse, customMessage?: strin
       ];
   }
 };
+
+export const instantFetchErrorHandler = (
+  dispatch: Dispatch,
+  response: AxiosResponse,
+  message = 'Something went wrong'
+) => {
+  if (!response) {
+    dispatch({
+      type: SET_MESSAGE,
+      payload: { message }
+    });
+    return;
+  }
+
+  const { data, status } = response;
+
+  if (status) {
+    if (status === 401) {
+      removeToken();
+      dispatch(setIsLogged(false));
+    }
+
+    dispatch({
+      type: SET_MESSAGE,
+      payload: {
+        message: (data && data.errorMessage) || message
+      }
+    });
+  } else {
+    dispatch({
+      type: SET_MESSAGE,
+      payload: {
+        message: response
+      }
+    });
+  }
+};
+
+export default instantFetchErrorHandler;

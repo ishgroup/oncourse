@@ -318,5 +318,8 @@ export const useCommonStyles = () => {
     bgTransp: {
       backgroundColor: 'transparent',
     },
+    bgThemed: {
+      backgroundColor: theme.colors.background,
+    },
   });
 };

@@ -1,4 +1,4 @@
-import { CourseClass, CourseClassApi } from '@api/model';
+import { ClassAttendanceItem, CourseClass, CourseClassApi } from '@api/model';
 import { DefaultHttpService } from '../constants/HttpService';
 
 class CourseClassService {
@@ -6,6 +6,10 @@ class CourseClassService {
 
   public getClass(classId: string): Promise<CourseClass> {
     return this.courseClassApi.getClass(classId);
+  }
+
+  public markAttendance(item: ClassAttendanceItem): Promise<any> {
+    return this.courseClassApi.markAttendance(item);
   }
 }
 
