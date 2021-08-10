@@ -1,5 +1,6 @@
 package ish.oncourse.willow.editor.webdav.jscompiler
 
+import groovy.transform.CompileStatic
 import org.apache.commons.io.IOUtils
 import org.apache.commons.io.LineIterator
 import org.apache.commons.lang3.StringUtils
@@ -8,7 +9,7 @@ import org.apache.logging.log4j.Logger
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-
+@CompileStatic
 class JSSourceParser {
 
     private static final Logger logger = LogManager.logger

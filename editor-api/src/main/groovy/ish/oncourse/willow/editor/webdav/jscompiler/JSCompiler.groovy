@@ -2,6 +2,7 @@ package ish.oncourse.willow.editor.webdav.jscompiler
 
 import com.google.javascript.jscomp.*
 import com.google.javascript.jscomp.Compiler
+import groovy.transform.CompileStatic
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.editor.webdav.ErrorEmailTemplate
 import ish.oncourse.willow.editor.webdav.GzipFile
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+@CompileStatic
 class JSCompiler implements ICompiler {
     
     private static final Logger logger = LogManager.logger
@@ -170,4 +172,17 @@ class JSCompiler implements ICompiler {
         javaScriptCompiler.init()
         return javaScriptCompiler
     }
+//
+//    static void main(String[] args) {
+//        JSCompiler javaScriptCompiler = new JSCompiler()
+//        javaScriptCompiler.sRoot = '/var/onCourse/s-draft'
+//
+//        javaScriptCompiler.siteKey = 'template-g'
+//        javaScriptCompiler.init()
+//        ICompiler compiler =  javaScriptCompiler
+//        compiler.compile()
+//        println compiler.errors.empty
+//        compiler.result
+//        compiler.gzResult
+//    }
 }

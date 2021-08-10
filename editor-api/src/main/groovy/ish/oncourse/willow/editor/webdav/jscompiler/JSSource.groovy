@@ -1,7 +1,9 @@
 package ish.oncourse.willow.editor.webdav.jscompiler
 
 import com.google.javascript.jscomp.SourceFile
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class JSSource {
     private String fileName
     private File file
@@ -47,7 +49,7 @@ class JSSource {
         JSSource source = new JSSource()
         source.fileName = fileName
         source.file = file
-        source.sourceFile = SourceFile.fromFile(file)
+        source.sourceFile = SourceFile.fromFile(file.getPath())
         source.parent = parent
         return source
     }

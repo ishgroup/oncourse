@@ -1,8 +1,9 @@
 package ish.oncourse.willow.editor.webdav.jscompiler
 
+import groovy.transform.CompileStatic
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.apache.logging.log4j.Logger
-
+@CompileStatic
 class JSCompilerErrorHandler {
 
     private List<String> errors = []
