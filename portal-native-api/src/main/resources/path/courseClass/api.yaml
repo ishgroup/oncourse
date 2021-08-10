@@ -4,6 +4,8 @@ get:
   description: Get class by id
   tags:
     - CourseClass
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
   parameters:
     - name: classId
       in: query

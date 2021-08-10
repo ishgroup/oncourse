@@ -42,7 +42,7 @@ class UserSessionFilter extends BillingSessionFilter {
         if (!user) {
             return 'Login unsuccessful. Invalid authentification data'
         } else {
-            requestService.ThreadLocalUser.set(user)
+            requestService.ThreadLocalSystemUser.set(user)
         }
         return null
     }
@@ -80,7 +80,7 @@ class UserSessionFilter extends BillingSessionFilter {
         } 
         
         if (user?.isAdmin) {
-            requestService.ThreadLocalUser.set(user)
+            requestService.ThreadLocalSystemUser.set(user)
             return null
         } else {
             return 'User session invalid'

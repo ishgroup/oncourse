@@ -4,6 +4,7 @@ import com.google.inject.Singleton
 import ish.oncourse.api.access.SessionCookie
 import ish.oncourse.model.College
 import ish.oncourse.model.SystemUser
+import ish.oncourse.model.User
 import ish.oncourse.model.WebSite
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.Response
@@ -15,7 +16,8 @@ class RequestService {
 
     static final ThreadLocal<Request> ThreadLocalRequest = new ThreadLocal<Request>()
     static final ThreadLocal<Response> ThreadLocalResponse = new ThreadLocal<Response>()
-    static final ThreadLocal<SystemUser> ThreadLocalUser = new ThreadLocal<SystemUser>()
+    static final ThreadLocal<SystemUser> ThreadLocalSystemUser = new ThreadLocal<SystemUser>()
+    static final ThreadLocal<User> ThreadLocalUser = new ThreadLocal<User>()
 
 
     Request getRequest() {
@@ -27,15 +29,19 @@ class RequestService {
     }
 
     SystemUser getSystemUser() {
-        ThreadLocalUser.get()
+        ThreadLocalSystemUser.get()
     }
     
     College getCollege() {
-        ThreadLocalUser.get()?.college
+        ThreadLocalSystemUser.get()?.college
     }
     
     String getRequestUrl() {
         request.requestURL
+    }
+
+    User getUser() {
+        ThreadLocalUser.get()
     }
 
     void setSessionToken(String value, int maxAge) {

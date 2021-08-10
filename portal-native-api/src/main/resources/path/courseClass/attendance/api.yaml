@@ -4,6 +4,8 @@ put:
   description: update attendance item
   tags:
     - CourseClass
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
   parameters:
     - name: item
       in: body

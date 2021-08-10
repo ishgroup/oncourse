@@ -4,6 +4,8 @@ get:
   description: Get sessions by user id
   tags:
     - Session
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
   responses:
     '200':
       description: Success response.

@@ -10,7 +10,6 @@ import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedFilter
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.api.cxf.CXFModule
-import ish.oncourse.api.request.RequestFilter
 import ish.oncourse.api.request.RequestModule
 import ish.oncourse.cayenne.WillowCayenneModuleBuilder
 import ish.oncourse.configuration.Configuration
@@ -31,7 +30,7 @@ import static ish.oncourse.configuration.Configuration.AdminProperty.STORAGE_ACC
 
 class BillingModule extends ConfigModule {
 
-    private static final TypeLiteral<MappedFilter<RequestFilter>> CORS_FILTER =
+    private static final TypeLiteral<MappedFilter<CORSFilter>> CORS_FILTER =
             new TypeLiteral<MappedFilter<CORSFilter>>() {
             }
     @Override

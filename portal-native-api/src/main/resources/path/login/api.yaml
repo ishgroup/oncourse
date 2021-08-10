@@ -42,7 +42,9 @@ post:
 delete:
   summary: Log user out
   operationId: signOut
-  description: destroy server session 
+  description: destroy server session
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
   tags:
     - Authentication
   responses:
