@@ -48,27 +48,27 @@ const filterGroups: FilterGroup[] = [
     filters: [
       {
         name: "Payment plan",
-        expression: "invoiceDate after yesterday",
+        expression: "invoiceDate after yesterday and type == 1",
         active: false
       },
       {
         name: "Credit notes",
-        expression: "amountOwing != null and amountOwing < 0",
+        expression: "amountOwing != null and amountOwing < 0 and type == 1",
         active: false
       },
       {
         name: "Unpaid invoices",
-        expression: "amountOwing != null and amountOwing > 0",
+        expression: "amountOwing != null and amountOwing > 0 and type == 1",
         active: true
       },
       {
         name: "Overdue",
-        expression: "overdue > 0 and amountOwing > 0 and dateDue < today",
+        expression: "overdue > 0 and amountOwing > 0 and dateDue < today and type == 1",
         active: false
       },
       {
         name: "Balanced (paid)",
-        expression: "amountOwing == 0",
+        expression: "amountOwing == 0 and type == 1",
         active: false
       },
       {
@@ -209,11 +209,13 @@ const Invoices = React.memo<any>(({
     onInit();
   }, [params, location, url]);
 
-
   const customOnCreate = async () => {
     if (params.id === "new" && window.location.search?.includes("lead.id")) {
-      const leadId = window.location.search.replace( /(^.+\D)(\d+)(\D.+$)/i,'$2');
+      const matchedValue = window.location.search.match(/\d+$/);
+      const leadId = matchedValue && matchedValue[0];
+
       const lead = await LeadService.getLead(+leadId);
+
       onCreateNew("Quote", lead);
     } else {
       openCreateMenu();
