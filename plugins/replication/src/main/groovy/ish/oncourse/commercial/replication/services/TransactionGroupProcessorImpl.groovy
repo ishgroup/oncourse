@@ -11,6 +11,7 @@ import ish.common.types.EntityMapping
 import ish.oncourse.commercial.replication.updaters.IAngelUpdater
 import ish.oncourse.commercial.replication.updaters.RelationShipCallback
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.webservices.ITransactionGroupProcessor
 import ish.oncourse.webservices.util.GenericDeletedStub
@@ -294,8 +295,13 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
         if (willowId == null) {
             return null
         }
-
-        def willowIdentifier = EntityMapping.getWillowEntityIdentifer(entityName)
+        def willowIdentifier
+        if (Invoice.simpleName == entityName) {
+            willowIdentifier = entityName
+        } else {
+            willowIdentifier = EntityMapping.getWillowEntityIdentifer(entityName)
+        }
+         
 
         for (def s : transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
             if (willowId.equals(s.getWillowId()) && s.getEntityIdentifier().equals(willowIdentifier)) {
