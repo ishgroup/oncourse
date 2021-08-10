@@ -13,19 +13,17 @@ package ish.oncourse.server.services;
 import com.google.inject.Inject;
 import ish.common.types.AccountTransactionType;
 import ish.common.types.EnrolmentStatus;
+import ish.common.types.InvoiceType;
 import ish.math.Money;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.accounting.AccountTransactionService;
 import ish.oncourse.server.accounting.builder.DelayedIncomeTransactionsBuilder;
 import ish.oncourse.server.cayenne.AccountTransaction;
-import ish.oncourse.server.cayenne.CourseClass;
+import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.InvoiceLine;
 import ish.persistence.Preferences;
 import ish.util.LocalDateUtils;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +33,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -110,7 +107,8 @@ public class DelayedEnrolmentIncomePostingJob implements Job {
 	 * @return list of invoice lines
 	 */
 	protected List<InvoiceLine> getListOfInvoiceLinesToProcess() {
-		var expr = InvoiceLine.PREPAID_FEES_REMAINING.ne(Money.ZERO);
+		var expr = InvoiceLine.INVOICE.dot(Invoice.TYPE).eq(InvoiceType.INVOICE)
+				.andExp(InvoiceLine.PREPAID_FEES_REMAINING.ne(Money.ZERO));
 		return this.cayenneService.getNewContext().select(SelectQuery.query(InvoiceLine.class, expr));
 	}
 

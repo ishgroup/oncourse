@@ -90,7 +90,7 @@ const getInputString = (tags: Tag[]) => (tags ? tags.reduce((acc, tag) => `${acc
 const getCurrentInputString = (input, formTags: Tag[]) => {
   let substr = input;
 
-  formTags.forEach(t => {
+  formTags && formTags.forEach(t => {
     substr = substr.replace("#" + t.name, "").trim();
   });
 

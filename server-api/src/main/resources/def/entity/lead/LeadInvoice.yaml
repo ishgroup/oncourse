@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  invoiceType:
+    $ref: '../../enum/InvoiceType.yaml'
+  title:
+    type: string
+  invoiceNumber:
+    type: integer
+    format: int64
+  total:
+    type: number

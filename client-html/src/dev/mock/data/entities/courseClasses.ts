@@ -1,5 +1,7 @@
 import { CourseClass } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { CourseClass as CourseClassQueryModel } from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
+import * as Models from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
 
 export function mockCourseClasses() {
   this.getCourseClass = id => {
@@ -56,6 +58,23 @@ export function mockCourseClasses() {
   this.getPlainCourseClassList = params => {
     let rows: any[];
     const columns = params.columns;
+    const keysForGeneratingArrayOfRecords = [{ name: "id", type: "number" }];
+
+    columns && columns.split(",").forEach(column => {
+      let newItem;
+      if (column.includes(".")) {
+        // const numberOfDots = column.match(/\./g).length;
+        const updColumn = column[0].toUpperCase() + column.substring(1);
+        const entityName = updColumn.slice(0, updColumn.indexOf('.'));
+        const fieldName = column.slice(column.lastIndexOf('.') + 1);
+        const field = Models[entityName][fieldName];
+        newItem = { name: column, type: field };
+      } else {
+        newItem = { name: column, type: CourseClassQueryModel[column] };
+      }
+
+      keysForGeneratingArrayOfRecords.push(newItem);
+    });
 
     if (columns.includes("course.name,course.code,code,feeIncGst,startDateTime,endDateTime")) {
       rows = generateArraysOfRecords(20, [
@@ -109,33 +128,21 @@ export function mockCourseClasses() {
           l.createdOn
         ]
       }));
-    } else if (columns.includes("createdOn,startDateTime,maximumPlaces,uniqueCode")) {
-      rows = generateArraysOfRecords(20, [
-        { name: "id", type: "number" },
-        { name: "createdOn", type: "Datetime" },
-        { name: "startDateTime", type: "Datetime" },
-        { name: "maximumPlaces", type: "number" },
-        { name: "uniqueCode", type: "string" },
-      ]).map(l => ({
-        id: l.id,
-        values: [
-          l.createdOn,
-          l.startDateTime,
-          l.maximumPlaces,
-          l.uniqueCode,
-        ]
-      }));
     } else {
-      rows = generateArraysOfRecords(20, [
-        { name: "id", type: "number" },
-        { name: "courseName", type: "string" },
-        { name: "code", type: "string" },
-        { name: "price", type: "number" },
-        { name: "createdOn", type: "Datetime" },
-      ]).map(l => ({
-        id: l.id,
-        values: [l.courseName, l.code, l.code, l.price, l.createdOn]
-      }));
+      rows = generateArraysOfRecords(20, keysForGeneratingArrayOfRecords).map(l => {
+        const copiedObject = { ...l };
+        delete copiedObject.id;
+
+        const result = [];
+        for (let key in copiedObject) {
+          result.push(l[key]);
+        }
+
+        return {
+          id: l.id,
+          values: result
+        };
+      });
     }
 
     return getEntityResponse({
@@ -144,7 +151,7 @@ export function mockCourseClasses() {
       plain: true
     });
   };
-  
+
   this.getCourseClassBudget = () => [
       {
         "id": 6455,

@@ -43,6 +43,8 @@ import {
  getAvailableOptions, getDocumentShareSummary, groupAttachmentsByEntity, isSingleContactAttachment
 } from "../utils";
 
+const typesAllowedForWebsite = ["Course", "Contact"];
+
 const useStyles = makeStyles((theme: AppTheme) => ({
   linkButton: {
     fontSize: "1.2em",
@@ -292,7 +294,8 @@ const DocumentShare:React.FC<Props> = ({
   }, [documentSource.attachmentRelations, documentSource.shared, documentSource.access]);
 
   const websiteAvailable = !documentSource.attachmentRelations.length
-    || (documentSource.attachmentRelations.length === 1 && documentSource.attachmentRelations[0].entity === "Course");
+    || (documentSource.attachmentRelations.length === 1
+    && typesAllowedForWebsite.includes(documentSource.attachmentRelations[0].entity));
 
   const contactRelated = isSingleContactAttachment(documentSource.attachmentRelations);
 

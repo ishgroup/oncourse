@@ -14,6 +14,8 @@ const GetTagRequirementDisplayName = (type: TagRequirementType) => {
       return "Documents";
     case TagRequirementType.Enrolment:
       return "Enrolments";
+    case TagRequirementType.Invoice:
+      return "Invoices";
     case TagRequirementType.Payslip:
       return "Payslips";
     case TagRequirementType.Room:

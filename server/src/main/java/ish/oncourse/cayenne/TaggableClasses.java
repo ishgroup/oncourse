@@ -52,7 +52,9 @@ public enum TaggableClasses implements Serializable, ExtendedEnumeration {
 	@API
 	ASSESSMENT(17),
 	@API
-	LEAD(18);
+	LEAD(18),
+	@API
+	INVOICE(19);
 
 
 	private Integer persistentValue;

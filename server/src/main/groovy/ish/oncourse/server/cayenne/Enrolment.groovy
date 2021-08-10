@@ -632,9 +632,10 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	}
 
 	/**
-	 * @return
+	 * @return invoice lines related to this enrolment
 	 */
 	@Nonnull
+	@API
 	@Override
     List<InvoiceLine> getInvoiceLines() {
 		return super.getInvoiceLines()

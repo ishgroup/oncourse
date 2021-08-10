@@ -8,6 +8,10 @@ class InvoiceService {
     return this.invoiceApi.get(id);
   }
 
+  public deleteQuote(id: number): Promise<Invoice> {
+    return this.invoiceApi.remove(id);
+  }
+
   public updateInvoice(id: number, invoice: Invoice): Promise<any> {
     return this.invoiceApi.update(id, invoice);
   }

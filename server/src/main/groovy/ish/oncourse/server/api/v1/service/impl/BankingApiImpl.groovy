@@ -165,7 +165,7 @@ class BankingApiImpl implements BankingApi {
 				.and(PaymentOut.ADMINISTRATION_CENTRE.eq(site).orExp(PaymentOut.ADMINISTRATION_CENTRE.isNull()))
 				.select(cayenneService.newContext)
 
-		return paymentIns.collect{ asModelPaymentInterface(it) } + paymentOuts.collect{ asModelPaymentInterface(it) }
+		return paymentIns.findAll{!it.relatedToReverse }.collect{ asModelPaymentInterface(it) } + paymentOuts.collect{ asModelPaymentInterface(it) }
 	}
 
 	@Override

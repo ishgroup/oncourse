@@ -105,7 +105,7 @@ class PrintRequestBuilder {
 
         PrintRequest request = new PrintRequest()
         request.records = records
-        request.entity = entityName
+        request.entity = records[0].entityName
         request.reportCode = report.keyCode
         request.createPreview = createPreview
 
@@ -131,10 +131,10 @@ class PrintRequestBuilder {
         request.addBindings(report.options.collectEntries {opt -> [opt.name, opt.objectValue]})
 
         PrintTransformation transformation = PrintTransformationsFactory
-                .getPrintTransformationFor(entityName, report.entity, report.keyCode)
+                .getPrintTransformationFor(request.entity, report.entity, report.keyCode)
 
         if (transformation) {
-            request.addPrintTransformation(entityName, transformation)
+            request.addPrintTransformation(request.entity, transformation)
         }
 
         request

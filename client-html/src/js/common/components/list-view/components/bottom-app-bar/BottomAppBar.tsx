@@ -13,7 +13,7 @@ import Share from "@material-ui/icons/Share";
 import Settings from "@material-ui/icons/Settings";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from "@material-ui/core/Tooltip";
+import { List, ListItem, Tooltip } from "@material-ui/core";
 import { darken, fade } from "@material-ui/core/styles/colorManipulator";
 import FindInPage from "@material-ui/icons/FindInPage";
 import { connect } from "react-redux";
