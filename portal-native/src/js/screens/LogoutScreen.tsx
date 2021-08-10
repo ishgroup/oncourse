@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useAppDispatch } from '../hooks/redux';
 import { setIsLogged } from '../actions/LoginActions';
-import { removeToken } from '../utils/SessionStorage';
+import { removeToken } from '../utils/SessionStorageUtils';
 
 const LogoutScreen = ({}) => {
   const dispatch = useAppDispatch();

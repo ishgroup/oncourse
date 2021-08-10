@@ -8,3 +8,8 @@ declare global {
     }
   }
 }
+
+
+export type Normalized<K extends keyof any, V> = {
+  [P in K]: { [id: string]: V }
+};

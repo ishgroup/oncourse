@@ -4,7 +4,6 @@ import { defaultAxios } from '../constants/DefaultHttpClient';
 
 const TOKEN_KEY = 'token';
 
-
 export const getToken = async () => {
   const useSS = await SecureStore.isAvailableAsync();
   return useSS ? SecureStore.getItemAsync(TOKEN_KEY) : AsyncStorage.getItem(TOKEN_KEY);
@@ -23,4 +22,3 @@ export const removeToken = async () => {
   defaultAxios.defaults.headers = {};
   useSS ? await SecureStore.deleteItemAsync(TOKEN_KEY) : await AsyncStorage.removeItem(TOKEN_KEY);
 };
-

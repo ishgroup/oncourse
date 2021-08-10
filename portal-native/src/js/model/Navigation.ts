@@ -9,9 +9,12 @@ export type RootDrawerParamList = {
   Logout: undefined;
 };
 
+export type ClassDetailsParams = { sessionId: string } | undefined;
+
 export type RootStackParamList = {
   NotFound: undefined;
   Login: undefined;
+  ClassRoll: ClassDetailsParams;
   Root: undefined;
 };
 

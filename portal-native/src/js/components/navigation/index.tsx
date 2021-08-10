@@ -9,10 +9,12 @@ import DrawerNavigation from './DrawerNavigation';
 import LoginScreen from '../../screens/login/LoginScreen';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useLinkingRedirects } from '../../hooks/linking';
-import { getToken, setToken } from '../../utils/SessionStorage';
+import { getToken, setToken } from '../../utils/SessionStorageUtils';
 import { setIsLogged } from '../../actions/LoginActions';
 import { getClientIds } from '../../actions/ThirdPartyActions';
 import { RootStackParamList } from '../../model/Navigation';
+import ClassRollScreen from '../../screens/class/ClassRollScreen';
+import { getUserSessions } from '../../actions/SessionActions';
 
 const style = StyleSheet.create({
   loader: {
@@ -45,6 +47,12 @@ export default function Navigation() {
     });
   }, []);
 
+  useEffect(() => {
+    if (isLogged) {
+      dispatch(getUserSessions());
+    }
+  }, [isLogged]);
+
   return loginChecked ? (
     <NavigationContainer
       linking={LinkingConfiguration}
@@ -58,6 +66,7 @@ export default function Navigation() {
           ? <Stack.Screen name="Root" component={DrawerNavigation} />
           : <Stack.Screen name="Login" component={LoginScreen} />}
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Stack.Screen name="ClassRoll" component={ClassRollScreen} options={{ presentation: 'modal' }} />
       </Stack.Navigator>
     </NavigationContainer>
   ) : <View style={style.loader}><ActivityIndicator size="large" /></View>;

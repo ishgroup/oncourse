@@ -5,7 +5,7 @@ import React, {
   useRef, useMemo
 } from 'react';
 import {
-  StyleSheet, Platform, View, NativeSyntheticEvent, NativeScrollEvent, FlatList
+  StyleSheet, Platform, View, FlatList
 } from 'react-native';
 import {
   Appbar, Dialog
@@ -17,11 +17,16 @@ import {
 import debounce from 'lodash.debounce';
 import { Session } from '@api/model';
 import { useMediaQuery } from 'react-responsive';
+import { denormalize } from 'normalizr';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 import Agenda from './Agenda';
 import { HeaderBase } from '../../components/navigation/Header';
 import { Day } from '../../model/Timetable';
 import Calendar from '../../components/layout/Calendar';
 import { MMMM_YYYY } from '../../constants/DateTime';
+import { useAppSelector } from '../../hooks/redux';
+import { sessionSchema } from '../../model/Session';
+import { RootDrawerParamList } from '../../model/Navigation';
 
 const styles = StyleSheet.create({
   root: {
@@ -66,45 +71,17 @@ const getRenderDays = (date: Date, sessions: Session[]): Day[] => {
   ];
 };
 
-// TODO Add real sessions
-const sessions: Session[] = [{
-  id: '11',
-  name: 'ACT -RSA course',
-  collegeName: 'Acme College',
-  siteName: 'Sydney Campus',
-  roomName: 'Newtown Learning',
-  start: '2021-08-04T12:40:44.273Z',
-  end: '2021-08-04T18:40:44.273Z',
-  color: '#1abc9c'
-},
-{
-  id: '12',
-  name: 'Introduction to Quick Enrol',
-  collegeName: 'Acme College',
-  siteName: 'Sydney Campus',
-  roomName: 'Newtown Learning',
-  start: '2021-08-11T12:40:44.273Z',
-  end: '2021-08-11T14:40:44.273Z',
-  color: '#5339f3'
-},
-{
-  id: '13',
-  name: 'Certificate III in Early Childhood Education and Care (no units)',
-  collegeName: 'Acme College',
-  siteName: 'Sydney Campus',
-  roomName: 'Newtown Learning',
-  start: '2021-08-11T12:40:44.273Z',
-  end: '2021-08-11T14:40:44.273Z',
-  color: '#f25b3a'
-}];
-
-export const TimetableScreen = ({ navigation }) => {
-  const [days, setDays] = useState(() => getRenderDays(today, sessions));
+export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerParamList, 'Timetable'>) => {
+  const plainSessions = useAppSelector(
+    (s) => s.sessions
+  );
+  const sessions = useMemo(() => denormalize(plainSessions.result, sessionSchema, plainSessions.entities),
+    [plainSessions]);
+  const [days, setDays] = useState(() => getRenderDays(today, sessions || []));
   const [month, setCurrentMonth] = useState<Date>(today);
   const [firstVisible, setFirstVisible] = useState<Date>(null);
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(true);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [maintainVisibleContentPosition, setMaintainVisibleContentPosition] = useState(null);
 
   const ref = useRef<FlatList<Day>>();
@@ -115,6 +92,7 @@ export const TimetableScreen = ({ navigation }) => {
   };
 
   const onDayPress = (day) => {
+    setRefreshing(true);
     const index = days.findIndex((d) => isSameDay(d.date, day));
 
     if (!isSameMonth(firstVisible, day)) {
@@ -131,13 +109,20 @@ export const TimetableScreen = ({ navigation }) => {
         ref.current.scrollToIndex({ index: updatedDays.findIndex((d) => isSameDay(d.date, day)) });
       }, 200);
     }
+    setRefreshing(false);
   };
 
   const onRefresh = (monthToAdd: number) => {
+    if (!navigation.isFocused()) return;
+
     setRefreshing(true);
     const updatedMonth = addMonths(month, monthToAdd);
     const updatedDays = getRenderDays(updatedMonth, sessions);
-    setCurrentMonth(updatedMonth);
+
+    if (!isSameMonth(month, updatedMonth)) {
+      setCurrentMonth(updatedMonth);
+    }
+
     setDays(updatedDays);
 
     // TODO remove when https://github.com/facebook/react-native/pull/29466 will be merged and available
@@ -147,15 +132,11 @@ export const TimetableScreen = ({ navigation }) => {
 
     setTimeout(() => {
       setRefreshing(false);
-    }, 2000);
+    }, 1000);
   };
 
   const onEndReached = () => {
     onRefresh(1);
-  };
-
-  const onStartReached = () => {
-    onRefresh(-1);
   };
 
   const openDialog = () => {
@@ -168,43 +149,14 @@ export const TimetableScreen = ({ navigation }) => {
     }
   }, 50), []);
 
-  const syncScroll = useCallback(debounce((scrolledPersent, onEnd, onStart) => {
-    if (scrolledPersent > 85) {
-      onEnd();
-    }
-    if (scrolledPersent < 25) {
-      onStart();
-    }
-  }, 50), []);
-
-  const onScroll = (
-    {
-      nativeEvent:
-        {
-          contentOffset,
-          layoutMeasurement,
-          contentSize
-        }
-    }: NativeSyntheticEvent<NativeScrollEvent>
-  ) => {
-    if (isMounted) {
-      const scrolledPersent = ((contentOffset.y > layoutMeasurement.height
-        ? contentOffset.y + layoutMeasurement.height
-        : contentOffset.y
-      ) / contentSize.height) * 100;
-
-      syncScroll(scrolledPersent, onEndReached, onStartReached);
-    }
-  };
-
-  const syncMonth = (isScrolling, prevMonth, newMonth) => {
-    if (!isScrolling && newMonth && !isSameMonth(prevMonth, newMonth)) {
+  const syncMonth = (isRefreshing, prevMonth, newMonth) => {
+    if (!isRefreshing && newMonth && !isSameMonth(prevMonth, newMonth)) {
       setCurrentMonth(newMonth);
     }
   };
 
   const updateMonth = useMemo(
-    () => debounce(syncMonth, 100),
+    () => debounce(syncMonth, 200),
     []
   );
 
@@ -217,13 +169,16 @@ export const TimetableScreen = ({ navigation }) => {
         minIndexForVisible: 0,
         autoscrollToTopThreshold: 0.4
       });
-      setIsMounted(true);
     }, 2000);
   }, []);
 
   useEffect(() => {
     updateMonth(refreshing, month, firstVisible);
   }, [firstVisible, refreshing]);
+
+  useEffect(() => {
+    setDays(getRenderDays(month, sessions));
+  }, [sessions]);
 
   const monthLabel = useMemo(() => format(month, MMMM_YYYY), [month]);
 
@@ -271,7 +226,7 @@ export const TimetableScreen = ({ navigation }) => {
           initialNumToRender={10}
             // IOS
           maintainVisibleContentPosition={maintainVisibleContentPosition}
-          onScroll={onScroll}
+          onEndReached={onEndReached}
           removeClippedSubviews
         />
         {!isSmallScreen && renderCalendar}

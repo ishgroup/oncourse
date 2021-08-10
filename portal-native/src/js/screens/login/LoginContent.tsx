@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormikContext } from 'formik';
 import { View } from 'react-native';
 import { Button, Caption, TextInput } from 'react-native-paper';
@@ -14,8 +14,17 @@ const LoginContent = () => {
   const cs = useCommonStyles();
 
   const {
-    handleSubmit, isValid, setFieldValue, values
+    handleSubmit, isValid, setFieldValue, values,
+    touched
   } = useFormikContext<LoginValues>();
+
+  useEffect(() => {
+    if (touched.password && !values.password) {
+      setTimeout(() => {
+        setFieldValue('submitBy', 'LoginEmail');
+      });
+    }
+  }, [values.password]);
 
   const onLoginClick = () => {
     setFieldValue('submitBy', 'SignIn');

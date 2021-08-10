@@ -81,7 +81,7 @@ const today = new Date();
 const Calendar = ({
   sessions, onDayPress, month, firstVisible, setCurrentMonth, monthLabel
 }: Props) => {
-  const days = useMemo(() => getCalendarDays(month, sessions), [month]);
+  const days = useMemo(() => getCalendarDays(month, sessions), [month, sessions]);
 
   const styles = useStyles();
 

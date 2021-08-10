@@ -215,7 +215,8 @@ export const useCommonStyles = () => {
     },
     flexCenter: {
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     dFlexStart: {
       display: 'flex',

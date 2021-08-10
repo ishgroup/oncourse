@@ -9,10 +9,10 @@ const LinkingConfig: LinkingOptions<RootStackParamList> = {
       Root: {
         screens: {
           Timetable: 'timetable',
-          Class: 'class/:id',
           Logout: 'logout',
         },
       },
+      ClassRoll: 'classRoll/:sessionId',
       Login: 'login',
       NotFound: '*',
     },

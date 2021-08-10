@@ -8,7 +8,7 @@ import { createRequest, Request } from '../../utils/EpicUtils';
 import { setIsLogged, setLoginStage, SIGN_IN } from '../../actions/LoginActions';
 import LoginService from '../../services/LoginService';
 import { LoginStages } from '../../model/Login';
-import { setToken } from '../../utils/SessionStorage';
+import { setToken } from '../../utils/SessionStorageUtils';
 
 const request: Request<LoginRequest, LoginResponse> = {
   type: SIGN_IN,

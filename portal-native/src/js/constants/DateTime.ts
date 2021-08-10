@@ -19,7 +19,7 @@ const generateOneMonth = (today: Date, sessions: Session[], status: CalendarDay[
       status,
       marks: sessions
         .filter((s) => isSameDay(new Date(s.start), date))
-        .map((s) => s.color)
+        .map((s) => s.classColor)
         .slice(0, 3)
     };
   });

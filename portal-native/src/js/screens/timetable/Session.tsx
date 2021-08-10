@@ -8,8 +8,11 @@ import { Entypo } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import { useMediaQuery } from 'react-responsive';
 import { Session } from '@api/model';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/core/lib/typescript/src/types';
 import { spacing } from '../../styles';
 import { H_MM_AAA } from '../../constants/DateTime';
+import { RootStackParamList } from '../../model/Navigation';
 
 const style = StyleSheet.create({
   root: {
@@ -35,15 +38,16 @@ const style = StyleSheet.create({
 
 const SessionComp = (
   {
+    id,
     name,
     collegeName,
     siteName,
     roomName,
     start,
     end,
-    color,
-    onPress
-  }: Session & { onPress: any }
+    classColor,
+    classId
+  }: Session
 ) => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 1200px)' });
 
@@ -51,8 +55,14 @@ const SessionComp = (
 
   const endTime = useMemo(() => format(new Date(end), H_MM_AAA), [end]);
 
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const onPress = () => {
+    navigation.navigate('ClassRoll', { sessionId: id });
+  };
+
   return (
-    <Card style={[style.root, { backgroundColor: color }]} onPress={onPress}>
+    <Card style={[style.root, { backgroundColor: classColor }]} onPress={onPress}>
       <View style={style.content}>
         <View style={style.description}>
           <Title numberOfLines={1} style={style.text}>{name}</Title>

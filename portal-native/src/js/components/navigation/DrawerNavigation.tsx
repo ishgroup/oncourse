@@ -8,20 +8,6 @@ import { TimetableScreen } from '../../screens/timetable/TimetableScreen';
 import LogoutScreen from '../../screens/LogoutScreen';
 import { RootDrawerParamList } from '../../model/Navigation';
 
-function StubScreen({ route }) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>
-          {route.name}
-          {' '}
-          screen
-        </Text>
-      </View>
-    </View>
-  );
-}
-
 const CustomDrawerContent = (props: DrawerContentComponentProps) => (
   <DrawerContentScrollView {...props}>
     <Drawer.Section>
@@ -42,7 +28,6 @@ const DrawerNav = createDrawerNavigator<RootDrawerParamList>();
 const DrawerNavigation = () => (
   <DrawerNav.Navigator
     screenOptions={{
-      unmountOnBlur: true,
       headerShown: true,
       header: Header,
     }}
