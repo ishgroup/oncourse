@@ -44,7 +44,7 @@ class RequestService {
         ThreadLocalUser.get()
     }
 
-    setUser(User user) {
+    void setUser(User user) {
         ThreadLocalUser.set(user)
     }
 

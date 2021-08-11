@@ -32,3 +32,12 @@ dependencies {
     implementation "com.nulab-inc:zxcvbn:1.4.1"
 
 }
+
+task copyWebApp(type: Copy, dependsOn: ':portal-native:build') {
+    from('../portal-native/build/web') {
+        include '**/*.*'
+    }
+    into 'build/resources/main/static'
+}
+
+distZip.dependsOn(copyWebApp)
