@@ -40,7 +40,7 @@ import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import LeadService from "../leads/services/LeadService";
 import { isInvoiceType } from "./utils";
 import { State } from "../../../reducers/state";
-
+import { getListTags } from "../../tags/actions";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -157,7 +157,8 @@ const Invoices = React.memo<any>(({
   location,
   listRecords,
   match: { params, url },
-  onInit
+  onInit,
+  getTags,
   }) => {
   useEffect(() => {
     getFilters();
@@ -166,6 +167,7 @@ const Invoices = React.memo<any>(({
     getDefaultTerms();
     getAdministrationSites();
     getQePermissions();
+    getTags();
 
     return clearListState;
   }, []);
@@ -318,6 +320,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onDeleteQuote: (id: string) => dispatch(deleteQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
+  getTags: () => dispatch(getListTags("AbstractInvoice")),
   getQePermissions: () => dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }))
 });
 
