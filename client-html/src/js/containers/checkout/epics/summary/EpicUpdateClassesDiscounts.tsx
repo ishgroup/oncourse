@@ -37,11 +37,14 @@ const request: EpicUtils.Request<any, boolean> = {
           if (i.type === "course") {
             totalEnrolmentsCount++;
 
+            const courseItems = l.items.filter(item => item.checked && item.type === "course");
+
             enrolments.push({
               contactId: l.contact.id,
               classItem: i,
-              courseIds: l.items.filter(item => item.checked && item.type === "course").map(item => item.courseId).toString(),
+              courseIds: courseItems.map(item => item.courseId).toString(),
               productIds: l.items.filter(item => item.checked && item.type !== "course").map(item => item.id).toString(),
+              classIds: courseItems.map(item => item.class.id).toString(),
               listIndex,
               itemIndex,
               membershipIds: l.items.filter(i => i.type === "membership" && i.checked).map(i => i.id).join(",")
@@ -56,7 +59,16 @@ const request: EpicUtils.Request<any, boolean> = {
 
     await enrolments.map(e => () =>
       CheckoutService
-        .getContactDiscounts(e.contactId, e.classItem.class.id, e.courseIds, e.productIds, codes, e.membershipIds, totalEnrolmentsCount, totalAmountExDiscount)
+        .getContactDiscounts(
+          e.contactId,
+          e.classItem.class.id,
+          e.courseIds,
+          e.productIds,
+          e.classIds,
+          codes,
+          e.membershipIds,
+          totalAmountExDiscount
+        )
         .then(res => {
           const discounts = res.map(i => i.discount);
 

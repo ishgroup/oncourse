@@ -111,7 +111,9 @@ export const processCheckoutLeadId = async (id: string, onChangeStep, setActiveF
     enrolments.push(enrolment);
   }
 
-  const courseIds = enrolments.map(en => en.courseClass?.courseId).filter(en => en).toString();
+  const classEnrolments = enrolments.filter(en => en.courseClass);
+  const courseIds = classEnrolments.map(en => en.courseClass.courseId);
+  const classIds = classEnrolments.map(en => en.courseClass.id);
 
   await enrolments.map(en => () => {
     if (en.courseClass && typeof en.contactId === "number") {
@@ -142,9 +144,9 @@ export const processCheckoutLeadId = async (id: string, onChangeStep, setActiveF
         en.courseClass.class.id,
         courseIds.toString(),
         prodIds.toString(),
+        classIds.toString(),
         promoIds.toString(),
         membershipIds.toString(),
-        1,
         total
       )
       .then(res => {
@@ -218,19 +220,19 @@ export const processCheckoutWaitingListIds = async (ids: string[], onChangeStep,
     await b();
   }, Promise.resolve());
 
-  const enrolmentsCount = enrolments.filter(en => en.courseClass).length;
-
-  const courseIds = enrolments.map(en => en.courseClass?.courseId).filter(en => en).toString();
+  const classEnrolments = enrolments.filter(en => en.courseClass);
+  const courseIds = classEnrolments.map(en => en.courseClass.courseId);
+  const classIds = classEnrolments.map(en => en.courseClass.id);
 
   await enrolments.map(en => () => (en.courseClass
     ? CheckoutService.getContactDiscounts(
         en.contactId,
         en.courseClass.class.id,
-        courseIds,
-        "",
-        "",
-        "",
-        enrolmentsCount,
+        courseIds.toString(),
+        '',
+        classIds.toString(),
+        '',
+        '',
         en.courseClass.price
       )
         .then(res => {
