@@ -34,6 +34,10 @@ properties:
     type: array
     items:
       $ref: '../Sale.yaml'
+  invoices:
+    type: array
+    items:
+      $ref: './LeadInvoice.yaml'
   tags:
     type: array
     items:

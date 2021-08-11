@@ -11,6 +11,7 @@ import TabsList, { TabsListItem } from "../../../../common/components/layout/Tab
 import LeadGeneral from "./LeadGeneral";
 import LeadSites from "./LeadSites";
 import LeadAttachmentsTab from "./LeadAttachmentsTab";
+import LeadInvoiceTab from "./LeadInvoiceTab";
 
 const items: TabsListItem[] = [
   {
@@ -20,6 +21,10 @@ const items: TabsListItem[] = [
   {
     label: "Sites",
     component: props => <LeadSites {...props} />
+  },
+  {
+    label: "Invoice",
+    component: props => <LeadInvoiceTab {...props} />
   },
   {
     label: "Attachments",

@@ -46,4 +46,12 @@ class Lead extends _Lead implements AttachableTrait, NotableTrait, ExpandableTra
     List<Product> getProducts() {
         return super.getProducts()
     }
+
+    List<Invoice> getInvoices() {
+        return super.getInvoices()
+    }
+
+    List<Quote> getQuotes() {
+        return super.getQuotes()
+    }
 }

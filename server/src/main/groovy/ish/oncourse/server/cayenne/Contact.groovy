@@ -18,6 +18,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.*
 import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.cayenne.glue._Contact
+import ish.util.InvoiceUtil
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
 import ish.validation.AngelContactValidator
@@ -172,7 +173,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@API
 	@Override
 	Money getTotalOwing() {
-		return Invoice.amountOwingForPayer(this)
+		return InvoiceUtil.amountOwingForPayer(this)
 	}
 
 	/**
@@ -684,6 +685,16 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@Override
 	List<Invoice> getInvoices() {
 		return super.getInvoices()
+	}
+
+	/**
+	 * @return all the quotes linked to this contact
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<Quote> getQuotes() {
+		return super.getQuotes()
 	}
 
 

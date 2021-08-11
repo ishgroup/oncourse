@@ -79,3 +79,9 @@ export const getInvoiceClosestPaymentDueDate = (invoice: Invoice) => {
   }
   return datesArr.length ? min(datesArr) : null;
 };
+
+export const isInvoiceType = (id: string, records: any) => {
+  const invoiceFromRecords = records && records.rows.length && records.rows.find(elem => elem.id === id);
+
+  return invoiceFromRecords && invoiceFromRecords.values[0] === "Invoice";
+};

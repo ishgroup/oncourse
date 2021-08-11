@@ -486,7 +486,7 @@ class CheckoutController {
         checkout.previousInvoices.each { id, amount ->
             Money payAmount = new Money(amount)
             if (payAmount != Money.ZERO) {
-                Invoice previousInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id))
+                Invoice previousInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
                 previousInvoice.updateAmountOwing()
                 Money payByVouchers = getAmountPaidByVouchers(previousInvoice)
                 Money owing = previousInvoice.amountOwing.add(payByVouchers)
@@ -713,7 +713,7 @@ class CheckoutController {
         checkout.previousInvoices.each { id, amount ->
             Money payNow = Money.valueOf(amount)
             if (payNow > Money.ZERO) {
-                Invoice prevInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id))
+                Invoice prevInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
 
                 Money amountForInvoice = payNow.min(leftToPay)
                 if (amountForInvoice.isGreaterThan(Money.ZERO)) {

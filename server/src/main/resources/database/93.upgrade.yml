@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+        id: 93-1
+        author: rostislav
+        preConditions:
+          - onFail: MARK_RAN
+          - not:
+              columnExists:
+                tableName: Invoice
+                columnName: title
+        changes:
+          - addColumn:
+              tableName: Invoice
+              columns:
+                - column:
+                    name: title
+                    type: VARCHAR(200)
+                - column:
+                    name: leadId
+                    type: BIGINT
+  - changeSet:
+      id:  93-2
+      author:  rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: fk_Invoice_Lead
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames:  leadId
+            baseTableName:  Invoice
+            constraintName:  fk_Invoice_Lead
+            referencedColumnNames:  id
+            referencedTableName:  Lead
+  - changeSet:
+      id: 93-3
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Invoice
+            columnName: invoiceNumber
+      changes:
+        - dropNotNullConstraint:
+            columnName: invoiceNumber
+            tableName: Invoice
+            columnDataType: BIGINT
+  - changeSet:
+      id: 93-4
+      author: rostislav
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: Invoice
+            columnName: allowAutoPay
+      changes:
+        - dropNotNullConstraint:
+            columnName: allowAutoPay
+            tableName: Invoice
+            columnDataType: TINYINT

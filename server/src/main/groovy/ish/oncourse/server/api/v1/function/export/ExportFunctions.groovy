@@ -12,6 +12,8 @@
 package ish.oncourse.server.api.v1.function.export
 
 import ish.oncourse.aql.AqlService
+import ish.oncourse.server.cayenne.AbstractInvoice
+import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.ClassCost
 import ish.oncourse.server.cayenne.CourseClassTutor
@@ -19,6 +21,8 @@ import ish.oncourse.server.cayenne.DiscountCourseClass
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.server.cayenne.Lead
+import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.TrainingPackage
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
@@ -85,7 +89,7 @@ class ExportFunctions {
             (Audit.simpleName.toLowerCase())             : [Audit.simpleName],
             (Banking.simpleName.toLowerCase())           : [Banking.simpleName, PaymentInterface.simpleName],
             (Certificate.simpleName.toLowerCase())       : [Certificate.simpleName],
-            (CourseClass.simpleName.toLowerCase()): [CourseClass.simpleName,
+            (CourseClass.simpleName.toLowerCase())       : [CourseClass.simpleName,
                                                             Session.simpleName,
                                                             Student.simpleName,
                                                             ClassCost.simpleName,
@@ -94,30 +98,31 @@ class ExportFunctions {
                                                             Outcome.simpleName,
                                                             Enrolment.simpleName,
                                                             TutorAttendance.simpleName],
-            (Contact.simpleName.toLowerCase())    : [Contact.simpleName,
-                                                     Student.simpleName,
-                                                     Tutor.simpleName,
-                                                     AccountTransaction.simpleName],
+            (Contact.simpleName.toLowerCase())           : [Contact.simpleName,
+                                                            Student.simpleName,
+                                                            Tutor.simpleName,
+                                                            AccountTransaction.simpleName],
             (CorporatePass.simpleName.toLowerCase())     : [CorporatePass.simpleName],
             (Course.simpleName.toLowerCase())            : [Course.simpleName, Session.simpleName],
             (Enrolment.simpleName.toLowerCase())         : [Enrolment.simpleName],
             (Discount.simpleName.toLowerCase())          : [Discount.simpleName],
-            (Invoice.simpleName.toLowerCase())           : [Invoice.simpleName, InvoiceLine.simpleName],
+            (AbstractInvoice.simpleName.toLowerCase())   : [Invoice.simpleName, InvoiceLine.simpleName,
+                                                            Quote.simpleName, QuoteLine.simpleName],
             (Message.simpleName.toLowerCase())           : [Message.simpleName],
             (PaymentIn.simpleName.toLowerCase())         : [PaymentIn.simpleName],
             (PaymentOut.simpleName.toLowerCase())        : [PaymentOut.simpleName],
             (Module.simpleName.toLowerCase())            : [Module.simpleName],
             (Payslip.simpleName.toLowerCase())           : [Payslip.simpleName, PayLine.simpleName],
-            (ProductItem.simpleName.toLowerCase())      : [ProductItem.simpleName, Voucher.simpleName, Membership.simpleName, Article.simpleName],
-            (Qualification.simpleName.toLowerCase())    : [Qualification.simpleName],
-            (Room.simpleName.toLowerCase())             : [Room.simpleName, Session.simpleName],
-            (Script.simpleName.toLowerCase())           : [Script.simpleName],
-            (Site.simpleName.toLowerCase())             : [Site.simpleName, Session.simpleName],
-            (TrainingPackage.simpleName.toLowerCase())  : [TrainingPackage.simpleName],
-            (WaitingList.simpleName.toLowerCase())      : [WaitingList.simpleName],
-            (VoucherProduct.simpleName.toLowerCase())   : [VoucherProduct.simpleName],
-            (MembershipProduct.simpleName.toLowerCase()): [MembershipProduct.simpleName],
-            (Survey.simpleName.toLowerCase())           : [Survey.simpleName],
+            (ProductItem.simpleName.toLowerCase())       : [ProductItem.simpleName, Voucher.simpleName, Membership.simpleName, Article.simpleName],
+            (Qualification.simpleName.toLowerCase())     : [Qualification.simpleName],
+            (Room.simpleName.toLowerCase())              : [Room.simpleName, Session.simpleName],
+            (Script.simpleName.toLowerCase())            : [Script.simpleName],
+            (Site.simpleName.toLowerCase())              : [Site.simpleName, Session.simpleName],
+            (TrainingPackage.simpleName.toLowerCase())   : [TrainingPackage.simpleName],
+            (WaitingList.simpleName.toLowerCase())       : [WaitingList.simpleName],
+            (VoucherProduct.simpleName.toLowerCase())    : [VoucherProduct.simpleName],
+            (MembershipProduct.simpleName.toLowerCase()) : [MembershipProduct.simpleName],
+            (Survey.simpleName.toLowerCase())            : [Survey.simpleName],
             (Outcome.simpleName.toLowerCase())           : [Outcome.simpleName],
             (Assessment.simpleName.toLowerCase())        : [Assessment.simpleName],
             (AssessmentSubmission.simpleName.toLowerCase()):[AssessmentSubmission.simpleName],

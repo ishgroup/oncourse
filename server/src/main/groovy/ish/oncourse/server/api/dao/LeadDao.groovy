@@ -20,7 +20,9 @@ class LeadDao implements CayenneLayer<Lead> {
 
     @Override
     Lead getById(ObjectContext context, Long id) {
-        SelectById.query(Lead.class, id)
-                .selectOne(context)
+        if (id == null) {
+            return null
+        }
+        return SelectById.query(Lead.class, id).selectOne(context)
     }
 }
