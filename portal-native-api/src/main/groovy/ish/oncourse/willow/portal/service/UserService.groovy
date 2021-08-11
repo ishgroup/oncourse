@@ -19,10 +19,10 @@ import java.time.LocalDateTime
 
 class UserService {
     
-    private Logger logger = LogManager.getLogger();
+    private Logger logger = LogManager.getLogger()
 
     public static final String VERIFiCATION_EMAIL_CONTENT = "" +
-            "The link vavid for 2 hours:\n" +
+            "The link valid for 2 hours:\n" +
             "%s\n" +
             ""
     public static final String VERIFiCATION_EMAIL_SUBJECT = "skillsOnCourse verification email"

@@ -44,6 +44,10 @@ class RequestService {
         ThreadLocalUser.get()
     }
 
+    setUser(User user) {
+        ThreadLocalUser.set(user)
+    }
+
     void setSessionToken(String value, int maxAge) {
         Cookie cookie = new Cookie(SessionCookie.SESSION_ID, value)
         cookie.domain = request.serverName
