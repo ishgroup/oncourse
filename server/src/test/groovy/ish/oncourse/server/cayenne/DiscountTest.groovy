@@ -44,7 +44,7 @@ class DiscountTest extends TestWithDatabase {
             Discount d = Discount.ID.eq(expectedResult1[1]).filterObjects(discounts).get(0)
             Boolean expectedResult = expectedResult1[2] == 1L
             Assertions.assertEquals(expectedResult,
-                    d.isStudentEligibile(s.contact, [], null, 1, Money.ONE),
+                    d.isStudentEligibile(s.contact, [], null, [], Money.ONE),
                     "Student : " + s.getId() + ", discount: " + d.getId())
         }
 
