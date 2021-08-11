@@ -284,8 +284,8 @@ const Table: React.FC<ListTableProps> = ({
   }, [threeColumn]);
 
   const onColumnOrderChange = useCallback(({
- destination, source, fields, headers
-}) => {
+   destination, source, fields, headers
+  }) => {
     if (destination) {
       const findDestinationColumn = headers[destination.index];
       const findSourceColumn = headers[source.index];

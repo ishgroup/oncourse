@@ -16,3 +16,9 @@ properties:
     description: width of filter column in view in px
     type: integer
     example: 110
+  tagsOrder:
+    description: order of tags
+    type: array
+    items:
+      type: integer
+      format: int64
