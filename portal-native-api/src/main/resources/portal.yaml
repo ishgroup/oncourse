@@ -17,7 +17,7 @@ produces:
   - application/json
 
 host: provisioning.ish.com.au
-basePath: /a/v1
+basePath: /p/v1
 
 paths:
   /login:
