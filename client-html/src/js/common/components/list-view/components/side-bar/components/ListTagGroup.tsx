@@ -89,7 +89,7 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey 
                 className={clsx(
                   "centeredFlex text-truncate text-nowrap outline-none",
                   customStyles.draggableCellItem,
-                  // { [customStyles.dragOver]: isDragging }
+                  { "pl-3": isDragging },
                 )}
               >
                 <DragIndicator

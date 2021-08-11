@@ -40,10 +40,12 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
     if (savedTagsOrder.length) {
       savedTagsOrder.forEach((tagId: number) => {
         const tag = filteredTags.find(elem => elem.tagBody.id === tagId);
-        const indexOfTag = filteredTags.indexOf(tag);
+        if (tag) {
+          const indexOfTag = filteredTags.indexOf(tag);
 
-        const [foundElement] = filteredTags.splice(indexOfTag, 1);
-        filteredSortedTags.push(foundElement);
+          const [foundElement] = filteredTags.splice(indexOfTag, 1);
+          filteredSortedTags.push(foundElement);
+        }
       });
     }
 
@@ -65,7 +67,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
   );
 
   const onDragEnd = result => {
-    if (!result.destination) {
+    if (!result.destination || result.destination.index === result.source.index) {
       return;
     }
 
