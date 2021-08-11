@@ -369,7 +369,7 @@ class InvoiceLineTest extends TestWithDatabase {
         enrolment.setStudent(student)
         enrolment.setCourseClass(courseClass)
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
-        enrolment.addToInvoiceLines(invoiceLine)
+        enrolment.addToAbstractInvoiceLines(invoiceLine)
 
         invoice.updateAmountOwing()
 
@@ -448,7 +448,7 @@ class InvoiceLineTest extends TestWithDatabase {
         enrolment.setStudent(student)
         enrolment.setCourseClass(courseClass)
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
-        enrolment.addToInvoiceLines(invoiceLine)
+        enrolment.addToAbstractInvoiceLines(invoiceLine)
 
         invoice.updateAmountOwing()
 
@@ -525,7 +525,7 @@ class InvoiceLineTest extends TestWithDatabase {
         enrolment.setStudent(student)
         enrolment.setCourseClass(courseClass)
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
-        enrolment.addToInvoiceLines(invoiceLine)
+        enrolment.addToAbstractInvoiceLines(invoiceLine)
 
         invoice.updateAmountOwing()
 
