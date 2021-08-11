@@ -21,10 +21,9 @@ interface Props {
   classes: any;
   updateActive: (updated: MenuTag) => void;
   dndKey: number;
-  hasDraggingGroup: boolean;
 }
 
-const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey, hasDraggingGroup }) => {
+const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey }) => {
   const [expanded, setExpanded] = useState([]);
 
   const customStyles = useStyles();
@@ -84,13 +83,13 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey,
                 snapshot.isDragging,
                 provided.draggableProps.style
               )}
-              className="mt-2"
+              className={clsx("pt-2", { [customStyles.dragOver]: isDragging })}
             >
               <div
                 className={clsx(
                   "centeredFlex text-truncate text-nowrap outline-none",
                   customStyles.draggableCellItem,
-                  { [customStyles.dragOver]: isDragging }
+                  // { [customStyles.dragOver]: isDragging }
                 )}
               >
                 <DragIndicator
@@ -102,27 +101,26 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey,
                   {rootTag.prefix ? `${rootTag.prefix} (${rootTag.tagBody.name})` : rootTag.tagBody.name}
                 </div>
               </div>
+
+              <TreeView expanded={expanded}>
+                {rootTag.children.map(c => {
+                  const key = c.prefix + c.tagBody.id.toString();
+                  return (
+                    <ListTagItem
+                      hasOffset={hasOffset}
+                      handleExpand={handleExpand}
+                      nodeId={key}
+                      item={c}
+                      key={key}
+                      toggleActive={toggleActive}
+                    />
+                  );
+                })}
+              </TreeView>
             </div>
           );
         }}
       </Draggable>
-      {!hasDraggingGroup && (
-        <TreeView expanded={expanded}>
-          {rootTag.children.map(c => {
-            const key = c.prefix + c.tagBody.id.toString();
-            return (
-              <ListTagItem
-                hasOffset={hasOffset}
-                handleExpand={handleExpand}
-                nodeId={key}
-                item={c}
-                key={key}
-                toggleActive={toggleActive}
-              />
-            );
-          })}
-        </TreeView>
-      )}
     </>
   );
 };
