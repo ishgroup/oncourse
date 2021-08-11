@@ -29,7 +29,6 @@ interface Props {
 }
 
 const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, updateTableModel, records }) => {
-  const [hasDraggingGroup, setGroupIsDragging] = useState(false);
   const [tagsForRender, setTagsForRender] = useState([]);
 
   useEffect(() => {
@@ -49,7 +48,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
     }
 
     setTagsForRender(filteredSortedTags.concat(filteredTags));
-  }, [tags]);
+  }, [records, tags]);
 
   const updateActive = useCallback(
     (updated: MenuTag) => {
@@ -66,8 +65,6 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
   );
 
   const onDragEnd = result => {
-    setGroupIsDragging(false);
-
     if (!result.destination) {
       return;
     }
@@ -81,13 +78,8 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
     updateTableModel({ tagsOrder });
   };
 
-  const onBeforeCapture = () => {
-    setGroupIsDragging(true);
-  };
-
   return (
     <DragDropContext
-      onBeforeCapture={onBeforeCapture}
       onDragEnd={args => onDragEnd(args)}
     >
       <Droppable droppableId="ROOT" style={{ transform: "none" }}>
@@ -103,7 +95,6 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
                 rootTag={t}
                 classes={classes}
                 updateActive={updateActive}
-                hasDraggingGroup={hasDraggingGroup}
               />
             ))}
           </div>
