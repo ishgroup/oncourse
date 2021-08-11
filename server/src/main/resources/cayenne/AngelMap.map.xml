@@ -5083,8 +5083,7 @@
 	<obj-relationship name="discountCourseClasses" source="CourseClass" target="DiscountCourseClass" deleteRule="Cascade" db-relationship-path="discount_courseclasses"/>
 	<obj-relationship name="enrolments" source="CourseClass" target="Enrolment" deleteRule="Deny" db-relationship-path="enrolments"/>
 	<obj-relationship name="incomeAccount" source="CourseClass" target="Account" deleteRule="Nullify" db-relationship-path="incomeAccount"/>
-	<obj-relationship name="invoiceLines" source="CourseClass" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="quoteLines" source="CourseClass" target="QuoteLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="abstractInvoiceLines" source="CourseClass" target="AbstractInvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="noteRelations" source="CourseClass" target="CourseClassNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentPlanLines" source="CourseClass" target="CourseClassPaymentPlanLine" deleteRule="Cascade" db-relationship-path="paymentPlanLines"/>
 	<obj-relationship name="relatedFundingSource" source="CourseClass" target="FundingSource" deleteRule="Nullify" db-relationship-path="relatedFundingSource"/>
@@ -5144,8 +5143,7 @@
 	<obj-relationship name="attachmentRelations" source="Enrolment" target="EnrolmentAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="customFields" source="Enrolment" target="EnrolmentCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
-	<obj-relationship name="invoiceLines" source="Enrolment" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="quoteLines" source="Enrolment" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="abstractInvoiceLines" source="Enrolment" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="noteRelations" source="Enrolment" target="EnrolmentNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Cascade" db-relationship-path="outcomes"/>
 	<obj-relationship name="relatedFundingSource" source="Enrolment" target="FundingSource" deleteRule="Nullify" db-relationship-path="relatedFundingSource"/>

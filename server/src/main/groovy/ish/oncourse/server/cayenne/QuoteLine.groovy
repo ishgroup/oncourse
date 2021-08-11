@@ -31,7 +31,7 @@ class QuoteLine extends _QuoteLine {
 
     @Override
     Enrolment getEnrolment() {
-        return null
+        return super.getEnrolment()
     }
 
     @Override

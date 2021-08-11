@@ -1053,9 +1053,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 */
 	@Nonnull
 	@API
-	@Override
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getInvoiceLines()
+		return super.getAbstractInvoiceLines().findAll {it.invoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
 	}
 
 	/**
@@ -1063,9 +1062,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 */
 	@Nonnull
 	@API
-	@Override
 	List<QuoteLine> getQuoteLines() {
-		return super.getQuoteLines()
+		return super.getAbstractInvoiceLines().findAll { it.invoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
 	}
 
 	/**

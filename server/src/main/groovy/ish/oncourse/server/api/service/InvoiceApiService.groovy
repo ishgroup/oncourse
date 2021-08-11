@@ -405,7 +405,12 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
                 iLine.courseClass = courseClassDao.getById(cayenneModel.context, il.courseClassId)
                 if (il.enrolmentId) {
                     iLine.enrolment = enrolmentDao.getById(cayenneModel.context, il.enrolmentId)
+                } else {
+                    iLine.enrolment = null
                 }
+            } else {
+                iLine.courseClass = null
+                iLine.enrolment = null
             }
             iLine.prepaidFeesRemaining = il.courseClassId || il.enrolmentId ? iLine.priceEachExTax.subtract(iLine.discountEachExTax).multiply(iLine.quantity) : Money.ZERO
             iLine.prepaidFeesAccount = accountDao.getById(cayenneModel.context, preferenceController.getDefaultAccountId(DefaultAccount.PREPAID_FEES.preferenceName))
