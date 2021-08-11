@@ -634,22 +634,25 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	/**
 	 * @return invoice lines related to this enrolment
 	 */
-	@Nonnull
-	@API
-	@Override
-    List<InvoiceLine> getInvoiceLines() {
-		return super.getInvoiceLines().findAll {InvoiceType.INVOICE == it.invoice.type }
-	}
-	
 	/**
-	 * @return invoice lines related to this enrolment
+	 * @return invoice lines related to this class
 	 */
 	@Nonnull
 	@API
 	@Override
-	List<InvoiceLine> getQuoteLines() {
-		return super.getQuoteLines().findAll {InvoiceType.QUOTE == it.invoice.type }
+	List<InvoiceLine> getInvoiceLines() {
+		return super.getAbstractInvoiceLines().findAll {it.invoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
 	}
+
+	/**
+	 * @return quote lines related to this class
+	 */
+	@Nonnull
+	@API
+	List<QuoteLine> getQuoteLines() {
+		return super.getAbstractInvoiceLines().findAll { it.invoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
+	}
+
 	/**
 	 * Non-VET classes will still have a single outcome for each enrolment, even though that outcome isn't linked to a
 	 * Module.
