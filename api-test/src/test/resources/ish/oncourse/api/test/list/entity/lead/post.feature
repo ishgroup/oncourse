@@ -14,13 +14,12 @@ Feature: Main feature for all POST requests with path 'list/entity/lead'
     * def newLead =
         """
         {
-        "studentName":"student for lead",
         "contactId": 33,
         "estimatedValue": null,
         "status": "Open",
         "studentCount":1,
         "nextActionOn":"2021-07-10T12:30:00.000Z",
-        "notify":false,
+        "estimatedValue": 350.0
         "relatedSellables":[
           {"id":112,"active":true,"name":"FirstLeadCourse","code":"lead1","type":"Course"},
           {"id":1010,"active":true,"name":"Exclusive Lead Voucher","code":"LFV1","type":"Voucher"}
