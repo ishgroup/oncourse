@@ -70,7 +70,7 @@ trait DiscountTrait {
     }
 
     @CompileDynamic
-    private boolean enrolledWithinDaysEligibile(Contact contact) {
+    boolean enrolledWithinDaysEligibile(Contact contact) {
         if (studentEnrolledWithinDays == null) {
             return true
         } else if (contact.student == null || contact.student.enrolments.empty) {
@@ -85,7 +85,7 @@ trait DiscountTrait {
         }
     }
 
-    private boolean studenAgeDateEligibile(Contact contact) {
+    boolean studenAgeDateEligibile(Contact contact) {
         if (studentAge == null  || !studentAge.matches(/[<>]\s\d+/) ) {
             return true
         } else if (contact.birthDate == null) {
@@ -107,7 +107,7 @@ trait DiscountTrait {
         }
     }
 
-    private boolean concessionEligibile(Contact contact) {
+    boolean concessionEligibile(Contact contact) {
 
         if (discountConcessionTypes.empty) {
             return true
@@ -122,7 +122,7 @@ trait DiscountTrait {
     }
 
 
-    private boolean postcodesEligibile(Contact contact) {
+    boolean postcodesEligibile(Contact contact) {
         if (studentPostcodes != null) {
             return true
         } else if (StringUtils.trimToNull(contact.postcode) == null) {
