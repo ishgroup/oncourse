@@ -70,7 +70,13 @@ const styles = theme =>
       verticalAlign: "middle",
       margin: 0
     },
-    tagInput: {}
+    tagInput: {},
+    tagColorDotSmall: {
+      width: theme.spacing(2),
+      height: theme.spacing(2),
+      background: "red",
+      borderRadius: "100%"
+    }
   });
 
 interface Props extends WrappedFieldProps {
@@ -101,6 +107,26 @@ const getCurrentInputString = (input, formTags: Tag[]) => {
   return substr;
 };
 
+const getFullTag = (tagId: number, tags: Tag[]) => {
+  let i = 0;
+  let result;
+
+  while (i < tags.length) {
+    if (tagId === tags[i].id) {
+      return tags[i];
+    }
+
+    if (result) break;
+
+    if (tags[i].childTags.length) {
+      result = getFullTag(tagId, tags[i].childTags);
+      if (result) return result;
+    }
+
+    ++i;
+  }
+};
+
 const SimpleTagList: React.FC<Props> = props => {
   const {
    input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
@@ -110,6 +136,22 @@ const SimpleTagList: React.FC<Props> = props => {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
+
+  const getInputValueForRender = useCallback(() => {
+    if (!tags || !tags.length) return "";
+    const formTags = input.value;
+
+    const arrayOfTags = formTags && formTags.length && formTags.map((tag: Tag) => getFullTag(tag.id, tags));
+
+    if (!arrayOfTags) return "";
+
+    return arrayOfTags.map((tag: Tag) => (
+      <span className="d-flex align-items-center pr-1">
+        <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
+        {`#${tag.name} `}
+      </span>
+    ));
+  }, [tags, input.value]);
 
   useEffect(() => {
     if (meta.invalid && !isEditing) {
@@ -378,12 +420,12 @@ const SimpleTagList: React.FC<Props> = props => {
                 component="div"
               >
                 <span
-                  className={clsx("overflow-hidden", classes.editable, {
+                  className={clsx("overflow-hidden d-flex", classes.editable, {
                     [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
                     [fieldClasses.text]: inputValue,
                   })}
                 >
-                  {inputValue || (
+                  {(inputValue && getInputValueForRender()) || (
                      "No value"
                   )}
                   {!disabled
