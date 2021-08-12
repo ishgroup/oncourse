@@ -70,7 +70,7 @@ class AccountApiImpl implements AccountApi {
         return (ObjectSelect.query(Account.class)
                     .where(Account.PAYMENTS.dot(PaymentIn.BANKING).isNull())
                     .and(Account.PAYMENTS.dot(PaymentIn.STATUS).eq(PaymentStatus.SUCCESS))
-                    .and(Account.PAYMENTS.dot(PaymentIn.AMOUNT).gt(Money.ZERO))
+                    .and(Account.PAYMENTS.dot(PaymentIn.AMOUNT).nin(Money.ZERO))
                     .and(Account.PAYMENTS.dot(PaymentIn.PAYMENT_METHOD.dot(PaymentMethod.TYPE)).nin(PaymentMethodUtil.SYSTEM_TYPES))
                     .select(cayenneService.newContext) +
                 ObjectSelect.query(Account.class)
