@@ -369,7 +369,7 @@ class InvoiceLineTest extends TestWithDatabase {
         enrolment.setStudent(student)
         enrolment.setCourseClass(courseClass)
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoiceLine.enrolment(enrolment)
+        invoiceLine.enrolment=enrolment
 
         invoice.updateAmountOwing()
 
