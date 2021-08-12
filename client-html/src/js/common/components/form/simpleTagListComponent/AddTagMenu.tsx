@@ -16,6 +16,12 @@ const styles = theme => ({
   },
   backContainer: {
     marginLeft: "-6px"
+  },
+  tagColorDotSmall: {
+    width: theme.spacing(2),
+    height: theme.spacing(2),
+    background: "red",
+    borderRadius: "100%"
   }
 });
 
