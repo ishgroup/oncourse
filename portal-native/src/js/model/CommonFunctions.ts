@@ -13,4 +13,4 @@ export type NumberArgFunction<R = any> = AnyArgFunction<number, R>;
 
 export type DateArgFunction<R = any> = AnyArgFunction<Date, R>;
 
-export type NoArgFunction = () => void;
+export type NoArgFunction<R = any> = () => R;

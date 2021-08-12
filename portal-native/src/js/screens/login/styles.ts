@@ -4,7 +4,7 @@ import { createStyles } from '../../hooks/styles';
 export const useStyles = createStyles((theme) => ({
   topPart: {
     flex: 3,
-    backgroundColor: theme.colors.background,
+    backgroundColor: '#fbf9f0',
   },
   bottomPart: {
     flex: 2,

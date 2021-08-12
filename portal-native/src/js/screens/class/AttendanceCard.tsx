@@ -12,9 +12,18 @@ const styles = StyleSheet.create({
     marginRight: 18,
     marginBottom: 18
   },
+  rootSmall: {
+    marginRight: 4,
+    marginBottom: 4
+  },
   content: {
     width: 180,
     height: 180,
+    position: 'relative',
+  },
+  contentSmall: {
+    width: 136,
+    height: 136,
     position: 'relative',
   },
   backDrop: {
@@ -43,6 +52,7 @@ const styles = StyleSheet.create({
 interface Props extends ClassAttendanceItem {
   onNamePress: any;
   onPicPress: any;
+  small?: boolean;
 }
 
 const attendanceBasic: AttendanceTypes[] = [
@@ -57,7 +67,8 @@ const AttendanceCard = (
     studentName,
     attendance,
     onPicPress,
-    onNamePress
+    onNamePress,
+    small
   }: Props
 ) => {
   const [attendanceType, setAttendanceType] = useState(attendance);
@@ -71,8 +82,8 @@ const AttendanceCard = (
   };
 
   return (
-    <TouchableRipple style={styles.root} onPress={onPicPressHandler}>
-      <View style={styles.content}>
+    <TouchableRipple style={small ? styles.rootSmall : styles.root} onPress={onPicPressHandler}>
+      <View style={small ? styles.contentSmall : styles.content}>
         <Image
           style={styles.image}
           source={{

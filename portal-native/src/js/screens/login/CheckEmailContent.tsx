@@ -7,7 +7,7 @@ const EmaiConfirmContent = () => {
   const cs = useCommonStyles();
 
   return (
-    <View style={[cs.flexCenter, cs.flex1, cs.justifyContentCenter]}>
+    <View style={[cs.flexCenter, cs.flex1, cs.justifyContentCenter, { minHeight: 360 }]}>
       <Caption style={{ fontSize: 16, textAlign: 'center' }}>
         Please check your email box for message with login link
       </Caption>

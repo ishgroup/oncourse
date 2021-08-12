@@ -70,25 +70,31 @@ export default function CourseClassApiMock(this: MockAdapterType) {
           id: '345743',
           name: 'Recource 1',
           link: '444',
-          mimeType: 'pdf'
+          mimeType: 'application/pdf'
         },
         {
           id: '7654',
           name: 'Recource 2',
           link: '444',
-          mimeType: 'jpeg'
+          mimeType: 'image/jpeg'
         },
         {
           id: '87654',
           name: 'Recource 3',
           link: '444',
-          mimeType: 'png'
+          mimeType: 'application/msword'
         },
         {
           id: '54334',
           name: 'Recource 4',
           link: '444',
-          mimeType: 'docx'
+          mimeType: 'application/vnd.ms-excel'
+        },
+        {
+          id: '52356',
+          name: 'Recource 5',
+          link: '444',
+          mimeType: 'application/zip'
         }
       ]
     }));

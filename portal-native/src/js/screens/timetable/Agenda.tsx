@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  FlatList, FlatListProps,
+  VirtualizedList, VirtualizedListProps,
   ListRenderItemInfo, StyleSheet, View
 } from 'react-native';
 import { Caption, Divider, Title } from 'react-native-paper';
@@ -95,21 +95,28 @@ const getItemLayout = (data: Day[], index) => ({
   index
 });
 
+const getItem = (data, index) => data[index];
+
+const getItemCount = (data) => data?.length;
+
 const viewabilityConfig = {
   waitForInteraction: false,
   itemVisiblePercentThreshold: 25,
 };
 
+
 const Agenda = ({
   days = [],
   ...rest
-}: Props & Partial<FlatListProps<Day>>, ref) => (
-  <FlatList
+}: Props & Partial<VirtualizedListProps<Day>>, ref) => (
+  <VirtualizedList
     ref={ref}
     data={days}
     keyExtractor={(item) => item.date.toISOString()}
     renderItem={renderDay}
     getItemLayout={getItemLayout}
+    getItemCount={getItemCount}
+    getItem={getItem}
     viewabilityConfig={viewabilityConfig}
     {...rest}
   />

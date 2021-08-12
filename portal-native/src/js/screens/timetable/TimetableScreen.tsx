@@ -12,7 +12,12 @@ import {
 } from 'react-native-paper';
 import '@expo/match-media';
 import {
-  addMonths, format, getDaysInMonth, isSameDay, isSameMonth, setDate
+  addMonths,
+  format,
+  getDaysInMonth,
+  isSameDay,
+  isSameMonth,
+  setDate
 } from 'date-fns';
 import debounce from 'lodash.debounce';
 import { Session } from '@api/model';
@@ -61,15 +66,13 @@ const getMonthDays = (
     };
   });
 
-const getRenderDays = (date: Date, sessions: Session[]): Day[] => {
-  const prevMonth = addMonths(date, -1);
-  const nextMonth = addMonths(date, 1);
-  return [
-    ...getMonthDays(prevMonth, sessions),
-    ...getMonthDays(date, sessions),
-    ...getMonthDays(nextMonth, sessions)
-  ];
-};
+const getRenderDays = (date: Date, sessions: Session[]): Day[] => [
+  ...getMonthDays(addMonths(date, -2), sessions),
+  ...getMonthDays(addMonths(date, -1), sessions),
+  ...getMonthDays(date, sessions),
+  ...getMonthDays(addMonths(date, 1), sessions),
+  ...getMonthDays(addMonths(date, 2), sessions)
+];
 
 export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerParamList, 'Timetable'>) => {
   const plainSessions = useAppSelector(
@@ -77,7 +80,7 @@ export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerPara
   );
   const sessions = useMemo(() => denormalize(plainSessions.result, sessionSchema, plainSessions.entities),
     [plainSessions]);
-  const [days, setDays] = useState(() => getRenderDays(today, sessions || []));
+  const [days, setDays] = useState(() => getRenderDays(today, sessions));
   const [month, setCurrentMonth] = useState<Date>(today);
   const [firstVisible, setFirstVisible] = useState<Date>(null);
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
@@ -95,10 +98,6 @@ export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerPara
     setRefreshing(true);
     const index = days.findIndex((d) => isSameDay(d.date, day));
 
-    if (!isSameMonth(firstVisible, day)) {
-      setCurrentMonth(day);
-    }
-
     if (index !== -1) {
       ref.current.scrollToIndex({ index });
     } else {
@@ -109,18 +108,19 @@ export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerPara
         ref.current.scrollToIndex({ index: updatedDays.findIndex((d) => isSameDay(d.date, day)) });
       }, 200);
     }
-    setRefreshing(false);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
-  const onRefresh = (monthToAdd: number) => {
+  const onRefresh = (newMonth) => {
     if (!navigation.isFocused()) return;
 
     setRefreshing(true);
-    const updatedMonth = addMonths(month, monthToAdd);
-    const updatedDays = getRenderDays(updatedMonth, sessions);
+    const updatedDays = getRenderDays(newMonth, sessions);
 
-    if (!isSameMonth(month, updatedMonth)) {
-      setCurrentMonth(updatedMonth);
+    if (!isSameMonth(month, newMonth)) {
+      setCurrentMonth(newMonth);
     }
 
     setDays(updatedDays);
@@ -135,8 +135,13 @@ export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerPara
     }, 1000);
   };
 
-  const onEndReached = () => {
-    onRefresh(1);
+  const onScroll = ({ nativeEvent: { contentOffset, contentSize, layoutMeasurement } }) => {
+    if (contentOffset.y === 0) {
+      ref.current.scrollToOffset({ offset: contentSize.height * 0.5, animated: false });
+    }
+    if (contentOffset.y + layoutMeasurement.height === contentSize.height) {
+      ref.current.scrollToOffset({ offset: contentSize.height * 0.5, animated: false });
+    }
   };
 
   const openDialog = () => {
@@ -151,14 +156,9 @@ export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerPara
 
   const syncMonth = (isRefreshing, prevMonth, newMonth) => {
     if (!isRefreshing && newMonth && !isSameMonth(prevMonth, newMonth)) {
-      setCurrentMonth(newMonth);
+      onRefresh(newMonth);
     }
   };
-
-  const updateMonth = useMemo(
-    () => debounce(syncMonth, 200),
-    []
-  );
 
   useEffect(() => {
     scrollToToday();
@@ -173,7 +173,7 @@ export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerPara
   }, []);
 
   useEffect(() => {
-    updateMonth(refreshing, month, firstVisible);
+    syncMonth(refreshing, month, firstVisible);
   }, [firstVisible, refreshing]);
 
   useEffect(() => {
@@ -226,7 +226,7 @@ export const TimetableScreen = ({ navigation }: DrawerScreenProps<RootDrawerPara
           initialNumToRender={10}
             // IOS
           maintainVisibleContentPosition={maintainVisibleContentPosition}
-          onEndReached={onEndReached}
+          onScroll={onScroll}
           removeClippedSubviews
         />
         {!isSmallScreen && renderCalendar}

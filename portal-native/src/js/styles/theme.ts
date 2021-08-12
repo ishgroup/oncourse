@@ -1,21 +1,29 @@
 import React, { useContext } from 'react';
 import { DefaultTheme } from 'react-native-paper';
+import { Theme } from 'react-native-paper/lib/typescript/types';
 import { SPACING_UNIT } from '../constants/Layout';
 
 export const spacing = (unit: number) => unit * SPACING_UNIT;
 
-export const LightTheme = {
+export type IshTheme = {
+  colors: {
+    secondary: string;
+  } & Theme['colors'],
+  spacing: typeof spacing;
+} & Theme;
+
+export const LightTheme: IshTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
     primary: '#fbb619',
     secondary: '#37caad',
-    background: '#fff'
+    background: '#fff',
   },
   spacing
 };
 
-export const DarkTheme = {
+export const DarkTheme: IshTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
@@ -24,8 +32,6 @@ export const DarkTheme = {
   },
   spacing
 };
-
-export type IshTheme = typeof LightTheme;
 
 export type ThemeType = 'light' | 'dark';
 

@@ -28,7 +28,6 @@ const DrawerNavigation = () => (
   <DrawerNav.Navigator
     screenOptions={{
       headerShown: true,
-      unmountOnBlur: true,
       header: Header,
     }}
     drawerContent={CustomDrawerContent}

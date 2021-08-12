@@ -6,6 +6,8 @@ import { CalendarDay } from '../model/Calendar';
 
 export const H_MM_AAA = 'h.mmaaa';
 
+export const H_MM_A = 'h.mm a';
+
 export const MMMM_YYYY = 'MMMM yyyy';
 
 const generateOneMonth = (today: Date, sessions: Session[], status: CalendarDay['status']): CalendarDay[] => Array(getDaysInMonth(today))

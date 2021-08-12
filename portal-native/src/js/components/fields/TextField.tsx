@@ -1,37 +1,44 @@
 // react-native-paper TextInput wrapper for Formik implementation
 
 import React, { useEffect, useMemo, useState } from 'react';
-import _get from 'lodash.get';
 import debounce from 'lodash.debounce';
 import { TextInputProps } from 'react-native-paper/src/components/TextInput/TextInput';
-import { useFormikContext } from 'formik';
-import { View } from 'react-native';
+import { useField } from 'formik';
+import { StyleSheet, View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
+import { AnyArgFunction } from '../../model/CommonFunctions';
+
+const styles = StyleSheet.create({
+  errorText: {
+    height: 22
+  },
+  borders: {
+    borderColor: 'rgba(0,0,0,24)'
+  }
+});
 
 interface Props extends Partial<TextInputProps> {
   name: string;
+  // TODO Change with native implementation when formik 3.0.0 will be released
+  format?: AnyArgFunction;
+  parse?: AnyArgFunction;
 }
 
 const TextField = (props: Props) => {
   const {
     label,
     name,
+    format,
+    parse,
     ...rest
   } = props;
 
-  const [textValue, setTextValue] = useState(null);
+  const [field, meta, helpers] = useField(name);
+  const [textValue, setTextValue] = useState(field.value);
   const [isMounted, setIsMounted] = useState(false);
 
-  const {
-    values, errors, touched, setFieldValue, setFieldTouched, isSubmitting
-  } = useFormikContext();
-
-  const value = _get(values, name);
-  const isTouched = _get(touched, name);
-  const errorMessage = _get(errors, name);
-
   const eventHandler = (text) => {
-    setFieldValue(name, text);
+    helpers.setValue(text);
   };
 
   const debouncedEventHandler = useMemo(
@@ -50,24 +57,29 @@ const TextField = (props: Props) => {
   }, [textValue]);
 
   useEffect(() => {
-    if (!isTouched && (value || isSubmitting)) {
-      setFieldTouched(name, true);
+    if (!meta.touched && field.value) {
+      helpers.setTouched(true);
     }
-  }, [value, isTouched, isSubmitting, name]);
+  }, [field.value, meta.touched, name]);
 
-  const hasError = Boolean(isTouched && errorMessage);
+  const hasError = Boolean(meta.touched && meta.error);
+
+  const displayedValue = useMemo(() => (format ? format(textValue) : textValue), [textValue, format]);
+
+  const onChangeText = (val) => setTextValue(parse ? parse(val) : val);
 
   return (
     <View>
       <TextInput
         error={hasError}
         label={label}
-        value={textValue}
-        onChangeText={setTextValue}
+        value={displayedValue}
+        onChangeText={onChangeText}
+        style={styles.borders}
         {...rest}
       />
-      <HelperText type="error" style={{ height: 22 }}>
-        {hasError && errorMessage}
+      <HelperText type="error" style={styles.errorText}>
+        {hasError && meta.error}
       </HelperText>
     </View>
   );

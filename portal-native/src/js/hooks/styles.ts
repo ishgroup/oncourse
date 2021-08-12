@@ -228,6 +228,9 @@ export const useCommonStyles = () => {
     flex1: {
       flex: 1
     },
+    flexWrap: {
+      flexWrap: 'wrap'
+    },
     flexNowrap: {
       flexWrap: 'nowrap'
     },

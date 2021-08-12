@@ -1,29 +1,37 @@
 import React, {
   useCallback, useEffect, useMemo, useState
 } from 'react';
-import { View } from 'react-native';
+import {
+  Platform, ScrollView, View
+} from 'react-native';
 import {
   ActivityIndicator, Appbar, Paragraph, Title
 } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AttendanceTypes, ClassAttendanceItem, CourseClass } from '@api/model';
 import { formatDistanceStrict } from 'date-fns';
+import '@expo/match-media';
 import debounce from 'lodash.debounce';
+import { useMediaQuery } from 'react-responsive';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootStackParamList } from '../../model/Navigation';
 import { useCommonStyles } from '../../hooks/styles';
 import CourseClassService from '../../services/CourseClassService';
 import instantFetchErrorHandler from '../../utils/ApiUtils';
 import AttendanceCard from './AttendanceCard';
+import { AttendanceModal, AttendanceModalMobile } from './AttendanceModal';
+import ResourceCard from '../../components/layout/ResourceCard';
 
 const ClassRollScreen = (
   {
     navigation,
     route: { params }
-  }: StackScreenProps<RootStackParamList>
+  }: StackScreenProps<RootStackParamList, 'ClassRoll'>
 ) => {
   const [courseClass, setCourseClass] = useState<CourseClass>();
-  const [dialogOpened, setDialogOpened] = useState(false);
+  const [activeAttendance, setActiveAttendance] = useState(null);
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 450px)' });
 
   const dispatch = useAppDispatch();
   const session = useAppSelector((s) => s.sessions.entities.session[params.sessionId]);
@@ -52,6 +60,10 @@ const ClassRollScreen = (
   }, 500), []);
 
   const onPressStudentName = (attendance: ClassAttendanceItem) => {
+    setActiveAttendance(attendance);
+  };
+
+  const onAttendanceDialogSubmit = () => {
 
   };
 
@@ -69,30 +81,67 @@ const ClassRollScreen = (
         <Appbar.Content color="white" title={session.name} />
         <Appbar.Action color="white" icon="open-in-new" onPress={() => {}} />
       </Appbar.Header>
-      <View style={[cs.flex1, cs.p3, cs.bgThemed]}>
+      <ScrollView style={[cs.flex1, cs.p3, cs.bgThemed]}>
         <Title>
           Description
         </Title>
         <Paragraph style={cs.pb2}>
           {courseClass.description}
         </Paragraph>
-        <Title>
-          Class Roll
-        </Title>
-        <Paragraph style={cs.pb2}>
-          {rollLabel}
-        </Paragraph>
-        <View style={cs.flexRow}>
-          {courseClass.attendance.map((a) => (
-            <AttendanceCard
-              key={a.id}
-              onPicPress={(newStatus) => onPressStudentPicture(a, newStatus)}
-              onNamePress={() => onPressStudentName(a)}
-              {...a}
-            />
-          ))}
-        </View>
-      </View>
+        {Boolean(courseClass.attendance.length) && (
+        <>
+          <Title>
+            Class Roll
+          </Title>
+          <Paragraph style={cs.pb2}>
+            {rollLabel}
+          </Paragraph>
+          <View style={[cs.flexRow, cs.flexWrap, cs.pb3]}>
+            {courseClass.attendance.map((a) => (
+              <AttendanceCard
+                key={a.id}
+                onPicPress={(newStatus) => onPressStudentPicture(a, newStatus)}
+                onNamePress={() => onPressStudentName(a)}
+                small={isSmallScreen}
+                {...a}
+              />
+            ))}
+          </View>
+        </>
+        )}
+        {Boolean(courseClass.resources.length) && (
+        <>
+          <Title style={cs.pb1}>
+            Resources
+          </Title>
+          <View style={[cs.flexRow, cs.flexWrap]}>
+            {courseClass.resources.map((r) => (
+              <ResourceCard
+                key={r.id}
+                {...r}
+              />
+            ))}
+          </View>
+        </>
+        )}
+      </ScrollView>
+      {Platform.OS === 'web'
+        ? (
+          <AttendanceModal
+            visible={Boolean(activeAttendance)}
+            onDismiss={() => setActiveAttendance(null)}
+            onSubmit={onAttendanceDialogSubmit}
+            attendance={activeAttendance}
+          />
+        )
+        : (
+          <AttendanceModalMobile
+            visible={Boolean(activeAttendance)}
+            onDismiss={() => setActiveAttendance(null)}
+            onSubmit={onAttendanceDialogSubmit}
+            attendance={activeAttendance}
+          />
+        )}
     </View>
   ) : <View style={[cs.flex1, cs.flexCenter]}><ActivityIndicator size="large" /></View>;
 };

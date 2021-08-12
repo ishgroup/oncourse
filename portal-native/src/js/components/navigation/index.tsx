@@ -63,10 +63,14 @@ export default function Navigation() {
         }}
       >
         {isLogged
-          ? <Stack.Screen name="Root" component={DrawerNavigation} />
+          ? (
+            <>
+              <Stack.Screen name="Root" component={DrawerNavigation} />
+              <Stack.Screen name="ClassRoll" component={ClassRollScreen} options={{ presentation: 'modal' }} />
+            </>
+          )
           : <Stack.Screen name="Login" component={LoginScreen} />}
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Screen name="ClassRoll" component={ClassRollScreen} options={{ presentation: 'modal' }} />
       </Stack.Navigator>
     </NavigationContainer>
   ) : <View style={style.loader}><ActivityIndicator size="large" /></View>;

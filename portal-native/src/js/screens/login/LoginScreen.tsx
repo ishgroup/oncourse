@@ -1,16 +1,17 @@
 import React, { useCallback, useMemo } from 'react';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { Image, View } from 'react-native';
+import {
+  Image, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View
+} from 'react-native';
 import { Caption, Card } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
 import '@expo/match-media';
 import { useMediaQuery } from 'react-responsive';
-import { SceneMap, TabView } from 'react-native-tab-view';
 import { useCommonStyles } from '../../hooks/styles';
 import { useStyles } from './styles';
 import LoginContent from './LoginContent';
-import { LoginRoute, LoginStages, LoginValues } from '../../model/Login';
+import { LoginStages, LoginValues } from '../../model/Login';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import EmaiConfirmContent from './CheckEmailContent';
 import ResetPasswordContent from './ResetPasswordContent';
@@ -19,21 +20,21 @@ import CreateAccountContent from './CreateAccountContent';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const renderScene = SceneMap<any>({
-  Login: LoginContent,
-  PasswordReset: ResetPasswordContent,
-  CreateAccount: CreateAccountContent,
-  EmaiConfirm: EmaiConfirmContent,
-});
+const renderStage = (stage: LoginStages) => {
+  switch (stage) {
+    default:
+    case LoginStages.Login:
+      return <LoginContent />;
+    case LoginStages.CreateAccount:
+      return <CreateAccountContent />;
+    case LoginStages.EmaiConfirm:
+      return <EmaiConfirmContent />;
+    case LoginStages.PasswordReset:
+      return <ResetPasswordContent />;
+  }
+};
 
-const initialValues: LoginValues = { submitBy: 'LoginEmail' };
-
-const routes: LoginRoute[] = [
-  { key: 'Login' },
-  { key: 'PasswordReset' },
-  { key: 'CreateAccount' },
-  { key: 'EmaiConfirm' },
-];
+const initialValues: LoginValues = { submitBy: 'LoginEmail', email: '', password: '' };
 
 const LoginScreen = () => {
   const isSmallScreen = useMediaQuery({ query: '(max-height: 800px)' });
@@ -99,42 +100,42 @@ const LoginScreen = () => {
     </Caption>
   );
 
+  const activeScreen = useMemo(() => renderStage(stage), [stage]);
+
   return (
-    <View
+    <KeyboardAvoidingView
       style={cs.flex1}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View style={styles.topPart} />
-      <View style={styles.bottomPart} />
-      <View style={[
-        styles.loginContainerWrapper,
-        cs.justifyContentCenter,
-      ]}
-      >
-        {!isSmallScreen && Logo}
-        <Card
-          elevation={3}
-          style={isSmallScreen ? styles.loginContainerFullScreen : styles.loginContainer}
-        >
-          <View style={styles.content}>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={cs.flex1}>
+          <View style={styles.topPart} />
+          <View style={styles.bottomPart} />
+          <View style={[
+            styles.loginContainerWrapper,
+            cs.justifyContentCenter,
+          ]}
+          >
+            {!isSmallScreen && Logo}
+            <Card
+              elevation={3}
+              style={isSmallScreen ? styles.loginContainerFullScreen : styles.loginContainer}
             >
-              <TabView
-                renderTabBar={() => null}
-                navigationState={{ index: stage, routes }}
-                renderScene={renderScene}
-                onIndexChange={() => null}
-                swipeEnabled={false}
-                lazy
-              />
-            </Formik>
+              <View style={styles.content}>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={onSubmit}
+                >
+                  {activeScreen}
+                </Formik>
+              </View>
+            </Card>
+            {!isSmallScreen && Info}
           </View>
-        </Card>
-        {!isSmallScreen && Info}
-      </View>
-    </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
