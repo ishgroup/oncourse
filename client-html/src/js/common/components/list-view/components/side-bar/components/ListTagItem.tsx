@@ -58,7 +58,14 @@ const styles = theme => createStyles({
       width: 0
     },
     selected: {},
-    content: {}
+    content: {},
+    tagColorDotExtraSmall: {
+      width: theme.spacing(1),
+      minWidth: theme.spacing(1),
+      height: theme.spacing(1),
+      minHeight: theme.spacing(1),
+      borderRadius: "100%"
+    }
   });
 
 interface Props extends TreeItemProps {
@@ -115,6 +122,7 @@ const ListTagItem: React.FC<Props> = ({
             )}
           label={item.tagBody.name}
         />
+        <div className={clsx(classes.tagColorDotExtraSmall, "mr-2")} style={{ background: "#" + item.tagBody.color }} />
       </div>
       )}
   >
