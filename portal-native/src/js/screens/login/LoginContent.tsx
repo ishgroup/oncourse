@@ -47,12 +47,10 @@ const LoginContent = () => {
       <TextField
         name="email"
         label="Email"
-        style={cs.bgTransp}
       />
       <TextField
         name="password"
         label="Password"
-        style={cs.bgTransp}
         secureTextEntry={hidePassword}
         right={(
           <TextInput.Icon

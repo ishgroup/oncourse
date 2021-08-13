@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet, Image, View, TouchableOpacity
 } from 'react-native';
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'lightgray'
   },
@@ -71,13 +70,10 @@ const AttendanceCard = (
     small
   }: Props
 ) => {
-  const [attendanceType, setAttendanceType] = useState(attendance);
 
   const onPicPressHandler = () => {
-    const prevIndex = attendanceBasic.indexOf(attendanceType);
+    const prevIndex = attendanceBasic.indexOf(attendance);
     const newIndex = prevIndex === attendanceBasic.length - 1 ? 0 : prevIndex + 1;
-
-    setAttendanceType(attendanceBasic[newIndex]);
     onPicPress(attendanceBasic[newIndex]);
   };
 
@@ -94,7 +90,7 @@ const AttendanceCard = (
           <Paragraph style={styles.nameLabel}>
             {studentName}
           </Paragraph>
-          <AttendanceIcon type={attendanceType} size={24} color="#fff" />
+          <AttendanceIcon type={attendance} size={24} color="#fff" />
         </TouchableOpacity>
       </View>
     </TouchableRipple>

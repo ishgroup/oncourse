@@ -1,153 +1,185 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Button, Card, Dialog, TextInput
 } from 'react-native-paper';
 import {
-  StyleSheet, Platform, View, Modal, ScrollView, TouchableHighlight, TouchableWithoutFeedback, Dimensions, StyleProp
+  StyleSheet,
+  Platform,
+  View,
+  Modal,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView
 } from 'react-native';
 import { ClassAttendanceItem } from '@api/model';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 import { format } from 'date-fns';
-import TextField from '../../components/fields/TextField';
+import { StatusBar } from 'expo-status-bar';
 import { useCommonStyles } from '../../hooks/styles';
-
+import TextField from '../../components/fields/TextField';
 import { H_MM_A } from '../../constants/DateTime';
+import TimePicker from '../../components/fields/TimePicker';
 
 const style = StyleSheet.create({
-  card: {
+  center: {
     alignSelf: 'center'
   },
   picture: {
-    minHeight: 411
+    height: 411
   }
 });
 
 interface Props {
-  visible: boolean;
   onDismiss: any;
   onSubmit: any;
+  setFieldValue: any;
+  index: number;
   attendance: ClassAttendanceItem;
 }
 
-const validationSchema = yup.object({
-  arriveTime: yup.string().nullable().notRequired(),
-  departureTime: yup.mixed().nullable().notRequired()
-});
-
 const AttendanceContent = ({
-  handleSubmit, values, onDismiss
+  handleSubmit, values, setFieldValue, index, onDismiss
 }: {
   handleSubmit: any,
+  index: number;
   values: ClassAttendanceItem,
-  onDismiss: any,
+  setFieldValue: any,
+  onDismiss: any
 }) => {
   const cs = useCommonStyles();
+  const [activeDate, setActiveDate] = useState<string>(null);
+
+  const activeDateValue = useMemo(() => (values[activeDate] ? new Date(values[activeDate]) : new Date()), [activeDate, values]);
+
+  const onDismissPicker = () => {
+    setActiveDate(null);
+  };
+
+  const onConfirmPicker = ({ hours, minutes }) => {
+    activeDateValue.setHours(hours, minutes);
+    setFieldValue(`attendance[${index}].${activeDate}`, activeDateValue.toISOString());
+    setActiveDate(null);
+  };
+
   return (
-    <Card>
-      <Card.Title title={values.studentName} subtitle={values.studentEmail} />
-      <Card.Cover style={style.picture} source={{ uri: values.studentPicture }} />
-      <Card.Content>
-        <View style={[cs.flexRow, cs.pt2]}>
-          <TextField
-            name="arriveTime"
-            label="Arrived"
-            mode="outlined"
-            style={cs.pr1}
-            right={(
-              <TextInput.Icon
-                name="clock-outline"
-              />
-              )}
-            format={(v) => format(new Date(v), H_MM_A)}
-          />
-          <TextField
-            name="departureTime"
-            label="Departured"
-            mode="outlined"
-            style={cs.pl1}
-            right={(
-              <TextInput.Icon
-                name="clock-outline"
-              />
-              )}
-            format={(v) => format(new Date(v), H_MM_A)}
-          />
-        </View>
+    <>
+      <Card>
+        <TimePicker
+          hours={activeDateValue.getHours()}
+          minutes={activeDateValue.getMinutes()}
+          visible={Boolean(activeDate)}
+          onDismiss={onDismissPicker}
+          onConfirm={onConfirmPicker}
+          webStyle={style.center}
 
-        <TextField
-          name="notes"
-          label="Notes"
-          mode="outlined"
-          numberOfLines={3}
-          multiline
         />
-      </Card.Content>
-      <Card.Actions style={[cs.justifyContentEnd, cs.pb2, cs.pr2]}>
-        <Button onPress={onDismiss} style={cs.mr2}>
-          Close
-        </Button>
-        <Button mode="contained" dark onPress={handleSubmit}>
-          Save
-        </Button>
-      </Card.Actions>
-    </Card>
+        <Card.Title title={values.studentName} subtitle={values.studentEmail} />
+        <Card.Cover style={style.picture} source={{ uri: values.studentPicture }} />
+        <Card.Content>
+          <View style={[cs.flexRow, cs.pt2]}>
+            <TextField
+              name={`attendance[${index}].arriveTime`}
+              label="Arrived"
+              mode="outlined"
+              style={[cs.flex1, cs.pr1]}
+              right={(
+                <TextInput.Icon
+                  name="clock-outline"
+                />
+                )}
+              format={(v) => format(new Date(v), H_MM_A)}
+              onFocus={() => {
+                Keyboard.dismiss();
+                setActiveDate('arriveTime');
+              }}
+              showSoftInputOnFocus={false}
+            />
+            <TextField
+              name={`attendance[${index}].departureTime`}
+              label="Departured"
+              mode="outlined"
+              style={[cs.flex1, cs.pl1]}
+              right={(
+                <TextInput.Icon
+                  name="clock-outline"
+                />
+                )}
+              format={(v) => format(new Date(v), H_MM_A)}
+              onFocus={() => {
+                Keyboard.dismiss();
+                setActiveDate('departureTime');
+              }}
+              showSoftInputOnFocus={false}
+            />
+          </View>
 
+          <TextField
+            name={`attendance[${index}].notes`}
+            label="Notes"
+            mode="outlined"
+            numberOfLines={3}
+            scrollEnabled={false}
+            multiline
+          />
+        </Card.Content>
+        <Card.Actions style={[cs.justifyContentEnd, cs.pb2, cs.pr2]}>
+          <Button onPress={onDismiss} style={cs.mr2}>
+            Close
+          </Button>
+          <Button mode="contained" dark onPress={handleSubmit}>
+            Save
+          </Button>
+        </Card.Actions>
+      </Card>
+    </>
   );
 };
 
 export const AttendanceModal = (
   {
-    visible,
     onDismiss,
     onSubmit,
-    attendance
+    attendance,
+    setFieldValue,
+    index
   }: Props
 ) => (attendance ? (
-  <Formik
-    initialValues={attendance}
-    validationSchema={validationSchema}
-    onSubmit={onSubmit}
-  >
-    {({ handleSubmit, values }) => (
-      <Dialog style={style.card} visible={visible} onDismiss={onDismiss}>
-        <AttendanceContent values={values} handleSubmit={handleSubmit} onDismiss={onDismiss} />
-      </Dialog>
-    )}
-  </Formik>
+  <Dialog style={style.center} visible={index !== null} onDismiss={onDismiss}>
+    <AttendanceContent index={index} setFieldValue={setFieldValue} values={attendance} handleSubmit={onSubmit} onDismiss={onDismiss} />
+  </Dialog>
+
 ) : null);
 
 export const AttendanceModalMobile = (
   {
-    visible,
     onDismiss,
     onSubmit,
-    attendance
+    attendance,
+    setFieldValue,
+    index
   }: Props
 ) => (attendance ? (
-  <Formik
-    initialValues={attendance}
-    validationSchema={validationSchema}
-    onSubmit={onSubmit}
+  <Modal
+    visible={index !== null}
+    onDismiss={onDismiss}
+    presentationStyle="fullScreen"
+    animationType="slide"
   >
-    {({ handleSubmit, values }) => (
-
-        <Modal
-          visible={visible}
-          onDismiss={onDismiss}
-          presentationStyle="fullScreen"
-          animationType="slide"
-        >
-          <ScrollView>
-            <AttendanceContent
-              values={values}
-              handleSubmit={handleSubmit}
-              onDismiss={onDismiss}
-            />
-          </ScrollView>
-        </Modal>
-
-
-    )}
-  </Formik>
+    <StatusBar hidden />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView>
+          <AttendanceContent
+            values={attendance}
+            handleSubmit={onSubmit}
+            onDismiss={onDismiss}
+            setFieldValue={setFieldValue}
+            index={index}
+          />
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+  </Modal>
 ) : null);

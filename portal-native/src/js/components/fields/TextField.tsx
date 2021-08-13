@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { TextInputProps } from 'react-native-paper/src/components/TextInput/TextInput';
 import { useField } from 'formik';
-import { StyleSheet, View } from 'react-native';
+import {  StyleSheet, View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
 import { AnyArgFunction } from '../../model/CommonFunctions';
 
@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
   },
   borders: {
     borderColor: 'rgba(0,0,0,24)'
+  },
+  field: {
+    backgroundColor: 'transparent'
   }
 });
 
@@ -30,6 +33,7 @@ const TextField = (props: Props) => {
     name,
     format,
     parse,
+    style,
     ...rest
   } = props;
 
@@ -57,6 +61,12 @@ const TextField = (props: Props) => {
   }, [textValue]);
 
   useEffect(() => {
+    if (isMounted) {
+      setTextValue(field.value);
+    }
+  }, [field.value]);
+
+  useEffect(() => {
     if (!meta.touched && field.value) {
       helpers.setTouched(true);
     }
@@ -69,13 +79,13 @@ const TextField = (props: Props) => {
   const onChangeText = (val) => setTextValue(parse ? parse(val) : val);
 
   return (
-    <View>
+    <View style={style}>
       <TextInput
         error={hasError}
         label={label}
         value={displayedValue}
         onChangeText={onChangeText}
-        style={styles.borders}
+        style={rest.mode !== 'outlined' && styles.field}
         {...rest}
       />
       <HelperText type="error" style={styles.errorText}>

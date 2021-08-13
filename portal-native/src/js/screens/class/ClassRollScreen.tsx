@@ -13,6 +13,7 @@ import { formatDistanceStrict } from 'date-fns';
 import '@expo/match-media';
 import debounce from 'lodash.debounce';
 import { useMediaQuery } from 'react-responsive';
+import { Formik } from 'formik';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootStackParamList } from '../../model/Navigation';
 import { useCommonStyles } from '../../hooks/styles';
@@ -29,7 +30,7 @@ const ClassRollScreen = (
   }: StackScreenProps<RootStackParamList, 'ClassRoll'>
 ) => {
   const [courseClass, setCourseClass] = useState<CourseClass>();
-  const [activeAttendance, setActiveAttendance] = useState(null);
+  const [activeAttendance, setActiveAttendance] = useState<number>(null);
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 450px)' });
 
@@ -53,18 +54,23 @@ const ClassRollScreen = (
     navigation.canGoBack() ? navigation.goBack() : navigation.navigate('Root');
   };
 
-  const onPressStudentPicture = useCallback(debounce((item: ClassAttendanceItem, attendance: AttendanceTypes) => {
+  const submitAttendance = (value: ClassAttendanceItem) => {
     CourseClassService
-      .markAttendance({ ...item, attendance })
+      .markAttendance(value)
       .catch((e) => instantFetchErrorHandler(dispatch, e, 'Something went wrong. Changes not saved'));
-  }, 500), []);
-
-  const onPressStudentName = (attendance: ClassAttendanceItem) => {
-    setActiveAttendance(attendance);
   };
 
-  const onAttendanceDialogSubmit = () => {
+  const onPressStudentPicture = useCallback(debounce((item: ClassAttendanceItem, attendance: AttendanceTypes) => {
+    submitAttendance({ ...item, attendance });
+  }, 500), []);
 
+  const onPressStudentName = (index: number) => {
+    setActiveAttendance(index);
+  };
+
+  const onSubmit = (values: CourseClass) => {
+    setActiveAttendance(null);
+    submitAttendance(values.attendance[activeAttendance]);
   };
 
   const rollLabel = useMemo(() => {
@@ -76,72 +82,89 @@ const ClassRollScreen = (
 
   return session && courseClass ? (
     <View style={cs.flex1}>
-      <Appbar.Header style={{ backgroundColor: session.classColor }}>
-        <Appbar.BackAction color="white" onPress={onPressBack} />
-        <Appbar.Content color="white" title={session.name} />
-        <Appbar.Action color="white" icon="open-in-new" onPress={() => {}} />
-      </Appbar.Header>
-      <ScrollView style={[cs.flex1, cs.p3, cs.bgThemed]}>
-        <Title>
-          Description
-        </Title>
-        <Paragraph style={cs.pb2}>
-          {courseClass.description}
-        </Paragraph>
-        {Boolean(courseClass.attendance.length) && (
-        <>
-          <Title>
-            Class Roll
-          </Title>
-          <Paragraph style={cs.pb2}>
-            {rollLabel}
-          </Paragraph>
-          <View style={[cs.flexRow, cs.flexWrap, cs.pb3]}>
-            {courseClass.attendance.map((a) => (
-              <AttendanceCard
-                key={a.id}
-                onPicPress={(newStatus) => onPressStudentPicture(a, newStatus)}
-                onNamePress={() => onPressStudentName(a)}
-                small={isSmallScreen}
-                {...a}
-              />
-            ))}
-          </View>
-        </>
+      <Formik
+        initialValues={courseClass}
+        onSubmit={onSubmit}
+      >
+        {({ handleSubmit, values, setFieldValue }) => (
+          <>
+            <Appbar.Header style={{ backgroundColor: session.classColor }}>
+              <Appbar.BackAction color="white" onPress={onPressBack} />
+              <Appbar.Content color="white" title={session.name} />
+              <Appbar.Action color="white" icon="open-in-new" onPress={() => {}} />
+            </Appbar.Header>
+            <ScrollView style={[cs.flex1, cs.p3, cs.bgThemed]}>
+              <Title>
+                Description
+              </Title>
+              <Paragraph style={cs.pb2}>
+                {values.description}
+              </Paragraph>
+
+              {Boolean(values.attendance.length) && (
+              <>
+                <Title>
+                  Class Roll
+                </Title>
+                <Paragraph style={cs.pb2}>
+                  {rollLabel}
+                </Paragraph>
+                <View style={[cs.flexRow, cs.flexWrap, cs.pb3]}>
+                  {values.attendance.map((a, i) => (
+                    <AttendanceCard
+                      key={a.id}
+                      onPicPress={(newStatus) => {
+                        setFieldValue(`attendance[${i}].attendance`, newStatus);
+                        onPressStudentPicture(a, newStatus);
+                      }}
+                      onNamePress={() => onPressStudentName(i)}
+                      small={isSmallScreen}
+                      {...a}
+                    />
+                  ))}
+                </View>
+              </>
+              )}
+              {Boolean(values.resources.length) && (
+              <>
+                <Title style={cs.pb1}>
+                  Resources
+                </Title>
+                <View style={[cs.flexRow, cs.flexWrap]}>
+                  {values.resources.map((r) => (
+                    <ResourceCard
+                      key={r.id}
+                      {...r}
+                    />
+                  ))}
+                </View>
+              </>
+              )}
+            </ScrollView>
+            {Platform.OS === 'web'
+              ? (
+                <AttendanceModal
+                  index={activeAttendance}
+                  onDismiss={() => setActiveAttendance(null)}
+                  onSubmit={handleSubmit}
+                  attendance={values.attendance[activeAttendance]}
+                  setFieldValue={setFieldValue}
+                />
+              )
+              : (
+                <AttendanceModalMobile
+                  index={activeAttendance}
+                  onDismiss={() => setActiveAttendance(null)}
+                  onSubmit={handleSubmit}
+                  attendance={values.attendance[activeAttendance]}
+                  setFieldValue={setFieldValue}
+                />
+              )}
+
+          </>
         )}
-        {Boolean(courseClass.resources.length) && (
-        <>
-          <Title style={cs.pb1}>
-            Resources
-          </Title>
-          <View style={[cs.flexRow, cs.flexWrap]}>
-            {courseClass.resources.map((r) => (
-              <ResourceCard
-                key={r.id}
-                {...r}
-              />
-            ))}
-          </View>
-        </>
-        )}
-      </ScrollView>
-      {Platform.OS === 'web'
-        ? (
-          <AttendanceModal
-            visible={Boolean(activeAttendance)}
-            onDismiss={() => setActiveAttendance(null)}
-            onSubmit={onAttendanceDialogSubmit}
-            attendance={activeAttendance}
-          />
-        )
-        : (
-          <AttendanceModalMobile
-            visible={Boolean(activeAttendance)}
-            onDismiss={() => setActiveAttendance(null)}
-            onSubmit={onAttendanceDialogSubmit}
-            attendance={activeAttendance}
-          />
-        )}
+      </Formik>
+
     </View>
   ) : <View style={[cs.flex1, cs.flexCenter]}><ActivityIndicator size="large" /></View>;
 };

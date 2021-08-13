@@ -31,7 +31,6 @@ const CreateAccount = () => {
       <TextField
         name="password"
         label="Password"
-        style={cs.bgTransp}
         secureTextEntry={hidePassword}
         right={(
           <TextInput.Icon
@@ -43,7 +42,6 @@ const CreateAccount = () => {
       <TextField
         name="confirmPassword"
         label="Confirm password"
-        style={cs.bgTransp}
         secureTextEntry={hidePasswordConfirm}
         right={(
           <TextInput.Icon
