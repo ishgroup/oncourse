@@ -32,8 +32,11 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.Student
@@ -82,6 +85,8 @@ class TagFunctions {
         put(Document.simpleName, TaggableClasses.DOCUMENT)
         put(Enrolment.simpleName, TaggableClasses.ENROLMENT)
         put(AbstractInvoice.simpleName, TaggableClasses.INVOICE)
+        put(Invoice.simpleName, TaggableClasses.INVOICE)
+        put(Quote.simpleName, TaggableClasses.INVOICE)
         put(Lead.simpleName, TaggableClasses.LEAD)
         put(Payslip.simpleName, TaggableClasses.PAYSLIP)
         put(Room.simpleName, TaggableClasses.ROOM)
