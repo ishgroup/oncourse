@@ -6,3 +6,4 @@ enum:
   - Boolean
   - Money
   - Percent
+  - Tags

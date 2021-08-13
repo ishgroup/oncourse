@@ -156,9 +156,6 @@ class EntityApiImpl implements EntityApi {
             response.rows << new DataRowDTO().with { r ->
                 r.id = Cayenne.intPKForObject(e).toString()
                 r.values = mapColumns(e, attributes)
-                if (e instanceof Taggable) {
-                    r.tags = (e as Taggable).colors
-                }
                 r
             }
         }
