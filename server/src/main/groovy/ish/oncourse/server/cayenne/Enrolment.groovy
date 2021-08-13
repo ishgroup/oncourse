@@ -634,11 +634,23 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	/**
 	 * @return invoice lines related to this enrolment
 	 */
+	/**
+	 * @return invoice lines related to this class
+	 */
 	@Nonnull
 	@API
 	@Override
-    List<InvoiceLine> getInvoiceLines() {
-		return super.getInvoiceLines()
+	List<InvoiceLine> getInvoiceLines() {
+		return super.getAbstractInvoiceLines().findAll {it.invoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+	}
+
+	/**
+	 * @return quote lines related to this class
+	 */
+	@Nonnull
+	@API
+	List<QuoteLine> getQuoteLines() {
+		return super.getAbstractInvoiceLines().findAll { it.invoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
 	}
 
 	/**

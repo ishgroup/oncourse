@@ -271,6 +271,15 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
   return (
     <Grid container className="p-3 saveButtonTableOffset defaultBackgroundColor">
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+          validate={tags && tags.length ? validateTagList : undefined}
+        />
+      </Grid>
+
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="text"
@@ -367,16 +376,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField type="multilineText" name="shippingAddress" label="Shipping address" fullWidth />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
-          validate={tags && tags.length ? validateTagList : undefined}
-          disabled={values.type !== "Quote" && !isNew}
-        />
       </Grid>
 
       <Grid item xs={12} className="pb-2">

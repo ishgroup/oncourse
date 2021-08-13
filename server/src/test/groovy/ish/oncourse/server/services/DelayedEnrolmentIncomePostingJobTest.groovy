@@ -951,7 +951,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         il.setInvoice(i)
 
         e.setStudent(s)
-        e.addToInvoiceLines(il)
+        il.enrolment = e
         e.setCourseClass(cc)
 
         cayenneContext.commitChanges()

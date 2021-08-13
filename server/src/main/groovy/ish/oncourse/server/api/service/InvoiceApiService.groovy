@@ -28,6 +28,7 @@ import ish.oncourse.server.api.v1.model.InvoiceTypeDTO
 import ish.oncourse.server.api.v1.model.LeadInvoiceDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
+import ish.oncourse.server.entity.mixins.BigDecimalMixin
 import ish.oncourse.server.services.IAutoIncrementService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
@@ -392,21 +393,29 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
                         ild
                     }
                 }
+            } else if (!iLine.newRecord && !iLine.invoiceLineDiscounts.empty) {
+                cayenneModel.context.deleteObjects(iLine.invoiceLineDiscounts)
+                iLine.cosAccount = null
             }
             iLine.tax = taxDao.getById(cayenneModel.context, il.taxId)
             iLine.priceEachExTax = toMoneyValue(il.priceEachExTax)
-            iLine.discountEachExTax = toMoneyValue(il.discountEachExTax)
+            iLine.discountEachExTax = toMoneyValue(il.discountEachExTax?:BigDecimal.ZERO)
             iLine.description = trimToNull(il.description)
             if (il.courseClassId) {
                 iLine.courseClass = courseClassDao.getById(cayenneModel.context, il.courseClassId)
                 if (il.enrolmentId) {
                     iLine.enrolment = enrolmentDao.getById(cayenneModel.context, il.enrolmentId)
+                } else {
+                    iLine.enrolment = null
                 }
+            } else {
+                iLine.courseClass = null
+                iLine.enrolment = null
             }
             iLine.prepaidFeesRemaining = il.courseClassId || il.enrolmentId ? iLine.priceEachExTax.subtract(iLine.discountEachExTax).multiply(iLine.quantity) : Money.ZERO
             iLine.prepaidFeesAccount = accountDao.getById(cayenneModel.context, preferenceController.getDefaultAccountId(DefaultAccount.PREPAID_FEES.preferenceName))
 
-            Money totalEachExTax = toMoneyValue(il.priceEachExTax - il.discountEachExTax)
+            Money totalEachExTax = toMoneyValue(il.priceEachExTax - (il.discountEachExTax?:BigDecimal.ZERO))
             Money totalEachIncTax = totalEachExTax.add(toMoneyValue(il.taxEach))
 
             Money taxAdjustment = MoneyUtil.calculateTaxAdjustment(totalEachIncTax, totalEachExTax,  iLine.tax.rate)
