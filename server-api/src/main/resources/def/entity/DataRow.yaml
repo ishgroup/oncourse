@@ -3,11 +3,6 @@ properties:
   id:
     type: string
     description: unique record identifier
-  tags:
-    description: list of tag colors
-    type: string
-    items:
-      type: string
   values:
     type: array
     items:
