@@ -6,15 +6,15 @@ import { useCommonStyles } from '../../hooks/styles';
 import TextField from '../../components/fields/TextField';
 import { LoginValues } from '../../model/Login';
 import { useAppSelector } from '../../hooks/redux';
+import NewPasswordField from '../../components/fields/NewPasswordField';
 
 const ResetPassword = () => {
-  const [hidePassword, setHidePassword] = useState(true);
   const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
   const loading = useAppSelector((state) => state.login.loading);
 
   const {
-    handleSubmit, isValid, values, touched, setFieldTouched
+    handleSubmit, isValid, values, touched, setFieldTouched, isSubmitting
   } = useFormikContext<LoginValues>();
 
   const cs = useCommonStyles();
@@ -27,17 +27,7 @@ const ResetPassword = () => {
 
   return (
     <View style={[cs.mtAuto, cs.mbAuto]}>
-      <TextField
-        name="password"
-        label="Password"
-        secureTextEntry={hidePassword}
-        right={(
-          <TextInput.Icon
-            onPress={() => setHidePassword((pr) => !pr)}
-            name={hidePassword ? 'eye' : 'eye-off'}
-          />
-        )}
-      />
+      <NewPasswordField />
       <TextField
         name="confirmPassword"
         label="Confirm password"
@@ -54,7 +44,7 @@ const ResetPassword = () => {
         mode="contained"
         dark
         onPress={handleSubmit}
-        disabled={!isValid}
+        disabled={!isValid || isSubmitting}
         loading={loading}
       >
         Reset password

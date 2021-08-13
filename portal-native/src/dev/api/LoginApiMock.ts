@@ -1,4 +1,4 @@
-import { LoginResponse } from '@api/model';
+import { LoginResponse, PasswordComplexity } from '@api/model';
 import { promiseResolve } from '../utils';
 import { MockAdapterType } from '../types';
 
@@ -23,4 +23,28 @@ export default function LoginApiMock(this: MockAdapterType) {
       Facebook: '837945397102277',
       Microsoft: '5aa7f417-c05e-49ae-8c10-026999bd12d2'
     }));
+
+  this.api.onPut(new RegExp('v1\\/login\\/pass\\/\\w+'))
+    .reply((config) => {
+      const password = config.url.replace('/v1/login/pass/', '');
+
+      if (password.length > 6 && password.length < 8) {
+        return promiseResolve<PasswordComplexity>(config, {
+          score: 2,
+          feedback: 'Normal password'
+        });
+      }
+
+      if (password.length > 7) {
+        return promiseResolve<PasswordComplexity>(config, {
+          score: 5,
+          feedback: 'Good password'
+        });
+      }
+
+      return promiseResolve<PasswordComplexity>(config, {
+        score: 1,
+        feedback: 'Weak password'
+      });
+    });
 }

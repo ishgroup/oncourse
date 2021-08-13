@@ -4,8 +4,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { TextInputProps } from 'react-native-paper/src/components/TextInput/TextInput';
 import { useField } from 'formik';
-import {  StyleSheet, View } from 'react-native';
+import {
+  StyleProp, StyleSheet, TextStyle, View
+} from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
+import { FieldValidator } from 'formik/dist/types';
 import { AnyArgFunction } from '../../model/CommonFunctions';
 
 const styles = StyleSheet.create({
@@ -25,6 +28,9 @@ interface Props extends Partial<TextInputProps> {
   // TODO Change with native implementation when formik 3.0.0 will be released
   format?: AnyArgFunction;
   parse?: AnyArgFunction;
+  helperText?: React.ReactNode;
+  fieldStyle?: StyleProp<TextStyle>;
+  validate?: FieldValidator;
 }
 
 const TextField = (props: Props) => {
@@ -34,10 +40,13 @@ const TextField = (props: Props) => {
     format,
     parse,
     style,
+    fieldStyle,
+    helperText,
+    validate,
     ...rest
   } = props;
 
-  const [field, meta, helpers] = useField(name);
+  const [field, meta, helpers] = useField({ name, validate });
   const [textValue, setTextValue] = useState(field.value);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -85,12 +94,14 @@ const TextField = (props: Props) => {
         label={label}
         value={displayedValue}
         onChangeText={onChangeText}
-        style={rest.mode !== 'outlined' && styles.field}
+        style={[fieldStyle, rest.mode !== 'outlined' && styles.field]}
         {...rest}
       />
-      <HelperText type="error" style={styles.errorText}>
-        {hasError && meta.error}
-      </HelperText>
+      {helperText || (
+        <HelperText type="error" style={styles.errorText}>
+          {hasError && meta.error}
+        </HelperText>
+      )}
     </View>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { DefaultTheme } from 'react-native-paper';
-import { Theme } from 'react-native-paper/lib/typescript/types';
+import { Theme } from 'react-native-paper/src/types';
 import { SPACING_UNIT } from '../constants/Layout';
 
 export const spacing = (unit: number) => unit * SPACING_UNIT;
