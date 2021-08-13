@@ -15,10 +15,12 @@ import {
 import { ClassAttendanceItem } from '@api/model';
 import { format } from 'date-fns';
 import { StatusBar } from 'expo-status-bar';
+import { Formik } from 'formik';
 import { useCommonStyles } from '../../hooks/styles';
 import TextField from '../../components/fields/TextField';
 import { H_MM_A } from '../../constants/DateTime';
 import TimePicker from '../../components/fields/TimePicker';
+import AttendanceSelect from './AttendanceSelect';
 
 const style = StyleSheet.create({
   center: {
@@ -32,16 +34,14 @@ const style = StyleSheet.create({
 interface Props {
   onDismiss: any;
   onSubmit: any;
-  setFieldValue: any;
   index: number;
   attendance: ClassAttendanceItem;
 }
 
 const AttendanceContent = ({
-  handleSubmit, values, setFieldValue, index, onDismiss
+  handleSubmit, values, setFieldValue, onDismiss
 }: {
   handleSubmit: any,
-  index: number;
   values: ClassAttendanceItem,
   setFieldValue: any,
   onDismiss: any
@@ -57,8 +57,12 @@ const AttendanceContent = ({
 
   const onConfirmPicker = ({ hours, minutes }) => {
     activeDateValue.setHours(hours, minutes);
-    setFieldValue(`attendance[${index}].${activeDate}`, activeDateValue.toISOString());
+    setFieldValue(activeDate, activeDateValue.toISOString());
     setActiveDate(null);
+  };
+
+  const onAttendanceChange = (val) => {
+    setFieldValue('attendance', val);
   };
 
   return (
@@ -76,9 +80,12 @@ const AttendanceContent = ({
         <Card.Title title={values.studentName} subtitle={values.studentEmail} />
         <Card.Cover style={style.picture} source={{ uri: values.studentPicture }} />
         <Card.Content>
+          <View style={[cs.flexRow, cs.justifyContentEnd, cs.zIndex1, cs.pt2]}>
+            <AttendanceSelect value={values.attendance} onChange={onAttendanceChange} />
+          </View>
           <View style={[cs.flexRow, cs.pt2]}>
             <TextField
-              name={`attendance[${index}].arriveTime`}
+              name="arriveTime"
               label="Arrived"
               mode="outlined"
               style={[cs.flex1, cs.pr1]}
@@ -95,7 +102,7 @@ const AttendanceContent = ({
               showSoftInputOnFocus={false}
             />
             <TextField
-              name={`attendance[${index}].departureTime`}
+              name="departureTime"
               label="Departured"
               mode="outlined"
               style={[cs.flex1, cs.pl1]}
@@ -114,7 +121,7 @@ const AttendanceContent = ({
           </View>
 
           <TextField
-            name={`attendance[${index}].notes`}
+            name="notes"
             label="Notes"
             mode="outlined"
             numberOfLines={3}
@@ -140,14 +147,21 @@ export const AttendanceModal = (
     onDismiss,
     onSubmit,
     attendance,
-    setFieldValue,
     index
   }: Props
 ) => (attendance ? (
-  <Dialog style={style.center} visible={index !== null} onDismiss={onDismiss}>
-    <AttendanceContent index={index} setFieldValue={setFieldValue} values={attendance} handleSubmit={onSubmit} onDismiss={onDismiss} />
-  </Dialog>
-
+  <>
+    <Formik
+      initialValues={attendance}
+      onSubmit={onSubmit}
+    >
+      {({ handleSubmit, values, setFieldValue }) => (
+        <Dialog style={style.center} visible={index !== null} onDismiss={onDismiss}>
+          <AttendanceContent setFieldValue={setFieldValue} values={values} handleSubmit={handleSubmit} onDismiss={onDismiss} />
+        </Dialog>
+      )}
+    </Formik>
+  </>
 ) : null);
 
 export const AttendanceModalMobile = (
@@ -155,7 +169,6 @@ export const AttendanceModalMobile = (
     onDismiss,
     onSubmit,
     attendance,
-    setFieldValue,
     index
   }: Props
 ) => (attendance ? (
@@ -171,13 +184,19 @@ export const AttendanceModalMobile = (
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView>
-          <AttendanceContent
-            values={attendance}
-            handleSubmit={onSubmit}
-            onDismiss={onDismiss}
-            setFieldValue={setFieldValue}
-            index={index}
-          />
+          <Formik
+            initialValues={attendance}
+            onSubmit={onSubmit}
+          >
+            {({ handleSubmit, values, setFieldValue }) => (
+              <AttendanceContent
+                values={values}
+                handleSubmit={handleSubmit}
+                onDismiss={onDismiss}
+                setFieldValue={setFieldValue}
+              />
+            )}
+          </Formik>
         </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

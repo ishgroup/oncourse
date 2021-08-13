@@ -86,7 +86,7 @@ const ClassRollScreen = (
         initialValues={courseClass}
         onSubmit={onSubmit}
       >
-        {({ handleSubmit, values, setFieldValue }) => (
+        {({ values, setFieldValue }) => (
           <>
             <Appbar.Header style={{ backgroundColor: session.classColor }}>
               <Appbar.BackAction color="white" onPress={onPressBack} />
@@ -146,18 +146,24 @@ const ClassRollScreen = (
                 <AttendanceModal
                   index={activeAttendance}
                   onDismiss={() => setActiveAttendance(null)}
-                  onSubmit={handleSubmit}
+                  onSubmit={(val) => {
+                    setFieldValue(`attendance[${activeAttendance}]`, val);
+                    submitAttendance(val);
+                    setActiveAttendance(null);
+                  }}
                   attendance={values.attendance[activeAttendance]}
-                  setFieldValue={setFieldValue}
                 />
               )
               : (
                 <AttendanceModalMobile
                   index={activeAttendance}
                   onDismiss={() => setActiveAttendance(null)}
-                  onSubmit={handleSubmit}
+                  onSubmit={(val) => {
+                    setFieldValue(`attendance[${activeAttendance}]`, val);
+                    submitAttendance(val);
+                    setActiveAttendance(null);
+                  }}
                   attendance={values.attendance[activeAttendance]}
-                  setFieldValue={setFieldValue}
                 />
               )}
 
