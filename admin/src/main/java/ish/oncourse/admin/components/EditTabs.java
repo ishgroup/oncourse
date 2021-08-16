@@ -35,11 +35,7 @@ public class EditTabs {
 	public String getOverviewPageName() {
 		return "college/overview";
 	}
-
-	public String getWebPageName() {
-		return "college/web";
-	}
-
+	
 	public String getPreferencesPageName() {
 		return "college/preferences";
 	}
