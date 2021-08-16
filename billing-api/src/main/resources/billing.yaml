@@ -179,6 +179,9 @@ definitions:
         type: array
         items:
           type: string
+      primaryDomain:
+        type: string
+        description: primary web site domain
 
   CollegeDTO:
     type: object

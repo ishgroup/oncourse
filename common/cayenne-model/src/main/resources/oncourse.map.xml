@@ -1439,6 +1439,7 @@
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="webSiteId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="status" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
 	<db-entity name="WebMenu">
 		<db-attribute name="URL" type="LONGVARCHAR" length="65535"/>
@@ -2821,6 +2822,7 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="status" type="ish.oncourse.model.WebHostNameStatus" db-attribute-path="status"/>
 	</obj-entity>
 	<obj-entity name="WebMenu" className="ish.oncourse.model.WebMenu" dbEntityName="WebMenu" superClassName="WillowCayenneObject">
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>

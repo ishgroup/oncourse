@@ -5,6 +5,7 @@ import ish.oncourse.api.request.RequestService
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.College
 import ish.oncourse.model.WebHostName
+import ish.oncourse.model.WebHostNameStatus
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.WebSiteDelete
@@ -34,7 +35,7 @@ class WebSiteService {
     void createWebSite(SiteDTO dto) {
         validateWebSiteBeforeCreate(dto)
         WebSite newSite = createWebSite(requestService.college, dto.webSiteTemplate, dto.name, dto.key)
-        updateDomains(newSite, dto.domains)
+        updateDomains(newSite, dto.domains, dto.primaryDomain)
         newSite.objectContext.commitChanges()
     }
     
@@ -61,7 +62,7 @@ class WebSiteService {
 
     }
     
-    private void updateDomains(WebSite site, List<String> domains) {
+    private void updateDomains(WebSite site, List<String> domains, String primaryDomain) {
         ObjectContext context = site.objectContext
         List<WebHostName> domainsToDelete = site.collegeDomains.findAll{!(it.name in domains)}
 
@@ -72,9 +73,14 @@ class WebSiteService {
             domain.name = domainName
             domain.created = new Date()
             domain.modified = new Date()
+            domain.status = WebHostNameStatus.ACTIVE
 
         }
         context.deleteObjects(domainsToDelete)
+        site.collegeDomains.each {
+            it.status = it.name == primaryDomain ? WebHostNameStatus.PRIMARY : WebHostNameStatus.ACTIVE
+        }
+        
     }
 
     private void validateWebSiteBeforeCreate(SiteDTO dto) {
@@ -98,6 +104,7 @@ class WebSiteService {
         if (!dto.webSiteTemplate) {
             throw new BadRequestException("Web site template is required")
         }
+        validateDomains(dto)
     }
     
     List<SiteDTO> getCollegeWebSites() {
@@ -107,6 +114,7 @@ class WebSiteService {
             dto.name = it.name
             dto.key = it.siteKey
             dto.domains = it.collegeDomains.collect{host -> host.name }
+            dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }
             dto
         }
     }
@@ -134,7 +142,8 @@ class WebSiteService {
         } else {
             webSite.name = dto.name
         }
-
+        validateDomains(dto)
+        
         if (!dto.key) {
             throw new BadRequestException("Web site url location is required")
         } else if (webSite.siteKey != dto.key) {
@@ -146,7 +155,7 @@ class WebSiteService {
                 webSite.siteKey = dto.key
             }
         }
-        updateDomains(webSite, dto.domains)
+        updateDomains(webSite, dto.domains, dto.primaryDomain)
         webSite.objectContext.commitChanges()
     } 
     
@@ -168,5 +177,16 @@ class WebSiteService {
             throw new InternalServerErrorException("Something unexpected has happened while deleting web site.\nContact ish support, please.")
         }
 
+    }
+    
+    void validateDomains(SiteDTO dto) {
+        if (!dto.domains.empty) {
+            if (!dto.primaryDomain) {
+                throw new BadRequestException("Primary url is required")
+            }
+            if (!(dto.primaryDomain in dto.domains)) {
+                throw new BadRequestException("Primary url is wrong")
+            }
+        }
     }
 }
