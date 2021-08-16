@@ -68,7 +68,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         * print "id = " + corporatePassPdfExportId
 
         Given path ishPathPdfTemplate
-        And param entityName = 'Invoice'
+        And param entityName = 'AbstractInvoice'
         When method GET
         Then status 200
         * def invoicePdfExportId = get[0] response[?(@.name == 'Debtors and Creditors Report')].id
@@ -196,7 +196,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         | 'Account'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(accountPdfExportId)","overlay":null,"variables":{"localdateRange_from":"2017-12-01","localdateRange_to":"2019-12-31"},"createPreview":false} |
         | 'Payslip'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(payslipPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
         | 'CorporatePass'       | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(corporatePassPdfExportId)","overlay":null,"variables":{},"createPreview":false} |
-        | 'Invoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
+        | 'AbstractInvoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
         | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
         | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
         | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
@@ -209,7 +209,6 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         | 'Course'              | {"search":"id == \"5\"","filter":"","tagGroups":[],"sorting":[],"report":"#(coursePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
         | 'CourseClass'         | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(courseClassPdfExportId)","overlay":null,"variables":{},"createPreview":false}      |
         | 'Enrolment'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(enrolmentPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'ProductItem'         | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(productItemPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
         | 'VoucherProduct'      | {"search":"id == \"1002\"","filter":"","tagGroups":[],"sorting":[],"report":"#(voucherProductPdfExportId)","overlay":null,"variables":{},"createPreview":false}|
         | 'Contact'             | {"search":"id == \"2\"","filter":"","tagGroups":[],"sorting":[],"report":"#(contactPdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
 
@@ -250,7 +249,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         | 'Account'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(accountPdfExportId)","overlay":null,"variables":{"localdateRange_from":"2017-12-01","localdateRange_to":"2019-12-31"},"createPreview":false} |
         | 'Payslip'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(payslipPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
         | 'CorporatePass'       | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(corporatePassPdfExportId)","overlay":null,"variables":{},"createPreview":false} |
-        | 'Invoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
+        | 'AbstractInvoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
         | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
         | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
         | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
@@ -263,7 +262,6 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         | 'Course'              | {"search":"id == \"5\"","filter":"","tagGroups":[],"sorting":[],"report":"#(coursePdfExportId)","overlay":null,"variables":{},"createPreview":false}           |
         | 'CourseClass'         | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(courseClassPdfExportId)","overlay":null,"variables":{},"createPreview":false}      |
         | 'Enrolment'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(enrolmentPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
-        | 'ProductItem'         | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(productItemPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
         | 'VoucherProduct'      | {"search":"id == \"1002\"","filter":"","tagGroups":[],"sorting":[],"report":"#(voucherProductPdfExportId)","overlay":null,"variables":{},"createPreview":false}|
         | 'Contact'             | {"search":"id == \"2\"","filter":"","tagGroups":[],"sorting":[],"report":"#(contactPdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
 
@@ -287,7 +285,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf'
         | 'Account'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(accountPdfExportId)","overlay":null,"variables":{"localdateRange_from":"2017-12-01","localdateRange_to":"2019-12-31"},"createPreview":false} |
         | 'Payslip'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(payslipPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
         | 'CorporatePass'       | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(corporatePassPdfExportId)","overlay":null,"variables":{},"createPreview":false} |
-        | 'Invoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
+        | 'AbstractInvoice'             | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(invoicePdfExportId)","overlay":null,"variables":{},"createPreview":false}          |
         | 'PaymentIn'           | {"search":"id == \"1\"","filter":"","tagGroups":[],"sorting":[],"report":"#(paymentInPdfExportId)","overlay":null,"variables":{},"createPreview":false}        |
         | 'Banking'             | {"search":"id == \"1000\"","filter":"","tagGroups":[],"sorting":[],"report":"#(bankingPdfExportId)","overlay":null,"variables":{},"createPreview":false}       |
         | 'WaitingList'         | {"search":"id == \"1001\"","filter":"","tagGroups":[],"sorting":[],"report":"#(waitingListPdfExportId)","overlay":null,"variables":{},"createPreview":false}   |
