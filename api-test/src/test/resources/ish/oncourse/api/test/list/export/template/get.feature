@@ -22,7 +22,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Account'             | "Account CSV export"                                                                  |
             | 'Payslip'             | "MYOB Activity Payslip CSV export","Payslip CSV export","Payslip MicroPay export"     |
             | 'CorporatePass'       | "CorporatePass CSV export"                                                            |
-            | 'Invoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"                |
+            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"                |
             | 'PaymentIn'           | "PaymentIn CSV export"                                                                |
             | 'Banking'             | "Banking CSV export"                                                                  |
             | 'WaitingList'         | "WaitingList CSV export"                                                              |
@@ -59,7 +59,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Account'             | "Account XML export"              |
             | 'Payslip'             | "Payslip XML export"              |
             | 'CorporatePass'       | "CorporatePass XML export"        |
-            | 'Invoice'             | "Invoice XML export"              |
+            | 'AbstractInvoice'             | "Invoice XML export"              |
             | 'PaymentIn'           | "PaymentIn XML export"            |
             | 'Banking'             | "Banking XML export"              |
             | 'WaitingList'         | "WaitingList XML export"          |
@@ -102,7 +102,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Account'             | "Account CSV export"                                                                      |
             | 'Payslip'             | "MYOB Activity Payslip CSV export","Payslip CSV export","Payslip MicroPay export"         |
             | 'CorporatePass'       | "CorporatePass CSV export"                                                                |
-            | 'Invoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"                    |
+            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"                    |
             | 'PaymentIn'           | "PaymentIn CSV export"                                                                    |
             | 'Banking'             | "Banking CSV export"                                                                      |
             | 'WaitingList'         | "WaitingList CSV export"                                                                  |
@@ -145,7 +145,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Account'             | "Account XML export"              |
             | 'Payslip'             | "Payslip XML export"              |
             | 'CorporatePass'       | "CorporatePass XML export"        |
-            | 'Invoice'             | "Invoice XML export"              |
+            | 'AbstractInvoice'             | "Invoice XML export"              |
             | 'PaymentIn'           | "PaymentIn XML export"            |
             | 'Banking'             | "Banking XML export"              |
             | 'WaitingList'         | "WaitingList XML export"          |
@@ -223,7 +223,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Account'             | "Account CSV export"                                                              |
             | 'Payslip'             | "MYOB Activity Payslip CSV export","Payslip CSV export","Payslip MicroPay export" |
             | 'CorporatePass'       | "CorporatePass CSV export"                                                        |
-            | 'Invoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"            |
+            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"            |
             | 'PaymentIn'           | "PaymentIn CSV export"                                                            |
             | 'Banking'             | "Banking CSV export"                                                              |
             | 'WaitingList'         | "WaitingList CSV export"                                                          |
@@ -263,7 +263,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Account'             | "Account XML export"              |
             | 'Payslip'             | "Payslip XML export"              |
             | 'CorporatePass'       | "CorporatePass XML export"        |
-            | 'Invoice'             | "Invoice XML export"              |
+            | 'AbstractInvoice'             | "Invoice XML export"              |
             | 'PaymentIn'           | "PaymentIn XML export"            |
             | 'Banking'             | "Banking XML export"              |
             | 'WaitingList'         | "WaitingList XML export"          |

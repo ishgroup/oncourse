@@ -68,7 +68,7 @@ Feature: Main feature for all GET requests with path 'list/export'
         * print "id = " + corporatePassCsvExportId
 
         Given path ishPathTemplate
-        And param entityName = 'Invoice'
+        And param entityName = 'AbstractInvoice'
         When method GET
         Then status 200
         * def invoiceCsvExportId = get[0] response[?(@.name == 'Debtor Payment Summary')].id
@@ -260,7 +260,7 @@ Feature: Main feature for all GET requests with path 'list/export'
         * print "id = " + corporatePassXmlExportId
 
         Given path ishPathTemplate
-        And param entityName = 'Invoice'
+        And param entityName = 'AbstractInvoice'
         When method GET
         Then status 200
         * def invoiceXmlExportId = get[0] response[?(@.name == 'Invoice XML export')].id
@@ -393,7 +393,7 @@ Feature: Main feature for all GET requests with path 'list/export'
             | 'Account'             | {"entityName":"Account","template":1000,"variables":{"varName2":"2019-10-07","varName":"qwerty","varName4":"false","varName3":"2019-10-07T09:32:44.021Z"},"search":"id == \"1\"","sorting":[{"attribute":"accountCode","ascending":true,"complexAttribute":[]}]} |
             | 'Payslip'             | {"entityName":"Payslip","template":"#(payslipCsvExportId)","search":"id == \"1000\"","sorting":[{"attribute":"createdOn","ascending":true}]}                                  |
             | 'CorporatePass'       | {"entityName":"CorporatePass","template":"#(corporatePassCsvExportId)","search":"id == \"1001\"","sorting":[{"attribute":"expiryDate","ascending":true}]}                     |
-            | 'Invoice'             | {"entityName":"Invoice","template":"#(invoiceCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
+            | 'AbstractInvoice'             | {"entityName":"AbstractInvoice","template":"#(invoiceCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
             | 'PaymentIn'           | {"entityName":"PaymentIn","template":"#(paymentInCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"source","ascending":true}]}                                    |
             | 'Banking'             | {"entityName":"Banking","template":"#(bankingCsvExportId)","search":"id == \"1000\"","sorting":[{"attribute":"settlementDate","ascending":false,"complexAttribute":[]}]}      |
             | 'WaitingList'         | {"entityName":"WaitingList","template":"#(waitingListCsvExportId)","search":"id == \"1001\"","sorting":[{"attribute":"createdOn","ascending":false,"complexAttribute":[]}]}   |
@@ -430,7 +430,7 @@ Feature: Main feature for all GET requests with path 'list/export'
             | 'Account'             | {"entityName":"Account","template":"#(accountXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"accountCode","ascending":true}]}                                   |
             | 'Payslip'             | {"entityName":"Payslip","template":"#(payslipXmlExportId)","search":"id == \"1000\"","sorting":[{"attribute":"createdOn","ascending":true}]}                                  |
             | 'CorporatePass'       | {"entityName":"CorporatePass","template":"#(corporatePassXmlExportId)","search":"id == \"1001\"","sorting":[{"attribute":"expiryDate","ascending":true}]}                     |
-            | 'Invoice'             | {"entityName":"Invoice","template":"#(invoiceXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
+            | 'AbstractInvoice'             | {"entityName":"AbstractInvoice","template":"#(invoiceXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
             | 'PaymentIn'           | {"entityName":"PaymentIn","template":"#(paymentInXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"source","ascending":true}]}                                    |
             | 'Banking'             | {"entityName":"Banking","template":"#(bankingXmlExportId)","search":"id == \"1000\"","sorting":[{"attribute":"settlementDate","ascending":false,"complexAttribute":[]}]}      |
             | 'WaitingList'         | {"entityName":"WaitingList","template":"#(waitingListXmlExportId)","search":"id == \"1001\"","sorting":[{"attribute":"createdOn","ascending":false,"complexAttribute":[]}]}   |
@@ -502,7 +502,7 @@ Feature: Main feature for all GET requests with path 'list/export'
             | 'Account'             | {"entityName":"Account","template":1000,"variables":{"varName2":"2019-10-08","varName":"123","varName4":"true","varName3":"2019-10-30T16:17:00.000Z"},"search":"id == \"1\"","sorting":[{"attribute":"accountCode","ascending":true,"complexAttribute":[]}]} |
             | 'Payslip'             | {"entityName":"Payslip","template":"#(payslipCsvExportId)","search":"id == \"1000\"","sorting":[{"attribute":"createdOn","ascending":true}]}                                  |
             | 'CorporatePass'       | {"entityName":"CorporatePass","template":"#(corporatePassCsvExportId)","search":"id == \"1001\"","sorting":[{"attribute":"expiryDate","ascending":true}]}                     |
-            | 'Invoice'             | {"entityName":"Invoice","template":"#(invoiceCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
+            | 'AbstractInvoice'             | {"entityName":"AbstractInvoice","template":"#(invoiceCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
             | 'PaymentIn'           | {"entityName":"PaymentIn","template":"#(paymentInCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"source","ascending":true}]}                                    |
             | 'Banking'             | {"entityName":"Banking","template":"#(bankingCsvExportId)","search":"id == \"1000\"","sorting":[{"attribute":"settlementDate","ascending":false,"complexAttribute":[]}]}      |
             | 'WaitingList'         | {"entityName":"WaitingList","template":"#(waitingListCsvExportId)","search":"id == \"1001\"","sorting":[{"attribute":"createdOn","ascending":false,"complexAttribute":[]}]}   |
@@ -545,7 +545,7 @@ Feature: Main feature for all GET requests with path 'list/export'
             | 'Account'             | {"entityName":"Account","template":"#(accountXmlExportId)","variables":{},"search":"id == \"1\"","sorting":[{"attribute":"accountCode","ascending":true}]}                                   |
             | 'Payslip'             | {"entityName":"Payslip","template":"#(payslipXmlExportId)","search":"id == \"1000\"","sorting":[{"attribute":"createdOn","ascending":true}]}                                  |
             | 'CorporatePass'       | {"entityName":"CorporatePass","template":"#(corporatePassXmlExportId)","search":"id == \"1001\"","sorting":[{"attribute":"expiryDate","ascending":true}]}                     |
-            | 'Invoice'             | {"entityName":"Invoice","template":"#(invoiceXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
+            | 'AbstractInvoice'             | {"entityName":"AbstractInvoice","template":"#(invoiceXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
             | 'PaymentIn'           | {"entityName":"PaymentIn","template":"#(paymentInXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"source","ascending":true}]}                                    |
             | 'Banking'             | {"entityName":"Banking","template":"#(bankingXmlExportId)","search":"id == \"1000\"","sorting":[{"attribute":"settlementDate","ascending":false,"complexAttribute":[]}]}      |
             | 'WaitingList'         | {"entityName":"WaitingList","template":"#(waitingListXmlExportId)","search":"id == \"1001\"","sorting":[{"attribute":"createdOn","ascending":false,"complexAttribute":[]}]}   |
@@ -586,7 +586,7 @@ Feature: Main feature for all GET requests with path 'list/export'
             | 'Account'             | {"entityName":"Account","template":"#(accountCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"accountCode","ascending":true}]}                                   |
             | 'Payslip'             | {"entityName":"Payslip","template":"#(payslipCsvExportId)","search":"id == \"1000\"","sorting":[{"attribute":"createdOn","ascending":true}]}                                  |
             | 'CorporatePass'       | {"entityName":"CorporatePass","template":"#(corporatePassCsvExportId)","search":"id == \"1001\"","sorting":[{"attribute":"expiryDate","ascending":true}]}                     |
-            | 'Invoice'             | {"entityName":"Invoice","template":"#(invoiceCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
+            | 'AbstractInvoice'             | {"entityName":"AbstractInvoice","template":"#(invoiceCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
             | 'PaymentIn'           | {"entityName":"PaymentIn","template":"#(paymentInCsvExportId)","search":"id == \"1\"","sorting":[{"attribute":"source","ascending":true}]}                                    |
             | 'Banking'             | {"entityName":"Banking","template":"#(bankingCsvExportId)","search":"id == \"1000\"","sorting":[{"attribute":"settlementDate","ascending":false,"complexAttribute":[]}]}      |
             | 'WaitingList'         | {"entityName":"WaitingList","template":"#(waitingListCsvExportId)","search":"id == \"1001\"","sorting":[{"attribute":"createdOn","ascending":false,"complexAttribute":[]}]}   |
@@ -626,7 +626,7 @@ Feature: Main feature for all GET requests with path 'list/export'
             | 'Account'             | {"entityName":"Account","template":"#(accountXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"accountCode","ascending":true}]}                                   |
             | 'Payslip'             | {"entityName":"Payslip","template":"#(payslipXmlExportId)","search":"id == \"1000\"","sorting":[{"attribute":"createdOn","ascending":true}]}                                  |
             | 'CorporatePass'       | {"entityName":"CorporatePass","template":"#(corporatePassXmlExportId)","search":"id == \"1001\"","sorting":[{"attribute":"expiryDate","ascending":true}]}                     |
-            | 'Invoice'             | {"entityName":"Invoice","template":"#(invoiceXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
+            | 'AbstractInvoice'             | {"entityName":"AbstractInvoice","template":"#(invoiceXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"invoiceNumber","ascending":true}]}                                 |
             | 'PaymentIn'           | {"entityName":"PaymentIn","template":"#(paymentInXmlExportId)","search":"id == \"1\"","sorting":[{"attribute":"source","ascending":true}]}                                    |
             | 'Banking'             | {"entityName":"Banking","template":"#(bankingXmlExportId)","search":"id == \"1000\"","sorting":[{"attribute":"settlementDate","ascending":false,"complexAttribute":[]}]}      |
             | 'WaitingList'         | {"entityName":"WaitingList","template":"#(waitingListXmlExportId)","search":"id == \"1001\"","sorting":[{"attribute":"createdOn","ascending":false,"complexAttribute":[]}]}   |
