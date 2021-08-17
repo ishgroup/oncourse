@@ -147,6 +147,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
     static InvoiceDTO toRestInvoiceModel(InvoiceDTO dto, Invoice invoice) {
         dto.with {invoiceDTO ->
             invoiceDTO.invoiceNumber = invoice.invoiceNumber
+            invoiceDTO.quoteNumber = invoice.quoteNumber
             invoiceDTO.paymentPlans.addAll(invoice.invoiceDueDates.collect { toRestPaymentPlan(it) }.sort { it.date })
             invoiceDTO.paymentPlans.addAll(invoice.paymentInLines.collect { toRestPaymentPlan(it) }.sort { it.date })
             invoiceDTO.paymentPlans.addAll(invoice.paymentOutLines.collect { toRestPaymentPlan(it) }.sort { it.date })
@@ -158,6 +159,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
     static InvoiceDTO toRestQuoteModel(InvoiceDTO dto, Quote quote) {
         dto.with {invoiceDTO ->
             invoiceDTO.title = quote.title
+            invoiceDTO.quoteNumber = quote.quoteNumber
             invoiceDTO.description = quote.description
             invoiceDTO.invoiceLines = quote.quoteLines.collect { toRestInvoiceLineModel(it as QuoteLine) }
             invoiceDTO
@@ -170,6 +172,7 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
             leadInvoice.invoiceType = InvoiceTypeDTO.values()[0].fromDbType(abstractInvoice.type)
             leadInvoice.title = abstractInvoice.title
             leadInvoice.invoiceNumber = abstractInvoice.invoiceNumber
+            leadInvoice.quoteNumber = abstractInvoice.quoteNumber
             leadInvoice.total = abstractInvoice.totalIncTax.toBigDecimal()
             leadInvoice
         }

@@ -10,5 +10,8 @@ properties:
   invoiceNumber:
     type: integer
     format: int64
+  quoteNumber:
+    type: integer
+    format: int64
   total:
     type: number
