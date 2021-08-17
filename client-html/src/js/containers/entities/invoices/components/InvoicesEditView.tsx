@@ -164,7 +164,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
   );
 
   const deleteInvoiceLine = useCallback(
-    isNew
+    (isNew || values.type === "Quote")
       ? index => {
           dispatch(arrayRemove(form, "invoiceLines", index));
 
