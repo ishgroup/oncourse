@@ -123,9 +123,9 @@ const findRelatedGroup: any[] = [
 const nameCondition = (invoice: Invoice) => {
   let result = "";
   if (invoice.type === "Invoice") {
-    result = invoice.invoiceNumber ? "#" + invoice.invoiceNumber : "New";
+    result = invoice.invoiceNumber ? "Invoice #" + invoice.invoiceNumber : "New";
   } else {
-    result = invoice.id ? "Quote #" + invoice.id : "New";
+    result = invoice.id ? "Quote #" + invoice.quoteNumber : "New";
   }
 
   return result;
@@ -137,6 +137,8 @@ const nestedEditFields = {
 };
 
 const manualLink = getManualLink("invoice");
+
+const secondaryColumnCondition = row => row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber;
 
 const Invoices = React.memo<any>(({
   getFilters,
@@ -231,7 +233,8 @@ const Invoices = React.memo<any>(({
       <ListView
         listProps={{
           primaryColumn: "contact.fullName",
-          secondaryColumn: "invoiceNumber"
+          secondaryColumn: "invoiceNumber",
+          secondaryColumnCondition,
         }}
         editViewProps={{
           manualLink,
