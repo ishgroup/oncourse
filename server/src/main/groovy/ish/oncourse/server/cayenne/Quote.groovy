@@ -19,6 +19,7 @@ import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Quote
 import ish.oncourse.server.services.IAutoIncrementService
+import ish.util.InvoiceUtil
 
 import javax.annotation.Nonnull
 
@@ -68,6 +69,10 @@ class Quote extends _Quote {
 	@Override
 	Money getAmountOwing() {
 		return Money.ZERO
+	}
+	
+	void updateAmountOwing() {
+		setAmountOwing(Money.ZERO)
 	}
 }
 
