@@ -36,6 +36,7 @@ public class ClusteredAutoincrementService implements IAutoIncrementService {
     private final ICayenneService  cayenneService;
     private final Queue<Long> studentIdPool = new ConcurrentLinkedQueue<>();
     private final Queue<Long> invoiceIdPool = new ConcurrentLinkedQueue<>();
+    private final Queue<Long> quoteIdPool = new ConcurrentLinkedQueue<>();
 
     @Inject
     public ClusteredAutoincrementService(ICayenneService  cayenneService) {
@@ -50,6 +51,11 @@ public class ClusteredAutoincrementService implements IAutoIncrementService {
     @Override
     public Long getNextInvoiceNumber() {
         return getNextIdFromPool(invoiceIdPool, "invoice");
+    }
+
+    @Override
+    public Long getNextQuoteNumber() {
+        return getNextIdFromPool(invoiceIdPool, "quote");
     }
 
     private Long getNextIdFromPool(Queue<Long> pool, String name) {
