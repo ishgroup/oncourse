@@ -375,6 +375,12 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
     }
 
     private void updateInvoiceLines(AbstractInvoice cayenneModel, List<InvoiceInvoiceLineDTO> invoiceLines) {
+        if (cayenneModel instanceof Quote && !cayenneModel.newRecord) {
+            //handle quote line removal
+            List<Long> ids = invoiceLines*.id.flatten().grep() as List<Long>
+            List<QuoteLine> linesToDelete = cayenneModel.quoteLines.findAll {!(it.id in ids)}
+            cayenneModel.context.deleteObjects(linesToDelete)
+        }
         invoiceLines.each { il ->
             AbstractInvoiceLine iLine = invoiceLineDao.getById(cayenneModel.context, il.id, cayenneModel.linePersistentClass)
             if (!iLine) {
