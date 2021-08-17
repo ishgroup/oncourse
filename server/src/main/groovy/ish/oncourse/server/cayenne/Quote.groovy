@@ -32,8 +32,8 @@ class Quote extends _Quote {
 	@Override
 	void postAdd() {
 		super.postAdd()
-		if (getInvoiceNumber() == null) {
-			setInvoiceNumber(autoIncrementService.getNextInvoiceNumber())
+		if (getQuoteNumber() == null) {
+			setQuoteNumber(autoIncrementService.getNextQuoteNumber())
 		}
 	}
 
