@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { isDirty, reset } from "redux-form";
+import { change, isDirty, reset } from "redux-form";
 import { PaymentOut } from "@api/model";
 import { format } from "date-fns";
 import { State } from "../../../../reducers/state";
@@ -24,7 +24,9 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import {
   getRecords,
   setListCreatingNew,
-  setListNestedEditRecord, setListSelection
+  setListFullScreenEditView,
+  setListNestedEditRecord,
+  setListSelection,
 } from "../../../../common/components/list-view/actions";
 import { PaymentOutModel } from "../../paymentsOut/reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
@@ -33,6 +35,7 @@ import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 import { isInvoiceType } from "../utils";
 
 interface Props extends CogwhelAdornmentProps {
+  dispatch: any;
   clearContraInvoices: any;
   duplicateAndReverseInvoice: any;
   contraInvoices: any;
@@ -49,11 +52,13 @@ interface Props extends CogwhelAdornmentProps {
   match: any;
   setListCreatingNew: any;
   updateSelection: any;
+  setListFullScreenEditView: (fullScreenEditView: boolean) => void;
   location?: any;
 }
 
 const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
   const {
+    dispatch,
     selection,
     menuItemClass,
     clearContraInvoices,
@@ -75,6 +80,7 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     updateSelection,
     match,
     location,
+    setListFullScreenEditView,
   } = props;
 
   const [dialogOpened, setDialogOpened] = useState(false);
@@ -113,6 +119,10 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
       duplicateAndReverseInvoice(selection[0]);
     } else {
       duplicateQuote(selection[0]);
+    }
+
+    if (listRecords.layout === "Three column") {
+      setListFullScreenEditView(true);
     }
 
     closeMenu();
@@ -223,6 +233,11 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
         const { params, url } = match;
         updateHistory(params.id ? url.replace(`/${params.id}`, `/${selection[0]}`) : url + `/${selection[0]}`, location.search, "Invoice");
 
+        if (listRecords.layout === "Three column") {
+          setListFullScreenEditView(true);
+          dispatch(change(LIST_EDIT_VIEW_FORM_NAME, "type", "Invoice"));
+        }
+
         closeMenu();
         break;
       }
@@ -286,6 +301,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+  dispatch,
   resetEditView: () => dispatch(reset(LIST_EDIT_VIEW_FORM_NAME)),
   getAmountOwing: (id: number) => dispatch(getAmountOwing(id)),
   getAddPaymentOutContact: (id: number) => dispatch(getAddPaymentOutContact(id)),
@@ -294,6 +310,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   duplicateQuote: (id: number) => dispatch(duplicateQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
+  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   openAddPaymentOutEditView: (entity: string, record: any, customOnSave?: any) =>
     dispatch(setListNestedEditRecord(entity, record, customOnSave))
 });
