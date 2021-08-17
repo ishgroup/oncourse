@@ -411,14 +411,16 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
             {total}
           </Typography>
         </div>
-        <div className="centeredFlex pt-1 pr-4 justify-content-end">
-          <Typography variant="subtitle2" noWrap>
-            Owing
-          </Typography>
-          <Typography variant="body2" color="textSecondary" className="pl-1 money">
-            {totalOwing}
-          </Typography>
-        </div>
+        {values.type !== "Quote" && (
+          <div className="centeredFlex pt-1 pr-4 justify-content-end">
+            <Typography variant="subtitle2" noWrap>
+              Owing
+            </Typography>
+            <Typography variant="body2" color="textSecondary" className="pl-1 money">
+              {totalOwing}
+            </Typography>
+          </div>
+        )}
       </Grid>
 
       {values.type === "Invoice" && (
