@@ -55,7 +55,7 @@ public class ClusteredAutoincrementService implements IAutoIncrementService {
 
     @Override
     public Long getNextQuoteNumber() {
-        return getNextIdFromPool(invoiceIdPool, "quote");
+        return getNextIdFromPool(quoteIdPool, "quote");
     }
 
     private Long getNextIdFromPool(Queue<Long> pool, String name) {
