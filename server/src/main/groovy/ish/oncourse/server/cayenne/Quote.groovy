@@ -13,11 +13,14 @@ package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
 import ish.common.types.InvoiceType
+import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Quote
 import ish.oncourse.server.services.IAutoIncrementService
+
+import javax.annotation.Nonnull
 
 /**
  * Pre-invoice state
@@ -56,6 +59,15 @@ class Quote extends _Quote {
 		} else {
 			throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
 		}
+	}
+	/**
+	 * @return . They shouldn't have an owing amount because they can't accept payments.
+	 */
+	@Nonnull
+	@API
+	@Override
+	Money getAmountOwing() {
+		return Money.ZERO
 	}
 }
 
