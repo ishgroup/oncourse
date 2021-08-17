@@ -11,11 +11,13 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
 import ish.common.types.InvoiceType
 import ish.oncourse.API
 import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Quote
+import ish.oncourse.server.services.IAutoIncrementService
 
 /**
  * Pre-invoice state
@@ -23,6 +25,17 @@ import ish.oncourse.server.cayenne.glue._Quote
 @API
 @QueueableEntity
 class Quote extends _Quote {
+
+	@Inject
+	private transient IAutoIncrementService autoIncrementService
+
+	@Override
+	void postAdd() {
+		super.postAdd()
+		if (getInvoiceNumber() == null) {
+			setInvoiceNumber(autoIncrementService.getNextInvoiceNumber())
+		}
+	}
 
 	@Override
 	InvoiceType getType() {
