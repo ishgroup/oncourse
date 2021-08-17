@@ -581,6 +581,7 @@ class CheckoutController {
         InvoiceLine invoiceLine = context.newObject(InvoiceLine)
         invoiceLine.invoice = invoice
         invoiceLine.enrolment = enrolment
+        enrolment.addToAbstractInvoiceLines(invoiceLine)
         invoiceLine.quantity = ONE
         invoiceLine.tax = taxOverride?:courseClass.tax as Tax
         invoiceLine.priceEachExTax = courseClass.feeExGst

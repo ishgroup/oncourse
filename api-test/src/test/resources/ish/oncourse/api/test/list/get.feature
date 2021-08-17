@@ -21,7 +21,7 @@ Feature: Main feature for all GET requests with path 'list'
         | 'Banking'             |
         | 'CorporatePass'       |
         | 'Discount'            |
-        | 'Invoice'             |
+        | 'AbstractInvoice'     |
         | 'Module'              |
         | 'Qualification'       |
         | 'Payslip'             |
@@ -73,7 +73,7 @@ Feature: Main feature for all GET requests with path 'list'
         | 'Banking'             |
         | 'CorporatePass'       |
         | 'Discount'            |
-        | 'Invoice'             |
+        | 'AbstractInvoice'     |
         | 'Module'              |
         | 'Qualification'       |
         | 'Payslip'             |
@@ -163,7 +163,7 @@ Feature: Main feature for all GET requests with path 'list'
         | 'Banking'             |
         | 'CorporatePass'       |
         | 'Discount'            |
-        | 'Invoice'             |
+        | 'AbstractInvoice'     |
         | 'Payslip'             |
         | 'WaitingList'         |
         | 'Application'         |

@@ -256,11 +256,6 @@ class PaymentInApiService extends EntityApiService<PaymentInDTO, PaymentIn, Paym
             reverseLine.createdOn = new Date()
         }
 
-        Account account = AccountUtil.getDefaultBankAccount(context, Account.class)
-        if(account.isAsset() || account.isLiability()) {
-            reverse.setAccountIn(account)
-        }
-
         SystemUser currentUser = context.localObject(systemUserService.currentUser)
         reverse.createdBy = currentUser
         reverse.administrationCentre = currentUser.defaultAdministrationCentre
