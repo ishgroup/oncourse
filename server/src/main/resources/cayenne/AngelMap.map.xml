@@ -823,6 +823,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="invoiceDate" type="DATE" isMandatory="true"/>
 		<db-attribute name="invoiceNumber" type="BIGINT"/>
+		<db-attribute name="quoteNumber" type="BIGINT"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="overdue" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
 		<db-attribute name="publicNotes" type="CLOB" length="32000"/>
@@ -1626,6 +1627,7 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="invoiceDate" type="java.time.LocalDate" db-attribute-path="invoiceDate"/>
 		<obj-attribute name="invoiceNumber" type="java.lang.Long" db-attribute-path="invoiceNumber"/>
+		<obj-attribute name="quoteNumber" type="java.lang.Long" db-attribute-path="quoteNumber"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="overdue" type="ish.math.Money" db-attribute-path="overdue"/>
 		<obj-attribute name="publicNotes" type="java.lang.String" db-attribute-path="publicNotes"/>
