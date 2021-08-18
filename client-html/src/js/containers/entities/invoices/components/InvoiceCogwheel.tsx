@@ -24,7 +24,6 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import {
   getRecords,
   setListCreatingNew,
-  setListFullScreenEditView,
   setListNestedEditRecord,
   setListSelection,
 } from "../../../../common/components/list-view/actions";
@@ -52,7 +51,6 @@ interface Props extends CogwhelAdornmentProps {
   match: any;
   setListCreatingNew: any;
   updateSelection: any;
-  setListFullScreenEditView: (fullScreenEditView: boolean) => void;
   location?: any;
 }
 
@@ -80,7 +78,6 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     updateSelection,
     match,
     location,
-    setListFullScreenEditView,
   } = props;
 
   const [dialogOpened, setDialogOpened] = useState(false);
@@ -119,10 +116,6 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
       duplicateAndReverseInvoice(selection[0]);
     } else {
       duplicateQuote(selection[0]);
-    }
-
-    if (listRecords.layout === "Three column") {
-      setListFullScreenEditView(true);
     }
 
     closeMenu();
@@ -234,7 +227,6 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
         updateHistory(params.id ? url.replace(`/${params.id}`, `/${selection[0]}`) : url + `/${selection[0]}`, location.search, "Invoice");
 
         if (listRecords.layout === "Three column") {
-          setListFullScreenEditView(true);
           dispatch(change(LIST_EDIT_VIEW_FORM_NAME, "type", "Invoice"));
         }
 
@@ -310,7 +302,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   duplicateQuote: (id: number) => dispatch(duplicateQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
-  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView)),
   openAddPaymentOutEditView: (entity: string, record: any, customOnSave?: any) =>
     dispatch(setListNestedEditRecord(entity, record, customOnSave))
 });

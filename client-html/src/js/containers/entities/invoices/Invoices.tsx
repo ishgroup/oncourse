@@ -211,7 +211,7 @@ const Invoices = React.memo<any>(({
 
     Initial.type = type;
     onInit();
-  }, [params, location, url]);
+  }, [params, location, url, listRecords]);
 
   const customOnCreate = async () => {
     if (params.id === "new" && window.location.search?.includes("lead.id")) {
@@ -255,6 +255,7 @@ const Invoices = React.memo<any>(({
         filterGroupsInitial={filterGroups}
         EditViewContent={InvoicesEditView}
         CogwheelAdornment={InvoiceCogwheel}
+        alwaysFullScreenCreateView
         noListTags
       />
       <Menu
@@ -324,7 +325,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   getTags: () => dispatch(getListTags("AbstractInvoice")),
-  getQePermissions: () => dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }))
+  getQePermissions: () => dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" })),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Invoices);
