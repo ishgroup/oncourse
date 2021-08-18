@@ -34,6 +34,7 @@ import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
 import { StringKeyObject } from "../../../../../model/common/CommomObjects";
 import styles from "./styles";
+import TagDotRenderer from "./components/TagDotRenderer";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -197,11 +198,17 @@ const Table: React.FC<ListTableProps> = ({
           id: "selection",
           disableResizing: true,
           Cell: ({ row, state }) => (
-            <StyledCheckbox
-              checked={row.isSelected}
-              className={classes.selectionCheckbox}
-              onClick={e => onRowCheckboxSelect(e, row.id, state)}
-            />
+            <>
+              <StyledCheckbox
+                checked={row.isSelected}
+                className={classes.selectionCheckbox}
+                onClick={e => onRowCheckboxSelect(e, row.id, state)}
+              />
+              <TagDotRenderer
+                colors={row.values.colors && row.values.colors.replace("[", "").replace("]", "").split(", ")}
+                dotsWrapperStyle={classes.listDots}
+              />
+            </>
           )
         },
         ...columns,
@@ -284,8 +291,8 @@ const Table: React.FC<ListTableProps> = ({
   }, [threeColumn]);
 
   const onColumnOrderChange = useCallback(({
- destination, source, fields, headers
-}) => {
+   destination, source, fields, headers
+  }) => {
     if (destination) {
       const findDestinationColumn = headers[destination.index];
       const findSourceColumn = headers[source.index];
@@ -320,7 +327,11 @@ const Table: React.FC<ListTableProps> = ({
       {headerGroups.map((headerGroup, groupIndex) => (
         <DragDropContext
           key={groupIndex}
-          onDragEnd={args => onColumnOrderChange({ ...args, fields: state.columnOrder, headers: headerGroup.headers })}
+          onDragEnd={args => onColumnOrderChange({
+            ...args,
+            fields: state.columnOrder,
+            headers: headerGroup.headers.filter(column => column.id !== "colors")
+          })}
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
             {provided => (
@@ -330,7 +341,7 @@ const Table: React.FC<ListTableProps> = ({
                 className={classes.headerRow}
                 component="div"
               >
-                {headerGroup.headers.map((column, columnIndex) => {
+                {headerGroup.headers.filter(column => column.id !== "colors").map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
                   return (
                     <TableCell

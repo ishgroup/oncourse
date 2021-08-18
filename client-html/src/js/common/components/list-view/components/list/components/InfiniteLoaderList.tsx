@@ -56,7 +56,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
             {row.original.primary}
           </Typography>
         </div>
-      ) : row.cells.map(cell => (
+      ) : row.cells.filter(cell => cell.column.id !== "colors").map(cell => (
         <TableCell
           component="div"
           {...cell.getCellProps()}

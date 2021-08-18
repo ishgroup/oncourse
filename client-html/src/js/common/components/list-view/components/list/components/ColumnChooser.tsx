@@ -14,9 +14,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Popover from "@material-ui/core/Popover";
 
-const ColumnChooserItem = ({
-  classes, column
-}) => (
+const ColumnChooserItem = ({ classes, column }) => (
   <ListItem
     button
     classes={{ root: classes.columnChooserListItem }}

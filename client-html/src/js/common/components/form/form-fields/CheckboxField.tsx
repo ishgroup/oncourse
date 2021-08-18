@@ -37,8 +37,8 @@ const styles = theme => ({
 
 const StyledCheckboxBase = props => {
   const {
- classes, uncheckedClass, className, ...rest
-} = props;
+   classes, uncheckedClass, className, ...rest
+  } = props;
 
   return (
     <Checkbox

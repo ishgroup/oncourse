@@ -112,7 +112,10 @@ export default (theme: AppTheme) => createStyles({
     fontSize: "13px",
     borderBottom: "none",
     "&:hover $selectionCheckbox": {
-      visibility: "visible"
+      display: "inline-flex",
+    },
+    "&:hover $listDots": {
+      display: "none",
     }
   },
   row: {
@@ -121,7 +124,10 @@ export default (theme: AppTheme) => createStyles({
       opacity: 1
     },
     "&$selected $selectionCheckbox": {
-      visibility: "visible"
+      display: "inline-flex",
+    },
+    "&$selected $listDots": {
+      display: "none",
     },
     cursor: "pointer"
   },
@@ -136,7 +142,12 @@ export default (theme: AppTheme) => createStyles({
     height: theme.spacing(1),
     width: theme.spacing(2.5),
     margin: 0,
-    visibility: "hidden"
+    display: "none",
+  },
+  listDots: {
+    height: "19px",
+    margin: 0,
+    display: "flex",
   },
   selected: {},
   resizer: {
