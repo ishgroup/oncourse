@@ -36,10 +36,11 @@ class GoogleOAuthProveder extends OAuthProvider {
                 .build()
     }
 
-    SSOCredantials authorize(String activationCode, String redirectUrl) {
+    SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
         //
         GoogleTokenResponse resp = flow.newTokenRequest(activationCode)
                 .setGrantType('authorization_code')
+                .set('code_verifier', codeVerifier)
                 .setRedirectUri(redirectUrl).execute()
         GoogleIdToken token =  resp.parseIdToken()
         SSOCredantials credantials = new SSOCredantials()

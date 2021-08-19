@@ -183,7 +183,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
             default:
                 throw new LoginException('Unsupported Authorization provider')
         }
-        credantials = authProvider.authorize(details.ssOToken, requestService.requestUrl)
+        credantials = authProvider.authorize(details.ssOToken, requestService.requestUrl, details.codeVerifier)
         return credantials
     }
 

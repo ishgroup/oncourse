@@ -35,7 +35,7 @@ class FacebookOAuthProvider extends OAuthProvider {
     }
 
     @Override
-    SSOCredantials authorize(String activationCode, String redirectUrl) {
+    SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
         Closure failureHandler = { resp, result ->
             logger.error(resp)
             logger.error(result)

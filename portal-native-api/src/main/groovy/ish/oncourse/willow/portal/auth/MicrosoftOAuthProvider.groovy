@@ -56,7 +56,7 @@ class MicrosoftOAuthProvider extends OAuthProvider {
 
     @Override
     @CompileDynamic
-    SSOCredantials authorize(String activationCode, String redirectUrl) {
+    SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
         AuthorizationCodeParameters parameters = AuthorizationCodeParameters.builder(
                 activationCode,
                 new URI(redirectUrl))

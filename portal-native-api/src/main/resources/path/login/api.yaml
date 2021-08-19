@@ -6,7 +6,7 @@ get:
     - Authentication
   parameters:
     - name: email
-      in: query
+      in: path
       required: true
       type: string
   responses:

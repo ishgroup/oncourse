@@ -6,7 +6,7 @@ abstract class OAuthProvider {
     
     protected abstract String getSecretFileName()
     abstract String getClientId()
-    abstract SSOCredantials authorize(String activationCode, String redirectUrl)
+    abstract SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier)
 
 
         protected FileInputStream readSecret() {
