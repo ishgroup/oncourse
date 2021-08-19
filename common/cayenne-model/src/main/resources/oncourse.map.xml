@@ -4642,7 +4642,7 @@
 	<obj-relationship name="customFields" source="Contact" target="ContactCustomField" deleteRule="Deny" db-relationship-path="customFields"/>
 	<obj-relationship name="fromContacts" source="Contact" target="ContactRelation" deleteRule="Deny" db-relationship-path="fromContacts"/>
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
-	<obj-relationship name="quotes" source="Contact" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
+	<obj-relationship name="quotes" source="Contact" target="Quote" deleteRule="Deny" db-relationship-path="invoices"/>
 	<obj-relationship name="messagePeople" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePeople"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>

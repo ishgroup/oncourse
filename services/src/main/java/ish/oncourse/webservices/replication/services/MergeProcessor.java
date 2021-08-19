@@ -86,6 +86,9 @@ public class MergeProcessor {
 		for (Invoice invoice : new ArrayList<>(contactToDelete.getInvoices())) {
 			invoice.setContact(contactToUpdate);
 		}
+		for (Quote quote : new ArrayList<>(contactToDelete.getQuotes())) {
+			quote.setContact(contactToUpdate);
+		}
 		for (MessagePerson person : new ArrayList<>(contactToDelete.getMessagePeople())) {
 			person.setContact(contactToUpdate);
 		}
