@@ -21,10 +21,10 @@ class UserService {
     
     private Logger logger = LogManager.getLogger()
 
-    public static final String VERIFiCATION_EMAIL_CONTENT = "" +
-            "The link valid for 2 hours:\n" +
-            "%s\n" +
-            ""
+    public static final String VERIFICATION_EMAIL_CONTENT = """
+            The link valid for 2 hours:
+            %s
+            """
     public static final String VERIFiCATION_EMAIL_SUBJECT = "skillsOnCourse verification email"
 
     public static final String EMAIL_FROM = "noreply@skillsoncourse.com.au"
@@ -71,7 +71,7 @@ class UserService {
         String validTo = LocalDateTime.now().plusHours(2).toString()
         String verificationUrl = "$requestService.requestUrl/login?stage=$stage&email=$email&valid=$validTo"
         verificationUrl = SecurityUtil.enrciptUrl(verificationUrl, sessionToken)
-        sendEmail(String.format(VERIFiCATION_EMAIL_CONTENT, verificationUrl), email)
+        sendEmail(String.format(VERIFICATION_EMAIL_CONTENT, verificationUrl), email)
     }
 
     User getUserByVerificationUrl(String urlString) {
