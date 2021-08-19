@@ -2909,9 +2909,6 @@
 		<obj-attribute name="profilePicture" type="java.lang.String" db-attribute-path="profilePicture"/>
 		<obj-attribute name="lastLogin" type="java.util.Date" db-attribute-path="lastLogin"/>
 		<obj-attribute name="passwordHash" type="java.lang.String" db-attribute-path="passwordHash"/>
-		<obj-attribute name="ssoProvider" type="ish.common.types.SSOProviderType" db-attribute-path="ssoProvider"/>
-		<obj-attribute name="ssoAccessToken" type="java.lang.String" db-attribute-path="ssoAccessToken"/>
-		<obj-attribute name="ssoRefreshToken" type="java.lang.String" db-attribute-path="ssoRefreshToken"/>
 	</obj-entity>
 	<obj-entity name="UserAccount" className="ish.oncourse.model.UserAccount" dbEntityName="UserAccount" superClassName="WillowCayenneObject">
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
