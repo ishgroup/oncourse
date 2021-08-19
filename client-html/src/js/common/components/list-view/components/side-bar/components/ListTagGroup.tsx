@@ -13,10 +13,11 @@ import { updateIndeterminateState, getUpdated } from "../../../utils/listFilters
 interface Props {
   rootTag: MenuTag;
   classes: any;
+  showColoredDots: boolean;
   updateActive: (updated: MenuTag) => void;
 }
 
-const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive }) => {
+const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, showColoredDots }) => {
   const [expanded, setExpanded] = React.useState([]);
 
   const hasOffset = useMemo(() => !rootTag.children.some(c => Boolean(c.children.length)), [rootTag.children]);
@@ -66,6 +67,7 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive }) => {
               item={c}
               key={key}
               toggleActive={toggleActive}
+              showColoredDots={showColoredDots}
             />
           );
         })}

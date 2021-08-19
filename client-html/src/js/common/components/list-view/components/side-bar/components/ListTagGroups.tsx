@@ -15,10 +15,11 @@ const styles = theme =>
 interface Props {
   tags: MenuTag[];
   classes: any;
+  showColoredDots: boolean;
   onChangeTagGroups: (tags: MenuTag[], type: string) => void;
 }
 
-const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups }) => {
+const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, showColoredDots }) => {
   const updateActive = useCallback(
     (updated: MenuTag) => {
       const updatedTags = tags.map(t => {
@@ -45,6 +46,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups }) =>
             rootTag={t}
             classes={classes}
             updateActive={updateActive}
+            showColoredDots={showColoredDots}
           />
         );
       })}
@@ -53,7 +55,8 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups }) =>
 };
 
 const mapStateToProps = (state: State) => ({
-  tags: state.list.menuTags
+  tags: state.list.menuTags,
+  showColoredDots: state.list.showColoredDots,
 });
 
 export default connect<any, any, any>(

@@ -14,33 +14,46 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Popover from "@material-ui/core/Popover";
 
-const ColumnChooserItem = ({ classes, column }) => (
-  <ListItem
-    button
-    classes={{ root: classes.columnChooserListItem }}
-  >
-    <FormControlLabel
-      {...column.getToggleHiddenProps()}
-      className="w-100"
-      classes={{
-        root: classes.columnChooserLabel
-      }}
-      disabled={column.disableVisibility}
-      label={column.Header}
-      control={(
-        <Checkbox
-          classes={{
-            root: classes.columnChooserCheckbox
-          }}
-        />
-    )}
-    />
-  </ListItem>
-);
+const ColumnChooserItem = ({ classes, column, columnId, setShowColoredDots }) => {
+  const customToggleHiddenProps = { ...column.getToggleHiddenProps() };
+
+  if (columnId === "colors") {
+    const customOnChange = e => {
+      column.toggleHidden(!e.target.checked);
+      setShowColoredDots(e.target.checked);
+    };
+
+    customToggleHiddenProps.onChange = customOnChange;
+  }
+
+  return (
+    <ListItem
+      button
+      classes={{ root: classes.columnChooserListItem }}
+    >
+      <FormControlLabel
+        {...customToggleHiddenProps}
+        className="w-100"
+        classes={{
+          root: classes.columnChooserLabel
+        }}
+        disabled={column.disableVisibility}
+        label={column.Header}
+        control={(
+          <Checkbox
+            classes={{
+              root: classes.columnChooserCheckbox
+            }}
+          />
+      )}
+      />
+    </ListItem>
+  );
+};
 
 const ColumnChooserOverlay = props => {
   const {
-    columns, target, visible, onHide, classes
+    columns, target, visible, onHide, classes, setShowColoredDots
   } = props;
 
   return (
@@ -59,6 +72,8 @@ const ColumnChooserOverlay = props => {
             key={column.id}
             column={column}
             classes={classes}
+            setShowColoredDots={setShowColoredDots}
+            columnId={column.id}
           />
         ) : null))}
       </List>
@@ -78,7 +93,7 @@ const ColumnChooserButton = React.forwardRef<any, any>((props, ref) => {
   );
 });
 
-const ColumnChooser = ({ classes, columns }) => {
+const ColumnChooser = ({ classes, columns, setShowColoredDots }) => {
   const [visible, setVisible] = useState(false);
   const buttonRef = useRef<any>();
 
@@ -89,6 +104,7 @@ const ColumnChooser = ({ classes, columns }) => {
         target={buttonRef.current}
         columns={columns}
         classes={classes}
+        setShowColoredDots={setShowColoredDots}
         onHide={() => setVisible(false)}
       />
       <ColumnChooserButton ref={buttonRef} className={classes.columnChooserButton} onToggle={() => setVisible(!visible)} />

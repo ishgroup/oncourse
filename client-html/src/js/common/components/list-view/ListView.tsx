@@ -50,6 +50,7 @@ import {
   setListSelection,
   setListUserAQLSearch,
   setSearch,
+  setShowColoredDots,
   updateTableModel
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
@@ -194,6 +195,7 @@ interface Props extends Partial<ListState> {
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
+  showColoredDots?: boolean;
   editRecordFetching?: boolean;
   recordsLeft?: number;
   searchQuery?: SearchQuery;
@@ -208,6 +210,7 @@ interface Props extends Partial<ListState> {
   setListviewMainContentWidth?: (value: string) => void;
   submitForm?: any;
   closeConfirm?: () => void;
+  setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
 }
@@ -320,7 +323,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       menuTagsLoaded,
       filterGroupsLoaded,
       noListTags,
-      preferences
+      preferences,
+      showColoredDots,
     } = this.props;
 
     const { threeColumn } = this.state;
@@ -985,7 +989,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   renderTableList = () => {
     const {
-      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns
+      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns, setShowColoredDots, showColoredDots
     } = this.props;
     const { threeColumn } = this.state;
     return (
@@ -997,6 +1001,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         recordsLeft={recordsLeft}
         threeColumn={threeColumn}
         updateColumns={updateColumns}
+        setShowColoredDots={setShowColoredDots}
+        showColoredDots={showColoredDots}
         shortCurrencySymbol={currency.shortCurrencySymbol}
         onRowDoubleClick={this.onRowDoubleClick}
         onSelectionChange={this.onSelection}
@@ -1199,7 +1205,8 @@ const mapStateToProps = (state: State) => ({
   syncErrors: getFormSyncErrors(LIST_EDIT_VIEW_FORM_NAME)(state),
   ...state.list,
   ...state.share,
-  preferences: state.userPreferences
+  preferences: state.userPreferences,
+  showColoredDots: state.list.showColoredDots,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
@@ -1230,7 +1237,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
-  closeConfirm: () => dispatch(closeConfirm())
+  closeConfirm: () => dispatch(closeConfirm()),
+  setShowColoredDots: (value: boolean) => dispatch(setShowColoredDots(value)),
 });
 
 export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView)));

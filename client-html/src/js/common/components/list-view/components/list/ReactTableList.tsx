@@ -48,6 +48,8 @@ interface ListTableProps extends Partial<ListProps>{
   columns: any;
   data: any;
   sorting: any;
+  showColoredDots: boolean;
+  setShowColoredDots: (value: boolean) => void;
   onChangeColumns: (arg: StringKeyObject<any>, listUpdate?: boolean) => void;
   onChangeColumnsOrder: (arg: string[]) => void;
 }
@@ -65,13 +67,23 @@ const Table: React.FC<ListTableProps> = ({
   onRowDoubleClick,
   selection,
   getContainerNode,
-  onChangeColumnsOrder
+  onChangeColumnsOrder,
+  setShowColoredDots,
+  showColoredDots,
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
 
   const isMountedRef = useRef(false);
   const isResizingRef = useRef(false);
   const tableRef = useRef<any>();
+
+  useEffect(() => {
+    const tagsColumn = columns.find(column => column.id === "colors");
+
+    if (tagsColumn && tagsColumn.visible && !showColoredDots) {
+      setShowColoredDots(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (tableRef.current) {
@@ -442,7 +454,7 @@ const Table: React.FC<ListTableProps> = ({
 
   return (
     <>
-      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} />}
+      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
       <MaUTable
         {...getTableProps()}
         ref={tableRef}
@@ -468,11 +480,13 @@ export interface ListProps {
   customColumnFormats?: CustomColumnFormats;
   setRowClasses?: AnyArgFunction<string>;
   threeColumn?: boolean;
+  showColoredDots?: boolean;
   primaryColumn: string;
   secondaryColumn: string;
   primaryColumnCondition?: (tableRow: any) => any;
   secondaryColumnCondition?: (tableRow: any) => any;
   onRowDoubleClick?: (id: string) => void;
+  setShowColoredDots?: (id: boolean) => void;
   onSelectionChange?: any;
   selection?: string[];
   firstColumnName?: string;
@@ -497,8 +511,10 @@ const ListRoot = React.memo<ListProps>(({
   onSelectionChange,
   selection,
   firstColumnName,
+  setShowColoredDots,
   getContainerNode,
-  updateColumns
+  updateColumns,
+  showColoredDots,
 }) => {
   const columns = useMemo(
     () => {
@@ -585,6 +601,8 @@ const ListRoot = React.memo<ListProps>(({
         onSelectionChange={onSelectionChange}
         selection={selection}
         getContainerNode={getContainerNode}
+        setShowColoredDots={setShowColoredDots}
+        showColoredDots={showColoredDots}
       />
     )
     : null;

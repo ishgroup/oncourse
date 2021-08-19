@@ -73,12 +73,13 @@ interface Props extends TreeItemProps {
   handleExpand: any;
   classes: any;
   toggleActive: any;
+  showColoredDots: boolean;
   toggleParentActive?: BooleanArgFunction;
   hasOffset?: boolean;
 }
 
 const ListTagItem: React.FC<Props> = ({
- classes, item, nodeId, handleExpand, hasOffset, toggleActive
+ classes, item, nodeId, handleExpand, hasOffset, toggleActive, showColoredDots
 }) => (
   <TreeItem
     nodeId={nodeId}
@@ -122,7 +123,9 @@ const ListTagItem: React.FC<Props> = ({
             )}
           label={item.tagBody.name}
         />
-        <div className={clsx(classes.tagColorDotExtraSmall, "mr-2")} style={{ background: "#" + item.tagBody.color }} />
+        {showColoredDots && (
+          <div className={clsx(classes.tagColorDotExtraSmall, "mr-2")} style={{ background: "#" + item.tagBody.color }} />
+        )}
       </div>
       )}
   >
@@ -136,6 +139,7 @@ const ListTagItem: React.FC<Props> = ({
             key={key}
             handleExpand={handleExpand}
             toggleActive={toggleActive}
+            showColoredDots={showColoredDots}
           />
         );
       })}

@@ -43,6 +43,8 @@ export const CLEAR_LIST_STATE = "clear/listView";
 
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 
+export const SET_SHOW_COLORED_DOTS = "set/listView/coloredDots";
+
 export const SET_LIST_SEARCH = "set/listView/search";
 
 export const SET_LIST_ENTITY = "set/listView/entity";
@@ -93,6 +95,11 @@ export const setListUserAQLSearch = (userAQLSearch: string) => ({
 export const setListLayout = (layout: LayoutType) => ({
   type: SET_LIST_LAYOUT,
   payload: layout
+});
+
+export const setShowColoredDots = (show: boolean) => ({
+  type: SET_SHOW_COLORED_DOTS,
+  payload: show,
 });
 
 export const setListMenuTags = (menuTags: MenuTag[]) => ({
