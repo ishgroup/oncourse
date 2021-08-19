@@ -12,6 +12,10 @@ properties:
   password:
     type: string
     description: User's password
+  verificationUrl:
+    type: string
+    description: the signed url from verification email
+
   codeVerifier:
     type: string
     description: code verified, need to check code challeng
