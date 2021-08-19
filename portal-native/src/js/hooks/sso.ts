@@ -32,7 +32,7 @@ export const useGoogleConnect = (
 
   useEffect(() => {
     if (response?.type === 'success') {
-      onSuccsess(response.params?.code);
+      onSuccsess(response.params?.code, request.codeVerifier);
     }
   }, [response]);
 

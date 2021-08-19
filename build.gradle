@@ -8,7 +8,7 @@ buildscript {
 		groovyVersion = '2.5.14'
         mariadbVersion = '2.7.2'
         tapestryVersion = '5.4.3'
-		bootiqueVersion = '1.0'
+		bootiqueVersion = '1.1'
         webservicesVersion = '119'
         caffeineVersion = '2.6.2'
     }

@@ -82,8 +82,8 @@ const LoginScreen = () => {
       }),
       verificationUrl: yup.string().nullable().notRequired(),
       submitBy: yup.mixed().nullable().notRequired(),
-      sSOToken: yup.string().nullable().notRequired(),
-      sSOProvider: yup.mixed().nullable().notRequired()
+      ssOToken: yup.string().nullable().notRequired(),
+      ssOProvider: yup.mixed().nullable().notRequired()
     });
   }, [stage]);
 

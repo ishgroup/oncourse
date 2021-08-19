@@ -1,9 +1,9 @@
 type: object
 properties:
-  SSOProvider:
+  ssOProvider:
     description: SSO service provider
     $ref: '../../enum/SSOproviders.yaml'
-  SSOToken:
+  ssOToken:
     type: string
     description: one time SSO token that is needed to complite OAuth2 process
   email:
@@ -12,7 +12,8 @@ properties:
   password:
     type: string
     description: User's password
-  verificationUrl:
+  codeVerifier:
     type: string
-    description: the signed url from verification email
+    description: code verified, need to check code challeng
+  
 

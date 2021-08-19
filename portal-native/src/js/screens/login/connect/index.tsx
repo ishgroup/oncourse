@@ -17,11 +17,12 @@ export const Connect = () => {
 
   const dispatch = useAppDispatch();
 
-  const onConnectSuccsess = (sSOToken, sSOProvider: SSOproviders) => {
+  const onConnectSuccsess = (ssOToken, ssOProvider: SSOproviders, codeVerifier: string) => {
     dispatch(signIn({
-      sSOProvider,
-      sSOToken,
-      verificationUrl
+      ssOProvider,
+      ssOToken,
+      verificationUrl,
+      codeVerifier
     }));
 
     if (verificationUrl) {
@@ -35,7 +36,7 @@ export const Connect = () => {
         <GoogleConnect
           styles={styles}
           clientId={thirdParty.Google.clientId}
-          onSuccsess={(auth) => onConnectSuccsess(auth, 'Google')}
+          onSuccsess={(auth, verifier) => onConnectSuccsess(auth, 'Google', verifier)}
         />
       )}
       {thirdParty?.Microsoft?.clientId && (
