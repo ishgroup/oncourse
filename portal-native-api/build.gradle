@@ -30,7 +30,9 @@ dependencies {
 
     //passwrd complexity
     implementation "com.nulab-inc:zxcvbn:1.4.1"
-
+    
+    //argon2 crypto algorithm (password hashing)
+    implementation "org.bouncycastle:bcprov-jdk15on:1.67"
 }
 
 task copyWebApp(type: Copy, dependsOn: ':portal-native:build') {
