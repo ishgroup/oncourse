@@ -51,7 +51,7 @@ class AuthenticationApiImpl implements AuthenticationApi{
     
     @Override
     void signOut() {
-
+        sessionManager.removeSessions(requestService.user)
     }
 
     @Override
