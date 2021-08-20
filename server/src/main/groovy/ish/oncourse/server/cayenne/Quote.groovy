@@ -61,8 +61,9 @@ class Quote extends _Quote {
 			throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
 		}
 	}
+
 	/**
-	 * @return . They shouldn't have an owing amount because they can't accept payments.
+	 * @return They shouldn't have an owing amount because they can't accept payments.
 	 */
 	@Nonnull
 	@API
@@ -71,10 +72,23 @@ class Quote extends _Quote {
 		return Money.ZERO
 	}
 	
+	/**
+	 * @return They shouldn't have an overdue amount
+	 */
+	@Nonnull
+	@API
+	@Override
+	Money getOverdue() {
+		return Money.ZERO
+	}
+
 	void updateAmountOwing() {
 		setAmountOwing(Money.ZERO)
 	}
-}
+	
+	void updateOverdue() {
+		setOverdue(Money.ZERO)
+	}
 
 
 
