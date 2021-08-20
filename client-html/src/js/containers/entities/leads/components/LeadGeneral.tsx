@@ -239,7 +239,7 @@ const LeadGeneral = (props: Props) => {
           <Chip
             size="small"
             label="Calculate"
-            className={clsx(classes.chipButton, "ml-2")}
+            className={clsx(classes.chipButton, "ml-2, mt-1")}
             onClick={() => (
               asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e))
             )}
