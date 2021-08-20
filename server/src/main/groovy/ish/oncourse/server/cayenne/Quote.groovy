@@ -71,7 +71,7 @@ class Quote extends _Quote {
 	Money getAmountOwing() {
 		return Money.ZERO
 	}
-	
+
 	/**
 	 * @return They shouldn't have an overdue amount
 	 */
@@ -85,10 +85,8 @@ class Quote extends _Quote {
 	void updateAmountOwing() {
 		setAmountOwing(Money.ZERO)
 	}
-	
+
 	void updateOverdue() {
 		setOverdue(Money.ZERO)
 	}
-
-
-
+}
