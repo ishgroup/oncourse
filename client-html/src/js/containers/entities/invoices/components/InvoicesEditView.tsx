@@ -332,14 +332,16 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <FormField type="text" name="customerReference" label="Customer reference" />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12} className="textField">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Overdue
-          </Typography>
-          <Typography className="money">{overdue}</Typography>
-        </div>
-      </Grid>
+      {values.type !== "Quote" && (
+        <Grid item xs={twoColumn ? 3 : 12} className="textField">
+          <div>
+            <Typography variant="caption" color="textSecondary">
+              Overdue
+            </Typography>
+            <Typography className="money">{overdue}</Typography>
+          </div>
+        </Grid>
+      )}
 
       {!isNew && values.type === "Invoice" && (
         <Grid item xs={twoColumn ? 3 : 12}>
