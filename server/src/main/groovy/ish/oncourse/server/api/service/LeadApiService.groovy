@@ -120,7 +120,6 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
     private void actualizeCourses(Lead lead, List<SaleDTO> expectedCourses) {
         ObjectContext context = lead.context
-        lead.removeFromCourses()
         lead.courses.findAll {!expectedCourses*.id.contains(it.id) }.each {
             lead.removeFromCourses(it)
         }
