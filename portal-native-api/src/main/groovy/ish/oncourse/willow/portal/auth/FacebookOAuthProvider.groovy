@@ -31,7 +31,7 @@ class FacebookOAuthProvider extends OAuthProvider {
 
     @Override
     String getClientId() {
-        return null
+        return clientId
     }
 
     @Override
@@ -51,6 +51,7 @@ class FacebookOAuthProvider extends OAuthProvider {
             uri.query = [client_id    : clientId,
                          redirect_uri : redirectUrl,
                          client_secret: clientSecret,
+                         codeVerifier: codeVerifier,
                          code         : activationCode]
 
             response.success = { resp, result ->

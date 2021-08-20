@@ -61,6 +61,7 @@ class MicrosoftOAuthProvider extends OAuthProvider {
                 activationCode,
                 new URI(redirectUrl))
                 .scopes(scopes)
+                .codeVerifier(codeVerifier)
                 .build()
 
         IAuthenticationResult result = app.acquireToken(parameters).get() 

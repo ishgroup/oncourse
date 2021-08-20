@@ -51,7 +51,7 @@ export const useFacebookConnect = (
 
   useEffect(() => {
     if (response?.type === 'success') {
-      onSuccsess(response.params?.code);
+      onSuccsess(response.params?.code, request.codeVerifier);
     }
   }, [response]);
 
@@ -90,7 +90,7 @@ export const useMicrosoftConnect = (
 
   useEffect(() => {
     if (response?.type === 'success') {
-      onSuccsess(response.params?.code);
+      onSuccsess(response.params?.code, request.codeVerifier);
     }
   }, [response]);
 
