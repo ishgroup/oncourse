@@ -27,7 +27,7 @@ class InvoiceNoteRelation extends _InvoiceNoteRelation {
 
 	@Override
 	void setNotableEntity(NotableTrait entity) {
-		super.setNotedInvoice((Invoice) entity)
+		super.setNotedInvoice((AbstractInvoice) entity)
 	}
 
 	@Nonnull
