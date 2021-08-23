@@ -38,6 +38,7 @@ const request: EpicUtils.Request = {
     data.overdue = 0;
     data.id = null;
     data.invoiceNumber = null;
+    data.quoteNumber = null;
 
     return [initialize(LIST_EDIT_VIEW_FORM_NAME, data)];
   },

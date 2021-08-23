@@ -179,6 +179,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Type', attribute: AbstractInvoice.TYPE.name, sortable: true, width: W100, visible: true, system: true),
                 new ColumnDTO(title: 'Invoice number', attribute: AbstractInvoice.INVOICE_NUMBER.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Quote number', attribute: AbstractInvoice.QUOTE_NUMBER.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Source', attribute: AbstractInvoice.SOURCE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Date due', attribute: AbstractInvoice.DATE_DUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Name', attribute: Invoice.CONTACT.dot(Contact.FULL_NAME_KEY).name, sortable: true,

@@ -35,13 +35,16 @@ public class LazyInvoiceComparisonNode extends LazyEntityComparisonNode {
         var lastNameNode = createComparisionNode(pathString + "contact.lastName", value.getLastName());
         var companyNameNode = createComparisionNode(pathString + CorporatePass.CONTACT.dot(Contact.LAST_NAME).getName(), value.getCompanyName());
         var invoiceNumberNode = createComparisionNode(pathString + "invoiceNumber", search, Op.EQ);
-        var isValidInvoiceNumber = tryParseLong(search);
+        var quoteNumberNode = createComparisionNode(pathString + "quoteNumber", search, Op.EQ);
+
+        var isValidNumber = tryParseLong(search);
 
         var idx = 0;
         var or = new ASTOr();
 
-        if (isValidInvoiceNumber) {
+        if (isValidNumber) {
             ExpressionUtil.addChild(or, invoiceNumberNode, idx++);
+            ExpressionUtil.addChild(or, quoteNumberNode, idx++);
         }
 
         if (companyNameNode != null && !search.contains(",")) {

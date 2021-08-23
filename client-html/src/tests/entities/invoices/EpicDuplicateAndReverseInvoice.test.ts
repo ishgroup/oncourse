@@ -21,6 +21,7 @@ describe("Duplicate and reverse invoice epic tests", () => {
       data.paymentPlans = [data.paymentPlans[0]];
 
       data.paymentPlans[0].amount = -data.paymentPlans[0].amount;
+      data.quoteNumber = null;
 
       data.total = -data.total;
       data.amountOwing = data.total;

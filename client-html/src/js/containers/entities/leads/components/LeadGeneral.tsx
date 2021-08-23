@@ -13,6 +13,9 @@ import { change } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import { Lead, LeadStatus, Sale, Tag, User } from "@api/model";
 import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
+import { makeStyles } from "@material-ui/core";
+import clsx from "clsx";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -32,6 +35,13 @@ import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decima
 import { getProductAqlType } from "../../sales/utils";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
+
+const useStyles = makeStyles(() => ({
+  chipButton: {
+    fontSize: "12px",
+    height: "20px",
+  }
+}));
 
 interface Props extends EditViewProps<Lead> {
   tags?: Tag[];
@@ -95,6 +105,8 @@ const LeadGeneral = (props: Props) => {
     invalid,
     users
   } = props;
+
+  const classes = useStyles();
 
   useEffect( () => {
     if (isNew) {
@@ -217,12 +229,22 @@ const LeadGeneral = (props: Props) => {
         </div>
         <FormField type="number" name="studentCount" label="Number of students" />
         <FormField type="dateTime" name="nextActionOn" label="Next action on" />
-        <FormField
-          type="money"
-          name="estimatedValue"
-          label="Estimated value"
-          normalize={normalizeNumberToZero}
-        />
+        <div className="centeredFlex">
+          <FormField
+            type="money"
+            name="estimatedValue"
+            label="Estimated value"
+            normalize={normalizeNumberToZero}
+          />
+          <Chip
+            size="small"
+            label="Calculate"
+            className={clsx(classes.chipButton, "ml-2, mt-1")}
+            onClick={() => (
+              asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e))
+            )}
+          />
+        </div>
         <FormField
           type="select"
           name="status"

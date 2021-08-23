@@ -120,7 +120,9 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
     private void actualizeCourses(Lead lead, List<SaleDTO> expectedCourses) {
         ObjectContext context = lead.context
-        context.deleteObjects(lead.courses.findAll {!expectedCourses*.id.contains(it.id) })
+        lead.courses.findAll {!expectedCourses*.id.contains(it.id) }.each {
+            lead.removeFromCourses(it)
+        }
 
         expectedCourses.findAll {!lead.courses*.id.contains(it.id) }
                 .each {saleItem ->
@@ -132,8 +134,9 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
     private void actualizeProducts(Lead lead, List<SaleDTO> expectedProducts) {
         ObjectContext context = lead.context
-        context.deleteObjects(lead.products.findAll {!expectedProducts*.id.contains(it.id) })
-
+        lead.products.findAll {!expectedProducts*.id.contains(it.id) }.each {
+            lead.removeFromProducts(it)
+        }
         expectedProducts.findAll {!lead.products*.id.contains(it.id) }
                 .each {saleItem ->
                     LeadItem leadItem = context.newObject(LeadItem.class)

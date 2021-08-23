@@ -93,6 +93,9 @@ class ContactMergeFunctions {
         toManyContactProperties.add(Contact.CONTACT_DUPLICATE.name)
         toManyContactProperties.add(Contact.COUNTRY.name)
         toManyContactProperties.add(Contact.TAX_OVERRIDE.name)
+        toManyContactProperties.add(Contact.QUOTES.name)
+        toManyContactProperties.add(Contact.LEADS.name)
+
 
         toManyStudentProperties.add(Student.APPLICATIONS.name)
         toManyStudentProperties.add(Student.ATTACHMENT_RELATIONS.name)

@@ -70,4 +70,9 @@ public class TestAutoIncrementService implements IAutoIncrementService {
 		}
 		return invoiceNumber.incrementAndGet();
 	}
+
+	@Override
+	public Long getNextQuoteNumber() {
+		return null;
+	}
 }
