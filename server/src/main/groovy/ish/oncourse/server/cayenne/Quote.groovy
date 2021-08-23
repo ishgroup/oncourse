@@ -11,11 +11,17 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
 import ish.common.types.InvoiceType
+import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Quote
+import ish.oncourse.server.services.IAutoIncrementService
+import ish.util.InvoiceUtil
+
+import javax.annotation.Nonnull
 
 /**
  * Pre-invoice state
@@ -23,6 +29,17 @@ import ish.oncourse.server.cayenne.glue._Quote
 @API
 @QueueableEntity
 class Quote extends _Quote {
+
+	@Inject
+	private transient IAutoIncrementService autoIncrementService
+
+	@Override
+	void postAdd() {
+		super.postAdd()
+		if (getQuoteNumber() == null) {
+			setQuoteNumber(autoIncrementService.getNextQuoteNumber())
+		}
+	}
 
 	@Override
 	InvoiceType getType() {
@@ -44,7 +61,32 @@ class Quote extends _Quote {
 			throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
 		}
 	}
+
+	/**
+	 * @return They shouldn't have an owing amount because they can't accept payments.
+	 */
+	@Nonnull
+	@API
+	@Override
+	Money getAmountOwing() {
+		return Money.ZERO
+	}
+
+	/**
+	 * @return They shouldn't have an overdue amount
+	 */
+	@Nonnull
+	@API
+	@Override
+	Money getOverdue() {
+		return Money.ZERO
+	}
+
+	void updateAmountOwing() {
+		setAmountOwing(Money.ZERO)
+	}
+
+	void updateOverdue() {
+		setOverdue(Money.ZERO)
+	}
 }
-
-
-

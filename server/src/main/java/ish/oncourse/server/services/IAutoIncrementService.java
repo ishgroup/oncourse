@@ -15,4 +15,6 @@ public interface IAutoIncrementService {
 	Long getNextStudentNumber();
 
 	Long getNextInvoiceNumber();
+	
+	Long getNextQuoteNumber();
 }
