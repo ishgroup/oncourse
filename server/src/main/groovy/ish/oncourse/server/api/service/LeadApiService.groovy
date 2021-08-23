@@ -73,7 +73,7 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.contactId = cayenneModel.customer.id
             dtoModel.contactName = cayenneModel.customer.fullName
             dtoModel.studentNotes = cayenneModel.studentNotes
-            dtoModel.estimatedValue = cayenneModel.estimatedValue.toBigDecimal()
+            dtoModel.estimatedValue = cayenneModel.estimatedValue?.toBigDecimal()
             dtoModel.nextActionOn = LocalDateUtils.dateToTimeValue(cayenneModel.nextActionOn)
             dtoModel.status = LeadStatusDTO.values()[0].fromDbType(cayenneModel.status)
             dtoModel.assignToId = cayenneModel.assignedTo?.id
@@ -120,7 +120,9 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
     private void actualizeCourses(Lead lead, List<SaleDTO> expectedCourses) {
         ObjectContext context = lead.context
-        context.deleteObjects(lead.courses.findAll {!expectedCourses*.id.contains(it.id) })
+        lead.courses.findAll {!expectedCourses*.id.contains(it.id) }.each {
+            lead.removeFromCourses(it)
+        }
 
         expectedCourses.findAll {!lead.courses*.id.contains(it.id) }
                 .each {saleItem ->
@@ -132,8 +134,9 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
     private void actualizeProducts(Lead lead, List<SaleDTO> expectedProducts) {
         ObjectContext context = lead.context
-        context.deleteObjects(lead.products.findAll {!expectedProducts*.id.contains(it.id) })
-
+        lead.products.findAll {!expectedProducts*.id.contains(it.id) }.each {
+            lead.removeFromProducts(it)
+        }
         expectedProducts.findAll {!lead.products*.id.contains(it.id) }
                 .each {saleItem ->
                     LeadItem leadItem = context.newObject(LeadItem.class)
@@ -184,17 +187,4 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
         action
     }
 
-    private Money calculateEstimatedValue(ObjectContext context, Integer studentCounts, List<SaleDTO> relatedCourses) {
-        if (!relatedCourses.empty) {
-            List<Course> dbCourses = relatedCourses.collect {courseApiService.getEntityAndValidateExistence(context, it.id) }
-            Money estimatedValue = dbCourses.findAll {!it.courseClasses.empty }
-                    .collect {dbCourse ->
-                        // take a last class of course
-                        return dbCourse.courseClasses.sort { it.startDateTime }.last()
-                    }*.feeExGst.sum() as Money
-
-            return estimatedValue.multiply(studentCounts.toBigDecimal())
-        }
-        return Money.ZERO
-    }
 }

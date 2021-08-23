@@ -13,7 +13,7 @@ Feature: Main feature for all GET requests with path 'checkout/discount'
     And param contactId = 10
     And param classId = 3
     And param membershipIds = 1003
-    And param enrolmentsCount = 1
+    And param classIds = 3
     And param purchaseTotal = 0
     When method GET
     Then status 200

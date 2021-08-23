@@ -24,6 +24,11 @@ const invoiceColumns: NestedTableColumn[] = [
     width: 110
   },
   {
+    name: "quoteNumber",
+    title: "Quote number",
+    width: 110
+  },
+  {
     name: "total",
     title: "Total (inc tax)",
     type: "currency"

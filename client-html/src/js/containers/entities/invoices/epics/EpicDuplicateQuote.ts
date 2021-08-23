@@ -32,6 +32,7 @@ const request: EpicUtils.Request = {
 
     data.id = null;
     data.invoiceNumber = null;
+    data.quoteNumber = null;
     return [initialize(LIST_EDIT_VIEW_FORM_NAME, data)];
   },
   processError: response => [...FetchErrorHandler(response, "Failed to duplicate Quote")]

@@ -164,7 +164,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
   );
 
   const deleteInvoiceLine = useCallback(
-    isNew
+    (isNew || values.type === "Quote")
       ? index => {
           dispatch(arrayRemove(form, "invoiceLines", index));
 
@@ -332,14 +332,16 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <FormField type="text" name="customerReference" label="Customer reference" />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12} className="textField">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Overdue
-          </Typography>
-          <Typography className="money">{overdue}</Typography>
-        </div>
-      </Grid>
+      {values.type !== "Quote" && (
+        <Grid item xs={twoColumn ? 3 : 12} className="textField">
+          <div>
+            <Typography variant="caption" color="textSecondary">
+              Overdue
+            </Typography>
+            <Typography className="money">{overdue}</Typography>
+          </div>
+        </Grid>
+      )}
 
       {!isNew && values.type === "Invoice" && (
         <Grid item xs={twoColumn ? 3 : 12}>
@@ -411,14 +413,16 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
             {total}
           </Typography>
         </div>
-        <div className="centeredFlex pt-1 pr-4 justify-content-end">
-          <Typography variant="subtitle2" noWrap>
-            Owing
-          </Typography>
-          <Typography variant="body2" color="textSecondary" className="pl-1 money">
-            {totalOwing}
-          </Typography>
-        </div>
+        {values.type !== "Quote" && (
+          <div className="centeredFlex pt-1 pr-4 justify-content-end">
+            <Typography variant="subtitle2" noWrap>
+              Owing
+            </Typography>
+            <Typography variant="body2" color="textSecondary" className="pl-1 money">
+              {totalOwing}
+            </Typography>
+          </div>
+        )}
       </Grid>
 
       {values.type === "Invoice" && (

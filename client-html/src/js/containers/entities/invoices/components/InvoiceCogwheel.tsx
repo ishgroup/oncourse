@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { isDirty, reset } from "redux-form";
+import { change, isDirty, reset } from "redux-form";
 import { PaymentOut } from "@api/model";
 import { format } from "date-fns";
 import { State } from "../../../../reducers/state";
@@ -24,7 +24,8 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import {
   getRecords,
   setListCreatingNew,
-  setListNestedEditRecord, setListSelection
+  setListNestedEditRecord,
+  setListSelection,
 } from "../../../../common/components/list-view/actions";
 import { PaymentOutModel } from "../../paymentsOut/reducers/state";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
@@ -33,6 +34,7 @@ import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 import { isInvoiceType } from "../utils";
 
 interface Props extends CogwhelAdornmentProps {
+  dispatch: any;
   clearContraInvoices: any;
   duplicateAndReverseInvoice: any;
   contraInvoices: any;
@@ -54,6 +56,7 @@ interface Props extends CogwhelAdornmentProps {
 
 const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
   const {
+    dispatch,
     selection,
     menuItemClass,
     clearContraInvoices,
@@ -223,6 +226,10 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
         const { params, url } = match;
         updateHistory(params.id ? url.replace(`/${params.id}`, `/${selection[0]}`) : url + `/${selection[0]}`, location.search, "Invoice");
 
+        if (listRecords.layout === "Three column") {
+          dispatch(change(LIST_EDIT_VIEW_FORM_NAME, "type", "Invoice"));
+        }
+
         closeMenu();
         break;
       }
@@ -286,6 +293,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+  dispatch,
   resetEditView: () => dispatch(reset(LIST_EDIT_VIEW_FORM_NAME)),
   getAmountOwing: (id: number) => dispatch(getAmountOwing(id)),
   getAddPaymentOutContact: (id: number) => dispatch(getAddPaymentOutContact(id)),

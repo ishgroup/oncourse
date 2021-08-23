@@ -21,7 +21,7 @@ Feature: Main feature for all POST requests with path 'list'
         | 'Banking'             |
         | 'CorporatePass'       |
         | 'Discount'            |
-        | 'Invoice'             |
+        | 'AbstractInvoice'     |
         | 'Module'              |
         | 'Qualification'       |
         | 'Payslip'             |
@@ -84,7 +84,7 @@ Feature: Main feature for all POST requests with path 'list'
           | 'Banking'             |
           | 'CorporatePass'       |
           | 'Discount'            |
-          | 'Invoice'             |
+          | 'AbstractInvoice'     |
           | 'Module'              |
           | 'Qualification'       |
           | 'Payslip'             |
@@ -174,7 +174,7 @@ Feature: Main feature for all POST requests with path 'list'
           | 'Banking'             |
           | 'CorporatePass'       |
           | 'Discount'            |
-          | 'Invoice'             |
+          | 'AbstractInvoice'     |
           | 'Payslip'             |
           | 'WaitingList'         |
           | 'Application'         |
