@@ -11,12 +11,14 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
 import ish.common.types.ContactType
 import ish.common.types.Gender
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.*
 import ish.oncourse.function.GetContactFullName
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.glue._Contact
 import ish.util.InvoiceUtil
 import ish.util.LocalDateUtils
@@ -33,7 +35,6 @@ import org.apache.logging.log4j.Logger
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-
 /**
  * Contacts are at the heart of onCourse. A Contact might be an individual or a company. Contacts can be extended by
  * Student or Tutor classes, however a Contact can also exist on its own.
@@ -42,7 +43,13 @@ import java.time.LocalDate
 @QueueableEntity
 class Contact extends _Contact implements ContactTrait, ExpandableTrait, ContactInterface, Queueable, NotableTrait, AttachableTrait {
 
-
+	public static final String TOTAL_OVERDUE_KEY = "totalOverdue";
+	public static final String ENROLMENTS_COUNT_KEY = "enrolmentsCount";
+	public static final String ACTIVE_MEMBERSHIPS_COUNT_KEY = "activeMembershipsCount";
+	public static final String ATTACHMENTS_COUNT_KEY = "attachmentsCount";
+	public static final String CONSESSIONS_AUTHORIZED_COUNT_KEY = "consessionsCount";
+	public static final String NOTES_COUNT_KEY = "notesCount";
+	public static final String LEADS_COUNT_KEY = "leadsCount";
 	public static final String FULL_NAME_KEY = "fullName"
 	public static final String IS_MALE_KEY = "isMale"
 	public static final String PHONES_PROP = "phones"
@@ -174,6 +181,67 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@Override
 	Money getTotalOwing() {
 		return InvoiceUtil.amountOwingForPayer(this)
+	}
+
+	/**
+	 * @return total of all overdue amounts for this contact
+	 */
+	@API
+	Money getTotalOverdue() {
+		return InvoiceUtil.amountOverdueForPayer(this)
+	}
+
+	/**
+	 * @return count of attachments
+	 */
+	@API
+	Long getAttachmentsCount() {
+		return attachmentRelations.size();
+	}
+
+	/**
+	 * @return count of enrolments
+	 */
+	@API
+	Long getEnrolmentsCount() {
+		return getStudent() != null ? getStudent().getEnrolments().size() : 0
+	}
+
+	/**
+	 * @return count of attachments
+	 */
+	@API
+	Long getActiveMembershipsCount() {
+		return memberships
+				.findAll {membership -> membership.expiryDate.before(new Date())}
+				.size()
+	}
+
+	/**
+	 * @return count of notes
+	 */
+	@API
+	Long getNotesCount() {
+		return allNotes.size();
+	}
+
+	@Inject
+	private ICayenneService cayenneService
+
+	/**
+	 * @return count of authorized consessions
+	 */
+	@API
+	Long getConsessionsCount() {
+		return concessionsAuthorised.size();
+	}
+
+	/**
+	 * @return count of authorized consessions
+	 */
+	@API
+	Long getLeadsCount() {
+		return leads.size();
 	}
 
 	/**
@@ -496,7 +564,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 		return super.getGender()
 	}
 
-		/**
+	/**
 	 * @return last name of this contact
 	 */
 	@API

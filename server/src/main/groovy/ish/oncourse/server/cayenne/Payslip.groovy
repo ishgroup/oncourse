@@ -29,6 +29,8 @@ import javax.annotation.Nullable
  */
 @API
 class Payslip extends _Payslip {
+	public static final String BUDGET_TOTAL_KEY = "budgetAmount";
+	public static final String PAID_TOTAL_KEY = "actualAmount";
 
 	@Override
 	protected void postAdd() {
@@ -133,7 +135,25 @@ class Payslip extends _Payslip {
 		return super.getPayType()
 	}
 
-	Money getFullAmount() {
-		super.getPaylines().sum { it -> it.amount } as Money
+	/**
+	 * If payline was created from a classCost record, sums that values and return
+	 * @return a total budget
+	 */
+	@API
+	Money getBudgetAmount() {
+		super.getPaylines().sum { it ->
+			if (it.budgetedQuantity != null && it.budgetedValue != null)
+				return it.budgetedValue * it.budgetedQuantity
+			else
+				return Money.ZERO
+		} as Money
+	}
+
+	/**
+	 * @return sum of all paylines amounts
+	 */
+	@API
+	Money getActualAmount() {
+		super.getPaylines().sum { it -> it.value * it.quantity } as Money
 	}
 }
