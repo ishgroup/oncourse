@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._MembershipProduct
@@ -21,15 +22,16 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.List
 
 /**
  * A persistent class mapped as "MembershipProduct" Cayenne entity.
  */
 @API
 @QueueableEntity
-class MembershipProduct extends _MembershipProduct {
+class MembershipProduct extends _MembershipProduct implements MembershipProductTrait {
 
+	public static final String SOLD_COUNT_KEY = "soldCount";
+	public static final String ACTIVE_MEMBERSHIPS_COUNT_KEY = "activeMembershipsCount";
 	private static final Logger logger = LogManager.getLogger()
 
 	@Override
@@ -61,6 +63,22 @@ class MembershipProduct extends _MembershipProduct {
 	@Override
 	List<DiscountMembership> getDiscountMemberships() {
 		return super.getDiscountMemberships()
+	}
+
+	/**
+	 * @return number of active product items
+	 */
+	@API
+	Long getActiveMembershipsCount() {
+		return getTotalActiveMembershipsCount()
+	}
+
+	/**
+	 * @return number of sold product items
+	 */
+	@API
+	Long getSoldCount() {
+		return getSoldProductsCount()
 	}
 
 	/**

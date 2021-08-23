@@ -45,6 +45,7 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	private static final Logger logger = LogManager.getLogger()
 
 	public static final SUCCESSFUL_OUTCOMES_PROPERTY = "successful_outcomes";
+	public static final String OUTCOMES_COUNT_KEY = "outcomesCount";
 
 	/**
 	 * @return
@@ -229,6 +230,15 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	@Override
 	String getPrivateNotes() {
 		return super.getPrivateNotes()
+	}
+
+	/**
+	 * @return number of outcomes
+	 *
+	 */
+	@API
+	String getOutcomesCount() {
+		return getOutcomes().size();
 	}
 
 	/**

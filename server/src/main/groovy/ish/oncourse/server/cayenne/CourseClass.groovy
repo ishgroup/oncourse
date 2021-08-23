@@ -739,6 +739,14 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
+	 * @return true if class will begin in future
+	 */
+	@API
+	Boolean getIsFuture() {
+		return startDateTime == null || startDateTime.after(new Date());
+	}
+
+	/**
 	 * @return true if class has been cancelled
 	 */
 	@Nonnull
