@@ -48,6 +48,7 @@ export const getEntityResponse = ({
     entity,
     offset: 0,
     filterColumnWidth: 200,
+    tagsOrder: [],
     layout: "Three column",
     pageSize: 20,
     search: null,
@@ -58,7 +59,7 @@ export const getEntityResponse = ({
   };
 
   if (plain) {
-    response = { ...response, filterColumnWidth: null, layout: null };
+    response = { ...response, filterColumnWidth: null, layout: null, tagsOrder: [] };
   }
 
   return response;

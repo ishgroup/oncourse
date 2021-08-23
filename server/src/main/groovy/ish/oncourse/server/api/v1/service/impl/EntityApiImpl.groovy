@@ -188,6 +188,7 @@ class EntityApiImpl implements EntityApi {
         dataResponse.columns = model.columns
         dataResponse.filterColumnWidth = model.filterColumnWidth
         dataResponse.layout = model.layout
+        dataResponse.tagsOrder = model.tagsOrder
 
         return dataResponse
     }

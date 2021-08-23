@@ -20,7 +20,8 @@ const request: EpicUtils.Request<
       sortings: payload.model.sortings || state.list.records.sort,
       columns: payload.model.columns || state.list.records.columns || [],
       layout: payload.model.layout || state.list.records.layout,
-      filterColumnWidth: payload.model.filterColumnWidth || state.list.records.filterColumnWidth
+      filterColumnWidth: payload.model.filterColumnWidth || state.list.records.filterColumnWidth,
+      tagsOrder: payload.model.tagsOrder || state.list.records.tagsOrder,
     };
     updatedModel.sortings.forEach(sorting => {
       updatedModel.columns.forEach(column => {
