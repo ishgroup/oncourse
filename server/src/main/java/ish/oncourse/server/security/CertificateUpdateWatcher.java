@@ -18,7 +18,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.io.File;
-import java.security.KeyStore;
 import java.util.Date;
 
 import static ish.oncourse.server.security.KeystoreGenerator.KEYSTORE;
@@ -28,10 +27,10 @@ import static ish.oncourse.server.security.KeystoreGenerator.KEYSTORE_PASSWORD;
 public class CertificateUpdateWatcher implements Job {
 
     private Long lastUpdate = new Date().getTime();
-    private SslContextFactory sslContextFactory;
+    private SslContextFactory.Server sslContextFactory;
 
     @Inject
-    public CertificateUpdateWatcher(SslContextFactory sslContextFactory) {
+    public CertificateUpdateWatcher(SslContextFactory.Server sslContextFactory) {
         this.sslContextFactory = sslContextFactory;
     }
 

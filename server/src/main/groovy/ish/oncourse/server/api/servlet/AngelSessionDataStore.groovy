@@ -140,13 +140,16 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
 
     }
 
-    /**
+    @Override
+    Set<String> doCheckExpired(Set<String> candidates, long time) {
+        return doGetExpired(candidates)
+    }
+/**
      * Get all expired sessions from the session ids provided
      *
      * @param candidates collection of session ids to check
      * @return
      */
-    @Override
     Set<String> doGetExpired(Set<String> candidates) {
         return ObjectSelect
                 .columnQuery(SystemUser, SystemUser.SESSION_ID)

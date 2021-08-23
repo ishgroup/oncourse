@@ -15,7 +15,7 @@ import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
 import io.bootique.jdbc.tomcat.JdbcTomcatModule;
-import io.bootique.jetty.JettyModule;
+import ish.jetty.AngelJettyModule;
 import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;
 import ish.oncourse.server.bugsnag.BugsnagModule;
@@ -52,7 +52,7 @@ public class AngelServer {
                 .module(ApiServiceModule.class)
                 .module(ApiImplementationModule.class)
                 .module(CustomServicesModule.class)
-                .module(JettyModule.class)
+                .module(AngelJettyModule.class)
                 .module(CXFModule.class)
                 .module(ServerApiModule.class)
                 .module(BugsnagModule.class)
