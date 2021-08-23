@@ -28,7 +28,6 @@ import ish.oncourse.server.api.v1.model.InvoiceTypeDTO
 import ish.oncourse.server.api.v1.model.LeadInvoiceDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
-import ish.oncourse.server.entity.mixins.BigDecimalMixin
 import ish.oncourse.server.services.IAutoIncrementService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService

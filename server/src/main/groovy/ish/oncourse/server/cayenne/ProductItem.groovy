@@ -136,6 +136,14 @@ class ProductItem extends _ProductItem implements Queueable {
 		return super.getProduct()
 	}
 
+	/**
+	 * @return if status equals active value
+	 */
+	@API
+	Boolean isActive() {
+		return status == ACTIVE
+	}
+
 	@Override
 	String getSummaryDescription() {
 		if (getProduct() == null) {

@@ -13,11 +13,9 @@ package ish.oncourse.server.cayenne
 
 import ish.common.payable.PayableLineInterface
 import ish.common.types.ConfirmationStatus
-import ish.common.types.InvoiceType
 import ish.common.types.PaymentSource
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.PayableInterface
 import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.server.cayenne.glue._AbstractInvoice

@@ -15,14 +15,7 @@ import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
-import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
-import ish.oncourse.server.api.v1.model.ColumnDTO
-import ish.oncourse.server.api.v1.model.DataResponseDTO
-import ish.oncourse.server.api.v1.model.DataRowDTO
-import ish.oncourse.server.api.v1.model.SearchQueryDTO
-import ish.oncourse.server.api.v1.model.TableModelDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.preference.UserPreferenceService
@@ -34,6 +27,7 @@ import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.Ordering
+import org.apache.cayenne.query.PrefetchTreeNode
 import org.apache.cayenne.query.SortOrder
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
@@ -41,7 +35,9 @@ import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
-import java.text.SimpleDateFormat
+
+import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 
 @CompileDynamic
 class EntityApiImpl implements EntityApi {
@@ -52,18 +48,22 @@ class EntityApiImpl implements EntityApi {
     private static final BigDecimal DEF_PAGE_SIZE = 50
     private static final String ID_FIELD = "id"
 
-    @Inject private ICayenneService cayenneService
-    @Inject private UserPreferenceService preference
-    @Inject private AqlService aql
+    @Inject
+    private ICayenneService cayenneService
+    @Inject
+    private UserPreferenceService preference
+    @Inject
+    private AqlService aql
 
 
     @Override
     DataResponseDTO get(String entity, String search, BigDecimal pageSize, BigDecimal offset) {
-        return getAll(entity, new SearchQueryDTO(search: search, pageSize: pageSize, offset:offset))
+        return getAll(entity, new SearchQueryDTO(search: search, pageSize: pageSize, offset: offset))
     }
 
     @Override
     DataResponseDTO getAll(String entity, SearchQueryDTO request) {
+
         DataResponseDTO response = createResponse(entity, request.search, request.pageSize, request.offset)
         ObjectContext context = cayenneService.newReadonlyContext
 
@@ -72,7 +72,7 @@ class EntityApiImpl implements EntityApi {
 
         ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups)
 
-        if ( request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
+        if (request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
             response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
         }
 
@@ -93,9 +93,20 @@ class EntityApiImpl implements EntityApi {
         }
         query.orderBy(ID_FIELD, sortOrder != null ? sortOrder : SortOrder.ASCENDING)
 
+        response.columns
+                .findAll { it -> it.visible }
+                .collect { it -> it.prefetches }
+                .flatten()
+                .forEach(
+                        {
+                            prefetch -> query.prefetch(prefetch.toString(), PrefetchTreeNode.DISJOINT_PREFETCH_SEMANTICS)
+                        }
+                )
+
         List<PersistentObject> records = query.select(context)
         response.pageSize = new BigDecimal(Math.min(response.pageSize.intValue(), records.size()))
         populateResponce(records, response, response.columns, null)
+
         return response
     }
 
@@ -105,7 +116,7 @@ class EntityApiImpl implements EntityApi {
         if (StringUtils.trimToNull(columnsString)) {
             columns = columnsString.split(',').toList()
         } else {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, null,"Columns list required.")).build())
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, null, "Columns list required.")).build())
         }
 
         List<String> cayenneSortings = new ArrayList<>()
@@ -150,7 +161,7 @@ class EntityApiImpl implements EntityApi {
 
     private static void populateResponce(List<PersistentObject> records, DataResponseDTO response, List<ColumnDTO> columns = null, List<String> stringColumns = null) {
 
-        List<String> attributes = stringColumns?:columns.findAll { it.visible || it.system }*.attribute
+        List<String> attributes = stringColumns ?: columns.findAll { it.visible || it.system }*.attribute
         records.subList(0, response.pageSize.intValue()).each { PersistentObject e ->
             response.rows << new DataRowDTO().with { r ->
                 r.id = Cayenne.intPKForObject(e).toString()
@@ -204,7 +215,7 @@ class EntityApiImpl implements EntityApi {
             return DateFormatter.formatDateISO8601(value)
         }
         if (value instanceof BigDecimal) {
-            return ((BigDecimal)value).toPlainString()
+            return ((BigDecimal) value).toPlainString()
         }
         return value.toString()
     }

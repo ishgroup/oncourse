@@ -146,7 +146,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return buff.toString()
 	}
 
-    /**
+	/**
 	 * @return class fee including GST
 	 */
 	@API
@@ -166,7 +166,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return "/class/" + getUniqueCode()
 	}
 
-    /**
+	/**
 	 * @return a unique identifier in the form {@code courseCode-classCode}.
 	 */
 	@Nonnull
@@ -253,7 +253,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 */
 	void updateClassRoom() {
 		if (!isDistantLearningCourse) {
-			setRoom(getSessions().sort {it.startDatetime}.find {it.room != null}?.room)
+			setRoom(getSessions().sort { it.startDatetime }.find { it.room != null }?.room)
 		}
 	}
 
@@ -338,16 +338,16 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getEnrolments() != null && getEnrolments().size() > 0) {
 
 			if (getFundingSource() != null) {
-				getEnrolments().findAll{ e -> !e.fundingSource}.each { e -> e.fundingSource = getFundingSource()}
+				getEnrolments().findAll { e -> !e.fundingSource }.each { e -> e.fundingSource = getFundingSource() }
 			}
 			if (getRelatedFundingSource() != null) {
-				getEnrolments().findAll{ e -> !e.relatedFundingSource}.each { e -> e.relatedFundingSource = getRelatedFundingSource()}
+				getEnrolments().findAll { e -> !e.relatedFundingSource }.each { e -> e.relatedFundingSource = getRelatedFundingSource() }
 			}
 			if (getVetFundingSourceStateID() != null) {
-				getEnrolments().findAll{ e -> !e.vetFundingSourceStateID}.each {e -> e.vetFundingSourceStateID = getFundingSource()}
+				getEnrolments().findAll { e -> !e.vetFundingSourceStateID }.each { e -> e.vetFundingSourceStateID = getFundingSource() }
 			}
 			if (getVetPurchasingContractID() != null) {
-				getEnrolments().findAll{ e -> !e.vetPurchasingContractID}.each {e -> e.vetPurchasingContractID = getVetPurchasingContractID()}
+				getEnrolments().findAll { e -> !e.vetPurchasingContractID }.each { e -> e.vetPurchasingContractID = getVetPurchasingContractID() }
 			}
 
 			updateOutcomesStartEndDates()
@@ -583,7 +583,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		super.validateForSave(validationResult)
 
 		if (getCourse() != null && !getCourse().isNewRecord() &&
-				detectDuplicate([COURSE_PROPERTY, CODE_PROPERTY ] as String[], null, true) != null) {
+				detectDuplicate([COURSE_PROPERTY, CODE_PROPERTY] as String[], null, true) != null) {
 			validationResult.addFailure(ValidationFailure.validationFailure(this, CODE_PROPERTY, "You must enter a unique course code."))
 		}
 	}
@@ -637,7 +637,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return  standard deliveryMode value for AVETMISS reporting
+	 * @return standard deliveryMode value for AVETMISS reporting
 	 */
 	@Nonnull
 	@API
@@ -739,6 +739,14 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
+	 * @return true if class will begin in future
+	 */
+	@API
+	Boolean getIsFuture() {
+		return startDateTime == null || startDateTime.after(new Date());
+	}
+
+	/**
 	 * @return true if class has been cancelled
 	 */
 	@Nonnull
@@ -825,7 +833,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return  the minimum age of students allowed to enrol in this courseClass
+	 * @return the minimum age of students allowed to enrol in this courseClass
 	 */
 	@API
 	@Override
@@ -1054,7 +1062,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getAbstractInvoiceLines().findAll {it.invoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+		return super.getAbstractInvoiceLines().findAll { it.invoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
 	}
 
 	/**
@@ -1137,14 +1145,14 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	String getTutorsAbridged() {
 		List<Tutor> tutors = new ArrayList<>()
 		List<CourseClassTutor> courseClassTutors = getTutorRoles()
-		for(CourseClassTutor classTutor : courseClassTutors) {
-			if(classTutor.getTutor() != null) {
+		for (CourseClassTutor classTutor : courseClassTutors) {
+			if (classTutor.getTutor() != null) {
 				tutors.add(classTutor.getTutor())
 			}
 		}
 		if (tutors == null || tutors.size() == 0) {
 			return "not set"
-		} else if(tutors.size() == 1) {
+		} else if (tutors.size() == 1) {
 			return tutors.get(0).getContact().getName()
 		}
 
@@ -1160,8 +1168,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	boolean getHasZeroWages() {
 		return getCosts()
 				.stream()
-				.filter{classCost -> ClassCostFlowType.WAGES == classCost.getFlowType() }
-				.anyMatch{
+				.filter { classCost -> ClassCostFlowType.WAGES == classCost.getFlowType() }
+				.anyMatch {
 					ClassCostUtil.getPerUnitAmountExTax(it) == null ||
 							ClassCostUtil.getPerUnitAmountExTax(it).isZero()
 				}

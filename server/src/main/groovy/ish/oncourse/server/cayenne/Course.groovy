@@ -43,6 +43,8 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	public static final int COURSE_NAME_MAX_LENGTH = 200;
 
 	public static final String CURRENT_CLASS_COUNT_PROPERTY = "currentClassesCount";
+	public static final String TOTAL_CLASS_COUNT_PROPERTY = "totalClassesCount";
+	public static final String DATA_COLLECTION_RULE_KEY = "dataCollectionRuleName";
 
 
 	private static final Logger logger = LogManager.getLogger()
@@ -82,7 +84,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 			setReportableHours(CalculateCourseReportableHours.valueOf(this).calculate())
 		}
 		if (getCourseClasses() != null && getCourseClasses().size() > 0) {
-			getCourseClasses().findAll { cc -> !cc.reportableHours}.each {cc -> cc.setReportableHours(CalculateCourseClassNominalHours.valueOf(cc).calculate())}
+			getCourseClasses().findAll { cc -> !cc.reportableHours }.each { cc -> cc.setReportableHours(CalculateCourseClassNominalHours.valueOf(cc).calculate()) }
 		}
 	}
 
@@ -109,7 +111,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	void validateForSave(@Nonnull ValidationResult validationResult) {
 		super.validateForSave(validationResult)
 
-		if (detectDuplicate([ CODE_PROPERTY ] as String[] , null, true) != null) {
+		if (detectDuplicate([CODE_PROPERTY] as String[], null, true) != null) {
 			validationResult.addFailure(ValidationFailure.validationFailure(this, CODE_PROPERTY, "You must enter a unique course code."))
 		}
 	}
@@ -289,7 +291,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	@Nonnull
 	@API
 	@Override
-    List<CourseClass> getCourseClasses() {
+	List<CourseClass> getCourseClasses() {
 		return super.getCourseClasses()
 	}
 
@@ -314,19 +316,28 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
+	 * @return the name of field configuration schema
+	 */
+	@API
+	String getDataCollectionRuleName() {
+		return fieldConfigurationSchema.getName();
+	}
+
+	/**
 	 * @return a list of all courses related to this one
 	 */
-	@Nonnull @API
+	@Nonnull
+	@API
 	List<Course> getRelatedCourses() {
 		List<Course> courses = new ArrayList<>()
 
 		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
 				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context)) } as List<Course>
 
 		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
 				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))}  as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context)) } as List<Course>
 
 		return courses
 	}
@@ -335,17 +346,18 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	 * A list of all courses related to this one by type with specified name
 	 * @return
 	 */
-	@Nonnull @API
+	@Nonnull
+	@API
 	List<Course> getRelatedCourses(String name) {
 		List<Course> courses = new ArrayList<>()
 
 		EntityRelationDao.getRelatedFromByName(context, Course.simpleName, id, name)
 				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))} as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context)) } as List<Course>
 
 		EntityRelationDao.getRelatedToByName(context, Course.simpleName, id, name)
 				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))} as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context)) } as List<Course>
 
 		return courses
 	}
@@ -353,17 +365,18 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	/**
 	 * @return a list of all products related to this one
 	 */
-	@Nonnull @API
+	@Nonnull
+	@API
 	List<Product> getRelatedProducts() {
 		List<Product> products = new ArrayList<>()
 
 		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
 				.findAll { it -> Product.simpleName == it.fromEntityIdentifier }
-				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context))} as List<Product>
+				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context)) } as List<Product>
 
 		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
 				.findAll { it -> Product.simpleName == it.toEntityIdentifier }
-				.each { it -> products.add(SelectById.query(Product, it.toRecordId).selectOne(context))} as List<Product>
+				.each { it -> products.add(SelectById.query(Product, it.toRecordId).selectOne(context)) } as List<Product>
 
 		return products
 	}
@@ -378,7 +391,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 
 		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
 				.findAll { it -> Product.simpleName == it.toEntityIdentifier }
-				.each { it -> products.add(SelectById.query(Product, it.toRecordId).selectOne(context))} as List<Product>
+				.each { it -> products.add(SelectById.query(Product, it.toRecordId).selectOne(context)) } as List<Product>
 
 		return products
 	}
@@ -393,7 +406,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 
 		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
 				.findAll { it -> Product.simpleName == it.fromEntityIdentifier }
-				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context))} as List<Product>
+				.each { it -> products.add(SelectById.query(Product, it.fromRecordId).selectOne(context)) } as List<Product>
 
 		return products
 	}
@@ -408,7 +421,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 
 		EntityRelationDao.getRelatedTo(context, Course.simpleName, id)
 				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))}  as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context)) } as List<Course>
 
 		return courses
 	}
@@ -423,7 +436,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 
 		EntityRelationDao.getRelatedToByName(context, Course.simpleName, id, name)
 				.findAll { it -> Course.simpleName == it.toEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context))} as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.toRecordId).selectOne(context)) } as List<Course>
 
 		return courses
 	}
@@ -438,7 +451,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 
 		EntityRelationDao.getRelatedFrom(context, Course.simpleName, id)
 				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context)) } as List<Course>
 
 		return courses
 	}
@@ -453,7 +466,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 
 		EntityRelationDao.getRelatedFromByName(context, Course.simpleName, id, name)
 				.findAll { it -> Course.simpleName == it.fromEntityIdentifier }
-				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context))}  as List<Course>
+				.each { it -> courses.add(SelectById.query(Course, it.fromRecordId).selectOne(context)) } as List<Course>
 
 		return courses
 	}
@@ -532,7 +545,9 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	 *
 	 * @return the scheme which applies to this course
 	 */
-	@Nonnull @Override @API
+	@Nonnull
+	@Override
+	@API
 	FieldConfigurationScheme getFieldConfigurationSchema() {
 		return super.getFieldConfigurationSchema()
 	}

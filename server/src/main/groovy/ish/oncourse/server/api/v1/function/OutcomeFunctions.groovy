@@ -233,7 +233,7 @@ class OutcomeFunctions {
                             break
                         case AttendanceType.DID_NOT_ATTEND_WITH_REASON:
                         case AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON:
-                            progression.absent += duration
+                            progression.absent+= duration
                             break
                         case AttendanceType.PARTIAL:
                             BigDecimal attended = attendance.durationInHours

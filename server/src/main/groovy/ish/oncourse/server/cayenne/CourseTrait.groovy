@@ -36,7 +36,15 @@ trait CourseTrait {
         Date now = new Date()
         Date tomorrow = CommonExpressionFactory.nextMidnight(now)
         Date today = CommonExpressionFactory.previousMidnight(now)
-        getCourseClasses().findAll { it.startDateTime != null && it.endDateTime != null && it.startDateTime <  tomorrow && it.endDateTime >= today && !it.isCancelled }.size()
+        getCourseClasses().findAll { it.startDateTime != null && it.endDateTime != null && it.startDateTime < tomorrow && it.endDateTime >= today && !it.isCancelled }.size()
+    }
+
+    /**
+     * @return number of all courseClasses, whether current, past or future
+     */
+    @API
+    Integer getTotalClassesCount() {
+        getCourseClasses().size()
     }
 
     /**
@@ -46,7 +54,7 @@ trait CourseTrait {
     Integer getFutureClasseCount() {
         Date now = new Date()
         Date tomorrow = CommonExpressionFactory.nextMidnight(now)
-        getCourseClasses().findAll { it.startDateTime != null && it.endDateTime != null && it.startDateTime >=  tomorrow && it.endDateTime >= tomorrow && !it.isCancelled }.size()
+        getCourseClasses().findAll { it.startDateTime != null && it.endDateTime != null && it.startDateTime >= tomorrow && it.endDateTime >= tomorrow && !it.isCancelled }.size()
     }
 
     /**
@@ -136,7 +144,7 @@ trait CourseTrait {
         if (courseClasses.empty) {
             return null
         }
-        return courseClasses.sort {it.createdOn}.reverse().find { it.persistenceState != PersistenceState.NEW }
+        return courseClasses.sort { it.createdOn }.reverse().find { it.persistenceState != PersistenceState.NEW }
 
     }
 
@@ -144,7 +152,7 @@ trait CourseTrait {
     private int timesClassCodeRepeatsWithinCourse(String aCode, CourseClass courseClass) {
         int result = 0
         for (CourseClass clazz : courseClasses) {
-            if (clazz != courseClass && clazz.code  && clazz.code.equalsIgnoreCase(aCode)) {
+            if (clazz != courseClass && clazz.code && clazz.code.equalsIgnoreCase(aCode)) {
                 result++
             }
         }
@@ -152,7 +160,7 @@ trait CourseTrait {
     }
 
     @API
-    CourseStatusDTO getStatus(){
+    CourseStatusDTO getStatus() {
         return !getIsShownOnWeb() && !getCurrentlyOffered() ? COURSE_DISABLED : !getIsShownOnWeb() ? ENABLED : ENABLED_AND_VISIBLE_ONLINE
     }
 

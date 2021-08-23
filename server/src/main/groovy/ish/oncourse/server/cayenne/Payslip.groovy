@@ -29,6 +29,8 @@ import javax.annotation.Nullable
  */
 @API
 class Payslip extends _Payslip {
+	public static final String BUDGET_TOTAL_KEY = "budgetAmount";
+	public static final String PAID_TOTAL_KEY = "actualAmount";
 
 	@Override
 	protected void postAdd() {
@@ -47,7 +49,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return the date and time this record was created
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
 	}
@@ -55,7 +59,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return the date and time this record was modified
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	Date getModifiedOn() {
 		return super.getModifiedOn()
 	}
@@ -63,7 +69,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return public notes appended to this payslip
 	 */
-	@Nullable @API @Override
+	@Nullable
+	@API
+	@Override
 	String getNotes() {
 		return super.getNotes()
 	}
@@ -71,7 +79,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return private notes appended to this payslip
 	 */
-	@Nullable @API @Override
+	@Nullable
+	@API
+	@Override
 	String getPrivateNotes() {
 		return super.getPrivateNotes()
 	}
@@ -79,7 +89,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return the workflow status of the payslip
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	PayslipStatus getStatus() {
 		return super.getStatus()
 	}
@@ -87,7 +99,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return the contact for the tutor this payslip belongs to
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	Contact getContact() {
 		return super.getContact()
 	}
@@ -95,7 +109,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return all paylines attached to this payslip
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	List<PayLine> getPaylines() {
 		return super.getPaylines()
 	}
@@ -103,7 +119,9 @@ class Payslip extends _Payslip {
 	/**
 	 * @return paymentInLines attached to this payslip
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	List<PaymentInLine> getPaymentInLines() {
 		return super.getPaymentInLines()
 	}
@@ -111,14 +129,17 @@ class Payslip extends _Payslip {
 	/**
 	 * @return paymentOutLines attached to this payslip
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	List<PaymentOutLine> getPaymentOutLines() {
 		return super.getPaymentOutLines()
 	}
 
-	@Nullable @Override
+	@Nullable
+	@Override
 	String getSummaryDescription() {
-		if(getContact() == null) {
+		if (getContact() == null) {
 			return super.getSummaryDescription()
 		}
 		return "pay for " + getContact().getFullName()
@@ -128,12 +149,32 @@ class Payslip extends _Payslip {
 	 * The payslip can be either for an employee (payroll) or contractor (invoice)
 	 * @return a pay type
 	 */
-	@Nonnull @API @Override
+	@Nonnull
+	@API
+	@Override
 	PayslipPayType getPayType() {
 		return super.getPayType()
 	}
 
-	Money getFullAmount() {
-		super.getPaylines().sum { it -> it.amount } as Money
+	/**
+	 * If payline was created from a classCost record, sums that values and return
+	 * @return a total budget
+	 */
+	@API
+	Money getBudgetAmount() {
+		super.getPaylines().sum { it ->
+			if (it.budgetedQuantity != null && it.budgetedValue != null)
+				return it.budgetedValue * it.budgetedQuantity
+			else
+				return Money.ZERO
+		} as Money
+	}
+
+	/**
+	 * @return sum of all paylines amounts
+	 */
+	@API
+	Money getActualAmount() {
+		super.getPaylines().sum { it -> it.value * it.quantity } as Money
 	}
 }
