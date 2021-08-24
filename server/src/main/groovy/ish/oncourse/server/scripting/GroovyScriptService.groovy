@@ -308,9 +308,10 @@ class GroovyScriptService {
     }
 
     private String getServerDefaultTimeZone() {
-        return ObjectSelect.query(Preference.class)
+        Preference preference = ObjectSelect.query(Preference.class)
                 .where(Preference.NAME.eq(Preferences.ONCOURSE_SERVER_DEFAULT_TZ))
                 .selectFirst(cayenneService.newContext)
+        return preference ? preference.value : null
     }
 
     void scriptAdded(Script script, String saveCronExp) {
