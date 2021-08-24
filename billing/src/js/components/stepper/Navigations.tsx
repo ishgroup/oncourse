@@ -3,6 +3,7 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import CallMadeIcon from '@material-ui/icons/CallMade';
 import CustomButton from '../common/Button';
 import { State } from '../../redux/reducers';
 
@@ -25,6 +26,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     '&:hover': {
       backgroundColor: 'rgba(248, 169, 74, 0.2)'
     }
+  },
+  nextButton: {
+    display: "flex",
+    alignItems: "center",
+    textTransform: "capitalize",
+    "& > svg": {
+      transform: "rotate(45deg)",
+    },
   },
 }));
 
@@ -56,7 +65,13 @@ const Navigation = (props) => {
             disabled={disabled || loading}
             loading={loading}
           >
-            {activeStep === steps.length - 2 ? 'Finish' : 'Next'}
+            {activeStep === steps.length - 2
+                ? 'Finish'
+                : (
+                  <div className={classes.nextButton}>
+                    Next Step&nbsp;&nbsp;<CallMadeIcon fontSize="small" />
+                  </div>
+                )}
           </CustomButton>
         </div>
       )}

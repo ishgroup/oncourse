@@ -24,17 +24,37 @@ import { State } from '../../redux/reducers';
 import { ExistingCustomerSteps, NewCustomerSteps, Step } from '../../models/User';
 import { AppTheme } from '../../models/Theme';
 import { getCookie } from '../../utils';
+import iconDots from "../../../images/icon-dots.png";
+import {Typography} from "@material-ui/core";
 
 export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   root: {
     width: '100%',
-    marginTop: '64px',
-    height: 'calc(100vh - 64px)',
+    marginTop: '0',
+    height: '100vh',
     display: 'flex'
   },
   content: {
     margin: 'auto',
-    minWidth: '400px',
+    maxWidth: 760,
+    padding: theme.spacing(10),
+    width: "100%",
+  },
+  contentInner: {
+    backgroundImage: `url(${iconDots})`,
+    backgroundPosition: "0 0",
+    backgroundSize: 18,
+    padding: "48px 48px 130px",
+    "& > $formItem": {
+      backgroundColor: "#fff",
+      padding: "48px 48px 8px",
+    }
+  },
+  formItem: {
+    position: "relative"
+  },
+  formStep: {
+    color: "#888",
   },
   formWrapper: {
     flex: 1,
@@ -138,7 +158,14 @@ const Stepper: React.FC<Props> = (
       <div className={classes.formWrapper}>
         {serverError ? <ErrorPage /> : (
           <div className={classes.content}>
-            {activePage}
+            <div className={classes.contentInner}>
+              <div className={classes.formItem}>
+                <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
+                  Step&nbsp;{activeStep + 1}
+                </Typography>
+                {activePage}
+              </div>
+            </div>
           </div>
         )}
       </div>

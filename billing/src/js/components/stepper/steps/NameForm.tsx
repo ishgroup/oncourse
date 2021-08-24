@@ -9,7 +9,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import clsx from 'clsx';
@@ -29,20 +30,45 @@ const useStyles = makeStyles((theme:any) => ({
   mainWrapper: {
     minHeight: '50px',
     marginTop: '20px',
+    paddingBottom: 40,
+    borderBottom: "1px solid #ddd",
   },
   textFieldWrapper2: {
     display: 'flex',
     alignItems: 'baseline'
   },
   coloredHeaderText: {
-    color: theme.statistics.coloredHeaderText.color
+    color: theme.statistics.coloredHeaderText.color,
+    fontFamily: theme.typography.fontFamily2,
+    fontSize: theme.spacing(4),
+    fontWeight: 100,
+    marginTop: 0,
+    marginBottom: theme.spacing(2),
   },
   errorMessage: {
     fontSize: '12px',
     color: '#f44336'
   },
   input: {
-    minWidth: '70px'
+    minWidth: 200
+  },
+  domainName: {
+    fontSize: 35,
+    fontFamily: theme.typography.fontFamily2
+  },
+  info: {
+    position: "absolute",
+    bottom: -100,
+    padding: 5,
+    backgroundColor: "#fff",
+    left: 0,
+    right: 0,
+    maxWidth: "60%",
+    margin: "0 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 12
   }
 }));
 
@@ -141,29 +167,26 @@ const NameForm = (props: any) => {
 
   return (
     <form className={classes.root}>
-      <h2 className={classes.coloredHeaderText}>Give your site a name</h2>
+      <h2 className={classes.coloredHeaderText}>Let's go! Give your site a name</h2>
       <Typography>Choose a name for your team or company</Typography>
 
       <div className={classes.mainWrapper}>
         <div className={classes.textFieldWrapper2}>
-          <Typography>https://</Typography>
+          <Typography className={classes.domainName}>https://</Typography>
           <span
-            className={clsx(classes.input, 'input')}
+            className={clsx(classes.input, 'input', classes.domainName)}
             onInput={(e) => setNewCollegeName(e)}
             ref={inputRef}
             contentEditable
             onKeyPress={(e) => keyPress(e)}
           />
-          <Typography>.oncourse.cc</Typography>
+          <Typography className={classes.domainName}>.oncourse.cc</Typography>
         </div>
         {errorMessage && (<Typography className={classes.errorMessage}>{errorMessage}</Typography>)}
       </div>
 
-      <Typography>- No credit card required</Typography>
-      <Typography>
-        - Free until
-        {getDate()}
-        , then $10/month
+      <Typography className={classes.info} component="div">
+        <ErrorOutlineIcon fontSize="small" color="primary" />&nbsp;&nbsp;No credit card required / Free until {getDate()}, then $10/month
       </Typography>
       <Navigation
         activeStep={activeStep}

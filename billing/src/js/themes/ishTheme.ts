@@ -83,7 +83,8 @@ const createOverrides = (palette: any) => ({
 
 const commonTypography = {
   typography: {
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: 'Merriweather, sans-serif',
+    fontFamily2: 'Port Lligat Slab, sans-serif',
     fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 400,

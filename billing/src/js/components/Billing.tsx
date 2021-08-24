@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import Stepper from './stepper/Stepper';
-import Header from './common/Header';
 import {
   ChristmasThemeKey,
   DarkThemeKey,
@@ -90,7 +89,6 @@ const Billing = () => {
       }}
     >
       <ThemeProvider theme={theme}>
-        <Header />
         <Stepper />
         <MessageProvider />
       </ThemeProvider>

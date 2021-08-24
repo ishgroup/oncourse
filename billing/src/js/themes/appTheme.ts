@@ -1,5 +1,5 @@
 import { yellow } from "@material-ui/core/colors";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from "@material-ui/core/styles/colorManipulator";
 import { ThemeValues, AppTheme } from "../models/Theme";
 
 export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
@@ -22,7 +22,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       shareButton: {
         color: "#302A22",
         backgroundColor: "#fff",
-        backgroundColorHover: fade("#fff", 0.9)
+        backgroundColorHover: alpha("#fff", 0.9)
       },
       color: {
         headerText: "#fff",
@@ -44,7 +44,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         strokeColor: "#ffd876"
       },
       rightColumn: {
-        color: fade("rgba(0, 0, 0, 0.87)", 0.4)
+        color: alpha("rgba(0, 0, 0, 0.87)", 0.4)
       }
     },
     appBarButton: {
@@ -57,7 +57,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     tabList: {
       listContainer: {
-        backgroundColor: "#302A22"
+        backgroundColor: "#fbf9f0"
       }
     },
     table: {
@@ -86,7 +86,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       shareButton: {
         color: "#302A22",
         backgroundColor: "#fff",
-        backgroundColorHover: fade("#fff", 0.9)
+        backgroundColorHover: alpha("#fff", 0.9)
       },
       color: {
         headerText: "#fff",
@@ -108,7 +108,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         strokeColor: "#ffd876"
       },
       rightColumn: {
-        color: fade("rgba(255, 255, 255, 0.87)", 0.4)
+        color: alpha("rgba(255, 255, 255, 0.87)", 0.4)
       }
     },
     appBarButton: {
@@ -150,7 +150,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       shareButton: {
         color: "#fff",
         backgroundColor: "#3e8ef7",
-        backgroundColorHover: fade("#3e8ef7", 0.9)
+        backgroundColorHover: alpha("#3e8ef7", 0.9)
       },
       color: {
         headerText: "#fff",
@@ -172,7 +172,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         strokeColor: "#ffd876"
       },
       rightColumn: {
-        color: fade("#222222", 0.4)
+        color: alpha("#222222", 0.4)
       }
     },
     appBarButton: {
@@ -214,7 +214,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       shareButton: {
         color: "#fff",
         backgroundColor: "#111111",
-        backgroundColorHover: fade("#fff", 0.9)
+        backgroundColorHover: alpha("#fff", 0.9)
       },
       color: {
         headerText: "#000",
@@ -276,7 +276,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       shareButton: {
         color: "#fff",
         backgroundColor: "#B3000C",
-        backgroundColorHover: fade("#fff", 0.9)
+        backgroundColorHover: alpha("#fff", 0.9)
       },
       color: {
         headerText: "#000",
@@ -298,7 +298,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         strokeColor: "#ffd876"
       },
       rightColumn: {
-        color: fade("rgba(0, 0, 0, 0.87)", 0.4)
+        color: alpha("rgba(0, 0, 0, 0.87)", 0.4)
       }
     },
     appBarButton: {

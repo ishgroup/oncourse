@@ -10,41 +10,56 @@ import Grid from "@material-ui/core/Grid";
 import clsx from "clsx";
 import ListItem from "@material-ui/core/ListItem";
 import createStyles from "@material-ui/core/styles/createStyles";
+import onCourseLogoChristmas from "../../../images/onCourseLogoChristmas.png";
+import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
+import onCourseLogoLight from "../../../images/onCourseLogoLight.png";
 
 const styles = theme => createStyles({
   root: {
-    width: "170px",
-    height: "calc(100vh - 64px)",
+    width: "250px",
+    height: "100vh",
     padding: theme.spacing(4),
     backgroundColor: theme.tabList.listContainer.backgroundColor,
     position: "fixed",
   },
   listContainer: {
     flexDirection: "column",
+    flex: 1,
+    textAlign: "center",
+    "& > img": {
+      maxWidth: 120
+    }
   },
   listContainerInner: {
     marginBottom: theme.spacing(8),
+    paddingTop: "70%",
   },
   listItemRoot: {
     alignItems: "flex-start",
     marginBottom: theme.spacing(3),
-    color: theme.palette.common.white,
+    color: theme.palette.common.black,
     fontWeight: 600,
     opacity: 0.6,
     padding: 0,
     "&$selected": {
       opacity: 1,
-      backgroundColor: "inherit"
+      backgroundColor: "inherit",
+      "& $listItemText": {
+        fontWeight: 600,
+      },
+      "&:hover": {
+        backgroundColor: "inherit",
+      }
     },
     '&:hover': {
       cursor: "auto",
     },
   },
   listItemText: {
-    fontSize: "14px",
-    fontWeight: 600,
+    fontSize: 16,
+    fontWeight: 400,
     width: "100%",
-    textTransform: "uppercase",
+    textTransform: "capitalize",
   },
   indicator: {
     display: "none"
@@ -57,21 +72,34 @@ interface Props {
   items: string[];
   activeStep: number;
   classes?: any;
+  theme?: any;
 }
 
 const TabsList = React.memo<Props>((
   {
     classes,
     items,
-    activeStep
+    activeStep,
+    theme
   }) => {
+
+  const isChristmas = localStorage.getItem("theme") === "christmas";
+
   return (
     <Grid container className={classes.root}>
       <div className={clsx("relative",
         classes.listContainer,
         localStorage.getItem("theme") === "christmas" && "christmasHeader")}
       >
-
+        {isChristmas ? (
+            <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
+        ) : (
+            <img
+                src={onCourseLogoDark}
+                className={classes.logo}
+                alt="Logo"
+            />
+        )}
         <div className={classes.listContainerInner}>
           {items.map((i, index) => (
             <ListItem
@@ -93,4 +121,4 @@ const TabsList = React.memo<Props>((
   );
 });
 
-export default withStyles(styles)(TabsList);
+export default withStyles(styles, { withTheme: true })(TabsList);
