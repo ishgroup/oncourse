@@ -4,15 +4,15 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import createStyles from "@material-ui/core/styles/createStyles";
 import onCourseLogoChristmas from "../../../images/onCourseLogoChristmas.png";
 import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
-import onCourseLogoLight from "../../../images/onCourseLogoLight.png";
 
 const styles = theme => createStyles({
   root: {
@@ -21,50 +21,55 @@ const styles = theme => createStyles({
     padding: theme.spacing(4),
     backgroundColor: theme.tabList.listContainer.backgroundColor,
     position: "fixed",
+    left: 0,
+    top: 0,
+    bottom: 0,
   },
   listContainer: {
     flexDirection: "column",
     flex: 1,
     textAlign: "center",
     "& > img": {
-      maxWidth: 120
+      maxWidth: 160,
+      position: "relative",
+      left: -5
     }
   },
   listContainerInner: {
     marginBottom: theme.spacing(8),
     paddingTop: "70%",
+    paddingLeft: 20,
+    textAlign: "left"
   },
-  listItemRoot: {
-    alignItems: "flex-start",
-    marginBottom: theme.spacing(3),
-    color: theme.palette.common.black,
-    fontWeight: 600,
-    opacity: 0.6,
-    padding: 0,
-    "&$selected": {
-      opacity: 1,
-      backgroundColor: "inherit",
-      "& $listItemText": {
-        fontWeight: 600,
+  stepRoot: {
+    marginBottom: 20,
+  },
+  stepCompleted: {
+    "& $stepLabelCompleted": {
+      color: "#37caad",
+    },
+    "& $stepLabelIconContainer": {
+      "& > svg": {
+        color: "#37caad",
       },
-      "&:hover": {
-        backgroundColor: "inherit",
+    },
+  },
+  stepperRoot: {
+    backgroundColor: "transparent",
+    padding: 0,
+  },
+  stepLabelDisabled: {
+    "& $stepLabelIconContainer": {
+      "& > svg": {
+        color: theme.palette.primary.contrastText,
+        "& > text": {
+          fill: theme.palette.primary.main
+        }
       }
-    },
-    '&:hover': {
-      cursor: "auto",
-    },
+    }
   },
-  listItemText: {
-    fontSize: 16,
-    fontWeight: 400,
-    width: "100%",
-    textTransform: "capitalize",
-  },
-  indicator: {
-    display: "none"
-  },
-  selected: {}
+  stepLabelIconContainer: {},
+  stepLabelCompleted: {},
 });
 
 
@@ -101,20 +106,45 @@ const TabsList = React.memo<Props>((
             />
         )}
         <div className={classes.listContainerInner}>
-          {items.map((i, index) => (
+          <Stepper activeStep={activeStep} orientation="vertical" connector={<></>} classes={{ root: classes.stepperRoot }}>
+            {items.map((label, index) => (
+              <Step
+                  key={label}
+                  classes={{
+                    root: classes.stepRoot,
+                    completed: classes.stepCompleted,
+
+                  }}
+              >
+                <StepLabel
+                    classes={{
+                      disabled: classes.stepLabelDisabled,
+                      iconContainer: classes.stepLabelIconContainer,
+                      completed: classes.stepLabelCompleted,
+                    }}
+                >
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {/*{items.map((item, index) => (
             <ListItem
               selected={index === activeStep}
               classes={{
-                root: classes.listItemRoot,
-                selected: classes.selected
               }}
               key={index}
             >
               <Typography variant="body2" component="div" color="inherit">
-                <div className={classes.listItemText}>{i}</div>
+
+                  <span className={classes.itemStepRound}>
+                    {index + 1}
+                  </span>
+                  {item}
+                </div>
               </Typography>
             </ListItem>
-          ))}
+          ))}*/}
         </div>
       </div>
     </Grid>

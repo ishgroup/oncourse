@@ -13,6 +13,10 @@ body {
   background-color: #fff;
 }
 
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
 .grecaptcha-badge {
   visibility: hidden;
 }

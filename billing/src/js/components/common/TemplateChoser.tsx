@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   gridList: {
-    width: 1000,
+    // width: 1000,
   },
   selectedImage: {},
   image: {
@@ -111,7 +111,7 @@ export const TemplateChoser = ({ value, onChange }) => {
 
   return (
     <div className={classes.root}>
-      <ImageList cellHeight={281} className={classes.gridList} cols={3}>
+      <ImageList cellHeight={281} className={classes.gridList} cols={2}>
         {imgData.map((tile) => (
           <ImageListItem key={tile.img} cols={1}>
             <img

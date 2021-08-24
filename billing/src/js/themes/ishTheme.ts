@@ -97,8 +97,20 @@ const commonTypography = {
     },
     caption: {
       fontWeight: 300
-    }
-  }
+    },
+    h2: {
+      fontFamily: 'Port Lligat Slab, sans-serif',
+    },
+    h3: {
+      fontFamily: 'Port Lligat Slab, sans-serif',
+    },
+    h4: {
+      fontFamily: 'Port Lligat Slab, sans-serif',
+    },
+    h5: {
+      fontFamily: 'Port Lligat Slab, sans-serif',
+    },
+  },
 };
 
 // Default Theme

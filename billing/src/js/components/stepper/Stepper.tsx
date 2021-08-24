@@ -10,6 +10,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import Typography from "@material-ui/core/Typography";
 import LeftMenu from '../common/LeftMenu';
 import NameForm from './steps/NameForm';
 import TemplateForm from './steps/TemplateForm';
@@ -25,18 +26,18 @@ import { ExistingCustomerSteps, NewCustomerSteps, Step } from '../../models/User
 import { AppTheme } from '../../models/Theme';
 import { getCookie } from '../../utils';
 import iconDots from "../../../images/icon-dots.png";
-import {Typography} from "@material-ui/core";
 
 export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   root: {
     width: '100%',
     marginTop: '0',
     height: '100vh',
-    display: 'flex'
+    display: 'flex',
+    paddingLeft: 250
   },
   content: {
     margin: 'auto',
-    maxWidth: 760,
+    // maxWidth: 760,
     padding: theme.spacing(10),
     width: "100%",
   },
@@ -59,9 +60,9 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   formWrapper: {
     flex: 1,
     display: 'flex',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
-    padding: '0px 20px 0px 190px'
+    padding: '0px 20px 0px 20px'
   },
   instructions: {
     marginTop: theme.spacing(1),
@@ -131,6 +132,11 @@ const Stepper: React.FC<Props> = (
     };
 
     loadScriptByURL('recaptcha-key', `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`);
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,600;1,300&family=Port+Lligat+Slab&display=swap';
+    document.head.appendChild(link);
   }, []);
 
   const handleNext = () => {

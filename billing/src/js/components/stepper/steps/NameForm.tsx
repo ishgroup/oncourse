@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme:any) => ({
     minHeight: '50px',
     marginTop: '20px',
     paddingBottom: 40,
-    borderBottom: "1px solid #ddd",
   },
   textFieldWrapper2: {
     display: 'flex',
@@ -46,8 +45,9 @@ const useStyles = makeStyles((theme:any) => ({
     marginBottom: theme.spacing(2),
   },
   errorMessage: {
-    fontSize: '12px',
-    color: '#f44336'
+    fontSize: 14,
+    color: '#f44336',
+    marginTop: 12
   },
   input: {
     minWidth: 200
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme:any) => ({
   },
   info: {
     position: "absolute",
-    bottom: -100,
+    bottom: -70,
     padding: 5,
     backgroundColor: "#fff",
     left: 0,

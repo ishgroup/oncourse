@@ -57,11 +57,15 @@ const TemplateForm = (props: any) => {
   return (
     <>
       <FormControl component="fieldset">
-        <h2 className={classes.coloredHeaderText}>Choose your website template</h2>
+        <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom={true}>
+          Choose your website template
+        </Typography>
+
+        <Typography variant="subtitle1" gutterBottom={true}>
+          To start, select one of our templates. Don't sweat it, you can change this later.
+        </Typography>
 
         <TemplateChoser value={webSiteTemplate} onChange={onChange} />
-
-        <Typography>Don't sweat it, you can change this later</Typography>
       </FormControl>
       <Navigation
         activeStep={activeStep}
