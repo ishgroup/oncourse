@@ -100,12 +100,12 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     const initialLength = this.props.customFields.length;
     const newLength = items.length;
 
-    const newItems = items.slice(0, newLength - initialLength);
+    const newItems = items.slice(0, newLength - initialLength + 1);
     const touchedItems = items
       .slice(newLength - initialLength, newLength)
       .filter((item, index) => !isEqual(item, this.props.customFields[index]));
 
-    return [...newItems, ...touchedItems];
+    return newItems.filter(val => !touchedItems.includes(val));
   };
 
   onSave = value => {
