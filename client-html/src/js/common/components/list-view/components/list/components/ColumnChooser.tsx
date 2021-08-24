@@ -13,11 +13,12 @@ import List from "@material-ui/core/List";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Popover from "@material-ui/core/Popover";
+import { COLUMN_WITH_COLORS } from "../utils";
 
 const ColumnChooserItem = ({ classes, column, columnId, setShowColoredDots }) => {
   const customToggleHiddenProps = { ...column.getToggleHiddenProps() };
 
-  if (columnId === "colors") {
+  if (columnId === COLUMN_WITH_COLORS) {
     const customOnChange = e => {
       column.toggleHidden(!e.target.checked);
       setShowColoredDots(e.target.checked);

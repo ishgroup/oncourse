@@ -28,7 +28,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Column, DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { getTableRows } from "./utils";
+import { COLUMN_WITH_COLORS, getTableRows } from "./utils";
 import { StyledCheckbox } from "../../../form/form-fields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
@@ -78,7 +78,7 @@ const Table: React.FC<ListTableProps> = ({
   const tableRef = useRef<any>();
 
   useEffect(() => {
-    const tagsColumn = columns.find(column => column.id === "colors");
+    const tagsColumn = columns.find(column => column.id === COLUMN_WITH_COLORS);
 
     if (tagsColumn && tagsColumn.visible && !showColoredDots) {
       setShowColoredDots(true);
@@ -217,7 +217,7 @@ const Table: React.FC<ListTableProps> = ({
                 onClick={e => onRowCheckboxSelect(e, row.id, state)}
               />
               <TagDotRenderer
-                colors={row.values.colors && row.values.colors.replace("[", "").replace("]", "").split(", ")}
+                colors={row.values[COLUMN_WITH_COLORS] && row.values[COLUMN_WITH_COLORS].replace("[", "").replace("]", "").split(", ")}
                 dotsWrapperStyle={classes.listDots}
               />
             </>
@@ -342,7 +342,7 @@ const Table: React.FC<ListTableProps> = ({
           onDragEnd={args => onColumnOrderChange({
             ...args,
             fields: state.columnOrder,
-            headers: headerGroup.headers.filter(column => column.id !== "colors")
+            headers: headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS)
           })}
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
@@ -353,7 +353,7 @@ const Table: React.FC<ListTableProps> = ({
                 className={classes.headerRow}
                 component="div"
               >
-                {headerGroup.headers.filter(column => column.id !== "colors").map((column, columnIndex) => {
+                {headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS).map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
                   return (
                     <TableCell
