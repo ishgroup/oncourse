@@ -393,7 +393,6 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	/**
 	 * @return percent of attended hours; if enrolment not set, returns 0 by default
 	 */
-	@API
 	Long getAttendedPercent() {
 		return enrolment != null ? getPresentAttendancePercent() : 0
 	}
@@ -401,7 +400,6 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	/**
 	 * @return percent of marked assesments; if enrolment not set, returns 0 by default
 	 */
-	@API
 	Long getMarkedPercent() {
 		return enrolment != null ? getMarkedAssessmentPercent() : 0
 	}

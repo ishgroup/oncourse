@@ -139,7 +139,6 @@ class Payslip extends _Payslip {
 	 * If payline was created from a classCost record, sums that values and return
 	 * @return a total budget
 	 */
-	@API
 	Money getBudgetAmount() {
 		super.getPaylines().sum { it ->
 			if (it.budgetedQuantity != null && it.budgetedValue != null)
@@ -152,7 +151,6 @@ class Payslip extends _Payslip {
 	/**
 	 * @return sum of all paylines amounts
 	 */
-	@API
 	Money getActualAmount() {
 		super.getPaylines().sum { it -> it.value * it.quantity } as Money
 	}

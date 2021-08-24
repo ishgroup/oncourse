@@ -68,7 +68,6 @@ class MembershipProduct extends _MembershipProduct implements MembershipProductT
 	/**
 	 * @return number of active product items
 	 */
-	@API
 	Long getActiveMembershipsCount() {
 		return getTotalActiveMembershipsCount()
 	}
@@ -76,7 +75,6 @@ class MembershipProduct extends _MembershipProduct implements MembershipProductT
 	/**
 	 * @return number of sold product items
 	 */
-	@API
 	Long getSoldCount() {
 		return getSoldProductsCount()
 	}
