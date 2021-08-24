@@ -186,7 +186,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	/**
 	 * @return total of all overdue amounts for this contact
 	 */
-	@API
 	Money getTotalOverdue() {
 		return InvoiceUtil.amountOverdueForPayer(this)
 	}
@@ -194,7 +193,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	/**
 	 * @return count of attachments
 	 */
-	@API
 	Long getAttachmentsCount() {
 		return attachmentRelations.size();
 	}
@@ -202,7 +200,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	/**
 	 * @return count of enrolments
 	 */
-	@API
 	Long getEnrolmentsCount() {
 		return getStudent() != null ? getStudent().getEnrolments().size() : 0
 	}
@@ -210,7 +207,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	/**
 	 * @return count of attachments
 	 */
-	@API
 	Long getActiveMembershipsCount() {
 		return memberships
 				.findAll {membership -> membership.expiryDate.before(new Date())}
@@ -220,18 +216,13 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	/**
 	 * @return count of notes
 	 */
-	@API
 	Long getNotesCount() {
 		return allNotes.size();
 	}
 
-	@Inject
-	private ICayenneService cayenneService
-
 	/**
 	 * @return count of authorized consessions
 	 */
-	@API
 	Long getConsessionsCount() {
 		return concessionsAuthorised.size();
 	}
@@ -239,7 +230,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	/**
 	 * @return count of authorized consessions
 	 */
-	@API
 	Long getLeadsCount() {
 		return leads.size();
 	}

@@ -318,7 +318,6 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	/**
 	 * @return the name of field configuration schema
 	 */
-	@API
 	String getDataCollectionRuleName() {
 		return fieldConfigurationSchema.getName();
 	}

@@ -236,7 +236,6 @@ class Certificate extends _Certificate implements Queueable, AttachableTrait {
 	 * @return number of outcomes
 	 *
 	 */
-	@API
 	String getOutcomesCount() {
 		return getOutcomes().size();
 	}
