@@ -206,26 +206,24 @@ class UnitAPI extends TCSI_API {
         BigDecimal feeCharged =  enrolment.feeCharged.toBigDecimal()
         BigDecimal helpLoanAmount =  enrolment.feeHelpAmount?enrolment.feeHelpAmount.toBigDecimal():BigDecimal.ZERO
         
-        if ( clazz.censusDate.plusDays(14).isAfter(LocalDate.now())) {
-            //Update to current value until the census date. Then corrections only with value to be correct as at the unit of study census date (E489)
-            //Within 14 days of the census date
-            unit["amount_charged"] = feeCharged //E384
-            unit["help_loan_amount"] = helpLoanAmount // E558
-            unit["amount_paid_upfront"] = feeCharged.subtract(helpLoanAmount) //E381
-            
-            if (enrolment.feeStatus && enrolment.feeStatus in [DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED, DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT]) {
-                LocalDate threshold_1 = LocalDate.parse('01-04-2020','dd-MM-yyyy')
-                LocalDate threshold_2 = LocalDate.parse('01-07-2021','dd-MM-yyyy')
 
-                if (clazz.censusDate.isAfter(threshold_1) && clazz.censusDate.isBefore(threshold_2)) {
-                    unit["loan_fee"] = BigDecimal.ZERO
-                } else {
-                    unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)).setScale(2, RoundingMode.UP)// E529
-                } 
-            } else  {
+        unit["amount_charged"] = feeCharged //E384
+        unit["help_loan_amount"] = helpLoanAmount // E558
+        unit["amount_paid_upfront"] = feeCharged.subtract(helpLoanAmount) //E381
+        
+        if (enrolment.feeStatus && enrolment.feeStatus in [DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED, DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT]) {
+            LocalDate threshold_1 = LocalDate.parse('01-04-2020','dd-MM-yyyy')
+            LocalDate threshold_2 = LocalDate.parse('01-07-2021','dd-MM-yyyy')
+
+            if (clazz.censusDate.isAfter(threshold_1) && clazz.censusDate.isBefore(threshold_2)) {
                 unit["loan_fee"] = BigDecimal.ZERO
-            }
+            } else {
+                unit["loan_fee"] =  helpLoanAmount.multiply(new BigDecimal(0.2)).setScale(2, RoundingMode.UP)// E529
+            } 
+        } else  {
+            unit["loan_fee"] = BigDecimal.ZERO
         }
+        
 
         if (enrolment.creditTotal) {
             switch (enrolment.creditTotal) {
