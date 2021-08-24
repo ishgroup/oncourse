@@ -2870,9 +2870,7 @@
 		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.QUOTE]]></qualifier>
 	</obj-entity>
 	<obj-entity name="QuoteLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.QuoteLine"/>
-	<obj-entity name="QuoteNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.QuoteNoteRelation">
-		<qualifier><![CDATA[entityIdentifier = "Quote"]]></qualifier>
-	</obj-entity>
+
 	<obj-entity name="SavedFind" className="ish.oncourse.server.cayenne.SavedFind" clientClassName="ish.oncourse.cayenne.SavedFind" dbEntityName="SavedFind" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="aqlExpressionString" type="java.lang.String" db-attribute-path="aqlExpressionString"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -4907,14 +4905,7 @@
 	<obj-relationship name="role" source="ACLAccessKey" target="ACLRole" deleteRule="Nullify" db-relationship-path="role"/>
 	<obj-relationship name="accessKeys" source="ACLRole" target="ACLAccessKey" deleteRule="Cascade" db-relationship-path="accessKeys"/>
 	<obj-relationship name="systemUsers" source="ACLRole" target="SystemUser" deleteRule="Deny" db-relationship-path="role_user_om.user_fk"/>
-	<obj-relationship name="attachmentRelations" source="AbstractInvoice" target="InvoiceAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
-	<obj-relationship name="authorisedRebillingCard" source="AbstractInvoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
-	<obj-relationship name="corporatePassUsed" source="AbstractInvoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
-	<obj-relationship name="createdByUser" source="AbstractInvoice" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
-	<obj-relationship name="debtorsAccount" source="AbstractInvoice" target="Account" deleteRule="Nullify" db-relationship-path="debtorsAccount"/>
-	<obj-relationship name="invoiceDueDates" source="AbstractInvoice" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
-	<obj-relationship name="lead" source="AbstractInvoice" target="Lead" deleteRule="Nullify" db-relationship-path="lead"/>
-	<obj-relationship name="taggingRelations" source="AbstractInvoice" target="AbstractInvoiceTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+
 	<obj-relationship name="account" source="AbstractInvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="account"/>
 	<obj-relationship name="cosAccount" source="AbstractInvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="cosAccount"/>
 	<obj-relationship name="prepaidFeesAccount" source="AbstractInvoiceLine" target="Account" deleteRule="Nullify" db-relationship-path="prepaidFeesAccount"/>
@@ -5146,7 +5137,6 @@
 	<obj-relationship name="courseClass" source="Enrolment" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="customFields" source="Enrolment" target="EnrolmentCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="abstractInvoiceLines" source="Enrolment" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="abstractInvoiceLines" source="AbstractInvoice" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="noteRelations" source="Enrolment" target="EnrolmentNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="outcomes" source="Enrolment" target="Outcome" deleteRule="Cascade" db-relationship-path="outcomes"/>
 	<obj-relationship name="relatedFundingSource" source="Enrolment" target="FundingSource" deleteRule="Nullify" db-relationship-path="relatedFundingSource"/>
@@ -5195,12 +5185,6 @@
 	<obj-relationship name="relatedObject" source="ImportAutomationBinding" target="Import" deleteRule="Nullify" db-relationship-path="import"/>
 	<obj-relationship name="integrationProperties" source="IntegrationConfiguration" target="IntegrationProperty" deleteRule="Cascade" db-relationship-path="integrationProperties"/>
 	<obj-relationship name="integrationConfiguration" source="IntegrationProperty" target="IntegrationConfiguration" deleteRule="Nullify" db-relationship-path="integrationConfiguration"/>
-	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
-	<obj-relationship name="paymentOutLines" source="Invoice" target="PaymentOutLine" deleteRule="Deny" db-relationship-path="paymentOutLines"/>
-	<obj-relationship name="noteRelations" source="Invoice" target="InvoiceNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="attachedInvoice" source="InvoiceAttachmentRelation" target="Invoice" deleteRule="Nullify" db-relationship-path="attachedInvoice"/>
 	<obj-relationship name="invoice" source="InvoiceDueDate" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="courseClass" source="InvoiceLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
@@ -5212,7 +5196,7 @@
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="quoteLine" source="InvoiceLineDiscount" target="QuoteLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
-	<obj-relationship name="notedInvoice" source="InvoiceNoteRelation" target="Invoice" deleteRule="Nullify" db-relationship-path="notedInvoice"/>
+	<obj-relationship name="notedInvoice" source="InvoiceNoteRelation" target="AbstractInvoice" deleteRule="Nullify" db-relationship-path="notedInvoice"/>
 	<obj-relationship name="students" source="Language" target="Student" deleteRule="Deny" db-relationship-path="students"/>
 	<obj-relationship name="invoices" source="Lead" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
 	<obj-relationship name="quotes" source="Lead" target="Quote" deleteRule="Nullify" db-relationship-path="invoices"/>
@@ -5336,14 +5320,36 @@
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>
 	<obj-relationship name="priorLearnings" source="Qualification" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="trainingPackage" source="Qualification" target="TrainingPackage" deleteRule="Deny" db-relationship-path="trainingPackage"/>
+	
 	<obj-relationship name="contact" source="Quote" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
-	<obj-relationship name="noteRelations" source="Quote" target="QuoteNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+
+
+	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="invoiceLines" source="Invoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="paymentInLines" source="Invoice" target="PaymentInLine" deleteRule="Deny" db-relationship-path="paymentInLines"/>
+	<obj-relationship name="paymentOutLines" source="Invoice" target="PaymentOutLine" deleteRule="Deny" db-relationship-path="paymentOutLines"/>
+
+	<obj-relationship name="paymentInLines" source="AbstractInvoice" target="PaymentInLine" deleteRule="Cascade" db-relationship-path="paymentInLines"/>
+	<obj-relationship name="paymentOutLines" source="AbstractInvoice" target="PaymentOutLine" deleteRule="Cascade" db-relationship-path="paymentOutLines"/>
+	<obj-relationship name="invoiceLines" source="AbstractInvoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="noteRelations" source="AbstractInvoice" target="InvoiceNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="attachmentRelations" source="AbstractInvoice" target="InvoiceAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="authorisedRebillingCard" source="AbstractInvoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
+	<obj-relationship name="corporatePassUsed" source="AbstractInvoice" target="CorporatePass" deleteRule="Nullify" db-relationship-path="corporatePassUsed"/>
+	<obj-relationship name="createdByUser" source="AbstractInvoice" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
+	<obj-relationship name="debtorsAccount" source="AbstractInvoice" target="Account" deleteRule="Nullify" db-relationship-path="debtorsAccount"/>
+	<obj-relationship name="invoiceDueDates" source="AbstractInvoice" target="InvoiceDueDate" deleteRule="Deny" db-relationship-path="invoiceDueDates"/>
+	<obj-relationship name="lead" source="AbstractInvoice" target="Lead" deleteRule="Nullify" db-relationship-path="lead"/>
+	<obj-relationship name="taggingRelations" source="AbstractInvoice" target="AbstractInvoiceTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="abstractInvoiceLines" source="AbstractInvoice" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+
+
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="quoteLineDiscounts" source="QuoteLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceline_discounts"/>
-	<obj-relationship name="notedQuote" source="QuoteNoteRelation" target="Quote" deleteRule="Nullify" db-relationship-path="notedQuote"/>
 	<obj-relationship name="background" source="Report" target="ReportOverlay" deleteRule="Nullify" db-relationship-path="background"/>
 	<obj-relationship name="taggingRelations" source="Report" target="ReportTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="automationBindings" source="Report" target="ReportAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>

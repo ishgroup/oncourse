@@ -39,6 +39,8 @@ class Quote extends _Quote {
 		if (getQuoteNumber() == null) {
 			setQuoteNumber(autoIncrementService.getNextQuoteNumber())
 		}
+		setAmountOwing(Money.ZERO)
+		setOverdue(Money.ZERO)
 	}
 
 	@Override
