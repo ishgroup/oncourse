@@ -17,7 +17,7 @@ import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class UpdateDuplicateSetOrders extends IshTaskChange {
+public class UpdateDuplicateSortOrders extends IshTaskChange {
 
     @Override
     public void execute(Database database) throws CustomChangeException {
