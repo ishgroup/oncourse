@@ -77,7 +77,6 @@ interface Props {
   items: string[];
   activeStep: number;
   classes?: any;
-  theme?: any;
 }
 
 const TabsList = React.memo<Props>((
@@ -85,7 +84,6 @@ const TabsList = React.memo<Props>((
     classes,
     items,
     activeStep,
-    theme
   }) => {
 
   const isChristmas = localStorage.getItem("theme") === "christmas";
@@ -106,14 +104,20 @@ const TabsList = React.memo<Props>((
             />
         )}
         <div className={classes.listContainerInner}>
-          <Stepper activeStep={activeStep} orientation="vertical" connector={<></>} classes={{ root: classes.stepperRoot }}>
+          <Stepper
+              activeStep={activeStep}
+              orientation="vertical"
+              connector={<></>}
+              classes={{
+                root: classes.stepperRoot,
+              }}
+          >
             {items.map((label, index) => (
               <Step
                   key={label}
                   classes={{
                     root: classes.stepRoot,
                     completed: classes.stepCompleted,
-
                   }}
               >
                 <StepLabel
@@ -128,27 +132,10 @@ const TabsList = React.memo<Props>((
               </Step>
             ))}
           </Stepper>
-          {/*{items.map((item, index) => (
-            <ListItem
-              selected={index === activeStep}
-              classes={{
-              }}
-              key={index}
-            >
-              <Typography variant="body2" component="div" color="inherit">
-
-                  <span className={classes.itemStepRound}>
-                    {index + 1}
-                  </span>
-                  {item}
-                </div>
-              </Typography>
-            </ListItem>
-          ))}*/}
         </div>
       </div>
     </Grid>
   );
 });
 
-export default withStyles(styles, { withTheme: true })(TabsList);
+export default withStyles(styles)(TabsList);

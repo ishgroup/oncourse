@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   },
   content: {
     margin: 'auto',
-    // maxWidth: 760,
+    maxWidth: 1200,
     padding: theme.spacing(10),
     width: "100%",
   },
