@@ -14,6 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
+import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.ICayenneService
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
@@ -188,6 +189,7 @@ class EntityApiImpl implements EntityApi {
         dataResponse.columns = model.columns
         dataResponse.filterColumnWidth = model.filterColumnWidth
         dataResponse.layout = model.layout
+        dataResponse.tagsOrder = model.tagsOrder
 
         return dataResponse
     }
