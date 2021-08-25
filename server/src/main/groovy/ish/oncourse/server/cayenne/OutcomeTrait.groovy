@@ -46,12 +46,32 @@ trait OutcomeTrait {
         }
     }
 
+    /**
+     * @return percent of attended hours; if enrolment not set or max duration is 0, returns 0 by default
+     */
     Long getPresentAttendancePercent() {
+        if(enrolment == null)
+            return 0
+
+        def maxPossibleAttendedDuration = getMaxPossibleAttendedDuration()
+        if( maxPossibleAttendedDuration == 0)
+            return 0
+
         return Math.round(getAttendedAttendancesDuration().doubleValue() / getMaxPossibleAttendedDuration().doubleValue() * 100)
     }
 
+    /**
+     * @return percent of marked assessments; if enrolment not set or assessments are empty, returns 0 by default
+     */
     Long getMarkedAssessmentPercent() {
-        return Math.round((double) getMarkedAssessmentsCount() / getOutcomeAssessments().size())
+        if(enrolment == null)
+            return 0
+
+        def outcomeAssessments = getOutcomeAssessments()
+        if(outcomeAssessments.isEmpty())
+            return 0
+
+        return Math.round((double) getMarkedAssessmentsCount() / outcomeAssessments.size())
     }
 
     BigDecimal getMaxPossibleAttendedDuration() {

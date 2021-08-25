@@ -8,18 +8,33 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
+import ish.oncourse.server.ICayenneService
+import org.apache.cayenne.query.ObjectSelect
+
 trait RoomTrait {
 
-    abstract List<CourseClass> getCourseClasses()
+    @Inject
+    private ICayenneService cayenneService
 
-    Long getActiveClassesCount(){
-        def classes = getCourseClasses()
-        return classes == null? 0: classes.findAll {courseClass -> courseClass.isActive}.size()
+    Long getActiveClassesCount() {
+        return ObjectSelect.query(CourseClass.class)
+                .where(CourseClass.ROOM.eq((Room) this).andExp(CourseClass.IS_ACTIVE.isTrue()))
+                .selectCount(cayenneService.newReadonlyContext)
     }
 
-    Long getFutureClassesCount(){
-        def classes = getCourseClasses()
-        return classes == null? 0: classes.findAll {courseClass -> courseClass.isFuture}.size()
+    Long getFutureClassesCount() {
+        return ObjectSelect.query(CourseClass.class)
+                .where(
+                        CourseClass.ROOM
+                                .eq((Room) this)
+                                .andExp(
+                                        CourseClass.START_DATE_TIME
+                                                .isNotNull()
+                                                .andExp(CourseClass.START_DATE_TIME.gt(new Date()))
+                                )
+                )
+                .selectCount(cayenneService.newReadonlyContext)
     }
 
 }

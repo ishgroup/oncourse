@@ -30,8 +30,8 @@ import javax.annotation.Nonnull
 @QueueableEntity
 class MembershipProduct extends _MembershipProduct implements MembershipProductTrait {
 
-	public static final String SOLD_COUNT_KEY = "soldCount";
-	public static final String ACTIVE_MEMBERSHIPS_COUNT_KEY = "activeMembershipsCount";
+	public static final String SOLD_COUNT_KEY = "soldProductsCount";
+	public static final String ACTIVE_MEMBERSHIPS_COUNT_KEY = "totalActiveMembershipsCount";
 	private static final Logger logger = LogManager.getLogger()
 
 	@Override
@@ -63,20 +63,6 @@ class MembershipProduct extends _MembershipProduct implements MembershipProductT
 	@Override
 	List<DiscountMembership> getDiscountMemberships() {
 		return super.getDiscountMemberships()
-	}
-
-	/**
-	 * @return number of active product items
-	 */
-	Long getActiveMembershipsCount() {
-		return getTotalActiveMembershipsCount()
-	}
-
-	/**
-	 * @return number of sold product items
-	 */
-	Long getSoldCount() {
-		return getSoldProductsCount()
 	}
 
 	/**
