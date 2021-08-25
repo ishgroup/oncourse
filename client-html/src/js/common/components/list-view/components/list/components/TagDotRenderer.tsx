@@ -30,16 +30,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const getSortedArrayOfColors = (menuTags, colors, result) => {
+const getSortedArrayOfColors = (menuTags, colors, colorsLength, result) => {
   let i = 0;
-  while (i <= menuTags.length - 1) {
-    if (result.length >= 3) break;
+  while (i <= menuTags.length - 1 && colorsLength !== 0) {
+    if (result.length >= 3 || colorsLength === 0) break;
     if (colors.includes(menuTags[i].tagBody.id.toString())) {
       result.push(menuTags[i].tagBody.color);
+      --colorsLength;
+      if (result.length >= 3 || colorsLength === 0) break;
     }
 
     if (menuTags[i].children.length) {
-      getSortedArrayOfColors(menuTags[i].children, colors, result);
+      getSortedArrayOfColors(menuTags[i].children, colors, colorsLength, result);
     }
     ++i;
   }
@@ -50,7 +52,8 @@ const getSortedArrayOfColors = (menuTags, colors, result) => {
 const TagDotRenderer = ({ colors = [], dotsWrapperStyle, menuTags }) => {
   const classes = useStyles();
 
-  const getSortedColors = useCallback(() => getSortedArrayOfColors(menuTags, colors, []), [colors, menuTags]);
+  const colorsLength = colors.length > 3 ? 3 : colors.length;
+  const getSortedColors = useCallback(() => getSortedArrayOfColors(menuTags, colors, colorsLength, []), [colors, menuTags]);
 
   const sortedColors = useMemo(() => (colors && colors.length
     ? getSortedColors()
