@@ -16,6 +16,14 @@ import {
 import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "../../components/summary/CheckoutSummaryList";
 import CheckoutService from "../../services/CheckoutService";
 
+const createArrayOfIds = (value, length) => {
+  const result = [];
+  for (let i = 0; i < length; i++) {
+    result.push(value);
+  }
+  return result;
+};
+
 const request: EpicUtils.Request<any, boolean> = {
   type: CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS,
   getData: (forcePricesUpdate, state) => new Promise(async resolve => {
@@ -44,7 +52,7 @@ const request: EpicUtils.Request<any, boolean> = {
               classItem: i,
               courseIds: courseItems.map(item => item.courseId).toString(),
               productIds: l.items.filter(item => item.checked && item.type !== "course").map(item => item.id).toString(),
-              classIds: courseItems.map(item => item.class.id).toString(),
+              classIds: createArrayOfIds(courseItems.map(item => item.class.id), state.checkout.summary.list.length).toString(),
               listIndex,
               itemIndex,
               membershipIds: l.items.filter(i => i.type === "membership" && i.checked).map(i => i.id).join(",")
