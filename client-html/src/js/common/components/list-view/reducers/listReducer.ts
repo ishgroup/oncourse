@@ -62,6 +62,7 @@ class State implements ListState {
     search: null,
     layout: null,
     filterColumnWidth: 200,
+    tagsOrder: [],
     recordsLeft: LIST_PAGE_SIZE
   };
 

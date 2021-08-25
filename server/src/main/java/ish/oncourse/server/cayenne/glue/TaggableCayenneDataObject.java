@@ -63,6 +63,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 						.eq(TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName()).getDatabaseValue()))
 				.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
 				.select(this.getContext());
+
 	}
 
 	/**

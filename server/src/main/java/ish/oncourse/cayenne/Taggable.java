@@ -27,4 +27,5 @@ public interface Taggable {
 	Long getId();
 	List<? extends Tag> getTags();
 	List<Long> getTagIds();
+
 }
