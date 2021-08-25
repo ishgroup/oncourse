@@ -64,8 +64,9 @@ const styles = theme => createStyles({
       minWidth: theme.spacing(1),
       height: theme.spacing(1),
       minHeight: theme.spacing(1),
-      borderRadius: "100%"
-    }
+      borderRadius: "100%",
+      marginLeft: -theme.spacing(1.5),
+    },
   });
 
 interface Props extends TreeItemProps {

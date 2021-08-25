@@ -65,6 +65,8 @@ export const SET_LIST_MENU_TAGS = "set/listView/menuTags";
 
 export const SET_LIST_EDIT_RECORD = "set/listView/editRecord";
 
+export const UPDATE_TAGS_ORDER = "set/listView/tagsOrder";
+
 export const SET_LIST_CREATING_NEW = "set/listView/creatingNew";
 
 export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
@@ -153,6 +155,11 @@ export const clearListState = () => ({
 
 export const setListEditRecordFetching = () => ({
   type: SET_LIST_EDIT_RECORD_FETCHING
+});
+
+export const updateTagsOrder = (tagsOrder: number[]) => ({
+  type: UPDATE_TAGS_ORDER,
+  payload: tagsOrder,
 });
 
 export const updateTableModel = (entity: string, model: TableModel, listUpdate?: boolean) => ({

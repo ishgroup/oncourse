@@ -51,7 +51,7 @@ import {
   setListUserAQLSearch,
   setSearch,
   setShowColoredDots,
-  updateTableModel
+  updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
 import {

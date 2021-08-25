@@ -78,27 +78,10 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
 
     const tagsOrder = tagsForRender.map(tag => tag.tagBody.id);
 
-    updateTableModel({ tagsOrder });
+    updateTableModel({ tagsOrder }, true);
   };
 
   return (
-//     <div>
-//       {tags.map(t => {
-//         if (!t.children.length) {
-//           return null;
-//         }
-//         return (
-//           <ListTagGroup
-//             key={t.prefix + t.tagBody.id.toString()}
-//             rootTag={t}
-//             classes={classes}
-//             updateActive={updateActive}
-//             showColoredDots={showColoredDots}
-//           />
-//         );
-//       })}
-//     </div>
-
     <DragDropContext
       onDragEnd={args => onDragEnd(args)}
     >

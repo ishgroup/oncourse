@@ -57,6 +57,21 @@ const ColumnChooserOverlay = props => {
     columns, target, visible, onHide, classes, setShowColoredDots
   } = props;
 
+  let sortedColumns = [];
+  const tagsColumn = columns.filter(column => column.id === COLUMN_WITH_COLORS);
+  if (tagsColumn.length) {
+    if (columns[0].id === "seletion") {
+      sortedColumns.push(columns[0]);
+      sortedColumns.push(tagsColumn[0]);
+      sortedColumns = sortedColumns.concat(columns.filter(column => column.id !== COLUMN_WITH_COLORS && column.id !== "seletion"));
+    } else {
+      sortedColumns.push(tagsColumn[0]);
+      sortedColumns = sortedColumns.concat(columns.filter(column => column.id !== COLUMN_WITH_COLORS && column.id !== "seletion"));
+    }
+  }
+
+  const columnsForRender = sortedColumns.length ? sortedColumns : columns;
+
   return (
     <Popover
       open={visible}
@@ -68,7 +83,7 @@ const ColumnChooserOverlay = props => {
       }}
     >
       <List>
-        {columns.map(column => (column.id !== "selection" && column.id !== "chooser" ? (
+        {columnsForRender.map(column => (column.id !== "selection" && column.id !== "chooser" ? (
           <ColumnChooserItem
             key={column.id}
             column={column}
