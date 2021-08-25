@@ -6,15 +6,19 @@ package ish.oncourse.server.scripting
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.TestSchedulerService
 import ish.scripting.ScriptResult
+import ish.util.TimeZoneUtil
 import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.query.SelectById
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.quartz.JobDetail
+import org.quartz.Trigger
+import org.quartz.impl.triggers.CronTriggerImpl
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/scripting/groovyScriptServiceTestDataSet.xml")
@@ -124,5 +128,33 @@ class GroovyScriptServiceTest extends TestWithDatabase {
 
         Assertions.assertEquals("script1", testJob.getKey().getName())
         Assertions.assertEquals(ISchedulerService.CUSTOM_SCRIPT_JOBS_GROUP_ID, testJob.getKey().getGroup())
+    }
+
+    @Test
+    void testCronTrigger() throws Exception {
+        PreferenceController preferenceController = (PreferenceController) injector.getInstance(PreferenceController.class)
+        preferenceController.setOncourseServerDefaultTimezone('Europe/Minsk')
+
+        GroovyScriptService scriptService = injector.getInstance(GroovyScriptService.class)
+        Script script1 = SelectById.query(Script.class, 3).selectOne(cayenneContext)
+
+        scriptService.scriptAdded(script1, '0 0 7 1/1 * ? *')
+        TestSchedulerService schedulerService = (TestSchedulerService) injector.getInstance(ISchedulerService.class)
+        Assertions.assertEquals(1,  schedulerService.jobs.size())
+
+        JobDetail detail = schedulerService.jobs.get(0)
+        Trigger trigger = schedulerService.getTrigger(detail)
+        Assertions.assertTrue(trigger instanceof CronTriggerImpl)
+
+        Assertions.assertEquals('Europe/Minsk', (trigger as CronTriggerImpl).timeZone.ID)
+
+
+        preferenceController.setOncourseServerDefaultTimezone(null)
+        scriptService.scriptAdded(script1, '0 0 7 1/1 * ? *')
+        detail = schedulerService.jobs.get(0)
+        trigger = schedulerService.getTrigger(detail)
+        Assertions.assertEquals(TimeZoneUtil.DEFAULT_SERVER_TIME_ZONE, (trigger as CronTriggerImpl).timeZone.ID)
+
+
     }
 }
