@@ -25,3 +25,4 @@ enum:
 - courseclass_default_maximumPlaces
 - courseclass_default_minimumPlaces
 - listview.main.content.width
+- oncourse.server.timezone.default
