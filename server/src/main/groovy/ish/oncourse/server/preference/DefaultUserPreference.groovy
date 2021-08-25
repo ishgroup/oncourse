@@ -130,7 +130,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Code', attribute: Module.NATIONAL_CODE.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Title', attribute: Module.TITLE.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Is offered', attribute: Module.IS_OFFERED.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
-                new ColumnDTO(title: 'Credit points', attribute: Module.CREDIT_POINTS.name, sortable: true, width: W100, visible: false, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Credit points', attribute: Module.CREDIT_POINTS.name, sortable: true, width: W100, visible: false),
                 new ColumnDTO(title: 'Expiry days', attribute: Module.EXPIRY_DAYS.name, sortable: true, width: W100, visible: false),
         ]
         it.sortings = [
@@ -155,7 +155,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Shown on web', attribute: Site.IS_SHOWN_ON_WEB.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Is virtual', attribute: Site.IS_VIRTUAL.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Active classes', attribute: Site.ACTIVE_CLASSES_COUNT_KEY, sortable: false, width: W200, visible: false, prefetches: [Site.ROOMS.path().toString()]),
-                new ColumnDTO(title: 'Future classes', attribute: Site.FUTURE_CLASSES_COUNT_KEY, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: 'Future classes', attribute: Site.FUTURE_CLASSES_COUNT_KEY, sortable: false, width: W200, visible: false, prefetches: [Site.ROOMS.path().toString()]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Site.NAME.name, ascending: true)
@@ -282,7 +282,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Type', attribute: Payslip.PAY_TYPE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Pay type', attribute: Payslip.CONTACT.dot(Contact.TUTOR).dot(Tutor.PAY_TYPE).name, sortable: false, width: W200, visible: false, prefetches: [Payslip.CONTACT.dot(Contact.TUTOR).path().toString()]),
                 new ColumnDTO(title: 'Budget total', attribute: Payslip.BUDGET_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()]),
-                new ColumnDTO(title: 'Paid total', attribute: Payslip.PAID_TOTAL_KEY, sortable: false, width: W100, visible: false),
+                new ColumnDTO(title: 'Paid total', attribute: Payslip.PAID_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()]),
         ]
         it.sortings = [
             new SortingDTO(attribute: Payslip.CREATED_ON.name, ascending: true)
@@ -495,7 +495,8 @@ class DefaultUserPreference {
                         attribute: Course.DATA_COLLECTION_RULE_KEY,
                         sortable: false,
                         width: W200,
-                        visible: false),
+                        visible: false,
+                        prefetches: [Course.FIELD_CONFIGURATION_SCHEMA.path().toString()]),
                 new ColumnDTO(title: 'Total classes',
                         attribute: Course.TOTAL_CLASS_COUNT_PROPERTY,
                         sortable: false,
@@ -704,7 +705,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Code', attribute: Assessment.CODE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Assessment.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Active', attribute: Assessment.ACTIVE.name, sortable: true, width: W200, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
-                new ColumnDTO(title: 'Grading type', attribute: Assessment.GRADING_TYPE.dot(GradingType.TYPE_NAME).name, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: 'Grading type', attribute: Assessment.GRADING_TYPE.dot(GradingType.TYPE_NAME).name, sortable: false, width: W200, visible: false, prefetches: [Assessment.GRADING_TYPE.path().toString()]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Assessment.CODE.name, ascending: true)
@@ -739,7 +740,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Grade', attribute: AssessmentSubmission.GRADE.name, sortable: true, width: W200, visible: false),
-                new ColumnDTO(title: 'Assessor', attribute: AssessmentSubmission.MARKED_BY.dot(Contact.FULL_NAME_KEY).name, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: 'Assessor', attribute: AssessmentSubmission.MARKED_BY.dot(Contact.FULL_NAME_KEY).name, sortable: false, width: W200, visible: false, prefetches: [AssessmentSubmission.MARKED_BY.path().toString()]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: AssessmentSubmission.ENROLMENT.dot(Enrolment.ID).name, ascending: true)
