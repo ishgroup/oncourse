@@ -24,7 +24,7 @@ interface Props {
   dndKey: number;
 }
 
-const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey }) => {
+const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey, showColoredDots }) => {
   const [expanded, setExpanded] = useState([]);
 
   const customStyles = useStyles();
@@ -114,6 +114,7 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey 
                       item={c}
                       key={key}
                       toggleActive={toggleActive}
+                      showColoredDots={showColoredDots}
                     />
                   );
                 })}

@@ -29,7 +29,7 @@ interface Props {
   updateTableModel: (model: TableModel, listUpdate?: boolean) => void;
 }
 
-const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, updateTableModel, records }) => {
+const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, updateTableModel, showColoredDots, records }) => {
   const [tagsForRender, setTagsForRender] = useState([]);
 
   useEffect(() => {
@@ -108,20 +108,21 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {tagsForRender.map((t, index) => (
+            {tagsForRender.map((t, index) => {
               if (!t.children.length) {
                 return null;
               }
-              return
-              <ListTagGroup
-                key={t.prefix + t.tagBody.id.toString()}
-                dndKey={index}
-                rootTag={t}
-                classes={classes}
-                updateActive={updateActive}
-                showColoredDots={showColoredDots}
-              />
-            ))}
+              return (
+                <ListTagGroup
+                  key={t.prefix + t.tagBody.id.toString()}
+                  dndKey={index}
+                  rootTag={t}
+                  classes={classes}
+                  updateActive={updateActive}
+                  showColoredDots={showColoredDots}
+                />
+              );
+            })}
           </div>
         )}
       </Droppable>
