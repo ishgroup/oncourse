@@ -44,10 +44,21 @@ databaseChangeLog:
           "class": "ish.oncourse.server.upgrades.liquibase.change.PopulateQuoteNumber"
         }
   - changeSet:
-      id: 95-2
+      id: 95-1
       author: kristina
       comment: fixes duplicate sortOrder indexes
       changes:
         - customChange: {
-          "class": "ish.oncourse.server.upgrades.liquibase.change.CheckInccorectSetOrder"
+          "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateDuplicateSortOrders"
         }
+  - changeSet:
+        id: 95-2
+        author: kristina
+        changes:
+          addNotNullConstraint:
+            columnDataType: BIGINT
+            columnName: sortOrder
+            tableName: CustomFieldType
+          addUniqueConstraint:
+            columnNames: sortOrder
+            tableName: CustomFieldType
