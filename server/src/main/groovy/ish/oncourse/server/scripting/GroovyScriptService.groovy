@@ -295,7 +295,7 @@ class GroovyScriptService {
                 def aTrigger = TriggerBuilder.newTrigger()
                         .withIdentity(script.getName() + ISchedulerService.TRIGGER_POSTFIX, ISchedulerService.CUSTOM_SCRIPT_JOBS_GROUP_ID)
                         .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
-                                .inTimeZone(TimeZoneUtil.getTimeZone(getServerDefaultTimeZone())))
+                                .inTimeZone(getServerDefaultTimeZone()))
                         .build()
 
                 schedulerService.scheduleJob(aJob, aTrigger)
@@ -307,11 +307,11 @@ class GroovyScriptService {
         }
     }
 
-    private String getServerDefaultTimeZone() {
+    private TimeZone getServerDefaultTimeZone() {
         Preference preference = ObjectSelect.query(Preference.class)
                 .where(Preference.NAME.eq(Preferences.ONCOURSE_SERVER_DEFAULT_TZ))
                 .selectFirst(cayenneService.newContext)
-        return preference ? preference.value : null
+        return TimeZoneUtil.getTimeZone(preference?.valueString)
     }
 
     void scriptAdded(Script script, String saveCronExp) {
