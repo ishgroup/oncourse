@@ -90,6 +90,8 @@ export const DEFAULT_MINIMUM_PLACES_KEY: PreferenceEnum = "courseclass_default_m
 
 export const LISTVIEW_MAIN_CONTENT_WIDTH: PreferenceEnum = "listview.main.content.width";
 
+export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default";
+
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
 // extending String with capitalize method
