@@ -14,8 +14,6 @@ import ish.oncourse.API;
 import org.apache.cayenne.ExtendedEnumeration;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 
 @API
 public enum TaggableClasses implements Serializable, ExtendedEnumeration {
@@ -67,6 +65,4 @@ public enum TaggableClasses implements Serializable, ExtendedEnumeration {
 		return this.persistentValue;
 	}
 
-	public static final List<TaggableClasses> ACTUAL_TAGGABLE_CLASSES = Arrays.asList(COURSE, COURSE_CLASS,
-			STUDENT, TUTOR, CONTACT, SITE, ROOM, DOCUMENT, APPLICATION, ENROLMENT, PAYSLIP, WAITING_LIST);
 }

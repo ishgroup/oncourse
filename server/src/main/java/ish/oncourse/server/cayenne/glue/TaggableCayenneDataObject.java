@@ -15,9 +15,11 @@ import com.google.inject.Inject;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.entity.services.TagService;
+import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.TagRelation;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
 import java.util.ArrayList;
@@ -48,6 +50,19 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 			return null;
 		}
 		return Cayenne.longPKForObject(this);
+	}
+
+	/**
+	 * Get firts 3   related tags colors.
+	 *
+	 * @return List of colors
+	 */
+	public List<String> getColors() {
+		return ObjectSelect.columnQuery(Tag.class, Tag.COLOUR)
+				.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
+						.eq(TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName()).getDatabaseValue()))
+				.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
+				.limit(3).select(this.getContext());
 	}
 
 	/**
