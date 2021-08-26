@@ -77,6 +77,7 @@ interface Props {
   items: string[];
   activeStep: number;
   classes?: any;
+  completed?: boolean;
 }
 
 const TabsList = React.memo<Props>((
@@ -84,6 +85,7 @@ const TabsList = React.memo<Props>((
     classes,
     items,
     activeStep,
+    completed,
   }) => {
 
   const isChristmas = localStorage.getItem("theme") === "christmas";
@@ -95,37 +97,37 @@ const TabsList = React.memo<Props>((
         localStorage.getItem("theme") === "christmas" && "christmasHeader")}
       >
         {isChristmas ? (
-            <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
+          <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
         ) : (
-            <img
-                src={onCourseLogoDark}
-                className={classes.logo}
-                alt="Logo"
-            />
+          <img
+            src={onCourseLogoDark}
+            className={classes.logo}
+            alt="Logo"
+          />
         )}
         <div className={classes.listContainerInner}>
           <Stepper
-              activeStep={activeStep}
-              orientation="vertical"
-              connector={<></>}
-              classes={{
-                root: classes.stepperRoot,
-              }}
+            activeStep={completed ? items.length : activeStep}
+            orientation="vertical"
+            connector={<></>}
+            classes={{
+              root: classes.stepperRoot,
+            }}
           >
             {items.map((label, index) => (
               <Step
-                  key={label}
-                  classes={{
-                    root: classes.stepRoot,
-                    completed: classes.stepCompleted,
-                  }}
+                key={label}
+                classes={{
+                  root: classes.stepRoot,
+                  completed: classes.stepCompleted,
+                }}
               >
                 <StepLabel
-                    classes={{
-                      disabled: classes.stepLabelDisabled,
-                      iconContainer: classes.stepLabelIconContainer,
-                      completed: classes.stepLabelCompleted,
-                    }}
+                  classes={{
+                    disabled: classes.stepLabelDisabled,
+                    iconContainer: classes.stepLabelIconContainer,
+                    completed: classes.stepLabelCompleted,
+                  }}
                 >
                   {label}
                 </StepLabel>

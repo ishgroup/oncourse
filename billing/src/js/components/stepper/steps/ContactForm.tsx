@@ -18,6 +18,9 @@ import Navigation from '../Navigations';
 import { phoneRegExp } from '../../../constant/common';
 import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -25,6 +28,23 @@ const useStyles = makeStyles((theme: any) => ({
   },
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color
+  },
+  subTitle: {
+    marginBottom: 30,
+  },
+  info: {
+    position: "absolute",
+    bottom: -70,
+    padding: 5,
+    backgroundColor: "#fff",
+    left: 0,
+    right: 0,
+    maxWidth: "90%",
+    margin: "0 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 12
   },
 }));
 
@@ -80,57 +100,76 @@ const ContactForm = (props: any) => {
 
   return (
     <form>
-      <h2 className={classes.coloredHeaderText}>Your contact details</h2>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="First Name"
-          label="First Name"
-          id="userFirstName"
-          autoFocus
-          onChange={handleChange}
-          value={values.userFirstName}
-          error={touched.userFirstName && errors.userFirstName}
-          helperText={errors.userFirstName}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Last Name"
-          label="Last Name"
-          id="userLastName"
-          onChange={handleChange}
-          value={values.userLastName}
-          error={touched.userLastName && errors.userLastName}
-          helperText={errors.userLastName}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Phone"
-          label="Phone"
-          id="userPhone"
-          onChange={handleChange}
-          value={values.userPhone}
-          error={touched.userPhone && errors.userPhone}
-          helperText={errors.userPhone}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Email"
-          label="Email"
-          id="userEmail"
-          onChange={handleChange}
-          value={values.userEmail}
-          error={touched.userEmail && errors.userEmail}
-          helperText={errors.userEmail}
-          onBlur={handleBlur}
-        />
-      </div>
-      {/* { console.log(222, "dirty", dirty) } */}
+      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom={true}>
+        Enter your contact details
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom={true} className={classes.subTitle}>
+        Tell us a bit about yourself
+      </Typography>
+      <Grid container spacing={5}>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="First Name"
+              label="First Name"
+              id="userFirstName"
+              autoFocus
+              onChange={handleChange}
+              value={values.userFirstName}
+              error={touched.userFirstName && errors.userFirstName}
+              helperText={errors.userFirstName}
+              onBlur={handleBlur}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="Last Name"
+              label="Last Name"
+              id="userLastName"
+              onChange={handleChange}
+              value={values.userLastName}
+              error={touched.userLastName && errors.userLastName}
+              helperText={errors.userLastName}
+              onBlur={handleBlur}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="Phone"
+              label="Phone"
+              id="userPhone"
+              onChange={handleChange}
+              value={values.userPhone}
+              error={touched.userPhone && errors.userPhone}
+              helperText={errors.userPhone}
+              onBlur={handleBlur}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="Email"
+              label="Email"
+              id="userEmail"
+              onChange={handleChange}
+              value={values.userEmail}
+              error={touched.userEmail && errors.userEmail}
+              helperText={errors.userEmail}
+              onBlur={handleBlur}
+            />
+          </div>
+        </Grid>
+      </Grid>
+
+      <Typography className={classes.info} component="div">
+        <ErrorOutlineIcon fontSize="small" color="primary" />&nbsp;&nbsp;Don't worry, ish won't share your details or spam you. These details help us personalise your site.
+      </Typography>
+
       <Navigation
         activeStep={activeStep}
         steps={steps}

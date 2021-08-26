@@ -9,6 +9,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import clsx from "clsx";
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import LeftMenu from '../common/LeftMenu';
@@ -46,13 +47,11 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
     backgroundPosition: "0 0",
     backgroundSize: 18,
     padding: "48px 48px 130px",
-    "& > $formItem": {
-      backgroundColor: "#fff",
-      padding: "48px 48px 8px",
-    }
   },
   formItem: {
-    position: "relative"
+    position: "relative",
+    backgroundColor: "#fff",
+    padding: "48px 48px 8px",
   },
   formStep: {
     color: "#888",
@@ -60,7 +59,6 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   formWrapper: {
     flex: 1,
     display: 'flex',
-    // justifyContent: 'center',
     alignItems: 'center',
     padding: '0px 20px 0px 20px'
   },
@@ -74,6 +72,27 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color,
   },
+  hasError: {
+    padding: theme.spacing(6),
+    "& $formItem": {
+      padding: theme.spacing(6),
+      backgroundColor: theme.palette.error.main,
+      color: theme.palette.error.contrastText,
+      borderRadius: 4,
+    }
+  },
+  stepsCompleted: {
+    padding: theme.spacing(6),
+    "& $formItem": {
+      padding: theme.spacing(6),
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.error.contrastText,
+      borderRadius: 4,
+      "& $formStep": {
+        color: theme.palette.error.contrastText,
+      }
+    }
+  }
 }));
 
 const getComponent = (type: Step, props: any) => {
@@ -153,18 +172,26 @@ const Stepper: React.FC<Props> = (
   };
 
   const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep, steps]);
+  const completed = activeStep === steps.length - 1;
 
   return (
     <div className={classes.root}>
       <LeftMenu
         items={steps}
         activeStep={activeStep}
+        completed={completed}
       />
 
       <div className={classes.formWrapper}>
-        {serverError ? <ErrorPage /> : (
-          <div className={classes.content}>
-            <div className={classes.contentInner}>
+        <div className={classes.content}>
+          {serverError ? (
+            <div className={clsx(classes.contentInner, classes.hasError)}>
+              <div className={classes.formItem}>
+                <ErrorPage />
+              </div>
+            </div>
+          ) : (
+            <div className={clsx(classes.contentInner, completed && classes.stepsCompleted)}>
               <div className={classes.formItem}>
                 <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
                   Step&nbsp;{activeStep + 1}
@@ -172,8 +199,8 @@ const Stepper: React.FC<Props> = (
                 {activePage}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
