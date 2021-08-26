@@ -6,7 +6,7 @@ package ish.oncourse.usi;
 import au.gov.abr.akm.credential.store.ABRCredential;
 import au.gov.abr.akm.credential.store.ABRKeyStore;
 import au.gov.abr.akm.credential.store.ABRProperties;
-import au.gov.usi._2018.ws.servicepolicy.IUSIService;
+import au.gov.usi._2020.ws.servicepolicy.IUSIService;
 import com.sun.xml.ws.api.security.trust.client.STSIssuedTokenConfiguration;
 import com.sun.xml.ws.client.BindingProviderProperties;
 import com.sun.xml.ws.security.trust.GenericToken;
@@ -93,7 +93,7 @@ public class USIServiceBuilder {
 
     private IUSIService getEndpoint() throws XMLStreamException, XWSSecurityException {
 
-        au.gov.usi._2018.ws.servicepolicy.USIService service = new au.gov.usi._2018.ws.servicepolicy.USIService();
+        au.gov.usi._2020.ws.servicepolicy.USIService service = new au.gov.usi._2020.ws.servicepolicy.USIService();
         DefaultSTSIssuedTokenConfiguration config = new DefaultSTSIssuedTokenConfiguration();
         otherOptions = config.getOtherOptions();
         config.setSignatureAlgorithm("SHA256withRSA");

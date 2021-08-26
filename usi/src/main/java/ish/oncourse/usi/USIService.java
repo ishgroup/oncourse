@@ -3,9 +3,9 @@
  */
 package ish.oncourse.usi;
 
-import au.gov.usi._2018.ws.*;
-import au.gov.usi._2018.ws.LocateUSIType;
-import au.gov.usi._2018.ws.servicepolicy.IUSIService;
+import au.gov.usi._2020.ws.*;
+import au.gov.usi._2020.ws.LocateUSIType;
+import au.gov.usi._2020.ws.servicepolicy.IUSIService;
 import com.sun.xml.ws.api.security.trust.client.STSIssuedTokenConfiguration;
 import com.sun.xml.ws.security.trust.GenericToken;
 import com.sun.xml.wss.XWSSecurityException;
