@@ -112,8 +112,8 @@ const Initial: Invoice = {
 const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Invoice and entityId" },
   { title: "Contacts", list: "contact", expression: "invoices.id" },
-  { title: "Enrolments", list: "enrolment", expression: "invoiceLines.invoice.id" },
-  { title: "Classes", list: "class", expression: "enrolments.invoiceLines.invoice.id" },
+  { title: "Enrolments", list: "enrolment", expression: "abstractInvoiceLines.abstractInvoice.id " },
+  { title: "Classes", list: "class", expression: "enrolments.abstractInvoiceLines.abstractInvoice.id" },
   { title: "Payment In", list: "paymentIn", expression: "paymentInLines.invoice.id" },
   { title: "Payment Out", list: "paymentOut", expression: "paymentOutLines.invoice.id" },
   { title: "Transactions", list: "transaction", expression: "invoice.id" },

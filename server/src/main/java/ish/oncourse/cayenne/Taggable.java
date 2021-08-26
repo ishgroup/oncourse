@@ -22,7 +22,10 @@ import java.util.List;
 public interface Taggable {
 
 	String TAGGING_RELATIONS_PROPERTY = "taggingRelations";
+	String TAG_IDS = "tagIds";
 
 	Long getId();
 	List<? extends Tag> getTags();
+	List<Long> getTagIds();
+
 }

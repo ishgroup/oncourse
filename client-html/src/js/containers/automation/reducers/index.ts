@@ -12,7 +12,7 @@ import {
 } from "../actions";
 import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
 import { CommonListItem } from "../../../model/common/sidebar";
-import { GET_SCRIPTS_LIST_FULFILLED } from "../containers/scripts/actions";
+import { GET_SCRIPTS_LIST_FULFILLED, GET_TIMEZONE_FULFILLED } from "../containers/scripts/actions";
 import { GET_EXPORT_TEMPLATES_LIST_FULFILLED } from "../containers/export-templates/actions";
 import { GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED } from "../containers/pdf-reports/actions";
 import { GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED } from "../containers/pdf-backgrounds/actions";
@@ -42,6 +42,7 @@ export interface AutomationState {
   importTemplate: {
     importTemplates: CommonListItem[];
   };
+  timeZone: string;
 }
 
 const Initial: AutomationState = {
@@ -66,7 +67,8 @@ const Initial: AutomationState = {
   },
   importTemplate: {
     importTemplates: []
-  }
+  },
+  timeZone: null,
 };
 
 export const automationReducer = (state: AutomationState = Initial, action: IAction<any>): any => {
@@ -165,7 +167,14 @@ export const automationReducer = (state: AutomationState = Initial, action: IAct
         }
       };
     }
-
+    
+    case GET_TIMEZONE_FULFILLED: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+    
     default:
       return state;
   }

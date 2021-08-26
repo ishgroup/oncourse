@@ -333,4 +333,9 @@ class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait {
 		}
 		return tagList
 	}
+
+	@Override
+	List<Long> getTagIds() {
+		return contact.tagIds
+	}
 }

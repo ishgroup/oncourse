@@ -16,7 +16,7 @@ const entities = [...AQL_ENTITY_ITEMS, { label: "ContactTagRelation", value: "Co
 
 const TriggerCardContent = props => {
   const {
-    TriggerTypeItems, ScheduleTypeItems, enableEntityNameField, values, isInternal, dispatch, form
+    TriggerTypeItems, ScheduleTypeItems, enableEntityNameField, values, isInternal, dispatch, form, timeZone
   } = props;
 
   const isScheduleOrOnDemand = useMemo(() => Boolean(
@@ -80,7 +80,7 @@ const TriggerCardContent = props => {
           <FormField
             type="select"
             name="trigger.cron.scheduleType"
-            label="Schedule type"
+            label={`Schedule type ${(timeZone ? '(' + timeZone + ' time)' : '' )}`}
             items={ScheduleTypeItems}
             required
             className="pl-2"

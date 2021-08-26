@@ -8,6 +8,9 @@ import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionU
 import { ScriptComponent, ScriptViewMode } from "../../../../../model/scripts";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 
+export const GET_TIMEZONE = _toRequestType("get/timeZone");
+export const GET_TIMEZONE_FULFILLED = FULFILLED(GET_TIMEZONE);
+
 export const GET_SCRIPTS_LIST = _toRequestType("get/scripts/list");
 export const GET_SCRIPTS_LIST_FULFILLED = FULFILLED(GET_SCRIPTS_LIST);
 
@@ -79,4 +82,8 @@ export const deleteScriptItem = (id: number) => ({
 export const setScriptComponents = (components: ScriptComponent[]) => ({
   type: SET_SCRIPT_COMPONENTS,
   payload: { components }
+});
+
+export const getTimeZone = () => ({
+  type: GET_TIMEZONE
 });

@@ -14,10 +14,7 @@ package ish.oncourse.aql.model.attribute;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.CourseClass;
-import ish.oncourse.server.cayenne.Enrolment;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.InvoiceLine;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
@@ -33,7 +30,7 @@ public class CourseClassesInvoice implements SyntheticAttributeDescriptor {
 
     @Override
     public Class<? extends Persistent> getEntityType() {
-        return Invoice.class;
+        return AbstractInvoice.class;
     }
 
     @Override
@@ -49,11 +46,11 @@ public class CourseClassesInvoice implements SyntheticAttributeDescriptor {
     @Override
     public SimpleNode spawnNode() {
         return new SyntheticCompoundNodeTemplate(getAttributeName(),
-                Invoice.INVOICE_LINES.outer()
+                AbstractInvoice.INVOICE_LINES.outer()
                         .dot(InvoiceLine.ENROLMENT).outer()
                         .dot(Enrolment.COURSE_CLASS).outer()
                         .getExpression(),
-                Invoice.INVOICE_LINES.outer()
+                AbstractInvoice.INVOICE_LINES.outer()
                         .dot(InvoiceLine.COURSE_CLASS).outer()
                         .getExpression());
     }

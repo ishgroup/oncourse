@@ -81,7 +81,7 @@ const SideBar: React.FC<Props> = props => {
 
         {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} />}
 
-        <ListTagGroups onChangeTagGroups={onChangeFilters} />
+        <ListTagGroups onChangeTagGroups={onChangeFilters} rootEntity={rootEntity} />
       </nav>
     </div>
   );
