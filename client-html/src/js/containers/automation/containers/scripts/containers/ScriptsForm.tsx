@@ -138,6 +138,7 @@ interface Props {
   onDelete?: any;
   formsState?: any;
   emailTemplates?: CommonListItem[];
+  timeZone?: string;
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType) => {
@@ -182,7 +183,8 @@ const ScriptsForm = React.memo<Props>(props => {
     emailTemplates,
     history,
     nextLocation,
-    setNextLocation
+    setNextLocation,
+    timeZone
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -414,6 +416,7 @@ const ScriptsForm = React.memo<Props>(props => {
                       enableEntityNameField={enableEntityNameField}
                       values={values}
                       isInternal={isInternal}
+                      timeZone={timeZone}
                     />
                   </ScriptCard>
                 </div>

@@ -18,7 +18,7 @@ import { getColumnsWidth, updateColumnsWidth, getPreferencesByKeys } from "../pr
 import SideBar from "./components/AutomationSideBar";
 import AutomatiomAppFrame from "./components/AutomationAppFrame";
 import { getIntegrations } from "./actions";
-import { getScriptsList } from "./containers/scripts/actions";
+import { getScriptsList, getTimeZone } from "./containers/scripts/actions";
 import { getExportTemplatesList } from "./containers/export-templates/actions";
 import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
 import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
@@ -85,6 +85,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getImportTemplatesList());
     dispatch(getAutomationPdfReportsList());
     dispatch(getAutomationPdfBackgroundsList());
+    dispatch(getTimeZone());
   },
   updateColumnsWidth: (automationLeftColumnWidth: number) => {
     dispatch(updateColumnsWidth({ automationLeftColumnWidth }));
