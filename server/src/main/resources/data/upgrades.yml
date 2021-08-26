@@ -59,6 +59,3 @@ databaseChangeLog:
             columnDataType: BIGINT
             columnName: sortOrder
             tableName: CustomFieldType
-          addUniqueConstraint:
-            columnNames: sortOrder
-            tableName: CustomFieldType
