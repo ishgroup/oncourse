@@ -60,6 +60,7 @@ export interface ListState {
   editRecord: any;
   fetching: boolean;
   editRecordFetching: boolean;
+  showColoredDots: boolean;
   selection: string[];
   search?: string;
   // current filters state

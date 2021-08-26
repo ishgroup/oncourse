@@ -14,6 +14,7 @@ import TableCell from "@material-ui/core/TableCell";
 import debounce from "lodash.debounce";
 import Typography from "@material-ui/core/Typography";
 import { LIST_PAGE_SIZE } from "../../../../../../constants/Config";
+import { COLUMN_WITH_COLORS } from "../utils";
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
@@ -56,7 +57,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
             {row.original.primary}
           </Typography>
         </div>
-      ) : row.cells.map(cell => (
+      ) : row.cells.filter(cell => cell.column.id !== COLUMN_WITH_COLORS).map(cell => (
         <TableCell
           component="div"
           {...cell.getCellProps()}

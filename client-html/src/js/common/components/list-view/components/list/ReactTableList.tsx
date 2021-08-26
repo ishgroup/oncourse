@@ -28,12 +28,13 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Column, DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { getTableRows } from "./utils";
+import { COLUMN_WITH_COLORS, getTableRows } from "./utils";
 import { StyledCheckbox } from "../../../form/form-fields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
 import { StringKeyObject } from "../../../../../model/common/CommomObjects";
 import styles from "./styles";
+import TagDotRenderer from "./components/TagDotRenderer";
 
 const COLUMN_MIN_WIDTH = 55;
 
@@ -47,6 +48,8 @@ interface ListTableProps extends Partial<ListProps>{
   columns: any;
   data: any;
   sorting: any;
+  showColoredDots: boolean;
+  setShowColoredDots: (value: boolean) => void;
   onChangeColumns: (arg: StringKeyObject<any>, listUpdate?: boolean) => void;
   onChangeColumnsOrder: (arg: string[]) => void;
 }
@@ -64,13 +67,23 @@ const Table: React.FC<ListTableProps> = ({
   onRowDoubleClick,
   selection,
   getContainerNode,
-  onChangeColumnsOrder
+  onChangeColumnsOrder,
+  setShowColoredDots,
+  showColoredDots,
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
 
   const isMountedRef = useRef(false);
   const isResizingRef = useRef(false);
   const tableRef = useRef<any>();
+
+  useEffect(() => {
+    const tagsColumn = columns.find(column => column.id === COLUMN_WITH_COLORS);
+
+    if (tagsColumn && tagsColumn.visible && !showColoredDots) {
+      setShowColoredDots(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (tableRef.current) {
@@ -197,11 +210,17 @@ const Table: React.FC<ListTableProps> = ({
           id: "selection",
           disableResizing: true,
           Cell: ({ row, state }) => (
-            <StyledCheckbox
-              checked={row.isSelected}
-              className={classes.selectionCheckbox}
-              onClick={e => onRowCheckboxSelect(e, row.id, state)}
-            />
+            <>
+              <StyledCheckbox
+                checked={row.isSelected}
+                className={classes.selectionCheckbox}
+                onClick={e => onRowCheckboxSelect(e, row.id, state)}
+              />
+              <TagDotRenderer
+                colors={row.values[COLUMN_WITH_COLORS] && row.values[COLUMN_WITH_COLORS].replace("[", "").replace("]", "").split(", ")}
+                dotsWrapperStyle={classes.listDots}
+              />
+            </>
           )
         },
         ...columns,
@@ -320,7 +339,11 @@ const Table: React.FC<ListTableProps> = ({
       {headerGroups.map((headerGroup, groupIndex) => (
         <DragDropContext
           key={groupIndex}
-          onDragEnd={args => onColumnOrderChange({ ...args, fields: state.columnOrder, headers: headerGroup.headers })}
+          onDragEnd={args => onColumnOrderChange({
+            ...args,
+            fields: state.columnOrder,
+            headers: headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS)
+          })}
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
             {provided => (
@@ -330,7 +353,7 @@ const Table: React.FC<ListTableProps> = ({
                 className={classes.headerRow}
                 component="div"
               >
-                {headerGroup.headers.map((column, columnIndex) => {
+                {headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS).map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
                   return (
                     <TableCell
@@ -431,7 +454,7 @@ const Table: React.FC<ListTableProps> = ({
 
   return (
     <>
-      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} />}
+      {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
       <MaUTable
         {...getTableProps()}
         ref={tableRef}
@@ -457,11 +480,13 @@ export interface ListProps {
   customColumnFormats?: CustomColumnFormats;
   setRowClasses?: AnyArgFunction<string>;
   threeColumn?: boolean;
+  showColoredDots?: boolean;
   primaryColumn: string;
   secondaryColumn: string;
   primaryColumnCondition?: (tableRow: any) => any;
   secondaryColumnCondition?: (tableRow: any) => any;
   onRowDoubleClick?: (id: string) => void;
+  setShowColoredDots?: (id: boolean) => void;
   onSelectionChange?: any;
   selection?: string[];
   firstColumnName?: string;
@@ -486,8 +511,10 @@ const ListRoot = React.memo<ListProps>(({
   onSelectionChange,
   selection,
   firstColumnName,
+  setShowColoredDots,
   getContainerNode,
-  updateColumns
+  updateColumns,
+  showColoredDots,
 }) => {
   const columns = useMemo(
     () => {
@@ -574,6 +601,8 @@ const ListRoot = React.memo<ListProps>(({
         onSelectionChange={onSelectionChange}
         selection={selection}
         getContainerNode={getContainerNode}
+        setShowColoredDots={setShowColoredDots}
+        showColoredDots={showColoredDots}
       />
     )
     : null;

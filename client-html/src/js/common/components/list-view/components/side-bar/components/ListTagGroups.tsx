@@ -22,13 +22,14 @@ const styles = theme =>
 interface Props {
   tags: MenuTag[];
   classes: any;
+  showColoredDots: boolean;
   records: DataResponse;
   onChangeTagGroups: (tags: MenuTag[], type: string) => void;
   rootEntity: string;
   updateTableModel: (model: TableModel, listUpdate?: boolean) => void;
 }
 
-const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, updateTableModel, records }) => {
+const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, updateTableModel, showColoredDots, records }) => {
   const [tagsForRender, setTagsForRender] = useState([]);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
 
     setTagsForRender(filteredSortedTags.concat(filteredTags));
   }, [records, tags]);
-
+  
   const updateActive = useCallback(
     (updated: MenuTag) => {
       const updatedTags = tags.map(t => {
@@ -77,7 +78,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
 
     const tagsOrder = tagsForRender.map(tag => tag.tagBody.id);
 
-    updateTableModel({ tagsOrder });
+    updateTableModel({ tagsOrder }, true);
   };
 
   return (
@@ -90,15 +91,21 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {tagsForRender.map((t, index) => (
-              <ListTagGroup
-                key={t.prefix + t.tagBody.id.toString()}
-                dndKey={index}
-                rootTag={t}
-                classes={classes}
-                updateActive={updateActive}
-              />
-            ))}
+            {tagsForRender.map((t, index) => {
+              if (!t.children.length) {
+                return null;
+              }
+              return (
+                <ListTagGroup
+                  key={t.prefix + t.tagBody.id.toString()}
+                  dndKey={index}
+                  rootTag={t}
+                  classes={classes}
+                  updateActive={updateActive}
+                  showColoredDots={showColoredDots}
+                />
+              );
+            })}
           </div>
         )}
       </Droppable>
@@ -108,6 +115,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
 
 const mapStateToProps = (state: State) => ({
   tags: state.list.menuTags,
+  showColoredDots: state.list.showColoredDots,
   records: state.list.records,
 });
 
