@@ -7,10 +7,14 @@ import {
   AccordionDetails,
   AccordionSummary,
   Chip,
+  FormControl,
   Grid,
   IconButton,
+  Select,
   TextField,
-  Typography
+  Typography,
+  MenuItem,
+  InputLabel
 } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import { AddCircle, Delete, ExpandMore } from '@material-ui/icons';
@@ -125,6 +129,7 @@ const validationSchema = yup.object({
         return sites.filter((s) => (s.id ? s.key : `${collegeKey}-${s.key}`) === (context.parent.id ? value : `${collegeKey}-${value}`)).length === 1;
       })
       .matches(/^[0-9a-z-]+$/i, 'You can only use letters, numbers and "-"'),
+    primaryDomain: yup.string().nullable(),
     name: yup.mixed().required('Required').test(
       'uniqueName',
       'Name should be unique',
@@ -204,6 +209,21 @@ export const SitesPage: React.FC<any> = () => {
     setFieldValue(name, newValue, shouldValidte);
   };
 
+  const onSetPrimaryDomain = (domain, index) => {
+    setFieldValue(`sites[${index}].primaryDomain`, domain);
+  }
+
+  const onAddDomain = (site, index, params) => {
+    setFieldValue(`sites[${index}].domains`, [...site.domains, params.inputProps.value]);
+    if (!site.domains.length && !site.primaryDomain) onSetPrimaryDomain(params.inputProps.value, index);
+  }
+
+  const renderSelectItems = domains => domains.map(domain => (
+    <MenuItem key={domain} value={domain}>
+      {domain}
+    </MenuItem>
+  ))
+
   return (
     <div className={classes.container}>
       {sites
@@ -220,12 +240,13 @@ export const SitesPage: React.FC<any> = () => {
                       id: null,
                       key: null,
                       name: null,
+                      primaryDomain: null,
                       webSiteTemplate: null,
                       domains: []
                     },
                     ...values.sites
                   ],
-                  collegeKey
+                  collegeKey,
                 })}
                 >
                   <AddCircle className={classes.plusButton} />
@@ -285,7 +306,7 @@ export const SitesPage: React.FC<any> = () => {
                             error={Boolean(error.name)}
                             helperText={error.name}
                             variant="standard"
-                            label="Site name"
+                            label="Website page title prefix"
                             InputLabelProps={{ shrink: true }}
                             onClick={stopPropagation}
                             fullWidth
@@ -303,6 +324,7 @@ export const SitesPage: React.FC<any> = () => {
                                 value={initialMatchPattern ? site.key.replace(`${collegeKey}-`, '') : site.key}
                                 error={Boolean(error.key)}
                                 onChange={(e) => onKeyChange(e, index, isNew, initial, initialMatchPattern)}
+                                disabled={!isNew}
                               />
                             </Typography>
                             <Typography>.oncourse.cc</Typography>
@@ -310,22 +332,6 @@ export const SitesPage: React.FC<any> = () => {
                           {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
                         </Grid>
                         <Grid item xs={6} className={classes.pr}>
-                          {isNew && (
-                            <TemplateField
-                              label="Site template"
-                              name={`sites[${index}].webSiteTemplate`}
-                              onChange={(val) => setFieldValue(`sites[${index}].webSiteTemplate`, val)}
-                              value={site.webSiteTemplate}
-                              helperText={error.webSiteTemplate}
-                              error={Boolean(error.webSiteTemplate)}
-                              variant="standard"
-                              margin="normal"
-                              InputLabelProps={{ shrink: true }}
-                              fullWidth
-                            />
-                          )}
-                        </Grid>
-                        <Grid item xs={6}>
                           <Autocomplete
                             size="small"
                             options={[]}
@@ -347,9 +353,8 @@ export const SitesPage: React.FC<any> = () => {
                                       <Chip
                                         size="small"
                                         label="Add"
-                                        onClick={() => {
-                                          setFieldValue(`sites[${index}].domains`, [...site.domains, params.inputProps.value]);
-                                        }}
+                                        clickable
+                                        onClick={() => onAddDomain(site, index, params)}
                                       />
                                     )
                                     : null
@@ -359,6 +364,7 @@ export const SitesPage: React.FC<any> = () => {
                                 label="Site domains"
                                 margin="normal"
                                 InputLabelProps={{ shrink: true }}
+                                multiline
                               />
                             )}
                             onChange={(e, v) => setFieldValue(`sites[${index}].domains`, v)}
@@ -367,6 +373,34 @@ export const SitesPage: React.FC<any> = () => {
                             freeSolo
                           />
                         </Grid>
+                        <Grid item xs={6}>
+                          <FormControl fullWidth margin="normal">
+                            <InputLabel>Primary hostname</InputLabel>
+                            <Select
+                              autoWidth
+                              value={site.primaryDomain || ""}
+                              onChange={e => onSetPrimaryDomain(e.target.value, index)}
+                            >
+                              {renderSelectItems(site.domains)}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        {isNew && (
+                          <Grid item xs={6} className={classes.pr}>
+                            <TemplateField
+                              label="Site template"
+                              name={`sites[${index}].webSiteTemplate`}
+                              onChange={(val) => setFieldValue(`sites[${index}].webSiteTemplate`, val)}
+                              value={site.webSiteTemplate}
+                              helperText={error.webSiteTemplate}
+                              error={Boolean(error.webSiteTemplate)}
+                              variant="standard"
+                              margin="normal"
+                              InputLabelProps={{ shrink: true }}
+                              fullWidth
+                            />
+                          </Grid>
+                        )}
                       </Grid>
                     </AccordionDetails>
                   </Accordion>
