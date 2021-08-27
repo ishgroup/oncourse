@@ -15,7 +15,7 @@ const request: EpicUtils.Request = {
 
     if (payeeId) {
       return EntityService.getPlainRecords(
-        "Invoice",
+        "AbstractInvoice",
         "dateDue,invoiceNumber,amountOwing",
         `contact.id == ${payeeId} and amountOwing < 0`
       );

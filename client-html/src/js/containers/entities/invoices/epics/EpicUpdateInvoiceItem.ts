@@ -20,7 +20,7 @@ const request: EpicUtils.Request<any, { id: number; invoice: Invoice & { notes: 
   type: UPDATE_INVOICE_ITEM,
   getData: ({ id, invoice }) => {
     delete invoice.notes;
-    return updateEntityItemById("Invoice", id, invoice);
+    return updateEntityItemById("AbstractInvoice", id, invoice);
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [

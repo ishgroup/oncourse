@@ -323,7 +323,7 @@ export const processCheckoutCourseClassId = (
 };
 
 export const processCheckoutInvoiceId = (invoiceId, onSelectHandler, onChangeStep, dispatch) => {
-  EntityService.getPlainRecords("Invoice", "contact.id", `id is ${invoiceId}`)
+  EntityService.getPlainRecords("AbstractInvoice", "contact.id", `id is ${invoiceId}`)
     .then(res => EntityService.getPlainRecords("Contact", CHECKOUT_CONTACT_COLUMNS, `id is ${res.rows[0].values[0]}`))
     .then(res => {
       const contact = res.rows.map(getCustomColumnsMap(CHECKOUT_CONTACT_COLUMNS))[0] as CheckoutContact;
