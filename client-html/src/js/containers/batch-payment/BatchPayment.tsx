@@ -318,7 +318,7 @@ interface Props {
 
 const getContacts = (dispatch, setContactsLoading, onComplete?) => {
   EntityService.getPlainRecords(
-    "Invoice",
+    "AbstractInvoice",
     "contact.id,contact.firstName,contact.lastName,amountOwing,dateDue,contact.hasSavedCC,invoiceNumber",
     `overdue > 0`,
     null,

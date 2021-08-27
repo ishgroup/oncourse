@@ -100,7 +100,7 @@ const Initial: Invoice = {
     {
       amount: 0,
       date: null,
-      entityName: "Invoice",
+      entityName: "AbstractInvoice",
       id: null,
       successful: true,
       type: "Invoice office"
@@ -311,7 +311,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getAdministrationSites: () => dispatch(getAdministrationSites()),
-  getFilters: () => dispatch(getFilters("Invoice")),
+  getFilters: () => dispatch(getFilters("AbstractInvoice")),
   getDefaultTerms: () => {
     dispatch(getDefaultInvoiceTerms());
     dispatch(getAccountTransactionLockedDate());

@@ -23,7 +23,7 @@ export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
     case "Enrolment":
       return ["Enrolments", "Classes"];
 
-    case "Invoice":
+    case "AbstractInvoice":
       return ["Invoices"];
 
     case "Lead":
@@ -110,11 +110,11 @@ export const mapAvailableFrom = (entity: EntityName): EntityName[] => {
     case "Enrolment":
       return ["Enrolment", "CourseClass"];
 
-    case "Invoice":
-      return ["Invoice"];
+    case "AbstractInvoice":
+      return ["AbstractInvoice"];
 
     case "InvoiceLine":
-      return ["Invoice"];
+      return ["AbstractInvoice"];
 
     case "Lead":
       return ["Lead"];

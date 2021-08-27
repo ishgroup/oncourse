@@ -39,7 +39,7 @@ export const ENTITIES = stringLiterals(
   "Discount",
   "DiscountCourseClass",
   "Enrolment",
-  "Invoice",
+  "AbstractInvoice",
   "InvoiceLine",
   "Lead",
   "Membership",

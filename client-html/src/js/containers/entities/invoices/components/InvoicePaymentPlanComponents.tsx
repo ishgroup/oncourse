@@ -177,7 +177,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
   }, [field.id, fields, successfulPayments]);
 
   const lineOwing = useMemo(() => {
-    if (field.entityName === "Invoice") {
+    if (field.entityName === "AbstractInvoice") {
       return field.amount;
     }
 
