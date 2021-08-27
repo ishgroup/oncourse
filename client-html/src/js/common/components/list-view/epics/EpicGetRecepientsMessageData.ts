@@ -23,9 +23,9 @@ const request:
           tagGroups: []
         };
 
-        return MessageService.getRecipients(entityName, messageType, selectionSearch);
+        return MessageService.getRecipients(entityName === "AbstractInvoice" ? "Invoice" : entityName, messageType, selectionSearch);
       }
-      return MessageService.getRecipients(entityName, messageType, searchQuery);
+      return MessageService.getRecipients(entityName === "AbstractInvoice" ? "Invoice" : entityName, messageType, searchQuery);
     },
     processData: (r: Recipients, s, { selection, messageType }) => {
       const payload: MessageData = {
