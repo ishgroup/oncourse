@@ -222,7 +222,7 @@ export const EpicTriggerFundingInvoiceCalculate: Epic<any, any, State> = (action
                   {
                     amount: 0,
                     date: format(new Date(), YYYY_MM_DD_MINUSED),
-                    entityName: "AbstractInvoice",
+                    entityName: "Invoice",
                     id: uniqid() as any,
                     successful: true,
                     type: "Invoice office"

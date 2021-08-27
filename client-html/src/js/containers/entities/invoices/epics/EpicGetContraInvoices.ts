@@ -21,7 +21,7 @@ const request: EpicUtils.Request<any,  ContraInvoiceFormData> = {
     if (invoiceToContra) {
       savedInvoiceToContra = invoiceToContra;
       return EntityService.getPlainRecords(
-        "AbstractInvoice",
+        "Invoice",
         "dateDue,invoiceNumber,amountOwing",
         `contact.id == ${invoiceToContra.contactId} and amountOwing > 0`
       );

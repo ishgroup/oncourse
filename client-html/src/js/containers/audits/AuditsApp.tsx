@@ -58,7 +58,7 @@ const findRelatedGroup: any[] = [
     title: "Transactions", list: "transaction", expression: "id", entityIdentifier: "AccountTransaction"
   },
   {
-    title: "Invoices", list: "invoice", expression: "id", entityIdentifier: "AbstractInvoice"
+    title: "Invoices", list: "invoice", expression: "id", entityIdentifier: "Invoice"
   },
   {
     title: "Banking Deposits", list: "banking", expression: "id", entityIdentifier: "Banking"
