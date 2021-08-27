@@ -14,13 +14,16 @@ dependencies {
         exclude group:'org.mariadb.jdbc'
     })
     compile project(':common:common-bootique')
-    compile 'au.gov.abr.akm:abrakm:1.0.0'
+    compile 'au.gov.abr.akm:abrakm:2.3.0'
     compile 'au.gov.abr.akm:auskey-dep:1.1.0'
     compile 'au.gov.abr.akm:token-manager:1.0.0'
 
     compile 'au.gov.abr.akm:webservices-api:1.1.0'
     compile 'au.gov.abr.akm:webservices-extra:1.1.0'
     compile 'au.gov.abr.akm:webservices-rt:1.1.0'
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.69'
+    implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.69'
+    implementation group: 'org.bouncycastle', name: 'bcutil-jdk15on', version: '1.69'
 
     ws "org.apache.cxf:cxf-tools:3.3.5",
             "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:3.3.5",
