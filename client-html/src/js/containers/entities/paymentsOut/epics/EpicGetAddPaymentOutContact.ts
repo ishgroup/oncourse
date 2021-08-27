@@ -15,7 +15,7 @@ const request: EpicUtils.Request = {
   hideLoadIndicator: true,
   getData: invoiceId => {
     return EntityService.getPlainRecords(
-      "AbstractInvoice",
+      "Invoice",
       "contact.id,contact.lastName,contact.firstName",
       `id == ${invoiceId}`
     ).then(res => {

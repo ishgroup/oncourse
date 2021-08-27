@@ -58,7 +58,6 @@ export const getEntityItemById = (entity: string, id: number, method?: ApiMethod
       return AccountService.getAccount(id);
     }
 
-    case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.getInvoice(id);
     }
@@ -185,7 +184,6 @@ export const updateEntityItemById = (entity: string, id: number, item: any, meth
       return AccountService.updateAccount(id, item);
     }
 
-    case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.updateInvoice(id, preformatInvoice(item));
     }
