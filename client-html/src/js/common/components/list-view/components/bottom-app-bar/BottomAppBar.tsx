@@ -32,6 +32,7 @@ import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "..
 import { LSGetItem } from "../../../../utils/storage";
 
 const SendMessageEntities = [
+  "AbstractInvoice",
   "Invoice",
   "Application",
   "Contact",
@@ -46,7 +47,7 @@ const SendMessageEntities = [
 ];
 
 const EntitiesToMessageTemplateEntitiesMap = {
-  Invoice: ["Contact", "Invoice"],
+  Invoice: ["Contact", "Invoice", "AbstractInvoice"],
   Application: ["Contact", "Application"],
   Contact: ["Contact"],
   Enrolment: ["Contact", "Enrolment"],

@@ -175,7 +175,7 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     const paymentOut = getPaymentOutFromModel(record);
     dispatch(postPaymentOut(paymentOut));
     formProps.toogleFullScreenEditView();
-    dispatch(getRecords("Invoice"));
+    dispatch(getRecords("AbstractInvoice"));
   };
 
   const onClick = useCallback(e => {

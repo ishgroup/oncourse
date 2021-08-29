@@ -83,5 +83,5 @@ export const getInvoiceClosestPaymentDueDate = (invoice: Invoice) => {
 export const isInvoiceType = (id: string, records: any) => {
   const invoiceFromRecords = records && records.rows.length && records.rows.find(elem => elem.id === id);
 
-  return invoiceFromRecords && invoiceFromRecords.values[0] === "Invoice";
+  return invoiceFromRecords && invoiceFromRecords.values.includes("Invoice");
 };
