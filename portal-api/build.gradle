@@ -24,22 +24,13 @@ dependencies {
     implementation 'com.google.apis:google-api-services-drive:v3-rev197-1.25.0'
     implementation 'com.google.apis:google-api-services-calendar:v3-rev411-1.25.0'
     implementation 'com.google.apis:google-api-services-oauth2:v2-rev157-1.25.0'
-    
-    //microsoft OAuth
-    compile group: 'com.microsoft.azure', name: 'msal4j', version: '1.11.0'
 
-    //passwrd complexity
+    //microsoft OAuth
+    implementation group: 'com.microsoft.azure', name: 'msal4j', version: '1.11.0'
+
+    //password complexity
     implementation "com.nulab-inc:zxcvbn:1.4.1"
-    
+
     //argon2 crypto algorithm (password hashing)
     implementation "org.bouncycastle:bcprov-jdk15on:1.67"
 }
-
-task copyWebApp(type: Copy, dependsOn: ':portal-native:build') {
-    from('../portal-native/build/web') {
-        include '**/*.*'
-    }
-    into 'build/resources/main/static'
-}
-
-distZip.dependsOn(copyWebApp)
