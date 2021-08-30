@@ -9,7 +9,6 @@ describe("Virtual rendered AssessmentEditView", () => {
     render: (wrapper, initialValues) => {
       expect(wrapper.find("#code").text()).toContain(initialValues.code);
       expect(wrapper.find("#name").text()).toContain(initialValues.name);
-      expect(wrapper.find("#tags").text()).toContain(initialValues.tags[0].name);
       expect(wrapper.find('input[type="checkbox"]').props().checked).toEqual(initialValues.active);
       expect(wrapper.find("#description").text()).toContain(initialValues.description);
     }
