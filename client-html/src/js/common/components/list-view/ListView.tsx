@@ -140,6 +140,7 @@ interface Props extends Partial<ListState> {
   nestedEditFields?: { [key: string]: (props: any) => React.ReactNode };
   fetch?: Fetch;
   menuTags?: MenuTag[];
+  filterEntity?: EntityName;
   filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
   onSearch?: StringArgFunction;
@@ -1037,6 +1038,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       fullScreenEditView,
       searchQuery,
       getCustomBulkEditFields,
+      filterEntity
     } = this.props;
 
     const {
@@ -1062,6 +1064,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
                 onChangeFilters={this.onChangeFiltersWithDirtyCheck}
                 filterGroups={filterGroups}
                 rootEntity={rootEntity}
+                filterEntity={filterEntity}
                 deleteFilter={this.onDeleteFilterWithDirtyCheck}
               />
             </ThemeProvider>
