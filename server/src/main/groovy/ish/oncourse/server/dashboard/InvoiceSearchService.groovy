@@ -13,13 +13,14 @@ package ish.oncourse.server.dashboard
 
 import ish.common.types.KeyCode
 import ish.oncourse.server.api.v1.model.SearchItemDTO
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Invoice
 
 class InvoiceSearchService extends EntitySearchService<Invoice> {
 
     @Override
-    Class<Invoice> getEntityClass() {
-        Invoice
+    Class<AbstractInvoice> getEntityClass() {
+        AbstractInvoice
     }
 
     @Override
