@@ -38,6 +38,6 @@ gradle-app.setting
 **/application.properties
 /portal-native/src/js/__tests__/__snapshots__/
 /billing-api/out/
-/portal-native-api/facebook_secret.json
-/portal-native-api/google_secret.json
-/portal-native-api/microsoft_secret.json
+/portal-api/facebook_secret.json
+/portal-api/google_secret.json
+/portal-api/microsoft_secret.json

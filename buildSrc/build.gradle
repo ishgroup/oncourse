@@ -5,6 +5,6 @@ repositories {
 }
 
 dependencies {
-    compile 'io.swagger:swagger-codegen:2.3.1'
-    compile 'com.atlassian.jira:jira-rest-java-client-core:5.0.4'
+    implementation 'io.swagger:swagger-codegen:2.3.1'
+    implementation 'com.atlassian.jira:jira-rest-java-client-core:5.0.4'
 }

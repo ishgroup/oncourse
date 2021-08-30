@@ -3,6 +3,10 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 
+/**
+ * @deprecated Remove when tapestry portal is removed.
+ */
+@Deprecated
 public class CombineSvg extends DefaultTask {
 
     @Input
@@ -43,7 +47,7 @@ public class CombineSvg extends DefaultTask {
                     result.append(imageNode)
                 }
             }
-            
+
             new File(outputDirectoryName + '/img').mkdirs()
             def outputFileName = "${outputDirectoryName}/img/${projectName}.svg"
             def outputFile = new File(outputFileName)

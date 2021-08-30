@@ -123,12 +123,12 @@ allprojects {
 
     dependencies {
 
-        compile "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
-        compile "org.apache.logging.log4j:log4j-web:$log4j2Version"
-        compile "org.apache.logging.log4j:log4j-api:$log4j2Version"
-        compile "org.apache.logging.log4j:log4j-core:$log4j2Version"
-        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
-        compile "org.apache.logging.log4j:log4j-jul:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-web:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+        implementation "org.apache.logging.log4j:log4j-jul:$log4j2Version"
 
         implementation "org.codehaus.groovy:groovy-all:$groovyVersion"
         implementation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"

@@ -2,7 +2,9 @@ import io.swagger.codegen.DefaultGenerator
 import io.swagger.codegen.config.CodegenConfigurator
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.TaskAction
 
 class Swagger extends DefaultTask {
@@ -10,21 +12,21 @@ class Swagger extends DefaultTask {
         group = "build"
     }
 
-    @Input
+    @InputDirectory
     File resourcesJava = new File("${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates/java")
 
-    @Input
+    @InputDirectory
     File resourcesJS = new File("${project.parent.projectDir}/buildSrc/src/main/resources/swaggerTemplates/js")
 
-    @Input
+    @InputFile
     File schema
 
     @Input
     String apiPackage
-    
+
     @Input
     String dtoPackage
-    
+
     @OutputDirectory
     File javaOutput
 
@@ -54,7 +56,7 @@ class Swagger extends DefaultTask {
         opt.config.apiTemplateFiles.put('apiServiceImpl.mustache', '.groovy')
         opt.config.importMapping.put("LocalDateTime", "java.time.LocalDateTime")
         opt.config.typeMapping.put("DateTime", "LocalDateTime")
-        
+
         def generator = new DefaultGenerator()
         generator.setGeneratorPropertyDefault('apiTests', 'false')
         generator.setGeneratorPropertyDefault('modelTests', 'false')
