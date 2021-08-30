@@ -34,6 +34,7 @@ import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.Lead
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.cayenne.QuoteLine
@@ -95,6 +96,7 @@ class TagFunctions {
         put(Tutor.simpleName, TaggableClasses.TUTOR)
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
+        put(Message.simpleName, TaggableClasses.MESSAGE)
     }}
 
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
