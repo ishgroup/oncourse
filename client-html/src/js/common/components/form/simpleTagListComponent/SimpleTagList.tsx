@@ -145,8 +145,8 @@ const SimpleTagList: React.FC<Props> = props => {
 
     if (!arrayOfTags) return "";
 
-    return arrayOfTags.map((tag: Tag) => (
-      <span className="d-flex align-items-center pr-1">
+    return arrayOfTags.map((tag: Tag, index) => (
+      <span className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
         <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
         {`#${tag.name} `}
       </span>
@@ -420,7 +420,7 @@ const SimpleTagList: React.FC<Props> = props => {
                 component="div"
               >
                 <span
-                  className={clsx("overflow-hidden d-flex", classes.editable, {
+                  className={clsx("overflow-hidden d-flex align-items-center", classes.editable, {
                     [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
                     [fieldClasses.text]: inputValue,
                   })}
@@ -430,7 +430,7 @@ const SimpleTagList: React.FC<Props> = props => {
                   )}
                   {!disabled
                   && Boolean(!tags || tags.length)
-                  && <Edit className={clsx("hoverIcon", classes.editInPlaceIcon, fieldClasses.placeholder)} />}
+                  && <Edit className={clsx("hoverIcon", classes.editInPlaceIcon, fieldClasses.placeholder, "mt-0-5")} />}
                 </span>
               </ButtonBase>
           )}

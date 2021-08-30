@@ -337,6 +337,12 @@ export const bootstrap = (theme: AppTheme) => ({
   ".op05": {
     opacity: 0.5
   },
+  ".row-op065": {
+    color: "rgba(0,0,0,0.65)",
+  },
+  ".row-op05": {
+    color: "rgba(0,0,0,0.5)",
+  },
   ".invisible": {
     visibility: "hidden"
   },
