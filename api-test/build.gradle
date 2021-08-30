@@ -38,14 +38,15 @@ task copyConfig(type: Copy) {
         include 'logSetup.xml'
     }
     into "$rootDir/server/build"
-    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
+    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'): 'jdbc:mariadb://127.0.0.1:3306/angel_api_test?user=root&password=X3f8kVjj'
+
     expand(dbUrl: dbUrl)
 }
 
 task prepareTestDb(type: JavaExec) {
     main = 'ish.oncourse.api.test.task.PrepareTestDb'
     classpath = sourceSets.test.runtimeClasspath
-    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
+    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://127.0.0.1:3306/angel_api_test?user=root&password=X3f8kVjj'
 
     args = [dbUrl, "$rootDir/api-test/src/test/resources/test-dataset.xml"]
 }
