@@ -163,7 +163,7 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   window.open(url);
 };
 
-const setRowClasses = ({ active }) => (active === "No" ? "op05" : undefined);
+const setRowClasses = ({ active }) => (active === "No" ? "row-op05" : undefined);
 
 const handleFileSelect = (files, setCreateNew) => {
   const file = files[0];
