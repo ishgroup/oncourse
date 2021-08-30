@@ -16,7 +16,7 @@ import ish.oncourse.server.api.v1.model.SearchItemDTO
 import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Invoice
 
-class InvoiceSearchService extends EntitySearchService<Invoice> {
+class InvoiceSearchService extends EntitySearchService<AbstractInvoice> {
 
     @Override
     Class<AbstractInvoice> getEntityClass() {
@@ -29,9 +29,9 @@ class InvoiceSearchService extends EntitySearchService<Invoice> {
     }
 
     @Override
-    SearchItemDTO toSearchItem(Invoice obj) {
+    SearchItemDTO toSearchItem(AbstractInvoice obj) {
         toSearchItem(obj.id,
-                "$obj.contact.fullName, #$obj.invoiceNumber"
+                "$obj.contact.fullName, #${obj.invoiceNumber?:obj.quoteNumber}"
         )
     }
 }
