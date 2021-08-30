@@ -14,9 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import Edit from "@material-ui/icons/Edit";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WrappedFieldProps } from "redux-form";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
@@ -137,11 +135,10 @@ const SimpleTagList: React.FC<Props> = props => {
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
 
-  const getInputValueForRender = useCallback(() => {
-    if (!tags || !tags.length) return "";
-    const formTags = input.value;
+  const InputValueForRender = useMemo(() => {
+    if (!inputValue || !tags || !tags.length) return "";
 
-    const arrayOfTags = formTags && formTags.length && formTags.map((tag: Tag) => getFullTag(tag.id, tags));
+    const arrayOfTags = input?.value?.length && input.value.map((tag: Tag) => getFullTag(tag.id, tags));
 
     if (!arrayOfTags) return "";
 
@@ -151,7 +148,7 @@ const SimpleTagList: React.FC<Props> = props => {
         {`#${tag.name} `}
       </span>
     ));
-  }, [tags, input.value]);
+  }, [tags, input.value, inputValue]);
 
   useEffect(() => {
     if (meta.invalid && !isEditing) {
@@ -425,9 +422,7 @@ const SimpleTagList: React.FC<Props> = props => {
                     [fieldClasses.text]: inputValue,
                   })}
                 >
-                  {(inputValue && getInputValueForRender()) || (
-                     "No value"
-                  )}
+                  {InputValueForRender || "No value"}
                   {!disabled
                   && Boolean(!tags || tags.length)
                   && <Edit className={clsx("hoverIcon", classes.editInPlaceIcon, fieldClasses.placeholder, "mt-0-5")} />}
