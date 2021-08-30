@@ -3,8 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
@@ -15,7 +14,12 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
-  createInvoice, deleteQuote, getDefaultInvoiceTerms, getInvoice, removeInvoice, updateInvoice
+  createInvoice,
+  deleteQuote,
+  getDefaultInvoiceTerms,
+  getInvoice,
+  removeInvoice,
+  updateInvoice
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
@@ -138,7 +142,7 @@ const nestedEditFields = {
 
 const manualLink = getManualLink("invoice");
 
-const secondaryColumnCondition = row => row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber;
+const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 
 const Invoices = React.memo<any>(({
   getFilters,
@@ -311,7 +315,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getAdministrationSites: () => dispatch(getAdministrationSites()),
-  getFilters: () => dispatch(getFilters("Invoice")),
+  getFilters: () => dispatch(getFilters("AbstractInvoice")),
   getDefaultTerms: () => {
     dispatch(getDefaultInvoiceTerms());
     dispatch(getAccountTransactionLockedDate());
