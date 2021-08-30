@@ -249,6 +249,7 @@ const Invoices = React.memo<any>(({
         nestedEditFields={nestedEditFields}
         getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
+        filterEntity="Invoice"
         onCreate={onCreate}
         onSave={onSave}
         onInit={onInit}
@@ -315,7 +316,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getAdministrationSites: () => dispatch(getAdministrationSites()),
-  getFilters: () => dispatch(getFilters("AbstractInvoice")),
+  getFilters: () => dispatch(getFilters("Invoice")),
   getDefaultTerms: () => {
     dispatch(getDefaultInvoiceTerms());
     dispatch(getAccountTransactionLockedDate());

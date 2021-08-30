@@ -11,7 +11,7 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Filter } from "@api/model";
-import { setListSavingFilter, createCustomFilter } from "../../../actions";
+import { createCustomFilter, setListSavingFilter } from "../../../actions";
 import { SavingFilterState } from "../../../../../../model/common/ListView";
 import { validateSingleMandatoryField, validateTagName } from "../../../../../utils/validation";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from "../../../../../../constants/Config";
@@ -87,7 +87,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
   };
 
   onSaveFilter = () => {
-    const { saveFilter, rootEntity, savingFilter } = this.props;
+    const { saveFilter, rootEntity, filterEntity, savingFilter } = this.props;
     const { filterName } = this.state;
 
     let expression = savingFilter.aqlSearch;
@@ -100,12 +100,12 @@ export class StubFilterItem extends React.PureComponent<any, any> {
 
     const filter: Filter = {
       name: filterName,
-      entity: rootEntity,
+      entity: filterEntity || rootEntity,
       expression,
       showForCurrentOnly: savingFilter.isPrivate
     };
 
-    saveFilter(filter, rootEntity);
+    saveFilter(filter, filterEntity || rootEntity);
   };
 
   clearFilter = () => {
