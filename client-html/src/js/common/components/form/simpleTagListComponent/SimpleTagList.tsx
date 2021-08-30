@@ -89,8 +89,6 @@ interface Props extends WrappedFieldProps {
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
-const getInputString = (tags: Tag[]) => (tags ? tags.reduce((acc, tag) => `${acc}#${tag.name} `, "") : "");
-
 const getCurrentInputString = (input, formTags: Tag[]) => {
   let substr = input;
 
@@ -125,6 +123,10 @@ const getFullTag = (tagId: number, tags: Tag[]) => {
   }
 };
 
+const getInputString = (tags: Tag[], allTags: Tag[]) => (tags?.length && allTags?.length
+    ? tags.reduce((acc, tag) => (getFullTag(tag.id, allTags) ? `${acc}#${tag.name} ` : acc), "")
+    : "");
+
 const SimpleTagList: React.FC<Props> = props => {
   const {
    input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
@@ -138,9 +140,10 @@ const SimpleTagList: React.FC<Props> = props => {
   const InputValueForRender = useMemo(() => {
     if (!inputValue || !tags || !tags.length) return "";
 
-    const arrayOfTags = input?.value?.length && input.value.map((tag: Tag) => getFullTag(tag.id, tags));
+    const arrayOfTags = input?.value?.length
+      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
 
-    if (!arrayOfTags) return "";
+    if (!arrayOfTags?.length) return "";
 
     return arrayOfTags.map((tag: Tag, index) => (
       <span className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
@@ -170,7 +173,7 @@ const SimpleTagList: React.FC<Props> = props => {
   );
 
   const synchronizeTags = () => {
-    const inputString = getInputString(input.value);
+    const inputString = getInputString(input.value, tags);
 
     if (inputString.trim() === inputValue.replace(endTagRegex, "").trim()) {
       return;
@@ -195,7 +198,7 @@ const SimpleTagList: React.FC<Props> = props => {
 
     updated.sort((a, b) => current.indexOf(a.name) - current.indexOf(b.name));
     input.onChange(updated);
-    setInputValue(getInputString(updated));
+    setInputValue(getInputString(updated, tags));
   };
 
   const onTagAdd = (tag: MenuTag) => {
@@ -291,14 +294,14 @@ const SimpleTagList: React.FC<Props> = props => {
   };
 
   useEffect(() => {
-    let inputString = getInputString(input.value);
+    let inputString = getInputString(input.value, tags);
 
     if (document.activeElement === inputNode.current && !endTagRegex.test(inputString)) {
       inputString += " #";
     }
 
     setInputValue(inputString);
-  }, [input.value]);
+  }, [input.value, tags]);
 
   useEffect(() => {
     setCurrentInputString(getCurrentInputString(inputValue, input.value));
