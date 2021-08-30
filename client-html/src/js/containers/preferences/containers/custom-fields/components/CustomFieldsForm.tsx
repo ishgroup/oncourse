@@ -97,15 +97,11 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
   findIndex = id => this.props.data.types.findIndex(item => item.id === id);
 
   getTouchedAndNew = items => {
-    const initialLength = this.props.customFields.length;
-    const newLength = items.length;
+    const fistNewItemIndex = items.findIndex(item => item.id === null);
 
-    const newItems = items.slice(0, newLength - initialLength + 1);
-    const touchedItems = items
-      .slice(newLength - initialLength, newLength)
-      .filter((item, index) => !isEqual(item, this.props.customFields[index]));
-
-    return newItems.filter(val => !touchedItems.includes(val));
+    return fistNewItemIndex === -1 ? items.filter((item, index) => !isEqual(item, this.props.customFields[index])) :
+    [...items.slice(0, fistNewItemIndex).filter((item, index) => item.id != this.props.customFields[index].id) ,
+      ...items.slice(fistNewItemIndex, items.length)];
   };
 
   onSave = value => {
