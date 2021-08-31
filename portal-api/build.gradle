@@ -2,6 +2,7 @@ ext {
     servicesPackage = 'ish.oncourse.willow.portal.v1.service'
     modelPackage = 'ish.oncourse.willow.portal.v1.model'
     swaggerName = 'portal.yaml'
+    jsOutputPath = 'portal-native'
 }
 
 apply from: "$rootDir/gradle/functions.gradle"
