@@ -38,6 +38,7 @@ class EntityService {
       const recordsLength = state.list.records.rows.length;
       if (typeof stopIndex === "number" && stopIndex > 0) {
         pageSize = (stopIndex + 1) - recordsLength;
+        if (pageSize < 0) pageSize = LIST_PAGE_SIZE;
         offset = recordsLength;
       } else {
         pageSize = recordsLength;
