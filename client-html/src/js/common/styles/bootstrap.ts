@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { fade } from "@material-ui/core/styles/colorManipulator";
 import { AppTheme } from "../../model/common/Theme";
 import { prefixer } from "./mixins/prefixer";
 
@@ -331,17 +332,11 @@ export const bootstrap = (theme: AppTheme) => ({
     opacity: 0.6,
     pointerEvents: "none"
   },
-  ".op075": {
-    opacity: 0.75
+  ".text-op065": {
+    color: fade(theme.palette.text.primary, 0.65),
   },
-  ".op05": {
-    opacity: 0.5
-  },
-  ".row-op065": {
-    color: "rgba(0,0,0,0.65)",
-  },
-  ".row-op05": {
-    color: "rgba(0,0,0,0.5)",
+  ".text-op05": {
+    color: fade(theme.palette.text.primary, 0.5),
   },
   ".invisible": {
     visibility: "hidden"
