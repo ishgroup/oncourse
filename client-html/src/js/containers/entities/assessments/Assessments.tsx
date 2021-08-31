@@ -78,7 +78,7 @@ const findRelatedGroup: any = [
   { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.assessment.id" }
 ];
 
-const setRowClasses = ({ active }) => (active === "Yes" ? undefined : "op05");
+const setRowClasses = ({ active }) => (active === "Yes" ? undefined : "row-op05");
 
 const Assessments: React.FC<AssessmentsProps> = props => {
   const {

@@ -178,8 +178,8 @@ const preformatBeforeSubmit = (value: CourseExtended): Course => {
 
 const setRowClasses = ({ currentlyOffered, isShownOnWeb }) => {
   if (currentlyOffered === "Yes" && isShownOnWeb === "Yes") return undefined;
-  if (currentlyOffered === "Yes") return "op075";
-  if (currentlyOffered === "No" && isShownOnWeb === "No") return "op05";
+  if (currentlyOffered === "Yes") return "row-op065";
+  if (currentlyOffered === "No" && isShownOnWeb === "No") return "row-op05";
 
   return undefined;
 };
