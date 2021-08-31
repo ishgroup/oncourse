@@ -11,7 +11,6 @@ describe("Virtual rendered ApplicationEditView", () => {
     render: (wrapper, initialValues) => {
       expect(wrapper.find("#contactId").text()).toContain(initialValues.contactId);
       expect(wrapper.find("#courseId").text()).toContain(initialValues.courseId);
-      expect(wrapper.find("#tags").text()).toContain(initialValues.tags[0].name);
       expect(wrapper.find("#applicationDate").text()).toContain(
         format(new Date(initialValues.applicationDate), III_DD_MMM_YYYY).toString()
       );

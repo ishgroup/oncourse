@@ -108,12 +108,6 @@ const LeadGeneral = (props: Props) => {
 
   const classes = useStyles();
 
-  useEffect( () => {
-    if (isNew) {
-      asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e));
-    }
-  }, [values.relatedSellables, values.studentCount, isNew]);
-
   const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
 
   const onContactChange = value => {

@@ -650,7 +650,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Nonnull
 	@API
 	List<QuoteLine> getQuoteLines() {
-		return super.getAbstractInvoiceLines().findAll { it.invoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
+		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
 	}
 
 	/**
