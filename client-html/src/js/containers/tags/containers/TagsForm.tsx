@@ -35,7 +35,7 @@ import TagRequirementItem from "../components/TagRequirementItem";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
-import { getAllTags } from "../utils";
+import { COLORS, getAllTags } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 
 const styles = () => ({
@@ -319,7 +319,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       modified: null,
       requirements: [],
       childTags: [],
-      color: theme.palette.primary.main.replace("#", "")
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
     };
 
     const clone = JSON.parse(JSON.stringify(values));
