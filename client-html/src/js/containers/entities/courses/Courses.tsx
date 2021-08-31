@@ -18,9 +18,7 @@ import { CourseExtended } from "../../../model/entities/Course";
 import { Classes } from "../../../model/entities/CourseClass";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
-import {
- createCourse, deleteCourse, getCourse, updateCourse
-} from "./actions";
+import { createCourse, deleteCourse, getCourse, updateCourse } from "./actions";
 import CourseCogWheel from "./components/CourseCogWheel";
 import CourseEditView from "./components/CourseEditView";
 
@@ -178,8 +176,8 @@ const preformatBeforeSubmit = (value: CourseExtended): Course => {
 
 const setRowClasses = ({ currentlyOffered, isShownOnWeb }) => {
   if (currentlyOffered === "Yes" && isShownOnWeb === "Yes") return undefined;
-  if (currentlyOffered === "Yes") return "row-op065";
-  if (currentlyOffered === "No" && isShownOnWeb === "No") return "row-op05";
+  if (currentlyOffered === "Yes") return "text-op065";
+  if (currentlyOffered === "No" && isShownOnWeb === "No") return "text-op05";
 
   return undefined;
 };
