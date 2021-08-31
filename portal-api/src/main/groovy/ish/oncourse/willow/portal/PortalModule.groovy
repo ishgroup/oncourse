@@ -17,14 +17,12 @@ import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
 class PortalModule extends ConfigModule {
 
-    private static final String ROOT_URL_PATTERN = "/*";
 
     
     @Override
     void configure(Binder binder) {
         binder.bind(ZKSessionManager)
-        JettyModule.extend(binder)
-                .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN)
+
 
         CayenneModule.extend(binder).addModule(new WillowCayenneModuleBuilder().build())
 

@@ -4,7 +4,6 @@ jetty:
     - type: willow
       port: 11100
       host: 0.0.0.0
-  staticResourceBase: classpath:static
   compactPath: true
 cxf:
   welcomeText: 'portal REST API'
