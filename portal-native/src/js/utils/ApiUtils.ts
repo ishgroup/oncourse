@@ -63,6 +63,19 @@ export const FetchErrorHandler = (response: AxiosResponse, customMessage?: strin
   }
 };
 
+export const LoginErrorHandler = (response: AxiosResponse, customMessage?: string): IAction<any>[] => {
+  removeToken();
+  return [
+    setIsLogged(false),
+    {
+      type: FETCH_FAIL,
+      payload: {
+        message: response?.data?.errorMessage || customMessage || 'Something went wrong',
+      },
+    },
+  ];
+};
+
 export const instantFetchErrorHandler = (
   dispatch: Dispatch,
   response: AxiosResponse,

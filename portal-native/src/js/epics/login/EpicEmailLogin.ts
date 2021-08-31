@@ -7,11 +7,13 @@ import { createRequest, Request } from '../../utils/EpicUtils';
 import { EMAIL_LOGIN, setLoginStage } from '../../actions/LoginActions';
 import LoginService from '../../services/LoginService';
 import { LoginStages } from '../../model/Login';
+import { LoginErrorHandler } from '../../utils/ApiUtils';
 
 const request: Request<string, boolean> = {
   type: EMAIL_LOGIN,
   getData: (email) => LoginService.emailLogin(email),
-  processData: () => [setLoginStage(LoginStages.EmaiConfirm)]
+  processData: () => [setLoginStage(LoginStages.EmaiConfirm)],
+  processError: (data) => LoginErrorHandler(data, 'Failed to email link')
 };
 
 export default createRequest(request);

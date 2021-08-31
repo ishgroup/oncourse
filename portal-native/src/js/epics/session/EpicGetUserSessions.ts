@@ -11,7 +11,7 @@ import SessionsService from '../../services/SessionsService';
 const request: Request<undefined, Session[]> = {
   type: GET_USER_SESSIONS,
   getData: () => SessionsService.getUserSessions(),
-  processData: (sessions) => [getUserSessionsFulfilled(sessions)]
+  processData: (sessions) => [getUserSessionsFulfilled(sessions || [])]
 };
 
 export default createRequest(request);
