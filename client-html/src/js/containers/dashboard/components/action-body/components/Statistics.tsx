@@ -191,7 +191,6 @@ interface Props {
   getCurrency?: AnyArgFunction;
   currency?: Currency;
   isUpdating?: boolean;
-  hasScriptsPermissions?: boolean;
   dispatch?: Dispatch;
 }
 
@@ -249,7 +248,7 @@ class Statistics extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, hasScriptsPermissions, statisticData, currency, dispatch
+     classes, statisticData, currency, dispatch
     } = this.props;
 
     const { chartData } = this.state;
@@ -385,7 +384,6 @@ class Statistics extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   statisticData: state.dashboard.statistics.data,
   isUpdating: state.dashboard.statistics.updating,
-  hasScriptsPermissions: state.access["ADMIN"],
   currency: state.currency
 });
 
