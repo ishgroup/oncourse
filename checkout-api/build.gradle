@@ -2,6 +2,7 @@ ext {
     servicesPackage = 'ish.oncourse.willow.service'
     modelPackage = 'ish.oncourse.willow.model'
     swaggerName = 'checkout.yaml'
+    jsOutputPath = 'checkout'
 }
 
 configurations {
