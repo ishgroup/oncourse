@@ -35,3 +35,9 @@ dependencies {
     //argon2 crypto algorithm (password hashing)
     implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
 }
+
+task start(type: JavaExec) {
+    main = 'ish.oncourse.willow.portal.PortalApp'
+    classpath = sourceSets.main.runtimeClasspath
+    args  = []
+}

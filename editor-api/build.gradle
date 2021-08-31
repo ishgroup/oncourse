@@ -2,6 +2,7 @@ ext {
     servicesPackage = 'ish.oncourse.willow.editor.v1.service'
     modelPackage = 'ish.oncourse.willow.editor.v1.model'
     swaggerName = 'editor.yaml'
+    jsOutputPath = 'editor'
 }
 
 apply from: "$rootDir/gradle/functions.gradle"
