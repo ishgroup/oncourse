@@ -371,14 +371,12 @@ class Statistics extends React.Component<Props, any> {
           </List>
         </Grid>
 
-        {hasScriptsPermissions && (
-          <Grid item xs={12} className="mt-2">
-            <Typography className={clsx("heading", classes.headingMargin)}>
-              Automation status
-            </Typography>
-            <ScriptStatistic dispatch={dispatch} />
-          </Grid>
-        )}
+        <Grid item xs={12} className="mt-2">
+          <Typography className={clsx("heading", classes.headingMargin)}>
+            Automation status
+          </Typography>
+          <ScriptStatistic dispatch={dispatch} />
+        </Grid>
       </Grid>
     ) : null;
   }
