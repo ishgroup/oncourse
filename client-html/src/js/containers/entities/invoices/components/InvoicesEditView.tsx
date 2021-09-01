@@ -207,6 +207,14 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     dispatch(change(form, "contactName", value["customer.fullName"]));
   };
 
+  const validateTagListCallback = useCallback(
+    (value, allValues) => {
+      const updProps = { ...props, rootEntity: "Invoice" };
+
+      return (tags && tags.length ? validateTagsList(tags, value, allValues, updProps) : undefined);
+    }, [tags]
+  );
+
   const onContactChange = useCallback(
     value => {
       setSelectedContact(value);
@@ -276,7 +284,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="tags"
           name="tags"
           tags={tags}
-          validate={tags && tags.length ? validateTagList : undefined}
+          validate={validateTagListCallback}
         />
       </Grid>
 
