@@ -151,11 +151,6 @@ const Stepper: React.FC<Props> = (
     };
 
     loadScriptByURL('recaptcha-key', `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`);
-
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,600;1,300&family=Port+Lligat+Slab&display=swap';
-    document.head.appendChild(link);
   }, []);
 
   const handleNext = () => {
