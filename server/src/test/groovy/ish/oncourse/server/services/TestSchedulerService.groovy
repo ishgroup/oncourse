@@ -9,28 +9,28 @@ import java.text.ParseException
 
 class TestSchedulerService implements ISchedulerService {
 
-    private List<JobDetail> jobs = new ArrayList<>()
+    private Map<JobDetail,Trigger> jobs = new HashMap<>()
 
     @Override
     void schedulePeriodicJob(Class<? extends Job> provider, String id, String groupId, int intervalInSeconds,
                              boolean startNow, boolean preventWhenHeadlessStart) throws ParseException, SchedulerException {
-        jobs.add(JobBuilder.newJob(provider).withIdentity(id, groupId).build())
+        jobs.put(JobBuilder.newJob(provider).withIdentity(id, groupId).build(), null)
     }
 
     @Override
     void scheduleCronJob(Class<? extends Job> provider, String id, String groupId, String cron, String timeZoneId,
                          boolean startNow, boolean preventWhenHeadlessStart) throws ParseException, SchedulerException {
-        jobs.add(JobBuilder.newJob(provider).withIdentity(id, groupId).build())
+        jobs.put(JobBuilder.newJob(provider).withIdentity(id, groupId).build(), null)
     }
 
     @Override
     void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
-        jobs.add(jobDetail)
+        jobs.put(jobDetail, trigger)
     }
 
     @Override
     void removeJob(JobKey jobKey) throws SchedulerException {
-        List<JobDetail> clonJobs = new ArrayList<>(jobs)
+        List<JobDetail> clonJobs = new ArrayList<>(jobs.keySet())
         for (JobDetail jobDetail : clonJobs) {
             if (jobKey == jobDetail.getKey()) {
                 jobs.remove(jobDetail)
@@ -44,6 +44,10 @@ class TestSchedulerService implements ISchedulerService {
     }
 
     List<JobDetail> getJobs() {
-        return jobs
+        return new ArrayList<JobDetail>(jobs.keySet())
+    }
+    
+    Trigger getTrigger(JobDetail detail) {
+        jobs.get(detail)
     }
 }

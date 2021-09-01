@@ -18,7 +18,7 @@ const request: EpicUtils.Request<any, never> = {
   getData: () => TagsService.getTags("CourseClass").then(courseClassTags => TagsService.getTags("Course").then(courseTags => ({ courseClassTags, courseTags }))),
   processData: ({ courseClassTags, courseTags }) => {
     const menuTags = getMenuTags(courseClassTags, [], null, null, "CourseClass")
-      .concat(getMenuTags(courseTags, [], null, null, "Course", "course"));
+      .concat(getMenuTags(courseTags, [], "Courses", null, "Course", "course"));
 
     return [
       {

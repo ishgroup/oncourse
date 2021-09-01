@@ -243,7 +243,7 @@ const setRowClasses = row => {
   const dateFinished = row["tutor.dateFinished"];
 
   if (dateFinished && isBefore(new Date(dateFinished), today)) {
-    return "op05";
+    return "row-op05";
   }
 
   return undefined;

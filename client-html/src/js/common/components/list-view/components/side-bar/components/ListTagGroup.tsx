@@ -19,11 +19,12 @@ const useStyles = makeStyles(styles);
 interface Props {
   rootTag: MenuTag;
   classes: any;
+  showColoredDots: boolean;
   updateActive: (updated: MenuTag) => void;
   dndKey: number;
 }
 
-const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey }) => {
+const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey, showColoredDots }) => {
   const [expanded, setExpanded] = useState([]);
 
   const customStyles = useStyles();
@@ -74,7 +75,7 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey 
         {(provided, snapshot) => {
           const isDragging = snapshot.isDragging;
 
-          return (
+          return (            
             <div
               ref={provided.innerRef}
               {...provided.draggableProps}
@@ -113,6 +114,7 @@ const ListTagGroup: React.FC<Props> = ({ rootTag, classes, updateActive, dndKey 
                       item={c}
                       key={key}
                       toggleActive={toggleActive}
+                      showColoredDots={showColoredDots}
                     />
                   );
                 })}

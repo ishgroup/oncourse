@@ -44,7 +44,6 @@ const request: EpicUtils.Request<any, boolean> = {
               classItem: i,
               courseIds: courseItems.map(item => item.courseId).toString(),
               productIds: l.items.filter(item => item.checked && item.type !== "course").map(item => item.id).toString(),
-              classIds: courseItems.map(item => item.class.id).toString(),
               listIndex,
               itemIndex,
               membershipIds: l.items.filter(i => i.type === "membership" && i.checked).map(i => i.id).join(",")
@@ -64,7 +63,7 @@ const request: EpicUtils.Request<any, boolean> = {
           e.classItem.class.id,
           e.courseIds,
           e.productIds,
-          e.classIds,
+          enrolments.map(enrolment => enrolment.classItem.class.id).toString(),
           codes,
           e.membershipIds,
           totalAmountExDiscount

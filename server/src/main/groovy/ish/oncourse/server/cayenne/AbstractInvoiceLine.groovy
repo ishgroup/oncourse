@@ -40,7 +40,7 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
 
     abstract Class<? extends AbstractInvoice> getInvoicePersistentClass()
 
-    abstract <T extends AbstractInvoice> T getInvoice()
+    abstract AbstractInvoice  getInvoice()
 
     abstract void setInvoice(AbstractInvoice abstractInvoice)
 
