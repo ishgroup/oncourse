@@ -43,3 +43,9 @@ export const getTagNamesSuggestions = (tags: Tag[]) => {
     };
   });
 };
+
+export const COLORS = [
+  "9e0142", "d53e4f", "f46d43", "fdae61", "fee08b", "ffffbf", "e6f598", "abdda4", "66c2a5", "3288bd", "5e4fa2",
+  "a30fe9", "480fec", "d7e90f", "e0e0e0", "bababa", "878787", "4d4d4d", "abd9e9", "74add1", "66bd63", "1a9850",
+  "006837", "a50026", "d73027"
+];
