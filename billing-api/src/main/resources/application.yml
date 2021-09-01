@@ -1,5 +1,5 @@
 jetty:
-  context: /a
+  context: /b
   connectors:
     - type: willow
       port: 11090

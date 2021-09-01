@@ -136,7 +136,12 @@ class Configuration {
 
         SVN_URL('svn_url', 'svn.url'),
         SVN_USER('svn_user', 'svn.user'),
-        SVN_PASS('svn_pass', 'svn.pass')
+        SVN_PASS('svn_pass', 'svn.pass'),
+        /**
+         * Path to *.py script. Need to run that script in different cases when web sites or colleges updated 
+         * #var/willow/billing.py website cce-main
+         */
+        BILLING_UPDATE('billing_update', 'billing.update')
         
         private String key
         private String systemProperty
