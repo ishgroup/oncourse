@@ -9,9 +9,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import clsx from "clsx";
+import clsx from 'clsx';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import Typography from "@material-ui/core/Typography";
+import Typography from '@material-ui/core/Typography';
 import LeftMenu from '../common/LeftMenu';
 import NameForm from './steps/NameForm';
 import TemplateForm from './steps/TemplateForm';
@@ -23,10 +23,9 @@ import ErrorPage from '../ErrorPage';
 import { SITE_KEY } from '../../constant/common';
 import { SitesPage } from './steps/SitesPage';
 import { State } from '../../redux/reducers';
-import { ExistingCustomerSteps, NewCustomerSteps, Step } from '../../models/User';
+import { Step } from '../../models/User';
 import { AppTheme } from '../../models/Theme';
-import { getCookie } from '../../utils';
-import iconDots from "../../../images/icon-dots.png";
+import iconDots from '../../../images/icon-dots.png';
 
 export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   root: {
@@ -40,21 +39,21 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
     margin: 'auto',
     maxWidth: 1200,
     padding: theme.spacing(10),
-    width: "100%",
+    width: '100%',
   },
   contentInner: {
     backgroundImage: `url(${iconDots})`,
-    backgroundPosition: "0 0",
+    backgroundPosition: '0 0',
     backgroundSize: 18,
-    padding: "48px 48px 130px",
+    padding: '48px 48px 130px',
   },
   formItem: {
-    position: "relative",
-    backgroundColor: "#fff",
-    padding: "48px 48px 8px",
+    position: 'relative',
+    backgroundColor: '#fff',
+    padding: '48px 48px 8px',
   },
   formStep: {
-    color: "#888",
+    color: '#888',
   },
   formWrapper: {
     flex: 1,
@@ -74,7 +73,7 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   },
   hasError: {
     padding: theme.spacing(6),
-    "& $formItem": {
+    '& $formItem': {
       padding: theme.spacing(6),
       backgroundColor: theme.palette.error.main,
       color: theme.palette.error.contrastText,
@@ -83,12 +82,12 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   },
   stepsCompleted: {
     padding: theme.spacing(6),
-    "& $formItem": {
+    '& $formItem': {
       padding: theme.spacing(6),
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.error.contrastText,
       borderRadius: 4,
-      "& $formStep": {
+      '& $formStep': {
         color: theme.palette.error.contrastText,
       }
     }
@@ -117,25 +116,17 @@ interface Props {
   serverError?: any;
   setCaptchaToken?: any;
   userKey?: string;
+  steps?: Step[];
 }
 
 const Stepper: React.FC<Props> = (
   {
-    serverError
+    serverError,
+    steps
   }
 ) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const [steps, setSteps] = React.useState<Step[]>([]);
-
-  useEffect(() => {
-    const token = getCookie('JSESSIONID');
-    if (token) {
-      setSteps([...ExistingCustomerSteps]);
-    } else {
-      setSteps([...NewCustomerSteps]);
-    }
-  }, []);
 
   useEffect(() => {
     const loadScriptByURL = (id, url) => {
@@ -189,7 +180,8 @@ const Stepper: React.FC<Props> = (
             <div className={clsx(classes.contentInner, completed && classes.stepsCompleted)}>
               <div className={classes.formItem}>
                 <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
-                  Step&nbsp;{activeStep + 1}
+                  Step&nbsp;
+                  {activeStep + 1}
                 </Typography>
                 {activePage}
               </div>
