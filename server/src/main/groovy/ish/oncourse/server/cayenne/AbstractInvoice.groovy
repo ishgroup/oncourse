@@ -422,6 +422,11 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 	String getSummaryDescription() {
 		return getDescription()
 	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return AbstractInvoiceTagRelation.class
+	}
 }
 
 

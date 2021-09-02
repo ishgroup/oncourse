@@ -32,6 +32,7 @@ import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import history from "../../../../constants/History";
 import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 import { isInvoiceType } from "../utils";
+import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 
 interface Props extends CogwhelAdornmentProps {
   dispatch: any;
@@ -249,6 +250,12 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     [oneSelectedAndNotNew, selectedInvoiceAmountOwing]
   );
 
+  const hoSelectedOrNew = useMemo(() => selection.length === 0 || selection[0] === "NEW", [selection]);
+
+  const onQuickEnrolment = useCallback(() => {
+    window.open(`/checkout?invoiceId=${selection[0]}`, "_self");
+  }, [selection]);
+
   return (
     <>
       <ContraInvoiceModal opened={dialogOpened} setDialogOpened={setDialogOpened} />
@@ -280,6 +287,18 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
       <MenuItem disabled={disableActionForQuote} className={menuItemClass} role="ConvertingQuote" onClick={onClick}>
         Convert quote to invoice
       </MenuItem>
+
+      <BulkEditCogwheelOption {...props} />
+      {hoSelectedOrNew ? null : (
+        <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions}>
+          Enrol
+          {' '}
+          {selection.length}
+          {' '}
+          highlighted student
+          {selection.length > 1 && "s"}
+        </MenuItem>
+      )}
     </>
   );
 });

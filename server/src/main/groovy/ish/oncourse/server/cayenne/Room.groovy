@@ -196,4 +196,8 @@ class Room extends _Room implements Queueable, NotableTrait, AttachableTrait {
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return RoomTagRelation.class
+	}
 }
