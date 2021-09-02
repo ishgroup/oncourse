@@ -247,6 +247,7 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
       ];
     }
     case "WaitingList":
+    case "AbstractInvoice":
     case "Room":
     case "Site":
     case "Payslip":
