@@ -215,7 +215,7 @@ const SimpleTagList: React.FC<Props> = props => {
     input.onChange(updated);
 
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 100);
   };
 
