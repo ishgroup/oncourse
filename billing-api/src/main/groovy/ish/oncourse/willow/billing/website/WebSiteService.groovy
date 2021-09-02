@@ -114,7 +114,7 @@ class WebSiteService {
             dto.name = it.name
             dto.key = it.siteKey
             dto.domains = it.collegeDomains.collect{host -> host.name }
-            dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }
+            dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
             dto
         }
     }
