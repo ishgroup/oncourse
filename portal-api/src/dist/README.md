@@ -21,6 +21,12 @@ Command to extract fingerprints:
 ```
 keytool -keystore path-to-debug-or-production-keystore -list -v
 ```
+Command to attach certificate:
+```
+keytool -keystore path-to-debug-or-production-keystore -importcert -alias alias.name -file certificate-file.cer
+```
+
+
 # google_secret.json
 1. select or create project in google cloud platform: https://console.cloud.google.com/projectcreate
 2. go to menu > APIs & Services > OAuth consent screen and proceed through the form (require folowed scopes openid .../auth/userinfo.email .../auth/userinfo.profile  .../auth/calendar.events .../auth/drive.file .../auth/drive.metadata)
