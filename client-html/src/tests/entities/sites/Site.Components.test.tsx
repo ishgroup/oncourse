@@ -8,8 +8,6 @@ describe("Virtual rendered SiteEditView", () => {
     record: mockecApi => mockecApi.db.getSite(1),
     render: (wrapper, initialValues) => {
       expect(wrapper.find("#name").text()).toContain(initialValues.name);
-      expect(wrapper.find("#tags").text()).toContain("#name 1 ");
-
       expect(wrapper.find('input[type="checkbox"]').at(0).props().checked).toEqual(true);
       expect(wrapper.find('input[type="checkbox"]').at(1).props().checked).toEqual(false);
       expect(wrapper.find('input[type="checkbox"]').at(2).props().checked).toEqual(true);

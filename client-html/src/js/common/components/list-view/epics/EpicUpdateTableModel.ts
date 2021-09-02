@@ -8,7 +8,7 @@ import { TableModel } from "@api/model";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
 import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { GET_RECORDS_REQUEST, UPDATE_TABLE_MODEL_REQUEST } from "../actions";
+import { GET_RECORDS_REQUEST, UPDATE_TABLE_MODEL_REQUEST, UPDATE_TAGS_ORDER } from "../actions";
 
 const request: EpicUtils.Request<
   any,
@@ -43,9 +43,13 @@ const request: EpicUtils.Request<
           {
             type: GET_RECORDS_REQUEST,
             payload: { entity: payload.entity, listUpdate: !payload.resetScroll }
-          }
-        ]
-      : [])
+          },
+        {
+          type: UPDATE_TAGS_ORDER,
+          payload: payload.model.tagsOrder || state.list.records.tagsOrder,
+        }
+      ]
+    : [])
   ],
   processError: response => FetchErrorHandler(response, "List settings was not saved")
 };

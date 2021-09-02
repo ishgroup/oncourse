@@ -143,7 +143,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO SITE_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: Site.NAME.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Country', attribute: Site.COUNTRY.dot("name").name, sortable: true, width: W100, visible: false),
                 new ColumnDTO(title: 'State', attribute: Site.STATE.name, sortable: true, width: W100, visible: false),
@@ -167,7 +167,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO ROOM_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: Room.NAME.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Site', attribute: Room.SITE.dot("name").name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Seated capacity', attribute: Room.SEATED_CAPACITY.name, sortable: true, width: W200, visible: true)
@@ -182,7 +182,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO INVOICE_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Type', attribute: AbstractInvoice.TYPE.name, sortable: true, width: W100, visible: true, system: true),
                 new ColumnDTO(title: 'Invoice number', attribute: AbstractInvoice.INVOICE_NUMBER.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Quote number', attribute: AbstractInvoice.QUOTE_NUMBER.name, sortable: true, width: W200, visible: true),
@@ -271,7 +271,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO PAYSLIP_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: Payslip.CONTACT.dot(Contact.FULL_NAME_KEY).name, sortable: true,
                     width: W200, visible: true, sortFields: [CorporatePass.CONTACT.dot(Contact.LAST_NAME).name,
                                                              CorporatePass.CONTACT.dot(Contact.FIRST_NAME).name,
@@ -294,7 +294,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO DOCUMENT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Link', attribute: Document.LINK_PROPERTY, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Document name', attribute: Document.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Date added', attribute: Document.ADDED.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
@@ -382,7 +382,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO WAIT_LIST_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Created', attribute: WaitingList.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Student', attribute: WaitingList.STUDENT.dot(Student.CONTACT).dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W300, visible: true, sortFields: [WaitingList.STUDENT.dot(Student.CONTACT).dot(Contact.LAST_NAME).name,
@@ -400,7 +400,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO LEAD_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Created', attribute: Lead.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Customer', attribute: Lead.CUSTOMER.dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W300, visible: true, sortFields: [Lead.CUSTOMER.dot(Contact.LAST_NAME).name,
@@ -420,7 +420,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO APPLICATION_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Source', attribute: Application.SOURCE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Student', attribute: Application.STUDENT.dot(Student.CONTACT).dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W300, visible: true, sortFields: [Application.STUDENT.dot(Student.CONTACT).dot(Contact.LAST_NAME).name,
@@ -457,7 +457,7 @@ class DefaultUserPreference {
 
     private static final TableModelDTO COURSE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: Course.NAME.name, sortable: true, width: W400, visible: true),
                 new ColumnDTO(title: 'Code', attribute: Course.CODE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Field', attribute: Course.FIELD_OF_EDUCATION.name, sortable: true, width: W200, visible: true),
@@ -701,7 +701,7 @@ class DefaultUserPreference {
 
     private static final ASSESSMENT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Code', attribute: Assessment.CODE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Assessment.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Active', attribute: Assessment.ACTIVE.name, sortable: true, width: W200, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
@@ -752,7 +752,7 @@ class DefaultUserPreference {
 
     private static final ENROLMENT_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Source', attribute: Enrolment.SOURCE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name',
                         attribute: Enrolment.STUDENT.dot(Student.CONTACT).dot(Contact.FULL_NAME_KEY).name,
@@ -806,7 +806,7 @@ class DefaultUserPreference {
 
     private static final MESSAGE_MODEL = new TableModelDTO().with() {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Date time', attribute: Message.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Sent by', attribute: Message.CREATED_BY.dot(SystemUser.LOGIN).name, sortable: false, width: W200, visible: true),
                 new ColumnDTO(title: 'Recipients', attribute: Message.RECIPIENTS_STRING_PROPERTY, sortable: false, width: W200, visible: true),
@@ -843,7 +843,7 @@ class DefaultUserPreference {
 
     private static final COURSECLASS_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Course', attribute: CourseClass.COURSE.dot(Course.NAME).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Code', attribute: CourseClass.UNIQUE_CODE_PROPERTY, sortable: true, width: W200, visible: true,
                         sortFields: [CourseClass.COURSE.dot(Course.CODE).name,
@@ -872,7 +872,7 @@ class DefaultUserPreference {
 
     private static final CONTACT_MODEL = new TableModelDTO().with {
         it.columns = [
-                new ColumnDTO(title: 'Tags', attribute: Taggable.COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_IDS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Name', attribute: Contact.FULL_NAME_KEY, sortable: true,
                         width: W300, visible: true, sortFields: [Contact.LAST_NAME.name,
                                                                  Contact.FIRST_NAME.name,

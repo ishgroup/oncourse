@@ -356,8 +356,8 @@ const shouldAsyncValidate = ({ trigger, pristine, initialized }) => {
 
 const setRowClasses = ({ isCancelled, isShownOnWeb, isActive }) => {
   if (isActive === "Yes" && isShownOnWeb === "Yes") return undefined;
-  if (isActive === "Yes") return "op075";
-  if (isActive === "No" || isCancelled === "Yes") return "op05";
+  if (isActive === "Yes") return "row-op065";
+  if (isActive === "No" || isCancelled === "Yes") return "row-op05";
 
   return undefined;
 };

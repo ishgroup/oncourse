@@ -3,8 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
@@ -15,7 +14,12 @@ import { notesAsyncValidate } from "../../../common/components/form/notes/utils"
 import ListView from "../../../common/components/list-view/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import {
-  createInvoice, deleteQuote, getDefaultInvoiceTerms, getInvoice, removeInvoice, updateInvoice
+  createInvoice,
+  deleteQuote,
+  getDefaultInvoiceTerms,
+  getInvoice,
+  removeInvoice,
+  updateInvoice
 } from "./actions";
 import { FilterGroup } from "../../../model/common/ListView";
 import InvoicesEditView from "./components/InvoicesEditView";
@@ -112,8 +116,8 @@ const Initial: Invoice = {
 const findRelatedGroup: any[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Invoice and entityId" },
   { title: "Contacts", list: "contact", expression: "invoices.id" },
-  { title: "Enrolments", list: "enrolment", expression: "invoiceLines.invoice.id" },
-  { title: "Classes", list: "class", expression: "enrolments.invoiceLines.invoice.id" },
+  { title: "Enrolments", list: "enrolment", expression: "abstractInvoiceLines.abstractInvoice.id " },
+  { title: "Classes", list: "class", expression: "enrolments.abstractInvoiceLines.abstractInvoice.id" },
   { title: "Payment In", list: "paymentIn", expression: "paymentInLines.invoice.id" },
   { title: "Payment Out", list: "paymentOut", expression: "paymentOutLines.invoice.id" },
   { title: "Transactions", list: "transaction", expression: "invoice.id" },
@@ -138,7 +142,7 @@ const nestedEditFields = {
 
 const manualLink = getManualLink("invoice");
 
-const secondaryColumnCondition = row => row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber;
+const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 
 const Invoices = React.memo<any>(({
   getFilters,
@@ -245,6 +249,7 @@ const Invoices = React.memo<any>(({
         nestedEditFields={nestedEditFields}
         getEditRecord={getInvoiceRecord}
         rootEntity="AbstractInvoice"
+        filterEntity="Invoice"
         onCreate={onCreate}
         onSave={onSave}
         onInit={onInit}

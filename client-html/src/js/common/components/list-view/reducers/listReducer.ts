@@ -34,7 +34,9 @@ import {
   SET_LIST_COLUMNS,
   SET_RECIPIENTS_MESSAGE_DATA,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
-  SET_LIST_EDIT_RECORD_FETCHING
+  SET_LIST_EDIT_RECORD_FETCHING,
+  SET_SHOW_COLORED_DOTS,
+  UPDATE_TAGS_ORDER,
 } from "../actions";
 import { latestActivityStorageHandler } from "../../../utils/storage";
 import { GetRecordsArgs, ListState } from "../../../../model/common/ListView";
@@ -48,6 +50,8 @@ class State implements ListState {
   filterGroups = [];
 
   filterGroupsLoaded = false;
+
+  showColoredDots = false;
 
   records = {
     entity: "",
@@ -167,6 +171,13 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       return {
         ...state,
         nestedEditRecords: [...state.nestedEditRecords, action.payload]
+      };
+    }
+
+    case SET_SHOW_COLORED_DOTS: {
+      return {
+        ...state,
+        showColoredDots: action.payload,
       };
     }
 
@@ -353,6 +364,16 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
 
     case CLEAR_LIST_STATE: {
       return new State();
+    }
+
+    case UPDATE_TAGS_ORDER: {
+      return {
+        ...state,
+        records: {
+          ...state.records,
+          tagsOrder: action.payload,
+        },
+      };
     }
 
     default:

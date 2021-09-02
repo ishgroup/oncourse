@@ -12,6 +12,7 @@ import { EpicCreateScriptItem } from "./EpicCreateScriptItem";
 import { EpicDeleteScriptItem } from "./EpicDeleteScriptItem";
 import { EpicRunScriptItem } from "./EpicRunScriptItem";
 import { EpicGetScriptsList } from "./EpicGetScriptsList";
+import { EpicGetTimeZone } from "./EpicGetTimeZone";
 
 export const EpicScripts = combineEpics(
   EpicGetScriptItem,
@@ -21,5 +22,6 @@ export const EpicScripts = combineEpics(
   EpicRunScriptItem,
   EpicGetScriptsList,
   EpicGetRunScriptResult,
-  EpicOpenRunScriptPdf
+  EpicOpenRunScriptPdf,
+  EpicGetTimeZone,
 );

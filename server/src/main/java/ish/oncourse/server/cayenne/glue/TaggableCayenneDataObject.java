@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne.glue;
 import com.google.inject.Inject;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
+import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.entity.services.TagService;
 import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.Tag;
@@ -23,6 +24,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -57,12 +59,18 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	 *
 	 * @return List of colors
 	 */
-	public List<String> getColors() {
-		return ObjectSelect.columnQuery(Tag.class, Tag.COLOUR)
-				.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
-						.eq(TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName()).getDatabaseValue()))
-				.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
-				.limit(3).select(this.getContext());
+	public List<Long> getTagIds() {
+		TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName());
+		if (taggable != null) {
+			return ObjectSelect.columnQuery(Tag.class, Tag.ID)
+					.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
+							.eq(taggable.getDatabaseValue()))
+					.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
+					.select(this.getContext());
+		} else {
+			return Collections.emptyList();
+		}
+
 	}
 
 	/**

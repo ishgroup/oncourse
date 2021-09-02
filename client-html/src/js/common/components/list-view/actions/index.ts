@@ -43,6 +43,8 @@ export const CLEAR_LIST_STATE = "clear/listView";
 
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 
+export const SET_SHOW_COLORED_DOTS = "set/listView/coloredDots";
+
 export const SET_LIST_SEARCH = "set/listView/search";
 
 export const SET_LIST_ENTITY = "set/listView/entity";
@@ -62,6 +64,8 @@ export const SET_LIST_USER_AQL_SEARCH = "set/listView/userAQLSearch";
 export const SET_LIST_MENU_TAGS = "set/listView/menuTags";
 
 export const SET_LIST_EDIT_RECORD = "set/listView/editRecord";
+
+export const UPDATE_TAGS_ORDER = "set/listView/tagsOrder";
 
 export const SET_LIST_CREATING_NEW = "set/listView/creatingNew";
 
@@ -93,6 +97,11 @@ export const setListUserAQLSearch = (userAQLSearch: string) => ({
 export const setListLayout = (layout: LayoutType) => ({
   type: SET_LIST_LAYOUT,
   payload: layout
+});
+
+export const setShowColoredDots = (show: boolean) => ({
+  type: SET_SHOW_COLORED_DOTS,
+  payload: show,
 });
 
 export const setListMenuTags = (menuTags: MenuTag[]) => ({
@@ -146,6 +155,11 @@ export const clearListState = () => ({
 
 export const setListEditRecordFetching = () => ({
   type: SET_LIST_EDIT_RECORD_FETCHING
+});
+
+export const updateTagsOrder = (tagsOrder: number[]) => ({
+  type: UPDATE_TAGS_ORDER,
+  payload: tagsOrder,
 });
 
 export const updateTableModel = (entity: string, model: TableModel, listUpdate?: boolean) => ({
