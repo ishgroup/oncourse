@@ -5,7 +5,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "web:prod": "expo start --no-dev --minify --web",
-    "test": "jest"
+    "test": "jest -u"
   },
   "jest": {
     "preset": "jest-expo"
