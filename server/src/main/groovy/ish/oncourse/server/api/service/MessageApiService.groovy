@@ -18,12 +18,16 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.AbstractInvoice
+import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
 import ish.oncourse.server.scripting.api.MetaclassCleaner
+import ish.util.AbstractEntitiesUtil
 import org.apache.cayenne.validation.ValidationException
 
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
@@ -79,6 +83,16 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     private static final Logger logger = LogManager.logger
     private static final String CREATED_SUCCESS = "Messages created successfully"
     private static final int BATCH_SIZE = 50
+
+    private static final List<Class<?>> classes = new ArrayList<Class<?>>() {
+        {
+            add(Invoice)
+            add(Quote)
+        }
+    }
+
+    private static final Map<Class<? extends AttachableTrait>, List<Class<?>>> abstractEntityImpls =
+            [(AbstractInvoice.class): classes]
 
 
     @Inject private AqlService aql
@@ -161,9 +175,15 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    RecipientsDTO getRecipients(String entityName, String messageType, SearchQueryDTO request) {
+    RecipientsDTO getRecipients(String entityName, String messageType, SearchQueryDTO request, Long templateId) {
         ObjectContext context = cayenneService.newReadonlyContext
-        List<Long> entitiesIds = getEntityIds(entityName, request, context)
+
+        def template = getTemplateByIdOrNull(templateId, context)
+        List<Long> entitiesIds = getEntityIdsByTemplate(template, entityName, request, context)
+
+        if (template != null)
+            entityName = template.entity
+
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
         RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
 
@@ -220,6 +240,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             case Application.ENTITY_NAME:
             case Contact.ENTITY_NAME:
             case Invoice.ENTITY_NAME:
+            case Quote.ENTITY_NAME:
             case PaymentIn.ENTITY_NAME:
             case PaymentOut.ENTITY_NAME:
             case ProductItem.ENTITY_NAME:
@@ -302,8 +323,11 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         validateBeforeSend(messageType, recipientsCount, request)
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
 
-        String entityName = request.entity
-        List<Long> entitiesIds = getEntityIds(entityName, request.searchQuery, context)
+        Expression templateWithType = EmailTemplate.TYPE.eq(messageTypeDTO.dbType)
+        EmailTemplate template = getTemplateByIdOrNull(request.templateId, context, templateWithType)
+        List<Long> entitiesIds = getEntityIdsByTemplate(template, request.entity, request.searchQuery, context)
+        String entityName = template != null ? template.entity : request.entity
+
         RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
         List<Long> recipientsToSend = new ArrayList<>()
 
@@ -330,10 +354,6 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         }
 
         SystemUser user = context.localObject(systemUserService.currentUser)
-
-        EmailTemplate template = ObjectSelect.query(EmailTemplate.class)
-                .where(EmailTemplate.ID.eq(request.templateId).andExp(EmailTemplate.TYPE.eq(messageTypeDTO.dbType)))
-                .selectOne(context)
 
         if (template == null) {
             logger.error("The message template didn't find out. MessageType: {}, Id: {}", messageTypeDTO.toString(), request.templateId)
@@ -399,9 +419,9 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                 fillMessage = { Message message ->
                     plainTemplate = templateService.createPlainTemplate(template)
                     htmlTemplate = templateService.createHtmlTemplate(template)
-                    
+
                     message.emailSubject = templateService.addSubject(template, plainBindings, htmlBindings)
-                    
+
                     message.emailBody = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
                     MetaclassCleaner.clearGroovyCache(plainTemplate);
 
@@ -415,7 +435,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             case MessageTypeDTO.SMS:
                 fillMessage = { Message message ->
                     plainTemplate = templateService.createPlainTemplate(template)
-                    
+
                     message.smsText = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
                     MetaclassCleaner.clearGroovyCache(plainTemplate)
 
@@ -465,13 +485,39 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    List<Long> getEntityIds(String entityName, SearchQueryDTO request, ObjectContext context) {
+    List<Long> getEntityIds(String entityName, SearchQueryDTO request, ObjectContext context,
+                            Expression exp = null) {
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entityName)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
-
-        parseSearchQuery(objectSelect, context, aql, entityName, request.search, request.filter, request.tagGroups)
+        def columnSelect = parseSearchQuery(objectSelect, context, aql, entityName, request.search, request.filter, request.tagGroups)
                 .column(Property.create("id", Long))
-                .select(context)
+        if (exp != null)
+            columnSelect = columnSelect.where(exp)
+        return columnSelect.select(context)
+    }
+
+
+    private EmailTemplate getTemplateByIdOrNull(Long templateId, ObjectContext context, Expression exp = null){
+        if (templateId == null)
+            return null
+        def objectSelect =  ObjectSelect.query(EmailTemplate.class)
+                .where(EmailTemplate.ID.eq(templateId))
+        if(exp != null)
+            objectSelect = objectSelect.where(exp)
+
+        return objectSelect.selectOne(context)
+    }
+
+
+    private List<Long> getEntityIdsByTemplate(EmailTemplate template, String entityName, SearchQueryDTO request,
+                                      ObjectContext context, Expression exp = null) {
+        if (template != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
+            Expression isCurrentInheritorExp = AbstractEntitiesUtil.getIsCurrentInheritorExp(entityName, template.entity)
+            if (exp != null)
+                isCurrentInheritorExp = isCurrentInheritorExp.andExp(exp)
+            return getEntityIds(template.entity, request, context, isCurrentInheritorExp)
+        } else
+            return getEntityIds(entityName, request, context, exp)
     }
 
 
