@@ -21,3 +21,15 @@ test.dependsOn(jest)
 build.dependsOn(webpack)
 
 processResources.dependsOn(":portal-api:swagger")
+
+publishing {
+    publications {
+        executables(MavenPublication) {
+            artifact(file("${buildDir}/distribution/${project.name}.zip")) {
+                classifier "executable"
+                extension "zip"
+                builtBy build
+            }
+        }
+    }
+}

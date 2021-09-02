@@ -20,7 +20,7 @@ module.exports = async function (env, argv) {
     config.plugins.push(
       new ZipPlugin({
         path: '../distribution',
-        filename: 'portal.zip',
+        filename: 'portal-native.zip',
         exclude: [/\.js$/, /\.css$/, /\.map$/],
         fileOptions: {
           mtime: new Date(),
