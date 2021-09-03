@@ -39,20 +39,22 @@ const getBodyEntries = body => {
 };
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
-  `\n${queryClosureReturnValue} = query {
+  `\n${queryClosureReturnValue || "records"} = query {
     entity "${entity || ""}"
     query "${query?.replace(new RegExp("\"", "g"), '\\"') || ""}"
   }\n\n`;
 
 export const getQueryComponent = (body: string): ScriptComponent => {
-  const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/);
+  // const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/g);
+  const queryClosureReturnValueMatch = body.match(/(.+)\s+=\s+query/g);
   const entityMatch = body.match(/entity\s+['"](.+)['"]\s/);
   const queryMatch = body.match(/query\s+"(.+)"\s+(context)?/);
 
   return {
     type: "Query",
     id: uniqid(),
-    queryClosureReturnValue: (queryClosureReturnValueMatch && queryClosureReturnValueMatch[1]) || "records",
+    queryClosureReturnValue: (queryClosureReturnValueMatch && queryClosureReturnValueMatch[0]
+      && queryClosureReturnValueMatch[0].replace(/\s+=\s+query/g, "")) || "records",
     entity: entityMatch && entityMatch[1],
     query: queryMatch && queryMatch[1].replace(/\\"/g, '"'),
   };
