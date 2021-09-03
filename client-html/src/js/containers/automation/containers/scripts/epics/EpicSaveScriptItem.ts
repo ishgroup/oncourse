@@ -20,6 +20,8 @@ const request: EpicUtils.Request = {
   getData: ({
    id, script, method, viewMode
   }) => {
+    if (script.queryClosureReturnValue) delete script.queryClosureReturnValue;
+
     if (method === "PATCH") {
       return ScriptsService.patchScriptItem(id, appendComponents(script, viewMode));
     }

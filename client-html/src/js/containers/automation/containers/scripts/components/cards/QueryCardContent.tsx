@@ -11,7 +11,6 @@ import * as Entities from "@aql/queryLanguageModel";
 import debounce from "lodash.debounce";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../../common/utils/common";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
 import EntityService from "../../../../../../common/services/EntityService";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
 
@@ -64,6 +63,16 @@ const QueryCardContent = props => {
     debounseSearch(isValidQuery, field.entity, field.query, queryResultsPending);
   }, [field.query]);
 
+  const validateQueryClosureReturnValue = useCallback(value => {
+    if (!value) return "";
+
+    const matches = value.match(/[a-zA-Z]*/g);
+
+    if (!matches || matches[0] !== value) return "You can only use letters";
+
+    return "";
+  }, [field]);
+
   const queryAvailable = Boolean(field.entity);
 
   const validateExpression = useCallback(() => (isValidQuery ? undefined : "Expression is invalid"), [isValidQuery]);
@@ -106,9 +115,12 @@ const QueryCardContent = props => {
 
         <Grid item={true} container xs={12}>
           <Grid xs={6}>
-            <Uneditable
+            <FormField
+              name={`${name}.queryClosureReturnValue`}
+              type="text"
               value={field.queryClosureReturnValue}
               label="Returned results name"
+              validate={validateQueryClosureReturnValue}
             />
           </Grid>
 
