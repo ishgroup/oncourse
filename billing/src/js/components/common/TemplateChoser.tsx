@@ -116,6 +116,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     border: '3px solid #e5e5e5',
     borderRadius: 4,
     transition: '0.5s all cubic-bezier(0.46, 0.03, 0.52, 0.96)',
+    minWidth: 301,
     '&:hover, &$listItemSelected': {
       borderColor: '#434343',
       '& $listItemOverlay': {
@@ -147,6 +148,22 @@ const useStyles = makeStyles((theme: AppTheme) => ({
       borderColor: theme.statistics.coloredHeaderText.color
     },
   },
+  responsiveImage: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
+    "& > img": {
+      position: "relative",
+      left: "50%",
+      top: 0,
+      transform: "translate(-50%, 0%)",
+      width: "auto",
+      height: "auto",
+      maxWidth: 450,
+      minWidth: "100%",
+    },
+  },
   listItemOverlay: {
     position: 'absolute',
     backgroundColor: alpha('#000', 0.5),
@@ -170,6 +187,10 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     '&:hover': {
       color: 'rgb(172, 103, 20)',
     }
+  },
+  actionContainer: {
+    display: "flex",
+    flexDirection: "column",
   },
   actionButton: {
     fontSize: 16,
@@ -199,12 +220,14 @@ export const TemplateChoser = ({ value, onChange }) => {
         {imgData.map((tile) => (
           <ImageListItem key={tile.img} cols={1}>
             <div className={clsx(classes.listItem, tile.value === value && classes.listItemSelected)}>
-              <img
-                src={tile.img}
-                alt={tile.title}
-                className={clsx(classes.image, tile.value === value ? classes.selectedImage : null)}
-                loading="lazy"
-              />
+              <span className={classes.responsiveImage}>
+                <img
+                  src={tile.img}
+                  alt={tile.title}
+                  className={clsx(classes.image, tile.value === value ? classes.selectedImage : null)}
+                  loading="lazy"
+                />
+              </span>
               <div className={classes.listItemOverlay}>
                 <div>
                   {tile.value === value ? (
@@ -212,7 +235,7 @@ export const TemplateChoser = ({ value, onChange }) => {
                       <CheckCircleRoundedIcon fontSize="large" className={classes.selectedItemCheck} />
                     </IconButton>
                   ) : (
-                    <div>
+                    <div className={classes.actionContainer}>
                       <Button
                         variant="contained"
                         color="primary"

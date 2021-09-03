@@ -33,7 +33,7 @@ import AutosizeInput from '../../common/AutosizeInput';
 export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   container: {
     display: 'flex',
-    padding: theme.spacing(0, 20)
+    padding: 0
   },
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color,
