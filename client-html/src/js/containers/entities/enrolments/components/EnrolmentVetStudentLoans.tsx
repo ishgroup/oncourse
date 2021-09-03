@@ -12,16 +12,16 @@ import {
   EnrolmentCreditProviderType,
   EnrolmentCreditLevel,
   EnrolmentFeeStatus,
-  Enrolment
+  Enrolment,
+  EnrolmentReportingStatus,
 } from "@api/model";
-import { Collapse, FormControlLabel } from "@material-ui/core";
+import { Collapse } from "@material-ui/core";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);
 
@@ -46,6 +46,8 @@ const enrolmentCreditProviderTypeItems = Object.keys(EnrolmentCreditProviderType
 const enrolmentCreditLevelItems = Object.keys(EnrolmentCreditLevel).map(mapSelectItems);
 
 const enrolmentCreditTotalItems = Object.keys(EnrolmentCreditTotal).map(mapSelectItems);
+
+const enrolmentReportingStatusItems = Object.keys(EnrolmentReportingStatus).map(mapSelectItems);
 
 const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
   {
@@ -73,12 +75,19 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
 
   const showVSL = Boolean(values.feeHelpAmount) || values.feeStatus !== null;
 
-  const onShowCheck = (e, checked) => {
-    if (checked) {
-      dispatch(change(form, "feeStatus", enrolmentFeeStatusItems[0].value));
-    } else {
-      dispatch(change(form, "feeStatus", null));
-      dispatch(change(form, "feeHelpAmount", 0));
+  const onChangeSelectValue = e => {
+    switch (e) {
+      case 'Eligible':
+      case 'Not eligible':
+        dispatch(change(form, "feeStatus", null));
+        dispatch(change(form, "feeHelpAmount", 0));
+        break;
+      case 'Ongoing':
+      case 'Finalized':
+        dispatch(change(form, "feeStatus", enrolmentFeeStatusItems[0].value));
+        break;
+      default:
+        break;
     }
   };
 
@@ -86,12 +95,17 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
     <Grid container className="pl-3 pr-3">
       {values.feeHelpClass && (
         <>
-          <Grid item xs={12} className="centeredFlex mt-2 mb-2">
-            <FormControlLabel
-              className="switchWrapper"
-              control={<Switch checked={showVSL} onChange={onShowCheck} />}
-              label={<span className="heading mr-1">VET Student Loans</span>}
-              labelPlacement="start"
+          <Grid item xs={12} className="mt-2 mb-2">
+            <div className="heading mt-2 mb-2">
+              VET Student Loans
+            </div>
+
+            <FormField
+              type="select"
+              name="reportingStatus"
+              label="Reporting Status"
+              items={enrolmentReportingStatusItems}
+              onChange={onChangeSelectValue}
             />
           </Grid>
 
@@ -102,7 +116,12 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                   <Uneditable label="Fee charged" value={values.feeCharged} money />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
-                  <FormField type="money" name="feeHelpAmount" label="Fee help requested" />
+                  <FormField
+                    type="money"
+                    name="feeHelpAmount"
+                    label="Fee help requested"
+                    disabled={values.reportingStatus === "Finalized"}
+                  />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <Uneditable label="Loan fee" value={loanData.loanFee} money />
@@ -116,6 +135,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                     name="feeStatus"
                     label="Fee subsidy"
                     items={enrolmentFeeStatusItems}
+                    disabled={values.reportingStatus === "Finalized"}
                     allowEmpty
                   />
                 </Grid>
@@ -125,6 +145,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                     name="attendanceType"
                     label="Type of attendance"
                     items={courseClassAttendanceTypeItems}
+                    disabled={values.reportingStatus === "Finalized"}
                   />
                 </Grid>
               </Grid>
