@@ -43,14 +43,14 @@ export const Connect = () => {
         <MicrosoftConnect
           styles={styles}
           clientId={thirdParty.Microsoft.clientId}
-          onSuccsess={(auth) => onConnectSuccsess(auth, 'Microsoft', verifier)}
+          onSuccsess={(auth, verifier) => onConnectSuccsess(auth, 'Microsoft', verifier)}
         />
       )}
       {thirdParty?.Facebook?.clientId && (
         <FacebookConnect
           styles={styles}
           clientId={thirdParty.Facebook.clientId}
-          onSuccsess={(auth) => onConnectSuccsess(auth, 'Facebook', verifier)}
+          onSuccsess={(auth, verifier) => onConnectSuccsess(auth, 'Facebook', verifier)}
         />
       )}
     </View>
