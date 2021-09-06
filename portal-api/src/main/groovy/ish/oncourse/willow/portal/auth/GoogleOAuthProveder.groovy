@@ -54,8 +54,13 @@ class GoogleOAuthProveder extends OAuthProvider {
         return credantials
     }
 
-    String getClientId() {
+    String getWebClientId() {
         clientSecrets.getWeb().getClientId()
+    }
+
+    @Override
+    String getAndroidClientId() {
+        return clientSecrets.getInstalled().getClientId()
     }
 
     @Override

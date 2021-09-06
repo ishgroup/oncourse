@@ -30,8 +30,13 @@ class FacebookOAuthProvider extends OAuthProvider {
     }
 
     @Override
-    String getClientId() {
+    String getWebClientId() {
         return clientId
+    }
+
+    @Override
+    String getAndroidClientId() {
+        return null
     }
 
     @Override

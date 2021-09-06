@@ -9,8 +9,7 @@ get:
       description: Success response.
       schema:
         type: object
-        additionalProperties:
-          type: string
+        additionalProperties: true
     default:
       description: Unexpected error
   

@@ -55,10 +55,10 @@ class AuthenticationApiImpl implements AuthenticationApi{
     }
 
     @Override
-    Map<String, String> ssoClientIds() {
-        return [(SSOproviders.GOOGLE.toString()) : googleOAuthProveder.clientId,
-                (SSOproviders.MICROSOFT.toString()): microsoftOAuthProvider.clientId,
-                (SSOproviders.FACEBOOK.toString()): facebookOAuthProvider.clientId]
+    Map<String, Map<String, String>> ssoClientIds() {
+        return [(SSOproviders.GOOGLE.toString()) : [web: googleOAuthProveder.webClientId, android: googleOAuthProveder.androidClientId],
+                (SSOproviders.MICROSOFT.toString()): [web: microsoftOAuthProvider.webClientId,  android: microsoftOAuthProvider.androidClientId],
+                (SSOproviders.FACEBOOK.toString()): [web: facebookOAuthProvider.webClientId, android: facebookOAuthProvider.androidClientId]]
     }
     
     @Override

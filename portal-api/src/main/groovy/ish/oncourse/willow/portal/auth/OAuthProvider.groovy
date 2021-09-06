@@ -5,7 +5,9 @@ import ish.oncourse.configuration.Configuration
 abstract class OAuthProvider {
     
     protected abstract String getSecretFileName()
-    abstract String getClientId()
+    abstract String getWebClientId()
+    abstract String getAndroidClientId()
+
     abstract SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier)
 
 

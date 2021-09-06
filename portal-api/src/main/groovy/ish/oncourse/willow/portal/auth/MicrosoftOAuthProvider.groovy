@@ -50,8 +50,13 @@ class MicrosoftOAuthProvider extends OAuthProvider {
         return "microsoft_secret.json"
     }
     @Override
-    String getClientId() {
+    String getWebClientId() {
         return clientId
+    }
+
+    @Override
+    String getAndroidClientId() {
+        return null
     }
 
     @Override
