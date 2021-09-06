@@ -158,7 +158,8 @@ const Stepper: React.FC<Props> = (
   };
 
   const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep, steps]);
-  const completed = activeStep === steps.length - 1;
+  const hasSites = steps[activeStep] === "Sites";
+  const completed = hasSites ? false : activeStep === steps.length - 1;
 
   return (
     <div className={classes.root}>
@@ -179,10 +180,12 @@ const Stepper: React.FC<Props> = (
           ) : (
             <div className={clsx(classes.contentInner, completed && classes.stepsCompleted)}>
               <div className={classes.formItem}>
-                <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
-                  Step&nbsp;
-                  {activeStep + 1}
-                </Typography>
+                {!hasSites && (
+                  <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
+                    Step&nbsp;
+                    {activeStep + 1}
+                  </Typography>
+                )}
                 {activePage}
               </div>
             </div>
