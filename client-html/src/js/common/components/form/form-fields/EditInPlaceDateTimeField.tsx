@@ -208,7 +208,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onInputChange = e => {
-    setTextValue(e.target.value);
+    e && setTextValue(e.target.value);
   };
 
   const openPicker = () => {
