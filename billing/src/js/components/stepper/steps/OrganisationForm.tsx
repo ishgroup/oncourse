@@ -19,6 +19,8 @@ import Navigation from '../Navigations';
 import { countries, countriesTimeZone } from '../../../utils';
 import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme: any) => ({
   textFieldWrapper: {
@@ -26,6 +28,19 @@ const useStyles = makeStyles((theme: any) => ({
   },
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color,
+  },
+  subTitle: {
+    marginBottom: 30,
+  },
+  sectionTitle: {
+    fontFamily: theme.typography.fontFamily,
+    fontSize: 22
+  },
+  groupOrganization: {
+    marginBottom: 30,
+  },
+  groupOrganizationDetails: {
+    marginBottom: 20,
   },
 }));
 
@@ -101,125 +116,161 @@ const OrganisationForm = (props: any) => {
 
   return (
     <form>
-      <h2 className={classes.coloredHeaderText}>Organisation</h2>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Name"
-          label="Name"
-          id="organisationName"
-          autoFocus
-          onChange={handleChange}
-          value={values.organisationName}
-          error={touched.organisationName && errors.organisationName}
-          helperText={errors.organisationName}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Company number/ABN"
-          label="Company number/ABN"
-          id="abn"
-          onChange={handleChange}
-          value={values.abn}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Trading Name"
-          label="Trading Name"
-          id="tradingName"
-          onChange={handleChange}
-          value={values.tradingName}
-          helperText="(if different to organisation name)"
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Address"
-          label="Address"
-          id="address"
-          onChange={handleChange}
-          value={values.address}
-          error={touched.address && errors.address}
-          helperText={errors.address}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="City | Suburb"
-          label="City | Suburb"
-          id="suburb"
-          onChange={handleChange}
-          value={values.suburb}
-          error={touched.suburb && errors.suburb}
-          helperText={errors.suburb}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="State"
-          label="State"
-          id="state"
-          onChange={handleChange}
-          value={values.state}
-          error={touched.state && errors.state}
-          helperText={errors.state}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <CustomTextField
-          placeholder="Postcode/ZIP"
-          label="Postcode/ZIP"
-          id="postcode"
-          onChange={handleChange}
-          value={values.postcode}
-          error={touched.postcode && errors.postcode}
-          helperText={errors.postcode}
-          onBlur={handleBlur}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <Autocomplete
-          id="country"
-          options={countries}
-          getOptionLabel={(option: string) => option}
-          onChange={(_, value) => setFieldValue('country', value)}
-          value={values.country}
-          renderInput={(params) => (
+      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom={true}>
+        Enter your organisation details
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom={true} className={classes.subTitle}>
+        Tell us a bit about your business
+      </Typography>
+
+      <Typography variant="h5" component="h5" className={classes.sectionTitle} color="initial" gutterBottom={true}>
+        Your Organisation
+      </Typography>
+      <Grid container spacing={5} className={classes.groupOrganization}>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
             <CustomTextField
-              {...params}
-              label="Country"
-              margin="normal"
-              error={touched.country && errors.country}
-              helperText={errors.country}
+              placeholder="Organisation Name"
+              label="Organisation Name"
+              id="organisationName"
+              autoFocus
+              onChange={handleChange}
+              value={values.organisationName}
+              error={touched.organisationName && errors.organisationName}
+              helperText={errors.organisationName}
               onBlur={handleBlur}
             />
-          )}
-        />
-      </div>
-      <div className={classes.textFieldWrapper}>
-        <Autocomplete
-          id="timeZone"
-          options={countriesTimeZone}
-          getOptionLabel={(option: string) => option}
-          onChange={(_, value) => setFieldValue('timeZone', value)}
-          value={values.timeZone}
-          renderInput={(params) => (
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
             <CustomTextField
-              {...params}
-              label="Time zone"
-              margin="normal"
-              error={touched.timeZone && errors.timeZone}
-              helperText={errors.timeZone}
+              placeholder="Company No. / ABN"
+              label="Company No. / ABN"
+              id="abn"
+              onChange={handleChange}
+              value={values.abn}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="Trading Name"
+              label="Trading Name"
+              id="tradingName"
+              onChange={handleChange}
+              value={values.tradingName}
+              helperText="(if different to organisation name)"
+            />
+          </div>
+        </Grid>
+      </Grid>
+
+      <Typography variant="h5" component="h5" className={classes.sectionTitle} color="initial" gutterBottom={true}>
+        Your Organisation's Details
+      </Typography>
+      <Grid container spacing={5} className={classes.groupOrganizationDetails}>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="Street Address"
+              label="Street Address"
+              id="address"
+              onChange={handleChange}
+              value={values.address}
+              error={touched.address && errors.address}
+              helperText={errors.address}
               onBlur={handleBlur}
             />
-          )}
-        />
-      </div>
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="City or Suburb"
+              label="City or Suburb"
+              id="suburb"
+              onChange={handleChange}
+              value={values.suburb}
+              error={touched.suburb && errors.suburb}
+              helperText={errors.suburb}
+              onBlur={handleBlur}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="State"
+              label="State"
+              id="state"
+              onChange={handleChange}
+              value={values.state}
+              error={touched.state && errors.state}
+              helperText={errors.state}
+              onBlur={handleBlur}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <CustomTextField
+              placeholder="Postcode / ZIP"
+              label="Postcode / ZIP"
+              id="postcode"
+              onChange={handleChange}
+              value={values.postcode}
+              error={touched.postcode && errors.postcode}
+              helperText={errors.postcode}
+              onBlur={handleBlur}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <Autocomplete
+              id="country"
+              options={countries}
+              getOptionLabel={(option: string) => option}
+              onChange={(_, value) => setFieldValue('country', value)}
+              value={values.country}
+              renderInput={(params) => (
+                <CustomTextField
+                  {...params}
+                  label="Country"
+                  margin="normal"
+                  error={touched.country && errors.country}
+                  helperText={errors.country}
+                  onBlur={handleBlur}
+                />
+              )}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <div className={classes.textFieldWrapper}>
+            <Autocomplete
+              id="timeZone"
+              options={countriesTimeZone}
+              getOptionLabel={(option: string) => option}
+              onChange={(_, value) => setFieldValue('timeZone', value)}
+              value={values.timeZone}
+              renderInput={(params) => (
+                <CustomTextField
+                  {...params}
+                  label="Time zone"
+                  margin="normal"
+                  error={touched.timeZone && errors.timeZone}
+                  helperText={errors.timeZone}
+                  onBlur={handleBlur}
+                />
+              )}
+            />
+          </div>
+        </Grid>
+      </Grid>
+
       <Navigation
         activeStep={activeStep}
         steps={steps}

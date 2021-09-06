@@ -1,5 +1,6 @@
 const createExpoWebpackConfigAsync = require('@expo/webpack-config');
 const path = require('path');
+const ZipPlugin = require('zip-webpack-plugin');
 
 // Expo CLI will await this method so you can optionally return a promise.
 module.exports = async function (env, argv) {
@@ -16,6 +17,19 @@ module.exports = async function (env, argv) {
     config.plugins[1].patterns[0].to = buildPath;
     config.plugins[1].patterns[1].to = buildPath;
     config.plugins[2].options.filename = `${buildPath}/index.html`;
+    config.plugins.push(
+      new ZipPlugin({
+        path: '../distribution',
+        filename: 'portal-native.zip',
+        exclude: [/\.js$/, /\.css$/, /\.map$/],
+        fileOptions: {
+          mtime: new Date(),
+          mode: 0o100664,
+          compress: true,
+          forceZip64Format: false,
+        },
+      }),
+    );
   }
 
   return config;

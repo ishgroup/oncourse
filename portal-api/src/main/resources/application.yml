@@ -1,5 +1,5 @@
 jetty:
-  context: /
+  context: /p
   connectors:
     - type: willow
       port: 11100
@@ -7,7 +7,6 @@ jetty:
   compactPath: true
 cxf:
   welcomeText: 'portal REST API'
-  urlPattern: '/p/*'
 jdbc:
   willow:
     driverClassName: org.mariadb.jdbc.Driver

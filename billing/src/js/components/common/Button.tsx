@@ -70,6 +70,7 @@ const Button = (props: any) => {
       onClick={onClick}
       type={type}
       disabled={disabled || loading}
+      disableElevation
     >
       {leftIcon && leftIcon(text && classes.leftIcon)}
       {text}

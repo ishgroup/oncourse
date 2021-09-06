@@ -4,52 +4,72 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import createStyles from "@material-ui/core/styles/createStyles";
+import onCourseLogoChristmas from "../../../images/onCourseLogoChristmas.png";
+import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
 
 const styles = theme => createStyles({
   root: {
-    width: "170px",
-    height: "calc(100vh - 64px)",
+    width: "250px",
+    height: "100vh",
     padding: theme.spacing(4),
     backgroundColor: theme.tabList.listContainer.backgroundColor,
     position: "fixed",
+    left: 0,
+    top: 0,
+    bottom: 0,
   },
   listContainer: {
     flexDirection: "column",
+    flex: 1,
+    textAlign: "center",
+    "& > img": {
+      maxWidth: 160,
+      position: "relative",
+      left: -5
+    }
   },
   listContainerInner: {
     marginBottom: theme.spacing(8),
+    paddingTop: "70%",
+    paddingLeft: 20,
+    textAlign: "left"
   },
-  listItemRoot: {
-    alignItems: "flex-start",
-    marginBottom: theme.spacing(3),
-    color: theme.palette.common.white,
-    fontWeight: 600,
-    opacity: 0.6,
+  stepRoot: {
+    marginBottom: 20,
+  },
+  stepCompleted: {
+    "& $stepLabelCompleted": {
+      color: "#37caad",
+    },
+    "& $stepLabelIconContainer": {
+      "& > svg": {
+        color: "#37caad",
+      },
+    },
+  },
+  stepperRoot: {
+    backgroundColor: "transparent",
     padding: 0,
-    "&$selected": {
-      opacity: 1,
-      backgroundColor: "inherit"
-    },
-    '&:hover': {
-      cursor: "auto",
-    },
   },
-  listItemText: {
-    fontSize: "14px",
-    fontWeight: 600,
-    width: "100%",
-    textTransform: "uppercase",
+  stepLabelDisabled: {
+    "& $stepLabelIconContainer": {
+      "& > svg": {
+        color: theme.palette.primary.contrastText,
+        "& > text": {
+          fill: theme.palette.primary.main
+        }
+      }
+    }
   },
-  indicator: {
-    display: "none"
-  },
-  selected: {}
+  stepLabelIconContainer: {},
+  stepLabelCompleted: {},
 });
 
 
@@ -57,36 +77,63 @@ interface Props {
   items: string[];
   activeStep: number;
   classes?: any;
+  completed?: boolean;
 }
 
 const TabsList = React.memo<Props>((
   {
     classes,
     items,
-    activeStep
+    activeStep,
+    completed,
   }) => {
+
+  const isChristmas = localStorage.getItem("theme") === "christmas";
+
   return (
     <Grid container className={classes.root}>
       <div className={clsx("relative",
         classes.listContainer,
         localStorage.getItem("theme") === "christmas" && "christmasHeader")}
       >
-
+        {isChristmas ? (
+          <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
+        ) : (
+          <img
+            src={onCourseLogoDark}
+            className={classes.logo}
+            alt="Logo"
+          />
+        )}
         <div className={classes.listContainerInner}>
-          {items.map((i, index) => (
-            <ListItem
-              selected={index === activeStep}
-              classes={{
-                root: classes.listItemRoot,
-                selected: classes.selected
-              }}
-              key={index}
-            >
-              <Typography variant="body2" component="div" color="inherit">
-                <div className={classes.listItemText}>{i}</div>
-              </Typography>
-            </ListItem>
-          ))}
+          <Stepper
+            activeStep={completed ? items.length : activeStep}
+            orientation="vertical"
+            connector={<></>}
+            classes={{
+              root: classes.stepperRoot,
+            }}
+          >
+            {items.map((label, index) => (
+              <Step
+                key={label}
+                classes={{
+                  root: classes.stepRoot,
+                  completed: classes.stepCompleted,
+                }}
+              >
+                <StepLabel
+                  classes={{
+                    disabled: classes.stepLabelDisabled,
+                    iconContainer: classes.stepLabelIconContainer,
+                    completed: classes.stepLabelCompleted,
+                  }}
+                >
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
         </div>
       </div>
     </Grid>

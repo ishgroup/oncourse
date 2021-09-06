@@ -1,9 +1,9 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer';
-import Navigation from '../components/navigation';
+import NotFoundScreen from '../screens/NotFoundScreen';
 
 it('renders correctly', () => {
-  const tree = renderer.create(<Navigation />).toJSON();
+  const tree = renderer.create(<NotFoundScreen />).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

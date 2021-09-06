@@ -5,25 +5,33 @@
 
 import { LoginRequest, LoginResponse } from '@api/model';
 import { createRequest, Request } from '../../utils/EpicUtils';
-import { setIsLogged, setLoginStage, SIGN_IN } from '../../actions/LoginActions';
+import {
+  setIsLogged, setLoginStage, SIGN_IN
+} from '../../actions/LoginActions';
 import LoginService from '../../services/LoginService';
 import { LoginStages } from '../../model/Login';
 import { setToken } from '../../utils/SessionStorageUtils';
+import { LoginErrorHandler } from '../../utils/ApiUtils';
 
 const request: Request<LoginRequest, LoginResponse> = {
   type: SIGN_IN,
   getData: (req) => LoginService.signIn(req),
   processData: (response) => {
+    const actions = [];
     if (response.vefiryEmail) {
-      return [setLoginStage(LoginStages.EmaiConfirm)];
+      actions.push(setLoginStage(LoginStages.EmaiConfirm));
     }
+    // if (response.user) {
+    //   actions.push(setUser(response.user));
+    // }
     if (response.token) {
       setToken(response.token);
-      return [setIsLogged(true)];
+      actions.push(setIsLogged(true));
     }
 
-    return [];
-  }
+    return actions;
+  },
+  processError: (data) => LoginErrorHandler(data)
 };
 
 export default createRequest(request);

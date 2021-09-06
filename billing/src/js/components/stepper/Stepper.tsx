@@ -9,7 +9,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import clsx from 'clsx';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import LeftMenu from '../common/LeftMenu';
 import NameForm from './steps/NameForm';
 import TemplateForm from './steps/TemplateForm';
@@ -21,27 +23,43 @@ import ErrorPage from '../ErrorPage';
 import { SITE_KEY } from '../../constant/common';
 import { SitesPage } from './steps/SitesPage';
 import { State } from '../../redux/reducers';
-import { ExistingCustomerSteps, NewCustomerSteps, Step } from '../../models/User';
+import { Step } from '../../models/User';
 import { AppTheme } from '../../models/Theme';
-import { getCookie } from '../../utils';
+import iconDots from '../../../images/icon-dots.png';
 
 export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   root: {
     width: '100%',
-    marginTop: '64px',
-    height: 'calc(100vh - 64px)',
-    display: 'flex'
+    marginTop: '0',
+    height: '100vh',
+    display: 'flex',
+    paddingLeft: 250
   },
   content: {
     margin: 'auto',
-    minWidth: '400px',
+    maxWidth: 1200,
+    padding: theme.spacing(10),
+    width: '100%',
+  },
+  contentInner: {
+    backgroundImage: `url(${iconDots})`,
+    backgroundPosition: '0 0',
+    backgroundSize: 18,
+    padding: '48px 48px 130px',
+  },
+  formItem: {
+    position: 'relative',
+    backgroundColor: '#fff',
+    padding: '48px 48px 8px',
+  },
+  formStep: {
+    color: '#888',
   },
   formWrapper: {
     flex: 1,
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: '0px 20px 0px 190px'
+    padding: '0px 20px 0px 20px'
   },
   instructions: {
     marginTop: theme.spacing(1),
@@ -53,6 +71,27 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color,
   },
+  hasError: {
+    padding: theme.spacing(6),
+    '& $formItem': {
+      padding: theme.spacing(6),
+      backgroundColor: theme.palette.error.main,
+      color: theme.palette.error.contrastText,
+      borderRadius: 4,
+    }
+  },
+  stepsCompleted: {
+    padding: theme.spacing(6),
+    '& $formItem': {
+      padding: theme.spacing(6),
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.error.contrastText,
+      borderRadius: 4,
+      '& $formStep': {
+        color: theme.palette.error.contrastText,
+      }
+    }
+  }
 }));
 
 const getComponent = (type: Step, props: any) => {
@@ -77,25 +116,17 @@ interface Props {
   serverError?: any;
   setCaptchaToken?: any;
   userKey?: string;
+  steps?: Step[];
 }
 
 const Stepper: React.FC<Props> = (
   {
-    serverError
+    serverError,
+    steps
   }
 ) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const [steps, setSteps] = React.useState<Step[]>([]);
-
-  useEffect(() => {
-    const token = getCookie('JSESSIONID');
-    if (token) {
-      setSteps([...ExistingCustomerSteps]);
-    } else {
-      setSteps([...NewCustomerSteps]);
-    }
-  }, []);
 
   useEffect(() => {
     const loadScriptByURL = (id, url) => {
@@ -127,20 +158,39 @@ const Stepper: React.FC<Props> = (
   };
 
   const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep, steps]);
+  const hasSites = steps[activeStep] === "Sites";
+  const completed = hasSites ? false : activeStep === steps.length - 1;
 
   return (
     <div className={classes.root}>
       <LeftMenu
         items={steps}
         activeStep={activeStep}
+        completed={completed}
       />
 
       <div className={classes.formWrapper}>
-        {serverError ? <ErrorPage /> : (
-          <div className={classes.content}>
-            {activePage}
-          </div>
-        )}
+        <div className={classes.content}>
+          {serverError ? (
+            <div className={clsx(classes.contentInner, classes.hasError)}>
+              <div className={classes.formItem}>
+                <ErrorPage />
+              </div>
+            </div>
+          ) : (
+            <div className={clsx(classes.contentInner, completed && classes.stepsCompleted)}>
+              <div className={classes.formItem}>
+                {!hasSites && (
+                  <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
+                    Step&nbsp;
+                    {activeStep + 1}
+                  </Typography>
+                )}
+                {activePage}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

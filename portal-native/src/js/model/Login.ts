@@ -1,10 +1,11 @@
-import { LoginRequest } from '@api/model';
+import { LoginRequest, User } from '@api/model';
 
 export interface LoginState {
   isLogged: boolean;
   loading: boolean;
   verificationUrl?: string;
   stage: LoginStages;
+  user: User;
 }
 
 export enum LoginStages {

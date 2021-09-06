@@ -9,10 +9,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import CheckCircle from "@material-ui/icons/CheckCircle";
 
 const useStyles = makeStyles((theme: any) => ({
-  coloredHeaderText: {
-    color: theme.statistics.coloredHeaderText.color
+  finishTitle: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: 20,
   },
 }));
 
@@ -21,14 +24,11 @@ const FinishPage = (props) => {
 
   return (
     <div>
-      <h2 className={classes.coloredHeaderText}>
-        All done!
-      </h2>
-      <Typography>
-        We are creating system for you now
+      <Typography variant="h3" component="h3" className={classes.finishTitle}>
+        <CheckCircle fontSize="large" />&nbsp;All done!
       </Typography>
-      <Typography>
-        You will receive an email with your new account details shortly
+      <Typography variant="subtitle1" component="div">
+        Servers are being created now and your system prepared. You'll get an email in a few minutes with your login details.
       </Typography>
     </div>
   );

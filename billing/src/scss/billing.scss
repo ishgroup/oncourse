@@ -7,9 +7,14 @@
  */
 
 body {
-  font-family: Inter, "sans-serif";
+  font-family: Merriweather, "sans-serif";
   margin: 0;
   padding: 0;
+  background-color: #fff;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
 }
 
 .grecaptcha-badge {

@@ -15,7 +15,7 @@ const CreateAccount = () => {
   const loading = useAppSelector((state) => state.login.loading);
 
   const {
-    handleSubmit, isValid, values, touched, setFieldTouched, isSubmitting
+    handleSubmit, isValid, values, touched, setFieldTouched, isSubmitting, isValidating
   } = useFormikContext<LoginValues>();
 
   const cs = useCommonStyles();
@@ -45,8 +45,8 @@ const CreateAccount = () => {
         mode="contained"
         dark
         onPress={handleSubmit}
-        disabled={!isValid || isSubmitting}
-        loading={loading}
+        disabled={!isValid || isValidating || isSubmitting}
+        loading={loading || isValidating}
       >
         Create account
       </Button>

@@ -5,7 +5,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "web:prod": "expo start --no-dev --minify --web",
-    "test": "jest"
+    "test": "jest -u"
   },
   "jest": {
     "preset": "jest-expo"
@@ -28,6 +28,7 @@
     "expo-application": "~3.2.0",
     "expo-asset": "~8.3.3",
     "expo-auth-session": "~3.3.1",
+    "expo-constants": "~11.0.1",
     "expo-font": "~9.2.1",
     "expo-linking": "~2.3.1",
     "expo-random": "~11.2.0",
@@ -82,7 +83,8 @@
     "expo-cli": "^4.10.0",
     "jest-expo": "^42.0.0",
     "react-test-renderer": "^17.0.2",
-    "typescript": "~4.0.0"
+    "typescript": "~4.0.0",
+    "zip-webpack-plugin": "^4.0.1"
   },
   "private": true
 }
