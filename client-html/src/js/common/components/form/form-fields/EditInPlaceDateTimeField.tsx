@@ -263,7 +263,11 @@ const EditInPlaceDateTimeField: React.FC<any> = (
           formatted = null;
         }
       } else {
-        formatted = v.toISOString();
+        try {
+          formatted = v.toISOString();
+        } catch {
+          formatted = null;
+        }
       }
       input.onChange(formatted);
       input.onBlur(formatted);
