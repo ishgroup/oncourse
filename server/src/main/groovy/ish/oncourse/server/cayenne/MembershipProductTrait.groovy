@@ -23,7 +23,11 @@ trait MembershipProductTrait {
      */
     Long getTotalActiveMembershipsCount(){
         return ObjectSelect.query(ProductItem.class)
-                .where(ProductItem.PRODUCT.eq((Product)this).andExp(ProductItem.STATUS.eq(ProductStatus.ACTIVE)))
+                .where(
+                        ProductItem.PRODUCT.eq((Product)this)
+                        .andExp(ProductItem.STATUS.eq(ProductStatus.ACTIVE))
+                        .andExp(ProductItem.EXPIRY_DATE.gt(new Date()))
+                )
                 .selectCount(cayenneService.newReadonlyContext)
     }
     /**

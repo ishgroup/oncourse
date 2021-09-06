@@ -280,7 +280,6 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Created', attribute: Payslip.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Status', attribute: Payslip.STATUS.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Type', attribute: Payslip.PAY_TYPE.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Pay type', attribute: Payslip.CONTACT.dot(Contact.TUTOR).dot(Tutor.PAY_TYPE).name, sortable: false, width: W200, visible: false, prefetches: [Payslip.CONTACT.dot(Contact.TUTOR).path().toString()]),
                 new ColumnDTO(title: 'Budget total', attribute: Payslip.BUDGET_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()]),
                 new ColumnDTO(title: 'Paid total', attribute: Payslip.PAID_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()]),
         ]
@@ -486,11 +485,11 @@ class DefaultUserPreference {
                         visible: false,
                         system: true),
                 new ColumnDTO(title: 'Enrolment type',
-                        attribute: Course.ENROLMENT_TYPE.name,
+                        attribute: Course.ENROLMENT_TYPE_KEY,
                         sortable: true,
                         width: W100,
                         visible: false,
-                        system: true),
+                        system: false),
                 new ColumnDTO(title: 'Data collection',
                         attribute: Course.DATA_COLLECTION_RULE_KEY,
                         sortable: false,
@@ -643,7 +642,7 @@ class DefaultUserPreference {
                 ),
                 new ColumnDTO(title: 'Purchased on', attribute: ProductItem.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Voucher code', attribute: ProductItem.CODE.name, sortable: true, width: W200, visible: false),
-                new ColumnDTO(title: 'Purchase price', attribute: ProductItem.VALUE_ON_PURCHASE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Purchase price', attribute: ProductItem.PURCHASE_PRICE_KEY, sortable: false, width: W200, visible: false, type: ColumnTypeDTO.MONEY, prefetches: [ProductItem.INVOICE_LINE.path().toString()]),
                 new ColumnDTO(title: 'Value remaining', attribute: ProductItem.REDEMPTION_VALUE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.MONEY),
         ]
         it.sortings = [
@@ -739,7 +738,11 @@ class DefaultUserPreference {
                 ),
                 new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
-                new ColumnDTO(title: 'Grade', attribute: AssessmentSubmission.GRADE.name, sortable: true, width: W200, visible: false),
+                new ColumnDTO(title: 'Grade', attribute: AssessmentSubmission.GRADE_KEY, sortable: true, width: W200, visible: false, sortFields: [AssessmentSubmission.GRADE.name],
+                        prefetches: [AssessmentSubmission.ASSESSMENT_CLASS
+                                             .dot(AssessmentClass.ASSESSMENT
+                                                .dot(Assessment.GRADING_TYPE))
+                                             .path().toString()]),
                 new ColumnDTO(title: 'Assessor', attribute: AssessmentSubmission.MARKED_BY.dot(Contact.FULL_NAME_KEY).name, sortable: false, width: W200, visible: false, prefetches: [AssessmentSubmission.MARKED_BY.path().toString()]),
         ]
         it.sortings = [
@@ -907,15 +910,15 @@ class DefaultUserPreference {
                         width: W200, visible: false,
                         prefetches: [Contact.PRODUCT_ITEMS.path().toString()]),
                 new ColumnDTO(title: 'Amount overdue', attribute: Contact.TOTAL_OVERDUE_KEY, sortable: false,
-                        width: W200, visible: false),
+                        width: W200, visible: false, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Enrolments', attribute: Contact.ENROLMENTS_COUNT_KEY, sortable: false,
                         width: W200, visible: false),
                 new ColumnDTO(title: 'Leads', attribute: Contact.LEADS_COUNT_KEY, sortable: false,
                         width: W200, visible: false,
                         prefetches: [Contact.LEADS.path().toString()]),
-                new ColumnDTO(title: 'Consessions', attribute: Contact.CONSESSIONS_AUTHORIZED_COUNT_KEY, sortable: false,
+                new ColumnDTO(title: 'Consessions', attribute: Contact.ACTIVE_CONSESSIONS_COUNT_KEY, sortable: false,
                         width: W200, visible: false,
-                        prefetches: [Contact.CONCESSIONS_AUTHORISED.path().toString()])
+                        prefetches: [Contact.STUDENT.path().toString()])
         ]
         it.layout = LayoutTypeDTO.THREE_COLUMN
         it.filterColumnWidth = W200

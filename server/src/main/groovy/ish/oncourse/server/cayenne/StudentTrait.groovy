@@ -11,9 +11,15 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
+import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 
 trait StudentTrait {
+
+    @Inject
+    private ICayenneService cayenneService
 
     abstract Long getId()
     abstract ObjectContext getContext()
@@ -24,5 +30,14 @@ trait StudentTrait {
 
     boolean isEnrolled(Course course) {
         course.courseClasses.any { isEnrolled(it) }
+    }
+
+    long getActiveConcessionsCount(){
+        return ObjectSelect.query(StudentConcession.class)
+                .where(
+                        StudentConcession.STUDENT.eq((Student)this)
+                                .andExp(StudentConcession.EXPIRES_ON.gt(new Date()))
+                )
+                .selectCount(cayenneService.newReadonlyContext)
     }
 }

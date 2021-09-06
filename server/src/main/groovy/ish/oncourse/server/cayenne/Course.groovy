@@ -45,6 +45,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	public static final String CURRENT_CLASS_COUNT_PROPERTY = "currentClassesCount";
 	public static final String TOTAL_CLASS_COUNT_PROPERTY = "totalClassesCount";
 	public static final String DATA_COLLECTION_RULE_KEY = "dataCollectionRuleName";
+	public static final String ENROLMENT_TYPE_KEY = "displayableEnrolmentType"
 
 
 	private static final Logger logger = LogManager.getLogger()
@@ -534,6 +535,14 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 			tagList.add(relation.getTag())
 		}
 		return tagList
+	}
+
+	/**
+	 *
+	 * @return EnrolmentType property in displayable view
+	 */
+	String getDisplayableEnrolmentType(){
+		return enrolmentType.columnDisplayName
 	}
 
 	@Override
