@@ -185,7 +185,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
 
   const handleUSIChange = e => {
     const prevUsiCode = values.student && values.student.usi;
-    const usiCode = e.target.value;
+    const usiCode = e?.target?.value;
 
     if (typeof prevUsiCode === "string" && prevUsiCode.length === 10) {
       clearUSIVerificationResult();
