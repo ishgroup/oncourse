@@ -299,7 +299,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
 
     setChangedFields([]);
 
-    if (values) onSave(values.id, values);
+    if (values && values.id) onSave(values.id, values);
   };
 
   return (
