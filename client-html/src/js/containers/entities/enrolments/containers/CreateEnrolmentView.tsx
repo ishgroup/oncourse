@@ -62,18 +62,11 @@ const CreateEnrolmentViewForm = React.memo<Props>(props => {
     [sidebarWidth]
   );
 
-  const handleFocusCallback = useCallback(props => {
-    // console.log(props.target.name);
-    //  setFocusedItem
-  }, []);
+  const handleFocusCallback = useCallback(props => {}, []);
 
-  const onSubmit = useCallback(props => {
-    // console.log(props);
-  }, []);
+  const onSubmit = useCallback(props => {}, []);
 
-  const onCloseClick = useCallback(() => {
-    // close event
-  }, []);
+  const onCloseClick = useCallback(() => {}, []);
 
   return (
     <div>
