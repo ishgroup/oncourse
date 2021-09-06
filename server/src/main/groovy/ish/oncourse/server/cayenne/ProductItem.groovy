@@ -13,6 +13,8 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.ConfirmationStatus
 import ish.common.types.ProductStatus
+import ish.math.Money
+
 import static ish.common.types.ProductStatus.ACTIVE
 import static ish.common.types.ProductStatus.EXPIRED
 import static ish.common.types.ProductStatus.NEW
@@ -38,6 +40,7 @@ class ProductItem extends _ProductItem implements Queueable {
 	private static final Logger logger = LogManager.getLogger()
 
 	public static final String TYPE_STRING_DEFENITION = "typeString"
+	public static final String PURCHASE_PRICE_KEY = "purchasePrice"
 
 	public static final String DISPLAYABLE_STATUS = "displayStatus"
 
@@ -102,6 +105,15 @@ class ProductItem extends _ProductItem implements Queueable {
 	@Override
 	Integer getType() {
 		return super.getType()
+	}
+
+
+	/**
+	 *
+	 * @return dollar value paid for product item
+	 */
+	Money getPurchasePrice(){
+		return invoiceLine.priceEachIncTax
 	}
 
 

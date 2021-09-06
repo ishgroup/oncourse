@@ -47,7 +47,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	public static final String ENROLMENTS_COUNT_KEY = "enrolmentsCount";
 	public static final String ACTIVE_MEMBERSHIPS_COUNT_KEY = "activeMembershipsCount";
 	public static final String ATTACHMENTS_COUNT_KEY = "attachmentsCount";
-	public static final String CONSESSIONS_AUTHORIZED_COUNT_KEY = "consessionsCount";
+	public static final String ACTIVE_CONSESSIONS_COUNT_KEY = "consessionsCount";
 	public static final String NOTES_COUNT_KEY = "notesCount";
 	public static final String LEADS_COUNT_KEY = "leadsCount";
 	public static final String FULL_NAME_KEY = "fullName"
@@ -224,11 +224,11 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	 * @return count of authorized consessions
 	 */
 	Long getConsessionsCount() {
-		return concessionsAuthorised.size();
+		return student == null ? 0 : student.getActiveConcessionsCount()
 	}
 
 	/**
-	 * @return count of authorized consessions
+	 * @return count of leads
 	 */
 	Long getLeadsCount() {
 		return leads.size();

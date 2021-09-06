@@ -13,14 +13,20 @@ trait SiteTrait {
     abstract List<Room> getRooms();
 
     Long getActiveClassesCount() {
-        return getRooms().findAll {
-            room -> room.getFutureClassesCount()
+        def list = getRooms()
+        if(list.isEmpty())
+            return 0
+        return list.collect {
+            it.activeClassesCount
         }.sum() as Long
     }
 
     Long getFutureClassesCount() {
-        return getRooms().findAll {
-            room -> room.getFutureClassesCount()
+        def list = getRooms()
+        if(list.isEmpty())
+            return 0
+        return list.collect {
+            it.futureClassesCount
         }.sum() as Long
     }
 }
