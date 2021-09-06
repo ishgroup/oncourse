@@ -1,8 +1,8 @@
 package ish.oncourse.usi;
 
-import au.gov.usi._2018.ws.ContactDetailsLocateType;
-import au.gov.usi._2018.ws.LocateUSIType;
-import au.gov.usi._2018.ws.PersonalDetailsLocateType;
+import au.gov.usi._2020.ws.ContactDetailsLocateType;
+import au.gov.usi._2020.ws.LocateUSIType;
+import au.gov.usi._2020.ws.PersonalDetailsLocateType;
 import ish.common.types.LocateUSIRequest;
 import org.apache.commons.lang3.StringUtils;
 

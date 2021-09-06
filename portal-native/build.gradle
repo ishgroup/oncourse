@@ -21,7 +21,6 @@ test.dependsOn(jest)
 build.dependsOn(webpack)
 
 processResources.dependsOn(":portal-api:swagger")
-
 publishing {
     publications {
         executables(MavenPublication) {

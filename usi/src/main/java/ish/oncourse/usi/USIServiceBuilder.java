@@ -6,7 +6,7 @@ package ish.oncourse.usi;
 import au.gov.abr.akm.credential.store.ABRCredential;
 import au.gov.abr.akm.credential.store.ABRKeyStore;
 import au.gov.abr.akm.credential.store.ABRProperties;
-import au.gov.usi._2018.ws.servicepolicy.IUSIService;
+import au.gov.usi._2020.ws.servicepolicy.IUSIService;
 import com.sun.xml.ws.api.security.trust.client.STSIssuedTokenConfiguration;
 import com.sun.xml.ws.client.BindingProviderProperties;
 import com.sun.xml.ws.security.trust.GenericToken;
@@ -93,13 +93,10 @@ public class USIServiceBuilder {
 
     private IUSIService getEndpoint() throws XMLStreamException, XWSSecurityException {
 
-        au.gov.usi._2018.ws.servicepolicy.USIService service = new au.gov.usi._2018.ws.servicepolicy.USIService();
+        au.gov.usi._2020.ws.servicepolicy.USIService service = new au.gov.usi._2020.ws.servicepolicy.USIService();
         DefaultSTSIssuedTokenConfiguration config = new DefaultSTSIssuedTokenConfiguration();
         otherOptions = config.getOtherOptions();
-        config.setSignatureAlgorithm("SHA256withRSA");
-
-
-
+        
         STSIssuedTokenFeature feature = new STSIssuedTokenFeature(config);
         IUSIService endpoint = service.getWS2007FederationHttpBindingIUSIService(feature);
         Map<String, Object> requestContext = ((BindingProvider)endpoint).getRequestContext();
@@ -108,13 +105,6 @@ public class USIServiceBuilder {
         requestContext.put(XWSSConstants.PRIVATEKEY_PROPERTY, key);
 
         requestContext.put(STSIssuedTokenConfiguration.LIFE_TIME, 20*60000); // minutes*60000 (milliseconds). This will override the WSDL
-
-        otherOptions.put(STSIssuedTokenConfiguration.STS_ENDPOINT, ENDPOINT);
-        otherOptions.put(STSIssuedTokenConfiguration.STS_WSDL_LOCATION, WSDL_LOCATION);
-        otherOptions.put(STSIssuedTokenConfiguration.STS_NAMESPACE, STS_NAMESPACE);
-        otherOptions.put(STSIssuedTokenConfiguration.STS_SERVICE_NAME, STS_SERVICE_NAME);
-        otherOptions.put(STSIssuedTokenConfiguration.STS_PORT_NAME, STS_PORT_NAME);
-        config.setSTSInfo(STS_PROTOCOL, ENDPOINT, WSDL_LOCATION, STS_SERVICE_NAME, STS_PORT_NAME, STS_NAMESPACE);
 
         requestContext.put(BindingProviderProperties.REQUEST_TIMEOUT, 60000);
         requestContext.put(BindingProviderProperties.CONNECT_TIMEOUT, 60000);
