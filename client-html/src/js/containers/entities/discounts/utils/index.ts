@@ -47,7 +47,7 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
 };
 
 export const getDiscountAmountExTax = (discount: Discount, currentTax: Tax, classFee: number) => {
-  const taxMul = decimalPlus(1, currentTax.rate);
+  const taxMul = decimalPlus(1, currentTax?.rate);
   let perUnitWithTax;
 
   switch (discount.discountType) {
