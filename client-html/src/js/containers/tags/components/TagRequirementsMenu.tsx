@@ -112,6 +112,8 @@ class TagRequirementsMenu extends React.Component<any, any> {
       items
     } = this.props;
 
+    item.id = null;
+
     onChange([item, ...items]);
   };
 
