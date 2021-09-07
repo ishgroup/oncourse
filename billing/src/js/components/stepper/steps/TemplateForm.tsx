@@ -26,6 +26,7 @@ import Navigation from '../Navigations';
 const useStyles = makeStyles((theme: any) => createStyles({
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color,
+    marginBottom: 30,
   },
   siteFilterPaper: {
     backgroundColor: theme.tabList.listContainer.backgroundColor,
@@ -78,7 +79,7 @@ const TemplateForm = (props: any) => {
           Choose your website template
         </Typography>
 
-        <Typography variant="subtitle1" gutterBottom>
+        {/*<Typography variant="subtitle1" gutterBottom>
           To start, select one of our templates. Don't sweat it, you can change this later.
         </Typography>
 
@@ -125,7 +126,7 @@ const TemplateForm = (props: any) => {
               </FormGroup>
             </Grid>
           </Grid>
-        </Paper>
+        </Paper>*/}
 
         <TemplateChoser value={webSiteTemplate} onChange={onChange} />
       </FormControl>
