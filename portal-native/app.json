@@ -25,7 +25,7 @@
       "package": "ish.oncourse.willow.portal"
     },
     "web": {
-      "favicon": "./src/assets/images/favicon.png"
+      "favicon": "./src/assets/images/favicon-32x32.png"
     },
     "description": "",
     "extra": {
