@@ -1,5 +1,6 @@
 {
   "main": "src/js/App.tsx",
+  "homepage": "/new",
   "scripts": {
     "android": "expo start --android",
     "ios": "expo start --ios",
