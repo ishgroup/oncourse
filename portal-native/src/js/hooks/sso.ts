@@ -1,24 +1,34 @@
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { AuthRequest, AuthRequestPromptOptions, AuthSessionResult } from 'expo-auth-session/src/AuthSession';
 import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+import { Platform } from 'react-native';
 
 interface Props {
   onSuccsess: (...args: any[]) => void;
-  clientId: string;
+  androidClientId: string;
+  iosClientId: string;
+  webClientId: string;
 }
 
 export const useGoogleConnect = (
-  { onSuccsess, clientId }: Props): [
+  {
+    onSuccsess,
+    webClientId,
+    iosClientId,
+    androidClientId
+  }: Props): [
     AuthRequest | null,
     (options?: AuthRequestPromptOptions
     ) => Promise<AuthSessionResult>
   ] => {
   const [request, response, promptAsync] = Google.useAuthRequest({
     responseType: 'code',
-    expoClientId: clientId,
-    webClientId: clientId,
+    expoClientId: webClientId,
+    webClientId,
+    iosClientId,
+    androidClientId,
     scopes: [
       'openid',
       'https://www.googleapis.com/auth/calendar.events',
@@ -40,13 +50,17 @@ export const useGoogleConnect = (
 };
 
 export const useFacebookConnect = (
-  { onSuccsess, clientId }: Props): [AuthRequest | null,
+  {
+    onSuccsess, webClientId, iosClientId, androidClientId
+  }: Props): [AuthRequest | null,
     (options?: AuthRequestPromptOptions
     )
     => Promise<AuthSessionResult>] => {
   const [request, response, promptAsync] = Facebook.useAuthRequest({
     responseType: 'code',
-    clientId,
+    webClientId,
+    iosClientId,
+    androidClientId
   });
 
   useEffect(() => {
@@ -59,9 +73,23 @@ export const useFacebookConnect = (
 };
 
 export const useMicrosoftConnect = (
-  { onSuccsess, clientId }: Props): [AuthRequest | null,
+  {
+    onSuccsess, webClientId, iosClientId, androidClientId
+  }: Props): [AuthRequest | null,
     (options?: AuthRequestPromptOptions
     ) => Promise<AuthSessionResult>] => {
+  const clientId = useMemo(() => {
+    switch (Platform.OS) {
+      default:
+      case 'web':
+        return webClientId;
+      case 'android':
+        return androidClientId;
+      case 'ios':
+        return iosClientId;
+    }
+  }, [webClientId, iosClientId, androidClientId]);
+
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: 'code',

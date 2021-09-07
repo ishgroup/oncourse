@@ -2,8 +2,12 @@ import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import { useFacebookConnect } from '../../../hooks/sso';
 
-export const FacebookConnect = ({ onSuccsess, styles, clientId }) => {
-  const [request, promptAsync] = useFacebookConnect({ onSuccsess, clientId });
+export const FacebookConnect = ({
+  onSuccsess, styles, webClientId, iosClientId, androidClientId
+}) => {
+  const [request, promptAsync] = useFacebookConnect({
+    onSuccsess, webClientId, iosClientId, androidClientId
+  });
   return (
     <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
       <Image

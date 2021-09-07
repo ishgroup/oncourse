@@ -1,5 +1,8 @@
-import { AuthenticationApi, LoginRequest, LoginResponse, PasswordComplexity } from '@api/model';
+import {
+  AuthenticationApi, LoginRequest, LoginResponse, PasswordComplexity
+} from '@api/model';
 import { DefaultHttpService } from '../constants/HttpService';
+import { ThirdPartyKeysResponse } from '../model/ThirdParty';
 
 class LoginService {
   private loginApi = new AuthenticationApi(new DefaultHttpService());
@@ -20,7 +23,7 @@ class LoginService {
     return this.loginApi.verifyEmail(email);
   }
 
-  public ssoClientIds(): Promise<{ [key: string]: string; }> {
+  public ssoClientIds(): Promise<ThirdPartyKeysResponse> {
     return this.loginApi.ssoClientIds();
   }
 }

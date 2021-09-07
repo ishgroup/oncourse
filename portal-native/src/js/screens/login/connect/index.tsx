@@ -32,25 +32,25 @@ export const Connect = () => {
 
   return (
     <View style={[cs.flexRow, cs.justifyContentCenter]}>
-      {thirdParty?.Google?.clientId && (
+      {thirdParty?.Google && (
         <GoogleConnect
           styles={styles}
-          clientId={thirdParty.Google.clientId}
           onSuccsess={(auth, verifier) => onConnectSuccsess(auth, 'Google', verifier)}
+          {...thirdParty?.Google}
         />
       )}
-      {thirdParty?.Microsoft?.clientId && (
+      {thirdParty?.Microsoft && (
         <MicrosoftConnect
           styles={styles}
-          clientId={thirdParty.Microsoft.clientId}
           onSuccsess={(auth, verifier) => onConnectSuccsess(auth, 'Microsoft', verifier)}
+          {...thirdParty?.Microsoft}
         />
       )}
-      {thirdParty?.Facebook?.clientId && (
+      {thirdParty?.Facebook && (
         <FacebookConnect
           styles={styles}
-          clientId={thirdParty.Facebook.clientId}
           onSuccsess={(auth, verifier) => onConnectSuccsess(auth, 'Facebook', verifier)}
+          {...thirdParty?.Facebook}
         />
       )}
     </View>
