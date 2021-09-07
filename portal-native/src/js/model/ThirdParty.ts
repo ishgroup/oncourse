@@ -7,7 +7,3 @@ export type ThirdPartyState = {
     iosClientId: string,
   }
 };
-
-export type ThirdPartyKeysResponse = {
-  [key in SSOproviders]: { web: string, android: string, ios: string }
-};
