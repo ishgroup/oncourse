@@ -1,0 +1,11 @@
+properties:
+  ssOProvider:
+    description: SSO service provider
+    $ref: '../../enum/SSOproviders.yaml'
+  platform:
+    description: platform
+    $ref: '../../enum/Platform.yaml'
+  clientId:
+    description: sso public key
+    type: string
+    

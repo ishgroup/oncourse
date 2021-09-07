@@ -15,30 +15,39 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.SSOProviderType
 import ish.oncourse.configuration.Configuration
+import ish.oncourse.willow.portal.v1.model.ClientId
+
+import static ish.oncourse.willow.portal.v1.model.Platform.ANDROID
+import static ish.oncourse.willow.portal.v1.model.Platform.WEB
+import static ish.oncourse.willow.portal.v1.model.SSOproviders.FACEBOOK
+import static ish.oncourse.willow.portal.v1.model.SSOproviders.GOOGLE
 
 @CompileStatic
 class GoogleOAuthProveder extends OAuthProvider {
     private static final JsonFactory jsonFactory = GsonFactory.defaultInstance
     private static final HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport()
     
-    private GoogleAuthorizationCodeFlow flow
-    private GoogleClientSecrets clientSecrets
+    private GoogleAuthorizationCodeFlow webFlow
+    private GoogleClientSecrets webSecrets
+    private GoogleClientSecrets androidSecret
     
     
     @Inject
     GoogleOAuthProveder() {
 
-        clientSecrets = GoogleClientSecrets.load(jsonFactory,
-                new InputStreamReader(readSecret()))
-        flow = new GoogleAuthorizationCodeFlow.Builder(
-                httpTransport , jsonFactory, clientSecrets, [Oauth2Scopes.OPENID, Oauth2Scopes.USERINFO_PROFILE,Oauth2Scopes.USERINFO_EMAIL, CalendarScopes.CALENDAR_EVENTS, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_METADATA])
+        webSecrets = GoogleClientSecrets.load(jsonFactory,
+                new InputStreamReader(readSecret(GOOGLE, WEB)))
+        webFlow = new GoogleAuthorizationCodeFlow.Builder(
+                httpTransport , jsonFactory, webSecrets, [Oauth2Scopes.OPENID, Oauth2Scopes.USERINFO_PROFILE,Oauth2Scopes.USERINFO_EMAIL, CalendarScopes.CALENDAR_EVENTS, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_METADATA])
                 .setAccessType("offline")
                 .build()
+        androidSecret = GoogleClientSecrets.load(jsonFactory,
+                new InputStreamReader(readSecret(GOOGLE, ANDROID)))
     }
 
     SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
         //
-        GoogleTokenResponse resp = flow.newTokenRequest(activationCode)
+        GoogleTokenResponse resp = webFlow.newTokenRequest(activationCode)
                 .setGrantType('authorization_code')
                 .set('code_verifier', codeVerifier)
                 .setRedirectUri(redirectUrl).execute()
@@ -54,17 +63,9 @@ class GoogleOAuthProveder extends OAuthProvider {
         return credantials
     }
 
-    String getWebClientId() {
-        clientSecrets.getWeb().getClientId()
-    }
-
     @Override
-    String getAndroidClientId() {
-        return clientSecrets.getInstalled().getClientId()
-    }
-
-    @Override
-    String getSecretFileName() {
-        return "google_secret.json"
+    List<ClientId> getClientIds() {
+        return [new ClientId(ssOProvider: GOOGLE, platform: WEB, clientId: webSecrets.getWeb().getClientId()),
+                new ClientId(ssOProvider: GOOGLE, platform: ANDROID, clientId: androidSecret.getInstalled().getClientId())]
     }
 }

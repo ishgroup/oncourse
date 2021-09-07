@@ -6,8 +6,14 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.oncourse.willow.portal.v1.model.ClientId
+import ish.oncourse.willow.portal.v1.model.Platform
+import ish.oncourse.willow.portal.v1.model.SSOproviders
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import static ish.oncourse.willow.portal.v1.model.Platform.WEB
+import static ish.oncourse.willow.portal.v1.model.SSOproviders.FACEBOOK
 
 @CompileDynamic
 class FacebookOAuthProvider extends OAuthProvider {
@@ -18,26 +24,13 @@ class FacebookOAuthProvider extends OAuthProvider {
 
     @Inject
     FacebookOAuthProvider() {
-        FileInputStream inputStream = readSecret()
+        FileInputStream inputStream = readSecret(FACEBOOK, WEB)
         Map<String, Object> secretJson = new JsonSlurper().parse(inputStream) as Map<String, Object>
         clientId = secretJson['web']['client_id'] as String
         clientSecret = secretJson['web']['client_secret']
     }
-
-    @Override
-    protected String getSecretFileName() {
-        return 'facebook_secret.json'
-    }
-
-    @Override
-    String getWebClientId() {
-        return clientId
-    }
-
-    @Override
-    String getAndroidClientId() {
-        return null
-    }
+    
+    
 
     @Override
     SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
@@ -97,6 +90,11 @@ class FacebookOAuthProvider extends OAuthProvider {
         }
 
         return credantials
+    }
+
+    @Override
+    List<ClientId> getClientIds() {
+        return [new ClientId(ssOProvider: FACEBOOK, platform: WEB, clientId: clientId)]
     }
 }
 

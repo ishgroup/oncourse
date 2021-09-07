@@ -27,13 +27,15 @@ keytool -keystore path-to-debug-or-production-keystore -importcert -alias alias.
 ```
 
 
-# google_secret.json
+# google_web.json
 1. select or create project in google cloud platform: https://console.cloud.google.com/projectcreate
 2. go to menu > APIs & Services > OAuth consent screen and proceed through the form (require folowed scopes openid .../auth/userinfo.email .../auth/userinfo.profile  .../auth/calendar.events .../auth/drive.file .../auth/drive.metadata)
 3. Create 3 credentials: menu > APIs & Services > Credentials, hit [+ CREATE CREDANTIALS] > OAuth client ID
  - type: Web Application
- - type: Android
- - 
+# google_android.json
+1. See google_web.json, type: Android
+2. use fingerint of android keystore see Android keystore
+
 
 
 

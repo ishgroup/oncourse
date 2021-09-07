@@ -7,12 +7,5 @@
     "client_secret":"t22OwUc3ctK0afZotu0ntI7d",
     "redirect_uris":["http://localhost"],
     "javascript_origins":["http://localhost"]
-  },
-  "installed": {
-    "client_id":"1223382561216-nd1d3s60h37f0l9l9aavcbtnexcv334ag.apps.googleusercontent.com",
-    "project_id":"android-portal-321809",
-    "auth_uri":"https://accounts.google.com/o/oauth2/auth",
-    "token_uri":"https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
-    "redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}
+  }
 }

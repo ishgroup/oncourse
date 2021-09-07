@@ -8,8 +8,9 @@ get:
     '200':
       description: Success response.
       schema:
-        type: object
-        additionalProperties: true
+        type: array
+        items:
+          $ref: './def/entity/login/ClientId.yaml'
     default:
       description: Unexpected error
   

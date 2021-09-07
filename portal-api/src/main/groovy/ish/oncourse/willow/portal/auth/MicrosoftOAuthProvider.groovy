@@ -11,8 +11,14 @@ import com.microsoft.aad.msal4j.IClientSecret
 import groovy.json.JsonSlurper
 import groovy.transform.CompileDynamic
 import ish.common.types.SSOProviderType
+import ish.oncourse.willow.portal.v1.model.ClientId
+import ish.oncourse.willow.portal.v1.model.SSOproviders
 
 import java.util.concurrent.Future
+
+import static ish.oncourse.willow.portal.v1.model.Platform.WEB
+import static ish.oncourse.willow.portal.v1.model.SSOproviders.GOOGLE
+import static ish.oncourse.willow.portal.v1.model.SSOproviders.MICROSOFT
 
 
 class MicrosoftOAuthProvider extends OAuthProvider {
@@ -35,9 +41,8 @@ class MicrosoftOAuthProvider extends OAuthProvider {
     ConfidentialClientApplication app
     @Inject
     MicrosoftOAuthProvider() {
-
-
-        FileInputStream inputStream = readSecret()
+        
+        FileInputStream inputStream = readSecret(MICROSOFT, WEB)
         Map<String, Object> secretJson = new JsonSlurper().parse(inputStream) as Map<String, Object>
         clientId = secretJson['web']['client_id'] as String
         IClientSecret secret = ClientCredentialFactory.createFromSecret(secretJson['web']['client_secret'] as String)
@@ -46,17 +51,8 @@ class MicrosoftOAuthProvider extends OAuthProvider {
     }
 
     @Override
-    String getSecretFileName() {
-        return "microsoft_secret.json"
-    }
-    @Override
-    String getWebClientId() {
-        return clientId
-    }
-
-    @Override
-    String getAndroidClientId() {
-        return null
+    List<ClientId> getClientIds() {
+        return [new ClientId(ssOProvider: MICROSOFT, platform: WEB, clientId: clientId)]
     }
 
     @Override

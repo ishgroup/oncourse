@@ -41,3 +41,9 @@ gradle-app.setting
 /portal-api/facebook_secret.json
 /portal-api/google_secret.json
 /portal-api/microsoft_secret.json
+/portal-api/google_secret_web.json
+/portal-api/google_secret_android.json
+/portal-api/facebook_web.json
+/portal-api/google_android.json
+/portal-api/google_web.json
+/portal-api/microsoft_web.json

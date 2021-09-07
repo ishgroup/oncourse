@@ -13,6 +13,7 @@ import ish.oncourse.willow.portal.auth.OAuthProvider
 import ish.oncourse.willow.portal.auth.SSOCredantials
 import ish.oncourse.willow.portal.auth.ZKSessionManager
 import ish.oncourse.willow.portal.service.UserService
+import ish.oncourse.willow.portal.v1.model.ClientId
 import ish.oncourse.willow.portal.v1.model.LoginRequest
 import ish.oncourse.willow.portal.v1.model.LoginResponse
 import ish.oncourse.willow.portal.v1.model.LoginStage
@@ -55,10 +56,8 @@ class AuthenticationApiImpl implements AuthenticationApi{
     }
 
     @Override
-    Map<String, Map<String, String>> ssoClientIds() {
-        return [(SSOproviders.GOOGLE.toString()) : [web: googleOAuthProveder.webClientId, android: googleOAuthProveder.androidClientId],
-                (SSOproviders.MICROSOFT.toString()): [web: microsoftOAuthProvider.webClientId,  android: microsoftOAuthProvider.androidClientId],
-                (SSOproviders.FACEBOOK.toString()): [web: facebookOAuthProvider.webClientId, android: facebookOAuthProvider.androidClientId]]
+    List<ClientId> ssoClientIds() {
+        return googleOAuthProveder.clientIds + facebookOAuthProvider.clientIds + microsoftOAuthProvider.clientIds
     }
     
     @Override
