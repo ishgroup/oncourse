@@ -2,7 +2,7 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
 import { useEffect, useMemo } from 'react';
 import { AuthRequest, AuthRequestPromptOptions, AuthSessionResult } from 'expo-auth-session/src/AuthSession';
-import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+import { makeRedirectUri, Prompt, useAuthRequest } from 'expo-auth-session';
 import { Platform } from 'react-native';
 
 interface Props {
@@ -11,6 +11,10 @@ interface Props {
   iosClientId: string;
   webClientId: string;
 }
+
+const redirectUri = Platform.OS === 'web'
+  ? makeRedirectUri({ path: '/new' })
+  : makeRedirectUri();
 
 export const useGoogleConnect = (
   {
@@ -37,7 +41,9 @@ export const useGoogleConnect = (
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.profile'
     ],
-    shouldAutoExchangeCode: false
+    shouldAutoExchangeCode: false,
+    prompt: Prompt.Consent,
+    redirectUri
   });
 
   useEffect(() => {
@@ -60,7 +66,8 @@ export const useFacebookConnect = (
     responseType: 'code',
     webClientId,
     iosClientId,
-    androidClientId
+    androidClientId,
+    redirectUri
   });
 
   useEffect(() => {
@@ -108,7 +115,7 @@ export const useMicrosoftConnect = (
         'Files.ReadWrite.Selected',
         'Calendars.ReadWrite'
       ],
-      redirectUri: makeRedirectUri(),
+      redirectUri,
     },
     {
       authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',

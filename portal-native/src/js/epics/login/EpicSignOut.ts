@@ -6,15 +6,11 @@
 import { createRequest, Request } from '../../utils/EpicUtils';
 import { SIGN_OUT } from '../../actions/LoginActions';
 import LoginService from '../../services/LoginService';
-import { removeToken } from '../../utils/SessionStorageUtils';
 
 const request: Request = {
   type: SIGN_OUT,
   getData: () => LoginService.signOut(),
-  processData: () => {
-    removeToken();
-    return [];
-  },
+  processData: () => [],
 };
 
 export default createRequest(request);

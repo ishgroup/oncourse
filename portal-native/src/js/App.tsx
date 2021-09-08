@@ -10,7 +10,8 @@ import store from './reducers/Store';
 import Navigation from './components/navigation';
 import { ErrorBoundary } from './constants/Bugsnag';
 import Message from './components/feedback/Message';
-
+// import { initMockDB } from '../dev/MockAdapter';
+//
 // if (__DEV__) {
 //   initMockDB();
 // }

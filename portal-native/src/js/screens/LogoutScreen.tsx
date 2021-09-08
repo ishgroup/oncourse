@@ -3,12 +3,14 @@ import { Image, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { setIsLogged, signOut } from '../actions/LoginActions';
+import { removeToken } from '../utils/SessionStorageUtils';
 
 const LogoutScreen = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.login.user || {});
 
   const logOut = () => {
+    removeToken();
     dispatch(signOut());
     dispatch(setIsLogged(false));
   };
