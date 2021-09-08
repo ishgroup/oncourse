@@ -15,6 +15,7 @@ import ish.common.types.RecognitionOfPriorLearningIndicator
 import ish.common.types.StudentStatusForUnitOfStudy
 import ish.math.Money
 import ish.oncourse.commercial.plugin.tcsi.TCSIIntegration
+import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
@@ -167,51 +168,75 @@ class UnitAPI extends TCSI_API {
             unit["mode_of_attendance_code"] = '3'
         }
 
-
-        if (enrolment.feeStatus) {
-            switch (enrolment.feeStatus)  {
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "401"
+        ExportJurisdiction jurisdiction = enrolment.relatedFundingSource?.flavour
+        Integer statusCode = null
+        if (jurisdiction) {
+            switch (jurisdiction) {
+                case ExportJurisdiction.PLAIN:
+                    // NCVER (Standard AVETMISS) -> 401 non State Government subsidised
+                    statusCode=401
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT:
-                    unit["student_status_code"] = "402"
+                  
+                case ExportJurisdiction.VIC:
+                    // Skills Victoria -> 403 Victorian State Government subsidised
+                    statusCode=403
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_VICTORIAN_STATE_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "403"
+                case ExportJurisdiction.OLIV:
+                case ExportJurisdiction.SMART:
+                    // CSO (Community Colleges) -> 404 New South Wales State Government subsidised
+                    // STSOnline (NSW) -> 404 New South Wales State Government subsidised
+                    statusCode=404
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NEW_SOUTH_WALES_STATE_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "404"
+                case ExportJurisdiction.QLD:
+                    // DETConnect (Queensland) -> 405 Queensland State Government subsidised
+                    statusCode=405
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_QUEENSLAND_STATE_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "405"
+                case ExportJurisdiction.SA:
+                    //STELA (South Australia) ->  South Australian State Government subsidised
+                    statusCode=406
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_SOUTH_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "406"
+                case ExportJurisdiction.RAPT:
+                case ExportJurisdiction.WA:    
+                    // WA RAPT -> 407 Western Australian State Government subsidised
+                    // STARS (WA) -> 407 Western Australian State Government subsidised
+                    statusCode=407
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_WESTERN_AUSTRALIAN_STATE_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "407"
+                case ExportJurisdiction.TAS:
+                    // Skills Tasmania -> 408 Tasmania State Government subsidised
+                    statusCode=408
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_TASMANIA_STATE_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "408"
+                case ExportJurisdiction.NTVETPP:
+                    // Northern Territories VET Provider Portal -> 409 Northern Territory Government subsidised
+                    statusCode=409
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NORTHERN_TERRITORY_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "409"
+                case ExportJurisdiction.AVETARS:
+                    // AVETARS (ACT) ->  402  Restricted Access Arrangement
+                    statusCode=410
                     break
-                case DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_AUSTRALIAN_CAPITAL_TERRITORY_GOVERNMENT_SUBSIDISED:
-                    unit["student_status_code"] = "410"
+                case ExportJurisdiction.AQTF:
+                case ExportJurisdiction.NSW:
                     break
             }
         }
-
-        BigDecimal feeCharged =  enrolment.feeCharged.toBigDecimal()
-        BigDecimal helpLoanAmount =  enrolment.feeHelpAmount?enrolment.feeHelpAmount.toBigDecimal():BigDecimal.ZERO
+        
         
 
+        BigDecimal feeCharged =  enrolment.feeCharged.toBigDecimal()
+        BigDecimal helpLoanAmount 
+        if (enrolment.feeHelpAmount) {
+            helpLoanAmount = enrolment.feeHelpAmount.toBigDecimal()
+        } else {
+            helpLoanAmount = BigDecimal.ZERO
+            if (statusCode != null) {
+                statusCode = statusCode + 100
+            }
+        }
+        unit["student_status_code"] = statusCode.toString() //E490
         unit["amount_charged"] = feeCharged //E384
         unit["help_loan_amount"] = helpLoanAmount // E558
         unit["amount_paid_upfront"] = feeCharged.subtract(helpLoanAmount) //E381
         
-        if (enrolment.feeStatus && enrolment.feeStatus in [DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED, DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT]) {
+        if (statusCode != null &&  (statusCode in [401, 402])) {
             LocalDate threshold_1 = LocalDate.parse('01-04-2020','dd-MM-yyyy')
             LocalDate threshold_2 = LocalDate.parse('01-07-2021','dd-MM-yyyy')
 
@@ -225,7 +250,7 @@ class UnitAPI extends TCSI_API {
         }
         
 
-        if (enrolment.creditTotal) {
+        if (enrolment.creditTotal) { //E577
             switch (enrolment.creditTotal) {
                 case RecognitionOfPriorLearningIndicator.NOT_RPL_UNIT_OF_STUDY:
                     unit["recognition_of_prior_learning_code"]=null
