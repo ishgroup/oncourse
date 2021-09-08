@@ -69,7 +69,7 @@ class UserService {
 
     void sendVerificationEmail(String email, String sessionToken, LoginStage stage) {
         String validTo = LocalDateTime.now().plusHours(2).toString()
-        String verificationUrl = "$requestService.requestUrl/login?stage=$stage&email=$email&valid=$validTo"
+        String verificationUrl = "$requestService.requestUrl?stage=$stage&email=$email&valid=$validTo"
         verificationUrl = SecurityUtil.enrciptUrl(verificationUrl, sessionToken)
         sendEmail(String.format(VERIFICATION_EMAIL_CONTENT, verificationUrl), email)
     }

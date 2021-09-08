@@ -37,8 +37,9 @@ class RequestService {
     }
     
     String getRequestUrl() {
-        request.requestURL
+        request.getHeader('referer')
     }
+    
 
     User getUser() {
         ThreadLocalUser.get()
