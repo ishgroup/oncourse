@@ -16,19 +16,19 @@ import io.bootique.jetty.server.ConnectorDescriptor;
 import io.bootique.jetty.server.ServerFactory;
 import io.bootique.jetty.server.ServerLifecycleLogger;
 import io.bootique.jetty.server.ServletContextHandlerExtender;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.NetworkConnector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.thread.ThreadPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class AngelServerFactory extends ServerFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AngelServerFactory.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private int maxFormContentSize;
     private int maxFormKeys;
