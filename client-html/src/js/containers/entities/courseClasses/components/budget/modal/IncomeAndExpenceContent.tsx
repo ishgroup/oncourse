@@ -22,7 +22,7 @@ import { PayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
 import { normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
 
-const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId).rate));
+const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId)?.rate));
 
 const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   taxes,
@@ -43,7 +43,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountExTax",
-            decimalDivide(value, decimalPlus(1, currentTax.rate))
+            decimalDivide(value, decimalPlus(1, currentTax?.rate))
           )
         );
       }
@@ -58,7 +58,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountIncTax",
-            decimalMul(value, decimalPlus(1, currentTax.rate))
+            decimalMul(value, decimalPlus(1, currentTax?.rate))
           )
         );
       }

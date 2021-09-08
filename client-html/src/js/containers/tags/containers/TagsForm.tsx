@@ -291,10 +291,10 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
       if (draggableIdMatch && draggableIdMatch.length > 0) {
         const removeIndex = Number(draggableIdMatch[0].replace(/[\[\]]/g, ""));
-        removePath.splice(removeIndex, 1);
+        removePath && removePath.splice(removeIndex, 1);
       }
 
-      combine ? insertPath.push(insertValue) : insertPath.splice(insertIndex, 0, insertValue);
+      combine ? insertPath.push(insertValue) : insertPath && insertPath.splice(insertIndex, 0, insertValue);
 
       setDragIndex(getAllTags([clone]));
       dispatch(change("TagsForm", "childTags", clone.childTags));
@@ -302,7 +302,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
   };
 
   addTag = () => {
-    const { values, dispatch, theme } = this.props;
+    const { values, dispatch } = this.props;
 
     const newTag: FormTag = {
       id: ("new" + this.counter) as any,
@@ -324,7 +324,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
     const clone = JSON.parse(JSON.stringify(values));
 
-    clone.childTags.splice(0, 0, newTag);
+    clone && clone.childTags && clone.childTags.splice(0, 0, newTag);
 
     setDragIndex(getAllTags([clone]));
 
@@ -348,7 +348,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
       const removePath = getDeepValue(clone, parent.replace(/\[[0-9]+]$/, ""));
 
-      removePath.splice(index, 1);
+      removePath && removePath.splice(index, 1);
 
       setDragIndex(getAllTags([clone]));
 
