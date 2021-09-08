@@ -7,7 +7,7 @@ import ish.oncourse.willow.portal.v1.model.SSOproviders
 
 abstract class OAuthProvider {
 
-    abstract SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier)
+    abstract SSOCredantials authorize(String activationCode, String codeVerifier)
     abstract List<ClientId> getClientIds()
     
     protected FileInputStream readSecret(SSOproviders provider, Platform platform) {

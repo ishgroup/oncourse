@@ -29,6 +29,7 @@ class GoogleOAuthProveder extends OAuthProvider {
     
     private GoogleAuthorizationCodeFlow webFlow
     private GoogleClientSecrets webSecrets
+    private GoogleAuthorizationCodeFlow androidFlow
     private GoogleClientSecrets androidSecret
     
     
@@ -43,14 +44,24 @@ class GoogleOAuthProveder extends OAuthProvider {
                 .build()
         androidSecret = GoogleClientSecrets.load(jsonFactory,
                 new InputStreamReader(readSecret(GOOGLE, ANDROID)))
+        androidFlow =  new GoogleAuthorizationCodeFlow.Builder(
+                httpTransport , jsonFactory, androidSecret, [Oauth2Scopes.OPENID, Oauth2Scopes.USERINFO_PROFILE,Oauth2Scopes.USERINFO_EMAIL, CalendarScopes.CALENDAR_EVENTS, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_METADATA])
+                .setAccessType("offline")
+                .build()
     }
 
-    SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
-        //
-        GoogleTokenResponse resp = webFlow.newTokenRequest(activationCode)
+ 
+    SSOCredantials authorize(String activationCode, String codeVerifier) {
+        GoogleAuthorizationCodeFlow codeFlow
+        //need to work out the criteria from which place we get auth request: browser or android app or ios app
+        //android redirect URL is ish.oncourse.willow.portal:/oauthredirect
+        codeFlow = webFlow
+        String redirect = webSecrets.getWeb().getRedirectUris()[0]
+
+        GoogleTokenResponse resp = codeFlow.newTokenRequest(activationCode)
                 .setGrantType('authorization_code')
                 .set('code_verifier', codeVerifier)
-                .setRedirectUri(redirectUrl).execute()
+                .setRedirectUri(redirect).execute()
         GoogleIdToken token =  resp.parseIdToken()
         SSOCredantials credantials = new SSOCredantials()
         credantials.providerType = SSOProviderType.GOOGLE

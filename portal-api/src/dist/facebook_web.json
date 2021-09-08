@@ -1,6 +1,7 @@
 {
   "web": {
     "client_id":"551030959678057",
-    "client_secret":"c2d27f66c955c1bcfc64320cfa9eb9f5"
+    "client_secret":"c2d27f66c955c1bcfc64320cfa9eb9f5",
+    "redirect_uri":"https://www.skillsoncourse.com.au/new"
   }
 }

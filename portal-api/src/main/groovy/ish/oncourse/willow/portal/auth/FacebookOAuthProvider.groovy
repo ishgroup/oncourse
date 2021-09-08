@@ -20,6 +20,7 @@ class FacebookOAuthProvider extends OAuthProvider {
 
     String clientId
     String clientSecret
+    String webRedirect
     private Logger logger = LogManager.getLogger();
 
     @Inject
@@ -28,12 +29,14 @@ class FacebookOAuthProvider extends OAuthProvider {
         Map<String, Object> secretJson = new JsonSlurper().parse(inputStream) as Map<String, Object>
         clientId = secretJson['web']['client_id'] as String
         clientSecret = secretJson['web']['client_secret']
+        webRedirect = secretJson['web']['redirect_uri'] as String
+
     }
     
     
 
     @Override
-    SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
+    SSOCredantials authorize(String activationCode, String codeVerifier) {
         Closure failureHandler = { resp, result ->
             logger.error(resp)
             logger.error(result)

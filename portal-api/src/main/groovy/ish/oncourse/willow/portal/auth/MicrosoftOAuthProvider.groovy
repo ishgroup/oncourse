@@ -37,6 +37,7 @@ class MicrosoftOAuthProvider extends OAuthProvider {
     'Calendars.ReadWrite'].toSet()
     
     private String clientId
+    private String webRedirect 
 
     ConfidentialClientApplication app
     @Inject
@@ -45,6 +46,7 @@ class MicrosoftOAuthProvider extends OAuthProvider {
         FileInputStream inputStream = readSecret(MICROSOFT, WEB)
         Map<String, Object> secretJson = new JsonSlurper().parse(inputStream) as Map<String, Object>
         clientId = secretJson['web']['client_id'] as String
+        webRedirect = secretJson['web']['redirect_uri'] as String
         IClientSecret secret = ClientCredentialFactory.createFromSecret(secretJson['web']['client_secret'] as String)
         app = ConfidentialClientApplication.builder(clientId, secret).build()
         
@@ -57,7 +59,7 @@ class MicrosoftOAuthProvider extends OAuthProvider {
 
     @Override
     @CompileDynamic
-    SSOCredantials authorize(String activationCode, String redirectUrl, String codeVerifier) {
+    SSOCredantials authorize(String activationCode, String codeVerifier) {
         AuthorizationCodeParameters parameters = AuthorizationCodeParameters.builder(
                 activationCode,
                 new URI(redirectUrl))
