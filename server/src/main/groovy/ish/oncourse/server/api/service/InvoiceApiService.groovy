@@ -21,11 +21,7 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.*
-import ish.oncourse.server.api.v1.model.InvoiceDTO
-import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
-import ish.oncourse.server.api.v1.model.InvoicePaymentPlanDTO
-import ish.oncourse.server.api.v1.model.InvoiceTypeDTO
-import ish.oncourse.server.api.v1.model.LeadInvoiceDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
 import ish.oncourse.server.services.IAutoIncrementService
@@ -48,12 +44,9 @@ import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimize
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
 import static ish.util.LocalDateUtils.dateToTimeValue
-import static org.apache.commons.lang3.StringUtils.EMPTY
-import static org.apache.commons.lang3.StringUtils.trimToNull
-import static org.apache.commons.lang3.StringUtils.isNotBlank
-import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.*
 
-class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, InvoiceDao> {
+class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, InvoiceDao> {
 
     @Inject
     private SystemUserService systemUserService
@@ -537,5 +530,14 @@ class InvoiceApiService extends EntityApiService<InvoiceDTO, AbstractInvoice, In
             dto
         }
 
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }
