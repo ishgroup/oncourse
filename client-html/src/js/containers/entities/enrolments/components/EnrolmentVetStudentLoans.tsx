@@ -129,7 +129,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <Uneditable label="Total loan" value={loanData.loanTotal} money />
                 </Grid>
-                <Grid item xs={twoColumn ? 6 : 12}>
+                <Grid item xs={twoColumn ? 6 : 12} className="d-none">
                   <FormField
                     type="select"
                     name="feeStatus"
