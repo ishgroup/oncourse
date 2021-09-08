@@ -280,8 +280,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Created', attribute: Payslip.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Status', attribute: Payslip.STATUS.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Type', attribute: Payslip.PAY_TYPE.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Budget total', attribute: Payslip.BUDGET_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()]),
-                new ColumnDTO(title: 'Paid total', attribute: Payslip.PAID_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()]),
+                new ColumnDTO(title: 'Budget total', attribute: Payslip.BUDGET_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()], type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Paid total', attribute: Payslip.PAID_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()], type: ColumnTypeDTO.MONEY),
         ]
         it.sortings = [
             new SortingDTO(attribute: Payslip.CREATED_ON.name, ascending: true)
@@ -489,7 +489,8 @@ class DefaultUserPreference {
                         sortable: true,
                         width: W100,
                         visible: false,
-                        system: false),
+                        system: false,
+                        sortFields: [Course.ENROLMENT_TYPE.name]),
                 new ColumnDTO(title: 'Data collection',
                         attribute: Course.DATA_COLLECTION_RULE_KEY,
                         sortable: false,
