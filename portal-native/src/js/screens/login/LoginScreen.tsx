@@ -65,7 +65,6 @@ const LoginScreen = () => {
 
   const validationSchema: yup.SchemaOf<LoginValues> = useMemo(() => {
     const isPasswordScreens = [LoginStages.PasswordReset, LoginStages.CreateAccount].includes(stage);
-
     return yup.object({
       confirmPassword: isPasswordScreens ? yup.string().when('password', {
         is: (val) => val,
@@ -83,7 +82,8 @@ const LoginScreen = () => {
       verificationUrl: yup.string().nullable().notRequired(),
       submitBy: yup.mixed().nullable().notRequired(),
       ssOToken: yup.string().nullable().notRequired(),
-      ssOProvider: yup.mixed().nullable().notRequired()
+      ssOProvider: yup.mixed().nullable().notRequired(),
+      codeVerifier: yup.mixed().nullable().notRequired()
     });
   }, [stage]);
 

@@ -17,11 +17,10 @@ export const useStyles = createStyles((theme) => ({
     bottom: 0,
     top: 0,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   loginContainer: {
     ...Platform.OS === 'android' ? { minHeight: 460 } : {},
-    width: 340,
     borderRadius: theme.spacing(3),
     padding: theme.spacing(2),
     display: 'flex',
@@ -56,6 +55,8 @@ export const useStyles = createStyles((theme) => ({
     flex: 1,
     padding: theme.spacing(2),
     justifyContent: 'center',
+    width: 310,
+    alignSelf: 'center'
   },
   companySwitch: {
     marginTop: theme.spacing(1),

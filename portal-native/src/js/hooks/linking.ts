@@ -38,7 +38,7 @@ export const useLinkingRedirects = () => {
 
   // Handle email login links
   useEffect(() => {
-    if (!isRedirecting && urlData?.path === 'login' && urlData?.queryParams?.stage) {
+    if (!isRedirecting && urlData?.path.includes('/login') && urlData?.queryParams?.stage) {
       switch (urlData.queryParams.stage as LoginStage) {
         case 'authorize':
           dispatch(signIn({

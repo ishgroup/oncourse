@@ -24,7 +24,7 @@ export const FetchErrorHandler = (response: AxiosResponse, customMessage?: strin
         {
           type: FETCH_FAIL,
           payload: {
-            message: data.errorMessage || customMessage || 'Something went wrong',
+            message: data?.message || customMessage || 'Something went wrong',
           },
         },
       ];
@@ -36,7 +36,7 @@ export const FetchErrorHandler = (response: AxiosResponse, customMessage?: strin
         {
           type: FETCH_FAIL,
           payload: {
-            message: data.errorMessage || customMessage || 'Something went wrong',
+            message: data?.message || customMessage || 'Something went wrong',
           },
         },
       ];
@@ -46,7 +46,7 @@ export const FetchErrorHandler = (response: AxiosResponse, customMessage?: strin
         {
           type: FETCH_FAIL,
           payload: {
-            message: data.errorMessage || customMessage || 'Something went wrong',
+            message: data?.message || customMessage || 'Something went wrong',
           },
         },
       ];
@@ -70,7 +70,7 @@ export const LoginErrorHandler = (response: AxiosResponse, customMessage?: strin
     {
       type: FETCH_FAIL,
       payload: {
-        message: response?.data?.errorMessage || customMessage || 'Something went wrong',
+        message: response?.data?.message || customMessage || 'Something went wrong',
       },
     },
   ];
@@ -100,7 +100,7 @@ export const instantFetchErrorHandler = (
     dispatch({
       type: SET_MESSAGE,
       payload: {
-        message: (data && data.errorMessage) || message
+        message: data?.message || message
       }
     });
   } else {
