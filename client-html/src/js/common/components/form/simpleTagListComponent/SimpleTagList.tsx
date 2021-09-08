@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Tag } from "@api/model";
 import { Typography } from "@material-ui/core";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -14,7 +15,6 @@ import TextField from "@material-ui/core/TextField";
 import Edit from "@material-ui/icons/Edit";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WrappedFieldProps } from "redux-form";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
@@ -251,7 +251,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 50);
   };
 
