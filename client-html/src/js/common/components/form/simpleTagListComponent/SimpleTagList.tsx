@@ -251,7 +251,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 50);
   };
 

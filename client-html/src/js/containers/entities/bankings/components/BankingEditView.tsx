@@ -195,7 +195,7 @@ class BankingEditView extends React.PureComponent<any, any> {
 
   onSettlementDateChanged = (v: any, newValue: string, prevValue: string) => {
     const { values, form } = this.props;
-    if (newValue !== prevValue) {
+    if (newValue !== prevValue && values) {
       values.payments.filter(v => v.reconcilable).forEach(v => (v.reconciled = false));
       change(form, "payments", values.payments);
     }

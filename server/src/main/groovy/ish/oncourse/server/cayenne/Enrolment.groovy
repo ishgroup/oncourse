@@ -764,4 +764,9 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	Class<? extends CustomField> getCustomFieldClass() {
 		return EnrolmentCustomField
 	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return EnrolmentTagRelation.class
+	}
 }

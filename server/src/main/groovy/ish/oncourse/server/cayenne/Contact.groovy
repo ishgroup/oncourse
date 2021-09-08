@@ -814,6 +814,11 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return ContactTagRelation.class
+	}
+
 	/**
 	 * @return middle name
 	 */

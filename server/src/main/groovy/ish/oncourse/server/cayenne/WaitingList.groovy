@@ -120,4 +120,9 @@ class WaitingList extends _WaitingList implements Queueable, ExpandableTrait {
 	Class<? extends CustomField> getCustomFieldClass() {
 		return WaitingListCustomField
 	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return WaitingListTagRelation.class
+	}
 }

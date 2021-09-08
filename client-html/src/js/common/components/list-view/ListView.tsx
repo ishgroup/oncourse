@@ -750,7 +750,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   };
 
   onChangeModel = (model: TableModel, listUpdate?: boolean) => {
-    this.props.updateTableModel(model, listUpdate);
+    if (this.props.records?.columns.length || model?.columns?.length) this.props.updateTableModel(model, listUpdate);
   };
 
   checkDirty = (handler, args, reset?: boolean) => {
@@ -879,7 +879,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     resetEditView();
 
     setTimeout(() => {
-      updateTableModel({ layout });
+      if (this.props.records?.columns.length) updateTableModel({ layout });
     }, 500);
 
     this.setState({
@@ -917,7 +917,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     });
 
     setTimeout(() => {
-      this.props.updateTableModel({ filterColumnWidth: sidebarWidth });
+      if (this.props.records?.columns.length) this.props.updateTableModel({ filterColumnWidth: sidebarWidth });
     }, 500);
   };
 
