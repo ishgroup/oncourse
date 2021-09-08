@@ -29,6 +29,9 @@ module.exports = async function (env, argv) {
         },
       }),
     );
+
+    // Placing fonts in static folder
+    config.module.rules[1].oneOf[4].use[0].options.name = './static/fonts/[name].[ext]';
   }
 
   return config;
