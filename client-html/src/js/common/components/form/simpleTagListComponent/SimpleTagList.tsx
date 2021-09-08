@@ -14,9 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import Edit from "@material-ui/icons/Edit";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WrappedFieldProps } from "redux-form";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
@@ -91,8 +89,6 @@ interface Props extends WrappedFieldProps {
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
-const getInputString = (tags: Tag[]) => (tags ? tags.reduce((acc, tag) => `${acc}#${tag.name} `, "") : "");
-
 const getCurrentInputString = (input, formTags: Tag[]) => {
   let substr = input;
 
@@ -127,6 +123,10 @@ const getFullTag = (tagId: number, tags: Tag[]) => {
   }
 };
 
+const getInputString = (tags: Tag[], allTags: Tag[]) => (tags?.length && allTags?.length
+    ? tags.reduce((acc, tag) => (getFullTag(tag.id, allTags) ? `${acc}#${tag.name} ` : acc), "")
+    : "");
+
 const SimpleTagList: React.FC<Props> = props => {
   const {
    input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
@@ -137,13 +137,13 @@ const SimpleTagList: React.FC<Props> = props => {
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
 
-  const getInputValueForRender = useCallback(() => {
-    if (!tags || !tags.length) return "";
-    const formTags = input.value;
+  const InputValueForRender = useMemo(() => {
+    if (!inputValue || !tags || !tags.length) return "";
 
-    const arrayOfTags = formTags && formTags.length && formTags.map((tag: Tag) => getFullTag(tag.id, tags));
+    const arrayOfTags = input?.value?.length
+      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
 
-    if (!arrayOfTags) return "";
+    if (!arrayOfTags?.length) return "";
 
     return arrayOfTags.map((tag: Tag, index) => (
       <span className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
@@ -151,7 +151,7 @@ const SimpleTagList: React.FC<Props> = props => {
         {`#${tag.name} `}
       </span>
     ));
-  }, [tags, input.value]);
+  }, [tags, input.value, inputValue]);
 
   useEffect(() => {
     if (meta.invalid && !isEditing) {
@@ -173,7 +173,7 @@ const SimpleTagList: React.FC<Props> = props => {
   );
 
   const synchronizeTags = () => {
-    const inputString = getInputString(input.value);
+    const inputString = getInputString(input.value, tags);
 
     if (inputString.trim() === inputValue.replace(endTagRegex, "").trim()) {
       return;
@@ -198,7 +198,7 @@ const SimpleTagList: React.FC<Props> = props => {
 
     updated.sort((a, b) => current.indexOf(a.name) - current.indexOf(b.name));
     input.onChange(updated);
-    setInputValue(getInputString(updated));
+    setInputValue(getInputString(updated, tags));
   };
 
   const onTagAdd = (tag: MenuTag) => {
@@ -215,7 +215,7 @@ const SimpleTagList: React.FC<Props> = props => {
     input.onChange(updated);
 
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 100);
   };
 
@@ -294,14 +294,14 @@ const SimpleTagList: React.FC<Props> = props => {
   };
 
   useEffect(() => {
-    let inputString = getInputString(input.value);
+    let inputString = getInputString(input.value, tags);
 
     if (document.activeElement === inputNode.current && !endTagRegex.test(inputString)) {
       inputString += " #";
     }
 
     setInputValue(inputString);
-  }, [input.value]);
+  }, [input.value, tags]);
 
   useEffect(() => {
     setCurrentInputString(getCurrentInputString(inputValue, input.value));
@@ -425,9 +425,7 @@ const SimpleTagList: React.FC<Props> = props => {
                     [fieldClasses.text]: inputValue,
                   })}
                 >
-                  {(inputValue && getInputValueForRender()) || (
-                     "No value"
-                  )}
+                  {InputValueForRender || "No value"}
                   {!disabled
                   && Boolean(!tags || tags.length)
                   && <Edit className={clsx("hoverIcon", classes.editInPlaceIcon, fieldClasses.placeholder, "mt-0-5")} />}

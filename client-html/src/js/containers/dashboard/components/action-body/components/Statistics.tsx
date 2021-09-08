@@ -26,6 +26,7 @@ import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import ScriptStatistic from "./ScriptStatistic";
+import { checkPermissions } from "../../../../../common/actions";
 
 const styles = theme => createStyles({
     root: {
@@ -191,8 +192,9 @@ interface Props {
   getCurrency?: AnyArgFunction;
   currency?: Currency;
   isUpdating?: boolean;
-  hasScriptsPermissions?: boolean;
+  hasAuditPermissions?: boolean;
   dispatch?: Dispatch;
+  getAuditPermissions?: () => void;
 }
 
 class Statistics extends React.Component<Props, any> {
@@ -207,11 +209,12 @@ class Statistics extends React.Component<Props, any> {
   }
 
   componentDidMount() {
-    const { getStatistic } = this.props;
+    const { getStatistic, getAuditPermissions } = this.props;
     getStatistic();
 
     // Statistic update interval
     this.interval = setInterval(getStatistic, 120000);
+    getAuditPermissions();
   }
 
   componentDidUpdate(prevProps) {
@@ -249,7 +252,7 @@ class Statistics extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, hasScriptsPermissions, statisticData, currency, dispatch
+     classes, hasAuditPermissions, statisticData, currency, dispatch
     } = this.props;
 
     const { chartData } = this.state;
@@ -371,7 +374,7 @@ class Statistics extends React.Component<Props, any> {
           </List>
         </Grid>
 
-        {hasScriptsPermissions && (
+        {hasAuditPermissions && (
           <Grid item xs={12} className="mt-2">
             <Typography className={clsx("heading", classes.headingMargin)}>
               Automation status
@@ -387,13 +390,14 @@ class Statistics extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   statisticData: state.dashboard.statistics.data,
   isUpdating: state.dashboard.statistics.updating,
-  hasScriptsPermissions: state.access["ADMIN"],
+  hasAuditPermissions: state.access["/a/v1/list/plain?entity=Audit"] && state.access["/a/v1/list/plain?entity=Audit"]["GET"],
   currency: state.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  getStatistic: () => dispatch(getDashboardStatistic())
+  getStatistic: () => dispatch(getDashboardStatistic()),
+  getAuditPermissions: () => dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Audit", method: "GET" })),
 });
 
 export default connect<any, any, any>(
