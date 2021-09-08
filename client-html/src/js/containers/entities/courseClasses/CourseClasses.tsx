@@ -46,12 +46,7 @@ import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
 import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
-import {
-  AnyArgFunction,
-  BooleanArgFunction,
-  NoArgFunction,
-  NumberArgFunction
-} from "../../../model/common/CommonFunctions";
+import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
@@ -356,8 +351,8 @@ const shouldAsyncValidate = ({ trigger, pristine, initialized }) => {
 
 const setRowClasses = ({ isCancelled, isShownOnWeb, isActive }) => {
   if (isActive === "Yes" && isShownOnWeb === "Yes") return undefined;
-  if (isActive === "Yes") return "row-op065";
-  if (isActive === "No" || isCancelled === "Yes") return "row-op05";
+  if (isActive === "Yes") return "text-op065";
+  if (isActive === "No" || isCancelled === "Yes") return "text-op05";
 
   return undefined;
 };

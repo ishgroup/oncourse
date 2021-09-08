@@ -32,6 +32,7 @@ import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import history from "../../../../constants/History";
 import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 import { isInvoiceType } from "../utils";
+import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 
 interface Props extends CogwhelAdornmentProps {
   dispatch: any;
@@ -280,6 +281,9 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
       <MenuItem disabled={disableActionForQuote} className={menuItemClass} role="ConvertingQuote" onClick={onClick}>
         Convert quote to invoice
       </MenuItem>
+
+      <BulkEditCogwheelOption {...props} />
+
     </>
   );
 });

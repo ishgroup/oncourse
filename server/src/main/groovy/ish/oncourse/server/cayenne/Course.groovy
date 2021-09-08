@@ -541,4 +541,9 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	Class<? extends CustomField> getCustomFieldClass() {
 		return CourseCustomField
 	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return CourseTagRelation.class
+	}
 }

@@ -136,4 +136,9 @@ class Payslip extends _Payslip {
 	Money getFullAmount() {
 		super.getPaylines().sum { it -> it.amount } as Money
 	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return PayslipTagRelation.class
+	}
 }

@@ -1132,6 +1132,10 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return CourseClassTagRelation.class
+	}
 
 	@API
 	String getTutorsAbridged() {

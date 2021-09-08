@@ -103,9 +103,9 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 			if(tag.getRoot().getTagRequirement(this.getClass()) == null) {
 				return false;
 			}
-			Class<? extends Taggable> type = this.getClass();
-			var taggedEntity = getContext().getEntityResolver().getObjEntity(type);
-			var joinEntity = getContext().getEntityResolver().getObjEntity(taggedEntity.getName() + TagRelation.class.getSimpleName());
+
+			var taggedEntity = getContext().getEntityResolver().getObjEntity(getTagRelationClass());
+			var joinEntity = getContext().getEntityResolver().getObjEntity(taggedEntity.getName());
 
 			var relation = (TagRelation) getContext().newObject(joinEntity.getJavaClass());
 			relation.setTag(tag);
@@ -114,6 +114,8 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		}
 		return false;
 	}
+
+	public abstract Class<? extends TagRelation> getTagRelationClass();
 
 	/**
 	 * Remove a tag from this object. If the tag isn't already attached, this method does nothing and returns false.

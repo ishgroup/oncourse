@@ -16,6 +16,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.common.NodeInterface
+import ish.oncourse.server.api.v1.function.TagFunctions
 import ish.oncourse.server.cayenne.glue._Tag
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
@@ -139,7 +140,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		if (getTagRequirements() != null && type != null) {
 			for (final TagRequirement nr : getTagRequirements()) {
 				if (nr.getPersistenceState() != PersistenceState.TRANSIENT && nr.getPersistenceState() != PersistenceState.DELETED &&
-						nr.getEntityClass() == type) {
+						TagFunctions.taggableClassesBidiMap.get(type.getSimpleName()) != null) {
 					return nr
 				}
 			}

@@ -327,4 +327,8 @@ class Site extends _Site implements Queueable, NotableTrait, AttachableTrait {
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return SiteTagRelation.class
+	}
 }
