@@ -26,7 +26,10 @@ trait MembershipProductTrait {
                 .where(
                         ProductItem.PRODUCT.eq((Product)this)
                         .andExp(ProductItem.STATUS.eq(ProductStatus.ACTIVE))
-                        .andExp(ProductItem.EXPIRY_DATE.gt(new Date()))
+                        .andExp(
+                                ProductItem.EXPIRY_DATE.isNull()
+                                        .orExp(ProductItem.EXPIRY_DATE.gt(new Date()))
+                        )
                 )
                 .selectCount(cayenneService.newReadonlyContext)
     }

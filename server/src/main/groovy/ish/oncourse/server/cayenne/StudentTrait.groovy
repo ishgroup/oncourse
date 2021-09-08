@@ -36,7 +36,10 @@ trait StudentTrait {
         return ObjectSelect.query(StudentConcession.class)
                 .where(
                         StudentConcession.STUDENT.eq((Student)this)
-                                .andExp(StudentConcession.EXPIRES_ON.gt(new Date()))
+                                .andExp(
+                                        StudentConcession.EXPIRES_ON.isNull()
+                                                .orExp(StudentConcession.EXPIRES_ON.gt(new Date()))
+                                        )
                 )
                 .selectCount(cayenneService.newReadonlyContext)
     }
