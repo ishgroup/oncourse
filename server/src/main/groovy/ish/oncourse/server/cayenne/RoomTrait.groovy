@@ -19,7 +19,14 @@ trait RoomTrait {
 
     Long getActiveClassesCount() {
         return ObjectSelect.query(CourseClass.class)
-                .where(CourseClass.ROOM.eq((Room) this).andExp(CourseClass.IS_ACTIVE.isTrue()))
+                .where(CourseClass.ROOM.eq((Room) this)
+                        .andExp(CourseClass.IS_ACTIVE.isTrue())
+                        .andExp(CourseClass.IS_CANCELLED.isFalse())
+                        .andExp(
+                                CourseClass.END_DATE_TIME.gt(new Date())
+                                        .orExp(CourseClass.IS_DISTANT_LEARNING_COURSE.isTrue())
+                        )
+                )
                 .selectCount(cayenneService.newReadonlyContext)
     }
 

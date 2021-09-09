@@ -218,7 +218,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Amount', attribute: PaymentIn.AMOUNT.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Account', attribute: PaymentIn.ACCOUNT_IN.dot(Account.ACCOUNT_CODE.name).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Date paid', attribute: PaymentIn.PAYMENT_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Date banked', attribute: PaymentIn.DATE_BANKED_PROPERTY, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Date banked', attribute: PaymentIn.DATE_BANKED_PROPERTY, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE, sortFields: [PaymentIn.BANKING.outer().dot(Banking.SETTLEMENT_DATE).name]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: PaymentIn.SOURCE.name, ascending: true)
