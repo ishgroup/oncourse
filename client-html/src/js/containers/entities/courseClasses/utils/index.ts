@@ -11,8 +11,7 @@ import {
   ClassCostTypes,
   Classes,
   CourseClassStatus,
-  CourseClassTutorExtended,
-  TutorAttendanceExtended
+  CourseClassTutorExtended
 } from "../../../../model/entities/CourseClass";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
@@ -94,7 +93,6 @@ export const getClassCostTypes = (
   sessions: TimetableSession[],
   tutors: CourseClassTutorExtended[],
   tutorRoles: any[],
-  tutorAttendance: TutorAttendanceExtended[]
 ) => {
   const types: ClassCostTypes = {
     income: {
@@ -141,7 +139,6 @@ export const getClassCostTypes = (
         budgetedPlaces,
         successAndQueuedEnrolmentsCount,
         sessions,
-        tutorAttendance
       );
 
       item.max = fee.max;
