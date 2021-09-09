@@ -79,7 +79,7 @@ class PathAliasFactory {
 
     private void createAlias(Class<? extends Persistent> entityType,
                              String path, String alias, Class<? extends Persistent> nextEntity) {
-        PathAliasDescriptor aliasDescriptor = new PathAliasDescriptor(factory, Course.class, path, alias, nextEntity);
+        PathAliasDescriptor aliasDescriptor = new PathAliasDescriptor(factory, entityType, path, alias, nextEntity);
         factory.addSyntheticAttribute(entityType, aliasDescriptor);
     }
 }

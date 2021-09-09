@@ -103,6 +103,8 @@ public class ConverterDirectory {
                 new ASTScalar(Boolean.valueOf(b.BooleanLiteral().getText())));
         registerConverter(AqlParser.NullContext.class, (n, ctx) ->
                 new ASTScalar(null));
+        registerConverter(AqlParser.EmptyContext.class, (n, ctx) ->
+                new LazyEmptyNode());
         registerConverter(AqlParser.IdContext.class,
                 new IdentifierConverter());
     }

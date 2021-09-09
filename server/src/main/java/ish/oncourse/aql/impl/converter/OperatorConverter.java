@@ -90,7 +90,8 @@ class OperatorConverter implements Converter<AqlParser.OperatorPredicateContext>
                 return null;
             }
             AqlParser.ValueTermContext valueTermContext = (AqlParser.ValueTermContext)termContext.term();
-            if(!(valueTermContext.value() instanceof AqlParser.NullContext)) {
+            if(!(valueTermContext.value() instanceof AqlParser.NullContext
+                    || valueTermContext.value() instanceof AqlParser.EmptyContext)) {
                 ctx.reportError(op.operator().start.getLine(), op.operator().start.getCharPositionInLine(),
                         "Only comparison with NULL is supported for the Persistent type");
                 return null;
