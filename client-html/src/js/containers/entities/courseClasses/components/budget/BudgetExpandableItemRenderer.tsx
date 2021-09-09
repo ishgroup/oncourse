@@ -63,14 +63,16 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
 
   const percentOfProjectedValue = useMemo(
     () =>
-      (rowsValues.projected <= 0
-        ? 0
-        : new Decimal(rowsValues.actual)
-            .div(rowsValues.projected || 1)
-            .mul(100)
-            .toDecimalPlaces(0)
-            .toFixed(2)),
-    [rowsValues.projected, rowsValues.actual]
+      (typeof rowsValues.percentage === 'number'
+        ? rowsValues.percentage.toFixed(2)
+        : (rowsValues.projected <= 0
+          ? 0
+          : new Decimal(rowsValues.actual)
+              .div(rowsValues.projected || 1)
+              .mul(100)
+              .toDecimalPlaces(0)
+              .toFixed(2))),
+    [rowsValues.projected, rowsValues.actual, rowsValues.percentage]
   );
 
   return rowsValues.items.length || showEmpty ? (
