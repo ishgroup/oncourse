@@ -39,6 +39,7 @@ import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.FieldConfiguration
+import ish.oncourse.server.cayenne.GradingType
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Lead
@@ -67,6 +68,7 @@ import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.entity.mixins.ApplicationMixin
 import ish.oncourse.server.entity.mixins.BankingMixin
 import ish.oncourse.server.entity.mixins.PaymentInMixin
+import org.apache.cayenne.query.PrefetchTreeNode
 
 @CompileStatic
 class DefaultUserPreference {
@@ -128,6 +130,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Code', attribute: Module.NATIONAL_CODE.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Title', attribute: Module.TITLE.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Is offered', attribute: Module.IS_OFFERED.name, sortable: true, width: W100, visible: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Credit points', attribute: Module.CREDIT_POINTS.name, sortable: true, width: W100, visible: false),
+                new ColumnDTO(title: 'Expiry days', attribute: Module.EXPIRY_DAYS.name, sortable: true, width: W100, visible: false),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Module.NATIONAL_CODE.name, ascending: true)
@@ -149,7 +153,9 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Local timezone', attribute: Site.LOCAL_TIMEZONE.name, sortable: true, width: W200, visible: false),
                 new ColumnDTO(title: 'Administration centre', attribute: Site.IS_ADMINISTRATION_CENTRE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Shown on web', attribute: Site.IS_SHOWN_ON_WEB.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.BOOLEAN),
-                new ColumnDTO(title: 'Is virtual', attribute: Site.IS_VIRTUAL.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.BOOLEAN)
+                new ColumnDTO(title: 'Is virtual', attribute: Site.IS_VIRTUAL.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Active classes', attribute: Site.ACTIVE_CLASSES_COUNT_KEY, sortable: false, width: W200, visible: false, prefetches: [Site.ROOMS.path().toString()]),
+                new ColumnDTO(title: 'Future classes', attribute: Site.FUTURE_CLASSES_COUNT_KEY, sortable: false, width: W200, visible: false, prefetches: [Site.ROOMS.path().toString()]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Site.NAME.name, ascending: true)
@@ -189,7 +195,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Owing', attribute: AbstractInvoice.AMOUNT_OWING.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Total', attribute: AbstractInvoice.TOTAL_INC_TAX_KEY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Overdue', attribute: AbstractInvoice.OVERDUE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
-                new ColumnDTO(title: 'Invoice date', attribute: AbstractInvoice.INVOICE_DATE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE)
+                new ColumnDTO(title: 'Invoice date', attribute: AbstractInvoice.INVOICE_DATE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Reference', attribute: AbstractInvoice.CUSTOMER_REFERENCE.name, sortable: true, width: W200, visible: false)
         ]
         it.sortings = [
                 new SortingDTO(attribute: AbstractInvoice.INVOICE_NUMBER.name, ascending: true)
@@ -203,7 +210,7 @@ class DefaultUserPreference {
         it.columns = [
                 new ColumnDTO(title: 'Source', attribute: PaymentIn.SOURCE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Type', attribute: PaymentIn.PAYMENT_METHOD.dot(PaymentMethod.NAME).name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Status', attribute: PaymentInMixin.DISPLAY_STATYS,  sortFields: [PaymentIn.STATUS.name], sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Status', attribute: PaymentInMixin.DISPLAY_STATYS, sortFields: [PaymentIn.STATUS.name], sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name', attribute: PaymentIn.PAYER.dot(Contact.FULL_NAME_KEY).name, sortable: true,
                         width: W200, visible: true, sortFields: [PaymentIn.PAYER.dot(Contact.LAST_NAME).name,
                                                                  PaymentIn.PAYER.dot(Contact.FIRST_NAME).name,
@@ -211,6 +218,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Amount', attribute: PaymentIn.AMOUNT.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Account', attribute: PaymentIn.ACCOUNT_IN.dot(Account.ACCOUNT_CODE.name).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Date paid', attribute: PaymentIn.PAYMENT_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Date banked', attribute: PaymentIn.DATE_BANKED_PROPERTY, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE, sortFields: [PaymentIn.BANKING.outer().dot(Banking.SETTLEMENT_DATE).name]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: PaymentIn.SOURCE.name, ascending: true)
@@ -231,6 +239,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Date paid', attribute: PaymentOut.PAYMENT_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Banked', attribute:  PaymentOut.BANKING.dot(Banking.SETTLEMENT_DATE).name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Status', attribute: PaymentOut.STATUS.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Account', attribute: PaymentOut.ACCOUNT_OUT.dot(Account.ACCOUNT_CODE.name).name, sortable: true, width: W200, visible: false),
 
         ]
         it.sortings = [
@@ -250,6 +259,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Amount', attribute: AccountTransaction.AMOUNT.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'Source', attribute: AccountTransaction.TABLE_NAME.name, sortable: true, width: W100, visible: true),
                 new ColumnDTO(title: 'Created', attribute: AccountTransaction.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
+                new ColumnDTO(title: 'Source id', attribute: AccountTransaction.INVOICE_NUMBER_PROPERTY, sortable: false, width: W200, visible: false),
         ]
         it.sortings = [
                 new SortingDTO(attribute: AccountTransaction.TRANSACTION_DATE.name, ascending: true)
@@ -269,8 +279,9 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Payroll reference number', attribute: Payslip.CONTACT.dot(Contact.TUTOR).dot(Tutor.PAYROLL_REF).name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Created', attribute: Payslip.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Status', attribute: Payslip.STATUS.name, sortable: true, width: W200, visible: true),
-                new ColumnDTO(title: 'Type', attribute: Payslip.PAY_TYPE.name, sortable: true, width: W200, visible: true)
-
+                new ColumnDTO(title: 'Type', attribute: Payslip.PAY_TYPE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Budget total', attribute: Payslip.BUDGET_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()], type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Paid total', attribute: Payslip.PAID_TOTAL_KEY, sortable: false, width: W100, visible: false, prefetches: [Payslip.PAYLINES.path().toString()], type: ColumnTypeDTO.MONEY),
         ]
         it.sortings = [
             new SortingDTO(attribute: Payslip.CREATED_ON.name, ascending: true)
@@ -418,6 +429,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Date of application', attribute: Application.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Status', attribute: ApplicationMixin.DISPLAY_STATUS, sortFields:[Application.STATUS.name], sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Fee Override', attribute: Application.FEE_OVERRIDE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Enrol by', attribute: Application.ENROL_BY.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Application.SOURCE.name, ascending: true)
@@ -472,7 +484,24 @@ class DefaultUserPreference {
                         type: ColumnTypeDTO.BOOLEAN,
                         visible: false,
                         system: true),
-
+                new ColumnDTO(title: 'Enrolment type',
+                        attribute: Course.ENROLMENT_TYPE_KEY,
+                        sortable: true,
+                        width: W100,
+                        visible: false,
+                        system: false,
+                        sortFields: [Course.ENROLMENT_TYPE.name]),
+                new ColumnDTO(title: 'Data collection',
+                        attribute: Course.DATA_COLLECTION_RULE_KEY,
+                        sortable: false,
+                        width: W200,
+                        visible: false,
+                        prefetches: [Course.FIELD_CONFIGURATION_SCHEMA.path().toString()]),
+                new ColumnDTO(title: 'Total classes',
+                        attribute: Course.TOTAL_CLASS_COUNT_PROPERTY,
+                        sortable: false,
+                        width: W200,
+                        visible: false),
         ]
         it.sortings = [
             new SortingDTO(attribute: Course.NAME.name, ascending: true)
@@ -503,6 +532,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Name', attribute: MembershipProduct.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Price', attribute: MembershipProduct.PRICE_INC_TAX_PROPERTY, sortFields: [MembershipProduct.PRICE_EX_TAX.name], sortable: true, width: W200, visible: true, type: ColumnTypeDTO.MONEY),
                 new ColumnDTO(title: 'SKU', attribute: MembershipProduct.SKU.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Active memberships', attribute: MembershipProduct.ACTIVE_MEMBERSHIPS_COUNT_KEY, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: 'Number sold', attribute: MembershipProduct.SOLD_COUNT_KEY, sortable: false, width: W200, visible: false),
         ]
         it.sortings = [
             new SortingDTO(attribute: MembershipProduct.NAME.name, ascending: true)
@@ -530,6 +561,8 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Awarded On', attribute: Certificate.AWARDED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Issued On', attribute: Certificate.ISSUED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Revoked On', attribute: Certificate.REVOKED_ON.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Expires On', attribute: Certificate.EXPIRY_DATE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Outcomes', attribute: Certificate.OUTCOMES_COUNT_KEY, sortable: false, width: W200, visible: false, prefetches: [Certificate.OUTCOMES.path().toString()])
         ]
         it.sortings = [
                 new SortingDTO(attribute: Certificate.AWARDED_ON.name, ascending: true)
@@ -608,7 +641,10 @@ class DefaultUserPreference {
                                 ProductItem.INVOICE_LINE.dot(InvoiceLine.INVOICE).dot(Invoice.CONTACT).dot(Contact.MIDDLE_NAME).name,
                         ]
                 ),
-                new ColumnDTO(title: 'Purchased on', attribute: ProductItem.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE ),
+                new ColumnDTO(title: 'Purchased on', attribute: ProductItem.CREATED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Voucher code', attribute: ProductItem.CODE.name, sortable: true, width: W200, visible: false),
+                new ColumnDTO(title: 'Purchase price', attribute: ProductItem.PURCHASE_PRICE_KEY, sortable: false, width: W200, visible: false, type: ColumnTypeDTO.MONEY, prefetches: [ProductItem.INVOICE_LINE.path().toString()]),
+                new ColumnDTO(title: 'Value remaining', attribute: ProductItem.REDEMPTION_VALUE.name, sortable: true, width: W200, visible: false, type: ColumnTypeDTO.MONEY),
         ]
         it.sortings = [
                 new SortingDTO(attribute: ProductItem.PRODUCT.dot(Product.NAME).name, ascending: true)
@@ -650,8 +686,10 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Training plan start date', attribute: Outcome.TRAINING_PLAN_START_DATE_PROPERTY, sortable: false, width: W200, visible: true, type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Training plan end date', attribute: Outcome.TRAINING_PLAN_END_DATE_PROPERTY, sortable: false, width: W200, visible: true,  type: ColumnTypeDTO.DATE),
                 new ColumnDTO(title: 'Start date', attribute: Outcome.START_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true,  type: ColumnTypeDTO.DATE),
-                new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true)
+                new ColumnDTO(title: 'End date', attribute: Outcome.END_DATE.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATE),
+                new ColumnDTO(title: 'Delivery mode', attribute: Outcome.DELIVERY_MODE.name, sortable: true, width: W200, visible: true),
+                /*new ColumnDTO(title: '% of present attendance', attribute: Outcome.PRESENT_ATTENDENCE_PERCENT_KEY, sortable: false, width: W200, visible: false),
+                new ColumnDTO(title: '% of marked asssessments', attribute: Outcome.MARKED_ASSESSMENT_PERCENT_KEY, sortable: false, width: W200, visible: false),*/
         ]
         it.sortings = [
             new SortingDTO(attribute: Outcome.ENROLMENT.outer().dot(Enrolment.COURSE_CLASS).outer().dot(CourseClass.COURSE).outer().dot(Course.NAME).name, ascending: true)
@@ -667,6 +705,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Code', attribute: Assessment.CODE.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Assessment.NAME.name, sortable: true, width: W200, visible: true),
                 new ColumnDTO(title: 'Active', attribute: Assessment.ACTIVE.name, sortable: true, width: W200, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Grading type', attribute: Assessment.GRADING_TYPE.dot(GradingType.TYPE_NAME).name, sortable: false, width: W200, visible: false, prefetches: [Assessment.GRADING_TYPE.path().toString()]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: Assessment.CODE.name, ascending: true)
@@ -700,6 +739,12 @@ class DefaultUserPreference {
                 ),
                 new ColumnDTO(title: 'Submitted on', attribute: AssessmentSubmission.SUBMITTED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
                 new ColumnDTO(title: 'Marked on', attribute: AssessmentSubmission.MARKED_ON.name, sortable: true, width: W200, visible: true, type: ColumnTypeDTO.DATETIME),
+                new ColumnDTO(title: 'Grade', attribute: AssessmentSubmission.GRADE_KEY, sortable: true, width: W200, visible: false, sortFields: [AssessmentSubmission.GRADE.name],
+                        prefetches: [AssessmentSubmission.ASSESSMENT_CLASS
+                                             .dot(AssessmentClass.ASSESSMENT
+                                                .dot(Assessment.GRADING_TYPE))
+                                             .path().toString()]),
+                new ColumnDTO(title: 'Assessor', attribute: AssessmentSubmission.MARKED_BY.dot(Contact.FULL_NAME_KEY).name, sortable: false, width: W200, visible: false, prefetches: [AssessmentSubmission.MARKED_BY.path().toString()]),
         ]
         it.sortings = [
                 new SortingDTO(attribute: AssessmentSubmission.ENROLMENT.dot(Enrolment.ID).name, ascending: true)
@@ -849,7 +894,32 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Type', attribute: Contact.CONTACT_TYPE_PROP, sortable: false,
                         width: W100, visible: true),
                 new ColumnDTO(title: 'Tutor\'s date finished', attribute: Contact.TUTOR.dot(Tutor.DATE_FINISHED).name, sortable: true,
-                        width: W100, visible: false, system: true, type: ColumnTypeDTO.DATETIME)
+                        width: W100, visible: false, system: true, type: ColumnTypeDTO.DATETIME),
+                new ColumnDTO(title: 'Email', attribute: Contact.EMAIL_KEY, sortable: true,
+                        width: W200, visible: false),
+                new ColumnDTO(title: 'Postcode', attribute: Contact.POSTCODE_KEY, sortable: true,
+                        width: W200, visible: false),
+                new ColumnDTO(title: 'Attachments', attribute: Contact.ATTACHMENTS_COUNT_KEY, sortable: false,
+                        width: W200, visible: false,
+                        prefetches: [Contact.ATTACHMENT_RELATIONS.path().toString()]),
+                new ColumnDTO(title: 'Note count', attribute: Contact.NOTES_COUNT_KEY, sortable: false,
+                        width: W200, visible: false,
+                        prefetches: [Contact.NOTE_RELATIONS.path().toString()]),
+/*                new ColumnDTO(title: 'Amount owing', attribute: Contact.TOTAL_OWING_KEY, sortable: false,
+                        width: W200, visible: false),*/
+                new ColumnDTO(title: 'Memberships', attribute: Contact.ACTIVE_MEMBERSHIPS_COUNT_KEY, sortable: false,
+                        width: W200, visible: false,
+                        prefetches: [Contact.PRODUCT_ITEMS.path().toString()]),
+                new ColumnDTO(title: 'Amount overdue', attribute: Contact.TOTAL_OVERDUE_KEY, sortable: false,
+                        width: W200, visible: false, type: ColumnTypeDTO.MONEY),
+                new ColumnDTO(title: 'Enrolments', attribute: Contact.ENROLMENTS_COUNT_KEY, sortable: false,
+                        width: W200, visible: false),
+                new ColumnDTO(title: 'Leads', attribute: Contact.LEADS_COUNT_KEY, sortable: false,
+                        width: W200, visible: false,
+                        prefetches: [Contact.LEADS.path().toString()]),
+                new ColumnDTO(title: 'Consessions', attribute: Contact.ACTIVE_CONSESSIONS_COUNT_KEY, sortable: false,
+                        width: W200, visible: false,
+                        prefetches: [Contact.STUDENT.path().toString()])
         ]
         it.layout = LayoutTypeDTO.THREE_COLUMN
         it.filterColumnWidth = W200

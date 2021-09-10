@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.AssessmentSubmissionInterface
 import ish.oncourse.cayenne.QueueableEntity
@@ -18,17 +19,16 @@ import ish.oncourse.server.cayenne.glue._AssessmentSubmission
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-
-
 //TODO docs
 @API
 @QueueableEntity
-class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface {
+class AssessmentSubmission extends _AssessmentSubmission implements Queueable, NotableTrait, AttachableTrait, AssessmentSubmissionInterface {
 
 	public static final String STUDENT_NAME_PROPERTY = "studentName"
 	public static final String CLASS_NAME_PROPERTY = "courseClassName"
 	public static final String ASSESSMENT_NAME_PROPERTY = "assessmentName"
 	public static final String MARKED_BY_ID_PROPERTY = "markedById"
+	public static final String GRADE_KEY = "gradeDisplayValue"
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
@@ -118,6 +118,15 @@ class AssessmentSubmission extends _AssessmentSubmission  implements Queueable, 
 	@API
 	String getAssessmentName() {
 		return getAssessmentClass().getAssessment().getName()
+	}
+
+	/**
+	 *
+	 * @return itemName of related GradingItem or null if grade is incorrect
+	 */
+	String getGradeDisplayValue() {
+		def type = assessmentClass.assessment.gradingType
+		return type == null ? "" : type.getDisplayableNameOfGrade(grade)
 	}
 
 	@Override
