@@ -11,11 +11,26 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.DataType
 import ish.oncourse.API
+import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
 import javax.annotation.Nullable
+import static ish.common.types.DataType.BOOLEAN
+import static ish.common.types.DataType.DATE
+import static ish.common.types.DataType.DATE_TIME
+import static ish.common.types.DataType.EMAIL
+import static ish.common.types.DataType.ENTITY
+import static ish.common.types.DataType.FILE
+import static ish.common.types.DataType.LIST
+import static ish.common.types.DataType.LONG_TEXT
+import static ish.common.types.DataType.MAP
+import static ish.common.types.DataType.MESSAGE_TEMPLATE
+import static ish.common.types.DataType.MONEY
+import static ish.common.types.DataType.PATTERN_TEXT
+import static ish.common.types.DataType.TEXT
 
 trait ExpandableTrait {
 
@@ -41,7 +56,7 @@ trait ExpandableTrait {
      * @param key
      * @return
      */
-    String propertyMissing(String key) {
+    Object propertyMissing(String key) {
         return getCustomFieldValue(key)
     }
 
@@ -50,21 +65,46 @@ trait ExpandableTrait {
      * contact.passportNumber = '123'
      * @throws MissingPropertyException
      */
-    void propertyMissing(String key, String value) {
-        CustomField customField = customFields.find {it.customFieldType.key == key}
+    void propertyMissing(String key, Object value) {
+        CustomField customField = customFields.find { it.customFieldType.key == key }
+        CustomFieldType type
         if (customField) {
-            customField.value = value
-            return
+            type = customField.customFieldType
+        } else {
+            type = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(key)).selectFirst(context)
+            if (type) {
+                customField = context.newObject(customFieldClass)
+                customField.relatedObject = this
+                customField.customFieldType = type
+            } else {
+                throw new MissingPropertyException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
+            }
         }
 
-        CustomFieldType type = ObjectSelect.query(CustomFieldType).where(CustomFieldType.KEY.eq(key)).selectFirst(context)
-        if (type) {
-            customField = context.newObject(customFieldClass)
-            customField.relatedObject = this
-            customField.customFieldType = type
-            customField.value = value
-        } else {
-            throw new MissingPropertyException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
+        switch (type.dataType) {
+            case LIST:
+            case MAP:
+            case EMAIL:
+            case DataType.URL:
+            case MONEY:
+            case TEXT:
+            case LONG_TEXT:
+            case PATTERN_TEXT:
+                customField.value = value
+                break
+            case DATE:
+                customField.value = LocalDateUtils.valueToString(LocalDateUtils.stringToValue(value.toString()))
+                break
+            case DATE_TIME:
+                customField.value = LocalDateUtils.timeValueToString(LocalDateUtils.stringToTimeValue(value.toString()))
+                break
+            case BOOLEAN:
+                customField.value = Boolean.valueOf(value.toString())
+                break
+            case ENTITY:
+            case FILE:
+            case MESSAGE_TEMPLATE:
+                throw new IllegalArgumentException("$ENTITY.displayName type is not supported for automation options")
         }
     }
 
