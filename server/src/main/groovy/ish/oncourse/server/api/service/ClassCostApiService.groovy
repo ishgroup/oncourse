@@ -116,6 +116,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
             ccDto.courseClassDiscount.forecast = cayenneModel.discountCourseClass.predictedStudentsPercentage
             ccDto.courseClassDiscount.discountOverride = cayenneModel.discountCourseClass.discountDollar?.toBigDecimal()
             ccDto.courseClassDiscount.discount = DiscountFunctions.toRestDiscount(cayenneModel.discountCourseClass.discount, false)
+            ccDto.actualUsePercent = cayenneModel.discountCourseClass.actualUsePercent
         }
         ccDto
     }
