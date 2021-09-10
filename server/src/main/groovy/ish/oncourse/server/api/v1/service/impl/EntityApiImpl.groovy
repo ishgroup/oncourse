@@ -99,7 +99,7 @@ class EntityApiImpl implements EntityApi {
                 .flatten()
                 .forEach(
                         {
-                            prefetch -> query.prefetch(prefetch.toString(), PrefetchTreeNode.DISJOINT_PREFETCH_SEMANTICS)
+                            prefetch -> query.prefetch(prefetch.toString(), PrefetchTreeNode.DISJOINT_BY_ID_PREFETCH_SEMANTICS)
                         }
                 )
 
