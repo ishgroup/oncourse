@@ -19,7 +19,10 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
 import javax.annotation.Nullable
-import java.util.regex.Pattern
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeParseException
+
 import static ish.common.types.DataType.*
 
 trait ExpandableTrait {
@@ -57,6 +60,11 @@ trait ExpandableTrait {
      */
     void propertyMissing(String key, Object value) {
         CustomField customField = customFields.find { it.customFieldType.key == key }
+        if (value == null) {
+            customField.value = value
+            return
+        }
+
         CustomFieldType type
         if (customField) {
             type = customField.customFieldType
@@ -69,63 +77,91 @@ trait ExpandableTrait {
             } else {
                 throw new MissingPropertyException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
             }
-            switch (type.dataType) {
-                case LIST:
-                case MAP:
-                case EMAIL:
-                case DataType.URL:
-                case TEXT:
-                case LONG_TEXT:
-                    if (value instanceof String) {
-                        customField.value = value
-                    } else {
-                        throw new IllegalArgumentException(value.class.simpleName + " is not supported for $type.dataType field")
-                    }
-                    break
-                case PATTERN_TEXT:
-                    if (value instanceof String) {
-                        String pattern = customField.customFieldType.pattern
-                        if (!Pattern.compile(pattern).matcher(value).matches()) {
-                            throw new IllegalArgumentException("`$value` does't match custom field pattern `$pattern`")
-                        }
-                        customField.value = value
-                    } else {
-                        throw new IllegalArgumentException(value.class.simpleName +" is not supported for $ENTITY.displayName")
-                    }
-                    break
-                case DATE:
-                    customField.value = LocalDateUtils.valueToString(LocalDateUtils.stringToValue(value.toString()))
-                    break
-                case DATE_TIME:
-                    customField.value = LocalDateUtils.timeValueToString(LocalDateUtils.stringToTimeValue(value.toString()))
-                    break
-                case MONEY:
-                    if (value instanceof String ^ value instanceof Money) {
-                        customField.value = value
-                    } else {
-                        if (value instanceof Number) {
-                            customField.value = new Money(value.toString()).toPlainString()
-                        } else {
-                            throw new IllegalArgumentException(value.class.simpleName +" is not supported for $ENTITY.displayName")
-                        }
-                    }
-                    break
-                case BOOLEAN:
-                    if (value instanceof Boolean) {
-                        customField.value = value
-                    } else {
-                        if (value instanceof Number) {
-                            customField.value = Boolean.valueOf(value.toString())
-                        } else {
-                            throw new IllegalArgumentException(value.class.simpleName +" is not supported for $ENTITY.displayName")
-                        }
-                    }
-                    break
-                default:
-                    throw new IllegalArgumentException("$ENTITY.displayName type is not supported for automation options")
-            }
         }
 
+        switch (type.dataType) {
+            case LIST:
+            case MAP:
+            case EMAIL:
+            case DataType.URL:
+            case TEXT:
+            case LONG_TEXT:
+                if (value instanceof String) {
+                    customField.value = value
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            case PATTERN_TEXT:
+                if (value instanceof String) {
+                    String pattern = customField.customFieldType.pattern
+                    if (value ==~ ~pattern) {
+                        customField.value = value
+                    } else {
+                        throw new IllegalArgumentException("`$value` does't match custom field pattern `$pattern`")
+                    }
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            case DATE:
+                if (value instanceof LocalDate) {
+                    customField.value = LocalDateUtils.valueToString(value)
+                } else if (value instanceof String) {
+                    try {
+                        LocalDate dateValue = LocalDateUtils.stringToValue(value)
+                        customField.value = LocalDateUtils.valueToString(dateValue)
+                    } catch (DateTimeParseException e) {
+                        throw new DateTimeParseException(e.message, e.parsedString, e.errorIndex)
+                    }
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            case DATE_TIME:
+                if (value instanceof LocalDateTime) {
+                    customField.value = LocalDateUtils.timeValueToString(value)
+                } else if (value instanceof String) {
+                    try {
+                        LocalDateTime dateTimeValue = LocalDateUtils.stringToTimeValue(value)
+                        customField.value = LocalDateUtils.timeValueToString(dateTimeValue)
+                    } catch (DateTimeParseException e) {
+                        throw new DateTimeParseException(e.message, e.parsedString, e.errorIndex)
+                    }
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            case MONEY:
+                if (value instanceof String) {
+                    try {
+                        Money money = new Money(value)
+                        customField.value = value.toString()
+                    } catch (NumberFormatException e) {
+                        throw new NumberFormatException(e.message)
+                    }
+                } else if (value instanceof Money) {
+                    customField.value = (value as Money).toPlainString()
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            case BOOLEAN:
+                if (value instanceof Boolean) {
+                    customField.value = value
+                } else if (value instanceof String) {
+                    if (value.equals("true") || value.equals("false")) {
+                        customField.value = value == "true" ?: "false"
+                    } else {
+                        throw new IllegalArgumentException(value + " cannot be the value for $key field")
+                    }
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            default:
+                throw new IllegalArgumentException("$ENTITY.displayName type is not supported for automation options")
+        }
     }
 
     /**
