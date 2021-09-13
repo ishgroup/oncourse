@@ -24,7 +24,8 @@ export const useStyles = createStyles((theme) => ({
     borderRadius: theme.spacing(3),
     padding: theme.spacing(2),
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: 340
   },
   loginContainerFullScreen: {
     width: '100%',
@@ -55,8 +56,8 @@ export const useStyles = createStyles((theme) => ({
     flex: 1,
     padding: theme.spacing(2),
     justifyContent: 'center',
-    width: 310,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    width: 310
   },
   companySwitch: {
     marginTop: theme.spacing(1),

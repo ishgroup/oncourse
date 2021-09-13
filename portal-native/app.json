@@ -22,7 +22,25 @@
       "bundleIdentifier": "ish.oncourse.willow.portal"
     },
     "android": {
-      "package": "ish.oncourse.willow.portal"
+      "package": "ish.oncourse.willow.portal",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "www.skillsoncourse.com.au",
+              "pathPrefix": "/new/",
+              "path": "/new"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "favicon": "./src/assets/images/favicon-32x32.png"
@@ -40,6 +58,6 @@
           "config": {}
         }
       ]
-    }
+    },
   }
 }

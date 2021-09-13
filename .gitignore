@@ -47,3 +47,4 @@ gradle-app.setting
 /portal-api/google_android.json
 /portal-api/google_web.json
 /portal-api/microsoft_web.json
+/portal-native/dist/
