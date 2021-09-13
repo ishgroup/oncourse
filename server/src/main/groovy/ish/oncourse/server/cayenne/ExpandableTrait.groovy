@@ -112,7 +112,7 @@ trait ExpandableTrait {
                         LocalDate dateValue = LocalDateUtils.stringToValue(value)
                         customField.value = LocalDateUtils.valueToString(dateValue)
                     } catch (DateTimeParseException e) {
-                        throw new DateTimeParseException(e.message, e.parsedString, e.errorIndex)
+                        throw new IllegalArgumentException("Cannot parse value `$value` for $key field")
                     }
                 } else {
                     throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
@@ -126,7 +126,7 @@ trait ExpandableTrait {
                         LocalDateTime dateTimeValue = LocalDateUtils.stringToTimeValue(value)
                         customField.value = LocalDateUtils.timeValueToString(dateTimeValue)
                     } catch (DateTimeParseException e) {
-                        throw new DateTimeParseException(e.message, e.parsedString, e.errorIndex)
+                        throw new IllegalArgumentException("Cannot parse value `$value` for $key field")
                     }
                 } else {
                     throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
@@ -153,14 +153,14 @@ trait ExpandableTrait {
                     if (value.equals("true") || value.equals("false")) {
                         customField.value = value == "true" ?: "false"
                     } else {
-                        throw new IllegalArgumentException(value + " cannot be the value for $key field")
+                        throw new IllegalArgumentException("$value cannot be the value for $key field")
                     }
                 } else {
                     throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
                 }
                 break
             default:
-                throw new IllegalArgumentException("$ENTITY.displayName type is not supported for automation options")
+                throw new IllegalArgumentException("$type.dataType type is not supported")
         }
     }
 
