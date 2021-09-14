@@ -36,7 +36,14 @@ import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/format
 const styles = theme => createStyles({
   textField: {
     paddingLeft: "0",
-    paddingBottom: `${theme.spacing(2) - 3}px`
+    paddingBottom: "9px",
+    height: "61px",
+  },
+  spanLabel: {
+    paddingLeft: "0.5px",
+    marginTop: "-3px",
+    display: "inline-block",
+    height: "17px",
   },
   editing: {
     paddingBottom: theme.spacing(1.25)
@@ -76,7 +83,7 @@ const styles = theme => createStyles({
   },
   viewMode: {
     padding: 0,
-    margin: 0
+    margin: "-2px 0 0",
   },
   label: {
     whiteSpace: "nowrap"
@@ -453,7 +460,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
         })}
       >
         {!hideLabel && label && (
-          <Typography variant="caption" color="textSecondary" className={fieldClasses.label} noWrap>
+          <Typography variant="caption" color="textSecondary" className={clsx(fieldClasses.label, classes.spanLabel)} noWrap>
             {labelContent}
           </Typography>
         )}
