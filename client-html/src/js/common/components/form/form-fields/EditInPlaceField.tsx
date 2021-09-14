@@ -28,7 +28,8 @@ import createStyles from "@material-ui/core/styles/createStyles";
 
 const styles = theme => createStyles({
   textField: {
-    paddingBottom: "13px",
+    paddingBottom: "9px",
+    height: "60px",
     paddingLeft: "0",
     overflow: "hidden",
     display: "flex"
@@ -64,6 +65,8 @@ const styles = theme => createStyles({
     overflow: "hidden",
     textOverflow: "ellipsis",
     justifyContent: "flex-start",
+    color: theme.palette.text.primaryEditable,
+    fontWeight: 400,
     "&:hover, &:hover $placeholderContent, &:hover $editButton": {
       color: theme.palette.primary.main,
       fill: theme.palette.primary.main
@@ -86,7 +89,13 @@ const styles = theme => createStyles({
   },
   viewMode: {
     padding: 0,
-    margin: 0
+    margin: "0 0 3px",
+  },
+  spanLabel: {
+    paddingLeft: "0.5px",
+    marginTop: "-3px",
+    display: "inline-block",
+    height: "17px",
   },
   label: {
     whiteSpace: "nowrap",
@@ -107,7 +116,8 @@ const styles = theme => createStyles({
   labelShrink: {},
   labelAdornment: {},
   placeholderContent: {
-    color: theme.palette.divider
+    color: theme.palette.divider,
+    fontWeight: 300,
   },
   chip: {
     margin: theme.spacing(0.25)
@@ -648,7 +658,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.hideArrows]: hideArrows,
           "text-end": rightAligned
         }),
-        placeholder: hidePlaceholderInEditMode ? undefined : placeholder,
+        placeholder: placeholder || "No value",
         style: {
           maxWidth: isInline ? this.getInputLength() : undefined
         }
@@ -707,6 +717,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 shrink: classes.labelShrink
               }}
               {...InputLabelProps}
+              shrink={InputLabelProps?.shrink !== undefined ? InputLabelProps.shrink : true}
             >
               {labelContent}
             </InputLabel>
@@ -768,7 +779,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         >
           <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
             {!hideLabel && label && (
-              <Typography variant="caption" color="textSecondary" className={fieldClasses.label} noWrap>
+              <Typography variant="caption" color="textSecondary" className={clsx(fieldClasses.label, classes.spanLabel)} noWrap>
                 {label}
                 {' '}
                 {labelAdornment && (
@@ -786,14 +797,14 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             {formatting === "primary" && (
             <ListItemText
               classes={{
-                    root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                    primary: "d-flex"
-                  }}
+                root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
+                primary: "d-flex"
+              }}
               primary={(
                 <ButtonBase
                   classes={{
-                        root: classes.valueContainer
-                      }}
+                    root: classes.valueContainer
+                  }}
                   onFocus={e => this.onEditButtonFocus(e, "focus")}
                   onClick={e => this.onEditButtonFocus(e, "click")}
                   className={clsx("hoverIconContainer", fieldClasses.text)}
@@ -802,8 +813,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   <span
                     ref={this.setContainerNode}
                     className={clsx(classes.editable, {
-                          [classes.rightAligned]: rightAligned
-                        })}
+                      [classes.rightAligned]: rightAligned
+                    })}
                   >
                     {editableComponent || this.getValue()}
                     {editIcon}
@@ -871,8 +882,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   [classes.rightAligned]: rightAligned,
                   [classes.readonly]: disabled,
                   [classes.inlineMargin]: disabled
-                }
-)}
+                  }
+                )}
               >
                 {editableComponent || this.getValue()}
                 {editIcon}

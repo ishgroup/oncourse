@@ -296,9 +296,10 @@ const globalStyles = (theme: AppTheme) =>
         marginLeft: "0.2rem"
       },
       ".editInPlaceIcon": {
+        visibility: "hidden",
         fontSize: "14px",
         color: theme.palette.divider,
-        verticalAlign: "middle"
+        verticalAlign: "middle",
       },
       ".coloredHover": {
         "&:hover": {
@@ -514,7 +515,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".hoverIconContainer": {
         "&:hover .hoverIcon": {
-          color: "inherit"
+          color: "inherit",
+          visibility: "visible",
         }
       },
       ".generalRoot": {
