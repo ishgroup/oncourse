@@ -1,0 +1,20 @@
+name: Xapiapps create assessment submittions
+body: acapma.script.xapiapps.history.groovy
+keyCode: acapma.script.xapiapps.history
+enabled: false
+triggerType: CRON
+schedule: 0 0 8 1/1 * ? *
+description: check for tasks that was complited yestarday and create corresponded assessment submittions in onCourse. Looking for students from certain groupStoreKey
+options:
+  - name: url
+    dataType: TEXT
+    value: ""
+  - name: publicToken
+    dataType: TEXT
+    value: ""
+  - name: secretToken
+    dataType: TEXT
+    value: ""
+  - name: groupStoreKey
+    dataType: TEXT
+    value: ""
