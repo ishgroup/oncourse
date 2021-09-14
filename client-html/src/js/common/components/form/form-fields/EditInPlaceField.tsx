@@ -113,7 +113,12 @@ const styles = theme => createStyles({
       marginTop: 0
     }
   },
-  labelShrink: {},
+  labelShrink: {
+    "& $labelAdornment": {
+      position: "absolute",
+      transform: "scale(1.33) translate(5px,0)",
+    },
+  },
   labelAdornment: {},
   placeholderContent: {
     color: theme.palette.divider,
