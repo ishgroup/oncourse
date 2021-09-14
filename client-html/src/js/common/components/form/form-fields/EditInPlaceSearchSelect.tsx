@@ -64,7 +64,11 @@ const searchStyles = theme => createStyles({
     fontSize: "inherit"
   },
   labelShrink: {},
-  labelAdornment: {}
+  labelAdornment: {},
+  editable: {
+    color: theme.palette.text.primaryEditable,
+    fontWeight: 400,
+  }
 });
 
 interface Props extends WrappedFieldProps {

@@ -61,9 +61,11 @@ const styles = theme => createStyles({
     display: "inline-flex"
   },
   editable: {
+    color: theme.palette.text.primaryEditable,
+    fontWeight: 400,
     "&:hover, &:hover $editButton": {
       color: theme.palette.primary.main,
-      fill: theme.palette.primary.main
+      fill: theme.palette.primary.main,
     }
   },
   readonly: {
