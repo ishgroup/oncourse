@@ -266,7 +266,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".inputAdornmentIcon": {
-        fontSize: theme.spacing(2)
+        fontSize: theme.spacing(2),
       },
       ".switchLabel": {
         marginRight: "auto",
