@@ -46,7 +46,6 @@ task prepareTestDb(type: JavaExec) {
     main = 'ish.oncourse.api.test.task.PrepareTestDb'
     classpath = sourceSets.test.runtimeClasspath
     def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
-
     args = [dbUrl, "$rootDir/api-test/src/test/resources/test-dataset.xml"]
 }
 
