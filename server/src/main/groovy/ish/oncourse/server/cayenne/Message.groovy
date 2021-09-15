@@ -220,7 +220,11 @@ class Message extends _Message implements Queueable {
 		return tagList
 	}
 
-	/**
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return MessageTagRelation.class
+	}
+/**
 	 * @return specific key of the message. It can be set in scripts.
 	 */
 	@API

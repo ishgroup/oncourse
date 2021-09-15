@@ -282,6 +282,10 @@ class Report extends _Report implements AutomationTrait {
         return tagList
     }
 
+    @Override
+    Class<? extends TagRelation> getTagRelationClass() {
+        return CourseTagRelation.class
+    }
     /**
      * @return all the automation bindings for this record, including both variables and options
      */

@@ -396,6 +396,24 @@ public final class InvoiceUtil {
 	}
 
 	/**
+	 * sums all invoice amount overdue for a payer
+	 *
+	 * @param payer to be analysed
+	 * @return Money sum of amount overdue
+	 */
+	public static Money amountOverdueForPayer(ContactInterface payer) {
+		Money result = Money.ZERO;
+		if (payer != null) {
+			List<? extends InvoiceInterface> invoices = payer.getInvoices();
+
+			for (InvoiceInterface invoice : invoices) {
+				result = result.add(invoice.getOverdue());
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * returns a list of invoices which are not balanced
 	 *
 	 * @param oc context to be used for queries

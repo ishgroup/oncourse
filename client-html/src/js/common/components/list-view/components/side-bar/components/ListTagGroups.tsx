@@ -78,7 +78,7 @@ const ListTagGroups: React.FC<Props> = ({ tags, classes, onChangeTagGroups, upda
 
     const tagsOrder = tagsForRender.map(tag => tag.tagBody.id);
 
-    updateTableModel({ tagsOrder }, true);
+    if (records.columns.length) updateTableModel({ tagsOrder }, true);
   };
 
   return (
