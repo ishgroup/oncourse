@@ -12,7 +12,7 @@ buildscript {
 		jettyVersion = '10.0.6'
         mariadbVersion = '2.7.2'
 		googleGuiceVersion = '4.2.2'
-		groovyVersion = '2.5.13'
+		groovyVersion = '3.0.9'
 		bouncycastleVersion = '1.67'
 		bootiqueVersion = '1.2'
 		cfxVersion = '3.3.5'
