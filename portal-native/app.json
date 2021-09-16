@@ -1,8 +1,8 @@
 {
   "expo": {
+    "version": "1.0.0",
     "name": "skillsOnCourse",
     "slug": "skillsOnCourse",
-    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "ish.oncourse.willow.portal",
@@ -18,10 +18,13 @@
       "**/*"
     ],
     "ios": {
+      "buildNumber": "1.0.1",
       "supportsTablet": true,
-      "bundleIdentifier": "ish.oncourse.willow.portal"
+      "bundleIdentifier": "ish.oncourse.willow.portal",
+      "icon": "./src/assets/images/ios-icon-1024.png"
     },
     "android": {
+      "versionCode": 1,
       "package": "ish.oncourse.willow.portal",
       "intentFilters": [
         {
@@ -58,6 +61,6 @@
           "config": {}
         }
       ]
-    },
+    }
   }
 }
