@@ -634,6 +634,7 @@
 		<db-attribute name="status" type="INTEGER"/>
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="studentIndustryANZSICCode" type="SMALLINT"/>
+    <db-attribute name="studentLoanStatus" type="INTEGER"/>
 		<db-attribute name="studyReason" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="suppressAvetmissExport" type="SMALLINT"/>
 		<db-attribute name="trainingPlanDeveloped" type="SMALLINT"/>
@@ -2269,6 +2270,7 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="outcomeIdTrainingOrg" type="java.lang.String" db-attribute-path="outcomeIdTrainingOrg"/>
+    <obj-attribute name="reportingStatus" type="ish.common.types.EnrolmentReportingStatus" db-attribute-path="studentLoanStatus"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.common.types.EnrolmentStatus" db-attribute-path="status"/>
 		<obj-attribute name="studentIndustryANZSICCode" type="java.lang.Integer" db-attribute-path="studentIndustryANZSICCode"/>
