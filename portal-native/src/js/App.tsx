@@ -4,17 +4,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
+import Constants from 'expo-constants';
 import useCachedResources from './hooks/useCachedResources';
 import { getThemeByType, ThemeContext, ThemeType } from './styles';
 import store from './reducers/Store';
 import Navigation from './components/navigation';
 import { ErrorBoundary } from './constants/Bugsnag';
 import Message from './components/feedback/Message';
-// import { initMockDB } from '../dev/MockAdapter';
-//
-// if (__DEV__) {
-//   initMockDB();
-// }
+import { initMockDB } from '../dev/MockAdapter';
+
+if (Constants.manifest.extra.enableMockedApi) {
+  initMockDB();
+}
 
 const App = () => {
   const [theme, setTheme] = useState<ThemeType>('light');
