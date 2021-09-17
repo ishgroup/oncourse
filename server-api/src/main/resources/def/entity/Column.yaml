@@ -29,4 +29,10 @@ properties:
     items:
       type: string
     description: fields which will be used for sorting
-    example: [contact.lastname, contact.firstname]
+    example: [ contact.lastname, contact.firstname ]
+  prefetches:
+    type: array
+    items:
+      type: string
+    description: path to fields which will be prefetched
+    example: [ 'attachmentRelations' ]

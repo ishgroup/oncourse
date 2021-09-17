@@ -60,7 +60,7 @@ class AttendanceFunctions {
         return 0
     }
 
-    private void copyAttendanceBtoA(Attendance a, Attendance b) {
+    private static void copyAttendanceBtoA(Attendance a, Attendance b) {
         a.setAttendanceType(b.getAttendanceType())
         a.setAttendedFrom(b.getAttendedFrom())
         a.setAttendedUntil(b.getAttendedUntil())
@@ -70,6 +70,5 @@ class AttendanceFunctions {
         a.setDurationMinutes(b.getDurationMinutes())
         a.setMarkedByTutor(b.getMarkedByTutor())
         a.setMarkedByTutorDate(b.getMarkedByTutorDate())
-
     }
 }

@@ -13,24 +13,17 @@ package ish.oncourse.server.modules;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.bootique.annotation.BQConfig;
-import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jetty.connector.ConnectorFactory;
-import io.bootique.resource.ResourceFactory;
 import ish.oncourse.server.security.KeystoreGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
-import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.http2.HTTP2Cipher;
-import org.eclipse.jetty.http2.server.HTTP2CServerConnectionFactory;
 import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
 import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.util.resource.URLResource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
-import java.net.URL;
 import java.security.KeyStore;
-import java.util.Objects;
 
 
 @BQConfig
@@ -56,7 +49,7 @@ public class AngelHttpsConnectorFactory extends ConnectorFactory {
     }
 
 
-    SslContextFactory createSslContextFactory()  {
+    SslContextFactory.Server createSslContextFactory()  {
         KeyStore keyStore;
         try {
             //read or create (first run) server key store
@@ -67,7 +60,7 @@ public class AngelHttpsConnectorFactory extends ConnectorFactory {
         }
 
         // SSL Context Factory for HTTPS and HTTP/2
-        SslContextFactory sslContextFactory = new SslContextFactory.Server();
+        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setKeyStore(keyStore);
         sslContextFactory.setKeyStorePassword(KeystoreGenerator.KEYSTORE_PASSWORD);
         sslContextFactory.setSslSessionTimeout(MAX_IDLE_TIME);
