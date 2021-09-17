@@ -4,13 +4,22 @@
 package org.eclipse.jetty.testing
 
 import groovy.transform.CompileStatic
-import org.eclipse.jetty.http.*
+import org.eclipse.jetty.http.HttpField
+import org.eclipse.jetty.http.HttpFields
+import org.eclipse.jetty.http.HttpGenerator
+import org.eclipse.jetty.http.HttpHeader
+import org.eclipse.jetty.http.HttpParser
+import org.eclipse.jetty.http.HttpURI
+import org.eclipse.jetty.http.HttpVersion
+import org.eclipse.jetty.http.MetaData
+import org.eclipse.jetty.http.MimeTypes
 import org.eclipse.jetty.util.BufferUtil
 import org.eclipse.jetty.util.StringUtil
 
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.util.stream.Stream
 
 @CompileStatic
 class HttpTester {
@@ -28,7 +37,7 @@ class HttpTester {
         return r
     }
 
-    abstract static class Message extends HttpFields implements HttpParser.HttpHandler {
+    abstract static class Message implements HttpFields, HttpParser.HttpHandler {
         ByteArrayOutputStream _content
         HttpVersion _version = HttpVersion.HTTP_1_0
 
@@ -76,7 +85,7 @@ class HttpTester {
 
         @Override
         void parsedHeader(HttpField field) {
-            put(field.getName(), field.getValue())
+            build().put(field.getName(), field.getValue())
         }
 
         @Override
@@ -105,11 +114,6 @@ class HttpTester {
             return false
         }
 
-        @Override
-        void badMessage(int status, String reason) {
-            throw new RuntimeException(reason)
-        }
-
         ByteBuffer generate() {
             try {
                 HttpGenerator generator = new HttpGenerator()
@@ -122,12 +126,11 @@ class HttpTester {
                 ByteBuffer chunk = null
                 ByteBuffer content = _content == null ? null : ByteBuffer.wrap(_content.toByteArray())
 
-
                 loop:
                 while (!generator.isEnd()) {
                     HttpGenerator.Result result = info instanceof MetaData.Request
                             ? generator.generateRequest((MetaData.Request) info, header, chunk, content, true)
-                            : generator.generateResponse((MetaData.Response) info, header, chunk, content, true)
+                            : generator.generateResponse((MetaData.Response) info, true, header, chunk, content, true)
                     switch (result) {
                         case HttpGenerator.Result.NEED_HEADER:
                             header = BufferUtil.allocate(8192)
@@ -169,24 +172,19 @@ class HttpTester {
         }
 
         abstract MetaData getInfo();
-
-        @Override
-        int getHeaderCacheSize() {
-            return 0
-        }
-
     }
+
+
 
     static class Request extends Message implements HttpParser.RequestHandler {
         private String _method
         private String _uri
 
         @Override
-        boolean startRequest(String method, String uri, HttpVersion version) {
+        void startRequest(String method, String uri, HttpVersion version) {
             _method = method
             _uri = uri
             _version = version
-            return false
         }
 
         String getMethod() {
@@ -207,7 +205,7 @@ class HttpTester {
 
         @Override
         MetaData.Request getInfo() {
-            return new MetaData.Request(_method, new HttpURI(_uri), _version, this, _content == null ? 0 : _content.size())
+            return new MetaData.Request(_method, HttpURI.from(_uri), _version, this, _content == null ? 0 : _content.size())
         }
 
         @Override
@@ -216,12 +214,37 @@ class HttpTester {
         }
 
         void setHeader(String name, String value) {
-            put(name, value)
+            build().put(name, value)
         }
 
         @Override
         boolean contentComplete() {
             return false
+        }
+
+        @Override
+        Immutable asImmutable() {
+            return build().asImmutable()
+        }
+
+        @Override
+        HttpField getField(int index) {
+            return build().getField(index)
+        }
+
+        @Override
+        int size() {
+            return build().size()
+        }
+
+        @Override
+        Stream<HttpField> stream() {
+            return build().stream()
+        }
+
+        @Override
+        Iterator<HttpField> iterator() {
+            return build().iterator()
         }
     }
 
@@ -230,11 +253,10 @@ class HttpTester {
         private String _reason
 
         @Override
-        boolean startResponse(HttpVersion version, int status, String reason) {
+        void startResponse(HttpVersion version, int status, String reason) {
             _version = version
             _status = status
             _reason = reason
-            return false
         }
 
         int getStatus() {
@@ -276,6 +298,31 @@ class HttpTester {
         @Override
         boolean contentComplete() {
             return false
+        }
+
+        @Override
+        Immutable asImmutable() {
+            return build().asImmutable()
+        }
+
+        @Override
+        HttpField getField(int index) {
+            return  build().getField(index)
+        }
+
+        @Override
+        int size() {
+            return build().size()
+        }
+
+        @Override
+        Stream<HttpField> stream() {
+            return build().stream()
+        }
+
+        @Override
+        Iterator<HttpField> iterator() {
+            return build().iterator()
         }
     }
 }

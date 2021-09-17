@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.InvoiceApiService
+import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.InvoiceDTO
 import ish.oncourse.server.api.v1.service.InvoiceApi
 
@@ -20,6 +21,11 @@ class InvoiceApiImpl implements InvoiceApi {
 
     @Inject
     private InvoiceApiService service
+
+    @Override
+    void bulkChange(DiffDTO diff) {
+        service.bulkChange(diff)
+    }
 
     @Override
     void contraInvoice(Long id, List<Long> invoicesToPay) {

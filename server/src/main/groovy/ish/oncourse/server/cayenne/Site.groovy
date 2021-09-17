@@ -31,9 +31,11 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Site extends _Site implements Queueable, NotableTrait, AttachableTrait {
+class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, SiteTrait {
 
 	public static final String DEFAULT_SITE_NAME = "Default site"
+	public static final String ACTIVE_CLASSES_COUNT_KEY = "activeClassesCount"
+	public static final String FUTURE_CLASSES_COUNT_KEY = "futureClassesCount"
 
 
 	private static Logger logger = LogManager.getLogger()
@@ -327,4 +329,8 @@ class Site extends _Site implements Queueable, NotableTrait, AttachableTrait {
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return SiteTagRelation.class
+	}
 }
