@@ -167,21 +167,11 @@
 		<db-attribute name="communication_key" type="BIGINT"/>
 		<db-attribute name="communication_key_status" type="VARCHAR" length="20"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
-		<db-attribute name="firstRemoteAuthentication" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="ipAddress" type="VARCHAR" length="39"/>
-		<db-attribute name="isTestingWebServicePayments" type="BIT"/>
-		<db-attribute name="isTestingWebSitePayments" type="BIT"/>
-		<db-attribute name="isWebServicePaymentsEnabled" type="BIT"/>
-		<db-attribute name="isWebSitePaymentsEnabled" type="BIT"/>
 		<db-attribute name="lastRemoteAuthentication" type="TIMESTAMP"/>
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="LONGVARCHAR" length="16777215"/>
-		<db-attribute name="paymentGatewayAccount" type="VARCHAR" length="32"/>
-		<db-attribute name="paymentGatewayPass" type="VARCHAR" length="16"/>
-		<db-attribute name="purchaseOrder" type="VARCHAR" length="256"/>
-		<db-attribute name="requiresAvetmiss" type="BIT" isMandatory="true"/>
-		<db-attribute name="timeZone" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="webServicesSecurityCode" type="VARCHAR" length="16"/>
 	</db-entity>
 	<db-entity name="ConcessionType">
@@ -999,6 +989,15 @@
 		<db-attribute name="value_string" type="LONGVARCHAR" length="32000"/>
 		<db-attribute name="webSiteId" type="BIGINT"/>
 	</db-entity>
+	<db-entity name="Settings">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
+		<db-attribute name="created" type="TIMESTAMP"/>
+		<db-attribute name="modified" type="TIMESTAMP"/>
+		<db-attribute name="name" type="VARCHAR" length="128" isMandatory="true"/>
+		<db-attribute name="value" type="LONGVARCHAR" length="32000" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="PriorLearning">
 		<db-attribute name="angelId" type="BIGINT"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true"/>
@@ -1759,20 +1758,10 @@
 		<obj-attribute name="communicationKey" type="java.lang.Long" db-attribute-path="communication_key"/>
 		<obj-attribute name="communicationKeyStatus" type="ish.oncourse.model.KeyStatus" db-attribute-path="communication_key_status"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="firstRemoteAuthentication" type="java.util.Date" db-attribute-path="firstRemoteAuthentication"/>
-		<obj-attribute name="ipAddress" type="java.lang.String" db-attribute-path="ipAddress"/>
-		<obj-attribute name="isTestingWebServicePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebServicePayments"/>
-		<obj-attribute name="isTestingWebSitePayments" type="java.lang.Boolean" db-attribute-path="isTestingWebSitePayments"/>
-		<obj-attribute name="isWebServicePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebServicePaymentsEnabled"/>
-		<obj-attribute name="isWebSitePaymentsEnabled" type="java.lang.Boolean" db-attribute-path="isWebSitePaymentsEnabled"/>
 		<obj-attribute name="lastRemoteAuthentication" type="java.util.Date" db-attribute-path="lastRemoteAuthentication"/>
+		<obj-attribute name="ipAddress" type="java.lang.String" db-attribute-path="ipAddress"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="paymentGatewayAccount" type="java.lang.String" db-attribute-path="paymentGatewayAccount"/>
-		<obj-attribute name="paymentGatewayPass" type="java.lang.String" db-attribute-path="paymentGatewayPass"/>
-		<obj-attribute name="purchaseOrder" type="java.lang.String" db-attribute-path="purchaseOrder"/>
-		<obj-attribute name="requiresAvetmiss" type="java.lang.Boolean" db-attribute-path="requiresAvetmiss"/>
-		<obj-attribute name="timeZone" type="java.lang.String" db-attribute-path="timeZone"/>
 		<obj-attribute name="webServicesSecurityCode" type="java.lang.String" db-attribute-path="webServicesSecurityCode"/>
 	</obj-entity>
 	<obj-entity name="ConcessionType" className="ish.oncourse.model.ConcessionType" dbEntityName="ConcessionType" superClassName="WillowCayenneObject">
@@ -2440,6 +2429,13 @@
 		<obj-attribute name="sqlType" type="java.lang.Integer" db-attribute-path="sqlType"/>
 		<obj-attribute name="value" type="byte[]" db-attribute-path="value"/>
 		<obj-attribute name="valueString" type="java.lang.String" db-attribute-path="value_string"/>
+	</obj-entity>
+	<obj-entity name="Settings" className="ish.oncourse.model.Settings" dbEntityName="Settings" superClassName="WillowCayenneObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
+		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
 	<obj-entity name="PriorLearning" className="ish.oncourse.model.PriorLearning" dbEntityName="PriorLearning" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -3238,6 +3234,9 @@
 	<db-relationship name="preferences" source="College" target="Preference" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
+	<db-relationship name="settings" source="College" target="Settings" toMany="true">
+		<db-attribute-pair source="id" target="collegeId"/>
+	</db-relationship>
 	<db-relationship name="priorLearnings" source="College" target="PriorLearning" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -4015,6 +4014,12 @@
 	<db-relationship name="webSite" source="Preference" target="WebSite">
 		<db-attribute-pair source="webSiteId" target="id"/>
 	</db-relationship>
+	<db-relationship name="college" source="Settings" target="College">
+		<db-attribute-pair source="collegeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="webSite" source="Settings" target="WebSite">
+		<db-attribute-pair source="webSiteId" target="id"/>
+	</db-relationship>
 	<db-relationship name="college" source="PriorLearning" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -4456,6 +4461,9 @@
 	<db-relationship name="preferences" source="WebSite" target="Preference" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
+	<db-relationship name="settings" source="WebSite" target="Settings" toMany="true">
+		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
 	<db-relationship name="versions" source="WebSite" target="WebSiteVersion" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
@@ -4605,6 +4613,7 @@
 	<obj-relationship name="paymentsIn" source="College" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="College" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="preferences" source="College" target="Preference" deleteRule="Deny" db-relationship-path="preferences"/>
+	<obj-relationship name="settings" source="College" target="Settings" deleteRule="Deny" db-relationship-path="settings"/>
 	<obj-relationship name="priorLearnings" source="College" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="productItems" source="College" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="products" source="College" target="Product" deleteRule="Deny" db-relationship-path="products"/>
@@ -4852,6 +4861,8 @@
 	<obj-relationship name="payment" source="PaymentTransaction" target="PaymentIn" deleteRule="Nullify" db-relationship-path="payment"/>
 	<obj-relationship name="college" source="Preference" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="webSite" source="Preference" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
+	<obj-relationship name="college" source="Settings" target="College" deleteRule="Nullify" db-relationship-path="college"/>
+	<obj-relationship name="webSite" source="Settings" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="PriorLearning" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="outcomes" source="PriorLearning" target="Outcome" deleteRule="Deny" db-relationship-path="outcomes"/>
 	<obj-relationship name="qualification" source="PriorLearning" target="Qualification" deleteRule="Nullify" db-relationship-path="qualification"/>
@@ -4996,6 +5007,7 @@
 	<obj-relationship name="invoices" source="WebSite" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
 	<obj-relationship name="licenseFees" source="WebSite" target="LicenseFee" deleteRule="Deny" db-relationship-path="licenseFees"/>
 	<obj-relationship name="preferences" source="WebSite" target="Preference" deleteRule="Cascade" db-relationship-path="preferences"/>
+	<obj-relationship name="settings" source="WebSite" target="Settings" deleteRule="Cascade" db-relationship-path="settings"/>
 	<obj-relationship name="versions" source="WebSite" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="versions"/>
 	<obj-relationship name="templates" source="WebSiteLayout" target="WebTemplate" deleteRule="Deny" db-relationship-path="templates"/>
 	<obj-relationship name="webNodeTypes" source="WebSiteLayout" target="WebNodeType" deleteRule="Deny" db-relationship-path="webNodeTypes"/>

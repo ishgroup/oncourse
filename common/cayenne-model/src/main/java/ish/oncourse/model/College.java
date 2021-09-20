@@ -2,6 +2,7 @@ package ish.oncourse.model;
 
 import ish.oncourse.model.auto._College;
 import ish.oncourse.utils.QueueableObjectUtils;
+import ish.persistence.Preferences;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
@@ -52,5 +53,13 @@ public class College extends _College {
 				and(Site.IS_WEB_VISIBLE.isTrue()).
 				orderBy(Site.NAME.asc()).
 				select(getObjectContext()));
+	}
+	
+	public String getTimeZone() {
+		Preference timeZone = ObjectSelect.query(Preference.class).where(Preference.COLLEGE.eq(this))
+				.and(Preference.NAME.eq(Preferences.ONCOURSE_SERVER_DEFAULT_TZ))
+				.selectFirst(getObjectContext());
+		
+		return timeZone != null ? timeZone.getValueString() : "Australia/Sydney";
 	}
 }
