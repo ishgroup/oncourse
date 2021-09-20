@@ -35,7 +35,6 @@ public class AppModule {
 		BinderFunctions.bindReferenceServices(binder);
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindWebSiteServices(binder, WebSiteServiceOverride.class, WebSiteVersionServiceOverride.class);
-		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindEnvServices(binder, "admin", false, new S3ServiceBuilder());
 
 		binder.bind(ITrainingComponentService.class, new TrainingComponentServiceBuilder());

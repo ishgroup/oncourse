@@ -50,7 +50,6 @@ import ish.oncourse.services.node.WebNodeService;
 import ish.oncourse.services.node.WebNodeTypeService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
@@ -203,10 +202,6 @@ public class ServiceModule {
 		binder.bind(CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
 		binder.bind(ICacheProvider.class, new BinderFunctions.CacheProviderBuilder()).eagerLoad();
 
-		binder.bind(IPaymentGatewayServiceBuilder.class, ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder.class);
-		binder.bind(IPaymentGatewayService.class, new BinderFunctions.PaymentGatewayServiceBuilder()).scope("perthread");
-		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(INewPaymentGatewayService.class, new BinderFunctions.PaymentGatewayBuilder()).scope("perthread");
 
 		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
 	}

@@ -39,7 +39,6 @@ public class AppModule {
 		BinderFunctions.bindReferenceServices(binder);
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindWebSiteServices(binder, WebSiteService.class);
-		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindEnvServices(binder, "web", false);
 		BinderFunctions.bindTapestryServices(binder, CacheMetaProvider.class, PageRenderer.class);
 	}

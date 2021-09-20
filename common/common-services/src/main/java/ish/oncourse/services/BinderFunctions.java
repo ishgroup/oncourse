@@ -36,7 +36,6 @@ import ish.oncourse.services.message.IMessagePersonService;
 import ish.oncourse.services.message.MessagePersonService;
 import ish.oncourse.services.payment.IPaymentService;
 import ish.oncourse.services.payment.PaymentService;
-import ish.oncourse.services.paymentexpress.*;
 import ish.oncourse.services.persistence.CayenneService;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.preference.PreferenceController;
@@ -86,14 +85,7 @@ import static org.apache.tapestry5.ioc.ScopeConstants.PERTHREAD;
  * Date: 29/11/17
  */
 public class BinderFunctions {
-
-	public static void bindPaymentGatewayServices(ServiceBinder binder) {
-		binder.bind(IPaymentGatewayServiceBuilder.class, ish.oncourse.services.paymentexpress.PaymentGatewayServiceBuilder.class);
-		binder.bind(IPaymentGatewayService.class, new PaymentGatewayServiceBuilder()).scope(PERTHREAD);
-
-		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
-		binder.bind(INewPaymentGatewayService.class, new PaymentGatewayBuilder()).scope(PERTHREAD);
-	}
+	
 
 	public static void bindReferenceServices(ServiceBinder binder) {
 		// Reference Data services
@@ -249,23 +241,5 @@ public class BinderFunctions {
 			return new ContentCacheService(resources.getService(ICacheProvider.class));
 		}
 	}
-
-	public static class PaymentGatewayServiceBuilder implements ServiceBuilder<IPaymentGatewayService> {
-		@Override
-		public IPaymentGatewayService buildService(ServiceResources resources) {
-			IPaymentGatewayServiceBuilder builder = resources.getService(IPaymentGatewayServiceBuilder.class);
-			return builder.buildService();
-		}
-	}
-
-
-	public static class PaymentGatewayBuilder implements ServiceBuilder<INewPaymentGatewayService> {
-		@Override
-		public INewPaymentGatewayService buildService(ServiceResources resources) {
-			INewPaymentGatewayServiceBuilder builder = resources.getService(INewPaymentGatewayServiceBuilder.class);
-			return builder.buildService();
-		}
-	}
-
-
+	
 }

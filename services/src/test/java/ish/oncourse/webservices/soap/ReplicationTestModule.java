@@ -43,7 +43,6 @@ public class ReplicationTestModule {
 
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindEnvServices(binder, "services", true);
-		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindTapestryServices(binder, NoCacheMetaProvider.class, PageRenderer.class);
 		BinderFunctions.bindReferenceServices(binder);
 

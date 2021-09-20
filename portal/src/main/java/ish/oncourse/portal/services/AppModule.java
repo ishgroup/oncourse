@@ -50,7 +50,6 @@ public class AppModule {
 		BinderFunctions.bindReferenceServices(binder);
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindWebSiteServices(binder, PortalSiteService.class);
-		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindEnvServices(binder, "portal", false);
 		BinderFunctions.bindTapestryServices(binder, NoCacheMetaProvider.class, PortalPageRenderer.class);
 

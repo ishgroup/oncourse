@@ -219,7 +219,6 @@ public class AppModule {
 		binder.bind(IJMXInitService.class, new BinderFunctions.JMXInitServiceBuilder("services")).eagerLoad();
 		binder.bind(RequestExceptionHandler.class, ServiceRequestExceptionHandler.class).withId(ServiceRequestExceptionHandler.class.getSimpleName());
 
-		BinderFunctions.bindPaymentGatewayServices(binder);
 	}
 
 

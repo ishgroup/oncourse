@@ -110,21 +110,11 @@ public class CollegeService implements ICollegeService {
 		college.setAngelVersion(angelVersion);
 		college.setCreated(accessTime);
 		college.setModified(accessTime);
-		college.setFirstRemoteAuthentication(accessTime);
 		college.setLastRemoteAuthentication(accessTime);
 		college.setCommunicationKey(-1l);
 		college.setCommunicationKeyStatus(KeyStatus.HALT);
 
 		college.setBillingCode(null);
-
-		college.setIsTestingWebServicePayments(false);
-		college.setIsTestingWebSitePayments(false);
-		college.setIsWebServicePaymentsEnabled(false);
-		college.setIsWebSitePaymentsEnabled(false);
-		college.setPaymentGatewayAccount(null);
-		college.setPaymentGatewayPass(null);
-		college.setRequiresAvetmiss(false);
-		college.setTimeZone("Australia/Sydney");
 
 		objectContext.commitChanges();
 

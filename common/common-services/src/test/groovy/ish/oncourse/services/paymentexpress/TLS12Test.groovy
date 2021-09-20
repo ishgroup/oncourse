@@ -30,11 +30,6 @@ class TLS12Test {
         FileUtils.copyInputStreamToFile(url.openStream(), file)
     }
 
-    @Test
-    void testPaymentExpress() {
-        URL url = new URL(PaymentExpressGatewayService.URL)
-        FileUtils.copyInputStreamToFile(url.openStream(), file)
-    }
 
     @Test
     void testTraining() {

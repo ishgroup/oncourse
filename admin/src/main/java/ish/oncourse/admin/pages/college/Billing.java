@@ -144,14 +144,7 @@ public class Billing {
 		return college.getBillingCode();
 	}
 
-	public void setPurchaseOrder(String value) {
-		college.setPurchaseOrder(value);
-	}
-
-	public String getPurchaseOrder() {
-		return college.getPurchaseOrder();
-	}
-
+	
 	public void setBillingCode(String value) {
 		college.setBillingCode(value);
 	}

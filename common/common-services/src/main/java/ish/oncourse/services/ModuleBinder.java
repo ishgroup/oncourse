@@ -32,7 +32,6 @@ public class ModuleBinder {
 
 		BinderFunctions.bindEntityServices(binder);
 		BinderFunctions.bindEnvServices(binder, "services", true);
-		BinderFunctions.bindPaymentGatewayServices(binder);
 		BinderFunctions.bindReferenceServices(binder);
 		bindWebSiteServices.bind(binder);
 		bindTapestryServices.bind(binder);
