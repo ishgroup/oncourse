@@ -296,7 +296,7 @@ const globalStyles = (theme: AppTheme) =>
         marginLeft: "0.2rem"
       },
       ".editInPlaceIcon": {
-        visibility: "hidden",
+        // visibility: "hidden",
         fontSize: "14px",
         color: theme.palette.divider,
         verticalAlign: "middle",

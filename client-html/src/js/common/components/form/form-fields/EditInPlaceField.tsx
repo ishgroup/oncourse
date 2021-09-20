@@ -19,14 +19,33 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import CreateIcon from '@material-ui/icons/Create';
 import ListItemText from "@material-ui/core/ListItemText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import { InputAdornment } from "@material-ui/core";
 
 const styles = theme => createStyles({
+  inputEndAdornment: {
+    fontSize: "18px",
+    color: theme.palette.primary.main,
+    display: "none",
+  },
+  inputWrapper: {
+    "&:hover $inputEndAdornment": {
+      display: "flex",
+    },
+  },
+  isEditing: {
+    borderBottom: "none!important",
+    "& $inputEndAdornment": {
+      display: "flex!important",
+      borderBottom: "none!important",
+    },
+  },
   textField: {
     paddingBottom: "9px",
     height: "60px",
@@ -145,7 +164,7 @@ const styles = theme => createStyles({
   inlineInput: {
     padding: "0 0 1px 0",
     minWidth: "2.2em",
-    fontSize: "inherit"
+    fontSize: "inherit",
   },
   inlineSelect: {
     "&$inlineSelect": {
@@ -173,7 +192,6 @@ const styles = theme => createStyles({
     "&:after": {
       borderBottomColor: theme.palette.primary.main
     },
-
   },
   selectIcon: {
     fontSize: "24px",
@@ -190,7 +208,7 @@ const styles = theme => createStyles({
       margin: 0
     },
     "-moz-appearance": "textfield"
-  }
+  },
 });
 
 export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
@@ -284,8 +302,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
 
   onFocus = () => {
     const {
- input, type, select, multiline
-} = this.props;
+     input, type, select, multiline
+    } = this.props;
 
     if (!this.state.isEditing) {
       this.setState({
@@ -333,7 +351,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     }
 
     if (items.length) {
-      input.onChange(returnType === "object" ? selected : e.target.value);
+      input.onChange(returnType === "object" ? selected || null : e.target.value);
       return;
     }
     this.onSelectClose();
@@ -631,7 +649,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       selectItems = [
         <MenuItem
           key="empty"
-          value={null}
+          value=""
           classes={{
             root: clsx({
               [classes.selectedItem]: multiple,
@@ -700,7 +718,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           className={clsx({
             [classes.rightPadding]: formatting !== "inline",
             [classes.inlineMargin]: isInline,
-            [classes.hiddenContainer]: !(isEditing || invalid),
+            [classes.hiddenContainer]: isInline && !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
             "d-inline": isInline && (isEditing || invalid)
           })}
@@ -735,7 +753,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       ? selectLabelCondition
                         ? selectLabelCondition(input.value)
                         : input.value ? input.value[selectValueMark] : ""
-                      : input.value}
+                      : input.value || ""}
                   inputRef={this.setInputNode}
                   classes={{
                     root: clsx(classes.textFieldBorderModified, fieldClasses.text),
@@ -746,9 +764,11 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   multiple={multiple}
                   autoWidth={autoWidth}
                   open={isEditing}
+                  disabled={disabled}
                   onOpen={this.onFocus}
                   onClose={this.onSelectClose}
                   onChange={this.onSelectChange}
+                  displayEmpty
                 >
                   {selectItems}
                 </Select>
@@ -760,9 +780,16 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   multiline={multiline}
                   inputRef={this.setInputNode}
                   classes={{
-                    root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified, fieldClasses.text),
+                    root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified,
+                      fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
                     underline: fieldClasses.underline
                   }}
+                  disabled={disabled}
+                  endAdornment={!isInline && !disabled && (
+                    <InputAdornment position="end" className={classes.inputEndAdornment}>
+                      <CreateIcon />
+                    </InputAdornment>
+                  )}
                 />
               )}
             <FormHelperText
@@ -776,7 +803,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         </div>
         <div
           className={clsx({
-            [classes.hiddenContainer]: isEditing || invalid,
+            [classes.hiddenContainer]: isEditing || invalid || !isInline,
             [classes.textField]: listSpacing && formatting !== "inline",
             [classes.rightAligned]: rightAligned,
             "d-inline": isInline && !(isEditing || invalid)
@@ -800,21 +827,21 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             )}
 
             {formatting === "primary" && (
-            <ListItemText
-              classes={{
-                root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                primary: "d-flex"
-              }}
-              primary={(
-                <ButtonBase
-                  classes={{
-                    root: classes.valueContainer
-                  }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                  component="div"
-                >
+              <ListItemText
+                classes={{
+                  root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
+                  primary: "d-flex"
+                }}
+                primary={(
+                  <ButtonBase
+                    classes={{
+                      root: classes.valueContainer
+                    }}
+                    onFocus={e => this.onEditButtonFocus(e, "focus")}
+                    onClick={e => this.onEditButtonFocus(e, "click")}
+                    className={clsx("hoverIconContainer", fieldClasses.text)}
+                    component="div"
+                  >
                   <span
                     ref={this.setContainerNode}
                     className={clsx(classes.editable, {
@@ -824,9 +851,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     {editableComponent || this.getValue()}
                     {editIcon}
                   </span>
-                </ButtonBase>
-                  )}
-            />
+                  </ButtonBase>
+                )}
+              />
             )}
 
             {formatting === "secondary" && (
@@ -884,9 +911,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   "d-inline vert-align-bl hoverIconContainer",
                   classes.editable,
                   fieldClasses.text, {
-                  [classes.rightAligned]: rightAligned,
-                  [classes.readonly]: disabled,
-                  [classes.inlineMargin]: disabled
+                    [classes.rightAligned]: rightAligned,
+                    [classes.readonly]: disabled,
+                    [classes.inlineMargin]: disabled
                   }
                 )}
               >

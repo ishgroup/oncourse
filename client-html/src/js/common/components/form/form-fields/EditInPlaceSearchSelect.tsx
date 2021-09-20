@@ -11,11 +11,12 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Popper from "@material-ui/core/Popper";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { withStyles } from "@material-ui/core";
+import { InputAdornment, withStyles } from "@material-ui/core";
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
 import ListItemText from "@material-ui/core/ListItemText";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import CreateIcon from "@material-ui/icons/Create";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { WrappedFieldProps } from "redux-form";
@@ -26,10 +27,33 @@ import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import { stubComponent } from "../../../utils/common";
 
 const searchStyles = theme => createStyles({
+  inputEndAdornment: {
+    fontSize: "18px",
+    color: theme.palette.primary.main,
+    display: "none",
+  },
+  inputWrapper: {
+    "&:hover $inputEndAdornment": {
+      display: "flex",
+    },
+    "&:focus $inputEndAdornment": {
+      display: "none",
+    },
+  },
+  isEditing: {
+    borderBottom: "none!important",
+    "& $inputEndAdornment": {
+      display: "none!important",
+      borderBottom: "none!important",
+    },
+  },
   validUnderline: {
     "&:after": {
       borderBottomColor: theme.palette.primary.main
     }
+  },
+  maxWidthForAutocomplete: {
+    maxWidth: "18em",
   },
   editingSelect: {
     paddingBottom: theme.spacing(1) + 1
@@ -461,7 +485,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     >
       <div
         className={clsx("pr-2", {
-          "d-none": !(inline || isEditing || (meta && meta.invalid)),
+          // "d-none": !(inline || isEditing || (meta && meta.invalid)),
           [classes.editingSelect]: !inline && formatting !== "inline"
         })}
       >
@@ -477,13 +501,17 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
         }}
         >
           <Autocomplete
-            value={input.value || null}
+            value={input.value || ""}
             options={sortedItems}
             loading={loading}
             freeSolo={creatable}
             disableClearable={!allowEmpty}
             getOptionSelected={getOptionSelected}
             onChange={handleChange}
+            classes={{
+              root: classes.maxWidthForAutocomplete,
+              option: itemRenderer ? null : classes.option
+            }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
             filterOptions={filterItems}
@@ -496,24 +524,30 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 {...params}
                 error={meta && meta.invalid}
               >
-                {labelContent && <InputLabel>{labelContent}</InputLabel>}
+                {labelContent && <InputLabel shrink={true}>{labelContent}</InputLabel>}
                 <Input
                   {...InputProps}
-                  placeholder={placeholder}
+                  placeholder={placeholder || "No value"}
                   autoFocus={inline}
                   onChange={handleInputChange}
                   onFocus={onFocus}
                   onBlur={onBlur}
+                  onClick={onEditButtonFocus}
                   inputRef={inputNode}
                   disableUnderline={inline}
                   classes={{
-                    root: fieldClasses.text,
+                    root: clsx(fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
                     underline: fieldClasses.underline
                   }}
                   inputProps={{
                     ...inputProps,
-                    value: searchValue
+                    value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : ""))
                   }}
+                  endAdornment={!disabled && (
+                    <InputAdornment position="end" className={classes.inputEndAdornment}>
+                      <ExpandMore />
+                    </InputAdornment>
+                  )}
                 />
                 <FormHelperText
                   classes={{
@@ -529,61 +563,58 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
                 : stubComponent()
             }
-            classes={{
-              option: itemRenderer ? null : classes.option
-            }}
             disableListWrap
             openOnFocus
             blurOnSelect
           />
         </SelectContext.Provider>
       </div>
-      <div
-        className={clsx(formatting !== "inline" && "textField", {
-          "d-none": inline || isEditing || (meta && meta.invalid)
-        })}
-      >
-        <div className="mw-100 text-truncate">
-          {!hideLabel && label && (
-            <Typography
-              variant="caption"
-              color="textSecondary"
-              style={colors ? { color: `${colors.subheader}` } : {}}
-              noWrap
-            >
-              {label}
-              {' '}
-              {labelAdornment && <span>{labelAdornment}</span>}
-            </Typography>
-          )}
+      {/*<div*/}
+      {/*  className={clsx(formatting !== "inline" && "textField", {*/}
+      {/*    "d-none": inline || isEditing || (meta && meta.invalid)*/}
+      {/*  })}*/}
+      {/*>*/}
+      {/*  <div className="mw-100 text-truncate">*/}
+      {/*    {!hideLabel && label && (*/}
+      {/*      <Typography*/}
+      {/*        variant="caption"*/}
+      {/*        color="textSecondary"*/}
+      {/*        style={colors ? { color: `${colors.subheader}` } : {}}*/}
+      {/*        noWrap*/}
+      {/*      >*/}
+      {/*        {label}*/}
+      {/*        {' '}*/}
+      {/*        {labelAdornment && <span>{labelAdornment}</span>}*/}
+      {/*      </Typography>*/}
+      {/*    )}*/}
 
-          <ListItemText
-            classes={{
-              root: "pl-0 mb-0 mt-0",
-              primary: clsx("d-flex", formatting === "inline" && classes.inline)
-            }}
-            primary={(
-              <>
-                <ButtonBase
-                  onFocus={onEditButtonFocus}
-                  className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
-                    "pointer-events-none": disabled
-                  })}
-                  component="div"
-                >
-                  <span className={clsx("text-truncate", classes.editable, fieldClasses.text)}>
-                    {displayedValue}
-                  </span>
-                  {!disabled && (
-                    <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
-                  )}
-                </ButtonBase>
-                {endAdornment}
-              </>
-            )}
-          />
-        </div>
-      </div>
+      {/*    <ListItemText*/}
+      {/*      classes={{*/}
+      {/*        root: "pl-0 mb-0 mt-0",*/}
+      {/*        primary: clsx("d-flex", formatting === "inline" && classes.inline)*/}
+      {/*      }}*/}
+      {/*      primary={(*/}
+      {/*        <>*/}
+      {/*          <ButtonBase*/}
+      {/*            onFocus={onEditButtonFocus}*/}
+      {/*            className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {*/}
+      {/*              "pointer-events-none": disabled*/}
+      {/*            })}*/}
+      {/*            component="div"*/}
+      {/*          >*/}
+      {/*            <span className={clsx("text-truncate", classes.editable, fieldClasses.text)}>*/}
+      {/*              {displayedValue}*/}
+      {/*            </span>*/}
+      {/*            {!disabled && (*/}
+      {/*              <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />*/}
+      {/*            )}*/}
+      {/*          </ButtonBase>*/}
+      {/*          {endAdornment}*/}
+      {/*        </>*/}
+      {/*      )}*/}
+      {/*    />*/}
+      {/*  </div>*/}
+      {/*</div>*/}
     </div>
   );
 };
