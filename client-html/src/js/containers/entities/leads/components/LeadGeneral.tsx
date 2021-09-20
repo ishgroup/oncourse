@@ -146,7 +146,7 @@ const LeadGeneral = (props: Props) => {
     [values.contactId]
   );
 
-  const contactIdField = (
+  const contactIdField = (inHeader: boolean = false) => (
     <FormField
       type="remoteDataSearchSelect"
       entity="Contact"
@@ -160,6 +160,7 @@ const LeadGeneral = (props: Props) => {
       disabled={!isNew}
       rowHeight={55}
       required
+      inHeader
     />
   );
 
@@ -169,7 +170,7 @@ const LeadGeneral = (props: Props) => {
         <CustomAppBar>
           <Grid container className="flex-fill">
             <Grid item xs={6}>
-              {contactIdField}
+              {contactIdField(true)}
             </Grid>
           </Grid>
           <div>
@@ -194,7 +195,7 @@ const LeadGeneral = (props: Props) => {
       <div className="generalRoot">
         {!twoColumn && (
           <Grid item xs={12} className="pt-2">
-            {contactIdField}
+            {contactIdField(false)}
           </Grid>
         )}
         <div>
