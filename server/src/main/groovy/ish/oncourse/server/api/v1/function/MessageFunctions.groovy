@@ -59,6 +59,8 @@ class MessageFunctions {
         switch (clazz) {
             case Invoice:
                 return { e -> (e as Invoice).contact }
+            case Quote:
+                return { e -> (e as Quote).contact }
             case Application:
                 return { e -> (e as Application).student.contact }
             case Contact:
