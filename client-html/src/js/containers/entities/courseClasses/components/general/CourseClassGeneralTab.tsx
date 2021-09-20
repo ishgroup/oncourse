@@ -165,7 +165,7 @@ const CourseClassGeneralTab = React.memo<Props>(
       []
     );
 
-    const courseIdField = (
+    const courseIdField = (inHeader = false) => (
       <FormField
         type="remoteDataSearchSelect"
         entity="Course"
@@ -181,6 +181,7 @@ const CourseClassGeneralTab = React.memo<Props>(
         onInnerValueChange={onCourseIdChange}
         rowHeight={55}
         required
+        inHeader
       />
     );
 
@@ -284,7 +285,7 @@ const CourseClassGeneralTab = React.memo<Props>(
           <CustomAppBar>
             <Grid container className="flex-fill">
               <Grid item xs={6} className="pr-2">
-                {courseIdField}
+                {courseIdField(true)}
               </Grid>
               <Grid item xs={4}>
                 {classCodeField}
@@ -317,7 +318,7 @@ const CourseClassGeneralTab = React.memo<Props>(
           {!twoColumn && (
             <>
               <Grid item xs={12}>
-                {courseIdField}
+                {courseIdField(false)}
               </Grid>
 
               <Grid item xs={12}>
