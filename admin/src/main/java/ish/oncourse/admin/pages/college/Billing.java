@@ -7,16 +7,12 @@ import ish.oncourse.services.preference.PreferenceController;
 import ish.oncourse.services.preference.PreferenceControllerFactory;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 public class Billing {
 
@@ -25,48 +21,20 @@ public class Billing {
 	@Property
 	@Persist
 	private College college;
-
-	@Property
-	private int webSiteIndex;
-
-	@Property
-	private int feeIndex;
-
-	@Property
-	private int customFeeIndex;
-
-	@Property
-	@Persist
-	private List<WebSite> webSites;
-
-	@Property
-	private String newCode;
-
-	@Property
-	private String newName;
-
-	@Property
-	private String newPaidUntil;
-
-	@Property
-	private BigDecimal newFee;
-
-	@Property
-	@Persist
-	private List<CustomFee> collegeCustomFees;
-
-	@Property
-	private boolean webPaymentEnabled;
-
-	@Property
-	private boolean qePaymentEnabled;
 	
 	@Property
-	private boolean creditCardPaymentEnabled;
+	private boolean skipPaymentAuth;
+
+	@Property
+	private String gatewayPass;
+	
+	@Property
+	private String collegeName;
+
 
 	@Inject
 	private ICayenneService cayenneService;
-
+	
 	@Inject
 	private ICollegeService collegeService;
 
@@ -77,8 +45,6 @@ public class Billing {
 
     @InjectPage
     private Index indexPage;
-
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	Object onActivate() {
 		this.preferenceController = prefsFactory.getPreferenceController(college);
@@ -92,39 +58,21 @@ public class Billing {
 
 		this.college = context.localObject(college);
 
-		if (!PaymentGatewayType.PAYMENT_EXPRESS.equals(preferenceController.getPaymentGatewayType())) {
-			this.webPaymentEnabled = false;
-		}
-		else {
-			this.webPaymentEnabled = true;
-		}
-		this.qePaymentEnabled = preferenceController.getLicenseCCProcessing();
-		
-		this.creditCardPaymentEnabled = preferenceController.isCreditCardPaymentEnabled();
-
-		this.webSites = college.getWebSites();
-
-		List<Preference> prefs = ObjectSelect.query(Preference.class).where(Preference.COLLEGE.eq(college)).select(context);
+		this.collegeName = college.getName();
+		this.gatewayPass = preferenceController.getPaymentGatewayPass();
+		this.skipPaymentAuth = preferenceController.isPurchaseWithoutAuth();
 	}
 
 	@OnEvent(component="billingForm", value="success")
 	void submitted() {
 		ObjectContext context = college.getObjectContext();
 
-		if (college != null) {
-			college.setName(this.college.getName());
-
-			if (this.webPaymentEnabled) {
-				preferenceController.setPaymentGatewayType(PaymentGatewayType.PAYMENT_EXPRESS);
-			}
-			else {
-				preferenceController.setPaymentGatewayType(PaymentGatewayType.DISABLED);
-			}
-			preferenceController.setLicenseCCProcessing(this.qePaymentEnabled);
-
-			preferenceController.setCreditCardPaymentEnabled(creditCardPaymentEnabled);
+		if (StringUtils.trimToNull(collegeName) != null) {
+			college.setName(collegeName);
 		}
 
+		preferenceController.setPaymentGatewayPass(gatewayPass);
+		preferenceController.setPurchaseWithoutAuth(skipPaymentAuth);
 		context.commitChanges();
 	}
 	
@@ -139,26 +87,6 @@ public class Billing {
 		return this.college.getId();
 	}
 	
-
-	public String getBillingCode() {
-		return college.getBillingCode();
-	}
-
-	
-	public void setBillingCode(String value) {
-		college.setBillingCode(value);
-	}
-
-	public String getCollegeName() {
-		return college.getName();
-	}
-
-	public void setCollegeName(String collegeName) {
-		if (StringUtils.trimToNull(collegeName) != null) {
-			college.setName(collegeName);
-		}
-	}
-
     public Object onException(Throwable cause){
         //redirect to index page when session was expired and persist properties got null value
         if (college == null) {
@@ -167,9 +95,4 @@ public class Billing {
 			throw new IllegalStateException(cause);
 		}
     }
-
-	public WebSite getCurrentWebsite() {
-		return webSites.get(webSiteIndex);
-	}
-
 }

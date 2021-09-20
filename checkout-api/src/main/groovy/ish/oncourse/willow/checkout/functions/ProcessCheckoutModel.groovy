@@ -11,7 +11,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Product
 import ish.oncourse.model.Tax
 import ish.oncourse.services.preference.IsCorporatePassEnabled
-import ish.oncourse.services.preference.IsCreditCardPaymentEnabled
+import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.services.preference.IsCreditNoteEnabled
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.corporatepass.ValidateCorporatePass
@@ -145,7 +145,7 @@ class ProcessCheckoutModel {
                 a
             }
 
-            boolean paymentMethodsEnabled = (new IsCorporatePassEnabled(college, context).get() || new IsCreditCardPaymentEnabled(college, context).get())
+            boolean paymentMethodsEnabled = (new IsCorporatePassEnabled(college, context).get() || new IsPaymentGatewayEnabled(college, context).get())
             
             
             if (ccPayment.isGreaterThan(ZERO) && !paymentMethodsEnabled) {

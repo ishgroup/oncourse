@@ -12,20 +12,15 @@
 			<td>College name</td>
 			<td><t:textfield t:id="collegeName" value="collegeName" /></td>
 		</tr>
+		<tr>
+			<td>Payment gateway password</td>
+			<td><t:textfield t:id="gatewayPass" value="gatewayPass" /></td>
+		</tr>
+		<tr>
+			<td>Skip payment authorisation</td>
+			<td><t:checkbox t:id="skipPaymentAuth" value="skipPaymentAuth"/></td>
+		</tr>
 	</table>
-	
-
-	<label class="checkbox">
-		<t:checkbox t:id="webPaymentCheckbox" value="webPaymentEnabled"/>Enable online enrolments
-	</label>
-	<label class="checkbox">
-		<t:checkbox t:id="qePaymentCheckbox" value="qePaymentEnabled"/>Enable credit card gateway for Angel
-	</label>
-
-	<label class="checkbox">
-		<t:checkbox t:id="creditCardPaymentEnabledCheckbox" value="creditCardPaymentEnabled"/>Enable online payment via credit card
-	</label>
-
 	<t:errors/>
 
 	<div class="form-actions">

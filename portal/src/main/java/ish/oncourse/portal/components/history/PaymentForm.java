@@ -43,7 +43,7 @@ public class PaymentForm {
 
 	@SetupRender
 	public void setupRender() {
-		isCreditCardPaymentEnabled = preferenceController.isCreditCardPaymentEnabled();
+		isCreditCardPaymentEnabled = preferenceController.isPaymentGatewayEnabled();
 		Contact payer = portalService.getContact();
 		payerId = payer.getId();
 

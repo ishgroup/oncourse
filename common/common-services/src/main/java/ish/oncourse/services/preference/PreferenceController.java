@@ -16,6 +16,8 @@ import java.util.Date;
 
 import static ish.oncourse.services.preference.Preferences.*;
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact;
+import static ish.persistence.Preferences.PAYMENT_GATEWAY_PASS;
+import static ish.persistence.Preferences.PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH;
 
 public class PreferenceController extends CommonPreferenceController {
 
@@ -98,11 +100,19 @@ public class PreferenceController extends CommonPreferenceController {
 		try {
 			return Boolean.parseBoolean(getValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false));
 		} catch (Exception e) {
-			logger.error("Cannot get property {}", PAYMENT_GATEWAY_TYPE, e);
+			logger.error("Cannot get property {}", HIDE_STUDENT_DETAILS_FROM_TUTOR, e);
 			return false;
 		}
 	}
 
+	public void setPaymentGatewayPass(String value) {
+		setValue(PAYMENT_GATEWAY_PASS, false, value);
+	}
+
+	public void setPurchaseWithoutAuth(Boolean value) {
+		setValue(PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, false, Boolean.toString(value));
+	}
+	
 	public void setHideStudentDetailsFromTutor(boolean value) {
 		setValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false, Boolean.toString(value));
 	}
@@ -175,19 +185,6 @@ public class PreferenceController extends CommonPreferenceController {
 		setValue(ADDTHIS_PROFILE_ID, false, value);
 	}
 
-	public PaymentGatewayType getPaymentGatewayType() {
-		try {
-			return PaymentGatewayType.valueOf(getValue(PAYMENT_GATEWAY_TYPE, false));
-		} catch (Exception e) {
-			logger.error("Cannot get property {}", PAYMENT_GATEWAY_TYPE, e);
-			return PaymentGatewayType.DISABLED;
-		}
-	}
-
-	public void setPaymentGatewayType(PaymentGatewayType value) {
-		setValue(PAYMENT_GATEWAY_TYPE, false, value.toString());
-	}
-
 	public boolean isPaymentGatewayEnabled() {
 		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
@@ -232,22 +229,12 @@ public class PreferenceController extends CommonPreferenceController {
 		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
 
-	public boolean isCreditCardPaymentEnabled() {
-		String value = StringUtils.trimToNull(getValue(ENROLMENT_CREDITCARD_PAYMENT_ENABLED, false));
-		if (value == null)
-			return true;
-		return Boolean.valueOf(value);
-	}
 
 	public void setCorporatePassPaymentEnabled(boolean value)
 	{
 		setValue(ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED, false, Boolean.toString(value));
 	}
-
-	public void setCreditCardPaymentEnabled(boolean value)
-	{
-		setValue(ENROLMENT_CREDITCARD_PAYMENT_ENABLED, false, Boolean.toString(value));
-	}
+	
 
     public Integer getContactAgeWhenNeedParent()
     {

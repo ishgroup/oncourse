@@ -6,7 +6,6 @@ package ish.oncourse.services.preference;
 public interface Preferences {
     String STOP_WEB_ENROLMENTS_AGE = "stop.web.enrolments.age";
     String STOP_WEB_ENROLMENTS_AGE_TYPE = "stop.web.enrolments.age.type";
-    String PAYMENT_GATEWAY_TYPE = "payment.gateway.type";
 
     String NTIS_LAST_UPDATE = "ntis.lastupdate";
     String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
@@ -21,7 +20,6 @@ public interface Preferences {
     String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
     String ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED = "enrolment.corporatePass.payment.enabled";
     String ENROLMENT_CREDIT_NOTE_ENABLED = "enrolment.credit.note.enabled";
-    String ENROLMENT_CREDITCARD_PAYMENT_ENABLED = "enrolment.creditCard..payment.enabled";
     String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
     String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
     String SUBURB_AUTOCOMPLITE_STATE = "feature.suburb.autocomplete.states";
