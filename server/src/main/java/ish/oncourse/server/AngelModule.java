@@ -219,6 +219,7 @@ public class AngelModule extends ConfigModule {
         System.setProperty("org.quartz.scheduler.skipUpdateCheck", "true");
         // reduce default thread priority for jobs from 5 to 3
         System.setProperty("org.quartz.threadPool.threadPriority", "3");
+        System.setProperty("org.quartz.jobStore.misfireThreshold", "14400000");
 
         // provide connection via Cayenne datasource
         DBConnectionManager.getInstance().addConnectionProvider("quarz-cayenne-ds", new CayenneConnectionProvider(injector));
