@@ -2,7 +2,7 @@ package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.util.PreferenceUtil;
 import ish.oncourse.model.College;
-import ish.oncourse.model.Preference;
+import ish.oncourse.model.Settings;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.cayenne.ObjectContext;
@@ -28,14 +28,14 @@ public class Preferences {
 	private String currentKey;
 	
 	@Property
-	private String newPreferenceKey;
+	private String newSettingKey;
 	
 	@Property
-	private String newPreferenceValue;
+	private String newSettingValue;
 	
 	@Property
 	@Persist(PersistenceConstants.SESSION)
-	private Map<String, String> preferences;
+	private Map<String, String> settings;
 	
 	@Inject
 	private ICayenneService cayenneService;
@@ -47,7 +47,7 @@ public class Preferences {
 	
 	@SetupRender
 	void setupRender() {
-		this.preferences = initPreferences();
+		this.settings = initSettings();
 	}
 	
 	void onActivate(Long id) {
@@ -74,16 +74,16 @@ public class Preferences {
 			
 		if (isNew) {
 			College college = context.localObject(this.college);
-			if (college != null && StringUtils.trimToNull(newPreferenceKey) != null 
-					&& StringUtils.trimToNull(newPreferenceValue) != null) {
-				PreferenceUtil.createPreference(context, college, newPreferenceKey, newPreferenceValue);
+			if (college != null && StringUtils.trimToNull(newSettingKey) != null 
+					&& StringUtils.trimToNull(newSettingValue) != null) {
+				PreferenceUtil.createSetting(context, college, newSettingKey, newSettingValue);
 			}
 		}
 		else {
-			for (Preference pref : getPreferences()) {
-				Preference p = context.localObject(pref);
+			for (Settings pref : getSettings()) {
+				Settings p = context.localObject(pref);
 				if (p != null) {
-					p.setValueString(preferences.get(p.getName()));
+					p.setValue(settings.get(p.getName()));
 				}
 			}
 		}
@@ -91,35 +91,35 @@ public class Preferences {
 		context.commitChanges();
 	}
 	
-	private Map<String, String> initPreferences() {
+	private Map<String, String> initSettings() {
 		
 		Map<String, String> prefs = new TreeMap<>();
 		
-		for (Preference pref : getPreferences()) {
+		for (Settings pref : getSettings()) {
 			if (pref.getName() != null) {
-				prefs.put(pref.getName(), pref.getValueString());
+				prefs.put(pref.getName(), pref.getValue());
 			}
 		}
 		
 		return prefs;
 	}
 	
-	private List<Preference> getPreferences() {
+	private List<Settings> getSettings() {
 		ObjectContext context = cayenneService.newContext();
 		College college = context.localObject(this.college);
 
-		return  ObjectSelect.query(Preference.class).
-				where(Preference.COLLEGE.eq(college)).
+		return  ObjectSelect.query(Settings.class).
+				where(Settings.COLLEGE.eq(college)).
 				select(context);
 	}
 	
 	public String getCurrentValue() {
-		return preferences.get(currentKey);
+		return settings.get(currentKey);
 	}
 	
 	public void setCurrentValue(String value) {
 		if (currentKey != null) {
-			preferences.put(currentKey, value);
+			settings.put(currentKey, value);
 		}
 	}
 

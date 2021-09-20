@@ -5,6 +5,7 @@ package ish.oncourse.util;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Preference;
+import ish.oncourse.model.Settings;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -25,11 +26,17 @@ public class PreferenceUtil {
 
 		return pref;
 	}
-	
-	public static Preference getPreference(ObjectContext context, College college, String name) {
-		return ObjectSelect.query(Preference.class).
-				where(Preference.NAME.eq(name).andExp(Preference.COLLEGE.eq(college))).
-				selectFirst(context);
-				
+	public static Settings createSetting(ObjectContext context, College college, String name, String value) {
+		Date now = new Date();
+
+		Settings setting = context.newObject(Settings.class);
+
+		setting.setCollege(college);
+		setting.setName(name);
+		setting.setValue(value);
+		setting.setCreated(now);
+		setting.setModified(now);
+
+		return setting;
 	}
 }

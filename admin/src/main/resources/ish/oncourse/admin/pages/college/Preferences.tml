@@ -14,17 +14,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<t:loop source="preferences.keySet()" value="currentKey">
+				<t:loop source="settings.keySet()" value="currentKey">
 					<tr>
 						<td>${currentKey}</td>
 						<td><t:textfield t:id="curentKey" value="currentValue"/></td>
 					</tr>
 				</t:loop>
 				<tr>
-					<td><t:textfield t:id="newPrefKey" value="newPreferenceKey"/></td>
+					<td><t:textfield t:id="newSettKey" value="newSettingKey"/></td>
 					<td>
 						<div class="input-append">
-							<t:textfield t:id="newPrefValue" value="newPreferenceValue"/>
+							<t:textfield t:id="newSettValue" value="newSettingValue"/>
 							<t:submit t:id="add" class="btn btn-success" value="Add"/>
 						</div>
 					</td>
