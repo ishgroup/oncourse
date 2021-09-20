@@ -13,18 +13,15 @@
  * Wrapper component for DateTimeField with edit in place functional
  * */
 
-import React, { ComponentClass, useMemo, useRef, useState } from "react";
+import React, { ComponentClass, useEffect, useMemo, useRef, useState } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import DateRange from "@material-ui/icons/DateRange";
 import QueryBuilder from "@material-ui/icons/QueryBuilder";
-import { ListItemText } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import { format, isValid } from "date-fns";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
@@ -44,6 +41,23 @@ const styles = theme => createStyles({
     marginTop: "-3px",
     display: "inline-block",
     height: "17px",
+  },
+  inputEndAdornment: {
+    fontSize: "18px",
+    color: theme.palette.primary.main,
+    display: "none",
+  },
+  inputWrapper: {
+    "&:hover $inputEndAdornment": {
+      display: "flex",
+    },
+  },
+  isEditing: {
+    borderBottom: "none!important",
+    "& $inputEndAdornment": {
+      display: "flex!important",
+      borderBottom: "none!important",
+    },
   },
   editing: {
     paddingBottom: theme.spacing(1.25)
@@ -97,12 +111,18 @@ const styles = theme => createStyles({
   inlinePickerButton: {
     padding: "0.2em",
     marginBottom: "0.2em",
-    fontSize: "1.3em"
+    fontSize: "1.3em",
+    "&:hover": {
+      color: theme.palette.primary.main,
+    }
   },
   pickerButton: {
     width: theme.spacing(4),
     height: theme.spacing(4),
-    padding: theme.spacing(0.5)
+    padding: theme.spacing(0.5),
+    "&:hover": {
+      color: theme.palette.primary.main,
+    }
   },
   inputLabel: {
     whiteSpace: "nowrap",
@@ -189,6 +209,25 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
   const isInline = formatting === "inline";
 
+  const formatDateInner = dateObj => {
+    if (!dateObj) {
+      return "";
+    }
+
+    if (dateObj.toString() === "Invalid Date") return "";
+
+    switch (type) {
+      case "date":
+        return format(dateObj, formatDate || III_DD_MMM_YYYY);
+      case "time":
+        return format(dateObj, formatTime || HH_MM_COLONED);
+      case "datetime":
+        return format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
+      default:
+        return dateObj.toString();
+    }
+  };
+
   const dateValue = useMemo(() => {
     let dateObj = input.value ? new Date(input.value) : null;
     if (timezone && input.value) {
@@ -216,6 +255,10 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     }, 600);
   };
 
+  useEffect(() => {
+    if (!textValue && dateValue) setTextValue(formatDateInner(dateValue));
+  }, []);
+
   const onInputChange = e => {
     e && setTextValue(e.target.value);
   };
@@ -229,25 +272,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     setTimeout(() => {
       if (inputNode && inputNode.current) inputNode.current.focus();
     }, 50);
-  };
-
-  const formatDateInner = dateObj => {
-    if (!dateObj) {
-      return "";
-    }
-
-    if (dateObj.toString() === "Invalid Date") return "";
-
-    switch (type) {
-      case "date":
-        return format(dateObj, formatDate || III_DD_MMM_YYYY);
-      case "time":
-        return format(dateObj, formatTime || HH_MM_COLONED);
-      case "datetime":
-        return format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
-      default:
-        return dateObj.toString();
-    }
   };
 
   const renderedValue = useMemo(() => {
@@ -278,10 +302,12 @@ const EditInPlaceDateTimeField: React.FC<any> = (
           formatted = null;
         }
       }
+      setTextValue(formatDateInner(v));
       input.onChange(formatted);
       input.onBlur(formatted);
       return;
     }
+    setTextValue("");
     input.onChange(null);
     input.onBlur(null);
   };
@@ -379,7 +405,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
       <div
         className={clsx({
-          [classes.hiddenContainer]: !(isEditing || invalid),
+          // [classes.hiddenContainer]: !(isEditing || invalid),
           [classes.readonly]: disabled,
           [classes.editing]: formatting !== "inline",
           fullWidth
@@ -402,6 +428,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 root: classes.inputLabel,
                 shrink: classes.labelShrink
               }}
+              shrink={true}
             >
               {labelContent}
             </InputLabel>
@@ -418,18 +445,19 @@ const EditInPlaceDateTimeField: React.FC<any> = (
               size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
               className: clsx({
                 [classes.inlineInput]: isInline,
-                [classes.readonly]: disabled
+                [classes.readonly]: disabled,
               }),
-              placeholder
+              placeholder: placeholder || "No value",
             }}
             value={!isEditing && invalid ? formatDateInner(dateValue) : textValue}
             classes={{
-              root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput),
+              root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
+                classes.inputWrapper, isEditing && classes.isEditing),
               underline: fieldClasses.underline,
               input: clsx(classes.input, fieldClasses.text)
             }}
             endAdornment={(
-              <InputAdornment position="end">
+              <InputAdornment position="end" className={classes.inputEndAdornment}>
                 <IconButton
                   tabIndex={-1}
                   onClick={openPicker}
@@ -452,96 +480,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
             {error || helperText}
           </FormHelperText>
         </FormControl>
-      </div>
-      <div
-        className={clsx({
-          [classes.hiddenContainer]: isEditing || invalid,
-          [classes.textField]: listSpacing && formatting !== "inline"
-        })}
-      >
-        {!hideLabel && label && (
-          <Typography variant="caption" color="textSecondary" className={clsx(fieldClasses.label, classes.spanLabel)} noWrap>
-            {labelContent}
-          </Typography>
-        )}
-
-        {formatting === "primary" && (
-          <ListItemText
-            classes={{
-              root: classes.viewMode
-            }}
-            primary={(
-              <ButtonBase
-                disabled={disabled}
-                classes={{
-                  disabled: classes.readonly
-                }}
-                onFocus={onEditButtonFocus}
-                onClick={onEditButtonFocus}
-                className={clsx(classes.editable, "hoverIconContainer")}
-                component="div"
-              >
-                {editableComponent || renderedValue}
-                {editIcon}
-              </ButtonBase>
-            )}
-          />
-        )}
-
-        {formatting === "secondary" && (
-          <ListItemText
-            classes={{
-              root: classes.viewMode
-            }}
-            secondary={(
-              <ButtonBase
-                disabled={disabled}
-                classes={{
-                  disabled: classes.readonly
-                }}
-                onFocus={onEditButtonFocus}
-                onClick={onEditButtonFocus}
-                className={clsx(classes.editable, "hoverIconContainer")}
-                component="span"
-              >
-                {editableComponent || renderedValue}
-                {editIcon}
-              </ButtonBase>
-            )}
-          />
-        )}
-
-        {formatting === "custom" && (
-          <ButtonBase
-            disabled={disabled}
-            classes={{
-              disabled: classes.readonly
-            }}
-            component="div"
-            onFocus={onEditButtonFocus}
-            onClick={onEditButtonFocus}
-            className={clsx(classes.editable, "hoverIconContainer")}
-          >
-            {editableComponent || renderedValue}
-            {editIcon}
-          </ButtonBase>
-        )}
-
-        {isInline && (
-          <ButtonBase
-            disabled={disabled}
-            classes={{
-              disabled: classes.readonly
-            }}
-            component="span"
-            onFocus={onEditButtonFocus}
-            onClick={onEditButtonFocus}
-            className={clsx(classes.editable, classes.inline, "hoverIconContainer")}
-          >
-            {editableComponent || renderedValue}
-            {editIcon}
-          </ButtonBase>
-        )}
       </div>
     </div>
   );

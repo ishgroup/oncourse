@@ -34,21 +34,34 @@ const createOverrides = palette => ({
     },
     MuiInput: {
       underline: {
+        borderBottom: "2px solid transparent",
         "&:before": {
           borderBottom: "2px solid transparent!important",
+        },
+        "&:hover:not($disabled)": {
+          borderBottom: `1px solid ${palette.primary.main}`,
+          marginBottom: "1px",
+        },
+      },
+    },
+    MuiSelect: {
+      select: {
+        "&:focus": {
+          backgroundColor: "none",
         },
       },
     },
     MuiInputBase: {
       input: {
+        textOverflow: "ellipsis",
         color: palette.text.primaryEditable,
         fontWeight: 400,
-        "&:hover:not(&:focus)": {
+        "&:hover:not($disabled):not(&:focus)": {
           color: palette.primary.main,
           MuiSelect: {
             icon: {
               color: palette.primary.main,
-            }
+            },
           },
         },
       },
