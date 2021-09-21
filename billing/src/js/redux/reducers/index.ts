@@ -1,3 +1,4 @@
+import { SiteDTO } from '@api/model';
 import {
   SET_CAPTCHA_TOKEN,
   CHECK_SITENAME,
@@ -16,14 +17,14 @@ import {
   GET_SITES,
   GET_SITES_FULFILLED,
   FETCH_FAIL,
-  UPDATE_COLLEGE_SITES, GET_COLLEGE_KEY, SET_COLLEGE_KEY,
-} from "../actions";
-import { contactFormInitialValue, organisationFormInitialValue } from "../initialValues";
-import {SiteDTO} from "@api/model";
+  UPDATE_COLLEGE_SITES, GET_COLLEGE_KEY, SET_COLLEGE_KEY, SET_IS_NEW_USER,
+} from '../actions';
+import { contactFormInitialValue, organisationFormInitialValue } from '../initialValues';
 
 export interface State {
   collegeKey: string;
   isValidName: boolean;
+  isNewUser: boolean;
   webSiteTemplate: string;
   token: string;
   collegeWasCreated: boolean;
@@ -55,22 +56,23 @@ export interface State {
 }
 
 const initState: State = {
-  collegeKey: "",
+  collegeKey: '',
+  isNewUser: true,
   isValidName: false,
-  webSiteTemplate: "",
-  token: "",
+  webSiteTemplate: '',
+  token: '',
   collegeWasCreated: false,
   sendTokenAgain: true,
   serverError: false,
   loading: false,
   sites: null,
   message: {
-    message: "",
+    message: '',
     success: false
   },
   contactForm: contactFormInitialValue,
   organisationForm: organisationFormInitialValue,
-}
+};
 
 export const createCollegeReducer = (state: State = initState, action): State => {
   switch (action.type) {
@@ -91,11 +93,17 @@ export const createCollegeReducer = (state: State = initState, action): State =>
         isValidName: action.payload
       };
 
+    case SET_IS_NEW_USER:
+      return {
+        ...state,
+        isNewUser: action.payload
+      };
+
     case SET_COLLEGE_KEY:
       return {
         ...state,
         collegeKey: action.payload
-      }
+      };
 
     case SET_TEMPLATE_VALUE:
       return {
@@ -134,7 +142,7 @@ export const createCollegeReducer = (state: State = initState, action): State =>
       return {
         ...state,
         collegeWasCreated: action.payload
-      }
+      };
 
     case FETCH_FAIL:
     case SHOW_MESSAGE:
@@ -146,34 +154,34 @@ export const createCollegeReducer = (state: State = initState, action): State =>
     case CLEAR_MESSAGE:
       return {
         ...state,
-        message: { message: "", success: false }
+        message: { message: '', success: false }
       };
 
     case SET_SERVER_ERROR_VALUE:
       return {
         ...state,
         serverError: action.payload
-      }
+      };
 
     case RESET_STORE:
       return {
         ...initState
-      }
+      };
 
     case SET_LOADING_VALUE:
       return {
         ...state,
         loading: action.payload
-      }
+      };
 
     case GET_SITES_FULFILLED:
       return {
         ...state,
         sites: action.payload,
         loading: false
-      }
+      };
 
     default:
       return state;
   }
-}
+};

@@ -28,6 +28,8 @@ export const GET_SITES_FULFILLED = FULFILLED(GET_SITES);
 
 export const UPDATE_COLLEGE_SITES = 'UPDATE_COLLEGE_SITES';
 
+export const SET_IS_NEW_USER = 'SET_IS_NEW_USER';
+
 export const updateCollegeSites = (sites: {
   changed: SiteDTO[],
   created: SiteDTO[],
@@ -48,6 +50,11 @@ export const getSites = () => ({
 export const setCaptchaToken = (token: string) => ({
   type: SET_CAPTCHA_TOKEN,
   payload: token
+});
+
+export const setIsNewUser = (isNewUser: boolean) => ({
+  type: SET_IS_NEW_USER,
+  payload: isNewUser
 });
 
 export const checkSiteName = (payload: { name: string, token: string }) => ({

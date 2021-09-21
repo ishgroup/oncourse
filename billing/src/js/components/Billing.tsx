@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Stepper from './stepper/Stepper';
 import {
   ChristmasThemeKey,
@@ -17,6 +17,7 @@ import MessageProvider from './common/message/MessageProvider';
 import { getCollegeKey, getSites } from '../redux/actions';
 import { defaultAxios } from '../api/services/DefaultHttpClient';
 import { ExistingCustomerSteps, NewCustomerSteps, Step } from '../models/User';
+import { State } from '../redux/reducers';
 
 const currentTheme = (themeName: any) => {
   switch (themeName) {
@@ -60,24 +61,31 @@ const getTheme = (theme: any) => {
 const Billing = () => {
   const [themeName, setThemeName] = useState(DefaultThemeKey);
   const [theme, setTheme] = useState(getTheme(defaultTheme));
-  const [steps, setSteps] = React.useState<Step[]>([]);
+  const [steps, setSteps] = useState<Step[]>([]);
+
+  const isNewUser = useSelector<State>((state) => state.isNewUser);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isNewUser) {
+      setSteps([...NewCustomerSteps]);
+    } else {
+      setSteps([...ExistingCustomerSteps]);
+      dispatch(getSites());
+    }
+  }, [isNewUser]);
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const token = query.get('token');
     if (token) {
-      setSteps([...ExistingCustomerSteps]);
       defaultAxios.defaults.headers = {
         Authorization: token
       };
-      dispatch(getCollegeKey());
-      dispatch(getSites());
       window.history.replaceState(null, null, window.location.pathname);
-    } else {
-      setSteps([...NewCustomerSteps]);
     }
+    dispatch(getCollegeKey());
   }, []);
 
   const themeHandler = (name: any) => {
