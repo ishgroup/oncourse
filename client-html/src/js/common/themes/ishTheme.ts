@@ -23,6 +23,11 @@ const createOverrides = palette => ({
         overflow: "visible"
       }
     },
+    MuiFormControl: {
+      root: {
+        maxWidth: "100%",
+      },
+    },
     MuiFormControlLabel: {
       label: {
         fontSize: "14px",
@@ -52,6 +57,9 @@ const createOverrides = palette => ({
       },
     },
     MuiInputBase: {
+      root: {
+        maxWidth: "100%",
+      },
       input: {
         textOverflow: "ellipsis",
         color: palette.text.primaryEditable,

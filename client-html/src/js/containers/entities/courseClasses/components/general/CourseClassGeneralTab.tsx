@@ -204,9 +204,9 @@ const CourseClassGeneralTab = React.memo<Props>(
       [values.code, values.courseCode, classCodeError]
     );
 
-    const classCodeField = useMemo(
-      () => (twoColumn ? (
-        <HeaderTextField {...classCodeProps} placeholder="Class code" />
+    const classCodeField = useCallback(
+      (inHeader = false) => (twoColumn ? (
+          <HeaderTextField {...classCodeProps} placeholder="Class code" inHeader />
         ) : (
           <EditInPlaceField {...classCodeProps} />
         )),
@@ -288,7 +288,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 {courseIdField(true)}
               </Grid>
               <Grid item xs={4}>
-                {classCodeField}
+                {classCodeField(true)}
               </Grid>
             </Grid>
             <div>
@@ -322,7 +322,7 @@ const CourseClassGeneralTab = React.memo<Props>(
               </Grid>
 
               <Grid item xs={12}>
-                {classCodeField}
+                {classCodeField(false)}
               </Grid>
             </>
           )}

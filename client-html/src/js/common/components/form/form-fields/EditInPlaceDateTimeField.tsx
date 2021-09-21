@@ -447,7 +447,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 [classes.inlineInput]: isInline,
                 [classes.readonly]: disabled,
               }),
-              placeholder: placeholder || "No value",
+              placeholder: placeholder || (!isEditing && "No value"),
             }}
             value={!isEditing && invalid ? formatDateInner(dateValue) : textValue}
             classes={{
