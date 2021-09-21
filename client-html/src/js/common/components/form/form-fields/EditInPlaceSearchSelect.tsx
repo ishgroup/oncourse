@@ -53,9 +53,6 @@ const searchStyles = theme => createStyles({
       borderBottomColor: theme.palette.primary.main
     }
   },
-  maxWidthForAutocomplete: {
-    maxWidth: "18em",
-  },
   editingSelect: {
     paddingBottom: theme.spacing(1) + 1
   },
@@ -95,9 +92,7 @@ const searchStyles = theme => createStyles({
     fontWeight: 400,
   },
   editableInHeader: {
-    "&$input": {
-      color: `${theme.palette.primary.contrastText}!important`,
-    },
+    color: theme.palette.primary.contrastText,
   },
 });
 
@@ -517,7 +512,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             getOptionSelected={getOptionSelected}
             onChange={handleChange}
             classes={{
-              root: classes.maxWidthForAutocomplete,
               option: itemRenderer ? null : classes.option,
             }}
             renderOption={renderOption}
@@ -535,7 +529,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 {labelContent && <InputLabel shrink={true}>{labelContent}</InputLabel>}
                 <Input
                   {...InputProps}
-                  placeholder={placeholder || "No value"}
+                  placeholder={placeholder || (!isEditing && "No value")}
                   autoFocus={inline}
                   onChange={handleInputChange}
                   onFocus={onFocus}
@@ -544,13 +538,13 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   inputRef={inputNode}
                   disableUnderline={inline}
                   classes={{
-                    root: clsx(fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing,
-                      inHeader && classes.editableInHeader),
-                    underline: fieldClasses.underline
+                    root: clsx(fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
+                    underline: fieldClasses.underline,
+                    input: clsx(inHeader && classes.editableInHeader),
                   }}
                   inputProps={{
                     ...inputProps,
-                    value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : ""))
+                    value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
                   }}
                   endAdornment={!disabled && (
                     <InputAdornment position="end" className={classes.inputEndAdornment}>

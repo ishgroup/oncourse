@@ -662,7 +662,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   getValue = classes => (
-    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden placeholderContent")}>{this.props.placeholder || "No value"}</span>
+    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden placeholderContent")}>{this.props.placeholder || (!this.state.isEditing && "No value")}</span>
   );
 
   getInlineMenuStyles = () => {

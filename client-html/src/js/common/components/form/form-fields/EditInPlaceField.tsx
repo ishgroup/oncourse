@@ -32,6 +32,7 @@ const styles = theme => createStyles({
   inputEndAdornment: {
     fontSize: "18px",
     color: theme.palette.primary.main,
+    opacity: 0.5,
     display: "none",
   },
   inputWrapper: {
@@ -44,6 +45,7 @@ const styles = theme => createStyles({
     "& $inputEndAdornment": {
       display: "flex!important",
       borderBottom: "none!important",
+      opacity: 1,
     },
   },
   textField: {
@@ -166,6 +168,12 @@ const styles = theme => createStyles({
     minWidth: "2.2em",
     fontSize: "inherit",
   },
+  selectMainWrapper: {
+    marginTop: theme.spacing(2),
+    "&:hover $selectIconInput": {
+      color: theme.palette.primary.main,
+    },
+  },
   inlineSelect: {
     "&$inlineSelect": {
       padding: 0
@@ -196,7 +204,18 @@ const styles = theme => createStyles({
   selectIcon: {
     fontSize: "24px",
     color: theme.palette.divider,
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+  },
+  selectWrapper: {
+    "&:hover $selectIconInput": {
+      color: theme.palette.primary.main,
+    },
+  },
+  selectIconInput: {
+    "&:hover": {
+      color: theme.palette.primary.main,
+      cursor: "pointer",
+    },
   },
   hideArrows: {
     "&::-webkit-outer-spin-button": {
@@ -681,12 +700,12 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.hideArrows]: hideArrows,
           "text-end": rightAligned
         }),
-        placeholder: placeholder || "No value",
+        placeholder: placeholder || (!isEditing && "No value"),
         style: {
           maxWidth: isInline ? this.getInputLength() : undefined
         }
       },
-      value: input.value,
+      value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
       onFocus: this.onFocus,
       onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v))
     };
@@ -740,38 +759,41 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 shrink: classes.labelShrink
               }}
               {...InputLabelProps}
-              shrink={InputLabelProps?.shrink !== undefined ? InputLabelProps.shrink : true}
+              shrink={InputLabelProps?.shrink !== undefined ? InputLabelProps.shrink : !error}
             >
               {labelContent}
             </InputLabel>
             {select
               ? (
-                <Select
-                  value={multiple
-                    ? input.value || []
-                    : returnType === "object"
-                      ? selectLabelCondition
-                        ? selectLabelCondition(input.value)
-                        : input.value ? input.value[selectValueMark] : ""
-                      : input.value || ""}
-                  inputRef={this.setInputNode}
-                  classes={{
-                    root: clsx(classes.textFieldBorderModified, fieldClasses.text),
-                    select: clsx(isInline && classes.inlineSelect),
-                    // @ts-ignore
-                    underline: fieldClasses.underline
-                  }}
-                  multiple={multiple}
-                  autoWidth={autoWidth}
-                  open={isEditing}
-                  disabled={disabled}
-                  onOpen={this.onFocus}
-                  onClose={this.onSelectClose}
-                  onChange={this.onSelectChange}
-                  displayEmpty
-                >
-                  {selectItems}
-                </Select>
+                <div className={clsx(isInline && "d-inline", classes.selectMainWrapper)}>
+                  <Select
+                    value={multiple
+                      ? input.value || []
+                      : returnType === "object"
+                        ? selectLabelCondition
+                          ? selectLabelCondition(input.value)
+                          : input.value ? input.value[selectValueMark] : ""
+                        : input.value || ""}
+                    inputRef={this.setInputNode}
+                    classes={{
+                      root: clsx(classes.textFieldBorderModified, fieldClasses.text, classes.selectWrapper),
+                      select: clsx(isInline && classes.inlineSelect),
+                      // @ts-ignore
+                      underline: fieldClasses.underline
+                    }}
+                    multiple={multiple}
+                    autoWidth={autoWidth}
+                    open={isEditing}
+                    disabled={disabled}
+                    onOpen={this.onFocus}
+                    onClose={this.onSelectClose}
+                    onChange={this.onSelectChange}
+                    IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
+                    displayEmpty
+                  >
+                    {selectItems}
+                  </Select>
+                </div>
                 )
               : (
                 <Input
