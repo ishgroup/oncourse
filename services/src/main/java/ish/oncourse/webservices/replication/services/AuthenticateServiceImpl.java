@@ -115,11 +115,9 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 		local.setCommunicationKeyStatus(KeyStatus.VALID);
 
 		Date date = new Date();
-		if (local.getFirstRemoteAuthentication() == null) {
-			local.setFirstRemoteAuthentication(date);
-		} else {
-			local.setLastRemoteAuthentication(date);
-		}
+
+		local.setLastRemoteAuthentication(date);
+
 		objectContext.commitChanges();
 
 		HttpServletRequest request = (HttpServletRequest) takeWebServiceContext().getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);

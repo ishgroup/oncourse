@@ -135,7 +135,6 @@ public class CommonTestModule {
 		binder.bind(IQualificationService.class, QualificationService.class).withId("QualificationService");
 		binder.bind(ITrainingPackageService.class, TrainingPackageService.class).withId("TrainingPackageService");
 
-		binder.bind(IPaymentGatewayServiceBuilder.class, PaymentGatewayServiceBuilder.class);
 		//this part added for test with manual services invoke
 		binder.bind(IFileStorageAssetService.class, FileStorageAssetService.class);
 		binder.bind(IWillowUpdater.class, WillowUpdaterImpl.class);
@@ -150,9 +149,7 @@ public class CommonTestModule {
 			}
 		}).scope(ScopeConstants.PERTHREAD);
 		binder.bind(InternalPaymentService.class, PaymentServiceImpl.class);
-		binder.bind(INewPaymentGatewayServiceBuilder.class, NewPaymentGatewayServiceBuilder.class);
 		binder.bind(javax.cache.CacheManager.class, new BinderFunctions.CacheManagerBuilder()).eagerLoad();
 		binder.bind(ICayenneService.class, new BinderFunctions.CayenneServiceBuilder()).eagerLoad();
-		binder.bind(INewPaymentGatewayService.class, new BinderFunctions.PaymentGatewayBuilder());
 	}
 }
