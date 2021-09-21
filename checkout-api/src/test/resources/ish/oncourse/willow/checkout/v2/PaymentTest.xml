@@ -11,8 +11,6 @@
 
     <Preference id="1" collegeId="1" name="license.ccprocessing"
                 value_string="true" />
-    <Preference id="2" collegeId="1" name="payment.gateway.type"
-                value_string="TEST" />
 
     <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 

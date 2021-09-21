@@ -3,12 +3,9 @@ package ish.oncourse.willow.checkout.payment.v2
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.PaymentType
-import ish.math.Country
 import ish.math.Money
 import ish.oncourse.model.College
-import ish.oncourse.model.PaymentGatewayType
 import ish.oncourse.model.PaymentIn
-import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.util.payment.PaymentInAbandon
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.util.payment.PaymentInSucceed
@@ -23,12 +20,7 @@ import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 
-import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
-import static ish.common.types.ConfirmationStatus.NOT_SENT
-import static ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE
-import static ish.persistence.Preferences.*
 
 @CompileStatic
 class ProcessPaymentModel {

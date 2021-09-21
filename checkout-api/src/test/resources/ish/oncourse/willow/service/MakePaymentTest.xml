@@ -8,8 +8,9 @@
              requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
              paymentGatewayPass="test1234"/>
 
+    <Preference id="1" collegeId="1" name="payment.gateway.api.key" value_string="SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"/>
+    <Preference id="2" collegeId="1" name="payment.gateway.purchase-without-auth" value_string="false"/>
     <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
-
     <Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
           created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
 

@@ -3,7 +3,6 @@ package ish.oncourse.willow.checkout.v2
 import ish.common.types.CreditCardType
 import ish.math.Money
 import ish.oncourse.model.PaymentIn
-import ish.oncourse.services.paymentexpress.TestPaymentGatewayService
 import ish.oncourse.willow.checkout.CheckoutApiImpl
 import ish.oncourse.willow.checkout.windcave.TestPaymentService
 import ish.oncourse.willow.model.checkout.payment.PaymentStatus
@@ -29,6 +28,7 @@ class PaymentTest extends ApiTest {
 
     @Test
     void testCCPayment() {
+        System.setProperty('payment.gateway.type.test', 'true')
         ThreadLocalPayerId.set(1005l)
         ThreadLocalValidateOnly.set(true)
 

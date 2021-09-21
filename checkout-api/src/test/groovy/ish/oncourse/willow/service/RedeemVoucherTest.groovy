@@ -1,24 +1,27 @@
 package ish.oncourse.willow.service
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.College
+import ish.oncourse.model.Contact
 import ish.oncourse.model.PaymentIn
 import ish.oncourse.model.PaymentInLine
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.checkout.functions.ProcessCheckoutModel
-import ish.oncourse.willow.checkout.payment.CreatePaymentModel
+import ish.oncourse.willow.checkout.payment.v2.CreatePaymentModel
 import ish.oncourse.willow.model.checkout.Amount
 import ish.oncourse.willow.model.checkout.Article
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.junit.Test
 
 import static org.junit.Assert.*
 
+@CompileStatic
 class RedeemVoucherTest extends ApiTest {
 
     @Override
@@ -64,16 +67,16 @@ class RedeemVoucherTest extends ApiTest {
         CheckoutModelRequest checkoutModelRequest = getModelRequest()
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest, financialService).process()
         Amount amount = processModel.model.amount
-        assertEquals(amount.total, 430.00, 0)
-        assertEquals(amount.discount, 33.00, 0)
-        assertEquals(amount.payNow, 318.00, 0)
-        assertEquals(amount.ccPayment, 69.00, 0)
-        assertEquals(amount.owing, 79.00, 0)
+        assertEquals(amount.total, 430.00d, 0)
+        assertEquals(amount.discount, 33.00d, 0)
+        assertEquals(amount.payNow, 318.00d, 0)
+        assertEquals(amount.ccPayment, 69.00d, 0)
+        assertEquals(amount.owing, 79.00d, 0)
         assertEquals(amount.voucherPayments.size(), 2)
         assertEquals(amount.voucherPayments[0].redeemVoucherId, '1001')
-        assertEquals(amount.voucherPayments[0].amount, 99.00, 0)
+        assertEquals(amount.voucherPayments[0].amount, 99.00d, 0)
         assertEquals(amount.voucherPayments[1].redeemVoucherId, '1002')
-        assertEquals(amount.voucherPayments[1].amount, 150.00, 0)
+        assertEquals(amount.voucherPayments[1].amount, 150.00d, 0)
     }
     
     @Test
@@ -84,16 +87,16 @@ class RedeemVoucherTest extends ApiTest {
         CheckoutModelRequest checkoutModelRequest = getModelRequest(false)
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, checkoutModelRequest, financialService).process()
         Amount amount = processModel.model.amount
-        assertEquals(amount.total, 330.00, 0)
-        assertEquals(amount.discount, 33.00, 0)
-        assertEquals(amount.payNow, 218.0, 0)
-        assertEquals(amount.ccPayment, 0.0, 0)
-        assertEquals(amount.owing, 79.00, 0)
+        assertEquals(amount.total, 330.00d, 0)
+        assertEquals(amount.discount, 33.00d, 0)
+        assertEquals(amount.payNow, 218.00d, 0)
+        assertEquals(amount.ccPayment, 0.00d, 0)
+        assertEquals(amount.owing, 79.00d, 0)
         assertEquals(amount.voucherPayments.size(), 2)
         assertEquals(amount.voucherPayments[0].redeemVoucherId, '1001')
-        assertEquals(amount.voucherPayments[0].amount, 99.00, 0)
+        assertEquals(amount.voucherPayments[0].amount, 99.00d, 0)
         assertEquals(amount.voucherPayments[1].redeemVoucherId, '1002')
-        assertEquals(amount.voucherPayments[1].amount, 119.00, 0)
+        assertEquals(amount.voucherPayments[1].amount, 119.00d, 0)
     }
     
     @Test
@@ -104,8 +107,8 @@ class RedeemVoucherTest extends ApiTest {
         College college = webSite.college
         
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(),financialService).process()
-
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, paymentRequest, processModel.model,financialService).create()
+        Contact payer = SelectById.query(Contact, 1001L).selectOne(context)
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, paymentRequest, processModel.model,financialService, payer).create()
 
         assertNotNull(createPaymentModel.model)
 
@@ -155,8 +158,8 @@ class RedeemVoucherTest extends ApiTest {
         College college = webSite.college
 
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(false), financialService).process()
-
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, getPaymentRequest(false), processModel.model,financialService).create()
+        Contact payer = SelectById.query(Contact, 1001L).selectOne(context)
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, getPaymentRequest(false), processModel.model,financialService, payer).create()
 
         assertNotNull(createPaymentModel.model)
 

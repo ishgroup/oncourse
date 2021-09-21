@@ -1,27 +1,29 @@
 package ish.oncourse.willow.service
 
+import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.model.College
+import ish.oncourse.model.Contact
 import ish.oncourse.model.Enrolment
 import ish.oncourse.model.Voucher
 import ish.oncourse.model.WebSite
 import ish.oncourse.util.payment.PaymentInModel
 import ish.oncourse.willow.checkout.CheckoutApiImpl
-import ish.oncourse.willow.checkout.payment.CreatePaymentModel
-import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
+import ish.oncourse.willow.checkout.payment.v2.CreatePaymentModel
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.checkout.CheckoutModel
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest
-import ish.oncourse.willow.model.checkout.payment.PaymentStatus
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.SelectById
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
+@CompileStatic
 class TaxOverridenTest extends AbstractPaymentTest {
     
     @Override
@@ -53,8 +55,9 @@ class TaxOverridenTest extends AbstractPaymentTest {
         assertEquals(46D, model.contactNodes[0].enrolments[0].price.appliedDiscount.discountValue, 0)
 
         model.amount
+        Contact payer = SelectById.query(Contact, 1001L).selectOne(context)
 
-        CreatePaymentModel createPaymentModel = new CreatePaymentModel(context, college, webSite, request, model,financialService).create()
+        CreatePaymentModel createPaymentModel = new CreatePaymentModel(context, college, webSite, request, model,financialService, payer).create()
         PaymentInModel paymentInModel = createPaymentModel.model
 
         assertEquals(new Money('169.00'), paymentInModel.paymentIn.amount)
@@ -82,12 +85,5 @@ class TaxOverridenTest extends AbstractPaymentTest {
         assertEquals(7l, voucher.product.id)
         assertEquals(new Money('100.00'), voucher.valueRemaining)
         assertEquals(new Money('100.00'), voucher.valueOnPurchase)
-
-        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext(), college, createPaymentModel, request).process()
-        assertEquals(PaymentStatus.SUCCESSFUL, processPaymentModel.response.status)
-
-        assertEquals(ish.common.types.PaymentStatus.SUCCESS, paymentInModel.paymentIn.status)
-        assertEquals(EnrolmentStatus.SUCCESS, enrolment.status)
-        assertEquals(ProductStatus.ACTIVE, voucher.status)
     }
 }

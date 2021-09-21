@@ -14,9 +14,6 @@ import ish.oncourse.willow.EntityRelationService
 import ish.oncourse.willow.FinancialService
 import ish.oncourse.willow.checkout.functions.*
 import ish.oncourse.willow.checkout.functions.v2.ValidatePaymentRequest as V2ValidatePaymentRequest
-import ish.oncourse.willow.checkout.payment.CreatePaymentModel
-import ish.oncourse.willow.checkout.payment.GetPaymentStatus
-import ish.oncourse.willow.checkout.payment.ProcessPaymentModel
 import ish.oncourse.willow.checkout.payment.v2.CreatePaymentModel as V2CreatePaymentModel
 import ish.oncourse.willow.checkout.payment.v2.ProcessPaymentModel as V2ProcessPaymentModel
 import ish.oncourse.willow.checkout.windcave.IPaymentService
@@ -73,77 +70,6 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
         return processModel.model
     }
     
-    @Override
-    @Deprecated
-    ContactNode getContactNode(ContactNodeRequest contactNodeRequest) {
-
-        if (contactNodeRequest.classIds.empty 
-                && contactNodeRequest.products.empty
-                && contactNodeRequest.waitingCourseIds.empty) {
-            logger.info('There are no selected items for purchase')
-            throw new BadRequestException(Response.status(400).entity(new CommonError(message: 'There are no selected items for purchase')).build())
-        }
-        
-        ObjectContext context = cayenneService.newContext()
-        College college = collegeService.college
-        
-        Contact contact = new GetContact(context, college, contactNodeRequest.contactId).get(false)
-
-        ContactNode node = new ContactNode()
-        node.contactId = contact.id.toString()
-        
-        if (!contact.isCompany) {
-            ProcessClasses processClasses = new ProcessClasses(context, contact, college, contactNodeRequest.classIds, contactNodeRequest.promotionIds).process()
-            node.enrolments = processClasses.enrolments
-            node.applications = processClasses.applications
-            
-            ProcessWaitingLists processWaitingLists = new ProcessWaitingLists(context, contact, college, contactNodeRequest.waitingCourseIds).process()
-            node.waitingLists += processWaitingLists.waitingLists
-        }
-
-        ProcessProducts processProducts = new ProcessProducts(context, contact, college, contactNodeRequest.products).process()
-        node.articles += processProducts.articles
-        node.memberships += processProducts.memberships
-        node.vouchers += processProducts.vouchers
-
-        node
-    }
-
-    @Override
-    @Deprecated
-    PaymentResponse getPaymentStatus(String sessionId) {
-        new GetPaymentStatus(cayenneService.newContext(), collegeService.college, sessionId).get()
-    }
-
-    @Override
-    @CompileStatic(TypeCheckingMode.SKIP)
-    @Deprecated
-    PaymentResponse makePayment(PaymentRequest paymentRequest) {
-        ObjectContext context = cayenneService.newContext()
-        WebSite webSite = collegeService.webSite
-        College college = webSite.college
-        
-        CheckoutModel checkoutModel = getCheckoutModel(paymentRequest.checkoutModelRequest)
-        ValidatePaymentRequest validatePaymentRequest = new ValidatePaymentRequest(checkoutModel, paymentRequest, context, financialService.getAvailableCredit(checkoutModel.payerId)).validate()
-        
-        if (validatePaymentRequest.commonError) {
-            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
-        } else if (validatePaymentRequest.validationError) {
-            throw new BadRequestException(Response.status(400).entity(validatePaymentRequest.validationError).build())
-        }
-        
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, paymentRequest, checkoutModel, financialService).create()
-        ProcessPaymentModel processPaymentModel = new ProcessPaymentModel(context, cayenneService.newNonReplicatingContext(), college, createPaymentModel, paymentRequest).process()
-        
-        if (processPaymentModel.error == null) {
-            return processPaymentModel.response
-        } else {
-            checkoutModel.error = processPaymentModel.error
-            throw new BadRequestException(Response.status(400).entity(checkoutModel).build())
-        }
-        
-    }
-
     @Override
     @CompileDynamic
     V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId, String origin) {
@@ -205,5 +131,23 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
         IPaymentService paymentService = new PaymentServiceBuilder().build(college, context)
         paymentService.checkStatus(sessionId)
         new V2PaymentResponse(responseText:paymentService.checkStatus(sessionId).statusText)
+    }
+
+    @Override
+    @Deprecated
+    ContactNode getContactNode(ContactNodeRequest contactNodeRequest) {
+        throw new UnsupportedOperationException()
+    }
+
+    @Override
+    @Deprecated
+    PaymentResponse getPaymentStatus(String sessionId) {
+        throw new UnsupportedOperationException()
+    }
+
+    @Override
+    @Deprecated
+    PaymentResponse makePayment(PaymentRequest paymentRequest) {
+        throw new UnsupportedOperationException()
     }
 }

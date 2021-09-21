@@ -5,7 +5,7 @@ import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
 import ish.oncourse.willow.model.checkout.Voucher
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.web.CourseClassPrice
 import ish.oncourse.willow.model.web.Discount
 
@@ -14,12 +14,6 @@ abstract class AbstractPaymentTest extends ApiTest {
     protected PaymentRequest buildPaymentRequest() {
         new PaymentRequest().with { paymentRequest ->
             paymentRequest.sessionId = 'paymentRandomSession'
-            paymentRequest.creditCardNumber = '5431111111111111'
-            paymentRequest.creditCardName = 'john smith'
-            paymentRequest.expiryMonth = '11'
-            paymentRequest.expiryYear = '2027'
-            paymentRequest.creditCardCvv = '321'
-            paymentRequest.agreementFlag = true
             paymentRequest.ccAmount = 200.00
             paymentRequest.checkoutModelRequest = new CheckoutModelRequest().with { modelRequest ->
                 modelRequest.contactNodes = [new ContactNode().with { cNode ->
