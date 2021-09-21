@@ -629,16 +629,5 @@
 		</preConditions>
 		<dropNotNullConstraint tableName="Invoice" columnName="invoiceNumber" columnDataType="BIGINT"/>
 	</changeSet>
-	
-	<changeSet id="48" author="artyom" runOnChange="false" runAlways="false" context="production">
-		<preConditions onFail="MARK_RAN">
-			<columnExists columnName="status" tableName="WebHostName"/>
-		</preConditions>
-		<addColumn tableName="WebHostName">
-			<column name="status" type="SMALLINT">
-				<constraints nullable="false"/>
-			</column>
-		</addColumn>
-	</changeSet>
 
 </databaseChangeLog>
