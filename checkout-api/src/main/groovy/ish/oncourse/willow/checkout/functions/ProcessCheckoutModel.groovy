@@ -30,7 +30,6 @@ import ish.oncourse.willow.model.checkout.Voucher
 import ish.oncourse.willow.model.checkout.WaitingList
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.model.common.ValidationError
-import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.FieldHeading
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils

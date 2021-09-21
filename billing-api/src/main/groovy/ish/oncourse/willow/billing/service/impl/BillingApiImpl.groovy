@@ -63,6 +63,8 @@ class BillingApiImpl implements BillingApi {
     private static final String svnRepo =  Configuration.getValue(SVN_URL)
     private static final String svnUser =  Configuration.getValue(SVN_USER)
     private static final String svnPass =  Configuration.getValue(SVN_PASS)
+    private static final String UPDATE_SCRIPT_PATH = Configuration.getValue(BILLING_UPDATE)
+
 
     private static final Logger logger = LogManager.logger
     
@@ -76,6 +78,7 @@ class BillingApiImpl implements BillingApi {
         Boolean s3Done = false
         Boolean svnDone = false
         Boolean dbDone = false
+        Boolean saltDone = false
         
         ObjectContext context = cayenneService.newContext()
 
@@ -93,9 +96,7 @@ class BillingApiImpl implements BillingApi {
             
             angelConfig.securityCode = SecurityUtil.generateRandomPassword(16)
             angelConfig.collegeKey = collegeDTO.collegeKey
-            angelConfig.s3bucketName = bucketName
-            angelConfig.s3accessId = key.getAccessKeyId()
-            angelConfig.s3accessKey = key.getSecretAccessKey()
+
             angelConfig.userFirstName = collegeDTO.userFirstName
             angelConfig.userLastName = collegeDTO.userLastName
             angelConfig.userEmail = collegeDTO.userEmail
@@ -107,7 +108,7 @@ class BillingApiImpl implements BillingApi {
             //3.Create db records in on transaction
             cayenneService.performTransaction {
 
-                College college = recordNewCollege(angelConfig.securityCode, angelConfig.collegeKey, collegeDTO.organisationName, collegeDTO.timeZone, context)
+                College college = recordNewCollege(angelConfig.securityCode, angelConfig.collegeKey, collegeDTO.organisationName, context)
                 context.commitChanges()
 
                 PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_NAME, collegeDTO.organisationName)
@@ -123,25 +124,12 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_SUBURB, collegeDTO.suburb)
                 PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_STATE, collegeDTO.state)
                 PreferenceUtil.createPreference(context, college, Preferences.AVETMISS_POSTCODE, collegeDTO.postcode)
-
-                PreferenceUtil.createPreference(context, college, Preference.STORAGE_BUCKET_NAME, angelConfig.s3bucketName)
-                PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_ID, angelConfig.s3accessId)
-                PreferenceUtil.createPreference(context, college, Preference.STORAGE_ACCESS_KEY, angelConfig.s3accessKey)
-
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_ACCESS_CONTROL, String.valueOf(false))
-              
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_SMS, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_CC_PROCESSING, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_PAYROLL, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_VOUCHER, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_MEMBERSHIP, String.valueOf(true))
-                PreferenceUtil.createPreference(context, college, Preferences.LICENSE_ATTENDANCE, String.valueOf(true))
-
-                PreferenceUtil.createPreference(context, college, ish.oncourse.services.preference.Preferences.ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED,String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, ish.oncourse.services.preference.Preferences.ENROLMENT_CREDITCARD_PAYMENT_ENABLED, String.valueOf(false))
-                PreferenceUtil.createPreference(context, college, ish.oncourse.services.preference.Preferences.PAYMENT_GATEWAY_TYPE, PaymentGatewayType.DISABLED.toString())
-                PreferenceUtil.createPreference(context, college, Preferences.SERVICES_CC_AMEX_ENABLED,  String.valueOf(false))
-
+                
+                PreferenceUtil.createSetting(context, college, Settings.STORAGE_BUCKET_NAME, bucketName)
+                PreferenceUtil.createSetting(context, college, Settings.STORAGE_ACCESS_ID, key.accessKeyId)
+                PreferenceUtil.createSetting(context, college, Settings.STORAGE_ACCESS_KEY, key.secretAccessKey)
+                PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
+                
                 context.commitChanges()
 
                 if (collegeDTO.webSiteTemplate) {
@@ -150,6 +138,13 @@ class BillingApiImpl implements BillingApi {
             }
             
             dbDone = true
+
+            try {
+                Runtime.getRuntime().exec("$UPDATE_SCRIPT_PATH collegeCreate $collegeDTO.collegeKey")
+                saltDone = true
+            } catch (Exception e) {
+                logger.catching(e)
+            }
             
             logger.warn("College was created:$collegeDTO.collegeKey")
             sendEmail('College was created', "college info: $collegeDTO")
@@ -164,6 +159,7 @@ class BillingApiImpl implements BillingApi {
                             "s3 done: ${s3Done} \n"+ 
                             "svn done: ${svnDone} \n"+
                             "db done: ${dbDone} \n"+ 
+                            "salt done: ${saltDone} \n"+ 
                             "college info: $collegeDTO".toString()
             )
             throw new InternalServerErrorException("Something unexpected has happened. Please contact ish support or try again")
@@ -196,7 +192,7 @@ class BillingApiImpl implements BillingApi {
                 .select(cayenneService.newContext()).empty
     }
 
-    private College recordNewCollege(String securityCode, String collegeKey, String name, String timeZone, ObjectContext objectContext ) {
+    private College recordNewCollege(String securityCode, String collegeKey, String name, ObjectContext objectContext ) {
         Date createdOn = new Date()
 
         College college = objectContext.newObject(College)
@@ -204,24 +200,13 @@ class BillingApiImpl implements BillingApi {
         // TODO An entity factory would be handy here... perhaps another time
         college.setWebServicesSecurityCode(securityCode)
         college.setName(name)
-
         college.setCreated(createdOn)
         college.setModified(createdOn)
         college.setCommunicationKey(-1l)
         college.setCommunicationKeyStatus(KeyStatus.VALID)
-
         college.setBillingCode(collegeKey)
         college.setCollegeKey(collegeKey)
-        
-        college.setIsTestingWebServicePayments(false)
-        college.setIsTestingWebSitePayments(false)
-        college.setIsWebServicePaymentsEnabled(false)
-        college.setIsWebSitePaymentsEnabled(false)
-        college.setRequiresAvetmiss(true)
-        college.setTimeZone(timeZone)
         college.lastRemoteAuthentication = new Date(0)
-        college.firstRemoteAuthentication = new Date()
-
         return college
     }
     
@@ -230,11 +215,6 @@ class BillingApiImpl implements BillingApi {
         
         String securityCode
         String collegeKey
-        
-        String s3bucketName
-        String s3accessId
-        String s3accessKey
-        String s3Region = Region.AP_Sydney.toString()
         
         String userFirstName
         String userLastName
@@ -254,43 +234,6 @@ class BillingApiImpl implements BillingApi {
             paidUntil = untilDate.format("yyyy-MM-01")
         }
         
-        Map<String, Object> toMap() {
-           return [
-                   (collegeKey): [
-                           security_key: securityCode, 
-                           version: '"{{ small }}"',
-                           server: [
-                                   max_users: 1,
-                                   port: port,
-                                   minion: 'colo.splash'
-                           ],
-                           db: [
-                                   pass: SecurityUtil.generateRandomPassword(12)
-                           ],
-                           document: [
-                                   bucket: s3bucketName,
-                                   accessKeyId: s3accessId,
-                                   accessSecretKey: s3accessKey,
-                                   region: s3Region,
-                                   limit: '1G'
-                           ],
-                           user: [
-                                   firstName: userFirstName,
-                                   lastName: userLastName,
-                                   email: userEmail,
-                           ],
-                           billing: [
-                                   code: collegeKey,
-                                   plan: 'basic', 
-                                   paid_until: "\"$paidUntil\"", 
-                                   web: [
-                                           plan: "WEB-6"
-                                   ]
-                           ]
-                   ]
-           ] as Map<String, Object>
-        }
-        
         String toString() {
             return  "$collegeKey:\n"+
                     "  security_key: $securityCode\n" +
@@ -301,12 +244,6 @@ class BillingApiImpl implements BillingApi {
                     "    minion: colo.splash\n" +
                     "  db:\n" +
                     "    pass: ${SecurityUtil.generateRandomPassword(12)}\n" +
-                    "  document:\n" +
-                    "    bucket: $s3bucketName\n" +
-                    "    accessKeyId: $s3accessId\n" +
-                    "    accessSecretKey: $s3accessKey\n" +
-                    "    region: $s3Region\n" +
-                    "    limit: 1G\n" +
                     "  user:\n"+
                     "    firstName: $userFirstName\n" +
                     "    lastName: $userLastName\n" +

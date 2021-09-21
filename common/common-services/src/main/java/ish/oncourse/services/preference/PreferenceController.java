@@ -7,6 +7,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.util.URLUtils;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -228,14 +229,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public boolean isCorporatePassPaymentEnabled() {
 		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
-
-
-	public void setCorporatePassPaymentEnabled(boolean value)
-	{
-		setValue(ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED, false, Boolean.toString(value));
-	}
 	
-
     public Integer getContactAgeWhenNeedParent()
     {
     	return new GetContactAgeWhenNeedParent(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
@@ -290,16 +284,28 @@ public class PreferenceController extends CommonPreferenceController {
     }
     
 	public String getStorageAccessId() {
-		return getValue(Preference.STORAGE_ACCESS_ID, false);
+		return getSetting(Settings.STORAGE_ACCESS_ID);
 	}
 	
 	public String getStorageAccessKey() {
-		return getValue(Preference.STORAGE_ACCESS_KEY, false);
+		return getSetting(Settings.STORAGE_ACCESS_KEY);
 	}
+	
 	public String getStorageBucketName() {
-		return getValue(Preference.STORAGE_BUCKET_NAME, false);
+		return getSetting(Settings.STORAGE_BUCKET_NAME);
 	}
-
+	
+	protected String getSetting(String name) {
+		Settings setting = ObjectSelect.query(Settings.class)
+				.where(Settings.COLLEGE.eq(webSiteService.getCurrentCollege()))
+				.and(Settings.NAME.eq(name)).selectOne(cayenneService.newContext());
+		if (setting != null) {
+			return setting.getValue();
+		} else {
+			return null;
+		}
+	}
+	
 	public enum FieldDescriptor {
 		street("address", Contact.STREET.getName(), String.class, true, true),
 		suburb("suburb", Contact.SUBURB.getName(), String.class, true, true),

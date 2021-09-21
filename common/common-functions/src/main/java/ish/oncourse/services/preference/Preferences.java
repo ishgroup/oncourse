@@ -18,7 +18,6 @@ public interface Preferences {
     String ENABLE_SOCIAL_MEDIA_LINKS_COURSE = "website.course.medialinks.enabled";
     String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
     String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
-    String ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED = "enrolment.corporatePass.payment.enabled";
     String ENROLMENT_CREDIT_NOTE_ENABLED = "enrolment.credit.note.enabled";
     String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
     String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";

@@ -42,7 +42,7 @@ class PreferenceApiImpl implements PreferenceApi {
         preferences.featureEnrolmentDisclosure = new GetFeatureEnrolmentDisclosure(college, context).get()
         preferences.googleTagmanagerAccount = collegeService.webSite.googleTagmanagerAccount
         preferences.minAge =  new GetContactAgeWhenNeedParent(college, context).get()?.doubleValue()
-        preferences.amexEnabled = new GetPreference(college, ish.persistence.Preferences.SERVICES_CC_AMEX_ENABLED, context).booleanValue
+        preferences.amexEnabled = true
         return preferences
     }
 }

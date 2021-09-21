@@ -1,21 +1,23 @@
 package ish.oncourse.services.preference
 
 import ish.oncourse.model.College
+import ish.oncourse.model.CorporatePass
 import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.StringUtils
+import org.apache.cayenne.query.ObjectSelect
 
-import static ish.oncourse.services.preference.Preferences.ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED
-
-class IsCorporatePassEnabled extends GetPreference {
+class IsCorporatePassEnabled  {
+    College college
+    ObjectContext objectContext
     
     IsCorporatePassEnabled(College college, ObjectContext objectContext) {
-        super(college, ENROLMENT_CORPORATEPASS_PAYMENT_ENABLED, objectContext)
+        this.college = college
+        this.objectContext = objectContext
     }
 
     boolean get() {
-        String valueString = StringUtils.trimToNull(getValue())
-        if (valueString == null)
-            return true
-        return Boolean.valueOf(value)
+        return ObjectSelect.query(CorporatePass)
+                .where(CorporatePass.COLLEGE.eq(college))
+                .and(CorporatePass.EXPIRY_DATE.isNull().orExp(CorporatePass.EXPIRY_DATE.gt(new Date())))
+                .selectFirst(objectContext) != null
     }
 }

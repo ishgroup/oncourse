@@ -12,9 +12,6 @@ public class Preference extends _Preference implements Queueable {
 
 	private static final long serialVersionUID = 8309390847931508840L;
 
-	public static final String STORAGE_BUCKET_NAME = "storage.bucket";
-	public static final String STORAGE_ACCESS_ID = "storage.access.id";
-	public static final String STORAGE_ACCESS_KEY = "storage.access.key";
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -22,7 +19,7 @@ public class Preference extends _Preference implements Queueable {
 
 	@Override
 	public boolean isAsyncReplicationAllowed() {
-		return (getWebSite() == null) || Arrays.asList(STORAGE_BUCKET_NAME, STORAGE_ACCESS_ID, STORAGE_ACCESS_KEY).contains(getName());
+		return (getWebSite() == null);
 	}
 
 	@Override
