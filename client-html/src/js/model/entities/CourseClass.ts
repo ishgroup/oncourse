@@ -17,10 +17,10 @@ import {
   createStringEnum,
   Note,
   StudentAttendance,
-  TutorAttendance,
   Tax,
-  TutorAttendanceType,
-  TrainingPlan
+  TrainingPlan,
+  TutorAttendance,
+  TutorAttendanceType
 } from "@api/model";
 import { AccountExtended } from "./Account";
 import { TimetableSession } from "../timetable";
@@ -102,6 +102,7 @@ export interface ClassCostType {
   projected: number;
   actual: number;
   items: ClassCostItem[];
+  percentage?: number;
 }
 
 export interface ClassCostTypes {

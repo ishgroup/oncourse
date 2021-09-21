@@ -327,43 +327,20 @@ public class ClassCostUtil {
 	}
 
 	private static Money getActualDiscountedAmount(ClassCost cost) {
-		if (ClassCostFlowType.DISCOUNT.equals(cost.getFlowType()) && (ClassCostRepetitionType.DISCOUNT.equals(cost.getRepetitionType()))) {
-
-			Money discounted = Money.ZERO;
-			List<Enrolment> enrolments = cost.getCourseClass().getSuccessAndQueuedEnrolments();
-			for (Enrolment e : enrolments) {
-				for (InvoiceLine invoiceLine : e.getInvoiceLines()) {
-					List<Discount> discounts = invoiceLine.getDiscounts();
-					Money currentTotalDiscountAmount = Money.ZERO;
-					Money currentDiscountAmount = Money.ZERO;
-					for (DiscountInterface discount : discounts) {
-
-						DiscountCourseClassInterface classDiscount = null;
-						for (DiscountCourseClassInterface dcc : cost.getCourseClass().getDiscountCourseClasses()) {
-							if (dcc.getDiscount().equals(discount)) {
-								classDiscount = dcc;
-								break;
-							}
-						}
-
-						Money discountValue = DiscountUtils.discountValue(classDiscount, invoiceLine.getPriceTotalExTax(), invoiceLine.getTax().getRate());
-						currentTotalDiscountAmount = currentTotalDiscountAmount.add(discountValue);
-
-						if (discount.equals(cost.getDiscountCourseClass().getDiscount())) {
-							currentDiscountAmount = discountValue;
-						}
-					}
-
-					if (currentTotalDiscountAmount.compareTo(Money.ZERO) != 0) {
-						discounted = discounted.add(invoiceLine.getDiscountTotalExTax()
-								.multiply(currentDiscountAmount.divide(currentTotalDiscountAmount)));
-					}
-				}
-			}
-
-			return discounted;
-		}
-		return Money.ZERO;
+		Discount discount = cost.getDiscountCourseClass().getDiscount();
+		// assume only one discount can be applied to inviceLine. the many-to-many is just legasy stuff.
+		return cost.getCourseClass()
+				// get all class enrolments
+				.getSuccessAndQueuedEnrolments().stream()
+				// take all invoiceLines from them 
+				.map(Enrolment::getInvoiceLines)
+				// flatten them since previous line returns stream of lists of invoiceLines
+				.flatMap(List::stream)
+				// filter invoiceLines that was discounted by certain discount: cost.getDiscountCourseClass().getDiscount()
+				.filter(il -> !il.getInvoiceLineDiscounts().isEmpty() && il.getInvoiceLineDiscounts()
+						.stream().anyMatch(ild -> ild.getDiscount() != null && ild.getDiscount().equalsIgnoreContext(discount)))
+				// summ of discount values
+				.map(AbstractInvoiceLine::getDiscountEachExTax).reduce(Money.ZERO, Money::add);
 	}
 
 	public static Money getPerUnitAmountExTax(ClassCost cost) {

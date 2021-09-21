@@ -17,8 +17,9 @@ import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.api.v1.model.EmailTemplateDTO
 import ish.oncourse.server.api.v1.service.EmailTemplateApi
 import ish.oncourse.server.cayenne.EmailTemplate
+import ish.util.AbstractEntitiesUtil
+import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
-
 
 class EmailTemplateApiImpl implements EmailTemplateApi {
 
@@ -29,9 +30,11 @@ class EmailTemplateApiImpl implements EmailTemplateApi {
     private ICayenneService cayenneService
 
     List<EmailTemplateDTO> getTemplatesWithKeyCode(String entityName) {
+        def currentEntitiesNames = AbstractEntitiesUtil.getImplsOf(entityName)
+        def currentEntityNameRequiredExp = buildExpressionForEntitiesNames(currentEntitiesNames)
         List<EmailTemplateDTO> result = ObjectSelect.query(EmailTemplate)
                     .and(EmailTemplate.ENABLED.isTrue())
-                    .and(EmailTemplate.ENTITY.eq(entityName))
+                    .and(currentEntityNameRequiredExp)
                 .select(cayenneService.newContext)
                 .collect { service.toRestModel(it) }
         result
@@ -60,5 +63,16 @@ class EmailTemplateApiImpl implements EmailTemplateApi {
     @Override
     void updateInternal(EmailTemplateDTO exportTemplate) {
         service.updateInternal(exportTemplate)
+    }
+
+
+    private Expression buildExpressionForEntitiesNames(List<String> entitiesNames){
+        if(entitiesNames.isEmpty())
+            throw new IllegalArgumentException("List of entity names cannot be null!")
+        def expression = EmailTemplate.ENTITY.eq(entitiesNames.get(0))
+        for(int i = 1; i < entitiesNames.size(); i++){
+            expression = expression.orExp(EmailTemplate.ENTITY.eq(entitiesNames.get(i)))
+        }
+        return expression
     }
 }

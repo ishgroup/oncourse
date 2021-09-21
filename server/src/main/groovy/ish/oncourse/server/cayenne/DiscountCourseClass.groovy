@@ -23,7 +23,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class DiscountCourseClass extends _DiscountCourseClass implements Queueable, DiscountCourseClassInterface {
+class DiscountCourseClass extends _DiscountCourseClass implements DiscountCourseClassTrait, Queueable, DiscountCourseClassInterface {
 
 	/**
 	 * @return predicted percentage of students using this discount
