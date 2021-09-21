@@ -3,9 +3,9 @@ package ish.oncourse.admin.pages.college;
 import ish.oncourse.admin.pages.Index;
 import ish.oncourse.model.*;
 import ish.oncourse.services.persistence.ICayenneService;
-import ish.oncourse.services.preference.PreferenceController;
-import ish.oncourse.services.preference.PreferenceControllerFactory;
+import ish.oncourse.services.preference.GetPreference;
 import ish.oncourse.services.system.ICollegeService;
+import ish.persistence.Preferences;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,41 +38,34 @@ public class Billing {
 	@Inject
 	private ICollegeService collegeService;
 
-	@Inject
-	private PreferenceControllerFactory prefsFactory;
-
-	private PreferenceController preferenceController;
-
     @InjectPage
     private Index indexPage;
 
 	Object onActivate() {
-		this.preferenceController = prefsFactory.getPreferenceController(college);
 		return null;
 	}
 
 	@SetupRender
 	void setupRender() {
-
 		ObjectContext context = cayenneService.newContext();
-
 		this.college = context.localObject(college);
-
+		
 		this.collegeName = college.getName();
-		this.gatewayPass = preferenceController.getPaymentGatewayPass();
-		this.skipPaymentAuth = preferenceController.isPurchaseWithoutAuth();
+		this.gatewayPass = new GetPreference(college, Preferences.PAYMENT_GATEWAY_PASS, context).getValue();
+		this.skipPaymentAuth = new GetPreference(college, Preferences.PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, context).getBooleanValue();
 	}
 
 	@OnEvent(component="billingForm", value="success")
 	void submitted() {
-		ObjectContext context = college.getObjectContext();
-
+		
+		ObjectContext context = cayenneService.newContext();
+		this.college = context.localObject(college);
 		if (StringUtils.trimToNull(collegeName) != null) {
 			college.setName(collegeName);
 		}
+		new GetPreference(college, Preferences.PAYMENT_GATEWAY_PASS, context).setValue(gatewayPass);
+		new GetPreference(college, Preferences.PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, context).setBooleanValue(skipPaymentAuth);
 
-		preferenceController.setPaymentGatewayPass(gatewayPass);
-		preferenceController.setPurchaseWithoutAuth(skipPaymentAuth);
 		context.commitChanges();
 	}
 	
