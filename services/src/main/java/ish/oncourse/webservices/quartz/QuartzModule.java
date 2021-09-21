@@ -137,10 +137,10 @@ public class QuartzModule extends ConfigModule {
 						.groupName(QUARTZ_GROUP_SOLR)
 						.jobClass(ReindexTagsJob.class)
 						.cronString(DEFAULT_CRON_REINDEX_TAGS),
-				new BuildJob()
-						.groupName(QUARTZ_GROUP_DEFAULT)
-						.jobClass(PaymentInExpireJob.class)
-						.cronString(DEFAULT_CRON_PAYMENT),
+//				new BuildJob()
+//						.groupName(QUARTZ_GROUP_DEFAULT)
+//						.jobClass(PaymentInExpireJob.class)
+//						.cronString(DEFAULT_CRON_PAYMENT),
 				new BuildJob()
 						.groupName(QUARTZ_GROUP_DEFAULT)
 						.jobClass(SMSJob.class)

@@ -112,7 +112,8 @@ public class PaymentInExpireJob implements Job {
 		//we need the try-catch block to continue processing other payments even if we get an excption
 		//in the method.
 		try {
-			// do not fail payments for which we haven't got final transaction response from gateway
+			//todo paymentService.isProcessedByGateway(p) just wrong - we do not use PaymentTransaction any more
+			//always return true
 			if (paymentService.isProcessedByGateway(p)) {
 				
 				boolean successResult = false;
@@ -133,30 +134,31 @@ public class PaymentInExpireJob implements Job {
 					p.setStatusNotes(PaymentStatus.PAYMENT_EXPIRED_BY_TIMEOUT_MESSAGE);
 					abandonPayment(p);
 				}
-			} else if (PaymentExpressGatewayService.UNKNOW_RESULT_PAYMENT_IN.equals(p.getStatusNotes())) {
-				if (p.getPaymentTransactions().isEmpty()) {
-					logger.warn("PaymentIn with id:{} has no related not finished transactions", p.getId());
-					return;
-				}
-
-				PreferenceController pref = prefFactory.getPreferenceController(p.getCollege());
-				IPaymentGatewayService gatewayService = new PaymentGatewayServiceBuilder(pref, cayenneService).buildService();
-				TransactionResult result = gatewayService.checkPaymentTransaction(p);
-
-				if (PaymentExpressUtil.isValidResult(result)) {
-					if (TransactionResult.ResultStatus.SUCCESS.equals(result.getStatus())) {
-						succeedPayment(p);
-					} else {
-						p.setStatusNotes(PaymentExpressGatewayService.FAILED_PAYMENT_IN);
-						abandonPayment(p);
-					}
-					PaymentInSupport.AdjustPaymentIn.valueOf(p, result).adjust();
-
-					PaymentTransaction transaction = p.getPaymentTransactions().get(0);
-					PaymentInSupport.AdjustPaymentTransaction.valueOf(transaction, result).adjust();
-				} else {
-					return;
-				}
+				//todo need to obtain the payment status in correct way here
+			} else if (false) {
+//				if (p.getPaymentTransactions().isEmpty()) {
+//					logger.warn("PaymentIn with id:{} has no related not finished transactions", p.getId());
+//					return;
+//				}
+//
+//				PreferenceController pref = prefFactory.getPreferenceController(p.getCollege());
+//				IPaymentGatewayService gatewayService = new PaymentGatewayServiceBuilder(pref, cayenneService).buildService();
+//				TransactionResult result = gatewayService.checkPaymentTransaction(p);
+//
+//				if (PaymentExpressUtil.isValidResult(result)) {
+//					if (TransactionResult.ResultStatus.SUCCESS.equals(result.getStatus())) {
+//						succeedPayment(p);
+//					} else {
+//						p.setStatusNotes(PaymentExpressGatewayService.FAILED_PAYMENT_IN);
+//						abandonPayment(p);
+//					}
+//					PaymentInSupport.AdjustPaymentIn.valueOf(p, result).adjust();
+//
+//					PaymentTransaction transaction = p.getPaymentTransactions().get(0);
+//					PaymentInSupport.AdjustPaymentTransaction.valueOf(transaction, result).adjust();
+//				} else {
+//					return;
+//				}
 			}
 			
 			try {
@@ -172,7 +174,8 @@ public class PaymentInExpireJob implements Job {
     }
 	
     private void succeedPayment(PaymentIn p) {
-		p.setStatusNotes(PaymentExpressGatewayService.SUCCESS_PAYMENT_IN);
+		// put the json responce here
+		p.setStatusNotes("");
 		PaymentInModel model;
 		if (PaymentSource.SOURCE_ONCOURSE.equals(p.getSource())) {
 			model = PaymentInModelFromSessionIdBuilder.valueOf(p.getSessionId(), p.getObjectContext()).build().getModel();
