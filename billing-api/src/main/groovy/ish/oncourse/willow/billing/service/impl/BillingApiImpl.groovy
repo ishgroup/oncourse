@@ -129,7 +129,15 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_ACCESS_ID, key.accessKeyId)
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_ACCESS_KEY, key.secretAccessKey)
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
-                
+
+
+                PreferenceUtil.createSetting(context, college, 'billing.code', collegeDTO.collegeKey)
+                PreferenceUtil.createSetting(context, college, 'billing.users', '1')
+                PreferenceUtil.createSetting(context, college, 'billing.plan', 'basic')
+                PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
+                PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
+
+
                 context.commitChanges()
 
                 if (collegeDTO.webSiteTemplate) {
@@ -239,7 +247,6 @@ class BillingApiImpl implements BillingApi {
                     "  security_key: $securityCode\n" +
                     "  version: \"{{ small }}\"\n" +
                     "  server:\n" +
-                    "    max_users: 1\n" +
                     "    port: $port\n" +
                     "    minion: colo.splash\n" +
                     "  db:\n" +
@@ -249,11 +256,7 @@ class BillingApiImpl implements BillingApi {
                     "    lastName: $userLastName\n" +
                     "    email: $userEmail\n" +
                     "  billing:\n"+
-                    "    code: $collegeKey\n"+
-                    "    plan: basic\n"+
-                    "    paid_until: \"$paidUntil\"\n" +
-                    "    web:\n" +
-                    "      plan: WEB-6\n"
+                    "    paid_until: \"$paidUntil\"\n"
         }
 
         void commit() {
