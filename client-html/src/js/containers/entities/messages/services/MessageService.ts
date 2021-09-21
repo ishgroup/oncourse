@@ -33,8 +33,8 @@ class MessageService {
       });
   }
 
-  public getRecipients(entity: string, messageType: MessageType, search: SearchQuery): Promise<Recipients> {
-    return this.messageApi.getRecipients(entity, messageType, search);
+  public getRecipients(entity: string, messageType: MessageType, search: SearchQuery, templateId: number): Promise<Recipients> {
+    return this.messageApi.getRecipients(entity, messageType, search, templateId);
   }
 }
 
