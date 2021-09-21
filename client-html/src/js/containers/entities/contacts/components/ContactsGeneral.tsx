@@ -52,6 +52,7 @@ import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
+import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -62,29 +63,34 @@ const TutorInitial: Tutor = {
 };
 
 const styles = theme => createStyles({
-    avatarWrapper: {
-      "&  img": {
-        width: "100%"
-      }
-    },
-    exitToApp: {
-      fontSize: "1.2rem",
-      top: "5px"
-    },
-    profileThumbnail: {
-      "&:hover $profileEditIcon": {
-        color: theme.palette.primary.main,
-        fill: theme.palette.primary.main
-      }
-    },
-    profileEditIcon: {
-      fontSize: "14px",
-      color: theme.palette.divider,
-      position: "absolute",
-      bottom: 5,
-      right: -10
+  avatarWrapper: {
+    "&  img": {
+      width: "100%"
     }
-  });
+  },
+  exitToApp: {
+    fontSize: "1.2rem",
+    top: "5px"
+  },
+  profileThumbnail: {
+    "&:hover $profileEditIcon": {
+      color: theme.palette.primary.main,
+      fill: theme.palette.primary.main
+    }
+  },
+  profileEditIcon: {
+    fontSize: "14px",
+    color: theme.palette.divider,
+    position: "absolute",
+    bottom: 5,
+    right: -10
+  },
+  customCheckbox: {
+    margin: 0,
+    height: "24px",
+    width: "30px",
+  }
+});
 
 interface ContactsGeneralProps extends EditViewProps<Contact> {
   classes?: any;
@@ -431,12 +437,28 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         <Grid item xs={12}>
           <ButtonGroup aria-label="full width outlined button group" className="mt-1">
             <Button color={isStudent ? "primary" : "default"} disabled={isCompany} onClick={toggleStudentRole}>
+              <StyledCheckbox
+                checked={isStudent}
+                color="primary"
+                className={classes.customCheckbox}
+              />
               Student
             </Button>
             <Button color={isTutor ? "primary" : "default"} onClick={toggleTutorRole}>
+              <StyledCheckbox
+                checked={isTutor}
+                color="primary"
+                className={classes.customCheckbox}
+              />
               Tutor
             </Button>
             <Button color={isCompany ? "primary" : "default"} disabled={isStudent} onClick={toggleCompanyRole}>
+              <StyledCheckbox
+                checked={isCompany}
+                color="primary"
+                disabled={isStudent}
+                className={classes.customCheckbox}
+              />
               Company
             </Button>
           </ButtonGroup>
