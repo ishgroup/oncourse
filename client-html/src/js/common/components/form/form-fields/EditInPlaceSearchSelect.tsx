@@ -16,7 +16,6 @@ import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
 import ListItemText from "@material-ui/core/ListItemText";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import CreateIcon from "@material-ui/icons/Create";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { WrappedFieldProps } from "redux-form";
@@ -30,25 +29,15 @@ const searchStyles = theme => createStyles({
   inputEndAdornment: {
     fontSize: "18px",
     color: theme.palette.primary.main,
-    display: "none",
-    "&:hover": {
-      cursor: 'pointer',
-    },
+    display: "flex",
+    visibility: 'hidden'
   },
   inputWrapper: {
-    paddingRight: "0!important",
     "&:hover $inputEndAdornment": {
-      display: "flex",
+      visibility: 'visible'
     },
     "&:focus $inputEndAdornment": {
-      display: "none",
-    },
-  },
-  isEditing: {
-    borderBottom: "none!important",
-    "& $inputEndAdornment": {
-      display: "none!important",
-      borderBottom: "none!important",
+      visibility: 'hidden',
     },
   },
   validUnderline: {
@@ -90,16 +79,22 @@ const searchStyles = theme => createStyles({
   },
   labelShrink: {},
   labelAdornment: {},
+  hasPopup: {
+    "& $inputWrapper": {
+      paddingRight: 0
+    },
+    "&$hasClear $inputWrapper": {
+      paddingRight: 0
+    }
+  },
+  hasClear: {},
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
   },
   editableInHeader: {
     color: theme.palette.primary.contrastText,
-  },
-  muiAutocompleteInput: {
-    width: "calc(100% - 32px)!important",
-  },
+  }
 });
 
 interface Props extends WrappedFieldProps {
@@ -141,6 +136,7 @@ interface Props extends WrappedFieldProps {
   sort?: (a: any, b: any) => number | boolean;
   sortPropKey?: string;
   inHeader?: boolean;
+  fullWidth?: boolean;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -206,7 +202,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     selectLabelCondition,
     selectFilterCondition,
     defaultDisplayValue,
-    items= [],
+    items = [],
     rowHeight,
     remoteRowCount,
     loadMoreRows,
@@ -225,7 +221,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     placeholder,
     sort,
     sortPropKey,
-    inHeader
+    inHeader,
+    fullWidth
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -520,7 +517,9 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             classes={{
               root: "d-inline-flex",
               option: itemRenderer ? null : classes.option,
-              input: classes.muiAutocompleteInput,
+              // @ts-ignore
+              hasPopupIcon: classes.hasPopup,
+              hasClearIcon: classes.hasClear
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
@@ -574,6 +573,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
                 : stubComponent()
             }
+            fullWidth={fullWidth}
             disableListWrap
             openOnFocus
             blurOnSelect
