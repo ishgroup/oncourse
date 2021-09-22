@@ -31,6 +31,9 @@ const searchStyles = theme => createStyles({
     fontSize: "18px",
     color: theme.palette.primary.main,
     display: "none",
+    "&:hover": {
+      cursor: 'pointer',
+    },
   },
   inputWrapper: {
     paddingRight: "0!important",
@@ -93,6 +96,9 @@ const searchStyles = theme => createStyles({
   },
   editableInHeader: {
     color: theme.palette.primary.contrastText,
+  },
+  muiAutocompleteInput: {
+    width: "calc(100% - 32px)!important",
   },
 });
 
@@ -512,7 +518,9 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             getOptionSelected={getOptionSelected}
             onChange={handleChange}
             classes={{
+              root: "d-inline-flex",
               option: itemRenderer ? null : classes.option,
+              input: classes.muiAutocompleteInput,
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}

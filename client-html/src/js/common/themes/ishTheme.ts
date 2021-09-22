@@ -59,6 +59,7 @@ const createOverrides = palette => ({
     MuiInputBase: {
       root: {
         maxWidth: "100%",
+        width: "100%",
       },
       input: {
         textOverflow: "ellipsis",
