@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ConcessionType,
   Contact,
@@ -16,9 +14,7 @@ import {
   Tag,
   Tutor
 } from "@api/model";
-import {
- arrayInsert, arrayRemove, change, Field, getFormInitialValues
-} from "redux-form";
+import { arrayInsert, arrayRemove, change, Field, getFormInitialValues } from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -34,11 +30,7 @@ import Link from "@material-ui/core/Link";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import FormField from "../../../../common/components/form/form-fields/FormField";
 import { State } from "../../../../reducers/state";
-import {
-  greaterThanNullValidation,
-  validateEmail,
-  validatePhoneNumber
-} from "../../../../common/utils/validation";
+import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
 import AvatarRenderer from "./AvatarRenderer";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { SettingsAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -489,6 +481,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             label={setMarketingLabel("street")}
             validate={greaterThanNullValidation}
             labelAdornment={<SettingsAdornment clickHandler={e => setPostalSettingsMenu(e.currentTarget)} />}
+            fullWidth
           />
           <Menu
             id="postalSettingsMenu"
@@ -514,7 +507,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </Menu>
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-          <FormField type="text" name="suburb" label="Suburb" />
+          <FormField type="text" name="suburb" label="Suburb" fullWidth />
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
           <FormField type="text" name="state" label="State" />
@@ -532,6 +525,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
               label="Country"
               returnType="object"
               items={countries}
+              fullWidth
             />
           )}
         </Grid>
@@ -573,6 +567,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             label={setMarketingLabel("email")}
             labelAdornment={<SettingsAdornment clickHandler={e => setEmailSettingsMenu(e.currentTarget)} />}
             validate={validateEmail}
+            fullWidth
           />
           <Menu
             id="emailSettingsMenu"
@@ -598,7 +593,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </Menu>
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-          <FormField type="text" name="message" label="Message (alert for operator)" />
+          <FormField type="text" name="message" label="Message (alert for operator)"  fullWidth/>
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
           <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />

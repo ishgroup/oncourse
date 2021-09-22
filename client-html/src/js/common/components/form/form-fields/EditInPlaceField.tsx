@@ -173,6 +173,7 @@ const styles = theme => createStyles({
   selectMainWrapper: {
     marginTop: theme.spacing(2),
     "&:hover $selectIconInput": {
+      visibility: 'visible',
       color: theme.palette.primary.main,
     },
   },
@@ -208,16 +209,8 @@ const styles = theme => createStyles({
     color: theme.palette.divider,
     verticalAlign: "middle",
   },
-  selectWrapper: {
-    "&:hover $selectIconInput": {
-      color: theme.palette.primary.main,
-    },
-  },
   selectIconInput: {
-    "&:hover": {
-      color: theme.palette.primary.main,
-      cursor: "pointer",
-    },
+    visibility: 'hidden',
   },
   hideArrows: {
     "&::-webkit-outer-spin-button": {
@@ -778,7 +771,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                         : input.value || ""}
                     inputRef={this.setInputNode}
                     classes={{
-                      root: clsx(classes.textFieldBorderModified, fieldClasses.text, classes.selectWrapper),
+                      root: clsx(classes.textFieldBorderModified, fieldClasses.text),
                       select: clsx(isInline && classes.inlineSelect),
                       // @ts-ignore
                       underline: fieldClasses.underline

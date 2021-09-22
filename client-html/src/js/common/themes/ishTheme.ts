@@ -39,15 +39,13 @@ const createOverrides = palette => ({
     },
     MuiInput: {
       underline: {
-        borderBottom: "2px solid transparent",
         "&:before": {
-          borderBottom: "2px solid transparent!important",
+          borderBottom: `1px solid transparent`
         },
-        "&:hover:not($disabled)": {
-          borderBottom: `1px solid ${palette.primary.main}`,
-          marginBottom: "1px",
-        },
-      },
+        "&:hover:not($disabled):before": {
+          borderBottom: `1px solid ${palette.primary.main}`
+        }
+      }
     },
     MuiSelect: {
       select: {
@@ -59,6 +57,7 @@ const createOverrides = palette => ({
     MuiFormLabel: {
       root: {
         lineHeight: 1.2,
+        whiteSpace: 'nowrap'
       },
     },
     MuiInputBase: {
@@ -140,6 +139,14 @@ const createOverrides = palette => ({
       active: {},
       icon: {
         fontSize: "18px"
+      }
+    },
+    MuiAutocomplete: {
+      inputRoot: {
+        flexWrap: 'inherit',
+        "& $input": {
+          width: "100%"
+        }
       }
     }
   }

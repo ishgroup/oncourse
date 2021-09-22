@@ -20,11 +20,7 @@ import QualificationListItemRenderer from "../../qualifications/components/Quali
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { EditViewProps } from "../../../../model/common/ListView";
-import {
-  AnyArgFunction,
-  BooleanArgFunction,
-  StringArgFunction
-} from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction, BooleanArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { openQualificationLink } from "../../qualifications/utils";
 import { CourseExtended } from "../../../../model/entities/Course";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
@@ -162,6 +158,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           selectLabelCondition={getQualificationLabel}
           validate={values.isTraineeship && validateSingleMandatoryField}
           rowHeight={55}
+          fullWidth
           allowEmpty
         />
       </Grid>
