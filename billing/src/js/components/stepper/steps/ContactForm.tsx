@@ -7,22 +7,22 @@
  */
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 import { connect } from 'react-redux';
 import * as yup from 'yup';
 import { Dispatch } from 'redux';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { makeAppStyles } from '../../../styles/makeStyles';
 import CustomTextField from '../../common/TextField';
 import { setContactFormValues } from '../../../redux/actions';
 import Navigation from '../Navigations';
 import { phoneRegExp } from '../../../constant/common';
 import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeAppStyles()((theme: any) => ({
   textFieldWrapper: {
     minHeight: '66px'
   },
@@ -33,17 +33,17 @@ const useStyles = makeStyles((theme: any) => ({
     marginBottom: 30,
   },
   info: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -70,
     padding: 5,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     left: 0,
     right: 0,
-    maxWidth: "90%",
-    margin: "0 auto",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    maxWidth: '90%',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: 12
   },
 }));
@@ -62,14 +62,14 @@ const ContactForm = (props: any) => {
     contactForm, activeStep, steps, handleBack, handleNext, setContactFormValues
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
-    handleSubmit, handleChange, values, errors, isValid, dirty, touched, handleBlur
+    handleChange, values, errors, isValid, dirty, touched, handleBlur
   } = useFormik({
     initialValues: contactForm,
     validationSchema,
-    onSubmit: (values) => {},
+    onSubmit: () => {},
   });
 
   const handleBackCustom = () => {
@@ -100,10 +100,10 @@ const ContactForm = (props: any) => {
 
   return (
     <form>
-      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom={true}>
+      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom>
         Enter your contact details
       </Typography>
-      <Typography variant="subtitle1" gutterBottom={true} className={classes.subTitle}>
+      <Typography variant="subtitle1" gutterBottom className={classes.subTitle}>
         Tell us a bit about yourself
       </Typography>
       <Grid container spacing={5}>
@@ -167,7 +167,8 @@ const ContactForm = (props: any) => {
       </Grid>
 
       <Typography className={classes.info} component="div">
-        <ErrorOutlineIcon fontSize="small" color="primary" />&nbsp;&nbsp;Don't worry, ish won't share your details or spam you. These details help us personalise your site.
+        <ErrorOutlineIcon fontSize="small" color="primary" />
+&nbsp;&nbsp;Don't worry, ish won't share your details or spam you. These details help us personalise your site.
       </Typography>
 
       <Navigation

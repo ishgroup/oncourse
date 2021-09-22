@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { createStyles, darken, makeStyles } from '@material-ui/core/styles';
+import { darken } from '@mui/material/styles';
 import {
   Accordion,
   AccordionDetails,
@@ -15,22 +15,22 @@ import {
   Typography,
   MenuItem,
   InputLabel
-} from '@material-ui/core';
-import { green } from '@material-ui/core/colors';
-import { AddCircle, Delete, ExpandMore } from '@material-ui/icons';
-import { Autocomplete } from '@material-ui/lab';
+} from '@mui/material';
+import { green } from '@mui/material/colors';
+import { AddCircle, Delete, ExpandMore } from '@mui/icons-material';
+import { Autocomplete, LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
 import { SiteDTO } from '@api/model';
-import CustomButton from '../../common/Button';
+import { makeAppStyles } from '../../../styles/makeStyles';
 import { stopPropagation } from '../../../utils';
-import { AppTheme } from '../../../models/Theme';
 import Loading from '../../common/Loading';
 import { State } from '../../../redux/reducers';
 import { updateCollegeSites } from '../../../redux/actions';
 import { TemplateField } from '../../common/TemplateChoser';
 import AutosizeInput from '../../common/AutosizeInput';
+import GoogleLoginButton from '../../common/GoogleLoginButton';
 
-export const useStyles = makeStyles((theme: AppTheme) => createStyles({
+export const useStyles = makeAppStyles()((theme) => ({
   container: {
     display: 'flex',
     padding: 0
@@ -49,7 +49,7 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
   },
   flexWrapper: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   plusButton: {
     color: darken(green[900], 0.1)
@@ -79,13 +79,13 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
       color: theme.palette.error.main
     },
     padding: theme.spacing(1),
-    margin: `-${theme.spacing(1)}px -${theme.spacing(1)}px -${theme.spacing(1)}px auto`
+    margin: `-${theme.spacing(1)} -${theme.spacing(1)} -${theme.spacing(1)} auto`
   },
   summaryContent: {
     justifyContent: 'space-between',
-    paddingLeft: `${theme.spacing(3)}px`,
+    paddingLeft: theme.spacing(3),
     '& > :last-child': {
-      paddingRight: `${theme.spacing(1)}px`
+      paddingRight: theme.spacing(1)
     }
   },
   summaryRoot: {
@@ -116,6 +116,9 @@ export const useStyles = makeStyles((theme: AppTheme) => createStyles({
     '& $domainsInput': {
       paddingRight: 0
     }
+  },
+  flex1: {
+    flex: 1
   }
 }));
 
@@ -191,7 +194,7 @@ export const SitesPage: React.FC<any> = () => {
     }
   }, [sites, collegeKey]);
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const onKeyChange: any = (e, index, isNew, initial, initialMatchPattern) => {
     const { value } = e.target;
@@ -211,18 +214,18 @@ export const SitesPage: React.FC<any> = () => {
 
   const onSetPrimaryDomain = (domain, index) => {
     setFieldValue(`sites[${index}].primaryDomain`, domain);
-  }
+  };
 
   const onAddDomain = (site, index, params) => {
     setFieldValue(`sites[${index}].domains`, [...site.domains, params.inputProps.value]);
     if (!site.domains.length && !site.primaryDomain) onSetPrimaryDomain(params.inputProps.value, index);
-  }
+  };
 
-  const renderSelectItems = domains => domains.map(domain => (
+  const renderSelectItems = (domains) => domains.map((domain) => (
     <MenuItem key={domain} value={domain}>
       {domain}
     </MenuItem>
-  ))
+  ));
 
   return (
     <div className={classes.container}>
@@ -233,24 +236,37 @@ export const SitesPage: React.FC<any> = () => {
           >
             <div>
               <div className={classes.flexWrapper}>
-                <h2 className={classes.coloredHeaderText}>Websites</h2>
-                <IconButton onClick={() => setValues({
-                  sites: [
-                    {
-                      id: null,
-                      key: null,
-                      name: null,
-                      primaryDomain: null,
-                      webSiteTemplate: null,
-                      domains: []
-                    },
-                    ...values.sites
-                  ],
-                  collegeKey,
-                })}
-                >
-                  <AddCircle className={classes.plusButton} />
-                </IconButton>
+                <div className={cx(classes.flex1, classes.flexWrapper)}>
+                  <h2 className={classes.coloredHeaderText}>Websites</h2>
+                  <IconButton
+                    onClick={() => setValues({
+                      sites: [
+                        {
+                          id: null,
+                          key: null,
+                          name: null,
+                          primaryDomain: null,
+                          webSiteTemplate: null,
+                          domains: []
+                        },
+                        ...values.sites
+                      ],
+                      collegeKey,
+                    })}
+                    size="large"
+                  >
+                    <AddCircle className={classes.plusButton} />
+                  </IconButton>
+                </div>
+
+                <div style={{ marginTop: 16 }}>
+                  <div>
+                    <GoogleLoginButton />
+                  </div>
+                  <Typography variant="caption" color="textSecondary">
+                    Login to connect sites with google services
+                  </Typography>
+                </div>
               </div>
               <div>
                 {(
@@ -280,7 +296,7 @@ export const SitesPage: React.FC<any> = () => {
                       classes={{
                         root: classes.summaryRoot,
                         focusVisible: classes.summaryFocused,
-                        expandIcon: classes.expandIcon,
+                        expandIconWrapper: classes.expandIcon,
                         content: classes.summaryContent
                       }}
                     >
@@ -291,7 +307,7 @@ export const SitesPage: React.FC<any> = () => {
                         .oncourse.cc
                       </Typography>
                       <div>
-                        <IconButton className={classes.deleteIcon} onClick={onClickDelete}>
+                        <IconButton className={classes.deleteIcon} onClick={onClickDelete} size="large">
                           <Delete fontSize="inherit" />
                         </IconButton>
                       </div>
@@ -378,8 +394,8 @@ export const SitesPage: React.FC<any> = () => {
                             <InputLabel>Primary hostname</InputLabel>
                             <Select
                               autoWidth
-                              value={site.primaryDomain || ""}
-                              onChange={e => onSetPrimaryDomain(e.target.value, index)}
+                              value={site.primaryDomain || ''}
+                              onChange={(e) => onSetPrimaryDomain(e.target.value, index)}
                             >
                               {renderSelectItems(site.domains)}
                             </Select>
@@ -409,15 +425,16 @@ export const SitesPage: React.FC<any> = () => {
             )}
               </div>
               <div className={classes.buttonsWrapper}>
-                <CustomButton
+                <LoadingButton
                   variant="contained"
                   color="primary"
                   type="submit"
                   loading={loading}
                   disabled={!isValid || !dirty}
+                  disableElevation
                 >
                   Save
-                </CustomButton>
+                </LoadingButton>
               </div>
             </div>
           </form>

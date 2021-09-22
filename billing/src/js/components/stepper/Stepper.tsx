@@ -9,9 +9,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import clsx from 'clsx';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
+import { makeAppStyles } from '../../styles/makeStyles';
 import LeftMenu from '../common/LeftMenu';
 import NameForm from './steps/NameForm';
 import TemplateForm from './steps/TemplateForm';
@@ -24,75 +23,82 @@ import { SITE_KEY } from '../../constant/common';
 import { SitesPage } from './steps/SitesPage';
 import { State } from '../../redux/reducers';
 import { Step } from '../../models/User';
-import { AppTheme } from '../../models/Theme';
 import iconDots from '../../../images/icon-dots.png';
 
-export const useStyles = makeStyles((theme: AppTheme) => createStyles({
-  root: {
-    width: '100%',
-    marginTop: '0',
-    height: '100vh',
-    display: 'flex',
-    paddingLeft: 250
-  },
-  content: {
-    margin: 'auto',
-    maxWidth: 1200,
-    padding: theme.spacing(10),
-    width: '100%',
-  },
-  contentInner: {
-    backgroundImage: `url(${iconDots})`,
-    backgroundPosition: '0 0',
-    backgroundSize: 18,
-    padding: '48px 48px 130px',
-  },
-  formItem: {
+export const useStyles = makeAppStyles()((theme, prop, createRef) => {
+  const formItem = {
+    ref: createRef(),
     position: 'relative',
     backgroundColor: '#fff',
     padding: '48px 48px 8px',
-  },
-  formStep: {
-    color: '#888',
-  },
-  formWrapper: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0px 20px 0px 20px'
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  actionsContainer: {
-    marginBottom: theme.spacing(2),
-  },
-  coloredHeaderText: {
-    color: theme.statistics.coloredHeaderText.color,
-  },
-  hasError: {
-    padding: theme.spacing(6),
-    '& $formItem': {
+  } as const;
+
+  const formStep = {
+    ref: createRef(),
+    color: '#888'
+  } as const;
+
+  return {
+    root: {
+      width: '100%',
+      marginTop: '0',
+      height: '100vh',
+      display: 'flex',
+      paddingLeft: 250
+    },
+    content: {
+      margin: 'auto',
+      maxWidth: 1200,
+      padding: theme.spacing(10),
+      width: '100%',
+    },
+    contentInner: {
+      backgroundImage: `url(${iconDots})`,
+      backgroundPosition: '0 0',
+      backgroundSize: 18,
+      padding: '48px 48px 130px',
+    },
+    formWrapper: {
+      flex: 1,
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0px 20px 0px 20px'
+    },
+    instructions: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+    actionsContainer: {
+      marginBottom: theme.spacing(2),
+    },
+    coloredHeaderText: {
+      color: theme.statistics.coloredHeaderText.color,
+    },
+    hasError: {
       padding: theme.spacing(6),
-      backgroundColor: theme.palette.error.main,
-      color: theme.palette.error.contrastText,
-      borderRadius: 4,
-    }
-  },
-  stepsCompleted: {
-    padding: theme.spacing(6),
-    '& $formItem': {
-      padding: theme.spacing(6),
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.error.contrastText,
-      borderRadius: 4,
-      '& $formStep': {
+      [`& .${formItem.ref}`]: {
+        padding: theme.spacing(6),
+        backgroundColor: theme.palette.error.main,
         color: theme.palette.error.contrastText,
+        borderRadius: 4,
       }
-    }
-  }
-}));
+    },
+    stepsCompleted: {
+      padding: theme.spacing(6),
+      [`& .${formItem.ref}`]: {
+        padding: theme.spacing(6),
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.error.contrastText,
+        borderRadius: 4,
+        [`& .${formStep.ref}`]: {
+          color: theme.palette.error.contrastText,
+        }
+      }
+    },
+    formItem,
+    formStep
+  };
+});
 
 const getComponent = (type: Step, props: any) => {
   switch (type) {
@@ -125,7 +131,7 @@ const Stepper: React.FC<Props> = (
     steps
   }
 ) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
 
   useEffect(() => {
@@ -158,7 +164,7 @@ const Stepper: React.FC<Props> = (
   };
 
   const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep, steps]);
-  const hasSites = steps[activeStep] === "Sites";
+  const hasSites = steps[activeStep] === 'Sites';
   const completed = hasSites ? false : activeStep === steps.length - 1;
 
   return (
@@ -172,13 +178,13 @@ const Stepper: React.FC<Props> = (
       <div className={classes.formWrapper}>
         <div className={classes.content}>
           {serverError ? (
-            <div className={clsx(classes.contentInner, classes.hasError)}>
+            <div className={cx(classes.contentInner, classes.hasError)}>
               <div className={classes.formItem}>
                 <ErrorPage />
               </div>
             </div>
           ) : (
-            <div className={clsx(classes.contentInner, completed && classes.stepsCompleted)}>
+            <div className={cx(classes.contentInner, completed && classes.stepsCompleted)}>
               <div className={classes.formItem}>
                 {!hasSites && (
                   <Typography variant="subtitle2" gutterBottom className={classes.formStep}>

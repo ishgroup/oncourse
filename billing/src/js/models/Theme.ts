@@ -1,33 +1,31 @@
-import { Theme } from "@material-ui/core";
-import { SimplePaletteColorOptions } from "@material-ui/core/styles/createPalette";
+import { Theme } from '@mui/material';
+import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 
 export type StringKeyObject<V> = { [key: string]: V };
 
 enum ThemeValuesEnum {
-  "default",
-  "dark",
-  "monochrome",
-  "highcontrast",
-  "christmas"
+  'default',
+  'dark',
+  'monochrome',
+  'highcontrast',
+  'christmas'
 }
 
 export type ThemeValues = keyof typeof ThemeValuesEnum;
 
-export const DefaultThemeKey: ThemeValues = "default";
+export const DefaultThemeKey: ThemeValues = 'default';
 
-export const DarkThemeKey: ThemeValues = "dark";
-export const MonochromeThemeKey: ThemeValues = "monochrome";
-export const HighcontrastThemeKey: ThemeValues = "highcontrast";
-export const ChristmasThemeKey: ThemeValues = "christmas";
-
-type ColorGetter = string | ((props: {}) => string);
+export const DarkThemeKey: ThemeValues = 'dark';
+export const MonochromeThemeKey: ThemeValues = 'monochrome';
+export const HighcontrastThemeKey: ThemeValues = 'highcontrast';
+export const ChristmasThemeKey: ThemeValues = 'christmas';
 
 export interface AppTheme extends Theme {
-  heading: StringKeyObject<ColorGetter>;
-  blog: StringKeyObject<StringKeyObject<ColorGetter>>;
-  share: StringKeyObject<StringKeyObject<ColorGetter>>;
-  statistics: StringKeyObject<StringKeyObject<ColorGetter>>;
-  appBarButton: StringKeyObject<StringKeyObject<ColorGetter>>;
-  tabList: StringKeyObject<StringKeyObject<ColorGetter>>;
+  heading: StringKeyObject<string>;
+  blog: StringKeyObject<StringKeyObject<string>>;
+  share: StringKeyObject<StringKeyObject<string>>;
+  statistics: StringKeyObject<StringKeyObject<string>>;
+  appBarButton: StringKeyObject<StringKeyObject<string>>;
+  tabList: StringKeyObject<StringKeyObject<string>>;
   table: StringKeyObject<SimplePaletteColorOptions>;
 }

@@ -1,14 +1,13 @@
 import React from 'react';
+import Button from '@mui/material/Button';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import CallMadeIcon from '@mui/icons-material/CallMade';
 import { connect } from 'react-redux';
-import clsx from 'clsx';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import CallMadeIcon from '@material-ui/icons/CallMade';
-import CustomButton from '../common/Button';
+import { LoadingButton } from '@mui/lab';
+import { makeAppStyles } from '../../styles/makeStyles';
 import { State } from '../../redux/reducers';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeAppStyles()((theme) => ({
   button: {
     marginRight: theme.spacing(1),
   },
@@ -17,31 +16,31 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     justifyContent: 'space-between',
     marginTop: '30px',
     paddingBottom: '20px',
-    position: "relative",
+    position: 'relative',
   },
   loading: {
     height: '25px!important',
     width: '25px!important',
   },
   declineButton: {
-    color: "#646464",
-    textTransform: "initial",
+    color: '#646464',
+    textTransform: 'initial',
     '&:hover': {
       backgroundColor: 'rgba(248, 169, 74, 0.2)'
     }
   },
   nextButton: {
-    display: "flex",
-    alignItems: "center",
-    textTransform: "capitalize",
-    "& > svg": {
-      transform: "rotate(45deg)",
+    display: 'flex',
+    alignItems: 'center',
+    textTransform: 'capitalize',
+    '& > svg': {
+      transform: 'rotate(45deg)',
     },
   },
 }));
 
 const Navigation = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const {
     activeStep, steps, handleBack, handleNext, disabled, loading, hideNextButton
   } = props;
@@ -54,31 +53,32 @@ const Navigation = (props) => {
             : (
               <Button
                 onClick={handleBack}
-                className={clsx(classes.button, classes.declineButton)}
+                className={cx(classes.button, classes.declineButton)}
                 disabled={loading}
                 startIcon={<ChevronLeftIcon fontSize="medium" />}
-                color="default"
               >
                 Back
               </Button>
             )}
           {!hideNextButton && (
-            <CustomButton
+            <LoadingButton
               variant="contained"
               color="primary"
               onClick={handleNext}
               className={classes.button}
               disabled={disabled || loading}
               loading={loading}
+              disableElevation
             >
               {activeStep === steps.length - 2
-                  ? 'Finish'
-                  : (
-                    <div className={classes.nextButton}>
-                      Next Step&nbsp;&nbsp;<CallMadeIcon fontSize="small" />
-                    </div>
-                  )}
-            </CustomButton>
+                ? 'Finish'
+                : (
+                  <div className={classes.nextButton}>
+                    Next Step&nbsp;&nbsp;
+                    <CallMadeIcon fontSize="small" />
+                  </div>
+                )}
+            </LoadingButton>
           )}
         </div>
       )}
@@ -91,4 +91,4 @@ const mapStateToProps = (state: State) => ({
   serverError: state.serverError
 });
 
-export default connect(mapStateToProps, null)(Navigation);
+export default connect(mapStateToProps)(Navigation);

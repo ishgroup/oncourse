@@ -1,5 +1,14 @@
-import { createTheme } from '@material-ui/core';
+import { createTheme } from '@mui/material';
+import { adaptV4Theme } from '@mui/material/styles';
 import { theme } from './appTheme';
+import {
+  AppTheme,
+  ChristmasThemeKey,
+  DarkThemeKey,
+  DefaultThemeKey,
+  HighcontrastThemeKey,
+  MonochromeThemeKey, ThemeValues
+} from '../models/Theme';
 
 const createOverrides = (palette: any) => ({
   overrides: {
@@ -132,12 +141,12 @@ const defaultThemePalette = {
   },
 };
 
-export const defaultTheme = createTheme({
+export const defaultTheme = createTheme(adaptV4Theme({
   palette: defaultThemePalette,
   ...commonTypography,
   ...theme.default,
   ...createOverrides(defaultThemePalette)
-} as any);
+})) as AppTheme;
 
 // Dark Theme
 
@@ -170,12 +179,12 @@ const darkThemePalette = {
   }
 };
 
-export const darkTheme = createTheme({
+export const darkTheme = createTheme(adaptV4Theme({
   palette: darkThemePalette,
   ...commonTypography,
   ...theme.dark,
   ...createOverrides(darkThemePalette)
-} as any);
+})) as AppTheme;
 
 // Monochrome Theme
 
@@ -204,12 +213,12 @@ const monochromeThemePalette = {
   }
 };
 
-export const monochromeTheme = createTheme({
+export const monochromeTheme = createTheme(adaptV4Theme({
   palette: monochromeThemePalette,
   ...commonTypography,
   ...theme.monochrome,
   ...createOverrides(monochromeThemePalette)
-} as any);
+})) as AppTheme;
 
 // High Contrast Theme
 
@@ -244,12 +253,12 @@ const highcontrastThemePalette = {
   divider: 'rgba(0, 0, 0, 0.40)'
 };
 
-export const highcontrastTheme = createTheme({
+export const highcontrastTheme = createTheme(adaptV4Theme({
   palette: highcontrastThemePalette,
   ...commonTypography,
   ...theme.highcontrast,
   ...createOverrides(highcontrastThemePalette)
-} as any);
+})) as AppTheme;
 
 // High Contrast Theme
 
@@ -284,9 +293,52 @@ const christmasThemePalette = {
   }
 };
 
-export const christmasTheme = createTheme({
+export const christmasTheme = createTheme(adaptV4Theme({
   palette: christmasThemePalette,
   ...commonTypography,
   ...theme.christmas,
   ...createOverrides(christmasThemePalette)
-} as any);
+})) as AppTheme;
+
+export const currentTheme = (themeName: ThemeValues): AppTheme => {
+  switch (themeName) {
+    case DarkThemeKey: {
+      return darkTheme;
+    }
+    case DefaultThemeKey: {
+      return defaultTheme;
+    }
+    case MonochromeThemeKey: {
+      return monochromeTheme;
+    }
+    case HighcontrastThemeKey: {
+      return highcontrastTheme;
+    }
+    case ChristmasThemeKey: {
+      return christmasTheme;
+    }
+    default: {
+      return defaultTheme;
+    }
+  }
+};
+
+export const getTheme = (): AppTheme => {
+  let actualTheme = defaultTheme;
+
+  try {
+    const storageThemeName = localStorage.getItem('theme') as ThemeValues;
+    if (storageThemeName) {
+      actualTheme = currentTheme(storageThemeName);
+    }
+  } catch (e) {
+    console.error(e);
+    return actualTheme;
+  }
+
+  return actualTheme;
+};
+
+export const useTheme = () => ({
+  ...getTheme()
+});

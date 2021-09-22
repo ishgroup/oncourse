@@ -102,6 +102,7 @@ export const createCollegeReducer = (state: State = initState, action): State =>
     case SET_COLLEGE_KEY:
       return {
         ...state,
+        loading: false,
         collegeKey: action.payload
       };
 

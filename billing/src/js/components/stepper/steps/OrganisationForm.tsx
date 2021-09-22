@@ -7,22 +7,22 @@
  */
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import { makeAppStyles } from '../../../styles/makeStyles';
 import CustomTextField from '../../common/TextField';
 import { createCollege, setOrganisationFormValues } from '../../../redux/actions';
 import Navigation from '../Navigations';
 import { countries, countriesTimeZone } from '../../../utils';
 import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeAppStyles()((theme: any) => ({
   textFieldWrapper: {
     minHeight: '66px',
   },
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: any) => ({
     fontSize: 22
   },
   groupOrganization: {
-    marginBottom: 30,
+    marginBottom: 50,
   },
   groupOrganizationDetails: {
     marginBottom: 20,
@@ -55,7 +55,7 @@ const validationSchema = yup.object({
 });
 
 const OrganisationForm = (props: any) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [validState, setValidState] = useState(false);
   const {
     activeStep,
@@ -76,11 +76,11 @@ const OrganisationForm = (props: any) => {
   }, [collegeWasCreated]);
 
   const {
-    handleSubmit, handleChange, values, errors, setFieldValue, isValid, touched, dirty, handleBlur
+    handleChange, values, errors, setFieldValue, isValid, touched, dirty, handleBlur
   } = useFormik({
     initialValues: organisationForm,
     validationSchema,
-    onSubmit: (values) => {},
+    onSubmit: () => {},
   });
 
   const handleBackCustom = () => {
@@ -116,14 +116,14 @@ const OrganisationForm = (props: any) => {
 
   return (
     <form>
-      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom={true}>
+      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom>
         Enter your organisation details
       </Typography>
-      <Typography variant="subtitle1" gutterBottom={true} className={classes.subTitle}>
+      <Typography variant="subtitle1" gutterBottom className={classes.subTitle}>
         Tell us a bit about your business
       </Typography>
 
-      <Typography variant="h5" component="h5" className={classes.sectionTitle} color="initial" gutterBottom={true}>
+      <Typography variant="h5" component="h5" className={classes.sectionTitle} color="initial" gutterBottom>
         Your Organisation
       </Typography>
       <Grid container spacing={5} className={classes.groupOrganization}>
@@ -167,7 +167,7 @@ const OrganisationForm = (props: any) => {
         </Grid>
       </Grid>
 
-      <Typography variant="h5" component="h5" className={classes.sectionTitle} color="initial" gutterBottom={true}>
+      <Typography variant="h5" component="h5" className={classes.sectionTitle} color="initial" gutterBottom>
         Your Organisation's Details
       </Typography>
       <Grid container spacing={5} className={classes.groupOrganizationDetails}>
@@ -269,15 +269,16 @@ const OrganisationForm = (props: any) => {
             />
           </div>
         </Grid>
+        <Grid item xs={12}>
+          <Navigation
+            activeStep={activeStep}
+            steps={steps}
+            handleBack={handleBackCustom}
+            handleNext={handleNextCustom}
+            disabled={(dirty && !isValid) || (!dirty && !validState)}
+          />
+        </Grid>
       </Grid>
-
-      <Navigation
-        activeStep={activeStep}
-        steps={steps}
-        handleBack={handleBackCustom}
-        handleNext={handleNextCustom}
-        disabled={(dirty && !isValid) || (!dirty && !validState)}
-      />
     </form>
   );
 };

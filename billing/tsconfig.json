@@ -10,6 +10,7 @@
     "baseUrl": ".",
     "paths": {
       "@api/model": ["build/generated-sources/api.ts"],
+      "@makeStyles": ["src/js/themes/makeStyles.ts"]
     },
     "outDir": "build/ts",
     "allowSyntheticDefaultImports": true,

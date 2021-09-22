@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import Alert from "@material-ui/lab/Alert";
-import CloseIcon from "@material-ui/icons/Close";
+import React from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import Alert from '@mui/lab/Alert';
+import CloseIcon from '@mui/icons-material/Close';
+import { makeAppStyles } from '../../../styles/makeStyles';
 
-const styles = theme => ({
+const useStyles = makeAppStyles()((theme) => ({
   close: {
     color: theme.palette.primary.contrastText,
     width: theme.spacing(4),
@@ -19,28 +18,28 @@ const styles = theme => ({
     padding: theme.spacing(0.5)
   },
   success: {
-    maxWidth: "unset"
+    maxWidth: 'unset'
   },
   autoWidth: {
-    [theme.breakpoints.down("md")]: {
-      flexGrow: "unset",
+    [theme.breakpoints.down('xl')]: {
+      flexGrow: 'unset',
       borderRadius: `${theme.shape.borderRadius}px`
     }
   },
   autoWidthRoot: {
-    [theme.breakpoints.down("md")]: {
-      left: "24px",
-      right: "auto",
-      bottom: "24px"
+    [theme.breakpoints.down('xl')]: {
+      left: '24px',
+      right: 'auto',
+      bottom: '24px'
     }
   },
   fullScreenMessage: {
-    maxHeight: "calc(100vh - 90px)",
-    overflow: "auto",
+    maxHeight: 'calc(100vh - 90px)',
+    overflow: 'auto',
     marginRight: theme.spacing(-2),
     paddingRight: theme.spacing(2)
   }
-});
+}));
 
 interface Props {
   opened: boolean;
@@ -48,90 +47,71 @@ interface Props {
   clearMessage: any;
   isSuccess?: boolean;
   persist?: boolean;
-  classes?: any;
 }
 
-class Message extends React.Component<Props, any> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      success: props.isSuccess,
-      text: props.text,
-      persist: props.persist
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.opened !== prevProps.opened) {
-      this.setState({
-        success: this.props.opened ? this.props.isSuccess : this.state.success,
-        text: this.props.opened ? this.props.text : this.state.text,
-        persist: this.props.opened ? this.props.persist : this.state.persist
-      });
-    }
-  }
-
-  handleClose = () => {
-    if (!this.state.persist) {
-      this.props.clearMessage();
+const Message = ({
+  opened,
+  text,
+  clearMessage,
+  isSuccess,
+  persist
+}: Props) => {
+  const handleClose = () => {
+    if (!persist) {
+      clearMessage();
     }
   };
 
-  render() {
-    const { classes, opened, clearMessage } = this.props;
+  const { classes, cx } = useStyles();
 
-    const { success, text, persist } = this.state;
-
-    return (
-
-      <Snackbar
-        open={opened}
-        anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
+  return (
+    <Snackbar
+      open={opened}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left'
+      }}
+      classes={{
+        root: classes.autoWidthRoot
+      }}
+      ContentProps={{
+        classes: {
+          root: cx(classes.autoWidth, {
+            [classes.success]: isSuccess
+          }),
+          message: persist ? classes.fullScreenMessage : undefined
+        }
+      }}
+      ClickAwayListenerProps={{
+        onClickAway: handleClose
+      }}
+      autoHideDuration={persist ? null : 6000}
+      onClose={handleClose}
+      disableWindowBlurListener={persist}
+    >
+      <Alert
+        variant="filled"
+        severity={isSuccess ? 'success' : 'error'}
         classes={{
-            root: classes.autoWidthRoot
-          }}
-        ContentProps={{
-            classes: {
-              root: clsx(classes.autoWidth, {
-                [classes.success]: success
-              }),
-              message: persist ? classes.fullScreenMessage : undefined
-            }
-          }}
-        ClickAwayListenerProps={{
-            onClickAway: this.handleClose
-          }}
-        autoHideDuration={persist ? null : 6000}
-        onClose={this.handleClose}
-        disableWindowBlurListener={persist}
-      >
-        <Alert
-          variant="filled"
-          severity={success ? "success" : "error"}
-          classes={{
-            message: "text-pre-wrap"
-          }}
-          action={(
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              className={classes.close}
-              onClick={clearMessage}
-            >
-              <CloseIcon />
-            </IconButton>
+          message: 'text-pre-wrap'
+        }}
+        action={(
+          <IconButton
+            key="close"
+            aria-label="Close"
+            color="inherit"
+            className={classes.close}
+            onClick={clearMessage}
+            size="large"
+          >
+            <CloseIcon />
+          </IconButton>
 )}
-        >
-          {text}
-        </Alert>
-      </Snackbar>
-    );
-  }
-}
+      >
+        {text}
+      </Alert>
+    </Snackbar>
+  );
+};
 
-export default withStyles(styles as any)(Message);
+export default Message;

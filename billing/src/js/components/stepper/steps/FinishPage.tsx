@@ -7,25 +7,26 @@
  */
 
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import CheckCircle from "@material-ui/icons/CheckCircle";
+import { Typography } from '@mui/material';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import { makeAppStyles } from '../../../styles/makeStyles';
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeAppStyles()({
   finishTitle: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     marginBottom: 20,
-  },
-}));
+  }
+});
 
-const FinishPage = (props) => {
-  const classes = useStyles();
+const FinishPage = () => {
+  const { classes } = useStyles();
 
   return (
     <div>
       <Typography variant="h3" component="h3" className={classes.finishTitle}>
-        <CheckCircle fontSize="large" />&nbsp;All done!
+        <CheckCircle fontSize="large" />
+&nbsp;All done!
       </Typography>
       <Typography variant="subtitle1" component="div">
         Servers are being created now and your system prepared. You'll get an email in a few minutes with your login details.

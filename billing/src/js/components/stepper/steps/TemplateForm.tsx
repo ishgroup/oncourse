@@ -8,22 +8,16 @@
 import React, { useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import createStyles from '@material-ui/core/styles/createStyles';
-import FormControl from '@material-ui/core/FormControl';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import { FormGroup } from '@material-ui/core';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import Typography from '@mui/material/Typography';
+import { makeAppStyles } from '../../../styles/makeStyles';
 import { setTemplateValue } from '../../../redux/actions';
 import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
 import { TemplateChoser } from '../../common/TemplateChoser';
 import Navigation from '../Navigations';
 
-const useStyles = makeStyles((theme: any) => createStyles({
+const useStyles = makeAppStyles()((theme) => ({
   coloredHeaderText: {
     color: theme.statistics.coloredHeaderText.color,
     marginBottom: 30,
@@ -37,7 +31,7 @@ const useStyles = makeStyles((theme: any) => createStyles({
 }));
 
 const TemplateForm = (props: any) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     activeStep, steps, handleBack, handleNext, templateStore, setTemplateValue
@@ -74,60 +68,10 @@ const TemplateForm = (props: any) => {
 
   return (
     <>
-      <FormControl component="fieldset">
+      <FormControl component="fieldset" className="w-100">
         <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom>
           Choose your website template
         </Typography>
-
-        {/*<Typography variant="subtitle1" gutterBottom>
-          To start, select one of our templates. Don't sweat it, you can change this later.
-        </Typography>
-
-        <Paper elevation={0} className={classes.siteFilterPaper}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="caption" color="primary">Topic</Typography>
-              <FormGroup row>
-                <FormControlLabel
-                  label="Corporate"
-                  control={<Checkbox checked name="corporate" color="primary" />}
-                />
-                <FormControlLabel
-                  label="Education"
-                  control={<Checkbox name="education" color="primary" />}
-                />
-                <FormControlLabel
-                  label="Technology"
-                  control={<Checkbox name="technology" color="primary" />}
-                />
-                <FormControlLabel
-                  label="Creative"
-                  control={<Checkbox name="creative" color="primary" />}
-                />
-                <FormControlLabel
-                  label="Entertainment"
-                  control={<Checkbox name="entertainment" color="primary" />}
-                />
-              </FormGroup>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="caption" color="primary">Suited for</Typography>
-              <FormGroup row>
-                <FormControlLabel
-                  label="Small amount of courses"
-                  control={<Checkbox name="small_courses" color="primary" />}
-                />
-              </FormGroup>
-              <FormGroup row>
-                <FormControlLabel
-                  label="Large amount of courses"
-                  control={<Checkbox name="large_courses" color="primary" />}
-                />
-              </FormGroup>
-            </Grid>
-          </Grid>
-        </Paper>*/}
-
         <TemplateChoser value={webSiteTemplate} onChange={onChange} />
       </FormControl>
       <Navigation

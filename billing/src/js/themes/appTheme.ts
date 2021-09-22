@@ -1,11 +1,11 @@
-import { yellow } from "@material-ui/core/colors";
-import { alpha } from "@material-ui/core/styles/colorManipulator";
-import { ThemeValues, AppTheme } from "../models/Theme";
+import { yellow } from '@mui/material/colors';
+import { alpha } from '@mui/material/styles';
+import { ThemeValues, AppTheme } from '../models/Theme';
 
 export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
   default: {
     heading: {
-      color: "#4b6390"
+      color: '#4b6390'
     },
     blog: {
       root: {
@@ -14,310 +14,310 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     share: {
       exportContainer: {
-        backgroundColor: "#302A22"
+        backgroundColor: '#302A22'
       },
       closeButton: {
-        color: "#f7941d"
+        color: '#f7941d'
       },
       shareButton: {
-        color: "#302A22",
-        backgroundColor: "#fff",
-        backgroundColorHover: alpha("#fff", 0.9)
+        color: '#302A22',
+        backgroundColor: '#fff',
+        backgroundColorHover: alpha('#fff', 0.9)
       },
       color: {
-        headerText: "#fff",
-        itemText: "rgba(255,255,255,0.6)",
-        selectedItemText: "rgba(255,255,255,1)",
-        customLabel: "rgba(255,255,255,.5)"
+        headerText: '#fff',
+        itemText: 'rgba(255,255,255,0.6)',
+        selectedItemText: 'rgba(255,255,255,1)',
+        customLabel: 'rgba(255,255,255,.5)'
       }
     },
     statistics: {
       coloredHeaderText: {
-        color: "#f7941d"
+        color: '#f7941d'
       },
       enrolmentText: {
-        color: "#73cba7",
-        strokeColor: "#73cba7"
+        color: '#73cba7',
+        strokeColor: '#73cba7'
       },
       revenueText: {
-        color: "#ffd876",
-        strokeColor: "#ffd876"
+        color: '#ffd876',
+        strokeColor: '#ffd876'
       },
       rightColumn: {
-        color: alpha("rgba(0, 0, 0, 0.87)", 0.4)
+        color: alpha('rgba(0, 0, 0, 0.87)', 0.4)
       }
     },
     appBarButton: {
       close: {
-        color: "white"
+        color: 'white'
       },
       helpMenu: {
-        color: "#fff"
+        color: '#fff'
       }
     },
     tabList: {
       listContainer: {
-        backgroundColor: "#fbf9f0"
+        backgroundColor: '#fbf9f0'
       }
     },
     table: {
       contrastRow: {
-        main: "#f8f8f8",
-        light: "#f4f3ec"
+        main: '#f8f8f8',
+        light: '#f4f3ec'
       }
     }
   },
   dark: {
     heading: {
-      color: "#9bbeff"
+      color: '#9bbeff'
     },
     blog: {
       root: {
-        backgroundColor: "#303030"
+        backgroundColor: '#303030'
       }
     },
     share: {
       exportContainer: {
-        backgroundColor: "#302A22"
+        backgroundColor: '#302A22'
       },
       closeButton: {
-        color: "#f7941d"
+        color: '#f7941d'
       },
       shareButton: {
-        color: "#302A22",
-        backgroundColor: "#fff",
-        backgroundColorHover: alpha("#fff", 0.9)
+        color: '#302A22',
+        backgroundColor: '#fff',
+        backgroundColorHover: alpha('#fff', 0.9)
       },
       color: {
-        headerText: "#fff",
-        itemText: "rgba(255,255,255,0.6)",
-        selectedItemText: "rgba(255,255,255,1)",
-        customLabel: "rgba(255,255,255,.5)"
+        headerText: '#fff',
+        itemText: 'rgba(255,255,255,0.6)',
+        selectedItemText: 'rgba(255,255,255,1)',
+        customLabel: 'rgba(255,255,255,.5)'
       }
     },
     statistics: {
       coloredHeaderText: {
-        color: "#f7941d"
+        color: '#f7941d'
       },
       enrolmentText: {
-        color: "#73cba7",
-        strokeColor: "#73cba7"
+        color: '#73cba7',
+        strokeColor: '#73cba7'
       },
       revenueText: {
-        color: "#ffd876",
-        strokeColor: "#ffd876"
+        color: '#ffd876',
+        strokeColor: '#ffd876'
       },
       rightColumn: {
-        color: alpha("rgba(255, 255, 255, 0.87)", 0.4)
+        color: alpha('rgba(255, 255, 255, 0.87)', 0.4)
       }
     },
     appBarButton: {
       close: {
-        color: "white"
+        color: 'white'
       },
       helpMenu: {
-        color: "#fff"
+        color: '#fff'
       }
     },
     tabList: {
       listContainer: {
-        backgroundColor: "#302A22"
+        backgroundColor: '#302A22'
       }
     },
     table: {
       contrastRow: {
-        main: "#696969",
-        light: "#696969bf"
+        main: '#696969',
+        light: '#696969bf'
       }
     }
   },
   monochrome: {
     heading: {
-      color: "#222222"
+      color: '#222222'
     },
     blog: {
       root: {
-        backgroundColor: "#eee"
+        backgroundColor: '#eee'
       }
     },
     share: {
       exportContainer: {
-        backgroundColor: "#222222"
+        backgroundColor: '#222222'
       },
       closeButton: {
-        color: "#eaeaea"
+        color: '#eaeaea'
       },
       shareButton: {
-        color: "#fff",
-        backgroundColor: "#3e8ef7",
-        backgroundColorHover: alpha("#3e8ef7", 0.9)
+        color: '#fff',
+        backgroundColor: '#3e8ef7',
+        backgroundColorHover: alpha('#3e8ef7', 0.9)
       },
       color: {
-        headerText: "#fff",
-        itemText: "rgba(255,255,255,0.6)",
-        selectedItemText: "rgba(255,255,255,1)",
-        customLabel: "rgba(255,255,255,.5)"
+        headerText: '#fff',
+        itemText: 'rgba(255,255,255,0.6)',
+        selectedItemText: 'rgba(255,255,255,1)',
+        customLabel: 'rgba(255,255,255,.5)'
       }
     },
     statistics: {
       coloredHeaderText: {
-        color: "#222222"
+        color: '#222222'
       },
       enrolmentText: {
-        color: "#73cba7",
-        strokeColor: "#73cba7"
+        color: '#73cba7',
+        strokeColor: '#73cba7'
       },
       revenueText: {
-        color: "#ffd876",
-        strokeColor: "#ffd876"
+        color: '#ffd876',
+        strokeColor: '#ffd876'
       },
       rightColumn: {
-        color: alpha("#222222", 0.4)
+        color: alpha('#222222', 0.4)
       }
     },
     appBarButton: {
       close: {
-        color: "#222222"
+        color: '#222222'
       },
       helpMenu: {
-        color: "#222222"
+        color: '#222222'
       }
     },
     tabList: {
       listContainer: {
-        backgroundColor: "#302A22"
+        backgroundColor: '#302A22'
       }
     },
     table: {
       contrastRow: {
-        main: "#f8f8f8",
-        light: "#f4f3ec"
+        main: '#f8f8f8',
+        light: '#f4f3ec'
       }
     }
   },
   highcontrast: {
     heading: {
-      color: "#424242"
+      color: '#424242'
     },
     blog: {
       root: {
-        backgroundColor: "#fff"
+        backgroundColor: '#fff'
       }
     },
     share: {
       exportContainer: {
-        backgroundColor: "#eee"
+        backgroundColor: '#eee'
       },
       closeButton: {
-        color: "#111111"
+        color: '#111111'
       },
       shareButton: {
-        color: "#fff",
-        backgroundColor: "#111111",
-        backgroundColorHover: alpha("#fff", 0.9)
+        color: '#fff',
+        backgroundColor: '#111111',
+        backgroundColorHover: alpha('#fff', 0.9)
       },
       color: {
-        headerText: "#000",
-        itemText: "rgba(17,17,17,0.6)",
-        selectedItemText: "rgba(17,17,17,1)",
-        customLabel: "rgba(17,17,17,.5)"
+        headerText: '#000',
+        itemText: 'rgba(17,17,17,0.6)',
+        selectedItemText: 'rgba(17,17,17,1)',
+        customLabel: 'rgba(17,17,17,.5)'
       }
     },
     statistics: {
       coloredHeaderText: {
-        color: "#111111"
+        color: '#111111'
       },
       enrolmentText: {
-        color: "#111111"
+        color: '#111111'
       },
       revenueText: {
-        color: "#111111"
+        color: '#111111'
       },
       rightColumn: {
-        color: "#111111"
+        color: '#111111'
       }
     },
     appBarButton: {
       close: {
-        color: "#fff"
+        color: '#fff'
       },
       helpMenu: {
-        color: "#fff"
+        color: '#fff'
       }
     },
     tabList: {
       listContainer: {
-        backgroundColor: "#727272"
+        backgroundColor: '#727272'
       }
     },
     table: {
       contrastRow: {
-        main: "#f8f8f8",
-        light: "#f4f3ec"
+        main: '#f8f8f8',
+        light: '#f4f3ec'
       }
     }
   },
   christmas: {
     heading: {
-      color: "#165B33"
+      color: '#165B33'
     },
     blog: {
       root: {
-        backgroundColor: "transparent"
+        backgroundColor: 'transparent'
       }
     },
     share: {
       exportContainer: {
-        backgroundColor: "#eee"
+        backgroundColor: '#eee'
       },
       closeButton: {
-        color: "#B3000C"
+        color: '#B3000C'
       },
       shareButton: {
-        color: "#fff",
-        backgroundColor: "#B3000C",
-        backgroundColorHover: alpha("#fff", 0.9)
+        color: '#fff',
+        backgroundColor: '#B3000C',
+        backgroundColorHover: alpha('#fff', 0.9)
       },
       color: {
-        headerText: "#000",
-        itemText: "rgba(0,0,0,0.6)",
-        selectedItemText: "rgba(0,0,0,1)",
-        customLabel: "rgba(0,0,0,.5)"
+        headerText: '#000',
+        itemText: 'rgba(0,0,0,0.6)',
+        selectedItemText: 'rgba(0,0,0,1)',
+        customLabel: 'rgba(0,0,0,.5)'
       }
     },
     statistics: {
       coloredHeaderText: {
-        color: "#00B32C"
+        color: '#00B32C'
       },
       enrolmentText: {
-        color: "#73cba7",
-        strokeColor: "#73cba7"
+        color: '#73cba7',
+        strokeColor: '#73cba7'
       },
       revenueText: {
-        color: "#ffd876",
-        strokeColor: "#ffd876"
+        color: '#ffd876',
+        strokeColor: '#ffd876'
       },
       rightColumn: {
-        color: alpha("rgba(0, 0, 0, 0.87)", 0.4)
+        color: alpha('rgba(0, 0, 0, 0.87)', 0.4)
       }
     },
     appBarButton: {
       close: {
-        color: "#fff"
+        color: '#fff'
       },
       helpMenu: {
-        color: "#fff"
+        color: '#fff'
       }
     },
     tabList: {
       listContainer: {
-        backgroundColor: "#146B3A"
+        backgroundColor: '#146B3A'
       }
     },
     table: {
       contrastRow: {
-        main: "#f8f8f8",
-        light: "#f4f3ec"
+        main: '#f8f8f8',
+        light: '#f4f3ec'
       }
     }
   }

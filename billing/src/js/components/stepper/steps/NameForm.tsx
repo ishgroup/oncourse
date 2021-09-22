@@ -6,21 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
-import moment from 'moment';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import React, {
+  useEffect, useMemo, useRef, useState
+} from 'react';
+import Typography from '@mui/material/Typography';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import clsx from 'clsx';
+import moment from 'moment';
+import { makeAppStyles } from '../../../styles/makeStyles';
 import Navigation from '../Navigations';
 import { checkSiteName, setCollegeKey, setLoadingValue } from '../../../redux/actions';
 import { SITE_KEY } from '../../../constant/common';
 import { State } from '../../../redux/reducers';
 import { usePrevious } from '../../../hooks/usePrevious';
 
-const useStyles = makeStyles((theme:any) => ({
+const useStyles = makeAppStyles()((theme:any) => ({
   root: {
     minWidth: '400px'
   },
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme:any) => ({
     minHeight: '50px',
     marginTop: '20px',
     paddingBottom: 40,
-    position: "relative",
+    position: 'relative',
   },
   textFieldWrapper2: {
     display: 'flex',
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme:any) => ({
   errorMessage: {
     fontSize: 14,
     color: '#f44336',
-    position: "absolute",
+    position: 'absolute',
     bottom: 12,
     left: 0,
   },
@@ -60,20 +61,30 @@ const useStyles = makeStyles((theme:any) => ({
     fontFamily: theme.typography.fontFamily2
   },
   info: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -70,
     padding: 5,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     left: 0,
     right: 0,
-    maxWidth: "60%",
-    margin: "0 auto",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    maxWidth: '60%',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: 12
   }
 }));
+
+const getDate = () => {
+  const currentDate = moment(new Date());
+  const currentDay = currentDate.date();
+
+  if (currentDay < 15) {
+    return currentDate.add(1, 'months').startOf('month').format('D MMMM');
+  }
+  return currentDate.add(2, 'months').startOf('month').format('D MMMM');
+};
 
 const NameForm = (props: any) => {
   const {
@@ -98,7 +109,7 @@ const NameForm = (props: any) => {
     loading: boolean,
   } = usePrevious({ loading });
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   useEffect(() => {
     if (prevProps && prevProps.loading && !loading && isValidName) {
@@ -158,15 +169,7 @@ const NameForm = (props: any) => {
     }
   };
 
-  const getDate = () => {
-    const currentDate = moment(new Date());
-    const currentDay = currentDate.date();
-
-    if (currentDay < 15) {
-      return currentDate.add(1, 'months').startOf('month').format('D MMMM');
-    }
-    return currentDate.add(2, 'months').startOf('month').format('D MMMM');
-  };
+  const date = useMemo(() => getDate(), []);
 
   return (
     <form className={classes.root}>
@@ -177,7 +180,7 @@ const NameForm = (props: any) => {
         <div className={classes.textFieldWrapper2}>
           <Typography className={classes.domainName}>https://</Typography>
           <span
-            className={clsx(classes.input, 'input', classes.domainName)}
+            className={cx(classes.input, 'input', classes.domainName)}
             onInput={(e) => setNewCollegeName(e)}
             ref={inputRef}
             contentEditable
@@ -189,7 +192,10 @@ const NameForm = (props: any) => {
       </div>
 
       <Typography className={classes.info} component="div">
-        <ErrorOutlineIcon fontSize="small" color="primary" />&nbsp;&nbsp;No credit card required / Free until {getDate()}, then $10/month
+        <ErrorOutlineIcon fontSize="small" color="primary" />
+&nbsp;&nbsp;No credit card required / Free until&nbsp;
+        {date}
+        , then $10/month
       </Typography>
       <Navigation
         activeStep={activeStep}

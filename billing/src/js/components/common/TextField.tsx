@@ -6,35 +6,36 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { TextField } from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React from 'react';
+import { TextField } from '@mui/material';
+import { makeAppStyles } from '../../styles/makeStyles';
 
-const styles = (theme: any) => ({
+const useStyles = makeAppStyles()(() => ({
   input: {
-    height: "36px",
-    width: "100%",
+    height: '36px',
+    width: '100%',
   }
-});
+}));
 
-const CustomTextField = (props: any) => {
-  const { classes } = props;
+const CustomTextField = (props) => {
+  const { classes } = useStyles();
 
   const inputProps = {
-    autoComplete: "off",
-    type: "search",
+    autoComplete: 'off',
+    type: 'search',
     form: {
-      autoComplete: "off",
+      autoComplete: 'off',
     },
-  }
+  };
 
   return (
     <TextField
       className={classes.input}
       inputProps={inputProps}
+      variant="standard"
       {...props}
     />
-  )
-}
+  );
+};
 
-export default withStyles(styles, { withTheme: true })(CustomTextField);
+export default CustomTextField;

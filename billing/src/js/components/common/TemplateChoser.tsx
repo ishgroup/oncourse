@@ -15,16 +15,15 @@ import {
   DialogContent,
   ImageList,
   ImageListItem,
-  makeStyles,
   TextField
-} from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import CheckIcon from '@material-ui/icons/Check';
-import OpenInNew from '@material-ui/icons/OpenInNew';
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
-import { TextFieldProps } from '@material-ui/core/TextField/TextField';
-import clsx from 'clsx';
-import { AppTheme } from '../../models/Theme';
+} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import CheckIcon from '@mui/icons-material/Check';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import { TextFieldProps } from '@mui/material/TextField/TextField';
+
+import { makeAppStyles } from '../../styles/makeStyles';
 import a from '../../../images/a.png';
 import b from '../../../images/b.png';
 import c from '../../../images/c.png';
@@ -101,70 +100,16 @@ const imgData = [
   },
 ];
 
-const useStyles = makeStyles((theme: AppTheme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  listItem: {
-    position: 'relative',
-    overflow: 'hidden',
-    height: '100%',
-    border: '3px solid #e5e5e5',
-    borderRadius: 4,
-    transition: '0.5s all cubic-bezier(0.46, 0.03, 0.52, 0.96)',
-    minWidth: 301,
-    '&:hover, &$listItemSelected': {
-      borderColor: '#434343',
-      '& $listItemOverlay': {
-        transform: 'translateX(0)',
-      }
-    },
-    '&$listItemSelected': {
-      borderColor: theme.palette.primary.main,
-      borderWidth: 5,
-      '& $listItemOverlay': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.6),
-        color: theme.palette.primary.contrastText,
-      },
-    },
-  },
-  listItemSelected: {},
-  selectedImage: {},
-  image: {
-    width: '100%',
-    height: '100%',
-    left: 0,
-    top: 0,
-    transform: 'none',
-    transition: '0.5s all cubic-bezier(0.46, 0.03, 0.52, 0.96)',
-    '&:hover': {
-      cursor: 'pointer',
-    },
-    '&$selectedImage': {
-      borderColor: theme.statistics.coloredHeaderText.color
-    },
-  },
-  responsiveImage: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-    "& > img": {
-      position: "relative",
-      left: "50%",
-      top: 0,
-      transform: "translate(-50%, 0%)",
-      width: "auto",
-      height: "auto",
-      maxWidth: 450,
-      minWidth: "100%",
-    },
-  },
-  listItemOverlay: {
+const useStyles = makeAppStyles()((theme, _params, createRef) => {
+  const listItemSelected = {
+    ref: createRef()
+  };
+  const selectedImage = {
+    ref: createRef()
+  };
+
+  const listItemOverlay = {
+    ref: createRef(),
     position: 'absolute',
     backgroundColor: alpha('#000', 0.5),
     top: 0,
@@ -179,59 +124,129 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     textAlign: 'center',
     transform: 'translateX(-100%)',
     transition: '0.5s all cubic-bezier(0.46, 0.03, 0.52, 0.96)',
-  },
-  link: {
-    color: theme.statistics.coloredHeaderText.color,
-    display: 'inline-block',
-    textDecoration: 'none',
-    '&:hover': {
-      color: 'rgb(172, 103, 20)',
-    }
-  },
-  actionContainer: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  actionButton: {
-    fontSize: 16,
-    padding: '8px 24px',
-    textTransform: 'initial',
-  },
-  actionButtonLink: {
-    marginTop: 16,
-    backgroundColor: theme.palette.primary.contrastText,
-    color: theme.palette.primary.main,
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
+  } as const;
+
+  return {
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+      overflow: 'hidden',
+      backgroundColor: theme.palette.background.paper,
+    },
+    listItem: {
+      position: 'relative',
+      overflow: 'hidden',
+      height: '100%',
+      border: '3px solid #e5e5e5',
+      borderRadius: 4,
+      transition: '0.5s all cubic-bezier(0.46, 0.03, 0.52, 0.96)',
+      minWidth: 301,
+      [`&:hover, &.${listItemSelected.ref}`]: {
+        borderColor: '#434343',
+        [`& .${listItemOverlay.ref}`]: {
+          transform: 'translateX(0)',
+        }
+      },
+      [`&.${listItemSelected.ref}`]: {
+        borderColor: theme.palette.primary.main,
+        borderWidth: 5,
+        [`& .${listItemOverlay.ref}`]: {
+          backgroundColor: alpha(theme.palette.primary.main, 0.6),
+          color: theme.palette.primary.contrastText,
+        },
+      },
+    },
+    image: {
+      width: '100%',
+      height: '100%',
+      left: 0,
+      top: 0,
+      transform: 'none',
+      transition: '0.5s all cubic-bezier(0.46, 0.03, 0.52, 0.96)',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+      [`&.${selectedImage.ref}`]: {
+        borderColor: theme.statistics.coloredHeaderText.color
+      },
+    },
+    responsiveImage: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      overflow: 'hidden',
+      '& > img': {
+        position: 'relative',
+        left: '50%',
+        top: 0,
+        transform: 'translate(-50%, 0%)',
+        width: 'auto',
+        height: 'auto',
+        maxWidth: 450,
+        minWidth: '100%',
+      },
+    },
+    link: {
+      color: theme.statistics.coloredHeaderText.color,
+      display: 'inline-block',
+      textDecoration: 'none',
+      '&:hover': {
+        color: 'rgb(172, 103, 20)',
+      }
+    },
+    actionContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    actionButton: {
+      fontSize: 16,
+      padding: '8px 24px',
+      textTransform: 'initial',
+    },
+    actionButtonLink: {
+      marginTop: 16,
+      backgroundColor: theme.palette.primary.contrastText,
+      color: theme.palette.primary.main,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+      },
+    },
+    selectedItemCheck: {
       color: theme.palette.primary.contrastText,
     },
-  },
-  selectedItemCheck: {
-    color: theme.palette.primary.contrastText,
-  },
-}));
+    listItemOverlay,
+    listItemSelected,
+    selectedImage,
+  };
+});
 
 export const TemplateChoser = ({ value, onChange }) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   return (
     <div className={classes.root}>
-      <ImageList cellHeight={250} cols={2} gap={20}>
+      <ImageList rowHeight={250} cols={2} gap={20} className="w-100 mt-0">
         {imgData.map((tile) => (
           <ImageListItem key={tile.img} cols={1}>
-            <div className={clsx(classes.listItem, tile.value === value && classes.listItemSelected)}>
+            <div className={cx(classes.listItem, tile.value === value && classes.listItemSelected)}>
               <span className={classes.responsiveImage}>
                 <img
                   src={tile.img}
                   alt={tile.title}
-                  className={clsx(classes.image, tile.value === value ? classes.selectedImage : null)}
+                  className={cx(classes.image, tile.value === value ? classes.selectedImage : null)}
                   loading="lazy"
                 />
               </span>
               <div className={classes.listItemOverlay}>
                 <div>
                   {tile.value === value ? (
-                    <IconButton aria-label="unlink-template" onClick={() => onChange(tile.value)}>
+                    <IconButton
+                      aria-label="unlink-template"
+                      onClick={() => onChange(tile.value)}
+                      size="large"
+                    >
                       <CheckCircleRoundedIcon fontSize="large" className={classes.selectedItemCheck} />
                     </IconButton>
                   ) : (
