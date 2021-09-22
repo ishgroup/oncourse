@@ -18,7 +18,6 @@ import Typography from "@material-ui/core/Typography";
 import ListItemText from "@material-ui/core/ListItemText";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Attachment } from "@material-ui/icons";
-import * as colorManipulator from "@material-ui/core/styles/colorManipulator";
 
 const styles = theme => createStyles({
   textField: {
@@ -103,7 +102,8 @@ const styles = theme => createStyles({
   labelShrink: {},
   labelAdornment: {},
   placeholderContent: {
-    color: colorManipulator.lighten(theme.palette.text.disabled, 0.6)
+    color: theme.palette.text.disabled,
+    opacity: 0.4,
   },
   chip: {
     margin: theme.spacing(0.25)
