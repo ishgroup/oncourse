@@ -133,7 +133,7 @@ const styles = theme => createStyles({
     maxWidth: "100%",
     "& $labelAdornment": {
       position: "absolute",
-      transform: "scale(1.33) translate(5px,0)"
+      transform: "scale(1.3) translate(5px,0)"
     },
     "&$labelShrink": {
       maxWidth: "calc(100% * 1.4)"
