@@ -59,10 +59,8 @@ trait ExpandableTrait {
      * @throws MissingPropertyException
      */
     void propertyMissing(String key, Object value) {
-        CustomField customField = customFields.find { it.customFieldType.key == key }
-        if (value == null) {
-            customField.value = value
-            return
+        CustomField customField = customFields.find {
+            it.customFieldType.key.toLowerCase().equals(key.toLowerCase())
         }
 
         CustomFieldType type
@@ -77,6 +75,11 @@ trait ExpandableTrait {
             } else {
                 throw new MissingPropertyException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
             }
+        }
+
+        if (value == null) {
+            customField.value = value
+            return
         }
 
         switch (type.dataType) {
