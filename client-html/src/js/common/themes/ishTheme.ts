@@ -56,6 +56,11 @@ const createOverrides = palette => ({
         },
       },
     },
+    MuiFormLabel: {
+      root: {
+        lineHeight: 1.2,
+      },
+    },
     MuiInputBase: {
       root: {
         maxWidth: "100%",
