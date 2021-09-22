@@ -29,6 +29,7 @@ import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
 import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
+import * as colorManipulator from "@material-ui/core/styles/colorManipulator";
 
 const styles = theme => createStyles({
   textField: {
@@ -103,7 +104,8 @@ const styles = theme => createStyles({
     whiteSpace: "nowrap"
   },
   placeholderContent: {
-    color: theme.palette.divider
+    color: colorManipulator.lighten(theme.palette.text.disabled, 0.6),
+    fontWeight: 400,
   },
   input: {
     width: "100%"

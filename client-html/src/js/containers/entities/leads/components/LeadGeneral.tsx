@@ -253,6 +253,7 @@ const LeadGeneral = (props: Props) => {
           entityValues={values}
           dispatch={dispatch}
           form={form}
+          fullWidth
         />
         <RelationsCommon
           values={values}

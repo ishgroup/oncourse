@@ -646,6 +646,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             entityValues={values}
             dispatch={dispatch}
             form={form}
+            fullWidth
           />
         </Grid>
         {values.student && (

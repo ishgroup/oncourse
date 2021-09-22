@@ -159,7 +159,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".placeholderContent": {
         color: theme.palette.divider,
-        fill: theme.palette.divider
+        fill: theme.palette.divider,
+        fontWeight: 400,
       },
       ".link": {
         color: "inherit",
@@ -262,7 +263,8 @@ const globalStyles = (theme: AppTheme) =>
         padding: 0,
         "&:hover .placeholderContent": {
           fill: theme.palette.primary.main,
-          color: theme.palette.primary.main
+          color: theme.palette.primary.main,
+          fontWeight: 400,
         }
       },
       ".inputAdornmentIcon": {
