@@ -55,14 +55,6 @@ public class WaitVerifyHandler extends AbstractStepHandler {
                 return;
             }
 
-            String certificate = getUsiController().getPreferenceController().getAuskeyCertificate();
-            if (certificate == null)
-            {
-                getUsiController().getValidationResult().addError("messaget-auskeyCertificateNotSet", getUsiController().getMessages());
-                nextStep.set(Step.usi);
-                return;
-            }
-
             USIVerificationRequest request = new USIVerificationRequest();
             request.setOrgCode(avetmissID);
             request.setStudentBirthDate(getUsiController().getContact().getDateOfBirth());
