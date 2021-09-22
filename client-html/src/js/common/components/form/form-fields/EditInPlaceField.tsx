@@ -27,7 +27,6 @@ import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { InputAdornment } from "@material-ui/core";
-import * as colorManipulator from "@material-ui/core/styles/colorManipulator";
 
 const styles = theme => createStyles({
   inputEndAdornment: {
@@ -143,7 +142,8 @@ const styles = theme => createStyles({
   },
   labelAdornment: {},
   placeholderContent: {
-    color: colorManipulator.lighten(theme.palette.text.disabled, 0.6),
+    color: theme.palette.text.disabled,
+    opacity: 0.4,
     fontWeight: 400,
   },
   chip: {
