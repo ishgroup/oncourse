@@ -430,6 +430,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
               entityValues={values}
               dispatch={dispatch}
               form={form}
+              fullWidth
             />
           </Grid>
         </Grid>

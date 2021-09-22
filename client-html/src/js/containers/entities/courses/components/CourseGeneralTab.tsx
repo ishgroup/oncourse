@@ -269,6 +269,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               entityValues={values}
               dispatch={dispatch}
               form={form}
+              fullWidth
             />
           </Grid>
         </Grid>

@@ -147,6 +147,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         entityValues={values}
         dispatch={dispatch}
         form={form}
+        fullWidth
       />
     </div>
   );

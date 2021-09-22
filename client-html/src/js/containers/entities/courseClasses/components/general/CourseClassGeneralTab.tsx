@@ -405,6 +405,7 @@ const CourseClassGeneralTab = React.memo<Props>(
               entityValues={values}
               dispatch={dispatch}
               form={form}
+              fullWidth
             />
           </Grid>
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>

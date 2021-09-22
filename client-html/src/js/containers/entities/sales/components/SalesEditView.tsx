@@ -134,6 +134,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         entityValues={values}
         dispatch={dispatch}
         form={form}
+        fullWidth
       />
 
       <Grid container>

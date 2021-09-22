@@ -1,5 +1,6 @@
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import { theme } from "./appTheme";
+import * as colorManipulator from "@material-ui/core/styles/colorManipulator";
 import {
   ChristmasThemeKey,
   DarkThemeKey,
@@ -67,6 +68,10 @@ const createOverrides = palette => ({
         width: "100%",
       },
       input: {
+        "&::placeholder": {
+          color: colorManipulator.lighten(palette.text.disabled, 0.2),
+          fill: colorManipulator.lighten(palette.text.disabled, 0.2),
+        },
         textOverflow: "ellipsis",
         color: palette.text.primaryEditable,
         fontWeight: 400,
@@ -177,6 +182,7 @@ const defaultThemePalette = {
     secondary: "rgba(0, 0, 0, 0.54)",
     primary: "rgba(0, 0, 0, 0.87)",
     primaryEditable: "rgba(0, 0, 0, 0.95)",
+    disabled: "rgba(34, 34, 34, 0.38)",
   }
 };
 

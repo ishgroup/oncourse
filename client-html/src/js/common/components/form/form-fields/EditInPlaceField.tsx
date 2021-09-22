@@ -27,6 +27,7 @@ import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { InputAdornment } from "@material-ui/core";
+import * as colorManipulator from "@material-ui/core/styles/colorManipulator";
 
 const styles = theme => createStyles({
   inputEndAdornment: {
@@ -142,8 +143,8 @@ const styles = theme => createStyles({
   },
   labelAdornment: {},
   placeholderContent: {
-    color: theme.palette.divider,
-    fontWeight: 300,
+    color: colorManipulator.lighten(theme.palette.text.disabled, 0.6),
+    fontWeight: 400,
   },
   chip: {
     margin: theme.spacing(0.25)
@@ -156,7 +157,8 @@ const styles = theme => createStyles({
   emptySelect: {
     color: "#fff",
     "& $placeholderContent": {
-      color: "#fff"
+      color: "#fff",
+      fontWeight: 400,
     }
   },
   inlineContainer: {
