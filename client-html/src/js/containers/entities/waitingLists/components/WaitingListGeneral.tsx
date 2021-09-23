@@ -82,6 +82,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
           entityValues={values}
           dispatch={dispatch}
           form={form}
+          fullWidth
         />
       </div>
     );

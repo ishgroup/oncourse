@@ -19,16 +19,38 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import CreateIcon from '@material-ui/icons/Create';
 import ListItemText from "@material-ui/core/ListItemText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import { InputAdornment } from "@material-ui/core";
 
 const styles = theme => createStyles({
+  inputEndAdornment: {
+    fontSize: "18px",
+    color: theme.palette.primary.main,
+    opacity: 0.5,
+    display: "none",
+  },
+  inputWrapper: {
+    "&:hover $inputEndAdornment": {
+      display: "flex",
+    },
+  },
+  isEditing: {
+    borderBottom: "none!important",
+    "& $inputEndAdornment": {
+      display: "flex!important",
+      borderBottom: "none!important",
+      opacity: 1,
+    },
+  },
   textField: {
-    paddingBottom: "13px",
+    paddingBottom: "9px",
+    height: "60px",
     paddingLeft: "0",
     overflow: "hidden",
     display: "flex"
@@ -64,6 +86,8 @@ const styles = theme => createStyles({
     overflow: "hidden",
     textOverflow: "ellipsis",
     justifyContent: "flex-start",
+    color: theme.palette.text.primaryEditable,
+    fontWeight: 400,
     "&:hover, &:hover $placeholderContent, &:hover $editButton": {
       color: theme.palette.primary.main,
       fill: theme.palette.primary.main
@@ -86,7 +110,13 @@ const styles = theme => createStyles({
   },
   viewMode: {
     padding: 0,
-    margin: 0
+    margin: "0 0 3px",
+  },
+  spanLabel: {
+    paddingLeft: "0.5px",
+    marginTop: "-3px",
+    display: "inline-block",
+    height: "17px",
   },
   label: {
     whiteSpace: "nowrap",
@@ -104,10 +134,17 @@ const styles = theme => createStyles({
       marginTop: 0
     }
   },
-  labelShrink: {},
+  labelShrink: {
+    "& $labelAdornment": {
+      position: "absolute",
+      transform: "scale(1.3) translate(5px,0)",
+    },
+  },
   labelAdornment: {},
   placeholderContent: {
-    color: theme.palette.divider
+    color: theme.palette.text.disabled,
+    opacity: 0.4,
+    fontWeight: 400,
   },
   chip: {
     margin: theme.spacing(0.25)
@@ -120,7 +157,8 @@ const styles = theme => createStyles({
   emptySelect: {
     color: "#fff",
     "& $placeholderContent": {
-      color: "#fff"
+      color: "#fff",
+      fontWeight: 400,
     }
   },
   inlineContainer: {
@@ -130,7 +168,14 @@ const styles = theme => createStyles({
   inlineInput: {
     padding: "0 0 1px 0",
     minWidth: "2.2em",
-    fontSize: "inherit"
+    fontSize: "inherit",
+  },
+  selectMainWrapper: {
+    marginTop: theme.spacing(2),
+    "&:hover $selectIconInput": {
+      visibility: 'visible',
+      color: theme.palette.primary.main,
+    },
   },
   inlineSelect: {
     "&$inlineSelect": {
@@ -158,12 +203,14 @@ const styles = theme => createStyles({
     "&:after": {
       borderBottomColor: theme.palette.primary.main
     },
-
   },
   selectIcon: {
     fontSize: "24px",
     color: theme.palette.divider,
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+  },
+  selectIconInput: {
+    visibility: 'hidden',
   },
   hideArrows: {
     "&::-webkit-outer-spin-button": {
@@ -175,7 +222,7 @@ const styles = theme => createStyles({
       margin: 0
     },
     "-moz-appearance": "textfield"
-  }
+  },
 });
 
 export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
@@ -269,8 +316,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
 
   onFocus = () => {
     const {
- input, type, select, multiline
-} = this.props;
+     input, type, select, multiline
+    } = this.props;
 
     if (!this.state.isEditing) {
       this.setState({
@@ -318,7 +365,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     }
 
     if (items.length) {
-      input.onChange(returnType === "object" ? selected : e.target.value);
+      input.onChange(returnType === "object" ? selected || null : e.target.value);
       return;
     }
     this.onSelectClose();
@@ -616,7 +663,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       selectItems = [
         <MenuItem
           key="empty"
-          value={null}
+          value=""
           classes={{
             root: clsx({
               [classes.selectedItem]: multiple,
@@ -648,12 +695,12 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.hideArrows]: hideArrows,
           "text-end": rightAligned
         }),
-        placeholder: hidePlaceholderInEditMode ? undefined : placeholder,
+        placeholder: placeholder || (!isEditing && "No value"),
         style: {
           maxWidth: isInline ? this.getInputLength() : undefined
         }
       },
-      value: input.value,
+      value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
       onFocus: this.onFocus,
       onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v))
     };
@@ -685,7 +732,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           className={clsx({
             [classes.rightPadding]: formatting !== "inline",
             [classes.inlineMargin]: isInline,
-            [classes.hiddenContainer]: !(isEditing || invalid),
+            [classes.hiddenContainer]: isInline && !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
             "d-inline": isInline && (isEditing || invalid)
           })}
@@ -707,35 +754,41 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 shrink: classes.labelShrink
               }}
               {...InputLabelProps}
+              shrink={InputLabelProps?.shrink !== undefined ? InputLabelProps.shrink : !error}
             >
               {labelContent}
             </InputLabel>
             {select
               ? (
-                <Select
-                  value={multiple
-                    ? input.value || []
-                    : returnType === "object"
-                      ? selectLabelCondition
-                        ? selectLabelCondition(input.value)
-                        : input.value ? input.value[selectValueMark] : ""
-                      : input.value}
-                  inputRef={this.setInputNode}
-                  classes={{
-                    root: clsx(classes.textFieldBorderModified, fieldClasses.text),
-                    select: clsx(isInline && classes.inlineSelect),
-                    // @ts-ignore
-                    underline: fieldClasses.underline
-                  }}
-                  multiple={multiple}
-                  autoWidth={autoWidth}
-                  open={isEditing}
-                  onOpen={this.onFocus}
-                  onClose={this.onSelectClose}
-                  onChange={this.onSelectChange}
-                >
-                  {selectItems}
-                </Select>
+                <div className={clsx(isInline && "d-inline", classes.selectMainWrapper)}>
+                  <Select
+                    value={multiple
+                      ? input.value || []
+                      : returnType === "object"
+                        ? selectLabelCondition
+                          ? selectLabelCondition(input.value)
+                          : input.value ? input.value[selectValueMark] : ""
+                        : input.value || ""}
+                    inputRef={this.setInputNode}
+                    classes={{
+                      root: clsx(classes.textFieldBorderModified, fieldClasses.text),
+                      select: clsx(isInline && classes.inlineSelect),
+                      // @ts-ignore
+                      underline: fieldClasses.underline
+                    }}
+                    multiple={multiple}
+                    autoWidth={autoWidth}
+                    open={isEditing}
+                    disabled={disabled}
+                    onOpen={this.onFocus}
+                    onClose={this.onSelectClose}
+                    onChange={this.onSelectChange}
+                    IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
+                    displayEmpty
+                  >
+                    {selectItems}
+                  </Select>
+                </div>
                 )
               : (
                 <Input
@@ -744,9 +797,16 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   multiline={multiline}
                   inputRef={this.setInputNode}
                   classes={{
-                    root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified, fieldClasses.text),
+                    root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified,
+                      fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
                     underline: fieldClasses.underline
                   }}
+                  disabled={disabled}
+                  endAdornment={!isInline && !disabled && (
+                    <InputAdornment position="end" className={classes.inputEndAdornment}>
+                      <CreateIcon />
+                    </InputAdornment>
+                  )}
                 />
               )}
             <FormHelperText
@@ -760,7 +820,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         </div>
         <div
           className={clsx({
-            [classes.hiddenContainer]: isEditing || invalid,
+            [classes.hiddenContainer]: isEditing || invalid || !isInline,
             [classes.textField]: listSpacing && formatting !== "inline",
             [classes.rightAligned]: rightAligned,
             "d-inline": isInline && !(isEditing || invalid)
@@ -768,7 +828,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         >
           <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
             {!hideLabel && label && (
-              <Typography variant="caption" color="textSecondary" className={fieldClasses.label} noWrap>
+              <Typography variant="caption" color="textSecondary" className={clsx(fieldClasses.label, classes.spanLabel)} noWrap>
                 {label}
                 {' '}
                 {labelAdornment && (
@@ -784,33 +844,33 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             )}
 
             {formatting === "primary" && (
-            <ListItemText
-              classes={{
-                    root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                    primary: "d-flex"
-                  }}
-              primary={(
-                <ButtonBase
-                  classes={{
-                        root: classes.valueContainer
-                      }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                  component="div"
-                >
+              <ListItemText
+                classes={{
+                  root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
+                  primary: "d-flex"
+                }}
+                primary={(
+                  <ButtonBase
+                    classes={{
+                      root: classes.valueContainer
+                    }}
+                    onFocus={e => this.onEditButtonFocus(e, "focus")}
+                    onClick={e => this.onEditButtonFocus(e, "click")}
+                    className={clsx("hoverIconContainer", fieldClasses.text)}
+                    component="div"
+                  >
                   <span
                     ref={this.setContainerNode}
                     className={clsx(classes.editable, {
-                          [classes.rightAligned]: rightAligned
-                        })}
+                      [classes.rightAligned]: rightAligned
+                    })}
                   >
                     {editableComponent || this.getValue()}
                     {editIcon}
                   </span>
-                </ButtonBase>
-                  )}
-            />
+                  </ButtonBase>
+                )}
+              />
             )}
 
             {formatting === "secondary" && (
@@ -868,11 +928,11 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   "d-inline vert-align-bl hoverIconContainer",
                   classes.editable,
                   fieldClasses.text, {
-                  [classes.rightAligned]: rightAligned,
-                  [classes.readonly]: disabled,
-                  [classes.inlineMargin]: disabled
-                }
-)}
+                    [classes.rightAligned]: rightAligned,
+                    [classes.readonly]: disabled,
+                    [classes.inlineMargin]: disabled
+                  }
+                )}
               >
                 {editableComponent || this.getValue()}
                 {editIcon}

@@ -165,7 +165,7 @@ const CourseClassGeneralTab = React.memo<Props>(
       []
     );
 
-    const courseIdField = (
+    const courseIdField = (inHeader = false) => (
       <FormField
         type="remoteDataSearchSelect"
         entity="Course"
@@ -181,6 +181,7 @@ const CourseClassGeneralTab = React.memo<Props>(
         onInnerValueChange={onCourseIdChange}
         rowHeight={55}
         required
+        inHeader
       />
     );
 
@@ -203,9 +204,9 @@ const CourseClassGeneralTab = React.memo<Props>(
       [values.code, values.courseCode, classCodeError]
     );
 
-    const classCodeField = useMemo(
-      () => (twoColumn ? (
-        <HeaderTextField {...classCodeProps} placeholder="Class code" />
+    const classCodeField = useCallback(
+      (inHeader = false) => (twoColumn ? (
+          <HeaderTextField {...classCodeProps} placeholder="Class code" inHeader />
         ) : (
           <EditInPlaceField {...classCodeProps} />
         )),
@@ -284,10 +285,10 @@ const CourseClassGeneralTab = React.memo<Props>(
           <CustomAppBar>
             <Grid container className="flex-fill">
               <Grid item xs={6} className="pr-2">
-                {courseIdField}
+                {courseIdField(true)}
               </Grid>
               <Grid item xs={4}>
-                {classCodeField}
+                {classCodeField(true)}
               </Grid>
             </Grid>
             <div>
@@ -317,11 +318,11 @@ const CourseClassGeneralTab = React.memo<Props>(
           {!twoColumn && (
             <>
               <Grid item xs={12}>
-                {courseIdField}
+                {courseIdField(false)}
               </Grid>
 
               <Grid item xs={12}>
-                {classCodeField}
+                {classCodeField(false)}
               </Grid>
             </>
           )}
@@ -404,6 +405,7 @@ const CourseClassGeneralTab = React.memo<Props>(
               entityValues={values}
               dispatch={dispatch}
               form={form}
+              fullWidth
             />
           </Grid>
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>

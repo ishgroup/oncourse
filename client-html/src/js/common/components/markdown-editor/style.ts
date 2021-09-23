@@ -203,7 +203,8 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
   editable: {
     "&:hover, &:hover .placeholderContent": {
       color: theme.palette.primary.main,
-      fill: theme.palette.primary.main
+      fill: theme.palette.primary.main,
+      fontWeight: 400,
     }
   },
   previewFrame: {

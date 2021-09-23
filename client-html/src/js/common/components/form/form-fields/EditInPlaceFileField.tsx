@@ -102,7 +102,8 @@ const styles = theme => createStyles({
   labelShrink: {},
   labelAdornment: {},
   placeholderContent: {
-    color: theme.palette.divider
+    color: theme.palette.text.disabled,
+    opacity: 0.4,
   },
   chip: {
     margin: theme.spacing(0.25)

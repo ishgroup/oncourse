@@ -105,7 +105,8 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
   const [lockedTerms, setLockedTerms] = useState(true);
 
-  const onLockClick = useCallback(() => {
+  const onLockClick = useCallback(e => {
+    e.preventDefault();
     if (!lockedTerms) {
       dispatch(change(form, "invoiceTerms", null));
     }
@@ -143,7 +144,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               disabled={lockedTerms}
               labelAdornment={(
                 <span>
-                  <IconButton className="inputAdornmentButton" onClick={onLockClick}>
+                  <IconButton className="inputAdornmentButton" onClick={e => onLockClick(e)}>
                     {!lockedTerms && <LockOpen className="inputAdornmentIcon" />}
                     {lockedTerms && <Lock className="inputAdornmentIcon" />}
                   </IconButton>

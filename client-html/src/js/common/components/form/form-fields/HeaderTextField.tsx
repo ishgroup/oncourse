@@ -48,7 +48,10 @@ const styles = theme => ({
   },
   fitWidth: {
     width: "50%"
-  }
+  },
+  editableInHeader: {
+    color: theme.palette.primary.contrastText,
+  },
 });
 
 const HeaderTextField: React.FC<any> = ({
@@ -60,7 +63,8 @@ const HeaderTextField: React.FC<any> = ({
   className,
   autoFocus,
   disabled,
-  fullWidth
+  fullWidth,
+  inHeader
 }) => {
   const inputNode = useRef<any>();
 
@@ -103,7 +107,8 @@ const HeaderTextField: React.FC<any> = ({
             underline: clsx({
               [classes.cssUnderline]: !invalid,
               [classes.cssUnderlineError]: invalid
-            })
+            }),
+            input: clsx(inHeader && classes.editableInHeader),
           }}
           inputRef={inputNode}
           value={input.value || ""}
