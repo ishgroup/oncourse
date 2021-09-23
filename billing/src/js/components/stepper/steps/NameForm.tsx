@@ -195,7 +195,6 @@ const NameForm = (props: any) => {
         <ErrorOutlineIcon fontSize="small" color="primary" />
 &nbsp;&nbsp;No credit card required / Free until&nbsp;
         {date}
-        , then $10/month
       </Typography>
       <Navigation
         activeStep={activeStep}
