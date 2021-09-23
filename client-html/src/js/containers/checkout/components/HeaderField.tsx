@@ -17,8 +17,8 @@ import CardHeader from "@material-ui/core/CardHeader";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import ArrowForward from "@material-ui/icons/ArrowForward";
-import { StyledCheckbox } from "../../../common/components/form/form-fields/CheckboxField";
-import { FormTextField } from "../../../common/components/form/form-fields/TextField";
+import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
+import { FormTextField } from "../../../common/components/form/formFields/TextField";
 import { formatCurrency } from "../../../common/utils/numbers/numbersNormalizing";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { AppTheme } from "../../../model/common/Theme";
@@ -133,7 +133,6 @@ const HeaderField: React.FC<Props> = props => {
               )
             }}
             validate={validate}
-            fullWidth
           />
         )}
         <div className="mt-2">

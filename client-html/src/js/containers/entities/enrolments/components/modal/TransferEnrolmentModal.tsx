@@ -17,7 +17,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import MuiButton from "@material-ui/core/Button";
 import { Account, CancelEnrolment, Tax } from "@api/model";
 import { getUserPreferences } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";

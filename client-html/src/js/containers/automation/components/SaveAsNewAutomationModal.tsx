@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import React from "react";
 import { InjectedFormProps, reduxForm } from "redux-form";
 import Button from "../../../common/components/buttons/Button";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import { validateKeycode } from "../utils";
 
 interface Props {

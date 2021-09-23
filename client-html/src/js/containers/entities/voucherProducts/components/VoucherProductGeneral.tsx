@@ -9,15 +9,15 @@ import { change } from "redux-form";
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../reducers/state";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { clearMinMaxFee, getMinMaxFee } from "../actions";
-import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
+import EditInPlaceMoneyField from "../../../../common/components/form/formFields/EditInPlaceMoneyField";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import {
@@ -331,7 +331,6 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             selectLabelMark="name"
             items={dataCollectionRules || []}
             format={normalizeString}
-            fullWidth
             required
             sort
           />

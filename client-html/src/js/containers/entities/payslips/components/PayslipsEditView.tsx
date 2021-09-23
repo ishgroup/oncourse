@@ -15,7 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import AddCircle from "@material-ui/icons/AddCircle";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
 import { getEntityTags } from "../../../tags/actions";

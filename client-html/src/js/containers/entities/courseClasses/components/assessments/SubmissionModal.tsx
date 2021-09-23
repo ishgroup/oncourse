@@ -16,8 +16,8 @@ import {
   DialogTitle
 } from "@material-ui/core";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 
 const SubmissionModal = (
   {

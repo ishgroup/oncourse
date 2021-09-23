@@ -12,7 +12,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Module, Qualification } from "@api/model";
 import { Collapse } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import Uneditable from "../../../../common/components/form/Uneditable";
@@ -158,7 +158,6 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           selectLabelCondition={getQualificationLabel}
           validate={values.isTraineeship && validateSingleMandatoryField}
           rowHeight={55}
-          fullWidth
           allowEmpty
         />
       </Grid>
@@ -195,7 +194,6 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           name="fieldOfEducation"
           label="Field of education"
           disabled={values.qualificationId || values.isTraineeship}
-          fullWidth
         />
       </Grid>
 

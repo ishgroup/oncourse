@@ -8,9 +8,7 @@ import DateRange from "@material-ui/icons/DateRange";
 import QueryBuilder from "@material-ui/icons/QueryBuilder";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
-import {
- withStyles, createStyles, Theme
-} from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@material-ui/core/styles";
 import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
@@ -662,7 +660,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   getValue = classes => (
-    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden placeholderContent")}>{this.props.placeholder || (!this.state.isEditing && "No value")}</span>
+    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || (!this.state.isEditing && "No value")}</span>
   );
 
   getInlineMenuStyles = () => {

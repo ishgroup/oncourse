@@ -100,6 +100,7 @@ const styles = theme => createStyles({
   },
   rightAligned: {},
   readonly: {
+    fontWeight: 300,
     pointerEvents: "none"
   },
   textFieldLeftMargin: {
@@ -226,8 +227,6 @@ const styles = theme => createStyles({
 });
 
 export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
-  private isAdornmentHovered: boolean = false;
-
   private preventEditOnFocus: boolean = false;
 
   state = {
@@ -283,31 +282,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     }
   };
 
-  onAdornmentOver = () => {
-    this.isAdornmentHovered = true;
-  };
-
-  onAdornmentOut = () => {
-    this.isAdornmentHovered = false;
-  };
-
-  onAdornmentClick = e => {
-    if (this.isAdornmentHovered) {
-      e.preventDefault();
-    }
-
-    setTimeout(() => {
-      this.isAdornmentHovered = false;
-      if (!this.state.isEditing) this.onBlur();
-    }, 1000);
-  };
-
   onBlur = () => {
     const { input, invalid } = this.props;
 
-    if (this.isAdornmentHovered) {
-      return;
-    }
     this.setState({
       isEditing: invalid || false
     });
@@ -574,11 +551,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       rightAligned,
       disableInputOffsets,
       onKeyDown,
-      hideArrows,
       onInnerValueChange,
       defaultValue,
       disabledTab,
-      fullWidth,
       sort,
       multiline,
       categoryKey,
@@ -608,9 +583,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         {' '}
         <span
           className={classes.labelAdornment}
-          onMouseEnter={this.onAdornmentOver}
-          onMouseLeave={this.onAdornmentOut}
-          onMouseDown={this.onAdornmentClick}
         >
           {labelAdornment}
         </span>
@@ -692,9 +664,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.inlineInput]: isInline,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
-          [classes.hideArrows]: hideArrows,
           "text-end": rightAligned
-        }),
+        },
+          classes.hideArrows),
         placeholder: placeholder || (!isEditing && "No value"),
         style: {
           maxWidth: isInline ? this.getInputLength() : undefined
@@ -740,7 +712,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           <FormControl
             error={invalid}
             margin="none"
-            fullWidth={fullWidth}
+            fullWidth
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
               [classes.bottomMargin]: listSpacing && formatting !== "inline",
@@ -754,7 +726,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 shrink: classes.labelShrink
               }}
               {...InputLabelProps}
-              shrink={InputLabelProps?.shrink !== undefined ? InputLabelProps.shrink : !error}
+              shrink={Boolean(label || input.value)}
             >
               {labelContent}
             </InputLabel>
@@ -827,21 +799,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           })}
         >
           <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
-            {!hideLabel && label && (
-              <Typography variant="caption" color="textSecondary" className={clsx(fieldClasses.label, classes.spanLabel)} noWrap>
-                {label}
-                {' '}
-                {labelAdornment && (
-                  <span
-                    onMouseEnter={this.onAdornmentOver}
-                    onMouseLeave={this.onAdornmentOut}
-                    onMouseDown={this.onAdornmentClick}
-                  >
-                    {labelAdornment}
-                  </span>
-                )}
-              </Typography>
-            )}
+            {isInline && !hideLabel && label && labelContent}
 
             {formatting === "primary" && (
               <ListItemText
@@ -859,15 +817,15 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     className={clsx("hoverIconContainer", fieldClasses.text)}
                     component="div"
                   >
-                  <span
-                    ref={this.setContainerNode}
-                    className={clsx(classes.editable, {
+                    <span
+                      ref={this.setContainerNode}
+                      className={clsx(classes.editable, {
                       [classes.rightAligned]: rightAligned
                     })}
-                  >
-                    {editableComponent || this.getValue()}
-                    {editIcon}
-                  </span>
+                    >
+                      {editableComponent || this.getValue()}
+                      {editIcon}
+                    </span>
                   </ButtonBase>
                 )}
               />

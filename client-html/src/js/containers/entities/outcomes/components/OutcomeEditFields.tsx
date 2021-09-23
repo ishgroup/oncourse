@@ -22,7 +22,7 @@ import {
 } from "@api/model";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { mapSelectItems } from "../../../../common/utils/common";

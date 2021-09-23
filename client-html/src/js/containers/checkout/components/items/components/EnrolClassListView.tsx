@@ -145,7 +145,6 @@ const EnrolClassListView = React.memo<any>(props => {
                         }}
                         className={clsx("text-left", classes.sessionButton)}
                         disabled={isSelected || isTransfered}
-                        fullWidth
                       >
                         <Grid container>
                           <Grid item xs={1}>

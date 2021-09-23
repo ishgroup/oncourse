@@ -16,7 +16,7 @@ import { FormControlLabel } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import Collapse from "@material-ui/core/Collapse";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
@@ -163,7 +163,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               name="name"
               label="Name"
               listSpacing={false}
-              fullWidth
               required
             />
           </Grid>
@@ -197,19 +196,19 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             <div className="container centeredFlex mb-2">
               <FormControlLabel
                 className="checkbox pr-3"
-                control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" />}
                 label="Administration center"
               />
 
               <FormControlLabel
                 className="checkbox pr-3"
-                control={<FormField type="checkbox" name="isVirtual" color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name="isVirtual" color="secondary" />}
                 label="Virtual site"
               />
 
               <FormControlLabel
                 className="checkbox"
-                control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" />}
                 label="Show this site on the website"
               />
             </div>

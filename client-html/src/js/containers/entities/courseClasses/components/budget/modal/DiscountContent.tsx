@@ -13,7 +13,7 @@ import Lock from "@material-ui/icons/Lock";
 import { Discount, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
@@ -162,28 +162,6 @@ const DiscountContent: React.FC<Props> = ({
     currencySymbol
   ]);
 
-  const valueAdormnet = useMemo(
-    () => (
-      <span>
-        <IconButton className="inputAdornmentButton" onClick={onValueLockClick}>
-          {valueLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
-        </IconButton>
-      </span>
-    ),
-    [valueLocked]
-  );
-
-  const forecastAdormnet = useMemo(
-    () => (
-      <span>
-        <IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
-          {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
-        </IconButton>
-      </span>
-    ),
-    [forecastLocked]
-  );
-
   const taxOnDiscount = useMemo(() => decimalMul(values.courseClassDiscount.discountOverride || values.perUnitAmountExTax || 0, currentTax.rate), [classFee, currentTax, values.courseClassDiscount.discountOverride]);
 
   const discountTotalFee = useMemo(() => {
@@ -223,8 +201,9 @@ const DiscountContent: React.FC<Props> = ({
           onKeyPress={preventNegativeOrLogEnter}
           props={{
             label: "Default forecast take-up",
-            fullWidth: true,
-            labelAdornment: forecastAdormnet
+            labelAdornment: <IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
+              {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+            </IconButton>
           }}
           disabled={forecastLocked}
         />
@@ -245,7 +224,11 @@ const DiscountContent: React.FC<Props> = ({
               name="perUnitAmountExTax"
               normalize={normalizeNumberToZero}
               label={valueLabel}
-              labelAdornment={valueAdormnet}
+              labelAdornment={(
+                <IconButton className="inputAdornmentButton" onClick={onValueLockClick}>
+                  {valueLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+                </IconButton>
+              )}
               disabled={valueLocked}
               onChange={onValueChange}
             />

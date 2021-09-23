@@ -16,7 +16,7 @@ import {
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
 import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import { openInternalLink } from "../../../../../common/utils/links";

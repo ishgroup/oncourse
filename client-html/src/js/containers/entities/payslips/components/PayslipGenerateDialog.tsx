@@ -21,7 +21,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { Dispatch } from "redux";
 import { PayrollRequest, WagesToProcess } from "@api/model";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { openInternalLink } from "../../../../common/utils/links";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";

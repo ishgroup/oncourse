@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import Grid from "@material-ui/core/Grid";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 
 const ChequeSummaryRenderer = () => (
   <Grid item xs={12} container>

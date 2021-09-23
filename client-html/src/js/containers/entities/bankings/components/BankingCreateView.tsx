@@ -14,8 +14,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { addDays, format as formatDate } from "date-fns";
 import { Report } from "@api/model";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -30,7 +30,7 @@ import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 
 const paymentColumns: NestedTableColumn[] = [
@@ -210,7 +210,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
       <div className="appBarContainer">
         <CustomAppBar noDrawer>
           <Grid container className="flex-fill">
-            <Grid item xs={6}>
+            <Grid item xs={6} className="mt-05">
               <FormField
                 type="searchSelect"
                 name="administrationCenterId"
@@ -282,7 +282,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
                     ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
                     : undefined
                 }
-                fullWidth
                 disabled={hasNoAccounts}
               />
             </Grid>
