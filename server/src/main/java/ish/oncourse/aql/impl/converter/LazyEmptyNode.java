@@ -37,12 +37,12 @@ public class LazyEmptyNode extends LazyExpressionNode {
         SimpleNode pathNode = null;
 
         if (parent instanceof LazyRelationshipComparisonNode) {
+            if (parent.jjtGetNumChildren() == 0) {
+                parent.jjtAddChild(args.get(0), 0);
+            }
             parent = ((LazyRelationshipComparisonNode) parent).resolveSelf(ctx);
             pathNode = (SimpleNode) parent.jjtGetChild(0);
         }
-
-        if (pathNode == null)
-            pathNode = args.get(0);
 
         if (!(pathNode instanceof ASTObjPath))
             pathNode = args.get(1);
@@ -60,12 +60,14 @@ public class LazyEmptyNode extends LazyExpressionNode {
             return parent;
         }
 
-        if(parent.jjtGetNumChildren() == 0)
+        if (parent.jjtGetNumChildren() == 0)
             ExpressionUtil.addChild(parent, pathNode, 0);
+
         ExpressionUtil.addChild(parent, new ASTScalar(null), args.size() - 1);
         ExpressionUtil.addChild(root, parent, 0);
 
-        ExpressionUtil.addChild(astConditionNode, pathNode, 0);
+        ASTObjPath emptyExpPathNode = new ASTObjPath(((ASTObjPath) pathNode).getPath());
+        ExpressionUtil.addChild(astConditionNode, emptyExpPathNode, 0);
 
         ASTScalar emptyStrNode = new ASTScalar();
         emptyStrNode.setValue("");
