@@ -4,9 +4,7 @@ import com.google.inject.Inject
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
-import ish.oncourse.services.preference.GetEnrolSuccessUrl
 import ish.oncourse.services.preference.GetFeatureEnrolmentDisclosure
-import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.GetRefundPolicyUrl
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
@@ -37,7 +35,6 @@ class PreferenceApiImpl implements PreferenceApi {
         College college = collegeService.college
         preferences.corporatePassEnabled = new IsCorporatePassEnabled(college, context).get()
         preferences.creditCardEnabled = new IsPaymentGatewayEnabled(college, context).get()
-        preferences.successLink = new GetEnrolSuccessUrl(college, context).get()
         preferences.refundPolicyUrl = new GetRefundPolicyUrl(college, context).get()
         preferences.featureEnrolmentDisclosure = new GetFeatureEnrolmentDisclosure(college, context).get()
         preferences.googleTagmanagerAccount = collegeService.webSite.googleTagmanagerAccount
