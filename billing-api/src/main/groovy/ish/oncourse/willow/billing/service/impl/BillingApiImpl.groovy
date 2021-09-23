@@ -134,9 +134,6 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createSetting(context, college, 'billing.code', collegeDTO.collegeKey)
                 PreferenceUtil.createSetting(context, college, 'billing.users', '1')
                 PreferenceUtil.createSetting(context, college, 'billing.plan', 'basic')
-                PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
-                PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
-
 
                 context.commitChanges()
 
