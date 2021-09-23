@@ -58,6 +58,8 @@ class LazyCustomFieldNode extends LazyExpressionNode {
         }
 
         var arg = args.get(1);
+        if(arg instanceof LazyEmptyNode)
+            arg = new ASTScalar(null);
         if (arg instanceof ASTScalar && parent instanceof ASTEqual && ((ASTScalar) arg).getValue() == null) {
 
             String clazzName = ctx.getQueryRootEntity().getJavaClass().getSimpleName();
