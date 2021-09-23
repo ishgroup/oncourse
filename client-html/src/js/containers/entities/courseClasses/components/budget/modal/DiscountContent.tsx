@@ -13,6 +13,7 @@ import Lock from "@material-ui/icons/Lock";
 import { Discount, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
+import debounce from "lodash.debounce";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
@@ -66,13 +67,11 @@ const onBeforeLockSet = (
 
   if (!pr) {
     dispatch(change(
-        COURSE_CLASS_COST_DIALOG_FORM,
-        "perUnitAmountExTax",
-        getDiscountAmountExTax(discount, currentTax, classFee)
-      ));
+      COURSE_CLASS_COST_DIALOG_FORM,
+      "perUnitAmountExTax",
+      getDiscountAmountExTax(discount, currentTax, classFee)
+    ));
   }
-
-  return !pr;
 };
 
 const DiscountContent: React.FC<Props> = ({
@@ -81,8 +80,8 @@ const DiscountContent: React.FC<Props> = ({
   const [forecastLocked, setForecastLocked] = useState(values.courseClassDiscount.forecast === null);
   const [valueLocked, setValueLocked] = useState(values.courseClassDiscount.discountOverride === null);
 
-  const onValueLockClick = useCallback(() => {
-    setValueLocked(pr =>
+  const onValueLockHandler = () => {
+    setValueLocked(pr => {
       onBeforeLockSet(
         pr,
         dispatch,
@@ -90,10 +89,17 @@ const DiscountContent: React.FC<Props> = ({
         currentTax,
         values.courseClassDiscount.discount,
         classFee
-      ));
-  }, [classFee, currentTax, values.courseClassDiscount.discount, values.perUnitAmountExTax]);
+      );
+      return !pr;
+    });
+  };
 
-  const onForecastLockClick = useCallback(() => {
+  const onValueLockClick = useMemo(
+    () => debounce(onValueLockHandler, 300),
+    []
+  );
+
+  const onForecastLockClickHandler = () => {
     setForecastLocked(pr => {
       dispatch(
         change(
@@ -105,7 +111,12 @@ const DiscountContent: React.FC<Props> = ({
 
       return !pr;
     });
-  }, [values.courseClassDiscount.discount.predictedStudentsPercentage]);
+  };
+
+  const onForecastLockClick = useMemo(
+    () => debounce(onForecastLockClickHandler, 300),
+    []
+  );
 
   const onValueChange = useCallback((e, val) => {
     dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "courseClassDiscount.discountOverride", val));
