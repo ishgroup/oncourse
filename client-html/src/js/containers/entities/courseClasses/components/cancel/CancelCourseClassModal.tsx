@@ -19,7 +19,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import { CancelCourseClass } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";

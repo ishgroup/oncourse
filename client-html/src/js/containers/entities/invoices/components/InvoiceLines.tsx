@@ -13,7 +13,7 @@ import { change } from "redux-form";
 import { Dispatch } from "redux";
 import { Decimal } from "decimal.js-light";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { formatCurrency, normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../reducers/state";
 import {
@@ -370,7 +370,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           selectValueMark="id"
           selectLabelCondition={accountLabelCondition}
           autoWidth={false}
-          fullWidth
           required
           onChange={onIncomeAccountChange}
         />

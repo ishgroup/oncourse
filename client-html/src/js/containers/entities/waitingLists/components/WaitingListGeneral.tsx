@@ -8,7 +8,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import { Grid } from "@material-ui/core";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
@@ -29,12 +30,17 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
       values,
       tags,
       dispatch,
-      form
+      form,
+      twoColumn
     } = this.props;
 
+    const gridItemProps: any = {
+      xs: twoColumn ? 6 : 12
+    };
+
     return (
-      <div className="generalRoot">
-        <div className="pt-2">
+      <Grid container className="generalRoot">
+        <Grid item {...gridItemProps} className="pt-2">
           <FormField
             type="remoteDataSearchSelect"
             entity="Contact"
@@ -51,40 +57,44 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             rowHeight={55}
             required
           />
-        </div>
-        <div>
+        </Grid>
+        <Grid item xs={12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
             validate={tags && tags.length ? this.validateTagList : undefined}
           />
-        </div>
-        <FormField type="number" name="studentCount" label="Number of students" />
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Course"
-          aqlFilter="allowWaitingLists is true"
-          name="courseId"
-          label="Course"
-          selectValueMark="id"
-          selectLabelCondition={v => v.name}
-          selectFilterCondition={courseFilterCondition}
-          defaultDisplayValue={values && values.courseName}
-          labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
-          itemRenderer={CourseItemRenderer}
-          rowHeight={55}
-          required
-        />
+        </Grid>
+        <Grid item {...gridItemProps}>
+          <FormField type="number" name="studentCount" label="Number of students" />
+        </Grid>
+        <Grid item {...gridItemProps}>
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Course"
+            aqlFilter="allowWaitingLists is true"
+            name="courseId"
+            label="Course"
+            selectValueMark="id"
+            selectLabelCondition={v => v.name}
+            selectFilterCondition={courseFilterCondition}
+            defaultDisplayValue={values && values.courseName}
+            labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
+            itemRenderer={CourseItemRenderer}
+            rowHeight={55}
+            required
+          />
+        </Grid>
         <CustomFields
           entityName="WaitingList"
           fieldName="customFields"
           entityValues={values}
           dispatch={dispatch}
           form={form}
-          fullWidth
+          gridItemProps={gridItemProps}
         />
-      </div>
+      </Grid>
     );
   }
 }

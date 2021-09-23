@@ -27,7 +27,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Settings from "@material-ui/icons/Settings";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import { getAllMonthsWithSessions } from "../../../../timetable/utils";

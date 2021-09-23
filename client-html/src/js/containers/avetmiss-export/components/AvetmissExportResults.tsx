@@ -16,7 +16,7 @@ import {
   AvetmissExportType
 } from "@api/model";
 import clsx from "clsx";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import SpeechCard from "../../../common/components/layout/SpeechCard";
 import Button from "../../../common/components/buttons/Button";
 import { openInternalLink, saveCategoryAQLLink } from "../../../common/utils/links";

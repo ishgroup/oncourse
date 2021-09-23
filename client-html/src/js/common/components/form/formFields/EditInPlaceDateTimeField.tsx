@@ -90,6 +90,7 @@ const styles = theme => createStyles({
     }
   },
   readonly: {
+    fontWeight: 300,
     pointerEvents: "none"
   },
   textFieldLeftMargin: {
@@ -258,8 +259,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   useEffect(() => {
-    if (!textValue && dateValue) setTextValue(formatDateInner(dateValue));
-  }, []);
+    setTextValue(formatDateInner(dateValue));
+  }, [dateValue]);
 
   const onInputChange = e => {
     e && setTextValue(e.target.value);
@@ -417,7 +418,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
         <FormControl
           error={invalid}
           margin="none"
-          fullWidth={fullWidth}
+          fullWidth
           className={clsx("pr-2", {
             [classes.topMargin]: !listSpacing,
             [classes.bottomMargin]: listSpacing && formatting !== "inline",

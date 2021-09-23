@@ -19,20 +19,15 @@ import { darken } from "@material-ui/core/styles";
 import debounce from "lodash.debounce";
 import { CustomFieldType } from "@api/model";
 import { getAllMenuTags } from "../../../../../../containers/tags/utils";
-import EditInPlaceQuerySelect, { Suggestion } from "../../../../form/form-fields/EditInPlaceQuerySelect";
+import EditInPlaceQuerySelect, { Suggestion } from "../../../../form/formFields/EditInPlaceQuerySelect";
 import QuerySaveMenu from "./QuerySaveMenu";
 import { State } from "../../../../../../reducers/state";
 import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { setIndeterminate } from "../../../utils/listFiltersUtils";
-import {
- setListUserAQLSearch, setFilterGroups, setListSavingFilter, setListMenuTags
-} from "../../../actions";
+import { setFilterGroups, setListMenuTags, setListSavingFilter, setListUserAQLSearch } from "../../../actions";
 import { MenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
-import {
-  FILTER_TAGS_REGEX,
-  TAGS_REGEX
-} from "../../../../../../constants/Config";
+import { FILTER_TAGS_REGEX, TAGS_REGEX } from "../../../../../../constants/Config";
 import { AppTheme } from "../../../../../../model/common/Theme";
 
 export const styles = (theme: AppTheme) => createStyles({

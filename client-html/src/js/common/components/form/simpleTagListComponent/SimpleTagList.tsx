@@ -23,7 +23,7 @@ import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
-import { selectStyles } from "../form-fields/SelectCustomComponents";
+import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
 
 const styles = theme =>

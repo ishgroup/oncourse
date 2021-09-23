@@ -17,7 +17,7 @@ import {
   getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
 import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { NoArgFunction } from "../../../../../model/common/CommonFunctions";

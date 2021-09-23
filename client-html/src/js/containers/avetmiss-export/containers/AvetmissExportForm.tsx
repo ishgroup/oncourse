@@ -36,12 +36,12 @@ import {
   FundingUpload
 } from "@api/model";
 import ErrorMessage from "../../../common/components/form/fieldMessage/ErrorMessage";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import { State } from "../../../reducers/state";
-import { StyledCheckbox } from "../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import Button from "../../../common/components/buttons/Button";
 import AvetmissExportResults from "../components/AvetmissExportResults";
 import {

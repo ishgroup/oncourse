@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState
+} from "react";
 import {
   ConcessionType,
   Contact,
@@ -14,7 +16,9 @@ import {
   Tag,
   Tutor
 } from "@api/model";
-import { arrayInsert, arrayRemove, change, Field, getFormInitialValues } from "redux-form";
+import {
+ arrayInsert, arrayRemove, change, Field, getFormInitialValues
+} from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -28,7 +32,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import ExitToApp from "@material-ui/icons/ExitToApp";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
 import AvatarRenderer from "./AvatarRenderer";
@@ -44,7 +48,7 @@ import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -393,6 +397,11 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
   const filteredTags = getFilteredTags();
 
+  const gridItemProps: any = {
+    xs: twoColumn ? 6 : 12,
+    lg: twoColumn ? 4 : 12
+  };
+
   return (
     <div className="p-3">
       <Grid container className="mb-3">
@@ -474,14 +483,13 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         </Grid>
       )}
       <Grid container>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField
             type="text"
             name="street"
             label={setMarketingLabel("street")}
             validate={greaterThanNullValidation}
             labelAdornment={<SettingsAdornment clickHandler={e => setPostalSettingsMenu(e.currentTarget)} />}
-            fullWidth
           />
           <Menu
             id="postalSettingsMenu"
@@ -506,16 +514,16 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             </MenuItem>
           </Menu>
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-          <FormField type="text" name="suburb" label="Suburb" fullWidth />
+        <Grid item {...gridItemProps}>
+          <FormField type="text" name="suburb" label="Suburb" />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField type="text" name="state" label="State" />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField type="text" name="postcode" label="Postcode" />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           {countries && (
             <FormField
               type="searchSelect"
@@ -525,11 +533,10 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
               label="Country"
               returnType="object"
               items={countries}
-              fullWidth
             />
           )}
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField
             type="text"
             name="mobilePhone"
@@ -560,14 +567,13 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             </MenuItem>
           </Menu>
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField
             type="text"
             name="email"
             label={setMarketingLabel("email")}
             labelAdornment={<SettingsAdornment clickHandler={e => setEmailSettingsMenu(e.currentTarget)} />}
             validate={validateEmail}
-            fullWidth
           />
           <Menu
             id="emailSettingsMenu"
@@ -592,24 +598,24 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             </MenuItem>
           </Menu>
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-          <FormField type="text" name="message" label="Message (alert for operator)"  fullWidth/>
+        <Grid item {...gridItemProps}>
+          <FormField type="text" name="message" label="Message (alert for operator)" />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField type="text" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField type="text" name="fax" label="Fax" />
         </Grid>
-        <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+        <Grid item {...gridItemProps}>
           <FormField type="text" name="abn" label="Business number (ABN)" validate={validateABN} />
         </Grid>
         {!isCompany ? (
           <>
-            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+            <Grid item {...gridItemProps}>
               <FormField
                 type="date"
                 name="birthDate"
@@ -618,7 +624,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
                 validate={validateBirthDate}
               />
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+            <Grid item {...gridItemProps}>
               <FormField
                 type="select"
                 name="gender"
@@ -629,24 +635,24 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
                 allowEmpty
               />
             </Grid>
-            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+            <Grid item {...gridItemProps}>
               <FormField type="text" name="honorific" label="Honorific" />
             </Grid>
           </>
         ) : null}
-        <Grid item xs={12}>
-          <CustomFields
-            entityName="Contact"
-            fieldName="customFields"
-            entityValues={values}
-            dispatch={dispatch}
-            form={form}
-            fullWidth
-          />
-        </Grid>
+
+        <CustomFields
+          entityName="Contact"
+          fieldName="customFields"
+          entityValues={values}
+          dispatch={dispatch}
+          form={form}
+          gridItemProps={gridItemProps}
+        />
+
         {values.student && (
           <>
-            <Grid item xs={12}>
+            <Grid item xs={twoColumn ? 6 : 12}>
               <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
             </Grid>
             <Grid item xs={12}>

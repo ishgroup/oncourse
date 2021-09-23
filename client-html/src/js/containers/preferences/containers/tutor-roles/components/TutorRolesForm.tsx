@@ -9,7 +9,7 @@ import { InjectedFormProps, reduxForm } from "redux-form";
 import Grid from "@material-ui/core/Grid";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { DefinedTutorRole } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";

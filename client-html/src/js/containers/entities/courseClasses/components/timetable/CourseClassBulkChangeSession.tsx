@@ -23,15 +23,15 @@ import Typography from "@material-ui/core/Typography";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Collapse from "@material-ui/core/Collapse";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import { defaultContactName } from "../../../contacts/utils";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { stubFunction } from "../../../../../common/utils/common";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from "../../../../../common/components/form/form-fields/EditInPlaceDurationField";
+import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
 import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 

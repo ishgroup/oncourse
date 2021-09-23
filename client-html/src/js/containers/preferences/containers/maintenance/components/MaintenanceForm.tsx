@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import * as Model from "../../../../../model/preferences/Maintenance";
@@ -96,7 +96,6 @@ class MaintenanceBaseForm extends React.Component<any, any> {
               label="Minutes of inactivity until automatic logout"
               parse={val => val || "0"}
               validate={[validateSingleMandatoryField, this.validateTimeoutRange]}
-              fullWidth
             />
           </Grid>
         </Grid>

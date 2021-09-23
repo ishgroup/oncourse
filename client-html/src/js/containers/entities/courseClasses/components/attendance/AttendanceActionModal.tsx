@@ -22,10 +22,10 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import LockOpen from "@material-ui/icons/LockOpen";
 import Lock from "@material-ui/icons/Lock";
 import { CourseClassTutor } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
   AttandanceChangeType,

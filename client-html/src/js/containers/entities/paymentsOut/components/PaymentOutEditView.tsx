@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { addDays, compareAsc, format } from "date-fns";
 import { Grid } from "@material-ui/core";
 import { PaymentMethod, PaymentOut } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";

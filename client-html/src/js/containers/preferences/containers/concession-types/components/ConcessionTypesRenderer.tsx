@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import { FormControlLabel } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { ConcessionType } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 
 const renderConcessionTypes = props => {

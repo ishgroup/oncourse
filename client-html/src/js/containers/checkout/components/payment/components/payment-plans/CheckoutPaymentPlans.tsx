@@ -13,7 +13,7 @@ import Stepper from "@material-ui/core/Stepper";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { normalizeNumberToPositive } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import { paymentPlanStyles } from "../../../../../entities/invoices/styles/paymentPlanStyles";
