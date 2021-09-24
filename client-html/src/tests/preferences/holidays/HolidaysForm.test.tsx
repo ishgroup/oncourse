@@ -18,25 +18,25 @@ describe("Virtual rendered HolidaysForm", () => {
         values
       };
     },
-    render: (wrapper, initialValues) => {
+    render: (wrapper, initialValues, shallow) => {
       initialValues.forEach((value, index) => {
-        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].description'] input`).getDOMNode().value)
+        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].description'] input`).val())
           .toEqual(value.description);
 
-        expect(wrapper.find(`#holidays-item-${index} input[type='checkbox']`).props().checked).toEqual(false);
+        expect(shallow.find(`#holidays-item-${index} input[type='checkbox']`).props().checked).toEqual(false);
 
-        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].startDateTime']`).text()).toContain(
+        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].startDateTime'] input`).val()).toContain(
           format(new Date(value.startDateTime), III_DD_MMM_YYYY).toString()
         );
 
-        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].endDateTime']`).text()).toContain(
+        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].endDateTime'] input`).val()).toContain(
           format(new Date(value.endDateTime), III_DD_MMM_YYYY).toString()
         );
 
-        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].repeat'] input`).getDOMNode().value).toEqual(value.repeat);
+        expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].repeat'] input`).val()).toEqual(value.repeat);
 
         if (value.repeat !== RepeatEnum.none) {
-          expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].repeatEnd'] input`).getDOMNode().value)
+          expect(wrapper.find(`#holidays-item-${index} div[id='holidays[${index}].repeatEnd'] input`).val())
             .toEqual(value.repeatEnd);
         }
       });

@@ -9,9 +9,6 @@ describe("Virtual rendered RoomEditView", () => {
     render: (wrapper, initialValues) => {
       expect(wrapper.find("#name input").val()).toContain(initialValues.name);
       expect(wrapper.find("#seatedCapacity input").val()).toContain(initialValues.seatedCapacity);
-      expect(wrapper.find("#siteId input").val()).toContain("No value");
-      expect(wrapper.find("#facilities input").val()).toContain("No value");
-      expect(wrapper.find("#directions input").val()).toContain("No value");
     }
   });
 });

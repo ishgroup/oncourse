@@ -9,12 +9,11 @@ describe("Virtual rendered VoucherProductEditView", () => {
     render: (wrapper, initialValues) => {
       expect(wrapper.find("#name input").val()).toContain(initialValues.name);
       expect(wrapper.find("#code input").val()).toContain(initialValues.code);
-      expect(wrapper.find("#liabilityAccountId input").val()).toContain("No value");
       expect(wrapper.find("#expiryDays input").val()).toContain(initialValues.expiryDays);
       expect(wrapper.find("#maxCoursesRedemption input").val()).toContain(initialValues.maxCoursesRedemption);
       expect(wrapper.find("#feeExTax input").val()).toContain(initialValues.feeExTax);
       expect(wrapper.find("#status input").val()).toContain(initialValues.status);
-      expect(wrapper.find("#description input").val()).toContain(initialValues.description);
+      expect(wrapper.find("#description").text()).toContain(initialValues.description);
     }
   });
 });

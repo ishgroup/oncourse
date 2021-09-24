@@ -17,14 +17,9 @@ describe("Virtual rendered ClassDefaultsForm", () => {
       expect(wrapper.find("#courseclass_default_minimumPlaces input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.ClassMinPlaces.uniqueKey]
       );
-
-      expect(wrapper.find("#courseclass_default_deliveryMode input").val()).toContain("No value");
-
       expect(wrapper.find("#courseclass_default_maximumPlaces input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.ClassMaxPlaces.uniqueKey]
       );
-
-      expect(wrapper.find("#courseclass_default_fundingSource input").val()).toContain("No value");
     }
   });
 });

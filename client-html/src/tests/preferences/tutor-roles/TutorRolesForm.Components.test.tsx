@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import { defaultComponents } from "../../common/Default.Components";
 import TutorRolesForm from "../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm";
 import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
-import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 
 describe("Virtual rendered TutorRolesForm", () => {
   defaultComponents({
@@ -29,17 +28,17 @@ describe("Virtual rendered TutorRolesForm", () => {
         showConfirm: jest.fn()
       };
     },
-    render: (wrapper, initialValues) => {
+    render: (wrapper, initialValues, shallow) => {
       expect(wrapper.find("#description input").val()).toContain(initialValues.description);
-      expect(wrapper.find("input[type='checkbox']").props().checked).toEqual(initialValues.active);
+      expect(shallow.find("input[type='checkbox']").props().checked).toEqual(initialValues.active);
 
       initialValues.payRates.forEach((payRate, index) => {
-        expect(wrapper.find(`div[id='payRates[${index}].validFrom']`).text()).toContain(
+        expect(wrapper.find(`div[id='payRates[${index}].validFrom'] input`).val()).toContain(
           format(new Date(payRate.validFrom), III_DD_MMM_YYYY).toString()
         );
-        expect(wrapper.find(`div[id='payRates[${index}].rate']`).text()).toContain(formatCurrency(`${payRate.rate}`, "null"));
-        expect(wrapper.find(`div[id='payRates[${index}].type']`).text()).toContain(payRate.type);
-        expect(wrapper.find(`div[id='payRates[${index}].oncostRate']`).text()).toContain(`${payRate.oncostRate * 100}%`);
+        expect(wrapper.find(`div[id='payRates[${index}].rate'] input`).val()).toContain(payRate.rate);
+        expect(wrapper.find(`div[id='payRates[${index}].type'] input`).val()).toContain(payRate.type);
+        expect(wrapper.find(`div[id='payRates[${index}].oncostRate'] input`).val()).toContain("10");
       });
     }
   });
