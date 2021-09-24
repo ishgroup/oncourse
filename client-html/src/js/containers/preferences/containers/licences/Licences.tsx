@@ -23,16 +23,8 @@ const styles: any = () => ({
 
 const LicenseNames = {
   [Model.LicenseSMS.uniqueKey]: "SMS",
-  [Model.LicenseCreditCard.uniqueKey]: "Credit card",
   [Model.LicenseAccessControl.uniqueKey]: "Access control",
-  [Model.LicensePayroll.uniqueKey]: "Payroll",
-  [Model.LicenseVoucher.uniqueKey]: "Vouchers",
-  [Model.LicenseAttendance.uniqueKey]: "Attendance",
-  [Model.LicenseMembership.uniqueKey]: "Membership",
   [Model.LicenseScripting.uniqueKey]: "Scripting",
-  [Model.LicenseFeeHelpExport.uniqueKey]: "VET Fee Help exports",
-  [Model.LicenseFundingContract.uniqueKey]: "Funding contract",
-  [Model.LicenseGravatar.uniqueKey]: "Gravatar",
 };
 
 class Licences extends React.Component<any, any> {

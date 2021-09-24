@@ -35,18 +35,6 @@ class PreferenceFunctions {
 
     public static final List<String> PRIVATE_PREFERENCES = [LDAP_BIND_USER_PASS, EMAIL_POP3PASSWORD]
 
-    public static final List<String> READONLY_PREFERENCES = [  LICENSE_ACCESS_CONTROL,
-                                                               LICENSE_SMS,
-                                                               LICENSE_CC_PROCESSING,
-                                                               LICENSE_PAYROLL,
-                                                               LICENSE_VOUCHER,
-                                                               LICENSE_MEMBERSHIP,
-                                                               LICENSE_ATTENDANCE,
-                                                               LICENSE_SCRIPTING,
-                                                               LICENSE_FEE_HELP_EXPORT,
-                                                               LICENSE_FUNDING_CONTRACT
-    ]
-
     static String toString(String key, PreferenceController controller) {
 
         if (key in PRIVATE_PREFERENCES) {
@@ -93,7 +81,6 @@ class PreferenceFunctions {
             case USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS:
             case SERVICES_LDAP_AUTHENTICATION:
             case SERVICES_LDAP_AUTHORISATION:
-            case SERVICES_CC_ENABLED:
             case EMAIL_BOUNCE_ENABLED:
             case LDAP_SSL:
             case LDAP_GROUP_POSIX_STYLE:

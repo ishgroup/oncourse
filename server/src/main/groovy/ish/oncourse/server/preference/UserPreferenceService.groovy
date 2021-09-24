@@ -147,10 +147,6 @@ class UserPreferenceService {
                 return preferenceController.oncourseServerDefaultTimezone
             case PreferenceEnumDTO.SYSTEMUSER_DEFAULTADMINISTRATIONCENTRE_NAME:
                 return userService.currentUser.defaultAdministrationCentre.name
-            case PreferenceEnumDTO.LICENSE_ACCESSCONTROL:
-                return preferenceController.licenseAccessControl.toString()
-            case PreferenceEnumDTO.LICENSE_SCRIPTING:
-                return preferenceController.licenseScripting.toString()
             case PreferenceEnumDTO.ACCOUNT_INVOICE_TERMS:
                 return preferenceController.accountInvoiceTerms.toString()
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID:
