@@ -39,7 +39,7 @@ class GoogleOAuthProveder extends OAuthProvider {
         webSecrets = GoogleClientSecrets.load(jsonFactory,
                 new InputStreamReader(readSecret(GOOGLE, WEB)))
         webFlow = new GoogleAuthorizationCodeFlow.Builder(
-                httpTransport , jsonFactory, webSecrets, [Oauth2Scopes.OPENID, Oauth2Scopes.USERINFO_PROFILE,Oauth2Scopes.USERINFO_EMAIL, CalendarScopes.CALENDAR_EVENTS, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_METADATA])
+                httpTransport , jsonFactory, webSecrets, [Oauth2Scopes.OPENID, Oauth2Scopes.USERINFO_PROFILE,Oauth2Scopes.USERINFO_EMAIL, CalendarScopes.CALENDAR_EVENTS, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_SCRIPTS])
                 .setAccessType("offline")
                 .build()
         androidSecret = GoogleClientSecrets.load(jsonFactory,
