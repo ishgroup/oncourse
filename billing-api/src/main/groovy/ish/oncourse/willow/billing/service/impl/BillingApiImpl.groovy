@@ -16,6 +16,7 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.util.PreferenceUtil
 import ish.oncourse.willow.billing.v1.model.CollegeDTO
+import ish.oncourse.willow.billing.v1.model.Currency
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.service.BillingApi
 import ish.oncourse.willow.billing.website.CreateNewWebSite
@@ -131,9 +132,10 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
 
 
-                PreferenceUtil.createSetting(context, college, 'billing.code', collegeDTO.collegeKey)
+                PreferenceUtil.createSetting(context, college, 'billing.code', "C-$collegeDTO.collegeKey")
                 PreferenceUtil.createSetting(context, college, 'billing.users', '1')
-                PreferenceUtil.createSetting(context, college, 'billing.plan', 'basic')
+                PreferenceUtil.createSetting(context, college, 'billing.plan', 'starter-21')
+                PreferenceUtil.createSetting(context, college, 'billing.currency', (collegeDTO.currency ? collegeDTO.currency.toString() : Currency.US.toString()))
 
                 context.commitChanges()
 
@@ -241,8 +243,6 @@ class BillingApiImpl implements BillingApi {
         
         String toString() {
             return  "$collegeKey:\n"+
-                    "  security_key: $securityCode\n" +
-                    "  version: \"{{ small }}\"\n" +
                     "  server:\n" +
                     "    port: $port\n" +
                     "    minion: colo.splash\n" +

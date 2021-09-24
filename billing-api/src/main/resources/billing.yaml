@@ -246,7 +246,17 @@ definitions:
       webSiteTemplate:
         description: web site template
         $ref: '#/definitions/SiteTemplate'
-
+      currency:
+        $ref: '#/definitions/Currency'
+        
+  Currency:
+    type: string
+    enum:
+      - us
+      - au
+      - nz
+      - eu
+      
   SiteTemplate:
     type: string
     enum:
@@ -256,6 +266,10 @@ definitions:
       - d
       - e
       - f
+      - g
+      - h
+      - i
+  
   ErrorDTO:
     type: object
     properties:
