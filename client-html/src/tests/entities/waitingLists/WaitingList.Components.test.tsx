@@ -7,11 +7,11 @@ describe("Virtual rendered WaitingListEditView", () => {
     EditView: WaitingListEditView,
     record: mockecApi => mockecApi.db.getWaitingList(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#contactId").text()).toContain(initialValues.studentName);
-      expect(wrapper.find("#studentCount").text()).toContain(initialValues.studentCount);
-      expect(wrapper.find("#courseId").text()).toContain(initialValues.courseName);
-      expect(wrapper.find("#studentNotes").text()).toContain(initialValues.studentNotes);
-      expect(wrapper.find("#privateNotes").text()).toContain(initialValues.privateNotes);
+      expect(wrapper.find("#contactId input").val()).toContain(initialValues.studentName);
+      expect(wrapper.find("#studentCount input").val()).toContain(initialValues.studentCount);
+      expect(wrapper.find("#courseId input").val()).toContain(initialValues.courseName);
+      expect(wrapper.find("#studentNotes input").val()).toContain(initialValues.studentNotes);
+      expect(wrapper.find("#privateNotes input").val()).toContain(initialValues.privateNotes);
     }
   });
 });

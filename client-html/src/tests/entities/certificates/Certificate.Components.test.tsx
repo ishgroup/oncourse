@@ -9,18 +9,18 @@ describe("Virtual rendered CertificateEditView", () => {
     EditView: CertificateEditView,
     record: mockecApi => mockecApi.db.getCertificate(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#studentContactId").text()).toContain(initialValues.studentName);
-      expect(wrapper.find("#nationalCode").text()).toContain(initialValues.nationalCode);
-      expect(wrapper.find("#title").text()).toContain(initialValues.title);
-      expect(wrapper.find("#publicNotes").text()).toContain("No value");
-      expect(wrapper.find("#awardedOn").text()).toContain(
+      expect(wrapper.find("#studentContactId input").val()).toContain(initialValues.studentName);
+      expect(wrapper.find("#nationalCode input").val()).toContain(initialValues.nationalCode);
+      expect(wrapper.find("#title input").val()).toContain(initialValues.title);
+      expect(wrapper.find("#publicNotes input").val()).toContain("No value");
+      expect(wrapper.find("#awardedOn input").val()).toContain(
         format(new Date(initialValues.awardedOn), III_DD_MMM_YYYY).toString()
       );
-      expect(wrapper.find("#issuedOn").text()).toContain(
+      expect(wrapper.find("#issuedOn input").val()).toContain(
         format(new Date(initialValues.issuedOn), III_DD_MMM_YYYY).toString()
       );
-      expect(wrapper.find("#expiryDate").text()).toContain("No value");
-      expect(wrapper.find("#privateNotes").text()).toContain("No value");
+      expect(wrapper.find("#expiryDate input").val()).toContain("No value");
+      expect(wrapper.find("#privateNotes input").val()).toContain("No value");
     }
   });
 });

@@ -9,10 +9,10 @@ describe("Virtual rendered CorporatePassEditView", () => {
     EditView: CorporatePassEditView,
     record: mockecApi => mockecApi.db.getCorporatePass(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#contactId").text()).toContain(initialValues.contactFullName);
-      expect(wrapper.find("#password").text()).toContain(initialValues.password);
-      expect(wrapper.find("#invoiceEmail").text()).toContain(initialValues.invoiceEmail);
-      expect(wrapper.find("#expiryDate").text()).toContain(
+      expect(wrapper.find("#contactId input").val()).toContain(initialValues.contactFullName);
+      expect(wrapper.find("#password input").val()).toContain(initialValues.password);
+      expect(wrapper.find("#invoiceEmail input").val()).toContain(initialValues.invoiceEmail);
+      expect(wrapper.find("#expiryDate input").val()).toContain(
         format(new Date(initialValues.expiryDate), III_DD_MMM_YYYY).toString()
       );
     }

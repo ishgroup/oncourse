@@ -39,18 +39,13 @@ export const defaultComponents: ({
     beforeFn();
   }
 
-  it(`${entity} components should render with given values`, () => {
-    const wrapper = mount(
+  it(`${entity} components should render with given values`, async () => {
+    const wrapper = await mount(
       <TestEntry>
         <MockedEditView />
       </TestEntry>,
     );
 
-    return new Promise<void>(resolve => {
-      setTimeout(() => {
-        render(wrapper, initialValues);
-        resolve();
-      }, 1000);
-    });
+    render(wrapper.render(), initialValues);
   });
 };

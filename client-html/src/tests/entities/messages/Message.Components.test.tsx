@@ -17,7 +17,7 @@ describe("Virtual rendered MessageEditView", () => {
         format(new Date(initialValues.createdOn), III_DD_MMM_YYYY).toString()
       );
 
-      expect(wrapper.find("code").text()).toContain(initialValues.message);
+      expect(wrapper.find("code input").val()).toContain(initialValues.message);
       expect(wrapper.find(".textField").at(3).text()).toContain("No Value");
       expect(wrapper.find(".textField").at(4).text()).toContain("No Value");
       expect(wrapper.find(".textField").at(5).text()).toContain(initialValues.creatorKey);

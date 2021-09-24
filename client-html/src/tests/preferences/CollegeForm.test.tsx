@@ -27,7 +27,7 @@ describe("College Form component", () => {
           mockedAPI.db.preference[PreferencesModel.CollegeName.uniqueKey],
         );
 
-        expect(wrapper.find("#oncourse-server-timezone-default div[role='button']").text()).toEqual(
+        expect(wrapper.find("#oncourse-server-timezone-default div[role='button'] input").val()).toEqual(
           mockedAPI.db.preference[PreferencesModel.CollegeTimezone.uniqueKey],
         );
 

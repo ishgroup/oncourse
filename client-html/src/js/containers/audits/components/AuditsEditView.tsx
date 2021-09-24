@@ -10,10 +10,10 @@ import FormField from "../../../common/components/form/formFields/FormField";
 const AuditsEditView = () => (
   <Grid container>
     <Grid item className="p-3">
-      <FormField disabled type="dateTime" name="created" label="Date and time"/>
-      <FormField disabled type="text" name="entityIdentifier" label="Entity name"/>
-      <FormField disabled type="text" name="entityId" multiline label="Entity ID"/>
-      <FormField disabled type="text" name="action" label="Action"/>
+      <FormField disabled type="dateTime" name="created" label="Date and time" />
+      <FormField disabled type="text" name="entityIdentifier" label="Entity name" />
+      <FormField disabled type="text" name="entityId" label="Entity ID" />
+      <FormField disabled type="text" name="action" label="Action" />
       <FormField disabled type="text" name="message" label="Message" multiline />
     </Grid>
   </Grid>
