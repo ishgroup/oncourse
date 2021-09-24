@@ -36,11 +36,9 @@ describe("Virtual rendered CollectionRules", () => {
       const rule = initialValues[0];
 
       expect(wrapper.find("#enrolmentFormName input").val()).toContain(rule.enrolmentFormName);
-      expect(wrapper.find("#surveyForms input").val()).toContain(rule.surveyForms.join(", "));
+      expect(wrapper.find("#surveyForms input").val()).toContain(rule.surveyForms.join(","));
       expect(wrapper.find("#applicationFormName input").val()).toContain(rule.applicationFormName);
-      expect(wrapper.find("#payerFormName input").val()).toContain("No value");
       expect(wrapper.find("#waitingListFormName input").val()).toContain(rule.waitingListFormName);
-      expect(wrapper.find("#parentFormName input").val()).toContain("No value");
     }
   });
 });

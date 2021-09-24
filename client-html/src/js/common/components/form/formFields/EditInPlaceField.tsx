@@ -629,7 +629,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         : [...selectItems, selectAdornment.content];
     }
 
-    if ((allowEmpty || !input.value) && (!multiple || !items.length)) {
+    if (((items && !items.some(i => !i[selectValueMark])) || !items) && (allowEmpty || !input.value) && (!multiple || !items.length)) {
       selectItems = [
         <MenuItem
           key="empty"

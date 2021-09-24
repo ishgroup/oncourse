@@ -10,8 +10,8 @@ describe("Virtual rendered WaitingListEditView", () => {
       expect(wrapper.find("#contactId input").val()).toContain(initialValues.studentName);
       expect(wrapper.find("#studentCount input").val()).toContain(initialValues.studentCount);
       expect(wrapper.find("#courseId input").val()).toContain(initialValues.courseName);
-      expect(wrapper.find("#studentNotes input").val()).toContain(initialValues.studentNotes);
-      expect(wrapper.find("#privateNotes input").val()).toContain(initialValues.privateNotes);
+      expect(wrapper.find("#studentNotes textarea").val()).toContain(initialValues.studentNotes);
+      expect(wrapper.find("#privateNotes textarea").val()).toContain(initialValues.privateNotes);
     }
   });
 });

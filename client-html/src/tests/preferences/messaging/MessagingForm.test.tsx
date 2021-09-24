@@ -26,8 +26,6 @@ describe("Virtual rendered MessagingForm", () => {
         mockedAPI.db.preference[PreferencesModel.EmailAdminAddress.uniqueKey]
       );
 
-      expect(wrapper.find("input[type='checkbox']").props().checked).toEqual(false);
-
       expect(wrapper.find("#email-pop3host input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.EmailPop3Host.uniqueKey]
       );
@@ -40,7 +38,7 @@ describe("Virtual rendered MessagingForm", () => {
         mockedAPI.db.preference[PreferencesModel.EmailPop3Account.uniqueKey]
       );
 
-      expect(wrapper.find("#email-pop3-password input").getDOMNode().value).toEqual(
+      expect(wrapper.find("#email-pop3-password input").val()).toEqual(
         mockedAPI.db.preference[PreferencesModel.EmailPop3Password.uniqueKey]
       );
     }
