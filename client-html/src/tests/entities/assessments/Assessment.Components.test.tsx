@@ -7,6 +7,9 @@ describe("Virtual rendered AssessmentEditView", () => {
     EditView: AssessmentEditView,
     record: mockecApi => mockecApi.db.getAssessment(1),
     render: (wrapper, initialValues) => {
+
+
+
       expect(wrapper.find("#code input").val()).toContain(initialValues.code);
       expect(wrapper.find("#name input").val()).toContain(initialValues.name);
       expect(wrapper.find('input[type="checkbox"]').props().checked).toEqual(initialValues.active);

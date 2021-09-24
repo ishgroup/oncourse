@@ -9,7 +9,7 @@ describe("Virtual rendered BankingEditView", () => {
     EditView: BankingEditView,
     record: mockecApi => mockecApi.db.getBanking(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("div.textField input").val()).toContain(initialValues.adminSite);
+      expect(wrapper.find("div.textField").text()).toContain(initialValues.adminSite);
       expect(wrapper.find("#settlementDate input").val()).toContain(
         format(new Date(initialValues.settlementDate), III_DD_MMM_YYYY).toString()
       );
