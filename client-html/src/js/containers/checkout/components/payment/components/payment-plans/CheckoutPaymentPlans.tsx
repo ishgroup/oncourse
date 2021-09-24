@@ -31,6 +31,9 @@ const styles = () => createStyles({
   stepLabel: {
     width: '100%',
     height: 48
+  },
+  container: {
+    marginBottom: 50
   }
 });
 
@@ -81,7 +84,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
   } = props;
 
   return (
-    <div className="mb-3">
+    <div className={classes.container}>
       <div className="centeredFlex mb-2">
         <Typography className="secondaryHeading">
           Payment plan
