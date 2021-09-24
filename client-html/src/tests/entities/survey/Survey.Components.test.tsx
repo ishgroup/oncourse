@@ -10,9 +10,8 @@ describe("Virtual rendered SurveyEditView", () => {
       expect(wrapper.find(".textField").text()).toContain(initialValues.studentName);
       expect(wrapper.find("#EditListItemForm-netPromoterScore-1").text()).toContain("");
       expect(wrapper.find("#EditListItemForm-netPromoterScore-2").text()).toContain("");
-      expect(wrapper.find("#comment input").val()).toContain(initialValues.comment);
+      expect(wrapper.find("#comment textarea").val()).toContain(initialValues.comment);
       expect(wrapper.find("#visibility input").val()).toContain(initialValues.visibility);
-      expect(wrapper.find("#testimonial input").val()).toContain("No value");
     }
   });
 });
