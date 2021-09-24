@@ -20,7 +20,7 @@ describe("Virtual rendered SecuritySettingsForm", () => {
         false
       );
 
-      expect(wrapper.find("#security-password-expiry-period").text()).toContain(
+      expect(wrapper.find("#security-password-expiry-period input").val()).toContain(
         30
       );
 
@@ -28,7 +28,7 @@ describe("Virtual rendered SecuritySettingsForm", () => {
         false
       );
 
-      expect(wrapper.find("#security-tfa-expiry-period").text()).toContain(
+      expect(wrapper.find("#security-tfa-expiry-period input").val()).toContain(
         16
       );
 
@@ -36,7 +36,7 @@ describe("Virtual rendered SecuritySettingsForm", () => {
         false
       );
 
-      expect(wrapper.find("#security-number-login-attempts").text()).toContain(
+      expect(wrapper.find("#security-number-login-attempts input").val()).toContain(
         5
       );
     }

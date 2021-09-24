@@ -36,10 +36,10 @@ describe("Virtual rendered DataCollectionForm", () => {
       const form = initialValues[0];
       const items = parseDataCollectionFormData(form);
 
-      expect(wrapper.find("h6[id='form.type']").text()).toContain(form.type === "Survey" ? "Student Feedback" : form.type);
+      expect(wrapper.find("h6[id='form.type'] input").val()).toContain(form.type === "Survey" ? "Student Feedback" : form.type);
 
       if (form.type === "Survey") {
-        expect(wrapper.find("div[id='form.deliverySchedule']").text()).toContain(form.deliverySchedule);
+        expect(wrapper.find("div[id='form.deliverySchedule'] input").val()).toContain(form.deliverySchedule);
       }
 
       items.forEach((field, key) => {

@@ -143,8 +143,7 @@ const styles = theme => createStyles({
   },
   labelAdornment: {},
   placeholderContent: {
-    color: theme.palette.text.disabled,
-    opacity: 0.4,
+    color: theme.palette.divider,
     fontWeight: 400,
   },
   chip: {
@@ -163,7 +162,7 @@ const styles = theme => createStyles({
     }
   },
   inlineContainer: {
-    display: "inline",
+    display: "inline-block",
     marginLeft: "0.3em"
   },
   inlineInput: {
@@ -172,7 +171,6 @@ const styles = theme => createStyles({
     fontSize: "inherit",
   },
   selectMainWrapper: {
-    marginTop: theme.spacing(2),
     "&:hover $selectIconInput": {
       visibility: 'visible',
       color: theme.palette.primary.main,
@@ -631,7 +629,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         : [...selectItems, selectAdornment.content];
     }
 
-    if (allowEmpty && (!multiple || !items.length)) {
+    if ((allowEmpty || !input.value) && (!multiple || !items.length)) {
       selectItems = [
         <MenuItem
           key="empty"
@@ -646,7 +644,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         >
           <span className={classes.placeholderContent}>{placeholder || "No value"}</span>
         </MenuItem>,
-        ...selectItems
+        ...selectItems || []
       ];
     }
 
@@ -664,9 +662,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           [classes.inlineInput]: isInline,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
+          [classes.hideArrows]: ["percentage", "number"].includes(type),
           "text-end": rightAligned
-        },
-          classes.hideArrows),
+        }),
         placeholder: placeholder || (!isEditing && "No value"),
         style: {
           maxWidth: isInline ? this.getInputLength() : undefined
@@ -720,19 +718,24 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             })}
             {...custom}
           >
-            <InputLabel
-              classes={{
-                root: clsx(classes.label, !label && classes.labelTopZeroOffset),
-                shrink: classes.labelShrink
-              }}
-              {...InputLabelProps}
-              shrink={Boolean(label || input.value)}
-            >
-              {labelContent}
-            </InputLabel>
+            {
+              label && (
+              <InputLabel
+                classes={{
+                  root: clsx(classes.label, !label && classes.labelTopZeroOffset),
+                  shrink: classes.labelShrink
+                }}
+                {...InputLabelProps}
+                shrink={Boolean(label || input.value)}
+              >
+                {labelContent}
+              </InputLabel>
+              )
+            }
+
             {select
               ? (
-                <div className={clsx(isInline && "d-inline", classes.selectMainWrapper)}>
+                <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
                   <Select
                     value={multiple
                       ? input.value || []
@@ -790,6 +793,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             </FormHelperText>
           </FormControl>
         </div>
+        {isInline && (
         <div
           className={clsx({
             [classes.hiddenContainer]: isEditing || invalid || !isInline,
@@ -802,87 +806,87 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             {isInline && !hideLabel && label && labelContent}
 
             {formatting === "primary" && (
-              <ListItemText
-                classes={{
+            <ListItemText
+              classes={{
                   root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
                   primary: "d-flex"
                 }}
-                primary={(
-                  <ButtonBase
-                    classes={{
+              primary={(
+                <ButtonBase
+                  classes={{
                       root: classes.valueContainer
                     }}
-                    onFocus={e => this.onEditButtonFocus(e, "focus")}
-                    onClick={e => this.onEditButtonFocus(e, "click")}
-                    className={clsx("hoverIconContainer", fieldClasses.text)}
-                    component="div"
+                  onFocus={e => this.onEditButtonFocus(e, "focus")}
+                  onClick={e => this.onEditButtonFocus(e, "click")}
+                  className={clsx("hoverIconContainer", fieldClasses.text)}
+                  component="div"
+                >
+                  <span
+                    ref={this.setContainerNode}
+                    className={clsx(classes.editable, {
+                        [classes.rightAligned]: rightAligned
+                      })}
                   >
-                    <span
-                      ref={this.setContainerNode}
-                      className={clsx(classes.editable, {
-                      [classes.rightAligned]: rightAligned
-                    })}
-                    >
-                      {editableComponent || this.getValue()}
-                      {editIcon}
-                    </span>
-                  </ButtonBase>
+                    {editableComponent || this.getValue()}
+                    {editIcon}
+                  </span>
+                </ButtonBase>
                 )}
-              />
+            />
             )}
 
             {formatting === "secondary" && (
-              <ListItemText
-                classes={{
+            <ListItemText
+              classes={{
                   root: `${classes.viewMode}`,
                   secondary: "d-flex"
                 }}
-                secondary={(
-                  <ButtonBase
-                    disabled={disabled}
-                    classes={{
+              secondary={(
+                <ButtonBase
+                  disabled={disabled}
+                  classes={{
                       root: classes.valueContainer
                     }}
-                    onFocus={e => this.onEditButtonFocus(e, "focus")}
-                    onClick={e => this.onEditButtonFocus(e, "click")}
-                    component="span"
-                    className={clsx("hoverIconContainer", fieldClasses.text)}
-                  >
-                    <span
-                      ref={this.setContainerNode}
-                      className={clsx(classes.editable, {
+                  onFocus={e => this.onEditButtonFocus(e, "focus")}
+                  onClick={e => this.onEditButtonFocus(e, "click")}
+                  component="span"
+                  className={clsx("hoverIconContainer", fieldClasses.text)}
+                >
+                  <span
+                    ref={this.setContainerNode}
+                    className={clsx(classes.editable, {
                         [classes.rightAligned]: rightAligned
                       })}
-                    >
-                      {editableComponent || this.getValue()}
-                      {editIcon}
-                    </span>
-                  </ButtonBase>
+                  >
+                    {editableComponent || this.getValue()}
+                    {editIcon}
+                  </span>
+                </ButtonBase>
                 )}
-              />
+            />
             )}
 
             {formatting === "custom" && (
-              <ButtonBase
-                component="div"
-                onFocus={e => this.onEditButtonFocus(e, "focus")}
-                onClick={e => this.onEditButtonFocus(e, "click")}
-                className={clsx(classes.editable, "hoverIconContainer", classes.fitWidth, fieldClasses.text, {
+            <ButtonBase
+              component="div"
+              onFocus={e => this.onEditButtonFocus(e, "focus")}
+              onClick={e => this.onEditButtonFocus(e, "click")}
+              className={clsx(classes.editable, "hoverIconContainer", classes.fitWidth, fieldClasses.text, {
                   [classes.rightAligned]: rightAligned,
                   [classes.readonly]: disabled
                 })}
-              >
-                {editableComponent || this.getValue()}
-                {editIcon}
-              </ButtonBase>
+            >
+              {editableComponent || this.getValue()}
+              {editIcon}
+            </ButtonBase>
             )}
 
             {isInline && (
-              <ButtonBase
-                component="span"
-                onFocus={e => this.onEditButtonFocus(e, "focus")}
-                onClick={e => this.onEditButtonFocus(e, "click")}
-                className={clsx(
+            <ButtonBase
+              component="span"
+              onFocus={e => this.onEditButtonFocus(e, "focus")}
+              onClick={e => this.onEditButtonFocus(e, "click")}
+              className={clsx(
                   "d-inline vert-align-bl hoverIconContainer",
                   classes.editable,
                   fieldClasses.text, {
@@ -891,15 +895,16 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     [classes.inlineMargin]: disabled
                   }
                 )}
-              >
-                {editableComponent || this.getValue()}
-                {editIcon}
-              </ButtonBase>
+            >
+              {editableComponent || this.getValue()}
+              {editIcon}
+            </ButtonBase>
             )}
 
             {helperText && <Typography variant="caption">{helperText}</Typography>}
           </div>
         </div>
+      )}
       </div>
     );
   }

@@ -14,17 +14,17 @@ describe("Virtual rendered ClassDefaultsForm", () => {
       history: jest.fn()
     }),
     render: wrapper => {
-      expect(wrapper.find("#courseclass_default_minimumPlaces").text()).toContain(
+      expect(wrapper.find("#courseclass_default_minimumPlaces input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.ClassMinPlaces.uniqueKey]
       );
 
-      expect(wrapper.find("#courseclass_default_deliveryMode").text()).toContain("No value");
+      expect(wrapper.find("#courseclass_default_deliveryMode input").val()).toContain("No value");
 
-      expect(wrapper.find("#courseclass_default_maximumPlaces").text()).toContain(
+      expect(wrapper.find("#courseclass_default_maximumPlaces input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.ClassMaxPlaces.uniqueKey]
       );
 
-      expect(wrapper.find("#courseclass_default_fundingSource").text()).toContain("No value");
+      expect(wrapper.find("#courseclass_default_fundingSource input").val()).toContain("No value");
     }
   });
 });

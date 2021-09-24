@@ -30,7 +30,7 @@ describe("Virtual rendered TutorRolesForm", () => {
       };
     },
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#description").text()).toContain(initialValues.description);
+      expect(wrapper.find("#description input").val()).toContain(initialValues.description);
       expect(wrapper.find("input[type='checkbox']").props().checked).toEqual(initialValues.active);
 
       initialValues.payRates.forEach((payRate, index) => {

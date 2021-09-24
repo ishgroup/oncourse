@@ -16,15 +16,15 @@ describe("Virtual rendered LDAPForm", () => {
     render: wrapper => {
       expect(wrapper.find(`input[type="checkbox"]`).at(0).props().checked).toEqual(false);
 
-      expect(wrapper.find("#ldap-host").text()).toContain(
+      expect(wrapper.find("#ldap-host input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.LdapHost.uniqueKey]
       );
 
-      expect(wrapper.find("#ldap-bind-user-dn").text()).toContain(
+      expect(wrapper.find("#ldap-bind-user-dn input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.LdapBindUserDN.uniqueKey]
       );
 
-      expect(wrapper.find("#ldap-serverport").text()).toContain(
+      expect(wrapper.find("#ldap-serverport input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.LdapServerPort.uniqueKey]
       );
 

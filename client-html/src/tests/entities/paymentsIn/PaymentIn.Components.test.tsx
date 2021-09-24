@@ -10,7 +10,7 @@ describe("Virtual rendered PaymentInsEditView", () => {
     record: mockecApi => mockecApi.db.getPaymentIn(1),
     render: (wrapper, initialValues) => {
       expect(wrapper.find(".textField").at(0).text()).toContain(initialValues.payerName);
-      expect(wrapper.find("#administrationCenterId").text()).toContain(initialValues.administrationCenterId);
+      expect(wrapper.find("#administrationCenterId input").val()).toContain(initialValues.administrationCenterId);
       expect(wrapper.find(".textField").at(2).text()).toContain(initialValues.paymentInType);
       expect(wrapper.find(".textField").at(3).text()).toContain(initialValues.status);
       expect(wrapper.find(".textField").at(4).text()).toContain(initialValues.amount);

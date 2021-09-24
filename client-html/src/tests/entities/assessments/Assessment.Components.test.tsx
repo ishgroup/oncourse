@@ -7,10 +7,10 @@ describe("Virtual rendered AssessmentEditView", () => {
     EditView: AssessmentEditView,
     record: mockecApi => mockecApi.db.getAssessment(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#code").text()).toContain(initialValues.code);
-      expect(wrapper.find("#name").text()).toContain(initialValues.name);
+      expect(wrapper.find("#code input").val()).toContain(initialValues.code);
+      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
       expect(wrapper.find('input[type="checkbox"]').props().checked).toEqual(initialValues.active);
-      expect(wrapper.find("#description").text()).toContain(initialValues.description);
+      expect(wrapper.find("#description input").val()).toContain(initialValues.description);
     }
   });
 });

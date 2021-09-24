@@ -10,7 +10,7 @@ describe("Virtual rendered PaymentsOutEditView", () => {
     record: mockecApi => mockecApi.db.getPaymentOut(1),
     render: (wrapper, initialValues) => {
       expect(wrapper.find(".textField").at(0).text()).toContain(initialValues.payeeName);
-      expect(wrapper.find("#administrationCenterId").text()).toContain(initialValues.administrationCenterName);
+      expect(wrapper.find("#administrationCenterId input").val()).toContain(initialValues.administrationCenterName);
       expect(wrapper.find(".textField").at(2).text()).toContain("No Value");
       expect(wrapper.find(".textField").at(3).text()).toContain(initialValues.status);
       expect(wrapper.find(".textField").at(4).text()).toContain("Account is disabled");
@@ -24,7 +24,7 @@ describe("Virtual rendered PaymentsOutEditView", () => {
         format(new Date(initialValues.dateBanked), III_DD_MMM_YYYY).toString()
       );
 
-      expect(wrapper.find("#privateNotes").text()).toContain("No value");
+      expect(wrapper.find("#privateNotes input").val()).toContain("No value");
       expect(wrapper.find(".textField").at(8).text()).toContain(initialValues.createdBy);
     }
   });

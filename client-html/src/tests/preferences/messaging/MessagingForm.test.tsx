@@ -14,29 +14,29 @@ describe("Virtual rendered MessagingForm", () => {
       history: jest.fn()
     }),
     render: wrapper => {
-      expect(wrapper.find("#email-from").text()).toContain(
+      expect(wrapper.find("#email-from input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.EmailFromAddress.uniqueKey]
       );
 
-      expect(wrapper.find("#email-from-name").text()).toContain(
+      expect(wrapper.find("#email-from-name input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.EmailFromName.uniqueKey]
       );
 
-      expect(wrapper.find("#email-admin").text()).toContain(
+      expect(wrapper.find("#email-admin input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.EmailAdminAddress.uniqueKey]
       );
 
       expect(wrapper.find("input[type='checkbox']").props().checked).toEqual(false);
 
-      expect(wrapper.find("#email-pop3host").text()).toContain(
+      expect(wrapper.find("#email-pop3host input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.EmailPop3Host.uniqueKey]
       );
 
-      expect(wrapper.find("#email-bounce-address").text()).toContain(
+      expect(wrapper.find("#email-bounce-address input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.EmailBounceAddress.uniqueKey]
       );
 
-      expect(wrapper.find("#email-pop3-account").text()).toContain(
+      expect(wrapper.find("#email-pop3-account input").val()).toContain(
         mockedAPI.db.preference[PreferencesModel.EmailPop3Account.uniqueKey]
       );
 

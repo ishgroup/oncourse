@@ -137,9 +137,8 @@ const EnrolClassListView = React.memo<any>(props => {
                     const isTraineeship = course.isTraineeship === "true";
 
                     return (
-                      <Grid item xs={12}>
+                      <Grid item xs={12} key={s.id}>
                         <Button
-                          key={s.id}
                           onClick={onSelect && (() => onSelect(s))}
                           classes={{
                             disabled: classes.disabledSessionButton

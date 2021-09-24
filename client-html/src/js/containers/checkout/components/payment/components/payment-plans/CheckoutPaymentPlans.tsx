@@ -27,6 +27,10 @@ const styles = () => createStyles({
   },
   inlineItem: {
     marginLeft: "0.3em"
+  },
+  stepLabel: {
+    width: '100%',
+    height: 48
   }
 });
 
@@ -102,8 +106,8 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
           const stepContent = (
             <StepLabel
               classes={{
-              root: "w-100"
-            }}
+                labelContainer: classes.stepLabel
+              }}
               className={first && selected ? "centeredFlex relative selectedItemArrow" : ""}
             >
 
@@ -160,7 +164,9 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
             <Step
               key={f}
               disabled={disabledStep}
-              classes={{ root: classes.step }}
+              classes={{
+                root: classes.step,
+              }}
             >
               {first ? (
                 <StepButton onClick={onPayNowFocus} className="text-left">

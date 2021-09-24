@@ -7,14 +7,14 @@ describe("Virtual rendered VoucherProductEditView", () => {
     EditView: VoucherProductEditView,
     record: mockecApi => mockecApi.db.getVoucherProduct(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#name").text()).toContain(initialValues.name);
-      expect(wrapper.find("#code").text()).toContain(initialValues.code);
-      expect(wrapper.find("#liabilityAccountId").text()).toContain("No value");
-      expect(wrapper.find("#expiryDays").text()).toContain(initialValues.expiryDays);
-      expect(wrapper.find("#maxCoursesRedemption").text()).toContain(initialValues.maxCoursesRedemption);
-      expect(wrapper.find("#feeExTax").text()).toContain(initialValues.feeExTax);
-      expect(wrapper.find("#status").text()).toContain(initialValues.status);
-      expect(wrapper.find("#description").text()).toContain(initialValues.description);
+      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
+      expect(wrapper.find("#code input").val()).toContain(initialValues.code);
+      expect(wrapper.find("#liabilityAccountId input").val()).toContain("No value");
+      expect(wrapper.find("#expiryDays input").val()).toContain(initialValues.expiryDays);
+      expect(wrapper.find("#maxCoursesRedemption input").val()).toContain(initialValues.maxCoursesRedemption);
+      expect(wrapper.find("#feeExTax input").val()).toContain(initialValues.feeExTax);
+      expect(wrapper.find("#status input").val()).toContain(initialValues.status);
+      expect(wrapper.find("#description input").val()).toContain(initialValues.description);
     }
   });
 });
