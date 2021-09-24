@@ -406,21 +406,13 @@
     <Preference CREATEDON="2012-06-20 10:27:53.0" MODIFIEDON="2019-01-11 23:51:41.85000000" NAME="data.wed.version"   UNIQUEKEY="data.wed.version" VALUESTRING="development" ID="220"/>
     <Preference CREATEDON="2012-06-20 10:28:05.0" MODIFIEDON="2012-06-20 10:28:05.0" NAME="services.soap.communication.key"   UNIQUEKEY="services.soap.communication.key" VALUESTRING="-1152920164454761137" ID="222"/>
     <Preference CREATEDON="2012-06-20 10:28:05.0" MODIFIEDON="2012-06-20 10:28:05.0" NAME="logout.timeout"   UNIQUEKEY="logout.timeout" VALUESTRING="60" ID="223"/>
-    <Preference CREATEDON="2014-08-20 00:01:13.0" MODIFIEDON="2018-11-06 23:53:23.0" NAME="license.payroll" UNIQUEKEY="license.payroll" VALUESTRING="true" ID="845"/>
         <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2014-07-01 21:54:39.0" NAME="license.externaldb" UNIQUEKEY="license.externaldb" VALUESTRING="true" ID="846"/>
-        <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2014-07-02 00:43:35.0" NAME="license.accesscontrol" UNIQUEKEY="license.accesscontrol" VALUESTRING="true" ID="847"/>
-        <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2015-08-20 21:05:34.0" NAME="license.ldap" UNIQUEKEY="license.ldap" VALUESTRING="true" ID="848"/>
+        <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2014-07-02 00:43:35.0" NAME="license.access_control" UNIQUEKEY="license.access_control" VALUESTRING="true" ID="847"/>
         <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2015-08-04 01:07:03.0" NAME="license.sms" UNIQUEKEY="license.sms" VALUESTRING="true" ID="849"/>
-        <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2015-08-21 21:38:27.0" NAME="license.voucher" UNIQUEKEY="license.voucher" VALUESTRING="true" ID="850"/>
-        <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2014-07-01 21:54:39.0" NAME="license.membership" UNIQUEKEY="license.membership" VALUESTRING="true" ID="851"/>
         <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2014-07-01 21:54:39.0" NAME="license.ssl" UNIQUEKEY="license.ssl" VALUESTRING="true" ID="852"/>
-        <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2014-07-01 21:54:39.0" NAME="license.attendance" UNIQUEKEY="license.attendance" VALUESTRING="true" ID="853"/>
-        <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2016-04-18 20:45:36.0" NAME="license.ccprocessing" UNIQUEKEY="license.ccprocessing" VALUESTRING="true" ID="854"/>
         <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2015-03-07 02:18:21.0" NAME="license.budget" UNIQUEKEY="license.budget" VALUESTRING="true" ID="855"/>
         <Preference CREATEDON="2014-07-01 21:54:39.0" MODIFIEDON="2014-07-01 21:54:39.0" NAME="license.website" UNIQUEKEY="license.website" VALUESTRING="true" ID="856"/>
         <Preference CREATEDON="2014-11-04 02:31:05.0" MODIFIEDON="2016-06-07 22:16:45.0" NAME="license.scripting" UNIQUEKEY="license.scripting" VALUESTRING="true" ID="857"/>
-        <Preference CREATEDON="2015-11-11 01:18:29.0" MODIFIEDON="2015-11-11 01:18:29.0" NAME="license.feeHelpExport" UNIQUEKEY="license.feeHelpExport" VALUESTRING="true" ID="858"/>
-        <Preference CREATEDON="2017-09-09 00:28:37.0" MODIFIEDON="2017-09-29 00:48:43.0" NAME="license.fundingContract" UNIQUEKEY="license.fundingContract" VALUESTRING="true" ID="859"/>
         <Preference CREATEDON="2019-04-04 22:33:12.0" MODIFIEDON="2019-04-04 22:33:12.0" NAME="college.abn" UNIQUEKEY="college.abn" VALUESTRING="abn000" ID="860"/>
         <Preference CREATEDON="2019-04-04 22:33:12.0" MODIFIEDON="2019-04-04 22:33:12.0" NAME="college.name" UNIQUEKEY="college.name" VALUESTRING="Test College" ID="861"/>
         <Preference CREATEDON="2019-04-04 22:33:12.0" MODIFIEDON="2019-04-04 22:33:12.0" NAME="oncourse.server.timezone.default" UNIQUEKEY="oncourse.server.timezone.default" VALUESTRING="Australia/Adelaide" ID="862"/>
