@@ -36,7 +36,7 @@ describe("Virtual rendered DataCollectionForm", () => {
       const form = initialValues[0];
       const items = parseDataCollectionFormData(form);
 
-      expect(wrapper.find("h6[id='form.type'] input").val()).toContain(form.type === "Survey" ? "Student Feedback" : form.type);
+      expect(wrapper.find("h6[id='form.type']").text()).toContain(form.type === "Survey" ? "Student Feedback" : form.type);
 
       if (form.type === "Survey") {
         expect(wrapper.find("div[id='form.deliverySchedule'] input").val()).toContain(form.deliverySchedule);
@@ -45,13 +45,12 @@ describe("Virtual rendered DataCollectionForm", () => {
       items.forEach((field, key) => {
         const warpperId = `#data-collection-form-${key}`;
         if (field.baseType === "field") {
-          expect(wrapper.find(`${warpperId} div[id="items[${key}].label"]`).text()).toContain(field.label);
+          expect(wrapper.find(`${warpperId} div[id="items[${key}].label"] input`).val()).toContain(field.label);
           expect(wrapper.find(`${warpperId} div[id="items[${key}].helpText"]`).text()).toContain(field.helpText);
           expect(wrapper.find(`${warpperId} h6[id="items[${key}].type"]`).text()).toContain(field.type.label);
-          expect(wrapper.find(`${warpperId} input[type="checkbox"]`).at(0).props().checked).toEqual(field.mandatory);
         } else {
-          expect(wrapper.find(`${warpperId} div[id="items[${key}].name"]`).text()).toContain(field.name);
-          expect(wrapper.find(`${warpperId} div[id="items[${key}].description"]`).text()).toContain(field.description);
+          expect(wrapper.find(`${warpperId} div[id="items[${key}].name"]  input`).val()).toContain(field.name);
+          expect(wrapper.find(`${warpperId} div[id="items[${key}].description"] textarea`).text()).toContain(field.description);
         }
       });
     }
