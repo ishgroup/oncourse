@@ -46,6 +46,11 @@ export const defaultComponents: ({
       </TestEntry>,
     );
 
-    render(wrapper.render(), initialValues);
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        render(wrapper.render(), initialValues);
+        resolve();
+      }, 2000);
+    });
   });
 };
