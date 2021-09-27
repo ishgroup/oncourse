@@ -638,7 +638,7 @@ class AntlrAqlServiceTest {
     void testEmptyToMany() {
         CompilationResult result = service
                 .compile("contact.address is empty", null, getMockContext())
-        assertValid("contact+.address+ = null", result)
+        assertValid("contact+.address+ = null or contact+.address+ = \"\"", result)
     }
 
     @Test
