@@ -19,8 +19,6 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.AbstractInvoice
-import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.Quote
@@ -173,7 +171,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         List<Long> entitiesIds = getEntityIds(entityName, request, context, template)
         
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
-        RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
+        RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
 
         new RecipientsDTO().with { dto ->
             dto.students = new RecipientTypeDTO().with { typeDto ->
@@ -211,9 +209,12 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    RecipientsModel getRecipientsModel(String entityName, MessageTypeDTO messageType, List<Long> entitiesIds) {
+    private RecipientsModel getRecipientsModel(String entityName, MessageTypeDTO messageType, List<Long> entitiesIds, EmailTemplate template) {
         RecipientsModel recipientsModel = new RecipientsModel()
-
+        if (AbstractEntitiesUtil.isAbstract(entityName)) {
+            entityName = template.entity
+        }
+            
         Expression exp = null
         Property<Long> contactFindProperty = getFindContactProperty(entityName)
         if ( contactFindProperty != null ) {
@@ -319,9 +320,8 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         
         List<Long> entitiesIds = getEntityIds(request.entity, request.searchQuery, context, template)
         String entityName = request.entity
-        
 
-        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
+        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
         List<Long> recipientsToSend = new ArrayList<>()
 
         addRecipientsToSend(recipientsToSend, recipientsModel.students, request.sendToStudents, request.sendToSuppressStudents)
