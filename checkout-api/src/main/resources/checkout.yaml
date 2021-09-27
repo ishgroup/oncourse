@@ -1720,6 +1720,9 @@ definitions:
     type: object
     requred:
     - contactId
+    - contactFirstName
+    - contactLastName
+    - contactEmail
     - enrolments
     - applications
     - articles
@@ -1728,6 +1731,12 @@ definitions:
     - waitingLists
     properties:
       contactId:
+        type: string
+      contactFirstName:
+        type: string
+      contactLastName:
+        type: string
+      contactEmail:
         type: string
       enrolments:
         type: array
