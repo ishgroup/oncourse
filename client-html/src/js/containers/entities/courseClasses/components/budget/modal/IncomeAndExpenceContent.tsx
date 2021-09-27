@@ -10,7 +10,7 @@ import { change } from "redux-form";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@material-ui/core";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { contactLabelCondition, openContactLink } from "../../../../contacts/utils";
 import { LinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
@@ -91,7 +91,6 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           type="multilineText"
           name="description"
           label="Description"
-          fullWidth
           required
         />
       </Grid>
@@ -166,7 +165,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
         <Grid item xs={12}>
           <FormControlLabel
             className="checkbox"
-            control={<FormField type="checkbox" name="isSunk" color="secondary" fullWidth />}
+            control={<FormField type="checkbox" name="isSunk" color="secondary" />}
             label="Sunk cost (not recoverable if class cancelled)"
           />
         </Grid>

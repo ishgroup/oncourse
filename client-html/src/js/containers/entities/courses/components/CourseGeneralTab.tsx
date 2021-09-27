@@ -13,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -99,7 +99,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
         label="Name"
         placeholder={twoColumn ? "Name" : undefined}
         required
-        fullWidth
       />
     );
     const codeField = (
@@ -109,7 +108,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
         label="Code"
         placeholder={twoColumn ? "Code" : undefined}
         required
-        fullWidth
       />
     );
 
@@ -260,18 +258,20 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               type="multilineText"
               name="brochureDescription"
               label="Print brochure description"
-              fullWidth
-            />
-
-            <CustomFields
-              entityName="Course"
-              fieldName="customFields"
-              entityValues={values}
-              dispatch={dispatch}
-              form={form}
-              fullWidth
             />
           </Grid>
+
+          <CustomFields
+            entityName="Course"
+            fieldName="customFields"
+            entityValues={values}
+            dispatch={dispatch}
+            form={form}
+            gridItemProps={{
+              xs: twoColumn ? 6 : 12,
+              lg: twoColumn ? 4 : 12
+            }}
+          />
         </Grid>
       </>
     );

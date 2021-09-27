@@ -19,7 +19,7 @@ import IconPhoneLocked from "@material-ui/icons/ScreenLockPortrait";
 import debounce from "lodash.debounce";
 import { User, UserRole } from "@api/model";
 import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
@@ -324,14 +324,12 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               name="firstName"
               label="First name"
               required
-              fullWidth
             />
             <FormField
               type="text"
               name="lastName"
               label="Last name"
               required
-              fullWidth
             />
 
             <FormField
@@ -340,14 +338,12 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               label="Email"
               validate={validateUniqueNames}
               required
-              fullWidth
             />
 
             <FormField
               type="select"
               name="administrationCentre"
               label="Bank cash/cheques to site"
-              fullWidth
               autoWidth={false}
               items={sites || []}
               required
@@ -438,7 +434,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     selectValueMark="id"
                     selectLabelMark="name"
                     items={userRoles || []}
-                    fullWidth
                     required={!values.admin}
                     sort
                   />

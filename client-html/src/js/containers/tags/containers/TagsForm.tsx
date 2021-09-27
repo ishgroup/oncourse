@@ -18,7 +18,7 @@ import { ForbiddenTagNames, Tag } from "@api/model";
 import { AddCircle } from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "../../../common/components/buttons/Button";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
 import AppBarHelpMenu from "../../../common/components/form/AppBarHelpMenu";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";

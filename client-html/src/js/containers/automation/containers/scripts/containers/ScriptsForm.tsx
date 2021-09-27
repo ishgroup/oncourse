@@ -4,22 +4,18 @@
  */
 
 import FileCopy from "@material-ui/icons/FileCopy";
-import React, {
- useCallback, useEffect, useMemo, useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState, } from "react";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-import {
-  Form, arrayInsert, change, FieldArray, initialize,
-} from "redux-form";
+import { arrayInsert, change, FieldArray, Form, initialize, } from "redux-form";
 import Typography from "@material-ui/core/Typography";
 import { OutputType, Script, TriggerType } from "@api/model";
 import createStyles from "@material-ui/core/styles/createStyles";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
 import CodeIcon from '@material-ui/icons/Code';
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
@@ -38,9 +34,7 @@ import { setScriptComponents } from "../actions";
 import { ScriptComponentType, ScriptViewMode } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import {
- getQueryComponent, getScriptComponent, getMessageComponent, getReportComponent,
-} from "../constants";
+import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent, } from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";

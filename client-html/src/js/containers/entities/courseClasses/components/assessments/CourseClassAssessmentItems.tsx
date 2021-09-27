@@ -20,8 +20,8 @@ import {
 } from "@api/model";
 import { withStyles } from "@material-ui/core/styles";
 import { DateRange, ExpandMore, Edit } from "@material-ui/icons";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";

@@ -11,7 +11,7 @@ import { FormControlLabel } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { EntityRelationType, EntityRelationCartAction } from "@api/model";
 import { Simulate } from "react-dom/test-utils";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 import Subtitle from "../../../../../common/components/layout/Subtitle";

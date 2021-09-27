@@ -16,8 +16,8 @@ import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../mode
 import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
 import GradeContent from "../../courseClasses/components/assessments/GradeContent";
 import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 
 interface Props {
   elem: EnrolmentAssessmentExtended;

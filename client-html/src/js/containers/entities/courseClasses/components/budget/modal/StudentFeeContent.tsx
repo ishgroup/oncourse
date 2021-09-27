@@ -12,7 +12,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Typography from "@material-ui/core/Typography";
 import { addDays, format } from "date-fns";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import {
   decimalDivide,
   decimalMinus,
@@ -20,7 +20,7 @@ import {
   decimalPlus
 } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency, normalizeNumber } from "../../../../../../common/utils/numbers/numbersNormalizing";
-import EditInPlaceMoneyField from "../../../../../../common/components/form/form-fields/EditInPlaceMoneyField";
+import EditInPlaceMoneyField from "../../../../../../common/components/form/formFields/EditInPlaceMoneyField";
 import { accountLabelCondition } from "../../../../accounts/utils";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";

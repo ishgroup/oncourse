@@ -3,14 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  withStyles, Typography, IconButton, Input, FormControl, FormHelperText
-} from "@material-ui/core";
+import { FormControl, FormHelperText, IconButton, Input, Typography, withStyles } from "@material-ui/core";
 import clsx from "clsx";
 import Edit from "@material-ui/icons/Edit";
-import React, {
-  useCallback, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import ButtonBase from "@material-ui/core/ButtonBase/ButtonBase";
 
 const styles = theme => ({

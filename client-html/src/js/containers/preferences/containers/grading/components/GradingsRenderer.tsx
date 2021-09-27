@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { Dispatch } from "redux";
 import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import GradingItemsRenderer from "./GradingItemsRenderer";
 import { AppTheme } from "../../../../../model/common/Theme";

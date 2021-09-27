@@ -17,12 +17,12 @@ import Button from "@material-ui/core/Button";
 import {
   getFormValues, InjectedFormProps, reduxForm
 } from "redux-form";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { State } from "../../../../reducers/state";
 import { getCertificatesRevokeStatus, revokeCertificate, setCertificatesRevokeStatus } from "../actions";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 
 interface RevokeConfirmProps extends InjectedFormProps {
   open: boolean;

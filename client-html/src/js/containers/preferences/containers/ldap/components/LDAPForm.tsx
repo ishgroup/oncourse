@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
 import ConfirmBase from "../../../../../common/components/dialog/confirm/ConfirmBase";
 import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../../model/preferences/Ldap";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
