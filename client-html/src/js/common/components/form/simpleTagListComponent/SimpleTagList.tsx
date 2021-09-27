@@ -63,9 +63,17 @@ const styles = theme =>
       }
     },
     tagInput: {},
+    hoverIcon: {
+      visibility: "hidden",
+    },
     editable: {
       color: theme.palette.text.primaryEditable,
       fontWeight: 400,
+      "&$editable &:hover $hoverIcon": {
+        visibility: "visible",
+        color: theme.palette.primary.main,
+        fontSize: "1.2rem",
+      },
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
@@ -414,7 +422,7 @@ const SimpleTagList: React.FC<Props> = props => {
             primary={(
               <ButtonBase
                 onClick={edit}
-                className={clsx(classes.editable, "overflow-hidden hoverIconContainer")}
+                className={clsx("overflow-hidden hoverIconContainer", classes.editable)}
                 component="div"
               >
                 <span
@@ -426,7 +434,7 @@ const SimpleTagList: React.FC<Props> = props => {
                   {InputValueForRender || "No value"}
                   {!disabled
                   && Boolean(!tags || tags.length)
-                  && <Edit className={clsx("editInPlaceIcon hoverIcon", fieldClasses.placeholder, "mt-0-5")} />}
+                  && <Edit className={clsx("editInPlaceIcon hoverIcon", classes.hoverIcon, fieldClasses.placeholder, "mt-0-5")} />}
                 </span>
               </ButtonBase>
           )}
