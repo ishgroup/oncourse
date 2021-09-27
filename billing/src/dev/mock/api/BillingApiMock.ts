@@ -30,7 +30,14 @@ export function BillingApiMock(this: MockAdapter) {
       {
         id: 3,
         name: 'Site 3',
-        key: 'nidasss',
+        key: 'nidatest',
+        domains: ['www.corporate.nida.edu.au', 'www.open.nida.edu.au'],
+        webSiteTemplate: null
+      },
+      {
+        id: 4,
+        name: 'Site 4',
+        key: 'nidatest2',
         domains: ['www.corporate.nida.edu.au', 'www.open.nida.edu.au'],
         webSiteTemplate: null
       }

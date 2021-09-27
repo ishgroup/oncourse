@@ -295,7 +295,7 @@ export const GlobalClasses = () => {
       '.d-none': {
         display: 'none'
       },
-      '.flex-fill': {
+      '.flex-1': {
         flex: 1
       },
       '.flex-nowrap': {

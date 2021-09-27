@@ -7,14 +7,11 @@ import {
   AccordionDetails,
   AccordionSummary,
   Chip,
-  FormControl,
   Grid,
   IconButton,
-  Select,
   TextField,
   Typography,
-  MenuItem,
-  InputLabel
+  MenuItem
 } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { AddCircle, Delete, ExpandMore } from '@mui/icons-material';
@@ -30,97 +27,108 @@ import { TemplateField } from '../../common/TemplateChoser';
 import AutosizeInput from '../../common/AutosizeInput';
 import GoogleLoginButton from '../../common/GoogleLoginButton';
 
-export const useStyles = makeAppStyles()((theme) => ({
-  container: {
-    display: 'flex',
-    padding: 0
-  },
-  coloredHeaderText: {
-    color: theme.statistics.coloredHeaderText.color,
-  },
-  textFieldWrapper: {
-    display: 'flex',
-    alignItems: 'baseline',
-    marginTop: theme.spacing(2)
-  },
-  errorMessage: {
-    fontSize: '12px',
-    color: '#f44336'
-  },
-  flexWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  plusButton: {
-    color: darken(green[900], 0.1)
-  },
-  root: {
-    minWidth: '600px'
-  },
-  loading: {
-    height: '25px!important',
-    width: '25px!important',
-  },
-  buttonsWrapper: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '30px',
-    paddingBottom: '20px'
-  },
-  expandIcon: {
-    right: 'unset',
-    left: '0px',
-    position: 'absolute'
-  },
-  deleteIcon: {
-    fontSize: '22px',
-    '&:hover': {
-      backgroundColor: 'transparent',
-      color: theme.palette.error.main
+export const useStyles = makeAppStyles()((theme, prop, createRef) => {
+  const rootExpanded = {
+    ref: createRef()
+  };
+
+  return {
+    container: {
+      display: 'flex',
+      padding: 0
     },
-    padding: theme.spacing(1),
-    margin: `-${theme.spacing(1)} -${theme.spacing(1)} -${theme.spacing(1)} auto`
-  },
-  summaryContent: {
-    justifyContent: 'space-between',
-    paddingLeft: theme.spacing(3),
-    '& > :last-child': {
-      paddingRight: theme.spacing(1)
-    }
-  },
-  summaryRoot: {
-    '&$summaryFocused': {
-      backgroundColor: 'inherit'
-    }
-  },
-  summaryFocused: {},
-  zeroMargin: {
-    margin: 0
-  },
-  caption: {
-    marginTop: theme.spacing(1)
-  },
-  pr: {
-    paddingRight: '20px'
-  },
-  textFieldWrapper2: {
-    display: 'flex',
-    alignItems: 'baseline'
-  },
-  floatLabel: {
-    position: 'relative',
-    bottom: theme.spacing(0.5)
-  },
-  domainsInput: {},
-  hasClearIcon: {
-    '& $domainsInput': {
-      paddingRight: 0
-    }
-  },
-  flex1: {
-    flex: 1
-  }
-}));
+    coloredHeaderText: {
+      color: theme.statistics.coloredHeaderText.color,
+    },
+    textFieldWrapper: {
+      display: 'flex',
+      alignItems: 'baseline',
+      marginTop: theme.spacing(2)
+    },
+    errorMessage: {
+      fontSize: '12px',
+      color: '#f44336'
+    },
+    flexWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    plusButton: {
+      color: darken(green[900], 0.1)
+    },
+    root: {
+      border: `1px solid ${theme.palette.divider}`,
+      [`&:not(:last-child):not(.${rootExpanded.ref})`]: {
+        borderBottom: 0,
+      },
+      [`&.${rootExpanded.ref}:before`]: {
+        opacity: 1,
+        top: '-18px',
+      },
+      '&:before': {
+        opacity: 0
+      }
+    },
+    loading: {
+      height: '25px!important',
+      width: '25px!important',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      marginTop: '30px',
+      paddingBottom: '20px'
+    },
+    expandIcon: {
+      right: 'unset',
+      left: theme.spacing(1),
+      position: 'absolute'
+    },
+    deleteIcon: {
+      fontSize: '22px',
+      '&:hover': {
+        backgroundColor: 'transparent',
+        color: theme.palette.error.main
+      },
+      padding: theme.spacing(1),
+      margin: `-${theme.spacing(1)} -${theme.spacing(1)} -${theme.spacing(1)} auto`
+    },
+    summaryContent: {
+      justifyContent: 'space-between',
+      paddingLeft: theme.spacing(3),
+    },
+    summaryRoot: {
+      '&$summaryFocused': {
+        backgroundColor: 'inherit'
+      }
+    },
+    summaryFocused: {},
+    zeroMargin: {
+      margin: 0
+    },
+    caption: {
+      marginTop: theme.spacing(1)
+    },
+    pr: {
+      paddingRight: '20px'
+    },
+    textFieldWrapper2: {
+      display: 'flex',
+      alignItems: 'baseline'
+    },
+    floatLabel: {
+      position: 'relative',
+      bottom: theme.spacing(0.5)
+    },
+    domainsInput: {},
+    hasClearIcon: {
+      '& $domainsInput': {
+        paddingRight: 0
+      }
+    },
+    rootExpanded
+  };
+});
 
 const validationSchema = yup.object({
   sites: yup.array().of(yup.object().shape({
@@ -236,7 +244,7 @@ export const SitesPage: React.FC<any> = () => {
           >
             <div>
               <div className={classes.flexWrapper}>
-                <div className={cx(classes.flex1, classes.flexWrapper)}>
+                <div className={cx('flex-1', classes.flexWrapper)}>
                   <h2 className={classes.coloredHeaderText}>Websites</h2>
                   <IconButton
                     onClick={() => setValues({
@@ -259,13 +267,13 @@ export const SitesPage: React.FC<any> = () => {
                   </IconButton>
                 </div>
 
-                <div style={{ marginTop: 16 }}>
-                  <div>
-                    <GoogleLoginButton />
-                  </div>
-                  <Typography variant="caption" color="textSecondary">
-                    Login to connect sites with google services
-                  </Typography>
+                <div className="mt-2">
+                  {/*<div>*/}
+                  {/*  <GoogleLoginButton />*/}
+                  {/*</div>*/}
+                  {/*<Typography variant="caption" color="textSecondary">*/}
+                  {/*  Login to connect sites with google services*/}
+                  {/*</Typography>*/}
                 </div>
               </div>
               <div>
@@ -286,10 +294,12 @@ export const SitesPage: React.FC<any> = () => {
                 return (
                   <Accordion
                     classes={{
-                      root: classes.root
+                      root: classes.root,
+                      expanded: classes.rootExpanded
                     }}
                     key={site.id || index}
                     defaultExpanded={isNew}
+                    elevation={0}
                   >
                     <AccordionSummary
                       expandIcon={<ExpandMore />}
@@ -331,19 +341,30 @@ export const SitesPage: React.FC<any> = () => {
                         <Grid item xs={6}>
                           <Typography variant="caption" color={error.key ? 'error' : 'textSecondary'} className={classes.floatLabel}>Site location</Typography>
                           <div className={classes.textFieldWrapper2}>
-                            <Typography>
-                              https://
-                              {isNew || initialMatchPattern ? `${collegeKey}-` : ''}
-                            </Typography>
-                            <Typography variant="body1" component="span">
-                              <AutosizeInput
-                                value={initialMatchPattern ? site.key.replace(`${collegeKey}-`, '') : site.key}
-                                error={Boolean(error.key)}
-                                onChange={(e) => onKeyChange(e, index, isNew, initial, initialMatchPattern)}
-                                disabled={!isNew}
-                              />
-                            </Typography>
-                            <Typography>.oncourse.cc</Typography>
+                            {isNew ? (
+                              <>
+                                <Typography>
+                                  https://
+                                  {isNew || initialMatchPattern ? `${collegeKey}-` : ''}
+                                </Typography>
+                                <Typography variant="body1" component="span">
+                                  <AutosizeInput
+                                    value={initialMatchPattern ? site.key.replace(`${collegeKey}-`, '') : site.key}
+                                    error={Boolean(error.key)}
+                                    onChange={(e) => onKeyChange(e, index, isNew, initial, initialMatchPattern)}
+                                  />
+                                </Typography>
+                                <Typography>.oncourse.cc</Typography>
+                              </>
+                            ) : (
+                              <Typography variant="body1">
+                                https://
+                                {isNew ? `${collegeKey}-` : ''}
+                                {site.key}
+                                .oncourse.cc
+                              </Typography>
+                            )}
+
                           </div>
                           {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
                         </Grid>
@@ -354,7 +375,6 @@ export const SitesPage: React.FC<any> = () => {
                             value={site.domains}
                             classes={{
                               inputRoot: classes.domainsInput,
-                              // @ts-ignore
                               hasClearIcon: classes.hasClearIcon
                             }}
                             renderInput={(params: any) => (
@@ -389,17 +409,18 @@ export const SitesPage: React.FC<any> = () => {
                             freeSolo
                           />
                         </Grid>
-                        <Grid item xs={6}>
-                          <FormControl fullWidth margin="normal">
-                            <InputLabel>Primary hostname</InputLabel>
-                            <Select
-                              autoWidth
-                              value={site.primaryDomain || ''}
-                              onChange={(e) => onSetPrimaryDomain(e.target.value, index)}
-                            >
-                              {renderSelectItems(site.domains)}
-                            </Select>
-                          </FormControl>
+                        <Grid item xs={6} marginTop="auto">
+                          <TextField
+                            select
+                            fullWidth
+                            margin="normal"
+                            label="Primary hostname"
+                            value={site.primaryDomain || ''}
+                            onChange={(e) => onSetPrimaryDomain(e.target.value, index)}
+                            variant="standard"
+                          >
+                            {renderSelectItems(site.domains)}
+                          </TextField>
                         </Grid>
                         {isNew && (
                           <Grid item xs={6} className={classes.pr}>
