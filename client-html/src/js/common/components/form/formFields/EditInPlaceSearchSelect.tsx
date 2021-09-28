@@ -9,7 +9,9 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Popper from "@material-ui/core/Popper";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useContext, useEffect, useMemo, useRef, useState
+} from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { InputAdornment, withStyles } from "@material-ui/core";
 import clsx from "clsx";
@@ -552,9 +554,13 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                     value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
                   }}
                   endAdornment={!disabled && (
-                    <InputAdornment position="end" className={classes.inputEndAdornment}>
-                      <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
-                    </InputAdornment>
+                    loading
+                      ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
+                      : (
+                        <InputAdornment position="end" className={classes.inputEndAdornment}>
+                          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+                        </InputAdornment>
+                      )
                   )}
                 />
                 <FormHelperText
@@ -566,11 +572,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 </FormHelperText>
               </FormControl>
           )}
-            popupIcon={
-              loading
-                ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
-                : stubComponent()
-            }
             fullWidth
             disableListWrap
             openOnFocus
@@ -578,6 +579,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           />
         </SelectContext.Provider>
       </div>
+      {formatting === "inline" && (
       <div
         className={clsx(formatting !== "inline" && "textField", {
           "d-none": (!inHeader && !disabled) || (inHeader && (inline || isEditing || (meta && meta.invalid)))
@@ -585,16 +587,16 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       >
         <div className="mw-100 text-truncate">
           {!hideLabel && label && (
-            <Typography
-              variant="caption"
-              color="textSecondary"
-              style={colors ? { color: `${colors.subheader}` } : {}}
-              noWrap
-            >
-              {label}
-              {' '}
-              {labelAdornment && <span>{labelAdornment}</span>}
-            </Typography>
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            style={colors ? { color: `${colors.subheader}` } : {}}
+            noWrap
+          >
+            {label}
+            {' '}
+            {labelAdornment && <span>{labelAdornment}</span>}
+          </Typography>
           )}
 
           <ListItemText
@@ -615,7 +617,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                     {displayedValue}
                   </span>
                   {!disabled && (
-                    <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
+                  <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
                   )}
                 </ButtonBase>
                 {endAdornment}
@@ -624,6 +626,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           />
         </div>
       </div>
+)}
     </div>
   );
 };
