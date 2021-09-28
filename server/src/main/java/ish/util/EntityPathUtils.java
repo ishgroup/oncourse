@@ -24,7 +24,6 @@ public class EntityPathUtils {
                 var nextSegment = next.replaceAll("\\+", "");
                 entity = entity.getRelationship(nextSegment).orElse(null);
                 if (entity == null) {
-                    ctx.reportError(-1, -1, "Can't resolve component '" + nextSegment + "' of relationship '" + path + "'");
                     return null;
                 }
             }
