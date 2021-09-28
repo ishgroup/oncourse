@@ -78,6 +78,11 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, null, "key: $key is not in user preferences list")).build())
         }
 
+        Map<String, String> value =
+                keys.split(JOIN_DELIMETER)
+                        .collect { PreferenceEnumDTO.fromValue(it) ?: throwException.call(it) }
+                        .collectEntries { [ (it.toString()) : usePrefService.get(it as PreferenceEnumDTO) ] }
+
         keys.split(JOIN_DELIMETER)
                 .collect { PreferenceEnumDTO.fromValue(it) ?: throwException.call(it) }
                 .collectEntries { [ (it.toString()) : usePrefService.get(it as PreferenceEnumDTO) ] }

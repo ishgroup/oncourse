@@ -27,7 +27,7 @@ export function mockUserPreferences(): mockedUserPreferencesDB {
     "timezone.default": "Australia/Hobart",
     "systemUser.defaultAdministrationCentre.name": "OnRoad OffRoad Training",
     "license.scripting": "",
-    "license.accesscontrol": "",
+    "license.access_control": "",
     "account.default.studentEnrolments.id": "11025",
     "account.default.voucherLiability.id": "4682",
     [ACCOUNT_INVOICE_TERMS]: 7

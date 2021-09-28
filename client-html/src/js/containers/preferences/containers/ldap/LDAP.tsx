@@ -11,9 +11,6 @@ import { getPreferences } from "../../actions";
 import { IAction } from "../../../../common/actions/IshAction";
 
 class LDAP extends React.Component<any, any> {
-  private getLicence(licences) {
-    return false;
-  }
 
   handleTestLdapConnection() {
     const host = this.props.ldap[ldapModel.LdapHost.uniqueKey];
@@ -31,7 +28,7 @@ class LDAP extends React.Component<any, any> {
       <FormContainer
         data={ldap}
         testLdapConnection={this.handleTestLdapConnection.bind(this)}
-        licence={licences && this.getLicence(licences)}
+        licence={licences}
         category={Categories.ldap}
         form={<LDAPForm />}
       />

@@ -83,6 +83,10 @@ public class PreferenceController extends CommonPreferenceController {
 			return getDefaultAccountId(key);
 		}
 
+		if (key.startsWith("license.")) {
+			return licenseService.getLisense(key);
+		}
+
 		switch (key) {
 			case LicenseService.SERVICES_SECURITYKEY:
 				String securityKey = licenseService.getSecurity_key();
