@@ -861,7 +861,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     let lastIdentifier = null;
 
     for (const token of [...parsedTokens].reverse()) {
-      if (token.type === 53 && token.text !== this.state.searchValue) {
+      if (token.type === AqlLexer.Identifier && token.text !== this.state.searchValue) {
         lastIdentifier = token;
         break;
       }
