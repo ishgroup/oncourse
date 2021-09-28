@@ -23,6 +23,7 @@ import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
@@ -106,6 +107,8 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     @Inject private SystemUserService systemUserService
 
     @Inject private SMTPService smtpService
+
+    @Inject private LicenseService licenseService
 
 
     @Override
@@ -350,6 +353,16 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                         "Please, contact onCourse administrator to upgrade your plan.")
             }
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
+                    "Please send in smaller batches or upgrade to a plan with a higher limit.")
+        }
+        if (licenseService.getLisense("license.sms") != null && recipientsToSend.size() > (Integer)licenseService.getLisense("license.sms") && MessageTypeDTO.SMS == messageTypeDTO) {
+            logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
+                    licenseService.getLisense("license.sms"), recipientsToSend.size().toString())
+            if (licenseService.getLisense("license.sms") == 0) {
+                validator.throwClientErrorException("recipientsCount", "Your license does not allow sending sms. " +
+                        "Please, contact onCourse administrator to upgrade your plan.")
+            }
+            validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${licenseService.getLisense("license.sms")} sms in one batch. " +
                     "Please send in smaller batches or upgrade to a plan with a higher limit.")
         }
 

@@ -50,7 +50,7 @@ post:
     errorMessage: Sorry, you have no permissions to create new script. Please contact your administrator
     license:
       code: license.scripting
-      errorMessage: You haven't license to create scripts
+      errorMessage: You haven not license to create scripts
 
 put:
   operationId: update

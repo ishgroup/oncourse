@@ -11,7 +11,7 @@ Feature: Main feature for all POST requests with path 'preference/'
 
         * table readOnlyPreferences
             | name                       | code                      | value  |
-            | 'LICENSE_ACCESS_CONTROL'   | 'license.access_control'   | 'true' |
+            | 'LICENSE_ACCESS_CONTROL'   | 'license.access_control'  | 'true' |
             | 'LICENSE_SMS'              | 'license.sms'             | 'true' |
             | 'LICENSE_SCRIPTING'        | 'license.scripting'       | 'true' |
 
