@@ -14,8 +14,8 @@ import Card from "@material-ui/core/Card";
 import { Dispatch } from "redux";
 import { format } from "date-fns";
 import { normalizeNumberToPositive } from "../../../utils/numbers/numbersNormalizing";
-import FormField from "../form-fields/FormField";
-import { StyledCheckbox } from "../form-fields/CheckboxField";
+import FormField from "../formFields/FormField";
+import { StyledCheckbox } from "../formFields/CheckboxField";
 import { repeatEndListItems, repeatListItems } from "../../../../containers/preferences/containers/holidays/ListItems";
 import AvailabilityNextHint from "./AvailabilityNextHint";
 import { validateMinMaxDate } from "../../../utils/validation";
@@ -109,7 +109,7 @@ const AvailabilityItem: React.FC<Props> = ({
                 "d-flex-start justify-content-space-between": threeColumn
               })}
             >
-              <FormField type="text" name={`${item}.description`} label="Description" fullWidth />
+              <FormField type="text" name={`${item}.description`} label="Description" />
               {threeColumn && (
                 <div className="d-flex errorColor">
                   <div className="flex-fill" />

@@ -10,7 +10,7 @@
 import React, { useCallback } from "react";
 import MuiSwitch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 
 const getValue = value => {

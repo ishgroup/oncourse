@@ -14,13 +14,10 @@ import Popper from "@material-ui/core/Popper";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {
-  Form,
-  getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
+import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import { BindingsItemType } from "./Bindings";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 

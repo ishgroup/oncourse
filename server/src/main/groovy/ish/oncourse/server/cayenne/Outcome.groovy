@@ -1,4 +1,3 @@
-
 /*
  * Copyright ish group pty ltd 2020.
  *
@@ -47,6 +46,8 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	public static final String ENDDATE = "endDate"
 	public static final String TRAINING_PLAN_START_DATE_PROPERTY = "trainingPlanStartDate"
 	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
+	public static final String PRESENT_ATTENDENCE_PERCENT_KEY = "presentAttendancePercent"
+	public static final String MARKED_ASSESSMENT_PERCENT_KEY = "markedAssessmentPercent"
 
 	public static final String CODE = "code";
 	public static final String NAME = "name";

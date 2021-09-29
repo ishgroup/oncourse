@@ -17,7 +17,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Decimal } from "decimal.js-light";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
@@ -195,7 +195,7 @@ class BankingEditView extends React.PureComponent<any, any> {
 
   onSettlementDateChanged = (v: any, newValue: string, prevValue: string) => {
     const { values, form } = this.props;
-    if (newValue !== prevValue) {
+    if (newValue !== prevValue && values) {
       values.payments.filter(v => v.reconcilable).forEach(v => (v.reconciled = false));
       change(form, "payments", values.payments);
     }
@@ -303,7 +303,6 @@ class BankingEditView extends React.PureComponent<any, any> {
                     ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
                     : undefined
                 }
-                fullWidth
               />
             </Grid>
             <Grid item xs={twoColumn ? 3 : 6}>

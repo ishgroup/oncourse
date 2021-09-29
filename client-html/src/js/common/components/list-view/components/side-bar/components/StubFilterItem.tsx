@@ -125,7 +125,6 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           error={error}
           inputRef={this.setInputNode}
           value={filterName}
-          fullWidth
         />
 
         <Tooltip title="Save Filter">

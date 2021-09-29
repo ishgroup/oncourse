@@ -32,7 +32,7 @@ import Link from "@material-ui/core/Link";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import Chip from "@material-ui/core/Chip";
 import { Dispatch } from "redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateNonNegative } from "../../../../common/utils/validation";
 import { SettingsAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -185,7 +185,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
 
   const handleUSIChange = e => {
     const prevUsiCode = values.student && values.student.usi;
-    const usiCode = e.target.value;
+    const usiCode = e?.target?.value;
 
     if (typeof prevUsiCode === "string" && prevUsiCode.length === 10) {
       clearUSIVerificationResult();
@@ -397,7 +397,6 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                   labelAdornment={<SettingsAdornment clickHandler={e => setMenuUSI(e.currentTarget)} />}
                   disabled={isSpecialUSI(values) || usiLocked}
                   onChange={handleUSIChange}
-                  fullWidth
                 />
                 <Menu
                   id="menuUSI"
@@ -484,7 +483,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormControlLabel
                 className="checkbox pr-3"
                 control={
-                  <FormField type="checkbox" name="student.isOverseasClient" color="secondary" fullWidth />
+                  <FormField type="checkbox" name="student.isOverseasClient" color="secondary" />
                 }
                 label="Overseas student"
               />
@@ -534,7 +533,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <div className="mt-1 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
-                control={<FormField type="checkbox" name="student.feeHelpEligible" color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name="student.feeHelpEligible" color="secondary" />}
                 label="VET student loan eligible"
               />
             </div>

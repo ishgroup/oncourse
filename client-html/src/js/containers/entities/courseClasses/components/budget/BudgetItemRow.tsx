@@ -67,15 +67,16 @@ const BudgetItemRow = React.memo<BudgetItemRowProps>(
 
     const percentOfProjectedValue = useMemo(
       () =>
-        (projectedBasedValue <= 0
-          ? 0
-          : new Decimal(actualBasedValue)
-            .div(projectedBasedValue || 1)
-            .mul(100)
-            .toDecimalPlaces(0)
-            .toFixed(2)),
-
-      [projectedBasedValue, actualBasedValue]
+        (typeof value.actualUsePercent === 'number'
+          ? value.actualUsePercent.toFixed(2)
+          : (projectedBasedValue <= 0
+            ? 0
+            : new Decimal(actualBasedValue)
+              .div(projectedBasedValue || 1)
+              .mul(100)
+              .toDecimalPlaces(0)
+              .toFixed(2))),
+      [projectedBasedValue, actualBasedValue, value.actualUsePercent]
     );
 
     const description = useMemo(() =>

@@ -27,11 +27,11 @@ import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
 import org.quartz.Scheduler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 
@@ -53,7 +53,7 @@ public class AngelCommand extends CommandWithMetadata {
     final private Provider<MailDeliveryService> mailDeliveryServiceProvider;
     final private Provider<EventService> eventServiceProvider;
 
-    private static final Logger logger = LoggerFactory.getLogger(AngelCommand.class);
+    private static final Logger logger =  LogManager.getLogger();
 
     @Inject
     public AngelCommand(Provider<Server> serverProvider,

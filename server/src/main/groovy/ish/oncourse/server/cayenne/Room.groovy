@@ -31,7 +31,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Room extends _Room implements Queueable, NotableTrait, AttachableTrait {
+class Room extends _Room implements Queueable, NotableTrait, AttachableTrait, RoomTrait {
 
 	public static final String DEFAULT_ROOM_NAME = "Default room"
 	public static final Integer DEFAULT_ROOM_CAPACITY = 10
@@ -196,4 +196,8 @@ class Room extends _Room implements Queueable, NotableTrait, AttachableTrait {
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return RoomTagRelation.class
+	}
 }

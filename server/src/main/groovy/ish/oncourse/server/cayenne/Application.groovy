@@ -185,6 +185,11 @@ class Application extends _Application implements Queueable, NotableTrait, Expan
 	}
 
 	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return WaitingListTagRelation.class
+	}
+
+	@Override
 	String getSummaryDescription() {
 		if(getStudent() == null || getStudent().getContact() == null) {
 			return super.getSummaryDescription()

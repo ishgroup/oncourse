@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Tag } from "@api/model";
 import { Typography } from "@material-ui/core";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -14,7 +15,6 @@ import TextField from "@material-ui/core/TextField";
 import Edit from "@material-ui/icons/Edit";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WrappedFieldProps } from "redux-form";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
@@ -23,7 +23,7 @@ import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
-import { selectStyles } from "../form-fields/SelectCustomComponents";
+import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
 
 const styles = theme =>
@@ -62,13 +62,11 @@ const styles = theme =>
         maxWidth: theme.spacing(30)
       }
     },
-    editInPlaceIcon: {
-      fontSize: "14px",
-      color: theme.palette.divider,
-      verticalAlign: "middle",
-      margin: 0
-    },
     tagInput: {},
+    editable: {
+      color: theme.palette.text.primaryEditable,
+      fontWeight: 400,
+    },
     tagColorDotSmall: {
       width: theme.spacing(2),
       height: theme.spacing(2),
@@ -251,7 +249,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 50);
   };
 
@@ -428,7 +426,7 @@ const SimpleTagList: React.FC<Props> = props => {
                   {InputValueForRender || "No value"}
                   {!disabled
                   && Boolean(!tags || tags.length)
-                  && <Edit className={clsx("hoverIcon", classes.editInPlaceIcon, fieldClasses.placeholder, "mt-0-5")} />}
+                  && <Edit className={clsx("editInPlaceIcon hoverIcon", fieldClasses.placeholder, "mt-0-5")} />}
                 </span>
               </ButtonBase>
           )}

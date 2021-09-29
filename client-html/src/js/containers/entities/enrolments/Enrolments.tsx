@@ -25,7 +25,7 @@ import Menu from "@material-ui/core/Menu";
 import { Enrolment, CustomFieldType } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "../../../common/components/buttons/Button";
-import { StyledCheckbox } from "../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import {
   setListEditRecord,
@@ -282,7 +282,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
   const onConfirm = () => {
     const outcomeFieldsToUpdate = changedFields.filter(f => f.update);
 
-    if (outcomeFieldsToUpdate.length && values) {
+    if (outcomeFieldsToUpdate.length && values && values.id) {
       EntityService.getPlainRecords("Outcome", "id", `enrolment.id is ${values.id}`)
         .then(res => {
           const ids = res.rows.map(r => Number(r.id));
@@ -299,7 +299,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
 
     setChangedFields([]);
 
-    if (values) onSave(values.id, values);
+    if (values && values.id) onSave(values.id, values);
   };
 
   return (

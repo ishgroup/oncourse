@@ -12,13 +12,13 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [11]
+        java: [11, 17]
 
     steps:
       - uses: actions/checkout@v2
 
       - id: skip_check
-        uses: fkirc/skip-duplicate-actions@v3.4.0
+        uses: fkirc/skip-duplicate-actions@v3.4.1
         with:
           cancel_others: 'true'
           skip_after_successful_duplicate: 'true'

@@ -12,7 +12,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Module, Qualification } from "@api/model";
 import { Collapse } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import Uneditable from "../../../../common/components/form/Uneditable";
@@ -20,11 +20,7 @@ import QualificationListItemRenderer from "../../qualifications/components/Quali
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { EditViewProps } from "../../../../model/common/ListView";
-import {
-  AnyArgFunction,
-  BooleanArgFunction,
-  StringArgFunction
-} from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction, BooleanArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { openQualificationLink } from "../../qualifications/utils";
 import { CourseExtended } from "../../../../model/entities/Course";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
@@ -198,7 +194,6 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
           name="fieldOfEducation"
           label="Field of education"
           disabled={values.qualificationId || values.isTraineeship}
-          fullWidth
         />
       </Grid>
 

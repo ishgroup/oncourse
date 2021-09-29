@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Close from "@material-ui/icons/Close";
 import SearchInput from "./SearchInput";
-import { Switch } from "../../form-fields/Switch";
+import { Switch } from "../../formFields/Switch";
 
 export const InputSection = React.memo<any>(props => {
   const {

@@ -53,7 +53,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
         And param entity = 'Payslip'
         When method GET
         Then status 200
-        And match $.rows[7].values[3] == "Completed"
+        And match $.rows[7].values[4] == "Completed"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPathPayslip + '/' + id
@@ -81,7 +81,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
         And param entity = 'Payslip'
         When method GET
         Then status 200
-        And match $.rows[2].values[3] == "Paid/Exported"
+        And match $.rows[2].values[4] == "Paid/Exported"
 
 
 
@@ -104,7 +104,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
         And param entity = 'Payslip'
         When method GET
         Then status 200
-        And match $.rows[1].values[3] == "Approved"
+        And match $.rows[1].values[4] == "Approved"
 
 
 
@@ -121,7 +121,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
          And param entity = 'Payslip'
          When method GET
          Then status 200
-         And match $.rows[4].values[3] == "New"
+         And match $.rows[4].values[4] == "New"
 
 
 
@@ -138,7 +138,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
          And param entity = 'Payslip'
          When method GET
          Then status 200
-         And match $.rows[5].values[3] == "Completed"
+         And match $.rows[5].values[4] == "Completed"
 
 
 
@@ -155,6 +155,6 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip/marki
         And param entity = 'Payslip'
         When method GET
         Then status 200
-        And match $.rows[6].values[3] == "Paid/Exported"
+        And match $.rows[6].values[4] == "Paid/Exported"
 
 

@@ -21,7 +21,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import MuiButton from "@material-ui/core/Button";
 import HelpOutline from "@material-ui/icons/HelpOutline";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import { State } from "../../../reducers/state";
 import Button from "../../../common/components/buttons/Button";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
@@ -146,7 +146,7 @@ const ImportForm: React.FC<Props> = props => {
                 />
                 <FormControlLabel
                   className="checkbox pb-2"
-                  control={<FormField type="checkbox" name="importDateTime" color="secondary" fullWidth />}
+                  control={<FormField type="checkbox" name="importDateTime" color="secondary" />}
                   label="importDateTime"
                 />
               </div>

@@ -15,7 +15,7 @@ import LockOpen from "@material-ui/icons/LockOpen";
 import Lock from "@material-ui/icons/Lock";
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
 import { State } from "../../../../reducers/state";
@@ -105,7 +105,8 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
   const [lockedTerms, setLockedTerms] = useState(true);
 
-  const onLockClick = useCallback(() => {
+  const onLockClick = useCallback(e => {
+    e.preventDefault();
     if (!lockedTerms) {
       dispatch(change(form, "invoiceTerms", null));
     }
@@ -143,7 +144,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               disabled={lockedTerms}
               labelAdornment={(
                 <span>
-                  <IconButton className="inputAdornmentButton" onClick={onLockClick}>
+                  <IconButton className="inputAdornmentButton" onClick={e => onLockClick(e)}>
                     {!lockedTerms && <LockOpen className="inputAdornmentIcon" />}
                     {lockedTerms && <Lock className="inputAdornmentIcon" />}
                   </IconButton>
@@ -157,7 +158,6 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               name="taxId"
               label="Tax type"
               items={getFormattedTaxes(taxTypes) || []}
-              fullWidth
             />
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory

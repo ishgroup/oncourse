@@ -11,11 +11,7 @@ import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.impl.Op;
-import org.apache.cayenne.exp.parser.ASTEqual;
-import org.apache.cayenne.exp.parser.ASTNotEqual;
-import org.apache.cayenne.exp.parser.ASTObjPath;
-import org.apache.cayenne.exp.parser.ASTScalar;
-import org.apache.cayenne.exp.parser.SimpleNode;
+import org.apache.cayenne.exp.parser.*;
 
 public class LazyRelationshipComparisonNode extends LazyExpressionNode {
 
@@ -32,28 +28,48 @@ public class LazyRelationshipComparisonNode extends LazyExpressionNode {
 
     @Override
     public SimpleNode resolveSelf(CompilationContext ctx) {
-        SimpleNode node;
-        switch (op) {
-            case EQ:
-                node = new ASTEqual();
-                break;
-            case NE:
-                node = new ASTNotEqual();
-                break;
-            default:
-                ctx.reportError(-1, -1, "Unexpected operator for the relationship: " + op);
-                return this;
+        SimpleNode node = getRoot();
+        if(node == null){
+            ctx.reportError(-1, -1, "Unexpected operator for the relationship: " + op);
+            return this;
         }
 
         // make the whole path "outer"
-        ASTObjPath path = (ASTObjPath)jjtGetChild(0);
+        ASTObjPath path = children == null ? new ASTObjPath("") : (ASTObjPath) jjtGetChild(0);
+        initRootFromPath(node, path);
+
+        return node;
+    }
+
+    public SimpleNode resolveSelf(ASTObjPath path, CompilationContext ctx) {
+        SimpleNode node = getRoot();
+        if(node == null){
+            ctx.reportError(-1, -1, "Unexpected operator for the relationship: " + op);
+            return this;
+        }
+
+        // make the whole path "outer"
+        initRootFromPath(node, path);
+        return node;
+    }
+
+    private SimpleNode getRoot(){
+        switch (op) {
+            case EQ:
+                return new ASTEqual();
+            case NE:
+                return new ASTNotEqual();
+            default:
+                return null;
+        }
+    }
+
+    private void initRootFromPath(SimpleNode node, ASTObjPath path){
         String outerPath = path.getPath() + "+";
         outerPath = outerPath.replace(".", "+.");
         outerPath = outerPath.replace("++", "+");
 
         ExpressionUtil.addChild(node, new ASTObjPath(outerPath), 0);
         ExpressionUtil.addChild(node, new ASTScalar(null), 1);
-
-        return node;
     }
 }

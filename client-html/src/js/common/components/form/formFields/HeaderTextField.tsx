@@ -3,14 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  withStyles, Typography, IconButton, Input, FormControl, FormHelperText
-} from "@material-ui/core";
+import { FormControl, FormHelperText, IconButton, Input, Typography, withStyles } from "@material-ui/core";
 import clsx from "clsx";
 import Edit from "@material-ui/icons/Edit";
-import React, {
-  useCallback, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import ButtonBase from "@material-ui/core/ButtonBase/ButtonBase";
 
 const styles = theme => ({
@@ -48,7 +44,10 @@ const styles = theme => ({
   },
   fitWidth: {
     width: "50%"
-  }
+  },
+  editableInHeader: {
+    color: theme.palette.primary.contrastText,
+  },
 });
 
 const HeaderTextField: React.FC<any> = ({
@@ -60,7 +59,8 @@ const HeaderTextField: React.FC<any> = ({
   className,
   autoFocus,
   disabled,
-  fullWidth
+  fullWidth,
+  inHeader
 }) => {
   const inputNode = useRef<any>();
 
@@ -103,7 +103,8 @@ const HeaderTextField: React.FC<any> = ({
             underline: clsx({
               [classes.cssUnderline]: !invalid,
               [classes.cssUnderlineError]: invalid
-            })
+            }),
+            input: clsx(inHeader && classes.editableInHeader),
           }}
           inputRef={inputNode}
           value={input.value || ""}

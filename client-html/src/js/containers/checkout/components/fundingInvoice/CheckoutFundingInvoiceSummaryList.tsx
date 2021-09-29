@@ -14,7 +14,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
@@ -107,7 +107,6 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           name={`fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`}
           label="Purchasing contract identifier (NSW Commitment ID)"
           validate={validateVetPurchasingContractIdentifier}
-          fullWidth
         />
       </Grid>
       <Grid item xs={12} className="pb-3">

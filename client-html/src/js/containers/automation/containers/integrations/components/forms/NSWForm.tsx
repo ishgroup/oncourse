@@ -7,8 +7,8 @@
  */
 
 import React from "react";
-import { reduxForm, initialize } from "redux-form";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import { initialize, reduxForm } from "redux-form";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";

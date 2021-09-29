@@ -10,7 +10,7 @@ import { change } from "redux-form";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@material-ui/core";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { contactLabelCondition, openContactLink } from "../../../../contacts/utils";
 import { LinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
@@ -22,7 +22,7 @@ import { PayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
 import { normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
 
-const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId).rate));
+const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId)?.rate));
 
 const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   taxes,
@@ -43,7 +43,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountExTax",
-            decimalDivide(value, decimalPlus(1, currentTax.rate))
+            decimalDivide(value, decimalPlus(1, currentTax?.rate))
           )
         );
       }
@@ -58,7 +58,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           change(
             COURSE_CLASS_COST_DIALOG_FORM,
             "perUnitAmountIncTax",
-            decimalMul(value, decimalPlus(1, currentTax.rate))
+            decimalMul(value, decimalPlus(1, currentTax?.rate))
           )
         );
       }
@@ -91,7 +91,6 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           type="multilineText"
           name="description"
           label="Description"
-          fullWidth
           required
         />
       </Grid>
@@ -166,7 +165,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
         <Grid item xs={12}>
           <FormControlLabel
             className="checkbox"
-            control={<FormField type="checkbox" name="isSunk" color="secondary" fullWidth />}
+            control={<FormField type="checkbox" name="isSunk" color="secondary" />}
             label="Sunk cost (not recoverable if class cancelled)"
           />
         </Grid>

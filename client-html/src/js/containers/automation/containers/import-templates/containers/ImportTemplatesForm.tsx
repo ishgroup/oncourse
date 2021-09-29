@@ -4,9 +4,7 @@
  */
 
 import PlayArrow from "@material-ui/icons/PlayArrow";
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, initialize, InjectedFormProps } from "redux-form";
@@ -18,7 +16,7 @@ import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import { ImportModel } from "@api/model";
 import Typography from "@material-ui/core/Typography";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";

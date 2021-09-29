@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import FileCopy from "@material-ui/icons/FileCopy";
@@ -20,7 +18,7 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings from "../../../components/Bindings";
 import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";

@@ -14,11 +14,11 @@ import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Collapse from "@material-ui/core/Collapse";
 import Button from "@material-ui/core/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { State } from "../../../../../reducers/state";
 import { validateTagsList } from "../../../../../common/components/form/simpleTagListComponent/validateTagsList";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
@@ -27,7 +27,7 @@ import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import HeaderTextField from "../../../../../common/components/form/form-fields/HeaderTextField";
+import HeaderTextField from "../../../../../common/components/form/formFields/HeaderTextField";
 import { stubFunction } from "../../../../../common/utils/common";
 import { showMessage } from "../../../../../common/actions";
 import { AppMessage } from "../../../../../model/common/Message";
@@ -165,7 +165,7 @@ const CourseClassGeneralTab = React.memo<Props>(
       []
     );
 
-    const courseIdField = (
+    const courseIdField = (inHeader = false) => (
       <FormField
         type="remoteDataSearchSelect"
         entity="Course"
@@ -181,6 +181,7 @@ const CourseClassGeneralTab = React.memo<Props>(
         onInnerValueChange={onCourseIdChange}
         rowHeight={55}
         required
+        inHeader
       />
     );
 
@@ -197,15 +198,14 @@ const CourseClassGeneralTab = React.memo<Props>(
           error: classCodeError,
           invalid: Boolean(classCodeError)
         },
-        fullWidth: true,
         disabled: !values.courseCode
       }),
       [values.code, values.courseCode, classCodeError]
     );
 
-    const classCodeField = useMemo(
-      () => (twoColumn ? (
-        <HeaderTextField {...classCodeProps} placeholder="Class code" />
+    const classCodeField = useCallback(
+      (inHeader = false) => (twoColumn ? (
+          <HeaderTextField {...classCodeProps} placeholder="Class code" inHeader />
         ) : (
           <EditInPlaceField {...classCodeProps} />
         )),
@@ -284,10 +284,10 @@ const CourseClassGeneralTab = React.memo<Props>(
           <CustomAppBar>
             <Grid container className="flex-fill">
               <Grid item xs={6} className="pr-2">
-                {courseIdField}
+                {courseIdField(true)}
               </Grid>
               <Grid item xs={4}>
-                {classCodeField}
+                {classCodeField(true)}
               </Grid>
             </Grid>
             <div>
@@ -317,11 +317,11 @@ const CourseClassGeneralTab = React.memo<Props>(
           {!twoColumn && (
             <>
               <Grid item xs={12}>
-                {courseIdField}
+                {courseIdField(false)}
               </Grid>
 
               <Grid item xs={12}>
-                {classCodeField}
+                {classCodeField(false)}
               </Grid>
             </>
           )}
@@ -395,15 +395,6 @@ const CourseClassGeneralTab = React.memo<Props>(
               name="message"
               label="Message for operator"
               className="pt-2"
-              fullWidth
-            />
-
-            <CustomFields
-              entityName="CourseClass"
-              fieldName="customFields"
-              entityValues={values}
-              dispatch={dispatch}
-              form={form}
             />
           </Grid>
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
@@ -419,6 +410,16 @@ const CourseClassGeneralTab = React.memo<Props>(
               hasBudget={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>
+          <CustomFields
+            entityName="CourseClass"
+            fieldName="customFields"
+            entityValues={values}
+            dispatch={dispatch}
+            form={form}
+            gridItemProps={{
+              xs: twoColumn ? 6 : 12
+            }}
+          />
         </Grid>
       </>
     );

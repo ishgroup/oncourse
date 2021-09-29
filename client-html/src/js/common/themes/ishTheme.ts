@@ -23,6 +23,11 @@ const createOverrides = palette => ({
         overflow: "visible"
       }
     },
+    MuiFormControl: {
+      root: {
+        maxWidth: "100%",
+      },
+    },
     MuiFormControlLabel: {
       label: {
         fontSize: "14px",
@@ -32,10 +37,57 @@ const createOverrides = palette => ({
       },
       disabled: {}
     },
+    MuiInput: {
+      underline: {
+        "&:before": {
+          borderBottom: `1px solid transparent`
+        },
+        "&:hover:not($disabled):not(.primaryContarstUnderline):before": {
+          borderBottom: `1px solid ${palette.primary.main}`
+        },
+        "&.primaryContarstUnderline:hover:not($disabled):before": {
+          borderBottom: `1px solid ${palette.primary.contrastText}`
+        }
+      }
+    },
+    MuiSelect: {
+      select: {
+        "&:focus": {
+          backgroundColor: "none",
+        },
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        lineHeight: 1.2,
+        whiteSpace: 'nowrap'
+      },
+    },
     MuiInputBase: {
+      root: {
+        maxWidth: "100%",
+        width: "100%",
+      },
+      input: {
+        "&::placeholder": {
+          color: palette.text.disabled,
+          fill: palette.text.disabled,
+        },
+        textOverflow: "ellipsis",
+        color: palette.text.primaryEditable,
+        fontWeight: 400,
+        "&:hover:not($disabled):not(&:focus):not(.primaryContarstHover)": {
+          color: palette.primary.main,
+          MuiSelect: {
+            icon: {
+              color: palette.primary.main,
+            },
+          },
+        },
+      },
       inputMultiline: {
         lineHeight: "1.5em"
-      }
+      },
     },
     MuiCssBaseline: {
       "@global": {
@@ -91,6 +143,14 @@ const createOverrides = palette => ({
       icon: {
         fontSize: "18px"
       }
+    },
+    MuiAutocomplete: {
+      inputRoot: {
+        flexWrap: 'inherit',
+        "& $input": {
+          width: "100%"
+        }
+      }
     }
   }
 });
@@ -129,7 +189,9 @@ const defaultThemePalette = {
   },
   text: {
     secondary: "rgba(0, 0, 0, 0.54)",
-    primary: "rgba(0, 0, 0, 0.87)"
+    primary: "rgba(0, 0, 0, 0.87)",
+    primaryEditable: "rgba(0, 0, 0, 0.95)",
+    disabled: "rgba(34, 34, 34, 0.38)",
   }
 };
 
@@ -165,6 +227,7 @@ const darkThemePalette = {
 },
   text: {
     primary: "rgba(255, 255, 255, 0.87)",
+    primaryEditable: "rgba(255, 255, 255, 0.95)",
     secondary: "rgba(255, 255, 255, 0.65)",
     disabled: "rgba(255, 255, 255, 0.38)",
     hint: "rgba(255, 255, 255, 0.38)"
@@ -195,10 +258,11 @@ const monochromeThemePalette = {
     contrastText: "#fff"
   },
   error: {
- light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-},
+    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
+  },
   text: {
     primary: "#222222",
+    primaryEditable: "#181818",
     secondary: "rgba(34, 34, 34, 0.54)",
     disabled: "rgba(34, 34, 34, 0.38)",
     hint: "rgba(34, 34, 34, 0.38)"
@@ -231,10 +295,11 @@ const highcontrastThemePalette = {
     default: "#f2f2f2"
   },
   error: {
- light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-},
+    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
+  },
   text: {
     primary: "#111111",
+    primaryEditable: "#070707",
     secondary: "#111111",
     disabled: "rgba(34, 34, 34, 0.38)",
     hint: "rgba(34, 34, 34, 0.38)"
@@ -276,6 +341,7 @@ const christmasThemePalette = {
   },
   text: {
     primary: "#111111",
+    primaryEditable: "#070707",
     secondary: "#111111",
     disabled: "rgba(34, 34, 34, 0.38)",
     hint: "rgba(34, 34, 34, 0.38)"
