@@ -58,7 +58,7 @@
              status="0" confirmationStatus="2"
              feeHelpAmount="0" attendanceType="9"/>
 
-  <CourseSession id="300" courseClass_Id="5" startDatetime="2021-09-20 12:00:00.0" endDatetime="2021-09-24 16:00:00.0" payAdjustment="0.00"/>
+  <CourseSession id="300" courseClass_Id="5" startDatetime="[tomorrow]" endDatetime="[end_session]" payAdjustment="0.00"/>
   <Assessment id="100" name="name" active="true" code="code" createdOn="2017-09-20 12:00:00.0" modifiedOn="[yesterday]"/>
   <AssessmentClass id="100" courseClassId="5" releaseDate="[yesterday]" assessmentId="100" dueDate="[tomorrow]"
                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
@@ -69,9 +69,6 @@
   <Assessment id="300" name="name" active="true" code="code2" createdOn="2017-09-20 12:00:00.0" modifiedOn="[yesterday]"/>
   <AssessmentClass id="300" courseClassId="5" releaseDate="[yesterday]" assessmentId="300" dueDate="[tomorrow]"
                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
-  <AssessmentSubmission id="1" assessmentClassId="300" enrolmentId="1235" markedById="1" submittedOn="[yesterday]"
-                        markedOn="[yesterday]" grade="85.43" modifiedOn="[yesterday]"
-                        createdOn="2012-01-03 10:00:00"/>
 
   <CourseSession id="400" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-04 12:00:00"
                  payAdjustment="0.00"/>

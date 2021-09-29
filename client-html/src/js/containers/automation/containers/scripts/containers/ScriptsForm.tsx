@@ -154,7 +154,7 @@ const getInitComponentBody = (componentName: ScriptComponentType) => {
   }
 };
 
-const outputTypes = [...Object.keys(OutputType).map(mapSelectItems), { label: "no output", value: null }];
+const outputTypes = [...Object.keys(OutputType).map(mapSelectItems), { label: "no output", value: "" }];
 
 const ScriptsForm = React.memo<Props>(props => {
   const {
