@@ -62,8 +62,6 @@ properties:
     type: boolean
   trainingPlanDeveloped:
     type: boolean
-  feeCharged:
-    type: number
   feeHelpAmount:
     type: number
   feeHelpClass:

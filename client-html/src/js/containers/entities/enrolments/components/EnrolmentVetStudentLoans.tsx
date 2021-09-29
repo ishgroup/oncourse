@@ -113,9 +113,6 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
             <Collapse in={showVSL}>
               <Grid container item={true} xs={12}>
                 <Grid item xs={twoColumn ? 3 : 12}>
-                  <Uneditable label="Fee charged" value={values.feeCharged} money />
-                </Grid>
-                <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="money"
                     name="feeHelpAmount"

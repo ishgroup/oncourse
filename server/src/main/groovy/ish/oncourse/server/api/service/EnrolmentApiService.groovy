@@ -14,7 +14,6 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.cancel.CancelationResult
 import ish.cancel.EnrolmentCancelationRequest
-import ish.common.types.EnrolmentReportingStatus
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.server.api.dao.EnrolmentDao
@@ -110,9 +109,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.cricosConfirmation = enrolment.cricosConfirmation
             enrolmentDTO.vetFeeIndicator = enrolment.vetFeeIndicator
             enrolmentDTO.trainingPlanDeveloped = enrolment.trainingPlanDeveloped
-
-            enrolmentDTO.feeCharged = enrolment.feeCharged.toBigDecimal()
-
+            
             enrolmentDTO.feeHelpAmount = enrolment.feeHelpAmount?.toBigDecimal()
             enrolmentDTO.creditOfferedValue = enrolment.creditOfferedValue
             enrolmentDTO.feeStatus = FEE_STATUS_MAP[enrolment.feeStatus]
