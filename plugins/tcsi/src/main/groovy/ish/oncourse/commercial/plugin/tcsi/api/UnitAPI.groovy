@@ -221,7 +221,7 @@ class UnitAPI extends TCSI_API {
         
         
 
-        BigDecimal feeCharged =  enrolment.feeCharged.toBigDecimal()
+        BigDecimal feeCharged =  getFeeChargedAmount()
         BigDecimal helpLoanAmount 
         if (enrolment.feeHelpAmount) {
             helpLoanAmount = enrolment.feeHelpAmount.toBigDecimal()
@@ -270,6 +270,14 @@ class UnitAPI extends TCSI_API {
         ]
 
         return unitData
+    }
+    
+    Money getFeeChargedAmount() {
+        if (enrolment.invoiceLines?.empty)  {
+            return Money.ZERO
+        } else {
+            return enrolment.invoiceLines.findAll {it.invoice.contact == enrolment.student.contact }*.finalPriceToPayIncTax.inject { a, b -> a.add(b) }
+        }
     }
 
 }
