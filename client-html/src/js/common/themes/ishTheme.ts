@@ -163,9 +163,6 @@ const createOverrides = palette => ({
     MuiAutocomplete: {
       inputRoot: {
         flexWrap: 'inherit',
-        "& $input": {
-          width: "100%"
-        }
       }
     }
   }
