@@ -955,7 +955,7 @@ definitions:
         description: Terms and conditions display label
       termsUrl:
         type: string
-        description: Terms and conditions display label  
+        description: Terms and conditions page url
   field.Suburb:
     type: object
     properties:
