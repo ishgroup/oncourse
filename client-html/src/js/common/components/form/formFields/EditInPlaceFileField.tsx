@@ -397,7 +397,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
       onInnerValueChange,
       defaultValue,
       disabledTab,
-      fullWidth,
       ...custom
     } = this.props;
 
@@ -470,7 +469,7 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
           <FormControl
             error={invalid}
             margin="none"
-            fullWidth={fullWidth}
+            fullWidth
             onClick={this.openFilePicker}
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,

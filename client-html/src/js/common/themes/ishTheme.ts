@@ -42,8 +42,11 @@ const createOverrides = palette => ({
         "&:before": {
           borderBottom: `1px solid transparent`
         },
-        "&:hover:not($disabled):before": {
+        "&:hover:not($disabled):not(.primaryContarstUnderline):before": {
           borderBottom: `1px solid ${palette.primary.main}`
+        },
+        "&.primaryContarstUnderline:hover:not($disabled):before": {
+          borderBottom: `1px solid ${palette.primary.contrastText}`
         }
       }
     },
@@ -73,7 +76,7 @@ const createOverrides = palette => ({
         textOverflow: "ellipsis",
         color: palette.text.primaryEditable,
         fontWeight: 400,
-        "&:hover:not($disabled):not(&:focus)": {
+        "&:hover:not($disabled):not(&:focus):not(.primaryContarstHover)": {
           color: palette.primary.main,
           MuiSelect: {
             icon: {

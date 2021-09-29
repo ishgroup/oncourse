@@ -12,11 +12,13 @@ import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
 import { format } from "date-fns";
 import QRCode from "qrcode.react";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useRef
+} from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { arrayRemove, change } from "redux-form";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import EntityService from "../../../../common/services/EntityService";
@@ -275,7 +277,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         </Typography>
       </Grid>
 
-      <Grid item xs={12} className={clsx(classes.select1, "pb-1")}>
+      <Grid item xs={twoColumn ? 12 : 6} className={clsx(classes.select1, "pb-1")}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Contact"
@@ -361,13 +363,15 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
       {twoColumn && <Grid item xs={3} />}
 
-      <Grid item xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-        <FormField
-          type="multilineText"
-          name="publicNotes"
-          label="Printed public notes / Specialization"
-          fullWidth
-        />
+      <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+        <Grid item xs={twoColumn ? 6 : 12}>
+          <FormField
+            type="multilineText"
+            name="publicNotes"
+            label="Printed public notes / Specialization"
+            fullWidth
+          />
+        </Grid>
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>
@@ -418,8 +422,10 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
       {twoColumn && <Grid item xs={3} />}
 
-      <Grid item xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-        <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+      <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+        <Grid item xs={twoColumn ? 6 : 12}>
+          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+        </Grid>
       </Grid>
 
       <Grid item xs={twoColumn ? 8 : 12} className={clsx({ "saveButtonTableOffset": twoColumn })}>

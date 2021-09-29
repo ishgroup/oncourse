@@ -19,9 +19,9 @@ import { D_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { StudentForRender } from "./CourseClassAssessmentItems";
 import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 
 interface Props {
   elem: StudentForRender;

@@ -15,7 +15,7 @@ import LockOpen from "@material-ui/icons/LockOpen";
 import Lock from "@material-ui/icons/Lock";
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
 import { State } from "../../../../reducers/state";
@@ -158,7 +158,6 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               name="taxId"
               label="Tax type"
               items={getFormattedTaxes(taxTypes) || []}
-              fullWidth
             />
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory

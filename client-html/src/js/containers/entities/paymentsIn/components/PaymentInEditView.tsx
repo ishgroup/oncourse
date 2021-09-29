@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { FieldArray, getFormInitialValues } from "redux-form";
 import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";

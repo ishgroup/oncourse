@@ -3,17 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import {
-  useTable,
-  useBlockLayout,
-  useRowSelect,
-  useSortBy,
-  useResizeColumns,
-  useColumnOrder
-} from "react-table";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MaUTable from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
@@ -24,12 +15,12 @@ import debounce from "lodash.debounce";
 import Typography from "@material-ui/core/Typography";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import clsx from "clsx";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Column, DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { COLUMN_WITH_COLORS, getTableRows } from "./utils";
-import { StyledCheckbox } from "../../../form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../form/formFields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
 import { StringKeyObject } from "../../../../../model/common/CommomObjects";

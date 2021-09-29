@@ -15,7 +15,7 @@ import Grid from "@material-ui/core/Grid/Grid";
 import { Dispatch } from "redux";
 import { Account, ProductItemCancel, Tax } from "@api/model";
 import { FormControlLabel } from "@material-ui/core";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";

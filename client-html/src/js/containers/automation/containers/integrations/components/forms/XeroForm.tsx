@@ -4,13 +4,11 @@
  */
 
 import * as React from "react";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import Button from "../../../../../../common/components/buttons/Button";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";

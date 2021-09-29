@@ -13,7 +13,7 @@ import {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { UserRole } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Categories from "../../../../../model/user-roles/index";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";

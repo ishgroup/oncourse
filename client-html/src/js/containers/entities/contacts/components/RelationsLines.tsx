@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { defaultContactName, getContactFullName, openContactLink } from "../utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";

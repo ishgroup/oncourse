@@ -7,7 +7,7 @@ import * as React from "react";
 import { FormControlLabel } from "@material-ui/core";
 import { QualificationType } from "@api/model";
 import Grid from "@material-ui/core/Grid";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 

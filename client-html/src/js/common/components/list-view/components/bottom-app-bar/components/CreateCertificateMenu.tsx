@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -20,7 +18,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Dispatch } from "redux";
 import EntityService from "../../../../../services/EntityService";
 import { openInternalLink } from "../../../../../utils/links";
-import { StyledCheckbox } from "../../../../form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../form/formFields/CheckboxField";
 import CertificateService from "../../../../../../containers/entities/certificates/services/CertificateService";
 import instantFetchErrorHandler from "../../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 

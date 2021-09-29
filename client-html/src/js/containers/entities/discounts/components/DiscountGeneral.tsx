@@ -11,14 +11,14 @@ import Divider from "@material-ui/core/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
 import { connect } from "react-redux";
 import Decimal from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
 import { validateNonNegative, validateRangeInclusive, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
+import { Switch } from "../../../../common/components/form/formFields/Switch";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
+import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { mapSelectItems } from "../../../../common/utils/common";
 
 interface DiscountGeneralProps {

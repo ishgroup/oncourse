@@ -5,12 +5,12 @@
 
 import * as React from "react";
 
-import { DatePicker, TimePicker, DateTimePicker } from "@material-ui/pickers";
+import { DatePicker, DateTimePicker, TimePicker } from "@material-ui/pickers";
 import { DD_MM_YYYY_HH_MM_SPECIAL, DD_MMM_YYYY_MINUSED, HH_MM_COLONED } from "../../../utils/dates/format";
 
 export const DateTimeField = props => {
   const {
- onChange, type, ampm, value, setPickerRef, formatDate, maxDate, minDate, ...rest 
+ onChange, type, ampm, value, setPickerRef, formatDate, maxDate, minDate, ...rest
 } = props;
 
   const picker = type === "date" ? (

@@ -7,7 +7,7 @@ import useTheme from "@material-ui/core/styles/useTheme";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import React from "react";
 import ListSubheader from '@material-ui/core/ListSubheader';
-import { FixedSizeList as List, areEqual } from 'react-window';
+import { areEqual, FixedSizeList as List } from 'react-window';
 import { createStyles } from "@material-ui/core";
 import green from "@material-ui/core/colors/green";
 import clsx from "clsx";
@@ -74,6 +74,10 @@ export const selectStyles = theme => createStyles({
     menuList: {
       background: theme.palette.background.paper,
       borderRadius: theme.shape.borderRadius
+    },
+    readonly: {
+      fontWeight: 300,
+      pointerEvents: "none"
     }
   });
 

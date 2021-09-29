@@ -16,7 +16,7 @@ import {
 import { change, FieldArray } from "redux-form";
 import { compareAsc, format as formatDate, startOfDay } from "date-fns";
 import { Grid } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
@@ -126,16 +126,17 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         <Grid item xs={twoColumn ? 6 : 12}>
           <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
         </Grid>
+        <CustomFields
+          entityName={customFieldType}
+          fieldName="customFields"
+          entityValues={values}
+          dispatch={dispatch}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 6 : 12
+          }}
+        />
       </Grid>
-
-      <CustomFields
-        entityName={customFieldType}
-        fieldName="customFields"
-        entityValues={values}
-        dispatch={dispatch}
-        form={form}
-        fullWidth
-      />
 
       <Grid container>
         {type === ProductType.Voucher && (

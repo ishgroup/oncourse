@@ -9,7 +9,9 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Popper from "@material-ui/core/Popper";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useContext, useEffect, useMemo, useRef, useState
+} from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { InputAdornment, withStyles } from "@material-ui/core";
 import clsx from "clsx";
@@ -136,7 +138,6 @@ interface Props extends WrappedFieldProps {
   sort?: (a: any, b: any) => number | boolean;
   sortPropKey?: string;
   inHeader?: boolean;
-  fullWidth?: boolean;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -221,8 +222,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     placeholder,
     sort,
     sortPropKey,
-    inHeader,
-    fullWidth
+    inHeader
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -545,18 +545,22 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   inputRef={inputNode}
                   disableUnderline={inline}
                   classes={{
-                    root: clsx(fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
+                    root: clsx(classes.inputWrapper, isEditing && classes.isEditing),
                     underline: fieldClasses.underline,
-                    input: clsx(inHeader && classes.editableInHeader),
+                    input: clsx(inHeader && classes.editableInHeader, fieldClasses.text),
                   }}
                   inputProps={{
                     ...inputProps,
                     value: (isEditing ? searchValue : (typeof displayedValue === "string" ? displayedValue : "")),
                   }}
                   endAdornment={!disabled && (
-                    <InputAdornment position="end" className={classes.inputEndAdornment}>
-                      <ExpandMore />
-                    </InputAdornment>
+                    loading
+                      ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
+                      : (
+                        <InputAdornment position="end" className={classes.inputEndAdornment}>
+                          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+                        </InputAdornment>
+                      )
                   )}
                 />
                 <FormHelperText
@@ -568,18 +572,14 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 </FormHelperText>
               </FormControl>
           )}
-            popupIcon={
-              loading
-                ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
-                : stubComponent()
-            }
-            fullWidth={fullWidth}
+            fullWidth
             disableListWrap
             openOnFocus
             blurOnSelect
           />
         </SelectContext.Provider>
       </div>
+      {formatting === "inline" && (
       <div
         className={clsx(formatting !== "inline" && "textField", {
           "d-none": (!inHeader && !disabled) || (inHeader && (inline || isEditing || (meta && meta.invalid)))
@@ -587,16 +587,16 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       >
         <div className="mw-100 text-truncate">
           {!hideLabel && label && (
-            <Typography
-              variant="caption"
-              color="textSecondary"
-              style={colors ? { color: `${colors.subheader}` } : {}}
-              noWrap
-            >
-              {label}
-              {' '}
-              {labelAdornment && <span>{labelAdornment}</span>}
-            </Typography>
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            style={colors ? { color: `${colors.subheader}` } : {}}
+            noWrap
+          >
+            {label}
+            {' '}
+            {labelAdornment && <span>{labelAdornment}</span>}
+          </Typography>
           )}
 
           <ListItemText
@@ -609,15 +609,15 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 <ButtonBase
                   onFocus={onEditButtonFocus}
                   className={clsx(classes.editable, fieldClasses.text, "overflow-hidden d-flex hoverIconContainer", {
-                    "pointer-events-none": disabled
+                    [classes.readonly]: disabled
                   })}
                   component="div"
                 >
-                  <span className={clsx("text-truncate", classes.editable, fieldClasses.text)}>
+                  <span className={clsx("text-truncate", fieldClasses.text)}>
                     {displayedValue}
                   </span>
                   {!disabled && (
-                    <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
+                  <ExpandMore className={clsx("hoverIcon", classes.editIcon, fieldClasses.editIcon)} />
                   )}
                 </ButtonBase>
                 {endAdornment}
@@ -626,6 +626,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           />
         </div>
       </div>
+)}
     </div>
   );
 };

@@ -31,7 +31,7 @@ import { Account, ClassCost, CourseClassDuplicate, Tax } from "@api/model";
 import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
 import { Typography } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import EntityService from "../../../../../common/services/EntityService";
 import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";

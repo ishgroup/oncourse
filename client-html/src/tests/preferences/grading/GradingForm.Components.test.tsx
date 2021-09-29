@@ -15,12 +15,12 @@ describe("Virtual rendered GradingTypesForm", () => {
     },
     render: (wrapper, initialValues) => {
       initialValues.forEach((type, index) => {
-        expect(wrapper.find(`div[id='types[${index}].name']`).text()).toContain(type.name);
-        expect(wrapper.find(`div[id='types[${index}].entryType'] input`).getDOMNode().value).toEqual(type.entryType);
+        expect(wrapper.find(`div[id='types[${index}].name'] input`).val()).toContain(type.name);
+        expect(wrapper.find(`div[id='types[${index}].entryType'] input`).val()).toEqual(type.entryType);
 
         if (type.entryType === 'number') {
-          expect(wrapper.find(`div[id='types[${index}].minValue']`).text()).toContain(type.minValue);
-          expect(wrapper.find(`div[id='types[${index}].maxValue']`).text()).toContain(type.maxValue);
+          expect(wrapper.find(`div[id='types[${index}].minValue'] input`).val()).toContain(type.minValue);
+          expect(wrapper.find(`div[id='types[${index}].maxValue'] input`).val()).toContain(type.maxValue);
         }
 
         type.gradingItems.forEach((gradingItem, gIndex) => {
