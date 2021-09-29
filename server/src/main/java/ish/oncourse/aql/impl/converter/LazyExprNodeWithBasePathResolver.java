@@ -15,13 +15,13 @@ import org.apache.cayenne.exp.parser.ASTPath;
 /**
  * extended expression node, that provides opportunity to find base path of node and resolve path to taggable entity
  */
-public abstract class LazyExprNodeWithBasePathResolver extends LazyExpressionNode {
+public abstract class LazyExprNodeWithBasePathResolver extends LazyExpressionNode implements BasePathProvider{
     protected static final String TAGGING_RELATIONS = "taggingRelations";
 
     /**
      * @return not null path
      */
-    protected String resolveBasePath() {
+    public String resolveBasePath() {
         if(jjtGetNumChildren() == 1) {
             var node = jjtGetChild(0);
             if(node instanceof ASTPath) {
