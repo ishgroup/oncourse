@@ -5,14 +5,13 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Tag } from "@api/model";
-import { Typography } from "@material-ui/core";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import Chip from "@material-ui/core/Chip";
+import { InputAdornment } from "@material-ui/core";
+import CreateIcon from "@material-ui/icons/Create";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import ListItemText from "@material-ui/core/ListItemText";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
-import Edit from "@material-ui/icons/Edit";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
 import { WrappedFieldProps } from "redux-form";
@@ -21,7 +20,6 @@ import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { MenuTag } from "../../../../model/tags";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
-import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
 import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
@@ -30,6 +28,25 @@ const styles = theme =>
   createStyles({
     listContainer: {
       marginLeft: "-2px"
+    },
+    inputEndAdornment: {
+      fontSize: "18px",
+      color: theme.palette.primary.main,
+      opacity: 0.5,
+      display: "none",
+    },
+    inputWrapper: {
+      paddingRight: "0",
+      "&:hover $inputEndAdornment": {
+        display: "flex",
+      },
+    },
+    isEditing: {
+      "& $inputEndAdornment": {
+        display: "flex",
+        borderBottom: "none",
+        opacity: 1,
+      },
     },
     tagBody: {
       color: theme.palette.text.primary,
@@ -55,11 +72,17 @@ const styles = theme =>
       marginRight: theme.spacing(1)
     },
     noTagsLabel: {},
+    input: {
+      minWidth: "150px",
+    },
     inputRoot: {
+      "& $input": {
+        minWidth: "150px",
+      },
+      flexWrap: "wrap",
       "& $tagInput": {
-        width: "auto",
         color: "inherit",
-        maxWidth: theme.spacing(30)
+        maxWidth: theme.spacing(30),
       }
     },
     tagInput: {},
@@ -77,10 +100,23 @@ const styles = theme =>
     },
     tagColorDotSmall: {
       width: theme.spacing(2),
+      minWidth: theme.spacing(2),
       height: theme.spacing(2),
+      minHeight: theme.spacing(2),
       background: "red",
       borderRadius: "100%"
-    }
+    },
+    chipLabel: {
+      fontSize: "16px",
+      fontWeight: 400,
+      paddingLeft: theme.spacing(0.5),
+    },
+    hasPopupIcon: {
+      "&$hasClearIcon $inputRoot": {
+        paddingRight: 0
+      }
+    },
+    hasClearIcon: {},
   });
 
 interface Props extends WrappedFieldProps {
@@ -129,10 +165,6 @@ const getFullTag = (tagId: number, tags: Tag[]) => {
   }
 };
 
-const getInputString = (tags: Tag[], allTags: Tag[]) => (tags?.length && allTags?.length
-    ? tags.reduce((acc, tag) => (getFullTag(tag.id, allTags) ? `${acc}#${tag.name} ` : acc), "")
-    : "");
-
 const SimpleTagList: React.FC<Props> = props => {
   const {
    input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
@@ -142,22 +174,6 @@ const SimpleTagList: React.FC<Props> = props => {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
-
-  const InputValueForRender = useMemo(() => {
-    if (!inputValue || !tags || !tags.length) return "";
-
-    const arrayOfTags = input?.value?.length
-      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
-
-    if (!arrayOfTags?.length) return "";
-
-    return arrayOfTags.map((tag: Tag, index) => (
-      <span className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
-        <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
-        {`#${tag.name} `}
-      </span>
-    ));
-  }, [tags, input.value, inputValue]);
 
   useEffect(() => {
     if (meta.invalid && !isEditing) {
@@ -178,35 +194,6 @@ const SimpleTagList: React.FC<Props> = props => {
     [menuTags]
   );
 
-  const synchronizeTags = () => {
-    const inputString = getInputString(input.value, tags);
-
-    if (inputString.trim() === inputValue.replace(endTagRegex, "").trim()) {
-      return;
-    }
-
-    const updated = [];
-    const current = inputValue.split("#").filter(i => i).map(i => i.trim());
-
-    allMenuTags.forEach(t => {
-      if (!t.children.length) {
-        const index = current.findIndex(c => c === t.tagBody.name);
-        if (index !== -1) {
-          const addedTagsMatch = input.value.find(v => v.name === t.tagBody.name);
-          if (addedTagsMatch && addedTagsMatch.id !== t.tagBody.id) {
-            return;
-          }
-          updated.push(t.tagBody);
-          current.splice(index, 1);
-        }
-      }
-    });
-
-    updated.sort((a, b) => current.indexOf(a.name) - current.indexOf(b.name));
-    input.onChange(updated);
-    setInputValue(getInputString(updated, tags));
-  };
-
   const onTagAdd = (tag: MenuTag) => {
     const updated = [...input.value];
 
@@ -220,9 +207,30 @@ const SimpleTagList: React.FC<Props> = props => {
 
     input.onChange(updated);
 
+    if (inputValue && inputValue !== "#") setInputValue("#");
+
     setTimeout(() => {
       inputNode?.current?.focus();
     }, 100);
+  };
+
+  const onDeleteTag = (tag: Tag) => {
+    const updated = [...input.value];
+
+    const index = updated.findIndex(t => t.id === tag.id);
+
+    if (index !== -1) updated.splice(index, 1);
+
+    input.onChange(updated);
+
+    setTimeout(() => {
+      inputNode?.current?.focus();
+    }, 100);
+
+    if (menuIsOpen) {
+      setTimeout(() => setMenuIsOpen(false), 0);
+      setTimeout(() => setMenuIsOpen(true), 0);
+    }
   };
 
   const filterOptions = item => !item.children.length && !input.value.some(v => v.id === item.tagBody.id) && item.tagBody.name
@@ -254,13 +262,6 @@ const SimpleTagList: React.FC<Props> = props => {
     setInputValue(e.target.value);
   };
 
-  const edit = () => {
-    setIsEditing(true);
-    setTimeout(() => {
-      inputNode?.current?.focus();
-    }, 50);
-  };
-
   const exit = () => {
     setMenuIsOpen(false);
     setIsEditing(false);
@@ -274,6 +275,7 @@ const SimpleTagList: React.FC<Props> = props => {
 
   const onFocus = () => {
     setMenuIsOpen(true);
+    if (!isEditing) setIsEditing(true);
     if (!endTagRegex.test(inputValue)) {
       setInputValue(inputValue + " #");
     }
@@ -282,32 +284,22 @@ const SimpleTagList: React.FC<Props> = props => {
   const onBlur = () => {
     if (currentInputString) {
       exit();
-      synchronizeTags();
     }
   };
 
   const onTagListBlur = () => {
     if (document.activeElement !== inputNode.current) {
       exit();
-      synchronizeTags();
     }
   };
 
   const handleChange = (e, value, action) => {
     if (action === "select-option") {
-      onTagAdd(value);
+      const newItem = value.splice(-1, 1)[0];
+
+      onTagAdd(newItem);
     }
   };
-
-  useEffect(() => {
-    let inputString = getInputString(input.value, tags);
-
-    if (document.activeElement === inputNode.current && !endTagRegex.test(inputString)) {
-      inputString += " #";
-    }
-
-    setInputValue(inputString);
-  }, [input.value, tags]);
 
   useEffect(() => {
     setCurrentInputString(getCurrentInputString(inputValue, input.value));
@@ -318,11 +310,10 @@ const SimpleTagList: React.FC<Props> = props => {
       return <div {...params} />;
     }
 
-    const coords = getCaretCoordinates(inputNode.current, inputValue.length);
-    const position = tagMenuNode.current
-    && coords.left > inputNode.current.clientWidth - tagMenuNode.current.clientWidth
+    const position = tagMenuNode.current && tagMenuNode.current.clientWidth
+    && inputNode.current.clientWidth < tagMenuNode.current.clientWidth
       ? { right: 0 }
-      : { left: coords.left };
+      : { left: inputNode.current.offsetLeft };
 
     return (
       <div id="popper" style={{ ...position, position: "absolute", zIndex: 2 }}>
@@ -331,7 +322,7 @@ const SimpleTagList: React.FC<Props> = props => {
         </ClickAwayListener>
       </div>
       );
-  }, [allMenuTags, inputValue, currentInputString, inputNode.current, tagMenuNode.current, input.value]);
+  }, [allMenuTags, inputValue, currentInputString, inputNode.current, tagMenuNode.current, input.value, input.value.length]);
 
   const listboxAdapter = useCallback(params => (
     <div className={params.className} ref={tagMenuNode}>
@@ -340,31 +331,64 @@ const SimpleTagList: React.FC<Props> = props => {
         handleAdd={onTagAdd}
       />
     </div>
-  ), [menuTags, onTagAdd]);
+  ), [menuTags, input.value, onTagAdd, input.value.length]);
+
+  const renderTags = (arrayOfTags: Tag[], getTagProps: any) => {
+    if (!arrayOfTags || !tags || !tags.length) return "";
+
+    const arrayOfFullTags = input?.value?.length
+      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
+
+    if (!arrayOfFullTags?.length) return "";
+
+    return arrayOfFullTags.map((tag: Tag, index) => (
+      <Chip
+        {...getTagProps({ index })}
+        key={tag.id}
+        avatar={(
+          <span className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
+            <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
+          </span>
+        )}
+        label={`#${tag.name} `}
+        onDelete={() => onDeleteTag(tag)}
+        classes={{
+          label: classes.chipLabel,
+        }}
+      />
+    ));
+  };
 
   return (
     <div className={className} id={input.name}>
       <div
         className={clsx("relative", {
-        "d-none": !isEditing,
         "pointer-events-none": disabled
       })}
       >
         <Autocomplete
-          value={null}
+          multiple
+          value={[...input.value]}
           open={menuIsOpen}
           options={filteredOptions}
           onChange={handleChange}
           renderOption={renderOption}
+          renderTags={renderTags}
           filterOptions={filterOptionsInner}
           getOptionLabel={getOptionLabel}
           PopperComponent={popperAdapter}
           ListboxComponent={currentInputString ? undefined : listboxAdapter}
           classes={{
-            listbox: fieldClasses.listbox
+            // @ts-ignore
+            hasPopupIcon: classes.hasPopupIcon,
+            hasClearIcon: classes.hasClearIcon,
+            inputRoot: classes.inputRoot,
+            input: classes.input,
+            listbox: fieldClasses.listbox,
           }}
           renderInput={params => (
             <TextField
+              multiline
               {...params}
               margin="none"
               InputLabelProps={{
@@ -373,12 +397,18 @@ const SimpleTagList: React.FC<Props> = props => {
                 }
               }}
               InputProps={{
-              ...params.InputProps,
-              classes: {
-                root: fieldClasses.text,
-                underline: fieldClasses.underline
-              },
-            }}
+                ...params.InputProps,
+                onFocus,
+                classes: {
+                  root: clsx(fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
+                  underline: fieldClasses.underline
+                },
+                endAdornment: !disabled && (
+                  <InputAdornment position="end" className={classes.inputEndAdornment}>
+                    <CreateIcon />
+                  </InputAdornment>
+                )
+              }}
               // eslint-disable-next-line react/jsx-no-duplicate-props
               inputProps={{
               ...params.inputProps,
@@ -395,51 +425,12 @@ const SimpleTagList: React.FC<Props> = props => {
               onBlur={onBlur}
               inputRef={inputNode}
               label={label}
-              multiline
             />
         )}
           popupIcon={stubComponent()}
           disableListWrap
           openOnFocus
         />
-      </div>
-      <div
-        className={clsx(classes.textField, {
-        "d-none": isEditing,
-        "pointer-events-none": disabled || !tags || !tags.length
-      })}
-      >
-        <div className="mw-100 text-truncate">
-          <Typography variant="caption" className={fieldClasses.label} color="textSecondary">
-            {label}
-          </Typography>
-
-          <ListItemText
-            classes={{
-            root: "pl-0 mb-0 mt-0",
-            primary: "d-flex"
-          }}
-            primary={(
-              <ButtonBase
-                onClick={edit}
-                className={clsx("overflow-hidden hoverIconContainer", classes.editable)}
-                component="div"
-              >
-                <span
-                  className={clsx("overflow-hidden d-flex align-items-center", classes.editable, {
-                    [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
-                    [fieldClasses.text]: inputValue,
-                  })}
-                >
-                  {InputValueForRender || "No value"}
-                  {!disabled
-                  && Boolean(!tags || tags.length)
-                  && <Edit className={clsx("editInPlaceIcon hoverIcon", classes.hoverIcon, fieldClasses.placeholder, "mt-0-5")} />}
-                </span>
-              </ButtonBase>
-          )}
-          />
-        </div>
       </div>
     </div>
   );
