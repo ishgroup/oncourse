@@ -24,14 +24,14 @@ import javax.ws.rs.InternalServerErrorException
 import static ish.oncourse.configuration.Configuration.AdminProperty.S_ROOT
 
 class WebSiteService {
-    
+
     private static final Logger logger = LogManager.logger
 
     @Inject
     private ICayenneService cayenneService
     @Inject
     private RequestService requestService
-    
+
     void createWebSite(SiteDTO dto) {
         validateWebSiteBeforeCreate(dto)
         WebSite newSite = createWebSite(requestService.college, dto.webSiteTemplate, dto.name, dto.key)
@@ -39,10 +39,10 @@ class WebSiteService {
         updateDomains(newSite, dto.domains, dto.primaryDomain)
         newSite.objectContext.commitChanges()
     }
-    
+
     WebSite createWebSite(College college, SiteTemplate siteTemplate, String name, String key) {
         ObjectContext context = cayenneService.newNonReplicatingContext()
-        Map<String, String>  errors = [:]
+        Map<String, String> errors = [:]
 
         WebSite template = ObjectSelect.query(WebSite)
                 .where(WebSite.SITE_KEY.eq("template-$siteTemplate".toString()))
@@ -62,12 +62,12 @@ class WebSiteService {
         return createNewWebSite.webSite
 
     }
-    
+
     private void updateDomains(WebSite site, List<String> domains, String primaryDomain) {
         ObjectContext context = site.objectContext
-        List<WebHostName> domainsToDelete = site.collegeDomains.findAll{!(it.name in domains)}
+        List<WebHostName> domainsToDelete = site.collegeDomains.findAll { !(it.name in domains) }
 
-        domains.findAll {!(it in site.collegeDomains*.name) }.each { domainName ->
+        domains.findAll { !(it in site.collegeDomains*.name) }.each { domainName ->
             WebHostName domain = context.newObject(WebHostName)
             domain.webSite = site
             domain.college = site.college
@@ -81,7 +81,7 @@ class WebSiteService {
         site.collegeDomains.each {
             it.status = it.name == primaryDomain ? WebHostNameStatus.PRIMARY : WebHostNameStatus.ACTIVE
         }
-        
+
     }
 
     private void validateWebSiteBeforeCreate(SiteDTO dto) {
@@ -91,10 +91,10 @@ class WebSiteService {
         if (!dto.key) {
             throw new BadRequestException("Web site url location is required")
         }
-        
+
         if (getWebSite(dto.key)) {
             throw new BadRequestException("Web site url location must be unique")
-        } 
+        }
 
         String collegeKey = requestService.college.collegeKey
 
@@ -107,7 +107,7 @@ class WebSiteService {
         }
         validateDomains(dto)
     }
-    
+
     List<SiteDTO> getCollegeWebSites() {
         return requestService.college.webSites.collect {
             SiteDTO dto = new SiteDTO()
@@ -116,12 +116,12 @@ class WebSiteService {
             dto.key = it.siteKey
             dto.gtmId = it.googleTagmanagerAccount
             dto.googleAnalyticsId = it.googleAnalyticAccount
-            dto.domains = it.collegeDomains.collect{host -> host.name }
+            dto.domains = it.collegeDomains.collect { host -> host.name }
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
             dto
         }
     }
-    
+
     WebSite getWebSite(Long id) {
         WebSite webSite = SelectById.query(WebSite, id).selectOne(cayenneService.newContext())
         if (webSite) {
@@ -130,10 +130,11 @@ class WebSiteService {
             throw new BadRequestException("Web site not found")
         }
     }
+
     WebSite getWebSite(String key) {
         ObjectSelect.query(WebSite).where(WebSite.SITE_KEY.eq(key)).selectFirst(cayenneService.newContext())
     }
-    
+
     void updateWebSite(SiteDTO dto) {
         if (!dto.id) {
             throw new BadRequestException("Web site identifier in not present in update request")
@@ -162,8 +163,8 @@ class WebSiteService {
         }
         updateDomains(webSite, dto.domains, dto.primaryDomain)
         webSite.objectContext.commitChanges()
-    } 
-    
+    }
+
     void deleteWebSite(Long id) {
         WebSite webSite = getWebSite(id)
         try {
@@ -176,14 +177,14 @@ class WebSiteService {
             } catch (IOException e) {
                 logger.error("Cannot delete {} to {}", webSiteDir, e)
             }
-        
+
         } catch (Exception e) {
             logger.error("Web site could not be deleted", e)
             throw new InternalServerErrorException("Something unexpected has happened while deleting web site.\nContact ish support, please.")
         }
 
     }
-    
+
     void validateDomains(SiteDTO dto) {
         if (!dto.domains.empty) {
             if (!dto.primaryDomain) {
@@ -194,7 +195,6 @@ class WebSiteService {
             }
         }
     }
-
 
     private void configureAccountsFor(WebSite webSite, SiteDTO dto) {
         if (dto.googleAnalyticsId)
