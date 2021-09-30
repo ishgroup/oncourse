@@ -4,7 +4,6 @@ import ish.oncourse.model.*;
 import ish.oncourse.services.courseclass.ClassAge;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.util.URLUtils;
 import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -17,8 +16,7 @@ import java.util.Date;
 
 import static ish.oncourse.services.preference.Preferences.*;
 import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact;
-import static ish.persistence.Preferences.PAYMENT_GATEWAY_PASS;
-import static ish.persistence.Preferences.PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH;
+
 
 public class PreferenceController extends CommonPreferenceController {
 
@@ -64,23 +62,6 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 
-	public void setLicenseAccessControl(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
-	}
-
-
-	public void setLicenseSms(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_SMS, false, Boolean.toString(value));
-	}
-
-	public void setLicenseCCProcessing(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_CC_PROCESSING, false, Boolean.toString(value));
-	}
-
-	public void setLicensePayroll(boolean value) {
-		setValue(ish.persistence.Preferences.LICENSE_PAYROLL, false, Boolean.toString(value));
-	}
-
 	public String getNTISLastUpdate() {
 		return getValue(NTIS_LAST_UPDATE, false);
 	}
@@ -106,26 +87,10 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public void setPaymentGatewayPass(String value) {
-		setValue(PAYMENT_GATEWAY_PASS, false, value);
-	}
-
-	public void setPurchaseWithoutAuth(Boolean value) {
-		setValue(PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, false, Boolean.toString(value));
-	}
-	
-	public void setHideStudentDetailsFromTutor(boolean value) {
-		setValue(HIDE_STUDENT_DETAILS_FROM_TUTOR, false, Boolean.toString(value));
-	}
-
 	public String getTutorFeedbackEmail() {
 		return getValue(TUTOR_FEEDBACK_EMAIL, false);
 	}
 
-	public void setTutorFeedbackEmail(String value) {
-		setValue(TUTOR_FEEDBACK_EMAIL, false, value);
-	}
-	
 	public boolean getOutcomeMarkingViaPortal() {
 		try {
 			return Boolean.parseBoolean(getValue(OUTCOME_MARKING_VIA_PORTAL, false));
@@ -133,10 +98,6 @@ public class PreferenceController extends CommonPreferenceController {
 			logger.error("Cannot get property {}", OUTCOME_MARKING_VIA_PORTAL, e);
 			return false;
 		}
-	}
-	
-	public void setOutcomeMarkingViaPortal(boolean value) {
-		setValue(OUTCOME_MARKING_VIA_PORTAL, false, Boolean.toString(value));
 	}
 
 	public boolean getEnableSocialMediaLinks() {
@@ -148,10 +109,6 @@ public class PreferenceController extends CommonPreferenceController {
 		}
 	}
 
-	public void setEnableSocialMediaLinks(boolean value) {
-		setValue(ENABLE_SOCIAL_MEDIA_LINKS, false, Boolean.toString(value));
-	}
-
 	public boolean getEnableSocialMediaLinksCourse() {
 		try {
 			return Boolean.parseBoolean(getValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false));
@@ -159,10 +116,6 @@ public class PreferenceController extends CommonPreferenceController {
 			logger.error("Cannot get property {}", ENABLE_SOCIAL_MEDIA_LINKS_COURSE, e);
 			return false;
 		}
-	}
-
-	public void setEnableSocialMediaLinksCourse(boolean value) {
-		setValue(ENABLE_SOCIAL_MEDIA_LINKS_COURSE, false, Boolean.toString(value));
 	}
 
 	public boolean getEnableSocialMediaLinksWebPage() {
@@ -173,73 +126,15 @@ public class PreferenceController extends CommonPreferenceController {
 			return false;
 		}
 	}
-
-	public void setEnableSocialMediaLinksWebPage(boolean value) {
-		setValue(ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, false, Boolean.toString(value));
-	}
-
+	
 	public String getAddThisProfileId() {
 		return getValue(ADDTHIS_PROFILE_ID, false);
-	}
-
-	public void setAddThisProfileId(String value) {
-		setValue(ADDTHIS_PROFILE_ID, false, value);
 	}
 
 	public boolean isPaymentGatewayEnabled() {
 		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
-
-	public Integer getEnrolmentMinAge() {
-		String value = getValue(ENROLMENT_MIN_AGE, false);
-
-		if (value != null && StringUtils.isNumeric(value)) {
-			return Integer.valueOf(value);
-		} else {
-			logger.debug("Cannot get property {}", ENROLMENT_MIN_AGE);
-			return 0;
-		}
-	}
-
-	public void setEnrolmentMinAge(Integer age) {
-		setValue(ENROLMENT_MIN_AGE, false, age.toString());
-	}
-
-	public String getRefundPolicyUrl() {
-		String url = getValue(REFUND_POLICY_URL, false);
-		if (url != null && !URLUtils.isAbsolute(url) && !url.startsWith("/")) {
-			url = "/" + url;
-		}
-		return url;
-	}
-
-	public void setRefundPolicyUrl(String value) {
-		setValue(REFUND_POLICY_URL, false, value);
-	}
-
-	public String getRequireContactField(ContactFieldSet contactFieldSet, FieldDescriptor field) {
-		return getValue(field.getPreferenceNameBy(contactFieldSet), false);
-	}
-
-
-	public void setRequireContactField(ContactFieldSet contactFieldSet, FieldDescriptor field, String value) {
-		setValue(field.getPreferenceNameBy(contactFieldSet), false, value);
-	}
-
-	public boolean isCorporatePassPaymentEnabled() {
-		return new IsCorporatePassEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
-	}
 	
-    public Integer getContactAgeWhenNeedParent()
-    {
-    	return new GetContactAgeWhenNeedParent(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
-    }
-
-    public void setContactAgeWhenNeedParent(Integer value)
-    {
-        setValue(ENROLMENT_contactAgeWhenNeedParent, false, value.toString());
-    }
-
     public boolean isCollectParentDetails()
     {
         return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();

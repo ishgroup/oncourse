@@ -20,9 +20,13 @@ public interface Preferences {
     String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
     String ENROLMENT_CREDIT_NOTE_ENABLED = "enrolment.credit.note.enabled";
     String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
-    String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
     String SUBURB_AUTOCOMPLITE_STATE = "feature.suburb.autocomplete.states";
     
+    String CHECKOUT_guardianRequiredAge = "checkout.guardianRequiredAge";
+    String CHECKOUT_TERMS_URL = "checkout.terms.url";
+    String CHECKOUT_TERMS_LABEL = "checkout.terms.label";
+
+
     int DEFAULT_contactAgeWhenNeedParent = 18;
 
     String HIDE_CLASS_ON_WEB_AGE = "hide.class.on.web.age";

@@ -3,8 +3,9 @@ package ish.oncourse.willow.preference
 import com.google.inject.Inject
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
+import ish.oncourse.services.preference.GetCheckoutTermsLabel
+import ish.oncourse.services.preference.GetCheckoutTermsUrl
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
-import ish.oncourse.services.preference.GetRefundPolicyUrl
 import ish.oncourse.services.preference.IsCorporatePassEnabled
 import ish.oncourse.services.preference.IsPaymentGatewayEnabled
 import ish.oncourse.willow.model.common.Preferences
@@ -34,10 +35,9 @@ class PreferenceApiImpl implements PreferenceApi {
         College college = collegeService.college
         preferences.corporatePassEnabled = new IsCorporatePassEnabled(college, context).get()
         preferences.creditCardEnabled = new IsPaymentGatewayEnabled(college, context).get()
-        preferences.refundPolicyUrl = new GetRefundPolicyUrl(college, context).get()
-        preferences.googleTagmanagerAccount = collegeService.webSite.googleTagmanagerAccount
-        preferences.minAge =  new GetContactAgeWhenNeedParent(college, context).get()?.doubleValue()
-        preferences.amexEnabled = true
+        preferences.minAge =  new GetContactAgeWhenNeedParent(college, context, collegeService.webSite).integerValue?.doubleValue()
+        preferences.termsLabel = new GetCheckoutTermsLabel(college, context, collegeService.webSite).value
+        preferences.termsUrl = new GetCheckoutTermsUrl(college, context, collegeService.webSite).value
         return preferences
     }
 }

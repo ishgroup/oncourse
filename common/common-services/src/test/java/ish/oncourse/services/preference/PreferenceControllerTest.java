@@ -64,23 +64,13 @@ public class PreferenceControllerTest extends ServiceTest {
 		prefController = new PreferenceController(cayenneService, webSiteService);
 	}
 	
-	@Test
-	public void testGetValue() throws Exception {
-		boolean smsLicense = prefController.getLicenseSms();
-		assertTrue("Check sms license.", smsLicense);
-		String smtpHost = prefController.getEmailSMTPHost();
-		assertEquals("Check smtp host.", smtpHost, "smtp.text.ish.com");
-	}
 	
 	@Test
 	public void testSetValue() throws Exception {
 		
 		prefController.setAvetmissPostcode("12345");
 		assertEquals("Check avetmiss post code", prefController.getAvetmissPostcode(), "12345");
-
-		prefController.setLicenseSms(true);
-		assertTrue("Check license sms.", prefController.getLicenseSms());
-
+		
 		prefController.setValue("testKey", false, "testValue");
 		assertEquals("testValue", prefController.getValue("testKey", false));
 

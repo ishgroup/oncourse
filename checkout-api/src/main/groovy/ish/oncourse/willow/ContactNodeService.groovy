@@ -50,6 +50,9 @@ class ContactNodeService {
 
         node = new ContactNode()
         node.contactId = contact.id.toString()
+        node.contactFirstName = contact.givenName
+        node.contactLastName = contact.familyName
+        node.contactEmail = contact.emailAddress
 
         if (!contact.isCompany) {
             ProcessClasses classesController = new ProcessClasses(context, contact, college, request.classIds, request.promotionIds).process()

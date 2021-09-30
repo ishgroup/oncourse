@@ -5,12 +5,9 @@ public class Preferences  {
   
     private Boolean corporatePassEnabled = null;
     private Boolean creditCardEnabled = null;
-    private String successLink = null;
-    private String refundPolicyUrl = null;
-    private String featureEnrolmentDisclosure = null;
-    private String googleTagmanagerAccount = null;
     private Double minAge = null;
-    private Boolean amexEnabled = null;
+    private String termsLabel = null;
+    private String termsUrl = null;
 
     /**
      * is corporate pass enabled preference
@@ -47,74 +44,6 @@ public class Preferences  {
     }
 
     /**
-     * After payment successful redirect user to URL
-     * @return successLink
-     */
-    public String getSuccessLink() {
-        return successLink;
-    }
-
-    public void setSuccessLink(String successLink) {
-       this.successLink = successLink;
-    }
-
-    public Preferences successLink(String successLink) {
-      this.successLink = successLink;
-      return this;
-    }
-
-    /**
-     * Terms and conditions page
-     * @return refundPolicyUrl
-     */
-    public String getRefundPolicyUrl() {
-        return refundPolicyUrl;
-    }
-
-    public void setRefundPolicyUrl(String refundPolicyUrl) {
-       this.refundPolicyUrl = refundPolicyUrl;
-    }
-
-    public Preferences refundPolicyUrl(String refundPolicyUrl) {
-      this.refundPolicyUrl = refundPolicyUrl;
-      return this;
-    }
-
-    /**
-     * Student Information
-     * @return featureEnrolmentDisclosure
-     */
-    public String getFeatureEnrolmentDisclosure() {
-        return featureEnrolmentDisclosure;
-    }
-
-    public void setFeatureEnrolmentDisclosure(String featureEnrolmentDisclosure) {
-       this.featureEnrolmentDisclosure = featureEnrolmentDisclosure;
-    }
-
-    public Preferences featureEnrolmentDisclosure(String featureEnrolmentDisclosure) {
-      this.featureEnrolmentDisclosure = featureEnrolmentDisclosure;
-      return this;
-    }
-
-    /**
-     * Google tag manager account
-     * @return googleTagmanagerAccount
-     */
-    public String getGoogleTagmanagerAccount() {
-        return googleTagmanagerAccount;
-    }
-
-    public void setGoogleTagmanagerAccount(String googleTagmanagerAccount) {
-       this.googleTagmanagerAccount = googleTagmanagerAccount;
-    }
-
-    public Preferences googleTagmanagerAccount(String googleTagmanagerAccount) {
-      this.googleTagmanagerAccount = googleTagmanagerAccount;
-      return this;
-    }
-
-    /**
      * Minimal age which not requiring parent
      * @return minAge
      */
@@ -132,19 +61,36 @@ public class Preferences  {
     }
 
     /**
-     * Amex card payment enabled
-     * @return amexEnabled
+     * Terms and conditions display label
+     * @return termsLabel
      */
-    public Boolean getAmexEnabled() {
-        return amexEnabled;
+    public String getTermsLabel() {
+        return termsLabel;
     }
 
-    public void setAmexEnabled(Boolean amexEnabled) {
-       this.amexEnabled = amexEnabled;
+    public void setTermsLabel(String termsLabel) {
+       this.termsLabel = termsLabel;
     }
 
-    public Preferences amexEnabled(Boolean amexEnabled) {
-      this.amexEnabled = amexEnabled;
+    public Preferences termsLabel(String termsLabel) {
+      this.termsLabel = termsLabel;
+      return this;
+    }
+
+    /**
+     * Terms and conditions page url
+     * @return termsUrl
+     */
+    public String getTermsUrl() {
+        return termsUrl;
+    }
+
+    public void setTermsUrl(String termsUrl) {
+       this.termsUrl = termsUrl;
+    }
+
+    public Preferences termsUrl(String termsUrl) {
+      this.termsUrl = termsUrl;
       return this;
     }
 
@@ -156,12 +102,9 @@ public class Preferences  {
       
       sb.append("    corporatePassEnabled: ").append(toIndentedString(corporatePassEnabled)).append("\n");
       sb.append("    creditCardEnabled: ").append(toIndentedString(creditCardEnabled)).append("\n");
-      sb.append("    successLink: ").append(toIndentedString(successLink)).append("\n");
-      sb.append("    refundPolicyUrl: ").append(toIndentedString(refundPolicyUrl)).append("\n");
-      sb.append("    featureEnrolmentDisclosure: ").append(toIndentedString(featureEnrolmentDisclosure)).append("\n");
-      sb.append("    googleTagmanagerAccount: ").append(toIndentedString(googleTagmanagerAccount)).append("\n");
       sb.append("    minAge: ").append(toIndentedString(minAge)).append("\n");
-      sb.append("    amexEnabled: ").append(toIndentedString(amexEnabled)).append("\n");
+      sb.append("    termsLabel: ").append(toIndentedString(termsLabel)).append("\n");
+      sb.append("    termsUrl: ").append(toIndentedString(termsUrl)).append("\n");
       sb.append("}");
       return sb.toString();
     }
