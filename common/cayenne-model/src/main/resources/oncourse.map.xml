@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
-	 project-version="10">
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+					project-version="10">
 	<property name="defaultPackage" value="ish.oncourse.model"/>
 	<property name="defaultSuperclass" value="WillowCayenneObject"/>
 	<db-entity name="Application">
@@ -1475,10 +1475,12 @@
 		<db-attribute name="created" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="googleDirectionsFrom" type="VARCHAR" length="256"/>
 		<db-attribute name="googleTagmanagerAccount" type="VARCHAR" length="16"/>
+		<db-attribute name="googleAnalyticAccount" type="VARCHAR" length="16"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
 		<db-attribute name="modified" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" length="128"/>
 		<db-attribute name="siteKey" type="VARCHAR" length="25"/>
+		<db-attribute name="configuredByUserId" type="BIGINT" length="19"/>
 	</db-entity>
 	<db-entity name="WebSiteLayout">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -2004,7 +2006,7 @@
 		<obj-attribute name="validTo" type="java.util.Date" db-attribute-path="validTo"/>
 		<obj-attribute name="validToOffset" type="java.lang.Integer" db-attribute-path="validToOffset"/>
 		<obj-attribute name="limitPreviousEnrolment" type="java.lang.Boolean" db-attribute-path="limitPreviousEnrolment"/>
-        <pre-persist method-name="onPrePersist"/>
+		<pre-persist method-name="onPrePersist"/>
 	</obj-entity>
 	<obj-entity name="DiscountConcessionType" className="ish.oncourse.model.DiscountConcessionType" dbEntityName="DiscountConcessionType" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
@@ -2852,6 +2854,7 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="siteKey" type="java.lang.String" db-attribute-path="siteKey"/>
+		<obj-attribute name="googleAnalyticAccount" type="java.lang.String" db-attribute-path="googleAnalyticAccount"/>
 	</obj-entity>
 	<obj-entity name="WebSiteLayout" className="ish.oncourse.model.WebSiteLayout" dbEntityName="WebSiteLayout" superClassName="WillowCayenneObject">
 		<obj-attribute name="layoutKey" type="java.lang.String" db-attribute-path="layoutKey"/>
@@ -4383,21 +4386,21 @@
 	<db-relationship name="webSiteVersion" source="WebContent" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
-	
+
 	<db-relationship name="webSiteVersion" source="WebLayoutPath" target="WebSiteVersion">
 		<db-attribute-pair source="webSiteVersionId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webLayoutPaths" source="WebSiteVersion" target="WebLayoutPath" toMany="true">
 		<db-attribute-pair source="id" target="webSiteVersionId"/>
 	</db-relationship>
-	
+
 	<db-relationship name="webNodeType" source="WebLayoutPath" target="WebNodeType">
 		<db-attribute-pair source="webNodeTypeId" target="id"/>
 	</db-relationship>
 	<db-relationship name="webLayoutPaths" source="WebNodeType" target="WebLayoutPath" toMany="true">
 		<db-attribute-pair source="id" target="webNodeTypeId"/>
 	</db-relationship>
-	
+
 	<db-relationship name="webContent" source="WebContentVisibility" target="WebContent">
 		<db-attribute-pair source="WebContentId" target="id"/>
 	</db-relationship>
@@ -4466,6 +4469,12 @@
 	</db-relationship>
 	<db-relationship name="versions" source="WebSite" target="WebSiteVersion" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
+	</db-relationship>
+	<db-relationship name="configuredByUser" source="WebSite" target="SystemUser">
+		<db-attribute-pair source="configuredByUserId" target="id"/>
+	</db-relationship>
+	<db-relationship name="configuredWebsites" source="SystemUser" target="WebSite" toMany="true">
+		<db-attribute-pair source="id" target="configuredByUserId"/>
 	</db-relationship>
 	<db-relationship name="templates" source="WebSiteLayout" target="WebTemplate" toMany="true">
 		<db-attribute-pair source="id" target="layoutId"/>
@@ -5032,5 +5041,7 @@
 	<obj-relationship name="user" source="UserAccount" target="User"  deleteRule="Nullify" db-relationship-path="user"/>
 	<obj-relationship name="accountProperties" source="UserAccount" target="UserAccountProperty" deleteRule="Cascade" db-relationship-path="accountProperties"/>
 	<obj-relationship name="account" source="UserAccountProperty" target="UserAccount" deleteRule="Nullify" db-relationship-path="account"/>
+	<obj-relationship name="configuredByUser" source="WebSite" target="SystemUser" db-relationship-path="configuredByUser"/>
+	<obj-relationship name="configuredWebsites" source="SystemUser" target="WebSite" db-relationship-path="configuredWebsites"/>
 
 </data-map>

@@ -35,6 +35,7 @@ class WebSiteService {
     void createWebSite(SiteDTO dto) {
         validateWebSiteBeforeCreate(dto)
         WebSite newSite = createWebSite(requestService.college, dto.webSiteTemplate, dto.name, dto.key)
+        configureAccountsFor(newSite, dto)
         updateDomains(newSite, dto.domains, dto.primaryDomain)
         newSite.objectContext.commitChanges()
     }
@@ -113,6 +114,8 @@ class WebSiteService {
             dto.id = it.id
             dto.name = it.name
             dto.key = it.siteKey
+            dto.gtmId = it.googleTagmanagerAccount
+            dto.googleAnalyticsId = it.googleAnalyticAccount
             dto.domains = it.collegeDomains.collect{host -> host.name }
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
             dto
@@ -143,7 +146,9 @@ class WebSiteService {
             webSite.name = dto.name
         }
         validateDomains(dto)
-        
+
+        configureAccountsFor(webSite, dto)
+
         if (!dto.key) {
             throw new BadRequestException("Web site url location is required")
         } else if (webSite.siteKey != dto.key) {
@@ -188,5 +193,17 @@ class WebSiteService {
                 throw new BadRequestException("Primary url is wrong")
             }
         }
+    }
+
+
+    private void configureAccountsFor(WebSite webSite, SiteDTO dto) {
+        if (dto.googleAnalyticsId)
+            webSite.setGoogleAnalyticAccount(dto.googleAnalyticsId)
+
+        if (dto.gtmId)
+            webSite.setGoogleTagmanagerAccount(dto.gtmId)
+
+        if (dto.googleAnalyticsId || dto.gtmId)
+            webSite.setConfiguredByUser(requestService.getSystemUser())
     }
 }

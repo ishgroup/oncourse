@@ -172,6 +172,10 @@ definitions:
         type: string
       name:
         type: string
+      googleAnalyticsId:
+        type: string
+      gtmId:
+        type: string
       webSiteTemplate:
         description: web site template, neew to create new site only
         $ref: '#/definitions/SiteTemplate'
