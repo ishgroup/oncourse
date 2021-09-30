@@ -35,7 +35,11 @@ const styles = theme => createStyles({
     opacity: 0.5,
     display: "none",
   },
+  inlineSvgIcon: {
+    fontSize: "1rem",
+  },
   inputWrapper: {
+    minWidth: "73px",
     "&:hover $inputEndAdornment": {
       display: "flex",
     },
@@ -169,6 +173,12 @@ const styles = theme => createStyles({
     padding: "0 0 1px 0",
     minWidth: "2.2em",
     fontSize: "inherit",
+  },
+  inlineInputEmpty: {
+    minWidth: "60px",
+  },
+  extraSmallInlineInput: {
+    minWidth: "1em",
   },
   selectMainWrapper: {
     "&:hover $selectIconInput": {
@@ -660,6 +670,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
         className: clsx({
           [classes.inlineInput]: isInline,
+          [classes.inlineInputEmpty]: isInline && !input.value,
+          [classes.extraSmallInlineInput]: max && input.value && +max < 100,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
           [classes.hideArrows]: ["percentage", "number"].includes(type),
@@ -702,7 +714,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           className={clsx({
             [classes.rightPadding]: formatting !== "inline",
             [classes.inlineMargin]: isInline,
-            [classes.hiddenContainer]: isInline && !(isEditing || invalid),
+            // [classes.hiddenContainer]: isInline && !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
             "d-inline": isInline && (isEditing || invalid)
           })}
@@ -732,7 +744,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               </InputLabel>
               )
             }
-
             {select
               ? (
                 <div className={clsx(isInline && "d-inline", label && 'mt-2', classes.selectMainWrapper)}>
@@ -773,13 +784,20 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   inputRef={this.setInputNode}
                   classes={{
                     root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified,
-                      fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing),
+                      fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing,
+                      (isInline && !input.value) && classes.inlineInputEmpty,
+                      max && input.value && +max < 100 && classes.extraSmallInlineInput),
                     underline: fieldClasses.underline
                   }}
                   disabled={disabled}
-                  endAdornment={!isInline && !disabled && (
+                  // endAdornment={!isInline && !disabled && (
+                  endAdornment={!disabled && (
                     <InputAdornment position="end" className={classes.inputEndAdornment}>
-                      <CreateIcon />
+                      <CreateIcon
+                        classes={{
+                          root: isInline && classes.inlineSvgIcon,
+                        }}
+                      />
                     </InputAdornment>
                   )}
                 />
@@ -793,118 +811,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             </FormHelperText>
           </FormControl>
         </div>
-        {isInline && (
-        <div
-          className={clsx({
-            [classes.hiddenContainer]: isEditing || invalid || !isInline,
-            [classes.textField]: listSpacing && formatting !== "inline",
-            [classes.rightAligned]: rightAligned,
-            "d-inline": isInline && !(isEditing || invalid)
-          })}
-        >
-          <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
-            {isInline && !hideLabel && label && labelContent}
-
-            {formatting === "primary" && (
-            <ListItemText
-              classes={{
-                  root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                  primary: "d-flex"
-                }}
-              primary={(
-                <ButtonBase
-                  classes={{
-                      root: classes.valueContainer
-                    }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                  component="div"
-                >
-                  <span
-                    ref={this.setContainerNode}
-                    className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                  >
-                    {editableComponent || this.getValue()}
-                    {editIcon}
-                  </span>
-                </ButtonBase>
-                )}
-            />
-            )}
-
-            {formatting === "secondary" && (
-            <ListItemText
-              classes={{
-                  root: `${classes.viewMode}`,
-                  secondary: "d-flex"
-                }}
-              secondary={(
-                <ButtonBase
-                  disabled={disabled}
-                  classes={{
-                      root: classes.valueContainer
-                    }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  component="span"
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                >
-                  <span
-                    ref={this.setContainerNode}
-                    className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                  >
-                    {editableComponent || this.getValue()}
-                    {editIcon}
-                  </span>
-                </ButtonBase>
-                )}
-            />
-            )}
-
-            {formatting === "custom" && (
-            <ButtonBase
-              component="div"
-              onFocus={e => this.onEditButtonFocus(e, "focus")}
-              onClick={e => this.onEditButtonFocus(e, "click")}
-              className={clsx(classes.editable, "hoverIconContainer", classes.fitWidth, fieldClasses.text, {
-                  [classes.rightAligned]: rightAligned,
-                  [classes.readonly]: disabled
-                })}
-            >
-              {editableComponent || this.getValue()}
-              {editIcon}
-            </ButtonBase>
-            )}
-
-            {isInline && (
-            <ButtonBase
-              component="span"
-              onFocus={e => this.onEditButtonFocus(e, "focus")}
-              onClick={e => this.onEditButtonFocus(e, "click")}
-              className={clsx(
-                  "d-inline vert-align-bl hoverIconContainer",
-                  classes.editable,
-                  fieldClasses.text, {
-                    [classes.rightAligned]: rightAligned,
-                    [classes.readonly]: disabled,
-                    [classes.inlineMargin]: disabled
-                  }
-                )}
-            >
-              {editableComponent || this.getValue()}
-              {editIcon}
-            </ButtonBase>
-            )}
-
-            {helperText && <Typography variant="caption">{helperText}</Typography>}
-          </div>
-        </div>
-      )}
       </div>
     );
   }
