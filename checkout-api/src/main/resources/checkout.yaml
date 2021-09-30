@@ -932,21 +932,6 @@ definitions:
       creditCardEnabled:
         type: boolean
         description: is credit card enabled preference
-      #successLink: 
-        #type: string
-        #description: After payment successful redirect user to URL
-      #refundPolicyUrl:
-        #type: string
-        #description: Terms and conditions page
-      #featureEnrolmentDisclosure:
-        #type: string
-        #description: Student Information
-      #googleTagmanagerAccount:
-       #type: string
-       #description: Google tag manager account
-      #amexEnabled:
-       #type: boolean
-       #description: Amex card payment enabled  
       minAge:
         type: number
         description: Minimal age which not requiring parent

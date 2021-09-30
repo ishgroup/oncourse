@@ -1,4 +1,3 @@
-
 /*
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
@@ -8,34 +7,34 @@
  * Wrapper component for Material Select and Text Field with edit in place functional
  * */
 
-import React from "react";
-import {change} from "redux-form";
-import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
-import Edit from "@material-ui/icons/Edit";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import MenuItem from "@material-ui/core/MenuItem";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import ListItemText from "@material-ui/core/ListItemText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
+import React from 'react';
+import { change } from 'redux-form';
+import clsx from 'clsx';
+import ListItem from '@material-ui/core/ListItem';
+import Edit from '@material-ui/icons/Edit';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import MenuItem from '@material-ui/core/MenuItem';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import ListItemText from '@material-ui/core/ListItemText';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import withStyles from '@material-ui/core/styles/withStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
 
-const styles = theme => createStyles({
+const styles = (theme) => createStyles({
   textField: {
-    paddingBottom: "4px",
-    paddingLeft: "0",
-    overflow: "hidden",
-    display: "flex",
+    paddingBottom: '4px',
+    paddingLeft: '0',
+    overflow: 'hidden',
+    display: 'flex',
   },
   inlineTextField: {
-    verticalAlign: "baseline",
-    "& > div": {
+    verticalAlign: 'baseline',
+    '& > div': {
       marginTop: 0,
     },
   },
@@ -44,51 +43,51 @@ const styles = theme => createStyles({
   },
   topMargin: {
     marginTop: theme.spacing(1),
-    paddingLeft: "0",
+    paddingLeft: '0',
   },
   hiddenContainer: {
-    display: "none",
+    display: 'none',
   },
   invisibleContainer: {
-    visibility: "hidden",
+    visibility: 'hidden',
   },
   editButton: {
-    padding: "4px",
-    "&:hover": {
+    padding: '4px',
+    '&:hover': {
       color: theme.palette.primary.main,
       fill: theme.palette.primary.main,
     },
   },
   editable: {
-    width: "100%",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    justifyContent: "flex-start",
-    "&:hover, &:hover $placeholderContent, &:hover $editButton": {
+    width: '100%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    justifyContent: 'flex-start',
+    '&:hover, &:hover $placeholderContent, &:hover $editButton': {
       color: theme.palette.primary.main,
       fill: theme.palette.primary.main,
     },
-    "&$rightAligned": {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "flex-end",
+    '&$rightAligned': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
     },
   },
   editableNoWrap: {
-    display: "flex",
-    alignItems: "center",
-    overflow: "hidden",
-    "&:hover, &:hover $placeholderContent, &:hover $editButton": {
+    display: 'flex',
+    alignItems: 'center',
+    overflow: 'hidden',
+    '&:hover, &:hover $placeholderContent, &:hover $editButton': {
       color: theme.palette.primary.main,
       fill: theme.palette.primary.main,
     },
-    "&$rightAligned": {
-      justifyContent: "flex-end",
+    '&$rightAligned': {
+      justifyContent: 'flex-end',
     },
   },
   rightAligned: {},
   readonly: {
-    pointerEvents: "none",
+    pointerEvents: 'none',
   },
   textFieldLeftMargin: {
     marginLeft: theme.spacing(1),
@@ -101,18 +100,18 @@ const styles = theme => createStyles({
     margin: 0,
   },
   label: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    paddingBottom: "4px",
-    right: "-46%",
-    maxWidth: "100%",
-    "&$labelShrink": {
-      maxWidth: "calc(100% * 1.4)",
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    paddingBottom: '4px',
+    right: '-46%',
+    maxWidth: '100%',
+    '&$labelShrink': {
+      maxWidth: 'calc(100% * 1.4)',
     },
   },
   labelTopZeroOffset: {
-    "& + $textFieldBorderModified": {
+    '& + $textFieldBorderModified': {
       marginTop: 0,
     },
   },
@@ -125,75 +124,75 @@ const styles = theme => createStyles({
     margin: theme.spacing(0.25),
   },
   fitWidth: {
-    maxWidth: "100%",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    maxWidth: '100%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   emptySelect: {
-    color: "#fff",
-    "& $placeholderContent": {
-      color: "#fff",
+    color: '#fff',
+    '& $placeholderContent': {
+      color: '#fff',
     },
   },
   inlineContainer: {
-    display: "inline-flex",
-    marginLeft: "0.3em",
+    display: 'inline-flex',
+    marginLeft: '0.3em',
   },
   inlineInput: {
     padding: 0,
-    minWidth: "2.2em",
+    minWidth: '2.2em',
   },
   inlineSelect: {
-    "&$inlineSelect": {
+    '&$inlineSelect': {
       padding: 0,
     },
   },
   smallOffsetInput: {
-    ".cms-scope &": {
-      padding: "2px",
+    '.cms-scope &': {
+      padding: '2px',
     }
   },
   inlineMargin: {
-    marginRight: "0.3em",
+    marginRight: '0.3em',
   },
   selectedItem: {
     backgroundColor: `${theme.palette.action.selected}`,
   },
   valueContainer: {
-    width: "100%",
+    width: '100%',
   },
   oneLineEditIcon: {
-    position: "absolute",
-    right: "-14px",
-    bottom: "4px",
+    position: 'absolute',
+    right: '-14px',
+    bottom: '4px',
   },
   textFieldBorderModified: {
-    "&:after": {
+    '&:after': {
       borderBottomColor: theme.palette.primary.main,
     },
   },
   selectIcon: {
-    fontSize: "24px",
+    fontSize: '24px',
     color: theme.palette.divider,
-    verticalAlign: "middle",
+    verticalAlign: 'middle',
   },
   hideArrows: {
-    "&::-webkit-outer-spin-button": {
-      "-webkit-appearance": "none",
+    '&::-webkit-outer-spin-button': {
+      '-webkit-appearance': 'none',
       margin: 0,
     },
-    "&::-webkit-inner-spin-button": {
-      "-webkit-appearance": "none",
+    '&::-webkit-inner-spin-button': {
+      '-webkit-appearance': 'none',
       margin: 0,
     },
-    "-moz-appearance": "textfield",
+    '-moz-appearance': 'textfield',
   },
 });
 
 export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
-  private isAdornmentHovered: boolean = false;
+  private isAdornmentHovered = false;
 
-  private preventEditOnFocus: boolean = false;
+  private preventEditOnFocus = false;
 
   state = {
     isEditing: false,
@@ -208,8 +207,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
   componentWillUnmount() {
     const {
       clearOnUnmount,
-      input: {name},
-      meta: {dispatch, form},
+      input: { name },
+      meta: { dispatch, form },
     } = this.props;
 
     if (clearOnUnmount) {
@@ -225,17 +224,17 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     }
   }
 
-  setInputNode = node => {
+  setInputNode = (node) => {
     if (node) {
       this.inputNode = node;
     }
-  }
+  };
 
-  setContainerNode = node => {
+  setContainerNode = (node) => {
     this.containerNode = node;
-  }
+  };
 
-  edit = e => {
+  edit = (e) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -246,19 +245,19 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     if (!this.props.select) {
       this.timeout = setTimeout(() => {
         this.inputNode.focus();
-      },                        50);
+      }, 50);
     }
-  }
+  };
 
   onAdornmentOver = () => {
     this.isAdornmentHovered = true;
-  }
+  };
 
   onAdornmentOut = () => {
     this.isAdornmentHovered = false;
-  }
+  };
 
-  onAdornmentClick = e => {
+  onAdornmentClick = (e) => {
     if (this.isAdornmentHovered) {
       e.preventDefault();
     }
@@ -266,11 +265,11 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     this.timeout = setTimeout(() => {
       this.isAdornmentHovered = false;
       if (!this.state.isEditing) this.onBlur();
-    },                        1000);
-  }
+    }, 1000);
+  };
 
   onBlur = () => {
-    const {input, invalid} = this.props;
+    const { input, meta: { invalid } } = this.props;
 
     if (this.isAdornmentHovered) {
       return;
@@ -280,10 +279,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     });
     input.onBlur(input.value);
     clearTimeout(this.timeout);
-  }
+  };
 
   onFocus = () => {
-    const {input} = this.props;
+    const { input } = this.props;
 
     if (!this.state.isEditing) {
       this.setState({
@@ -291,45 +290,45 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       });
     }
     input.onFocus();
-  }
+  };
 
   onEditButtonFocus = (e, type) => {
-    if (this.props.select && this.props.disabledTab && type === "focus") return;
-    if (this.props.select && type === "focus" && this.preventEditOnFocus && !this.props.disabledTab) {
+    if (this.props.select && this.props.disabledTab && type === 'focus') return;
+    if (this.props.select && type === 'focus' && this.preventEditOnFocus && !this.props.disabledTab) {
       this.preventEditOnFocus = false;
       return;
     }
     this.edit(e);
-  }
+  };
 
   onSelectClose = () => {
     this.preventEditOnFocus = true;
     this.setState({
       isEditing: false,
     });
-  }
+  };
 
-  onSelectChange = e => {
+  onSelectChange = (e) => {
     const {
-      items, input, selectValueMark = "value", onInnerValueChange, returnType,
+      items, input, selectValueMark = 'value', onInnerValueChange, returnType,
     } = this.props;
 
-    const selected = items.find(i => i[selectValueMark] === e.target.value);
+    const selected = items.find((i) => i[selectValueMark] === e.target.value);
 
-    if (typeof onInnerValueChange === "function") {
+    if (typeof onInnerValueChange === 'function') {
       onInnerValueChange(selected);
     }
 
     if (items.length) {
-      input.onChange(returnType === "object" ? selected : e.target.value);
+      input.onChange(returnType === 'object' ? selected : e.target.value);
       return;
     }
     this.onSelectClose();
-  }
+  };
 
-  onFieldChange = v => {
+  onFieldChange = (v) => {
     const {
-      input: {onChange},
+      input: { onChange },
       disabled,
       stringValue,
     } = this.props;
@@ -337,12 +336,12 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     if (!disabled) {
       onChange(stringValue ? String(v) : v);
     }
-  }
+  };
 
   getTruncatedValue = () => {
     const {
       truncateLines,
-      input: {value},
+      input: { value },
     } = this.props;
 
     let result;
@@ -355,14 +354,14 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     this.containerNode.parentElement.appendChild(clone);
     this.containerNode.parentElement.removeChild(this.containerNode);
 
-    const wordArray = clone.innerText.split(" ");
+    const wordArray = clone.innerText.split(' ');
     while (clone.scrollHeight > clone.offsetHeight) {
       wordArray.pop();
-      clone.innerText = wordArray.join(" ") + "..." + "##########";
+      clone.innerText = `${wordArray.join(' ')}...` + '##########';
     }
 
     if (value.length > clone.innerText.length) {
-      result = clone.innerText.replace(/##########/, "");
+      result = clone.innerText.replace(/##########/, '');
     } else {
       result = value;
     }
@@ -371,7 +370,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     clone.parentElement.removeChild(clone);
 
     return result;
-  }
+  };
 
   getValue = () => {
     const {
@@ -380,30 +379,30 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       items,
       multiple,
       multiline,
-      input: {value},
+      input: { value },
       placeholder,
-      selectValueMark = "value",
-      selectLabelMark = "label",
+      selectValueMark = 'value',
+      selectLabelMark = 'label',
       selectLabelCondition,
       classes,
-      returnType = "string",
+      returnType = 'string',
       preformatDisplayValue,
       defaultValue,
       truncateLines,
       fieldClasses = {},
     } = this.props;
 
-    if (type === "password") {
+    if (type === 'password') {
       return value ? (
-        value.replace(/./g, "•")
+        value.replace(/./g, '•')
       ) : (
         <span className={clsx(classes.placeholderContent, classes.editable)}>••••••••••</span>
       );
     }
 
-    if (type === "percentage") {
-      if (typeof value === "number") {
-        return value + "%";
+    if (type === 'percentage') {
+      if (typeof value === 'number') {
+        return `${value}%`;
       }
       if (defaultValue) {
         return defaultValue;
@@ -415,13 +414,13 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         return value.map((item, index) => (
           <span key={index} className={classes.editable}>
             {item}
-            {value.length > 1 ? index + 1 !== value.length && ", " : null}
+            {value.length > 1 ? index + 1 !== value.length && ', ' : null}
           </span>
         ));
       }
 
       const match = value !== null && value !== undefined && items.find(
-        item => (returnType === "object" ? item[selectValueMark] === value[selectValueMark] : item[selectValueMark] === value),
+        (item) => (returnType === 'object' ? item[selectValueMark] === value[selectValueMark] : item[selectValueMark] === value),
       );
 
       if (match) return selectLabelCondition ? selectLabelCondition(match) : match[selectLabelMark];
@@ -431,7 +430,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       }
       return (
         <span className={clsx(classes.placeholderContent, classes.editable, fieldClasses.placeholder)}>
-          {placeholder || "No value"}
+          {placeholder || 'No value'}
         </span>
       );
     }
@@ -462,13 +461,13 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       )
     ) : defaultValue || (
       <span className={clsx(classes.placeholderContent, classes.editable, fieldClasses.placeholder)}>
-        {placeholder || "No value"}
+        {placeholder || 'No value'}
       </span>
     );
-  }
+  };
 
   componentDidMount() {
-    const {truncateLines} = this.props;
+    const { truncateLines } = this.props;
 
     if (truncateLines) this.forceUpdate();
   }
@@ -476,12 +475,12 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
   render() {
     const {
       classes,
-      formatting = "primary",
-      selectValueMark = "value",
-      selectLabelMark = "label",
+      formatting = 'primary',
+      selectValueMark = 'value',
+      selectLabelMark = 'label',
       selectLabelCondition,
       input,
-      meta: {error, invalid},
+      meta: { error, invalid },
       helperText,
       select,
       items,
@@ -504,7 +503,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       hidePlaceholderInEditMode,
       selectAdornment,
       returnType,
-      InputProps: {...restInputProps} = {},
+      InputProps: { ...restInputProps } = {},
       labelAdornment,
       preformatDisplayValue,
       clearOnUnmount,
@@ -525,10 +524,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       ...custom
     } = this.props;
 
-    const {isEditing} = this.state;
+    const { isEditing } = this.state;
 
     const sortedItems = items && (sort
-      ? [...items].sort(typeof sort === "function"
+      ? [...items].sort(typeof sort === 'function'
         ? sort
         : (aOption, bOption) => {
           const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[selectLabelMark];
@@ -565,10 +564,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           acc[cur[categoryKey]] = [cur];
         }
         return acc;
-      },                                       {});
+      }, {});
       selectItems = [];
-      Object.keys(categoryGroup).forEach(k => {
-        selectItems.push(<ListItem key={k} className={clsx("heading", selectItems.length && "mt-2")}>{k}</ListItem>);
+      Object.keys(categoryGroup).forEach((k) => {
+        selectItems.push(<ListItem key={k} className={clsx('heading', selectItems.length && 'mt-2')}>{k}</ListItem>);
         categoryGroup[k].sort((aOption, bOption) => {
           const aLabel = selectLabelCondition ? selectLabelCondition(aOption) : aOption[selectLabelMark];
           const bLabel = selectLabelCondition ? selectLabelCondition(bOption) : bOption[selectLabelMark];
@@ -586,11 +585,11 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           <MenuItem key={index} value={option[selectValueMark]}>
             {selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]}
           </MenuItem>
-      ));
+        ));
     }
 
     if (selectAdornment) {
-      selectItems = selectAdornment.position === "start"
+      selectItems = selectAdornment.position === 'start'
         ? [selectAdornment.content, ...selectItems]
         : [...selectItems, selectAdornment.content];
     }
@@ -608,7 +607,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             selected: classes.emptySelect,
           }}
         >
-          <span className={classes.placeholderContent}>{placeholder || "No value"}</span>
+          <span className={classes.placeholderContent}>{placeholder || 'No value'}</span>
         </MenuItem>,
         ...selectItems,
       ];
@@ -623,32 +622,32 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         min,
         max,
         onKeyDown,
-        size: formatting === "inline" && input.value ? String(input.value.length + 1) : undefined,
-        type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
+        size: formatting === 'inline' && input.value ? String(input.value.length + 1) : undefined,
+        type: type !== 'password' ? (type === 'percentage' ? 'number' : type) : undefined,
         className: clsx({
-          [classes.inlineInput]: formatting === "inline",
+          [classes.inlineInput]: formatting === 'inline',
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
           [classes.hideArrows]: hideArrows,
-          "text-end": rightAligned,
+          'text-end': rightAligned,
         }),
         placeholder: hidePlaceholderInEditMode ? undefined : placeholder,
+        value: input.value || ''
       },
-      value: input.value,
       onFocus: this.onFocus,
-      onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v)),
+      onChange: (v) => (type === 'number' && max && Number(v) > Number(max) ? null : this.onFieldChange(v)),
     };
 
     const editIcon = select ? (
       <ExpandMore
-        className={clsx("hoverIcon", classes.selectIcon, fieldClasses.placeholder, {
+        className={clsx('hoverIcon', classes.selectIcon, fieldClasses.placeholder, {
           [classes.hiddenContainer]: rightAligned && disabled,
           [classes.invisibleContainer]: !rightAligned && disabled,
         })}
       />
     ) : (
       <Edit
-        className={clsx("hoverIcon editInPlaceIcon", fieldClasses.placeholder, {
+        className={clsx('hoverIcon editInPlaceIcon', fieldClasses.placeholder, {
           [classes.hiddenContainer]: rightAligned && disabled,
           [classes.invisibleContainer]: !rightAligned && disabled,
         })}
@@ -658,14 +657,14 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     return (
       <div
         id={input.name}
-        className={clsx(className, "outline-none", {
-          [classes.inlineContainer]: formatting === "inline",
+        className={clsx(className, 'outline-none', {
+          [classes.inlineContainer]: formatting === 'inline',
         })}
       >
         <div
           className={clsx({
-            [classes.rightPadding]: formatting !== "inline",
-            [classes.inlineMargin]: formatting === "inline",
+            [classes.rightPadding]: formatting !== 'inline',
+            [classes.inlineMargin]: formatting === 'inline',
             [classes.hiddenContainer]: !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
           })}
@@ -676,8 +675,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             fullWidth={fullWidth}
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
-              [classes.bottomMargin]: listSpacing && formatting !== "inline",
-              [classes.inlineTextField]: formatting === "inline",
+              [classes.bottomMargin]: listSpacing && formatting !== 'inline',
+              [classes.inlineTextField]: formatting === 'inline',
             })}
             {...custom}
           >
@@ -694,15 +693,15 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 <Select
                   value={multiple
                     ? input.value || []
-                    : returnType === "object"
+                    : returnType === 'object'
                       ? selectLabelCondition
                         ? selectLabelCondition(input.value)
-                        : input.value ? input.value[selectValueMark] : ""
+                        : input.value ? input.value[selectValueMark] : ''
                       : input.value}
                   inputRef={this.setInputNode}
                   classes={{
                     root: clsx(classes.textFieldBorderModified, fieldClasses.text),
-                    select: clsx(formatting === "inline" && classes.inlineSelect),
+                    select: clsx(formatting === 'inline' && classes.inlineSelect),
                     // @ts-ignore
                     underline: fieldClasses.underline,
                   }}
@@ -715,7 +714,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 >
                   {selectItems}
                 </Select>
-                )
+              )
               : (
                 <Input
                   {...restInputProps}
@@ -730,7 +729,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               )}
             <FormHelperText
               classes={{
-                error: "shakingError",
+                error: 'shakingError',
               }}
             >
               {error || helperText}
@@ -740,7 +739,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         <div
           className={clsx({
             [classes.hiddenContainer]: isEditing || invalid,
-            [classes.textField]: listSpacing && formatting !== "inline",
+            [classes.textField]: listSpacing && formatting !== 'inline',
             [classes.rightAligned]: rightAligned,
           })}
         >
@@ -761,20 +760,20 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               </Typography>
             )}
 
-            {formatting === "primary" && (
+            {formatting === 'primary' && (
             <ListItemText
               classes={{
-                root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                primary: "d-flex",
+                root: `${classes.viewMode} ${disabled ? classes.readonly : ''}`,
+                primary: 'd-flex',
               }}
               primary={(
                 <ButtonBase
                   classes={{
                     root: classes.valueContainer,
                   }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
+                  onFocus={(e) => this.onEditButtonFocus(e, 'focus')}
+                  onClick={(e) => this.onEditButtonFocus(e, 'click')}
+                  className={clsx('hoverIconContainer', fieldClasses.text)}
                   component="div"
                 >
                   {noWrap ? (
@@ -783,10 +782,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       className={classes.editableNoWrap}
                     >
                       <span className="text-truncate">
-                         {editableComponent || this.getValue()}
+                        {editableComponent || this.getValue()}
                       </span>
                       {editIcon}
-                  </span>
+                    </span>
                   ) : (
                     <span
                       ref={this.setContainerNode}
@@ -796,19 +795,19 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     >
                       {editableComponent || this.getValue()}
                       {editIcon}
-                  </span>
+                    </span>
                   )}
                 </ButtonBase>
                   )}
             />
             )}
 
-            {formatting === "inline" && (
+            {formatting === 'inline' && (
               <ButtonBase
                 component="span"
-                onFocus={e => this.onEditButtonFocus(e, "focus")}
-                onClick={e => this.onEditButtonFocus(e, "click")}
-                className={clsx(classes.editable, fieldClasses.text, "hoverIconContainer", "centeredFlex", {
+                onFocus={(e) => this.onEditButtonFocus(e, 'focus')}
+                onClick={(e) => this.onEditButtonFocus(e, 'click')}
+                className={clsx(classes.editable, fieldClasses.text, 'hoverIconContainer', 'centeredFlex', {
                   [classes.rightAligned]: rightAligned,
                   [classes.readonly]: disabled,
                   [classes.inlineMargin]: disabled,
