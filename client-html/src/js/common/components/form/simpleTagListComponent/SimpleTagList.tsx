@@ -377,6 +377,7 @@ const SimpleTagList: React.FC<Props> = props => {
               InputProps={{
                 ...params.InputProps,
                 classes: {
+                  root: fieldClasses.text,
                   underline: fieldClasses.underline
                 },
               }}
