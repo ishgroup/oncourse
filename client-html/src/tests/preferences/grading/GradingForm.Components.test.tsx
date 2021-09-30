@@ -24,8 +24,8 @@ describe("Virtual rendered GradingTypesForm", () => {
         }
 
         type.gradingItems.forEach((gradingItem, gIndex) => {
-          expect(wrapper.find(`div[id='types[${index}].gradingItems[${gIndex}].name']`).text()).toContain(gradingItem.name);
-          expect(wrapper.find(`div[id='types[${index}].gradingItems[${gIndex}].lowerBound']`).text()).toContain(gradingItem.lowerBound);
+          expect(wrapper.find(`div[id='types[${index}].gradingItems[${gIndex}].name'] input`).val()).toContain(gradingItem.name);
+          expect(wrapper.find(`div[id='types[${index}].gradingItems[${gIndex}].lowerBound'] input`).val()).toContain(gradingItem.lowerBound);
         });
       });
     }
