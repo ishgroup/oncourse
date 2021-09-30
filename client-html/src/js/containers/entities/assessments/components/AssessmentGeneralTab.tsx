@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import { Assessment, GradingType, Tag } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { EditViewProps } from "../../../../model/common/ListView";

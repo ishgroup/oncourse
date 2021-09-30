@@ -137,48 +137,49 @@ const EnrolClassListView = React.memo<any>(props => {
                     const isTraineeship = course.isTraineeship === "true";
 
                     return (
-                      <Button
-                        key={s.id}
-                        onClick={onSelect && (() => onSelect(s))}
-                        classes={{
-                          disabled: classes.disabledSessionButton
-                        }}
-                        className={clsx("text-left", classes.sessionButton)}
-                        disabled={isSelected || isTransfered}
-                        fullWidth
-                      >
-                        <Grid container>
-                          <Grid item xs={1}>
-                            <Radio color="primary" checked={isSelected} />
-                          </Grid>
-                          <Grid item xs={11} sm={7}>
-                            <CalendarSession
-                              {...s}
-                              startLabel={s.startDateTime ? null : s.isSelfPaced ? "Self \n paced" : "No start date"}
-                              classes={{ warningColor: classes.disabledWarningColor }}
-                              warningMessage={isTransfered ? "The student has transferred out of this class" : undefined}
-                              disableLink
-                              disableTags
-                              inView
-                            />
-                          </Grid>
-                          <Grid item xs={12} sm={4}>
-                            <Grid container>
-                              <Grid item xs={6}>
-                                <Typography component="div">
-                                  {isTraineeship ? "1 place" : `${s.placesLeft} place${s.placesLeft > 1 ? "s" : ""}`}
-                                </Typography>
+                      <Grid item xs={12} key={s.id}>
+                        <Button
+                          onClick={onSelect && (() => onSelect(s))}
+                          classes={{
+                            disabled: classes.disabledSessionButton
+                          }}
+                          className={clsx("text-left", classes.sessionButton)}
+                          disabled={isSelected || isTransfered}
+                        >
+                          <Grid container>
+                            <Grid item xs={1}>
+                              <Radio color="primary" checked={isSelected} />
+                            </Grid>
+                            <Grid item xs={11} sm={7}>
+                              <CalendarSession
+                                {...s}
+                                startLabel={s.startDateTime ? null : s.isSelfPaced ? "Self \n paced" : "No start date"}
+                                classes={{ warningColor: classes.disabledWarningColor }}
+                                warningMessage={isTransfered ? "The student has transferred out of this class" : undefined}
+                                disableLink
+                                disableTags
+                                inView
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                              <Grid container>
+                                <Grid item xs={6}>
+                                  <Typography component="div">
+                                    {isTraineeship ? "1 place" : `${s.placesLeft} place${s.placesLeft > 1 ? "s" : ""}`}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={4}>
+                                  <Typography component="div" className="text-end money">
+                                    {formatCurrency(s.price, currencySymbol)}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={2} />
                               </Grid>
-                              <Grid item xs={4}>
-                                <Typography component="div" className="text-end money">
-                                  {formatCurrency(s.price, currencySymbol)}
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={2} />
                             </Grid>
                           </Grid>
-                        </Grid>
-                      </Button>
+                        </Button>
+                      </Grid>
+
                     );
                   })}
                 </CalendarDayBase>

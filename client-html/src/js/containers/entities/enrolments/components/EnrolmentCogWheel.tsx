@@ -66,7 +66,7 @@ const EnrolmentCogWheel = React.memo<any>(props => {
   const selectedAndNotNew = useMemo(() => selection.length >= 1 && selection[0] !== "NEW", [selection]);
 
   const onClick = useCallback(e => {
-    const status = e.target.getAttribute("role");
+    const status = e && e.target.getAttribute("role");
 
     if (status === "Avetmiss-Export") {
       return manualAvetmisConfirm(() => {

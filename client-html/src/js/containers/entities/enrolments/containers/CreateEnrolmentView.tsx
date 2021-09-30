@@ -16,7 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { ColumnWidth } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { ListSideBarDefaultWidth } from "../../../../common/components/list-view/ListView";
 import ResizableWrapper from "../../../../common/components/layout/resizable/ResizableWrapper";
@@ -24,7 +24,7 @@ import Drawer from "../../../../common/components/layout/Drawer";
 import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
 import Content from "../../../../common/components/layout/Content";
 import { updateColumnsWidth } from "../../../preferences/actions";
-import { FormTextField } from "../../../../common/components/form/form-fields/TextField";
+import { FormTextField } from "../../../../common/components/form/formFields/TextField";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 
 export const FORM: string = "CREATE_ENROLMENT_VIEW_FORM";
@@ -62,18 +62,11 @@ const CreateEnrolmentViewForm = React.memo<Props>(props => {
     [sidebarWidth]
   );
 
-  const handleFocusCallback = useCallback(props => {
-    // console.log(props.target.name);
-    //  setFocusedItem
-  }, []);
+  const handleFocusCallback = useCallback(props => {}, []);
 
-  const onSubmit = useCallback(props => {
-    // console.log(props);
-  }, []);
+  const onSubmit = useCallback(props => {}, []);
 
-  const onCloseClick = useCallback(() => {
-    // close event
-  }, []);
+  const onCloseClick = useCallback(() => {}, []);
 
   return (
     <div>

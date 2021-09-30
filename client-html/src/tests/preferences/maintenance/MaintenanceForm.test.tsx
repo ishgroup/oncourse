@@ -11,7 +11,7 @@ describe("Virtual rendered MaintenanceForm", () => {
     record: () => ({}),
     defaultProps: () => ({}),
     render: wrapper => {
-      expect(wrapper.find("#logout-timeout input").getDOMNode().value).toEqual(
+      expect(wrapper.find("#logout-timeout input").val()).toEqual(
         mockedAPI.db.preference[PreferencesModel.LogoutTimeout.uniqueKey].toString()
       );
     }

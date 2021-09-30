@@ -87,7 +87,7 @@ const nestedEditFields = {
 
 const manualLink = getManualLink("leads");
 
-const setRowClasses = ({ status }) => (status === "Closed" ? "row-op05" : undefined);
+const setRowClasses = ({ status }) => (status === "Closed" ? "text-op05" : undefined);
 
 const Leads = props => {
   const {

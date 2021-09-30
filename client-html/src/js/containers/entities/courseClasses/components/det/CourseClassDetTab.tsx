@@ -5,7 +5,7 @@
 
 import React from "react";
 import Grid from "@material-ui/core/Grid/Grid";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 

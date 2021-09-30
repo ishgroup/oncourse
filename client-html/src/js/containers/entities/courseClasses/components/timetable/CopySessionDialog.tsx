@@ -15,7 +15,7 @@ import { createStyles, withStyles } from "@material-ui/core/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import { mapSelectItems } from "../../../../../common/utils/common";

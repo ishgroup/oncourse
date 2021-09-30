@@ -13,7 +13,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { Note } from "@api/model";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormField from "../../form-fields/FormField";
+import FormField from "../../formFields/FormField";
 import { formatRelativeDate } from "../../../../utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../utils/dates/format";
 

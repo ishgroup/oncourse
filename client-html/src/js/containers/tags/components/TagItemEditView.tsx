@@ -23,7 +23,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import LockOpen from "@material-ui/icons/LockOpen";
 import Lock from "@material-ui/icons/Lock";
 import { Tag, TagStatus } from "@api/model";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
 import ColorPicker from "../../../common/components/color-picker/ColorPicker";

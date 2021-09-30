@@ -10,15 +10,11 @@
  */
 
 import { Document, DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
-import {
-  FormControlLabel
-} from "@material-ui/core";
+import { FormControlLabel } from "@material-ui/core";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
-import React, {
-  useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -26,21 +22,22 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
-import {
- Attachment, Language, OpenInNew, Link, LockOutlined, SupervisorAccount, Directions
-} from "@material-ui/icons";
+import { Attachment, Directions, Language, Link, LockOutlined, OpenInNew, SupervisorAccount } from "@material-ui/icons";
 import { AlertTitle } from "@material-ui/lab";
 import Alert from "@material-ui/lab/Alert";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { showMessage } from "../../../../../actions";
-import { StyledCheckbox } from "../../../form-fields/CheckboxField";
-import { Switch } from "../../../form-fields/Switch";
+import { StyledCheckbox } from "../../../formFields/CheckboxField";
+import { Switch } from "../../../formFields/Switch";
 import { openInternalLink } from "../../../../../utils/links";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
 import {
- getAvailableOptions, getDocumentShareSummary, groupAttachmentsByEntity, isSingleContactAttachment
+  getAvailableOptions,
+  getDocumentShareSummary,
+  groupAttachmentsByEntity,
+  isSingleContactAttachment
 } from "../utils";
 
 const typesAllowedForWebsite = ["Course", "Contact"];

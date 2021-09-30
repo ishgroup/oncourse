@@ -6,7 +6,7 @@ interface Props {
   entity: string;
   View: (props: any) => any;
   record: (mockedApi: any) => object;
-  render: (wrapper: any, initialValues: any) => any;
+  render: (wrapper: any, initialValues: any, shallow?: any) => any;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
 }
@@ -39,8 +39,8 @@ export const defaultComponents: ({
     beforeFn();
   }
 
-  it(`${entity} components should render with given values`, () => {
-    const wrapper = mount(
+  it(`${entity} components should render with given values`, async () => {
+    const wrapper = await mount(
       <TestEntry>
         <MockedEditView />
       </TestEntry>,
@@ -48,9 +48,9 @@ export const defaultComponents: ({
 
     return new Promise<void>(resolve => {
       setTimeout(() => {
-        render(wrapper, initialValues);
+        render(wrapper.render(), initialValues, wrapper);
         resolve();
-      }, 1000);
+      }, 2000);
     });
   });
 };

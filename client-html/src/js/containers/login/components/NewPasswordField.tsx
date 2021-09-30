@@ -10,7 +10,7 @@ import { withStyles, createStyles } from "@material-ui/core/styles";
 import green from "@material-ui/core/colors/green";
 import ClassNames from "clsx";
 import debounce from "lodash.debounce";
-import { TextField } from "../../../common/components/form/form-fields/TextField";
+import { TextField } from "../../../common/components/form/formFields/TextField";
 
 const styles = theme => createStyles({
   disabled: {},

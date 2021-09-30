@@ -13,7 +13,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { formatCurrency, normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 

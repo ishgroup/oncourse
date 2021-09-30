@@ -24,8 +24,8 @@ import Accordion from "@material-ui/core/Accordion";
 import { EnrolmentStudyReason } from "@api/model";
 import debounce from "lodash.debounce";
 import { showConfirm } from "../../../../../common/actions";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import {

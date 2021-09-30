@@ -14,7 +14,7 @@ import { change, Field } from "redux-form";
 import { SurveyItem } from "@api/model";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import Score from "./Score";
 import Uneditable from "../../../../common/components/form/Uneditable";
@@ -107,10 +107,10 @@ const SurveyEditView = (props: Props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <FormField type="text" label="Comment" name="comment" disabled />
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField type="multilineText" label="Comment" name="comment" disabled />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="visibility"
@@ -125,25 +125,25 @@ const SurveyEditView = (props: Props) => {
           }}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="multilineText"
           label="Testimonial"
           name="testimonial"
           disabled={values.visibility !== "Public testimonial"}
-          fullWidth
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12} className={twoColumn ? undefined : "saveButtonTableOffset"}>
-        <CustomFields
-          entityName="Survey"
-          fieldName="customFields"
-          entityValues={values}
-          dispatch={dispatch}
-          form={form}
-          fullWidth
-        />
-      </Grid>
+      <CustomFields
+        entityName="Survey"
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12,
+          className: twoColumn ? undefined : "saveButtonTableOffset"
+        }}
+      />
     </Grid>
   ) : null;
 };

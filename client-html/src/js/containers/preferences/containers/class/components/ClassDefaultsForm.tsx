@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { Form, reduxForm, initialize } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import * as Model from "../../../../../model/preferences/ClassDefaults";

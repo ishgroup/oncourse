@@ -37,6 +37,8 @@ properties:
     type: number
   actualAmount:
     type: number
+  actualUsePercent:
+    type: number
   unitCount:
     type: number
   contactId:

@@ -1,0 +1,35 @@
+o-------------------o
+<% if (quote.getTotalIncTax().toBigDecimal() < 0) { %>
+     Credit Note
+<% } else { %>
+     Quote
+<% } %>
+o-------------------o
+
+Quote created on: ${quote.invoiceDate.format("d/M/yy")}
+Quote due on: ${quote.dateDue.format("d/M/yy")}
+Quote number: ${quote.quoteNumber}
+<% if (quote.customerReference) { %>
+Your reference: ${quote.customerReference}
+<% } %>
+Quote to: ${quote.contact.fullName}
+
+
+Items
+-----
+<% quote.quoteLines.each { %>
+${it.title}    ${it.priceTotalExTax} (ex Tax)   ${it.discountEachExTax} (discount)
+<% if (it.description) { %>${it.description}<% } %>
+
+<% } %>
+
+o-------------------o
+Total Tax ${quote.totalTax}
+o-------------------o
+
+<% if (quote.invoiceDueDates.size() > 0) { %>
+Payment due date
+-----------------
+<% quote.unpaidInvoiceDueDates.sort{ it.dueDate }.each { %>${it.dueDate.format("d MMMM yyyy")} - ${it.unpaidAmount}
+<% } %>
+<% } %>

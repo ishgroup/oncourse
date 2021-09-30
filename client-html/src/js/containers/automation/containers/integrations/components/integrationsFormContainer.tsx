@@ -6,9 +6,7 @@
 import * as React from "react";
 import clsx from "clsx";
 import Grid from "@material-ui/core/Grid";
-import {
-  initialize, isDirty, isInvalid, SubmissionError
-} from "redux-form";
+import { initialize, isDirty, isInvalid, SubmissionError } from "redux-form";
 import { withStyles } from "@material-ui/core/styles";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -16,7 +14,7 @@ import { Dispatch } from "redux";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import createStyles from "@material-ui/core/styles/createStyles";
 import { Integration, IntegrationProp } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import IntegrationDescription from "./IntegrationDescription";
 import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
@@ -27,11 +25,7 @@ import { State } from "../../../../../reducers/state";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import {
-  updateIntegration,
-  createIntegration,
-  deleteIntegrationItem
-} from "../../../actions";
+import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import { getByType } from "../utils";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
