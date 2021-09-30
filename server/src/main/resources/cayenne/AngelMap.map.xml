@@ -2270,7 +2270,7 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="outcomeIdTrainingOrg" type="java.lang.String" db-attribute-path="outcomeIdTrainingOrg"/>
-    <obj-attribute name="reportingStatus" type="ish.common.types.EnrolmentReportingStatus" db-attribute-path="studentLoanStatus"/>
+    <obj-attribute name="studentLoanStatus" type="ish.common.types.EnrolmentReportingStatus" db-attribute-path="studentLoanStatus"/>
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.common.types.EnrolmentStatus" db-attribute-path="status"/>
 		<obj-attribute name="studentIndustryANZSICCode" type="java.lang.Integer" db-attribute-path="studentIndustryANZSICCode"/>

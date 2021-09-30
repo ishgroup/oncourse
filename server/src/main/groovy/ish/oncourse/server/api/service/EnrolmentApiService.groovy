@@ -83,8 +83,8 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.source = PaymentSourceDTO.values()[0].fromDbType(enrolment.source)
             enrolmentDTO.confirmationStatus = ConfirmationStatusDTO.values()[0]
                     .fromDbType(enrolment.confirmationStatus)
-            enrolmentDTO.reportingStatus = EnrolmentReportingStatusDTO.values()[0]
-                    .fromDbType(enrolment.reportingStatus)
+            enrolmentDTO.studentLoanStatus = EnrolmentReportingStatusDTO.values()[0]
+                    .fromDbType(enrolment.studentLoanStatus)
 
             enrolmentDTO.eligibilityExemptionIndicator = enrolment.eligibilityExemptionIndicator
             enrolmentDTO.outcomeIdTrainingOrg = enrolment.outcomeIdTrainingOrg

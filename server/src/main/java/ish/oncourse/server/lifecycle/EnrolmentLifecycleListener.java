@@ -43,11 +43,11 @@ public class EnrolmentLifecycleListener {
 	public void prePersist(Enrolment enrol) {
 	    var course = enrol.getCourseClass().getCourse();
 	    if(!course.getFeeHelpClass())
-	        enrol.setReportingStatus(EnrolmentReportingStatus.NOT_ELIGIBLE);
+	        enrol.setStudentLoanStatus(EnrolmentReportingStatus.NOT_ELIGIBLE);
 	    else if(enrol.getFeeHelpAmount() != Money.ZERO || enrol.getFeeStatus() != null)
-	        enrol.setReportingStatus(EnrolmentReportingStatus.ONGOING);
+	        enrol.setStudentLoanStatus(EnrolmentReportingStatus.ONGOING);
 	    else
-	        enrol.setReportingStatus(EnrolmentReportingStatus.ELIGIBLE);
+	        enrol.setStudentLoanStatus(EnrolmentReportingStatus.ELIGIBLE);
 
 		SetFundingContact.valueOf(enrol).set();
 	}

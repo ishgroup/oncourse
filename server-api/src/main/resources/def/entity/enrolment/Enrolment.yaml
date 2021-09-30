@@ -86,7 +86,7 @@ properties:
     $ref: './EnrolmentCreditProviderType.yaml'
   creditTotal:
     $ref: './EnrolmentCreditTotal.yaml'
-  reportingStatus:
+  studentLoanStatus:
     $ref: './EnrolmentReportingStatus.yaml'
   creditType:
     $ref: './EnrolmentCreditType.yaml'

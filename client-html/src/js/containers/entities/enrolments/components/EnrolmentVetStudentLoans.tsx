@@ -117,7 +117,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                     type="money"
                     name="feeHelpAmount"
                     label="Fee help requested"
-                    disabled={values.reportingStatus === "Finalized"}
+                    disabled={values.studentLoanStatus === "Finalized"}
                   />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
@@ -132,7 +132,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                     name="feeStatus"
                     label="Fee subsidy"
                     items={enrolmentFeeStatusItems}
-                    disabled={values.reportingStatus === "Finalized"}
+                    disabled={values.studentLoanStatus === "Finalized"}
                     allowEmpty
                   />
                 </Grid>
@@ -142,7 +142,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                     name="attendanceType"
                     label="Type of attendance"
                     items={courseClassAttendanceTypeItems}
-                    disabled={values.reportingStatus === "Finalized"}
+                    disabled={values.studentLoanStatus === "Finalized"}
                   />
                 </Grid>
               </Grid>
