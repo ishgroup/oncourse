@@ -1,6 +1,7 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.model.QueuedRecord;
+import ish.oncourse.model.QueuedRecordAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -98,6 +99,10 @@ public class DFADedupper implements Comparable<DFADedupper> {
 			}
 			break;
 		case DFA_DELETE:
+			if (record.getAction() == QueuedRecordAction.DELETE){
+				break;
+			}
+
 			throw new DedupperException(
                     String.format(
                     "Can't accept any events after DELETE event. EntityWillowId: %d  EntityIdentifier: %s, Action: %s college:%s",
