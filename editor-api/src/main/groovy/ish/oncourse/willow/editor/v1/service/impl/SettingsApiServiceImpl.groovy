@@ -5,6 +5,8 @@ import ish.oncourse.model.College
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.preference.GetAutoCompleteState
+import ish.oncourse.services.preference.GetCheckoutTermsLabel
+import ish.oncourse.services.preference.GetCheckoutTermsUrl
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsCollectParentDetails
@@ -126,15 +128,18 @@ class SettingsApiServiceImpl implements SettingsApi {
     CheckoutSettings getCheckoutSettings() {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
-        
+        WebSite site = WebSiteFunctions.getCurrentWebSite(requestService.request, context)
         return new CheckoutSettings().with { settings ->
             settings.allowCreateContactOnEnrol = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.enrolment), context).booleanValue
             settings.allowCreateContactOnWaitingList = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.waitinglist), context).booleanValue
             settings.allowCreateContactOnMailingList = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue
 
             settings.collectParentDetails = new IsCollectParentDetails(college, context).get() 
-            settings.contactAgeWhenNeedParent = new GetContactAgeWhenNeedParent(college, context).get()
+            settings.contactAgeWhenNeedParent = new GetContactAgeWhenNeedParent(college, context, site).integerValue
             settings.enrolmentMinAge = new GetPreference(college, ENROLMENT_MIN_AGE, context).integerValue
+            settings.termsUrl = new GetCheckoutTermsUrl(college, context, site).value
+            settings.termsLabel = new GetCheckoutTermsLabel(college, context, site).value
+
             settings
         }
         
@@ -144,14 +149,15 @@ class SettingsApiServiceImpl implements SettingsApi {
     CheckoutSettings updateCheckoutSettings(CheckoutSettings settings) {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
-
+        WebSite site = WebSiteFunctions.getCurrentWebSite(requestService.request, context)
         new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.enrolment), context).booleanValue = settings.allowCreateContactOnEnrol
         new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.waitinglist), context).booleanValue = settings.allowCreateContactOnWaitingList
         new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue = settings.allowCreateContactOnMailingList
         new IsCollectParentDetails(college, context).booleanValue = settings.collectParentDetails
-        new GetContactAgeWhenNeedParent(college, context).integerValue = settings.contactAgeWhenNeedParent
+        new GetContactAgeWhenNeedParent(college, context,site).integerValue = settings.contactAgeWhenNeedParent
         new GetPreference(college, ENROLMENT_MIN_AGE, context).integerValue = settings.enrolmentMinAge
-        
+        new GetCheckoutTermsLabel(college, context, site).value = settings.termsLabel
+        new GetCheckoutTermsUrl(college, context, site).value = settings.termsUrl
         context.commitChanges()
         
         return settings
