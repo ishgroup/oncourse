@@ -1,9 +1,8 @@
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const path = require('path');
+const path = require("path");
 
 const _info = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
   console.log(`
@@ -17,112 +16,111 @@ const _info = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
 };
 
 const KEYS = {
-  ENTRY: 'entry'
+  ENTRY: "entry"
 };
 
 const _common = (dirname, options) => {
-  const _main = {
+  let _main = {
     entry: [
       options[KEYS.ENTRY],
     ],
     output: {
-      path: path.resolve(dirname, 'build'),
-      publicPath: '/',
-      filename: 'billing.js'
+      path: path.resolve(dirname, "build"),
+      publicPath: "/",
+      filename: "billing.js"
     },
     mode: 'development',
     resolve: {
       modules: [
-        'node_modules',
-        path.resolve(dirname, 'build/generated-sources'),
-        path.resolve(dirname, 'src/images'),
+        "node_modules",
+        path.resolve(dirname, "build/generated-sources"),
+        path.resolve(dirname, "src/images"),
       ],
-      extensions: ['.ts', '.tsx', '.js'],
+      extensions: [".ts", ".tsx", ".js"],
       plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.json') })],
     },
     module: {
       rules: [
         {
-          test: /\.ts(x?)$/,
-          use: [
-            {
-              loader: 'ts-loader',
-              options: {
-                transpileOnly: true
-              },
-            },
-          ],
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
           include: [
             path.resolve(dirname, 'build/generated-sources'),
-            path.resolve(dirname, 'src/js'),
-            path.resolve(dirname, 'src/dev'),
+            path.resolve(dirname, "src/js"),
+            path.resolve(dirname, "src/dev"),
           ],
           exclude: [
-            path.resolve(dirname, 'node_modules'),
+            path.resolve(dirname, "node_modules"),
           ],
         },
-      ],
+      ]
     },
     plugins: [
-      new MiniCssExtractPlugin({ filename: 'billing.css' }),
+      new MiniCssExtractPlugin({filename: "billing.css"}),
       _DefinePlugin('development', options.BUILD_NUMBER),
-      new ForkTsCheckerWebpackPlugin({
-        async: false,
+      new webpack.SourceMapDevToolPlugin({
+        filename: "[file].map",
+        test: /billing/
       }),
     ],
     devServer: {
       inline: true,
-      hot: true,
       port: 8100
     },
-    devtool: 'source-map'
+    devtool: false,
+    target: "web"
   };
   _main.module.rules = [..._main.module.rules, ..._styleModule()];
   return _main;
 };
 
-const _styleModule = () => [
-  {
-    test: /\.(jpg|jpeg|gif|png)$/,
-    use: [{
+const _styleModule = () => {
+  return [
+    {
+      test: /\.(jpg|jpeg|gif|png)$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]'
+        },
+      }]
+    },
+    {
+      test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
       loader: 'file-loader',
       options: {
-        name: '[name].[ext]'
-      },
-    }]
-  },
-  {
-    test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
-    loader: 'file-loader',
-    options: {
-      name: 'fonts/[name].[ext]',
-      publicPath: './'
+        name: "fonts/[name].[ext]",
+        publicPath: "./"
+      }
+    },
+    {
+      test: /\.s?css$/,
+      use: [MiniCssExtractPlugin.loader,'css-loader', 'sass-loader'],
+      exclude: [
+        /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+      ]
+    },
+    {
+      enforce: "pre", test: /\.js$/, loader: "source-map-loader"
     }
-  },
-  {
-    test: /\.s?css$/,
-    use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-    exclude: [
-      /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-    ]
-  },
-  {
-    enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'
-  }
-];
+  ]
+};
+
 
 /**
  * The DefinePlugin allows you to create global constants which can be configured at compile time.
  */
-const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => new webpack.DefinePlugin({
-  'process.env': {
-    NODE_ENV: JSON.stringify(NODE_ENV)
-  },
-  _APP_VERSION: JSON.stringify(BUILD_NUMBER || 'DEV')
-});
+const _DefinePlugin = (NODE_ENV, BUILD_NUMBER) => {
+  return new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify(NODE_ENV)
+    },
+    _APP_VERSION: JSON.stringify(BUILD_NUMBER || "DEV")
+  });
+};
 
 module.exports = {
-  KEYS,
+  KEYS: KEYS,
   info: _info,
   common: _common,
   styleModule: _styleModule,

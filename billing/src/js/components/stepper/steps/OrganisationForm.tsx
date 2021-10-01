@@ -19,8 +19,8 @@ import CustomTextField from '../../common/TextField';
 import { createCollege, setOrganisationFormValues } from '../../../redux/actions';
 import Navigation from '../Navigations';
 import { countries, countriesTimeZone } from '../../../utils';
+import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
-import { State } from '../../../models/State';
 
 const useStyles = makeAppStyles()((theme: any) => ({
   textFieldWrapper: {
@@ -284,11 +284,11 @@ const OrganisationForm = (props: any) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  collegeWasCreated: state.college.collegeWasCreated,
-  collegeKey: state.college.collegeKey,
-  webSiteTemplate: state.college.webSiteTemplate,
-  contactForm: state.form.contactForm,
-  organisationForm: state.form.organisationForm,
+  collegeWasCreated: state.collegeWasCreated,
+  collegeKey: state.collegeKey,
+  webSiteTemplate: state.webSiteTemplate,
+  contactForm: state.contactForm,
+  organisationForm: state.organisationForm,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

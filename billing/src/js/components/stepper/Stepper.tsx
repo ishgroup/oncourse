@@ -20,10 +20,10 @@ import FinishPage from './steps/FinishPage';
 import { setCaptchaToken } from '../../redux/actions';
 import ErrorPage from '../ErrorPage';
 import { SITE_KEY } from '../../constant/common';
-import { SitesPage } from './steps/sites/SitesPage';
+import { SitesPage } from './steps/SitesPage';
+import { State } from '../../redux/reducers';
 import { Step } from '../../models/User';
 import iconDots from '../../../images/icon-dots.png';
-import { State } from '../../models/State';
 
 export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const formItem = {
@@ -48,11 +48,9 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
     },
     content: {
       margin: 'auto',
+      maxWidth: 1200,
       padding: theme.spacing(10),
       width: '100%',
-    },
-    maxWidth: {
-      maxWidth: 1200,
     },
     contentInner: {
       backgroundImage: `url(${iconDots})`,
@@ -124,13 +122,11 @@ interface Props {
   serverError?: any;
   setCaptchaToken?: any;
   userKey?: string;
-  isNewUser?: boolean;
   steps?: Step[];
 }
 
 const Stepper: React.FC<Props> = (
   {
-    isNewUser,
     serverError,
     steps
   }
@@ -180,7 +176,7 @@ const Stepper: React.FC<Props> = (
       />
 
       <div className={classes.formWrapper}>
-        <div className={cx(classes.content, isNewUser && classes.maxWidth)}>
+        <div className={classes.content}>
           {serverError ? (
             <div className={cx(classes.contentInner, classes.hasError)}>
               <div className={classes.formItem}>
@@ -207,7 +203,7 @@ const Stepper: React.FC<Props> = (
 };
 
 const mapStateToProps = (state: State) => ({
-  serverError: state.college.serverError
+  serverError: state.serverError
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
