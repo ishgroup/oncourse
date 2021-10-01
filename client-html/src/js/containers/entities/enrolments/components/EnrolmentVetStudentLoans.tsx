@@ -102,8 +102,8 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
 
             <FormField
               type="select"
-              name="reportingStatus"
-              label="Reporting Status"
+              name="studentLoanStatus"
+              label="Reporting status"
               items={enrolmentReportingStatusItems}
               onChange={onChangeSelectValue}
             />
