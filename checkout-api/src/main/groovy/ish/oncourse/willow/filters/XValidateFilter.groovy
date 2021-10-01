@@ -1,10 +1,12 @@
 package ish.oncourse.willow.filters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.willow.service.XValidate
 
 import javax.ws.rs.container.ContainerRequestContext
 import javax.ws.rs.container.ContainerRequestFilter
 
+@CompileStatic
 @XValidate
 class XValidateFilter implements ContainerRequestFilter {
 

@@ -58,7 +58,7 @@ class ContactApiServiceImpl implements ContactApi{
 
     @Override
     ContactId createOrGetContact(CreateContactParams createContactParams) {
-        CreateOrGetContact createOrGet = new CreateOrGetContact(params:createContactParams, context: cayenneService.newContext(), college: collegeService.college).perform()
+        CreateOrGetContact createOrGet = new CreateOrGetContact(params:createContactParams, context: cayenneService.newContext(), college: collegeService.college, site: collegeService.webSite).perform()
         if (!createOrGet.validationError.formErrors.empty || !createOrGet.validationError.fieldsErrors.empty) {
             throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST).entity(createOrGet.validationError).build())
         } else {
@@ -70,7 +70,7 @@ class ContactApiServiceImpl implements ContactApi{
     void createParentChildrenRelation(CreateParentChildrenRequest request) {
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
-        CreateParentChildrenRelation createRelation = new CreateParentChildrenRelation(college, context, request).create()
+        CreateParentChildrenRelation createRelation = new CreateParentChildrenRelation(college, context, request, collegeService.webSite).create()
 
         if (createRelation.error) {
             context.rollbackChanges()
@@ -137,7 +137,7 @@ class ContactApiServiceImpl implements ContactApi{
         ContactId response = new ContactId().id(contact.id.toString()).newContact(false).parentRequired(false)
         
         if (!contact.isCompany) {
-            CheckParent checkParent = new CheckParent(college, context, contact).perform()
+            CheckParent checkParent = new CheckParent(college, context, contact, collegeService.webSite).perform()
             response = response.parentRequired(checkParent.parentRequired)
         }
         

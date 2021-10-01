@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.voucher
 
+import groovy.transform.CompileStatic
 import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.model.College
@@ -17,6 +18,7 @@ import org.apache.cayenne.ObjectContext
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class ProcessRedeemedVouchers {
 
     private ObjectContext context

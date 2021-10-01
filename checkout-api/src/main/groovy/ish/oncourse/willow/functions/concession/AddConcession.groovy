@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.concession
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.ConcessionType
 import ish.oncourse.model.Contact
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory
 
 import java.text.ParseException
 
+@CompileStatic
 class AddConcession {
     
     final static  Logger logger = LoggerFactory.getLogger(GetConcessionTypeById.class)

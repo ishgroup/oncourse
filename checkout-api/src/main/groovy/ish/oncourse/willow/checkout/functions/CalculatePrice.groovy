@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.DiscountCourseClass
@@ -9,6 +10,7 @@ import ish.oncourse.model.Tax
 import ish.util.DiscountUtils
 import ish.util.InvoiceUtil
 
+@CompileStatic
 class CalculatePrice {
     
     Money priceEachEx

@@ -26,6 +26,7 @@ import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+@CompileStatic
 class CreatePaymentModel {
     
     ObjectContext context

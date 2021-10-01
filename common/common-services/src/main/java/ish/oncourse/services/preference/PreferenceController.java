@@ -140,11 +140,6 @@ public class PreferenceController extends CommonPreferenceController {
         return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
     }
 
-    public void setCollectParentDetails(boolean value)
-    {
-        setValue(ENROLMENT_collectParentDetails, false, Boolean.toString(value));
-    }
-
 	public void setHideClassOnWebsiteAge(ClassAge classAge) {
 		setValue(HIDE_CLASS_ON_WEB_AGE, false, String.valueOf(classAge.getDays()));
 		setValue(HIDE_CLASS_ON_WEB_AGE_TYPE, false, String.valueOf(classAge.getType().name()));

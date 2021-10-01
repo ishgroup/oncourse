@@ -6,6 +6,7 @@ import ish.common.types.CreditCardType
 import ish.math.Money
 
 
+@CompileStatic
 class TestPaymentService implements IPaymentService {
 
     Boolean isSkipAuth() {

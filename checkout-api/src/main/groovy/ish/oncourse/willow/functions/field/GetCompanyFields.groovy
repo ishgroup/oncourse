@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.College
@@ -15,6 +16,7 @@ import org.apache.cayenne.ObjectContext
 import static ish.oncourse.common.field.FieldProperty.*
 import static ish.oncourse.common.field.FieldProperty.getByKey
 
+@CompileStatic
 class GetCompanyFields {
     
     private static final List<FieldProperty> COMPANY_FIELDS = [STREET, SUBURB, POSTCODE, STATE, COUNTRY, BUSINESS_PHONE_NUMBER, FAX_NUMBER,

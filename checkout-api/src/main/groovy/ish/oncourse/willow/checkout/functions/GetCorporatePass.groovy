@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.CorporatePass
 import ish.oncourse.willow.model.common.CommonError
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class GetCorporatePass extends Get<CorporatePass> {
 
     final static  Logger logger = LoggerFactory.getLogger(GetContact.class)

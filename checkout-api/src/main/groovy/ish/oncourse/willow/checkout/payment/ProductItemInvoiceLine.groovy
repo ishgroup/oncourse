@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.Contact
 import ish.oncourse.model.InvoiceLine
@@ -8,6 +9,7 @@ import ish.oncourse.model.ProductItem
 import ish.oncourse.model.Tax
 import ish.util.InvoiceUtil
 
+@CompileStatic
 class ProductItemInvoiceLine {
 
     ProductItem productItem

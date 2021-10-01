@@ -1,10 +1,12 @@
 package ish.oncourse.willow.functions
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.ContactRelation
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class GetParents {
     
     public static final long ANGEL_ID_ContactRelationType_ParentOrGuardian = -1

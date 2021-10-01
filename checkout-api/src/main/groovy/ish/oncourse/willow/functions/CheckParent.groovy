@@ -3,6 +3,7 @@ package ish.oncourse.willow.functions
 import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.WebSite
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistenceState
 
@@ -15,15 +16,17 @@ class CheckParent {
     private Contact contact
     private List<Contact> parents = new ArrayList<>()
     private boolean parentRequired = false
+    private WebSite site
 
-    CheckParent(College college, ObjectContext context, Contact contact) {
+    CheckParent(College college, ObjectContext context, Contact contact, WebSite site) {
         this.college = college
         this.context = context
         this.contact = contact
+        this.site = site
     }
     
     CheckParent perform() {
-        parentRequired = new IsParentRequired(college, context, contact).get()
+        parentRequired = new IsParentRequired(college, context, contact, site).get()
         
         if (contact.persistenceState != PersistenceState.NEW) {
             parents = new GetParents(college, context, contact).get()

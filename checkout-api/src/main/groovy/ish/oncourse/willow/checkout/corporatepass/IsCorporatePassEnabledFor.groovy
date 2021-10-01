@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.corporatepass
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
@@ -12,6 +13,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 
+@CompileStatic
 class IsCorporatePassEnabledFor {
 
     private ObjectContext context

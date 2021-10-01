@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.common.field.PropertyGetSetFactory
 import ish.oncourse.model.Contact
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory
 
 import static ish.oncourse.common.field.FieldProperty.*
 
+@CompileStatic
 class FieldTagBuilder {
     
     Field field

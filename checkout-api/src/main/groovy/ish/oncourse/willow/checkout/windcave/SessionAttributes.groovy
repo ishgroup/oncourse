@@ -5,10 +5,12 @@
 
 package ish.oncourse.willow.checkout.windcave
 
+import groovy.transform.CompileStatic
 import ish.common.types.CreditCardType
 
 import java.time.LocalDate
 
+@CompileStatic
 class SessionAttributes {
 
     String sessionId

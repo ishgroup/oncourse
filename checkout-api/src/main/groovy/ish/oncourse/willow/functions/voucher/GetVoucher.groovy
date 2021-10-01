@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.voucher
 
+import groovy.transform.CompileStatic
 import ish.common.types.ProductStatus
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class GetVoucher extends Get<Voucher> {
 
     final static  Logger logger = LoggerFactory.getLogger(GetVoucher.class)

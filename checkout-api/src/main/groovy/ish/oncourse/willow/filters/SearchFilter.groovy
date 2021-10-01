@@ -1,5 +1,6 @@
 package ish.oncourse.willow.filters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.willow.model.common.CommonError
 import ish.oncourse.willow.service.SearchText
 import org.apache.commons.lang3.StringUtils
@@ -10,6 +11,7 @@ import javax.ws.rs.container.ContainerRequestFilter
 import javax.ws.rs.core.MultivaluedMap
 import javax.ws.rs.core.Response
 
+@CompileStatic
 @SearchText
 class SearchFilter implements ContainerRequestFilter {
     

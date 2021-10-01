@@ -1,11 +1,13 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.model.*
 import ish.util.InvoiceUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
+@CompileStatic
 class ProductsItemInvoiceLine {
 
     ObjectContext context

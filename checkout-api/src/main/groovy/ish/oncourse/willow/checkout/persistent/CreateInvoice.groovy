@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.persistent
 
+import groovy.transform.CompileStatic
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentSource
 import ish.math.Money
@@ -13,6 +14,7 @@ import ish.oncourse.model.WebSite
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.time.DateUtils
 
+@CompileStatic
 class CreateInvoice {
 
     private ObjectContext context

@@ -2,6 +2,7 @@ package ish.oncourse.willow.functions
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.common.ValidationError
@@ -27,7 +28,7 @@ class CreateOrGetContact  {
     ObjectContext context
     ContactId contactId = new ContactId()
     ValidationError validationError = new ValidationError()
-
+    WebSite site
 
     CreateOrGetContact perform() {
         Contact contact = findContact()
@@ -64,7 +65,7 @@ class CreateOrGetContact  {
         if (contact) {
             contactId.id = contact.id.toString()
             if (!contact.isCompany) {
-                CheckParent checkParent = new CheckParent(college, context, contact).perform()
+                CheckParent checkParent = new CheckParent(college, context, contact, site).perform()
                 contactId.parentRequired = checkParent.parentRequired
             }
         } else {

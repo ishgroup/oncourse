@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.concession
 
+import groovy.transform.CompileStatic
 import ish.common.types.ProductStatus
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -12,6 +13,7 @@ import org.apache.cayenne.ObjectContext
 
 import java.text.SimpleDateFormat
 
+@CompileStatic
 class GetConcessionsAndMemberships {
 
     ObjectContext context

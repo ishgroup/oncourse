@@ -9,6 +9,7 @@ import ish.oncourse.model.VoucherProduct
 import ish.oncourse.willow.model.checkout.Voucher
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class ValidateVoucher extends Validate<Voucher>{
 
     String payerId

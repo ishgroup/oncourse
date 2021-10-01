@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.Course
@@ -7,6 +8,7 @@ import ish.oncourse.model.Field
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.willow.model.field.FieldHeading
 
+@CompileStatic
 class GetWaitingListFields {
 
     private Course course

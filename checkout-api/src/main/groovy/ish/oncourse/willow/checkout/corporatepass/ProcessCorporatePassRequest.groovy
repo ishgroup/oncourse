@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.corporatepass
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.CorporatePass
 import ish.oncourse.services.preference.IsCorporatePassEnabled
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class ProcessCorporatePassRequest {
     
     final static  Logger logger = LoggerFactory.getLogger(ProcessCorporatePassRequest)

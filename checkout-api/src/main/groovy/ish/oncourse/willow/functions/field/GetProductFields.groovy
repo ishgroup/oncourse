@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.common.types.ProductType
 import ish.common.types.TypesUtil
 import ish.oncourse.common.field.FieldProperty
@@ -12,6 +13,7 @@ import static ish.common.types.ProductType.ARTICLE
 import static ish.common.types.ProductType.MEMBERSHIP
 import static ish.common.types.ProductType.VOUCHER
 
+@CompileStatic
 class GetProductFields {
 
     private Product product

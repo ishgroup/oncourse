@@ -9,6 +9,7 @@ import ish.oncourse.model.Tax
 import ish.oncourse.willow.model.checkout.Article
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class ValidateArticle extends Validate<Article> {
 
     private Tax taxOverridden

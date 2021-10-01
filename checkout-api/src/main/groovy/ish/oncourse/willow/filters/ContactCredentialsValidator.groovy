@@ -1,5 +1,6 @@
 package ish.oncourse.willow.filters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.util.contact.CommonContactValidator
 import ish.oncourse.willow.model.common.FieldError
@@ -19,6 +20,7 @@ import javax.ws.rs.ext.ReaderInterceptorContext
 import static ish.oncourse.common.field.FieldProperty.*
 import static ish.validation.ContactValidator.Property.*
 
+@CompileStatic
 @ContactValidation
 class ContactCredentialsValidator implements ReaderInterceptor {
 

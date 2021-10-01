@@ -21,6 +21,7 @@ import static ish.common.types.ProductType.ARTICLE
 import static ish.common.types.ProductType.MEMBERSHIP
 import static ish.common.types.ProductType.VOUCHER
 
+@CompileStatic
 class ProcessProduct {
     
     private static final Money DEFAULT_VOUCHER_PRICE = new Money("100.00")

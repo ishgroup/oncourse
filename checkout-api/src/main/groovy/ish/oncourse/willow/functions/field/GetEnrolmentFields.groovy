@@ -1,11 +1,13 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.FieldConfiguration
 import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.FieldHeading
 
+@CompileStatic
 class GetEnrolmentFields {
     
     private CourseClass courseClass

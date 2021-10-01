@@ -17,6 +17,7 @@ import org.apache.cayenne.ObjectContext
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 
+@CompileStatic
 class ProcessClass {
     
     ObjectContext context

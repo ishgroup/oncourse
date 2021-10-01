@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.persistent
 
+import groovy.transform.CompileStatic
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentSource
@@ -9,8 +10,9 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.checkout.functions.GetCourseClass
 import ish.oncourse.willow.functions.field.FieldHelper
-import org.apache.cayenne.ObjectContext 
+import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class CreateApplication {
 
     private ObjectContext context
