@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
-import { useDispatch, useSelector } from 'react-redux';
 import { CacheProvider } from '@emotion/react';
-import createCache from 'tss-react/@emotion/cache'; // Or "@emotion/cache"
+import createCache from 'tss-react/@emotion/cache';
 import Stepper from './stepper/Stepper';
 import { DefaultThemeKey } from '../models/Theme';
 import { currentTheme, getTheme } from '../themes/ishTheme';
@@ -11,7 +10,7 @@ import MessageProvider from './common/message/MessageProvider';
 import { getCollegeKey, getSites } from '../redux/actions';
 import { defaultAxios } from '../api/services/DefaultHttpClient';
 import { ExistingCustomerSteps, NewCustomerSteps, Step } from '../models/User';
-import { State } from '../redux/reducers';
+import { useAppDispatch, useAppSelector } from '../redux/hooks/redux';
 
 export const muiCache = createCache({
   key: 'mui',
@@ -23,9 +22,9 @@ const Billing = () => {
   const [theme, setTheme] = useState(getTheme());
   const [steps, setSteps] = useState<Step[]>([]);
 
-  const isNewUser = useSelector<State>((state) => state.isNewUser);
+  const isNewUser = useAppSelector((state) => state.college.isNewUser);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isNewUser) {
@@ -64,7 +63,7 @@ const Billing = () => {
       >
 
         <ThemeProvider theme={theme}>
-          <Stepper steps={steps} />
+          <Stepper steps={steps} isNewUser={isNewUser} />
           <MessageProvider />
         </ThemeProvider>
       </ThemeContext.Provider>

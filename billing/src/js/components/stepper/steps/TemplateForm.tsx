@@ -12,10 +12,10 @@ import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import { makeAppStyles } from '../../../styles/makeStyles';
 import { setTemplateValue } from '../../../redux/actions';
-import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
 import { TemplateChoser } from '../../common/TemplateChoser';
 import Navigation from '../Navigations';
+import { State } from '../../../models/State';
 
 const useStyles = makeAppStyles()((theme) => ({
   coloredHeaderText: {
@@ -86,7 +86,7 @@ const TemplateForm = (props: any) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  templateStore: state.webSiteTemplate,
+  templateStore: state.college.webSiteTemplate,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

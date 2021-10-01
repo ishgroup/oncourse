@@ -18,8 +18,8 @@ import { makeAppStyles } from '../../../styles/makeStyles';
 import Navigation from '../Navigations';
 import { checkSiteName, setCollegeKey, setLoadingValue } from '../../../redux/actions';
 import { SITE_KEY } from '../../../constant/common';
-import { State } from '../../../redux/reducers';
 import { usePrevious } from '../../../hooks/usePrevious';
+import { State } from '../../../models/State';
 
 const useStyles = makeAppStyles()((theme:any) => ({
   root: {
@@ -208,10 +208,10 @@ const NameForm = (props: any) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  collegeKeyFromState: state.collegeKey,
-  isValidName: state.isValidName,
+  collegeKeyFromState: state.college.collegeKey,
+  isValidName: state.college.isValidName,
   loading: state.loading,
-  sendTokenAgain: state.sendTokenAgain,
+  sendTokenAgain: state.college.sendTokenAgain,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
