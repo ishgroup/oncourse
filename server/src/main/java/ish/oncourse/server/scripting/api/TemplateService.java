@@ -14,13 +14,16 @@ import com.google.inject.Inject;
 import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.EmailTemplate;
+import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.document.DocumentService;
+import ish.oncourse.server.entity.mixins.ContactMixin;
 import ish.util.DateFormatter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -45,6 +48,7 @@ public class TemplateService {
 	private static final String HTML_POUND = "&pound;";
 	private static final String JAVA_EURO = "\u20AC";
 	private static final String HTML_EURO = "&euro;";
+	public static final String CONTACT_SERVICE_BINDING = "ContactService";
 
 	private ICayenneService cayenneService;
 	private CollegePreferenceService preferenceService;
@@ -156,6 +160,8 @@ public class TemplateService {
 		bindings.put(CollegePreferenceService.PREFERENCE_ALIAS, preferenceService.getPrefHelper());
 		bindings.put(COLLEGE_PREFERENCE_SERVICE, preferenceService);
 		bindings.put(DATE_FORMATTER, new DateFormatter(TimeZone.getDefault()));
+		bindings.put(CONTACT_SERVICE_BINDING, new ContactTrait.ContactService());
+
 		bindings.put(BINDINGS, bindings);
 
 		return bindings;

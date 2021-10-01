@@ -2,23 +2,20 @@ package ish.oncourse.server.api.v1.function
 
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.EntityRelationType
-import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.Qualification
-import ish.oncourse.server.cayenne.VoucherProduct
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.v1.function.SaleFunctions.toRestSale
 import static ish.oncourse.server.cayenne.EntityRelationType.DEFAULT_SYSTEM_TYPE_ID
 
 class EntityRelationFunctions {
@@ -85,13 +82,13 @@ class EntityRelationFunctions {
     static SaleDTO toRestToEntityRelation(EntityRelation relation) {
         SaleDTO dto
         if (Course.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Course, relation.toEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Course, relation.toEntityAngelId))
         } else if (Product.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Product, relation.toEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Product, relation.toEntityAngelId))
         } else if (Module.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Module, relation.toEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Module, relation.toEntityAngelId))
         } else if (Qualification.simpleName == relation.toEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Qualification, relation.toEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Qualification, relation.toEntityAngelId))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
@@ -105,13 +102,13 @@ class EntityRelationFunctions {
     static SaleDTO toRestFromEntityRelation(EntityRelation relation) {
         SaleDTO dto
         if (Course.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Course, relation.fromEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Course, relation.fromEntityAngelId))
         } else if (Product.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Product, relation.fromEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Product, relation.fromEntityAngelId))
         } else if (Module.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Module, relation.fromEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Module, relation.fromEntityAngelId))
         } else if (Qualification.simpleName == relation.fromEntityIdentifier) {
-            dto = toRestSalable(getRecordById(relation.context, Qualification, relation.fromEntityAngelId))
+            dto = toRestSale(getRecordById(relation.context, Qualification, relation.fromEntityAngelId))
         } else {
             throw new IllegalArgumentException("Unsupported entity type relation")
         }
@@ -119,58 +116,5 @@ class EntityRelationFunctions {
         dto.entityFromId = relation.fromEntityAngelId
         dto.relationId = relation.relationType?.id
         dto
-    }
-
-
-    static SaleDTO toRestSalable(Course course) {
-        new SaleDTO().with { s ->
-            s.active =  course.currentlyOffered || course.isShownOnWeb
-            s.code = course.code
-            s.name = course.with { "$it.name $it.code" }
-            s.type = SaleTypeDTO.COURSE
-            s
-        }
-    }
-
-    static SaleDTO toRestSalable(Product product) {
-        new SaleDTO().with { s ->
-            s.name = product.name
-            s.code = product.sku
-            s.active = Boolean.TRUE
-            switch (product) {
-                case VoucherProduct:
-                    s.type = SaleTypeDTO.VOUCHER
-                    break
-                case MembershipProduct:
-                    s.type = SaleTypeDTO.MEMBERSHIP
-                    break
-                case ArticleProduct:
-                    s.type = SaleTypeDTO.PRODUCT
-                    break
-                default:
-                    throw new IllegalArgumentException("${product.class}")
-            }
-            s
-        }
-    }
-
-    static SaleDTO toRestSalable(Module module) {
-        new SaleDTO().with { s ->
-            s.name = module.title
-            s.code = module.nationalCode
-            s.active = module.isOffered
-            s.type = SaleTypeDTO.MODULE
-            s
-        }
-    }
-
-    static SaleDTO toRestSalable(Qualification qualification) {
-        new SaleDTO().with { s ->
-            s.name = qualification.title
-            s.code = qualification.nationalCode
-            s.active = qualification.isOffered
-            s.type = SaleTypeDTO.QUALIFICATION
-            s
-        }
     }
 }

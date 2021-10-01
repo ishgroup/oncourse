@@ -13,6 +13,9 @@ export const DELETE_USER_ROLES_FULFILLED = FULFILLED(DELETE_USER_ROLES_REQUEST);
 export const GET_USERS_REQUEST = _toRequestType("get/user");
 export const GET_USERS_REQUEST_FULFILLED = FULFILLED(GET_USERS_REQUEST);
 
+export const GET_ACTIVE_USERS_REQUEST = _toRequestType("get/user/active");
+export const GET_ACTIVE_USERS_REQUEST_FULFILLED = FULFILLED(GET_ACTIVE_USERS_REQUEST);
+
 export const POST_USER_REQUEST = _toRequestType("post/user");
 export const POST_USER_REQUEST_FULFILLED = FULFILLED(POST_USER_REQUEST);
 
@@ -64,6 +67,10 @@ export const validateNewUserPassword = (value: string) => ({
 
 export const getUsers = () => ({
   type: GET_USERS_REQUEST
+});
+
+export const getActiveUsers = () => ({
+  type: GET_ACTIVE_USERS_REQUEST
 });
 
 export const updateUser = (user: User) => ({

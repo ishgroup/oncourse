@@ -10,6 +10,7 @@
  */
 package ish.oncourse.cayenne;
 
+import ish.math.Money;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SortOrder;
 
@@ -36,4 +37,5 @@ public interface InvoiceInterface extends PayableInterface {
 
 	public Long getInvoiceNumber();
 
+	public Money getOverdue();
 }

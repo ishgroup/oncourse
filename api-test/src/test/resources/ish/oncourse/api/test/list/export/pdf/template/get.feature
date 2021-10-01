@@ -22,7 +22,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf/template'
             | 'Account'             | "Transaction Detail","Transaction Summary"                                                    |
             | 'Payslip'             | "Payslip Report"                                                                              |
             | 'CorporatePass'       | "CorporatePass","CorporatePass List"                                                          |
-            | 'Invoice'             | "Debtors and Creditors Report"                                                                |
+            | 'AbstractInvoice'     | "Debtors and Creditors Report"                                                                |
             | 'PaymentIn'           | "PaymentIn"                                                                                   |
             | 'Banking'             | "Banking Report","Cash Movements Detail Report","Cash Movements Summary Report"               |
             | 'WaitingList'         | "Waiting List"                                                                                |
@@ -65,7 +65,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf/template'
             | 'Account'             | "Transaction Detail","Transaction Summary"                                                    |
             | 'Payslip'             | "Payslip Report"                                                                              |
             | 'CorporatePass'       | "CorporatePass","CorporatePass List"                                                          |
-            | 'Invoice'             | "Debtors and Creditors Report"                                                                |
+            | 'AbstractInvoice'     | "Debtors and Creditors Report"                                                                |
             | 'PaymentIn'           | "PaymentIn"                                                                                   |
             | 'WaitingList'         | "Waiting List"                                                                                |
             | 'Application'         | "Application List"                                                                            |
@@ -121,7 +121,7 @@ Feature: Main feature for all GET requests with path 'list/export/pdf/template'
             | 'Account'             | "Transaction Detail","Transaction Summary"                                                    |
             | 'Payslip'             | "Payslip Report"                                                                              |
             | 'CorporatePass'       | "CorporatePass","CorporatePass List"                                                          |
-            | 'Invoice'             | "Debtors and Creditors Report"                                                                |
+            | 'AbstractInvoice'     | "Debtors and Creditors Report"                                                                |
             | 'PaymentIn'           | "PaymentIn"                                                                                   |
             | 'Banking'             | "Banking Report","Cash Movements Detail Report","Cash Movements Summary Report"               |
             | 'WaitingList'         | "Waiting List"                                                                                |

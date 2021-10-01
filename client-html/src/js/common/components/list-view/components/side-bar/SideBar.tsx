@@ -34,13 +34,14 @@ interface Props {
   filterGroups: FilterGroup[]
   deleteFilter: any;
   rootEntity: string;
+  filterEntity?: string;
   savingFilter: any;
   fetching: boolean;
 }
 
 const SideBar: React.FC<Props> = props => {
   const {
-   classes, onChangeFilters, filterGroups, deleteFilter, rootEntity, savingFilter, fetching
+   classes, onChangeFilters, filterGroups, deleteFilter, rootEntity, filterEntity, savingFilter, fetching
   } = props;
 
   const hasCustomFilters = filterGroups.some(i => i.title === "Custom Filters");
@@ -79,9 +80,9 @@ const SideBar: React.FC<Props> = props => {
 
         {savingFilter && !hasCustomFilters && <div className="heading mt-2">Custom Filters</div>}
 
-        {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} />}
+        {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} filterEntity={filterEntity} />}
 
-        <ListTagGroups onChangeTagGroups={onChangeFilters} />
+        <ListTagGroups onChangeTagGroups={onChangeFilters} rootEntity={rootEntity} />
       </nav>
     </div>
   );

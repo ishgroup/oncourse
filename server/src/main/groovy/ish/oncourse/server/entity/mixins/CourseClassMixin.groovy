@@ -460,10 +460,10 @@ class CourseClassMixin {
 			text.each { t ->
 				if (theSessions) {
 					theSessions.each { s ->
-						result.add(PrintableAttendance.valueOf(contactService, enrolmentService, s, t))
+						result.add(PrintableAttendance.valueOf(enrolmentService, s, t))
 					}
 				} else {
-					result.add(PrintableAttendance.valueOf(contactService, enrolmentService, null, t))
+					result.add(PrintableAttendance.valueOf(enrolmentService, null, t))
 				}
 			}
 
@@ -472,10 +472,10 @@ class CourseClassMixin {
 					theSessions.each { s ->
 						List<TutorAttendance> attendances = TutorAttendance.COURSE_CLASS_TUTOR.eq(tr).filterObjects(s.sessionTutors)
 
-						result.add(PrintableAttendance.valueOf(contactService, enrolmentService, tr.tutor, s, attendances[0]?.attendanceType))
+						result.add(PrintableAttendance.valueOf(enrolmentService, tr.tutor, s, attendances[0]?.attendanceType))
 					}
 				} else {
-					result.add(PrintableAttendance.valueOf(contactService, enrolmentService, tr.tutor, null, null))
+					result.add(PrintableAttendance.valueOf(enrolmentService, tr.tutor, null, null))
 				}
 			}
 		}

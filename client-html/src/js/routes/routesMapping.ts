@@ -6,6 +6,7 @@
 import { Category } from "@api/model";
 import { routes } from ".";
 import { Classes } from "../model/entities/CourseClass";
+import { getCookie } from "../common/utils/Cookie";
 
 export const getSystemRouteUrl = (title: Category) => {
   switch (title) {
@@ -54,9 +55,12 @@ export const getSystemRouteUrl = (title: Category) => {
     case "Classes": {
       return `/${Classes.path}?filter=@Classes,@Current_classes,@Future_classes,@Self_paced_classes`;
     }
-    // case "Website setup": {
-    //   return "/provisioning";
-    // }
+    case "Quotes": {
+      return `/invoice?filter=@Quote`;
+    }
+    case "Website setup": {
+      return `https://provisioning.ish.com.au?token=${getCookie("JSESSIONID")}`;
+    }
 
     default:
       throw `No URL found for category ${title}`;

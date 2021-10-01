@@ -44,7 +44,7 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         ObjectContext context = cayenneService.newContext
         validateModelBeforeSave(dto, context, null)
         K cayenneModel = toCayenneModel(dto, entityDao.newObject(context))
-        save(context)
+        save(cayenneModel.objectContext) // context can be different from above
         return cayenneModel
     }
 

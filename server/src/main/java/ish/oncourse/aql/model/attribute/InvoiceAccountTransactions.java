@@ -15,11 +15,7 @@ import ish.common.types.AccountTransactionType;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.AccountTransaction;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.InvoiceLine;
-import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
@@ -35,7 +31,7 @@ public class InvoiceAccountTransactions implements SyntheticAttributeDescriptor 
 
     @Override
     public Class<? extends Persistent> getEntityType() {
-        return Invoice.class;
+        return AbstractInvoice.class;
     }
 
     @Override
@@ -50,6 +46,6 @@ public class InvoiceAccountTransactions implements SyntheticAttributeDescriptor 
 
     @Override
     public SimpleNode spawnNode() {
-        return new AccountTransactionLazyNode(Invoice.INVOICE_LINES.dot(InvoiceLine.ID), AccountTransactionType.INVOICE_LINE, false);
+        return new AccountTransactionLazyNode(AbstractInvoice.ABSTRACT_INVOICE_LINES.dot(InvoiceLine.ID), AccountTransactionType.INVOICE_LINE, false);
     }
 }

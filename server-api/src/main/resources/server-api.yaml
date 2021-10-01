@@ -169,6 +169,8 @@ paths:
     $ref: './path/list/entity/invoice/contra/api.yaml'
   /list/entity/invoice/search:
     $ref: './path/list/entity/invoice/search/api.yaml'
+  /list/entity/lead:
+    $ref: './path/list/entity/lead/api.yaml'
   /list/entity/message:
     $ref: './path/list/entity/message/api.yaml'
   /list/entity/membershipProduct:
@@ -293,6 +295,8 @@ paths:
     $ref: './path/token/api.yaml'
   /user:
     $ref: './path/user/api.yaml'
+  /user/active:
+    $ref: './path/user/active/api.yaml'
   /user/preference:
     $ref: './path/user/preference/api.yaml'
   /user/preference/category:

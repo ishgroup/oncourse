@@ -32,8 +32,6 @@ import java.time.LocalDate
 @API
 class AccountTransaction extends _AccountTransaction {
 
-
-
 	public static final String TRANSACTION_DESCRIPTION_PROPERTY = "transactionDescription"
 	public static final String SOURCE_STRING_PROPERTY = "source"
 	public static final String INVOICE_NUMBER_PROPERTY = "invoiceNumber"
@@ -141,8 +139,7 @@ class AccountTransaction extends _AccountTransaction {
 		return ""
 	}
 
-	String getCourseName()
-    {
+	String getCourseName() {
         InvoiceLine invoiceLine = getInvoiceLineForTransaction(getObjectContext(), this)
 		if (invoiceLine != null) {
             Enrolment enrolment = invoiceLine.getEnrolment()
@@ -153,8 +150,7 @@ class AccountTransaction extends _AccountTransaction {
         return StringUtils.EMPTY
 	}
 
-	String getInvoiceDescription()
-    {
+	String getInvoiceDescription() {
         InvoiceLine invoiceLine = getInvoiceLineForTransaction(getObjectContext(), this)
 		if (invoiceLine != null) {
             return invoiceLine.getDescription()
@@ -164,7 +160,7 @@ class AccountTransaction extends _AccountTransaction {
 
 
     /**
-	 * Get number of related invoice if transaction type is {@link AccountTransactionType#INVOICE_LINE} or null if it is not.
+	 * Get number of related invoice if transaction is linked to an invoice line
 	 *
 	 * @return invoice number
 	 */
@@ -218,13 +214,17 @@ class AccountTransaction extends _AccountTransaction {
 		return ""
 	}
 
+	/**
+	* @return a human readable string of the source class which generated this transaction
+	 */
+	@API
 	String getSource() {
 		return getTableName().getDisplayName().replace(" line", "")
 	}
 
 	/**
 	 *
-	 * @return the Persistent class to which this transaction is linked
+	 * @return the Java class which generated this transaction
 	 */
 	@Nullable
 	@API

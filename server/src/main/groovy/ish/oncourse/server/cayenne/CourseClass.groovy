@@ -1049,13 +1049,21 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return
+	 * @return invoice lines related to this class
 	 */
 	@Nonnull
 	@API
-	@Override
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getInvoiceLines()
+		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+	}
+
+	/**
+	 * @return quote lines related to this class
+	 */
+	@Nonnull
+	@API
+	List<QuoteLine> getQuoteLines() {
+		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
 	}
 
 	/**
@@ -1124,6 +1132,10 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return CourseClassTagRelation.class
+	}
 
 	@API
 	String getTutorsAbridged() {

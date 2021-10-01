@@ -70,8 +70,6 @@ dependencies {
 
 	implementation "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 	implementation "org.eclipse.jetty.http2:http2-server:$jettyVersion"
-	implementation "org.eclipse.jetty.websocket:websocket-servlet:$jettyVersion"
-	implementation "org.eclipse.jetty.websocket:websocket-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 
@@ -103,7 +101,7 @@ dependencies {
 	implementation 'net.glxn.qrgen:javase:2.0'
 
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.939'
-	implementation 'com.azure:azure-storage-blob:12.0.0'
+	implementation 'com.azure:azure-storage-blob:12.9.0'
 
 	api 'org.quartz-scheduler:quartz:2.2.2'
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'

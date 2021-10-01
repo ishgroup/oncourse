@@ -24,6 +24,7 @@ import ish.oncourse.server.api.v1.model.TagRequirementTypeDTO
 import ish.oncourse.server.api.v1.model.TagStatusDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.TagValidation
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.Contact
@@ -31,7 +32,12 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.Invoice
+import ish.oncourse.server.cayenne.Lead
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.Student
@@ -61,6 +67,8 @@ class TagFunctions {
         put(TaggableClasses.COURSE, TagRequirementTypeDTO.COURSE)
         put(TaggableClasses.DOCUMENT, TagRequirementTypeDTO.DOCUMENT)
         put(TaggableClasses.ENROLMENT, TagRequirementTypeDTO.ENROLMENT)
+        put(TaggableClasses.INVOICE, TagRequirementTypeDTO.INVOICE)
+        put(TaggableClasses.LEAD, TagRequirementTypeDTO.LEAD)
         put(TaggableClasses.PAYSLIP, TagRequirementTypeDTO.PAYSLIP)
         put(TaggableClasses.ROOM, TagRequirementTypeDTO.ROOM)
         put(TaggableClasses.SITE, TagRequirementTypeDTO.SITE)
@@ -77,6 +85,10 @@ class TagFunctions {
         put(Course.simpleName, TaggableClasses.COURSE)
         put(Document.simpleName, TaggableClasses.DOCUMENT)
         put(Enrolment.simpleName, TaggableClasses.ENROLMENT)
+        put(AbstractInvoice.simpleName, TaggableClasses.INVOICE)
+        put(Invoice.simpleName, TaggableClasses.INVOICE)
+        put(Quote.simpleName, TaggableClasses.INVOICE)
+        put(Lead.simpleName, TaggableClasses.LEAD)
         put(Payslip.simpleName, TaggableClasses.PAYSLIP)
         put(Room.simpleName, TaggableClasses.ROOM)
         put(Site.simpleName, TaggableClasses.SITE)
@@ -84,6 +96,7 @@ class TagFunctions {
         put(Tutor.simpleName, TaggableClasses.TUTOR)
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
+        put(Message.simpleName, TaggableClasses.MESSAGE)
     }}
 
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =

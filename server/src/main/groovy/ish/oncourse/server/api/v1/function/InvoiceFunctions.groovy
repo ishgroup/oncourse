@@ -15,9 +15,10 @@ import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
 import ish.oncourse.server.api.v1.model.InvoicePaymentPlanDTO
+import ish.oncourse.server.cayenne.AbstractInvoice
+import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceDueDate
-import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.PaymentOut
@@ -28,7 +29,7 @@ import java.time.ZoneOffset
 
 class InvoiceFunctions {
 
-    static InvoiceInvoiceLineDTO toRestInvoiceLineModel(InvoiceLine cayenneModel) {
+    static InvoiceInvoiceLineDTO toRestInvoiceLineModel(AbstractInvoiceLine cayenneModel) {
         new InvoiceInvoiceLineDTO().with { invoiceLine ->
             invoiceLine.id = cayenneModel.id
             invoiceLine.title = cayenneModel.title
@@ -57,12 +58,12 @@ class InvoiceFunctions {
         }
     }
 
-    static InvoicePaymentPlanDTO toRestPaymentPlan(Invoice dbInvoice) {
+    static InvoicePaymentPlanDTO toRestPaymentPlan(AbstractInvoice dbInvoice) {
         new InvoicePaymentPlanDTO().with { pp ->
             pp.id = dbInvoice.id
             pp.entityName = Invoice.simpleName
             pp.date = dbInvoice.createdOn?.toInstant()?.atZone(ZoneOffset.systemDefault())?.toLocalDate()
-            pp.type = "${InvoiceUtil.sumInvoiceLines(dbInvoice.invoiceLines).isLessThan(Money.ZERO) ? 'Credit note' : 'Invoice'} $dbInvoice.source.displayName"
+            pp.type = "${InvoiceUtil.sumInvoiceLines(dbInvoice.getLines()).isLessThan(Money.ZERO) ? 'Credit note' : 'Invoice'} $dbInvoice.source.displayName"
             pp.successful = true
             pp.amount = dbInvoice.totalIncTax.toBigDecimal()
             pp

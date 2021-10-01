@@ -171,6 +171,8 @@ class UserPreferenceService {
                 return preferenceController.getValueForKey(Preferences.CLASS_DEFAULTS_MINIMUM_PLACES)
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERUNDERPAYMENT_ID:
                 return AccountUtil.getDefaultVoucherExpenseAccount(preferenceController.objectContext, Account.class)?.id?.toString()
+            case PreferenceEnumDTO.ONCOURSE_SERVER_TIMEZONE_DEFAULT:
+                return preferenceController.getOncourseServerDefaultTimezone()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)

@@ -67,6 +67,7 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(InvoiceApi)
         CXFModule.contributeResources(binder).addBinding().to(ImportApi)
 
+        CXFModule.contributeResources(binder).addBinding().to(LeadApi)
         CXFModule.contributeResources(binder).addBinding().to(MessageApi)
         CXFModule.contributeResources(binder).addBinding().to(MembershipProductApi)
         CXFModule.contributeResources(binder).addBinding().to(ModuleApi)

@@ -20,13 +20,13 @@ import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
 import { FilterGroup } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
 import {
-  setListEditRecord,
-  getFilters,
   clearListState,
+  getFilters,
   setFilterGroups,
-  setListSelection,
   setListCreatingNew,
-  setListFullScreenEditView
+  setListEditRecord,
+  setListFullScreenEditView,
+  setListSelection
 } from "../../../common/components/list-view/actions";
 import { State } from "../../../reducers/state";
 import { getEntityTags } from "../../tags/actions";
@@ -163,7 +163,7 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   window.open(url);
 };
 
-const setRowClasses = ({ active }) => (active === "No" ? "op05" : undefined);
+const setRowClasses = ({ active }) => (active === "No" ? "text-op05" : undefined);
 
 const handleFileSelect = (files, setCreateNew) => {
   const file = files[0];

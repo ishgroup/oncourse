@@ -5,6 +5,7 @@
 
 import React from "react";
 import { format as formatDateTime } from "date-fns";
+import { DataRow } from "@api/model";
 import { SelectItemDefault } from "../../../model/entities/common";
 
 export const getDeepValue = (source, path) => {
@@ -40,7 +41,7 @@ export const sortDefaultSelectItems = (a: SelectItemDefault, b: SelectItemDefaul
 
 export const mapSelectItems = (i): SelectItemDefault => ({ label: i, value: i });
 
-export const getCustomColumnsMap = columns => {
+export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any => {
   const colArr: string[] = columns.split(",");
   const booleanArr = ["true", "false"];
 

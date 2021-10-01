@@ -7,37 +7,29 @@
  */
 
 import { isBefore } from "date-fns";
-import React, {
-  Dispatch, useCallback, useEffect, useState
-} from "react";
+import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import Typography from "@material-ui/core/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
+  createContact,
+  deleteContact,
   getContact,
-  getContactsRelationTypes,
   getContactsConcessionTypes,
+  getContactsRelationTypes,
   getContactsTaxTypes,
   getContactTags,
-  updateContact,
-  createContact,
-  deleteContact
+  updateContact
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import {
- getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
-} from "../../preferences/actions";
+import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
@@ -243,7 +235,7 @@ const setRowClasses = row => {
   const dateFinished = row["tutor.dateFinished"];
 
   if (dateFinished && isBefore(new Date(dateFinished), today)) {
-    return "op05";
+    return "text-op05";
   }
 
   return undefined;

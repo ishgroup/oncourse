@@ -26,7 +26,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
     <entity name="PaymentOut">
         <attribute name="accountTransactions" ref="AccountTransaction"/>
     </entity>
-    <entity name="Invoice">
+    <entity name="AbstractInvoice">
         <attribute name="accountTransactions" ref="AccountTransaction"/>
         <attribute name="courseClasses" ref="CourseClass"/>
         <attribute name="banking" ref="Banking"/>

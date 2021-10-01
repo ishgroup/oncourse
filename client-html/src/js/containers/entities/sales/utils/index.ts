@@ -13,3 +13,16 @@ export const productUrl = (productItem: ProductItem) => {
       return undefined;
   }
 };
+
+export const getProductAqlType = (type: ProductType | string) => {
+  switch (type) {
+    case ProductType.Membership:
+      return "MembershipProduct";
+    case ProductType.Voucher:
+      return "VoucherProduct";
+    case ProductType.Product:
+      return "ArticleProduct";
+    default:
+      throw Error("Unknown product type");
+  }
+};

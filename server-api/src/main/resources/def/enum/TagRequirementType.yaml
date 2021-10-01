@@ -7,6 +7,8 @@ enum:
   - Course
   - Document
   - Enrolment
+  - Invoice
+  - Lead
   - Payslip
   - Room
   - Site

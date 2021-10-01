@@ -47,6 +47,7 @@ import ish.oncourse.server.api.dao.ImportDao
 import ish.oncourse.server.api.dao.InvoiceDao
 import ish.oncourse.server.api.dao.InvoiceDueDateDao
 import ish.oncourse.server.api.dao.InvoiceLineDao
+import ish.oncourse.server.api.dao.LeadDao
 import ish.oncourse.server.api.dao.MembershipProductDao
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.api.dao.ModuleDao
@@ -110,6 +111,7 @@ class ApiCayenneLayerModule implements Module {
         binder.bind(InvoiceDueDateDao).in(Scopes.SINGLETON)
         binder.bind(InvoiceLineDao).in(Scopes.SINGLETON)
 
+        binder.bind(LeadDao).in(Scopes.SINGLETON)
         binder.bind(MembershipProductDao).in(Scopes.SINGLETON)
         binder.bind(MessageDao).in(Scopes.SINGLETON)
         binder.bind(ModuleDao).in(Scopes.SINGLETON)

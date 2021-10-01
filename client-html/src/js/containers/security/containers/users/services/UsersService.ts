@@ -15,6 +15,10 @@ class UserService {
     return this.userApi.get();
   }
 
+  public getActiveUsers(): Promise<User[]> {
+    return this.userApi.getActive();
+  }
+
   public updateUser(user: User): Promise<User[]> {
     return this.userApi.update(user);
   }

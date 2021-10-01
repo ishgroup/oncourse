@@ -12,17 +12,20 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
-import ish.oncourse.aql.AqlService
 import ish.oncourse.server.api.service.InvoiceApiService
+import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.InvoiceDTO
 import ish.oncourse.server.api.v1.service.InvoiceApi
-import ish.oncourse.server.cayenne.Invoice
-import org.apache.cayenne.query.ObjectSelect
 
 class InvoiceApiImpl implements InvoiceApi {
 
     @Inject
     private InvoiceApiService service
+
+    @Override
+    void bulkChange(DiffDTO diff) {
+        service.bulkChange(diff)
+    }
 
     @Override
     void contraInvoice(Long id, List<Long> invoicesToPay) {
@@ -47,5 +50,10 @@ class InvoiceApiImpl implements InvoiceApi {
     @Override
     void update(Long id, InvoiceDTO invoice) {
         service.update(id, invoice)
+    }
+
+    @Override
+    void remove(Long id) {
+        service.remove(id)
     }
 }

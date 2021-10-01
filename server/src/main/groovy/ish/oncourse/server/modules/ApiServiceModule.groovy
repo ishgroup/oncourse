@@ -33,6 +33,7 @@ import ish.oncourse.server.api.service.ExportTemplateApiService
 import ish.oncourse.server.api.service.GradingApiService
 import ish.oncourse.server.api.service.ImportApiService
 import ish.oncourse.server.api.service.InvoiceApiService
+import ish.oncourse.server.api.service.LeadApiService
 import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.service.MessageApiService
 import ish.oncourse.server.api.service.NoteApiService
@@ -48,7 +49,6 @@ import ish.oncourse.server.api.service.TutorRoleApiService
 import ish.oncourse.server.api.service.VoucherProductApiService
 import ish.oncourse.server.api.service.WaitingListApiService
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
@@ -92,6 +92,7 @@ class ApiServiceModule implements Module {
         binder.bind(GradingApiService).in(Scopes.SINGLETON)
         binder.bind(ImportApiService).in(Scopes.SINGLETON)
         binder.bind(InvoiceApiService).in(Scopes.SINGLETON)
+        binder.bind(LeadApiService).in(Scopes.SINGLETON)
         binder.bind(MembershipProductApiService).in(Scopes.SINGLETON)
         binder.bind(MessageApiService).in(Scopes.SINGLETON)
         binder.bind(NoteApiService).in(Scopes.SINGLETON)

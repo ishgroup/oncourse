@@ -22,6 +22,9 @@ import PayslipService from "../../../../containers/entities/payslips/services/Pa
 import SiteService from "../../../../containers/entities/sites/services/SiteService";
 import RoomService from "../../../../containers/entities/rooms/services/RoomService";
 import WaitingListService from "../../../../containers/entities/waitingLists/services/WaitingListService";
+import LeadService from "../../../../containers/entities/leads/services/LeadService";
+import { Invoice } from "@aql/queryLanguageModel";
+import InvoiceService from "../../../../containers/entities/invoices/services/InvoiceService";
 
 const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
   switch (entity) {
@@ -49,6 +52,10 @@ const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
       return RoomService.bulkChange(diff);
     case "WaitingList":
       return WaitingListService.bulkChange(diff);
+    case "Lead":
+      return LeadService.bulkChange(diff);
+    case "AbstractInvoice":
+      return InvoiceService.bulkChange(diff);
     default: {
       // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject(`No bulk edit endpoint was found for ${entity}`);

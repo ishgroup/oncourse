@@ -18,6 +18,7 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
@@ -224,6 +225,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             case ProductItem.ENTITY_NAME:
             case Article.ENTITY_NAME:
             case Membership.ENTITY_NAME:
+            case Lead.ENTITY_NAME:
                 addRecipientsToGroup(recipientsModel.students, exp.andExp(Contact.STUDENT.isNotNull()), messageType)
                 addRecipientsToGroup(recipientsModel.tutors, exp.andExp(Contact.TUTOR.isNotNull()), messageType)
                 addRecipientsToGroup(recipientsModel.other, exp.andExp(Contact.STUDENT.outer().isNull()).andExp(Contact.TUTOR.outer().isNull()), messageType)

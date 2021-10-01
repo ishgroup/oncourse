@@ -24,6 +24,7 @@ import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.EntityRelationType
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
+import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.MessagePerson
@@ -65,6 +66,7 @@ class MessageFunctions {
             ],
             "Enrolment" : ["Contact" : Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.ID)],
             "Invoice" : ["Contact" : Contact.INVOICES.dot(Invoice.ID)],
+            "Lead" : ["Contact" : Contact.LEADS.dot(Lead.ID)],
             "Application" : ["Contact" : Contact.STUDENT.dot(Student.APPLICATIONS).dot(Application.ID)],
             "Student" : ["Contact" : Contact.STUDENT.dot(Student.ID)],
             "Tutor" : ["Contact" : Contact.TUTOR.dot(Tutor.ID)],
@@ -104,6 +106,8 @@ class MessageFunctions {
                 return { e -> (e as WaitingList).student.contact }
             case Payslip:
                 return { e -> (e as Payslip).contact }
+            case Lead:
+                return { e -> (e as Lead).customer }
             default:
                 null
         }
@@ -156,6 +160,8 @@ class MessageFunctions {
                 return Contact.STUDENT.dot(Student.WAITING_LISTS).dot(WaitingList.ID)
             case Payslip.ENTITY_NAME:
                 return Contact.PAYSLIPS.dot(WaitingList.ID)
+            case Lead.ENTITY_NAME:
+                return Contact.LEADS.dot(Lead.ID)
             default:
                 null
         }
