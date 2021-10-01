@@ -7,7 +7,7 @@ import * as React from "react";
 import Grid from "@material-ui/core/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -51,7 +51,7 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
             type="text"
             name="password"
@@ -59,10 +59,10 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
             required
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 6 : 12}>
           <FormField type="text" name="invoiceEmail" label="Email invoice to" />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 6 : 12}>
           <FormField type="date" name="expiryDate" label="Expire on" />
         </Grid>
       </Grid>

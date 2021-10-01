@@ -39,8 +39,8 @@ class MessageApiImpl implements MessageApi {
         return service.sendMessage(messageType, recipientsCount, request)
     }
 
-    RecipientsDTO getRecipients(String entity, String messageType, SearchQueryDTO search) {
-        return service.getRecipients(entity, messageType, search)
+    RecipientsDTO getRecipients(String entity, String messageType, SearchQueryDTO search, Long templateId) {
+        return service.getRecipients(entity, messageType, search, templateId)
     }
 
     @Override

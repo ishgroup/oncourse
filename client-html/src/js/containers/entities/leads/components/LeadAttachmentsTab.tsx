@@ -12,7 +12,7 @@ import { Lead } from "@api/model";
 import { EditViewProps } from "../../../../model/common/ListView";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 
 interface LeadDocumentsProps {
   classes?: any;

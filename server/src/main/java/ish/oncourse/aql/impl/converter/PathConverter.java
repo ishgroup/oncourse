@@ -99,6 +99,8 @@ class PathConverter implements Converter<AqlParser.PathContext> {
         if(syntheticAttribute.isPresent()) {
             ctx.addNode(syntheticAttribute.get().spawnNode());
             ctx.addNode(objPath);
+            if(pathCtx.getText().equals("tags") || last.equals("tags"))
+                return new LazyTagsNode(objPath);
             return null;
         }
 

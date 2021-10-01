@@ -11,18 +11,22 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import Grid from "@material-ui/core/Grid";
-import { Lead, LeadStatus, Sale, Tag, User } from "@api/model";
+import {
+ Lead, LeadStatus, Sale, Tag, User
+} from "@api/model";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { contactLabelCondition, defaultContactName, getContactName, openContactLink } from "../../contacts/utils";
+import {
+ contactLabelCondition, defaultContactName, getContactName, openContactLink
+} from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
@@ -146,7 +150,7 @@ const LeadGeneral = (props: Props) => {
     [values.contactId]
   );
 
-  const contactIdField = (
+  const contactIdField = (inHeader: boolean = false) => (
     <FormField
       type="remoteDataSearchSelect"
       entity="Contact"
@@ -160,6 +164,7 @@ const LeadGeneral = (props: Props) => {
       disabled={!isNew}
       rowHeight={55}
       required
+      inHeader
     />
   );
 
@@ -169,7 +174,7 @@ const LeadGeneral = (props: Props) => {
         <CustomAppBar>
           <Grid container className="flex-fill">
             <Grid item xs={6}>
-              {contactIdField}
+              {contactIdField(true)}
             </Grid>
           </Grid>
           <div>
@@ -191,13 +196,13 @@ const LeadGeneral = (props: Props) => {
           </div>
         </CustomAppBar>
       )}
-      <div className="generalRoot">
+      <Grid container className="generalRoot mt-2">
         {!twoColumn && (
           <Grid item xs={12} className="pt-2">
-            {contactIdField}
+            {contactIdField(false)}
           </Grid>
         )}
-        <div>
+        <Grid item xs={twoColumn ? 6 : 12}>
           {!isNew
             && (
             <FormField
@@ -212,57 +217,71 @@ const LeadGeneral = (props: Props) => {
               required
             />
           )}
-        </div>
-        <div>
+        </Grid>
+        <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
             validate={tags && tags.length ? validateTagList : undefined}
           />
-        </div>
-        <FormField type="number" name="studentCount" label="Number of students" />
-        <FormField type="dateTime" name="nextActionOn" label="Next action on" />
-        <div className="centeredFlex">
+        </Grid>
+        <Grid item xs={twoColumn ? 6 : 12}>
+          <FormField type="number" name="studentCount" label="Number of students" />
+        </Grid>
+        <Grid item xs={twoColumn ? 6 : 12}>
+          <FormField type="dateTime" name="nextActionOn" label="Next action on" />
+        </Grid>
+        <Grid item xs={twoColumn ? 6 : 12}>
+          <div className="centeredFlex">
+            <FormField
+              type="money"
+              name="estimatedValue"
+              label="Estimated value"
+              normalize={normalizeNumberToZero}
+            />
+            <Chip
+              size="small"
+              label="Calculate"
+              className={clsx(classes.chipButton, "ml-2, mt-1")}
+              onClick={() => (
+                asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e))
+              )}
+            />
+          </div>
+        </Grid>
+
+        <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
-            type="money"
-            name="estimatedValue"
-            label="Estimated value"
-            normalize={normalizeNumberToZero}
+            type="select"
+            name="status"
+            label="Status"
+            items={statusItems}
+            required
           />
-          <Chip
-            size="small"
-            label="Calculate"
-            className={clsx(classes.chipButton, "ml-2, mt-1")}
-            onClick={() => (
-              asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e))
-            )}
-          />
-        </div>
-        <FormField
-          type="select"
-          name="status"
-          label="Status"
-          items={statusItems}
-          required
-        />
+        </Grid>
         <CustomFields
           entityName="Lead"
           fieldName="customFields"
           entityValues={values}
           dispatch={dispatch}
           form={form}
+          gridItemProps={{
+            xs: twoColumn ? 6 : 12,
+          }}
         />
-        <RelationsCommon
-          values={values}
-          dispatch={dispatch}
-          form={form}
-          submitSucceeded={submitSucceeded}
-          rootEntity={rootEntity}
-          customAqlEntities={["Course", "Product"]}
-          dataRowClass="grid-temp-col-2-fr"
-        />
-      </div>
+        <Grid item xs={12}>
+          <RelationsCommon
+            values={values}
+            dispatch={dispatch}
+            form={form}
+            submitSucceeded={submitSucceeded}
+            rootEntity={rootEntity}
+            customAqlEntities={["Course", "Product"]}
+            dataRowClass="grid-temp-col-2-fr"
+          />
+        </Grid>
+      </Grid>
     </>
   );
 };

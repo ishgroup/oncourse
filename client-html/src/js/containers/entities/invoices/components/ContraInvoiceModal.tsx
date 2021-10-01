@@ -19,7 +19,7 @@ import {
 } from "redux-form";
 import Button from "../../../../common/components/buttons/Button";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";

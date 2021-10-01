@@ -201,9 +201,10 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
     }
   },
   editable: {
+    fontWeight: 400,
     "&:hover, &:hover .placeholderContent": {
       color: theme.palette.primary.main,
-      fill: theme.palette.primary.main
+      fill: theme.palette.primary.main,
     }
   },
   previewFrame: {
@@ -215,6 +216,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
     }
   },
   readonly: {
+    fontWeight: 300,
     pointerEvents: "none"
   },
   textField: {

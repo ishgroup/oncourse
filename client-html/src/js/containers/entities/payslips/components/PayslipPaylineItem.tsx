@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { format } from "date-fns";
 import Button from "@material-ui/core/Button";
 import { Currency } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";

@@ -29,17 +29,11 @@ describe("Virtual rendered EntityRelationTypes", () => {
     render: (wrapper, initialValues) => {
       initialValues.forEach((type, key) => {
         const warpperId = `#entity-relation-type-${key}`;
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].name"]`).text()).toContain(type.name);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].description"]`).text()).toContain(type.description);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].fromName"]`).text()).toContain(type.fromName);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].shoppingCart"]`).text()).toContain(type.shoppingCart);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].discountId"]`).text()).toContain("No value");
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].shoppingCart"]`).text()).toContain(type.shoppingCart);
-
-        expect(wrapper.find(`${warpperId} input[type="checkbox"]`).at(0).props().checked).toEqual(type.considerHistory);
-
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].toName"]`).text()).toContain(type.toName);
-        expect(wrapper.find(`${warpperId} input[type="checkbox"]`).at(1).props().checked).toEqual(type.isShownOnWeb);
+        expect(wrapper.find(`${warpperId} div[id="types[${key}].name"] input`).val()).toContain(type.name);
+        expect(wrapper.find(`${warpperId} div[id="types[${key}].description"] input`).val()).toContain(type.description);
+        expect(wrapper.find(`${warpperId} div[id="types[${key}].fromName"] input`).val()).toContain(type.fromName);
+        expect(wrapper.find(`${warpperId} div[id="types[${key}].shoppingCart"] input`).val()).toContain(type.shoppingCart);
+        expect(wrapper.find(`${warpperId} div[id="types[${key}].toName"] input`).val()).toContain(type.toName);
       });
     }
   });

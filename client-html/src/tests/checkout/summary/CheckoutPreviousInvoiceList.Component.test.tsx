@@ -35,14 +35,14 @@ describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
         uncheckAllPreviousInvoice: jest.fn()
       };
     },
-    render: (wrapper, initialValues) => {
+    render: (wrapper, initialValues, shallow) => {
       const count = initialValues.length;
       let i;
 
-      expect(wrapper.find("input[type='checkbox']").at(0).props().checked).toEqual(true);
+      expect(shallow.find("input[type='checkbox']").at(0).props().checked).toEqual(true);
 
       for (i = 1; i <= count; i++) {
-        expect(wrapper.find("input[type='checkbox']").at(i).props().checked).toEqual(true);
+        expect(shallow.find("input[type='checkbox']").at(i).props().checked).toEqual(true);
       }
     }
   });

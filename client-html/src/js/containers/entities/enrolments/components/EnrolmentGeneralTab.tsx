@@ -23,7 +23,7 @@ import {
   PaymentSource,
   Tag
 } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { formatFundingSourceId } from "../../common/utils";
@@ -419,20 +419,19 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
             <Grid item xs={12} className="pb-3">
               <Divider />
             </Grid>
-          </>
-        )}
-
-        <Grid container>
-          <Grid item xs={12} className="mb-2">
             <CustomFields
               entityName="Enrolment"
               fieldName="customFields"
               entityValues={values}
               dispatch={dispatch}
               form={form}
+              gridItemProps={{
+                xs: twoColumn ? 6 : 12,
+                lg: twoColumn ? 4 : 12
+              }}
             />
-          </Grid>
-        </Grid>
+          </>
+        )}
 
         <FieldArray
           name="assessments"

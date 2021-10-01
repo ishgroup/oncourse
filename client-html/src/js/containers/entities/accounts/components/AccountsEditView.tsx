@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Tax } from "@api/model";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 
 const formattedAccountTypes: any[] = [
@@ -70,7 +70,6 @@ const AccountsEditView = props => {
               name="accountCode"
               label="Code"
               required
-              fullWidth
             />
             <FormField
               type="select"
@@ -79,7 +78,6 @@ const AccountsEditView = props => {
               label="Type"
               items={formattedAccountTypes}
               required
-              fullWidth
             />
             <FormField
               type="text"
@@ -87,12 +85,11 @@ const AccountsEditView = props => {
               label="Description"
               required={isNew || isCustom}
               multiline
-              fullWidth
             />
             <FormControlLabel
               className="checkbox pr-3"
               control={
-                <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" fullWidth />
+                <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" />
               }
               label="Enabled"
             />
@@ -103,7 +100,6 @@ const AccountsEditView = props => {
                 label="Tax type"
                 required={isNew || isCustom}
                 items={getFormattedTaxes(taxTypes) || []}
-                fullWidth
               />
             ) : null}
           </Grid>

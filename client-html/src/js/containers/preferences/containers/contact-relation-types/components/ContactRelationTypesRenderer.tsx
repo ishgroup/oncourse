@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import { FormControlLabel } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { ContactRelationType } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 
 const renderContactRelationTypes = props => {
   const { fields, classes, onDelete } = props;

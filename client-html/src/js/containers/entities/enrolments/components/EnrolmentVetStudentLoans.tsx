@@ -16,12 +16,12 @@ import {
 } from "@api/model";
 import { Collapse, FormControlLabel } from "@material-ui/core";
 import { change } from "redux-form";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
+import { Switch } from "../../../../common/components/form/formFields/Switch";
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);
 
@@ -159,6 +159,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditTotal"
           label="RPL indicator"
           items={enrolmentCreditTotalItems}
+          fullWidth
         />
       </Grid>
 
@@ -184,6 +185,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditProviderType"
           label="Credit provider type"
           items={enrolmentCreditProviderTypeItems}
+          fullWidth
         />
       </Grid>
 
@@ -193,6 +195,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditType"
           label="Credit type"
           items={enrolmentCreditTypeItems}
+          fullWidth
         />
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -201,6 +204,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
           name="creditLevel"
           label="Credit level"
           items={enrolmentCreditLevelItems}
+          fullWidth
         />
       </Grid>
     </Grid>

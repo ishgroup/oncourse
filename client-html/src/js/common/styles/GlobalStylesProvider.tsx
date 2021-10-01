@@ -159,7 +159,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".placeholderContent": {
         color: theme.palette.divider,
-        fill: theme.palette.divider
+        fill: theme.palette.divider,
+        fontWeight: 400,
       },
       ".link": {
         color: "inherit",
@@ -262,11 +263,12 @@ const globalStyles = (theme: AppTheme) =>
         padding: 0,
         "&:hover .placeholderContent": {
           fill: theme.palette.primary.main,
-          color: theme.palette.primary.main
+          color: theme.palette.primary.main,
+          fontWeight: 400,
         }
       },
       ".inputAdornmentIcon": {
-        fontSize: theme.spacing(2)
+        fontSize: theme.spacing(2),
       },
       ".switchLabel": {
         marginRight: "auto",
@@ -296,9 +298,10 @@ const globalStyles = (theme: AppTheme) =>
         marginLeft: "0.2rem"
       },
       ".editInPlaceIcon": {
+        // visibility: "hidden",
         fontSize: "14px",
         color: theme.palette.divider,
-        verticalAlign: "middle"
+        verticalAlign: "middle",
       },
       ".coloredHover": {
         "&:hover": {
@@ -514,7 +517,8 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".hoverIconContainer": {
         "&:hover .hoverIcon": {
-          color: "inherit"
+          color: "inherit",
+          visibility: "visible",
         }
       },
       ".generalRoot": {

@@ -11,9 +11,9 @@ import { FormControlLabel, Grid } from "@material-ui/core";
 import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { getContactName } from "../../contacts/utils";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -66,7 +66,6 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           type="text"
           placeholder={twoColumn ? "Name" : undefined}
           disabled
-          fullWidth
         />
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -76,7 +75,6 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           type="text"
           placeholder={twoColumn ? "Class Name" : undefined}
           disabled
-          fullWidth
         />
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -86,7 +84,6 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
           type="text"
           placeholder={twoColumn ? "Assessmment Name" : undefined}
           disabled
-          fullWidth
         />
       </Grid>
 
@@ -127,7 +124,6 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
             name="submittedOn"
             type="dateTime"
             placeholder={twoColumn ? "Submitted On" : undefined}
-            fullWidth
             required
           />
         </Grid>
@@ -138,7 +134,6 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
             name="markedOn"
             type="dateTime"
             placeholder={twoColumn ? "Marked On" : undefined}
-            fullWidth
           />
             )}
         </Grid>
