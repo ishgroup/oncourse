@@ -5,7 +5,7 @@ import CallMadeIcon from '@mui/icons-material/CallMade';
 import { connect } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 import { makeAppStyles } from '../../styles/makeStyles';
-import { State } from '../../redux/reducers';
+import { State } from '../../models/State';
 
 const useStyles = makeAppStyles()((theme) => ({
   button: {
@@ -88,7 +88,7 @@ const Navigation = (props) => {
 
 const mapStateToProps = (state: State) => ({
   loading: state.loading,
-  serverError: state.serverError
+  serverError: state.college.serverError
 });
 
 export default connect(mapStateToProps)(Navigation);

@@ -3,7 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-declare module '*.png';
-declare module '*.gif';
-declare module '*.jpg';
-declare module '*.svg';
+import { Action } from 'redux';
+
+export interface IAction<P = any> extends Action {
+  type: string;
+  payload?: P;
+  meta?: any;
+}
