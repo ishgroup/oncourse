@@ -186,6 +186,9 @@ definitions:
       primaryDomain:
         type: string
         description: primary web site domain
+      configuredByInfo:
+        description: info about system user who configured google accounts of this website
+        $ref: '#/definitions/UserInfo'
 
   CollegeDTO:
     type: object
@@ -273,7 +276,20 @@ definitions:
       - g
       - h
       - i
-  
+
+  UserInfo:
+    type: object
+    properties:
+      firstname:
+        type: string
+        description: system user's first name
+      lastname:
+        type: string
+        description: system user's last name
+      email:
+        type: string
+        description: User's email
+
   ErrorDTO:
     type: object
     properties:

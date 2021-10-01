@@ -141,8 +141,11 @@ class Configuration {
          * Path to *.py script. Need to run that script in different cases when web sites or colleges updated 
          * #var/willow/billing.py website cce-main
          */
-        BILLING_UPDATE('billing_update', 'billing.update')
-        
+        BILLING_UPDATE('billing_update', 'billing.update'),
+
+        CLIENT_ID('client_id', 'credential.client-id'),
+        API_KEY('api_key', 'credential.api-key')
+
         private String key
         private String systemProperty
 

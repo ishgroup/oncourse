@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.College
+import ish.oncourse.model.SystemUser
 import ish.oncourse.model.WebHostName
 import ish.oncourse.model.WebHostNameStatus
 import ish.oncourse.model.WebSite
@@ -11,6 +12,7 @@ import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.WebSiteDelete
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.model.SiteTemplate
+import ish.oncourse.willow.billing.v1.model.UserInfo
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -116,6 +118,7 @@ class WebSiteService {
             dto.key = it.siteKey
             dto.gtmId = it.googleTagmanagerAccount
             dto.googleAnalyticsId = it.googleAnalyticAccount
+            dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
             dto.domains = it.collegeDomains.collect { host -> host.name }
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
             dto
@@ -205,5 +208,13 @@ class WebSiteService {
 
         if (dto.googleAnalyticsId || dto.gtmId)
             webSite.setConfiguredByUser(requestService.getSystemUser())
+    }
+
+    private UserInfo getUserInfoFromSystemUser(SystemUser systemUser){
+        UserInfo info = new UserInfo();
+        info.setEmail(systemUser.email)
+        info.setFirstname(systemUser.firstName)
+        info.setLastname(systemUser.surname)
+        info
     }
 }
