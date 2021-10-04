@@ -11,7 +11,7 @@ import {
 import {
   Outcome, PriorLearning, Qualification
 } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";

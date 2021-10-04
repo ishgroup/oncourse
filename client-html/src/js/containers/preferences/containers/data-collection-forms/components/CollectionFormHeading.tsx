@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import Delete from "@material-ui/icons/Delete";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import IconButton from "@material-ui/core/IconButton";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 
 const styles = theme =>

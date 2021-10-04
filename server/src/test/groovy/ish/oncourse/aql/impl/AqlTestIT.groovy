@@ -135,19 +135,6 @@ class AqlTestIT extends TestWithDatabase {
         Assertions.assertEquals(2l, contacts.get(0).getId())
     }
 
-    @Test
-    void testDisplayableEnum() {
-        CompilationResult result = aqlService
-                .compile("invoices.type is 'Sale order'",
-                        Contact.class, cayenneContext)
-        Assertions.assertTrue(result.getCayenneExpression().isPresent())
-        Assertions.assertTrue(result.getErrors().isEmpty())
-
-        List<Contact> contacts = ObjectSelect.query(Contact)
-                .where(result.getCayenneExpression().get())
-                .select(cayenneContext)
-        Assertions.assertEquals(0, contacts.size())
-    }
 
     @Test
     void testCourseClassesAlias() {

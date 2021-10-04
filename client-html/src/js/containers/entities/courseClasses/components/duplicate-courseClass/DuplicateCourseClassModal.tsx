@@ -27,10 +27,10 @@ import {
 } from "date-fns";
 import { Typography } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import Button from "../../../../../common/components/buttons/Button";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { courseFilterCondition } from "../../../courses/utils";
 import {

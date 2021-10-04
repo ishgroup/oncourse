@@ -11,31 +11,28 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { PlayArrow, Help, Publish } from "@material-ui/icons";
+import { Help, PlayArrow, Publish } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- change, Field, FieldArray, getFormValues, initialize, reduxForm,
-} from "redux-form";
+import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from "redux-form";
 import IconButton from "@material-ui/core/IconButton";
 import {
-  ExportRequest,
-  PrintRequest,
-  Sorting,
-  ExportTemplate,
   Binding,
+  ExportRequest,
+  ExportTemplate,
   OutputType,
-  Report, SearchQuery,
+  PrintRequest,
+  Report,
+  SearchQuery,
+  Sorting,
 } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import clsx from "clsx";
-import FormField from "../../../form/form-fields/FormField";
+import FormField from "../../../form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import bottomDrawerStyles from "../bottomDrawerStyles";
-import {
- addPrintOverlay, doPrintRequest, getShareList, getExportTemplates, runExport,
-} from "./actions";
+import { addPrintOverlay, doPrintRequest, getExportTemplates, getShareList, runExport, } from "./actions";
 import Button from "../../../buttons/Button";
 import SelectionSwitcher from "./SelectionSwitcher";
 import { ProcessState } from "../../../../reducers/processReducer";
@@ -499,7 +496,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     }}
                     items={overlays || []}
                     allowEmpty
-                    fullWidth
                   />
                 </Grid>
                 <FieldArray name="variables" component={this.templatesRenderer as any} />
@@ -572,7 +568,6 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             type={item.type}
             component={DataTypeRenderer}
             validate={validateSingleMandatoryField}
-            fullWidth
             {...fieldProps}
           />
         </Grid>

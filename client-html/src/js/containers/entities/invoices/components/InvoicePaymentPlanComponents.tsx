@@ -13,7 +13,7 @@ import OpenInNew from "@material-ui/icons/OpenInNew";
 import { change } from "redux-form";
 import { format, isBefore } from "date-fns";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { useHoverShowStyles } from "../../../../common/styles/hooks";
 import { openInternalLink } from "../../../../common/utils/links";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";

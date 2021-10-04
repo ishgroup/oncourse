@@ -5,12 +5,12 @@
 
 import React from "react";
 import { FormControlLabel } from "@material-ui/core";
-import { FormSwitch } from "./form-fields/Switch";
-import EditInPlaceField from "./form-fields/EditInPlaceField";
-import EditInPlaceDateTimeField from "./form-fields/EditInPlaceDateTimeField";
-import { CheckboxField } from "./form-fields/CheckboxField";
-import EditInPlaceFileField from "./form-fields/EditInPlaceFileField";
-import EditInPlaceMoneyField from "./form-fields/EditInPlaceMoneyField";
+import { FormSwitch } from "./formFields/Switch";
+import EditInPlaceField from "./formFields/EditInPlaceField";
+import EditInPlaceDateTimeField from "./formFields/EditInPlaceDateTimeField";
+import { CheckboxField } from "./formFields/CheckboxField";
+import EditInPlaceFileField from "./formFields/EditInPlaceFileField";
+import EditInPlaceMoneyField from "./formFields/EditInPlaceMoneyField";
 
 interface Props {
   type: string;

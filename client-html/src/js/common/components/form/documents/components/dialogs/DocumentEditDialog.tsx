@@ -14,7 +14,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import FormField from "../../../form-fields/FormField";
+import FormField from "../../../formFields/FormField";
 import DocumentIconsChooser from "../items/DocumentIconsChooser";
 import { dialogStyles } from "./dialogStyles";
 import Button from "../../../../buttons/Button";

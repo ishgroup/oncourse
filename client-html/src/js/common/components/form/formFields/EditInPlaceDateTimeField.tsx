@@ -43,7 +43,6 @@ const styles = theme => createStyles({
     height: "17px",
   },
   inputEndAdornment: {
-    fontSize: "18px",
     color: theme.palette.primary.main,
     display: "none",
   },
@@ -90,6 +89,7 @@ const styles = theme => createStyles({
     }
   },
   readonly: {
+    fontWeight: 300,
     pointerEvents: "none"
   },
   textFieldLeftMargin: {
@@ -258,8 +258,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   useEffect(() => {
-    if (!textValue && dateValue) setTextValue(formatDateInner(dateValue));
-  }, []);
+    setTextValue(formatDateInner(dateValue));
+  }, [dateValue]);
 
   const onInputChange = e => {
     e && setTextValue(e.target.value);
@@ -267,13 +267,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
   const openPicker = () => {
     setPickerOpened(true);
-  };
-
-  const edit = () => {
-    setIsEditing(true);
-    setTimeout(() => {
-      if (inputNode && inputNode.current) inputNode.current.focus();
-    }, 50);
   };
 
   const renderedValue = useMemo(() => {
@@ -346,10 +339,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     input.onFocus();
   };
 
-  const onEditButtonFocus = () => {
-    edit();
-  };
-
   const onButtonOver = () => {
     isIconOvered.current = true;
   };
@@ -378,17 +367,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     label
   );
 
-  const editIcon = !disabled && (
-    <IconButton className={classes.editButton}>
-      {type === "time"
-        ? <QueryBuilder className={clsx("hoverIcon", classes.editIcon, fieldClasses.placeholder)} />
-        : <DateRange className={clsx("hoverIcon", classes.editIcon, fieldClasses.placeholder)} />}
-    </IconButton>
-  );
-
   return (
     <div
-      id={input.name}
       className={clsx(className, "outline-none", {
         [classes.inlineContainer]: isInline,
         [classes.inlineMargin]: inlineMargin
@@ -406,18 +386,17 @@ const EditInPlaceDateTimeField: React.FC<any> = (
       </div>
 
       <div
+        id={input.name}
         className={clsx({
-          // [classes.hiddenContainer]: !(isEditing || invalid),
           [classes.readonly]: disabled,
           [classes.editing]: formatting !== "inline",
           fullWidth
         })}
       >
-
         <FormControl
           error={invalid}
           margin="none"
-          fullWidth={fullWidth}
+          fullWidth
           className={clsx("pr-2", {
             [classes.topMargin]: !listSpacing,
             [classes.bottomMargin]: listSpacing && formatting !== "inline",
@@ -451,7 +430,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
               }),
               placeholder: placeholder || (!isEditing && "No value"),
             }}
-            value={!isEditing && invalid ? formatDateInner(dateValue) : textValue}
+            value={textValue}
             classes={{
               root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
                 classes.inputWrapper, isEditing && classes.isEditing),

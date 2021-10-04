@@ -15,7 +15,7 @@ import Delete from "@material-ui/icons/Delete";
 import { WrappedFieldArrayProps } from "redux-form";
 import { GradingItem, GradingType } from "@api/model";
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 import { GradingFormData } from "./GradingTypesForm";
 

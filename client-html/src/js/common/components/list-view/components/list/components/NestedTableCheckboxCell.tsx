@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import FormField from "../../../../form/form-fields/FormField";
+import FormField from "../../../../form/formFields/FormField";
 
 const NestedTableCheckboxCell = props => {
   const {

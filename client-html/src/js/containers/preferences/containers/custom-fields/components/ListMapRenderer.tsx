@@ -14,7 +14,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import Delete from "@material-ui/icons/Delete";
 import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";

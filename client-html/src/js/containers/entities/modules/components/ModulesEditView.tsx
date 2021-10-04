@@ -7,7 +7,7 @@ import * as React from "react";
 import { FormControlLabel } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { ModuleType } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 
@@ -56,7 +56,6 @@ const ModulesEditView = (props: any) => {
               name="title"
               label="Title"
               validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
-              fullWidth
             />
             <FormField
               type="text"
@@ -64,21 +63,18 @@ const ModulesEditView = (props: any) => {
               name="nationalCode"
               label="National code"
               validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
-              fullWidth
             />
             <FormField
               type="text"
               disabled={isDisabled}
               name="fieldOfEducation"
               label="Field of education"
-              fullWidth
             />
             <FormField
               type="text"
               name="specialization"
               label="Specialization"
               maxLength="128"
-              fullWidth
             />
           </Grid>
 
@@ -90,7 +86,6 @@ const ModulesEditView = (props: any) => {
               name="creditPoints"
               label="Credit points"
               validate={greaterThanNullValidation}
-              fullWidth
             />
 
             <FormField
@@ -104,7 +99,6 @@ const ModulesEditView = (props: any) => {
               name="expiryDays"
               label="Expiry days"
               validate={greaterThanNullValidation}
-              fullWidth
             />
 
             <FormField
@@ -112,7 +106,6 @@ const ModulesEditView = (props: any) => {
               normalize={normalizeNominalHours}
               name="nominalHours"
               label="Nominal hours"
-              fullWidth
             />
 
             <FormField
@@ -129,7 +122,7 @@ const ModulesEditView = (props: any) => {
             <div className="heading mb-2 mt-2">Internal options</div>
             <FormControlLabel
               className="checkbox"
-              control={<FormField type="checkbox" name="isOffered" fullWidth />}
+              control={<FormField type="checkbox" name="isOffered" />}
               label="Is offered"
             />
           </Grid>

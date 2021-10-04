@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Tooltip from "@material-ui/core/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import {
   formatFieldPercent,

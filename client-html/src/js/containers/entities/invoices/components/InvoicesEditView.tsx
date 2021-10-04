@@ -15,7 +15,7 @@ import { Account, Currency, Tag, Tax } from "@api/model";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { addDays } from "date-fns";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
@@ -127,6 +127,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
   const InvoiceLineComponent = useCallback(
     props => (
       <InvoiceLines
+        {...props}
         currency={currency}
         isNew={isNew}
         twoColumn={twoColumn}
@@ -135,7 +136,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         taxes={taxes}
         incomeAndCosAccounts={incomeAndCosAccounts}
         type={values.type}
-        {...props}
       />
       ),
     [currency, isNew, twoColumn, form]
@@ -381,14 +381,14 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="multilineText" name="billToAddress" label="Billing address" fullWidth />
+        <FormField type="multilineText" name="billToAddress" label="Billing address"/>
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="multilineText" name="shippingAddress" label="Shipping address" fullWidth />
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField type="multilineText" name="shippingAddress" label="Shipping address"/>
       </Grid>
 
-      <Grid item xs={12} className="pb-2">
+      <Grid item xs={twoColumn ? 6 : 12} className="pb-2">
         <FormField
           type="multilineText"
           name="description"

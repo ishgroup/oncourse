@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { Sale } from "@api/model";
 import { Dispatch } from "redux";
 import { createStyles, withStyles } from "@material-ui/core/styles";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
 import { clearCourseClassSales, getCourseClassSales } from "../../sales/actions";

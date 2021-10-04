@@ -12,11 +12,11 @@ import {
 } from "@material-ui/core";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
-import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
-import EditInPlaceMoneyField from "../../../../../common/components/form/form-fields/EditInPlaceMoneyField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceMoneyField from "../../../../../common/components/form/formFields/EditInPlaceMoneyField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import {
   validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validateRegex
 } from "../../../../../common/utils/validation";

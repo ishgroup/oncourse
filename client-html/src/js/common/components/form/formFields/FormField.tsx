@@ -4,7 +4,7 @@
  */
 import React, { useMemo } from "react";
 import { createStringEnum } from "@api/model";
-import { Field, BaseFieldProps } from "redux-form";
+import { BaseFieldProps, Field } from "redux-form";
 import { validateSingleMandatoryField } from "../../../utils/validation";
 import SimpleTagList from "../simpleTagListComponent/SimpleTagList";
 import { CheckboxField } from "./CheckboxField";
