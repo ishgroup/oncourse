@@ -21,6 +21,8 @@ basePath: /a/v1
 
 
 paths:
+  /properties:
+    $ref: './path/properties/api.yaml'
   /college:
     get:
       operationId: verifyCollegeName
@@ -160,6 +162,7 @@ paths:
       responses:
         '200':
           description: success responce
+
 
 definitions:
   SiteDTO:

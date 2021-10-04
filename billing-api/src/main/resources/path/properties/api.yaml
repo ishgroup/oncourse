@@ -1,0 +1,13 @@
+get:
+  operationId: getProperties
+  description: |
+    Get properties from application.properties file
+  tags:
+    - Properties
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
+  responses:
+    '200':
+      description: PropertiesDTO object
+      schema:
+        $ref: './def/entity/PropertiesDTO.yaml'
