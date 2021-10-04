@@ -9,3 +9,12 @@ export interface GoogleState {
   profile: GoogleLoginResponse['profileObj'],
   token: GoogleLoginResponse['tokenObj']
 }
+
+export interface GTMAccount {
+  path?: string,
+  accountId?: string,
+  name?: string,
+  shareData?: boolean,
+  fingerprint?: string,
+  tagManagerUrl?: string
+}

@@ -1,12 +1,58 @@
 import { Epic } from 'redux-observable';
 import * as EpicUtils from './EpicUtils';
 import {
-  SET_LOADING_VALUE,
+  SET_LOADING_VALUE, SET_SERVER_ERROR_VALUE,
   SHOW_MESSAGE
 } from '../actions';
-import InstantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
 import BillingService from '../../api/services/BillingService';
 import { CHECK_SITENAME, SET_SEND_TOKEN_AGAIN_VALUE, SET_SITENAME_VALID_VALUE } from '../actions/College';
+
+const errorHandler = (
+  response: any,
+  customMessage = 'Something unexpected has happened, please contact ish support or try again'
+) => {
+  if (!response) {
+    return ([{
+      type: SHOW_MESSAGE,
+      payload: { message: customMessage || 'Something went wrong', error: true }
+    }]);
+  }
+
+  const { data, status } = response;
+
+  if (status) {
+    return ([{
+      type: SHOW_MESSAGE,
+      payload: {
+        message: (data && data.errorMessage) || customMessage,
+        error: true
+      }
+    }]);
+  } if (status === 500) {
+    document.cookie.split(';').forEach((c) => {
+      document.cookie = c.replace(/^ +/, '')
+        .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+    });
+
+    return ([{
+      type: SET_SERVER_ERROR_VALUE,
+      payload: true
+    }, {
+      type: SHOW_MESSAGE,
+      payload: {
+        message: (data && data.errorMessage) || customMessage,
+        error: true
+      }
+    }]);
+  }
+  return ([{
+    type: SHOW_MESSAGE,
+    payload: {
+      message: response,
+      error: true
+    }
+  }]);
+};
 
 const request: EpicUtils.Request = {
   type: CHECK_SITENAME,
@@ -30,7 +76,7 @@ const request: EpicUtils.Request = {
     return returnedValue;
   },
   processError: (response) => [
-    ...InstantFetchErrorHandler(response),
+    ...errorHandler(response),
     { type: SET_SITENAME_VALID_VALUE, payload: false },
     { type: SET_LOADING_VALUE, payload: false }
   ]

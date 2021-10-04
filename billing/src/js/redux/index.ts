@@ -19,7 +19,7 @@ const getMiddleware = (): StoreEnhancer<any> => {
   return applyMiddleware(epicMiddleware);
 };
 
-export const CreateStore = (): Store<any> => {
+const CreateStore = (): Store<any> => {
   const store: Store<any> = createStore(
     billingReducers,
     compose(getMiddleware()),
@@ -29,3 +29,5 @@ export const CreateStore = (): Store<any> => {
 
   return store;
 };
+
+export const store = CreateStore();

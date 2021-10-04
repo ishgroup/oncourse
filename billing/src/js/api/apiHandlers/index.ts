@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-export type ApiMethods = "PUT" | "POST" | "GET" | "PATCH" | "DELETE";
+export type ApiMethods = 'PUT' | 'POST' | 'GET' | 'PATCH' | 'DELETE';
 
 export interface ServerResponse {
   data: any;

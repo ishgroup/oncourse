@@ -3,53 +3,39 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { SET_SERVER_ERROR_VALUE, SHOW_MESSAGE } from "../../redux/actions/index";
+import { Dispatch } from 'redux';
+import { SHOW_MESSAGE } from '../../redux/actions';
+import { ServerResponse } from '../apiHandlers';
 
 const instantFetchErrorHandler = (
-  response: any,
-  customMessage: string = "Something unexpected has happened, please contact ish support or try again"
+  dispatch: Dispatch,
+  response: ServerResponse,
+  customMessage = 'Something went wrong'
 ) => {
   if (!response) {
-    return ([{
+    dispatch({
       type: SHOW_MESSAGE,
-      payload: { message: customMessage || "Something went wrong", error: true }
-    }]);
+      payload: { message: customMessage }
+    });
+    return;
   }
 
   const { data, status } = response;
 
   if (status) {
-    return ([{
+    dispatch({
       type: SHOW_MESSAGE,
       payload: {
-        message: (data && data.errorMessage) || customMessage,
-        error: true
+        message: (data && data.errorMessage) || customMessage
       }
-    }]);
-  } else if (status === 500) {
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c.replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
     });
-
-    return ([{
-        type: SET_SERVER_ERROR_VALUE,
-        payload: true
-      }, {
-        type: SHOW_MESSAGE,
-        payload: {
-          message: (data && data.errorMessage) || customMessage,
-          error: true
-      }
-    }]);
   } else {
-    return ([{
+    dispatch({
       type: SHOW_MESSAGE,
       payload: {
-        message: response,
-        error: true
+        message: response
       }
-    }]);
+    });
   }
 };
 

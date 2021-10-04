@@ -14,7 +14,8 @@ import { Button, Typography } from '@mui/material';
 import google from '../../../images/google.svg';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import { setGoogleCredentials } from '../../redux/actions/Google';
-import { showMessage } from '../../redux/actions';
+import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
+import GoogleService from '../../api/services/GoogleService';
 
 const SCOPE = 'email '
   + 'profile '
@@ -44,30 +45,32 @@ const GoogleLoginButton = () => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.google.profile);
 
+  const onFailure = (err?) => instantFetchErrorHandler(dispatch, err);
+
+  const setRefreshTokenTimeout = (response: GoogleLoginResponse, expiresIn: number) => {
+    // auto refresh token
+    setTimeout(() => {
+      response.reloadAuthResponse()
+        .then((token) => {
+          dispatch(setGoogleCredentials({ token }));
+          setRefreshTokenTimeout(response, token.expires_in);
+        })
+        .catch(onFailure);
+    }, expiresIn * 1000);
+  };
+
   const responseGoogle = (response: GoogleLoginResponse) => {
-    dispatch(setGoogleCredentials(
-      response.profileObj,
-      response.tokenObj
-    ));
+    dispatch(setGoogleCredentials({ profile: response.profileObj, token: response.tokenObj }));
+    setRefreshTokenTimeout(response, response.tokenObj.expires_in);
+
+    console.log(GoogleService.getGTMAccounts().catch(e => console.log('!!!!!',e)));
   };
 
   const onLogoutSuccess = () => {
-    dispatch(setGoogleCredentials(
-      null,
-      null
-    ));
-  };
-
-  const onFailure = (error?) => {
-    if (error) {
-      console.error(error);
-    }
-    dispatch(
-      showMessage({
-        message: 'Something went wrong',
-        success: false
-      })
-    );
+    dispatch(setGoogleCredentials({
+      profile: null,
+      token: null
+    }));
   };
 
   return (
