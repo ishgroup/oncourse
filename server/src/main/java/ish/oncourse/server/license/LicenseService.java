@@ -18,7 +18,7 @@ public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
     private Boolean access_control = null;
-    private Boolean custom_script = null;
+    private Boolean custom_scripts = null;
     private Integer purge_audit_after_days = null;
 
     private String services_host =  "https://secure-payment.oncourse.net.au";
@@ -42,8 +42,8 @@ public class LicenseService {
     }
 
     @BQConfigProperty
-    public void setCustom_script(boolean custom_script) {
-        this.custom_script = custom_script;
+    public void setCustom_scripts(boolean custom_scripts) {
+        this.custom_scripts = custom_scripts;
     }
 
     @BQConfigProperty
@@ -116,7 +116,7 @@ public class LicenseService {
 
         switch (key) {
             case "license.access_control" : return access_control;
-            case "license.scripting" : return custom_script;
+            case "license.scripting" : return custom_scripts;
             case "license.sms" : return smsService.getMessage_batch();
             default: return null;
         }

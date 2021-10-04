@@ -50,7 +50,7 @@ post:
     errorMessage: Sorry, you have no permissions to create new script. Please contact your administrator
     license:
       code: license.scripting
-      errorMessage: You haven not license to create scripts
+      errorMessage: You have no license to create scripts
 
 put:
   operationId: update
@@ -107,7 +107,7 @@ delete:
     errorMessage: Sorry, you have no permissions to delete script. Please contact your administrator
     license:
       code: license.scripting
-      errorMessage: You have not license to delete scripts.
+      errorMessage: You have no license to delete scripts.
 
 patch:
   operationId: patch
