@@ -34,7 +34,7 @@ post:
     keyCode: ADMIN
     license:
       code: license.access_control
-      errorMessage: You have not license to update user roles.
+      errorMessage: You have no license to update user roles.
 
 delete:
   operationId: remove
@@ -57,4 +57,4 @@ delete:
     keyCode: ADMIN
     license:
       code: license.access_control
-      errorMessage: You have not license to delete user roles.
+      errorMessage: You have no license to delete user roles.

@@ -47,7 +47,8 @@ class Licences extends React.Component<any, any> {
 
     const inactive = licences
       && Object.keys(licences)
-        .filter(item => Object.keys(LicenseNames).includes(item) && (licences[item] === "false" || licences[item] === "0"))
+        .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+          && (licences[item].toLowerCase() === "false" || licences[item] === "0"))
         .map(item => this.listItem(item, false));
 
     return (
@@ -63,7 +64,8 @@ class Licences extends React.Component<any, any> {
         >
           {licences
           && Object.keys(licences)
-            .filter(item => Object.keys(LicenseNames).includes(item) && (licences[item] === "true" || Number(licences[item]) > 0))
+            .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+              && (licences[item].toLowerCase() === "true" || Number(licences[item]) > 0))
             .map(item => this.listItem(item, true))}
         </List>
 
