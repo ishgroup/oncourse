@@ -1,0 +1,6 @@
+type: string
+enum:
+  - us
+  - au
+  - nz
+  - eu

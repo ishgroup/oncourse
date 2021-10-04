@@ -1,0 +1,64 @@
+type: object
+properties:
+  collegeKey:
+    type: string
+    description: college sub domain
+    example: sttrinians
+  organisationName:
+    type: string
+    description: College name
+    example: Training ish onCourse
+  abn:
+    type: string
+    description: College abn
+    example: 123 456 789
+  tradingName:
+    type: string
+    description: College traiding name
+    example: Ish Learning Pty Ltd
+  address:
+    type: string
+    description: College address
+    example: Level 1, 30 Wilson St
+  suburb:
+    type: string
+    description: College suburb
+    example: Newtown
+  state:
+    type: string
+    description: College state
+    example: NSW
+  postcode:
+    type: string
+    description: College postcode
+    example: 2042
+  country:
+    type: string
+    description: College country
+    example: Australia
+  timeZone:
+    type: string
+    description: College time zone
+    example: Australia/sydney
+  userEmail:
+    type: string
+    format: email
+    description: user email
+    example: john.smith@gmail.com
+  userFirstName:
+    type: string
+    description: user first name
+    example: John
+  userLastName:
+    type: string
+    description: user last name
+    example: john.smith@gmail.com
+  userPhone:
+    type: string
+    description: user phone number
+    example: 0412345678
+  webSiteTemplate:
+    description: web site template
+    $ref: '../../enum/SiteTemplate.yaml'
+  currency:
+    $ref: '../../enum/Currency.yaml'

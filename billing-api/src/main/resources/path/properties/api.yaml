@@ -10,4 +10,4 @@ get:
     '200':
       description: PropertiesDTO object
       schema:
-        $ref: './def/entity/PropertiesDTO.yaml'
+        $ref: './def/entity/dto/PropertiesDTO.yaml'

@@ -1,0 +1,48 @@
+get:
+  operationId: verifyCollegeName
+  description: |
+    Check if college name is available
+  tags:
+    - Billing
+  x-filter:
+    - ish.oncourse.api.access.GuestFilter
+  parameters:
+    - name: collegeKey
+      in: path
+      description: College unique key
+      required: true
+      type: string
+    - name: xGRecaptcha
+      in: header
+      description: reCaptch token
+      required: false
+      type: string
+  responses:
+    '200':
+      description: verification responce
+      schema:
+        type: boolean
+post:
+  operationId: createCollege
+  description: |
+    Create college
+  tags:
+    - Billing
+  x-filter:
+    - ish.oncourse.api.access.GuestFilter
+  consumes:
+    - application/json
+  parameters:
+    - name: college
+      in: body
+      description: College attributes
+      required: true
+      schema:
+        $ref: './def/entity/dto/CollegeDTO.yaml'
+  responses:
+    '204':
+      description: Success responce
+    '400':
+      description: Bad request
+      schema:
+        $ref: './def/entity/dto/ErrorDTO.yaml'

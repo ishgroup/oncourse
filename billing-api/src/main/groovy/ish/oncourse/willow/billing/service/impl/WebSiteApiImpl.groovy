@@ -21,7 +21,7 @@ class WebSiteApiImpl implements WebSiteApi {
     private WebSiteService webSiteService
     
     @Override
-    void crateSite(SiteDTO site) {
+    void createSite(SiteDTO site) {
         webSiteService.createWebSite(site)
         runUpdate(site.key)
     }
