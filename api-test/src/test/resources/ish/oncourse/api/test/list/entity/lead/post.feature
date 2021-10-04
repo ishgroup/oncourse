@@ -61,7 +61,7 @@ Feature: Main feature for all POST requests with path 'list/entity/lead'
     And match $.contactId == 33
     And match $.status == 'Open'
     And match $.estimatedValue == 350.0
-    And match $.assignTo == "admin@gmail.com"
+    And match $.assignTo == "onCourse Administrator"
     And match $.tags == "#[1]"
     And match $.relatedSellables == "#[2]"
     And match $.sites == "#[1]"
