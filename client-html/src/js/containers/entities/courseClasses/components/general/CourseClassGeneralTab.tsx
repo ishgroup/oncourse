@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState
+} from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -165,7 +167,7 @@ const CourseClassGeneralTab = React.memo<Props>(
       []
     );
 
-    const courseIdField = (inHeader = false) => (
+    const courseIdField = (
       <FormField
         type="remoteDataSearchSelect"
         entity="Course"
@@ -183,7 +185,7 @@ const CourseClassGeneralTab = React.memo<Props>(
         required
         inHeader
       />
-    );
+);
 
     const classCodeProps = useMemo(
       () => ({
@@ -203,9 +205,9 @@ const CourseClassGeneralTab = React.memo<Props>(
       [values.code, values.courseCode, classCodeError]
     );
 
-    const classCodeField = useCallback(
+    const classCodeField = useMemo(
       (inHeader = false) => (twoColumn ? (
-          <HeaderTextField {...classCodeProps} placeholder="Class code" inHeader />
+        <HeaderTextField {...classCodeProps} placeholder="Class code" />
         ) : (
           <EditInPlaceField {...classCodeProps} />
         )),
@@ -284,10 +286,10 @@ const CourseClassGeneralTab = React.memo<Props>(
           <CustomAppBar>
             <Grid container className="flex-fill">
               <Grid item xs={6} className="pr-2">
-                {courseIdField(true)}
+                {courseIdField}
               </Grid>
               <Grid item xs={4}>
-                {classCodeField(true)}
+                {classCodeField}
               </Grid>
             </Grid>
             <div>
@@ -317,11 +319,11 @@ const CourseClassGeneralTab = React.memo<Props>(
           {!twoColumn && (
             <>
               <Grid item xs={12}>
-                {courseIdField(false)}
+                {courseIdField}
               </Grid>
 
               <Grid item xs={12}>
-                {classCodeField(false)}
+                {classCodeField}
               </Grid>
             </>
           )}

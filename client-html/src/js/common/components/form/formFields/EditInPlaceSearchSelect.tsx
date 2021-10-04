@@ -491,7 +491,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     >
       <div
         className={clsx("pr-2", {
-          "d-none": disabled || (inHeader && !(inline || isEditing || (meta && meta.invalid))),
+          "d-none": (inHeader && !(inline || isEditing || (meta && meta.invalid))),
           [classes.editingSelect]: !inline && formatting !== "inline"
         })}
       >
@@ -515,7 +515,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             getOptionSelected={getOptionSelected}
             onChange={handleChange}
             classes={{
-              root: "d-inline-flex",
+              root: clsx("d-inline-flex"),
               option: itemRenderer ? null : classes.option,
               // @ts-ignore
               hasPopupIcon: classes.hasPopup,
@@ -536,6 +536,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 {labelContent && <InputLabel shrink={true}>{labelContent}</InputLabel>}
                 <Input
                   {...InputProps}
+                  disabled={disabled}
                   placeholder={placeholder || (!isEditing && "No value")}
                   autoFocus={inline}
                   onChange={handleInputChange}
@@ -547,7 +548,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   classes={{
                     root: clsx(classes.inputWrapper, isEditing && classes.isEditing),
                     underline: fieldClasses.underline,
-                    input: clsx(inHeader && classes.editableInHeader, fieldClasses.text),
+                    input: clsx(inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
                   }}
                   inputProps={{
                     ...inputProps,
@@ -571,7 +572,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   {(meta && meta.error) || helperText}
                 </FormHelperText>
               </FormControl>
-          )}
+            )}
             fullWidth
             disableListWrap
             openOnFocus
@@ -582,7 +583,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       {formatting === "inline" && (
       <div
         className={clsx(formatting !== "inline" && "textField", {
-          "d-none": (!inHeader && !disabled) || (inHeader && (inline || isEditing || (meta && meta.invalid)))
+          "d-none": !inHeader || (inHeader && (inline || isEditing || (meta && meta.invalid)))
         })}
       >
         <div className="mw-100 text-truncate">
