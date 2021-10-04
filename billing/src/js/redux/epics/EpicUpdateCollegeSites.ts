@@ -1,9 +1,10 @@
 import { Epic } from 'redux-observable';
 import { SiteDTO } from '@api/model';
 import * as EpicUtils from './EpicUtils';
-import { getSites, setLoadingValue, showMessage, UPDATE_COLLEGE_SITES } from '../actions';
+import { setLoadingValue, showMessage } from '../actions';
 import WebSiteService from '../../api/services/WebSiteService';
 import FetchErrorHandler from '../../api/fetch-errors-handlers/FetchErrorHandler';
+import { getSites, UPDATE_COLLEGE_SITES } from '../actions/Sites';
 
 const request: EpicUtils.Request<any, { changed: SiteDTO[], created: SiteDTO[], removed: SiteDTO[] }> = {
   type: UPDATE_COLLEGE_SITES,

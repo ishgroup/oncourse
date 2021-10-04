@@ -16,10 +16,11 @@ import { Dispatch } from 'redux';
 import moment from 'moment';
 import { makeAppStyles } from '../../../styles/makeStyles';
 import Navigation from '../Navigations';
-import { checkSiteName, setCollegeKey, setLoadingValue } from '../../../redux/actions';
+import { setLoadingValue } from '../../../redux/actions';
 import { SITE_KEY } from '../../../constant/common';
 import { usePrevious } from '../../../hooks/usePrevious';
 import { State } from '../../../models/State';
+import { checkSiteName, setCollegeKey } from '../../../redux/actions/College';
 
 const useStyles = makeAppStyles()((theme:any) => ({
   root: {

@@ -4,11 +4,9 @@
  */
 
 import { IAction } from '../../models/IshAction';
-import {
-  SET_CONTACT_FORM_VALUES, SET_ORGANISATION_FORM_VALUES
-} from '../actions';
 import { FormsState } from '../../models/Forms';
 import { contactFormInitialValue, organisationFormInitialValue } from '../initialValues';
+import { SET_CONTACT_FORM_VALUES, SET_ORGANISATION_FORM_VALUES } from '../actions/College';
 
 const Initial: FormsState = {
   contactForm: contactFormInitialValue,

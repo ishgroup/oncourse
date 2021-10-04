@@ -11,11 +11,11 @@ import { Dispatch } from 'redux';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import { makeAppStyles } from '../../../styles/makeStyles';
-import { setTemplateValue } from '../../../redux/actions';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
 import { TemplateChoser } from '../../common/TemplateChoser';
 import Navigation from '../Navigations';
 import { State } from '../../../models/State';
+import { setTemplateValue } from '../../../redux/actions/College';
 
 const useStyles = makeAppStyles()((theme) => ({
   coloredHeaderText: {

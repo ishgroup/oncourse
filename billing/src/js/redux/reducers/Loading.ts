@@ -10,14 +10,10 @@
 
 import { IAction } from '../../models/IshAction';
 import {
-  CREATE_COLLEGE,
-  GET_COLLEGE_KEY,
-  GET_SITES,
-  GET_SITES_FULFILLED,
-  SET_COLLEGE_KEY,
   SET_LOADING_VALUE,
-  UPDATE_COLLEGE_SITES
 } from '../actions';
+import { GET_SITES, GET_SITES_FULFILLED, UPDATE_COLLEGE_SITES } from '../actions/Sites';
+import { CREATE_COLLEGE, GET_COLLEGE_KEY, SET_COLLEGE_KEY } from '../actions/College';
 
 export const loadingReducer = (state = false, action: IAction): boolean => {
   switch (action.type) {
@@ -32,6 +28,6 @@ export const loadingReducer = (state = false, action: IAction): boolean => {
     case SET_LOADING_VALUE:
       return action.payload;
     default:
-      return false;
+      return state;
   }
 };

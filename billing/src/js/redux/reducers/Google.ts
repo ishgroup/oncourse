@@ -5,13 +5,23 @@
 
 import { IAction } from '../../models/IshAction';
 import { GoogleState } from '../../models/Google';
+import { SET_GOOGLE_CREDENTIALS } from '../actions/Google';
 
 const Initial: GoogleState = {
-  userEmail: null
+  profile: null,
+  token: null
 };
 
 export const googleReducer = (state: GoogleState = Initial, action: IAction): GoogleState => {
   switch (action.type) {
+    case SET_GOOGLE_CREDENTIALS:
+      return {
+        ...state,
+        ...action.payload
+      }
+
+
+
     default:
       return {
         ...state

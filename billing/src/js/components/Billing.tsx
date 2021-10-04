@@ -7,10 +7,11 @@ import { DefaultThemeKey } from '../models/Theme';
 import { currentTheme, getTheme } from '../themes/ishTheme';
 import { ThemeContext } from '../themes/ThemeContext';
 import MessageProvider from './common/message/MessageProvider';
-import { getCollegeKey, getSites } from '../redux/actions';
 import { defaultAxios } from '../api/services/DefaultHttpClient';
 import { ExistingCustomerSteps, NewCustomerSteps, Step } from '../models/User';
 import { useAppDispatch, useAppSelector } from '../redux/hooks/redux';
+import { getSites } from '../redux/actions/Sites';
+import { getCollegeKey } from '../redux/actions/College';
 
 export const muiCache = createCache({
   key: 'mui',

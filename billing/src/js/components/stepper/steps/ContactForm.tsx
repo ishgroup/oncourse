@@ -16,11 +16,11 @@ import Grid from '@mui/material/Grid';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { makeAppStyles } from '../../../styles/makeStyles';
 import CustomTextField from '../../common/TextField';
-import { setContactFormValues } from '../../../redux/actions';
 import Navigation from '../Navigations';
 import { phoneRegExp } from '../../../constant/common';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
 import { State } from '../../../models/State';
+import { setContactFormValues } from '../../../redux/actions/College';
 
 const useStyles = makeAppStyles()((theme: any) => ({
   textFieldWrapper: {

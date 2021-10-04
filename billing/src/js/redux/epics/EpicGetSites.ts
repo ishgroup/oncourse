@@ -1,7 +1,7 @@
 import { Epic } from 'redux-observable';
 import * as EpicUtils from './EpicUtils';
-import { GET_SITES, GET_SITES_FULFILLED } from '../actions';
 import WebSiteService from '../../api/services/WebSiteService';
+import { GET_SITES, GET_SITES_FULFILLED } from '../actions/Sites';
 
 const request: EpicUtils.Request = {
   type: GET_SITES,

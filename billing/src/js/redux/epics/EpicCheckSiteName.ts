@@ -1,14 +1,12 @@
 import { Epic } from 'redux-observable';
 import * as EpicUtils from './EpicUtils';
 import {
-  CHECK_SITENAME,
   SET_LOADING_VALUE,
-  SET_SEND_TOKEN_AGAIN_VALUE,
-  SET_SITENAME_VALID_VALUE,
   SHOW_MESSAGE
 } from '../actions';
 import InstantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
 import BillingService from '../../api/services/BillingService';
+import { CHECK_SITENAME, SET_SEND_TOKEN_AGAIN_VALUE, SET_SITENAME_VALID_VALUE } from '../actions/College';
 
 const request: EpicUtils.Request = {
   type: CHECK_SITENAME,

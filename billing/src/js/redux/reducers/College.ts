@@ -4,19 +4,21 @@
  */
 
 import {
-  SET_CAPTCHA_TOKEN,
-  CHECK_SITENAME,
-  SET_TEMPLATE_VALUE,
-  SET_SITENAME_VALID_VALUE,
-  COLLEGE_WAS_CREATED,
-  SET_SEND_TOKEN_AGAIN_VALUE,
   SET_SERVER_ERROR_VALUE,
   RESET_STORE,
-  SET_COLLEGE_KEY,
   SET_IS_NEW_USER,
 } from '../actions';
 import { CollegeState } from '../../models/College';
 import { IAction } from '../../models/IshAction';
+import {
+  CHECK_SITENAME,
+  COLLEGE_WAS_CREATED,
+  SET_CAPTCHA_TOKEN,
+  SET_COLLEGE_KEY,
+  SET_SEND_TOKEN_AGAIN_VALUE,
+  SET_SITENAME_VALID_VALUE,
+  SET_TEMPLATE_VALUE
+} from '../actions/College';
 
 const initState: CollegeState = {
   collegeKey: '',

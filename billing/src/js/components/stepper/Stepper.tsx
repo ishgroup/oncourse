@@ -17,13 +17,13 @@ import TemplateForm from './steps/TemplateForm';
 import ContactForm from './steps/ContactForm';
 import OrganisationForm from './steps/OrganisationForm';
 import FinishPage from './steps/FinishPage';
-import { setCaptchaToken } from '../../redux/actions';
 import ErrorPage from '../ErrorPage';
 import { SITE_KEY } from '../../constant/common';
 import { SitesPage } from './steps/sites/SitesPage';
 import { Step } from '../../models/User';
 import iconDots from '../../../images/icon-dots.png';
 import { State } from '../../models/State';
+import { setCaptchaToken } from '../../redux/actions/College';
 
 export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const formItem = {

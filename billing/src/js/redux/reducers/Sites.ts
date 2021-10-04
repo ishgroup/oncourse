@@ -10,9 +10,7 @@
 
 import { SiteDTO } from '@api/model';
 import { IAction } from '../../models/IshAction';
-import {
-  GET_SITES_FULFILLED
-} from '../actions';
+import { GET_SITES_FULFILLED } from '../actions/Sites';
 
 const Initial: SiteDTO[] = [];
 

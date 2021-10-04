@@ -1,10 +1,12 @@
 import { Epic } from 'redux-observable';
 import * as EpicUtils from './EpicUtils';
 import {
-  GET_COLLEGE_KEY, setCollegeKey, setIsNewUser, setLoadingValue
+  setIsNewUser,
+  setLoadingValue
 } from '../actions';
 import BillingService from '../../api/services/BillingService';
 import FetchErrorHandler from '../../api/fetch-errors-handlers/FetchErrorHandler';
+import { GET_COLLEGE_KEY, setCollegeKey } from '../actions/College';
 
 const request: EpicUtils.Request = {
   type: GET_COLLEGE_KEY,

@@ -4,8 +4,17 @@
  */
 
 import { GoogleLoginResponse } from 'react-google-login';
+import { IAction } from '../../models/IshAction';
 
-export interface GoogleState {
+export const SET_GOOGLE_CREDENTIALS = 'SET_GOOGLE_DATA';
+
+export const setGoogleCredentials = (
   profile: GoogleLoginResponse['profileObj'],
   token: GoogleLoginResponse['tokenObj']
-}
+): IAction => ({
+  type: SET_GOOGLE_CREDENTIALS,
+  payload: {
+    profile,
+    token
+  }
+});

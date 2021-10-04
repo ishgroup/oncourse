@@ -1,18 +1,21 @@
 import { Epic } from 'redux-observable';
 import * as EpicUtils from './EpicUtils';
-import { COLLEGE_WAS_CREATED, CREATE_COLLEGE, SET_LOADING_VALUE, SET_SERVER_ERROR_VALUE } from '../actions';
+import {
+  setLoadingValue, setServerErrorValue
+} from '../actions';
 import BillingService from '../../api/services/BillingService';
+import { CREATE_COLLEGE, setCollegeWasCreatedValue } from '../actions/College';
 
 const request: EpicUtils.Request = {
   type: CREATE_COLLEGE,
   getData: (data) => BillingService.createCollege(data),
   processData: () => [
-    { type: COLLEGE_WAS_CREATED, payload: true },
-    { type: SET_LOADING_VALUE, payload: false }
+    setCollegeWasCreatedValue(true),
+    setLoadingValue(false)
   ],
-  processError: (response) => [
-    { type: SET_LOADING_VALUE, payload: false },
-    { type: SET_SERVER_ERROR_VALUE, payload: true },
+  processError: () => [
+    setLoadingValue(false),
+    setServerErrorValue(true),
   ]
 };
 

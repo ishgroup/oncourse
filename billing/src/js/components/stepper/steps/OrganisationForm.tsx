@@ -16,11 +16,11 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { makeAppStyles } from '../../../styles/makeStyles';
 import CustomTextField from '../../common/TextField';
-import { createCollege, setOrganisationFormValues } from '../../../redux/actions';
 import Navigation from '../Navigations';
 import { countries, countriesTimeZone } from '../../../utils';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
 import { State } from '../../../models/State';
+import { createCollege, setOrganisationFormValues } from '../../../redux/actions/College';
 
 const useStyles = makeAppStyles()((theme: any) => ({
   textFieldWrapper: {

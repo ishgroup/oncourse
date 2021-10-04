@@ -6,10 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { darken } from '@mui/material/styles';
-import {
-  IconButton,
-  Typography
-} from '@mui/material';
+import { IconButton } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { AddCircle } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
@@ -18,10 +15,10 @@ import { SiteDTO } from '@api/model';
 import { makeAppStyles } from '../../../../styles/makeStyles';
 import { stopPropagation } from '../../../../utils';
 import Loading from '../../../common/Loading';
-import { updateCollegeSites } from '../../../../redux/actions';
 import GoogleLoginButton from '../../../common/GoogleLoginButton';
 import { SiteContent } from './SiteContent';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks/redux';
+import { updateCollegeSites } from '../../../../redux/actions/Sites';
 
 export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
@@ -276,14 +273,7 @@ export const SitesPage: React.FC<any> = () => {
                   </IconButton>
                 </div>
 
-                <div>
-                  <div className="d-flex justify-content-end">
-                    <GoogleLoginButton />
-                  </div>
-                  <Typography variant="caption" color="textSecondary">
-                    Logged as joe@gmail.com
-                  </Typography>
-                </div>
+                <GoogleLoginButton />
               </div>
               <div>
                 {(
