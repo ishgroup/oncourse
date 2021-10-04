@@ -140,7 +140,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		if (getTagRequirements() != null && type != null) {
 			for (final TagRequirement nr : getTagRequirements()) {
 				if (nr.getPersistenceState() != PersistenceState.TRANSIENT && nr.getPersistenceState() != PersistenceState.DELETED &&
-						TagFunctions.taggableClassesBidiMap.get(type.getSimpleName()) != null) {
+						TagFunctions.taggableClassesBidiMap.get(type.getSimpleName()) != null && TagFunctions.taggableClassesBidiMap.get(type.getSimpleName()) == nr.getEntityIdentifier()) {
 					return nr
 				}
 			}
