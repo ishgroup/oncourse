@@ -15,6 +15,7 @@ import com.nimbusds.jose.jwk.RSAKey
 import groovy.transform.CompileDynamic
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
+import ish.common.types.EnrolmentReportingStatus
 import ish.oncourse.commercial.plugin.tcsi.api.AdmissionAPI
 import ish.oncourse.commercial.plugin.tcsi.api.CampusAPI
 import ish.oncourse.commercial.plugin.tcsi.api.CourseAPI
@@ -218,7 +219,15 @@ class TCSIIntegration implements PluginTrait {
     }
     
     void export(Enrolment e) {
+        
         enrolment = objectContext.localObject(e)
+        if (enrolment.studentLoanStatus == EnrolmentReportingStatus.NOT_ELIGIBLE) {
+            interraptExport("Enrolment has not eligible reporting status")
+        }
+        if (enrolment.studentLoanStatus == EnrolmentReportingStatus.FINALIZED) {
+            interraptExport("Enrolment has finalized reporting status")
+        }
+        
         highEducation = TCSIUtils.getHighEducation(objectContext, highEducationType, enrolment)
         courseAdmission = enrolment.student.enrolments.find {it.courseClass.course.equalsIgnoreContext(highEducation)}
         
