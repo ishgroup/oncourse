@@ -22,7 +22,6 @@ Feature: Main feature for all POST requests with path 'preference/'
             | 'LICENSE_FEE_HELP_EXPORT'  | 'license.feeHelpExport'   | 'true' |
             | 'LICENSE_FUNDING_CONTRACT' | 'license.fundingContract' | 'true' |
 
-        * call read('postReadOnlyPreferences.feature') readOnlyPreferences
 
 
 
