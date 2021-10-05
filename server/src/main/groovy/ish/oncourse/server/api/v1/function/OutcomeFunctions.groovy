@@ -184,72 +184,20 @@ class OutcomeFunctions {
 
     static OutcomeProgressionDTO getProgression(Outcome outcome)  {
         OutcomeProgressionDTO progression = new OutcomeProgressionDTO()
-        CourseClass clazz = outcome.enrolment.courseClass
-        Student student = outcome.enrolment.student
 
-        progression.attended = BigDecimal.ZERO
-        progression.notMarked = BigDecimal.ZERO
-        progression.absent = BigDecimal.ZERO
-        progression.futureTimetable = BigDecimal.ZERO
+        progression.attended = outcome.getAttendedAttendancesDuration()
+        progression.notMarked = outcome.getNotMarkedAttendancesDuration()
+        progression.absent = outcome.getAbsentAttendancesDuration()
+        progression.futureTimetable = outcome.getFutureTimetable()
 
         progression.released = 0
         progression.notReleased = 0
         progression.submitted =  0
         progression.marked = 0
 
-        List<AssessmentClass> outcomeAssessments
-
-        if (clazz.isDistantLearningCourse || clazz.sessions.empty) {
-            outcomeAssessments = clazz.assessmentClasses
-            // skip attendance diagram since no sessions
-        } else {
-            List<Session> outcomeSessions
-
-            //if vet outcome - take in account only training plan sessions
-            if (outcome.module) {
-                outcomeSessions = clazz.sessions.findAll {session -> outcome.module in session.modules }
-                outcomeAssessments = clazz.assessmentClasses.findAll {assessment -> outcome.module in assessment.modules }
-            } else {
-                // all sessions for defaullt outcome
-                outcomeSessions = clazz.sessions
-                outcomeAssessments = clazz.assessmentClasses
-            }
-            
-            List<Session> futureSessions = outcomeSessions.findAll { session -> session.endDatetime.after(new Date())}
-            progression.futureTimetable = futureSessions.collect { session -> session.durationInHours }.inject (BigDecimal.ZERO) { a,b -> a.add(b) } as BigDecimal
-           
-            List<Session> pastSessions = outcomeSessions.findAll { session -> session.endDatetime.before(new Date())}
-
-            pastSessions.each {session -> 
-                Attendance attendance = session.getAttendance(student)
-                BigDecimal duration = session.durationInHours
-                if (attendance && attendance.attendanceType) {
-                    switch (attendance.attendanceType) {
-                        case AttendanceType.UNMARKED:
-                            progression.notMarked += duration
-                            break
-                        case AttendanceType.ATTENDED:
-                            progression.attended += duration
-                            break
-                        case AttendanceType.DID_NOT_ATTEND_WITH_REASON:
-                        case AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON:
-                            progression.absent += duration
-                            break
-                        case AttendanceType.PARTIAL:
-                            BigDecimal attended = attendance.durationInHours
-                            progression.attended += attended
-                            progression.absent += (duration - attended)
-                            break
-                    }
-                } else {
-                    progression.notMarked += session.durationInHours
-                }
-                
-            }
-        }
-        
+        List<AssessmentClass> outcomeAssessments = outcome.getOutcomeAssessments()
         if (!outcomeAssessments.empty) {
-            List<AssessmentClass> releasedAssessments = outcomeAssessments.findAll {assessment -> assessment.releaseDate == null || assessment.releaseDate.before(new Date())}
+            List<AssessmentClass> releasedAssessments = outcome.getReleasedAssessments()
             progression.released = releasedAssessments.size()
             progression.notReleased = outcomeAssessments.size() - progression.released
             releasedAssessments.each { assessment ->

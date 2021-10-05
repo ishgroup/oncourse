@@ -6,19 +6,20 @@
 import * as React from "react";
 import { change } from "redux-form";
 import Grid from "@material-ui/core/Grid";
-import { FormControlLabel, Typography } from "@material-ui/core";
+import { Collapse, FormControlLabel, Typography } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
 import { connect } from "react-redux";
 import Decimal from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import { TransitionProps } from "@material-ui/core/transitions/transition";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
 import { validateNonNegative, validateRangeInclusive, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
+import { Switch } from "../../../../common/components/form/formFields/Switch";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
+import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { mapSelectItems } from "../../../../common/utils/common";
 
 interface DiscountGeneralProps {
@@ -300,23 +301,30 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   render() {
     const { twoColumn, cosAccounts } = this.props;
     const { validFromIndex, validToIndex } = this.state;
+
+    const gridXS = twoColumn ? 6 : 12;
+
     return (
       <div className="d-grid pt-2 pl-3 pr-3 pb-0">
-        <FormField
-          type="text"
-          name="name"
-          label="Name"
-          required
-        />
-        <FormField
-          type="select"
-          name="discountType"
-          label="Value type"
-          items={discountTypes}
-          onChange={this.cleanValueFields}
-        />
         <Grid container spacing={0}>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={gridXS}>
+            <FormField
+              type="text"
+              name="name"
+              label="Name"
+              required
+            />
+          </Grid>
+          <Grid item xs={gridXS}>
+            <FormField
+              type="select"
+              name="discountType"
+              label="Value type"
+              items={discountTypes}
+              onChange={this.cleanValueFields}
+            />
+          </Grid>
+          <Grid item xs={gridXS}>
             {this.state.discountType === DiscountType.Percent ? (
               <FormField
                 type="number"
@@ -337,76 +345,87 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               />
             )}
           </Grid>
-          <Grid item xs={twoColumn ? 2 : 6}>
+          <Grid item xs={gridXS}>
             <FormField type="select" name="rounding" label="Rounding" items={roundingModeTypes} />
           </Grid>
-          {this.state.discountType === DiscountType.Percent && (
-            <>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField
-                  type="money"
-                  name="discountMin"
-                  label="Min"
-                  validate={validateNonNegative}
-                />
+
+          <Grid item xs={12}>
+            <Collapse in={this.state.discountType === DiscountType.Percent} mountOnEnter unmountOnExit>
+              <Grid container>
+                <Grid item xs={gridXS}>
+                  <FormField
+                    type="money"
+                    name="discountMin"
+                    label="Min"
+                    validate={validateNonNegative}
+                  />
+                </Grid>
+                <Grid item xs={gridXS}>
+                  <FormField
+                    type="money"
+                    name="discountMax"
+                    label="Max"
+                    validate={validateNonNegative}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField
-                  type="money"
-                  name="discountMax"
-                  label="Max"
-                  validate={validateNonNegative}
-                />
-              </Grid>
-            </>
-          )}
+            </Collapse>
+          </Grid>
+
+          <Grid item xs={12} className="mt-2 mb-2">
+            <Subtitle label="ACCOUNTING" />
+          </Grid>
+          <Grid item xs={gridXS}>
+            <FormField
+              type="select"
+              name="cosAccount"
+              label="Post discount to COS Account"
+              items={cosAccounts || []}
+              selectLabelMark="description"
+              selectValueMark="id"
+              allowEmpty
+            />
+          </Grid>
+          <Grid item xs={gridXS}>
+            <FormField
+              type="number"
+              name="predictedStudentsPercentage"
+              label="Default forecast take-up"
+              validate={[validateSingleMandatoryField, validateRangePredictedStudentsPercentage]}
+              format={this.formatPercent}
+              parse={this.parsePercent}
+              normalize={this.normalizePercent}
+              preformatDisplayValue={value => value + "%"}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider className="mt-2 mb-2" />
+            <div className="d-grid justify-content-start align-items-center gridAutoFlow-column mb-2">
+              <Typography className="heading">Require promotional code</Typography>
+              <Switch onChange={this.onCodeSwitchToggle} checked={this.state.codeOn} />
+              {this.state.codeOn && <FormField type="text" name="code" formatting="inline" />}
+            </div>
+          </Grid>
+
+          <Grid item xs={gridXS} className="mb-2">
+            <CustomSelector
+              caption="Valid from"
+              options={this.validFromOptions}
+              onSelect={this.onSelectValidFrom}
+              initialIndex={validFromIndex}
+            />
+          </Grid>
+
+          <Grid item xs={gridXS} className="mb-2">
+            <CustomSelector
+              caption="Valid to"
+              options={this.validToOptions}
+              onSelect={this.onSelectValidTo}
+              initialIndex={validToIndex}
+            />
+          </Grid>
         </Grid>
-        <div className="mt-2 mb-2">
-          <Subtitle label="ACCOUNTING" />
-        </div>
-        <FormField
-          type="select"
-          name="cosAccount"
-          label="Post discount to COS Account"
-          items={cosAccounts || []}
-          selectLabelMark="description"
-          selectValueMark="id"
-          allowEmpty
-        />
-        <FormField
-          type="number"
-          name="predictedStudentsPercentage"
-          label="Default forecast take-up"
-          validate={[validateSingleMandatoryField, validateRangePredictedStudentsPercentage]}
-          format={this.formatPercent}
-          parse={this.parsePercent}
-          normalize={this.normalizePercent}
-          preformatDisplayValue={value => value + "%"}
-        />
-        <Divider className="mt-2 mb-2" />
-        <div className="d-grid justify-content-start align-items-center gridAutoFlow-column mb-2">
-          <Typography className="heading">Require promotional code</Typography>
-          <Switch onChange={this.onCodeSwitchToggle} checked={this.state.codeOn} />
-          {this.state.codeOn && <FormField type="text" name="code" formatting="inline" />}
-        </div>
-
-        <div className="mb-2">
-          <CustomSelector
-            caption="Valid from"
-            options={this.validFromOptions}
-            onSelect={this.onSelectValidFrom}
-            initialIndex={validFromIndex}
-          />
-        </div>
-
-        <div className="mb-2">
-          <CustomSelector
-            caption="Valid to"
-            options={this.validToOptions}
-            onSelect={this.onSelectValidTo}
-            initialIndex={validToIndex}
-          />
-        </div>
 
         <Divider className="mt-2 mb-2" />
 

@@ -7,11 +7,8 @@ describe("Virtual rendered RoomEditView", () => {
     EditView: RoomEditView,
     record: mockecApi => mockecApi.db.getRoom(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#name").text()).toContain(initialValues.name);
-      expect(wrapper.find("#seatedCapacity").text()).toContain(initialValues.seatedCapacity);
-      expect(wrapper.find("#siteId").text()).toContain("No value");
-      expect(wrapper.find("#facilities").text()).toContain("No value");
-      expect(wrapper.find("#directions").text()).toContain("No value");
+      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
+      expect(wrapper.find("#seatedCapacity input").val()).toContain(initialValues.seatedCapacity);
     }
   });
 });

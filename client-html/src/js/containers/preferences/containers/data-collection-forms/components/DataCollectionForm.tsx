@@ -20,7 +20,7 @@ import FileCopy from "@material-ui/icons/FileCopy";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";

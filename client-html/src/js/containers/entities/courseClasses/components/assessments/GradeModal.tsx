@@ -18,7 +18,7 @@ import {
   Dialog
 } from "@material-ui/core";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { useGradeErrors } from "./utils/hooks";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 

@@ -13,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { DiscountType } from "@api/model";
 import { Dispatch } from "redux";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";

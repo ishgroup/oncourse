@@ -345,7 +345,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         }
 
         if (!sessionAttributes.authorised) {
-            String errorMessage = "Refund transaction is failed: ${sessionAttributes.statusText?:sessionAttributes.errorMessage}"
+            String errorMessage = "Refund transaction is failed: ${sessionAttributes.statusText?:sessionAttributes.errorMessage}, error code: $sessionAttributes.reCo"
 
             paymentOut.status = FAILED
             paymentOut.paymentDate = LocalDate.now()

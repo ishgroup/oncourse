@@ -25,7 +25,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class GradingType extends _GradingType implements Queueable {
+class GradingType extends _GradingType implements Queueable, GradingTypeTrait {
 
     /**
      * @return the date and time this record was created

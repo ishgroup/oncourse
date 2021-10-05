@@ -3,16 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useRef, useState
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, InjectedFormProps } from "redux-form";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import Grid from "@material-ui/core/Grid/Grid";
 import { ReportOverlay } from "@api/model";
 import { Dispatch } from "redux";
 import Typography from "@material-ui/core/Typography";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";

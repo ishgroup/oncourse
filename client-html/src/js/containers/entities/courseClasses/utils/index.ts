@@ -111,6 +111,7 @@ export const getClassCostTypes = (
       max: 0,
       projected: 0,
       actual: 0,
+      percentage: null,
       items: []
     },
     cost: {
@@ -156,6 +157,7 @@ export const getClassCostTypes = (
           types.discount.max = decimalPlus(types.discount.max, item.max);
           types.discount.projected = decimalPlus(types.discount.projected, item.projected);
           types.discount.actual = decimalPlus(types.discount.actual, item.actual);
+          types.discount.percentage = decimalPlus(types.discount.percentage, item.value.actualUsePercent || 0);
           break;
         case "Wages":
           const tutor = tutors.find(

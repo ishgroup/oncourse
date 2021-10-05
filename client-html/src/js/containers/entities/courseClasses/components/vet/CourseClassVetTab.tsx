@@ -14,7 +14,7 @@ import {
   FundingSource
 } from "@api/model";
 import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
 import {
   validateCourseSiteIdentifier,

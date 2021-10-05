@@ -133,10 +133,10 @@ export const getFilters = (entity: string) => ({
   payload: { entity }
 });
 
-export const getRecipientsMessageData = (entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[]) => ({
+export const getRecipientsMessageData = (entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[], templateId: number) => ({
   type: GET_RECIPIENTS_MESSAGE_DATA,
   payload: {
-   entityName, messageType, searchQuery, selection
+   entityName, messageType, searchQuery, selection, templateId
   }
 });
 

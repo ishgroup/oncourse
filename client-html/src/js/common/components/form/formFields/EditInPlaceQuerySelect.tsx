@@ -8,9 +8,7 @@ import DateRange from "@material-ui/icons/DateRange";
 import QueryBuilder from "@material-ui/icons/QueryBuilder";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
-import {
- withStyles, createStyles, Theme
-} from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@material-ui/core/styles";
 import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
@@ -41,7 +39,7 @@ import {
 import { FieldClasses } from "../../../../model/common/Fields";
 import { ListAqlMenuItemsRenderer } from "../../../../model/common/ListView";
 
-const queryStyles = (theme: Theme) => createStyles({
+const queryStyles = theme => createStyles({
   queryMenuItem: {
     minHeight: "unset",
     fontSize: "0.9rem"
@@ -77,7 +75,11 @@ const queryStyles = (theme: Theme) => createStyles({
     }
   },
   hasClearIcon: {},
-  inputRoot: {}
+  inputRoot: {},
+  editable: {
+    color: theme.palette.text.primaryEditable,
+    fontWeight: 400,
+  },
 });
 
 const TimePicker: any = Time;
@@ -658,7 +660,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   getValue = classes => (
-    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden placeholderContent")}>{this.props.placeholder || "No value"}</span>
+    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || (!this.state.isEditing && "No value")}</span>
   );
 
   getInlineMenuStyles = () => {
@@ -859,7 +861,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     let lastIdentifier = null;
 
     for (const token of [...parsedTokens].reverse()) {
-      if (token.type === 53 && token.text !== this.state.searchValue) {
+      if (token.type === AqlLexer.Identifier && token.text !== this.state.searchValue) {
         lastIdentifier = token;
         break;
       }
@@ -1335,7 +1337,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
                     })}
                   >
                     {editableComponent || this.getValue(classes)}
-                    {!disabled && <CreateIcon className={clsx("hoverIcon", classes.editPencilIcon)} />}
+                    {!disabled && <CreateIcon className="editInPlaceIcon hoverIcon" />}
                   </span>
                 </ButtonBase>
               )}

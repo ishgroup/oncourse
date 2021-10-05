@@ -10,15 +10,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { FileCopy } from "@material-ui/icons";
 import DeleteForever from "@material-ui/icons/DeleteForever";
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { mapSelectItems } from "../../../../../common/utils/common";

@@ -7,7 +7,7 @@ interface Props {
   entity: string;
   EditView: any;
   record: (mockedApi: any) => object;
-  render: (wrapper: any, initialValues: any) => any;
+  render: (wrapper: any, initialValues: any, shallow?: any) => any;
 }
 
 export const mockedEditView: ({

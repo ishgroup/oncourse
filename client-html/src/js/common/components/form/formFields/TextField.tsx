@@ -7,11 +7,11 @@
  * Wrapper component for Material Text Field
  * */
 
-import * as React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import MuiTextField from "@material-ui/core/TextField";
+  import * as React from "react";
+  import { withStyles } from "@material-ui/core/styles";
+  import MuiTextField from "@material-ui/core/TextField";
 
-const styles = theme => ({
+  const styles = theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1)

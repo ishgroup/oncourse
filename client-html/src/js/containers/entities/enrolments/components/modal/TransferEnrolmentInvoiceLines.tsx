@@ -10,7 +10,7 @@ import { Decimal } from "decimal.js-light";
 import React, { useCallback } from "react";
 import { change } from "redux-form";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
 
