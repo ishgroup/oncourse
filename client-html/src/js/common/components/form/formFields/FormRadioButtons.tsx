@@ -5,9 +5,7 @@
 
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import {
- FormControlLabel, FormControl, Radio, RadioGroup
-} from "@material-ui/core";
+import { FormControl, FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({

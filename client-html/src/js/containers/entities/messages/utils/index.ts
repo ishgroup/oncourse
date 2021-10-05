@@ -23,8 +23,6 @@ export const getMessageRequestModel = (message: MessageExtended, selection: stri
     requestModel.searchQuery.search = `id in (${String(selection)})`;
   }
 
-  if (requestModel.entity === "AbstractInvoice") requestModel.entity = "Invoice";
-
   delete requestModel.selectAll;
   delete requestModel.bindings;
   delete requestModel.recipientsCount;

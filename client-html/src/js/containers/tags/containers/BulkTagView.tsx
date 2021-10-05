@@ -15,7 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import MuiButton from "@material-ui/core/Button/Button";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../common/components/form/AppBarActions";
 import Button from "../../../common/components/buttons/Button";

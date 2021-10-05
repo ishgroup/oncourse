@@ -9,7 +9,7 @@ import Collapse from "@material-ui/core/Collapse";
 import { CircularProgress, Typography } from "@material-ui/core";
 import * as Entities from "@aql/queryLanguageModel";
 import debounce from "lodash.debounce";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../../common/utils/common";
 import EntityService from "../../../../../../common/services/EntityService";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";

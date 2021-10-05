@@ -28,7 +28,7 @@ import {
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import {
   clearListNestedEditRecord,
@@ -44,8 +44,8 @@ import { MessageData, MessageExtended } from "../../../../model/common/Message";
 import { State } from "../../../../reducers/state";
 import MessageService from "../services/MessageService";
 import RecipientsSelectionSwitcher from "./RecipientsSelectionSwitcher";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import { Switch } from "../../../../common/components/form/formFields/Switch";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import previewSmsImage from "../../../../../images/preview-sms.png";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { getMessageRequestModel } from "../utils";
@@ -121,7 +121,7 @@ interface MessageEditViewProps extends EditViewProps {
   submitting?: boolean;
   listSearchQuery?: SearchQuery;
   listEntity?: string;
-  getRecipientsMessageData?: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[]) => void;
+  getRecipientsMessageData?: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[], templateId: number) => void;
   clearOnClose?: AnyArgFunction;
   close?: AnyArgFunction;
 }
@@ -151,26 +151,22 @@ const bindingsRenderer: any = ({ fields }) => fields.map((i, n) => {
         };
       case "Text":
         return {
-          fullWidth: true,
           listSpacing: false,
           multiline: true
         };
       case "Date":
         return {
-          fullWidth: true,
           listSpacing: false,
           formatValue: YYYY_MM_DD_MINUSED
         };
       case "Money": {
         return {
           stringValue: true,
-          fullWidth: true,
           listSpacing: false
         };
       }
       default: {
         return {
-          fullWidth: true,
           listSpacing: false
         };
       }
@@ -330,7 +326,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
       if (selectedTemplate.type === "Sms") {
         dispatch(change(form, "messageType", "Sms"));
       }
-      getRecipientsMessageData(listEntity, selectedTemplate.type, listSearchQuery, values.selectAll ? null : selection);
+      getRecipientsMessageData(listEntity, selectedTemplate.type, listSearchQuery, values.selectAll ? null : selection, selectedTemplate.id);
     }
   };
 
@@ -343,7 +339,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
   const setSelectAll = useCallback((v: boolean) => {
     dispatch(change(form, "selectAll", v));
-    getRecipientsMessageData(listEntity, values.messageType, listSearchQuery, v ? null : selection);
+    getRecipientsMessageData(listEntity, values.messageType, listSearchQuery, v ? null : selection, values.templateId);
   }, [form, values]);
 
   const totalCounter = useMemo(() => {
@@ -568,12 +564,13 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
-  getRecipientsMessageData: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[]) => dispatch(
+  getRecipientsMessageData: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[], templateId: number) => dispatch(
     getRecipientsMessageData(
       entityName,
       messageType,
       listSearchQuery,
-      selection
+      selection,
+      templateId
     )
   ),
   clearOnClose: () => {

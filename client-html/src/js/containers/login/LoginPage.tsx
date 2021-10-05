@@ -29,7 +29,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
 import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
 import NewPasswordField from "./components/NewPasswordField";
-import { FormTextField } from "../../common/components/form/form-fields/TextField";
+import { FormTextField } from "../../common/components/form/formFields/TextField";
 import { validateSingleMandatoryField } from "../../common/utils/validation";
 import {
   postLoginRequest, setLoginState, updatePasswordRequest, checkPassword, getEmailByToken, createPasswordRequest

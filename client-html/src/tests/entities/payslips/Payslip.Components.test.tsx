@@ -7,10 +7,7 @@ describe("Virtual rendered PayslipsEditView", () => {
     EditView: PayslipsEditView,
     record: mockecApi => mockecApi.db.getPayslip(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#tutorId").text()).toContain(initialValues.tutorFullName);
-      expect(wrapper.find("#tags").text()).toContain("No value");
-      expect(wrapper.find("#publicNotes").text()).toContain("No value");
-      expect(wrapper.find("#privateNotes").text()).toContain("No value");
+      expect(wrapper.find("#tutorId input").val()).toContain(initialValues.tutorFullName);
     }
   });
 });

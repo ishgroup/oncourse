@@ -21,8 +21,8 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { checkPermissions } from "../../../../../common/actions";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -596,7 +596,6 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           placeholder="Payment method"
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          fullWidth
           disabledTab
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />

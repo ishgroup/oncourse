@@ -14,7 +14,7 @@ import clsx from "clsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { CheckoutSummary } from "../../../../model/checkout";

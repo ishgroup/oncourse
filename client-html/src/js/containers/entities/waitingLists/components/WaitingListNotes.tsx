@@ -4,26 +4,29 @@
  */
 
 import * as React from "react";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import { Grid } from "@material-ui/core";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import { EditViewContainerProps, EditViewProps } from "../../../../model/common/ListView";
 
-interface Props { }
-
-const WaitingListNotes: React.FunctionComponent<Props> = () => (
-  <div className="pl-3 saveButtonTableOffset">
-    <div className="centeredFlex">
-      <div className="heading pb-1">Notes</div>
-    </div>
-    <div>
+const WaitingListNotes: React.FunctionComponent<EditViewProps> = ({ twoColumn }) => (
+  <Grid container className="pl-3 saveButtonTableOffset">
+    <Grid item xs={12}>
+      <div className="centeredFlex">
+        <div className="heading pb-1">Notes</div>
+      </div>
+    </Grid>
+    <Grid item xs={twoColumn ? 6 : 12}>
       <FormField
         type="multilineText"
         name="studentNotes"
         disabled
         label="Student notes"
-        fullWidth
       />
-    </div>
-    <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
-  </div>
+    </Grid>
+    <Grid item xs={twoColumn ? 6 : 12}>
+      <FormField type="multilineText" name="privateNotes" label="Private notes" />
+    </Grid>
+  </Grid>
 );
 
 export default WaitingListNotes;
