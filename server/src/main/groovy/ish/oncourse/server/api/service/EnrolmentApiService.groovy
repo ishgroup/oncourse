@@ -14,6 +14,7 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import ish.cancel.CancelationResult
 import ish.cancel.EnrolmentCancelationRequest
+import ish.common.types.EnrolmentReportingStatus
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.server.api.dao.EnrolmentDao
@@ -83,6 +84,8 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.source = PaymentSourceDTO.values()[0].fromDbType(enrolment.source)
             enrolmentDTO.confirmationStatus = ConfirmationStatusDTO.values()[0]
                     .fromDbType(enrolment.confirmationStatus)
+            enrolmentDTO.studentLoanStatus = EnrolmentReportingStatusDTO.values()[0]
+                    .fromDbType(enrolment.studentLoanStatus)
 
             enrolmentDTO.eligibilityExemptionIndicator = enrolment.eligibilityExemptionIndicator
             enrolmentDTO.outcomeIdTrainingOrg = enrolment.outcomeIdTrainingOrg
@@ -107,9 +110,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.cricosConfirmation = enrolment.cricosConfirmation
             enrolmentDTO.vetFeeIndicator = enrolment.vetFeeIndicator
             enrolmentDTO.trainingPlanDeveloped = enrolment.trainingPlanDeveloped
-
-            enrolmentDTO.feeCharged = enrolment.feeCharged.toBigDecimal()
-
+            
             enrolmentDTO.feeHelpAmount = enrolment.feeHelpAmount?.toBigDecimal()
             enrolmentDTO.creditOfferedValue = enrolment.creditOfferedValue
             enrolmentDTO.feeStatus = FEE_STATUS_MAP[enrolment.feeStatus]
@@ -169,6 +170,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditTotal =  CREDIT_TOTAL_MAP.getByValue(dto.creditTotal)
         enrolment.creditType = CREDIT_TYPE_MAP.getByValue(dto.creditType)
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
+        enrolment.studentLoanStatus = dto.studentLoanStatus.getDbType()
 
         updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags*.id, EnrolmentTagRelation, context)

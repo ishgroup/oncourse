@@ -34,14 +34,10 @@ interface ContactsFinancialProps extends EditViewProps<Contact> {
   access?: AccessState;
 }
 
-const getFormattedTaxes = (taxes: Tax[]) => {
-  const formattedTaxes = taxes.map(tax => ({
-    value: tax.id,
-    label: `${tax.code}`
-  }));
-  formattedTaxes.push({ value: null, label: "Not set" });
-  return formattedTaxes;
-};
+const getFormattedTaxes = (taxes: Tax[]) => taxes.map(tax => ({
+  value: tax.id,
+  label: `${tax.code}`
+}));
 
 const financialColumns: NestedTableColumn[] = [
   {
@@ -158,11 +154,13 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               name="taxId"
               label="Tax type"
               items={getFormattedTaxes(taxTypes) || []}
+              placeholder="Not set"
+              allwowEmpty
             />
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory
           && (
-            <Grid item xs={12} className="centeredFlex mb-3">
+            <Grid item xs={12} className="centeredFlex mb-3 mt-2">
               <Typography variant="body2">
                 <div>
                   A credit card was collected on
@@ -218,4 +216,4 @@ const mapStateToProps = (state: State) => ({
   access: state.access
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(ContactsFinancial);
+export default connect<any, any, any>(mapStateToProps)(ContactsFinancial);

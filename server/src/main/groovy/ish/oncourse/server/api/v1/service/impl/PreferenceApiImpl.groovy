@@ -24,7 +24,6 @@ import ish.oncourse.server.PreferenceController
 import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
 import static ish.oncourse.server.api.v1.function.LanguageFunctions.toRestLanguage
 import ish.oncourse.server.api.v1.function.PreferenceFunctions
-import static ish.oncourse.server.api.v1.function.PreferenceFunctions.READONLY_PREFERENCES
 import static ish.oncourse.server.api.v1.function.PreferenceFunctions.getOrCreateUserPreference
 import static ish.oncourse.server.api.v1.function.PreferenceFunctions.toValue
 import ish.oncourse.server.api.v1.model.ColumnWidthDTO
@@ -116,12 +115,8 @@ class PreferenceApiImpl implements PreferenceApi {
         cayenneService.serverRuntime.performInTransaction {
             preferences.each {
                 try {
-                    if (it.uniqueKey in READONLY_PREFERENCES) {
-                        throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(it.uniqueKey, 'valueString', 'preference read only')).build())
-                    } else {
-                        controller.getValueForKey(it.uniqueKey)
-                        controller.setValueForKey(it.uniqueKey, toValue(it.uniqueKey, it.valueString))
-                    }
+                    controller.getValueForKey(it.uniqueKey)
+                    controller.setValueForKey(it.uniqueKey, toValue(it.uniqueKey, it.valueString))
                 } catch (IllegalArgumentException e) {
                     controller.rollbackChanges()
                     logger.catching(e)

@@ -11,6 +11,8 @@ package ish.oncourse.aql.impl.converter;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
+import ish.oncourse.aql.model.Entity;
+import ish.util.EntityPathUtils;
 import org.apache.cayenne.exp.parser.*;
 
 import java.util.List;
@@ -68,6 +70,15 @@ public class LazyEmptyNode extends LazyExpressionNode {
             return parent;
         }
 
+        String basePath = resolvePathFor(pathNode);
+
+        Entity entity = EntityPathUtils.resolvePath(basePath, ctx);
+
+        if (entity != null) {
+            parent.jjtAddChild(new ASTScalar(null), parent.jjtGetNumChildren() - 1);
+            return parent;
+        }
+
         if (parent.jjtGetNumChildren() == 0)
             ExpressionUtil.addChild(parent, pathNode, 0);
 
@@ -84,6 +95,17 @@ public class LazyEmptyNode extends LazyExpressionNode {
 
         ExpressionUtil.addChild(root, astConditionNode, 1);
         return root;
+    }
+
+    private String resolvePathFor(SimpleNode node) {
+        if (!(node instanceof BasePathProvider || node instanceof ASTPath)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (node instanceof BasePathProvider)
+            return ((BasePathProvider) node).resolveBasePath();
+        else
+            return ((ASTPath) node).getPath();
     }
 
     @Override
