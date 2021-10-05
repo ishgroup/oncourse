@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.Method.POST
@@ -135,9 +136,7 @@ PIN: %s\n
         if (result == "invalid pin.") {
             sendEmail(invalidPinErrorMessage)
         } else {
-            Map<String, String> customFields = voucher.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
-            customFields[VOUCHER_REDEEMED_DATE_TYPE_KEY] = DateFormatter.formatDate(new Date())
-            updateCustomFields(voucher.context, voucher, customFields, VoucherCustomField)
+            voucher.serviceNswRedeemedOn = LocalDateTime.now().clearTime()
             voucher.context.commitChanges()
         }
     }
