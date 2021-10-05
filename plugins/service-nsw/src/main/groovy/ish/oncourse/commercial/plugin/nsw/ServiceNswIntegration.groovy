@@ -127,6 +127,12 @@ PIN: %s\n
         apiData.each {data ->
             result = sendRedeemRequest(data.pin, data.postcode).toLowerCase()
             if (result == "voucher was redeemed.") {
+                
+                if (voucher.serviceNswRedeemedOn == null) {
+                    voucher.serviceNswRedeemedOn = LocalDateTime.now().clearTime()
+                    voucher.context.commitChanges()
+                }
+                
                 return
             } else if (result != "invalid pin.") {
                 sendEmail(getStandartErrorMessage(result))
