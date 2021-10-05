@@ -18,10 +18,6 @@ class MYOBBaseForm extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
-    this.state = {
-      hideConfig: false,
-      loading: false
-    };
     // Initializing form with values
     props.dispatch(initialize("MYOBForm", props.item));
   }
