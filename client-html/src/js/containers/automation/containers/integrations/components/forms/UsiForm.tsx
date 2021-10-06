@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import { change, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";

@@ -5,14 +5,14 @@
 
 import React, { useMemo } from "react";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import FileCopyOutlined from "@material-ui/icons/FileCopyOutlined";
-import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@mui/material/IconButton";
+import FileCopyOutlined from "@mui/icons-material/FileCopyOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { CourseClassTutor, SessionWarning } from "@api/model";
 import { Dispatch } from "redux";
-import Edit from "@material-ui/icons/Edit";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Edit from "@mui/icons-material/Edit";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { TimetableSession } from "../../../../../model/timetable";
 import CourseClassSessionFields from "./CourseClassSessionFields";
 import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";

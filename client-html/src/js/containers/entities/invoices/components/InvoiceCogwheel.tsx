@@ -4,7 +4,7 @@
  */
 
 import React, { memo, NamedExoticComponent, useCallback, useEffect, useMemo, useState } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";

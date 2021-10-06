@@ -5,13 +5,13 @@
 
 import * as React from "react";
 import { Document, Tag } from "@api/model";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Launch from "@material-ui/icons/Launch";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import AddCircle from "@material-ui/icons/AddCircle";
-import IconButton from "@material-ui/core/IconButton";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Launch from "@mui/icons-material/Launch";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import AddCircle from "@mui/icons-material/AddCircle";
+import IconButton from "@mui/material/IconButton";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { WrappedFieldArrayProps } from "redux-form";
@@ -347,7 +347,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
             </Typography>
           </div>
         </Grid>
-        <Grid container spacing={3} wrap="wrap">
+        <Grid container columnSpacing={3} spacing={3} wrap="wrap">
           {fields.map((f, index) => {
             const item = fields.get(index);
 

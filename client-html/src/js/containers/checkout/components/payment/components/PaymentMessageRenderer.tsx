@@ -4,17 +4,17 @@
  */
 import React from "react";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import IconButton from "@material-ui/core/IconButton";
-import Launch from "@material-ui/icons/Launch";
-import Share from "@material-ui/icons/Share";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import CancelIcon from "@material-ui/icons/Cancel";
-import DoneRounded from "@material-ui/icons/DoneRounded";
-import Paper from "@material-ui/core/Paper";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import Launch from "@mui/icons-material/Launch";
+import Share from "@mui/icons-material/Share";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DoneRounded from "@mui/icons-material/DoneRounded";
+import Paper from "@mui/material/Paper";
 import Button from "../../../../../common/components/buttons/Button";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";
@@ -168,7 +168,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
         <Typography variant="h5">Transaction successful</Typography>
       </div>
       <div>
-        <Grid container className="p-3 align-content-between">
+        <Grid container columnSpacing={3} className="p-3 align-content-between">
           {payment.invoice && (
           <Grid item xs={12}>
             {summary.list.map((list, i) => (

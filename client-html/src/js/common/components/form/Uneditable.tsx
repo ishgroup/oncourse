@@ -5,7 +5,7 @@
 
 import clsx from "clsx";
 import React, { useCallback } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import { State } from "../../../reducers/state";
 import { openInternalLink } from "../../utils/links";

@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Dialog } from "@material-ui/core";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Typography from "@material-ui/core/Typography";
+import { Dialog } from "@mui/material";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
 import React, { useCallback, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -675,7 +675,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         alwaysFullScreenCreateView
       />
 
-      <Dialog maxWidth="md" open={Boolean(changedFields.length)} disableBackdropClick disableEscapeKeyDown>
+      <Dialog maxWidth="md" open={Boolean(changedFields.length)} disableEscapeKeyDown>
         <DialogTitle classes={{
           root: "pb-0"
         }}

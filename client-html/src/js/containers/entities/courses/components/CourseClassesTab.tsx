@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import React, { useEffect, useState } from "react";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import { EntityType } from "../../../../model/common/NestedEntity";
@@ -58,7 +58,7 @@ const CourseClassesTab: React.FC<any> = ({
   ]);
 
   return (
-    <Grid container item xs={12} className="pl-3 pr-3">
+    <Grid container columnSpacing={3} item xs={12} className="pl-3 pr-3">
       <NestedEntity
         entityName="Classes"
         goToLink="/class"

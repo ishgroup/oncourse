@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import Error from "@material-ui/icons/Error";
-import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
+import Error from "@mui/icons-material/Error";
+import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
 import styles from "./styles";
 

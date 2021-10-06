@@ -16,16 +16,18 @@
 import React, { useEffect } from "react";
 import { isDirty } from "redux-form";
 import { Route, Switch, withRouter } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { connect } from "react-redux";
+import { CacheProvider } from '@emotion/react';
+import createCache from 'tss-react/@emotion/cache';
 import { Dispatch } from "redux";
 import { BrowserWarning } from "../common/components/dialog/BrowserWarning";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import store from "../constants/Store";
 import { loginRoute, routes } from "../routes";
 import MessageProvider from "../common/components/dialog/message/MessageProvider";
-import { currentTheme, defaultTheme, getTheme } from "../common/themes/ishTheme";
+import { currentTheme, getTheme } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
@@ -44,6 +46,11 @@ import Message from "../common/components/dialog/message/Message";
 import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
 import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
 import { getDashboardBlogPosts } from "./dashboard/actions";
+
+export const muiCache = createCache({
+  key: 'mui',
+  prepend: true,
+});
 
 const isAnyFormDirty = (state: State) => {
   const forms = Object.getOwnPropertyNames(state.form);
@@ -116,7 +123,7 @@ export class MainBase extends React.PureComponent<Props, any> {
 
     this.state = {
       themeName: DefaultThemeKey,
-      theme: getTheme(defaultTheme),
+      theme: getTheme(),
       showMessage: false,
       successMessage: false,
       messageText: ""
@@ -128,7 +135,7 @@ export class MainBase extends React.PureComponent<Props, any> {
       themeName: LSGetItem(APPLICATION_THEME_STORAGE_NAME)
         ? LSGetItem(APPLICATION_THEME_STORAGE_NAME)
         : DefaultThemeKey,
-      theme: getTheme(defaultTheme)
+      theme: getTheme()
     });
   };
 
@@ -241,35 +248,37 @@ export class MainBase extends React.PureComponent<Props, any> {
     const { isLogged } = this.props;
 
     return (
-      <ThemeContext.Provider
-        value={{
-          themeHandler: this.themeHandler,
-          themeName
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <GlobalStylesProvider>
-            <BrowserWarning />
-            <Message
-              opened={showMessage}
-              isSuccess={successMessage}
-              text={messageText}
-              clearMessage={this.clearMessage}
-            />
-            <Switch>
-              {isLogged ? (
-                routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
-              ) : (
-                loginRoute.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
-              )}
-            </Switch>
-            <ConfirmProvider />
-            {isLogged && <SwipeableSidebar />}
-          </GlobalStylesProvider>
-          <MessageProvider />
-        </ThemeProvider>
-      </ThemeContext.Provider>
+      <CacheProvider value={muiCache}>
+        <ThemeContext.Provider
+          value={{
+            themeHandler: this.themeHandler,
+            themeName
+          }}
+        >
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <GlobalStylesProvider>
+              <BrowserWarning />
+              <Message
+                opened={showMessage}
+                isSuccess={successMessage}
+                text={messageText}
+                clearMessage={this.clearMessage}
+              />
+              <Switch>
+                {isLogged ? (
+                  routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
+                ) : (
+                  loginRoute.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
+                )}
+              </Switch>
+              <ConfirmProvider />
+              {isLogged && <SwipeableSidebar />}
+            </GlobalStylesProvider>
+            <MessageProvider />
+          </ThemeProvider>
+        </ThemeContext.Provider>
+      </CacheProvider>
     );
   }
 }

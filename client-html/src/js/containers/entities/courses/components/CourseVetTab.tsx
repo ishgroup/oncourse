@@ -7,11 +7,11 @@ import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Tooltip from "@material-ui/core/Tooltip";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Tooltip from "@mui/material/Tooltip";
 import { Module, Qualification } from "@api/model";
-import { Collapse } from "@material-ui/core";
+import { Collapse } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -139,7 +139,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
   }, [moduleItems]);
 
   return (
-    <Grid container className="pl-3 pr-3">
+    <Grid container columnSpacing={3} className="pl-3 pr-3">
       <Grid item xs={12}>
         <div className="heading mt-2 mb-2">Vet</div>
       </Grid>

@@ -4,11 +4,11 @@
  */
 
 import * as React from "react";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Grid, { GridSize } from "@mui/material/Grid";
 import { FieldArray, change } from "redux-form";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import ScreenShare from "@mui/icons-material/ScreenShare";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
@@ -67,7 +67,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
 
     return (
       <>
-        <Grid container className="p-3">
+        <Grid container columnSpacing={3} className="p-3">
           <Grid item xs={layoutArray[2].xs}>
             <FormField
               type="text"
@@ -78,7 +78,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
             />
           </Grid>
           <Grid item xs={layoutArray[0].xs}>
-            <Grid container className="flex-nowrap align-items-center mb-1">
+            <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
               <Grid item xs={12} className="container">
                 <FormField
                   type="tags"
@@ -103,7 +103,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
           </Grid>
 
           <Grid item xs={layoutArray[1].xs}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={layoutArray[3].xs}>
                 <FormField
                   type="text"

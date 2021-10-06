@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
 import EnrolItemListRenderer from "./components/EnrolItemListRenderer";
 import SaleRelations from "./components/SaleRelations";
@@ -26,7 +26,7 @@ const EnrolItemListView = React.memo<any>(props => {
   const hasSalesRelations = Boolean(salesRelations.length);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={12} md={hasSalesRelations ? 6 : 12}>
         <EnrolItemListRenderer
           type="course"

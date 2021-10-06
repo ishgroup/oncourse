@@ -3,16 +3,16 @@ import {
   ExecuteImportRequest,
   ImportModel
 } from "@api/model";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import React, {
   useCallback, useEffect, useMemo
 } from "react";
-import MuiButton from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Typography from "@material-ui/core/Typography/Typography";
+import MuiButton from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography/Typography";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
@@ -165,7 +165,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             {values.description && (
               <Grid item xs={12} className="mb-2">
                 <Typography variant="body2" color="textSecondary" className="pb-2">

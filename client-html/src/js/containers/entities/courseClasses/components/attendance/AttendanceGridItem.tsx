@@ -6,11 +6,11 @@
 import React, { useCallback, useMemo } from "react";
 import { change, initialize } from "redux-form";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Message from "@material-ui/icons/Message";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { withStyles, createStyles } from "@mui/styles";
+import IconButton from "@mui/material/IconButton";
+import Message from "@mui/icons-material/Message";
 import { AttendanceType } from "@api/model";
 import { differenceInMinutes, format } from "date-fns";
 import Decimal from "decimal.js-light";
@@ -357,7 +357,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
   }, [type, attendancePercent, attendancePeriod]);
 
   return (
-    <Grid container className="align-items-center">
+    <Grid container columnSpacing={3} className="align-items-center">
       <Grid item xs={3}>
         <div className={clsx("pt-0-5 pb-0-5 pl-1 pr-1 d-inline-flex-center", classes.name)}>
           {attendanceLeftLabel}
@@ -366,9 +366,9 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
         </div>
       </Grid>
       <Grid item xs={9}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={10} className="overflow-hidden">
-            <Grid container className={clsx(checkAnimationClass())}>
+            <Grid container columnSpacing={3} className={clsx(checkAnimationClass())}>
               {renderedItems}
             </Grid>
           </Grid>

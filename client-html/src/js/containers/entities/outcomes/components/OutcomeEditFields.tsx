@@ -8,19 +8,19 @@
 
 import {
   Card, Chip, Grid, Tooltip, Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
 import { change } from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from "@mui/material/IconButton/IconButton";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { makeStyles } from "@mui/styles";
 import {
  ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
 } from "@api/model";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
@@ -220,7 +220,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const today = new Date();
 
   return (
-    <Grid container className={className}>
+    <Grid container columnSpacing={3} className={className}>
       {!twoColumn && (
         <Grid item xs={12}>
           <Uneditable
@@ -295,7 +295,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
       <Grid item xs={twoColumn ? 8 : 12}>
         <Card className={classes.card}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12}>
               <div className="heading">OUTCOME PROGRESSION</div>
             </Grid>
@@ -310,7 +310,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       </Grid>
 
       {priorLearningEditView ? (
-        <Grid container item={true} xs={12}>
+        <Grid container columnSpacing={3} item={true} xs={12}>
           <Grid item xs={twoColumn ? 4 : 12} className="textField">
             <div>
               <FormField
@@ -338,7 +338,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Grid>
       ) : (
         <Card className={classes.card}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid xs={twoColumn ? 3 : 12}>
               <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
               <Tooltip
@@ -457,7 +457,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Card>
       )}
       <Grid item xs={12}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="select"
@@ -489,7 +489,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="text"

@@ -1,4 +1,4 @@
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import * as React from 'react';
 
 const BROWSER_WARNING_TEXT = "Your current browser is not supported. Please ensure you are using an up to date version of Chrome, Firefox or Edge.";

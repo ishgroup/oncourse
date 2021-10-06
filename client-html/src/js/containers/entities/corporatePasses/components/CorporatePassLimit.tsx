@@ -6,8 +6,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
 import { CorporatePass, Sale, SaleType } from "@api/model";
 import { change } from "redux-form";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";

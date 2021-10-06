@@ -1,8 +1,9 @@
 import * as React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
-import { createStyles, Grid, withStyles } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
+import { Grid } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
 import { TutorRolePayRate } from "@api/model";
 import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
@@ -58,7 +59,7 @@ class PayRates extends React.Component<Props, any> {
     const { classes } = this.props;
 
     return (
-      <Grid container className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
+      <Grid container columnSpacing={3} className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
         <Grid item xs={12}>
           <div className="centeredFlex">
             <div className="heading">Pay Rate</div>

@@ -4,10 +4,10 @@
  */
 
 import React, { useEffect, useState } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import ChevronRight from "@mui/icons-material/ChevronRight";
+import ChevronLeft from "@mui/icons-material/ChevronLeft";
 
 const ChartViewSwitcher: React.FC<any> = ({ showAllWeeks, setShowAllWeeks, theme }) => {
   const [showTooltip, setShowTooltip] = useState(false);

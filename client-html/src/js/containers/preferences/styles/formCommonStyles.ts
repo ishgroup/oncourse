@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles } from "@material-ui/core/styles";
-import { darken } from "@material-ui/core";
+import { createStyles } from "@mui/styles";
+import { darken } from "@mui/material";
 
 export const formCommonStyles = theme => createStyles({
   marginTop: {

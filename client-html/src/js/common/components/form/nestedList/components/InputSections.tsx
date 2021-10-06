@@ -5,11 +5,11 @@
 
 import React from "react";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse/Collapse";
-import Typography from "@material-ui/core/Typography";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Close from "@material-ui/icons/Close";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse/Collapse";
+import Typography from "@mui/material/Typography";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Close from "@mui/icons-material/Close";
 import SearchInput from "./SearchInput";
 import { Switch } from "../../formFields/Switch";
 

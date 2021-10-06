@@ -9,8 +9,8 @@
 import React, { useMemo, } from "react";
 import { connect } from "react-redux";
 import { change, getFormValues } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { CustomFieldType } from "@api/model";
 import { Dispatch } from "redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
@@ -99,7 +99,7 @@ const MessageCardContent = React.memo<Props>(props => {
   );
 
   return (
-    <Grid container className="mt-2">
+    <Grid container columnSpacing={3} className="mt-2">
       <Grid item xs={12} className="centeredFlex">
         <Typography variant="caption" color="textSecondary">
           Use template

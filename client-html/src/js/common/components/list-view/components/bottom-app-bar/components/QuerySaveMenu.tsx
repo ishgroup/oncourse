@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 
 const QuerySaveMenu = props => {
   const { closeQuerySaveMenu, anchor, setSavingFilterState } = props;

@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { FieldArray } from "redux-form";
-import { GridSize } from "@material-ui/core/Grid";
+import { GridSize } from "@mui/material/Grid";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 
@@ -25,7 +25,7 @@ class Directions extends React.Component<any, any> {
     return (
       <>
         <div className="heading p-3 pt-2 pb-0">Directions</div>
-        <Grid container className="h-100 justify-content-center p-3" alignItems="flex-start" alignContent="flex-start">
+        <Grid container columnSpacing={3} className="h-100 justify-content-center p-3" alignItems="flex-start" alignContent="flex-start">
           <Grid item xs={layoutArray[0].xs} className="mb-2">
             <FormEditorField
               name="drivingDirections"

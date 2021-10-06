@@ -4,17 +4,17 @@
  */
 
 import * as React from "react";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Grid, { GridSize } from "@mui/material/Grid";
 import clsx from "clsx";
 import {
   arrayInsert, arrayRemove, change, FieldArray
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
-import Typography from "@material-ui/core/Typography";
-import AddCircle from "@material-ui/icons/AddCircle";
+import Typography from "@mui/material/Typography";
+import AddCircle from "@mui/icons-material/AddCircle";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
@@ -138,9 +138,9 @@ class PayslipsEditView extends React.PureComponent<any, any> {
     return values ? (
       <div className="fullHeightWithoutAppBar overflow-hidden">
         <div className="h-100 overflow-y-auto">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item md={paislipsLayout[0].md} xs={12}>
-              <Grid container className="pt-1 pl-3 pr-3 pb-0">
+              <Grid container columnSpacing={3} className="pt-1 pl-3 pr-3 pb-0">
                 <Grid item xs={12}>
                   <FormField
                     type="remoteDataSearchSelect"
@@ -199,12 +199,12 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                       "mw-800": twoColumn
                     })}
                   >
-                    <Grid container>
+                    <Grid container columnSpacing={3}>
                       <Grid item xs={paislipsLayout[8].xs} className="centeredFlex">
                         <span className="heading flex-fill money">Payrun total</span>
                       </Grid>
                       <Grid item xs={paislipsLayout[9].xs}>
-                        <Grid container>
+                        <Grid container columnSpacing={3}>
                           <Grid item xs={twoColumn ? paislipsLayout[10].xs : false} />
 
                           <Grid item xs={paislipsLayout[11].xs} className="centeredFlex justify-content-end">

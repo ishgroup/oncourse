@@ -5,7 +5,7 @@
 
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { FieldArray, initialize } from "redux-form";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -250,7 +250,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
   return (
     <div className="p-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Education">
-        <Grid container>
+        <Grid container columnSpacing={3}>
           {enrolmentsPermissions && (
           <Grid
             item
@@ -274,7 +274,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
           </Grid>
         )}
         </Grid>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           {priorLearningsPermissions
             && (
             <Grid
@@ -298,7 +298,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             </Grid>
           )}
         </Grid>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           {outcomesPermissions
             && (
             <Grid
@@ -322,7 +322,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             </Grid>
           )}
         </Grid>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           {certificatesPermissions
             && (
             <Grid

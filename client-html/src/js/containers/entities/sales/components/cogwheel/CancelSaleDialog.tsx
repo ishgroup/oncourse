@@ -5,16 +5,16 @@
 
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 import { change, clearFields, DecoratedComponentClass, getFormValues, reduxForm } from "redux-form";
-import Grid from "@material-ui/core/Grid/Grid";
+import Grid from "@mui/material/Grid/Grid";
 import { Dispatch } from "redux";
 import { Account, ProductItemCancel, Tax } from "@api/model";
-import { FormControlLabel } from "@material-ui/core";
+import { FormControlLabel } from "@mui/material";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
@@ -95,7 +95,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
         <DialogTitle>You are about to cancel this sale</DialogTitle>
 
         <DialogContent className="overflow-hidden">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12}>
               <FormControlLabel
                 classes={{
@@ -132,7 +132,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
             </Grid>
 
             <Grid item xs={12}>
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 <Grid item xs={4}>
                   <FormField
                     type="money"

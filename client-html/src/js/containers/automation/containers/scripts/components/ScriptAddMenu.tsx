@@ -1,9 +1,9 @@
 import * as React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import { Menu, MenuItem } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import Fab from "@material-ui/core/Fab";
+import { createStyles, withStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import { Menu, MenuItem } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
 import { change } from "redux-form";
 
 const styles = theme =>
@@ -76,7 +76,6 @@ class ScriptAddMenu extends React.Component<any, any> {
               <div className="flex-fill">
                 <Typography className="heading pl-2 mb-1">Action</Typography>
                 <MenuItem
-                  button
                   disabled={hasImports || !hasUpdateAccess}
                   className={classes.listItemPadding}
                   data-component="Import"
@@ -88,7 +87,6 @@ class ScriptAddMenu extends React.Component<any, any> {
                 </MenuItem>
 
                 <MenuItem
-                  button
                   className={classes.listItemPadding}
                   data-component="Query"
                   onClick={this.addComponent}
@@ -99,7 +97,6 @@ class ScriptAddMenu extends React.Component<any, any> {
                 </MenuItem>
 
                 <MenuItem
-                  button
                   disabled={!hasUpdateAccess}
                   className={classes.listItemPadding}
                   data-component="Script"
@@ -111,7 +108,6 @@ class ScriptAddMenu extends React.Component<any, any> {
                 </MenuItem>
 
                 <MenuItem
-                  button
                   className={classes.listItemPadding}
                   data-component="Message"
                   onClick={this.addComponent}
@@ -122,7 +118,6 @@ class ScriptAddMenu extends React.Component<any, any> {
                 </MenuItem>
 
                 <MenuItem
-                  button
                   className={classes.listItemPadding}
                   data-component="Report"
                   onClick={this.addComponent}

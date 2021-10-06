@@ -4,9 +4,10 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { createStyles, darken, withStyles } from "@material-ui/core/styles";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { createStyles, withStyles } from "@mui/styles";
+import { darken } from "@mui/material/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../model/common/Theme";
 

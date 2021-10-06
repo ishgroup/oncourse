@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
-import Chip from "@material-ui/core/Chip";
-import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
+import Chip from "@mui/material/Chip";
+import { createStyles, withStyles } from "@mui/styles";
+import { Theme } from "@mui/material/styles";
 import { CommonListFilter } from "../../../../../model/common/sidebar";
 
 interface Props {
@@ -68,7 +69,7 @@ const FiltersList = React.memo<Props>(({
           label={f.name}
           icon={f.icon}
           color={activeFilters[i] ? "secondary" : undefined}
-          variant={activeFilters[i] ? "default" : "outlined"}
+          variant={activeFilters[i] ? "filled" : "outlined"}
           onClick={onClick}
           role={i.toString()}
         />

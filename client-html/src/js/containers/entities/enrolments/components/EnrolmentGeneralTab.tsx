@@ -7,12 +7,12 @@ import React, { useCallback, useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { change, FieldArray } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import {
   AssessmentClass,
   ClassFundingSource,
@@ -175,7 +175,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
           </div>
         </CustomAppBar>
       )}
-      <Grid container className="pt-3 pl-3 pr-3">
+      <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
           <FormField
             type="tags"

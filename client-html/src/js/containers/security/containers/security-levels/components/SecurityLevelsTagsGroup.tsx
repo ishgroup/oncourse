@@ -1,7 +1,8 @@
 import React from "react";
 import {
- FormGroup, FormControlLabel, Typography, withStyles 
-} from "@material-ui/core";
+ FormGroup, FormControlLabel, Typography
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 
 import CustomButtonEditShowHide from "./CustomButtonEditShowHide";

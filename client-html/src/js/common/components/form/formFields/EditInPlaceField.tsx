@@ -11,22 +11,22 @@
 import React from "react";
 import { change } from "redux-form";
 import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
-import Edit from "@material-ui/icons/Edit";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import MenuItem from "@material-ui/core/MenuItem";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import CreateIcon from '@material-ui/icons/Create';
-import ListItemText from "@material-ui/core/ListItemText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { InputAdornment } from "@material-ui/core";
+import ListItem from "@mui/material/ListItem";
+import Edit from "@mui/icons-material/Edit";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import MenuItem from "@mui/material/MenuItem";
+import ButtonBase from "@mui/material/ButtonBase";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import CreateIcon from '@mui/icons-material/Create';
+import ListItemText from "@mui/material/ListItemText";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import { InputAdornment } from "@mui/material";
 
 const styles = theme => createStyles({
   inputEndAdornment: {
@@ -675,7 +675,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       },
       value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
       onFocus: this.onFocus,
-      onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v))
+      onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v)),
+      variant: restInputProps.variant || "standard",
     };
 
     const editIcon = select ? (
@@ -730,6 +731,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 }}
                 {...InputLabelProps}
                 shrink={Boolean(label || input.value)}
+                variant={restInputProps.variant || "standart"}
               >
                 {labelContent}
               </InputLabel>
@@ -762,6 +764,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onClose={this.onSelectClose}
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
+                    variant="standard"
                     displayEmpty
                   >
                     {selectItems}

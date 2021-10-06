@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import React, { useEffect, useState } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import { getNestedTutorClassItem } from "../utils";

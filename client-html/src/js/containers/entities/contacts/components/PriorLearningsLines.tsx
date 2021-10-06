@@ -1,6 +1,6 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid/Grid";
 import Uneditable from "../../../../common/components/form/Uneditable";
 
 const PriorLearningsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
@@ -23,7 +23,7 @@ export const PriorLearningsContentLine: React.FunctionComponent<any> = React.mem
   const { row } = props;
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={6}>
         <Uneditable value={row.externalRef} label="External reference" />
       </Grid>

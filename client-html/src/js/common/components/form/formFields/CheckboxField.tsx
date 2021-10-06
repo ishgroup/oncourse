@@ -8,8 +8,8 @@
  * */
 
 import React, { useCallback } from "react";
-import Checkbox from "@material-ui/core/Checkbox";
-import withStyles from "@material-ui/core/styles/withStyles";
+import Checkbox from "@mui/material/Checkbox";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
 
 const getValue = (value, stringValue) => {

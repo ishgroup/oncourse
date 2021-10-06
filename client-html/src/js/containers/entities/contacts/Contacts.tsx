@@ -10,7 +10,7 @@ import { isBefore } from "date-fns";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";

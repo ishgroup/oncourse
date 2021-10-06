@@ -7,12 +7,12 @@ import React, { useCallback } from "react";
 import clsx from "clsx";
 import { FieldArray } from "redux-form";
 import { Draggable } from "react-beautiful-dnd";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Delete from "@material-ui/icons/Delete";
-import Edit from "@material-ui/icons/Edit";
-import DragIndicator from "@material-ui/icons/DragIndicator";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography/Typography";
+import { withStyles, createStyles } from "@mui/styles";
+import Delete from "@mui/icons-material/Delete";
+import Edit from "@mui/icons-material/Edit";
+import DragIndicator from "@mui/icons-material/DragIndicator";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography/Typography";
 import TagItemsRenderer from "./TagItemsRenderer";
 
 const styles = theme => createStyles({

@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { Tax } from "@api/model";
 import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -61,9 +61,9 @@ const AccountsEditView = props => {
   }
 
   return (
-    <Grid container className="p-3">
+    <Grid container columnSpacing={3} className="p-3">
       <Grid item lg={twoColumn ? 11 : 11} md={twoColumn ? 11 : 11} xs={11}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
               type="text"

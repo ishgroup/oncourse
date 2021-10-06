@@ -3,14 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import useTheme from "@material-ui/core/styles/useTheme";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import useTheme from "@mui/styles/useTheme";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import React from "react";
-import ListSubheader from '@material-ui/core/ListSubheader';
+import ListSubheader from '@mui/material/ListSubheader';
 import { areEqual, FixedSizeList as List } from 'react-window';
-import { createStyles } from "@material-ui/core";
-import green from "@material-ui/core/colors/green";
+import { createStyles } from "@mui/styles";
+import green from "@mui/material/colors/green";
 import clsx from "clsx";
+import { AppTheme } from "../../../../model/common/Theme";
 
 export const selectStyles = theme => createStyles({
     textField: {
@@ -103,7 +104,7 @@ export const ListboxComponent = React.forwardRef<any, any>((props, ref) => {
   } = props;
 
   const itemData = React.Children.toArray(children);
-  const theme = useTheme();
+  const theme = useTheme() as AppTheme;
   const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
   const itemCount = itemData.length;
   const itemSize = rowHeight || (smUp ? 36 : 48);

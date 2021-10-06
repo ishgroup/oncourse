@@ -1,6 +1,6 @@
 import * as React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import MuiTextField from "@material-ui/core/TextField";
+import { withStyles } from "@mui/styles";
+import MuiTextField from "@mui/material/TextField";
 
 const styles = theme => ({
   inputWrapper: {

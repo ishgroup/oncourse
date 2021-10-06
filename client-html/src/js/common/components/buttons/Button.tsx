@@ -8,10 +8,10 @@
  * */
 
 import React from "react";
-import MuiButton from "@material-ui/core/Button";
+import MuiButton from "@mui/material/Button";
 import clsx from "clsx";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { withStyles, createStyles } from "@mui/styles";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const styles = theme => createStyles({
     leftIcon: {
@@ -66,7 +66,7 @@ const Button = props => {
       classes={{
         root: clsx(rootClasses, className),
         disabled: disabledClasses,
-        label: loading ? classes.loading : undefined
+        text: loading ? classes.loading : undefined
       }}
       onClick={onClick}
       type={type}

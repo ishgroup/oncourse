@@ -5,9 +5,10 @@
 
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Collapse, Typography, withStyles } from "@material-ui/core";
+import { Collapse, Typography } from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { Field, change } from "redux-form";
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 import clsx from "clsx";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { Switch } from "../../../../../common/components/form/formFields/Switch";

@@ -6,15 +6,15 @@
 import React, { useCallback } from "react";
 import clsx from "clsx";
 import { InjectedFormProps, reduxForm } from "redux-form";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import HelpOutline from "@material-ui/icons/HelpOutline";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import MuiButton from "@material-ui/core/Button/Button";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import HelpOutline from "@mui/icons-material/HelpOutline";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import MuiButton from "@mui/material/Button/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../common/components/form/AppBarActions";
@@ -164,7 +164,7 @@ const BulkTagViewForm: React.FC<BulkTagViewProps> = props => {
         <Content>
           <form className="container" onSubmit={handleSubmit(onSubmit)}>
             <CustomAppBar fullWidth>
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 <Grid item xs={12} className="centeredFlex">
                   <div className="flex-fill" />
                   <AppBarActions actions={[]} />
@@ -179,7 +179,7 @@ const BulkTagViewForm: React.FC<BulkTagViewProps> = props => {
                 </Grid>
               </Grid>
             </CustomAppBar>
-            <Grid container className={classes.mainContent}>
+            <Grid container columnSpacing={3} className={classes.mainContent}>
               <Grid item sm={5}>
                 <Card>
                   <CardContent className="mb-0 p-3">

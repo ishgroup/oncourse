@@ -8,10 +8,10 @@ import { connect } from "react-redux";
 import {
  change, FieldArray, getFormInitialValues, initialize
 } from "redux-form";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { addDays, format as formatDate } from "date-fns";
 import { Report } from "@api/model";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
@@ -209,7 +209,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
     return (
       <div className="appBarContainer">
         <CustomAppBar noDrawer>
-          <Grid container className="flex-fill">
+          <Grid container columnSpacing={3} className="flex-fill">
             <Grid item xs={6} className="mt-05">
               <FormField
                 type="searchSelect"
@@ -258,7 +258,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
           </div>
         </CustomAppBar>
         <div className="flex-column p-3 h-100">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={4}>
               <EditInPlaceField
                 items={accounts || []}

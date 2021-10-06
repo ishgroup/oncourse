@@ -4,12 +4,12 @@
  */
 
 import { CustomFieldType } from "@api/model";
-import MuiButton from "@material-ui/core/Button/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import MuiButton from "@mui/material/Button/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";

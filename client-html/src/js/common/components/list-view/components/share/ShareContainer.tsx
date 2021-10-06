@@ -4,18 +4,18 @@
  */
 
 import * as React from "react";
-import Drawer from "@material-ui/core/Drawer";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import { Help, PlayArrow, Publish } from "@material-ui/icons";
+import Drawer from "@mui/material/Drawer";
+import withStyles from "@mui/styles/withStyles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import { Help, PlayArrow, Publish } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from "redux-form";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import {
   Binding,
   ExportRequest,
@@ -26,8 +26,8 @@ import {
   SearchQuery,
   Sorting,
 } from "@api/model";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import clsx from "clsx";
 import FormField from "../../../form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
@@ -460,7 +460,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     return (
       <>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={preview ? 8 : 12}>
             {pdfActive && pdfActive.description && (
               <Grid item xs={12} className="mb-2">
@@ -470,7 +470,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               </Grid>
             )}
             <Grid item xs={12}>
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 <Grid item xs={12}>
                   <FormField
                     type="select"
@@ -580,7 +580,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     return (
       <Grid item xs={12}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12}>
             <Typography variant="body2" color="inherit">
               {values && values.description}
@@ -642,8 +642,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           className={classes.fileInput}
           onChange={this.handleBackgroundUpload}
         />
-        <Grid container className={classes.content}>
-          <Grid container className={classes.header} wrap="nowrap" alignItems="center">
+        <Grid container columnSpacing={3} className={classes.content}>
+          <Grid container columnSpacing={3} className={classes.header} wrap="nowrap" alignItems="center">
             <Grid item xs={2}>
               <Typography variant="body2" className={classes.headerText}>
                 Share
@@ -666,7 +666,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             </Grid>
           </Grid>
 
-          <Grid container className={classes.body} wrap="nowrap" spacing={3}>
+          <Grid container columnSpacing={3} className={classes.body} wrap="nowrap" spacing={3}>
             <Grid item zeroMinWidth className={classes.menuColumn}>
               <List disablePadding className={classes.list}>
                 {Boolean(pdfReports.length) && (
@@ -679,7 +679,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     key={0}
                     selected={selectedPrimary === 0}
                     onClick={() => this.selectPrimary(0)}
-                    disableRipple
+                    // disableRipple
                   >
                     <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       PDF
@@ -690,7 +690,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 )}
                 {exportTemplateTypesArr.map((t, i) => (
                   <ListItem
-                    button
+                    // button
                     classes={{
                       root: classes.listItems,
                       selected: classes.listItemsSelected,
@@ -698,7 +698,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     key={i + 1}
                     selected={selectedPrimary === i + 1}
                     onClick={() => this.selectPrimary(i + 1)}
-                    disableRipple
+                    // disableRipple
                   >
                     <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       {t}
@@ -714,7 +714,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 {pdfSelected
                   && pdfReports.map((i, index) => (
                     <ListItem
-                      button
+                      // button
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -723,7 +723,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      disableRipple
+                      // disableRipple
                       style={{ position: "relative" }}
                     >
                       <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
@@ -738,7 +738,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   && Boolean(exportTemplateTypesArr.length)
                   && exportTemplateTypes[exportTemplateTypesArr[selectedPrimary - 1]].map((t, index) => (
                     <ListItem
-                      button
+                      // button
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -747,7 +747,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      disableRipple
+                      // disableRipple
                       style={{ position: "relative" }}
                     >
                       <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
@@ -761,7 +761,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             </Grid>
             <Grid item xs className={classes.menuColumn}>
               <form autoComplete="off" onSubmit={handleSubmit(this.onSave)} className={classes.form}>
-                <Grid container className={classes.formContent}>
+                <Grid container columnSpacing={3} className={classes.formContent}>
                   {AlertComponent && (
                     <Grid item xs={12}>
                       <AlertComponent

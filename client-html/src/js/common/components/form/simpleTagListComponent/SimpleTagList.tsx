@@ -5,15 +5,15 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Tag } from "@api/model";
-import { Typography } from "@material-ui/core";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import ListItemText from "@material-ui/core/ListItemText";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField";
-import Edit from "@material-ui/icons/Edit";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Typography } from "@mui/material";
+import ButtonBase from "@mui/material/ButtonBase";
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import ListItemText from "@mui/material/ListItemText";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import TextField from "@mui/material/TextField";
+import Edit from "@mui/icons-material/Edit";
+import Autocomplete from "@mui/lab/Autocomplete";
 import clsx from "clsx";
 import { WrappedFieldProps } from "redux-form";
 import { getAllMenuTags } from "../../../../containers/tags/utils";

@@ -11,9 +11,9 @@ import {
   reduxForm
 } from "redux-form";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import withStyles from "@mui/styles/withStyles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
@@ -90,7 +90,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
           <CheckoutSummaryCogwheel dispatch={dispatch} summary={summary} disableDiscounts={disableDiscounts} />
         </CustomAppBar>
 
-        <Grid container className="p-3">
+        <Grid container columnSpacing={3} className="p-3">
           <Grid item xs={12}>
             {summary.list.map((list, i) => (
               <CheckoutSummaryExpandableItemRenderer
@@ -125,7 +125,6 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
               xs={12}
               sm={4}
               container
-              justify="flex-end"
               className={clsx("money pt-2 summaryTopBorder", classes.itemTotal)}
             >
               <Typography variant="body2">

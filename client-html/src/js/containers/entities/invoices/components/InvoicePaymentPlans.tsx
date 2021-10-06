@@ -4,17 +4,17 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
-import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@mui/styles";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import StepContent from "@mui/material/StepContent";
+import Typography from "@mui/material/Typography";
 import { InvoicePaymentPlan } from "@api/model";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
+import IconButton from "@mui/material/IconButton/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
 import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import StepButton from "@material-ui/core/StepButton";
+import StepButton from "@mui/material/StepButton";
 import { format } from "date-fns";
 import clsx from "clsx";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";

@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
-import { Button, createStyles, withStyles } from "@material-ui/core";
-import { MorningIcon, AfternoonIcon, EveningIcon } from "./DayPeriodIcons";
+import { Button } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { TimetableContext, timetableContextStateInitial } from "../../../../Timetable";
+import { MorningIcon, AfternoonIcon, EveningIcon } from "./DayPeriodIcons";
 
 const styles = theme =>
   createStyles({

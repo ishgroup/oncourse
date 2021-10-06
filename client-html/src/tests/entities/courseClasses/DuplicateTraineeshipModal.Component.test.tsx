@@ -6,22 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { createMount } from "@material-ui/core/test-utils";
+// import { createMount } from "@mui/material/test-utils";
+import { shallow } from 'enzyme';
 import * as React from "react";
 import { TestEntry } from "../../TestEntry";
 import DuplicateTraineeshipModal from "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
 import { stubFunction } from "../../../js/common/utils/common";
 
 describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
-  let mount;
+  // let mount;
 
-  beforeAll(() => {
-    mount = createMount();
-  });
-
-  afterAll(() => {
-    mount.cleanUp();
-  });
+  // beforeAll(() => {
+  //   mount = createMount();
+  // });
+  //
+  // afterAll(() => {
+  //   mount.cleanUp();
+  // });
 
   const defaultProps = {
     opened: true,
@@ -32,7 +33,7 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
   const MockedEditView = pr => <DuplicateTraineeshipModal {...{ ...pr, ...defaultProps }} />;
 
   it(`DuplicateTraineeshipModal should render with default store`, () => {
-    const wrapper = mount(
+    const wrapper = shallow(
       <TestEntry>
         <MockedEditView />
       </TestEntry>

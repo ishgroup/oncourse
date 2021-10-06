@@ -4,12 +4,12 @@
  */
 
 import * as React from "react";
-import { FormControlLabel } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import { ExitToApp } from "@material-ui/icons";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import { FormControlLabel } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Hidden from "@mui/material/Hidden";
+import { ExitToApp } from "@mui/icons-material";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import {
   Form, reduxForm, initialize, getFormValues
 } from "redux-form";
@@ -82,7 +82,7 @@ class MessagingBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 Messaging
@@ -111,7 +111,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           Outgoing Emails
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={5} lg={4}>
             <FormField
               type="text"
@@ -162,7 +162,7 @@ class MessagingBaseForm extends React.Component<any, any> {
             </Typography>
           </Grid>
 
-          <Grid container spacing={5}>
+          <Grid container columnSpacing={3} spacing={5}>
             <Grid item xs={12} lg={8}>
               <Divider />
             </Grid>
@@ -211,7 +211,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           </Grid>
         </Grid>
 
-        <Grid container className="mb-1">
+        <Grid container columnSpacing={3} className="mb-1">
           <Grid item xs={12} sm={5} lg={4}>
             <FormField
               type="text"
@@ -236,7 +236,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           </Grid>
         </Grid>
 
-        <Grid container spacing={5} className="mb-1">
+        <Grid container columnSpacing={3} spacing={5} className="mb-1">
           <Grid item xs={12} lg={8}>
             <Divider />
           </Grid>
@@ -246,7 +246,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           SMS
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={5} lg={4}>
             <Typography variant="subtitle1" className="centeredFlex">
               <DynamicText defaultValue="0" text=" SMS queued" value={smsCount} function={smsQueued} />

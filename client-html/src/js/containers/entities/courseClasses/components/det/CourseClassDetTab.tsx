@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import Grid from "@material-ui/core/Grid/Grid";
+import Grid from "@mui/material/Grid/Grid";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
@@ -14,7 +14,7 @@ const CourseClassDetTab: React.FC<EditViewProps<CourseClassExtended>> = () => (
     <div className="pl-3 pr-3 centeredFlex">
       <div className="heading mt-2 mb-2">DET export</div>
     </div>
-    <Grid container className="pl-3 pr-3">
+    <Grid container columnSpacing={3} className="pl-3 pr-3">
       <Grid item xs={12}>
         <FormField type="text" name="initialDetExport" label="Initial DET export" />
       </Grid>

@@ -1,12 +1,12 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import { withStyles } from "@material-ui/core/styles";
-import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
+import AppBar from "@mui/material/AppBar";
+import { withStyles } from "@mui/styles";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import { APPLICATION_THEME_STORAGE_NAME, DRAWER_WIDTH } from "../../../constants/Config";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -34,9 +34,9 @@ const styles: any = theme => ({
 
 class Bar extends React.Component<any, any> {
   render() {
-    const { classes, title, width, openDrawer, noDrawer } = this.props;
+    const { classes, title, openDrawer, noDrawer } = this.props;
 
-    const isSmallScreen = !isWidthUp("md", width);
+    const isSmallScreen = useMediaQuery('(max-width:992px)');
 
     return (
       <AppBar
@@ -74,4 +74,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 export default connect<any, any, any>(
   null,
   mapDispatchToProps
-)(withWidth()(withStyles(styles)(Bar)));
+)(withStyles(styles)(Bar));

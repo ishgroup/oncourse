@@ -9,7 +9,7 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -26,16 +26,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { arrayInsert, change, Field, } from "redux-form";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Collapse from "@material-ui/core/Collapse";
+import { createStyles, withStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Collapse from "@mui/material/Collapse";
 import {
   ExpandMore,
   OpenWith
-} from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+} from "@mui/icons-material";
+import Button from "@mui/material/Button";
 import { addDays, format } from "date-fns";
 import { Document, DocumentVersion } from "@api/model";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
@@ -223,7 +223,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         <div className={twoColumn ? "appBarContainer" : "h-100"}>
           {twoColumn && (
             <CustomAppBar>
-              <Grid container className="flex-fill">
+              <Grid container columnSpacing={3} className="flex-fill">
                 <Grid item xs={6} className="pr-2">
                   {headerField}
                 </Grid>
@@ -249,7 +249,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             </CustomAppBar>
           )}
 
-          <Grid container className="p-3 relative">
+          <Grid container columnSpacing={3} className="p-3 relative">
             <Grid item xs={twoColumn ? 4 : 12}>
               {Boolean(values.removed) && (
               <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>

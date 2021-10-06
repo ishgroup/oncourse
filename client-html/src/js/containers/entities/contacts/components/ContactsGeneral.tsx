@@ -21,17 +21,17 @@ import {
 } from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { FormControlLabel, Grid } from "@material-ui/core";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Checkbox from "@material-ui/core/Checkbox";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import ExitToApp from "@material-ui/icons/ExitToApp";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import { FormControlLabel, Grid } from "@mui/material";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import ExitToApp from "@mui/icons-material/ExitToApp";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
@@ -404,7 +404,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
   return (
     <div className="p-3">
-      <Grid container className="mb-3">
+      <Grid container columnSpacing={3} className="mb-3">
         <Grid item xs={twoColumn ? 2 : 12}>
           <Field
             name="profilePicture"
@@ -437,7 +437,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         </Grid>
         <Grid item xs={12}>
           <ButtonGroup aria-label="full width outlined button group" className="mt-1">
-            <Button color={isStudent ? "primary" : "default"} disabled={isCompany} onClick={toggleStudentRole}>
+            <Button color={isStudent ? "primary" : "inherit"} disabled={isCompany} onClick={toggleStudentRole}>
               <StyledCheckbox
                 checked={isStudent}
                 color="primary"
@@ -445,7 +445,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
               />
               Student
             </Button>
-            <Button color={isTutor ? "primary" : "default"} onClick={toggleTutorRole}>
+            <Button color={isTutor ? "primary" : "inherit"} onClick={toggleTutorRole}>
               <StyledCheckbox
                 checked={isTutor}
                 color="primary"
@@ -453,7 +453,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
               />
               Tutor
             </Button>
-            <Button color={isCompany ? "primary" : "default"} disabled={isStudent} onClick={toggleCompanyRole}>
+            <Button color={isCompany ? "primary" : "inherit"} disabled={isStudent} onClick={toggleCompanyRole}>
               <StyledCheckbox
                 checked={isCompany}
                 color="primary"
@@ -465,7 +465,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      <Grid container className="flex-nowrap align-items-center mb-1">
+      <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
         <Grid item xs={12}>
           <FormField
             type="tags"
@@ -476,13 +476,13 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         </Grid>
       </Grid>
       {isStudent && (
-        <Grid container className="pt-2 pb-2">
+        <Grid container columnSpacing={3} className="pt-2 pb-2">
           <Grid item xs={12} className="mb-2">
             <TimetableButton onClick={onCalendarClick} />
           </Grid>
         </Grid>
       )}
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item {...gridItemProps}>
           <FormField
             type="text"

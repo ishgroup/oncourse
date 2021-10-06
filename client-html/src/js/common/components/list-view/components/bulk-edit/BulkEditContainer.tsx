@@ -4,14 +4,14 @@
  */
 
 import { Diff, FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
-import Drawer from "@material-ui/core/Drawer";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import { Help } from "@material-ui/icons";
+import Drawer from "@mui/material/Drawer";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
+import { Help } from "@mui/icons-material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -259,8 +259,8 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
         }
       }}
     >
-      <Grid container className={classes.content}>
-        <Grid container className={classes.header} wrap="nowrap" alignItems="center">
+      <Grid container columnSpacing={3} className={classes.content}>
+        <Grid container columnSpacing={3} className={classes.header} wrap="nowrap" alignItems="center">
           <Grid item xs={2}>
             <Typography variant="body2" className={classes.headerText}>
               Bulk edit
@@ -282,7 +282,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid container className={classes.body} wrap="nowrap" spacing={3}>
+        <Grid container columnSpacing={3} className={classes.body} wrap="nowrap" spacing={3}>
           <Grid item zeroMinWidth className={classes.menuColumn}>
             <List disablePadding className={classes.list}>
               {bulkEditFields
@@ -313,7 +313,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           </Grid>
           <Grid item xs className={classes.menuColumn}>
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
-              <Grid container className={classes.formContent}>
+              <Grid container columnSpacing={3} className={classes.formContent}>
                 <Grid item xs={12}>
                   {BulkEditFieldRendered}
                 </Grid>

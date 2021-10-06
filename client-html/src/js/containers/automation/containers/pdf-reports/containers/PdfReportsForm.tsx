@@ -5,15 +5,15 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { change, Form, initialize, InjectedFormProps } from "redux-form";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import FileCopy from "@material-ui/icons/FileCopy";
-import Grid from "@material-ui/core/Grid/Grid";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import FileCopy from "@mui/icons-material/FileCopy";
+import Grid from "@mui/material/Grid/Grid";
 import { Report } from "@api/model";
 import { Dispatch } from "redux";
-import Typography from "@material-ui/core/Typography";
-import Grow from "@material-ui/core/Grow";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
+import Typography from "@mui/material/Typography";
+import Grow from "@mui/material/Grow";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
@@ -270,7 +270,7 @@ const PdfReportsForm = React.memo<Props>(
             />
           </CustomAppBar>
 
-          <Grid container className="p-3 appBarContainer">
+          <Grid container columnSpacing={3} className="p-3 appBarContainer">
             <Grid item xs={7} className="pr-3">
               <div className="heading">Type</div>
               <FormField

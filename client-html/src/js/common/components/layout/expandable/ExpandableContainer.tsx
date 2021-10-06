@@ -6,11 +6,11 @@
 import React, {
  useCallback, useRef, useEffect, useMemo 
 } from "react";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import AddCircle from "@material-ui/icons/AddCircle";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import AddCircle from "@mui/icons-material/AddCircle";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
 

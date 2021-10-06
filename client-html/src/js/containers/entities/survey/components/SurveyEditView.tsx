@@ -7,13 +7,13 @@
  */
 
 import React, { useCallback } from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import { Theme } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { createStyles, withStyles } from "@mui/styles";
+import { Theme } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { change, Field } from "redux-form";
 import { SurveyItem } from "@api/model";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import Score from "./Score";
@@ -63,7 +63,7 @@ const SurveyEditView = (props: Props) => {
   }, [classId]);
 
   return values ? (
-    <Grid container className={classes.root} alignContent="flex-start">
+    <Grid container columnSpacing={3} className={classes.root} alignContent="flex-start">
       <Grid item xs={12}>
         <Uneditable
           value={values.studentName}
@@ -71,14 +71,14 @@ const SurveyEditView = (props: Props) => {
           url={`/contact/${values.studentContactId}`}
         />
       </Grid>
-      <Grid container justify="space-between" className="mw-800 pb-2" spacing={2}>
+      <Grid container columnSpacing={3} className="mw-800 pb-2" spacing={2}>
         <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
           <Grid item>
             <Field name="netPromoterScore" label="Net Promoter Score" max={10} component={Score} />
           </Grid>
         </Grid>
         <Grid item xs={twoColumn ? 8 : 12}>
-          <Grid container justify="flex-end" spacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
+          <Grid container columnSpacing={3} spacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
             <Grid item xs={twoColumn ? "auto" : 12}>
               <Field name="courseScore" label="Course" component={Score} />
               <Link href="#" onClick={openClass} color="textSecondary">
