@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         * def ishPath = 'list/entity/invoice'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        
+
 
 
 
@@ -16,6 +16,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         * def newInvoice =
         """
         {
+        "type": "Invoice",
         "billToAddress":"address str. Adelaide SA 5000",
         "createdByUser":null,
         "dateDue":"2019-09-09",
@@ -57,56 +58,63 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         And match $ ==
         """
         {
-        "id":"#(~~id)",
-        "contactId":202,
-        "contactName":"stud202",
-        "customerReference":"invoice100",
-        "invoiceNumber":"#number",
-        "billToAddress":"address str. Adelaide SA 5000",
-        "shippingAddress":"some shipping address",
-        "invoiceDate":"2019-09-09",
-        "dateDue":"2019-09-09",
-        "overdue":210.00,
-        "invoiceLines":
-            [{
-            "id":"#number",
-            "title":"invoiceLine1",
-            "quantity":1.00,
-            "unit":"kg",
-            "incomeAccountId":8,
-            "incomeAccountName":"Merchandise 42000",
-            "discountId":null,
-            "discountName":null,
-            "priceEachExTax":200.00,
-            "discountEachExTax":10.00,
-            "taxEach":20.00,
-            "finalPriceToPayIncTax":null,
-            "taxId":1,
-            "taxName":"Australian GST",
-            "description":"some description",
-            "courseClassId":null,
-            "courseName":null,
-            "courseCode":null,
-            "classCode":null,
-            "enrolmentId":null,
-            "enrolledStudent":null,
-            "courseId":null,
-            "enrolment": null,
-            "voucher": null,
-            "article": null,
-            "membership": null,
-            "contactId": null
-            }],
-        "total":210.00,
-        "amountOwing":210.00,
-        "publicNotes":null,
-        "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":210.00,"entityName":"Invoice"}],
-        "source":"office",
-        "createdByUser":"admin@gmail.com",
-        "sendEmail":true,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "relatedFundingSourceId":null
+            "id":"#(~~id)",
+            "contactId":202,
+            "contactName":"stud202",
+            "customerReference":"invoice100",
+            "invoiceNumber":"#number",
+            "billToAddress":"address str. Adelaide SA 5000",
+            "shippingAddress":"some shipping address",
+            "invoiceDate":"2019-09-09",
+            "dateDue":"2019-09-09",
+            "overdue":210.00,
+            "invoiceLines":
+                [{
+                "id":"#number",
+                "title":"invoiceLine1",
+                "quantity":1.00,
+                "unit":"kg",
+                "incomeAccountId":8,
+                "incomeAccountName":"Merchandise 42000",
+                "discountId":null,
+                "discountName":null,
+                "priceEachExTax":200.00,
+                "discountEachExTax":10.00,
+                "taxEach":20.00,
+                "finalPriceToPayIncTax":null,
+                "taxId":1,
+                "taxName":"Australian GST",
+                "description":"some description",
+                "courseClassId":null,
+                "courseName":null,
+                "courseCode":null,
+                "classCode":null,
+                "enrolmentId":null,
+                "enrolledStudent":null,
+                "courseId":null,
+                "enrolment": null,
+                "voucher": null,
+                "article": null,
+                "membership": null,
+                "contactId": null
+                }],
+            "total":210.00,
+            "amountOwing":210.00,
+            "publicNotes":null,
+            "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":210.00,"entityName":"Invoice"}],
+            "source":"office",
+            "createdByUser":"admin@gmail.com",
+            "sendEmail":true,
+            "createdOn":"#ignore",
+            "modifiedOn":"#ignore",
+            "relatedFundingSourceId":null,
+            "leadCustomerName": null,
+            "description": null,
+            "type": "Invoice",
+            "title": null,
+            "leadId": null,
+            "quoteNumber": null,
+            "tags": []
         }
         """
 
@@ -117,6 +125,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         * def newInvoice =
         """
         {
+        "type": "Invoice",
         "contactId":303,
         "contactName":"stud303",
         "customerReference":"invoice108p",
@@ -171,32 +180,39 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         And match $ ==
         """
         {
-        "id":"#(~~id)",
-        "contactId":303,
-        "contactName":"stud303",
-        "customerReference":"invoice108p",
-        "invoiceNumber":"#number",
-        "billToAddress":"address str. Adelaide SA 5000",
-        "shippingAddress":null,
-        "invoiceDate":"2023-06-01",
-        "dateDue":"2023-06-23",
-        "overdue":0.0,
-        "invoiceLines":[{"id":"#number","title":"invoiceLine5","quantity":2.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":150.00,"discountEachExTax":0.00,"taxEach":15.00,"finalPriceToPayIncTax":null,,"taxId":1,"taxName":"Australian GST","description":null,"courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
-        "total":330.00,
-        "amountOwing":330.00,
-        "publicNotes":null,
-        "paymentPlans":
-            [
-            {"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":330.00,"entityName":"Invoice"},
-            {"id":"#number","date":"2023-06-23","type":"Payment due","successful":true,"amount":30.00,"entityName":"InvoiceDueDate"},
-            {"id":"#number","date":"2023-07-23","type":"Payment due","successful":true,"amount":300.00,"entityName":"InvoiceDueDate"}
-            ],
-        "source":"office",
-        "createdByUser":"admin@gmail.com",
-        "sendEmail":false,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "relatedFundingSourceId":null
+            "id":"#(~~id)",
+            "contactId":303,
+            "contactName":"stud303",
+            "customerReference":"invoice108p",
+            "invoiceNumber":"#number",
+            "billToAddress":"address str. Adelaide SA 5000",
+            "shippingAddress":null,
+            "invoiceDate":"2023-06-01",
+            "dateDue":"2023-06-23",
+            "overdue":0.0,
+            "invoiceLines":[{"id":"#number","title":"invoiceLine5","quantity":2.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":150.00,"discountEachExTax":0.00,"taxEach":15.00,"finalPriceToPayIncTax":null,,"taxId":1,"taxName":"Australian GST","description":null,"courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+            "total":330.00,
+            "amountOwing":330.00,
+            "publicNotes":null,
+            "paymentPlans":
+                [
+                {"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":330.00,"entityName":"Invoice"},
+                {"id":"#number","date":"2023-06-23","type":"Payment due","successful":true,"amount":30.00,"entityName":"InvoiceDueDate"},
+                {"id":"#number","date":"2023-07-23","type":"Payment due","successful":true,"amount":300.00,"entityName":"InvoiceDueDate"}
+                ],
+            "source":"office",
+            "createdByUser":"admin@gmail.com",
+            "sendEmail":false,
+            "createdOn":"#ignore",
+            "modifiedOn":"#ignore",
+            "relatedFundingSourceId":null,
+            "leadCustomerName": null,
+            "description": null,
+            "type": "Invoice",
+            "title": null,
+            "leadId": null,
+            "quoteNumber": null,
+            "tags": [],
         }
         """
 
@@ -207,6 +223,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         * def newInvoice =
         """
         {
+        "type": "Invoice",
         "amountOwing":0,
         "billToAddress":null,
         "createdByUser":null,
@@ -247,27 +264,34 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         And match $ ==
         """
         {
-        "id":"#(~~id)",
-        "contactId":303,
-        "contactName":"stud303",
-        "customerReference":"invoice108pp",
-        "invoiceNumber":"#number",
-        "billToAddress":null,
-        "shippingAddress":null,
-        "invoiceDate":"2029-08-13",
-        "dateDue":"2029-08-13",
-        "overdue":0.00,
-        "invoiceLines":[{"id":"#number","title":"testLine","quantity":1.00,"unit":null,"incomeAccountId":8,"incomeAccountName":"Merchandise 42000","discountId":null,"discountName":null,"priceEachExTax":90.91,"discountEachExTax":0.00,"taxEach":9.09,"finalPriceToPayIncTax": null,"taxId":1,"taxName":"Australian GST","description":null,"courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
-        "total":100.00,
-        "amountOwing":100.00,
-        "publicNotes":null,
-        "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":100.00,"entityName":"Invoice"},{"id":"#number","date":"2029-08-13","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"}],
-        "source":"office",
-        "createdByUser":"admin@gmail.com",
-        "sendEmail":true,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "relatedFundingSourceId":null
+            "id":"#(~~id)",
+            "contactId":303,
+            "contactName":"stud303",
+            "customerReference":"invoice108pp",
+            "invoiceNumber":"#number",
+            "billToAddress":null,
+            "shippingAddress":null,
+            "invoiceDate":"2029-08-13",
+            "dateDue":"2029-08-13",
+            "overdue":0.00,
+            "invoiceLines":[{"id":"#number","title":"testLine","quantity":1.00,"unit":null,"incomeAccountId":8,"incomeAccountName":"Merchandise 42000","discountId":null,"discountName":null,"priceEachExTax":90.91,"discountEachExTax":0.00,"taxEach":9.09,"finalPriceToPayIncTax": null,"taxId":1,"taxName":"Australian GST","description":null,"courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+            "total":100.00,
+            "amountOwing":100.00,
+            "publicNotes":null,
+            "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":100.00,"entityName":"Invoice"},{"id":"#number","date":"2029-08-13","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"}],
+            "source":"office",
+            "createdByUser":"admin@gmail.com",
+            "sendEmail":true,
+            "createdOn":"#ignore",
+            "modifiedOn":"#ignore",
+            "relatedFundingSourceId":null,
+            "leadCustomerName": null,
+            "description": null,
+            "type": "Invoice",
+            "title": null,
+            "leadId": null,
+            "quoteNumber": null,
+            "tags": [],
         }
         """
 
@@ -278,6 +302,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         * def newInvoice =
         """
         {
+        "type": "Invoice",
         "amountOwing":0,
         "billToAddress":null,
         "createdByUser":null,
@@ -318,31 +343,36 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         And match $ ==
         """
         {
-        "id":"#(~~id)",
-        "contactId":303,
-        "contactName":"stud303",
-        "customerReference":"invoice108w",
-        "invoiceNumber":"#number",
-        "billToAddress":null,
-        "shippingAddress":null,
-        "invoiceDate":"2019-08-08",
-        "dateDue":"2019-08-31",
-        "overdue":0.00,
-        "invoiceLines":[{"id":"#number","title":"someTitle","quantity":1.00,"unit":null,"incomeAccountId":8,"incomeAccountName":"Merchandise 42000","discountId":null,"discountName":null,"priceEachExTax":0.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax": null,"taxId":1,"taxName":"Australian GST","description":null,"courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
-        "total":0.00,
-        "amountOwing":0.00,
-        "publicNotes":null,
-        "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":0.00,"entityName":"Invoice"}],
-        "source":"office",
-        "createdByUser":"admin@gmail.com",
-        "sendEmail":false,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "relatedFundingSourceId":null
+            "id":"#(~~id)",
+            "contactId":303,
+            "contactName":"stud303",
+            "customerReference":"invoice108w",
+            "invoiceNumber":"#number",
+            "billToAddress":null,
+            "shippingAddress":null,
+            "invoiceDate":"2019-08-08",
+            "dateDue":"2019-08-31",
+            "overdue":0.00,
+            "invoiceLines":[{"id":"#number","title":"someTitle","quantity":1.00,"unit":null,"incomeAccountId":8,"incomeAccountName":"Merchandise 42000","discountId":null,"discountName":null,"priceEachExTax":0.00,"discountEachExTax":0.00,"taxEach":0.00,"finalPriceToPayIncTax": null,"taxId":1,"taxName":"Australian GST","description":null,"courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
+            "total":0.00,
+            "amountOwing":0.00,
+            "publicNotes":null,
+            "paymentPlans":[{"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":0.00,"entityName":"Invoice"}],
+            "source":"office",
+            "createdByUser":"admin@gmail.com",
+            "sendEmail":false,
+            "createdOn":"#ignore",
+            "modifiedOn":"#ignore",
+            "relatedFundingSourceId":null,
+            "leadCustomerName": null,
+            "description": null,
+            "type": "Invoice",
+            "title": null,
+            "leadId": null,
+            "quoteNumber": null,
+            "tags": [],
         }
         """
-
-
 
     Scenario: (-) Create invoice with incorrect Payment Plan
 
@@ -423,7 +453,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         And request newInvoice
         When method POST
         Then status 400
-        And match $.errorMessage == "Contact id is required."
+        And match $.errorMessage == "Contact is required."
 
 
 
@@ -611,12 +641,13 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        
+
 #       <--->
 
         * def newInvoice =
         """
         {
+        "type": "Invoice",
         "contactId":202,
         "contactName":"stud202",
         "customerReference":"invoice101",
@@ -667,64 +698,71 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         And match $ ==
         """
         {
-        "id":"#(~~id)",
-        "contactId":202,
-        "contactName":"stud202",
-        "customerReference":"invoice101",
-        "invoiceNumber":"#number",
-        "billToAddress":"address str. Adelaide SA 5000",
-        "shippingAddress":"some shipping address",
-        "invoiceDate":"2025-06-01",
-        "dateDue":"2025-06-01",
-        "overdue":0.00,
-        "invoiceLines":
-            [{
-            "id":"#number",
-            "title":"invoiceLine2",
-            "quantity":11.00,
-            "unit":"kg",
-            "incomeAccountId":7,
-            "incomeAccountName":"Student enrolments 41000",
-            "discountId":null,
-            "discountName":null,
-            "priceEachExTax":180.00,
-            "discountEachExTax":0.00,
-            "taxEach":0.00,
-            "finalPriceToPayIncTax": null,
-            "taxId":2,
-            "taxName":"GST exempt",
-            "description":"some invoice description",
-            "courseClassId":15,
-            "courseName":"Course4",
-            "courseCode":"course4",
-            "classCode":"2",
-            "enrolmentId":115,
-            "enrolledStudent":"stud12",
-            "courseId":4,
-            "enrolment": null,
-            "voucher": null,
-            "article": null,
-            "membership": null,
-            "contactId": null
-            }],
-        "total":1980.00,
-        "amountOwing":1980.00,
-        "publicNotes":"some public notes",
-        "paymentPlans":
-            [{
-            "id":"#number",
-            "date":"#ignore",
-            "type":"Invoice office",
-            "successful":true,
-            "amount":1980.00,
-            "entityName":"Invoice"
-            }],
-        "source":"office",
-        "createdByUser":"UserWithRightsCreate@gmail.com",
-        "sendEmail":false,
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
-        "relatedFundingSourceId":null
+            "id":"#(~~id)",
+            "contactId":202,
+            "contactName":"stud202",
+            "customerReference":"invoice101",
+            "invoiceNumber":"#number",
+            "billToAddress":"address str. Adelaide SA 5000",
+            "shippingAddress":"some shipping address",
+            "invoiceDate":"2025-06-01",
+            "dateDue":"2025-06-01",
+            "overdue":0.00,
+            "invoiceLines":
+                [{
+                "id":"#number",
+                "title":"invoiceLine2",
+                "quantity":11.00,
+                "unit":"kg",
+                "incomeAccountId":7,
+                "incomeAccountName":"Student enrolments 41000",
+                "discountId":null,
+                "discountName":null,
+                "priceEachExTax":180.00,
+                "discountEachExTax":0.00,
+                "taxEach":0.00,
+                "finalPriceToPayIncTax": null,
+                "taxId":2,
+                "taxName":"GST exempt",
+                "description":"some invoice description",
+                "courseClassId":15,
+                "courseName":"Course4",
+                "courseCode":"course4",
+                "classCode":"2",
+                "enrolmentId":115,
+                "enrolledStudent":"stud12",
+                "courseId":4,
+                "enrolment": null,
+                "voucher": null,
+                "article": null,
+                "membership": null,
+                "contactId": null
+                }],
+            "total":1980.00,
+            "amountOwing":1980.00,
+            "publicNotes":"some public notes",
+            "paymentPlans":
+                [{
+                "id":"#number",
+                "date":"#ignore",
+                "type":"Invoice office",
+                "successful":true,
+                "amount":1980.00,
+                "entityName":"Invoice"
+                }],
+            "source":"office",
+            "createdByUser":"UserWithRightsCreate@gmail.com",
+            "sendEmail":false,
+            "createdOn":"#ignore",
+            "modifiedOn":"#ignore",
+            "relatedFundingSourceId":null,
+            "leadCustomerName": null,
+            "description": null,
+            "type": "Invoice",
+            "title": null,
+            "leadId": null,
+            "quoteNumber": null,
+            "tags": [],
         }
         """
 
@@ -735,7 +773,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        
+
 #       <--->
 
         * def newInvoice = {}

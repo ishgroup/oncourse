@@ -10,9 +10,11 @@
  */
 package ish.oncourse.server.lifecycle;
 
+import ish.common.types.EnrolmentReportingStatus;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.common.types.SystemEventType;
+import ish.math.Money;
 import ish.oncourse.common.SystemEvent;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Enrolment;
@@ -39,6 +41,13 @@ public class EnrolmentLifecycleListener {
 
 	@PrePersist(value = Enrolment.class)
 	public void prePersist(Enrolment enrol) {
+
+	    var course = enrol.getCourseClass().getCourse();
+		if(!course.getFeeHelpClass())
+	        enrol.setStudentLoanStatus(EnrolmentReportingStatus.NOT_ELIGIBLE);
+	    else
+	        enrol.setStudentLoanStatus(EnrolmentReportingStatus.ELIGIBLE);
+
 		SetFundingContact.valueOf(enrol).set();
 	}
 

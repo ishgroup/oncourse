@@ -17,6 +17,8 @@ import ish.util.RuntimeUtil;
 public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
+    private Boolean access_control = null;
+    private Boolean custom_scripts = null;
     private Integer purge_audit_after_days = null;
 
     private String services_host =  "https://secure-payment.oncourse.net.au";
@@ -25,12 +27,23 @@ public class LicenseService {
     private String college_key;
     private String security_key;
 
+    private LicenseSmsService smsService;
 
 
     @BQConfigProperty
     public void setMax_concurrent_users(int max_concurrent_users) {
         RuntimeUtil.println("server will limit number of concurrent users to " + max_concurrent_users);
         this.max_concurrent_users = max_concurrent_users;
+    }
+
+    @BQConfigProperty
+    public void setAccess_control(boolean access_control) {
+        this.access_control = access_control;
+    }
+
+    @BQConfigProperty
+    public void setCustom_scripts(boolean custom_scripts) {
+        this.custom_scripts = custom_scripts;
     }
 
     @BQConfigProperty
@@ -94,4 +107,34 @@ public class LicenseService {
     public String getCurrentHostName() {
         return college_key == null ? null : String.format("https://%s.cloud.oncourse.cc", college_key);
     }
+
+    public void setSmsService(LicenseSmsService smsService) {
+        this.smsService = smsService;
+    }
+
+    public Object getLisense(String key) {
+
+        switch (key) {
+            case "license.access_control" : return access_control;
+            case "license.scripting" : return custom_scripts;
+            case "license.sms" : return smsService.getMessage_batch();
+            default: return null;
+        }
+    }
+
 }
+
+class LicenseSmsService {
+
+    private Integer message_batch = null;
+
+    @BQConfigProperty
+    public void setMessage_batch(int message_batch) {
+        this.message_batch = message_batch;
+    }
+
+    public Integer getMessage_batch() {
+        return message_batch;
+    }
+}
+

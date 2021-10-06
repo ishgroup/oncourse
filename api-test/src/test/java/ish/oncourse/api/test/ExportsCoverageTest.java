@@ -74,7 +74,10 @@ public class ExportsCoverageTest {
                 .map(item -> item.replaceFirst(ENTITY_LIST_PATH, EMPTY_STRING))
                 .collect(Collectors.toList()).stream()
                 .filter(path -> !path.contains("/"))
+                .map(item -> !item.equals("invoice") ? item : "abstractInvoice")
                 .collect(Collectors.toList());
+        // replace invoice in abstract invoice and all work good
+
         List<Map<String, String>> result = new ArrayList<>();
         entities.forEach(entity -> {
             if (!excludedEntities.contains(entity)) {
