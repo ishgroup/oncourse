@@ -12,18 +12,19 @@ import {
 } from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
 import DialogContent from "@mui/material/DialogContent";
 import Grid from "@mui/material/Grid";
 import { differenceInMinutes, format } from "date-fns";
 import { Typography } from "@mui/material";
 import SvgIcon from "@mui/material/SvgIcon";
-import IconButton from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import { CourseClassTutor } from "@api/model";
-import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
+import Button from "../../../../../common/components/buttons/Button";
 import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
@@ -45,7 +46,6 @@ import {
   III_DD_MMM_YYYY_HH_MM_SS
 } from "../../../../../common/utils/dates/format";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
-import Button from "@mui/material/Button";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);
@@ -376,11 +376,11 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
       </DialogContent>
 
       <DialogActions className="p-3">
-        <Button color="primary" onClick={onClose}>
+        <MuiButton color="primary" onClick={onClose}>
           Cancel
-        </Button>
+        </MuiButton>
 
-        <LoadingButton
+        <Button
           onClick={handleSubmit}
           disabled={invalid || hasError}
           loading={fetching}
@@ -388,7 +388,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
           color="primary"
         >
           OK
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

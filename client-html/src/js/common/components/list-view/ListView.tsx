@@ -1050,7 +1050,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
 
     return (
-      <Grid container className="root" direction="row" wrap="nowrap">
+      <Grid container columnSpacing={3} className="root" direction="row" wrap="nowrap">
         {hasFilters && (
           <ResizableWrapper
             ignoreScreenWidth
@@ -1093,7 +1093,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             manualLink={editViewProps.manualLink}
             getCustomBulkEditFields={getCustomBulkEditFields}
           />
-          <Grid container className={clsx("flex-fill relative overflow-hidden", classes.gridWithEditColumn)}>
+          <Grid container columnSpacing={3} className={clsx("flex-fill relative overflow-hidden", classes.gridWithEditColumn)}>
             <LoadingIndicator transparentBackdrop allowInteractions />
 
             {threeColumn ? (

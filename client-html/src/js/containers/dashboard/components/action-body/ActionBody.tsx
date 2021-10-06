@@ -24,7 +24,8 @@ const styles = (theme: AppTheme) =>
       height: "calc(100% - 64px)"
     },
     rightSideBar: {
-      backgroundColor: theme.palette.background.default,
+      backgroundColor:
+        theme.palette.mode === "light" ? theme.palette.background.paper : theme.palette.background.default,
       overflowY: "auto",
       minWidth: 370
     }
@@ -111,7 +112,7 @@ class ActionBody extends React.PureComponent<Props, any> {
     const { statisticsColumnWidth } = this.state;
 
     return (
-      <Grid container wrap="nowrap" className={classes.root}>
+      <Grid container columnSpacing={3} wrap="nowrap" className={classes.root}>
         <ResizableWrapper
           minWidth="20%"
           maxWidth="60%"
@@ -127,10 +128,7 @@ class ActionBody extends React.PureComponent<Props, any> {
         <Grid
           item
           xs
-          className={clsx(
-            classes.rightSideBar,
-            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")
-          }
+          className={clsx(classes.rightSideBar, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")}
         >
           <NewsRender />
         </Grid>

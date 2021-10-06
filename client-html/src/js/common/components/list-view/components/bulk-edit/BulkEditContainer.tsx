@@ -4,7 +4,7 @@
  */
 
 import {
- Diff, FundingSource, SearchQuery, Sorting, Tag 
+ Diff, FundingSource, SearchQuery, Sorting, Tag
 } from "@api/model";
 import Drawer from "@mui/material/Drawer";
 import Grid from "@mui/material/Grid";
@@ -15,7 +15,7 @@ import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import { Help } from "@mui/icons-material";
 import React, {
- useCallback, useEffect, useMemo, useState 
+ useCallback, useEffect, useMemo, useState
 } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";

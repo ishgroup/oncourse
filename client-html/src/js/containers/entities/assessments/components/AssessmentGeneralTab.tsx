@@ -8,18 +8,19 @@ import { connect } from "react-redux";
 import Grid from "@mui/material/Grid";
 import { Assessment, GradingType, Tag } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Button from "@mui/material/Button";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { EditViewProps } from "../../../../model/common/ListView";
-import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
+import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 
 interface Props extends Partial<EditViewProps<Assessment>> {
   tags?: Tag[];
   classes?: any;
   gradingTypes?: GradingType[];
-  isScrolling?: boolean;
 }
 
 const AssessmentGeneralTab = React.memo<Props>(
@@ -28,6 +29,12 @@ const AssessmentGeneralTab = React.memo<Props>(
     tags,
     twoColumn,
     values,
+    isNew,
+    manualLink,
+    rootEntity,
+    onCloseClick,
+    invalid,
+    dirty,
     gradingTypes = []
   }
 ) => {
@@ -39,6 +46,7 @@ const AssessmentGeneralTab = React.memo<Props>(
       <FormField
         label="Code"
         name="code"
+        type={twoColumn ? "headerText" : "text"}
         placeholder={twoColumn ? "Code" : undefined}
         required
         fullWidth
@@ -48,6 +56,7 @@ const AssessmentGeneralTab = React.memo<Props>(
       <FormField
         label="Name"
         name="name"
+        type={twoColumn ? "headerText" : "text"}
         placeholder={twoColumn ? "Name" : undefined}
         required
         fullWidth
@@ -57,33 +66,34 @@ const AssessmentGeneralTab = React.memo<Props>(
     return (
       <>
         {twoColumn && (
-          <FullScreenStickyHeader
-            twoColumn={twoColumn}
-            title={(
-              <Grid container columnSpacing={3}>
-                <Grid item xs={4}>
-                  <span className="d-block text-truncate text-nowrap">
-                    {values && values.code}
-                  </span>
-                </Grid>
-                <Grid item xs={8}>
-                  <span className="d-block text-truncate text-nowrap">
-                    {values && values.name}
-                  </span>
-                </Grid>
+          <CustomAppBar>
+            <Grid container columnSpacing={3} className="flex-fill">
+              <Grid item xs={3}>
+                {assessmentCodeField}
               </Grid>
-            )}
-            fields={(
-              <Grid container columnSpacing={3} className="flex-fill">
-                <Grid item xs={4}>
-                  {assessmentCodeField}
-                </Grid>
-                <Grid item xs={7}>
-                  {assessmentNameField}
-                </Grid>
+              <Grid item xs={8}>
+                {assessmentNameField}
               </Grid>
-            )}
-          />
+            </Grid>
+            <div>
+              {manualLink && (
+                <AppBarHelpMenu
+                  created={values ? new Date(values.createdOn) : null}
+                  modified={values ? new Date(values.modifiedOn) : null}
+                  auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
+                  manualUrl={manualLink}
+                />
+              )}
+
+              <Button onClick={onCloseClick} className="closeAppBarButton">
+                Close
+              </Button>
+              <FormSubmitButton
+                disabled={(!isNew && !dirty)}
+                invalid={invalid}
+              />
+            </div>
+          </CustomAppBar>
         )}
         <Grid container columnSpacing={3} className="p-3">
           {!twoColumn && (

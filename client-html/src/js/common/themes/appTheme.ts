@@ -47,32 +47,18 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: alpha('rgba(0, 0, 0, 0.87)', 0.4)
       }
     },
-    appBar: {
-      header: {
-        background: "#fbf9f0",
-        color: "#222",
-      },
-      headerAlternate: {
-        background: "#fff",
-        color: "#222",
-      },
-    },
     appBarButton: {
       close: {
-        color: "#f7941d",
+        color: 'white'
       },
       helpMenu: {
-        color: "#f7941d",
+        color: '#fff'
       }
     },
     tabList: {
       listContainer: {
-        backgroundColor: '#4b6390'
-      },
-      listItemRoot: {
-        color: "#c9d0de",
-        selectedColor: "#fff",
-      },
+        backgroundColor: '#302A22'
+      }
     },
     table: {
       contrastRow: {
@@ -125,16 +111,6 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: alpha('rgba(255, 255, 255, 0.87)', 0.4)
       }
     },
-    appBar: {
-      header: {
-        background: "#1b1b1b",
-        color: "#fff",
-      },
-      headerAlternate: {
-        background: "#f7941d",
-        color: "#fff",
-      },
-    },
     appBarButton: {
       close: {
         color: 'white'
@@ -146,11 +122,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     tabList: {
       listContainer: {
         backgroundColor: '#302A22'
-      },
-      listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
-      },
+      }
     },
     table: {
       contrastRow: {
@@ -203,16 +175,6 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: alpha('#222222', 0.4)
       }
     },
-    appBar: {
-      header: {
-        background: "#fff",
-        color: "#222",
-      },
-      headerAlternate: {
-        background: "#eaeaea",
-        color: "#222",
-      },
-    },
     appBarButton: {
       close: {
         color: '#222222'
@@ -224,11 +186,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     tabList: {
       listContainer: {
         backgroundColor: '#302A22'
-      },
-      listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
-      },
+      }
     },
     table: {
       contrastRow: {
@@ -279,32 +237,18 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: '#111111'
       }
     },
-    appBar: {
-      header: {
-        background: "#fff",
-        color: "#222",
-      },
-      headerAlternate: {
-        background: "#111",
-        color: "#fff",
-      },
-    },
     appBarButton: {
       close: {
-        color: '#222'
+        color: '#fff'
       },
       helpMenu: {
-        color: '#222'
+        color: '#fff'
       }
     },
     tabList: {
       listContainer: {
-        backgroundColor: '#292929'
-      },
-      listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
-      },
+        backgroundColor: '#727272'
+      }
     },
     table: {
       contrastRow: {
@@ -357,16 +301,6 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: alpha('rgba(0, 0, 0, 0.87)', 0.4)
       }
     },
-    appBar: {
-      header: {
-        background: "#fff",
-        color: "#222",
-      },
-      headerAlternate: {
-        background: "#B3000C",
-        color: "#fff",
-      },
-    },
     appBarButton: {
       close: {
         color: '#fff'
@@ -378,11 +312,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     tabList: {
       listContainer: {
         backgroundColor: '#146B3A'
-      },
-      listItemRoot: {
-        color: "#fff",
-        selectedColor: "#fff",
-      },
+      }
     },
     table: {
       contrastRow: {
