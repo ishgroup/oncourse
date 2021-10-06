@@ -335,7 +335,6 @@ export class MockDB {
       checkout: {
         allowCreateContactOnEnrol: false,
         allowCreateContactOnWaitingList: true,
-        allowCreateContactOnMailingList: false,
         collectParentDetails: true,
         contactAgeWhenNeedParent: 12,
         enrolmentMinAge: 18,

@@ -26,6 +26,7 @@ class ContactNodeService {
     private Set<Course> shoppingCartCourses = []
     private List<Product> shoppingCartProducts = []
     private College college
+    private WebSite site
     private ObjectContext context
 
     private Set<Course> programCourses = []
@@ -40,6 +41,7 @@ class ContactNodeService {
     ContactNodeService(CayenneService cayenneService, CollegeService collegeService, EntityRelationService relationService, ContactNodeRequest request) {
         this.context = cayenneService.newContext()
         this.college = collegeService.getCollege()
+        this.site = collegeService.getWebSite()
         this.relationService = relationService
         this.request = request
     }
@@ -150,7 +152,7 @@ class ContactNodeService {
             programCourses << relatedCourse
 
             CourseClass availableClass = relatedCourse.getAvailableClasses().find { clazz ->
-                new ValidateEnrolment(context,college).validate(clazz, contact.student).errors.empty
+                new ValidateEnrolment(context,college, site).validate(clazz, contact.student).errors.empty
             }
 
             ish.oncourse.willow.model.checkout.Enrolment enrolment = null

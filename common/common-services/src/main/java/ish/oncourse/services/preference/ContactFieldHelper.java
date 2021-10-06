@@ -1,13 +1,11 @@
 package ish.oncourse.services.preference;
 
 import ish.oncourse.model.Contact;
-import ish.oncourse.model.CustomField;
 import ish.oncourse.model.CustomFieldType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static ish.oncourse.services.preference.Preferences.ContactFieldSet;
 import static ish.oncourse.services.preference.PreferenceController.FieldDescriptor;
 
 /**
@@ -17,84 +15,29 @@ public class ContactFieldHelper {
 
 	public static final String VALUE_Show = "Show";
 	public static final String VALUE_Required = "Required";
-	public static final String VALUE_Hide = "Hide";
 
 	private PreferenceController preferenceController;
 
-	private ContactFieldSet contactFieldSet;
 
-	public ContactFieldHelper(PreferenceController preferenceController, ContactFieldSet contactFieldSet) {
+	public ContactFieldHelper(PreferenceController preferenceController) {
 		this.preferenceController = preferenceController;
-		this.contactFieldSet = contactFieldSet;
 	}
 
 	private boolean isShow(String require) {
 		return VALUE_Show.equals(require) || VALUE_Required.equals(require) || require == null;
 	}
-
-	public boolean hasVisibleFields(Contact contact) {
-
-		FieldDescriptor[] fields = FieldDescriptor.values();
-
-		for (FieldDescriptor field : fields) {
-			if (isValid(field, contact)) {
-				String preferenceValue = preferenceController.getValue(field.getPreferenceNameBy(contactFieldSet), false);
-				if ((VALUE_Required.equals(preferenceValue) || VALUE_Show.equals(preferenceValue))) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasVisibleCustomFields(Contact contact) {
-		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-			if (isCustomFieldTypeRequired(fieldType) || isCustomFieldTypeVisible(fieldType)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
-	public boolean isAllRequiredFieldFilled(Contact contact) {
-
-		FieldDescriptor[] fields = FieldDescriptor.values();
-
-		for (FieldDescriptor field : fields) {
-			if (isValid(field, contact)) {
-				String preferenceValue = preferenceController.getValue(field.getPreferenceNameBy(contactFieldSet), false);
-				Object propertyValue = contact.readProperty(field.propertyName);
-				if (VALUE_Required.equals(preferenceValue) && propertyValue == null) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	public boolean isAllRequiredCustomFieldFilled(Contact contact) {
-
-		for (CustomFieldType fieldType : contact.getCollege().getCustomFieldTypes()) {
-			if (isCustomFieldTypeRequired(fieldType) &&
-				CustomField.CUSTOM_FIELD_TYPE.eq(fieldType).andExp(CustomField.VALUE.isNotNull()).filterObjects(contact.getCustomFields()).isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
 	
 	private boolean isShowField(FieldDescriptor fieldDescriptor, Contact contact) {
 		if (!isValid(fieldDescriptor, contact))
 			return false;
-		String preferenceValue = preferenceController.getValue(fieldDescriptor.getPreferenceNameBy(contactFieldSet), false);
+		String preferenceValue = preferenceController.getValue(fieldDescriptor.getPreferenceNameBy(), false);
 		return isShow(preferenceValue);
 	}
 
 	public boolean isRequiredField(FieldDescriptor fieldDescriptor, Contact contact) {
 		if (!isValid(fieldDescriptor, contact))
 			return false;
-		String preferenceValue = preferenceController.getValue(fieldDescriptor.getPreferenceNameBy(contactFieldSet), false);
+		String preferenceValue = preferenceController.getValue(fieldDescriptor.getPreferenceNameBy(), false);
 		return VALUE_Required.equals(preferenceValue);
 	}
 
@@ -129,34 +72,7 @@ public class ContactFieldHelper {
 		return preferenceController;
 	}
 
-
-	public boolean isCustomFieldVisible(CustomField customField) {
-		return isCustomFieldTypeVisible(customField.getCustomFieldType());
-	}
-	
-	public boolean isCustomFieldTypeVisible(CustomFieldType customFieldType) {
-			switch (contactFieldSet) {
-				case enrolment:
-					return isShow(customFieldType.getRequireForEnrolment());
-				case waitinglist:
-					return isShow(customFieldType.getRequireForWaitingList());
-				case mailinglist:
-					return isShow(customFieldType.getRequireForMailingList());
-				default:
-					throw new IllegalArgumentException("Unknown field set type.");
-			}
-	}
-
 	public boolean isCustomFieldTypeRequired(CustomFieldType customFieldType) {
-			switch (contactFieldSet) {
-				case enrolment:
-					return VALUE_Required.equals(customFieldType.getRequireForEnrolment());
-				case waitinglist:
-					return VALUE_Required.equals(customFieldType.getRequireForWaitingList());
-				case mailinglist:
-					return VALUE_Required.equals(customFieldType.getRequireForMailingList());
-				default:
-					throw new IllegalArgumentException("Unknown field set type.");
-			}
+		return VALUE_Required.equals(customFieldType.getRequireForEnrolment());
 	}
 }

@@ -10,6 +10,7 @@ import ish.oncourse.services.preference.GetCheckoutTermsUrl
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.IsCollectParentDetails
+import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.editor.v1.model.CheckoutSettings
 import ish.oncourse.willow.editor.v1.model.ClassStateTransition
 import ish.oncourse.willow.editor.v1.model.ClassAge
@@ -28,7 +29,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.services.preference.Preferences.*
-import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
 
 @CompileStatic
 class SettingsApiServiceImpl implements SettingsApi {
@@ -130,13 +130,12 @@ class SettingsApiServiceImpl implements SettingsApi {
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         WebSite site = WebSiteFunctions.getCurrentWebSite(requestService.request, context)
         return new CheckoutSettings().with { settings ->
-            settings.allowCreateContactOnEnrol = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.enrolment), context).booleanValue
-            settings.allowCreateContactOnWaitingList = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.waitinglist), context).booleanValue
-            settings.allowCreateContactOnMailingList = new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue
+            settings.allowCreateContactOnEnrol =  new GetPreference(college, CHECKOUT_ENROLMENT_allowCreateContact, context, site).booleanValue
+            settings.allowCreateContactOnWaitingList =  new GetPreference(college, CHECKOUT_WAITING_LIST_allowCreateContact, context, site).booleanValue
 
-            settings.collectParentDetails = new IsCollectParentDetails(college, context).get() 
+            settings.collectParentDetails = new IsCollectParentDetails(college, context, site).booleanValue 
             settings.contactAgeWhenNeedParent = new GetContactAgeWhenNeedParent(college, context, site).integerValue
-            settings.enrolmentMinAge = new GetPreference(college, ENROLMENT_MIN_AGE, context).integerValue
+            settings.enrolmentMinAge = new GetPreference(college, CHECKOUT_ENROLMENT_minAge, context, site).integerValue
             settings.termsUrl = new GetCheckoutTermsUrl(college, context, site).value
             settings.termsLabel = new GetCheckoutTermsLabel(college, context, site).value
 
@@ -150,12 +149,11 @@ class SettingsApiServiceImpl implements SettingsApi {
         ObjectContext context = cayenneService.newContext()
         College college = WebSiteFunctions.getCurrentCollege(requestService.request, context)
         WebSite site = WebSiteFunctions.getCurrentWebSite(requestService.request, context)
-        new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.enrolment), context).booleanValue = settings.allowCreateContactOnEnrol
-        new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.waitinglist), context).booleanValue = settings.allowCreateContactOnWaitingList
-        new GetPreference(college, allowCreateContact.getPreferenceNameBy(ContactFieldSet.mailinglist), context).booleanValue = settings.allowCreateContactOnMailingList
-        new IsCollectParentDetails(college, context).booleanValue = settings.collectParentDetails
+        new GetPreference(college, CHECKOUT_ENROLMENT_allowCreateContact, context, site).booleanValue = settings.allowCreateContactOnEnrol
+        new GetPreference(college, CHECKOUT_WAITING_LIST_allowCreateContact, context, site).booleanValue = settings.allowCreateContactOnWaitingList
+        new IsCollectParentDetails(college, context, site).booleanValue  = settings.collectParentDetails
         new GetContactAgeWhenNeedParent(college, context,site).integerValue = settings.contactAgeWhenNeedParent
-        new GetPreference(college, ENROLMENT_MIN_AGE, context).integerValue = settings.enrolmentMinAge
+        new GetPreference(college, CHECKOUT_ENROLMENT_minAge, context, site).integerValue = settings.enrolmentMinAge
         new GetCheckoutTermsLabel(college, context, site).value = settings.termsLabel
         new GetCheckoutTermsUrl(college, context, site).value = settings.termsUrl
         context.commitChanges()

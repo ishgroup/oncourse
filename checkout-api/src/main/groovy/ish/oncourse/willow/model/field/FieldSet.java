@@ -11,10 +11,8 @@ public enum FieldSet {
   
   ENROLMENT("ENROLMENT"),
   
-  WAITINGLIST("WAITINGLIST"),
+  WAITINGLIST("WAITINGLIST");
   
-  MAILINGLIST("MAILINGLIST");
-
   private String value;
 
   FieldSet(String value) {

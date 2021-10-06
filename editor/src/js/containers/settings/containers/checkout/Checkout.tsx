@@ -100,7 +100,7 @@ export class Checkout extends React.Component<Props, CompState> {
 
   render() {
     const {
-      allowCreateContactOnEnrol, allowCreateContactOnWaitingList, allowCreateContactOnMailingList,
+      allowCreateContactOnEnrol, allowCreateContactOnWaitingList,
       collectParentDetails, enrolmentMinAge, contactAgeWhenNeedParent, termsLabel, termsUrl, termsUrlError, termslabelError
     } = this.state;
     const { fetching } = this.props;
@@ -130,18 +130,6 @@ export class Checkout extends React.Component<Props, CompState> {
               />
             )}
             label="Allow create new student on waiting list."
-          />
-
-          <FormControlLabel
-            control={(
-              <Checkbox
-                checked={allowCreateContactOnMailingList}
-                onChange={(e) => this.onChange(e.target.checked, 'allowCreateContactOnMailingList')}
-                name="allowCreateContactOnMailingList"
-                color="primary"
-              />
-            )}
-            label="Allow create new student on mailing list"
           />
 
           <div>

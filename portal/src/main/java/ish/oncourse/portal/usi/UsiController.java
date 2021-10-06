@@ -14,8 +14,6 @@ import org.apache.tapestry5.ioc.internal.util.MessagesImpl;
 import java.util.List;
 import java.util.Map;
 
-import static ish.oncourse.services.preference.Preferences.ContactFieldSet.enrolment;
-
 /**
  * Copyright ish group pty ltd. All rights reserved. http://www.ish.com.au No copying or use of this code is allowed without permission in writing from ish.
  */
@@ -124,7 +122,7 @@ public class UsiController {
         usiController.languageService = languageService;
 
         usiController.preferenceController = preferenceController;
-        usiController.contactFieldHelper = new ContactFieldHelper(usiController.getPreferenceController(), enrolment);
+        usiController.contactFieldHelper = new ContactFieldHelper(usiController.getPreferenceController());
 
         usiController.usiVerificationService = usiVerificationService;
         usiController.messages = MessagesImpl.forClass(Usi.class);

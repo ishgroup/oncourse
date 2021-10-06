@@ -30,7 +30,7 @@ class IsParentRequired {
         if (contact.dateOfBirth) {
             Integer age = ChronoUnit.YEARS.between(ZonedDateTime.ofInstant(contact.dateOfBirth.toInstant(), ZoneId.systemDefault()),
                     ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault())).toInteger()
-            return new IsCollectParentDetails(college, context).get() && new GetContactAgeWhenNeedParent(college, context, site).integerValue > age
+            return new IsCollectParentDetails(college, context, site).booleanValue && new GetContactAgeWhenNeedParent(college, context, site).integerValue > age
         }
         return false
     }

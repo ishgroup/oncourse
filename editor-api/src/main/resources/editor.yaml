@@ -1224,8 +1224,6 @@ definitions:
         type: boolean
       allowCreateContactOnWaitingList:
         type: boolean
-      allowCreateContactOnMailingList:
-        type: boolean
       collectParentDetails:
         type: boolean
       contactAgeWhenNeedParent:

@@ -1229,7 +1229,6 @@ definitions:
     enum:
       - ENROLMENT
       - WAITINGLIST
-      - MAILINGLIST
   web.CreateContactParams:
     type: object
     required:

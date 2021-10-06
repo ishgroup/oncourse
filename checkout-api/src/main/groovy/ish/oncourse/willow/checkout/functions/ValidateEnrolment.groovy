@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Student
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.courseclass.CheckClassAge
 import ish.oncourse.services.courseclass.ClassAge
 import ish.oncourse.services.preference.GetPreference
@@ -19,8 +20,8 @@ import java.time.temporal.ChronoUnit
 @CompileStatic
 class ValidateEnrolment extends Validate<Enrolment>{
     
-    ValidateEnrolment(ObjectContext context, College college) {
-        super(context, college)
+    ValidateEnrolment(ObjectContext context, College college, WebSite site) {
+        super(context, college, site)
     }
 
     @Override
@@ -72,7 +73,7 @@ class ValidateEnrolment extends Validate<Enrolment>{
             Integer minEnrolmentAge = courseClass.minStudentAge
             Integer maxEnrolmentAge = courseClass.maxStudentAge
 
-            String value = new GetPreference(college, Preferences.ENROLMENT_MIN_AGE, context).value
+            String value = new GetPreference(college, Preferences.CHECKOUT_ENROLMENT_minAge, context, site).value
             Integer globalMinEnrolmentAge = value != null && StringUtils.isNumeric(value) ? Integer.valueOf(value) : 0
 
             Integer age = ChronoUnit.YEARS.between(ZonedDateTime.ofInstant(dateOfBirth.toInstant(), ZoneId.systemDefault()),

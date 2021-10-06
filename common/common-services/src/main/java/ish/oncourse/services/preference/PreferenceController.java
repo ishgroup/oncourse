@@ -15,7 +15,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.Date;
 
 import static ish.oncourse.services.preference.Preferences.*;
-import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact;
 
 
 public class PreferenceController extends CommonPreferenceController {
@@ -135,11 +134,6 @@ public class PreferenceController extends CommonPreferenceController {
 		return new IsPaymentGatewayEnabled(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
 	}
 	
-    public boolean isCollectParentDetails()
-    {
-        return new IsCollectParentDetails(webSiteService.getCurrentCollege(), cayenneService.sharedContext()).get();
-    }
-
 	public void setHideClassOnWebsiteAge(ClassAge classAge) {
 		setValue(HIDE_CLASS_ON_WEB_AGE, false, String.valueOf(classAge.getDays()));
 		setValue(HIDE_CLASS_ON_WEB_AGE_TYPE, false, String.valueOf(classAge.getType().name()));
@@ -160,18 +154,6 @@ public class PreferenceController extends CommonPreferenceController {
 				getValue(STOP_WEB_ENROLMENTS_AGE_TYPE, false));
 	}
 
-	public void setAllowCreateContact(ContactFieldSet contactFieldSet, boolean value) {
-		setValue(allowCreateContact.getPreferenceNameBy(contactFieldSet), false, String.valueOf(value));
-	}
-
-    public boolean getAllowCreateContact(ContactFieldSet contactFieldSet) {
-        String value = getValue(allowCreateContact.getPreferenceNameBy(contactFieldSet), false);
-        if (StringUtils.isBlank(value)) {
-            return true;
-        } else {
-            return Boolean.valueOf(value);
-        }
-    }
     
 	public String getStorageAccessId() {
 		return getSetting(Settings.STORAGE_ACCESS_ID);
@@ -226,8 +208,8 @@ public class PreferenceController extends CommonPreferenceController {
             this.forPerson = forPerson;
         }
 
-		public String getPreferenceNameBy(ContactFieldSet contactFieldSet) {
-			return String.format("%s.contact.%s.required", contactFieldSet.name(), this.preferenceName);
+		public String getPreferenceNameBy() {
+			return String.format("enrolment.contact.%s.required",  this.preferenceName);
 		}
 
         public boolean isForCompany() {
