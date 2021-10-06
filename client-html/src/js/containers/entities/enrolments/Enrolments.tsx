@@ -25,7 +25,7 @@ import Menu from "@material-ui/core/Menu";
 import { Enrolment, CustomFieldType } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import Button from "../../../common/components/buttons/Button";
-import { StyledCheckbox } from "../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import {
   setListEditRecord,
@@ -90,7 +90,6 @@ const Initial: Enrolment = {
   creditUsedValue: null,
   cricosConfirmation: null,
   eligibilityExemptionIndicator: false,
-  feeCharged: 0,
   vetFeeExemptionType: "Not set",
   feeHelpAmount: 0,
   feeStatus: "Australian Capital Territory Government subsidised",

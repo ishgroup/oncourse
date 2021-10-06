@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { change } from "redux-form";
 import { Dispatch } from "redux";
 import { useSelector } from "react-redux";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import PdfService from "../../../pdf-reports/services/PdfService";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import { State } from "../../../../../../reducers/state";

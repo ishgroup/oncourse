@@ -42,7 +42,7 @@ Feature: Main feature for all GET requests with path 'list/entity/payslip'
         Given path ishPath + "/1000"
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "payType":"Employee",
@@ -53,9 +53,6 @@ Feature: Main feature for all GET requests with path 'list/entity/payslip'
         "tutorId":1,
         "tutorFullName":"tutor1",
         "tags":[],
-        "paylines":"#ignore",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
         }
         """
         And match $.paylines contains only

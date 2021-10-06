@@ -11,7 +11,7 @@ import Delete from "@material-ui/icons/Delete";
 import DragIndicator from "@material-ui/icons/DragIndicator";
 import IconButton from "@material-ui/core/IconButton";
 import { Field } from "redux-form";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { PillCheckboxField } from "../../../../../common/components/form/PillCheckbox";
 
 const styles = () => createStyles({

@@ -39,14 +39,22 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
 
     Scenario: (+) Get site by admin
 
-        Given path ishPath + "/201"
+        Given path ishPathList
+        And param entity = 'Site'
+        When method GET
+        Then status 200
+        And match $.rows[*].values[*] contains ["site1"]
+
+        * def id = get[0] response.rows[?(@.values == ["[]","site1","Adelaide","5000","false"])].id
+
+        Given path ishPath + "/" + id
         When method GET
         Then status 200
 
-        And match $ ==
+        And match $ contains
             """
             {
-            "id":201,
+            "id":#number,
             "isAdministrationCentre":false,
             "isVirtual":false,
             "isShownOnWeb":false,
@@ -71,8 +79,6 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
                 ],
             "documents":[],
             "rules":[],
-            "createdOn":"#ignore",
-            "modifiedOn":"#ignore"
             }
             """
 
@@ -85,15 +91,22 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
 
         
 #       <--->
+        Given path ishPathList
+        And param entity = 'Site'
+        When method GET
+        Then status 200
+        And match $.rows[*].values[*] contains ["site1"]
 
-        Given path ishPath + "/201"
+        * def id = get[0] response.rows[?(@.values == ["[]","site1","Adelaide","5000","false"])].id
+
+        Given path ishPath + "/" + id
         When method GET
         Then status 200
 
-        And match $ ==
+        And match $ contains
             """
             {
-            "id":201,
+            "id":#number,
             "isAdministrationCentre":false,
             "isVirtual":false,
             "isShownOnWeb":false,
@@ -118,8 +131,6 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
                 ],
             "documents":[],
             "rules":[],
-            "createdOn":"#ignore",
-            "modifiedOn":"#ignore"
             }
             """
 

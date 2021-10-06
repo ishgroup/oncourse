@@ -8,7 +8,7 @@ import clsx from "clsx";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-groovy";
 import "ace-builds/src-noconflict/theme-textmate";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@material-ui/core/styles";
 
 const styles = theme =>
   createStyles({

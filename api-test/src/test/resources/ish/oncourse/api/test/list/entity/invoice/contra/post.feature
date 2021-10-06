@@ -8,8 +8,11 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice/contr
         * def ishPathLogin = 'login'
         * def ishPathInvoice = 'list/entity/invoice'
         * def ishPathPlain = 'list/plain'
-        
 
+
+    # During test execution, additional rows are created in the 'PaymentInLine' table, witch also
+    # not delete after completed "prepareTestDb" task
+    # You need to delete them yourself
 
 
     Scenario: (+) Create contra invoice by admin

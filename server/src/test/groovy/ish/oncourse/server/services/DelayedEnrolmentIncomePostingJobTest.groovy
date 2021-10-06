@@ -79,10 +79,6 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
 	
 	@Test
 	void testGetPercentageOfDeliveredScheduledHours() {
-        cayenneContext.deleteObjects(cayenneContext.select(SelectQuery.query(AccountTransaction.class)))
-        cayenneContext.deleteObjects(cayenneContext.select(SelectQuery.query(Outcome.class)))
-        cayenneContext.deleteObjects(cayenneContext.select(SelectQuery.query(Enrolment.class)))
-        cayenneContext.commitChanges()
 
         CourseClass cc1 = getRecordWithId(cayenneContext, CourseClass.class, 100L)
         CourseClass cc2 = getRecordWithId(cayenneContext, CourseClass.class, 200L)

@@ -88,6 +88,6 @@ public class AngelServletTester extends ContainerLifeCycle {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Request (Buffer): {}", BufferUtil.toUTF8String(request));
         }
-        return _connector.getResponses(request);
+        return _connector.getResponse(request);
     }
 }

@@ -1,5 +1,5 @@
 http:
-  port: 443
+  port: 8182
   ip: 127.0.0.1
   path: /
 
@@ -8,4 +8,11 @@ db:
 
 license:
   max_concurrent_users: 99
-  admin_password_reset: false
+
+smtp:
+  email_batch: 10000
+  host: smtp.gmail.com
+  port: 465
+  mode: ssl
+  username: your_email@gmail.com
+  password: your_email_password

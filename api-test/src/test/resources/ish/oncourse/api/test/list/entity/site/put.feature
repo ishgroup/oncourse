@@ -50,8 +50,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["someSite100","Adelaide","5000","false"])].id
-#       <--->
+        * def id = get[0] response.rows[?(@.values == ["[]","someSite100","Adelaide","5000","false"])].id
+    #       <--->
 
         * def siteToUpdate =
             """
@@ -111,8 +111,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
             "rooms":[{"id":"#number","name":"room1","seatedCapacity":75,"siteId":"#number","siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
             "documents":[],
             "rules":[{"id":"#ignore","description":"fff","startDate":"2020-01-01","endDate":"2020-02-29","startDateTime":null,"endDateTime":null,"repeat":"hour","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}],
-            "createdOn":"#ignore",
-            "modifiedOn":"#ignore"
             }
             """
 

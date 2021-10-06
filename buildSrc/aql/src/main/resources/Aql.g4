@@ -126,6 +126,7 @@ value
    | RichTextLiteral           # RichText
    | BooleanLiteral            # Boolean
    | NullLiteral               # Null
+   | EmptyLiteral              # Empty
    | Identifier                # Id
    | unaryOperator             # Id
    ;
@@ -177,7 +178,10 @@ SEPARATOR   : '.' ;
 BooleanLiteral: 'true' | 'false';
 
 // The Null Literal
-NullLiteral: 'null' | 'empty';
+NullLiteral: 'null';
+
+//Empty Literal
+EmptyLiteral: 'empty';
 
 Identifier: Letter LetterOrDigit*;
 fragment Letter: [a-zA-Z_];

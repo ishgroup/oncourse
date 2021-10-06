@@ -32,8 +32,8 @@ import {
 } from "redux-form";
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import AppBarHelpMenu from "../../common/components/form/AppBarHelpMenu";
-import FormField from "../../common/components/form/form-fields/FormField";
-import { Switch } from "../../common/components/form/form-fields/Switch";
+import FormField from "../../common/components/form/formFields/FormField";
+import { Switch } from "../../common/components/form/formFields/Switch";
 import DynamicSizeList from "../../common/components/form/DynamicSizeList";
 import { LinkAdornment } from "../../common/components/form/FieldAdornments";
 import CustomAppBar from "../../common/components/layout/CustomAppBar";

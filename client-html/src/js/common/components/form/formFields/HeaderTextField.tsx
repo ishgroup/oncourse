@@ -4,12 +4,12 @@
  */
 
 import {
-  withStyles, Typography, IconButton, Input, FormControl, FormHelperText
+ FormControl, FormHelperText, IconButton, Input, Typography, withStyles
 } from "@material-ui/core";
 import clsx from "clsx";
 import Edit from "@material-ui/icons/Edit";
 import React, {
-  useCallback, useMemo, useRef, useState
+ useCallback, useMemo, useRef, useState
 } from "react";
 import ButtonBase from "@material-ui/core/ButtonBase/ButtonBase";
 
@@ -48,7 +48,10 @@ const styles = theme => ({
   },
   fitWidth: {
     width: "50%"
-  }
+  },
+  editableInHeader: {
+    color: theme.palette.primary.contrastText,
+  },
 });
 
 const HeaderTextField: React.FC<any> = ({
@@ -103,7 +106,8 @@ const HeaderTextField: React.FC<any> = ({
             underline: clsx({
               [classes.cssUnderline]: !invalid,
               [classes.cssUnderlineError]: invalid
-            })
+            }),
+            input: classes.editableInHeader,
           }}
           inputRef={inputNode}
           value={input.value || ""}

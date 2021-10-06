@@ -19,7 +19,7 @@ const request: EpicUtils.Request = {
     `( ${
       scriptsMap[payload.entity]
         ? scriptsMap[payload.entity].map(e => `entityClass == ${e}`).join(" || ")
-        : `entityClass == ${payload.entity === "AbstractInvoice" ? "Invoice" : payload.entity}`
+        : `entityClass == ${payload.entity}`
     } ) && ( triggerType == ON_DEMAND )`
   ),
   processData: (records: DataResponse) => {

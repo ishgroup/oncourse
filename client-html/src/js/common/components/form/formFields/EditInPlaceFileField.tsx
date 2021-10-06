@@ -102,7 +102,8 @@ const styles = theme => createStyles({
   labelShrink: {},
   labelAdornment: {},
   placeholderContent: {
-    color: theme.palette.divider
+    color: theme.palette.text.disabled,
+    opacity: 0.4,
   },
   chip: {
     margin: theme.spacing(0.25)
@@ -396,7 +397,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
       onInnerValueChange,
       defaultValue,
       disabledTab,
-      fullWidth,
       ...custom
     } = this.props;
 
@@ -469,7 +469,7 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
           <FormControl
             error={invalid}
             margin="none"
-            fullWidth={fullWidth}
+            fullWidth
             onClick={this.openFilePicker}
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,

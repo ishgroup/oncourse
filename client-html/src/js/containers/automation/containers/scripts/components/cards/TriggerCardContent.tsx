@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Help from "@material-ui/icons/Help";
 import * as Entities from "@aql/queryLanguageModel";
 import { change } from "redux-form";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { AQL_ENTITY_ITEMS } from "../../../../constants";
 import { mapSelectItems } from "../../../../../../common/utils/common";
 

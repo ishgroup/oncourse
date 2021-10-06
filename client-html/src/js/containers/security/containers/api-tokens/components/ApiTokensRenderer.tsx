@@ -13,7 +13,7 @@ import Button from "@material-ui/core/Button";
 import { ApiToken, User } from "@api/model";
 import { WrappedFieldArrayProps } from "redux-form";
 import { Dispatch } from "redux";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";

@@ -6,7 +6,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { initialize, reduxForm } from "redux-form";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 

@@ -67,7 +67,7 @@ export const GOOGLE_ANALYTICS_USER_ID_KEY: PreferenceEnum = "google.analytics.ui
 
 export const LICENSE_SCRIPTING_KEY: PreferenceEnum = "license.scripting";
 
-export const LICENSE_ACCESS_CONTROL_KEY: PreferenceEnum = "license.accesscontrol";
+export const LICENSE_ACCESS_CONTROL_KEY: PreferenceEnum = "license.access_control";
 
 export const ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID: PreferenceEnum = "account.default.studentEnrolments.id";
 

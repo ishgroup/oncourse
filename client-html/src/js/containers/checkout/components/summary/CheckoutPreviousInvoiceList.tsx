@@ -10,7 +10,7 @@ import clsx from "clsx";
 import {
   Chip, Paper, Typography, Grid, withStyles, FormControlLabel
 } from "@material-ui/core";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { openInternalLink } from "../../../../common/utils/links";

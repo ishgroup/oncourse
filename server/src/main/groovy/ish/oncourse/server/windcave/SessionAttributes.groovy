@@ -24,6 +24,7 @@ class SessionAttributes {
     String type
     String responceJson
     String errorMessage
+    String reCo
 
     String transactionId
     String statusText

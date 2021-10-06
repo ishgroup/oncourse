@@ -10,7 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Settings from "@material-ui/icons/Settings";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import { CheckoutSummary } from "../../../../model/checkout";
 import {
   checkoutSetDisableDiscounts,
