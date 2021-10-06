@@ -93,7 +93,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/payslip'
         And param entity = 'Payslip'
         When method GET
         Then status 200
-        And match $.rows[7].values[3] == "Completed"
+        And match $.rows[7].values[4] == "Completed"
 #       <----->
 
         Given path ishPath + '/' + id

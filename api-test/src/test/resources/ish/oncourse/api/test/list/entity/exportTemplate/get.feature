@@ -13,6 +13,7 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
 
         Given path ishPathList
         And param entity = 'ExportTemplate'
+        And param pageSize = 100
         And param columns = 'name'
         When method GET
         Then status 200
@@ -23,10 +24,9 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#number",
         "name":"Room CSV export",
         "keyCode":"ish.onCourse.room.csv",
         "entity":"Room",
@@ -35,8 +35,6 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         "variables":[],
         "options":[],
         "outputType":"csv",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":null
         }
         """
@@ -63,10 +61,9 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#number",
         "name":"Class outcomes CSV export",
         "keyCode":"ish.onCourse.classOutcomes.csv",
         "entity":"CourseClass",
@@ -75,8 +72,6 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         "variables":[],
         "options":[],
         "outputType":"csv",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":null
         }
         """
