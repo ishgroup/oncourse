@@ -4,11 +4,11 @@
  */
 
 import React, { useCallback, useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import SpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SettingsIcon from "@material-ui/icons/Settings";
+import { withStyles } from "@mui/styles";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import SpeedDialIcon from "@mui/lab/SpeedDialIcon";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { connect } from "react-redux";
 import { showConfirm } from "../../actions";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";

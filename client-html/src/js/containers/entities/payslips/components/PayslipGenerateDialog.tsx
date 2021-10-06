@@ -5,19 +5,19 @@
 
 import React, { useCallback, useState } from "react";
 import clsx from "clsx";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import {
   reduxForm, change, getFormValues
 } from "redux-form";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import Collapse from "@material-ui/core/Collapse";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import Collapse from "@mui/material/Collapse";
 import { format as formatDate } from "date-fns";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { PayrollRequest, WagesToProcess } from "@api/model";
 import { connect } from "react-redux";

@@ -7,14 +7,14 @@ import React, { useEffect, useMemo } from "react";
 import { Dispatch } from "redux";
 import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid/Grid";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
+import withStyles from "@mui/styles/withStyles";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid/Grid";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
 import { Account, CancelEnrolment, Tax } from "@api/model";
 import { getUserPreferences } from "../../../../../common/actions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -210,7 +210,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
     <Dialog fullWidth maxWidth="md" open={opened} onClose={onClose}>
       <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12}>
               <div className="centeredFlex">
                 <div className="heading mt-2 mb-2">Transfer Enrolment</div>

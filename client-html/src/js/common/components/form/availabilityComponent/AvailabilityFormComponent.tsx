@@ -5,8 +5,8 @@
 
 import React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import { Dispatch } from "redux";
 import { addHours } from "date-fns";

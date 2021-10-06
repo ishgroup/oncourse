@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import DateRange from "@material-ui/icons/DateRange";
-import Button from "@material-ui/core/Button";
+import DateRange from "@mui/icons-material/DateRange";
+import Button from "@mui/material/Button";
 
 const TimetableButton: React.FC<any> = ({ title = "Timetable", onClick }) => (
   <Button variant="contained" size="small" onClick={onClick}>

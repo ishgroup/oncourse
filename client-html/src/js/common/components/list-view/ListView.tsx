@@ -10,14 +10,15 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
 import clsx from "clsx";
-import { createStyles, ThemeProvider, withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { ThemeProvider } from "@mui/material/styles";
+import { createStyles, withStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
-import Button from "@material-ui/core/Button";
+import { createTheme } from '@mui/material';
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
 import SideBar from "./components/side-bar/SideBar";
@@ -104,7 +105,7 @@ const styles = () => createStyles({
   }
 });
 
-const sideBarTheme = theme => createMuiTheme({
+const sideBarTheme = theme => createTheme({
   ...theme,
   overrides: {
     MuiFormControlLabel: {
@@ -1048,7 +1049,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
 
     return (
-      <Grid container className="root" direction="row" wrap="nowrap">
+      <Grid container columnSpacing={3} className="root" direction="row" wrap="nowrap">
         {hasFilters && (
           <ResizableWrapper
             ignoreScreenWidth
@@ -1091,7 +1092,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             manualLink={editViewProps.manualLink}
             getCustomBulkEditFields={getCustomBulkEditFields}
           />
-          <Grid container className={clsx("flex-fill relative overflow-hidden", classes.gridWithEditColumn)}>
+          <Grid container columnSpacing={3} className={clsx("flex-fill relative overflow-hidden", classes.gridWithEditColumn)}>
             <LoadingIndicator transparentBackdrop allowInteractions />
 
             {threeColumn ? (

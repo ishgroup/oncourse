@@ -8,7 +8,7 @@
 
 import React from "react";
 import { FieldArray } from "redux-form";
-import Grid from "@material-ui/core/Grid/Grid";
+import Grid from "@mui/material/Grid/Grid";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface AssessmentDocumentsProps {
@@ -25,7 +25,7 @@ const AssessmentSubmissionDocuments: React.FC<AssessmentDocumentsProps> = props 
   } = props;
 
   return (
-    <Grid container className="p-3 saveButtonTableOffset">
+    <Grid container columnSpacing={3} className="p-3 saveButtonTableOffset">
       <FieldArray
         name="documents"
         label="Documents"

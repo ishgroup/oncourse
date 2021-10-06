@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import { change } from "redux-form";
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
@@ -208,7 +208,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   return (
     <div className="generalRoot">
       <div className="pt-1">
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 6}>
             <FormField
               type="text"
@@ -321,7 +321,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         items={productStatusItems}
         selectLabelMark="value"
       />
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
             type="select"

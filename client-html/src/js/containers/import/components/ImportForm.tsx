@@ -10,17 +10,17 @@ import {
   reduxForm, getFormValues, InjectedFormProps
 } from "redux-form";
 import { format as formatDate } from "date-fns";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import MuiButton from "@material-ui/core/Button";
-import HelpOutline from "@material-ui/icons/HelpOutline";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import MuiButton from "@mui/material/Button";
+import HelpOutline from "@mui/icons-material/HelpOutline";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { State } from "../../../reducers/state";
 import Button from "../../../common/components/buttons/Button";
@@ -79,7 +79,7 @@ const ImportForm: React.FC<Props> = props => {
   return (
     <form className="container" onSubmit={handleSubmit(onSubmit)}>
       <CustomAppBar fullWidth>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} className="centeredFlex">
             <Typography variant="h6" color="inherit" noWrap>
               Import
@@ -98,7 +98,7 @@ const ImportForm: React.FC<Props> = props => {
           </Grid>
         </Grid>
       </CustomAppBar>
-      <Grid container className={classes.mainContent}>
+      <Grid container columnSpacing={3} className={classes.mainContent}>
         <Grid item sm={5}>
           <Card>
             <CardContent className="mb-0 p-3">

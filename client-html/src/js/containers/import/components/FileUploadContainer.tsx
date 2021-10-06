@@ -3,12 +3,12 @@ import React, {
 } from "react";
 import clsx from "clsx";
 import { useDropzone } from "react-dropzone";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Grid from "@material-ui/core/Grid";
-import DeleteIcon from "@material-ui/icons/Delete";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Grid from "@mui/material/Grid";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "../../../common/components/buttons/Button";
 
 const styles = theme => createStyles({
@@ -75,11 +75,11 @@ const FileUploadContainer: React.FC<any> = props => {
   );
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Typography color="inherit" component="div" className="heading centeredFlex pt-3">
         Files
       </Typography>
-      <Grid container className="pt-2">
+      <Grid container columnSpacing={3} className="pt-2">
         {fileRenderer}
       </Grid>
       <div className="container pt-2 pb-2">
@@ -88,7 +88,7 @@ const FileUploadContainer: React.FC<any> = props => {
           className={clsx(classes.uploadContainer, "paperBackgroundColor w-100 outline-none p-3")}
         >
           <input {...getInputProps()} />
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item sm={12} className={clsx(classes.fileType, "d-flex justify-content-center pb-3")}>
               <Typography variant="subtitle2" component="div">
                 enrolmentCsv

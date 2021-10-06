@@ -1,6 +1,6 @@
-import { Theme } from "@material-ui/core";
+import { Theme } from "@mui/material";
+import { SimplePaletteColorOptions } from '@mui/material/styles/createPalette';
 import { StringKeyObject } from "./CommomObjects";
-import { SimplePaletteColorOptions } from "@material-ui/core/styles/createPalette";
 
 enum ThemeValuesEnum {
   "default",

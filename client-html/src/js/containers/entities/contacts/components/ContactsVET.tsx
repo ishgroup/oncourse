@@ -22,15 +22,15 @@ import {
 } from "@api/model";
 import { change } from "redux-form";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Link from "@material-ui/core/Link";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import Chip from "@material-ui/core/Chip";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Link from "@mui/material/Link";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Chip from "@mui/material/Chip";
 import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -247,7 +247,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   return values ? (
     <div className="p-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
-        <Grid container>
+        <Grid container columnSpacing={3}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
@@ -387,7 +387,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 4 : 12} xl={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"

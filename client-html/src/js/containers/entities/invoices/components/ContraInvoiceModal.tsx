@@ -4,13 +4,13 @@
  */
 
 import { Currency } from "@api/model";
-import MuiButton from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Grid from "@material-ui/core/Grid/Grid";
-import Typography from "@material-ui/core/Typography/Typography";
+import MuiButton from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid/Grid";
+import Typography from "@mui/material/Typography/Typography";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -162,7 +162,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
         <DialogTitle>Contra Invoice</DialogTitle>
 
         <DialogContent className="overflow-hidden">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={6}>
               <FormField
                 type="text"

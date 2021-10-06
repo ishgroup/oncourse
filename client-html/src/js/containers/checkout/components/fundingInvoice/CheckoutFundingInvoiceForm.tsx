@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Collapse } from "@material-ui/core";
+import { Collapse } from "@mui/material";
 import React from "react";
 import { connect } from "react-redux";
 import {
   DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm
 } from "redux-form";
 import clsx from "clsx";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { createStyles, withStyles } from "@mui/styles";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";

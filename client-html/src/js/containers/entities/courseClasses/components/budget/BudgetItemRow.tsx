@@ -8,11 +8,11 @@
 
 import React, { useCallback, useMemo } from "react";
 import Decimal from "decimal.js-light";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { IconButton } from "@material-ui/core";
-import Delete from "@material-ui/icons/Delete";
-import Edit from "@material-ui/icons/Edit";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { IconButton } from "@mui/material";
+import Delete from "@mui/icons-material/Delete";
+import Edit from "@mui/icons-material/Edit";
 import { ClassCost } from "@api/model";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";

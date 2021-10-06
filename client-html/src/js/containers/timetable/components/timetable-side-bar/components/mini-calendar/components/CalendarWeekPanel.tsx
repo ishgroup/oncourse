@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, withStyles } from "@material-ui/core";
+import { createStyles, withStyles } from "@mui/styles";
 import WeekDay from "./WeekDay";
 
 interface Props {

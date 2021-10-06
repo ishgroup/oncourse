@@ -4,11 +4,11 @@
  */
 
 import React from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Alert from "@material-ui/lab/Alert";
-import Tooltip from "@material-ui/core/Tooltip";
+import Alert from "@mui/lab/Alert";
+import Tooltip from "@mui/material/Tooltip";
+import { makeAppStyles } from "../../../common/styles/makeStyles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   alertRoot: {
     padding: 3,
     fontSize: "0.75em",
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const CheckoutAlertTextMessage: React.FC<Props> = (props => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { message } = props;
 
   return message && (

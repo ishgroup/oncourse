@@ -4,12 +4,12 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
+import { withStyles } from "@mui/styles";
+import Drawer from "@mui/material/Drawer";
+import Hidden from "@mui/material/Hidden";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { createStyles } from "@material-ui/styles";
+import { createStyles } from "@mui/styles";
 import { State } from "../../../reducers/state";
 import { closeDrawer } from "../../actions";
 import { AppTheme } from "../../../model/common/Theme";

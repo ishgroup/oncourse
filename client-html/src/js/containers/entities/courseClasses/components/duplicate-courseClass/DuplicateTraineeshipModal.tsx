@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import debounce from "lodash.debounce";
@@ -19,18 +19,18 @@ import {
   InjectedFormProps,
   reduxForm
 } from "redux-form";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid/Grid";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import withStyles from "@mui/styles/withStyles";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid/Grid";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { Account, ClassCost, CourseClassDuplicate, Tax } from "@api/model";
 import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
-import { Typography } from "@material-ui/core";
-import Tooltip from "@material-ui/core/Tooltip";
+import { Typography } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import EntityService from "../../../../../common/services/EntityService";
 import { State } from "../../../../../reducers/state";
@@ -312,7 +312,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
       disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
-      disableBackdropClick={disableClose}
       disableEscapeKeyDown={disableClose}
       onKeyDown={e => e.stopPropagation()}
     >
@@ -322,7 +321,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
             root: classes.dialogContent
           }}
         >
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={4}>
               <div className="centeredFlex">
                 <div className="heading mt-2 mb-2">

@@ -6,7 +6,10 @@
 import React, {
   useCallback, useEffect, useMemo, useRef
 } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
+import FormGroup from "@mui/material/FormGroup";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   arrayPush, arrayRemove, change, Field, formValueSelector
 } from "redux-form";
@@ -18,6 +21,8 @@ import { connect } from "react-redux";
 import {
   ClashType, SessionWarning, Site, TutorAttendance,
 } from "@api/model";
+import { FormControl, FormHelperText } from "@mui/material";
+import clsx from "clsx";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -91,7 +96,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
     });
     return types;
   }, [warnings]);
-  
+
   const shiftSessionDates = (durationMinutes: number, sessionStart: string) => {
     const startDate = new Date(sessionStart);
     const endDate = addMinutes(startDate, durationMinutes);
@@ -103,7 +108,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         endDate.toISOString()
       )
     );
-    
+
     const updatedSession = {
       ...session,
       start: startDate.toISOString(),
@@ -111,7 +116,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
     };
 
     setShiftedTutorAttendances(session, updatedSession);
-    
+
     dispatch(
       change(form, `sessions[${session.index}].tutorAttendances`, updatedSession.tutorAttendances)
     );
@@ -179,7 +184,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
   };
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={4}>
         <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />
         <FormField

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { FormControlLabel } from "@material-ui/core";
+import { FormControlLabel } from "@mui/material";
 import { FormSwitch } from "./formFields/Switch";
 import EditInPlaceField from "./formFields/EditInPlaceField";
 import EditInPlaceDateTimeField from "./formFields/EditInPlaceDateTimeField";

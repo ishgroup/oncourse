@@ -6,13 +6,13 @@
 import React, {
   useRef, useState
 } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Popover from "@material-ui/core/Popover";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import ListItem from "@mui/material/ListItem";
+import List from "@mui/material/List";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Popover from "@mui/material/Popover";
 import { COLUMN_WITH_COLORS } from "../utils";
 
 const ColumnChooserItem = ({ classes, column, columnId, setShowColoredDots }) => {

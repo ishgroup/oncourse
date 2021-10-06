@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";

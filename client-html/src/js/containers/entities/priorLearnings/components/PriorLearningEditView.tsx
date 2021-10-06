@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import {
   arrayInsert, arrayRemove, change, FieldArray
 } from "redux-form";
@@ -115,7 +115,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
   return values ? (
     <div className="p-3">
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={12}>
           <FormField type="text" name="title" label="Title" required />
         </Grid>

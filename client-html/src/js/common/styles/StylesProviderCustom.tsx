@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StylesProvider, createGenerateClassName } from "@material-ui/styles";
+import { StylesProvider, createGenerateClassName } from "@mui/styles";
 
 const generateClassName = createGenerateClassName({
   disableGlobal: true

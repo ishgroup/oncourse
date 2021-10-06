@@ -10,19 +10,19 @@ import { connect } from "react-redux";
 import {
   arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit
 } from "redux-form";
-import Dialog from "@material-ui/core/Dialog";
-import Grid from "@material-ui/core/Grid/Grid";
-import DialogContent from "@material-ui/core/DialogContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Typography from "@material-ui/core/Typography";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Collapse from "@material-ui/core/Collapse";
+import Dialog from "@mui/material/Dialog";
+import Grid from "@mui/material/Grid/Grid";
+import DialogContent from "@mui/material/DialogContent";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Collapse from "@mui/material/Collapse";
 import { Session, TutorAttendance } from "@api/model";
 import { differenceInMinutes, isPast } from "date-fns";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
@@ -228,7 +228,7 @@ const CourseClassBulkChangeSessionForm = props => {
             root: classes.bulkChangeDialogContent
           }}
         >
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12}>
               <div className={clsx("centeredFlex")}>
                 <div className="heading mt-2 mb-2">
@@ -255,7 +255,7 @@ const CourseClassBulkChangeSessionForm = props => {
             </Grid>
             <Grid item xs={12}>
               <BulkItemWrapper classes={classes} title="Location" name="location">
-                <Grid container>
+                <Grid container columnSpacing={3}>
                   <Grid item xs={6}>
                     <FormField
                       type="remoteDataSearchSelect"

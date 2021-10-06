@@ -4,8 +4,8 @@
  */
 
 import React, { useCallback, useRef } from "react";
-import { FormHelperText } from "@material-ui/core";
-import Edit from "@material-ui/icons/Edit";
+import { FormHelperText } from "@mui/material";
+import Edit from "@mui/icons-material/Edit";
 import Gravatar from "react-awesome-gravatar";
 import { change } from "redux-form";
 import noAvatarImg from "../../../../../images/no_pic.png";

@@ -6,16 +6,16 @@
 import React from "react";
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
-import Dialog from "@material-ui/core/Dialog";
-import AppBar from "@material-ui/core/AppBar";
-import { createStyles, withStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import Dialog from "@mui/material/Dialog";
+import AppBar from "@mui/material/AppBar";
+import { createStyles, withStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import Slide from "@material-ui/core/Slide";
-import Typography from "@material-ui/core/Typography";
-import { TransitionProps } from "@material-ui/core/transitions";
+import Slide from "@mui/material/Slide";
+import Typography from "@mui/material/Typography";
+import { TransitionProps } from "@mui/material/transitions";
 import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";
 import LoadingIndicator from "../../../layout/LoadingIndicator";
@@ -188,7 +188,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               </div>
             </AppBar>
           )}
-          <Grid container className={hideFullScreenAppBar ? undefined : classes.root}>
+          <Grid container columnSpacing={3} className={hideFullScreenAppBar ? undefined : classes.root}>
             <Grid item xs={12}>
               <LoadingIndicator appBarOffset position="fixed" />
 

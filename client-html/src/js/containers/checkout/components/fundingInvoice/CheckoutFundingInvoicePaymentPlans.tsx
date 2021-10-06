@@ -4,15 +4,15 @@
  */
 
 import { InvoicePaymentPlan } from "@api/model";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import Step from "@material-ui/core/Step";
-import StepButton from "@material-ui/core/StepButton";
-import StepContent from "@material-ui/core/StepContent";
-import StepLabel from "@material-ui/core/StepLabel";
-import Stepper from "@material-ui/core/Stepper";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import AddCircle from "@material-ui/icons/AddCircle";
+import IconButton from "@mui/material/IconButton/IconButton";
+import Step from "@mui/material/Step";
+import StepButton from "@mui/material/StepButton";
+import StepContent from "@mui/material/StepContent";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
+import { withStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import AddCircle from "@mui/icons-material/AddCircle";
 import clsx from "clsx";
 import { format } from "date-fns";
 import React, { useCallback, useMemo } from "react";

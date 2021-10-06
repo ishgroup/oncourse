@@ -4,13 +4,13 @@
  */
 
 import { Account, CancelEnrolment, Tax } from "@api/model";
-import MuiButton from "@material-ui/core/Button/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import MuiButton from "@mui/material/Button/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";

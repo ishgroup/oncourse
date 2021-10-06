@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Typography } from "@material-ui/core";
-import { createStyles, withStyles } from "@material-ui/styles";
+import { Button, Typography } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 
 interface Props {
@@ -29,21 +29,21 @@ const styles = theme =>
     }
   });
 
-const WeekDay = ({ classes, name, selected, click, id }: Props) => {
-  return (
+const WeekDay = ({
+    classes, name, selected, click, id
+  }: Props) => (
     <Button
       className={clsx(classes.weekButton, {
         [classes.selectedWeekDay]: selected
       })}
       onClick={() => click(id)}
       variant={selected ? "contained" : "text"}
-      color={selected ? "primary" : "default"}
+      color={selected ? "primary" : "inherit"}
     >
-      <Typography variant="caption" align={"center"} className={selected ? classes.weekDayText : ""}>
+      <Typography variant="caption" align="center" className={selected ? classes.weekDayText : ""}>
         {name}
       </Typography>
     </Button>
   );
-};
 
 export default withStyles(styles)(WeekDay);

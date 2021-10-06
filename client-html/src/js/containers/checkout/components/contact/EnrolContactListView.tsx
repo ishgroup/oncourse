@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";

@@ -7,7 +7,7 @@ import React, { useEffect, useMemo } from "react";
 import { isDirty, reset } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Lock from "@material-ui/icons/LockOutlined";
+import Lock from "@mui/icons-material/LockOutlined";
 import { LICENSE_SCRIPTING_KEY, ADMIN_EMAIL_KEY } from "../../constants/Config";
 import { State } from "../../reducers/state";
 import { CommonListFilter } from "../../model/common/sidebar";

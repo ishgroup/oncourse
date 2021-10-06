@@ -7,11 +7,11 @@ import React, {
  useEffect, useMemo, useRef, Fragment, useState
 } from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/styles/withStyles";
+import withStyles from "@mui/styles/withStyles";
 import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions/index";
 import styles from "../styles";
 import { gapHoursDayPeriodsBase, getGapHours } from "../../../../utils/index";
@@ -46,13 +46,13 @@ const EmptyGapDay: React.FunctionComponent<any> = React.memo(
         }
 
         return (
-          <Grid container key={i} className={i !== 2 ? "mb-2" : undefined}>
+          <Grid container columnSpacing={3} key={i} className={i !== 2 ? "mb-2" : undefined}>
             <Grid item xs={1} className={classes.gapDayOffsetTop}>
               <p.periodIcon className={classes.stickyIcon} />
             </Grid>
 
             <Grid item xs={11} className={classes.gapDayOffsetTop}>
-              <Grid container spacing={2}>
+              <Grid container columnSpacing={3} spacing={2}>
                 {p.hours.map(h => (
                   <Fragment key={h.title}>
                     <Grid item xs={1}>
@@ -97,13 +97,13 @@ const GapDay: React.FunctionComponent<any> = React.memo(
           }
 
           return (
-            <Grid container key={i} className={classes.gapPeriodOffsetTop}>
+            <Grid container columnSpacing={3} key={i} className={classes.gapPeriodOffsetTop}>
               <Grid item xs={1} className={classes.gapDayOffsetTop}>
                 <p.periodIcon className={classes.stickyIcon} />
               </Grid>
 
               <Grid item xs={11}>
-                <Grid container spacing={2}>
+                <Grid container columnSpacing={3} spacing={2}>
                   {p.hours.map(h => (
                     <Fragment key={h.title}>
                       <Grid item xs={1}>

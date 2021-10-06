@@ -4,16 +4,15 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Typography from "@material-ui/core/Typography";
-import Delete from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
+import Typography from "@mui/material/Typography";
+import Delete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
 import { Binding } from "@api/model";
 import {
  arrayPush, arrayRemove, Field, FieldArray
 } from "redux-form";
 import { Dispatch } from "redux";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import { CommonListItem } from "../../../model/common/sidebar";
 import { SelectItemDefault } from "../../../model/entities/common";
@@ -23,6 +22,9 @@ import DataTypesMenu from "./DataTypesMenu";
 import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { renderAutomationItems } from "../utils";
+import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { AppTheme } from "../../../model/common/Theme";
+import { makeStyles } from "@mui/styles";
 
 export type BindingsItemType = "component" | "label";
 
@@ -35,7 +37,8 @@ interface BindingsItemProps {
   emailTemplateItems?: SelectItemDefault[];
 }
 
-const useStyles = makeStyles(theme => ({
+// @ts-ignore
+const useStyles = makeStyles((theme: AppTheme) => ({
   labelTypeWrapper: {
     maxHeight: "24px"
   },
@@ -47,7 +50,8 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(-2.25)
   },
   textDelete: {
-    marginLeft: `-${theme.spacing(1) - 1}px`
+    // @ts-ignore
+    marginLeft: `-${theme.spacing(1) - 1}px`,
   },
   dateDelete: {
     marginBottom: theme.spacing(1.25)
@@ -57,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 const BindingsItem = React.memo<BindingsItemProps>(({
     item, index, onDelete, type, field, emailTemplateItems
   }) => {
-  const classes = useStyles({});
+  const classes = useStyles();
 
   const buttonClass = useMemo(() => {
     switch (item.type) {

@@ -5,15 +5,15 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import MaUTable from "@material-ui/core/Table";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
+import makeStyles from "@mui/styles/makeStyles";
+import MaUTable from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
 import debounce from "lodash.debounce";
-import Typography from "@material-ui/core/Typography";
-import DragIndicator from "@material-ui/icons/DragIndicator";
+import Typography from "@mui/material/Typography";
+import DragIndicator from "@mui/icons-material/DragIndicator";
 import clsx from "clsx";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Column, DataResponse, TableModel } from "@api/model";

@@ -5,9 +5,9 @@
 
 import clsx from "clsx";
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
 import { withRouter } from "react-router";
 import {
   Form,
@@ -22,7 +22,7 @@ import {
 import { connect } from "react-redux";
 import { FundingSource } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@material-ui/core/Fab";
+import Fab from "@mui/material/Fab";
 import { Dispatch } from "redux";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
@@ -195,7 +195,7 @@ class FundingContractsForm extends React.Component<Props, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex relative">
               {(
                 <Fab
@@ -238,7 +238,7 @@ class FundingContractsForm extends React.Component<Props, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item sm={12} lg={10} className="mt-1">
             {values && (
               <FieldArray

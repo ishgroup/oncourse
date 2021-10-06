@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 interface Props {
   Title?: any;
@@ -32,13 +32,13 @@ const CheckoutSearchList = React.memo<Props>(props => {
           {items.map((item, i) => (
             <React.Fragment key={i}>
               <ListItem
-                button
+                // button
                 disableGutters
                 dense
                 className="justify-content-space-between p-0-5"
                 alignItems="flex-start"
-                onClick={onClick && (e => onClick(item, type))}
-                onDoubleClick={onDoubleClick && (e => onDoubleClick(item, type, false))}
+                // onClick={onClick && (e => onClick(item, type))}
+                // onDoubleClick={onDoubleClick && (e => onDoubleClick(item, type, false))}
                 selected={selected(item, type)}
               >
                 <ListItemText

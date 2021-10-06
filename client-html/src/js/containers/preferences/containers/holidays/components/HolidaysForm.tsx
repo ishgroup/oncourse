@@ -5,11 +5,11 @@
 
 import * as React from "react";
 import ClassNames from "clsx";
-import Grid from "@material-ui/core/Grid";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
-import Fab from "@material-ui/core/Fab";
+import Grid from "@mui/material/Grid";
+import { withStyles, createStyles } from "@mui/styles";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
+import Fab from "@mui/material/Fab";
 import { Dispatch } from "redux";
 import isEqual from "lodash.isequal";
 import { withRouter } from "react-router";
@@ -209,7 +209,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
               <Fab
                 type="button"
@@ -245,7 +245,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item sm={12} lg={10} className={classes.container}>
             {values && (
               <FieldArray

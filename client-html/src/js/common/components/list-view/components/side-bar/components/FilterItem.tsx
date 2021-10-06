@@ -1,11 +1,11 @@
 import * as React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Delete from "@material-ui/icons/Delete";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Tooltip from "@material-ui/core/Tooltip";
-import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@material-ui/icons";
+import { createStyles, withStyles } from "@mui/styles";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Tooltip from "@mui/material/Tooltip";
+import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
 import { AppTheme } from "../../../../../../model/common/Theme";
 
 const styles = (theme: AppTheme) =>

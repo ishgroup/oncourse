@@ -10,16 +10,16 @@ import {
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
  Grid, List, ListItem, Typography
-} from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { Person } from "@material-ui/icons";
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import { Person } from "@mui/icons-material";
 import clsx from "clsx";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from '@mui/material/styles';
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Currency, StatisticData } from "@api/model";
-import Paper from "@material-ui/core/Paper";
+import Paper from "@mui/material/Paper";
 import { State } from "../../../../../reducers/state";
 import { getDashboardStatistic } from "../../../actions";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
@@ -34,7 +34,7 @@ const styles = theme => createStyles({
       alignContent: "flex-start"
     },
     totalText: {
-      color: fade(theme.palette.text.primary, 0.5),
+      color: alpha(theme.palette.text.primary, 0.5),
       display: "flex",
       alignItems: "baseline",
       "& span": {
@@ -71,7 +71,7 @@ const styles = theme => createStyles({
       fontSize: "12px"
     },
     grayText: {
-      color: fade(theme.palette.text.primary, 0.4)
+      color: alpha(theme.palette.text.primary, 0.4)
     },
     coloredHeaderText: {
       color: theme.statistics.coloredHeaderText.color
@@ -258,9 +258,9 @@ class Statistics extends React.Component<Props, any> {
     const { chartData } = this.state;
 
     return statisticData ? (
-      <Grid container className={classes.root}>
+      <Grid container columnSpacing={3} className={classes.root}>
         <Grid item className="w-100">
-          <Grid container justify="space-between">
+          <Grid container columnSpacing={3}>
             <Grid item>
               <Typography className="heading">Enrolments & Revenue</Typography>
             </Grid>
@@ -331,7 +331,7 @@ class Statistics extends React.Component<Props, any> {
             classes open for enrolment
           </Typography>
           <List dense disablePadding>
-            <Grid container className={classes.containerStatisticGroup}>
+            <Grid container columnSpacing={3} className={classes.containerStatisticGroup}>
               <Grid item className={classes.statisticGroup} xs={6}>
                 <ListItem dense disableGutters className={classes.smallTextGroup}>
                   <Typography className={classes.smallText}>
@@ -351,7 +351,7 @@ class Statistics extends React.Component<Props, any> {
                 </ListItem>
               </Grid>
             </Grid>
-            <Grid container className={classes.containerStatisticGroup}>
+            <Grid container columnSpacing={3} className={classes.containerStatisticGroup}>
               <Grid item className={classes.statisticGroup} xs={6}>
                 <ListItem dense disableGutters className={classes.smallTextGroup}>
                   <Typography className={classes.smallText}>

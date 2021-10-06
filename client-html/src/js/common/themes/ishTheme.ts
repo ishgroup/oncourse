@@ -1,14 +1,14 @@
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import { createTheme } from '@mui/material/styles';
 import { theme } from "./appTheme";
 import {
+  AppTheme,
   ChristmasThemeKey,
   DarkThemeKey,
   DefaultThemeKey,
   HighcontrastThemeKey,
-  MonochromeThemeKey
+  MonochromeThemeKey,
+  ThemeValues
 } from "../../model/common/Theme";
-import { LSGetItem } from "../utils/storage";
-import { APPLICATION_THEME_STORAGE_NAME } from "../../constants/Config";
 
 const createOverrides = palette => ({
   overrides: {
@@ -40,7 +40,8 @@ const createOverrides = palette => ({
     MuiInput: {
       underline: {
         "&:before": {
-          borderBottom: `1px solid transparent`
+          borderBottom: `1px solid transparent`,
+          visibility: "hidden",
         },
         "&:hover:not($disabled):not(.primaryContarstUnderline):before": {
           borderBottom: `1px solid ${palette.primary.main}`
@@ -74,6 +75,14 @@ const createOverrides = palette => ({
       root: {
         maxWidth: "100%",
         width: "100%",
+        MuiInput: {
+          root: {
+            "&:before": {
+              borderBottom: `1px solid transparent`,
+              visibility: "hidden",
+            },
+          },
+        },
       },
       input: {
         "&::placeholder": {
@@ -199,18 +208,18 @@ const defaultThemePalette = {
     primary: "rgba(0, 0, 0, 0.87)",
     primaryEditable: "rgba(0, 0, 0, 0.95)",
     disabled: "rgba(34, 34, 34, 0.38)",
+    hint: "rgba(34, 34, 34, 0.38)"
   }
 };
 
-export const defaultTheme = createMuiTheme({
+export const defaultTheme = createTheme({
   palette: defaultThemePalette,
   ...commonTypography,
   ...theme.default,
   ...createOverrides(defaultThemePalette)
-} as any);
+}) as AppTheme;
 
 // Dark Theme
-
 const darkThemePalette = {
   type: "dark",
   common: { black: "#000", white: "#fff" },
@@ -241,12 +250,12 @@ const darkThemePalette = {
   }
 };
 
-export const darkTheme = createMuiTheme({
+export const darkTheme = createTheme({
   palette: darkThemePalette,
   ...commonTypography,
   ...theme.dark,
   ...createOverrides(darkThemePalette)
-} as any);
+}) as AppTheme;
 
 // Monochrome Theme
 
@@ -276,12 +285,12 @@ const monochromeThemePalette = {
   }
 };
 
-export const monochromeTheme = createMuiTheme({
+export const monochromeTheme = createTheme({
   palette: monochromeThemePalette,
   ...commonTypography,
   ...theme.monochrome,
   ...createOverrides(monochromeThemePalette)
-} as any);
+}) as AppTheme;
 
 // High Contrast Theme
 
@@ -317,12 +326,12 @@ const highcontrastThemePalette = {
   divider: "rgba(0, 0, 0, 0.40)"
 };
 
-export const highcontrastTheme = createMuiTheme({
+export const highcontrastTheme = createTheme({
   palette: highcontrastThemePalette,
   ...commonTypography,
   ...theme.highcontrast,
   ...createOverrides(highcontrastThemePalette)
-} as any);
+}) as AppTheme;
 
 // High Contrast Theme
 
@@ -358,14 +367,14 @@ const christmasThemePalette = {
   }
 };
 
-export const christmasTheme = createMuiTheme({
+export const christmasTheme = createTheme({
   palette: christmasThemePalette,
   ...commonTypography,
   ...theme.christmas,
   ...createOverrides(christmasThemePalette)
-} as any);
+}) as AppTheme;
 
-export const currentTheme = themeName => {
+export const currentTheme = (themeName: ThemeValues): AppTheme => {
   switch (themeName) {
     case DarkThemeKey: {
       return darkTheme;
@@ -388,13 +397,22 @@ export const currentTheme = themeName => {
   }
 };
 
-export const getTheme = theme => {
-  let actualTheme = theme;
+export const getTheme = (): AppTheme => {
+  let actualTheme = defaultTheme;
 
-  const storageThemeName = LSGetItem(APPLICATION_THEME_STORAGE_NAME);
-  if (storageThemeName) {
-    actualTheme = currentTheme(storageThemeName);
+  try {
+    const storageThemeName = localStorage.getItem('theme') as ThemeValues;
+    if (storageThemeName) {
+      actualTheme = currentTheme(storageThemeName);
+    }
+  } catch (e) {
+    console.error(e);
+    return actualTheme;
   }
 
   return actualTheme;
 };
+
+export const useTheme = () => ({
+  ...getTheme()
+});

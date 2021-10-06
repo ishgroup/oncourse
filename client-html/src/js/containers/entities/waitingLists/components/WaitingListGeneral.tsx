@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -39,7 +39,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
     };
 
     return (
-      <Grid container className="generalRoot">
+      <Grid container columnSpacing={3} className="generalRoot">
         <Grid item {...gridItemProps} className="pt-2">
           <FormField
             type="remoteDataSearchSelect"

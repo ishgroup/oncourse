@@ -4,12 +4,12 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
-import Hidden from "@material-ui/core/Hidden";
-import { FormControlLabel } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import Checkbox from "@material-ui/core/Checkbox";
+import Grid from "@mui/material/Grid";
+import Divider from "@mui/material/Divider";
+import Hidden from "@mui/material/Hidden";
+import { FormControlLabel } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Checkbox from "@mui/material/Checkbox";
 import {
   Form, reduxForm, getFormValues, initialize
 } from "redux-form";
@@ -91,7 +91,7 @@ class LDAPBaseForm extends React.Component<any, any> {
         />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 LDAP
@@ -121,7 +121,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <Grid item xs={12}>
             <FormControlLabel
               className="mb-2"
@@ -149,7 +149,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           LDAP server parameter
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={4}>
             <FormField
               type="text"
@@ -254,7 +254,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           </Grid>
         </Grid>
 
-        <Grid container spacing={5}>
+        <Grid container columnSpacing={3} spacing={5}>
           <Grid item xs={12} sm={8}>
             <Divider className="mb-1 mt-1" />
           </Grid>
@@ -264,7 +264,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           Users
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={4}>
             <FormField
               type="text"
@@ -341,7 +341,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           Roles
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={4}>
             <FormField
               type="text"

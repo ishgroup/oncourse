@@ -21,9 +21,9 @@ import {
   IconButton,
   Tooltip,
   Typography,
-  withStyles
-} from "@material-ui/core";
-import { ExpandMore, HelpOutline } from "@material-ui/icons";
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
+import { ExpandMore, HelpOutline } from "@mui/icons-material";
 import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import clsx from "clsx";
 import {
@@ -64,10 +64,11 @@ import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExpor
 import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
 import { AppTheme } from "../../../model/common/Theme";
 import { AvetmissExportSettingsReqired } from "../../../model/preferences";
+import { createStyles } from "@mui/styles";
 
 export const FORM: string = "AvetmissExportForm";
 
-const styles: any = (theme: AppTheme) => ({
+const styles = theme => createStyles({
   divider: {
     margin: theme.spacing(3, -3)
   },
@@ -673,7 +674,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
       <form className="container" onSubmit={handleSubmit(this.onFind)}>
         <CustomAppBar fullWidth>
           <HamburgerMenu variant={VARIANTS.temporary} />
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography variant="h6" color="inherit" noWrap>
                 AVETMISS 8
@@ -696,7 +697,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         </CustomAppBar>
 
         {values && (
-          <Grid container spacing={2}>
+          <Grid container columnSpacing={3} spacing={2}>
             {uploads && uploads.length > 0 && !skipAnimation && (
               <Grid item xs={12} lg={8}>
                 <Box

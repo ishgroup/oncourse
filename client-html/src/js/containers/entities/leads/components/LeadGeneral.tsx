@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import {
  Lead, LeadStatus, Sale, Tag, User
 } from "@api/model";
-import Button from "@material-ui/core/Button";
-import Chip from "@material-ui/core/Chip";
-import { makeStyles } from "@material-ui/core";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -37,10 +36,11 @@ import { mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getProductAqlType } from "../../sales/utils";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   chipButton: {
     fontSize: "12px",
     height: "20px",
@@ -110,7 +110,7 @@ const LeadGeneral = (props: Props) => {
     users
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
 
@@ -172,7 +172,7 @@ const LeadGeneral = (props: Props) => {
     <>
       {twoColumn && (
         <CustomAppBar>
-          <Grid container className="flex-fill">
+          <Grid container columnSpacing={3} className="flex-fill">
             <Grid item xs={6}>
               {contactIdField(true)}
             </Grid>
@@ -196,7 +196,7 @@ const LeadGeneral = (props: Props) => {
           </div>
         </CustomAppBar>
       )}
-      <Grid container className="generalRoot mt-2">
+      <Grid container columnSpacing={3} className="generalRoot mt-2">
         {!twoColumn && (
           <Grid item xs={12} className="pt-2">
             {contactIdField(false)}

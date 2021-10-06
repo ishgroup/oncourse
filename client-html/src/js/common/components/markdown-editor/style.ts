@@ -1,7 +1,7 @@
-import { makeStyles } from "@material-ui/core/styles";
 import { AppTheme } from "../../../model/common/Theme";
+import { makeAppStyles } from "../../styles/makeStyles";
 
-export const useStyles = makeStyles((theme: AppTheme) => ({
+export const useStyles = makeAppStyles()((theme: AppTheme) => ({
   editorArea: {
     "&#editorRoot": {
       "& textarea.mde-text, .mde-tabs button": {
@@ -161,7 +161,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
         right: "10px",
         top: "8px",
         padding: "5px",
-        zIndex: "1000",
+        zIndex: 1000,
         "& .content-mode": {
           maxWidth: "85px",
           border: 0,
@@ -221,6 +221,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
   },
   textField: {
     paddingLeft: "0",
+    // @ts-ignore
     paddingBottom: `${theme.spacing(2) - 3}px`,
     margin: 0
   },

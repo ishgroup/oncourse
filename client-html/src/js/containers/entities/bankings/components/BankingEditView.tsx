@@ -11,11 +11,11 @@ import {
 import { addDays, compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Checkbox from "@mui/material/Checkbox";
 import { Decimal } from "decimal.js-light";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
@@ -237,7 +237,7 @@ class BankingEditView extends React.PureComponent<any, any> {
       <div className={twoColumn ? "appBarContainer" : "h-100"}>
         {twoColumn && (
           <CustomAppBar>
-            <Grid container className="flex-fill">
+            <Grid container columnSpacing={3} className="flex-fill">
               <Grid item xs="auto">
                 <div className="d-flex align-items-baseline">
                   {values && values.administrationCenterId && (
@@ -280,7 +280,7 @@ class BankingEditView extends React.PureComponent<any, any> {
           </CustomAppBar>
         )}
         <div className="h-100 flex-column p-3">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className={twoColumn ? "d-none" : undefined}>
               {values && values.administrationCenterId && (
                 <Uneditable

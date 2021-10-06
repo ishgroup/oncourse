@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { isSameDay } from "date-fns";
 import { TimetableContext } from "../../../../../Timetable";
-import withTheme from "@material-ui/styles/withTheme";
-import { makeStyles } from "@material-ui/styles";
+import withTheme from "@mui/styles/withTheme";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   day: number;
@@ -75,7 +75,7 @@ const CalendarDay = React.memo((props: Props) => {
       className={classes.root}
       onClick={() => setTargetDay(date)}
       variant={isSame ? "contained" : "text"}
-      color={isSame ? "primary" : "default"}
+      color={isSame ? "primary" : "inherit"}
       disabled={disabled}
     >
       {day}

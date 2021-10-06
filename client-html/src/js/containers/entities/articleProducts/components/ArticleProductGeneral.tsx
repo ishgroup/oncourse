@@ -9,7 +9,7 @@ import {
  Account, ArticleProduct, ProductStatus, Tax
 } from "@api/model";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
@@ -69,7 +69,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   return (
 
-    <Grid container className="pt-1 generalRoot">
+    <Grid container columnSpacing={3} className="pt-1 generalRoot">
       <Grid item {...gridItemProps}>
         <FormField
           type="text"

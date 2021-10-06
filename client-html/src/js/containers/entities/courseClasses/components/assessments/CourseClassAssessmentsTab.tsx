@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Grid from "@material-ui/core/Grid/Grid";
+import Grid from "@mui/material/Grid/Grid";
 import { arrayInsert, arrayRemove } from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { AssessmentClass, GradingType } from "@api/model";
 import { connect } from "react-redux";
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
@@ -147,7 +147,7 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   );
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={12} className="pl-3 pr-3 pb-2">
         {isNew ? (
           <div>

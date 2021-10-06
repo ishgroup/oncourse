@@ -4,7 +4,7 @@ import { Tag } from "@api/model";
 import history from "../../constants/History";
 import { State } from "../../reducers/state";
 import { connect } from "react-redux";
-import withTheme from "@material-ui/core/styles/withTheme";
+import withTheme from "@mui/styles/withTheme";
 import Content from "../../common/components/layout/Content";
 
 const emptyTag: Tag = {

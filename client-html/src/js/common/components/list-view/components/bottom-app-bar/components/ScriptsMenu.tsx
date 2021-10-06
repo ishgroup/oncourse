@@ -4,9 +4,9 @@
  */
 
 import React, { useState } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { Script } from "@api/model";
-import { Menu } from "@material-ui/core";
+import { Menu } from "@mui/material";
 
 interface ScriptsMenuProps {
   scripts?: Script[];

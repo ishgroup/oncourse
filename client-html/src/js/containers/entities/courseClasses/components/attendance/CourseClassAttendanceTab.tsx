@@ -6,18 +6,18 @@
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { withStyles, createStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
  faAdjust, faCheck, faTimes, faCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { change, initialize } from "redux-form";
 import { AttendanceType } from "@api/model";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import Typography from "@material-ui/core/Typography";
+import IconButton from "@mui/material/IconButton";
+import ChevronRight from "@mui/icons-material/ChevronRight";
+import ChevronLeft from "@mui/icons-material/ChevronLeft";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 
 import { AppTheme } from "../../../../../model/common/Theme";
@@ -676,9 +676,9 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     const renderedDays = useCallback(
       (attendanceType?: string) => (
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={10} className={classes.attendanceDayBase}>
-            <Grid container className={clsx(checkAnimationClass())}>
+            <Grid container columnSpacing={3} className={clsx(checkAnimationClass())}>
               {selectedItems.map((sd, si) => (
                 <AttendanceDayBase
                   // eslint-disable-next-line react/no-array-index-key
@@ -905,13 +905,13 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     const daysScroller = (type?: string) => (
       <>
-        <Grid container className={clsx("sticky top-0 pt-1 zIndex1", classes.timeline)}>
+        <Grid container columnSpacing={3} className={clsx("sticky top-0 pt-1 zIndex1", classes.timeline)}>
           <Grid item xs={3}>
             &nbsp;
           </Grid>
           <Grid item xs={9} />
 
-          <Grid item container xs={3} alignItems="center" justify="flex-end" className="pr-2">
+          <Grid item container xs={3} alignItems="center" className="pr-2">
             {sessionsLeftScroller}
           </Grid>
           <Grid item xs={9} className="centeredFlex">
@@ -928,7 +928,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
           <div className="w-100">
             <div className="heading">Training plan</div>
             {daysScroller("Training plan")}
-            <Grid container className={classes.sessionsLine}>
+            <Grid container columnSpacing={3} className={classes.sessionsLine}>
               <Grid item xs={12} className={classes.items}>
                 {renderedTrainingPlans}
               </Grid>
@@ -956,7 +956,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
             {stepItems.length > 0 && !sessionsChanged && !assessmentsChanged && !isNew ? (
               <>
                 {daysScroller("")}
-                <Grid container className={classes.sessionsLine}>
+                <Grid container columnSpacing={3} className={classes.sessionsLine}>
                   <Grid item xs={12} className={classes.items}>
                     {renderedStudentAttendances}
                   </Grid>

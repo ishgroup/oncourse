@@ -9,8 +9,8 @@ import React from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 import { isInvalid } from "redux-form";
 import {
   CheckoutPayment,

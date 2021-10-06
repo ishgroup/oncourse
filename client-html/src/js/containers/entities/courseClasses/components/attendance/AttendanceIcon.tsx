@@ -6,7 +6,7 @@
 import { AttendanceType, TutorAttendanceType } from "@api/model";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@mui/styles";
 
 const styles = () =>
   createStyles({

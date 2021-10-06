@@ -4,15 +4,15 @@
  */
 
 import React, { useCallback, useEffect } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Delete from "@material-ui/icons/Delete";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Delete from "@mui/icons-material/Delete";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Document } from "@api/model";
-import { OpenWith } from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+import { OpenWith } from "@mui/icons-material";
+import Button from "@mui/material/Button";
 import FileUploaderDialog from "../../../common/components/file-uploader/FileUploaderDialog";
 import { getInitialDocument } from "../../../common/components/form/documents/components/utils";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";

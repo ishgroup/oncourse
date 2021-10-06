@@ -4,12 +4,12 @@
  */
 
 import React from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
 import { stopEventPropagation } from "../../../utils/events";
@@ -84,7 +84,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           root: classes.expansionPanelSummayRoot,
           content: classes.summaryContent,
           expanded: classes.expansionPanelSummayContentExpanded,
-          expandIcon: classes.expandIcon
+          expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
         expandIcon={<ExpandMoreIcon />}

@@ -8,10 +8,10 @@ import clsx from "clsx";
 import React, {
   useCallback, useState
 } from "react";
-import { Typography } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Delete from "@material-ui/icons/Delete";
+import { Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Delete from "@mui/icons-material/Delete";
 import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
 import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";

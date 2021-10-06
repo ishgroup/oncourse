@@ -4,10 +4,10 @@
  */
 
 import * as React from "react";
-import { darken, fade } from "@material-ui/core/styles/colorManipulator";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { green, grey } from "@material-ui/core/colors";
+import { alpha, darken } from '@mui/material/styles';
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { green, grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
 import christmasHeaderBackground from "../../../images/beach-header.jpg";
@@ -54,7 +54,7 @@ const customOSScrollbars = getOS() === "Windows"
 const globalStyles = (theme: AppTheme) =>
   createStyles({
     "@global": {
-      ...theme.palette.type === "dark" ? { "a": { color: "#90caf9" } } : {},
+      ...theme.palette.mode === "dark" ? { "a": { color: "#90caf9" } } : {},
         "@font-face": [
         {
           fontFamily: "Inter",
@@ -185,7 +185,7 @@ const globalStyles = (theme: AppTheme) =>
         backgroundColor: theme.palette.primary.main,
         "&:hover": {
           color: theme.palette.primary.contrastText,
-          backgroundColor: fade(theme.palette.primary.main, 0.9)
+          backgroundColor: alpha(theme.palette.primary.main, 0.9)
         },
         margin: theme.spacing(0, 1)
       },
@@ -223,12 +223,12 @@ const globalStyles = (theme: AppTheme) =>
         marginLeft: theme.spacing(1),
         "&:hover": {
           color: theme.palette.primary.main,
-          backgroundColor: fade(theme.palette.primary.contrastText, 0.9)
+          backgroundColor: alpha(theme.palette.primary.contrastText, 0.9)
         }
       },
       ".whiteAppBarButtonDisabled": {
         color: `${theme.palette.primary.main} !important`,
-        backgroundColor: `${fade(theme.palette.primary.contrastText, 0.3)} !important`
+        backgroundColor: `${alpha(theme.palette.primary.contrastText, 0.3)} !important`
       },
       ".avetmissButton": {
         "&:hover": {
@@ -284,7 +284,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "100px"
       },
       ".addButtonColor": {
-        color: theme.palette.type === "light" ? darken(green[900], 0.1) : darken(grey[400], 0.1)
+        color: theme.palette.mode === "light" ? darken(green[900], 0.1) : darken(grey[400], 0.1)
       },
       ".labelOffset": {
         marginLeft: "-14px"
@@ -321,6 +321,7 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".textField": {
+        // @ts-ignore
         paddingBottom: `${theme.spacing(2) - 3}px`,
         paddingLeft: "0",
         overflow: "hidden",
@@ -336,7 +337,7 @@ const globalStyles = (theme: AppTheme) =>
         backgroundColor: theme.palette.error.main
       },
       ".errorColorFade-0-2": {
-        color: fade(theme.palette.error.main, 0.2)
+        color: alpha(theme.palette.error.main, 0.2)
       },
       ".errorDarkColor": {
         color: theme.palette.error.dark
@@ -401,7 +402,7 @@ const globalStyles = (theme: AppTheme) =>
         padding: theme.spacing(0.5)
       },
       ".lightGrayIconButton": {
-        color: fade(theme.palette.text.primary, 0.2),
+        color: alpha(theme.palette.text.primary, 0.2),
         fontSize: "18px",
         width: theme.spacing(4),
         height: theme.spacing(4),
