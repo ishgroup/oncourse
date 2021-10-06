@@ -5,11 +5,11 @@
 
 import React, { useCallback, useMemo } from "react";
 import { getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 import { connect } from "react-redux";
 import { Account, ClassCostRepetitionType, Tax } from "@api/model";
 import Button from "../../../../../../common/components/buttons/Button";

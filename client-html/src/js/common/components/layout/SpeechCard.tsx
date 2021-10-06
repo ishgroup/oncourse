@@ -1,6 +1,6 @@
 import React from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
+import { withStyles, createStyles } from "@mui/styles";
+import Card from "@mui/material/Card";
 import clsx from "clsx";
 
 const styles = theme =>

@@ -3,21 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Popper from "@material-ui/core/Popper";
+import CircularProgress from "@mui/material/CircularProgress";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import Popper from "@mui/material/Popper";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { InputAdornment, withStyles } from "@material-ui/core";
+import Autocomplete from '@mui/lab/Autocomplete';
+import { InputAdornment } from "@mui/material";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import ListItemText from "@material-ui/core/ListItemText";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import createStyles from "@material-ui/core/styles/createStyles";
+import Typography from "@mui/material/Typography";
+import ListItemText from "@mui/material/ListItemText";
+import ButtonBase from "@mui/material/ButtonBase";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import createStyles from "@mui/styles/createStyles";
 import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
@@ -510,7 +511,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             loading={loading}
             freeSolo={creatable}
             disableClearable={!allowEmpty}
-            getOptionSelected={getOptionSelected}
+            isOptionEqualToValue={getOptionSelected}
             onChange={handleChange}
             classes={{
               root: "d-inline-flex",

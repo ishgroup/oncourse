@@ -8,10 +8,10 @@
 
 import clsx from "clsx";
 import React, { useMemo } from "react";
-import { Typography } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Delete from "@material-ui/icons/Delete";
+import { Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Delete from "@mui/icons-material/Delete";
 import { WrappedFieldArrayProps } from "redux-form";
 import { GradingItem, GradingType } from "@api/model";
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";

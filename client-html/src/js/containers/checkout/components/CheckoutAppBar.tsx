@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
 

@@ -4,14 +4,14 @@
  */
 
 import * as React from "react";
-
-import { DatePicker, DateTimePicker, TimePicker } from "@material-ui/pickers";
+import TextField from "@mui/material/TextField";
+import { DatePicker, DateTimePicker, TimePicker } from "@mui/lab";
 import { DD_MM_YYYY_HH_MM_SPECIAL, DD_MMM_YYYY_MINUSED, HH_MM_COLONED } from "../../../utils/dates/format";
 
 export const DateTimeField = props => {
   const {
- onChange, type, ampm, value, setPickerRef, formatDate, maxDate, minDate, ...rest
-} = props;
+   onChange, type, ampm, value, setPickerRef, formatDate, maxDate, minDate, ...rest
+  } = props;
 
   const picker = type === "date" ? (
     <DatePicker
@@ -22,6 +22,8 @@ export const DateTimeField = props => {
       format={formatDate || DD_MMM_YYYY_MINUSED}
       maxDate={maxDate || undefined}
       minDate={minDate || undefined}
+      renderInput={props => <TextField {...props} />}
+      variant={props.variant || "standard"}
       {...rest}
     />
     ) : type === "time" ? (
@@ -33,6 +35,8 @@ export const DateTimeField = props => {
         format={formatDate || HH_MM_COLONED}
         maxDate={maxDate || undefined}
         minDate={minDate || undefined}
+        renderInput={props => <TextField {...props} />}
+        {props.variant || "standard"}
         {...rest}
       />
     ) : type === "datetime" ? (
@@ -44,6 +48,8 @@ export const DateTimeField = props => {
         format={formatDate || DD_MM_YYYY_HH_MM_SPECIAL}
         maxDate={maxDate || undefined}
         minDate={minDate || undefined}
+        renderInput={props => <TextField {...props} />}
+        {props.variant || "standard"}
         {...rest}
       />
     ) : null;

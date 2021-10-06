@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import RadioLabel from "./RadioLabel";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { MergeLine } from "@api/model";
 import { WrappedFieldProps } from "redux-form";
 

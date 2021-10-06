@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, withStyles } from "@material-ui/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import CalendarDay from "./CalendarDay";
 import { getDay } from "date-fns";
 import { getCalendarDays } from "../utils";

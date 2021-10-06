@@ -5,14 +5,14 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Launch from "@material-ui/icons/Launch";
-import Grid from "@material-ui/core/Grid";
-import { IconButton } from "@material-ui/core";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Launch from "@mui/icons-material/Launch";
+import Grid from "@mui/material/Grid";
+import { IconButton } from "@mui/material";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { BudgetExpandableProps } from "./BudgetExpandableItemRenderer";
@@ -86,7 +86,7 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Grid container direction="row">
+            <Grid container columnSpacing={3} direction="row">
               <Grid item xs={5}>
                 <div className="secondaryHeading">{header}</div>
               </Grid>
@@ -106,7 +106,7 @@ const BudgetInvoiceItemRenderer = React.memo<Partial<BudgetExpandableProps>>(
             </Grid>
           </AccordionSummary>
           <AccordionDetails>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               {rowsValues.items.map((item, i) => (
                 <BudgetInvoiceItemRow key={i} value={item.value} currencySymbol={currencySymbol} classes={classes} />
               ))}

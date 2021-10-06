@@ -6,14 +6,14 @@
 import React, {
  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import { AddCircle, ExpandMore } from "@material-ui/icons";
-import createStyles from "@material-ui/core/styles/createStyles";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import { AddCircle, ExpandMore } from "@mui/icons-material";
+import createStyles from "@mui/styles/createStyles";
 import debounce from "lodash.debounce";
 import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
 import { latestActivityStorageHandler } from "../../../utils/storage";

@@ -9,14 +9,14 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { ListItemText } from "@material-ui/core";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import Edit from "@material-ui/icons/Edit";
+import { ListItemText } from "@mui/material";
+import ButtonBase from "@mui/material/ButtonBase";
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -71,7 +71,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   const [contentMode, setContentMode] = useState(getContentMarker(value));
   const [isEditing, setIsEditing] = useState(false);
   const [modeMenu, setModeMenu] = useState(null);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const modeMenuOpen = e => {
     setModeMenu(e.currentTarget);

@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import {
   reduxForm, getFormSyncErrors, getFormValues, InjectedFormProps
 } from "redux-form";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../../common/components/form/notes/utils";
 import { State } from "../../../../reducers/state";

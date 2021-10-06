@@ -5,8 +5,8 @@ import {
 } from "redux-form";
 import { Dispatch } from "redux";
 import { GradingType } from "@api/model";
-import AddIcon from "@material-ui/icons/Add";
-import { Fab, Grid, Typography } from "@material-ui/core";
+import AddIcon from "@mui/icons-material/Add";
+import { Fab, Grid, Typography } from "@mui/material";
 import { showConfirm } from "../../../../../common/actions";
 import { deleteGradingType, updateGradingTypes } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -87,7 +87,7 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
       <RouteChangeConfirm form={form} when={dirty} />
 
       <CustomAppBar>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} className="centeredFlex relative">
             <Fab
               type="button"
@@ -123,7 +123,7 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
         </Grid>
       </CustomAppBar>
 
-      <Grid container className="mt-3">
+      <Grid container columnSpacing={3} className="mt-3">
         <FieldArray
           name="types"
           component={GradingsRenderer}

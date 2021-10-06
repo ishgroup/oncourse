@@ -9,12 +9,12 @@ import React, {
 import { Dispatch } from "redux";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-import Search from "@material-ui/icons/Search";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
+import Search from "@mui/icons-material/Search";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { ColumnWidth } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -107,7 +107,7 @@ const CreateEnrolmentViewForm = React.memo<Props>(props => {
         <div className="appFrame">
           <LoadingIndicator />
           <CustomAppBar>
-            <Grid container className="flex-fill">
+            <Grid container columnSpacing={3} className="flex-fill">
               <Typography variant="body2">Select an item from list below</Typography>
             </Grid>
             <Button onClick={onCloseClick} className="closeAppBarButton">

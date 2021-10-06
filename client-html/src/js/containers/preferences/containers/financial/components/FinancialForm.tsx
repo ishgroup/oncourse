@@ -4,10 +4,10 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import Grid from "@mui/material/Grid";
+import Hidden from "@mui/material/Hidden";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
@@ -59,7 +59,7 @@ class FinancialBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 Financial
@@ -89,7 +89,7 @@ class FinancialBaseForm extends React.Component<any, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item sm={8} xs={12}>
             <FormField
               type="multilineText"

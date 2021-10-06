@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { Form, reduxForm, initialize } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
@@ -53,7 +53,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 Class Defaults
@@ -83,7 +83,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <Grid item xs={12} sm={3}>
             <FormField
               type="number"
@@ -105,7 +105,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <Grid item xs={12} sm={3}>
             <FormField
               type="number"

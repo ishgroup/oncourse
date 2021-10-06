@@ -1,18 +1,18 @@
 import * as React from "react";
 import ClassNames from "clsx";
 import { withRouter } from "react-router";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
+import { withStyles, createStyles } from "@mui/styles";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
 import {
   Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change, initialize
 } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@material-ui/core/Fab";
+import Fab from "@mui/material/Fab";
 
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
@@ -197,7 +197,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
         <Form className={classes.container} onSubmit={handleSubmit(this.onSave)} noValidate autoComplete="off">
           <RouteChangeConfirm form={form} when={dirty} />
           <CustomAppBar>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
                 <Fab
                   type="button"
@@ -233,7 +233,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             </Grid>
           </CustomAppBar>
 
-          <Grid container className={classes.marginTop}>
+          <Grid container columnSpacing={3} className={classes.marginTop}>
             <Grid item lg={10}>
               {data && data.types && (
               <FieldArray

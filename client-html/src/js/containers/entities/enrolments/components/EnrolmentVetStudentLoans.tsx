@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import {
   CourseClassAttendanceType,
   EnrolmentCreditTotal,
@@ -14,7 +14,7 @@ import {
   EnrolmentFeeStatus,
   Enrolment
 } from "@api/model";
-import { Collapse, FormControlLabel } from "@material-ui/core";
+import { Collapse, FormControlLabel } from "@mui/material";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
@@ -83,7 +83,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
   };
 
   return (
-    <Grid container className="pl-3 pr-3">
+    <Grid container columnSpacing={3} className="pl-3 pr-3">
       {values.feeHelpClass && (
         <>
           <Grid item xs={12} className="centeredFlex mt-2 mb-2">
@@ -97,7 +97,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
 
           <Grid item xs={12}>
             <Collapse in={showVSL}>
-              <Grid container item={true} xs={12}>
+              <Grid container columnSpacing={3} item={true} xs={12}>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <Uneditable label="Fee charged" value={values.feeCharged} money />
                 </Grid>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Contact } from "@api/model";
 import { FieldArray } from "redux-form";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface ContactsDocumentsProps {
@@ -19,7 +19,7 @@ const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
   } = props;
 
   return values ? (
-    <Grid container className="p-3">
+    <Grid container columnSpacing={3} className="p-3">
       <FieldArray
         name="documents"
         label="Documents"

@@ -5,8 +5,8 @@
 
 import React from "react";
 import { change } from "redux-form";
-import { ButtonBase, Divider, Typography } from "@material-ui/core";
-import Launch from "@material-ui/icons/Launch";
+import { ButtonBase, Divider, Typography } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import {
   AvetmissExportOutcome,
   AvetmissExportOutcomeCategory,

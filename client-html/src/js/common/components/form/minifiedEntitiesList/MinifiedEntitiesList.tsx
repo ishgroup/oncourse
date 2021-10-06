@@ -5,9 +5,9 @@
 
 import React, { useMemo } from "react";
 import { FieldArray } from "redux-form";
-import Typography from "@material-ui/core/Typography";
-import AddCircle from "@material-ui/icons/AddCircle";
-import IconButton from "@material-ui/core/IconButton";
+import Typography from "@mui/material/Typography";
+import AddCircle from "@mui/icons-material/AddCircle";
+import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 

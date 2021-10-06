@@ -5,9 +5,9 @@
 
 import React from "react";
 import clsx from "clsx";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Grid from "@mui/material/Grid";
 import { PreferenceEnum } from "@api/model";
 import { AppTheme } from "../../../../model/common/Theme";
 import ResizableWrapper from "../../../../common/components/layout/resizable/ResizableWrapper";
@@ -25,7 +25,7 @@ const styles = (theme: AppTheme) =>
     },
     rightSideBar: {
       backgroundColor:
-        theme.palette.type === "light" ? theme.palette.background.paper : theme.palette.background.default,
+        theme.palette.mode === "light" ? theme.palette.background.paper : theme.palette.background.default,
       overflowY: "auto",
       minWidth: 370
     }
@@ -113,7 +113,7 @@ class ActionBody extends React.PureComponent<Props, any> {
     const { statisticsColumnWidth } = this.state;
 
     return (
-      <Grid container justify="flex-end" wrap="nowrap" className={classes.root}>
+      <Grid container columnSpacing={3} wrap="nowrap" className={classes.root}>
         <ResizableWrapper
           minWidth="20%"
           maxWidth="60%"

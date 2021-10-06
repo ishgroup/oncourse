@@ -4,10 +4,10 @@
  */
 
 import React, { useCallback } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Launch from "@material-ui/icons/Launch";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { IconButtonTypeMap } from "@material-ui/core";
+import IconButton from "@mui/material/IconButton";
+import Launch from "@mui/icons-material/Launch";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { IconButtonTypeMap } from "@mui/material";
 
 interface Props {
   link?: string | number;

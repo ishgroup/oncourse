@@ -6,10 +6,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { createStyles, Popover, withStyles } from "@material-ui/core";
-import Link from "@material-ui/core/Link";
-import zIndex from "@material-ui/core/styles/zIndex";
-import { ExitToApp } from "@material-ui/icons";
+import { Popover } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import Link from "@mui/material/Link";
+import zIndex from "@mui/material/styles/zIndex";
+import { ExitToApp } from "@mui/icons-material";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import SendMessageEditView from "../messages/components/SendMessageEditView";

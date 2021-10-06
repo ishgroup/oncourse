@@ -7,13 +7,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { Dispatch } from "redux";
 import { Tag } from "@api/model";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Collapse from "@material-ui/core/Collapse";
-import Button from "@material-ui/core/Button";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Collapse from "@mui/material/Collapse";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { State } from "../../../../../reducers/state";
@@ -282,7 +282,7 @@ const CourseClassGeneralTab = React.memo<Props>(
       <>
         {twoColumn && (
           <CustomAppBar>
-            <Grid container className="flex-fill">
+            <Grid container columnSpacing={3} className="flex-fill">
               <Grid item xs={6} className="pr-2">
                 {courseIdField(true)}
               </Grid>
@@ -310,7 +310,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             </div>
           </CustomAppBar>
         )}
-        <Grid container className="pl-3 pt-3 pr-3 relative">
+        <Grid container columnSpacing={3} className="pl-3 pt-3 pr-3 relative">
           {Boolean(values.isCancelled) && (
             <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
           )}

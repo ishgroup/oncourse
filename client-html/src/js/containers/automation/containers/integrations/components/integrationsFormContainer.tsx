@@ -5,14 +5,14 @@
 
 import * as React from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { initialize, isDirty, isInvalid, SubmissionError } from "redux-form";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import createStyles from "@material-ui/core/styles/createStyles";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import createStyles from "@mui/styles/createStyles";
 import { Integration, IntegrationProp } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
@@ -302,7 +302,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     const descriptionItem = getByType(match.params.type, IntegrationTypes);
 
     return (
-      <Grid container className={classes.root}>
+      <Grid container columnSpacing={3} className={classes.root}>
         <Grid item xs={12} sm={6} lg={5} className={classes.formPadding}>
           {item && TypeForm && (
             <TypeForm

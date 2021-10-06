@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import * as React from "react";
 import { connect } from "react-redux";
 import { change, getFormValues, initialize, reduxForm } from "redux-form";

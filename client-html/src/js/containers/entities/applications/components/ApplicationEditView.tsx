@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import { Application } from "@api/model";
 import { Dispatch } from "redux";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";

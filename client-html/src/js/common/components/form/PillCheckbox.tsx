@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from "react";
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 import clsx from "clsx";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import { darken } from "@material-ui/core/styles/colorManipulator";
-import { grey } from "@material-ui/core/colors";
+import { withStyles, createStyles } from "@mui/styles";
+import { darken } from "@mui/material/styles";
+import { grey } from "@mui/material/colors";
 
 const styles = theme =>
   createStyles({

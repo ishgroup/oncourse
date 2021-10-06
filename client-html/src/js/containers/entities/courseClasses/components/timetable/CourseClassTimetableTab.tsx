@@ -9,24 +9,24 @@ import React, {
 import {
   change, initialize, arrayRemove, startAsyncValidation, stopAsyncValidation
 } from "redux-form";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
 import {
   addBusinessDays, addDays, addHours, addMinutes, addMonths, addWeeks, addYears, differenceInMinutes, isWeekend, subDays
 } from "date-fns";
 
 import { Session, SessionWarning } from "@api/model";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Settings from "@material-ui/icons/Settings";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Settings from "@mui/icons-material/Settings";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
@@ -725,7 +725,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         />
       )}
       {values.isDistantLearningCourse ? (
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} className="pb-2 centeredFlex">
             <div>
               <div className="heading pb-1">Timetable</div>

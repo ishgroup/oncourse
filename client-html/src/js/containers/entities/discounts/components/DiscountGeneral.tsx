@@ -5,9 +5,9 @@
 
 import * as React from "react";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import { FormControlLabel, Typography } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import Grid from "@mui/material/Grid";
+import { FormControlLabel, Typography } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
 import { connect } from "react-redux";
 import Decimal from "decimal.js-light";
@@ -315,7 +315,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
           items={discountTypes}
           onChange={this.cleanValueFields}
         />
-        <Grid container spacing={0}>
+        <Grid container columnSpacing={3} spacing={0}>
           <Grid item xs={twoColumn ? 2 : 6}>
             {this.state.discountType === DiscountType.Percent ? (
               <FormField

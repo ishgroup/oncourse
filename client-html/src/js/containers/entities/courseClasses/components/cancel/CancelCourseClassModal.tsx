@@ -10,14 +10,14 @@ import { connect } from "react-redux";
 import {
   reduxForm, getFormValues, InjectedFormProps
 } from "redux-form";
-import Dialog from "@material-ui/core/Dialog";
-import Typography from "@material-ui/core/Typography";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import DialogContent from "@material-ui/core/DialogContent";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
+import Dialog from "@mui/material/Dialog";
+import Typography from "@mui/material/Typography";
+import DialogActions from "@mui/material/DialogActions";
+import MuiButton from "@mui/material/Button";
+import DialogContent from "@mui/material/DialogContent";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
 import { CancelCourseClass } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
@@ -119,7 +119,7 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
       >
         <form autoComplete="off" onSubmit={handleSubmit(this.onSubmit)}>
           <DialogContent>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={12}>
                 <div className="centeredFlex">
                   <div className="heading mt-2 mb-2">

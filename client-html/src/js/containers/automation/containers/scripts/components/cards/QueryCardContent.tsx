@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import Collapse from "@material-ui/core/Collapse";
-import { CircularProgress, Typography } from "@material-ui/core";
+import Grid from "@mui/material/Grid";
+import Collapse from "@mui/material/Collapse";
+import { CircularProgress, Typography } from "@mui/material";
 import * as Entities from "@aql/queryLanguageModel";
 import debounce from "lodash.debounce";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
@@ -69,7 +69,7 @@ const QueryCardContent = props => {
   const validateExpression = useCallback(() => (isValidQuery ? undefined : "Expression is invalid"), [isValidQuery]);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={12}>
         <FormField
           type="select"
@@ -85,7 +85,7 @@ const QueryCardContent = props => {
           <Collapse
             in={queryAvailable}
             classes={{
-              container: field.entity ? "overflow-visible" : undefined
+              wrapper: field.entity ? "overflow-visible" : undefined
             }}
           >
             <div className={classes.queryField}>
@@ -112,7 +112,7 @@ const QueryCardContent = props => {
             />
           </Grid>
 
-          <Grid xs={6} className="d-flex p-2" alignItems="flex-end" justify="flex-end">
+          <Grid xs={6} className="d-flex p-2" alignItems="flex-end">
             {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
             {!queryResultsPending && !hideQueryResults && (
               <Typography variant="caption" color="textSecondary">

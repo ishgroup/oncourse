@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 
@@ -24,7 +24,7 @@ const ConcessionsHeaderBase: React.FunctionComponent<any> = (props: any) => {
 export const ConcessionsHeader = ConcessionsHeaderBase;
 
 export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes }) => (
-  <Grid container>
+  <Grid container columnSpacing={3}>
     <Grid item xs={12}>
       <FormField
         type="select"

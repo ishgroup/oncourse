@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import TextField from "@material-ui/core/TextField";
-import DateRange from "@material-ui/icons/DateRange";
-import QueryBuilder from "@material-ui/icons/QueryBuilder";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@mui/material/TextField";
+import DateRange from "@mui/icons-material/DateRange";
+import QueryBuilder from "@mui/icons-material/QueryBuilder";
+import Autocomplete from "@mui/lab/Autocomplete";
 import React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
-import { DatePicker, TimePicker as Time } from "@material-ui/pickers";
-import CreateIcon from '@material-ui/icons/Create';
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
-import { InputProps } from "@material-ui/core/Input";
+import { DatePicker, TimePicker as Time } from "@mui/lab";
+import CreateIcon from '@mui/icons-material/Create';
+import ButtonBase from "@mui/material/ButtonBase";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import { InputProps } from "@mui/material/Input";
 import { CodeCompletionCore } from "antlr4-c3";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { AqlLexer } from "@aql/AqlLexer";
@@ -1232,6 +1232,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             onChange={date => this.handlePickerChange("DATE", date)}
             onClose={this.closePicker}
             open={pickerOpened === "DATE"}
+            renderInput={props => <TextField {...props} />}
           />
 
           <TimePicker
@@ -1239,6 +1240,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             onChange={date => this.handlePickerChange("TIME", date)}
             onClose={this.closePicker}
             open={pickerOpened === "TIME"}
+            renderInput={props => <TextField {...props} />}
           />
         </div>
 
@@ -1250,7 +1252,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
           })}
         >
           <Autocomplete
-            debug
+            // debug
             value={value}
             open={menuIsOpen && Boolean(filteredOptions.length)}
             options={filteredOptions}

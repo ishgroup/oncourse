@@ -1,5 +1,6 @@
 import * as React from "react";
-import { createMount } from "@material-ui/core/test-utils";
+// import { createMount } from "@mui/material/test-utils";
+import { shallow } from 'enzyme';
 import { mockedAPI, TestEntry } from "../TestEntry";
 
 interface Props {
@@ -17,15 +18,15 @@ export const defaultComponents: ({
   entity, View, record, render, defaultProps, beforeFn,
 }) => {
   const initialValues = record(mockedAPI);
-  let mount;
+  // let mount;
 
-  beforeAll(() => {
-    mount = createMount();
-  });
-
-  afterAll(() => {
-    mount.cleanUp();
-  });
+  // beforeAll(() => {
+  //   mount = createMount();
+  // });
+  //
+  // afterAll(() => {
+  //   mount.cleanUp();
+  // });
 
   let viewProps = { initialValues, values: initialValues };
 
@@ -40,7 +41,7 @@ export const defaultComponents: ({
   }
 
   it(`${entity} components should render with given values`, async () => {
-    const wrapper = await mount(
+    const wrapper = await shallow(
       <TestEntry>
         <MockedEditView />
       </TestEntry>,

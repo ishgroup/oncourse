@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import clsx from "clsx";
 import { addDays, compareAsc, isSameDay } from "date-fns";
 import { format } from "date-fns-tz";

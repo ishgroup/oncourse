@@ -5,17 +5,17 @@
 
 import { Room, Site } from "@api/model";
 import * as React from "react";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Grid, { GridSize } from "@mui/material/Grid";
 import {
   arrayInsert, arrayRemove
 } from "redux-form";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import { FormControlLabel } from "@material-ui/core";
+import ScreenShare from "@mui/icons-material/ScreenShare";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { FormControlLabel } from "@mui/material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import Collapse from "@material-ui/core/Collapse";
+import Collapse from "@mui/material/Collapse";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
@@ -148,7 +148,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
 
     return (
       <>
-        <Grid container className="p-3">
+        <Grid container columnSpacing={3} className="p-3">
           <CoordinatesValueUpdater
             dispatch={dispatch}
             latPath="latitude"
@@ -168,7 +168,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           </Grid>
 
           <Grid item xs={layoutArray[0].xs}>
-            <Grid container className="flex-nowrap align-items-center mb-1">
+            <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
               <Grid item xs={12}>
                 <FormField
                   type="tags"
@@ -215,7 +215,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           </Grid>
 
           <Collapse in={!values.isVirtual}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={layoutArray[2].xs}>
                 <FormField
                   type="text"
@@ -227,7 +227,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
 
                 <FormField type="text" name="suburb" label="Suburb" onBlur={this.updateLatLong} />
 
-                <Grid container>
+                <Grid container columnSpacing={3}>
                   <Grid item xs={layoutArray[3].xs}>
                     <FormField type="text" name="state" label="State" />
                   </Grid>

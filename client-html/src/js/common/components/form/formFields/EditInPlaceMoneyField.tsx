@@ -5,7 +5,7 @@
 
 import React, { useCallback } from "react";
 import NumberFormat from "react-number-format";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import InputAdornment from "@mui/material/InputAdornment";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import EditInPlaceField from "./EditInPlaceField";

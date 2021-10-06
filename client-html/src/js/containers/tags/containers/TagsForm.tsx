@@ -4,10 +4,11 @@
  */
 
 import React, { ComponentClass } from "react";
-import { withStyles, Typography, Grid } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import { Typography, Grid } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import Divider from "@mui/material/Divider";
 import { withRouter } from "react-router";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues
@@ -15,8 +16,8 @@ import {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ForbiddenTagNames, Tag } from "@api/model";
-import { AddCircle } from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
+import { AddCircle } from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
 import Button from "../../../common/components/buttons/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
@@ -445,7 +446,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
           {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
           <CustomAppBar>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={12} className="centeredFlex">
                 <FormField
                   type="headerText"
@@ -495,9 +496,9 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
             </Grid>
           </CustomAppBar>
 
-          <Grid container spacing={5}>
+          <Grid container columnSpacing={3} spacing={5}>
             <Grid item sm={12} lg={11} xl={8}>
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 <Grid item xs={12} md={8}>
                   <div className="centeredFlex">
                     {values && (

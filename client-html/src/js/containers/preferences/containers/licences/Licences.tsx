@@ -1,9 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import {
  List, ListItem, ListSubheader, ListItemText
-} from "@material-ui/core";
+} from "@mui/material";
 import Button from "../../../../common/components/buttons/Button";
 import { State } from "../../../../reducers/state";
 import * as Model from "../../../../model/preferences/Licences";

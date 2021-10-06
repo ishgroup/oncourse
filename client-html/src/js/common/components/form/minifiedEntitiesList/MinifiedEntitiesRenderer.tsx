@@ -4,16 +4,16 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/Typography";
-import Delete from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import AccordionActions from "@material-ui/core/AccordionActions";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Typography from "@mui/material/Typography";
+import Delete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import AccordionActions from "@mui/material/AccordionActions";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import { getDeepValue } from "../../../utils/common";
 import Button from "../../buttons/Button";
 import { AppTheme } from "../../../../model/common/Theme";
@@ -115,7 +115,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
           >
             <AccordionSummary
               classes={{
-                expandIcon: classes.expandIcon,
+                expandIconWrapper: classes.expandIcon,
                 content: classes.summaryContent
               }}
               expandIcon={<ExpandMoreIcon />}

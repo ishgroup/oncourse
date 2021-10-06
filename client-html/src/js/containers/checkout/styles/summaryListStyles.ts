@@ -9,7 +9,7 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 import { AppTheme } from "../../../model/common/Theme";
 
 export const summaryListStyles = (theme: AppTheme) => createStyles({

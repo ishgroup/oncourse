@@ -6,7 +6,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Application, ApplicationStatus } from "@api/model";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { State } from "../../../../reducers/state";
@@ -51,7 +51,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   } as any;
 
   return (
-    <Grid container className="generalRoot mt-2">
+    <Grid container columnSpacing={3} className="generalRoot mt-2">
       <Grid item xs={12}>
         <FormField
           type="remoteDataSearchSelect"

@@ -6,13 +6,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Note } from "@api/model";
-import Paper from "@material-ui/core/Paper";
-import Tooltip from "@material-ui/core/Tooltip";
+import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../formFields/FormField";
 import { formatRelativeDate } from "../../../../utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../utils/dates/format";
@@ -37,7 +37,7 @@ const NoteItem = (props: Props) => {
   return (
     <Grid item xs={twoColumn ? 1 : 12} md={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
       <Paper className="p-1 h-100">
-        <Grid container className="h-100" alignContent="space-between">
+        <Grid container columnSpacing={3} className="h-100" alignContent="space-between">
           <Grid item xs={12}>
             <FormField
               type="text"
@@ -48,7 +48,7 @@ const NoteItem = (props: Props) => {
               multiline
             />
           </Grid>
-          <Grid container justify="space-between" alignItems="flex-end">
+          <Grid container columnSpacing={3} alignItems="flex-end">
             <Grid item>
               {item.created && (
                 <Typography className={classes.dateInfo}>

@@ -6,11 +6,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Chip from "@material-ui/core/Chip";
-import List from "@material-ui/core/List";
-import Collapse from "@material-ui/core/Collapse";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Chip from "@mui/material/Chip";
+import List from "@mui/material/List";
+import Collapse from "@mui/material/Collapse";
 import { openInternalLink } from "../../../../../utils/links";
 import ListLinkItem from "./ListLinkItem";
 import { State } from "../../../../../../reducers/state";

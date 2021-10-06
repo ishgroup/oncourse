@@ -10,14 +10,14 @@ import {
   reduxForm, getFormValues, InjectedFormProps, change
 } from "redux-form";
 import { format as formatDate } from "date-fns";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import MuiButton from "@material-ui/core/Button";
-import Collapse from "@material-ui/core/Collapse";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import IconButton from "@material-ui/core/IconButton";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import MuiButton from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
+import DialogContentText from "@mui/material/DialogContentText";
+import IconButton from "@mui/material/IconButton";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import { PayrollRequest } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";

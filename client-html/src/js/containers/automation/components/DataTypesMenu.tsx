@@ -5,23 +5,24 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import { Binding, DataType } from "@api/model";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
-import Popper from "@material-ui/core/Popper";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import Popper from "@mui/material/Popper";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
 import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { BindingsItemType } from "./Bindings";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
+import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { AppTheme } from "../../../model/common/Theme";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeAppStyles()((theme: AppTheme) => ({
   popper: {
     zIndex: theme.zIndex.modal + 1
   },
@@ -68,7 +69,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
     const nameRef = useRef<any>();
     const popperRef = useRef<any>();
 
-    const classes = useStyles({});
+    const { classes } = useStyles();
 
     const setPopperRef = useCallback(node => {
       if (node) {

@@ -4,11 +4,11 @@
  */
 
 import { CertificateOutcome, Contact } from "@api/model";
-import { FormControlLabel, Theme } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid/Grid";
-import Link from "@material-ui/core/Link";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { FormControlLabel, Theme } from "@mui/material";
+import Grid from "@mui/material/Grid/Grid";
+import Link from "@mui/material/Link";
+import { createStyles, withStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { format } from "date-fns";
 import QRCode from "qrcode.react";
@@ -252,7 +252,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
   const foundOutcomes = useMemo(() => studentOutcomes.map(transformForNestedList), [studentOutcomes]);
 
   return (
-    <Grid container className={clsx("pt-2 pr-3 pb-0 pl-3 relative h-100 align-content-start defaultBackgroundColor", classes.root)}>
+    <Grid container columnSpacing={3} className={clsx("pt-2 pr-3 pb-0 pl-3 relative h-100 align-content-start defaultBackgroundColor", classes.root)}>
       {isNew && <div className={clsx("backgroundText paperTextColor", { "fs19": twoColumn })}>Draft</div>}
       {Boolean(values.revokedOn) && (
         <div className={clsx("backgroundText errorColorFade-0-2", { "fs19": twoColumn })}>Revoked</div>
@@ -434,7 +434,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           name="outcomes"
           title="Transcript"
           searchType="immediate"
-          innerRef={listRef}
+          ref={listRef}
           values={outcomes}
           validate={validateOutcomes}
           hideAddButton={!!values.printedOn}

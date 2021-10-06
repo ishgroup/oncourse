@@ -14,17 +14,17 @@
  * */
 
 import React, { ComponentClass, useEffect, useMemo, useRef, useState } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import DateRange from "@material-ui/icons/DateRange";
-import QueryBuilder from "@material-ui/icons/QueryBuilder";
+import DateRange from "@mui/icons-material/DateRange";
+import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import { format, isValid } from "date-fns";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
 import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
@@ -410,6 +410,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 shrink: classes.labelShrink
               }}
               shrink={true}
+              variant="standard"
             >
               {labelContent}
             </InputLabel>

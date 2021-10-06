@@ -4,17 +4,17 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button/Button";
-import Typography from "@material-ui/core/Typography";
+import MenuItem from "@mui/material/MenuItem";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button/Button";
+import Typography from "@mui/material/Typography";
 import { CertificateCreateForEnrolmentsRequest, Enrolment } from "@api/model";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import DialogTitle from "@mui/material/DialogTitle/DialogTitle";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Dispatch } from "redux";
 import EntityService from "../../../../../services/EntityService";
 import { openInternalLink } from "../../../../../utils/links";
@@ -218,7 +218,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
       <Dialog open={dialogOpened} onClose={onClose} fullWidth>
         <DialogTitle>{!loading && headerLabel}</DialogTitle>
         <DialogContent>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             {!loading && Boolean(enrolments.vet.length) && Boolean(enrolments.noCertificate.length) && (
               <Grid item xs={12}>
                 <ul className="m-0">
@@ -249,7 +249,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
                 </ul>
               </Grid>
             )}
-            <Grid container item xs={12} justify="center">
+            <Grid container columnSpacing={3} item xs={12}>
               <CircularProgress classes={{ root: loading ? undefined : "d-none" }} size={40} thickness={5} />
             </Grid>
           </Grid>

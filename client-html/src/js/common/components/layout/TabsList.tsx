@@ -6,12 +6,12 @@
 import React, {
  useCallback, useEffect, useRef, useState
 } from "react";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import { withStyles } from "@mui/styles";
+import Grid, { GridSize } from "@mui/material/Grid";
 import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
-import createStyles from "@material-ui/core/styles/createStyles";
+import ListItem from "@mui/material/ListItem";
+import createStyles from "@mui/styles/createStyles";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
@@ -178,9 +178,9 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   const layoutArray = getLayoutArray(itemProps.twoColumn);
 
   return (
-    <Grid container className={clsx("overflow-hidden", { "root": customAppBar && itemProps.twoColumn })}>
+    <Grid container columnSpacing={3} className={clsx("overflow-hidden", { "root": customAppBar && itemProps.twoColumn })}>
       <Grid item xs={layoutArray[0].xs}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid
             item
             xs={layoutArray[1].xs}
@@ -208,7 +208,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             <div className={classes.listContainerInner}>
               {items.map((i, index) => (
                 <ListItem
-                  button
+                  // button
                   selected={i.label === selected}
                   classes={{
                     root: classes.listItemRoot,

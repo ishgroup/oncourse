@@ -5,9 +5,9 @@
 
 import React from "react";
 import clsx from "clsx";
-import { Grid } from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Grid } from "@mui/material";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { PreferenceEnum } from "@api/model";

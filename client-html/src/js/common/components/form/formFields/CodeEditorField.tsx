@@ -8,12 +8,12 @@ import clsx from "clsx";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-groovy";
 import "ace-builds/src-noconflict/theme-textmate";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@mui/styles";
 
 const styles = theme =>
   createStyles({
     editor: {
-      filter: theme.palette.type === "dark" ? "invert(80%)" : "",
+      filter: theme.palette.mode === "dark" ? "invert(80%)" : "",
       zIndex: 0,
       outline: "none"
     },

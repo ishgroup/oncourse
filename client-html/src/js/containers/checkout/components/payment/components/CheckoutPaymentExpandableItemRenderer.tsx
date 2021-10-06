@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@material-ui/core/IconButton";
-import Share from "@material-ui/icons/Share";
+import IconButton from "@mui/material/IconButton";
+import Share from "@mui/icons-material/Share";
 import React from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { CheckoutItem } from "../../../../../model/checkout";
@@ -127,7 +127,7 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Grid container className="centeredFlex">
+            <Grid container columnSpacing={3} className="centeredFlex">
               <div className="centeredFlex flex-fill">
                 <div className="heading mr-2">{header}</div>
               </div>
@@ -135,7 +135,7 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
           </AccordionSummary>
           <AccordionDetails>
             {children || (
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 {items && items.filter(item => item.checked).map((item, i) => (
                   <ItemRow
                     key={i}

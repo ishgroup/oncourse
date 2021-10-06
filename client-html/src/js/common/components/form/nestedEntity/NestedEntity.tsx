@@ -4,15 +4,15 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Button from "@material-ui/core/Button";
-import Badge from "@material-ui/core/Badge";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import DateRange from "@material-ui/icons/DateRange";
-import Launch from "@material-ui/icons/Launch";
-import Grid from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import DateRange from "@mui/icons-material/DateRange";
+import Launch from "@mui/icons-material/Launch";
+import Grid from "@mui/material/Grid";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import { openInternalLink } from "../../../utils/links";
@@ -90,7 +90,7 @@ const NestedEntity: React.FC<Props> = ({
         </div>
       )}
 
-      <Grid container>
+      <Grid container columnSpacing={3}>
         {entityTypes.map((t, i) => (
           <Grid key={i} item xs={twoColumn ? "auto" : 12} className="mb-2">
             <Badge

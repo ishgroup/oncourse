@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { LinearProgress } from "@material-ui/core";
+import { withStyles } from "@mui/styles";
+import { LinearProgress } from "@mui/material";
 
 const styles: any = () => ({
   root: {

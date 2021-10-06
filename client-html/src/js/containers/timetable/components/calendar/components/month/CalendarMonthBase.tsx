@@ -4,11 +4,11 @@
  */
 
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import { Theme } from "@material-ui/core";
+import { withStyles, createStyles } from "@mui/styles";
+import { Theme } from "@mui/material";
 
 const styles = (theme: Theme) => createStyles({
     manyDaysWrapper: {
@@ -42,7 +42,7 @@ const CalendarMonthBase: React.FC<MonthBaseProps> = props => {
   const notNullDate = month.getFullYear() !== 1970;
 
   return (
-    <Grid container style={style} ref={parentRef}>
+    <Grid container columnSpacing={3} style={style} ref={parentRef}>
       <Grid item xs={1}>
         <div className={classes.month}>
           {

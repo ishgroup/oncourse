@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { MenuItem } from "@material-ui/core";
+import { MenuItem } from "@mui/material";
 import { connect } from "react-redux";
-import Menu from "@material-ui/core/Menu/Menu";
+import Menu from "@mui/material/Menu/Menu";
 import { DataCollectionType } from "@api/model";
 import { State } from "../../../reducers/state";
 import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";

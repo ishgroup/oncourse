@@ -3,7 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles, fade } from "@material-ui/core/styles";
+import { createStyles } from "@mui/styles";
+import { alpha } from "@mui/material/styles";
 import { AppTheme } from "../../../../model/common/Theme";
 
 export const paymentPlanStyles = (theme: AppTheme) => createStyles({
@@ -12,7 +13,7 @@ export const paymentPlanStyles = (theme: AppTheme) => createStyles({
     padding: 0
   },
   deleteIcon: {
-    color: fade(theme.palette.text.primary, 0.2),
+    color: alpha(theme.palette.text.primary, 0.2),
     fontSize: "18px",
     width: theme.spacing(4),
     height: theme.spacing(4),

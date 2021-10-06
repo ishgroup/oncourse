@@ -7,7 +7,7 @@ import React from "react";
 import { change } from "redux-form";
 import { Account, ExpiryType, MembershipProduct, ProductStatus, Tax } from "@api/model";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -129,7 +129,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
   return (
     <div className="generalRoot">
       <div className="pt-1">
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="text"
@@ -149,7 +149,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         </Grid>
       </div>
 
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormEditorField name="description" label="Description" />
         </Grid>
@@ -166,7 +166,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
         />
       </div>
-      <Grid container className="mr-2 mb-2">
+      <Grid container columnSpacing={3} className="mr-2 mb-2">
         <Grid item xs={twoColumn ? 2 : 4}>
           <FormField
             type="money"

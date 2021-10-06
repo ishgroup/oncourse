@@ -4,11 +4,11 @@
  */
 
 import React from "react";
-import { Typography } from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Typography } from "@mui/material";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import debounce from "lodash.debounce";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Field, Validator } from "redux-form";
 import { connect } from "react-redux";
 import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperListRenderer";

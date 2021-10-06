@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import { createStyles, withStyles } from "@material-ui/core";
+import { createStyles, withStyles } from "@mui/styles";
 import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";

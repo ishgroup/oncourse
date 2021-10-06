@@ -4,14 +4,14 @@
  */
 
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { createStyles } from "@material-ui/core";
-import { CheckBoxOutlineBlank, CheckBox, IndeterminateCheckBox } from "@material-ui/icons";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
-import TreeItem, { TreeItemProps } from "@material-ui/lab/TreeItem";
+import withStyles from "@mui/styles/withStyles";
+import { createStyles } from "@mui/material";
+import { CheckBoxOutlineBlank, CheckBox, IndeterminateCheckBox } from "@mui/icons-material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import IconButton from "@mui/material/IconButton";
+import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
+import TreeItem, { TreeItemProps } from "@mui/lab/TreeItem";
 import clsx from "clsx";
 import { BooleanArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { MenuTag } from "../../../../../../model/tags";

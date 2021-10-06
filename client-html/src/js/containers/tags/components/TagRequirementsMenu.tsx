@@ -1,10 +1,11 @@
 import React, { ComponentClass } from "react";
 import {
-  withStyles, Typography, Menu, MenuItem
-} from "@material-ui/core";
+  Typography, Menu, MenuItem
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { TagRequirement, TagRequirementType } from "@api/model";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
 import clsx from "clsx";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 

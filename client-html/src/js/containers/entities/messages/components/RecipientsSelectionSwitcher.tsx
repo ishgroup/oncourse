@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from "react";
-import { createStyles, withStyles } from "@material-ui/core";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import Typography from "@mui/material/Typography";
+import ButtonBase from "@mui/material/ButtonBase";
 
 const styles = theme => createStyles({
     select: {

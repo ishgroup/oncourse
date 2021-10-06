@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import { createStyles } from "@material-ui/core";
-import Grid, { GridSize } from "@material-ui/core/Grid";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { createStyles } from "@mui/material";
+import Grid, { GridSize } from "@mui/material/Grid";
+import withStyles from "@mui/styles/withStyles";
 import { Holiday } from "@api/model";
 import AvailabilityItem from "./AvailabilityItem";
 
@@ -60,7 +60,7 @@ const AvailabilityRenderer = ({
   const availabilityLayout = getLayoutArray(threeColumn);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={availabilityLayout[0].xs} className="p-3">
         {fields.map((item, index) => {
           const field: Holiday = fields.get(index);

@@ -5,10 +5,10 @@
 
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { Assessment, GradingType, Tag } from "@api/model";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Button from "@material-ui/core/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Button from "@mui/material/Button";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -67,7 +67,7 @@ const AssessmentGeneralTab = React.memo<Props>(
       <>
         {twoColumn && (
           <CustomAppBar>
-            <Grid container className="flex-fill">
+            <Grid container columnSpacing={3} className="flex-fill">
               <Grid item xs={3}>
                 {assessmentCodeField}
               </Grid>
@@ -95,7 +95,7 @@ const AssessmentGeneralTab = React.memo<Props>(
             </div>
           </CustomAppBar>
         )}
-        <Grid container className="p-3">
+        <Grid container columnSpacing={3} className="p-3">
           {!twoColumn && (
             <>
               <Grid item xs={12}>

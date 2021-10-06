@@ -4,8 +4,8 @@
  */
 
 import React, { useMemo } from "react";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import Typography from "@material-ui/core/Typography/Typography";
+import Tooltip from "@mui/material/Tooltip/Tooltip";
+import Typography from "@mui/material/Typography/Typography";
 
 const LeadSelectItemRenderer = React.memo<{ content: string; data: any }>(props => {
   const { content, data } = props;

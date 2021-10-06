@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { CheckoutItem, CheckoutSummary } from "../../../../../model/checkout";
 import QuickEnrolItemViewFormWraper from "./CkecoutItemViewForm";
@@ -63,7 +63,7 @@ const CheckoutItemView: React.FC<Props> = ({ onClose, openedItem, summary }) => 
           </Button>
         </div>
       </CustomAppBar>
-      <Grid container className="appBarContainer">
+      <Grid container columnSpacing={3} className="appBarContainer">
         {formComponent && <QuickEnrolItemViewFormWraper EditViewComponent={formComponent} summaryVoucher={summaryVoucher} />}
       </Grid>
     </div>

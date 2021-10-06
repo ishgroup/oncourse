@@ -3,7 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles, fade } from "@material-ui/core/styles";
+import { createStyles } from "@mui/styles";
+import { alpha } from '@mui/material/styles';
 import { AppTheme } from "../../../../../model/common/Theme";
 
 export default (theme: AppTheme) => createStyles({
@@ -132,7 +133,7 @@ export default (theme: AppTheme) => createStyles({
     cursor: "pointer"
   },
   oddRow: {
-    backgroundColor: fade(theme.palette.action.hover, 0.03)
+    backgroundColor: alpha(theme.palette.action.hover, 0.03)
   },
   threeColumnRow: {
     borderBottom: `1px solid ${theme.palette.divider}`,

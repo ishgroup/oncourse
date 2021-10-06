@@ -6,17 +6,17 @@
 import React, {
  useCallback, useEffect, useMemo, useRef
 } from "react";
-import Grid from "@material-ui/core/Grid";
-import FormGroup from "@material-ui/core/FormGroup";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import FormGroup from "@mui/material/FormGroup";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import {
  arrayPush, arrayRemove, change, Field, formValueSelector
 } from "redux-form";
 import { addMinutes, differenceInMinutes, subMinutes } from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { FormControl, FormHelperText } from "@material-ui/core";
+import { FormControl, FormHelperText } from "@mui/material";
 import clsx from "clsx";
 import { ClashType, Room, SessionWarning, Site } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
@@ -280,7 +280,7 @@ const CourseClassSessionFields: React.FC<Props> = (
   );
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item container xs={6}>
         <Grid item xs={12}>
           <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />

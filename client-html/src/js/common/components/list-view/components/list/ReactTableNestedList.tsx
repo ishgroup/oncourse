@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Launch from "@material-ui/icons/Launch";
-import RemoveCircle from "@material-ui/icons/RemoveCircle";
+import IconButton from "@mui/material/IconButton";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Launch from "@mui/icons-material/Launch";
+import RemoveCircle from "@mui/icons-material/RemoveCircle";
 import React, {
   useMemo, useState
 } from "react";
@@ -17,13 +17,13 @@ import {
   useRowSelect,
   useSortBy
 } from "react-table";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import MaUTable from "@material-ui/core/Table";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import MaUTable from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { NestedTableColumn } from "../../../../../model/common/NestedTable";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";

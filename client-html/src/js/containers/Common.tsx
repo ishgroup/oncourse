@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { CardContent, Card } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@mui/styles";
+import { CardContent, Card } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { routeGroups } from "../routes";
 
 const styles: any = theme => ({
