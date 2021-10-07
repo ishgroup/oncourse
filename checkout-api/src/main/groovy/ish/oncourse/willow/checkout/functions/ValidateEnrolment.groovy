@@ -11,7 +11,6 @@ import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.checkout.Enrolment
 import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.StringUtils
 
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -72,10 +71,7 @@ class ValidateEnrolment extends Validate<Enrolment>{
         {
             Integer minEnrolmentAge = courseClass.minStudentAge
             Integer maxEnrolmentAge = courseClass.maxStudentAge
-
-            String value = new GetPreference(college, Preferences.CHECKOUT_ENROLMENT_minAge, context, site).value
-            Integer globalMinEnrolmentAge = value != null && StringUtils.isNumeric(value) ? Integer.valueOf(value) : 0
-
+            
             Integer age = ChronoUnit.YEARS.between(ZonedDateTime.ofInstant(dateOfBirth.toInstant(), ZoneId.systemDefault()),
                     ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault())).toInteger()
 
@@ -85,9 +81,7 @@ class ValidateEnrolment extends Validate<Enrolment>{
                 } else if ((maxEnrolmentAge != null && age > maxEnrolmentAge)) {
                     errors << "The maximum age for this class is $maxEnrolmentAge. $student.contact.fullName is too old to enrol. If you intended to enrol your child, please click \"add another student\" below.".toString()
                 }
-            } else if (globalMinEnrolmentAge != null && age < globalMinEnrolmentAge) {
-                errors << "The minimum age for this class is $globalMinEnrolmentAge. $student.contact.fullName is too young to enrol.".toString()
-            }
+            } 
         }
         this
     }

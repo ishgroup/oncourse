@@ -6,8 +6,6 @@ import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.common.ValidationError
-import ish.oncourse.willow.model.field.FieldSet
-import ish.oncourse.willow.model.web.ContactId
 import ish.oncourse.willow.model.web.CreateContactParams
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -75,12 +73,7 @@ class CreateOrGetContact  {
     }
 
    private boolean isContactCreationAllowed() {
-       switch (params.fieldSet) {
-           case FieldSet.ENROLMENT:
-               return new GetPreference(college, Preferences.CHECKOUT_ENROLMENT_allowCreateContact, context, site).booleanValue
-           case FieldSet.WAITINGLIST:
-               return new GetPreference(college, Preferences.CHECKOUT_ENROLMENT_allowCreateContact, context, site).booleanValue
-       }
+       return new GetPreference(college, Preferences.CHECKOUT_createContactAllowed, context, site).booleanValue
     }
     
     private Contact findContact() {

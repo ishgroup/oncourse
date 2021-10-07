@@ -1220,15 +1220,9 @@ definitions:
   CheckoutSettings:
     type: object
     properties:
-      allowCreateContactOnEnrol:
-        type: boolean
-      allowCreateContactOnWaitingList:
-        type: boolean
-      collectParentDetails:
+      allowCreateContact:
         type: boolean
       contactAgeWhenNeedParent:
-        type: integer
-      enrolmentMinAge:
         type: integer
       termsLabel:
         type: string

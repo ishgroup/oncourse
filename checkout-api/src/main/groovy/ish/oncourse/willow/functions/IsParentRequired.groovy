@@ -4,7 +4,6 @@ import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetContactAgeWhenNeedParent
-import ish.oncourse.services.preference.IsCollectParentDetails
 import org.apache.cayenne.ObjectContext
 
 import java.time.ZoneId
@@ -30,7 +29,7 @@ class IsParentRequired {
         if (contact.dateOfBirth) {
             Integer age = ChronoUnit.YEARS.between(ZonedDateTime.ofInstant(contact.dateOfBirth.toInstant(), ZoneId.systemDefault()),
                     ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault())).toInteger()
-            return new IsCollectParentDetails(college, context, site).booleanValue && new GetContactAgeWhenNeedParent(college, context, site).integerValue > age
+            return new GetContactAgeWhenNeedParent(college, context, site).integerValue > age
         }
         return false
     }

@@ -19,17 +19,11 @@ public interface Preferences {
     String ENROLMENT_CREDIT_NOTE_ENABLED = "enrolment.credit.note.enabled";
     String SUBURB_AUTOCOMPLITE_STATE = "feature.suburb.autocomplete.states";
 
-    String CHECKOUT_collectParentDetails = "checkout.collectParentDetails";
     String CHECKOUT_guardianRequiredAge = "checkout.guardianRequiredAge";
 
     String CHECKOUT_TERMS_URL = "checkout.terms.url";
     String CHECKOUT_TERMS_LABEL = "checkout.terms.label";
-    String CHECKOUT_ENROLMENT_allowCreateContact = "checkout.enrolment.allowCreateContact";
-    String CHECKOUT_ENROLMENT_minAge = "checkout.enrolment.minAge";
-
-    String CHECKOUT_WAITING_LIST_allowCreateContact = "checkout.waitingList.allowCreateContact";
-
- 
+    String CHECKOUT_createContactAllowed = "checkout.createContactAllowed";
     
     int DEFAULT_contactAgeWhenNeedParent = 18;
 
