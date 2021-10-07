@@ -5,11 +5,8 @@ import {
 import { CheckoutSettings } from '../../../../../../../build/generated-sources/api';
 
 const defaultState: CheckoutSettings = {
-  allowCreateContactOnEnrol: true,
-  allowCreateContactOnWaitingList: true,
-  collectParentDetails: true,
+  allowCreateContact: null,
   contactAgeWhenNeedParent: 18,
-  enrolmentMinAge: 18,
   termsLabel: null,
   termsUrl: null,
 };

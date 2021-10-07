@@ -100,8 +100,12 @@ export class Checkout extends React.Component<Props, CompState> {
 
   render() {
     const {
-      allowCreateContactOnEnrol, allowCreateContactOnWaitingList,
-      collectParentDetails, enrolmentMinAge, contactAgeWhenNeedParent, termsLabel, termsUrl, termsUrlError, termslabelError
+      allowCreateContact,
+      termsLabel,
+      termsUrl,
+      contactAgeWhenNeedParent,
+      termsUrlError,
+      termslabelError
     } = this.state;
     const { fetching } = this.props;
 
@@ -111,61 +115,14 @@ export class Checkout extends React.Component<Props, CompState> {
           <FormControlLabel
             control={(
               <Checkbox
-                checked={allowCreateContactOnEnrol}
-                onChange={(e) => this.onChange(e.target.checked, 'allowCreateContactOnEnrol')}
-                name="enableSocialMedia"
+                checked={allowCreateContact}
+                onChange={(e) => this.onChange(e.target.checked, 'allowCreateContact')}
+                name="allowCreateContact"
                 color="primary"
               />
             )}
-            label="Allow create new student on enrol."
+            label="Allow create new student"
           />
-
-          <FormControlLabel
-            control={(
-              <Checkbox
-                checked={allowCreateContactOnWaitingList}
-                onChange={(e) => this.onChange(e.target.checked, 'allowCreateContactOnWaitingList')}
-                name="allowCreateContactOnWaitingList"
-                color="primary"
-              />
-            )}
-            label="Allow create new student on waiting list."
-          />
-
-          <div>
-            <div className="form-inline">
-              <FormControlLabel
-                control={(
-                  <Checkbox
-                    checked={collectParentDetails}
-                    onChange={(e) => this.onChange(e.target.checked, 'collectParentDetails')}
-                    name="collectParentDetails"
-                    color="primary"
-                  />
-                )}
-                label={(
-                  <span onClick={(e) => e.preventDefault()}>
-                    Collect parent or guardian details for students under
-                    <EditInPlaceField
-                      type="number"
-                      name="contactAgeWhenNeedParent"
-                      meta={{}}
-                      input={{
-                        onChange: (e) => this.onChange(e.target.value, 'contactAgeWhenNeedParent'),
-                        onBlur: (e) => this.onChange(toPositive(e), 'contactAgeWhenNeedParent'),
-                        onFocus: stubFunction,
-                        value: contactAgeWhenNeedParent,
-                      }}
-                      formatting="inline"
-                      style={{ width: '40px' }}
-                      disableInputOffsets
-                      hideArrows
-                    />
-                  </span>
-                )}
-              />
-            </div>
-          </div>
         </div>
 
         <Grid container>
@@ -173,15 +130,17 @@ export class Checkout extends React.Component<Props, CompState> {
             <Grid item xs={12} className="mt-2">
               <EditInPlaceField
                 type="number"
-                label="Enrolment min age"
-                name="enrolmentMinAge"
+                name="contactAgeWhenNeedParent"
+                label="Collect parent or guardian details for students under"
                 meta={{}}
                 input={{
-                  onChange: (e) => this.onChange(e.target.value, 'enrolmentMinAge'),
-                  onBlur: stubFunction,
+                  onChange: (e) => this.onChange(e.target.value, 'contactAgeWhenNeedParent'),
+                  onBlur: (e) => this.onChange(toPositive(e), 'contactAgeWhenNeedParent'),
                   onFocus: stubFunction,
-                  value: enrolmentMinAge,
+                  value: contactAgeWhenNeedParent,
                 }}
+                style={{ width: '40px' }}
+                disableInputOffsets
                 fullWidth
                 hideArrows
               />
