@@ -116,7 +116,8 @@ class WebSiteService {
             dto.id = it.id
             dto.name = it.name
             dto.key = it.siteKey
-            dto.gtmId = it.googleTagmanagerAccount
+            dto.gtmAccountId = it.googleTagmanagerAccount
+            dto.gtmContainerId = it.googleTagmanagerContainer
             dto.googleAnalyticsId = it.googleAnalyticAccount
             dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
             dto.domains = it.collegeDomains.collect { host -> host.name }
@@ -203,10 +204,13 @@ class WebSiteService {
         if (dto.googleAnalyticsId)
             webSite.setGoogleAnalyticAccount(dto.googleAnalyticsId)
 
-        if (dto.gtmId)
-            webSite.setGoogleTagmanagerAccount(dto.gtmId)
+        if (dto.gtmAccountId)
+            webSite.setGoogleTagmanagerAccount(dto.gtmAccountId)
 
-        if (dto.googleAnalyticsId || dto.gtmId)
+        if(dto.gtmContainerId)
+            webSite.setGoogleTagmanagerContainer(dto.gtmContainerId)
+
+        if (dto.googleAnalyticsId || dto.gtmAccountId || dto.gtmContainerId)
             webSite.setConfiguredByUser(requestService.getSystemUser())
     }
 

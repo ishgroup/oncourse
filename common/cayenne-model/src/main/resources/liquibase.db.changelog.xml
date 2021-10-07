@@ -648,4 +648,15 @@
 														 referencedColumnNames="id"
 														 validate="true"/>
 	</changeSet>
+
+	<changeSet id="49" author="dmitriy" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="HALT">
+			<not>
+				<columnExists tableName="WebSite" columnName="googleTagmanagerContainer"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="WebSite">
+			<column name="googleTagmanagerContainer" type="VARCHAR(256)"/>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>
