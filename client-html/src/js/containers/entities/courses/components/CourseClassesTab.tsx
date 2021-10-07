@@ -58,7 +58,7 @@ const CourseClassesTab: React.FC<any> = ({
   ]);
 
   return (
-    <Grid container columnSpacing={3} item xs={12} className="pl-3 pr-3">
+    <Grid container item xs={12} className="pl-3 pr-3">
       <NestedEntity
         entityName="Classes"
         goToLink="/class"
