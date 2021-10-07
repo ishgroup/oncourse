@@ -15,7 +15,7 @@ import React, {
 import Autocomplete from '@mui/lab/Autocomplete';
 import { IconButton, InputAdornment } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";

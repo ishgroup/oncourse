@@ -250,7 +250,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const getOptionLabel = op => op.path;
 
   const renderOption = option => {
-    const label = option.tagBody.name;
+    const label = option?.tagBody?.name;
     const highlightedLabel = getHighlightedPartLabel(label, currentInputString);
     return getOptionText(option, highlightedLabel);
   };
@@ -400,6 +400,7 @@ const SimpleTagList: React.FC<Props> = props => {
               onBlur={onBlur}
               inputRef={inputNode}
               label={label}
+              variant="standard"
               multiline
             />
           )}

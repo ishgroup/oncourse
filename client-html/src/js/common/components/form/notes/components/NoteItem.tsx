@@ -37,7 +37,7 @@ const NoteItem = (props: Props) => {
   return (
     <Grid item xs={twoColumn ? 1 : 12} md={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
       <Paper className="p-1 h-100">
-        <Grid container columnSpacing={3} className="h-100" alignContent="space-between">
+        <Grid container className="h-100" alignContent="space-between">
           <Grid item xs={12}>
             <FormField
               type="text"
@@ -48,7 +48,7 @@ const NoteItem = (props: Props) => {
               multiline
             />
           </Grid>
-          <Grid container columnSpacing={3} alignItems="flex-end">
+          <Grid container alignItems="flex-end">
             <Grid item>
               {item.created && (
                 <Typography className={classes.dateInfo}>
