@@ -9,7 +9,9 @@ properties:
     type: string
   googleAnalyticsId:
     type: string
-  gtmId:
+  gtmAccountId:
+    type: string
+  gtmContainerId:
     type: string
   webSiteTemplate:
     description: web site template, neew to create new site only
