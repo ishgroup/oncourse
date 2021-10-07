@@ -2,6 +2,7 @@ package ish.oncourse.willow.billing.website;
 
 import ish.oncourse.configuration.Configuration;
 import ish.oncourse.model.College;
+import ish.oncourse.model.Preference;
 import ish.oncourse.model.WebSite;
 import ish.oncourse.model.WebSiteVersion;
 import ish.oncourse.services.site.WebSitePublisher;
@@ -40,7 +41,7 @@ public class CreateNewWebSite {
     public void create() {
         createFileStructure();
         createWebSiteStructure();
-        
+        copyPreferences();
         context.commitChanges();
 
         WebSitePublisher publisher = WebSitePublisher.valueOf(webSiteVersion, Configuration.getValue(DEPLOY_SCRIPT_PATH), context);
@@ -67,6 +68,18 @@ public class CreateNewWebSite {
         } else {
             CreateDefaultWebSiteStructure.valueOf(webSiteVersion, context).create();
         }
+    }
+
+    private void copyPreferences() {
+        template.getPreferences().forEach( preference -> {
+            Preference newPreference = context.newObject(Preference.class);
+            newPreference.setName(preference.getName());
+            newPreference.setValueString(preference.getValueString());
+            newPreference.setCollege(college);
+            newPreference.setWebSite(webSite);
+            newPreference.setCreated(now);
+            newPreference.setModified(now);
+        });
     }
 
     private void createFileStructure() {
