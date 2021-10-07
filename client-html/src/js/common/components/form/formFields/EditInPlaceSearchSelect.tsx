@@ -34,11 +34,18 @@ const searchStyles = theme => createStyles({
     visibility: 'hidden'
   },
   inputWrapper: {
+    fontWeight: 400,
     "&:hover $inputEndAdornment": {
       visibility: 'visible'
     },
     "&:focus $inputEndAdornment": {
       visibility: 'hidden',
+    },
+    "&:before": {
+      borderBottom: "1px solid transparent",
+    },
+    "&:hover&:before": {
+      borderBottom: `1px solid ${theme.palette.primary.main}`,
     },
   },
   validUnderline: {
@@ -532,7 +539,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                 {...params}
                 error={meta && meta.invalid}
               >
-                {labelContent && <InputLabel shrink={true}>{labelContent}</InputLabel>}
+                {labelContent && <InputLabel shrink={true} variant="standard">{labelContent}</InputLabel>}
                 <Input
                   {...InputProps}
                   placeholder={placeholder || (!isEditing && "No value")}

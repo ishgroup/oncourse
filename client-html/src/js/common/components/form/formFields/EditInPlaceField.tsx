@@ -15,12 +15,9 @@ import ListItem from "@mui/material/ListItem";
 import Edit from "@mui/icons-material/Edit";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import MenuItem from "@mui/material/MenuItem";
-import ButtonBase from "@mui/material/ButtonBase";
-import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import CreateIcon from '@mui/icons-material/Create';
-import ListItemText from "@mui/material/ListItemText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
@@ -39,12 +36,16 @@ const styles = theme => createStyles({
     fontSize: "1rem",
   },
   inputWrapper: {
+    fontWeight: 400,
     minWidth: "73px",
     "&:hover $inputEndAdornment": {
       display: "flex",
     },
     "&:before": {
       borderBottom: "1px solid transparent",
+    },
+    "&:hover&:before": {
+      borderBottom: `1px solid ${theme.palette.primary.main}`,
     },
   },
   isEditing: {
@@ -762,7 +763,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                         : input.value || ""}
                     inputRef={this.setInputNode}
                     classes={{
-                      root: clsx(classes.textFieldBorderModified, fieldClasses.text),
+                      root: clsx(classes.textFieldBorderModified, fieldClasses.text, classes.inputWrapper),
                       select: clsx(isInline && classes.inlineSelect),
                       // @ts-ignore
                       underline: fieldClasses.underline
@@ -796,7 +797,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     underline: fieldClasses.underline
                   }}
                   disabled={disabled}
-                  // endAdornment={!isInline && !disabled && (
                   endAdornment={!disabled && (
                     <InputAdornment position="end" className={classes.inputEndAdornment}>
                       <CreateIcon

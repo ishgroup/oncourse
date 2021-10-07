@@ -3,6 +3,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
+import clsx from "clsx";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Tooltip from "@mui/material/Tooltip";
 import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
@@ -13,10 +14,13 @@ const styles = (theme: AppTheme) =>
     checkbox: {
       height: "1em",
       width: "1em",
-      marginLeft: ".3em"
+      marginLeft: ".3em",
     },
     checkboxFontSize: {
       fontSize: "18px"
+    },
+    checkboxLabel: {
+      fontSize: "12px",
     },
     root: {
       display: "flex",
@@ -46,7 +50,7 @@ const FilterItem = props => {
     <div className={classes.root}>
       <FormControlLabel
         classes={{
-          label: "overflow-hidden text-nowrap"
+          label: clsx("overflow-hidden text-nowrap", classes.checkboxLabel),
         }}
         className="flex-fill overflow-hidden"
         control={(

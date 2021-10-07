@@ -1272,6 +1272,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             renderInput={params => (
               <TextField
                 {...params}
+                variant="standard"
                 onKeyDown={this.onKeyDown}
                 InputProps={{
                   ...params.InputProps,

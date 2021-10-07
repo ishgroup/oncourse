@@ -47,8 +47,15 @@ const styles = theme => createStyles({
     display: "none",
   },
   inputWrapper: {
+    fontWeight: 400,
     "&:hover $inputEndAdornment": {
       display: "flex",
+    },
+    "&:before": {
+      borderBottom: "1px solid transparent",
+    },
+    "&:hover&:before": {
+      borderBottom: `1px solid ${theme.palette.primary.main}`,
     },
   },
   isEditing: {

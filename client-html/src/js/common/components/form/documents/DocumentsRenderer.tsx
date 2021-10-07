@@ -350,7 +350,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
             </Typography>
           </div>
         </Grid>
-        <Grid container columnSpacing={3} spacing={3} wrap="wrap">
+        <Grid container spacing={3} wrap="wrap">
           {renderedItems && renderedItems.map((item, index) => (
             <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
               <DocumentItem
