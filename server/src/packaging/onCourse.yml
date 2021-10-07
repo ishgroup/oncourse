@@ -12,7 +12,7 @@ license:
 smtp:
   email_batch: 10000
   host: smtp.gmail.com
-  port: 465
-  mode: ssl
+  port: 587
+  mode: starttls
   username: your_email@gmail.com
   password: your_email_password
