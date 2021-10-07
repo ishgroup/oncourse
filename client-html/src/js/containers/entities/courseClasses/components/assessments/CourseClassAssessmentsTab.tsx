@@ -147,7 +147,7 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   );
 
   return (
-    <Grid container columnSpacing={3}>
+    <Grid container>
       <Grid item xs={12} className="pl-3 pr-3 pb-2">
         {isNew ? (
           <div>
