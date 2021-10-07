@@ -302,8 +302,7 @@ const CourseClassBudgetTab = React.memo<Props>(
         values.successAndQueuedEnrolmentsCount,
         values.sessions,
         values.tutors,
-        tutorRoles,
-        values.tutorAttendance
+        tutorRoles
       ]
     );
 

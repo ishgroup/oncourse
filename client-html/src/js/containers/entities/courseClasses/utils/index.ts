@@ -165,10 +165,10 @@ export const getClassCostTypes = (
           );
           const role = tutor && tutorRoles.find(r => r.id === tutor.roleId);
           const defaultOnCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
+          const onCostToUse = typeof value.onCostRate === "number" ? value.onCostRate : defaultOnCostRate;
 
-          item.max = decimalMul(item.max, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
-          item.projected = decimalMul(item.projected, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
-          item.actual = decimalMul(item.actual, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
+          item.max = decimalMul(item.max, decimalPlus(onCostToUse, 1));
+          item.projected = decimalMul(item.projected, decimalPlus(onCostToUse, 1));
 
           types.cost.items.push(item);
           types.cost.max = decimalPlus(types.cost.max, item.max);
