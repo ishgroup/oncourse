@@ -5,7 +5,7 @@ class WebSiteService {
   readonly webSiteApi = new WebSiteApi(new DefaultHttpService());
 
   public crateSite(site: SiteDTO): Promise<any> {
-    return this.webSiteApi.crateSite(site);
+    return this.webSiteApi.createSite(site);
   }
 
   public deleteSite(id: number): Promise<any> {
