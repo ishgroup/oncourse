@@ -29,7 +29,6 @@ import java.util.List;
 public class UserDisableJob implements Job {
 
     private static final Logger logger = LogManager.getLogger();
-    public static final String USER_DISABLE_JOB = "userDisableJob" ;
 
     private final ICayenneService cayenneService;
 
@@ -43,16 +42,13 @@ public class UserDisableJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        DataContext dataContext = cayenneService.getNewNonReplicatingContext();
-        dataContext.setUserProperty(USER_DISABLE_JOB, "true");
+        DataContext dataContext = cayenneService.getNewContext();
 
         LocalDate time = LocalDate.now().minus(Period.ofYears(4));
-        List<SystemUser> deletedUsers = ObjectSelect.query(SystemUser.class)
-                .where((SystemUser.LAST_ACCESS.lte(Date.valueOf(time)).andExp(SystemUser.IS_ACTIVE.eq(Boolean.TRUE)))
-                        .orExp(SystemUser.LAST_ACCESS.isNull().andExp(SystemUser.IS_ACTIVE.eq(Boolean.TRUE)))
-                )
+        List<SystemUser> inActiveUsers = ObjectSelect.query(SystemUser.class)
+                .where(SystemUser.LAST_LOGIN_ON.lte(Date.valueOf(time))).and(SystemUser.IS_ACTIVE.eq(Boolean.TRUE))
                 .select(dataContext);
-        deletedUsers.forEach( systemUser -> systemUser.setIsActive(false));
+        inActiveUsers.forEach( systemUser -> systemUser.setIsActive(false));
         dataContext.commitChanges();
     }
 }
