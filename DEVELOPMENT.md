@@ -33,8 +33,10 @@
    <li>Configure smtp. Change <code>[your_email@gmail.com]</code> with your email and <code>[your_email_password]</code> with password to your email account. Follow <a href="https://support.google.com/mail/answer/7126229?hl=en">Google documentation</a> to configure smtp for your email address.
    </ul>
 4. Create and put near configured <code>onCourse.yml</code> file <code>createAdminUsers.txt</code>, that must have lines in the same format: <code>[firstname] [lastname] [your email]</code> like <code>Peter Peterson your_email@gmail.com</code> of new system user, which will be added to database. After first running of the server you will receive on selected email letter with credentials to the system.
-5. Build project with command <code>./gradlew -x test server:build</code> executed from root folder.
-6. If you use Intellij Idea, create Application configuration, set main class <code>server/src/main/java/ish/oncourse/server/AngelServer.java</code>, module <code>onCourse.server.main</code> and working directory as <code>server</code>.
+5. Make sure, that access to accout with entered email is allowed from unsafe applications. Go to <a href="https://myaccount.google.com/lesssecureapps">Google profile settings</a>, select account you want to share and switch "unsafe application 
+   locked". When you receive message from server on your email you may lock this ability again.
+6. Build project with command <code>./gradlew -x test server:build</code> executed from root folder.
+7. If you use Intellij Idea, create Application configuration, set main class <code>server/src/main/java/ish/oncourse/server/AngelServer.java</code>, module <code>onCourse.server.main</code> and working directory as <code>server</code>.
    Then run configuration.<br>
    Else run task <code> ./gradlew -x test server:runServer</code> from root directory.
 8. Check email. Assign link from email message.
