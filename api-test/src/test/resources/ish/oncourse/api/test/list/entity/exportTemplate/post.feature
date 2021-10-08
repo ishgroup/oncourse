@@ -46,10 +46,9 @@ Feature: Main feature for all POST requests with path 'list/entity/exportTemplat
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#number",
         "name":"post ExportTemplate01",
         "keyCode":"post1",
         "entity":"AccountTransaction",
@@ -58,8 +57,6 @@ Feature: Main feature for all POST requests with path 'list/entity/exportTemplat
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
         "options":[{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
         "outputType":"txt",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":"some description"
         }
         """
@@ -112,10 +109,9 @@ Feature: Main feature for all POST requests with path 'list/entity/exportTemplat
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#number",
         "name":"post ExportTemplate02",
         "keyCode":"post2",
         "entity":"Account",
@@ -124,8 +120,6 @@ Feature: Main feature for all POST requests with path 'list/entity/exportTemplat
         "variables":[{"name":"varName2","label":"varLabel2","type":"Date","value":null,"system":null,"valueDefault":null}],
         "options":[{"name":"optName2","label":null,"type":"Checkbox","value":"true","system":null,"valueDefault":null}],
         "outputType":"ics",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":"some description"
         }
         """

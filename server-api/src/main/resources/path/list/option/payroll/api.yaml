@@ -26,9 +26,6 @@ put:
     mask: view
     keyCode: LAZY/entity
     errorMessage: Sorry, you have no permissions to generate payroll. Please contact your administrator
-    license:
-      code: license.payroll
-      errorMessage: You do not have the licence for payrolls
 
 post:
   operationId: execute
@@ -64,9 +61,6 @@ post:
     mask: view
     keyCode: LAZY/entity
     errorMessage: Sorry, you have no permissions to generate payroll. Please contact your administrator
-    license:
-      code: license.payroll
-      errorMessage: You do not have the licence for payroll
     chain:
       - param: bulkConfirmTutorWages
         keyCode: BULK_CONFIRM_TUTOR_WAGES

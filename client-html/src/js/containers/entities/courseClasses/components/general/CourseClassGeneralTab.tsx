@@ -229,7 +229,6 @@ const CourseClassGeneralTab = React.memo<Props>(
         values.sessions,
         values.tutors,
         tutorRoles,
-        values.tutorAttendance
       );
 
       let projected = decimalMinus(
@@ -255,7 +254,6 @@ const CourseClassGeneralTab = React.memo<Props>(
             values.sessions,
             values.tutors,
             tutorRoles,
-            values.tutorAttendance
           );
 
           projected = decimalMinus(

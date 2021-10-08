@@ -309,9 +309,6 @@ class CheckoutApiImpl implements CheckoutApi {
         }
 
         if (checkout.creditCard) {
-            if (!preferenceController.licenseCCProcessing) {
-                 hanbleError(VALIDATION_ERROR, [new CheckoutValidationErrorDTO(error:"Real time credit card processing would be available here with a support contract from ish")])
-            }
 
             if (xValidateOnly) {
                 save(checkout)

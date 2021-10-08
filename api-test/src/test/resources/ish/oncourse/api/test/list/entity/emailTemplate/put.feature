@@ -170,7 +170,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/emailTemplate'
         And match $ contains
         """
         {
-        "id":"#(~~id)",
         "type":"Post",
         "keyCode":"put2email",
         "name":"put 2 upd",

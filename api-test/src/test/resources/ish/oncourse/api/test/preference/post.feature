@@ -11,18 +11,10 @@ Feature: Main feature for all POST requests with path 'preference/'
 
         * table readOnlyPreferences
             | name                       | code                      | value  |
-            | 'LICENSE_ACCESS_CONTROL'   | 'license.accesscontrol'   | 'true' |
+            | 'LICENSE_ACCESS_CONTROL'   | 'license.access_control'  | 'true' |
             | 'LICENSE_SMS'              | 'license.sms'             | 'true' |
-            | 'LICENSE_CC_PROCESSING'    | 'license.ccprocessing'    | 'true' |
-            | 'LICENSE_PAYROLL'          | 'license.payroll'         | 'true' |
-            | 'LICENSE_VOUCHER'          | 'license.voucher'         | 'true' |
-            | 'LICENSE_MEMBERSHIP'       | 'license.membership'      | 'true' |
-            | 'LICENSE_ATTENDANCE'       | 'license.attendance'      | 'true' |
             | 'LICENSE_SCRIPTING'        | 'license.scripting'       | 'true' |
-            | 'LICENSE_FEE_HELP_EXPORT'  | 'license.feeHelpExport'   | 'true' |
-            | 'LICENSE_FUNDING_CONTRACT' | 'license.fundingContract' | 'true' |
 
-        * call read('postReadOnlyPreferences.feature') readOnlyPreferences
 
 
 

@@ -41,20 +41,6 @@ trait EnrolmentTrait {
     }
 
     /**
-     * @return total amount of all related invoices
-     */
-    @API
-    Money getFeeCharged() {
-        if (invoiceLines?.empty)  {
-            return Money.ZERO
-        } else {
-            return invoiceLines*.priceTotalIncTax.inject { a, b -> a.add(b) }
-        }
-    }
-
-
-
-    /**
      * @return related attendance list
      */
     @API

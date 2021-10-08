@@ -162,7 +162,17 @@ Feature: Main feature for all DELETE requests with path 'list/entity/exportTempl
 
     Scenario: (-) Delete system ExportTemplate
 
-        Given path ishPath + '/1'
+        Given path ishPathList
+        And param entity = 'ExportTemplate'
+        And param pageSize = 100
+        And param columns = 'name'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["Room CSV export"])].id
+        * print "id = " + id
+
+        Given path ishPath + '/' + id
         When method DELETE
         Then status 400
         And match response.errorMessage == "Template provided by ish cannot be deleted."
