@@ -23,6 +23,7 @@ interface Props {
 interface CompState extends CheckoutSettings{
   termslabelError: string;
   termsUrlError: string;
+  collectParentDetails: boolean;
 }
 
 export class Checkout extends React.Component<Props, CompState> {
@@ -31,6 +32,7 @@ export class Checkout extends React.Component<Props, CompState> {
 
     this.state = {
       ...props.checkout,
+      collectParentDetails: Boolean(props.checkout.contactAgeWhenNeedParent),
       termslabelError: null,
       termsUrlError: null,
     };
@@ -46,6 +48,11 @@ export class Checkout extends React.Component<Props, CompState> {
       this.setState((prev) => ({
         ...prev,
         ...checkout,
+        ...{
+          collectParentDetails: Boolean(checkout.contactAgeWhenNeedParent),
+          contactAgeWhenNeedParent: checkout.contactAgeWhenNeedParent || 18
+        },
+
       }));
       this.validateTermsLabel(checkout.termsLabel);
       this.validateTermsUrl(checkout.termsUrl);
@@ -59,8 +66,13 @@ export class Checkout extends React.Component<Props, CompState> {
   }
 
   onSave = () => {
-    const { termslabelError, termsUrlError, ...rest } = this.state;
-    this.props.onSave(rest);
+    const {
+      termslabelError, termsUrlError, collectParentDetails, ...rest
+    } = this.state;
+    this.props.onSave({
+      ...rest,
+      contactAgeWhenNeedParent: collectParentDetails ? rest.contactAgeWhenNeedParent : null
+    });
   };
 
   validateTermsLabel = (value) => {
@@ -105,7 +117,8 @@ export class Checkout extends React.Component<Props, CompState> {
       termsUrl,
       contactAgeWhenNeedParent,
       termsUrlError,
-      termslabelError
+      termslabelError,
+      collectParentDetails
     } = this.state;
     const { fetching } = this.props;
 
@@ -125,26 +138,44 @@ export class Checkout extends React.Component<Props, CompState> {
           />
         </div>
 
+        <div>
+          <div className="form-inline">
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  checked={collectParentDetails}
+                  onChange={(e) => this.onChange(e.target.checked, 'collectParentDetails')}
+                  name="collectParentDetails"
+                  color="primary"
+                />
+              )}
+              label={(
+                <span onClick={(e) => e.preventDefault()}>
+                  Collect parent or guardian details for students under
+                  <EditInPlaceField
+                    type="number"
+                    name="contactAgeWhenNeedParent"
+                    meta={{}}
+                    input={{
+                      onChange: (e) => this.onChange(e.target.value, 'contactAgeWhenNeedParent'),
+                      onBlur: (e) => this.onChange(toPositive(e), 'contactAgeWhenNeedParent'),
+                      onFocus: stubFunction,
+                      value: contactAgeWhenNeedParent,
+                    }}
+                    formatting="inline"
+                    style={{ width: '40px' }}
+                    disabled={!collectParentDetails}
+                    disableInputOffsets
+                    hideArrows
+                  />
+                </span>
+              )}
+            />
+          </div>
+        </div>
+
         <Grid container>
           <Grid item container xs={6}>
-            <Grid item xs={12} className="mt-2">
-              <EditInPlaceField
-                type="number"
-                name="contactAgeWhenNeedParent"
-                label="Collect parent or guardian details for students under"
-                meta={{}}
-                input={{
-                  onChange: (e) => this.onChange(e.target.value, 'contactAgeWhenNeedParent'),
-                  onBlur: (e) => this.onChange(toPositive(e), 'contactAgeWhenNeedParent'),
-                  onFocus: stubFunction,
-                  value: contactAgeWhenNeedParent,
-                }}
-                style={{ width: '40px' }}
-                disableInputOffsets
-                fullWidth
-                hideArrows
-              />
-            </Grid>
             <Grid item xs={12} className="mt-2">
               <EditInPlaceField
                 label="Terms and conditions checkbox label"
