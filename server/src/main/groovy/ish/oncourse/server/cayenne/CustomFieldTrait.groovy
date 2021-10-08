@@ -44,6 +44,11 @@ trait CustomFieldTrait {
     abstract String getValue()
 
     Object getObjectValue() {
+        
+        if (!value) {
+             return null   
+        }
+        
         try {
             switch (customFieldType.dataType) {
                 case LIST:
