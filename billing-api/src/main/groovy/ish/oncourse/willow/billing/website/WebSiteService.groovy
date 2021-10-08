@@ -10,6 +10,7 @@ import ish.oncourse.model.WebHostNameStatus
 import ish.oncourse.model.WebSite
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.site.WebSiteDelete
+import ish.oncourse.willow.billing.utils.DomainUtils
 import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.model.SiteTemplate
 import ish.oncourse.willow.billing.v1.model.UserInfo
@@ -38,7 +39,7 @@ class WebSiteService {
         validateWebSiteBeforeCreate(dto)
         WebSite newSite = createWebSite(requestService.college, dto.webSiteTemplate, dto.name, dto.key)
         configureAccountsFor(newSite, dto)
-        updateDomains(newSite, dto.domains, dto.primaryDomain)
+        updateDomains(newSite, dto.domains.keySet().collect(), dto.primaryDomain)
         newSite.objectContext.commitChanges()
     }
 
@@ -120,8 +121,9 @@ class WebSiteService {
             dto.gtmContainerId = it.googleTagmanagerContainer
             dto.googleAnalyticsId = it.googleAnalyticAccount
             dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
-            dto.domains = it.collegeDomains.collect { host -> host.name }
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
+            dto.domains = it.collegeDomains
+                    .collectEntries {host -> [host.name, DomainUtils.findNotInRangeIp(host.name)]}
             dto
         }
     }
@@ -165,7 +167,7 @@ class WebSiteService {
                 webSite.siteKey = dto.key
             }
         }
-        updateDomains(webSite, dto.domains, dto.primaryDomain)
+        updateDomains(webSite, dto.domains.collect {entry -> entry.key}, dto.primaryDomain)
         webSite.objectContext.commitChanges()
     }
 

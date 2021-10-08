@@ -144,7 +144,10 @@ class Configuration {
         BILLING_UPDATE('billing_update', 'billing.update'),
 
         CLIENT_ID('client_id', 'credential.client-id'),
-        API_KEY('api_key', 'credential.api-key')
+        API_KEY('api_key', 'credential.api-key'),
+
+        IPV4_DIAPASON('website_ipv4_range',"website.range.ipv4"),
+        IPV6_DIAPASON('website_ipv6_range','website.range.ipv6')
 
         private String key
         private String systemProperty

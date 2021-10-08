@@ -17,8 +17,9 @@ properties:
     description: web site template, neew to create new site only
     $ref: '../../enum/SiteTemplate.yaml'
   domains:
-    type: array
-    items:
+    type: object
+    description: map where keys are domains, values are errors if some of this domain ip addresses are not in range
+    additionalProperties:
       type: string
   primaryDomain:
     type: string
