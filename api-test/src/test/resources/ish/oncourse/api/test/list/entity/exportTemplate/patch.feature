@@ -15,6 +15,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
 
         Given path ishPathList
         And param entity = 'ExportTemplate'
+        And param pageSize = 100
         And param columns = 'name'
         When method GET
         Then status 200
@@ -57,8 +58,6 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
         "variables":[],
         "options":[],
         "outputType":"csv",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":null
         }
         """
@@ -154,8 +153,6 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
         "variables":[],
         "options":[{"name":"optName110", "label":null, "type":"Text", "value":"some record UPD","system":null,"valueDefault":null}],
         "outputType":"txt",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":null
         }
         """
@@ -171,6 +168,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
 
         Given path ishPathList
         And param entity = 'ExportTemplate'
+        And param pageSize = 100
         And param columns = 'name'
         When method GET
         Then status 200
@@ -219,8 +217,6 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
         "variables":[],
         "options":[],
         "outputType":"csv",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":null
         }
         """
@@ -321,8 +317,6 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
         "variables":[],
         "options":[{"name":"optName111", "label":null, "type":"Text", "value":"some record UPD","system":null,"valueDefault":null}],
         "outputType":"json",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":null
         }
         """
@@ -373,6 +367,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
 
         Given path ishPathList
         And param entity = 'ExportTemplate'
+        And param pageSize = 100
         And param columns = 'name'
         When method GET
         Then status 200
@@ -490,8 +485,6 @@ Feature: Main feature for all PATCH requests with path 'list/entity/exportTempla
         "variables":[],
         "options":[],
         "outputType":"ics",
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
         }
         """
 

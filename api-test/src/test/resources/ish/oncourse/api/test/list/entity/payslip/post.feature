@@ -41,7 +41,7 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         Given path ishPath + "/" + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "payType":"Employee",
@@ -53,8 +53,6 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "tutorFullName":"tutor2",
         "tags":[{"id":218,"name":"ps1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":33.00}],
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
         }
         """
 
@@ -101,11 +99,11 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "payType":"Employee",
         "id":"#number",
+        "payType":"Employee",
         "publicNotes":"some public notes2",
         "privateNotes":"some private notes2",
         "status":"New",
@@ -113,8 +111,6 @@ Feature: Main feature for all POST requests with path 'list/entity/payslip'
         "tutorFullName":"tutor2",
         "tags":[{"id":218,"name":"ps1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "paylines":[{"id":"#number","dateFor":"#ignore","description":"someDescription2","className":null,"type":null,"budgetedQuantity":null,"budgetedValue":null,"quantity":1.0000,"value":66.00}],
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
         }
         """
 

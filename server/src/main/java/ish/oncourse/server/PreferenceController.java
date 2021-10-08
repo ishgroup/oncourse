@@ -83,6 +83,10 @@ public class PreferenceController extends CommonPreferenceController {
 			return getDefaultAccountId(key);
 		}
 
+		if (key.startsWith("license.")) {
+			return licenseService.getLisense(key);
+		}
+
 		switch (key) {
 			case LicenseService.SERVICES_SECURITYKEY:
 				String securityKey = licenseService.getSecurity_key();
@@ -91,26 +95,6 @@ public class PreferenceController extends CommonPreferenceController {
 				} else {
 					return null;
 				}
-			case LICENSE_ACCESS_CONTROL:
-				return getLicenseAccessControl();
-			case LICENSE_SMS:
-				return getLicenseSms();
-			case LICENSE_CC_PROCESSING:
-				return getLicenseCCProcessing();
-			case LICENSE_PAYROLL:
-				return getLicensePayroll();
-			case LICENSE_VOUCHER :
-				return getLicenseVoucher();
-			case LICENSE_MEMBERSHIP:
-				return getLicenseMembership();
-			case LICENSE_ATTENDANCE:
-				return getLicenseAttendance();
-			case LICENSE_SCRIPTING:
-				return getLicenseScripting();
-			case LICENSE_FEE_HELP_EXPORT :
-				return getLicenseFeeHelpExport();
-			case LICENSE_FUNDING_CONTRACT:
-				return getLicenseFundingContract();
 			case USI_SOFTWARE_ID:
 				return getUsiSoftwareId();
 			default:

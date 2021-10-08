@@ -49,7 +49,6 @@ interface Props {
   dispatch: any;
   handleSubmit: any;
   initialized: boolean;
-  hasLicence: boolean;
   form: string;
   timestamps: Date[];
   openConfirm?: ShowConfirmCaller;
@@ -129,7 +128,7 @@ class FundingContractsForm extends React.Component<Props, any> {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      this.props.onSave(this.getTouchedAndNew(value.fundingContracts), this.props.hasLicence ? "POST" : "PATCH");
+      this.props.onSave(this.getTouchedAndNew(value.fundingContracts),   "POST");
     })
       .then(() => {
         const {
@@ -188,7 +187,7 @@ class FundingContractsForm extends React.Component<Props, any> {
 
   render() {
     const {
-     values, dirty, invalid, handleSubmit, hasLicence, timestamps, form
+     values, dirty, invalid, handleSubmit, timestamps, form
     } = this.props;
 
     return (
@@ -198,7 +197,7 @@ class FundingContractsForm extends React.Component<Props, any> {
         <CustomAppBar>
           <Grid container>
             <Grid item xs={12} className="centeredFlex relative">
-              {hasLicence && (
+              {(
                 <Fab
                   type="button"
                   size="small"
@@ -215,8 +214,7 @@ class FundingContractsForm extends React.Component<Props, any> {
               <Typography
                 color="inherit"
                 noWrap
-                className={clsx("appHeaderFontSize",
-                  hasLicence ? "pl-2" : undefined)}
+                className={clsx("appHeaderFontSize", "pl-2" )}
               >
                 Funding Contracts
               </Typography>
@@ -247,7 +245,6 @@ class FundingContractsForm extends React.Component<Props, any> {
                 name="fundingContracts"
                 component={FundingContractItem}
                 onDelete={this.onClickDelete}
-                hasLicence={hasLicence}
               />
             )}
           </Grid>
@@ -262,9 +259,6 @@ const mapStateToProps = (state: State) => ({
   fundingContracts: state.preferences.fundingContracts,
   timestamps: state.preferences.fundingContracts && getTimestamps(state.preferences.fundingContracts),
   fetch: state.fetch,
-  hasLicence:
-    state.preferences.licences && state.preferences.licences[Model.LicenseFundingContract.uniqueKey] === "true",
-  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

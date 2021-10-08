@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         * def ishPath = 'list/entity/assessment'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
-        
+
 
 
 
@@ -44,12 +44,9 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#number",
-        "createdOn": "#ignore",
-        "modifiedOn": "#ignore",
         "code":"code001",
         "name":"create assessment 1",
         "gradingTypeId":1,
@@ -63,8 +60,9 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
             "access":"Private",
             "added":"#ignore",
             "description":"Private description",
-            "createdOn":"#ignore","tags":[],
-            "attachmentRelations":"#ignore", 
+            "createdOn":"#ignore",
+            "tags":[],
+            "attachmentRelations":"#ignore",
             "versionId":null,
             "modifiedOn":"#ignore",
             "removed":false,
@@ -343,26 +341,22 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#number",
-        "createdOn": "#ignore",
-        "modifiedOn": "#ignore",
         "code":"code002",
         "name":"create assessment 2",
         "gradingTypeId":null,
         "tags":[{"id":195,"name":"Journal","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "active":true,
         "description":"some description 2",
-        "documents":"#ignore"
         }
         """
 
 #       <---->  Scenario have been finished. Now remove created entity:
         * configure headers = { Authorization:  'admin'}
 
-        
+
 
         Given path ishPath + '/' + id
         When method DELETE
