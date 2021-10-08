@@ -7,6 +7,7 @@ import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.common.ValidationError
 import ish.oncourse.willow.model.web.CreateContactParams
+import ish.oncourse.willow.model.web.ContactId
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.slf4j.Logger
