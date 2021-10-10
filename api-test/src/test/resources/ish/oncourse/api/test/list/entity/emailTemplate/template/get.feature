@@ -48,7 +48,7 @@ Feature: Main feature for all GET requests with path 'list/entity/emailTemplate/
 #       <--->
 
         Given path ishPath
-        And param entity = 'Course'
+        And param entityName = 'Course'
         When method GET
         Then status 200
 

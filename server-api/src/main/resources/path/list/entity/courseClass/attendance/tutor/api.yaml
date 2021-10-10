@@ -55,6 +55,3 @@ post:
     mask: edit
     keyCode: CLASS
     errorMessage: Sorry, you have no permissions to edit tutor attendance. Please contact your administrator
-    license:
-      code: license.payroll
-      errorMessage: You do not have the licence for payroll

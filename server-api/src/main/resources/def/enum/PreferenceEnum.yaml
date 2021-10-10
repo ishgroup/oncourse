@@ -12,7 +12,7 @@ enum:
 - timezone.default
 - systemUser.defaultAdministrationCentre.name
 - license.scripting
-- license.accesscontrol
+- license.access_control
 - account.default.studentEnrolments.id
 - account.default.voucherLiability.id
 - account.default.voucherUnderpayment.id

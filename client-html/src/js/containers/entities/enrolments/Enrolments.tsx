@@ -90,7 +90,6 @@ const Initial: Enrolment = {
   creditUsedValue: null,
   cricosConfirmation: null,
   eligibilityExemptionIndicator: false,
-  feeCharged: 0,
   vetFeeExemptionType: "Not set",
   feeHelpAmount: 0,
   feeStatus: "Australian Capital Territory Government subsidised",
