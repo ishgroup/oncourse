@@ -109,7 +109,7 @@ dependencies {
 	implementation 'commons-io:commons-io:2.6'
 	implementation 'org.apache.commons:commons-lang3:3.7'
 	implementation 'org.apache.commons:commons-collections4:4.1'
-	implementation 'org.reflections:reflections:0.9.12'
+	implementation 'org.reflections:reflections:0.10'
 	api "com.google.inject:guice:$googleGuiceVersion"
 
 	implementation 'net.sf.supercsv:super-csv:2.4.0'
@@ -119,7 +119,7 @@ dependencies {
 	implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
 
 	implementation 'org.yaml:snakeyaml:1.27'
-	implementation "org.antlr:antlr4-runtime:4.7.1"
+	implementation 'org.antlr:antlr4-runtime:4.9.2'
 
 	// WSDL SOAP helpers for our integrations
 	implementation ('com.github.groovy-wslite:groovy-wslite:1.1.3') {
