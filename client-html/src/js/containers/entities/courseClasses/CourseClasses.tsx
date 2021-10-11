@@ -48,7 +48,7 @@ import CourseClassEditView from "./components/CourseClassEditView";
 import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
 import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
+import { getGradingTypes, getTimezones, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
@@ -787,7 +787,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         DEFAULT_MINIMUM_PLACES_KEY
       ])
     );
-    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getTimezones());
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
