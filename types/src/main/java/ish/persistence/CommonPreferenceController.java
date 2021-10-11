@@ -196,18 +196,6 @@ public abstract class CommonPreferenceController {
 		setValue(SERVICES_LDAP_AUTHORISATION, false, Boolean.toString(value));
 	}
 
-	public boolean getServicesCCEnabled() {
-		return Boolean.parseBoolean(getValue(SERVICES_CC_ENABLED, false));
-	}
-
-	public void setServicesCCEnabled(boolean value) {
-		setValue(SERVICES_CC_ENABLED, false, Boolean.toString(value));
-	}
-
-	public boolean getServicesAmexEnabled() {
-		return Boolean.parseBoolean(getValue(SERVICES_CC_AMEX_ENABLED, false));
-	}
-
 	public Long getReferenceDataVersion() {
 		String result = getValue(SERVICES_INFO_REPLICATION_VERSION, false);
 		if (result == null) {
@@ -260,86 +248,6 @@ public abstract class CommonPreferenceController {
 
 	public void setAngelReplicationLastRun(Date value) {
 		setValue(SERVICES_ANGEL_REPLICATION_LASTRUN, false, dateFormat.format(value));
-	}
-
-	public boolean getLicenseAccessControl() {
-		return Boolean.parseBoolean(getValue(LICENSE_ACCESS_CONTROL, false));
-	}
-
-	public void setLicenseAccessControl(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_ACCESS_CONTROL, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseSms() {
-		return Boolean.parseBoolean(getValue(LICENSE_SMS, false));
-	}
-
-	public void setLicenseSms(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_SMS, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseCCProcessing() {
-		return Boolean.parseBoolean(getValue(LICENSE_CC_PROCESSING, false));
-	}
-
-	public void setLicenseCCProcessing(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_CC_PROCESSING, false, Boolean.toString(value));
-	}
-
-	public boolean getLicensePayroll() {
-		return Boolean.parseBoolean(getValue(LICENSE_PAYROLL, false));
-	}
-
-	public void setLicensePayroll(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-// setValue(LICENSE_WEBSITE, false, Boolean.toString(value));
-	}
-
-	public boolean getLicenseVoucher() {
-		return Boolean.parseBoolean(getValue(LICENSE_VOUCHER, false));
-	}
-
-	public void setLicenseVoucher(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-	}
-
-	public boolean getLicenseMembership() {
-		return Boolean.parseBoolean(getValue(LICENSE_MEMBERSHIP, false));
-	}
-
-	public void setLicenseMembership(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-	}
-
-	public boolean getLicenseAttendance() {
-		return Boolean.parseBoolean(getValue(LICENSE_ATTENDANCE, false));
-	}
-
-	public void setLicenseAttendance(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-	}
-
-	public boolean getLicenseScripting() {
-		return Boolean.parseBoolean(getValue(LICENSE_SCRIPTING, false));
-	}
-
-	public boolean getLicenseFeeHelpExport () {
-		return Boolean.parseBoolean(getValue(LICENSE_FEE_HELP_EXPORT, false));
-	}
-
-	public void setLicenseScripting(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
-	}
-
-	public boolean getLicenseFundingContract() {
-		return Boolean.parseBoolean(getValue(LICENSE_FUNDING_CONTRACT, false));
-	}
-
-	public void setLicenseFundingContract(boolean value) {
-		throw new IllegalStateException("Licences must replicate from ish");
 	}
 
 	public String getEmailAdminAddress() {
@@ -941,14 +849,6 @@ public abstract class CommonPreferenceController {
 		}
 	}
 
-	public boolean getGravatarEnabled() {
-		String value = getValue(GRAVATAR, false);
-		if (StringUtils.isEmpty(value)) {
-			return Boolean.TRUE;
-		}
-		return Boolean.parseBoolean(value);
-	}
-
 	public boolean getUseOnlyOfferedModulesAndQualifications() {
 		return Boolean.parseBoolean(getValue(USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS, false));
 	}
@@ -993,8 +893,6 @@ public abstract class CommonPreferenceController {
 			return getServicesLdapAuthentication();
 		} else if (SERVICES_LDAP_AUTHORISATION.equals(key)) {
 			return getServicesLdapAuthorisation();
-		} else if (SERVICES_CC_ENABLED.equals(key)) {
-			return getServicesCCEnabled();
 		} else if (SERVICES_INFO_REPLICATION_VERSION.equals(key)) {
 			return getReferenceDataVersion();
 		} else if (DEDUPE_LASTRUN.equals(key)) {
@@ -1113,8 +1011,6 @@ public abstract class CommonPreferenceController {
 			return getCourseClassDefaultMinimumPlaces();
 		} else if (MYOB_LAST_EXPORT_DATE.equals(key)) {
 			return getMYOBLastExportDate();
-		} else if (GRAVATAR.equals(key)) {
-			return getGravatarEnabled();
 		} else if (ONCOURSE_SERVER_DEFAULT_TZ.equals(key)) {
 			return getOncourseServerDefaultTimezone();
 		} else if (ACCOUNT_INVOICE_TERMS.equals(key)) {
@@ -1164,8 +1060,6 @@ public abstract class CommonPreferenceController {
 			setServicesLdapAuthentication((Boolean) value);
 		} else if (SERVICES_LDAP_AUTHORISATION.equals(key)) {
 			setServicesLdapAuthorisation((Boolean) value);
-		} else if (SERVICES_CC_ENABLED.equals(key)) {
-			setServicesCCEnabled((Boolean) value);
 		} else if (SERVICES_INFO_REPLICATION_VERSION.equals(key)) {
 			setReferenceDataVersion((Integer) value);
 		} else if (DEDUPE_LASTRUN.equals(key)) {

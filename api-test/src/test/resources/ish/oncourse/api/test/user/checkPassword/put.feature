@@ -19,7 +19,7 @@ Feature: Main feature for all PUT requests with path 'user/checkPassword'
 
     Scenario: (+) Check valid password: special symbols: "§!@#$%^&*()_+=-[];:|><?{}±\"
 
-        Given path ishPath + '/' + '%C2%A7!%40%23%24%25%5E%26*()_%2B%3D-%5B%5D%3B%3A%7C%3E%3C%3F%7B%7D%C2%B1%5C'
+        Given path ishPath + '/' + 'C2A7!402324255E26*()_2B3D-5B5D3B3A7C3E3C3F7B7DC2B15C'
         And request {}
         When method PUT
         Then status 200
@@ -85,7 +85,7 @@ Feature: Main feature for all PUT requests with path 'user/checkPassword'
 
     Scenario: (-) Check password: Straight rows of keys:
 
-        Given path ishPath + '/' + '!%40%23%24%25%5E%26*'
+        Given path ishPath + '/' + 'qwertyuiop[]'
         And request {}
         When method PUT
         Then status 200

@@ -147,12 +147,12 @@ class UserPreferenceService {
                 return preferenceController.oncourseServerDefaultTimezone
             case PreferenceEnumDTO.SYSTEMUSER_DEFAULTADMINISTRATIONCENTRE_NAME:
                 return userService.currentUser.defaultAdministrationCentre.name
-            case PreferenceEnumDTO.LICENSE_ACCESSCONTROL:
-                return preferenceController.licenseAccessControl.toString()
-            case PreferenceEnumDTO.LICENSE_SCRIPTING:
-                return preferenceController.licenseScripting.toString()
             case PreferenceEnumDTO.ACCOUNT_INVOICE_TERMS:
                 return preferenceController.accountInvoiceTerms.toString()
+            case PreferenceEnumDTO.LICENSE_ACCESS_CONTROL:
+                return licenseService.getLisense(PreferenceEnumDTO.LICENSE_ACCESS_CONTROL.toString());
+            case PreferenceEnumDTO.LICENSE_SCRIPTING:
+                return licenseService.getLisense(PreferenceEnumDTO.LICENSE_SCRIPTING.toString())
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID:
                 return preferenceController.getPreference(ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID.toString(), false).getValueString()
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID:

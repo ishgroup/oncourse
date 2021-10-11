@@ -21,7 +21,7 @@ import { getEntityTags } from "../../../../../containers/tags/actions";
 import { State } from "../../../../../reducers/state";
 import Button from "../../../buttons/Button";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
-import FormField from "../../../form/form-fields/FormField";
+import FormField from "../../../form/formFields/FormField";
 import { validateTagsList } from "../../../form/simpleTagListComponent/validateTagsList";
 import { bulkChangeRecords } from "../../actions";
 import bottomDrawerStyles from "../bottomDrawerStyles";

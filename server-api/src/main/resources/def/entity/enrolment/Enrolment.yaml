@@ -62,8 +62,6 @@ properties:
     type: boolean
   trainingPlanDeveloped:
     type: boolean
-  feeCharged:
-    type: number
   feeHelpAmount:
     type: number
   feeHelpClass:
@@ -88,6 +86,8 @@ properties:
     $ref: './EnrolmentCreditProviderType.yaml'
   creditTotal:
     $ref: './EnrolmentCreditTotal.yaml'
+  studentLoanStatus:
+    $ref: './EnrolmentReportingStatus.yaml'
   creditType:
     $ref: './EnrolmentCreditType.yaml'
   creditLevel:

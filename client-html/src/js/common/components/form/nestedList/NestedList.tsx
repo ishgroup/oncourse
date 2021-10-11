@@ -15,7 +15,7 @@ import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperLi
 import ListRenderer from "./components/ListRenderer";
 import { InputSection, InputSectionWithToggle } from "./components/InputSections";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX, TAGS_REGEX } from "../../../../constants/Config";
-import { Suggestion } from "../form-fields/EditInPlaceQuerySelect";
+import { Suggestion } from "../formFields/EditInPlaceQuerySelect";
 import { State } from "../../../../reducers/state";
 import { getTagNamesSuggestions } from "../../../../containers/tags/utils";
 

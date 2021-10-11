@@ -4,7 +4,7 @@
  */
 import React from "react";
 import { Grid } from "@material-ui/core";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 
 const ProductEditView: React.FC<any> = () => (
   <Grid container className="p-3">
@@ -18,7 +18,7 @@ const ProductEditView: React.FC<any> = () => (
     </Grid>
     <Grid container>
       <Grid item sm={6}>
-        <FormField type="multilineText" name="description" label="Description" fullWidth disabled />
+        <FormField type="multilineText" name="description" label="Description" disabled />
       </Grid>
     </Grid>
   </Grid>

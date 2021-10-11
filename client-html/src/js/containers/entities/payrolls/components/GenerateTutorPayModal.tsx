@@ -19,7 +19,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import IconButton from "@material-ui/core/IconButton";
 import OpenInNew from "@material-ui/icons/OpenInNew";
 import { PayrollRequest } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import Button from "../../../../common/components/buttons/Button";
 import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";

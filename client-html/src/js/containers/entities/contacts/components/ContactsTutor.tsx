@@ -9,7 +9,7 @@ import { Grid } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import { change } from "redux-form";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Typography from "@material-ui/core/Typography";
 import { openInternalLink } from "../../../../common/utils/links";
 import { getContactFullName } from "../utils";
@@ -18,7 +18,7 @@ import ContactCourseClass from "./ContactCourseClass";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
+import { Switch } from "../../../../common/components/form/formFields/Switch";
 import { AppTheme } from "../../../../model/common/Theme";
 
 interface ContactsTutorProps {

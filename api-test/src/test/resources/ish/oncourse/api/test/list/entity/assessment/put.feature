@@ -452,7 +452,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/assessment'
         """
         {
         "id":"#(id)",
-        "code":"code30",
+        "code":"code030",
         "name":"update assessment 30",
         "tags":[{"id":227}],
         "active":true,

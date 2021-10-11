@@ -6,11 +6,9 @@
 import { Typography } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
-import {
-  reduxForm, initialize, getFormValues, change
-} from "redux-form";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import Button from "../../../../../../common/components/buttons/Button";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";

@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/cayenne/outcomeProgressTest.xml")
 class OutcomeTraitTest extends TestWithDatabase {
-    private static final long ENROLMENT_ID = 1235
-
 
     @Override
     void dataSourceReplaceValues(ReplacementDataSet rDataSet) {
@@ -38,21 +36,32 @@ class OutcomeTraitTest extends TestWithDatabase {
 
         rDataSet.addReplacementObject("[yesterday]", DateUtils.addDays(new Date(), -1))
         rDataSet.addReplacementObject("[tomorrow]", DateUtils.addDays(new Date(), 1))
+        rDataSet.addReplacementObject("[end_session]", DateUtils.addHours(new Date(), 124))
     }
 
     @Test
     void testOutcomeSessionsAndAttandancesProgress() {
         DataContext newContext = cayenneService.getNewContext()
 
-        Student student = newContext.select(SelectQuery.query(Student.class, Student.ID.eq(5L))).get(0)
-        CourseClass cc = newContext.select(SelectQuery.query(CourseClass.class, CourseClass.ID.eq(5L)))
-                .get(0)
+        Student student = SelectById.query(Student.class, 5L).selectOne(newContext)
+        CourseClass cc = SelectById.query(CourseClass.class, 5L).selectOne(newContext)
+
+        AssessmentClass assessmentClass = SelectById.query(AssessmentClass.class, 300L).selectOne(newContext)
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
-        enrolment.setId(ENROLMENT_ID)
-        enrolment.setStudent(student)
         enrolment.setCourseClass(cc)
+        enrolment.setStudent(student)
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
+
+        AssessmentSubmission submission = newContext.newObject(AssessmentSubmission.class)
+        submission.setEnrolment(enrolment)
+        submission.setAssessmentClass(assessmentClass)
+        submission.setGrade(BigDecimal.valueOf(84.74F))
+        submission.setSubmittedOn(DateUtils.addDays(new Date(), -1))
+        submission.setMarkedOn(DateUtils.addDays(new Date(), -1))
+        submission.setMarkedBy(student.contact)
+
+        enrolment.assessmentSubmissions.add(submission)
 
         newContext.commitChanges()
         student = SelectById.query(Student.class, student.getObjectId())

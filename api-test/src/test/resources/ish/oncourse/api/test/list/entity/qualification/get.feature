@@ -17,7 +17,7 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
         And param entity = 'Qualification'
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
             {
                 "entity":"Qualification",
@@ -27,11 +27,11 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                 "sort":[{"attribute":"nationalCode","ascending":true,"complexAttribute":[]}],
                 "columns":
                     [
-                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Level","attribute":"level","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Hours","attribute":"nominalHours","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]}
+                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Level","attribute":"level","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Hours","attribute":"nominalHours","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]}
                     ],
                 "rows":
                     [
@@ -40,7 +40,10 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                         {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0","true"]},
                         {"id":"1","values":["UEE30807","Electrotechnology Electrician","Certificate III in",null,"false"]}
                     ],
-                "filteredCount":null,"layout":"Three column","filterColumnWidth":200
+                "filteredCount":null,
+                "layout":"Three column",
+                "filterColumnWidth":200,
+                "tagsOrder": [],
             }
         """
 
@@ -58,7 +61,7 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
         And param entity = 'Qualification'
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
             {
                 "entity":"Qualification",
@@ -68,11 +71,11 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                 "sort":[{"attribute":"nationalCode","ascending":true,"complexAttribute":[]}],
                 "columns":
                     [
-                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Level","attribute":"level","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Hours","attribute":"nominalHours","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]}
+                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Level","attribute":"level","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Hours","attribute":"nominalHours","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]}
                     ],
                 "rows":
                     [
@@ -81,7 +84,10 @@ Feature: Main feature for all GET requests with path 'list/entity/qualification'
                         {"id":"4","values":["90946NSW","Building Studies, Technology","Advanced Diploma of","0","true"]},
                         {"id":"1","values":["UEE30807","Electrotechnology Electrician","Certificate III in",null,"false"]}
                     ],
-                "filteredCount":null,"layout":"Three column","filterColumnWidth":200
+                "filteredCount":null,
+                "layout":"Three column",
+                "filterColumnWidth":200,
+                "tagsOrder": [],
             }
         """
 

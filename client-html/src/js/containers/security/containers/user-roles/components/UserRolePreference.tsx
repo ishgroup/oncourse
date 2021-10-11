@@ -9,8 +9,8 @@ import { Collapse, Typography, withStyles } from "@material-ui/core";
 import { Field, change } from "redux-form";
 import createStyles from "@material-ui/core/styles/createStyles";
 import clsx from "clsx";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
-import { Switch } from "../../../../../common/components/form/form-fields/Switch";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import { Switch } from "../../../../../common/components/form/formFields/Switch";
 import SliderStepperField from "./SliderStepperField";
 
 const styles = theme =>

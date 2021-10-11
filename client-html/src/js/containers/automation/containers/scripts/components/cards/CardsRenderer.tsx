@@ -4,12 +4,12 @@
  */
 
 import * as React from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Grid from "@material-ui/core/Grid";
 import { FormControlLabel } from "@material-ui/core";
 import { WrappedFieldArrayProps } from "redux-form";
 import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { ScriptComponent } from "../../../../../../model/scripts";
 import ScriptCard from "./CardBase";
 import QueryCardContent from "./QueryCardContent";

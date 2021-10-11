@@ -25,7 +25,7 @@ import FileUploaderDialog from "../../../../file-uploader/FileUploaderDialog";
 import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { State } from "../../../../../../reducers/state";
 import { dialogStyles } from "./dialogStyles";
-import EditInPlaceSearchSelect from "../../../form-fields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../formFields/EditInPlaceSearchSelect";
 import { DocumentSearchItem as DocumentSearchItemType } from "../../epics/EpicSearchExistingDocumentByName";
 import { stubFunction } from "../../../../../utils/common";
 

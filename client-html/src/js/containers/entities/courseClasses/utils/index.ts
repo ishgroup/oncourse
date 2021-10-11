@@ -11,8 +11,7 @@ import {
   ClassCostTypes,
   Classes,
   CourseClassStatus,
-  CourseClassTutorExtended,
-  TutorAttendanceExtended
+  CourseClassTutorExtended
 } from "../../../../model/entities/CourseClass";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
@@ -94,7 +93,6 @@ export const getClassCostTypes = (
   sessions: TimetableSession[],
   tutors: CourseClassTutorExtended[],
   tutorRoles: any[],
-  tutorAttendance: TutorAttendanceExtended[]
 ) => {
   const types: ClassCostTypes = {
     income: {
@@ -113,6 +111,7 @@ export const getClassCostTypes = (
       max: 0,
       projected: 0,
       actual: 0,
+      percentage: null,
       items: []
     },
     cost: {
@@ -140,7 +139,6 @@ export const getClassCostTypes = (
         budgetedPlaces,
         successAndQueuedEnrolmentsCount,
         sessions,
-        tutorAttendance
       );
 
       item.max = fee.max;
@@ -159,6 +157,7 @@ export const getClassCostTypes = (
           types.discount.max = decimalPlus(types.discount.max, item.max);
           types.discount.projected = decimalPlus(types.discount.projected, item.projected);
           types.discount.actual = decimalPlus(types.discount.actual, item.actual);
+          types.discount.percentage = decimalPlus(types.discount.percentage, item.value.actualUsePercent || 0);
           break;
         case "Wages":
           const tutor = tutors.find(
@@ -166,10 +165,10 @@ export const getClassCostTypes = (
           );
           const role = tutor && tutorRoles.find(r => r.id === tutor.roleId);
           const defaultOnCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
+          const onCostToUse = typeof value.onCostRate === "number" ? value.onCostRate : defaultOnCostRate;
 
-          item.max = decimalMul(item.max, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
-          item.projected = decimalMul(item.projected, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
-          item.actual = decimalMul(item.actual, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
+          item.max = decimalMul(item.max, decimalPlus(onCostToUse, 1));
+          item.projected = decimalMul(item.projected, decimalPlus(onCostToUse, 1));
 
           types.cost.items.push(item);
           types.cost.max = decimalPlus(types.cost.max, item.max);

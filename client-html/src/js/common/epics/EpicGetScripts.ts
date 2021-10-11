@@ -10,7 +10,10 @@ import * as EpicUtils from "./EpicUtils";
 import { GET_SCRIPTS_FULFILLED, GET_SCRIPTS_REQUEST } from "../actions";
 import EntityService from "../services/EntityService";
 
-const scriptsMap = { "ProductItem": ["ProductItem", "Voucher", "Article", "Membership"] };
+const scriptsMap = {
+  "ProductItem": ["ProductItem", "Voucher", "Article", "Membership"],
+  "AbstractInvoice": ["Invoice", "Quote"]
+};
 
 const request: EpicUtils.Request = {
   type: GET_SCRIPTS_REQUEST,
@@ -19,7 +22,7 @@ const request: EpicUtils.Request = {
     `( ${
       scriptsMap[payload.entity]
         ? scriptsMap[payload.entity].map(e => `entityClass == ${e}`).join(" || ")
-        : `entityClass == ${payload.entity === "AbstractInvoice" ? "Invoice" : payload.entity}`
+        : `entityClass == ${payload.entity}`
     } ) && ( triggerType == ON_DEMAND )`
   ),
   processData: (records: DataResponse) => {

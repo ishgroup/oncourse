@@ -18,10 +18,7 @@ describe("Virtual rendered ConcessionTypes", () => {
     }),
     render: (wrapper, initialValues) => {
       initialValues.forEach((type, key) => {
-        expect(wrapper.find(`#concession-type-${key} div[id="types[${key}].name"]`).text()).toContain(type.name);
-        expect(wrapper.find(`#concession-type-${key} input[type="checkbox"]`).at(0).props().checked).toEqual(type.allowOnWeb);
-        expect(wrapper.find(`#concession-type-${key} input[type="checkbox"]`).at(1).props().checked).toEqual(type.requireExpary);
-        expect(wrapper.find(`#concession-type-${key} input[type="checkbox"]`).at(2).props().checked).toEqual(type.requireNumber);
+        expect(wrapper.find(`#concession-type-${key} div[id="types[${key}].name"] input`).val()).toContain(type.name);
       });
     }
   });

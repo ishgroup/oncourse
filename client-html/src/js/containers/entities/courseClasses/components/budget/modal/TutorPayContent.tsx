@@ -14,7 +14,7 @@ import { Collapse, Divider } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import LockOpen from "@material-ui/icons/LockOpen";
 import Lock from "@material-ui/icons/Lock";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { PayRateTypes } from "./BudgetCostModal";
@@ -96,15 +96,13 @@ const TutorPayContent: React.FC<Props> = ({
         classValues.budgetedPlaces,
         classValues.successAndQueuedEnrolmentsCount,
         classValues.sessions,
-        classValues.tutorAttendance
       ).projected,
     [
       values,
       classValues.maximumPlaces,
       classValues.budgetedPlaces,
       classValues.successAndQueuedEnrolmentsCount,
-      classValues.sessions,
-      classValues.tutorAttendance
+      classValues.sessions
     ]
   );
 

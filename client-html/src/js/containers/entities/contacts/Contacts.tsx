@@ -62,9 +62,7 @@ interface ContactsProps {
   getContactsConcessionTypes?: () => void;
   getTaxTypes?: () => void;
   getDefaultTerms?: () => void;
-  getGenerateAccessForContact?: () => void;
-  getConfirmAccessForContact?: () => void;
-  getQePermissions?: () => void;
+  getPermissions?: () => void;
   getContactRelationTypes?: () => void;
   selection?: string[];
   relationTypes?: PreferencesState["contactRelationTypes"];
@@ -256,9 +254,7 @@ const Contacts: React.FC<ContactsProps> = props => {
     getContactsConcessionTypes,
     getTaxTypes,
     getDefaultTerms,
-    getGenerateAccessForContact,
-    getConfirmAccessForContact,
-    getQePermissions,
+    getPermissions,
     getContactRelationTypes,
     relationTypes,
     selection,
@@ -322,9 +318,7 @@ const Contacts: React.FC<ContactsProps> = props => {
     getContactsConcessionTypes();
     getTaxTypes();
     getDefaultTerms();
-    getGenerateAccessForContact();
-    getConfirmAccessForContact();
-    getQePermissions();
+    getPermissions();
     getContactRelationTypes();
 
     return () => {
@@ -414,19 +408,15 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, contact: Contact) => dispatch(updateContact(id, contact)),
   onCreate: (contact: Contact) => dispatch(createContact(contact)),
   clearListState: () => dispatch(clearListState()),
-  getGenerateAccessForContact: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" })),
-  getConfirmAccessForContact: () => dispatch(
-    checkPermissions({
-      path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true",
-      method: "POST"
-    })
-  ),
-  getQePermissions: () => {
+  getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PriorLearning", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
+    dispatch(checkPermissions({path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST"}));
+    dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" }));
   },
   getPaymentTypes: () => dispatch(getPaymentTypes())
 });
