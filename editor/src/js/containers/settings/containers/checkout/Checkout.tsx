@@ -71,7 +71,7 @@ export class Checkout extends React.Component<Props, CompState> {
     } = this.state;
     this.props.onSave({
       ...rest,
-      contactAgeWhenNeedParent: collectParentDetails ? rest.contactAgeWhenNeedParent : null
+      contactAgeWhenNeedParent: rest.contactAgeWhenNeedParent || 0
     });
   };
 
