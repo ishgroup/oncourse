@@ -11,8 +11,9 @@
 
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -50,7 +51,7 @@ public class SanityCheckCommand extends CommandWithMetadata {
             logger.warn("Start data sanity check");
             sanityCheckServiceProvider.get().performCheck();
             LicenseService licenseService = licenseServiceProvider.get();
-            
+
             logger.warn("Start transaction checking...");
             transactionCheckServiceProvider.get().performCheck();
         } catch (Exception e) {

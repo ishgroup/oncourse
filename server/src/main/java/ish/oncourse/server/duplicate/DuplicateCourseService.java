@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.duplicate;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.duplicate.CourseDuplicationRequest;
 import ish.duplicate.DuplicationResult;
 import ish.oncourse.server.ICayenneService;

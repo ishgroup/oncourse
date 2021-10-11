@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.services;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Document;
 import ish.oncourse.server.document.DocumentService;

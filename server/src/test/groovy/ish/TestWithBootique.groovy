@@ -1,15 +1,14 @@
 package ish
 
-import com.google.inject.Binder
-import com.google.inject.Module
-import com.google.inject.Provides
-import com.google.inject.Singleton
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import io.bootique.cayenne.CayenneConfigMerger
 import io.bootique.cayenne.ServerRuntimeFactory
 import io.bootique.cayenne.annotation.CayenneConfigs
 import io.bootique.config.ConfigurationFactory
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
+import io.bootique.di.Provides
 import io.bootique.jdbc.DataSourceFactory
 
 import ish.oncourse.common.ResourcesUtil
@@ -89,10 +88,9 @@ abstract class TestWithBootique {
                 .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(TestModule.class)
-                .module(new Module() {
+                .module(new BQModule() {
 
                     @Provides
-                    @Singleton
                     protected ServerRuntime createCayenneRuntime(ConfigurationFactory configFactory,
                                                                  CayenneConfigMerger configMerger,
                                                                  @CayenneConfigs Set<String> injectedCayenneConfigs) {
@@ -119,7 +117,7 @@ abstract class TestWithBootique {
                             boolean isStarted(String dataSourceName) {
                                 return true
                             }
-                        } 
+                        }
                         ServerRuntime runtime = configFactory
                                 .config(ServerRuntimeFactory.class, 'cayenne')
                                 .createCayenneRuntime(factory,

@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.text.Template
 import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
@@ -172,7 +172,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
 
         def template = getTemplate(templateId, context)
         List<Long> entitiesIds = getEntityIds(entityName, request, context, template)
-        
+
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
         RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
 
@@ -217,7 +217,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         if (AbstractEntitiesUtil.isAbstract(entityName)) {
             entityName = template.entity
         }
-            
+
         Expression exp = null
         Property<Long> contactFindProperty = getFindContactProperty(entityName)
         if ( contactFindProperty != null ) {
@@ -320,7 +320,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             logger.error("The message template didn't find out. MessageType: {}, Id: {}", messageTypeDTO.toString(), request.templateId)
             validator.throwClientErrorException("templateId", "The message template didn't find out.")
         }
-        
+
         List<Long> entitiesIds = getEntityIds(request.entity, request.searchQuery, context, template)
         String entityName = request.entity
 
@@ -496,14 +496,14 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             Expression isCurrentInheritorExp = AbstractEntitiesUtil.getIsCurrentInheritorExp(entityName, template.entity)
             columnSelect = columnSelect.and(isCurrentInheritorExp)
         }
-           
+
         return columnSelect.select(context)
     }
 
     private EmailTemplate getTemplate(Long templateId, ObjectContext context){
         return SelectById.query(EmailTemplate, templateId).selectOne(context)
     }
-    
+
     static List<Long> addRecipientsToSend(List<Long> recipients, RecipientGroupModel group, boolean suitableForSend, boolean suppressToSend) {
         if (suitableForSend) {
             recipients.addAll(group.suitableForSend)

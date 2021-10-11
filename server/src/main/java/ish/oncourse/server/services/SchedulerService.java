@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.services;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.services.ISchedulerService;
 import ish.util.TimeZoneUtil;
 import org.apache.logging.log4j.LogManager;

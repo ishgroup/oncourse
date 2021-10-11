@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.services
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.types.AuditAction
 import ish.oncourse.server.ICayenneService

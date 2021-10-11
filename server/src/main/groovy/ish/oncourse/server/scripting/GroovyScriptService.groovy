@@ -10,8 +10,9 @@
  */
 package ish.oncourse.server.scripting
 
-import com.google.inject.Inject
-import com.google.inject.Injector
+import io.bootique.di.Injector
+
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import ish.common.types.EntityEvent

@@ -1,19 +1,15 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2021.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 package ish.oncourse.server.modules
 
-import com.google.inject.Binder
-import com.google.inject.Module
-import com.google.inject.Scopes
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import ish.oncourse.server.api.service.ApiTokenApiService
 import ish.oncourse.server.api.service.ApplicationApiService
 import ish.oncourse.server.api.service.ArticleProductApiService
@@ -58,55 +54,55 @@ import ish.oncourse.server.dashboard.EnrolmentSearchService
 import ish.oncourse.server.dashboard.InvoiceSearchService
 import ish.oncourse.server.windcave.PaymentService
 
-class ApiServiceModule implements Module {
+class ApiServiceModule implements BQModule {
 
     @Override
     void configure(Binder binder) {
-        binder.bind(ExecutorManager).in(Scopes.SINGLETON)
+        binder.bind(ExecutorManager).inSingletonScope()
 
-        binder.bind(ClassSearchService).in(Scopes.SINGLETON)
-        binder.bind(ContactSearchService).in(Scopes.SINGLETON)
-        binder.bind(CourseSearchService).in(Scopes.SINGLETON)
-        binder.bind(EnrolmentSearchService).in(Scopes.SINGLETON)
-        binder.bind(InvoiceSearchService).in(Scopes.SINGLETON)
-        binder.bind(DashboardSearchManager).in(Scopes.SINGLETON)
+        binder.bind(ClassSearchService).inSingletonScope()
+        binder.bind(ContactSearchService).inSingletonScope()
+        binder.bind(CourseSearchService).inSingletonScope()
+        binder.bind(EnrolmentSearchService).inSingletonScope()
+        binder.bind(InvoiceSearchService).inSingletonScope()
+        binder.bind(DashboardSearchManager).inSingletonScope()
 
-        binder.bind(EntityValidator).in(Scopes.SINGLETON)
+        binder.bind(EntityValidator).inSingletonScope()
 
         binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
-        binder.bind(ApplicationApiService).in(Scopes.SINGLETON)
-        binder.bind(ArticleProductApiService).in(Scopes.SINGLETON)
-        binder.bind(AssessmentApiService).in(Scopes.SINGLETON)
-        binder.bind(AssessmentSubmissionApiService).in(Scopes.SINGLETON)
-        binder.bind(CertificateApiService).in(Scopes.SINGLETON)
-        binder.bind(ClassCostApiService).in(Scopes.SINGLETON)
-        binder.bind(ContactApiService).in(Scopes.SINGLETON)
-        binder.bind(CourseApiService).in(Scopes.SINGLETON)
-        binder.bind(CourseClassApiService).in(Scopes.SINGLETON)
-        binder.bind(CourseClassTutorApiService).in(Scopes.SINGLETON)
-        binder.bind(DocumentApiService).in(Scopes.SINGLETON)
-        binder.bind(EmailTemplateApiService).in(Scopes.SINGLETON)
-        binder.bind(EnrolmentApiService).in(Scopes.SINGLETON)
+        binder.bind(ApplicationApiService).inSingletonScope()
+        binder.bind(ArticleProductApiService).inSingletonScope()
+        binder.bind(AssessmentApiService).inSingletonScope()
+        binder.bind(AssessmentSubmissionApiService).inSingletonScope()
+        binder.bind(CertificateApiService).inSingletonScope()
+        binder.bind(ClassCostApiService).inSingletonScope()
+        binder.bind(ContactApiService).inSingletonScope()
+        binder.bind(CourseApiService).inSingletonScope()
+        binder.bind(CourseClassApiService).inSingletonScope()
+        binder.bind(CourseClassTutorApiService).inSingletonScope()
+        binder.bind(DocumentApiService).inSingletonScope()
+        binder.bind(EmailTemplateApiService).inSingletonScope()
+        binder.bind(EnrolmentApiService).inSingletonScope()
         binder.bind(EntityRelationTypeApiService).in(Scopes.NO_SCOPE)
-        binder.bind(ExportTemplateApiService).in(Scopes.SINGLETON)
-        binder.bind(GradingApiService).in(Scopes.SINGLETON)
-        binder.bind(ImportApiService).in(Scopes.SINGLETON)
-        binder.bind(InvoiceApiService).in(Scopes.SINGLETON)
-        binder.bind(LeadApiService).in(Scopes.SINGLETON)
-        binder.bind(MembershipProductApiService).in(Scopes.SINGLETON)
-        binder.bind(MessageApiService).in(Scopes.SINGLETON)
-        binder.bind(NoteApiService).in(Scopes.SINGLETON)
-        binder.bind(OutcomeApiService).in(Scopes.SINGLETON)
+        binder.bind(ExportTemplateApiService).inSingletonScope()
+        binder.bind(GradingApiService).inSingletonScope()
+        binder.bind(ImportApiService).inSingletonScope()
+        binder.bind(InvoiceApiService).inSingletonScope()
+        binder.bind(LeadApiService).inSingletonScope()
+        binder.bind(MembershipProductApiService).inSingletonScope()
+        binder.bind(MessageApiService).inSingletonScope()
+        binder.bind(NoteApiService).inSingletonScope()
+        binder.bind(OutcomeApiService).inSingletonScope()
         binder.bind(PayslipApiService).in(Scopes.NO_SCOPE)
         binder.bind(PaymentService).in(Scopes.NO_SCOPE)
-        binder.bind(PriorLearningApiService).in(Scopes.SINGLETON)
-        binder.bind(ReportApiService).in(Scopes.SINGLETON)
+        binder.bind(PriorLearningApiService).inSingletonScope()
+        binder.bind(ReportApiService).inSingletonScope()
         binder.bind(RoomApiService).in(Scopes.NO_SCOPE)
-        binder.bind(ScriptApiService).in(Scopes.SINGLETON)
+        binder.bind(ScriptApiService).inSingletonScope()
         binder.bind(SiteApiService).in(Scopes.NO_SCOPE)
-        binder.bind(SurveyApiService).in(Scopes.SINGLETON)
-        binder.bind(TutorRoleApiService).in(Scopes.SINGLETON)
-        binder.bind(VoucherProductApiService).in(Scopes.SINGLETON)
+        binder.bind(SurveyApiService).inSingletonScope()
+        binder.bind(TutorRoleApiService).inSingletonScope()
+        binder.bind(VoucherProductApiService).inSingletonScope()
         binder.bind(WaitingListApiService).in(Scopes.NO_SCOPE)
 
     }

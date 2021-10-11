@@ -1,19 +1,14 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2021.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 package ish.oncourse.server.modules;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Scopes;
-import ish.oncourse.GoogleGuiceInjector;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
 import ish.oncourse.aql.AqlService;
 import ish.oncourse.aql.impl.AntlrAqlService;
 import ish.oncourse.entity.services.*;
@@ -37,57 +32,52 @@ import ish.oncourse.server.users.SystemUserService;
 
 /**
  */
-public class ServiceModule implements Module {
+public class ServiceModule implements BQModule {
 
 	public ServiceModule() {
 	}
 
-	/**
-	 * @see com.google.inject.Module#configure(Binder)
-	 */
 	@Override
 	public void configure(Binder binder) {
-		binder.bind(SanityCheckService.class).in(Scopes.SINGLETON);
-		binder.bind(TransactionCheckService.class).in(Scopes.SINGLETON);
-		binder.bind(IReportService.class).to(ReportService.class).in(Scopes.SINGLETON);
-		binder.bind(PrintService.class).in(Scopes.SINGLETON);
+		binder.bind(SanityCheckService.class).inSingletonScope();
+		binder.bind(TransactionCheckService.class).inSingletonScope();
+		binder.bind(IReportService.class).to(ReportService.class).inSingletonScope();
+		binder.bind(PrintService.class).inSingletonScope();
 
 
 		// jobs
 		binder.bind(EmailDequeueJob.class);
-		binder.bind(StatsService.class).in(Scopes.SINGLETON);
+		binder.bind(StatsService.class).inSingletonScope();
 
-		binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON);
-		binder.bind(AuditService.class).in(Scopes.SINGLETON);
-		binder.bind(AuditListener.class).in(Scopes.SINGLETON);
-		binder.bind(CayenneListenersService.class).asEagerSingleton();
+		binder.bind(AccountTransactionService.class).inSingletonScope();
+		binder.bind(AuditService.class).inSingletonScope();
+		binder.bind(AuditListener.class).inSingletonScope();
+		binder.bind(CayenneListenersService.class).initOnStartup();
 
-		binder.bind(MixinHelper.class).asEagerSingleton();
+		binder.bind(MixinHelper.class).initOnStartup();
 
 		binder.bind(InvoiceLineInitHelper.class);
 
 		binder.bind(ISchedulerService.class).to(SchedulerService.class);
-		binder.bind(GroovyScriptService.class).in(Scopes.SINGLETON);
-		binder.bind(QualityService.class).in(Scopes.SINGLETON);
-
-		binder.bind(GoogleGuiceInjector.class).asEagerSingleton();
+		binder.bind(GroovyScriptService.class).inSingletonScope();
+		binder.bind(QualityService.class).inSingletonScope();
 
 		// entity service classes
-		binder.bind(CourseClassService.class).in(Scopes.SINGLETON);
-		binder.bind(StudentConcessionService.class).in(Scopes.SINGLETON);
-		binder.bind(TagService.class).in(Scopes.SINGLETON);
-		binder.bind(SessionService.class).in(Scopes.SINGLETON);
-		binder.bind(CourseService.class).in(Scopes.SINGLETON);
-		binder.bind(CertificateService.class).in(Scopes.SINGLETON);
-		binder.bind(StudentService.class).in(Scopes.SINGLETON);
-		binder.bind(InvoiceLineService.class).in(Scopes.SINGLETON);
-		binder.bind(EnrolmentService.class).in(Scopes.SINGLETON);
-		binder.bind(IAutoIncrementService.class).to(ClusteredAutoincrementService.class).in(Scopes.SINGLETON);
-		binder.bind(TransactionLockedService.class).in(Scopes.SINGLETON);
-		binder.bind(CustomFieldTypeService.class).in(Scopes.SINGLETON);
-		binder.bind(ISystemUserService.class).to(SystemUserService.class).in(Scopes.SINGLETON);
-		binder.bind(AqlService.class).to(AntlrAqlService.class).in(Scopes.SINGLETON);
-		binder.bind(PayrollService.class).in(Scopes.SINGLETON);
-		binder.bind(ContactMergeService.class).in(Scopes.SINGLETON);
+		binder.bind(CourseClassService.class).inSingletonScope();
+		binder.bind(StudentConcessionService.class).inSingletonScope();
+		binder.bind(TagService.class).inSingletonScope();
+		binder.bind(SessionService.class).inSingletonScope();
+		binder.bind(CourseService.class).inSingletonScope();
+		binder.bind(CertificateService.class).inSingletonScope();
+		binder.bind(StudentService.class).inSingletonScope();
+		binder.bind(InvoiceLineService.class).inSingletonScope();
+		binder.bind(EnrolmentService.class).inSingletonScope();
+		binder.bind(IAutoIncrementService.class).to(ClusteredAutoincrementService.class).inSingletonScope();
+		binder.bind(TransactionLockedService.class).inSingletonScope();
+		binder.bind(CustomFieldTypeService.class).inSingletonScope();
+		binder.bind(ISystemUserService.class).to(SystemUserService.class).inSingletonScope();
+		binder.bind(AqlService.class).to(AntlrAqlService.class).inSingletonScope();
+		binder.bind(PayrollService.class).inSingletonScope();
+		binder.bind(ContactMergeService.class).inSingletonScope();
 	}
 }

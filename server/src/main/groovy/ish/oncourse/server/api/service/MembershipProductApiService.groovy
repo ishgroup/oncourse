@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.AccountType
 import ish.math.Money
 import ish.oncourse.server.api.dao.AccountDao

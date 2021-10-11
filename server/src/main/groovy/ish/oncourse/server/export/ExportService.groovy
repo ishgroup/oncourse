@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.export
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.json.JsonBuilder
 import groovy.transform.CompileDynamic
 import groovy.xml.MarkupBuilder

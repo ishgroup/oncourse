@@ -11,12 +11,13 @@
 
 package ish.oncourse.server.http;
 
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.Provides;
 import org.eclipse.jetty.server.Server;
+
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 public class HttpModule extends ConfigModule {
 

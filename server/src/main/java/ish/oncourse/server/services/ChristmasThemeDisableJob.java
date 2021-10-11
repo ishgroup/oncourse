@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.services;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO;
 import ish.oncourse.server.cayenne.Preference;

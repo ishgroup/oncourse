@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.servlet
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
 import ish.oncourse.server.security.api.IPermissionService

@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.EntityRelationCartAction
 import ish.oncourse.server.api.dao.ContactDao
@@ -102,16 +102,16 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     ContactDao contactDao
-    
+
     @Inject
     CourseDao courseDao
-    
+
     @Inject
     ProductDao productDao
 
     @Inject
     ModuleDao moduleDao
-    
+
     @Inject
     PreferenceController preferenceController
 
@@ -120,7 +120,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     PaymentService paymentService
-    
+
     @Inject
     LicenseService licenseService
 
@@ -200,13 +200,13 @@ class CheckoutApiImpl implements CheckoutApi {
         List<EntityRelation> relations = EntityRelationDao.getRelatedToOrEqual(context, entityName, id)
                 .findAll { EntityRelationCartAction.NO_ACTION != it.relationType.shoppingCart }
         List<CheckoutSaleRelationDTO> result = []
-        
+
         relations.findAll { Course.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
             EntityRelationType relationType = relation.relationType
             Course course = courseDao.getById(context, relation.toEntityAngelId)
 
             if (contact && relationType.considerHistory  && contact.student.isEnrolled(course)) {
-                //ignore that course since student already enrolled in 
+                //ignore that course since student already enrolled in
             } else {
                 result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
             }
@@ -222,7 +222,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 result << createCourseCheckoutSaleRelation(id, entityName, course, relationType)
             }
         }
-        
+
         relations.findAll { Product.simpleName == it.toEntityIdentifier && id != it.toEntityAngelId }.each { relation ->
             EntityRelationType relationType = relation.relationType
             Product product = productDao.getById(context, relation.toEntityAngelId)
@@ -265,7 +265,7 @@ class CheckoutApiImpl implements CheckoutApi {
         ObjectContext context = cayenneService.newContext
         List<CheckoutSaleRelationDTO> result = []
         Contact contact = contactId ? contactDao.getById(context, contactId) : null
-        
+
         if (StringUtils.trimToNull(courseIds)) {
             (courseIds.split(',').collect {Long.valueOf(it)} as List<Long>).each { courseId ->
                 result.addAll(getSaleRelations(courseId, Course.simpleName, contact))
@@ -298,7 +298,7 @@ class CheckoutApiImpl implements CheckoutApi {
             hanbleError(VALIDATION_ERROR, checkout.errors)
         }  else if (xValidateOnly) {
             eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
-          
+
         }
 
         if (checkoutModel.payWithSavedCard) {

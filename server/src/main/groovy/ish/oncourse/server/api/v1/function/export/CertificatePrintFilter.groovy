@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.function.export
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.common.types.OutcomeStatus
