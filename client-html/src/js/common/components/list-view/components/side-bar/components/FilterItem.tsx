@@ -14,7 +14,8 @@ const styles = (theme: AppTheme) =>
     checkbox: {
       height: "1em",
       width: "1em",
-      marginLeft: ".3em",
+      marginLeft: ".6em",
+      marginRight: theme.spacing(0.5),
     },
     checkboxFontSize: {
       fontSize: "18px"
@@ -28,7 +29,8 @@ const styles = (theme: AppTheme) =>
       "&:hover $deleteButton": {
         visibility: "visible"
       },
-      maxHeight: theme.spacing(3)
+      height: theme.spacing(3),
+      maxHeight: theme.spacing(3),
     },
     deleteButton: {
       visibility: "hidden",
