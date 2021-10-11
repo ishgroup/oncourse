@@ -66,7 +66,7 @@ const QueryCardContent = props => {
   const validateQueryClosureReturnValue = useCallback(value => {
     if (!value) return "";
 
-    const matches = value.match(/[a-zA-Z]*/g);
+    const matches = value.match(/[a-zA-Z\s]*/g);
 
     if (!matches || matches[0] !== value) return "You can only use letters";
 
