@@ -20,16 +20,21 @@ const styles = theme => createStyles({
     checkbox: {
       height: "1em",
       width: "1em",
-      marginLeft: ".3em"
+      marginLeft: ".3em",
+      marginRight: theme.spacing(0.5),
     },
     checkboxFontSize: {
       fontSize: "18px"
+    },
+    checkboxLabel: {
+      fontSize: "12px",
     },
     collapseButton: {
       height: theme.spacing(3),
       width: theme.spacing(3),
       transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
-      padding: 0
+      padding: 0,
+      marginRight: theme.spacing(0.5),
     },
     collapseWrapper: {
       marginLeft: "12px"
@@ -55,10 +60,15 @@ const styles = theme => createStyles({
       marginLeft: theme.spacing(-1.5)
     },
     iconContainer: {
-      width: 0
+      width: 0,
     },
     selected: {},
-    content: {},
+    content: {
+      padding: `0 ${theme.spacing(1)} 0 ${theme.spacing(0.5)}`,
+      "& $iconContainer": {
+        width: 0,
+      }
+    },
     tagColorDotExtraSmall: {
       width: theme.spacing(1),
       minWidth: theme.spacing(1),
@@ -107,7 +117,7 @@ const ListTagItem: React.FC<Props> = ({
         <FormControlLabel
           className="overflow-hidden"
           classes={{
-              label: "text-nowrap text-truncate"
+              label: clsx("text-nowrap text-truncate", classes.checkboxLabel),
             }}
           control={(
             <Checkbox
