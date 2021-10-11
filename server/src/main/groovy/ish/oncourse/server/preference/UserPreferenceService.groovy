@@ -12,12 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.v1.model.CategoryDTO
 
 import javax.inject.Inject
 
-import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID
-import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.TableModelDTO
 import ish.oncourse.server.cayenne.Account

@@ -15,7 +15,6 @@ import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
 import io.bootique.jdbc.hikaricp.JdbcHikariCPModule;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import io.bootique.jetty.JettyModule;
 import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;

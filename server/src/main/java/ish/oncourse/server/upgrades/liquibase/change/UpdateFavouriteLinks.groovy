@@ -9,7 +9,7 @@
 package ish.oncourse.server.upgrades.liquibase.change
 
 import com.google.common.base.CaseFormat
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.cayenne.Preference
