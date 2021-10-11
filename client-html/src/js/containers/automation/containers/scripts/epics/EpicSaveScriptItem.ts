@@ -20,7 +20,24 @@ const request: EpicUtils.Request = {
   getData: ({
    id, script, method, viewMode
   }) => {
+    if (viewMode === "Cards" && script.savedQuerypPrefixes?.length && script.components.length) {
+      script.components.forEach(component => {
+        if (component.type === "Query") {
+          const currentPrefix = script.savedQuerypPrefixes.filter(prefix => prefix.id === component.id)[0];
+          if (currentPrefix) {
+            if (currentPrefix.prefixValue.includes("def") && component.queryClosureReturnValue.includes("def")) {
+              currentPrefix.prefixValue.replace("def", "");
+            }
+            if (currentPrefix.prefixValue) {
+              component.queryClosureReturnValue = currentPrefix.prefixValue + " " + component.queryClosureReturnValue;
+            }
+          }
+        }
+      });
+    }
+
     if (script.queryClosureReturnValue) delete script.queryClosureReturnValue;
+    if (script.savedQuerypPrefixes) delete script.savedQuerypPrefixes;
 
     if (method === "PATCH") {
       return ScriptsService.patchScriptItem(id, appendComponents(script, viewMode));
