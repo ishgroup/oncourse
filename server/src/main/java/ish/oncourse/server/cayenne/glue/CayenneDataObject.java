@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne.glue;
 
-import ish.oncourse.GoogleGuiceInjector;
 import ish.oncourse.cayenne.PersistentObjectI;
 import ish.util.MapsUtil;
 import ish.validation.ValidationFailure;
@@ -31,7 +30,6 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -541,13 +539,6 @@ public abstract class CayenneDataObject extends org.apache.cayenne.CayenneDataOb
 		return MapsUtil.getKeyForValue(value, map);
 	}
 
-	@Override
-	public void setObjectContext(ObjectContext objectContext) {
-		super.setObjectContext(objectContext);
-		if (GoogleGuiceInjector.getInstance()  != null) {
-			GoogleGuiceInjector.getInstance().injectMembers(this);
-		}
-	}
 
 	public boolean isAuditAllowed() {
 		return true;

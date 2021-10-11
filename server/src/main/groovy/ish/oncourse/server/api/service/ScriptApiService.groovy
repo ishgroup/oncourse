@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType

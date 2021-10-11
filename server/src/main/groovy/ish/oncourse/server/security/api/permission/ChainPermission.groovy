@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.security.api.permission
 
-import com.google.inject.Injector
 import groovy.transform.CompileStatic
+import io.bootique.di.Injector
 
 /**
  * Represents chain of resourcePermissions that may be executed.

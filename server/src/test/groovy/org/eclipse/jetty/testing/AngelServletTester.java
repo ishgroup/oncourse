@@ -4,7 +4,6 @@
  */
 package org.eclipse.jetty.testing;
 
-import com.google.inject.Provider;
 import groovy.transform.CompileStatic;
 import ish.oncourse.server.AngelServerFactory;
 import ish.oncourse.server.PreferenceController;
@@ -19,6 +18,7 @@ import org.eclipse.jetty.util.component.ContainerLifeCycle;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
+import javax.inject.Provider;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;

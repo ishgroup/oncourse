@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.types.FundingStatus
 import ish.oncourse.server.api.dao.EnrolmentDao

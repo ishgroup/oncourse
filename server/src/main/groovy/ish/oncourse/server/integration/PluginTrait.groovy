@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.integration
 
-import com.google.inject.Injector
+import io.bootique.di.Injector
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -62,12 +62,12 @@ trait PluginTrait {
 	int type
 
 	void loadConfig(Map args) {
-		
+
 		configuration = args.get("configuration") as IntegrationConfiguration
 		name = args.get("name") as String
-		
+
 		injector = args.get("injector") as Injector
-		
+
 		if (injector) {
 			cayenneService = injector.getInstance(ICayenneService)
 			emailService = injector.getInstance(EmailService)

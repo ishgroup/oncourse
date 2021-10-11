@@ -1,23 +1,23 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2021.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 package ish.oncourse.server.preference
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.inject.Inject
-import com.google.inject.Singleton
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.CategoryDTO
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID
+import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.TableModelDTO
 import ish.oncourse.server.cayenne.Account

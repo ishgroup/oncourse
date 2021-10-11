@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.ConfirmationStatus
 import ish.common.types.InvoiceType
 import ish.common.types.PaymentStatus

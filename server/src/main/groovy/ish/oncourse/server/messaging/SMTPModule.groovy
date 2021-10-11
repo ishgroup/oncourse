@@ -8,14 +8,12 @@
 
 package ish.oncourse.server.messaging
 
-import com.google.inject.Provides
-import com.google.inject.Singleton
 import io.bootique.ConfigModule
 import io.bootique.config.ConfigurationFactory
+import io.bootique.di.Provides
 
 class SMTPModule extends ConfigModule {
 
-    @Singleton
     @Provides
     SMTPService createSMTPService(ConfigurationFactory configFactory) {
         configFactory

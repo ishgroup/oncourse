@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.messaging;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 import ish.common.types.MessageStatus;
 import ish.common.types.MessageType;

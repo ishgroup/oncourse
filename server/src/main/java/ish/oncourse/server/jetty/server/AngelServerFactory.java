@@ -14,6 +14,7 @@ import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.connector.ConnectorFactory;
 import io.bootique.jetty.server.ConnectorDescriptor;
 import io.bootique.jetty.server.ServerFactory;
+import io.bootique.jetty.server.ServerHolder;
 import io.bootique.jetty.server.ServerLifecycleLogger;
 import io.bootique.jetty.server.ServletContextHandlerExtender;
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +33,7 @@ public class AngelServerFactory extends ServerFactory {
 
     private int maxFormContentSize;
     private int maxFormKeys;
+    private ServerHolder serverHolder;
 
     public Server createServer(
             Set<MappedServlet> servlets,
@@ -40,7 +42,7 @@ public class AngelServerFactory extends ServerFactory {
             Set<ServletContextHandlerExtender> contextHandlerExtenders) {
 
         ThreadPool threadPool = createThreadPool();
-        ServletContextHandler contextHandler = createHandler(servlets, filters, listeners);
+        ServletContextHandler contextHandler = createHandler(context, servlets, filters, listeners);
 
         Server server = new Server(threadPool);
         server.setStopAtShutdown(true);
@@ -77,7 +79,7 @@ public class AngelServerFactory extends ServerFactory {
             });
         }
 
-        contextHandler.addEventListener(new ServerLifecycleLogger(connectorDescriptors, context));
+        contextHandler.addEventListener(new ServerLifecycleLogger(serverHolder));
         return server;
     }
 

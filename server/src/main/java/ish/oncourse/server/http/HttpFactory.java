@@ -11,11 +11,12 @@
 
 package ish.oncourse.server.http;
 
-import com.google.inject.Provider;
 import io.bootique.annotation.BQConfigProperty;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+
+import javax.inject.Provider;
 
 public class HttpFactory {
 

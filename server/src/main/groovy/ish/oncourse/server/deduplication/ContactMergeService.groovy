@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.deduplication
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.ContactDao

@@ -12,8 +12,8 @@
 package ish.oncourse.server.db;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.google.inject.Injector;
 import io.bootique.annotation.BQConfig;
+import io.bootique.di.Injector;
 import io.bootique.jdbc.managed.ManagedDataSourceStarter;
 import io.bootique.jdbc.tomcat.TomcatManagedDataSourceFactory;
 import org.apache.logging.log4j.LogManager;

@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cancel;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.cancel.CancelationResult;
 import ish.cancel.EnrolmentCancelationRequest;
 import ish.common.types.EnrolmentStatus;

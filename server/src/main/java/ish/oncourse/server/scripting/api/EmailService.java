@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.scripting.api;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import ish.oncourse.server.ICayenneService;

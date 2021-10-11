@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect

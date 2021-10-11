@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.duplicate;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.duplicate.ClassDuplicationRequest;
 import ish.duplicate.DuplicationResult;
 import ish.oncourse.entity.services.CourseClassService;

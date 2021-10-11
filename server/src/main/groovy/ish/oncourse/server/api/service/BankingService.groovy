@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.CreditCardType
 import ish.common.types.PaymentStatus

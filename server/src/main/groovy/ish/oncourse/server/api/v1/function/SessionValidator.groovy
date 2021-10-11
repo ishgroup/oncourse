@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.function
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao

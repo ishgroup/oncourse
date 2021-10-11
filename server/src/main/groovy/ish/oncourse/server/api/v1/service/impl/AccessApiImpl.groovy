@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.oncourse.server.api.v1.model.KeyCodeDTO

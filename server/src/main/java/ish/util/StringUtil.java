@@ -138,7 +138,7 @@ public class StringUtil {
 		//firstly replace all chars with different types of accents and underscores with simple chars from ASCII table
 		asciiString = StringUtils.stripAccents(unicodeString);
 		//then replace all non ASCII chars with a blank space
-		asciiString = CharMatcher.ascii().negate().replaceFrom(asciiString, " ");
+		asciiString = CharMatcher.ASCII.negate().replaceFrom(asciiString, " ");
 		return asciiString;
 	}
 }

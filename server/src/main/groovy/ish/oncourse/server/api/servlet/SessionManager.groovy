@@ -11,12 +11,13 @@
 
 package ish.oncourse.server.api.servlet
 
-import com.google.inject.Inject
-import com.google.inject.Provider
 import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
+
+import javax.inject.Inject
+import javax.inject.Provider
 
 import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
 

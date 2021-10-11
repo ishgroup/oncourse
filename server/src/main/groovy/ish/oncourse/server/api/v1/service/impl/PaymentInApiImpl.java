@@ -11,11 +11,12 @@
 
 package ish.oncourse.server.api.v1.service.impl;
 
-import com.google.inject.Inject;
 import ish.oncourse.server.api.service.PaymentInApiService;
 import ish.oncourse.server.api.v1.model.BankingParamDTO;
 import ish.oncourse.server.api.v1.model.PaymentInDTO;
 import ish.oncourse.server.api.v1.service.PaymentInApi;
+
+import javax.inject.Inject;
 
 public class PaymentInApiImpl implements PaymentInApi {
 

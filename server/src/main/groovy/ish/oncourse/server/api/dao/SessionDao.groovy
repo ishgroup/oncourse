@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.SessionModule
 import org.apache.cayenne.query.ObjectSelect
