@@ -69,9 +69,10 @@ export class Checkout extends React.Component<Props, CompState> {
     const {
       termslabelError, termsUrlError, collectParentDetails, ...rest
     } = this.state;
+
     this.props.onSave({
       ...rest,
-      contactAgeWhenNeedParent: rest.contactAgeWhenNeedParent || 0
+      contactAgeWhenNeedParent: collectParentDetails ? rest.contactAgeWhenNeedParent || 0 : 0
     });
   };
 
