@@ -4,7 +4,6 @@ import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Student
-import ish.oncourse.model.WebSite
 import ish.oncourse.services.courseclass.CheckClassAge
 import ish.oncourse.services.courseclass.ClassAge
 import ish.oncourse.services.preference.GetPreference
@@ -19,8 +18,8 @@ import java.time.temporal.ChronoUnit
 @CompileStatic
 class ValidateEnrolment extends Validate<Enrolment>{
     
-    ValidateEnrolment(ObjectContext context, College college, WebSite site) {
-        super(context, college, site)
+    ValidateEnrolment(ObjectContext context, College college) {
+        super(context, college)
     }
 
     @Override

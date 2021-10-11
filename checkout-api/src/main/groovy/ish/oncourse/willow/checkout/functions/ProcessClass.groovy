@@ -39,7 +39,6 @@ class ProcessClass {
         this.taxOverridden = taxOverridden
     }
 
-    @CompileStatic(TypeCheckingMode.SKIP)
     ProcessClass process() {
 
         persistentClass = new GetCourseClass(context, college, classId).get()

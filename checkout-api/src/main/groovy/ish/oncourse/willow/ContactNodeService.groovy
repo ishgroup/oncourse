@@ -152,7 +152,7 @@ class ContactNodeService {
             programCourses << relatedCourse
 
             CourseClass availableClass = relatedCourse.getAvailableClasses().find { clazz ->
-                new ValidateEnrolment(context,college, site).validate(clazz, contact.student).errors.empty
+                new ValidateEnrolment(context,college).validate(clazz, contact.student).errors.empty
             }
 
             ish.oncourse.willow.model.checkout.Enrolment enrolment = null
