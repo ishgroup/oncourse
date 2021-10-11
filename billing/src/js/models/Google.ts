@@ -5,16 +5,14 @@
 
 import { GoogleLoginResponse } from 'react-google-login';
 
+export type GTMAccount = gapi.client.tagmanager.Account;
+export type GTMContainer = gapi.client.tagmanager.Container;
+export type GAAccount = gapi.client.analytics.Account;
+
 export interface GoogleState {
   profile: GoogleLoginResponse['profileObj'],
-  token: GoogleLoginResponse['tokenObj']
-}
-
-export interface GTMAccount {
-  path?: string,
-  accountId?: string,
-  name?: string,
-  shareData?: boolean,
-  fingerprint?: string,
-  tagManagerUrl?: string
+  token: GoogleLoginResponse['tokenObj'],
+  gtmAccounts: GTMAccount[],
+  gtmContainers: Record<GTMAccount['accountId'], GTMContainer[]>,
+  gaAccounts: GAAccount[],
 }

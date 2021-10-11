@@ -4,21 +4,31 @@
  */
 
 import { DefaultHttpService } from './HttpService';
-import { store } from '../../redux';
-import { State } from '../../models/State';
+import { GTMAccount } from '../../models/Google';
 
 class GoogleService {
   readonly defaultHttpService = new DefaultHttpService();
 
-  private getToken = () => {
-    const state: State = store.getState();
-    return state.google.token?.access_token;
-  };
-
-  public getGTMAccounts(): Promise<any> {
+  public getGTMAccounts(Authorization: string): Promise<{ account: GTMAccount[] }> {
     return this.defaultHttpService.GET('https://www.googleapis.com/tagmanager/v2/accounts', {
       headers: {
-        Authorization: `Bearer ${this.getToken()}`
+        Authorization
+      }
+    });
+  }
+
+  public getGTMContainers(Authorization: string, accountId: string): Promise<gapi.client.tagmanager.ListContainersResponse> {
+    return this.defaultHttpService.GET(`https://www.googleapis.com/tagmanager/v2/accounts/${accountId}/containers`, {
+      headers: {
+        Authorization
+      }
+    });
+  }
+
+  public getGAAccounts(Authorization: string): Promise<gapi.client.analytics.Accounts> {
+    return this.defaultHttpService.GET('https://www.googleapis.com/analytics/v3/management/accounts', {
+      headers: {
+        Authorization
       }
     });
   }

@@ -19,9 +19,16 @@ import GoogleLoginButton from '../../../common/GoogleLoginButton';
 import { SiteContent } from './SiteContent';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks/redux';
 import { updateCollegeSites } from '../../../../redux/actions/Sites';
+import { SiteValues } from '../../../../models/Sites';
 
-export const useStyles = makeAppStyles()((theme, prop, createRef) => {
+const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
+    ref: createRef()
+  };
+  const domainsRoot = {
+    ref: createRef()
+  };
+  const domainsInput = {
     ref: createRef()
   };
 
@@ -113,12 +120,13 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
       position: 'relative',
       bottom: theme.spacing(0.5)
     },
-    domainsInput: {},
     hasClearIcon: {
-      '& $domainsInput': {
+      [`&.${domainsRoot.ref} .${domainsInput.ref}`]: {
         paddingRight: 0
       }
     },
+    domainsRoot,
+    domainsInput,
     rootExpanded
   };
 });
@@ -168,10 +176,11 @@ const getChangedSites = (initial: SiteDTO[], current: SiteDTO[]) => {
   return changed;
 };
 
-export const SitesPage: React.FC<any> = () => {
+export const SitesPage = () => {
   const loading = useAppSelector((state) => state.loading);
   const sites = useAppSelector((state) => state.sites);
   const collegeKey = useAppSelector((state) => state.college.collegeKey);
+
   const dispatch = useAppDispatch();
 
   const [expanded, setExpanded] = useState<number | boolean>(false);
@@ -181,8 +190,18 @@ export const SitesPage: React.FC<any> = () => {
   };
 
   const {
-    handleSubmit, setValues, setFieldError, initialValues, dirty, handleChange, values, errors, setFieldValue, isValid, resetForm
-  } = useFormik({
+    handleSubmit,
+    setValues,
+    setFieldError,
+    initialValues,
+    dirty,
+    handleChange,
+    values,
+    errors,
+    setFieldValue,
+    isValid,
+    resetForm
+  } = useFormik<SiteValues>({
     initialValues: { sites, collegeKey },
     validationSchema,
     onSubmit: (submitted) => {
@@ -202,31 +221,6 @@ export const SitesPage: React.FC<any> = () => {
   }, [sites, collegeKey]);
 
   const { classes, cx } = useStyles();
-
-  const onKeyChange: any = (e, index, isNew, initial, initialMatchPattern) => {
-    const { value } = e.target;
-    const name = `sites[${index}].key`;
-    const newValue = initialMatchPattern ? `${collegeKey}-${value}` : value;
-    let shouldValidte = true;
-    if (initial && initial.key !== newValue && !newValue.match(`${collegeKey}-`)) {
-      shouldValidte = false;
-      setFieldError(name, `Location should start with ${collegeKey}-`);
-    }
-    if (initial && initial.key !== newValue && newValue.match(`${collegeKey}-`) && !newValue.match(new RegExp(`${collegeKey}-[^\\s]`))) {
-      shouldValidte = false;
-      setFieldError(name, 'Location has invalid format');
-    }
-    setFieldValue(name, newValue, shouldValidte);
-  };
-
-  const onSetPrimaryDomain = (domain, index) => {
-    setFieldValue(`sites[${index}].primaryDomain`, domain);
-  };
-
-  const onAddDomain = (site, index, params) => {
-    setFieldValue(`sites[${index}].domains`, [...site.domains, params.inputProps.value]);
-    if (!site.domains.length && !site.primaryDomain) onSetPrimaryDomain(params.inputProps.value, index);
-  };
 
   const onClickDelete = (index) => (e) => {
     stopPropagation(e);
@@ -272,16 +266,15 @@ export const SitesPage: React.FC<any> = () => {
                     <AddCircle className={classes.plusButton} />
                   </IconButton>
                 </div>
-
                 <GoogleLoginButton />
               </div>
               <div>
                 {(
-                  values?.sites?.map((site: SiteDTO, index) => {
+                  values?.sites?.map((site, index) => {
                     const isNew = typeof site.id !== 'number';
                     const error = (errors.sites && errors.sites[index]) || {};
                     const initial = site.id && initialValues.sites.find((i) => i.id === site.id);
-                    const initialMatchPattern = initial && initial.key.match(`${collegeKey}-`);
+                    const initialMatchPattern = initial && initial.key.includes(`${collegeKey}-`);
 
                     return (
                       <SiteContent
@@ -296,14 +289,12 @@ export const SitesPage: React.FC<any> = () => {
                         onClickDelete={onClickDelete(index)}
                         index={index}
                         initial={initial}
-                        error={error}
+                        error={error as any}
                         initialMatchPattern={initialMatchPattern}
-                        onKeyChange={onKeyChange}
-                        onAddDomain={onAddDomain}
                         setFieldValue={setFieldValue}
+                        setFieldError={setFieldError}
                         values={values}
                         handleChange={handleChange}
-                        onSetPrimaryDomain={onSetPrimaryDomain}
                       />
                     );
                   })

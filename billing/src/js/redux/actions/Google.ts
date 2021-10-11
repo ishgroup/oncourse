@@ -5,8 +5,26 @@
 
 import { GoogleLoginResponse } from 'react-google-login';
 import { IAction } from '../../models/IshAction';
+import { FULFILLED } from './ActionUtils';
+import { GoogleState } from '../../models/Google';
 
 export const SET_GOOGLE_CREDENTIALS = 'SET_GOOGLE_DATA';
+
+export const GET_GTM_AND_GA_DATA = 'GET_GTM_AND_GA_DATA';
+export const GET_GTM_AND_GA_DATA_FULFILLED = FULFILLED(GET_GTM_AND_GA_DATA);
+
+export const getGtmAndGaData = (): IAction => ({
+  type: GET_GTM_AND_GA_DATA
+});
+
+export const getGtmAndGaDataFulfilled = (
+  gtmAccounts: GoogleState['gaAccounts'],
+  gaAccounts: GoogleState['gaAccounts'],
+  gtmContainers: GoogleState['gtmContainers'],
+): IAction => ({
+  type: GET_GTM_AND_GA_DATA_FULFILLED,
+  payload: { gtmAccounts, gtmContainers, gaAccounts }
+});
 
 export const setGoogleCredentials = (payload: {
   profile?: GoogleLoginResponse['profileObj'],

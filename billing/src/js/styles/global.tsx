@@ -362,6 +362,9 @@ export const GlobalClasses = () => {
       '.text-disabled': {
         color: theme.palette.text.disabled
       },
+      '.text-placeholder': {
+        color: theme.palette.divider
+      },
       '.cursor-grab': {
         cursor: 'grab'
       },

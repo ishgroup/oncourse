@@ -13,9 +13,8 @@ import { GoogleLogin, GoogleLoginResponse, GoogleLogout } from 'react-google-log
 import { Button, Typography } from '@mui/material';
 import google from '../../../images/google.svg';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
-import { setGoogleCredentials } from '../../redux/actions/Google';
+import { getGtmAndGaData, setGoogleCredentials } from '../../redux/actions/Google';
 import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
-import GoogleService from '../../api/services/GoogleService';
 
 const SCOPE = 'email '
   + 'profile '
@@ -28,7 +27,11 @@ const SCOPE = 'email '
   + 'https://www.googleapis.com/auth/tagmanager.edit.containerversions '
   + 'https://www.googleapis.com/auth/tagmanager.publish '
   + 'https://www.googleapis.com/auth/tagmanager.manage.users '
-  + 'https://www.googleapis.com/auth/tagmanager.manage.accounts';
+  + 'https://www.googleapis.com/auth/tagmanager.manage.accounts '
+  + 'https://www.googleapis.com/auth/analytics.readonly '
+  + 'https://www.googleapis.com/auth/analytics.edit '
+  + 'https://www.googleapis.com/auth/analytics.manage.users '
+  + 'https://www.googleapis.com/auth/analytics.manage.users.readonly';
 
 const ButtonComp = ({ text, ...props }) => (
   <Button
@@ -62,8 +65,7 @@ const GoogleLoginButton = () => {
   const responseGoogle = (response: GoogleLoginResponse) => {
     dispatch(setGoogleCredentials({ profile: response.profileObj, token: response.tokenObj }));
     setRefreshTokenTimeout(response, response.tokenObj.expires_in);
-
-    console.log(GoogleService.getGTMAccounts().catch(e => console.log('!!!!!',e)));
+    dispatch(getGtmAndGaData());
   };
 
   const onLogoutSuccess = () => {

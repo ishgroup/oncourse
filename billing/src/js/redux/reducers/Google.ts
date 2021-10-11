@@ -5,22 +5,24 @@
 
 import { IAction } from '../../models/IshAction';
 import { GoogleState } from '../../models/Google';
-import { SET_GOOGLE_CREDENTIALS } from '../actions/Google';
+import { GET_GTM_AND_GA_DATA_FULFILLED, SET_GOOGLE_CREDENTIALS } from '../actions/Google';
 
 const Initial: GoogleState = {
   profile: null,
-  token: null
+  token: null,
+  gtmAccounts: null,
+  gtmContainers: null,
+  gaAccounts: null
 };
 
 export const googleReducer = (state: GoogleState = Initial, action: IAction): GoogleState => {
   switch (action.type) {
+    case GET_GTM_AND_GA_DATA_FULFILLED:
     case SET_GOOGLE_CREDENTIALS:
       return {
         ...state,
         ...action.payload
-      }
-
-
+      };
 
     default:
       return {
