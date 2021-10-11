@@ -17,6 +17,9 @@ import { addMinutes, differenceInMinutes, subMinutes } from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FormControl, FormHelperText } from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
 import { ClashType, Room, SessionWarning, Site } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
@@ -48,6 +51,7 @@ interface Props {
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
   prevTutorsState?: any;
+  timezones?: string[];
 }
 const siteRoomLabel = site => (typeof site === "object" ? site.name : "");
 
@@ -69,7 +73,8 @@ const CourseClassSessionFields: React.FC<Props> = (
   classes,
   warnings,
   prevTutorsState,
-  sites
+  sites,
+  timezones,
 }) => {
   const isMounted = useRef(false);
 
@@ -279,6 +284,8 @@ const CourseClassSessionFields: React.FC<Props> = (
     [tutors, session.courseClassTutorIds, session.temporaryTutorIds, warningTypes.Tutor]
   );
 
+  const isVirtualSite = sites.find(site => site.id === session.siteId && site.isVirtual);
+
   return (
     <Grid container>
       <Grid item container xs={6}>
@@ -289,7 +296,7 @@ const CourseClassSessionFields: React.FC<Props> = (
           <FormField
             type="dateTime"
             name={`sessions[${session.index}].start`}
-            label={`${session.room
+            label={`${session.roomId
               ? (session.siteTimezone 
                 ? `Start date (${session.siteTimezone})` 
                 : `Virtual start date (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
@@ -387,22 +394,42 @@ const CourseClassSessionFields: React.FC<Props> = (
         {warningTypes.Room
           .map(w => <ErrorMessage message={w.message} /> )}
       </Grid>
+      {session.siteId && session.roomId && isVirtualSite && (
+        <Grid item xs={6}>
+          <FormField
+            type="searchSelect"
+            name={`sessions[${session.index}].siteTimezone`}
+            label="Default timezone"
+            defaultValue={session.siteTimezone}
+            items={timezones || []}
+            labelAdornment={(
+              <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                <IconButton classes={{ root: "inputAdornmentButton" }}>
+                  <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
+        </Grid>
+      )}
 
-      <Grid item xs={6}>
-        <FormField
-          type="multilineText"
-          name={`sessions[${session.index}].publicNotes`}
-          label="Public notes"
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <FormField
-          type="multilineText"
-          name={`sessions[${session.index}].privateNotes`}
-          label="Private notes"
-          fullWidth
-        />
+      <Grid container item xs={12}>
+        <Grid item xs={6}>
+          <FormField
+            type="multilineText"
+            name={`sessions[${session.index}].publicNotes`}
+            label="Public notes"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <FormField
+            type="multilineText"
+            name={`sessions[${session.index}].privateNotes`}
+            label="Private notes"
+            fullWidth
+          />
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -418,7 +445,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const mapStateToProps = (state: State, ownProps: Props) => ({
   rooms: state.plainSearchRecords["Room"].items,
   sites: state.plainSearchRecords["Site"].items,
-  session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {}
+  session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
+  timezones: state.timezones,
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClassSessionFields);
