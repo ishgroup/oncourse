@@ -37,12 +37,6 @@ dependencies {
 
 	implementation project(':common:cayenne-model')
 	implementation project(':common:common-services')
-	implementation (project(':common:webservices-usi')) {
-		exclude group: 'axis'
-		exclude group: 'org.apache.cxf'
-		exclude group: 'org.springframework'
-		exclude group: 'ish.oncourse.willow'
-	}
 
 	implementation ("org.apache.cxf:cxf-rt-frontend-jaxws:$adminCxfVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-servlet_3.0_spec'
