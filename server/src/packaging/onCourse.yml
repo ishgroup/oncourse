@@ -8,14 +8,13 @@ db:
 
 license:
   max_concurrent_users: 99
-  admin_password_reset: false
   custom_scripts: True
   access_control: True
 
 smtp:
   email_batch: 100000
   host: smtp.gmail.com
-  port: 465
-  mode: tls
+  port: 587
+  mode: starttls
   username: your_email@gmail.com
   password: your_email_password
