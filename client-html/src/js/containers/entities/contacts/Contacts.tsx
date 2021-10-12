@@ -211,7 +211,7 @@ export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
 );
 
-const SearchMenuItem = React.memo<any>(({ content, data }) => (data.prefix ? (
+const SearchMenuItem = React.memo<any>(({ content, data }) => (
   <div className="d-flex align-items-baseline">
     {content}
     <Typography className="ml-0-5" variant="caption" color="textSecondary">
@@ -220,9 +220,7 @@ const SearchMenuItem = React.memo<any>(({ content, data }) => (data.prefix ? (
       )
     </Typography>
   </div>
-) : (
-  content
-)));
+));
 
 const searchMenuItemsRenderer = (content, data, search) => (
   data.prefix ? <SearchMenuItem content={content} data={data} search={search} /> : content

@@ -74,7 +74,7 @@ export const selectStyles = theme => createStyles({
     },
     menuList: {
       background: theme.palette.background.paper,
-      borderRadius: theme.shape.borderRadius
+      borderRadius: theme.shape.borderRadius,
     },
     readonly: {
       fontWeight: 300,
