@@ -14,6 +14,7 @@ import io.bootique.di.Binder
 import io.bootique.di.Injector
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
+import org.reflections.scanners.Scanners
 
 import javax.inject.Inject
 import java.lang.reflect.Method
@@ -87,7 +88,7 @@ class PluginService {
      * @return Method getProps integration method
      */
     static Set<String> getPluggableResources(String resourcePath, String filePattern) {
-        return new Reflections(resourcePath, new ResourcesScanner()).getResources(Pattern.compile(filePattern))
+        return new Reflections(resourcePath, Scanners.Resources).getResources(Pattern.compile(filePattern))
     }
 
 
