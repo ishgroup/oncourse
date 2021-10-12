@@ -295,7 +295,8 @@ class GroovyScriptService {
                 def aTrigger = TriggerBuilder.newTrigger()
                         .withIdentity(script.getName() + ISchedulerService.TRIGGER_POSTFIX, ISchedulerService.CUSTOM_SCRIPT_JOBS_GROUP_ID)
                         .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
-                                .inTimeZone(getServerDefaultTimeZone()))
+                                .inTimeZone(getServerDefaultTimeZone())
+                                .withMisfireHandlingInstructionFireAndProceed())
                         .build()
 
                 schedulerService.scheduleJob(aJob, aTrigger)

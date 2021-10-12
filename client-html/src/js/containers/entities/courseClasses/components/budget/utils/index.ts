@@ -75,10 +75,8 @@ export const getClassCostFee = (
   projectedPlaces: number,
   actualPlaces: number,
   sessions: TimetableSession[],
-  tutotAttendance: TutorAttendanceExtended[]
 ) => {
   let feeAmount = item.perUnitAmountExTax;
-  let actualFeeAmount = item.perUnitAmountExTax;
   let isMultiplyable = true;
 
   switch (item.repetitionType) {
@@ -94,7 +92,6 @@ export const getClassCostFee = (
         : sessions.length;
 
       feeAmount = decimalMul(feeAmount, sessionsLength);
-      actualFeeAmount = feeAmount;
       break;
     }
     case "Per enrolment": {
@@ -104,7 +101,6 @@ export const getClassCostFee = (
     case "Per unit": {
       isMultiplyable = false;
       feeAmount = decimalMul(feeAmount, item.unitCount);
-      actualFeeAmount = feeAmount;
       break;
     }
     case "Discount": {
@@ -129,18 +125,15 @@ export const getClassCostFee = (
     case "Per timetabled hour":
     case "Per student contact hour": {
       const duration = sessions.reduce((p, s) => getSessionPayable(item, s, p, null), 0);
-      const actualDuration = sessions.reduce((p, s) => getSessionPayable(item, s, p, tutotAttendance), 0);
-
       isMultiplyable = item.repetitionType === "Per student contact hour";
       feeAmount = decimalMul(feeAmount, duration);
-      actualFeeAmount = decimalMul(actualFeeAmount, actualDuration);
     }
   }
 
   return {
     max: isMultiplyable ? decimalMul(feeAmount, maximumPlaces) : feeAmount,
     projected: isMultiplyable ? decimalMul(feeAmount, projectedPlaces) : feeAmount,
-    actual: isMultiplyable ? decimalMul(actualFeeAmount, actualPlaces) : actualFeeAmount
+    actual: item.actualAmount || 0
   };
 };
 

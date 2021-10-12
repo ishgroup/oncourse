@@ -63,6 +63,7 @@ class MailSession {
             case SMTPService.Mode.starttls:
                 properties.put("mail.smtp.ssl.enable", "false")
                 properties.put("mail.smtp.starttls.enable", "true")
+                properties.put("mail.smtp.ssl.protocols","TLSv1.3")
                 break
             case SMTPService.Mode.unsafe:
                 properties.put("mail.smtp.ssl.enable", "false")
