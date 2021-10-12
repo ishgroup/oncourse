@@ -29,7 +29,7 @@ const styles = theme =>
       alignItems: "flex-start"
     },
     deleteButton: {
-      margin: `-${theme.spacing(1) - 2}px -${theme.spacing(1) - 2}px -${theme.spacing(1)}px 0px`
+      margin: `-${theme.spacing(1)} -${theme.spacing(1)} -${theme.spacing(1)} 0`
     },
     fade: {
       opacity: 0.5

@@ -125,7 +125,7 @@ const globalStyles = (theme: AppTheme) =>
         marginBottom: theme.spacing(8)
       },
       ".editViewHeadingOffset": {
-        marginTop: `-${theme.spacing(2)}px`
+        marginTop: `-${theme.spacing(2)}`
       },
       ".heading": {
         textTransform: "uppercase",

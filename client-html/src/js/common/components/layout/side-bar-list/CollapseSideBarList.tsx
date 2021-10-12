@@ -21,7 +21,7 @@ import CollapseSideBarListItem from "./CollapseSideBarListItem";
 
 const styles = theme => createStyles({
     listItemPadding: {
-      padding: `${theme.spacing(1) - 4}px ${theme.spacing(3)}px`,
+      padding: `${theme.spacing(0.5)} ${theme.spacing(3)}`,
       minHeight: "unset"
     },
     listHeadingPadding: {
@@ -49,7 +49,7 @@ const styles = theme => createStyles({
     },
     collapseButton: {
       position: "absolute",
-      bottom: theme.spacing(-0.5),
+      bottom: `-${theme.spacing(0.5)}`,
       height: theme.spacing(3),
       width: theme.spacing(3),
       transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,

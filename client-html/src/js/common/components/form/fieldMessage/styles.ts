@@ -8,9 +8,9 @@ import { AppTheme } from "../../../../model/common/Theme";
 
 export default (theme: AppTheme) => createStyles({
   root: {
-    marginTop: `-${theme.spacing(1)}px`,
+    marginTop: `-${theme.spacing(1)}`,
     // @ts-ignore
-    paddingBottom: `${theme.spacing(2) - 3}px`,
+    paddingBottom: `${theme.spacing(2) - 3}`,
   },
   icon: {
     fontSize: theme.spacing(2),
