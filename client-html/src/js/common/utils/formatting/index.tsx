@@ -7,7 +7,7 @@ export const getHighlightedPartLabel = (label: string, highlighted: string, opti
   const parts = parse(label, matches);
 
   return (
-    <div  {...optionProps}>
+    <div  {...optionProps || {}}>
       {parts.map((part, index) => (
         <span key={index}>{part.highlight ? <strong>{part.text}</strong> : part.text}</span>
       ))}
