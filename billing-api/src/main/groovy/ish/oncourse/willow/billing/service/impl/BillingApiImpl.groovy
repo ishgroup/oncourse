@@ -131,11 +131,9 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_ACCESS_KEY, key.secretAccessKey)
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
 
-
-                PreferenceUtil.createSetting(context, college, 'billing.code', "C-$collegeDTO.collegeKey")
                 PreferenceUtil.createSetting(context, college, 'billing.users', '1')
                 PreferenceUtil.createSetting(context, college, 'billing.plan', 'starter-21')
-                PreferenceUtil.createSetting(context, college, 'billing.currency', (collegeDTO.currency ? collegeDTO.currency.toString() : Currency.US.toString()))
+                PreferenceUtil.createSetting(context, college, 'billing.currency', (collegeDTO.currency ? collegeDTO.currency.toString() : Currency.AU.toString()))
 
                 context.commitChanges()
 
@@ -229,7 +227,6 @@ class BillingApiImpl implements BillingApi {
         String userPhone
 
         String paidUntil
-        String port
         
         AngelConfig() {
             LocalDate untilDate = LocalDate.now()
@@ -244,10 +241,7 @@ class BillingApiImpl implements BillingApi {
         String toString() {
             return  "$collegeKey:\n"+
                     "  server:\n" +
-                    "    port: $port\n" +
                     "    minion: colo.splash\n" +
-                    "  db:\n" +
-                    "    pass: ${SecurityUtil.generateRandomPassword(12)}\n" +
                     "  user:\n"+
                     "    firstName: $userFirstName\n" +
                     "    lastName: $userLastName\n" +
@@ -263,29 +257,7 @@ class BillingApiImpl implements BillingApi {
             SVNRepository repository = SVNRepositoryFactory.create( SVNURL.parseURIEncoded(svnRepo))
             ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUser, svnPass.toCharArray())
             repository.setAuthenticationManager(authManager)
-
-            int maxPort = 0
-            try {
-                (repository.getDir('.', -1, null, (Collection<SVNDirEntry>) null) as Collection<SVNDirEntry>)
-                        .each { SVNDirEntry entry -> 
-                            if (entry.name.endsWith('.sls')) {
-                                SVNProperties fileProperties = new SVNProperties()
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream()
-                                repository.getFile(entry.relativePath, -1, fileProperties, baos)
-                                String collegeKey = entry.name.replace('.sls', '')
-                                Map<String, Object> yaml = mapper.readValue(baos.toString(), new TypeReference<Map<String, Object>>() {})
-                                int collegePort = yaml[(collegeKey)]['server']['port'] as int
-                                if (collegePort > maxPort) {
-                                    maxPort = collegePort
-                                }
-                    }
-                }
-            } catch (Exception e) {
-                logger.catching(e)
-                port='10000'
-            }
             
-            port = ++ maxPort
             
             ISVNEditor editor = repository.getCommitEditor( "Create $collegeKey angel instance", null)
             
