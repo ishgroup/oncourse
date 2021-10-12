@@ -448,8 +448,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     return option[selectValueMark] === value;
   };
 
-  const renderOption = data => {
-    const option = getHighlightedPartLabel(getOptionLabel(data), searchValue);
+  const renderOption = (optionProps, data) => {
+    const option = getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
 
     if (typeof itemRenderer === "function") {
       return itemRenderer(option, data, searchValue) as any;
