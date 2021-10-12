@@ -16,12 +16,11 @@ const request: EpicUtils.Request = {
     setCollegeKey(payload)
   ],
   processError: (response) => {
+    const actions = [setLoadingValue(false)];
     if (response?.status && [401, 406].includes(response.status)) {
-      return [
-        setLoadingValue(false),
-      ];
+      return actions;
     }
-    return FetchErrorHandler(response);
+    return [...actions, ...FetchErrorHandler(response)];
   }
 };
 

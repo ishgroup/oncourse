@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { LoadingButton } from '@mui/lab';
 import { makeAppStyles } from '../../styles/makeStyles';
 import { State } from '../../models/State';
+import { NewCustomerSteps } from '../../models/User';
 
 const useStyles = makeAppStyles()((theme) => ({
   button: {
@@ -42,12 +43,12 @@ const useStyles = makeAppStyles()((theme) => ({
 const Navigation = (props) => {
   const { classes, cx } = useStyles();
   const {
-    activeStep, steps, handleBack, handleNext, disabled, loading, hideNextButton
+    activeStep, handleBack, handleNext, disabled, loading, hideNextButton
   } = props;
 
   return (
     <div>
-      {activeStep !== steps.length - 1 && (
+      {activeStep !== NewCustomerSteps.length - 1 && (
         <div className={classes.buttonsWrapper}>
           {activeStep === 0 ? (<span />)
             : (
@@ -70,7 +71,7 @@ const Navigation = (props) => {
               loading={loading}
               disableElevation
             >
-              {activeStep === steps.length - 2
+              {activeStep === NewCustomerSteps.length - 2
                 ? 'Finish'
                 : (
                   <div className={classes.nextButton}>

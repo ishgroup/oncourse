@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import Billing from './components/Billing';
+import Main from './components/Main';
 import { GlobalClasses } from './styles/global';
 import '../scss/billing.scss';
 import { store } from './redux';
@@ -11,7 +11,7 @@ export const initApp = () => {
     <Provider store={store}>
       <React.StrictMode>
         <GlobalClasses />
-        <Billing />
+        <Main />
       </React.StrictMode>
     </Provider>,
     document.getElementById('provisioning')

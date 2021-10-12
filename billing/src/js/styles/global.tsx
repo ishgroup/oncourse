@@ -8,6 +8,8 @@ import { GlobalStyles } from 'tss-react';
 import { alpha } from '@mui/material/styles';
 import { prefixer } from './mixins/prefixer';
 import { useTheme } from '../themes/ishTheme';
+import iconDots from '../../images/icon-dots.png';
+
 
 export const GlobalClasses = () => {
   const theme = useTheme();
@@ -451,6 +453,30 @@ export const GlobalClasses = () => {
       },
       '.grid-temp-col-2-fr': {
         gridTemplateColumns: '1fr 1fr'
+      },
+      '.root': {
+        width: '100%',
+        marginTop: '0',
+        height: '100vh',
+        display: 'flex',
+        paddingLeft: 250
+      },
+      '.content': {
+        margin: 'auto',
+        padding: theme.spacing(10),
+        width: '100%',
+      },
+      '.contentInner': {
+        backgroundImage: `url(${iconDots})`,
+        backgroundPosition: '0 0',
+        backgroundSize: 18,
+        padding: '48px 48px 130px',
+      },
+      '.formWrapper': {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0px 20px 0px 20px'
       }
     }}
     />

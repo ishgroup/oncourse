@@ -6,20 +6,21 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { darken } from '@mui/material/styles';
-import { IconButton } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { AddCircle } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
 import { SiteDTO } from '@api/model';
-import { makeAppStyles } from '../../../../styles/makeStyles';
-import { stopPropagation } from '../../../../utils';
-import Loading from '../../../common/Loading';
-import GoogleLoginButton from '../../../common/GoogleLoginButton';
+import { useParams } from 'react-router-dom';
+import { makeAppStyles } from '../../styles/makeStyles';
+import { stopPropagation } from '../../utils';
+import Loading from '../common/Loading';
+import GoogleLoginButton from '../common/GoogleLoginButton';
 import { SiteContent } from './SiteContent';
-import { useAppDispatch, useAppSelector } from '../../../../redux/hooks/redux';
-import { updateCollegeSites } from '../../../../redux/actions/Sites';
-import { SiteValues } from '../../../../models/Sites';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
+import { updateCollegeSites } from '../../redux/actions/Sites';
+import { SiteValues } from '../../models/Sites';
 
 const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
@@ -49,10 +50,6 @@ const useStyles = makeAppStyles()((theme, prop, createRef) => {
       fontSize: '12px',
       color: '#f44336'
     },
-    flexWrapper: {
-      display: 'flex',
-      alignItems: 'center',
-    },
     plusButton: {
       color: darken(green[900], 0.1)
     },
@@ -77,7 +74,6 @@ const useStyles = makeAppStyles()((theme, prop, createRef) => {
       display: 'flex',
       justifyContent: 'flex-end',
       marginTop: '30px',
-      paddingBottom: '20px'
     },
     expandIcon: {
       right: 'unset',
@@ -247,6 +243,13 @@ export const SitesPage = () => {
     });
   };
 
+  const { id } = useParams<any>();
+  const site = values?.sites[id];
+  const isNew = typeof site?.id !== 'number';
+  // const error = (errors.sites && errors.sites[index]) || {};
+  const initial = site?.id && initialValues.sites.find((i) => i.id === site.id);
+  const initialMatchPattern = initial && initial.key.includes(`${collegeKey}-`);
+
   return (
     <div className={classes.container}>
       {sites
@@ -256,51 +259,37 @@ export const SitesPage = () => {
             onSubmit={handleSubmit}
           >
             <div>
-              <div className={classes.flexWrapper}>
-                <div className={cx('flex-1', classes.flexWrapper)}>
-                  <h2 className={classes.coloredHeaderText}>Websites</h2>
-                  <IconButton
-                    onClick={onAddSite}
-                    size="large"
-                  >
-                    <AddCircle className={classes.plusButton} />
-                  </IconButton>
-                </div>
+              <div className="d-flex justify-content-end mb-3">
                 <GoogleLoginButton />
               </div>
-              <div>
-                {(
-                  values?.sites?.map((site, index) => {
-                    const isNew = typeof site.id !== 'number';
-                    const error = (errors.sites && errors.sites[index]) || {};
-                    const initial = site.id && initialValues.sites.find((i) => i.id === site.id);
-                    const initialMatchPattern = initial && initial.key.includes(`${collegeKey}-`);
 
-                    return (
-                      <SiteContent
-                        cx={cx}
-                        classes={classes}
-                        key={site.id || index}
-                        isNew={isNew}
-                        expanded={expanded}
-                        handleExpand={handleExpand}
-                        collegeKey={collegeKey}
-                        site={site}
-                        onClickDelete={onClickDelete(index)}
-                        index={index}
-                        initial={initial}
-                        error={error as any}
-                        initialMatchPattern={initialMatchPattern}
-                        setFieldValue={setFieldValue}
-                        setFieldError={setFieldError}
-                        values={values}
-                        handleChange={handleChange}
-                      />
-                    );
-                  })
-            )}
+              <div>
+                {site && (
+                <SiteContent
+                  cx={cx}
+                  classes={classes}
+                  key={site.id}
+                  isNew={isNew}
+                  expanded={expanded}
+                  handleExpand={handleExpand}
+                  collegeKey={collegeKey}
+                  site={site}
+                  // onClickDelete={onClickDelete(index)}
+                  index={1}
+                  initial={initial}
+                  error={{}}
+                  initialMatchPattern={initialMatchPattern}
+                  setFieldValue={setFieldValue}
+                  setFieldError={setFieldError}
+                  values={values}
+                  handleChange={handleChange}
+                />
+                )}
               </div>
               <div className={classes.buttonsWrapper}>
+                <Button disableElevation color="error" variant="contained" className="mr-2">
+                  Delete
+                </Button>
                 <LoadingButton
                   variant="contained"
                   color="primary"

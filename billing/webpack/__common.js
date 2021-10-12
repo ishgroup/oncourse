@@ -71,6 +71,7 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
+      historyApiFallback: true,
       inline: true,
       hot: true,
       port: 8100
@@ -95,8 +96,7 @@ const _styleModule = () => [
     test: /\.(otf|eot|ttf|woff|woff2|svg)$/,
     loader: 'file-loader',
     options: {
-      name: 'fonts/[name].[ext]',
-      publicPath: './'
+      name: 'fonts/[name].[ext]'
     }
   },
   {
