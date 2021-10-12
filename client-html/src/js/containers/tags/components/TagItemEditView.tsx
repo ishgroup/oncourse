@@ -45,7 +45,7 @@ const styles = theme => createStyles({
   },
   root: {
     marginTop: theme.spacing(8),
-    height: `calc(100vh - ${theme.spacing(8)}px)`
+    height: `calc(100vh - ${theme.spacing(8)})`
   }
 });
 

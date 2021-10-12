@@ -64,7 +64,7 @@ const styles = theme => createStyles({
     },
     selected: {},
     content: {
-      padding: `0 ${theme.spacing(1)} 0 ${theme.spacing(0.5)}`,
+      padding: `0 ${theme.spacing(1)} 0 0`,
       "& $iconContainer": {
         width: 0,
       }

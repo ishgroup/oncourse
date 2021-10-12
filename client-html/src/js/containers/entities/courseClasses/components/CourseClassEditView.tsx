@@ -183,7 +183,7 @@ const useBudgetAdornmentStyles = makeAppStyles()((theme: AppTheme) => ({
     gridTemplateColumns: "1fr auto",
     alignItems: "end",
     position: "relative",
-    rowGap: `${theme.spacing(0.5)}px`,
+    rowGap: `${theme.spacing(0.5)}`,
     columnGap: theme.spacing(1),
     paddingTop: theme.spacing(0.5)
   },

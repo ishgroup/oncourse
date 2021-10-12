@@ -33,7 +33,7 @@ import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 const styles = theme => createStyles({
     root: {
       padding: theme.spacing(3),
-      height: `calc(100% - ${theme.spacing(8)}px)`,
+      height: `calc(100% - ${theme.spacing(8)})`,
       marginTop: theme.spacing(8)
     },
     image: {

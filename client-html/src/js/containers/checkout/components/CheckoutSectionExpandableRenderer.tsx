@@ -36,7 +36,7 @@ const styles = (theme: AppTheme) =>
       }
     },
     expansionPanelSummaryRoot: {
-      padding: `0 ${theme.spacing(2)}px`,
+      padding: `0 ${theme.spacing(2)}`,
       "&$expansionPanelSummaryExpanded": {
         minHeight: 48
       }

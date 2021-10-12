@@ -12,7 +12,7 @@ const styles = theme =>
   createStyles({
     root: {
       display: "grid",
-      gridTemplateColumns: `repeat(7, ${theme.spacing(4)}px)`,
+      gridTemplateColumns: `repeat(7, ${theme.spacing(4)})`,
       gridColumnGap: 1,
       padding: theme.spacing(0, 1),
       marginBottom: theme.spacing(1),
