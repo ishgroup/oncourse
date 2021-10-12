@@ -14,10 +14,10 @@ import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.command.CommandDecorator;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.ApiFilter;
 import ish.oncourse.server.api.servlet.ISessionManager;
@@ -148,7 +148,7 @@ public class AngelModule extends ConfigModule {
                 .addModule(CommitLogModuleExt.class);
 
 
-        AngelJettyModule.extend(binder)
+        JettyModule.extend(binder)
                 .addMappedFilter(API_FILTER)
                 .addMappedServlet(HEALTHCHECK_SERVLET)
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
