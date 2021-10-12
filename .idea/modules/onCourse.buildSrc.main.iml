@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="onCourse:buildSrc:main" external.linked.project.path="$MODULE_DIR$/../../buildSrc" external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
+    <output url="file://$MODULE_DIR$/../../buildSrc/build/classes/java/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../buildSrc/src/main" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/6.8.2/generated-gradle-jars/gradle-api-6.8.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-6.8.2-bin/5nlkemqlnno2amj7d1mfn69bt/gradle-6.8.2/lib/groovy-all-1.3-2.5.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-6.8.2-bin/5nlkemqlnno2amj7d1mfn69bt/gradle-6.8.2/lib/kotlin-stdlib-1.4.20.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-6.8.2-bin/5nlkemqlnno2amj7d1mfn69bt/gradle-6.8.2/lib/kotlin-stdlib-common-1.4.20.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-6.8.2-bin/5nlkemqlnno2amj7d1mfn69bt/gradle-6.8.2/lib/kotlin-stdlib-jdk7-1.4.20.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-6.8.2-bin/5nlkemqlnno2amj7d1mfn69bt/gradle-6.8.2/lib/kotlin-stdlib-jdk8-1.4.20.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-6.8.2-bin/5nlkemqlnno2amj7d1mfn69bt/gradle-6.8.2/lib/kotlin-reflect-1.4.20.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-6.8.2-bin/5nlkemqlnno2amj7d1mfn69bt/gradle-6.8.2/lib/gradle-installation-beacon-6.8.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="onCourse.buildSrc.apidoc.main" scope="RUNTIME" />
+    <orderEntry type="module" module-name="onCourse.buildSrc.aql.main" scope="RUNTIME" />
+    <orderEntry type="module" module-name="onCourse.buildSrc.swagger.main" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: antlr:antlr:2.7.7" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.ant:ant-antlr:1.9.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:antlr4:4.7.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-codegen:2.4.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:antlr4-runtime:4.7.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:ST4:4.0.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:antlr-runtime:3.5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.abego.treelayout:org.abego.treelayout.core:1.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.glassfish:javax.json:1.0.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.ibm.icu:icu4j:58.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-compat-spec-parser:1.0.36" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-parser:1.0.36" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-core:1.5.21" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.samskivert:jmustache:1.12" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-ext:1.7.12" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-simple:1.7.12" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-api:1.7.22" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.commons:commons-lang3:3.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-cli:commons-cli:1.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.atlassian.commonmark:commonmark:0.9.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:json-schema-validator:2.2.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.fge:json-patch:1.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-models:1.5.21" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.guava:guava:20.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.validation:validation-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: ch.qos.cal10n:cal10n-api:0.8.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:json-schema-core:1.2.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.mail:mailapi:1.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: joda-time:joda-time:2.9.7" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.fge:jackson-coreutils:1.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-annotations:1.5.21" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.yaml:snakeyaml:1.18" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.fge:uri-template:0.9" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.mozilla:rhino:1.7R4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.fge:msg-simple:1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.fge:btf:1.2" level="project" />
+  </component>
+</module>
