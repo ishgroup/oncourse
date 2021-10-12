@@ -90,7 +90,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
     useEffect(() => {
       if (popperRef.current) {
-        popperRef.current.update();
+        popperRef.current.forceUpdate();
       }
     }, [values, popperRef.current]);
 
