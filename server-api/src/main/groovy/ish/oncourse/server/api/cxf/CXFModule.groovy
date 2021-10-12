@@ -24,11 +24,11 @@ import javax.ws.rs.core.Application
 class CXFModule extends ConfigModule {
 
     static SetBuilder<Object> contributeResources(Binder binder) {
-        return binder.bindSet(Object.class, CXFResource)
+        return binder.bindSet(Object, CXFResource)
     }
 
     static SetBuilder<Object> contributeFeatures(Binder binder) {
-        return binder.bindSet(Object.class, CXFFeature)
+        return binder.bindSet(Object, CXFFeature)
     }
 
     @Override

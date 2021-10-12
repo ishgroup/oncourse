@@ -43,50 +43,50 @@ class TestModule implements BQModule {
     @Override
     void configure(Binder binder) {
 
-        binder.bind(IReportService.class).to(ReportService.class).inSingletonScope()
+        binder.bind(IReportService).to(ReportService).inSingletonScope()
 
 
-        binder.bind(AccountTransactionService.class).inSingletonScope()
-        binder.bind(AuditService.class).inSingletonScope()
-        binder.bind(AuditListener.class).toInstance(Mockito.mock(AuditListener.class))
+        binder.bind(AccountTransactionService).inSingletonScope()
+        binder.bind(AuditService).inSingletonScope()
+        binder.bind(AuditListener).toInstance(Mockito.mock(AuditListener))
 
-        binder.bind(MixinHelper.class).initOnStartup()
+        binder.bind(MixinHelper).initOnStartup()
 
-        binder.bind(InvoiceLineInitHelper.class)
-        binder.bind(AqlService.class).to(AntlrAqlService.class)
-        binder.bind(QueryService.class).inSingletonScope()
-        binder.bind(GroovyScriptService.class).inSingletonScope()
-        binder.bind(MessageService.class).inSingletonScope()
+        binder.bind(InvoiceLineInitHelper)
+        binder.bind(AqlService).to(AntlrAqlService)
+        binder.bind(QueryService).inSingletonScope()
+        binder.bind(GroovyScriptService).inSingletonScope()
+        binder.bind(MessageService).inSingletonScope()
 
         // dummy scheduler service for tests
-        binder.bind(ISchedulerService.class).toInstance(new TestSchedulerService())
+        binder.bind(ISchedulerService).toInstance(new TestSchedulerService())
 
         // entity service classes
-        binder.bind(CourseClassService.class).inSingletonScope()
-        binder.bind(StudentConcessionService.class).inSingletonScope()
-        binder.bind(TagService.class).inSingletonScope()
-        binder.bind(SessionService.class).inSingletonScope()
-        binder.bind(CourseService.class).inSingletonScope()
-        binder.bind(CertificateService.class).inSingletonScope()
-        binder.bind(StudentService.class).inSingletonScope()
-        binder.bind(InvoiceLineService.class).inSingletonScope()
-        binder.bind(IAutoIncrementService.class).to(TestAutoIncrementService.class).inSingletonScope()
-        binder.bind(CertificateServiceTest.class).inSingletonScope()
-        binder.bind(ISystemUserService.class).to(TestSystemUserService.class).inSingletonScope()
+        binder.bind(CourseClassService).inSingletonScope()
+        binder.bind(StudentConcessionService).inSingletonScope()
+        binder.bind(TagService).inSingletonScope()
+        binder.bind(SessionService).inSingletonScope()
+        binder.bind(CourseService).inSingletonScope()
+        binder.bind(CertificateService).inSingletonScope()
+        binder.bind(StudentService).inSingletonScope()
+        binder.bind(InvoiceLineService).inSingletonScope()
+        binder.bind(IAutoIncrementService).to(TestAutoIncrementService).inSingletonScope()
+        binder.bind(CertificateServiceTest).inSingletonScope()
+        binder.bind(ISystemUserService).to(TestSystemUserService).inSingletonScope()
 
-        binder.bind(CustomFieldTypeService.class).inSingletonScope()
-        binder.bind(SanityCheckService.class).inSingletonScope()
-        binder.bind(QualityService.class).inSingletonScope()
-        binder.bind(ExportService.class).inSingletonScope()
-        binder.bind(DuplicateCourseService.class).inSingletonScope()
-        binder.bind(DuplicateClassService.class).inSingletonScope()
+        binder.bind(CustomFieldTypeService).inSingletonScope()
+        binder.bind(SanityCheckService).inSingletonScope()
+        binder.bind(QualityService).inSingletonScope()
+        binder.bind(ExportService).inSingletonScope()
+        binder.bind(DuplicateCourseService).inSingletonScope()
+        binder.bind(DuplicateClassService).inSingletonScope()
 
-        binder.bind(DataPopulation.class).inSingletonScope()
-        binder.bind(ImportService.class).inSingletonScope()
-        binder.bind(ContactMergeService.class).inSingletonScope()
-        binder.bind(SessionValidator.class).inSingletonScope()
+        binder.bind(DataPopulation).inSingletonScope()
+        binder.bind(ImportService).inSingletonScope()
+        binder.bind(ContactMergeService).inSingletonScope()
+        binder.bind(SessionValidator).inSingletonScope()
 
-        binder.bind(CayenneListenersService.class).initOnStartup()
+        binder.bind(CayenneListenersService).initOnStartup()
 
     }
 }

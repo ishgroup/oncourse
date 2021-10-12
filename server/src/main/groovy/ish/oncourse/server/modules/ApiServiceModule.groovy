@@ -10,8 +10,6 @@ package ish.oncourse.server.modules
 
 import io.bootique.di.BQModule
 import io.bootique.di.Binder
-import io.bootique.di.Scope
-import io.bootique.di.spi.NoScope
 import ish.oncourse.server.api.service.ApiTokenApiService
 import ish.oncourse.server.api.service.ApplicationApiService
 import ish.oncourse.server.api.service.ArticleProductApiService
