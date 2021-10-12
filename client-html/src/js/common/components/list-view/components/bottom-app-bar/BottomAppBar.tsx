@@ -107,7 +107,7 @@ const styles = theme => createStyles({
       color: theme.palette.error.main
     },
     customIconButton: {
-      padding: `${theme.spacing(1)}px 2.5px`,
+      padding: `${theme.spacing(1)} 2.5px`,
       height: theme.spacing(6),
       width: theme.spacing(6)
     },

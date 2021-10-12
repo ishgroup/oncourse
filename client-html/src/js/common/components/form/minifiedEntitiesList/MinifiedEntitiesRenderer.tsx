@@ -35,12 +35,12 @@ const styles = (theme: AppTheme) =>
         color: theme.palette.error.main
       },
       padding: theme.spacing(1),
-      margin: `-${theme.spacing(1)}px -${theme.spacing(1)}px -${theme.spacing(1)}px auto`
+      margin: `-${theme.spacing(1)} -${theme.spacing(1)} -${theme.spacing(1)} auto`
     },
     summaryContent: {
-      paddingLeft: `${theme.spacing(3)}px`,
+      paddingLeft: `${theme.spacing(3)}`,
       "& > :last-child": {
-        paddingRight: `${theme.spacing(1)}px`
+        paddingRight: `${theme.spacing(1)}`
       }
     }
   });

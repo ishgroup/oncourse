@@ -10,7 +10,7 @@ import DocumentTags from "./DocumentTags";
 
 const styles = (theme: AppTheme) => createStyles({
   container: {
-    paddingLeft: `${theme.spacing(10.5)}px !important`
+    paddingLeft: `${theme.spacing(10.5)} !important`
   },
   documentNoTags: {
     fontSize: 13

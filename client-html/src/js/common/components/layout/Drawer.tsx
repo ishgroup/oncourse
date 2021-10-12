@@ -34,10 +34,10 @@ const styles = (theme: AppTheme) =>
       padding: theme.spacing(0.75, 3)
     },
     listHeadingPadding: {
-      padding: `${theme.spacing(1) + 4}px ${theme.spacing(3)}px`
+      padding: `${theme.spacing(1) + 4} ${theme.spacing(3)}`
     },
     listPadding: {
-      padding: `12px 0px ${theme.spacing(2)}px 0px`
+      padding: `12px 0px ${theme.spacing(2)} 0px`
     }
   });
 

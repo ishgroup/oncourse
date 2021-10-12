@@ -10,7 +10,7 @@ const styles: any = theme => ({
     backgroundColor: theme.palette.background.default,
     width: "100%",
     padding: theme.spacing(3),
-    height: `calc(100% - ${theme.spacing(8)}px)`,
+    height: `calc(100% - ${theme.spacing(8)})`,
     marginTop: theme.spacing(8),
     "overflow-y": "auto"
   }
