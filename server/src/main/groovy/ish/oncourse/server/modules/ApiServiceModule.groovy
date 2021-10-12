@@ -10,6 +10,8 @@ package ish.oncourse.server.modules
 
 import io.bootique.di.BQModule
 import io.bootique.di.Binder
+import io.bootique.di.Scope
+import io.bootique.di.spi.NoScope
 import ish.oncourse.server.api.service.ApiTokenApiService
 import ish.oncourse.server.api.service.ApplicationApiService
 import ish.oncourse.server.api.service.ArticleProductApiService
@@ -69,7 +71,7 @@ class ApiServiceModule implements BQModule {
 
         binder.bind(EntityValidator).inSingletonScope()
 
-        binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
+        binder.bind(ApiTokenApiService).withoutScope()
         binder.bind(ApplicationApiService).inSingletonScope()
         binder.bind(ArticleProductApiService).inSingletonScope()
         binder.bind(AssessmentApiService).inSingletonScope()
@@ -83,7 +85,7 @@ class ApiServiceModule implements BQModule {
         binder.bind(DocumentApiService).inSingletonScope()
         binder.bind(EmailTemplateApiService).inSingletonScope()
         binder.bind(EnrolmentApiService).inSingletonScope()
-        binder.bind(EntityRelationTypeApiService).in(Scopes.NO_SCOPE)
+        binder.bind(EntityRelationTypeApiService).withoutScope()
         binder.bind(ExportTemplateApiService).inSingletonScope()
         binder.bind(GradingApiService).inSingletonScope()
         binder.bind(ImportApiService).inSingletonScope()
@@ -93,17 +95,17 @@ class ApiServiceModule implements BQModule {
         binder.bind(MessageApiService).inSingletonScope()
         binder.bind(NoteApiService).inSingletonScope()
         binder.bind(OutcomeApiService).inSingletonScope()
-        binder.bind(PayslipApiService).in(Scopes.NO_SCOPE)
-        binder.bind(PaymentService).in(Scopes.NO_SCOPE)
+        binder.bind(PayslipApiService).withoutScope()
+        binder.bind(PaymentService).withoutScope()
         binder.bind(PriorLearningApiService).inSingletonScope()
         binder.bind(ReportApiService).inSingletonScope()
-        binder.bind(RoomApiService).in(Scopes.NO_SCOPE)
+        binder.bind(RoomApiService).withoutScope()
         binder.bind(ScriptApiService).inSingletonScope()
-        binder.bind(SiteApiService).in(Scopes.NO_SCOPE)
+        binder.bind(SiteApiService).withoutScope()
         binder.bind(SurveyApiService).inSingletonScope()
         binder.bind(TutorRoleApiService).inSingletonScope()
         binder.bind(VoucherProductApiService).inSingletonScope()
-        binder.bind(WaitingListApiService).in(Scopes.NO_SCOPE)
+        binder.bind(WaitingListApiService).withoutScope()
 
     }
 }

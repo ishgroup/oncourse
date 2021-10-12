@@ -12,6 +12,8 @@
 package ish.oncourse.server.services;
 
 import javax.inject.Inject;
+
+import ish.oncourse.server.ICayenneService;
 import ish.util.TimeZoneUtil;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SQLTemplate;
