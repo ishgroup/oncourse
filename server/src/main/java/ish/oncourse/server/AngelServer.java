@@ -14,6 +14,7 @@ package ish.oncourse.server;
 import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
+import io.bootique.jdbc.hikaricp.JdbcHikariCPModule;
 import io.bootique.jdbc.tomcat.JdbcTomcatModule;
 import io.bootique.jetty.JettyModule;
 import ish.oncourse.server.api.ServerApiModule;
@@ -46,7 +47,7 @@ public class AngelServer {
                 .module(PermissionModule.class)
                 .module(CayenneModule.class)
                 .module(JdbcModule.class)
-                .module(JdbcTomcatModule.class)
+                .module(JdbcHikariCPModule.class)
                 .module(ServiceModule.class)
                 .module(ApiCayenneLayerModule.class)
                 .module(ApiServiceModule.class)

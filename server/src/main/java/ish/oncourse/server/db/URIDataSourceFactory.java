@@ -15,17 +15,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.bootique.annotation.BQConfig;
 import io.bootique.di.Injector;
 import io.bootique.jdbc.managed.ManagedDataSourceStarter;
-import io.bootique.jdbc.tomcat.TomcatManagedDataSourceFactory;
+import io.bootique.jdbc.hikaricp.HikariCPManagedDataSourceFactory;
 import ish.util.RuntimeUtil;
 
-@BQConfig("Pooling Tomcat JDBC DataSource configuration.")
+@BQConfig("Pooling Hikari JDBC DataSource configuration.")
 @JsonTypeName("uri")
-public class URIDataSourceFactory extends TomcatManagedDataSourceFactory {
+public class URIDataSourceFactory extends HikariCPManagedDataSourceFactory {
 
     public ManagedDataSourceStarter create(String dataSourceName, Injector injector) {
         DbUriProvider provider = injector.getInstance(DbUriProvider.class);
-        setUrl(provider.getUri());
-        RuntimeUtil.println("server will use database " + getUrl());
+        setJdbcUrl(provider.getUri());
+        RuntimeUtil.println("server will use database " + getJdbcUrl());
         return super.create(dataSourceName, injector);
     }
 

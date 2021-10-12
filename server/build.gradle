@@ -51,7 +51,7 @@ dependencies {
 
 	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
-	implementation "io.bootique.jdbc:bootique-jdbc-tomcat:$bootiqueVersion"
+	implementation "io.bootique.jdbc:bootique-jdbc-hikaricp:$bootiqueVersion"
 	implementation "io.bootique.bom:bootique-bom:$bootiqueVersion"
 
 	api ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
