@@ -825,10 +825,20 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
 
     Scenario: (-) Update system template
 
+        Given path ishPathList
+        And param entity = 'ExportTemplate'
+        And param pageSize = 100
+        And param columns = 'name'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["Room CSV export"])].id
+        * print "id = " + id
+
         * def exportTemplateToUpdate =
         """
         {
-        "id":1,
+        "id":#(id),
         "name":"Room CSV export",
         "keyCode":"ish.onCourse.room.csv",
         "entity":"Room",
@@ -841,7 +851,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         }
         """
 
-        Given path ishPath + '/1'
+        Given path ishPath + '/' + id
         And request exportTemplateToUpdate
         When method PUT
         Then status 400

@@ -62,8 +62,10 @@ class Discount extends _Discount implements DiscountTrait, DiscountInterface, Qu
 	void validateForSave(final ValidationResult validationResult) {
 		// data sanity check:
 		if (getDiscountPercent() == null || BigDecimal.ZERO == getDiscountPercent()) {
-			setDiscountMax(Money.ZERO)
-			setDiscountMin(Money.ZERO)
+			if(discountMax != null)
+				setDiscountMax(Money.ZERO)
+			if(discountMin != null)
+				setDiscountMin(Money.ZERO)
 		}
 	}
 

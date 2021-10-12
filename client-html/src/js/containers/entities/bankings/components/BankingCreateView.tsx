@@ -214,6 +214,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
               <FormField
                 type="searchSelect"
                 name="administrationCenterId"
+                placeholder="Administration center"
                 defaultDisplayValue={values && values.adminSite}
                 selectLabelCondition={getAdminCenterLabel}
                 onChange={this.onSiteIdChange as any}

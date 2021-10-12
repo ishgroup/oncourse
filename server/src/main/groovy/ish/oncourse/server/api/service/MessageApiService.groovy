@@ -13,16 +13,16 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import groovy.text.Template
+import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.AbstractInvoice
-import ish.oncourse.server.cayenne.AttachableTrait
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
@@ -79,21 +79,11 @@ import org.apache.logging.log4j.Logger
 
 import java.time.ZoneOffset
 
+@CompileStatic
 class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageDao> {
     private static final Logger logger = LogManager.logger
     private static final String CREATED_SUCCESS = "Messages created successfully"
     private static final int BATCH_SIZE = 50
-
-    private static final List<Class<?>> classes = new ArrayList<Class<?>>() {
-        {
-            add(Invoice)
-            add(Quote)
-        }
-    }
-
-    private static final Map<Class<? extends AttachableTrait>, List<Class<?>>> abstractEntityImpls =
-            [(AbstractInvoice.class): classes]
-
 
     @Inject private AqlService aql
 
@@ -106,6 +96,8 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     @Inject private SystemUserService systemUserService
 
     @Inject private SMTPService smtpService
+
+    @Inject private LicenseService licenseService
 
 
     @Override
@@ -178,14 +170,11 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     RecipientsDTO getRecipients(String entityName, String messageType, SearchQueryDTO request, Long templateId) {
         ObjectContext context = cayenneService.newReadonlyContext
 
-        def template = getTemplateByIdOrNull(templateId, context)
-        List<Long> entitiesIds = getEntityIdsByTemplate(template, entityName, request, context)
-
-        if (template != null)
-            entityName = template.entity
-
+        def template = getTemplate(templateId, context)
+        List<Long> entitiesIds = getEntityIds(entityName, request, context, template)
+        
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
-        RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
+        RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
 
         new RecipientsDTO().with { dto ->
             dto.students = new RecipientTypeDTO().with { typeDto ->
@@ -223,9 +212,12 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    RecipientsModel getRecipientsModel(String entityName, MessageTypeDTO messageType, List<Long> entitiesIds) {
+    private RecipientsModel getRecipientsModel(String entityName, MessageTypeDTO messageType, List<Long> entitiesIds, EmailTemplate template) {
         RecipientsModel recipientsModel = new RecipientsModel()
-
+        if (AbstractEntitiesUtil.isAbstract(entityName)) {
+            entityName = template.entity
+        }
+            
         Expression exp = null
         Property<Long> contactFindProperty = getFindContactProperty(entityName)
         if ( contactFindProperty != null ) {
@@ -323,12 +315,16 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         validateBeforeSend(messageType, recipientsCount, request)
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
 
-        Expression templateWithType = EmailTemplate.TYPE.eq(messageTypeDTO.dbType)
-        EmailTemplate template = getTemplateByIdOrNull(request.templateId, context, templateWithType)
-        List<Long> entitiesIds = getEntityIdsByTemplate(template, request.entity, request.searchQuery, context)
-        String entityName = template != null ? template.entity : request.entity
+        EmailTemplate template = getTemplate(request.templateId, context)
+        if (template == null || template.type != messageTypeDTO.dbType) {
+            logger.error("The message template didn't find out. MessageType: {}, Id: {}", messageTypeDTO.toString(), request.templateId)
+            validator.throwClientErrorException("templateId", "The message template didn't find out.")
+        }
+        
+        List<Long> entitiesIds = getEntityIds(request.entity, request.searchQuery, context, template)
+        String entityName = request.entity
 
-        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
+        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
         List<Long> recipientsToSend = new ArrayList<>()
 
         addRecipientsToSend(recipientsToSend, recipientsModel.students, request.sendToStudents, request.sendToSuppressStudents)
@@ -352,13 +348,18 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
                     "Please send in smaller batches or upgrade to a plan with a higher limit.")
         }
+        if (licenseService.getLisense("license.sms") != null && recipientsToSend.size() > (Integer)licenseService.getLisense("license.sms") && MessageTypeDTO.SMS == messageTypeDTO) {
+            logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
+                    licenseService.getLisense("license.sms"), recipientsToSend.size().toString())
+            if (licenseService.getLisense("license.sms") == 0) {
+                validator.throwClientErrorException("recipientsCount", "Your license does not allow sending sms. " +
+                        "Please, contact onCourse administrator to upgrade your plan.")
+            }
+            validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${licenseService.getLisense("license.sms")} sms in one batch. " +
+                    "Please send in smaller batches or upgrade to a plan with a higher limit.")
+        }
 
         SystemUser user = context.localObject(systemUserService.currentUser)
-
-        if (template == null) {
-            logger.error("The message template didn't find out. MessageType: {}, Id: {}", messageTypeDTO.toString(), request.templateId)
-            validator.throwClientErrorException("templateId", "The message template didn't find out.")
-        }
 
         Map<String, Object> plainBindings = templateApiService.getVariablesMap(request.variables, template)
         Map<String, Object> htmlBindings = templateApiService.getVariablesMap(request.variables, template, true)
@@ -485,42 +486,24 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    List<Long> getEntityIds(String entityName, SearchQueryDTO request, ObjectContext context,
-                            Expression exp = null) {
+    List<Long> getEntityIds(String entityName, SearchQueryDTO request, ObjectContext context, EmailTemplate template = null) {
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entityName)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
         def columnSelect = parseSearchQuery(objectSelect, context, aql, entityName, request.search, request.filter, request.tagGroups)
                 .column(Property.create("id", Long))
-        if (exp != null)
-            columnSelect = columnSelect.where(exp)
+
+        if (template != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
+            Expression isCurrentInheritorExp = AbstractEntitiesUtil.getIsCurrentInheritorExp(entityName, template.entity)
+            columnSelect = columnSelect.and(isCurrentInheritorExp)
+        }
+           
         return columnSelect.select(context)
     }
 
-
-    private EmailTemplate getTemplateByIdOrNull(Long templateId, ObjectContext context, Expression exp = null){
-        if (templateId == null)
-            return null
-        def objectSelect =  ObjectSelect.query(EmailTemplate.class)
-                .where(EmailTemplate.ID.eq(templateId))
-        if(exp != null)
-            objectSelect = objectSelect.where(exp)
-
-        return objectSelect.selectOne(context)
+    private EmailTemplate getTemplate(Long templateId, ObjectContext context){
+        return SelectById.query(EmailTemplate, templateId).selectOne(context)
     }
-
-
-    private List<Long> getEntityIdsByTemplate(EmailTemplate template, String entityName, SearchQueryDTO request,
-                                      ObjectContext context, Expression exp = null) {
-        if (template != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
-            Expression isCurrentInheritorExp = AbstractEntitiesUtil.getIsCurrentInheritorExp(entityName, template.entity)
-            if (exp != null)
-                isCurrentInheritorExp = isCurrentInheritorExp.andExp(exp)
-            return getEntityIds(template.entity, request, context, isCurrentInheritorExp)
-        } else
-            return getEntityIds(entityName, request, context, exp)
-    }
-
-
+    
     static List<Long> addRecipientsToSend(List<Long> recipients, RecipientGroupModel group, boolean suitableForSend, boolean suppressToSend) {
         if (suitableForSend) {
             recipients.addAll(group.suitableForSend)

@@ -7,6 +7,10 @@ import { State } from "../../../reducers/state";
 import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
 import routes from "../routes";
 import { SidebarSharedProps } from "../../../model/common/sidebar";
+import { LICENSE_ACCESS_CONTROL_KEY } from "../../../constants/Config";
+import { Dispatch } from "redux";
+import { getUserPreferences } from "../../../common/actions";
+import LDAP from "../containers/ldap/LDAP";
 
 const formTypes = Object.keys(DataCollectionType).map(type => {
   const response = { type, displayName: type };
@@ -16,13 +20,6 @@ const formTypes = Object.keys(DataCollectionType).map(type => {
   }
   return response;
 });
-
-const preferencesItems = routes
-  .filter(r => r.title)
-  .map(({ url, title }) => ({
-    url,
-    name: title
-  }));
 
 const DataCollectionTypesMenu = React.memo<any>(({ anchorEl, history, onClose }) => {
   const handleMenuClick = useCallback(e => {
@@ -43,9 +40,10 @@ const DataCollectionTypesMenu = React.memo<any>(({ anchorEl, history, onClose })
 
 const SideBar = React.memo<any>(
   ({
- search, history, collectionForms, collectionRules, activeFiltersConditions, tutorRoles
+ search, history, collectionForms, collectionRules, activeFiltersConditions, tutorRoles, accessLicense, onInit
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    useEffect(onInit, []);
 
     const dataCollectionTypesMenuOpen = useCallback(e => setAnchorEl(e.currentTarget), []);
     const dataCollectionTypesMenuClose = useCallback(() => setAnchorEl(null), []);
@@ -64,6 +62,13 @@ const SideBar = React.memo<any>(
 }),
       [history, search, activeFiltersConditions]
     );
+
+    const preferencesItems = routes
+      .filter(r => r.main !== LDAP || accessLicense)
+      .map(({ url, title }) => ({
+        url,
+        name: title
+      }));
 
     return (
       <>
@@ -114,10 +119,17 @@ const SideBar = React.memo<any>(
 const mapStateToProps = (state: State) => ({
   collectionForms: state.preferences.dataCollectionForms,
   collectionRules: state.preferences.dataCollectionRules,
-  tutorRoles: state.preferences.tutorRoles
+  tutorRoles: state.preferences.tutorRoles,
+  accessLicense: state.userPreferences[LICENSE_ACCESS_CONTROL_KEY] === 'true',
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  onInit: () => {
+    dispatch(getUserPreferences([LICENSE_ACCESS_CONTROL_KEY]));
+  },
 });
 
 export default connect<any, any, any>(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(SideBar);

@@ -23,16 +23,8 @@ const styles: any = () => ({
 
 const LicenseNames = {
   [Model.LicenseSMS.uniqueKey]: "SMS",
-  [Model.LicenseCreditCard.uniqueKey]: "Credit card",
   [Model.LicenseAccessControl.uniqueKey]: "Access control",
-  [Model.LicensePayroll.uniqueKey]: "Payroll",
-  [Model.LicenseVoucher.uniqueKey]: "Vouchers",
-  [Model.LicenseAttendance.uniqueKey]: "Attendance",
-  [Model.LicenseMembership.uniqueKey]: "Membership",
   [Model.LicenseScripting.uniqueKey]: "Scripting",
-  [Model.LicenseFeeHelpExport.uniqueKey]: "VET Fee Help exports",
-  [Model.LicenseFundingContract.uniqueKey]: "Funding contract",
-  [Model.LicenseGravatar.uniqueKey]: "Gravatar",
 };
 
 class Licences extends React.Component<any, any> {
@@ -55,7 +47,8 @@ class Licences extends React.Component<any, any> {
 
     const inactive = licences
       && Object.keys(licences)
-        .filter(item => licences[item] === "false")
+        .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+          && (licences[item].toLowerCase() === "false" || licences[item] === "0"))
         .map(item => this.listItem(item, false));
 
     return (
@@ -70,9 +63,10 @@ class Licences extends React.Component<any, any> {
           )}
         >
           {licences
-            && Object.keys(licences)
-              .filter(item => licences[item] === "true")
-              .map(item => this.listItem(item, true))}
+          && Object.keys(licences)
+            .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+              && (licences[item].toLowerCase() === "true" || Number(licences[item]) > 0))
+            .map(item => this.listItem(item, true))}
         </List>
 
         {inactive && Boolean(inactive.length) && (

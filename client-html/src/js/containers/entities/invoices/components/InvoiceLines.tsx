@@ -375,7 +375,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
         />
       </Grid>
 
-      <Grid item xs={12} className="pt-2">
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="multilineText"
           name={`${item}.description`}

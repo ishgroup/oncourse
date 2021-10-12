@@ -96,15 +96,13 @@ const TutorPayContent: React.FC<Props> = ({
         classValues.budgetedPlaces,
         classValues.successAndQueuedEnrolmentsCount,
         classValues.sessions,
-        classValues.tutorAttendance
       ).projected,
     [
       values,
       classValues.maximumPlaces,
       classValues.budgetedPlaces,
       classValues.successAndQueuedEnrolmentsCount,
-      classValues.sessions,
-      classValues.tutorAttendance
+      classValues.sessions
     ]
   );
 

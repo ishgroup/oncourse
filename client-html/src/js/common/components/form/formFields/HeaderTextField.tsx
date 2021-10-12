@@ -60,8 +60,7 @@ const HeaderTextField: React.FC<any> = ({
   className,
   autoFocus,
   disabled,
-  fullWidth,
-  inHeader
+  fullWidth
 }) => {
   const inputNode = useRef<any>();
 
@@ -105,7 +104,7 @@ const HeaderTextField: React.FC<any> = ({
               [classes.cssUnderline]: !invalid,
               [classes.cssUnderlineError]: invalid
             }),
-            input: clsx(inHeader && classes.editableInHeader),
+            input: classes.editableInHeader,
           }}
           inputRef={inputNode}
           value={input.value || ""}

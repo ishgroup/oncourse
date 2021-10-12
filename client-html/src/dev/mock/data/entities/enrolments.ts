@@ -24,7 +24,6 @@ export function mockEnrolments() {
       customFields: {},
       eligibilityExemptionIndicator: false,
       feeExemption: "Not set",
-      feeCharged: 550,
       feeHelpAmount: 0,
       feeHelpClass: true,
       fundingSource: "Domestic full fee paying student",

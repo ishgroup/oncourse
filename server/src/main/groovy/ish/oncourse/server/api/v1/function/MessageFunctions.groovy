@@ -42,6 +42,11 @@ class MessageFunctions {
                     "Membership": ProductItem.ID,
                     "Article": ProductItem.ID
             ],
+            "AbstractInvoice" : [
+                    "Invoice" : AbstractInvoice.ID,
+                    "Quote" : AbstractInvoice.ID,
+                    "Contact": Contact.INVOICES.dot(Invoice.ID)
+            ],
             "Enrolment" : ["Contact" : Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.ID)],
             "Invoice" : ["Contact" : Contact.INVOICES.dot(Invoice.ID)],
             "Quote" : ["Contact" : Contact.QUOTES.dot(Quote.ID)],
@@ -152,7 +157,7 @@ class MessageFunctions {
 
     static Property<Long> getEntityTransformationProperty(String entityName, String templateEntityName) {
         Property<Long> property = Property.create("id", Long)
-        if (entityName != "Contact" && !AbstractEntitiesUtil.isAbstract(entityName) && entityName != templateEntityName) {
+        if (entityName != "Contact" && entityName != templateEntityName) {
             property = ENTITY_TRANSFORMATION.get(entityName)?.get(templateEntityName)
         }
         property

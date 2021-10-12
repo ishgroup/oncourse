@@ -25,6 +25,7 @@ sourceSets.test.groovy.srcDir 'src/test/java'
 sourceCompatibility = 11
 
 dependencies {
+    implementation "org.apache.cayenne:cayenne-server:$cayenneVersion"
 
     api project(":types")
 
