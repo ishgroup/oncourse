@@ -46,9 +46,12 @@ public class UserDisableJob implements Job {
 
         LocalDate time = LocalDate.now().minus(Period.ofYears(4));
         List<SystemUser> inActiveUsers = ObjectSelect.query(SystemUser.class)
-                .where(SystemUser.LAST_LOGIN_ON.lte(Date.valueOf(time))).and(SystemUser.IS_ACTIVE.eq(Boolean.TRUE))
-                .select(dataContext);
-        inActiveUsers.forEach( systemUser -> systemUser.setIsActive(false));
+                .where((SystemUser.LAST_LOGIN_ON.lte(Date.valueOf(time)).andExp(SystemUser.IS_ACTIVE.isTrue()))
+                        .orExp(SystemUser.LAST_LOGIN_ON.isNull()
+                                .andExp(SystemUser.CREATED_ON.lte(Date.valueOf(time)))
+                                .andExp(SystemUser.IS_ACTIVE.isTrue())
+                        )).select(dataContext);
+        inActiveUsers.forEach(systemUser -> systemUser.setIsActive(false));
         dataContext.commitChanges();
     }
 }
