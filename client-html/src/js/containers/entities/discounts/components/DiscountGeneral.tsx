@@ -11,7 +11,6 @@ import Divider from "@mui/material/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
 import { connect } from "react-redux";
 import Decimal from "decimal.js-light";
-import { TransitionProps } from "@material-ui/core/transitions/transition";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";

@@ -184,6 +184,12 @@ const styles = theme => createStyles({
   extraSmallInlineInput: {
     minWidth: "1em",
   },
+  extraSmallInlineInputWrapper: {
+    maxWidth: "20px",
+    "&:hover": {
+      maxWidth: "none",
+    },
+  },
   selectMainWrapper: {
     "&:hover $selectIconInput": {
       visibility: 'visible',
@@ -675,7 +681,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         className: clsx({
           [classes.inlineInput]: isInline,
           [classes.inlineInputEmpty]: isInline && !input.value,
-          [classes.extraSmallInlineInput]: max && input.value && +max < 100,
+          [classes.extraSmallInlineInput]: max && input.value && +max < 100 && +input.value < 100,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
           [classes.hideArrows]: ["percentage", "number"].includes(type),
@@ -692,34 +698,18 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       variant: restInputProps.variant || "standard",
     };
 
-    const editIcon = select ? (
-      <ExpandMore
-        className={clsx("hoverIcon", classes.selectIcon, fieldClasses.placeholder, {
-          [classes.hiddenContainer]: rightAligned && disabled,
-          [classes.invisibleContainer]: !rightAligned && disabled
-        })}
-      />
-    ) : (
-      <Edit
-        className={clsx("hoverIcon editInPlaceIcon", fieldClasses.placeholder, {
-          [classes.hiddenContainer]: rightAligned && disabled,
-          [classes.invisibleContainer]: !rightAligned && disabled
-        })}
-      />
-    );
-
     return (
       <div
         id={input.name}
         className={clsx(className, "outline-none", {
-          [classes.inlineContainer]: isInline
+          [classes.inlineContainer]: isInline,
+          [classes.extraSmallInlineInputWrapper]: input.value && !isEditing && max && +max < 100 && +input.value < 100,
         })}
       >
         <div
           className={clsx({
             [classes.rightPadding]: formatting !== "inline",
             [classes.inlineMargin]: isInline,
-            // [classes.hiddenContainer]: isInline && !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
             "d-inline": isInline && (isEditing || invalid)
           })}
@@ -793,7 +783,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     root: clsx(isInline && classes.inlineInput, classes.textFieldBorderModified,
                       fieldClasses.text, classes.inputWrapper, isEditing && classes.isEditing,
                       (isInline && !input.value) && classes.inlineInputEmpty,
-                      max && input.value && +max < 100 && classes.extraSmallInlineInput),
+                      max && input.value && +max < 100 && classes.extraSmallInlineInput && +input.value < 100),
                     underline: fieldClasses.underline
                   }}
                   disabled={disabled}
