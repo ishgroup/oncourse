@@ -629,5 +629,36 @@
 		</preConditions>
 		<dropNotNullConstraint tableName="Invoice" columnName="invoiceNumber" columnDataType="BIGINT"/>
 	</changeSet>
+	
+	<changeSet id="48" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="HALT">
+			<not>
+				<columnExists tableName="SessionTutor" columnName="startDate" />
+				<columnExists tableName="SessionTutor" columnName="endDate"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="SessionTutor">
+			<column name="startDate" type="DATETIME"/>
+			<column name="endDate" type="DATETIME"/>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="49" author="artyom" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="HALT">
+			<columnExists tableName="SessionTutor" columnName="startDate" />
+			<columnExists tableName="SessionTutor" columnName="endDate"/>
+		</preConditions>
+		<sql>
+			UPDATE SessionTutor st
+			JOIN `Session` s ON  st.sessionId = s.id
+			SET st.startDate = s.startDate, st.endDate = s.endDate
+		</sql>
+	</changeSet>
+
+<!--	Can set not null Constraint only after update services (replication)-->
+<!--	<changeSet id="50" author="artyom" runOnChange="false" runAlways="false" context="production">-->
+<!--		<addNotNullConstraint tableName="SessionTutor" columnName="startDate" columnDataType="DATETIME" />-->
+<!--		<addNotNullConstraint tableName="SessionTutor" columnName="endDate" columnDataType="DATETIME" />-->
+<!--	</changeSet>-->
 
 </databaseChangeLog>
