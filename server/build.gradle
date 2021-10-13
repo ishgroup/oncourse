@@ -89,8 +89,8 @@ dependencies {
 		exclude group:'bouncycastle'
 	}
 
-	implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
-	implementation "org.bouncycastle:bcmail-jdk15on:$bouncycastleVersion"
+	implementation "org.bouncycastle:bcprov-jdk15on:1.69"
+	implementation "org.bouncycastle:bcmail-jdk15on:1.69"
 
 	api 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 	implementation 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
@@ -108,7 +108,6 @@ dependencies {
 	implementation 'org.apache.commons:commons-lang3:3.7'
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.10'
-//	api "com.google.inject:guice:$googleGuiceVersion"
 
 	implementation 'net.sf.supercsv:super-csv:2.4.0'
 	implementation 'net.sf.supercsv:super-csv-java8:2.4.0'
@@ -194,6 +193,7 @@ test {
 }
 
 task integration(type: Test) {
+	group = 'verification'
 	description = "Run integration tests requiring a database."
 	useJUnitPlatform {
 		includeTags "integration"
