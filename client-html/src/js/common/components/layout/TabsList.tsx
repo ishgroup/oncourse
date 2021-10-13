@@ -12,6 +12,7 @@ import Grid, { GridSize } from "@mui/material/Grid";
 import clsx from "clsx";
 import ListItem from "@mui/material/ListItem";
 import createStyles from "@mui/styles/createStyles";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
@@ -29,23 +30,38 @@ const styles = theme => createStyles({
     listItemRoot: {
       alignItems: "flex-start",
       marginBottom: theme.spacing(3),
-      color: theme.palette.common.white,
+      color: theme.tabList.listItemRoot.color,
       fontWeight: 600,
       opacity: 0.6,
       padding: 0,
+      overflow: "hidden",
+      position: "relative",
       "&$selected": {
         opacity: 1,
-        backgroundColor: "inherit"
+        backgroundColor: "inherit",
+        color: theme.tabList.listItemRoot.selectedColor,
+        "& $arrowIcon": {
+          transform: "translateX(0)",
+        },
+        "& $listItemText": {
+          paddingLeft: 30,
+        },
       }
     },
     listItemText: {
       fontWeight: "inherit",
-      width: "100%"
+      width: "100%",
+      transition: "all 0.5s ease-in-out",
     },
     indicator: {
       display: "none"
     },
-    selected: {}
+    selected: {},
+    arrowIcon: {
+      position: "absolute",
+      transform: "translateX(-30px)",
+      transition: "all 0.5s ease-in-out",
+    },
   });
 
 export interface TabsListItem {
@@ -208,27 +224,31 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
           >
             <div className={classes.listContainerInner}>
-              {items.map((i, index) => (
-                <ListItem
-                  // button
-                  selected={i.label === selected}
-                  classes={{
-                    root: classes.listItemRoot,
-                    selected: classes.selected
-                  }}
-                  onClick={() => scrollToSelected(i, index)}
-                  key={index}
-                >
-                  <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                    <div className="text-uppercase">{i.label}</div>
-                    {i.labelAdornment && (
-                      <Typography variant="caption" component="div" className="text-pre-wrap">
-                        {i.labelAdornment}
-                      </Typography>
-                    )}
-                  </Typography>
-                </ListItem>
-              ))}
+              {items.map((i, index) => {
+                const itemSelected = i.label === selected;
+                return (
+                  <ListItem
+                    // button
+                    selected={itemSelected}
+                    classes={{
+                      root: classes.listItemRoot,
+                      selected: classes.selected
+                    }}
+                    onClick={() => scrollToSelected(i, index)}
+                    key={index}
+                  >
+                    <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
+                    <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
+                      <div className="text-uppercase">{customLabels && customLabels[index] ? customLabels[index] : i.label}</div>
+                      {i.labelAdornment && (
+                        <Typography variant="caption" component="div" className="text-pre-wrap">
+                          {i.labelAdornment}
+                        </Typography>
+                      )}
+                    </Typography>
+                  </ListItem>
+                );
+              })}
             </div>
           </div>
         </Grid>
