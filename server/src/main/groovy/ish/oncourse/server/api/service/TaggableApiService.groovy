@@ -12,10 +12,11 @@
 package ish.oncourse.server.api.service
 
 import ish.oncourse.server.api.dao.CayenneLayer
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.traits._DTOTrait
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 
 abstract class TaggableApiService <T extends _DTOTrait, K extends TaggableCayenneDataObject, M extends CayenneLayer<K>> extends EntityApiService<T, K, M> {
 

@@ -18,23 +18,13 @@ import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.AccountTransaction;
-import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.InvoiceLine;
-import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
-import ish.oncourse.server.cayenne.PaymentOut;
-import ish.oncourse.server.cayenne.PaymentOutLine;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.SelectQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

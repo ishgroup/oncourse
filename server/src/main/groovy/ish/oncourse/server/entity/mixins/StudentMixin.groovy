@@ -14,14 +14,14 @@ package ish.oncourse.server.entity.mixins
 import groovy.transform.CompileDynamic
 import ish.common.types.AttendanceType
 import ish.oncourse.API
-import ish.oncourse.entity.services.SessionService
 import ish.oncourse.entity.services.StudentConcessionService
 import ish.oncourse.entity.services.StudentService
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.StudentConcession
-import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 import javax.annotation.Nonnull
+
+import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 @CompileDynamic
 class StudentMixin {

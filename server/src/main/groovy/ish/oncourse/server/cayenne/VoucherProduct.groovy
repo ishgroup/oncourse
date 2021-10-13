@@ -21,7 +21,6 @@ import org.apache.cayenne.validation.ValidationResult
 import org.apache.commons.lang3.StringUtils
 
 import javax.annotation.Nonnull
-import java.util.List
 
 /**
  * The Voucher Product represents an item available for sale (through the office or on the website).
@@ -62,7 +61,7 @@ class VoucherProduct extends _VoucherProduct {
 		if (!underpaymentAccount) {
 			result.addFailure(ValidationFailure.validationFailure(this, UNDERPAYMENT_ACCOUNT.getName(), "Underpayment account required."))
 		}
-		
+
 		if (StringUtils.trimToNull(getName()) == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, NAME.getName(), "Name cannot be empty."))
 		}

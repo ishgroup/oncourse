@@ -14,11 +14,8 @@ package ish.oncourse.server.concurrent
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.v1.model.ProcessStatusDTO
 
-import java.util.concurrent.Callable
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import java.util.concurrent.*
+
 @CompileStatic
 class ExecutorManager {
 

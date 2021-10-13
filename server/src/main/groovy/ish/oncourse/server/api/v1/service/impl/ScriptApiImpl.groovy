@@ -11,8 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
-import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ScriptApiService
@@ -20,12 +18,13 @@ import ish.oncourse.server.api.v1.model.ExecuteScriptRequestDTO
 import ish.oncourse.server.api.v1.model.ScriptDTO
 import ish.oncourse.server.api.v1.service.ScriptApi
 import ish.oncourse.server.api.validation.EntityValidator
+import ish.oncourse.types.OutputType
 import ish.scripting.ScriptResult
 
+import javax.inject.Inject
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.core.Context
 import java.time.LocalDateTime
-
 
 class ScriptApiImpl implements ScriptApi {
 

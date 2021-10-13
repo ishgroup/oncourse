@@ -8,10 +8,11 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.inject.Inject
 import ish.common.types.GradingEntryType
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.query.ObjectSelect
+
+import javax.inject.Inject
 
 trait GradingTypeTrait {
 

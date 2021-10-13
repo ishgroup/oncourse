@@ -11,27 +11,23 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
 import ish.oncourse.server.api.service.SiteApiService
-import static ish.oncourse.server.api.v1.function.SiteFunctions.toDbSite
-import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSite
-import static ish.oncourse.server.api.v1.function.SiteFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.SiteFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.SiteDTO
 import ish.oncourse.server.api.v1.service.SiteApi
 import ish.oncourse.server.cayenne.Site
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.EntityFunctions.*
+import static ish.oncourse.server.api.v1.function.SiteFunctions.*
 
 class SiteApiImpl implements SiteApi {
 

@@ -18,12 +18,13 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.PaymentOutLine
-import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 import ish.oncourse.server.services.TransactionLockedService
 import org.apache.cayenne.query.SelectById
 
-import javax.annotation.Nullable
 import javax.annotation.Nonnull
+import javax.annotation.Nullable
+
+import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 @CompileStatic
 class AccountTransactionMixin {

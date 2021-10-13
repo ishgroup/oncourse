@@ -11,17 +11,13 @@
 
 package ish.oncourse.server.api.dao
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
-import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.server.cayenne.AssessmentClass
-import ish.oncourse.server.cayenne.AssessmentClassModule
-import ish.oncourse.server.cayenne.AssessmentClassTutor
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Tutor
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
 
 class AssessmentClassDao implements ClassRelatedDao<AssessmentClass> {
 

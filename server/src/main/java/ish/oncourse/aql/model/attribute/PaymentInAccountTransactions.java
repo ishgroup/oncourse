@@ -12,25 +12,15 @@
 package ish.oncourse.aql.model.attribute;
 
 import ish.common.types.AccountTransactionType;
-import ish.oncourse.aql.impl.CompilationContext;
-import ish.oncourse.aql.impl.ExpressionUtil;
-import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
 import ish.oncourse.server.cayenne.AccountTransaction;
-import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.PaymentIn;
 import ish.oncourse.server.cayenne.PaymentInLine;
-import ish.oncourse.server.cayenne.ProductItem;
-import ish.oncourse.server.cayenne.Voucher;
-import ish.oncourse.server.cayenne.VoucherPaymentIn;
 import org.apache.cayenne.Persistent;
-import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
-import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.List;
 import java.util.Optional;
 
 public class PaymentInAccountTransactions implements SyntheticAttributeDescriptor {

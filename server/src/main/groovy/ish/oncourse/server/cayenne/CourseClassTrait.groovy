@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import groovy.time.TimeCategory
+
 import groovy.transform.CompileDynamic
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
@@ -51,7 +51,7 @@ trait CourseClassTrait {
            DiscountCourseClass discountCourseClass = objectContext.newObject(DiscountCourseClass)
            discountCourseClass.courseClass = this as CourseClass
            discountCourseClass.discount = objectContext.localObject(discount)
-           
+
            ClassCost classCost = objectContext.newObject(ClassCost)
            classCost.courseClass = this as CourseClass
            classCost.discountCourseClass = discountCourseClass
@@ -77,7 +77,7 @@ trait CourseClassTrait {
             objectContext.deleteObjects(discountCourseClasses)
         }
     }
-    
+
     @API
     BigDecimal getQualificationHours() {
         getCourse().qualification?.nominalHours

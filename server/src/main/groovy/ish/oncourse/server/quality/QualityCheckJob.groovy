@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.quality
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.query.ObjectSelect
@@ -21,6 +20,8 @@ import org.quartz.DisallowConcurrentExecution
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
+
+import javax.inject.Inject
 
 @DisallowConcurrentExecution
 class QualityCheckJob implements Job {

@@ -11,15 +11,14 @@
 
 package ish.oncourse.server.security;
 
-import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.ACLRole;
-import ish.security.LdapAuthConnection;
 import ish.security.LdapAuthConnectionRequest;
 import ish.security.LdapProperties;
 import ish.security.TestLdapAuthConnection;
 import org.apache.cayenne.query.ObjectSelect;
 
+import javax.inject.Inject;
 import javax.naming.Name;
 import javax.naming.NamingException;
 import java.util.ArrayList;

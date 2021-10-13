@@ -15,14 +15,15 @@ import groovy.transform.CompileStatic
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
+import ish.oncourse.server.scripting.ScriptClosureTrait
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
+
 /**
  * Mailchimp integration groovy script API. Allows to subscribe/unsubscribe contact to/from Mailchimp list.
  * You can use 'subscribe' action for updating contacts in MailChimp.

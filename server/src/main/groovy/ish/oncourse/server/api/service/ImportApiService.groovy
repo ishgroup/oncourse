@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
+import ish.common.types.DataType
 import ish.imports.ImportResult
 import ish.oncourse.server.api.dao.ImportDao
 import ish.oncourse.server.api.model.ImportModel
@@ -20,9 +20,9 @@ import ish.oncourse.server.api.v1.model.ImportModelDTO
 import ish.oncourse.server.cayenne.Import
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.imports.ImportService
-import ish.common.types.DataType
 import org.apache.cayenne.ObjectContext
 
+import javax.inject.Inject
 import java.util.concurrent.Callable
 
 class ImportApiService extends AutomationApiService<ImportModelDTO, Import, ImportDao> {

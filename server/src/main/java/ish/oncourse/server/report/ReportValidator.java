@@ -19,8 +19,6 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-
 import static ish.report.ImportReportResult.ReportValidationError.*;
 
 public class ReportValidator {

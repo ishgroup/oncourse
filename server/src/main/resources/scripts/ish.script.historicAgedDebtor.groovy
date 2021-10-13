@@ -2,8 +2,10 @@ import ish.math.Money
 import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.server.cayenne.PaymentOutLine
 import ish.oncourse.server.export.CsvBuilder
-import static java.time.temporal.ChronoUnit.DAYS
+
 import java.time.LocalDate
+
+import static java.time.temporal.ChronoUnit.DAYS
 
 List<ContactRow> rows = []
 def contacts = query {

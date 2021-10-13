@@ -18,7 +18,6 @@ import ish.validation.AngelStudentConcessionValidator
 import org.apache.cayenne.validation.ValidationResult
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * StudentConcessions are attributes of Students describing the properties of a particular ConcessionType held

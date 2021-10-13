@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.common.types.PaymentStatus
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.FinalisePeriodInfoDTO
@@ -27,15 +26,17 @@ import ish.persistence.Preferences
 import ish.util.LocalDateUtils
 import ish.util.PaymentMethodUtil
 import ish.validation.TransactionLockedErrorCode
-import static ish.validation.TransactionLockedErrorCode.*
 import ish.validation.TransactionLockedValidator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate
+
+import static ish.validation.TransactionLockedErrorCode.*
 
 class FinalisePeriodApiImpl implements FinalisePeriodApi {
 

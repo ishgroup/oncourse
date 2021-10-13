@@ -1,11 +1,12 @@
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.EntityRelationTypeDao
 import ish.oncourse.server.api.service.EntityRelationTypeApiService
 import ish.oncourse.server.api.v1.model.EntityRelationTypeDTO
 import ish.oncourse.server.api.v1.service.EntityRelationTypeApi
+
+import javax.inject.Inject
 
 import static ish.oncourse.server.api.service.EntityRelationTypeApiService.validateDuplicates
 

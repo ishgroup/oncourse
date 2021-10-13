@@ -15,8 +15,6 @@ import ish.common.types.AccountType
 import ish.oncourse.DefaultAccount
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.BidiMap
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.v1.function.TaxFunctions.toRestTaxMinimized
 import ish.oncourse.server.api.v1.model.AccountDTO
 import ish.oncourse.server.api.v1.model.AccountTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -24,10 +22,13 @@ import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Tax
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.ZoneOffset
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.v1.function.TaxFunctions.toRestTaxMinimized
+import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class AccountFunctions {
 

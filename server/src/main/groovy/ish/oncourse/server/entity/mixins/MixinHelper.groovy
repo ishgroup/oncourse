@@ -11,43 +11,13 @@
 
 package ish.oncourse.server.entity.mixins
 
+import groovy.transform.CompileDynamic
 import io.bootique.di.Injector
+import ish.oncourse.cayenne.PersistentObjectI
+import ish.oncourse.server.cayenne.*
+import ish.print.PrintableObject
 
 import javax.inject.Inject
-import groovy.transform.CompileDynamic
-import ish.oncourse.cayenne.PersistentObjectI
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.AccountTransaction
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.ArticleProduct
-import ish.oncourse.server.cayenne.Banking
-import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CorporatePass
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.Discount
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceDueDate
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Script
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.SessionModule
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.cayenne.VoucherProduct
-import ish.oncourse.server.cayenne.WaitingList
-import ish.print.PrintableObject
 
 class MixinHelper {
 

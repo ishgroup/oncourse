@@ -16,8 +16,6 @@ import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
 import ish.oncourse.server.cayenne.AccountTransaction;
-import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
 import ish.oncourse.server.cayenne.PaymentOut;
 import ish.oncourse.server.cayenne.PaymentOutLine;
 import org.apache.cayenne.Persistent;

@@ -11,12 +11,9 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.ConfirmationStatus
-import ish.common.types.PaymentStatus
-import static ish.common.types.PaymentStatus.*
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.entity.services.SetPaymentMethod
@@ -24,31 +21,28 @@ import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.InvoiceDao
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.dao.PaymentOutDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.PaymentInvoiceDTO
 import ish.oncourse.server.api.v1.model.PaymentOutDTO
 import ish.oncourse.server.api.v1.model.PaymentStatusDTO
 import ish.oncourse.server.api.v1.model.PaymentTypeDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
-import ish.oncourse.server.cayenne.Site
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.server.windcave.PaymentService
 import ish.oncourse.server.windcave.SessionAttributes
-import static ish.util.LocalDateUtils.dateToTimeValue
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
-
-import static ish.util.EnumUtil.toDTOEnum
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
 
+import javax.inject.Inject
 import java.time.LocalDate
+
+import static ish.common.types.PaymentStatus.FAILED
+import static ish.common.types.PaymentStatus.SUCCESS
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.util.EnumUtil.toDTOEnum
+import static ish.util.LocalDateUtils.dateToTimeValue
 
 @CompileStatic
 class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, PaymentOutDao> {

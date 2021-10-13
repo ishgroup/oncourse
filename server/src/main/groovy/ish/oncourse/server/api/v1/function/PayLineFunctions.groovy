@@ -12,17 +12,18 @@
 package ish.oncourse.server.api.v1.function
 
 import ish.math.Money
-import ish.oncourse.server.api.v1.model.PayLineDTO
 import ish.oncourse.server.api.v1.model.ClassCostRepetitionTypeDTO
+import ish.oncourse.server.api.v1.model.PayLineDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.ClassCost
 import ish.oncourse.server.cayenne.PayLine
 import ish.oncourse.server.cayenne.Payslip
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.LocalDate
+
+import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class PayLineFunctions {
 

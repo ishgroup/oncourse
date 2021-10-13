@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.export
 
-import javax.inject.Inject
 import groovy.json.JsonBuilder
 import groovy.transform.CompileDynamic
 import groovy.xml.MarkupBuilder
@@ -20,7 +19,6 @@ import ish.export.ExportResult
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
-import ish.oncourse.server.messaging.DocumentParam
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.ExportSpec
@@ -28,6 +26,7 @@ import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import javax.script.ScriptEngineManager
 import javax.script.SimpleBindings
 

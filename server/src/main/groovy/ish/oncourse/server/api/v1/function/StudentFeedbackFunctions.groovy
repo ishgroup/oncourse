@@ -11,12 +11,10 @@
 
 package ish.oncourse.server.api.v1.function
 
-import static ish.common.types.SurveyVisibility.NOT_TESTIMONIAL
-import static ish.common.types.SurveyVisibility.REVIEW
-import static ish.common.types.SurveyVisibility.STUDENT_HIDDEN
-import static ish.common.types.SurveyVisibility.TESTIMONIAL
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.SurveyVisibilityDTO
+
+import static ish.common.types.SurveyVisibility.*
 
 class StudentFeedbackFunctions {
 

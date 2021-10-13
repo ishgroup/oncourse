@@ -13,7 +13,6 @@ package ish.oncourse.server.scripting.api;
 import ish.math.Money;
 import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.CourseClassPaymentPlanLine;
-import org.apache.cayenne.ObjectContext;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

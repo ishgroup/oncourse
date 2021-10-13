@@ -11,15 +11,15 @@
 
 package ish.oncourse.server.services
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
-import ish.oncourse.types.AuditAction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
+import ish.oncourse.types.AuditAction
 import org.apache.cayenne.Cayenne
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.Timestamp

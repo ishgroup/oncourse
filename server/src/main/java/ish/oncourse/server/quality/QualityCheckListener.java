@@ -19,8 +19,6 @@ import org.apache.cayenne.annotation.PostRemove;
 import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.List;
-
 public class QualityCheckListener {
 
 	private QualityService qualityService;

@@ -12,62 +12,11 @@
 package ish.oncourse.server.api.v1.function.export
 
 import ish.oncourse.aql.AqlService
-import ish.oncourse.server.cayenne.AbstractInvoice
-import ish.oncourse.server.cayenne.AbstractInvoiceLine
-import ish.oncourse.server.cayenne.AssessmentSubmission
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.cayenne.PaymentInterface
-import ish.oncourse.server.cayenne.Lead
-import ish.oncourse.server.cayenne.Quote
-import ish.oncourse.server.cayenne.QuoteLine
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.TrainingPackage
-import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import ish.oncourse.server.api.v1.model.ColumnDTO
 import ish.oncourse.server.api.v1.model.SortingDTO
 import ish.oncourse.server.api.v1.model.TagGroupDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.AccountTransaction
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.ArticleProduct
-import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.server.cayenne.Audit
-import ish.oncourse.server.cayenne.Banking
-import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CorporatePass
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Discount
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.PayLine
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.PriorLearning
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Qualification
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Script
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.Survey
-import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.cayenne.TutorAttendance
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherProduct
-import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.preference.DefaultUserPreference
 import ish.util.EntityUtil
@@ -75,6 +24,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SortOrder
+
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 
 class ExportFunctions {
 

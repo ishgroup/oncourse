@@ -13,18 +13,9 @@ package ish.oncourse.aql.impl.converter;
 
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.Op;
-import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.Course;
-import ish.oncourse.server.cayenne.CourseClass;
-import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Module;
-import ish.oncourse.server.cayenne.Outcome;
-import ish.oncourse.server.cayenne.Student;
-import org.apache.cayenne.exp.parser.ASTAnd;
-import org.apache.cayenne.exp.parser.ASTObjPath;
-import org.apache.cayenne.exp.parser.ASTOr;
-import org.apache.cayenne.exp.parser.ASTScalar;
-import org.apache.cayenne.exp.parser.SimpleNode;
+import ish.oncourse.server.cayenne.*;
+import org.apache.cayenne.exp.parser.*;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 

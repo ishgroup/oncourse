@@ -18,29 +18,9 @@ import ish.oncourse.cayenne.FinancialItem
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.ContactRelationDao
 import ish.oncourse.server.api.dao.ContactRelationTypeDao
-import ish.oncourse.server.api.v1.model.ContactDTO
-import ish.oncourse.server.api.v1.model.MessagePersonDTO
-import ish.oncourse.server.api.v1.model.MessageStatusDTO
-import ish.oncourse.server.api.v1.model.MessageTypeDTO
-import ish.oncourse.server.api.v1.model.StudentConcessionDTO
-import ish.oncourse.server.api.v1.model.StudentDTO
-import ish.oncourse.server.cayenne.ConcessionType
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.api.v1.model.ContactRelationDTO
-import ish.oncourse.server.api.v1.model.DocumentDTO
-import ish.oncourse.server.api.v1.model.PaymentStatusDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.ContactRelationType
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.api.v1.model.FinancialLineDTO
-import ish.oncourse.server.api.v1.model.FinancialTypeDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactAttachmentRelation
-import ish.oncourse.server.cayenne.ContactRelation
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.InvoiceLine
+import ish.oncourse.server.cayenne.*
 import ish.util.InvoiceUtil
 import ish.util.LocalDateUtils
 import ish.util.UsiUtil
@@ -50,14 +30,14 @@ import org.apache.cayenne.Persistent
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.Ordering
-import org.apache.cayenne.query.Orderings
 import org.apache.cayenne.query.PrefetchTreeNode
 import org.apache.cayenne.query.SortOrder
 import org.apache.commons.lang3.StringUtils
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static org.apache.commons.lang3.StringUtils.isBlank
 
 import java.time.LocalDate
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static org.apache.commons.lang3.StringUtils.isBlank
 
 class ContactFunctions {
 

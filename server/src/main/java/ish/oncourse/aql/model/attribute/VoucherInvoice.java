@@ -17,13 +17,8 @@ import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
-import ish.oncourse.server.cayenne.ProductItem;
-import ish.oncourse.server.cayenne.Voucher;
 import ish.oncourse.server.cayenne.VoucherPaymentIn;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;

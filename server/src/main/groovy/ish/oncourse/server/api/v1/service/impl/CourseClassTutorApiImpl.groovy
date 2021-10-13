@@ -11,13 +11,15 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.CourseClassTutorApiService
-import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 import ish.oncourse.server.api.v1.model.CourseClassTutorDTO
 import ish.oncourse.server.api.v1.service.CourseClassTutorApi
 import ish.oncourse.server.cayenne.CourseClassTutor
 import org.apache.cayenne.validation.ValidationException
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 
 class CourseClassTutorApiImpl implements CourseClassTutorApi {
 

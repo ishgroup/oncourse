@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.imports
 
-import javax.inject.Inject
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.imports.ImportParameter
@@ -31,6 +30,7 @@ import org.apache.cayenne.validation.ValidationException
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
 import javax.script.SimpleBindings

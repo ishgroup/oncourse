@@ -15,14 +15,12 @@ import ish.common.types.ExpiryType
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.dao.CayenneLayer
 import ish.oncourse.server.api.v1.model.ExpiryTypeDTO
-import static ish.oncourse.server.api.v1.model.ExpiryTypeDTO.DAYS
-import static ish.oncourse.server.api.v1.model.ExpiryTypeDTO.NEVER_LIFETIME_
-import static ish.oncourse.server.api.v1.model.ExpiryTypeDTO._1ST_JANUARY
-import static ish.oncourse.server.api.v1.model.ExpiryTypeDTO._1ST_JULY
 import ish.oncourse.server.api.v1.model.MembershipCorporatePassDTO
 import ish.oncourse.server.cayenne.CorporatePass
 import ish.oncourse.server.cayenne.CorporatePassProduct
 import ish.oncourse.server.cayenne.Product
+
+import static ish.oncourse.server.api.v1.model.ExpiryTypeDTO.*
 
 class ProductFunctions {
 

@@ -5,13 +5,13 @@
 
 package ish.oncourse.aql.impl.converter;
 
-import java.util.List;
-
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.impl.Op;
 import org.apache.cayenne.exp.parser.*;
+
+import java.util.List;
 
 public class LazyRelationshipComparisonNode extends LazyExpressionNode {
 

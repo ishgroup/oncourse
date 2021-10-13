@@ -11,11 +11,6 @@
 
 package ish.oncourse.server.api.v1.function
 
-import static ish.common.types.QualificationType.COURSE_TYPE
-import static ish.common.types.QualificationType.HIGHER_TYPE
-import static ish.common.types.QualificationType.QUALIFICATION_TYPE
-import static ish.common.types.QualificationType.SKILLSET_LOCAL_TYPE
-import static ish.common.types.QualificationType.SKILLSET_TYPE
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.QualificationDTO
 import ish.oncourse.server.api.v1.model.QualificationTypeDTO
@@ -23,9 +18,11 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Qualification
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.ZoneOffset
+
+import static ish.common.types.QualificationType.*
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class QualificationFunctions {
 

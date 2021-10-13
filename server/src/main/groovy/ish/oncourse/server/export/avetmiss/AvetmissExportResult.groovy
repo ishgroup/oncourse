@@ -13,17 +13,7 @@ package ish.oncourse.server.export.avetmiss
 import groovy.transform.CompileStatic
 import ish.common.types.OutcomeStatus
 import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.export.avetmiss8.Avetmiss010Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss020Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss030Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss060Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss080Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss085Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss090Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss100Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss120Line
-import ish.oncourse.server.export.avetmiss8.Avetmiss130Line
-import ish.oncourse.server.export.avetmiss8.AvetmissLine
+import ish.oncourse.server.export.avetmiss8.*
 import ish.util.StringUtil
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -36,7 +26,7 @@ import java.util.concurrent.ConcurrentMap
 class AvetmissExportResult {
 
     private static final Logger logger = LogManager.getLogger()
-    
+
     ConcurrentMap<String, Avetmiss010Line> avetmiss010Lines = new ConcurrentHashMap<String, Avetmiss010Line>()
     ConcurrentMap<String, Avetmiss020Line> avetmiss020Lines = new ConcurrentHashMap<String, Avetmiss020Line>()
     ConcurrentMap<String, Avetmiss030Line> avetmiss030Lines = new ConcurrentHashMap<String, Avetmiss030Line>()
@@ -49,16 +39,16 @@ class AvetmissExportResult {
     ConcurrentMap<String, Avetmiss130Line> avetmiss130Lines = new ConcurrentHashMap<String, Avetmiss130Line>()
 
 
-    
+
     private AvetmissExportResultType success
     private Map<String, ByteArrayOutputStream> exportFiles = [:]
-    
+
     LocalDate exportEndDate
     OutcomeStatus defaultOutcome
     Site adminSite
     LocalDate overriddenEndDate
     Boolean ignoreAssessments
-    
+
     boolean has_SKILLSET_LOCAL_TYPE = false
 
     void setFile(String fileName, ByteArrayOutputStream contents) {

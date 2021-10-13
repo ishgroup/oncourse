@@ -15,16 +15,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ish.common.types.KeyCode;
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO;
 import ish.oncourse.server.cayenne.ACLAccessKey;
-import ish.oncourse.server.cayenne.ACLRole;
 import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.security.api.permission.*;
 import ish.oncourse.server.services.ISystemUserService;
-import org.apache.xerces.util.URI;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

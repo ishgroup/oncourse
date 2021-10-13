@@ -8,22 +8,23 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.ApiTokenDao
 import ish.oncourse.server.api.service.ApiTokenApiService
 import ish.oncourse.server.api.v1.model.ApiTokenDTO
 import ish.oncourse.server.api.v1.service.TokenApi
 
+import javax.inject.Inject
+
 class ApiTokenApiImpl implements TokenApi {
-    
+
     @Inject
     ApiTokenApiService entityService
     @Inject
     CayenneService cayenneService
     @Inject
     ApiTokenDao entityDao
-    
+
     @Override
     void create(List<ApiTokenDTO> tokens) {
         cayenneService.getServerRuntime().performInTransaction {

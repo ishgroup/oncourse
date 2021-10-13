@@ -11,34 +11,22 @@
 
 package ish.oncourse.server.deduplication
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.CayenneService
-import ish.oncourse.server.api.dao.ContactDao
-import ish.oncourse.server.api.dao.ContactDuplicateDao
-import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CustomFieldDao
-import ish.oncourse.server.api.dao.EnrolmentDao
-import ish.oncourse.server.api.dao.InvoiceDao
-import ish.oncourse.server.api.dao.NoteDao
-import ish.oncourse.server.api.dao.TagDao
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.function.DateFunctions
 import ish.oncourse.server.api.v1.function.ContactMergeFunctions
 import ish.oncourse.server.api.v1.function.EntityFunctions
 import ish.oncourse.server.api.v1.model.InfoLineDTO
 import ish.oncourse.server.api.v1.model.MergeLineDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactCustomField
-import ish.oncourse.server.cayenne.ContactTagRelation
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.Tutor
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.ISystemUserService
 import ish.util.DateFormatter
 import ish.util.TimeFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
+
+import javax.inject.Inject
 
 @CompileStatic
 class ContactMergeService {

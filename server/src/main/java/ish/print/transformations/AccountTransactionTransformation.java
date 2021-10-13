@@ -12,8 +12,6 @@
 package ish.print.transformations;
 
 import ish.print.AdditionalParameters;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 

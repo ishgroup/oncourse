@@ -11,10 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.SurveyApiService
 import ish.oncourse.server.api.v1.model.SurveyItemDTO
 import ish.oncourse.server.api.v1.service.SurveyApi
+
+import javax.inject.Inject
 
 class SurveyApiImpl implements SurveyApi {
 

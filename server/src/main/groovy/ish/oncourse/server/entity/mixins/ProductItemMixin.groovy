@@ -11,11 +11,8 @@
 
 package ish.oncourse.server.entity.mixins
 
-import static ish.common.types.ProductStatus.*
 import ish.common.types.ProductType
-import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.ProductItem
-import static ish.persistence.CommonExpressionFactory.previousMidnight
 import org.apache.commons.lang3.StringUtils
 
 class ProductItemMixin {

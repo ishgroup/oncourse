@@ -15,8 +15,6 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._TrainingPackage
 
 import javax.annotation.Nonnull
-import java.util.Date
-import java.util.List
 
 /**
  * The Training Package class contains records from training packages (national)

@@ -11,11 +11,12 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.OutcomeApiService
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.OutcomeDTO
 import ish.oncourse.server.api.v1.service.OutcomeApi
+
+import javax.inject.Inject
 
 class OutcomeApiImpl implements OutcomeApi {
 

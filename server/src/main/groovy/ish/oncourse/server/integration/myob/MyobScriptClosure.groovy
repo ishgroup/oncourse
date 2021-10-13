@@ -11,11 +11,10 @@
 
 package ish.oncourse.server.integration.myob
 
-
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.AccountTransaction
-import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
+import ish.oncourse.server.scripting.ScriptClosureTrait
 
 @API
 @ScriptClosure(key = "myob", integration = MyobIntegration)

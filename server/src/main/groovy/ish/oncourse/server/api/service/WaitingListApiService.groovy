@@ -12,9 +12,7 @@
 package ish.oncourse.server.api.service
 
 import ish.oncourse.server.api.dao.WaitingListDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.WaitingListDTO
-import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.WaitingList
 import org.apache.cayenne.ObjectContext
 

@@ -11,21 +11,16 @@
 
 package ish.oncourse.server.api.dao
 
-import javax.inject.Inject
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.server.CayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.*
 import ish.util.AccountUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
 
 class CourseClassDao implements CayenneLayer<CourseClass> {
 

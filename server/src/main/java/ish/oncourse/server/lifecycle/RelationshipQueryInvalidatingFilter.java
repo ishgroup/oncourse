@@ -12,9 +12,7 @@
 package ish.oncourse.server.lifecycle;
 
 import org.apache.cayenne.*;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.map.ObjRelationship;
 import org.apache.cayenne.query.Query;
 import org.apache.cayenne.query.RelationshipQuery;
 import org.apache.cayenne.query.SelectQuery;

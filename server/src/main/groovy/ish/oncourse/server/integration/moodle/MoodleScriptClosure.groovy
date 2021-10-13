@@ -14,8 +14,8 @@ package ish.oncourse.server.integration.moodle
 import groovy.transform.CompileStatic
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
+import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.util.SecurityUtil
 
 /**

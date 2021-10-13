@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.dao
 
-import javax.inject.Inject
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
@@ -20,6 +19,8 @@ import ish.oncourse.server.cayenne.DiscountCourseClass
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
 
 class ClassCostDao implements CayenneLayer<ClassCost> {
 

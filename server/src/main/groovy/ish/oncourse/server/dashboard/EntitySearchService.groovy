@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.dashboard
 
-import javax.inject.Inject
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.oncourse.aql.AqlService
@@ -23,6 +22,8 @@ import ish.oncourse.server.security.api.IPermissionService
 import org.apache.cayenne.PersistentObject
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+
+import javax.inject.Inject
 
 abstract class EntitySearchService<T extends PersistentObject> {
 

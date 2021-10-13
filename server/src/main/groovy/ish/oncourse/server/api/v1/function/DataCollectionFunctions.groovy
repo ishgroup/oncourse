@@ -12,51 +12,23 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
-import ish.oncourse.server.cayenne.ArticleFieldConfiguration
-import ish.oncourse.server.cayenne.MembershipFieldConfiguration
-import ish.oncourse.server.cayenne.VoucherFieldConfiguration
-import ish.oncourse.server.cayenne.WaitingList
-
-import javax.ws.rs.ClientErrorException
-import javax.ws.rs.core.Response
-
-import static ish.common.types.DataType.LIST
-import static ish.common.types.DataType.MAP
-import static ish.common.types.DataType.TEXT
 import ish.common.types.DeliverySchedule
 import ish.common.types.FieldConfigurationType
 import ish.common.types.NodeType
-import static ish.oncourse.common.field.FieldProperty.*
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
-import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
-import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
-import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
-import ish.oncourse.server.api.v1.model.DataCollectionTypeDTO
-import ish.oncourse.server.api.v1.model.DeliveryScheduleTypeDTO
-import ish.oncourse.server.api.v1.model.FieldDTO
-import ish.oncourse.server.api.v1.model.FieldTypeDTO
-import ish.oncourse.server.api.v1.model.HeadingDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.ApplicationFieldConfiguration
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CustomFieldType
-import ish.oncourse.server.cayenne.EnrolmentFieldConfiguration
-import ish.oncourse.server.cayenne.Field
-import ish.oncourse.server.cayenne.FieldConfiguration
-import ish.oncourse.server.cayenne.FieldConfigurationLink
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.FieldHeading
-import ish.oncourse.server.cayenne.ParentFieldConfiguration
-import ish.oncourse.server.cayenne.PayerFieldConfiguration
-import ish.oncourse.server.cayenne.Survey
-import ish.oncourse.server.cayenne.SurveyFieldConfiguration
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.WaitingListFieldConfiguration
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 import java.time.ZoneOffset
+
+import static ish.common.types.DataType.*
+import static ish.oncourse.common.field.FieldProperty.*
+import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFactory.TAG_PATTERN
 
 @CompileStatic
 class DataCollectionFunctions {
@@ -72,7 +44,7 @@ class DataCollectionFunctions {
                                YEAR_SCHOOL_COMPLETED, ENGLISH_PROFICIENCY, INDIGENOUS_STATUS, HIGHEST_SCHOOL_LEVEL, IS_STILL_AT_SCHOOL,
                                PRIOR_EDUCATION_CODE, LABOUR_FORCE_STATUS, DISABILITY_TYPE, SPECIAL_NEEDS, MIDDLE_NAME, HONORIFIC, TITLE ]
                                 .collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
-        
+
             WAITING_LIST_FIELDS = [DETAIL, STUDENTS_COUNT].collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
         }
 
@@ -124,7 +96,7 @@ class DataCollectionFunctions {
                     .collect{new FieldTypeDTO(uniqueKey: "${TAG_PATTERN}${it.pathName}", label: it.name)}
 
             fieldTypes += VISIBLE_FIELDS
-            
+
             if (WaitingList.simpleName == formType) {
                 fieldTypes += WAITING_LIST_FIELDS
             }

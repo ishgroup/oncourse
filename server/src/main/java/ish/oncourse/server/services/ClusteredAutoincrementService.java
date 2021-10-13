@@ -10,11 +10,6 @@
  */
 package ish.oncourse.server.services;
 
-import java.sql.Connection;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SQLExec;
@@ -22,6 +17,11 @@ import org.apache.cayenne.query.SQLSelect;
 import org.apache.cayenne.tx.TransactionDescriptor;
 import org.apache.cayenne.tx.TransactionManager;
 import org.apache.cayenne.tx.TransactionPropagation;
+
+import javax.inject.Inject;
+import java.sql.Connection;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly;
 

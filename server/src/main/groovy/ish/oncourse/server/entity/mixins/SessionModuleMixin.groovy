@@ -14,6 +14,7 @@ package ish.oncourse.server.entity.mixins
 import ish.oncourse.API
 import ish.oncourse.entity.services.SessionService
 import ish.oncourse.server.cayenne.SessionModule
+
 import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 class SessionModuleMixin {

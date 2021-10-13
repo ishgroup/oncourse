@@ -30,7 +30,7 @@ sourceSets {
 		groovy {
 			srcDirs += 'src/main/java'
 			srcDirs += 'src/main/groovy'
-			srcDirs += "$buildDir/antlr/java"
+			srcDirs += "${buildDir}/antlr/java"
 			srcDirs += "${buildDir}/generated-resources/main/java"
 		}
 		java {

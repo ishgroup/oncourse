@@ -11,51 +11,29 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.common.types.AccountType
 import ish.math.Money
-import ish.oncourse.server.api.dao.AccountDao
-import ish.oncourse.server.api.dao.ContactRelationTypeDao
-import ish.oncourse.server.api.dao.CorporatePassDao
-import ish.oncourse.server.api.dao.CorporatePassProductDao
-import ish.oncourse.server.api.dao.DiscountDao
-import ish.oncourse.server.api.dao.DiscountMembershipDao
-import ish.oncourse.server.api.dao.DiscountMembershipRelationTypeDao
-import ish.oncourse.server.api.dao.EntityRelationDao
-import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
-import ish.oncourse.server.api.dao.MembershipProductDao
-import ish.oncourse.server.api.dao.ProductDao
-import ish.oncourse.server.api.dao.TaxDao
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Product
-
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.function.MembershipProductFunctions
-import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
-import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
-import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
-import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePasses
 import ish.oncourse.server.api.v1.model.ExpiryTypeDTO
 import ish.oncourse.server.api.v1.model.MembershipCorporatePassDTO
 import ish.oncourse.server.api.v1.model.MembershipDiscountDTO
 import ish.oncourse.server.api.v1.model.MembershipProductDTO
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.DISABLED
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.CorporatePass
-import ish.oncourse.server.cayenne.DiscountMembership
-import ish.oncourse.server.cayenne.DiscountMembershipRelationType
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.cayenne.*
+import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+import java.time.ZoneId
+
+import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
+import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
+import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
+import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePasses
+import static ish.oncourse.server.api.v1.model.ProductStatusDTO.*
 import static ish.util.MoneyUtil.calculateTaxAdjustment
 import static ish.util.MoneyUtil.getPriceIncTax
-import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.isNotBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
-
-import java.time.ZoneId
+import static org.apache.commons.lang3.StringUtils.*
 
 class MembershipProductApiService extends EntityApiService<MembershipProductDTO, MembershipProduct, MembershipProductDao> {
 

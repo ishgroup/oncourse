@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.inject.Inject
 import ish.common.types.EnrolmentStatus
 import ish.common.types.InvoiceType
 import ish.oncourse.API
@@ -25,6 +24,7 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 
 import javax.annotation.Nonnull
+import javax.inject.Inject
 
 /**
  * Invoices are where the accounting side of onCourse meets the training and delivery parts of the

@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.ExpiryType
@@ -31,6 +30,7 @@ import org.apache.cayenne.validation.ValidationResult
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.stream.Collectors

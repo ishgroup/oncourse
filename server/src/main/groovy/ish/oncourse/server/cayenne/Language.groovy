@@ -17,7 +17,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * This table is read-only since it is updated through an automated process, pulling changes and new records

@@ -13,7 +13,6 @@ import io.bootique.cayenne.CayenneModule
 import io.bootique.di.Binder
 import io.bootique.di.Injector
 import org.reflections.Reflections
-import org.reflections.scanners.ResourcesScanner
 import org.reflections.scanners.Scanners
 
 import javax.inject.Inject

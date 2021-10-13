@@ -1,9 +1,9 @@
 import ish.common.types.OutcomeStatus
-import ish.oncourse.types.Severity
 import ish.oncourse.server.cayenne.CertificateOutcome
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Outcome
+import ish.oncourse.types.Severity
 import org.apache.cayenne.query.ObjectSelect
 
 import java.time.LocalDate

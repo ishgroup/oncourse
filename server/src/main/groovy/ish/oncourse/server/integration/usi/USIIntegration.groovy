@@ -11,15 +11,12 @@
 
 package ish.oncourse.server.integration.usi
 
-
 import groovyx.net.http.HTTPBuilder
 import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
 import ish.common.types.USIVerificationStatus
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.Plugin
-
 import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.license.LicenseService
 import org.apache.logging.log4j.LogManager

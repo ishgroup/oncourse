@@ -11,14 +11,12 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.inject.Inject
 import ish.common.types.ContactType
 import ish.common.types.Gender
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.*
 import ish.oncourse.function.GetContactFullName
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.glue._Contact
 import ish.util.InvoiceUtil
 import ish.util.LocalDateUtils
@@ -35,6 +33,7 @@ import org.apache.logging.log4j.Logger
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
+
 /**
  * Contacts are at the heart of onCourse. A Contact might be an individual or a company. Contacts can be extended by
  * Student or Tutor classes, however a Contact can also exist on its own.

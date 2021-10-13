@@ -17,7 +17,6 @@ import ish.oncourse.server.cayenne.glue._Postcode
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.math.BigDecimal
 
 /**
  * This table is read-only since it is updated through an automated process, pulling changes and new records

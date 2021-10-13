@@ -11,11 +11,8 @@
 
 package ish.oncourse.server.api.v1.function
 
-import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
 import ish.oncourse.server.api.v1.model.MembershipDiscountDTO
-import ish.oncourse.server.api.v1.model.MembershipProductDTO
 import ish.oncourse.server.cayenne.DiscountMembership
-import ish.oncourse.server.cayenne.MembershipProduct
 
 class MembershipProductFunctions {
 

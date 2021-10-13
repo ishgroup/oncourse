@@ -11,15 +11,18 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.imports.ImportResult
 import ish.oncourse.server.api.v1.model.ProcessResultDTO
 import ish.oncourse.server.api.v1.model.ProcessStatusDTO
-import static ish.oncourse.server.api.v1.model.ProcessStatusDTO.*
 import ish.oncourse.server.api.v1.service.ControlApi
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.print.PrintResult
 import ish.scripting.ScriptResult
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.v1.model.ProcessStatusDTO.FAILED
+import static ish.oncourse.server.api.v1.model.ProcessStatusDTO.FINISHED
 import static ish.scripting.ScriptResult.ResultType.FAILURE
 import static org.apache.commons.lang3.StringUtils.isNotBlank
 

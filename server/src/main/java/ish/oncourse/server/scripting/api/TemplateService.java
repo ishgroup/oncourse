@@ -10,20 +10,18 @@
  */
 package ish.oncourse.server.scripting.api;
 
-import javax.inject.Inject;
 import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.ContactTrait;
+import ish.oncourse.server.cayenne.EmailTemplate;
 import ish.oncourse.server.document.DocumentService;
-import ish.oncourse.server.entity.mixins.ContactMixin;
 import ish.util.DateFormatter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
+import javax.inject.Inject;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -83,7 +81,7 @@ public class TemplateService {
 		Template htmlTemplate = createHtmlTemplate(template);
 		var html = htmlTemplate.make(putBaseBindings(bindings)).toString();
 		MetaclassCleaner.clearGroovyCache(htmlTemplate);
-		
+
 		return html
 				.replaceAll(JAVA_POUND, HTML_POUND)
 				.replaceAll(JAVA_EURO, HTML_EURO);

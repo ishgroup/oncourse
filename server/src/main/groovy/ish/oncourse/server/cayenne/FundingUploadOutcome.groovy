@@ -17,7 +17,6 @@ import ish.oncourse.server.cayenne.glue._FundingUploadOutcome
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-import java.util.Date
 
 @API
 class FundingUploadOutcome extends _FundingUploadOutcome {

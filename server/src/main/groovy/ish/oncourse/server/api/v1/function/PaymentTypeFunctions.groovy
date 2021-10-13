@@ -14,11 +14,6 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.common.types.AccountType
 import ish.common.types.PaymentType
-import static ish.common.types.PaymentType.CONTRA
-import static ish.common.types.PaymentType.CREDIT_CARD
-import static ish.common.types.PaymentType.INTERNAL
-import static ish.common.types.PaymentType.REVERSE
-import static ish.common.types.PaymentType.VOUCHER
 import ish.oncourse.server.api.v1.model.PayTypeDTO
 import ish.oncourse.server.api.v1.model.PaymentMethodDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -27,6 +22,8 @@ import ish.oncourse.server.cayenne.PaymentMethod
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+
+import static ish.common.types.PaymentType.*
 
 @CompileStatic
 class PaymentTypeFunctions {

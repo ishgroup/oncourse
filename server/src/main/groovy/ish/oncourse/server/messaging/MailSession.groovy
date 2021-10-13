@@ -11,12 +11,12 @@
 
 package ish.oncourse.server.messaging
 
-import javax.inject.Inject
 import groovy.transform.CompileDynamic
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.mail.Authenticator
 import javax.mail.PasswordAuthentication
 import javax.mail.Session
@@ -54,7 +54,7 @@ class MailSession {
         properties.put(SMTP_IO_TIMEOUT, SMTP_IO_TIMEOUT_VALUE)
         properties.put(SMTP_HOST, smtpService.host)
         properties.put(SMTP_PORT, smtpService.port)
-        
+
         switch (smtpService.mode) {
             case SMTPService.Mode.ssl:
                 properties.put("mail.smtp.ssl.enable", "true")
@@ -70,7 +70,7 @@ class MailSession {
                 properties.put("mail.smtp.starttls.enable", "false")
                 break
         }
-        
+
         if (authNeed) {
             properties.put(SMTP_AUTH, Boolean.TRUE)
         }

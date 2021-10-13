@@ -11,73 +11,43 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import groovy.text.Template
 import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Lead
-import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.Quote
-import ish.oncourse.server.license.LicenseService
-import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
-import ish.oncourse.server.scripting.api.MetaclassCleaner
-import ish.util.AbstractEntitiesUtil
-import org.apache.cayenne.validation.ValidationException
-
-import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
-import static ish.oncourse.server.api.v1.function.MessageFunctions.getFindContactProperty
-import ish.oncourse.server.api.v1.model.RecipientTypeDTO
-import ish.oncourse.server.api.v1.model.RecipientsDTO
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.WaitingList
-import static ish.oncourse.server.messaging.MessageService.createMessagePerson
-import org.apache.commons.lang3.StringUtils
-
-
-import static org.apache.commons.lang3.StringUtils.EMPTY
-import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
-import static ish.oncourse.server.api.v1.function.MessageFunctions.getRecipientsListFromEntity
-import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
-import ish.oncourse.server.api.v1.model.SearchQueryDTO
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.api.v1.model.MessageDTO
-import ish.oncourse.server.api.v1.model.MessageTypeDTO
-import ish.oncourse.server.api.v1.model.SendMessageRequestDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.EmailTemplate
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.ProductItem
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.entity.mixins.MessageMixin
+import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.messaging.SMTPService
+import ish.oncourse.server.scripting.api.MetaclassCleaner
 import ish.oncourse.server.scripting.api.TemplateService
 import ish.oncourse.server.users.SystemUserService
+import ish.util.AbstractEntitiesUtil
 import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+import org.apache.cayenne.validation.ValidationException
+import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import java.time.ZoneOffset
+
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
+import static ish.oncourse.server.api.v1.function.MessageFunctions.*
+import static ish.oncourse.server.messaging.MessageService.createMessagePerson
+import static org.apache.commons.lang3.StringUtils.EMPTY
 
 @CompileStatic
 class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageDao> {

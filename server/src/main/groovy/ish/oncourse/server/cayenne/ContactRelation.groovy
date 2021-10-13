@@ -18,7 +18,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Object representing relation between two individual contacts. For example parent-child, employer-employee, etc.

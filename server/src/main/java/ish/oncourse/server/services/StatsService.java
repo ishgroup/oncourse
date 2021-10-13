@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;
@@ -39,6 +38,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 
+import javax.inject.Inject;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

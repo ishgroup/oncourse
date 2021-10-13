@@ -11,10 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.document.DocumentService
-import ish.s3.AmazonS3Service
 import ish.oncourse.server.api.service.DocumentApiService
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.DocumentDTO
@@ -23,20 +20,17 @@ import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
 import ish.oncourse.server.api.v1.service.DocumentApi
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
+import ish.s3.AmazonS3Service
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
+import javax.inject.Inject
+
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.getDocumentByHash
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocumentVersion
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentVersion
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateForSave
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForSave
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.*
 
 class DocumentApiImpl implements DocumentApi {
 

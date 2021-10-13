@@ -14,11 +14,7 @@ package ish.oncourse.server.api.v1.function
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Qualification
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.entity.mixins.CourseClassMixin
 
 class SaleFunctions {

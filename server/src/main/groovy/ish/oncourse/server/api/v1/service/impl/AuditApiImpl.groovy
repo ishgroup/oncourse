@@ -11,15 +11,17 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
-import static ish.oncourse.server.api.v1.function.AuditFunctions.toRestAudit
 import ish.oncourse.server.api.v1.model.AuditDTO
 import ish.oncourse.server.api.v1.service.AuditApi
 import ish.oncourse.server.cayenne.Audit
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
+import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
+import static ish.oncourse.server.api.v1.function.AuditFunctions.toRestAudit
 
 class AuditApiImpl implements AuditApi {
 

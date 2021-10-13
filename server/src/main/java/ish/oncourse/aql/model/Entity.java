@@ -11,9 +11,7 @@
 
 package ish.oncourse.aql.model;
 
-import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
-import org.apache.cayenne.map.ObjRelationship;
 
 import java.util.*;
 

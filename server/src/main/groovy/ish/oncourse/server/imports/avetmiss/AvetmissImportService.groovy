@@ -12,20 +12,7 @@
 package ish.oncourse.server.imports.avetmiss
 
 import groovy.transform.CompileDynamic
-import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_10
-import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_11
-import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_12
-import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_8_OR_BELOW
-import static ish.common.types.AvetmissStudentSchoolLevel.COMPLETED_YEAR_9
-import static ish.common.types.AvetmissStudentSchoolLevel.DEFAULT_POPUP_OPTION
-import static ish.common.types.AvetmissStudentSchoolLevel.DID_NOT_GO_TO_SCHOOL
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactCustomField
-import ish.oncourse.server.cayenne.Country
-import ish.oncourse.server.cayenne.CustomField
-import ish.oncourse.server.cayenne.CustomFieldType
-import ish.oncourse.server.cayenne.Language
-import ish.oncourse.server.cayenne.Student
+import ish.oncourse.server.cayenne.*
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -35,6 +22,8 @@ import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+import static ish.common.types.AvetmissStudentSchoolLevel.*
 
 @CompileDynamic
 class AvetmissImportService {

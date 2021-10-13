@@ -12,7 +12,9 @@
 package ish.oncourse.server.function;
 
 import ish.math.Money;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.PaymentIn;
+import ish.oncourse.server.cayenne.PaymentInLine;
+import ish.oncourse.server.cayenne.VoucherPaymentIn;
 
 /**
  * Created by anarut on 10/14/16.

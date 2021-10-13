@@ -14,33 +14,10 @@ package ish.oncourse.server.api.v1.function
 import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.DocumentDao
-import ish.oncourse.server.api.v1.model.SearchItemDTO
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
-import java.nio.file.Files
-import java.nio.file.Path
-import ish.oncourse.server.api.v1.model.DocumentAttachmentRelationDTO
-import ish.oncourse.server.api.v1.model.DocumentDTO
-import ish.oncourse.server.api.v1.model.DocumentVersionDTO
-import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.server.cayenne.AttachableTrait
-import ish.oncourse.server.cayenne.AttachmentData
-import ish.oncourse.server.cayenne.AttachmentRelation
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.DocumentTagRelation
-import ish.oncourse.server.cayenne.DocumentVersion
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.PriorLearning
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.SystemUser
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
@@ -51,17 +28,15 @@ import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+import java.nio.file.Files
+import java.nio.file.Path
 
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
-import static ish.util.ImageHelper.generatePdfPreview
-import static ish.util.ImageHelper.generateThumbnail
-import static ish.util.ImageHelper.imageHeight
-import static ish.util.ImageHelper.imageWidth
-import static ish.util.ImageHelper.isImage
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.Constants.BILLING_APP_LINK
+import static ish.util.ImageHelper.*
+import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 @CompileStatic
 class DocumentFunctions {

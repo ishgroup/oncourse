@@ -9,19 +9,16 @@
 package ish.oncourse.server.upgrades.liquibase.change;
 
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.Quote;
 import ish.oncourse.server.db.SchemaUpdateService;
 import liquibase.database.Database;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.CustomChangeException;
-import liquibase.exception.DatabaseException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.cayenne.query.SQLTemplate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -50,5 +47,5 @@ public class PopulateQuoteNumber extends IshTaskChange {
             throw new RuntimeException(e);
         }
     }
-    
+
 }

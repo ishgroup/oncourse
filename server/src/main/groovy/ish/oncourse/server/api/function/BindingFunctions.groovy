@@ -20,7 +20,8 @@ import ish.oncourse.server.cayenne.AutomationTrait
 import ish.print.AdditionalParameters
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistentObject
-import static   ish.oncourse.server.export.ExportService.*
+
+import static ish.oncourse.server.export.ExportService.*
 import static org.apache.http.util.TextUtils.isBlank
 
 class BindingFunctions {

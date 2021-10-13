@@ -13,15 +13,12 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.time.TimeCategory
 import groovy.transform.CompileDynamic
-import ish.oncourse.server.api.dao.SessionDao
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.cayenne.Session
 import ish.util.LocalDateUtils
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 
 import java.time.LocalDateTime
-
 
 // Due to their dynamic nature, usage of categories is not possible with static type checking active
 @CompileDynamic

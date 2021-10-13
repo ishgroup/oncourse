@@ -8,11 +8,12 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.AssessmentSubmissionApiService
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.service.AssessmentSubmissionApi
+
+import javax.inject.Inject
 
 class AssessmentSubmissionApiImpl implements AssessmentSubmissionApi {
 

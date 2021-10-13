@@ -12,7 +12,6 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.DataType
-import static ish.common.types.DataType.*
 import ish.math.Money
 import ish.util.LocalDateUtils
 import org.apache.logging.log4j.LogManager
@@ -20,6 +19,7 @@ import org.apache.logging.log4j.Logger
 
 import java.time.format.DateTimeParseException
 
+import static ish.common.types.DataType.*
 
 trait AutomationBindingTrait {
 

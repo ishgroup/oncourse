@@ -11,10 +11,10 @@
 
 package ish.oncourse.server.scripting.api;
 
-import ish.oncourse.types.AuditAction;
 import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.glue.CayenneDataObject;
 import ish.oncourse.server.services.AuditService;
+import ish.oncourse.types.AuditAction;
 
 public class KeyCollisionAudit {
 

@@ -14,6 +14,7 @@ package ish.oncourse.server.entity.mixins
 import ish.oncourse.API
 import ish.oncourse.entity.services.InvoiceLineService
 import ish.oncourse.server.cayenne.InvoiceLine
+
 import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 class InvoiceLineMixin {

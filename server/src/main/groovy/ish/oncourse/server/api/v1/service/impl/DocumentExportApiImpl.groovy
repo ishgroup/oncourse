@@ -11,14 +11,16 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
 import ish.oncourse.server.api.v1.service.DocumentExportApi
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
+import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
 
 class DocumentExportApiImpl implements DocumentExportApi {
 

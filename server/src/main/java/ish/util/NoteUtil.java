@@ -15,8 +15,6 @@ import ish.oncourse.server.cayenne.NotableTrait;
 import ish.oncourse.server.cayenne.Note;
 import ish.oncourse.server.cayenne.NoteRelation;
 
-import java.util.List;
-
 public class NoteUtil {
 
     public static <K extends NotableTrait, T extends NoteRelation> Note createNewNote(

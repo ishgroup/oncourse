@@ -11,31 +11,25 @@
 
 package ish.oncourse.server.api.v1.function
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.RoomDao
 import ish.oncourse.server.api.dao.UnavailableRuleDao
-import ish.oncourse.server.api.traits.SessionDTOTrait
-import static ish.oncourse.server.api.v1.model.ClashTypeDTO.*
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.cayenne.UnavailableRule
+import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+
+import static ish.oncourse.server.api.v1.model.ClashTypeDTO.*
 
 class SessionValidator {
 

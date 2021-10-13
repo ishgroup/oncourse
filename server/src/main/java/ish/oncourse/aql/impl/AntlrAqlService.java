@@ -11,16 +11,16 @@
 
 package ish.oncourse.aql.impl;
 
-import javax.inject.Inject;
 import ish.oncourse.aql.AqlService;
 import ish.oncourse.aql.CompilationResult;
-import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.users.SystemUserService;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import org.apache.cayenne.ObjectContext;
+
+import javax.inject.Inject;
 
 /**
  * <a href="http://www.antlr.org">ANTLR</a> based AQL query service.

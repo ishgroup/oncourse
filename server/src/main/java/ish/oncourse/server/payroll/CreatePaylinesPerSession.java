@@ -13,7 +13,6 @@ package ish.oncourse.server.payroll;
 import ish.math.Money;
 import ish.oncourse.server.cayenne.ClassCost;
 import ish.oncourse.server.cayenne.PayLine;
-import ish.oncourse.server.cayenne.TutorAttendance;
 import ish.util.LocalDateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

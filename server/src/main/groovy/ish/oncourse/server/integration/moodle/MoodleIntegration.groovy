@@ -17,9 +17,10 @@ import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
-import static org.apache.commons.lang3.StringUtils.EMPTY
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import static org.apache.commons.lang3.StringUtils.EMPTY
 
 @CompileDynamic
 @Plugin(type = 1)

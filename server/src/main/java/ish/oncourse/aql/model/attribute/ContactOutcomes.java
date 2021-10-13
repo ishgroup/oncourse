@@ -14,8 +14,6 @@ package ish.oncourse.aql.model.attribute;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.ContactRelation;
 import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Outcome;
 import ish.oncourse.server.cayenne.PriorLearning;

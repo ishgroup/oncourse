@@ -8,10 +8,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.GradingApiService
 import ish.oncourse.server.api.v1.model.GradingTypeDTO
 import ish.oncourse.server.api.v1.service.GradingApi
+
+import javax.inject.Inject
 
 import static ish.oncourse.server.api.service.GradingApiService.validateDuplicates
 

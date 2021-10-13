@@ -12,12 +12,7 @@
 package ish.oncourse.server.export.avetmiss8
 
 import groovy.transform.CompileStatic
-import ish.common.types.AvetmissStudentDisabilityType
-import ish.common.types.AvetmissStudentIndigenousStatus
-import ish.common.types.AvetmissStudentPriorEducation
-import ish.common.types.AvetmissStudentSchoolLevel
-import ish.common.types.Gender
-import ish.common.types.UsiStatus
+import ish.common.types.*
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Student
@@ -25,8 +20,8 @@ import ish.oncourse.server.export.avetmiss.AddressParser
 import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import org.apache.commons.lang3.StringUtils
 
-import java.time.LocalDate
 import java.time.Period
+
 /**
  * AVETMISS export for students - also known as file 080.
  */

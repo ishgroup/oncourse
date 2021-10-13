@@ -11,18 +11,17 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.v1.function.PayrollFunctions.toPayrollGenerationRequest
-import static ish.oncourse.server.api.v1.function.PayrollFunctions.toWagesToProcess
-import static ish.oncourse.server.api.v1.function.PayrollFunctions.validate
 import ish.oncourse.server.api.v1.model.PayrollRequestDTO
 import ish.oncourse.server.api.v1.model.WagesToProcessDTO
 import ish.oncourse.server.api.v1.service.PayrollApi
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.payroll.PayrollService
 
+import javax.inject.Inject
 import java.util.concurrent.Callable
+
+import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
+import static ish.oncourse.server.api.v1.function.PayrollFunctions.*
 
 class PayrollApiImpl implements PayrollApi {
 

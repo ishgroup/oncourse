@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.OutcomeStatus
@@ -26,6 +25,7 @@ import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
+import javax.inject.Inject
 import java.time.LocalDate
 
 import static org.apache.commons.lang3.StringUtils.isEmpty

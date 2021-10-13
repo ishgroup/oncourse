@@ -21,10 +21,6 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Collections
-import java.util.Date
-import java.util.LinkedHashMap
-import java.util.Map
 
 /**
  * Object representing requirements and limitations put on applicability of a tag to certain entity type,

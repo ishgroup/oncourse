@@ -8,12 +8,12 @@
 
 package ish.oncourse.server;
 
-import io.bootique.di.*;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.command.CommandDecorator;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.*;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
@@ -59,11 +59,7 @@ import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarFile;
 
 public class AngelModule extends ConfigModule {

@@ -14,8 +14,9 @@ package ish.oncourse.server.integration.coassemble
 import groovy.transform.CompileStatic
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
+import ish.oncourse.server.scripting.ScriptClosureTrait
+
 /**
  * Integration allows us to establish interaction between Coassemble (previously called E-coach) and onCourse enrol system.
  *

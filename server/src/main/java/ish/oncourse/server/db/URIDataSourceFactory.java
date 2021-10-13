@@ -14,8 +14,8 @@ package ish.oncourse.server.db;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.bootique.annotation.BQConfig;
 import io.bootique.di.Injector;
-import io.bootique.jdbc.managed.ManagedDataSourceStarter;
 import io.bootique.jdbc.hikaricp.HikariCPManagedDataSourceFactory;
+import io.bootique.jdbc.managed.ManagedDataSourceStarter;
 import ish.util.RuntimeUtil;
 
 @BQConfig("Pooling Hikari JDBC DataSource configuration.")

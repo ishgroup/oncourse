@@ -11,20 +11,9 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.getFieldTypes
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.getFormById
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.getRuleById
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.toDbForm
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.toDbRule
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.toRestForm
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.toRestRule
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.validateForm
-import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.validateRule
 import ish.oncourse.server.api.v1.model.DataCollectionFormDTO
 import ish.oncourse.server.api.v1.model.DataCollectionRuleDTO
-import static ish.oncourse.server.api.v1.model.DataCollectionTypeDTO.fromValue
 import ish.oncourse.server.api.v1.model.FieldTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.DataCollectionApi
@@ -39,9 +28,13 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.ServerErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.*
+import static ish.oncourse.server.api.v1.model.DataCollectionTypeDTO.fromValue
 
 class DataCollectionApiImpl implements DataCollectionApi {
 

@@ -11,12 +11,13 @@
 
 package ish.oncourse.server.api.v1.function
 
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.TransactionDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import org.apache.cayenne.ObjectContext
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 
 class TransactionFunctions {
 

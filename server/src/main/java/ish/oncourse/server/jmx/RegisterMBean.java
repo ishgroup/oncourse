@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.jmx;
 
-import javax.inject.Inject;
 import ish.oncourse.server.AngelModule;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.PreferenceController;
@@ -20,6 +19,7 @@ import ish.oncourse.server.monitoring.ApplicationInfoMBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.management.MBeanServer;

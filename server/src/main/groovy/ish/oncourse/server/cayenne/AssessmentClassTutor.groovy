@@ -11,11 +11,9 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.API
+
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._AssessmentClassTutor
-
-import javax.annotation.Nonnull
 
 @QueueableEntity
 class AssessmentClassTutor extends _AssessmentClassTutor implements Queueable {

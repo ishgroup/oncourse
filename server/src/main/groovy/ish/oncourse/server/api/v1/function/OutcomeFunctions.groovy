@@ -11,35 +11,23 @@
 
 package ish.oncourse.server.api.v1.function
 
-import ish.common.types.AttendanceType
-import ish.common.types.OutcomeStatus
-import ish.oncourse.server.api.v1.model.OutcomeProgressionDTO
-import ish.oncourse.server.cayenne.AssessmentClass
-import ish.oncourse.server.cayenne.AssessmentSubmission
-import ish.oncourse.server.cayenne.Attendance
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Student
 
-import static ish.common.types.OutcomeStatus.*
+import ish.common.types.OutcomeStatus
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.api.v1.model.ClassFundingSourceDTO
-import ish.oncourse.server.api.v1.model.DeliveryModeDTO
-import ish.oncourse.server.api.v1.model.OutcomeDTO
-import ish.oncourse.server.api.v1.model.OutcomeStatusDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.validation.EntityValidator
-import static ish.oncourse.server.api.validation.EntityValidator.validateLength
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.Outcome
+import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.LocalDate
+
+import static ish.common.types.OutcomeStatus.*
+import static ish.oncourse.server.api.validation.EntityValidator.validateLength
+import static org.apache.commons.lang3.StringUtils.trimToEmpty
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class OutcomeFunctions {
 
@@ -208,12 +196,12 @@ class OutcomeFunctions {
                     } else {
                         progression.submitted = progression.submitted + 1
                     }
-                    
+
                 }
             }
             progression.released = progression.released - (progression.marked + progression.submitted)
         }
-        
+
         return progression
     }
 }

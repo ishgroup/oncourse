@@ -11,13 +11,14 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.oncourse.server.api.dao.TutorAttendanceDao
 import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
 import ish.oncourse.server.api.v1.model.TutorAttendanceTypeDTO
 import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
 
 class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, TutorAttendance, TutorAttendanceDao> {
 

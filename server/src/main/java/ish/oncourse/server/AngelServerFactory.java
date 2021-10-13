@@ -11,7 +11,6 @@
 
 package ish.oncourse.server;
 
-import javax.inject.Inject;
 import io.bootique.annotation.BQConfig;
 import ish.math.Country;
 import ish.math.CurrencyFormat;
@@ -25,10 +24,9 @@ import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
-import ish.oncourse.server.services.ISchedulerService;
-import ish.oncourse.server.services.*;
 import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.oncourse.server.services.*;
 import ish.util.RuntimeUtil;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
@@ -39,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
+import javax.inject.Inject;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.nio.file.Files;

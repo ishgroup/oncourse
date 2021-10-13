@@ -12,7 +12,6 @@
 package ish.oncourse.server.api.v1.function
 
 import ish.common.types.KeyCode
-import static ish.common.types.KeyCode.*
 import ish.common.types.Mask
 import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.v1.model.AccessStatusDTO
@@ -24,6 +23,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
 import java.time.ZoneOffset
+
+import static ish.common.types.KeyCode.*
 
 class UserRoleFunctions {
 

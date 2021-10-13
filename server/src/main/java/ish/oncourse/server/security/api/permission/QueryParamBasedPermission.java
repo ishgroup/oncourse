@@ -16,8 +16,6 @@ import ish.common.types.KeyCode;
 import ish.common.types.Mask;
 import ish.oncourse.server.security.api.IPermissionService;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Permission which checks permission based on query parameter value.
  */

@@ -15,7 +15,6 @@ import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.cayenne.glue._UnavailableRuleRelation
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * A persistent class mapped as "UnavailableRuleRelation" Cayenne entity.

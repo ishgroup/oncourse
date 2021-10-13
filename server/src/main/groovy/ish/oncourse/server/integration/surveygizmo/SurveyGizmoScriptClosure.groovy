@@ -17,7 +17,6 @@ import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.EmailTemplate
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
-import ish.oncourse.server.scripting.api.TemplateService
 
 /**
  * This integration allows you to push records into SurveyGizmo in order to add them to a survey. Create one integration
@@ -124,7 +123,7 @@ class SurveyGizmoScriptClosure implements ScriptClosureTrait<SurveyGizmoIntegrat
 				integration.sendEmail(campaign_id, subject, emailBody, replyTo)
 			}
 		}
-		
+
 		return null
 	}
 }

@@ -19,7 +19,6 @@ import ish.oncourse.server.cayenne.glue._InvoiceDueDate
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-import java.util.Date
 
 /**
  * Object representing single payment due date of a payment plan.

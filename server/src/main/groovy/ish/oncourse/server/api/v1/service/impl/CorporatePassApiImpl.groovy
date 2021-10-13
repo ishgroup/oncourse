@@ -11,21 +11,18 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
-import static ish.oncourse.server.api.v1.function.CorporatePassFunctions.toDbCorporatePass
-import static ish.oncourse.server.api.v1.function.CorporatePassFunctions.toRestCorporatePass
-import static ish.oncourse.server.api.v1.function.CorporatePassFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.CorporatePassFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.CorporatePassDTO
 import ish.oncourse.server.api.v1.service.CorporatePassApi
 import ish.oncourse.server.cayenne.CorporatePass
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.EntityFunctions.*
+import static ish.oncourse.server.api.v1.function.CorporatePassFunctions.*
 
 class CorporatePassApiImpl implements CorporatePassApi {
 

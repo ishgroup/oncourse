@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
 import ish.common.types.ProductStatus;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.accounting.AccountTransactionService;
@@ -28,6 +27,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Date;
 

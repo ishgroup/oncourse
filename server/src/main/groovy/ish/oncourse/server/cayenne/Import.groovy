@@ -15,7 +15,6 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._Import
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Import describes the way some external format (XML, CSV, etc.) can be transformed into onCourse records.

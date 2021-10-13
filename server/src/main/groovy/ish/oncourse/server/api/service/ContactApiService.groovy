@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.AttachmentSpecialType
 import ish.common.types.USIFieldStatus
@@ -37,6 +36,7 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate

@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.duplicate.CourseDuplicationRequest
@@ -27,6 +26,7 @@ import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 

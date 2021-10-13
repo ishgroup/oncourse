@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.accounting
 
-import javax.inject.Inject
 import ish.common.types.AccountTransactionType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.accounting.builder.JournalTransactionsBuilder
@@ -21,6 +20,7 @@ import ish.oncourse.server.cayenne.AccountTransaction
 import ish.request.AccountTransactionRequest
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import java.util.concurrent.locks.ReentrantLock
 
 class AccountTransactionService {

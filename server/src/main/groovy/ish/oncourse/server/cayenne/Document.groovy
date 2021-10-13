@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.inject.Inject
 import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -21,6 +20,7 @@ import ish.oncourse.server.license.LicenseService
 import org.apache.cayenne.query.Ordering
 
 import javax.annotation.Nonnull
+import javax.inject.Inject
 
 /**
  * Document is a file (like text document, image, pdf, etc.) which can be attached to different types of

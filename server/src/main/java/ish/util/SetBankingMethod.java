@@ -14,11 +14,9 @@ package ish.util;
 import ish.common.types.CreditCardType;
 import ish.oncourse.cayenne.PaymentInterface;
 import ish.oncourse.common.BankingType;
-import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.Banking;
 import ish.oncourse.server.cayenne.PaymentIn;
 import ish.oncourse.server.cayenne.PaymentOut;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.time.LocalDate;

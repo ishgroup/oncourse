@@ -18,7 +18,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 import static ish.persistence.Preferences.SERVICES_COMMUNICATION_KEY
 

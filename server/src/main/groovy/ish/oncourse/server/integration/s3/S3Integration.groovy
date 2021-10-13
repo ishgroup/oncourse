@@ -12,11 +12,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import com.amazonaws.services.s3.model.AccessControlList
-import com.amazonaws.services.s3.model.GroupGrantee
-import com.amazonaws.services.s3.model.ObjectMetadata
-import com.amazonaws.services.s3.model.Permission
-import com.amazonaws.services.s3.model.PutObjectRequest
+import com.amazonaws.services.s3.model.*
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.messaging.DocumentParam
@@ -46,7 +42,7 @@ class S3Integration implements PluginTrait {
         this.bucket = configuration.getIntegrationProperty(S3_BUCKET).value
         this.region = configuration.getIntegrationProperty(S3_REGION).value
     }
-    
+
     String store(Object blob, String name) {
 
         AmazonS3 s3 = AmazonS3ClientBuilder
@@ -80,6 +76,6 @@ class S3Integration implements PluginTrait {
         objectAcl.grantPermission(GroupGrantee.AllUsers, Permission.Read)
         s3.setObjectAcl(bucket, uuid, version, objectAcl)
         return s3.getUrl(bucket, uuid).toString()
-         
+
     }
 }

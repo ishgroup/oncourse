@@ -11,10 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.api.v1.model.ReportDTO
 import ish.oncourse.server.api.v1.service.PdfTemplateApi
+
+import javax.inject.Inject
 
 class PdfTemplateApiImpl implements PdfTemplateApi {
 

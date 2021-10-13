@@ -17,22 +17,16 @@ import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
-import ish.oncourse.server.cayenne.Product;
 import ish.oncourse.server.cayenne.ProductItem;
 import ish.oncourse.server.cayenne.Voucher;
 import org.apache.cayenne.Persistent;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.parser.ASTBetween;
 import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class VoucherPaymentIn  implements SyntheticAttributeDescriptor {
 

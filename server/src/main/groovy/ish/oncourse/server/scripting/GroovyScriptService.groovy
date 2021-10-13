@@ -10,11 +10,9 @@
  */
 package ish.oncourse.server.scripting
 
-import io.bootique.di.Injector
-
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
+import io.bootique.di.Injector
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
@@ -52,6 +50,7 @@ import org.codehaus.groovy.runtime.MethodClosure
 import org.quartz.*
 import org.reflections.Reflections
 
+import javax.inject.Inject
 import javax.script.*
 import java.util.concurrent.*
 

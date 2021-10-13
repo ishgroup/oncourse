@@ -11,12 +11,12 @@ package ish.oncourse.server.integration.azureStorage
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobContainerClientBuilder
 import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.common.StorageSharedKeyCredential
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.messaging.DocumentParam
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import com.azure.storage.common.StorageSharedKeyCredential
 
 @Plugin(type=17)
 class AzureStorageIntegration implements PluginTrait {
@@ -56,7 +56,7 @@ class AzureStorageIntegration implements PluginTrait {
             documentParam = DocumentParam.valueOf(name, blob)
         }
         byte[] bytes = documentParam.contentInBytes
-        
+
         BlockBlobClient blobClient = blobContainerClient.getBlobClient(name).getBlockBlobClient()
         blobClient.upload( new ByteArrayInputStream(bytes), bytes.length)
         return blobClient.blobUrl

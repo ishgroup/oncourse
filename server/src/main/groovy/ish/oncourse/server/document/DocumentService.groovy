@@ -24,15 +24,15 @@ import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.scripting.api.DocumentSpec
 import ish.s3.AmazonS3Service
 import ish.s3.AmazonS3Service.UploadResult
+import ish.util.ImageHelper
 import ish.util.RuntimeUtil
+import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.scripting.api.DocumentSpec.ATTACH_ACTION
 import static ish.oncourse.server.scripting.api.DocumentSpec.CREATE_ACTION
-import ish.util.ImageHelper
-import ish.util.SecurityUtil
-import org.apache.cayenne.query.ObjectSelect
 
 /**
  * This class contains simple image closure which allow to put any images from document management system to email template.

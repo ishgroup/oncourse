@@ -11,17 +11,16 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.inject.Inject
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.CourseStatusDTO
-import org.apache.cayenne.query.ObjectSelect
-
-import static ish.oncourse.server.api.v1.model.CourseStatusDTO.COURSE_DISABLED
-import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED
-import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED_AND_VISIBLE_ONLINE
 import ish.persistence.CommonExpressionFactory
 import org.apache.cayenne.PersistenceState
+import org.apache.cayenne.query.ObjectSelect
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.v1.model.CourseStatusDTO.*
 
 trait CourseTrait {
 

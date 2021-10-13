@@ -1,5 +1,3 @@
-import java.time.LocalDate
-
 xml.mkp.xmlDeclaration(version: "1.0", encoding: "utf-8")
 
 xml.data() {

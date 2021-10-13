@@ -14,9 +14,7 @@ package ish.oncourse.server.entity.mixins
 import groovy.transform.CompileDynamic
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceAttachmentRelation
 import ish.oncourse.server.cayenne.InvoiceLine
 
 @CompileDynamic

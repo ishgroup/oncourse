@@ -22,7 +22,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Payment line links payment with one or multiple invoices which are getting paid for.

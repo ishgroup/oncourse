@@ -10,13 +10,13 @@
  */
 package ish.oncourse.server.security;
 
-import javax.inject.Inject;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.util.Date;
 

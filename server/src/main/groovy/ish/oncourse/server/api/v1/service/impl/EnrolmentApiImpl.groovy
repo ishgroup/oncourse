@@ -11,12 +11,13 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.EnrolmentApiService
 import ish.oncourse.server.api.v1.model.CancelEnrolmentDTO
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.EnrolmentDTO
 import ish.oncourse.server.api.v1.service.EnrolmentApi
+
+import javax.inject.Inject
 
 class EnrolmentApiImpl implements EnrolmentApi {
 

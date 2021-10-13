@@ -11,12 +11,13 @@
 
 package ish.oncourse.server.duplicate;
 
-import javax.inject.Inject;
 import ish.duplicate.CourseDuplicationRequest;
 import ish.duplicate.DuplicationResult;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.api.dao.EntityRelationDao;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.Course;
+import ish.oncourse.server.cayenne.CourseAttachmentRelation;
+import ish.oncourse.server.cayenne.EntityRelation;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.regex.Pattern;
 
 public class DuplicateCourseService {

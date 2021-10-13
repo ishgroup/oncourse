@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server;
 
-import javax.inject.Inject;
 import ish.oncourse.server.accounting.AccountTransactionService;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.lifecycle.*;
@@ -18,6 +17,8 @@ import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.ScriptTriggeringListener;
 import ish.oncourse.server.services.TransactionLockedService;
 import org.apache.cayenne.access.ValidationFilter;
+
+import javax.inject.Inject;
 
 /**
  */

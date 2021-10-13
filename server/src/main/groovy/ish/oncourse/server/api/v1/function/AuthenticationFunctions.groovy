@@ -20,7 +20,6 @@ import ish.oncourse.server.cayenne.ACLRole
 import ish.oncourse.server.cayenne.SystemUser
 import ish.security.AuthenticationUtil
 import ish.security.LdapAuthConnection
-import static ish.util.Constants.TOTP_COOKIE_NAME
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.ArrayUtils
 import org.apache.commons.lang3.StringUtils
@@ -35,6 +34,8 @@ import javax.servlet.http.HttpServletResponse
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+
+import static ish.util.Constants.TOTP_COOKIE_NAME
 
 class AuthenticationFunctions {
 

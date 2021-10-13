@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.lifecycle;
 
-import javax.inject.Inject;
 import ish.common.types.PaymentSource;
 import ish.common.types.PaymentStatus;
 import ish.common.types.PaymentType;
@@ -22,6 +21,7 @@ import org.apache.cayenne.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.Date;
 
 /**

@@ -11,18 +11,10 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.common.types.NodeType
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
-import static ish.oncourse.server.api.v1.function.TagFunctions.getAdditionalTaggableClasses
-import static ish.oncourse.server.api.v1.function.TagFunctions.getTagGroupPrefetch
-import static ish.oncourse.server.api.v1.function.TagFunctions.getTaggableClassForName
-import static ish.oncourse.server.api.v1.function.TagFunctions.toDbTag
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTag
-import static ish.oncourse.server.api.v1.function.TagFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.TagFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.TagDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
@@ -32,8 +24,11 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.TagFunctions.*
 
 class TagApiImpl implements TagApi {
 

@@ -14,8 +14,8 @@ package ish.oncourse.aql.impl.converter;
 import ish.oncourse.aql.impl.AqlParser;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.Op;
-import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.cayenne.Module;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
 /**

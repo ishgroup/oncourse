@@ -13,7 +13,6 @@ package ish.oncourse.server.api.v1.function.export
 
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.print.transformations.PrintTransformation
-import ish.util.PaginatedResultIterable
 import org.apache.cayenne.ObjectContext
 
 class TransformationIterable<T> implements Iterable<T> {

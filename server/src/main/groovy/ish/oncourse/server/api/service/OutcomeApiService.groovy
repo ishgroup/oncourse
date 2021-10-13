@@ -11,32 +11,27 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.common.types.EnrolmentStatus
-import ish.oncourse.types.FundingStatus
 import ish.oncourse.server.api.dao.EnrolmentDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.OutcomeDao
-import static ish.oncourse.server.api.v1.function.OutcomeFunctions.STATUS_MAP
-import static ish.oncourse.server.api.v1.function.OutcomeFunctions.toCayenneOutcome
-import static ish.oncourse.server.api.v1.function.OutcomeFunctions.toRestOutcome
-import static ish.oncourse.server.api.v1.function.OutcomeFunctions.validateOutcomeFields
-import static ish.oncourse.server.api.v1.function.OutcomeFunctions.validateOutcomeStartEndDates
 import ish.oncourse.server.api.v1.model.ClassFundingSourceDTO
 import ish.oncourse.server.api.v1.model.DeliveryModeDTO
 import ish.oncourse.server.api.v1.model.OutcomeDTO
 import ish.oncourse.server.api.v1.model.OutcomeStatusDTO
-import static ish.oncourse.server.api.v1.model.OutcomeStatusDTO.NOT_SET
-import static ish.oncourse.server.api.v1.model.OutcomeStatusDTO.SATISFACTORILY_COMPLETED_81_
-import static ish.oncourse.server.api.v1.model.OutcomeStatusDTO.WITHDRAWN_OR_NOT_SATISFACTORILY_COMPLETED_82_
-import static ish.oncourse.server.api.validation.EntityValidator.validateLength
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Outcome
+import ish.oncourse.types.FundingStatus
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
+import javax.inject.Inject
 import java.time.LocalDate
+
+import static ish.oncourse.server.api.v1.function.OutcomeFunctions.*
+import static ish.oncourse.server.api.v1.model.OutcomeStatusDTO.*
+import static ish.oncourse.server.api.validation.EntityValidator.validateLength
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class OutcomeApiService extends EntityApiService<OutcomeDTO, Outcome, OutcomeDao> {
 

@@ -11,10 +11,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
-import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
@@ -34,6 +32,7 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 

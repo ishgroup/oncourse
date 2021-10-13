@@ -11,10 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.TutorRoleApiService
 import ish.oncourse.server.api.v1.model.DefinedTutorRoleDTO
 import ish.oncourse.server.api.v1.service.TutorRoleApi
+
+import javax.inject.Inject
 
 class TutorRoleApiImpl implements TutorRoleApi {
 

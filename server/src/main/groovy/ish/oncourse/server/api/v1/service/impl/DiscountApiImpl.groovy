@@ -11,21 +11,18 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.toDbDiscount
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.toRestDiscount
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.DiscountDTO
 import ish.oncourse.server.api.v1.service.DiscountApi
 import ish.oncourse.server.cayenne.Discount
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.EntityFunctions.*
+import static ish.oncourse.server.api.v1.function.DiscountFunctions.*
 
 class DiscountApiImpl implements DiscountApi {
 

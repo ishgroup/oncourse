@@ -12,7 +12,6 @@
 package ish.oncourse.server.api.dao
 
 import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 

@@ -11,13 +11,14 @@
 
 package ish.oncourse.server
 
-import javax.inject.Inject
-import ish.oncourse.types.AuditAction
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.services.AuditService
+import ish.oncourse.types.AuditAction
 import org.apache.cayenne.annotation.PostPersist
 import org.apache.cayenne.annotation.PostRemove
 import org.apache.cayenne.annotation.PostUpdate
+
+import javax.inject.Inject
 
 class AuditListener {
 

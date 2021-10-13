@@ -15,18 +15,14 @@ import com.nulabinc.zxcvbn.Zxcvbn
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
-import ish.oncourse.server.messaging.MailDeliveryService
-import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
-import ish.oncourse.server.scripting.api.SmtpParameters
-
-import javax.mail.MessagingException
-
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.UserDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.ACLRole
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.messaging.MailDeliveryService
+import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
+import ish.oncourse.server.scripting.api.SmtpParameters
 import ish.security.AuthenticationUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -34,9 +30,11 @@ import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.mail.MessagingException
 import java.time.LocalDate
 import java.time.ZoneOffset
 
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.util.SecurityUtil.generateUserInvitationToken
 
 @CompileStatic
@@ -209,13 +207,13 @@ class UserFunctions {
         if (ipAddress == null) {
             ipAddress = '0.0.0.0'
         }
-        
+
         if (port == null) {
             port = 8182
         }
-        
+
         String serverAddress = hostName ?: "https://${ipAddress}:${port}"
-                
+
         String messageStart = currentUser ? "${currentUser.fullName} has given you access" : "You were provided access"
         String invitationToken = generateUserInvitationToken()
         String subject = "Welcome to onCourse!"

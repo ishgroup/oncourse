@@ -12,7 +12,9 @@
 package ish.oncourse.server.report;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.pdf.*;
+import com.lowagie.text.pdf.PdfCopy;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

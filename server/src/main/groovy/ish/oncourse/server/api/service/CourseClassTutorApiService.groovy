@@ -11,21 +11,18 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseClassDao
 import ish.oncourse.server.api.dao.CourseClassTutorDao
 import ish.oncourse.server.api.dao.DefinedTutorRoleDao
-import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 import ish.oncourse.server.api.v1.model.CourseClassTutorDTO
-import ish.oncourse.server.cayenne.AssessmentClassTutor
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.DefinedTutorRole
-import ish.oncourse.server.cayenne.Student
+import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 
 class CourseClassTutorApiService extends EntityApiService<CourseClassTutorDTO, CourseClassTutor, CourseClassTutorDao>{
 

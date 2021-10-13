@@ -13,11 +13,12 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.SessionApiService
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
 import ish.oncourse.server.api.v1.service.SessionApi
+
+import javax.inject.Inject
 
 class SessionApiImpl implements SessionApi {
 

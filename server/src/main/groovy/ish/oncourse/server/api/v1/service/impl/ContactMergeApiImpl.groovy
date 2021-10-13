@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.v1.model.MergeDataDTO
@@ -25,6 +24,8 @@ import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import javax.inject.Inject
 
 class ContactMergeApiImpl implements ContactMergeApi {
 

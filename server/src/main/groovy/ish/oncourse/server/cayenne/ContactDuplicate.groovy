@@ -16,8 +16,6 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._ContactDuplicate
 
-import java.util.Date
-
 /**
  */
 @QueueableEntity

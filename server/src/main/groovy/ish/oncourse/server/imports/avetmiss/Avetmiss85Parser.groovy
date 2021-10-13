@@ -15,8 +15,9 @@ import groovy.transform.CompileDynamic
 import ish.oncourse.server.cayenne.Contact
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
-import static org.apache.commons.lang3.StringUtils.isBlank
 import org.apache.logging.log4j.LogManager
+
+import static org.apache.commons.lang3.StringUtils.isBlank
 
 @CompileDynamic
 class Avetmiss85Parser extends AbstractAvetmissParser {

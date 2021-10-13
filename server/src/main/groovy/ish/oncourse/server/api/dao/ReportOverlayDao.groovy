@@ -11,11 +11,12 @@
 
 package ish.oncourse.server.api.dao
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.cayenne.ReportOverlay
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
 
 class ReportOverlayDao implements CayenneLayer<ReportOverlay> {
 

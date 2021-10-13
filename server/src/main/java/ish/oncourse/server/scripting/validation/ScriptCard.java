@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.scripting.validation;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ScriptCard extends BaseToken {

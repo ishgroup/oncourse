@@ -16,7 +16,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._CorporatePassProduct
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Object representing relation between CorporatePass and product.

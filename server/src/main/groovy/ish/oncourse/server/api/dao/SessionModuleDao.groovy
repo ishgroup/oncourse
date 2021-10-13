@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import ish.oncourse.server.cayenne.Attendance
+
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.SessionModule

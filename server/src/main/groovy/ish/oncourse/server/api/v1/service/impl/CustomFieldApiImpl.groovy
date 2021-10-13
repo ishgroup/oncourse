@@ -11,12 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.updateCustomField
-import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.validateData
-import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.validateForUpdate
 import ish.oncourse.server.api.v1.model.CustomFieldTypeDTO
 import ish.oncourse.server.api.v1.model.DataTypeDTO
 import ish.oncourse.server.api.v1.model.EntityTypeDTO
@@ -30,10 +25,13 @@ import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.ServerErrorException
 import javax.ws.rs.core.Response
 import java.time.ZoneOffset
+
+import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.*
 
 class CustomFieldApiImpl implements CustomFieldApi {
 

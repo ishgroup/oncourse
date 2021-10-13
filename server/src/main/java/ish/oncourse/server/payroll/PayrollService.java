@@ -10,10 +10,8 @@
  */
 package ish.oncourse.server.payroll;
 
-import javax.inject.Inject;
 import ish.common.types.AttendanceType;
 import ish.common.types.ClassCostFlowType;
-import ish.common.types.PayslipPayType;
 import ish.math.Money;
 import ish.oncourse.entity.services.SessionService;
 import ish.oncourse.server.ICayenneService;
@@ -28,6 +26,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;

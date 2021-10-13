@@ -11,9 +11,6 @@
 
 package ish.oncourse.server;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -34,6 +31,8 @@ import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Server;
 import org.quartz.Scheduler;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import java.lang.management.ManagementFactory;
 
 

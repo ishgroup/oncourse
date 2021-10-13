@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.oncourse.server.api.dao.AssessmentClassDao
 import ish.oncourse.server.api.v1.model.AssessmentClassDTO
 import ish.oncourse.server.cayenne.Assessment
@@ -20,6 +19,8 @@ import ish.oncourse.server.cayenne.AssessmentClassTutor
 import ish.oncourse.server.cayenne.CourseClass
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
 
 import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions
 

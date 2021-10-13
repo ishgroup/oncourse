@@ -12,9 +12,6 @@
 package ish.oncourse.server.db;
 
 import io.bootique.annotation.BQConfigProperty;
-import io.bootique.jdbc.managed.ManagedDataSourceStarter;
-
-import java.util.Map;
 
 public class DbUriProvider {
 

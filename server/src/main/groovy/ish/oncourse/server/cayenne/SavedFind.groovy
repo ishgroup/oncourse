@@ -14,7 +14,6 @@ package ish.oncourse.server.cayenne
 import ish.oncourse.server.cayenne.glue._SavedFind
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Saved instance of advanced search.

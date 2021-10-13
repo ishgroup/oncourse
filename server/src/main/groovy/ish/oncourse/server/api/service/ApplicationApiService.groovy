@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
@@ -29,6 +28,7 @@ import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
 
+import javax.inject.Inject
 import java.time.ZoneOffset
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue

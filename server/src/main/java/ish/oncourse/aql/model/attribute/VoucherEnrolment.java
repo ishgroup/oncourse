@@ -11,24 +11,14 @@
 
 package ish.oncourse.aql.model.attribute;
 
-import ish.common.types.AccountTransactionType;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.AccountTransaction;
-import ish.oncourse.server.cayenne.Enrolment;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.InvoiceLine;
-import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
-import ish.oncourse.server.cayenne.PaymentOut;
-import ish.oncourse.server.cayenne.PaymentOutLine;
-import ish.oncourse.server.cayenne.ProductItem;
-import ish.oncourse.server.cayenne.Voucher;
 import ish.oncourse.server.cayenne.VoucherPaymentIn;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;

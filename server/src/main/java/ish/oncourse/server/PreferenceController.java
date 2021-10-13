@@ -25,7 +25,8 @@ import javax.inject.Singleton;
 import java.util.Date;
 
 import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
-import static ish.persistence.Preferences.*;
+import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
+import static ish.persistence.Preferences.USI_SOFTWARE_ID;
 
 @Singleton
 public class PreferenceController extends CommonPreferenceController {

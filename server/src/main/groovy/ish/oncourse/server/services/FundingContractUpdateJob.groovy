@@ -11,16 +11,17 @@
 
 package ish.oncourse.server.services
 
-import javax.inject.Inject
-import ish.oncourse.types.FundingStatus
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.FundingUpload
+import ish.oncourse.types.FundingStatus
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.quartz.DisallowConcurrentExecution
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
+
+import javax.inject.Inject
 
 @DisallowConcurrentExecution
 class FundingContractUpdateJob implements Job {

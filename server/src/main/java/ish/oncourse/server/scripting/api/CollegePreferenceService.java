@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.scripting.api;
 
-import javax.inject.Inject;
 import ish.common.types.DeliverySchedule;
 import ish.oncourse.API;
 import ish.oncourse.server.PreferenceController;
@@ -23,6 +22,7 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
+import javax.inject.Inject;
 import java.util.Calendar;
 import java.util.Date;
 

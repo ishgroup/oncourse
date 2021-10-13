@@ -11,18 +11,8 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.inject.Inject
 import com.sun.istack.NotNull
-import ish.common.types.AvetmissStudentDisabilityType
-import ish.common.types.AvetmissStudentEnglishProficiency
-import ish.common.types.AvetmissStudentIndigenousStatus
-import ish.common.types.AvetmissStudentLabourStatus
-import ish.common.types.AvetmissStudentPriorEducation
-import ish.common.types.AvetmissStudentSchoolLevel
-import ish.common.types.ClientIndustryEmploymentType
-import ish.common.types.ClientOccupationIdentifierType
-import ish.common.types.StudentCitizenship
-import ish.common.types.UsiStatus
+import ish.common.types.*
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -36,6 +26,8 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import javax.inject.Inject
+
 /**
  * A student is a type of contact who is able to be enrolled. Every Student object will be linked to exactly one
  * Contact. Only student specific data is stored here: for all regular contact attributes and relationships, refer to the

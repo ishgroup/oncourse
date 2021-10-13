@@ -11,22 +11,20 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
 import ish.oncourse.server.api.service.WaitingListApiService
-import static ish.oncourse.server.api.v1.function.WaitingListFunctions.toDbWaitingList
-import static ish.oncourse.server.api.v1.function.WaitingListFunctions.toRestWaitingList
-import static ish.oncourse.server.api.v1.function.WaitingListFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.WaitingListDTO
 import ish.oncourse.server.api.v1.service.WaitingListApi
 import ish.oncourse.server.cayenne.WaitingList
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.EntityFunctions.*
+import static ish.oncourse.server.api.v1.function.WaitingListFunctions.*
 
 class WaitingListApiImpl implements WaitingListApi {
 

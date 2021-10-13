@@ -10,9 +10,6 @@
  */
 package ish.oncourse.server.upgrades;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import ish.oncourse.common.ResourceProperty;
 import ish.oncourse.common.ResourceType;
 import ish.oncourse.common.ResourcesUtil;
@@ -25,6 +22,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;

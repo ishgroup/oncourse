@@ -17,8 +17,6 @@ import ish.oncourse.server.cayenne.glue._FundingSource
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
-import java.util.List
 
 @API
 class FundingSource extends _FundingSource {

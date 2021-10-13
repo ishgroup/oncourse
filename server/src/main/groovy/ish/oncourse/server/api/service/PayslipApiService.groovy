@@ -14,21 +14,15 @@ package ish.oncourse.server.api.service
 import ish.common.types.PayslipStatus
 import ish.oncourse.server.api.dao.PayslipDao
 import ish.oncourse.server.api.v1.function.PayLineFunctions
-import ish.oncourse.server.api.v1.model.PayLineDTO
-import ish.oncourse.server.api.v1.model.PayslipPayTypeDTO
-import ish.oncourse.server.api.v1.model.PayslipRequestDTO
-import ish.oncourse.server.api.v1.model.PayslipStatusDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.PayslipTagRelation
+import org.apache.cayenne.ObjectContext
 
 import java.time.ZoneOffset
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import ish.oncourse.server.api.v1.model.PayslipDTO
-import ish.oncourse.server.cayenne.Payslip
-import org.apache.cayenne.ObjectContext
-
 import static ish.oncourse.server.api.v1.function.PayLineFunctions.toRestPayLine
 import static ish.oncourse.server.api.v1.function.PayLineFunctions.updatePayLines
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
@@ -78,7 +72,7 @@ class PayslipApiService extends TaggableApiService<PayslipDTO, Payslip, PayslipD
 
     @Override
     void validateModelBeforeSave(PayslipDTO dto, ObjectContext context, Long id) {
-        
+
         Payslip dbModel = id ? entityDao.getById(context, id) : null as Payslip
         if (dto.tutorId == null) {
             validator.throwClientErrorException(dbModel?.id?.toString(), 'tutor', 'Tutor is required.')
@@ -97,7 +91,7 @@ class PayslipApiService extends TaggableApiService<PayslipDTO, Payslip, PayslipD
         if (error) {
             validator.throwClientErrorException(error)
         }
-        
+
     }
 
     @Override

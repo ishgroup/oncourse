@@ -14,7 +14,6 @@ package ish.oncourse.server.api.dao
 import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.Queueable
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 

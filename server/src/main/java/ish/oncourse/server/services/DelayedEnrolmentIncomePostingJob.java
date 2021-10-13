@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
 import ish.common.types.AccountTransactionType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.InvoiceType;
@@ -33,6 +32,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import javax.inject.Inject;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

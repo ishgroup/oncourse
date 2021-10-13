@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.db;
 
-import javax.inject.Inject;
 import ish.common.types.AccountType;
 import ish.oncourse.DefaultAccount;
 import ish.oncourse.server.ICayenneService;
@@ -30,6 +29,7 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 
 

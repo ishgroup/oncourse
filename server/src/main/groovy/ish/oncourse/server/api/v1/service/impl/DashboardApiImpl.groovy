@@ -11,12 +11,10 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.DateFunctions
-import static ish.oncourse.server.api.v1.function.DashboardFunctions.toStatisticItem
 import ish.oncourse.server.api.v1.model.SearchGroupDTO
 import ish.oncourse.server.api.v1.model.StatisticDataDTO
 import ish.oncourse.server.api.v1.service.DashboardApi
@@ -33,9 +31,12 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SQLSelect
 import org.apache.commons.lang.StringUtils
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate
+
+import static ish.oncourse.server.api.v1.function.DashboardFunctions.toStatisticItem
 
 @CompileStatic
 class DashboardApiImpl implements DashboardApi {

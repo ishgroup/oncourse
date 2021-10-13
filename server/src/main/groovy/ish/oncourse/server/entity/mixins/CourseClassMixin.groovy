@@ -21,22 +21,14 @@ import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.entity.services.EnrolmentService
 import ish.oncourse.entity.services.InvoiceLineService
 import ish.oncourse.entity.services.TagService
-import ish.oncourse.server.cayenne.Attendance
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.TutorAttendance
-import static ish.oncourse.server.entity.mixins.MixinHelper.getService
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.proxy.PrintableAssessmentClassModule
 import ish.oncourse.server.print.proxy.PrintableAttendance
 import ish.persistence.CommonExpressionFactory
 import org.apache.cayenne.query.Ordering
 import org.apache.commons.lang3.time.DateUtils
 
-import javax.annotation.Nullable
+import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 @CompileDynamic
 class CourseClassMixin {

@@ -11,9 +11,9 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.types.FundingStatus
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._FundingUpload
+import ish.oncourse.types.FundingStatus
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable

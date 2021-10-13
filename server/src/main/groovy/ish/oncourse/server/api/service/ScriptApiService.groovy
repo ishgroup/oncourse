@@ -11,22 +11,13 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
-import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.api.dao.ScriptDao
-import static ish.oncourse.server.api.v1.function.ScriptFunctions.validateQueries
 import ish.oncourse.server.api.v1.function.export.ExportFunctions
-import ish.oncourse.server.api.v1.model.ExecuteScriptRequestDTO
-import ish.oncourse.server.api.v1.model.OutputTypeDTO
-import ish.oncourse.server.api.v1.model.ScheduleDTO
-import ish.oncourse.server.api.v1.model.ScheduleTypeDTO
-import ish.oncourse.server.api.v1.model.ScriptDTO
-import ish.oncourse.server.api.v1.model.ScriptTriggerDTO
-import static ish.oncourse.server.api.v1.model.TriggerTypeDTO.*
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
@@ -35,21 +26,26 @@ import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.oncourse.server.scripting.validation.ScriptValidator
 import ish.oncourse.server.users.SystemUserService
+import ish.oncourse.types.AuditAction
 import ish.scripting.CronExpressionType
 import ish.scripting.ScriptResult
-import static ish.scripting.ScriptResult.ResultType.FAILURE
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import static org.apache.commons.lang.StringUtils.isBlank
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.ServerErrorException
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
 import java.util.concurrent.Callable
+
+import static ish.oncourse.server.api.v1.function.ScriptFunctions.validateQueries
+import static ish.oncourse.server.api.v1.model.TriggerTypeDTO.*
+import static ish.scripting.ScriptResult.ResultType.FAILURE
+import static org.apache.commons.lang.StringUtils.isBlank
 
 class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao> {
 
@@ -192,7 +188,7 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
         if (scriptDTO.trigger.type in [ON_CREATE, ON_EDIT, ON_CREATE_AND_EDIT, ON_DELETE] && scriptDTO.trigger.entityName == null) {
             validator.throwClientErrorException('trigger', "Entity name required")
         }
-        
+
         switch (scriptDTO.trigger.type) {
             case ON_CREATE:
                 dbScript.triggerType = TriggerType.ENTITY_EVENT

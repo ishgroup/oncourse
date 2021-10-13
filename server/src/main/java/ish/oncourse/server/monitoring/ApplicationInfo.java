@@ -23,10 +23,7 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 import java.util.Map;
 
-import static ish.oncourse.cayenne.MappedSelectParams.COUNT_COLUMN;
-import static ish.oncourse.cayenne.MappedSelectParams.ENTITY_COUNT_QUERY;
-import static ish.oncourse.cayenne.MappedSelectParams.ENTITY_NAME_PARAMETER;
-import static ish.oncourse.cayenne.MappedSelectParams.WHERE_CLAUSE_PARAMETER;
+import static ish.oncourse.cayenne.MappedSelectParams.*;
 
 public class ApplicationInfo extends StandardMBean implements ApplicationInfoMBean {
 

@@ -15,7 +15,6 @@ import groovy.transform.CompileDynamic
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.util.AbstractEntitiesUtil
 import org.apache.cayenne.exp.Property
 
 import java.util.function.Function

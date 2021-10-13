@@ -16,7 +16,6 @@ import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
 import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.ContactRelation;
-import ish.oncourse.server.cayenne.ContactRelationType;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.SimpleNode;
 

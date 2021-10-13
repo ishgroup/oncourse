@@ -13,7 +13,6 @@ package ish.oncourse.server.scripting.api;
 import ish.common.types.MessageStatus;
 import ish.common.types.MessageType;
 import ish.oncourse.server.cayenne.*;
-import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

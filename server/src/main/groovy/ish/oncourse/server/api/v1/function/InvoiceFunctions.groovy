@@ -15,14 +15,7 @@ import ish.common.types.PaymentStatus
 import ish.math.Money
 import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
 import ish.oncourse.server.api.v1.model.InvoicePaymentPlanDTO
-import ish.oncourse.server.cayenne.AbstractInvoice
-import ish.oncourse.server.cayenne.AbstractInvoiceLine
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceDueDate
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.PaymentOutLine
+import ish.oncourse.server.cayenne.*
 import ish.util.InvoiceUtil
 
 import java.time.ZoneOffset

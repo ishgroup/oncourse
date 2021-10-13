@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.print;
 
-import javax.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import ish.oncourse.server.ICayenneService;
@@ -24,11 +23,10 @@ import ish.print.PrintResult.ResultType;
 import ish.print.PrintTransformationsFactory;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.query.ObjectSelect;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.rmi.server.UID;
 import java.util.Date;

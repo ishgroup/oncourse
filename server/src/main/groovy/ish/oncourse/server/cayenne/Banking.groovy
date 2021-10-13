@@ -22,8 +22,6 @@ import org.apache.logging.log4j.Logger
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-import java.util.Date
-import java.util.List
 
 @API
 class Banking extends _Banking implements BankingInterface {

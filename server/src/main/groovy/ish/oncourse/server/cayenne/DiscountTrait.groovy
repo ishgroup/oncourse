@@ -16,7 +16,6 @@ import groovy.transform.CompileDynamic
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
-import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 

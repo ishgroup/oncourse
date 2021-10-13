@@ -16,34 +16,27 @@ import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
-import ish.oncourse.server.http.HttpFactory
-import ish.oncourse.server.license.LicenseService
-import ish.oncourse.server.messaging.MailDeliveryService
-
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.mail.MessagingException
-
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser
-import static ish.oncourse.server.api.v1.function.UserFunctions.toDbSystemUser
-import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUser
-import static ish.oncourse.server.api.v1.function.UserFunctions.toRestUserMinimized
-import static ish.oncourse.server.api.v1.function.UserFunctions.validateForUpdate
-import static ish.oncourse.server.api.v1.function.UserFunctions.validateUserPassword
 import ish.oncourse.server.api.v1.model.PasswordComplexityDTO
 import ish.oncourse.server.api.v1.model.UserDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.UserApi
 import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.http.HttpFactory
+import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.messaging.MailDeliveryService
 import ish.oncourse.server.users.SystemUserService
 import ish.security.AuthenticationUtil
 import org.apache.cayenne.ObjectContext
 
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.mail.MessagingException
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate
 
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.v1.function.UserFunctions.*
 
 class UserApiImpl implements UserApi {
 

@@ -9,16 +9,10 @@
 package ish.util;
 
 import ish.common.types.InvoiceType;
-import ish.oncourse.cayenne.PersistentObjectI;
 import ish.oncourse.server.cayenne.AbstractInvoice;
 import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.Quote;
-import ish.oncourse.server.cayenne.glue.CayenneDataObject;
-import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.Property;
-import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -22,8 +22,8 @@ import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
 import ish.oncourse.server.integration.GetProps
-import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.OnSave
+import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -303,12 +303,12 @@ class CanvasIntegration implements PluginTrait {
 
     @OnSave
     static void onSave(IntegrationConfiguration configuration, Map<String, String> props) {
-        
+
         String baseUrl = props[CANVAS_BASE_URL_KEY].trim()
         if (!baseUrl.startsWith("https://")) {
             baseUrl = "https://" + baseUrl
         }
-            
+
         configuration.setProperty(CANVAS_BASE_URL_KEY,baseUrl)
         configuration.setProperty(CANVAS_CLIENT_TOKEN_KEY,props[CANVAS_CLIENT_TOKEN_KEY])
         configuration.setProperty(CANVAS_CLIENT_SECRET_KEY,props[CANVAS_CLIENT_SECRET_KEY])
@@ -333,7 +333,7 @@ class CanvasIntegration implements PluginTrait {
                     logger.error(data.toString())
                     throw new RuntimeException(data.toString())
                 }
-                
+
             }
             response.failure = { HttpResponseDecorator resp  ->
                 String error = resp.responseBase.entity.content.getText("UTF-8")

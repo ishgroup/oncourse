@@ -18,7 +18,6 @@ import ish.oncourse.server.cayenne.glue.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class MessageReceived {

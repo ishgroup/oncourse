@@ -12,17 +12,16 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
-import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.getAssetAccount
-import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.getLiabilityAccount
 import ish.oncourse.server.api.v1.model.TaxDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Tax
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
-import org.apache.cayenne.query.SelectQuery
 import org.apache.cayenne.validation.ValidationResult
+
+import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.getAssetAccount
+import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.getLiabilityAccount
 
 @CompileStatic
 class TaxFunctions {

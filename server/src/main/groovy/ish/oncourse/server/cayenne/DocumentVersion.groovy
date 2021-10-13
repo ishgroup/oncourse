@@ -18,8 +18,6 @@ import ish.oncourse.server.cayenne.glue._DocumentVersion
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
-import java.util.List
 
 /**
  * Specific version of a document record stored in onCourse.

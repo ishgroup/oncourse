@@ -19,7 +19,6 @@ import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public abstract class AbstractFontExtensionsRegistry implements ExtensionsRegistry {

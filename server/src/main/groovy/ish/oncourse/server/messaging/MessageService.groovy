@@ -11,39 +11,28 @@
 
 package ish.oncourse.server.messaging
 
-import javax.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.common.types.MessageStatus
 import ish.common.types.MessageType
 import ish.messaging.SendMessageRequest
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.scripting.api.MessageBuilder
-import ish.oncourse.server.scripting.api.NeedToSendEmail
-import ish.oncourse.server.scripting.api.SendEmailViaSmtp
-import ish.oncourse.server.scripting.api.SmtpParameters
-import ish.oncourse.server.services.AuditService
-
-import java.util.function.Function
-
-import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
-import static ish.oncourse.server.api.v1.function.MessageFunctions.getRecipientsListFromEntity
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.EmailTemplate
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.server.scripting.api.MessageSpec
-import ish.oncourse.server.scripting.api.SmsSpec
-import ish.oncourse.server.scripting.api.TemplateService
+import ish.oncourse.server.scripting.api.*
+import ish.oncourse.server.services.AuditService
 import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
+import javax.inject.Inject
 import javax.mail.MessagingException
+import java.util.function.Function
+
+import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
+import static ish.oncourse.server.api.v1.function.MessageFunctions.getRecipientsListFromEntity
 
 @CompileDynamic
 class MessageService {

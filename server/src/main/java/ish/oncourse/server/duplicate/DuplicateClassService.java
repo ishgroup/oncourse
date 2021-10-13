@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.duplicate;
 
-import javax.inject.Inject;
 import ish.duplicate.ClassDuplicationRequest;
 import ish.duplicate.DuplicationResult;
 import ish.oncourse.entity.services.CourseClassService;
@@ -25,6 +24,7 @@ import org.apache.cayenne.validation.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 

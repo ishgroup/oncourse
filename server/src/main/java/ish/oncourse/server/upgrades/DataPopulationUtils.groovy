@@ -13,27 +13,13 @@ package ish.oncourse.server.upgrades
 
 import ish.common.types.EntityEvent
 import ish.common.types.MessageType
-import static ish.oncourse.common.ResourceType.EXPORT
-import static ish.oncourse.common.ResourceType.IMPORT
-import static ish.oncourse.common.ResourceType.MESSAGING
-import ish.oncourse.server.cayenne.AutomationTrait
-import ish.oncourse.server.cayenne.EmailTemplate
-import ish.oncourse.server.cayenne.EmailTemplateAutomationBinding
-import ish.oncourse.server.cayenne.ExportTemplate
-import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
-import ish.oncourse.server.cayenne.Import
-import ish.oncourse.server.cayenne.ImportAutomationBinding
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.types.OutputType
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.common.ResourceProperty
-import static ish.oncourse.common.ResourceProperty.*
 import ish.oncourse.common.ResourceType
-import static ish.oncourse.common.ResourceType.SCRIPT
 import ish.oncourse.common.ResourcesUtil
-import ish.oncourse.server.cayenne.Script
-import ish.oncourse.server.cayenne.ScriptAutomationBinding
+import ish.oncourse.server.cayenne.*
+import ish.oncourse.types.OutputType
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.IOUtils
@@ -41,6 +27,9 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.nio.charset.Charset
+
+import static ish.oncourse.common.ResourceProperty.*
+import static ish.oncourse.common.ResourceType.*
 
 class DataPopulationUtils {
 

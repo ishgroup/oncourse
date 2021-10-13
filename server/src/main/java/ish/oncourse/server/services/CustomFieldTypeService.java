@@ -11,15 +11,14 @@
 
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import ish.oncourse.server.function.DeleteCustomFieldTypeWithRelatedFields;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SelectById;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**

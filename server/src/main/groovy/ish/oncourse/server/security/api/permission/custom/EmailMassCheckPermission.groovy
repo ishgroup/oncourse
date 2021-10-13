@@ -17,6 +17,7 @@ import ish.common.types.Mask
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.security.api.permission.PermissionCheckingResult
 import ish.oncourse.server.security.api.permission.ResourcePermission
+
 import static org.apache.commons.lang3.StringUtils.trimToEmpty
 
 class EmailMassCheckPermission extends ResourcePermission {

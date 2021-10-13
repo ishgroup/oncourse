@@ -11,13 +11,12 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.math.Money
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Membership
 import ish.validation.ValidationFailure
 import org.apache.cayenne.validation.ValidationResult
-import org.apache.commons.lang3.StringUtils
 
 import javax.annotation.Nonnull
 

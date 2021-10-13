@@ -5,15 +5,15 @@
 
 package ish.oncourse.aql.model;
 
-import java.util.List;
-import java.util.Optional;
-
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.ASTObjPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
+
+import java.util.List;
+import java.util.Optional;
 
 public class PathAliasDescriptor implements SyntheticAttributeDescriptor {
 

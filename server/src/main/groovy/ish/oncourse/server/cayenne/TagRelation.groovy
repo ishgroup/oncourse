@@ -22,7 +22,6 @@ import org.apache.cayenne.validation.ValidationResult
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
 
 /**
  * Object representing relation between tag and entity record tagged with it.

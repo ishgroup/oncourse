@@ -11,57 +11,35 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.cancel.CancelationResult
 import ish.common.types.EnrolmentStatus
 import ish.common.types.OutcomeStatus
 import ish.duplicate.ClassDuplicationRequest
 import ish.duplicate.DuplicationResult
 import ish.oncourse.entity.services.CourseClassService
-import ish.oncourse.server.api.dao.AssessmentClassDao
-import ish.oncourse.server.api.dao.ClassCostDao
-import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.api.dao.SessionModuleDao
-import ish.oncourse.server.api.dao.SiteDao
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.function.DocumentFunctions
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import ish.oncourse.server.api.v1.model.CancelCourseClassDTO
-import ish.oncourse.server.api.v1.model.ClassFundingSourceDTO
-import ish.oncourse.server.api.v1.model.CourseClassAttendanceTypeDTO
-import ish.oncourse.server.api.v1.model.CourseClassDTO
-import ish.oncourse.server.api.v1.model.CourseClassDuplicateDTO
-import ish.oncourse.server.api.v1.model.DeliveryModeDTO
-import ish.oncourse.server.api.v1.model.TrainingPlanDTO
-import static ish.oncourse.server.api.validation.EntityValidator.validateLength
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cancel.CancelClassHelper
 import ish.oncourse.server.cancel.CancelEnrolmentService
-import ish.oncourse.server.cayenne.AssessmentClass
-import ish.oncourse.server.cayenne.AssessmentClassModule
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassAttachmentRelation
-import ish.oncourse.server.cayenne.CourseClassCustomField
-import ish.oncourse.server.cayenne.CourseClassTagRelation
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.SessionModule
+import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.duplicate.DuplicateClassService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.oncourse.server.api.validation.EntityValidator.validateLength
+import static org.apache.commons.lang3.StringUtils.trimToEmpty
 
 class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseClass, CourseClassDao> {
 

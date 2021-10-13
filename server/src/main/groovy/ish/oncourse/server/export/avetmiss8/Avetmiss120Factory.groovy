@@ -12,11 +12,7 @@
 package ish.oncourse.server.export.avetmiss8
 
 import groovy.transform.CompileStatic
-import ish.common.types.ClassFundingSource
-import ish.common.types.DeliveryMode
-import ish.common.types.OutcomeStatus
-import ish.common.types.StudyReason
-import ish.common.types.VETFeeExemptionType
+import ish.common.types.*
 import ish.math.Money
 import ish.math.MoneyRounding
 import ish.oncourse.common.ExportJurisdiction
@@ -27,14 +23,12 @@ import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.export.avetmiss.AvetmissExportResult
 import ish.oncourse.server.export.avetmiss.functions.GetPredominantDeliveryMode
-
 import ish.util.LocalDateUtils
 import org.apache.commons.lang3.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.Month
+
 /**
  * AVETMISS export for outcomes - also known as file 120.
  */
@@ -232,8 +226,8 @@ class Avetmiss120Factory extends AvetmissFactory {
             } else {
                 line.setResult(OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.getDatabaseValue().toString())
             }
-        } 
-        
+        }
+
         // outcomes which have not ended
         // if no submittions (and 'ignore' flag is false) - export outcomes as future (not yet started)
         // if the 'ignore assessments' flag enabled - export as commenced

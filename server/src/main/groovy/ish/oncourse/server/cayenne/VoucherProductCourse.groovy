@@ -14,7 +14,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._VoucherProductCourse
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * A persistent class mapped as "VoucherProductCourse" Cayenne entity.

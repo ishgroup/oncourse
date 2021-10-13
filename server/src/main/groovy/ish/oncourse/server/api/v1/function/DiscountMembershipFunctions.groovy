@@ -12,7 +12,6 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.DiscountMembershipDTO
 import ish.oncourse.server.cayenne.ContactRelationType
 import ish.oncourse.server.cayenne.DiscountMembership
@@ -20,6 +19,8 @@ import ish.oncourse.server.cayenne.DiscountMembershipRelationType
 import org.apache.cayenne.ObjectContext
 
 import java.util.stream.Collectors
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 
 @CompileStatic
 class DiscountMembershipFunctions {

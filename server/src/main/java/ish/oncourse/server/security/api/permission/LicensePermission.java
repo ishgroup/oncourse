@@ -14,7 +14,6 @@ package ish.oncourse.server.security.api.permission;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.license.LicenseService;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 
 /**

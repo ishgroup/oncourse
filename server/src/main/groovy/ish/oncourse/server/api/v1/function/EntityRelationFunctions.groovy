@@ -3,12 +3,7 @@ package ish.oncourse.server.api.v1.function
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.server.cayenne.EntityRelationType
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Qualification
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext

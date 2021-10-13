@@ -16,9 +16,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._FieldConfigurationScheme
 
 import javax.annotation.Nonnull
-import java.util.ArrayList
-import java.util.Date
-import java.util.List
 
 /**
  * Data collection rules {@link ish.oncourse.cayenne.FieldConfigurationScheme} comprise several FieldConfigurations:<br>

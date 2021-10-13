@@ -19,6 +19,7 @@ import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.security.api.permission.PermissionCheckingResult
 import ish.oncourse.server.security.api.permission.ResourcePermission
 import org.apache.commons.lang3.StringUtils
+
 import static org.apache.commons.lang3.StringUtils.trimToEmpty
 
 class MessageMassCheckPermission extends ResourcePermission {

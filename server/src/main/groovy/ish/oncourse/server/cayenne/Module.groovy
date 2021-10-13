@@ -18,6 +18,7 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Module
 import org.apache.cayenne.query.SelectById
+
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 

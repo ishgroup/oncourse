@@ -11,10 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.PriorLearningApiService
 import ish.oncourse.server.api.v1.model.PriorLearningDTO
 import ish.oncourse.server.api.v1.service.PriorLearningApi
+
+import javax.inject.Inject
 
 class PriorLearningApiImpl implements PriorLearningApi {
 

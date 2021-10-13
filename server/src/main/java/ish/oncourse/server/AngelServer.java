@@ -15,7 +15,6 @@ import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
 import io.bootique.jdbc.hikaricp.JdbcHikariCPModule;
-import io.bootique.jdbc.tomcat.JdbcTomcatModule;
 import io.bootique.jetty.JettyModule;
 import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;
@@ -25,11 +24,7 @@ import ish.oncourse.server.document.DocumentModule;
 import ish.oncourse.server.http.HttpModule;
 import ish.oncourse.server.license.LicenseModule;
 import ish.oncourse.server.messaging.SMTPModule;
-import ish.oncourse.server.modules.ApiCayenneLayerModule;
-import ish.oncourse.server.modules.ApiImplementationModule;
-import ish.oncourse.server.modules.ApiServiceModule;
-import ish.oncourse.server.modules.CustomServicesModule;
-import ish.oncourse.server.modules.ServiceModule;
+import ish.oncourse.server.modules.*;
 import ish.oncourse.server.security.api.PermissionModule;
 
 public class AngelServer {

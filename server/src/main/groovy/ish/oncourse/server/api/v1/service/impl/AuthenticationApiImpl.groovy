@@ -11,33 +11,13 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
-import ish.oncourse.server.api.dao.UserDao
-
-import static ish.common.types.TwoFactorAuthorizationStatus.DISABLED
-import static ish.common.types.TwoFactorAuthorizationStatus.ENABLED_FOR_ADMIN
-import static ish.common.types.TwoFactorAuthorizationStatus.ENABLED_FOR_ALL
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.api.servlet.ISessionManager
-import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.*
 import ish.oncourse.server.api.v1.model.LoginRequestDTO
 import ish.oncourse.server.api.v1.model.LoginResponseDTO
-
-import static ish.oncourse.server.api.v1.function.UserFunctions.updateLoginAttemptNumber
-import static ish.oncourse.server.api.v1.function.UserFunctions.validateUserPassword
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.CONCURRENT_SESSIONS_FOUND
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.FORCED_PASSWORD_UPDATE
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.INVALID_CREDENTIALS
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.INVALID_OR_EXPIRED_TOKEN
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.LOGIN_SUCCESSFUL
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.PASSWORD_OUTDATED
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.TFA_OPTIONAL
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.TFA_REQUIRED
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.TOKEN_REQUIRED
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.TOO_MANY_USERS
-import static ish.oncourse.server.api.v1.model.LoginStatusDTO.WEAK_PASSWORD
 import ish.oncourse.server.api.v1.service.AuthenticationApi
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.license.LicenseService
@@ -45,12 +25,20 @@ import ish.oncourse.server.services.TOTPService
 import ish.oncourse.server.users.SystemUserService
 import ish.security.AuthenticationUtil
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
 import java.time.LocalDate
+
+import static ish.common.types.TwoFactorAuthorizationStatus.*
+import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.*
+import static ish.oncourse.server.api.v1.function.UserFunctions.updateLoginAttemptNumber
+import static ish.oncourse.server.api.v1.function.UserFunctions.validateUserPassword
+import static ish.oncourse.server.api.v1.model.LoginStatusDTO.*
 
 @CompileStatic
 class AuthenticationApiImpl implements AuthenticationApi {

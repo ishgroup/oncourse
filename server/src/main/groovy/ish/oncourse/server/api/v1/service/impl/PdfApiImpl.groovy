@@ -11,24 +11,17 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ReportApiService
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
-import ish.oncourse.server.api.v1.function.export.CertificatePrintFilter
-import ish.oncourse.server.api.v1.function.export.CertificatePrintPreProcessor
-import ish.oncourse.server.api.v1.function.export.PrintFilter
-import ish.oncourse.server.api.v1.function.export.PrintPreProcessor
-import ish.oncourse.server.api.v1.function.export.PrintRequestBuilder
+import ish.oncourse.server.api.v1.function.export.*
 import ish.oncourse.server.api.v1.model.PrintRequestDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.PdfApi
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.concurrent.ExecutorManager
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.print.PrintWorker
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.users.SystemUserService
@@ -37,11 +30,14 @@ import ish.print.PrintResult
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.ForbiddenException
 import javax.ws.rs.core.Context
 import java.time.LocalDateTime
 import java.util.concurrent.Callable
+
+import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
 
 @CompileStatic
 class PdfApiImpl implements PdfApi {

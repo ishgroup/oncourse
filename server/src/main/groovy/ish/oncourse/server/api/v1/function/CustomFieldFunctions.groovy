@@ -17,6 +17,7 @@ import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.ExpandableTrait
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+
 import static org.apache.commons.lang3.StringUtils.isBlank
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
@@ -30,7 +31,7 @@ class CustomFieldFunctions {
         context.deleteObjects(dbCustomFields.findAll { !customFieldsToSave.contains(it.customFieldType.key) })
         customFields.each { k, v ->
             CustomField cf = dbCustomFields.find { it.customFieldType.key == k }
-            
+
             if (cf) {
                 cf.value = trimToNull(v)
             } else if (v) {

@@ -18,8 +18,6 @@ import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.AutomationTrait;
 import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-
 
 import java.util.HashMap;
 import java.util.List;

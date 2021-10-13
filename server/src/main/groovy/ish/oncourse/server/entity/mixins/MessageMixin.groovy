@@ -16,8 +16,6 @@ import ish.oncourse.server.cayenne.MessagePerson
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 
-import java.util.stream.Collectors
-
 class MessageMixin {
 
     static String getRecipientsString(Message self) {

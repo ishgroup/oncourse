@@ -14,9 +14,10 @@ package ish.oncourse.server.api.v1.function
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.oncourse.server.api.v1.model.CategoryDTO
-import static ish.oncourse.server.api.v1.model.CategoryDTO.*
 import ish.oncourse.server.api.v1.model.CategoryItemDTO
 import ish.oncourse.server.security.api.IPermissionService
+
+import static ish.oncourse.server.api.v1.model.CategoryDTO.*
 
 class DashboardCategoryFunctions {
 

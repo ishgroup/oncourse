@@ -16,30 +16,20 @@ import ish.common.types.OutcomeStatus
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.entity.services.CertificateService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.FundingSource
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.Student
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.export.avetmiss.AvetmissExport
-import org.apache.cayenne.query.SelectById
-
-import static ish.oncourse.server.export.avetmiss.AvetmissExport.*
 import ish.oncourse.server.export.avetmiss.AvetmissExportResult
-import ish.persistence.GetInExpression
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.ResultBatchIterator
-import org.apache.cayenne.ResultIterator
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
+
+import static ish.oncourse.server.export.avetmiss.AvetmissExport.*
 
 @CompileStatic
 class Avetmiss8ExportRunner {
@@ -190,7 +180,7 @@ class Avetmiss8ExportRunner {
         new Avetmiss010Factory(result, jurisdiction, preferenceController).createLine()
 
         logger.info("AVETMISS export for {} outcomes. Now constructing outcome objects...", outcomeIds.size())
-        
+
         outcomeIds.parallelStream().forEach() { id ->
             Outcome outcome = SelectById.query(Outcome.class, id)
                     .prefetch(Outcome.ENROLMENT.joint())
@@ -200,7 +190,7 @@ class Avetmiss8ExportRunner {
                     .prefetch(Outcome.ENROLMENT.dot(Enrolment.COURSE_CLASS).dot(CourseClass.COURSE).joint())
                     .prefetch(Outcome.ENROLMENT.dot(Enrolment.COURSE_CLASS).dot(CourseClass.COURSE).dot(Course.QUALIFICATION).joint())
                     .selectOne(context)
-            
+
 
             new Avetmiss120Factory(result, jurisdiction, preferenceController).createLine(outcome)
             Avetmiss130Factory a130 = new Avetmiss130Factory(result, jurisdiction, preferenceController)

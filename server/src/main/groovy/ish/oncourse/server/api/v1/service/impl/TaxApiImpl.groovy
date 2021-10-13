@@ -11,15 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.TaxFunctions.GST_TAX_CODE
-import static ish.oncourse.server.api.v1.function.TaxFunctions.GST_exempt_TAX_CODE
-import static ish.oncourse.server.api.v1.function.TaxFunctions.NON_SUPPLY_TAX_CODE
-import static ish.oncourse.server.api.v1.function.TaxFunctions.updateTax
-import static ish.oncourse.server.api.v1.function.TaxFunctions.validateData
-import static ish.oncourse.server.api.v1.function.TaxFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.TaxFunctions.validateForUpdate
 import ish.oncourse.server.api.v1.model.TaxDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TaxApi
@@ -29,9 +21,12 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang.StringUtils
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.ZoneOffset
+
+import static ish.oncourse.server.api.v1.function.TaxFunctions.*
 
 class TaxApiImpl implements TaxApi {
 

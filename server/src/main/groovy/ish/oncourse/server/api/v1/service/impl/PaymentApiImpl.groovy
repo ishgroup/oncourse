@@ -11,17 +11,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
-import static ish.common.types.PaymentType.CHEQUE
-import static ish.common.types.PaymentType.CREDIT_CARD
-import static ish.common.types.PaymentType.OTHER
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.SYSTEM_TYPES
-import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.updateType
-import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.validateData
-import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.validateForUpdate
 import ish.oncourse.server.api.v1.model.PayTypeDTO
 import ish.oncourse.server.api.v1.model.PaymentMethodDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -33,9 +24,13 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang.StringUtils
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.ZoneOffset
+
+import static ish.common.types.PaymentType.*
+import static ish.oncourse.server.api.v1.function.PaymentTypeFunctions.*
 
 @CompileStatic
 class PaymentApiImpl implements PaymentApi {

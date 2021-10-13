@@ -11,9 +11,6 @@
 
 package ish.oncourse.server;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -23,6 +20,9 @@ import ish.oncourse.server.db.TransactionCheckService;
 import ish.oncourse.server.license.LicenseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 
 public class SanityCheckCommand extends CommandWithMetadata {

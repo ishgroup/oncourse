@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.oncourse.server.api.v1.model.KeyCodeDTO
@@ -21,6 +20,8 @@ import ish.oncourse.server.api.v1.service.AccessApi
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.security.api.permission.PermissionCheckingResult
 import ish.oncourse.server.users.SystemUserService
+
+import javax.inject.Inject
 
 class AccessApiImpl implements AccessApi {
 

@@ -13,8 +13,6 @@ package ish.budget;
 import ish.common.types.ClassCostFlowType;
 import ish.common.types.ClassCostRepetitionType;
 import ish.math.Money;
-import ish.oncourse.cayenne.DiscountCourseClassInterface;
-import ish.oncourse.cayenne.DiscountInterface;
 import ish.oncourse.server.cayenne.*;
 import ish.util.DiscountUtils;
 
@@ -332,7 +330,7 @@ public class ClassCostUtil {
 		return cost.getCourseClass()
 				// get all class enrolments
 				.getSuccessAndQueuedEnrolments().stream()
-				// take all invoiceLines from them 
+				// take all invoiceLines from them
 				.map(Enrolment::getInvoiceLines)
 				// flatten them since previous line returns stream of lists of invoiceLines
 				.flatMap(List::stream)

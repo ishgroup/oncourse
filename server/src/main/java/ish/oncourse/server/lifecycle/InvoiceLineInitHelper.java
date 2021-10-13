@@ -12,12 +12,11 @@ package ish.oncourse.server.lifecycle;
 
 import ish.common.types.PaymentType;
 import ish.math.Money;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.Account;
+import ish.oncourse.server.cayenne.InvoiceLine;
+import ish.oncourse.server.cayenne.VoucherProduct;
 import ish.oncourse.server.cayenne.glue._PaymentInLine;
 import ish.util.AccountUtil;
-import org.apache.cayenne.ObjectContext;
-
-import java.util.List;
 
 /**
  * Helper class for initializing account and tax for invoice lines coming from willow.

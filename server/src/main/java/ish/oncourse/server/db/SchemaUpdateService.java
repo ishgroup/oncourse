@@ -11,7 +11,6 @@
 package ish.oncourse.server.db;
 
 
-import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.license.LicenseService;
@@ -28,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.util.ClasspathHelper;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.net.URL;
 import java.sql.Connection;

@@ -13,11 +13,7 @@ package ish.oncourse.server.api.dao
 
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
-import ish.oncourse.server.cayenne.Attendance
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.Student
+import ish.oncourse.server.cayenne.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById

@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.integration;
 
-import javax.inject.Inject;
 import ish.common.types.SystemEventType;
 import ish.common.types.TriggerType;
 import ish.oncourse.common.SystemEvent;
@@ -23,6 +22,7 @@ import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**

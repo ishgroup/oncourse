@@ -12,7 +12,6 @@
 package ish.oncourse.aql.impl.converter;
 
 import ish.oncourse.aql.impl.Op;
-
 import ish.oncourse.server.cayenne.Contact;
 import ish.util.StringUtil;
 import org.apache.cayenne.exp.Expression;

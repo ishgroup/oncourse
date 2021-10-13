@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service;
 
-import javax.inject.Inject;
 import ish.oncourse.server.api.dao.ReportDao;
 import ish.oncourse.server.api.dao.ReportOverlayDao;
 import ish.oncourse.server.api.v1.model.BindingDTO;
@@ -20,9 +19,9 @@ import ish.oncourse.server.api.v1.model.ReportDTO;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.report.ReportBuilder;
 import ish.print.PrintTransformationsFactory;
-import ish.print.transformations.PrintTransformation;
 import ish.util.LocalDateUtils;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;

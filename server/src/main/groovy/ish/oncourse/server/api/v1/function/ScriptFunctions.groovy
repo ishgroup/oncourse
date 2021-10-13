@@ -13,21 +13,15 @@ package ish.oncourse.server.api.v1.function
 
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
-import ish.oncourse.server.api.v1.model.ScheduleTypeDTO
 import ish.oncourse.server.api.v1.model.ScriptDTO
-import ish.oncourse.server.api.v1.model.TriggerTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.querying.QuerySpec
 import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.Property
-import org.apache.cayenne.query.ColumnSelect
-import org.apache.cayenne.query.ObjectSelect
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import ish.oncourse.server.cayenne.Script
 
 class ScriptFunctions {
 

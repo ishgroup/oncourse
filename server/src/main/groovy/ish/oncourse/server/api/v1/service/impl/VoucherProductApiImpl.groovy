@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.VoucherProductApiService
 import ish.oncourse.server.api.v1.function.EntityRelationFunctions
@@ -19,6 +18,8 @@ import ish.oncourse.server.api.v1.model.VoucherProductDTO
 import ish.oncourse.server.api.v1.service.VoucherProductApi
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.VoucherProduct
+
+import javax.inject.Inject
 
 class VoucherProductApiImpl implements VoucherProductApi {
 

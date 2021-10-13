@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import ish.oncourse.server.cayenne.TutorAttendance
+
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
 

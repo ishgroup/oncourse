@@ -11,21 +11,22 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.CertificateApiService
-import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecords
+import ish.oncourse.server.api.v1.model.CertificateCreateForEnrolmentsRequestDTO
 import ish.oncourse.server.api.v1.model.CertificateDTO
 import ish.oncourse.server.api.v1.model.CertificateRevokeRequestDTO
 import ish.oncourse.server.api.v1.model.CertificateValidationRequestDTO
 import ish.oncourse.server.api.v1.service.CertificateApi
-import ish.oncourse.server.api.v1.model.CertificateCreateForEnrolmentsRequestDTO
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.print.CertificatePrintStatus
-import org.apache.cayenne.Cayenne
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecords
 
 @CompileStatic
 class CertificateApiImpl implements CertificateApi {

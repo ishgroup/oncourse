@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.dao
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.v1.function.export.ExportFunctions
 import ish.oncourse.server.cayenne.Report
@@ -19,6 +18,8 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
 
 class ReportDao implements AutomationDao<Report> {
 

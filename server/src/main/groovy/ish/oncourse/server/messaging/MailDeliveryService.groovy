@@ -11,18 +11,17 @@
 
 package ish.oncourse.server.messaging
 
-import javax.inject.Inject
 import com.sun.mail.smtp.SMTPMessage
 import groovy.transform.CompileDynamic
 import ish.oncourse.server.AngelModule
-
-import javax.inject.Named
-
-import static javax.mail.Message.RecipientType
 import org.apache.commons.lang3.StringUtils
 
+import javax.inject.Inject
+import javax.inject.Named
 import javax.mail.MessagingException
 import javax.mail.Transport
+
+import static javax.mail.Message.RecipientType
 
 @CompileDynamic
 class MailDeliveryService {

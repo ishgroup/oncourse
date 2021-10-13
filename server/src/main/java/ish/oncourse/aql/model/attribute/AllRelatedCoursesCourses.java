@@ -11,26 +11,14 @@
 
 package ish.oncourse.aql.model.attribute;
 
-import ish.oncourse.aql.impl.CompilationContext;
-import ish.oncourse.aql.impl.ExpressionUtil;
-import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
 import ish.oncourse.server.cayenne.Course;
-import ish.oncourse.server.cayenne.EntityRelation;
-import ish.oncourse.server.cayenne.PaymentOutLine;
 import org.apache.cayenne.Persistent;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.exp.parser.ASTPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
-import org.apache.cayenne.query.ObjectSelect;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class AllRelatedCoursesCourses implements SyntheticAttributeDescriptor {
 

@@ -12,10 +12,8 @@
 package ish.oncourse.server.api.service
 
 import ish.oncourse.server.api.dao.RoomDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Tag
 import org.apache.cayenne.ObjectContext
 
 class RoomApiService extends TaggableApiService<RoomDTO, Room, RoomDao> {

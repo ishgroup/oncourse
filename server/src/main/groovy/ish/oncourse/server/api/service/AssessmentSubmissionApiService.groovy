@@ -8,7 +8,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.oncourse.server.api.dao.AssessmentSubmissionDao
 import ish.oncourse.server.api.v1.model.AssessmentSubmissionDTO
 import ish.oncourse.server.cayenne.AssessmentSubmission
@@ -19,6 +18,8 @@ import ish.oncourse.server.document.DocumentService
 import ish.util.DateFormatter
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments

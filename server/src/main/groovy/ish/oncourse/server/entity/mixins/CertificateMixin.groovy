@@ -16,9 +16,10 @@ import ish.oncourse.entity.services.CertificateService
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.CertificateOutcome
 import ish.oncourse.server.cayenne.Outcome
-import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 import net.glxn.qrgen.core.image.ImageType
 import net.glxn.qrgen.javase.QRCode
+
+import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 class CertificateMixin {
 

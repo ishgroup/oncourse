@@ -21,9 +21,9 @@ import ish.oncourse.server.cayenne.NoteRelation
 import ish.oncourse.server.cayenne.SystemUser
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+
 import static org.apache.commons.lang3.StringUtils.isBlank
 import static org.apache.commons.lang3.StringUtils.trimToNull
-
 
 @CompileStatic
 class NoteFunctions {

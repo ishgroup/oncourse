@@ -11,22 +11,19 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.toDbModule
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.toModuleModel
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.validateModelRequiredFields
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.validateValues
 import ish.oncourse.server.api.v1.model.ModuleDTO
 import ish.oncourse.server.api.v1.service.ModuleApi
 import ish.oncourse.server.cayenne.Module
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.EntityFunctions.*
+import static ish.oncourse.server.api.v1.function.ModuleFunctions.*
+
 @CompileStatic
 class ModuleApiImpl implements ModuleApi {
 

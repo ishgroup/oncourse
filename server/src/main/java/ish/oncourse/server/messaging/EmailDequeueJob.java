@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.messaging;
 
-import javax.inject.Inject;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 import ish.common.types.MessageStatus;
 import ish.common.types.MessageType;
@@ -20,7 +19,6 @@ import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.MessagePerson;
-import ish.oncourse.server.cayenne.glue._MessagePerson;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
@@ -35,6 +33,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import javax.inject.Inject;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
@@ -44,7 +43,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @DisallowConcurrentExecution
 public class EmailDequeueJob implements Job {

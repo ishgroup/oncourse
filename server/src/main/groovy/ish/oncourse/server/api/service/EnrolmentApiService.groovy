@@ -11,10 +11,8 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.cancel.CancelationResult
 import ish.cancel.EnrolmentCancelationRequest
-import ish.common.types.EnrolmentReportingStatus
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.server.api.dao.EnrolmentDao
@@ -29,6 +27,8 @@ import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.v1.function.AssessmentSubmissionFunctions.updateSubmissions

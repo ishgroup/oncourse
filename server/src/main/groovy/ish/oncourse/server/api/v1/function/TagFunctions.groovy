@@ -18,46 +18,18 @@ import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.function.GetTagGroupsInterface
 import ish.oncourse.server.api.BidiMap
-import ish.oncourse.server.api.v1.model.TagDTO
-import ish.oncourse.server.api.v1.model.TagRequirementDTO
-import ish.oncourse.server.api.v1.model.TagRequirementTypeDTO
-import ish.oncourse.server.api.v1.model.TagStatusDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.validation.TagValidation
-import ish.oncourse.server.cayenne.AbstractInvoice
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.Lead
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.Quote
-import ish.oncourse.server.cayenne.QuoteLine
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.TagRelation
-import ish.oncourse.server.cayenne.TagRequirement
-import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.function.GetTagGroups
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
 
+import java.time.ZoneOffset
 import java.util.stream.Collectors
 
-import static org.apache.commons.lang3.StringUtils.EMPTY
 import static org.apache.commons.lang3.StringUtils.trimToNull
-
-import java.time.ZoneOffset
-
 
 @CompileStatic
 class TagFunctions {

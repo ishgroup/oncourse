@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.scripting.api;
 
-import javax.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import ish.oncourse.server.ICayenneService;
@@ -20,6 +19,7 @@ import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.AuditService;
 import org.apache.cayenne.ObjectContext;
 
+import javax.inject.Inject;
 import javax.mail.MessagingException;
 import java.util.function.Function;
 

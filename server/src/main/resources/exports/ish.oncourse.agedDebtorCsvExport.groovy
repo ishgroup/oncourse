@@ -1,9 +1,12 @@
 // find all recrods before the threshold date exclusive
 // atDate - export param
+
 import ish.math.Money
 import ish.oncourse.server.cayenne.PaymentOutLine
-import static java.time.temporal.ChronoUnit.DAYS
+
 import java.time.LocalDate
+
+import static java.time.temporal.ChronoUnit.DAYS
 
 //LocalDate atDate = LocalDate.parse('2019-06-30')
 

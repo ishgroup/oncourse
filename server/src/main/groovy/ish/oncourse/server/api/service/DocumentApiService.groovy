@@ -13,14 +13,13 @@ package ish.oncourse.server.api.service
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.DocumentDao
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentTagRelation
 import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.trimToEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
+
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static org.apache.commons.lang3.StringUtils.*
 
 @CompileStatic
 class DocumentApiService extends TaggableApiService<DocumentDTO, Document, DocumentDao> {

@@ -12,21 +12,6 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.DataType
-import static ish.common.types.DataType.BOOLEAN
-import static ish.common.types.DataType.DATE
-import static ish.common.types.DataType.DATE_TIME
-import static ish.common.types.DataType.EMAIL
-import static ish.common.types.DataType.ENTITY
-import static ish.common.types.DataType.FILE
-import static ish.common.types.DataType.LIST
-import static ish.common.types.DataType.LONG_TEXT
-import static ish.common.types.DataType.MAP
-import static ish.common.types.DataType.MESSAGE_TEMPLATE
-import static ish.common.types.DataType.MONEY
-import static ish.common.types.DataType.PATTERN_TEXT
-import static ish.common.types.DataType.TEXT
-
-
 import ish.math.Money
 import ish.oncourse.API
 import ish.util.LocalDateUtils
@@ -34,6 +19,8 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.time.format.DateTimeParseException
+
+import static ish.common.types.DataType.*
 
 @API
 trait CustomFieldTrait {
@@ -44,11 +31,11 @@ trait CustomFieldTrait {
     abstract String getValue()
 
     Object getObjectValue() {
-        
+
         if (!value) {
-             return null   
+             return null
         }
-        
+
         try {
             switch (customFieldType.dataType) {
                 case LIST:

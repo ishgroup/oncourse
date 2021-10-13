@@ -11,18 +11,9 @@
 
 package ish.oncourse.server.api.v1.function
 
-import ish.common.types.CreditLevel
-import ish.common.types.CreditProviderType
-import ish.common.types.CreditType
-import ish.common.types.RecognitionOfPriorLearningIndicator
-import ish.common.types.StudentStatusForUnitOfStudy
+import ish.common.types.*
 import ish.oncourse.server.api.BidiMap
-import ish.oncourse.server.api.v1.model.EnrolmentCreditLevelDTO
-import ish.oncourse.server.api.v1.model.EnrolmentCreditProviderTypeDTO
-import ish.oncourse.server.api.v1.model.EnrolmentCreditTotalDTO
-import ish.oncourse.server.api.v1.model.EnrolmentCreditTypeDTO
-import ish.oncourse.server.api.v1.model.EnrolmentFeeStatusDTO
-import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.api.v1.model.*
 
 class EnrolmentFunctions {
 

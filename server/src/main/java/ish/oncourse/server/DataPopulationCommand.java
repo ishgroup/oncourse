@@ -11,10 +11,6 @@
 
 package ish.oncourse.server;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
-
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -24,6 +20,10 @@ import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.upgrades.DataPopulation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
 
 public class DataPopulationCommand  extends CommandWithMetadata {
 

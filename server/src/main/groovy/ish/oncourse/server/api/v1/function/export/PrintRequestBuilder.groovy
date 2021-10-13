@@ -13,7 +13,6 @@ package ish.oncourse.server.api.v1.function.export
 
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.api.service.ReportApiService
-import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecords
 import ish.oncourse.server.api.v1.model.SortingDTO
 import ish.oncourse.server.api.v1.model.TagGroupDTO
 import ish.oncourse.server.cayenne.Report
@@ -22,22 +21,17 @@ import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.security.api.IPermissionService
 import ish.print.AdditionalParameters
-import static ish.print.AdditionalParameters.BOOLEAN_FLAG
-import static ish.print.AdditionalParameters.DATERANGE_FROM
-import static ish.print.AdditionalParameters.DATERANGE_TO
-import static ish.print.AdditionalParameters.LOCALDATERANGE_FROM
-import static ish.print.AdditionalParameters.LOCALDATERANGE_TO
-import static ish.print.AdditionalParameters.PRINT_QR_CODE
 import ish.print.PrintRequest
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
-import static ish.util.LocalDateUtils.stringToTimeValue
-import static ish.util.LocalDateUtils.stringToValue
-import static ish.util.LocalDateUtils.timeValueToDate
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
 import java.util.stream.Collectors
+
+import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecords
+import static ish.print.AdditionalParameters.*
+import static ish.util.LocalDateUtils.*
 
 class PrintRequestBuilder {
 

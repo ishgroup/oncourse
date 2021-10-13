@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.security.api.permission;
 
-import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.services.ISystemUserService;
 
 /**

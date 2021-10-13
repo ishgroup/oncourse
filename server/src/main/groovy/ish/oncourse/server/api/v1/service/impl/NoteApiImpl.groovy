@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.NoteApiService
 import ish.oncourse.server.api.v1.model.NoteDTO
 import ish.oncourse.server.api.v1.service.NoteApi
@@ -19,6 +18,7 @@ import org.apache.commons.lang.exception.ExceptionUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import java.sql.SQLTransactionRollbackException
 
 class NoteApiImpl implements NoteApi {

@@ -11,13 +11,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
-import static ish.oncourse.server.api.v1.function.UserRoleFunctions.toDbACLRole
-import static ish.oncourse.server.api.v1.function.UserRoleFunctions.toRestUserRole
-import static ish.oncourse.server.api.v1.function.UserRoleFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.UserRoleFunctions.validateForUpdate
 import ish.oncourse.server.api.v1.model.UserRoleDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.UserRoleApi
@@ -25,8 +20,11 @@ import ish.oncourse.server.cayenne.ACLRole
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.UserRoleFunctions.*
 
 class UserRoleApiImpl implements UserRoleApi {
 

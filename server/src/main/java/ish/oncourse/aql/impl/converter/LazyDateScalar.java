@@ -15,7 +15,6 @@ import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.DateTimeInterval;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.impl.LazyExpressionNode;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.parser.*;
 
 import java.util.List;

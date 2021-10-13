@@ -11,8 +11,6 @@
 
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
-
 import ish.oncourse.server.ICayenneService;
 import ish.util.TimeZoneUtil;
 import org.apache.cayenne.access.DataContext;
@@ -23,6 +21,7 @@ import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.terracotta.quartz.wrappers.TriggerWrapper;
 
+import javax.inject.Inject;
 import java.text.ParseException;
 
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;

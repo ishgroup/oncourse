@@ -12,7 +12,6 @@
 package ish.oncourse.server.lifecycle;
 
 import ish.oncourse.server.cayenne.Enrolment;
-import ish.oncourse.server.cayenne.FundingSource;
 
 public class SetFundingContact {
 

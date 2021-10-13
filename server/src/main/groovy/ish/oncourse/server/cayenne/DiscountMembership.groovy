@@ -18,8 +18,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
-import java.util.List
 
 /**
  * Object representing relation between discount and membership.

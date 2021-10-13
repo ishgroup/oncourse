@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.quality
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
@@ -24,6 +23,7 @@ import ish.quality.QualityRuleCheckResult
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import javax.script.ScriptEngineManager
 import javax.script.SimpleBindings
 

@@ -40,6 +40,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -295,7 +296,7 @@ public class PrintWorker implements Runnable {
 			if (transform != null) {
 
 				printList = transform.applyTransformation(cayenneService.getNewContext(), recordIds, printRequest.getAdditionalParameters());
-	
+
 			} else {
 				Map<String, List<Long>> tempMap = new HashMap<>();
 				tempMap.put(printRequest.getEntity(), recordIds);

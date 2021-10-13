@@ -13,13 +13,13 @@ package ish.oncourse.server.api.v1.function
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
-import ish.oncourse.types.FundingStatus
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.AvetmissExportSettingsDTO
 import ish.oncourse.server.api.v1.model.FundingStatusDTO
 import ish.oncourse.server.api.v1.model.FundingUploadDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.FundingUpload
+import ish.oncourse.types.FundingStatus
 
 import java.time.ZoneOffset
 

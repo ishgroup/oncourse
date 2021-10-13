@@ -11,14 +11,14 @@
 
 package ish.oncourse.server.api.v1.function
 
-
 import ish.oncourse.server.api.v1.model.PayrollRequestDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.model.WagesToProcessDTO
 import ish.payroll.PayrollGenerationRequest
 import ish.payroll.WagesSummaryResponse
-import static org.apache.commons.lang3.StringUtils.isNotBlank
 import org.apache.commons.lang3.time.DateUtils
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank
 
 class PayrollFunctions {
 

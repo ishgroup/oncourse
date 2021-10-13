@@ -15,7 +15,6 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._AttachmentData
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Represents attachment file stored in onCourse database.

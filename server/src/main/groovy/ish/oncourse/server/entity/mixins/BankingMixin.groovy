@@ -12,12 +12,11 @@
 package ish.oncourse.server.entity.mixins
 
 import ish.math.Money
-import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.server.api.v1.function.BankingFunctions
-import ish.oncourse.server.api.v1.model.ReconciledStatusDTO
 import ish.oncourse.server.cayenne.Banking
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
+
 import static org.apache.cayenne.query.ObjectSelect.query
 
 class BankingMixin {

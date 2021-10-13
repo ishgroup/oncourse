@@ -15,8 +15,8 @@ import ish.common.types.PayslipPayType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
-import ish.oncourse.types.WorkingWithChildrenStatus
 import ish.oncourse.server.cayenne.glue._Tutor
+import ish.oncourse.types.WorkingWithChildrenStatus
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.exp.Expression
@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+
 /**
  * A tutor is a type of contact who is able to deliver training. Every Tutor object will be linked to exactly one
  * Contact. Only tutor specific data is stored here: for all regular contact attributes and relationships, refer to the

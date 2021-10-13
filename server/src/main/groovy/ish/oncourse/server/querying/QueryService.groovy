@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.querying
 
-import javax.inject.Inject
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.server.CayenneService
@@ -19,6 +18,8 @@ import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
+
+import javax.inject.Inject
 
 class QueryService {
 

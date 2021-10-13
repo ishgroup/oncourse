@@ -13,13 +13,13 @@ package ish.oncourse.server.lifecycle;
 
 import ish.common.types.AttendanceType;
 import ish.common.types.EnrolmentStatus;
-import ish.oncourse.types.FundingStatus;
 import ish.common.types.OutcomeStatus;
 import ish.oncourse.function.CalculateOutcomeReportableHours;
 import ish.oncourse.server.cayenne.Attendance;
 import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.Outcome;
+import ish.oncourse.types.FundingStatus;
 import org.apache.cayenne.ObjectContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

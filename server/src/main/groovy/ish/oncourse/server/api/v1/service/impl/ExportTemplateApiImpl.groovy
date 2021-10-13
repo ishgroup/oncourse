@@ -11,10 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.ExportTemplateApiService
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
+
+import javax.inject.Inject
 
 class ExportTemplateApiImpl implements ExportTemplateApi {
 

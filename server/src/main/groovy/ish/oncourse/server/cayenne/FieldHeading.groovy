@@ -17,8 +17,6 @@ import ish.oncourse.server.cayenne.glue._FieldHeading
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
-import java.util.List
 
 /**
  * Data collection rules {@link FieldConfigurationScheme} have zero or more headings under which

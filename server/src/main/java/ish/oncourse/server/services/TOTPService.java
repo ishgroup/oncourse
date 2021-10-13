@@ -12,7 +12,6 @@
 package ish.oncourse.server.services;
 
 import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 import ish.totp.TOTPKey;
 import net.glxn.qrgen.core.image.ImageType;

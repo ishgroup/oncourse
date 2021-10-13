@@ -13,7 +13,6 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
-import ish.math.Money
 import ish.oncourse.API
 
 trait EnrolmentTrait {

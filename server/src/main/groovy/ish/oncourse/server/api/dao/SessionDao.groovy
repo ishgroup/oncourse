@@ -11,16 +11,17 @@
 
 package ish.oncourse.server.api.dao
 
-import javax.inject.Inject
 import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.SessionModule
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 import ish.oncourse.server.cayenne.Session
+import ish.oncourse.server.cayenne.SessionModule
 import org.apache.cayenne.DataRow
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SQLSelect
 import org.apache.cayenne.query.SelectById
+import org.apache.commons.lang3.StringUtils
+
+import javax.inject.Inject
 
 class SessionDao implements ClassRelatedDao<Session> {
 

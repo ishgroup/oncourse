@@ -14,14 +14,7 @@ package ish.oncourse.aql.model.attribute;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.Assessment;
-import ish.oncourse.server.cayenne.AssessmentClass;
-import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.cayenne.CourseClass;
-import ish.oncourse.server.cayenne.CourseClassTutor;
-import ish.oncourse.server.cayenne.Enrolment;
-import ish.oncourse.server.cayenne.Student;
-import ish.oncourse.server.cayenne.Tutor;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.SimpleNode;
 

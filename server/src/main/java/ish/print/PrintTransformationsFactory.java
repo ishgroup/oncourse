@@ -14,7 +14,8 @@ package ish.print;
 import ish.print.transformations.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  */

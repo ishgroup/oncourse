@@ -12,7 +12,6 @@
 package ish.oncourse.server.scripting.api;
 
 import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.messaging.MailDeliveryParam;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import org.apache.cayenne.ObjectContext;
 

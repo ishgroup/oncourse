@@ -10,33 +10,28 @@ package ish.oncourse.server.preference
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.CompileStatic
-import ish.oncourse.API
-import ish.oncourse.DefaultAccount
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.CategoryDTO
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
+import ish.oncourse.server.api.v1.model.TableModelDTO
 import ish.oncourse.server.cayenne.Account
+import ish.oncourse.server.cayenne.Preference
+import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.services.ISystemUserService
+import ish.persistence.Preferences
 import ish.util.AccountUtil
+import org.apache.cayenne.CayenneRuntimeException
+import org.apache.cayenne.ObjectContext
+import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.lang3.StringUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import javax.inject.Inject
 
 import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID
 import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID
-import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
-import ish.oncourse.server.api.v1.model.TableModelDTO
-import ish.oncourse.server.cayenne.Preference
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.license.LicenseService
-import ish.oncourse.server.services.ISystemUserService
-import ish.persistence.Preferences
-import org.apache.cayenne.CayenneRuntimeException
-import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
-import org.apache.commons.codec.digest.DigestUtils
-import org.apache.commons.lang3.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 @Singleton
 @CompileStatic

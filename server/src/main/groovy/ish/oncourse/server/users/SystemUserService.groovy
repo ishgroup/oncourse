@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.users
 
-import javax.inject.Inject
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.servlet.ISessionManager
@@ -21,6 +20,8 @@ import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import javax.inject.Inject
 
 @API
 class SystemUserService implements ISystemUserService {

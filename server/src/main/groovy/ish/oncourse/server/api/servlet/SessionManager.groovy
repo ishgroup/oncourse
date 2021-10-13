@@ -15,14 +15,6 @@ import groovy.transform.CompileStatic
 import io.bootique.jetty.servlet.DefaultServletEnvironment
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
-
-import javax.inject.Inject
-import javax.inject.Provider
-
-import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
-
-import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
-import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
 import ish.oncourse.server.cayenne.SystemUser
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -32,7 +24,13 @@ import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.SessionIdManager
 import org.eclipse.jetty.server.session.Session
 
+import javax.inject.Inject
+import javax.inject.Provider
 import javax.servlet.http.HttpServletRequest
+
+import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
+import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
+import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 
 @CompileStatic
 class SessionManager implements ISessionManager {

@@ -11,25 +11,19 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
-import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.CourseClassTutorDao
-import ish.oncourse.server.api.dao.RoomDao
-import ish.oncourse.server.api.dao.SessionDao
-import ish.oncourse.server.api.dao.TutorAttendanceDao
-import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.function.SessionValidator
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
-import static ish.oncourse.server.api.v1.service.impl.SessionApiImpl.CLASS_TEMP_ID
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.Session
-import ish.oncourse.server.cayenne.TutorAttendance
+import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.validation.ValidationException
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
+import static ish.oncourse.server.api.v1.service.impl.SessionApiImpl.CLASS_TEMP_ID
 
 class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao> {
 

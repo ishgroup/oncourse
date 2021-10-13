@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.common.types.ConfirmationStatus
 import ish.common.types.InvoiceType
 import ish.common.types.PaymentStatus
@@ -33,6 +32,7 @@ import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import java.time.LocalDate
 
 import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
@@ -135,7 +135,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
         }
         return dto
     }
-    
+
     static InvoiceDTO toRestInvoiceModel(InvoiceDTO dto, Invoice invoice) {
         dto.with {invoiceDTO ->
             invoiceDTO.invoiceNumber = invoice.invoiceNumber
@@ -144,7 +144,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             invoiceDTO.paymentPlans.addAll(invoice.paymentInLines.collect { toRestPaymentPlan(it) }.sort { it.date })
             invoiceDTO.paymentPlans.addAll(invoice.paymentOutLines.collect { toRestPaymentPlan(it) }.sort { it.date })
             invoiceDTO.invoiceLines = invoice.invoiceLines.collect { toRestInvoiceLineModel(it as InvoiceLine) }
-            invoiceDTO        
+            invoiceDTO
         }
     }
 

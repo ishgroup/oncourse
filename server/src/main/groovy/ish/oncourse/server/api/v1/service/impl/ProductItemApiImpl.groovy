@@ -11,11 +11,12 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.ProductItemApiService
 import ish.oncourse.server.api.v1.model.ProductItemCancelDTO
 import ish.oncourse.server.api.v1.model.ProductItemDTO
 import ish.oncourse.server.api.v1.service.ProductItemApi
+
+import javax.inject.Inject
 
 class ProductItemApiImpl implements ProductItemApi {
 

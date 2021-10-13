@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO;
 import ish.oncourse.server.cayenne.Preference;
@@ -23,7 +22,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.util.List;
+import javax.inject.Inject;
 
 @DisallowConcurrentExecution
 public class ChristmasThemeDisableJob implements Job {

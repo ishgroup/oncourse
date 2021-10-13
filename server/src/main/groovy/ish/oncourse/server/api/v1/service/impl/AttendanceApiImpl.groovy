@@ -11,10 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.AttendanceApiService
 import ish.oncourse.server.api.v1.model.StudentAttendanceDTO
 import ish.oncourse.server.api.v1.service.AttendanceApi
+
+import javax.inject.Inject
 
 class AttendanceApiImpl implements AttendanceApi {
 

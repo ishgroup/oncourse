@@ -11,13 +11,13 @@
 
 package ish.oncourse.server.api.dao
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.FundingSource
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
+import javax.inject.Inject
 
 class FundingSourceDao implements CayenneLayer<FundingSource>{
 

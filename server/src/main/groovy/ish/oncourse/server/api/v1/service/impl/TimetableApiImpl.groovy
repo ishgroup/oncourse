@@ -11,13 +11,9 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.SessionDao
-import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
-import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
-import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
 import ish.oncourse.server.api.v1.model.SearchRequestDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.service.TimetableApi
@@ -25,12 +21,18 @@ import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.Tutor
-import static ish.util.LocalDateUtils.dateToTimeValue
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.FunctionExpressionFactory
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
+import static ish.oncourse.server.api.v1.function.TimetableFunctions.getDateRangeExpression
+import static ish.oncourse.server.api.v1.function.TimetableFunctions.toRestSession
+import static ish.util.LocalDateUtils.dateToTimeValue
 
 class TimetableApiImpl implements TimetableApi {
 

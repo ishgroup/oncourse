@@ -17,7 +17,6 @@ import ish.oncourse.server.cayenne.glue._CustomFieldType
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
 
 /**
  * A definition of a custom field which can be used to extend the Contact object.

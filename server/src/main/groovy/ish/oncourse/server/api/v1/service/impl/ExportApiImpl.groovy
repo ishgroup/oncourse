@@ -11,14 +11,9 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
-import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ExportTemplateApiService
-import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
-import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecordIds
-import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecords
 import ish.oncourse.server.api.v1.function.export.TransformationIterable
 import ish.oncourse.server.api.v1.model.ExportRequestDTO
 import ish.oncourse.server.api.v1.service.ExportApi
@@ -27,15 +22,21 @@ import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.export.ExportService
+import ish.oncourse.types.OutputType
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.core.Context
 import java.util.concurrent.Callable
+
+import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
+import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecordIds
+import static ish.oncourse.server.api.v1.function.export.ExportFunctions.getSelectedRecords
 
 class ExportApiImpl implements ExportApi {
 

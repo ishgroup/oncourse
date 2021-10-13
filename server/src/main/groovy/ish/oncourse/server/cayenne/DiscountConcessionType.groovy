@@ -15,7 +15,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._DiscountConcessionType
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Object representing relation between discount and concession type.

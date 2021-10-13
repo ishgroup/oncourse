@@ -12,10 +12,8 @@
 package ish.oncourse.server.api.service
 
 import ish.oncourse.server.api.dao.SiteDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.v1.model.SiteDTO
 import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.Tag
 import org.apache.cayenne.ObjectContext
 
 class SiteApiService extends TaggableApiService<SiteDTO, Site, SiteDao> {

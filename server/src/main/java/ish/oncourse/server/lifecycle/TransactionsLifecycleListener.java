@@ -20,15 +20,12 @@ import ish.oncourse.server.services.TransactionLockedService;
 import ish.util.AccountUtil;
 import ish.validation.ValidationFailure;
 import ish.validation.ValidationResult;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PreUpdate;
 import org.apache.cayenne.validation.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.time.LocalDate;
 
 import static ish.oncourse.server.lifecycle.ChangeFilter.getAtrAttributeChange;
 

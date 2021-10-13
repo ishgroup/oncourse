@@ -11,16 +11,14 @@
 
 package ish.oncourse.server.entity.mixins
 
-import static ish.common.types.TriggerType.CRON
-import static ish.common.types.TriggerType.ENTITY_EVENT
-import static ish.common.types.TriggerType.ONCOURSE_EVENT
-import static ish.common.types.TriggerType.ON_DEMAND
 import ish.oncourse.server.cayenne.Script
 import ish.scripting.CronExpressionType
 import ish.util.DateTimeFormatter
 import org.apache.commons.lang3.StringUtils
 import org.quartz.CronScheduleBuilder
 import org.quartz.TriggerBuilder
+
+import static ish.common.types.TriggerType.*
 
 class ScriptMixin {
 

@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import ish.oncourse.server.cayenne.Survey
+
 import ish.oncourse.server.cayenne.UnavailableRule
 import ish.oncourse.server.cayenne.UnavailableRuleRelation
 import org.apache.cayenne.ObjectContext

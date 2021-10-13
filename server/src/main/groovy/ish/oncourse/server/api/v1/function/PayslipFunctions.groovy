@@ -14,12 +14,9 @@ package ish.oncourse.server.api.v1.function
 import ish.common.types.PayslipStatus
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.PayslipStatusDTO
-import static ish.oncourse.server.api.v1.model.PayslipStatusDTO.APPROVED
-import static ish.oncourse.server.api.v1.model.PayslipStatusDTO.COMPLETED
-import static ish.oncourse.server.api.v1.model.PayslipStatusDTO.NEW
-import static ish.oncourse.server.api.v1.model.PayslipStatusDTO.PAID_EXPORTED
 import ish.oncourse.server.cayenne.Payslip
 
+import static ish.oncourse.server.api.v1.model.PayslipStatusDTO.*
 
 class PayslipFunctions {
 

@@ -11,13 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.toRestConcessionType
-import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.updateConcession
-import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.validateData
-import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.validateForUpdate
 import ish.oncourse.server.api.v1.model.ConcessionTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.ConcessionApi
@@ -27,8 +21,11 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.*
 
 class ConcessionApiImpl implements ConcessionApi {
 

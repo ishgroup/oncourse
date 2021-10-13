@@ -11,13 +11,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.getIntegrationById
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.validateForCreate
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.validateForUpdate
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -29,10 +24,13 @@ import ish.oncourse.server.integration.myob.MyobIntegration
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.lang.reflect.Method
 import java.time.ZoneOffset
+
+import static ish.oncourse.server.api.v1.function.IntegrationFunctions.*
 
 @CompileStatic
 class IntegrationApiImpl implements IntegrationApi {

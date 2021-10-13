@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.servlet
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
 import ish.oncourse.server.security.api.IPermissionService
@@ -23,11 +22,8 @@ import org.apache.logging.log4j.Logger
 import org.eclipse.jetty.server.Request
 import org.eclipse.jetty.server.Response
 
-import javax.servlet.Filter
-import javax.servlet.FilterChain
-import javax.servlet.FilterConfig
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
+import javax.inject.Inject
+import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
@@ -35,7 +31,7 @@ import javax.servlet.http.HttpSession
 import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 
 class ApiFilter implements Filter {
-    
+
     private static final Logger logger = LogManager.getLogger()
 
     private static final String LOGIN_PATH_INFO = 'login'
@@ -45,7 +41,7 @@ class ApiFilter implements Filter {
     private static final String XVALIDATEONLY = 'XValidateOnly'
 
     public static final String AUTHORIZATION = 'Authorization'
-    
+
     private FilterConfig filterConfig
 
     private final ICayenneService cayenneService
@@ -98,8 +94,8 @@ class ApiFilter implements Filter {
         String authHeader = request.getHeader(AUTHORIZATION)
         if (authHeader) {
             ApiToken token = ObjectSelect.query(ApiToken).where(ApiToken.SECRET.eq(authHeader)).selectFirst(cayenneService.newContext)
-            
-            if (token && token.systemUser.isActive) {               
+
+            if (token && token.systemUser.isActive) {
 
                 token.lastAccess = new Date()
                 token.context.commitChanges()
@@ -109,7 +105,7 @@ class ApiFilter implements Filter {
                 return false
             }
         }
-        
+
         if (!request.requestedSessionIdValid) {
             // session forged or expired or user kicked out
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED)

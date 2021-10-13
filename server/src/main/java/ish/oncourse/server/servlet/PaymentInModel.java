@@ -15,7 +15,6 @@ import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.PaymentIn;
 import ish.payment.PaymentInRequest;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.query.SelectById;
 
 import java.util.ArrayList;

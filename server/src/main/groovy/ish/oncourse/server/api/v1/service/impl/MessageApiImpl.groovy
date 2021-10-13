@@ -11,14 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.api.service.MessageApiService
-import ish.oncourse.server.api.v1.model.DiffDTO
-import ish.oncourse.server.api.v1.model.MessageDTO
-import ish.oncourse.server.api.v1.model.RecipientsDTO
-import ish.oncourse.server.api.v1.model.SearchQueryDTO
-import ish.oncourse.server.api.v1.model.SendMessageRequestDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.MessageApi
+
+import javax.inject.Inject
 
 class MessageApiImpl implements MessageApi {
 

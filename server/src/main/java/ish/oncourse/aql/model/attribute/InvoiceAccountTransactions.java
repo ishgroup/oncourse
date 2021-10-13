@@ -15,7 +15,9 @@ import ish.common.types.AccountTransactionType;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.cayenne.AbstractInvoice;
+import ish.oncourse.server.cayenne.AccountTransaction;
+import ish.oncourse.server.cayenne.InvoiceLine;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.SimpleNode;
 

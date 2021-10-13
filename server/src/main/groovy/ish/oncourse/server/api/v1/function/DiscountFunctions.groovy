@@ -17,41 +17,9 @@ import ish.common.types.ClassCostRepetitionType
 import ish.common.types.DiscountType
 import ish.math.MoneyRounding
 import ish.oncourse.server.api.BidiMap
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
-import static ConcessionTypeFunctions.toRestConcessionType
-import static ish.oncourse.server.api.v1.function.DiscountMembershipFunctions.toRestDiscountMembership
-import static ish.oncourse.server.api.v1.function.DiscountMembershipFunctions.updateContactRelationTypes
-import ish.oncourse.server.api.v1.model.ConcessionTypeDTO
-import ish.oncourse.server.api.v1.model.DiscountDTO
-import ish.oncourse.server.api.v1.model.DiscountCorporatePassDTO
-import ish.oncourse.server.api.v1.model.DiscountMembershipDTO
-import ish.oncourse.server.api.v1.model.DiscountTypeDTO
-import static ish.oncourse.server.api.v1.model.DiscountTypeDTO.DOLLAR
-import static ish.oncourse.server.api.v1.model.DiscountTypeDTO.FEE_OVERRIDE
-import static ish.oncourse.server.api.v1.model.DiscountTypeDTO.PERCENT
-import ish.oncourse.server.api.v1.model.MoneyRoundingDTO
-import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.NEAREST_10_CENTS
-import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.NEAREST_50_CENTS
-import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.NEAREST_DOLLAR
-import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.NO_ROUNDING
-import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.ConcessionType
-import ish.oncourse.server.cayenne.ContactRelationType
-import ish.oncourse.server.cayenne.CorporatePass
-import ish.oncourse.server.cayenne.CorporatePassDiscount
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Discount
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.Discount as DbDiscount
-import ish.oncourse.server.cayenne.DiscountConcessionType
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.DiscountMembership
-import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.entity.mixins.CourseClassMixin
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
@@ -59,11 +27,16 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.StringUtils
-import static org.apache.commons.lang3.StringUtils.isNumeric
+
+import static ConcessionTypeFunctions.toRestConcessionType
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.DiscountMembershipFunctions.toRestDiscountMembership
+import static ish.oncourse.server.api.v1.function.DiscountMembershipFunctions.updateContactRelationTypes
+import static ish.oncourse.server.api.v1.model.DiscountTypeDTO.*
+import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.*
 import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import static org.apache.commons.lang3.StringUtils.trimToNull
-
-import java.time.ZoneOffset
 
 @CompileStatic
 class DiscountFunctions {

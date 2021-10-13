@@ -11,12 +11,13 @@
 
 package ish.oncourse.server.integration.canvas
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
+import ish.oncourse.server.scripting.ScriptClosureTrait
+
 /**
  * Integration allows us to establish interaction between Canvas LMS and onCourse enrol system.
  *

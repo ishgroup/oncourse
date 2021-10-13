@@ -11,20 +11,21 @@
 
 package ish.oncourse.server.windcave
 
-import javax.inject.Inject
 import groovy.json.JsonOutput
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.HttpResponseException
-import static ish.common.types.CreditCardType.*
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import java.time.LocalDate
+
+import static ish.common.types.CreditCardType.values
 
 @CompileStatic
 class PaymentService {

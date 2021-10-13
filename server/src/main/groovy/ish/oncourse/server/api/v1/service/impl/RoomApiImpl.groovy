@@ -11,27 +11,23 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam
 import ish.oncourse.server.api.service.RoomApiService
-import static ish.oncourse.server.api.v1.function.RoomFunctions.toDbRoom
-import static ish.oncourse.server.api.v1.function.RoomFunctions.toRestRoom
-import static ish.oncourse.server.api.v1.function.RoomFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.RoomFunctions.validateForSave
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.api.v1.service.RoomApi
 import ish.oncourse.server.cayenne.Room
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
+
+import javax.inject.Inject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.deleteRecord
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.EntityFunctions.*
+import static ish.oncourse.server.api.v1.function.RoomFunctions.*
 
 class RoomApiImpl implements RoomApi {
 

@@ -13,17 +13,14 @@ package ish.oncourse.server.entity.mixins
 
 import ish.math.Money
 import ish.oncourse.API
-import static ish.oncourse.cayenne.MappedSelectParams.AMOUNT_SUM_COLUMN
-import static ish.oncourse.cayenne.MappedSelectParams.ENTITY_NAME_PARAMETER
-import static ish.oncourse.cayenne.MappedSelectParams.FIELD_NAME
-import static ish.oncourse.cayenne.MappedSelectParams.SUM_QUERY
-import static ish.oncourse.cayenne.MappedSelectParams.WHERE_CLAUSE_PARAMETER
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.AccountTransaction
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.MappedSelect
 
 import java.time.LocalDate
+
+import static ish.oncourse.cayenne.MappedSelectParams.*
 
 class AccountMixin {
 

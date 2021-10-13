@@ -10,12 +10,10 @@
  */
 package ish.oncourse.server.payroll;
 
-import ish.common.types.AttendanceType;
 import ish.oncourse.server.cayenne.ClassCost;
 import ish.oncourse.server.cayenne.PayLine;
 import ish.oncourse.server.cayenne.Session;
 import ish.oncourse.server.cayenne.TutorAttendance;
-import org.apache.cayenne.exp.Expression;
 
 import java.util.ArrayList;
 import java.util.Collections;

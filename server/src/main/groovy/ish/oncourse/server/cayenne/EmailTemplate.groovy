@@ -16,7 +16,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EmailTemplate
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Email template defines generic structure of an email suited for some particular purpose (enrolment confirmation,

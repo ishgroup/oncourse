@@ -10,12 +10,12 @@
  */
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.Student;
 import org.apache.cayenne.query.ObjectSelect;
 
+import javax.inject.Inject;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,15 +26,15 @@ public class TestAutoIncrementService implements IAutoIncrementService {
 
 	private AtomicLong studentNumber;
 	private AtomicLong invoiceNumber;
-	
+
 	private ICayenneService  cayenneService;
 	private AtomicBoolean initialized = new AtomicBoolean();
-	
+
 	@Inject
 	public TestAutoIncrementService(ICayenneService  cayenneService) {
 		this.cayenneService = cayenneService;
 	}
-	
+
 	private void init() {
 		var context = cayenneService.getNewNonReplicatingContext();
 
@@ -53,7 +53,7 @@ public class TestAutoIncrementService implements IAutoIncrementService {
 		if (!initialized.getAndSet(true)) {
 			init();
 		}
-		
+
 		if (validateOnly.get() != null && validateOnly.get()) {
 			return 100L;
 		}
@@ -64,7 +64,7 @@ public class TestAutoIncrementService implements IAutoIncrementService {
 		if (!initialized.getAndSet(true)) {
 			init();
 		}
-		
+
 		if (validateOnly.get() != null && validateOnly.get()) {
 			return 100L;
 		}

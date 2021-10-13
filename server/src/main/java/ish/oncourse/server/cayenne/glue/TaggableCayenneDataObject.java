@@ -11,7 +11,6 @@
 package ish.oncourse.server.cayenne.glue;
 
 
-import javax.inject.Inject;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
@@ -23,6 +22,7 @@ import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

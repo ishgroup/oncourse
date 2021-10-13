@@ -10,12 +10,7 @@
  */
 package ish.oncourse.common;
 
-import ish.oncourse.server.cayenne.AutomationTrait;
-import ish.oncourse.server.cayenne.EmailTemplate;
-import ish.oncourse.server.cayenne.ExportTemplate;
-import ish.oncourse.server.cayenne.Import;
-import ish.oncourse.server.cayenne.Report;
-import ish.oncourse.server.cayenne.Script;
+import ish.oncourse.server.cayenne.*;
 
 import javax.annotation.Nonnull;
 

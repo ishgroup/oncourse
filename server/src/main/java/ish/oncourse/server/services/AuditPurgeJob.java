@@ -8,7 +8,6 @@
 
 package ish.oncourse.server.services;
 
-import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.license.LicenseService;
 import org.apache.cayenne.ObjectContext;
@@ -21,6 +20,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

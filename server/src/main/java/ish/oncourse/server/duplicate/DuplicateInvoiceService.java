@@ -13,11 +13,7 @@ package ish.oncourse.server.duplicate;
 
 import ish.common.types.ConfirmationStatus;
 import ish.oncourse.server.PreferenceController;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.InvoiceDueDate;
-import ish.oncourse.server.cayenne.InvoiceLine;
-import ish.oncourse.server.cayenne.InvoiceLineDiscount;
-import ish.oncourse.server.cayenne.InvoiceNoteRelation;
+import ish.oncourse.server.cayenne.*;
 import ish.util.InvoiceUtil;
 import ish.util.NoteUtil;
 

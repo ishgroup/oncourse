@@ -12,29 +12,17 @@
 package ish.oncourse.server.security.api
 
 import ish.oncourse.server.api.security.Permission
-import static ish.oncourse.server.security.api.PermissionServiceFactory.ROOT_API
-import ish.oncourse.server.security.api.permission.AdminApiPermission
-import ish.oncourse.server.security.api.permission.ApiPermission
-import ish.oncourse.server.security.api.permission.ChainPermission
-import ish.oncourse.server.security.api.permission.LazyApiPermission
-import ish.oncourse.server.security.api.permission.LicensePermission
-import ish.oncourse.server.security.api.permission.OpenApiPermission
-import ish.oncourse.server.security.api.permission.QueryParamBasedPermission
-import ish.oncourse.server.security.api.permission.ResourcePermission
-import static org.apache.commons.lang3.StringUtils.isNoneBlank
-import static org.apache.commons.lang3.StringUtils.isNotBlank
+import ish.oncourse.server.security.api.permission.*
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import javax.ws.rs.DELETE
-import javax.ws.rs.GET
-import javax.ws.rs.HttpMethod
-import javax.ws.rs.PATCH
-import javax.ws.rs.POST
-import javax.ws.rs.PUT
-import javax.ws.rs.Path
+import javax.ws.rs.*
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
+
+import static ish.oncourse.server.security.api.PermissionServiceFactory.ROOT_API
+import static org.apache.commons.lang3.StringUtils.isNoneBlank
+import static org.apache.commons.lang3.StringUtils.isNotBlank
 
 class ChainPermissionBuilder {
 

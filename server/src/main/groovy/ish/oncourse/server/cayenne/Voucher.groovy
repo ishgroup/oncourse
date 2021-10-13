@@ -13,7 +13,6 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.ConfirmationStatus
 import ish.common.types.PaymentSource
-import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -23,7 +22,6 @@ import org.apache.cayenne.validation.ValidationResult
 import org.apache.commons.lang3.StringUtils
 
 import javax.annotation.Nonnull
-import java.util.List
 
 /**
  * A Voucher is an instance of a Voucher Product which is purchased by a particular contact

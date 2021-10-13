@@ -11,22 +11,19 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.UnavailableRuleDao
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.getHolidayById
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.toDbHoliday
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.validateFoUpdate
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.validateForDelete
 import ish.oncourse.server.api.v1.model.HolidayDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.HolidayApi
 import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.ObjectContext
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
 
 class HolidayApiImpl implements HolidayApi {
 

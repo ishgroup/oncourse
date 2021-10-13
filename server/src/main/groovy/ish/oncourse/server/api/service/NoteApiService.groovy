@@ -11,15 +11,15 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import ish.oncourse.server.api.dao.NoteDao
 import ish.oncourse.server.api.v1.function.NoteFunctions
 import ish.oncourse.server.api.v1.model.NoteDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.Persistent
 import org.apache.cayenne.query.SelectById
+
+import javax.inject.Inject
 
 public class NoteApiService extends EntityApiService<NoteDTO, Note, NoteDao> {
 

@@ -11,31 +11,23 @@
 
 package ish.oncourse.server.api.service
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.CreditCardType
 import ish.common.types.PaymentStatus
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.common.BankingType
-import static ish.oncourse.common.BankingType.AUTO_AMEX
-import static ish.oncourse.common.BankingType.AUTO_MCVISA
-import static ish.oncourse.common.BankingType.AUTO_OTHER
-import static ish.oncourse.common.BankingType.MANUAL
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.Banking
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentMethod
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.SystemUser
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.users.SystemUserService
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import static org.apache.cayenne.query.ObjectSelect.query
 
+import javax.inject.Inject
 import java.time.LocalDate
+
+import static ish.oncourse.common.BankingType.*
+import static org.apache.cayenne.query.ObjectSelect.query
 
 @CompileStatic
 class BankingService {

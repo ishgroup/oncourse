@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.v1.function.EntityRelationFunctions
@@ -19,6 +18,8 @@ import ish.oncourse.server.api.v1.model.MembershipProductDTO
 import ish.oncourse.server.api.v1.service.MembershipProductApi
 import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Product
+
+import javax.inject.Inject
 
 class MembershipProductApiImpl implements MembershipProductApi {
 

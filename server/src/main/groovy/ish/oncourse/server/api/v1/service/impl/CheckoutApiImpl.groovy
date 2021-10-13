@@ -11,28 +11,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.EntityRelationCartAction
-import ish.oncourse.server.api.dao.ContactDao
-import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.EntityRelationDao
-import ish.oncourse.server.api.dao.ModuleDao
-import ish.oncourse.server.api.dao.ProductDao
-import ish.oncourse.server.api.v1.model.CheckoutSaleRelationDTO
-import ish.oncourse.server.api.v1.model.EntityRelationCartActionDTO
-import ish.oncourse.server.api.v1.model.SaleDTO
-import ish.oncourse.server.api.v1.model.SaleTypeDTO
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.Module
-import ish.oncourse.server.cayenne.EntityRelation
-import ish.oncourse.server.cayenne.EntityRelationType
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Product
-import org.apache.commons.lang3.StringUtils
-
-import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
-import static ish.common.types.ConfirmationStatus.NOT_SENT
 import ish.common.types.PaymentStatus
 import ish.common.types.SystemEventType
 import ish.math.Money
@@ -41,52 +21,33 @@ import ish.oncourse.server.CayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.checkout.CheckoutController
-import ish.oncourse.server.api.dao.FundingSourceDao
-import ish.oncourse.server.api.dao.PaymentInDao
-import ish.oncourse.server.api.service.ArticleProductApiService
-import ish.oncourse.server.api.service.ContactApiService
-import ish.oncourse.server.api.service.CourseClassApiService
-import ish.oncourse.server.api.service.InvoiceApiService
-import ish.oncourse.server.api.service.MembershipProductApiService
-import ish.oncourse.server.api.service.VoucherProductApiService
+import ish.oncourse.server.api.dao.*
+import ish.oncourse.server.api.service.*
 import ish.oncourse.server.api.v1.function.DiscountFunctions
-import ish.oncourse.server.api.v1.model.CheckoutArticleDTO
-import ish.oncourse.server.api.v1.model.CheckoutEnrolmentDTO
-import ish.oncourse.server.api.v1.model.CheckoutMembershipDTO
-import ish.oncourse.server.api.v1.model.CheckoutModelDTO
-import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
-import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
-import ish.oncourse.server.api.v1.model.CheckoutVoucherDTO
-import ish.oncourse.server.api.v1.model.CourseClassDiscountDTO
-import ish.oncourse.server.api.v1.model.InvoiceDTO
-import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
-import ish.oncourse.server.api.v1.model.SessionStatusDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.server.windcave.PaymentService
-import static ish.oncourse.server.windcave.PaymentService.AUTH_TYPE
 import ish.oncourse.server.windcave.SessionAttributes
 import ish.util.DiscountUtils
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.ValidationException
+import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
+import static ish.common.types.ConfirmationStatus.NOT_SENT
+import static ish.oncourse.server.windcave.PaymentService.AUTH_TYPE
 
 @CompileStatic
 class CheckoutApiImpl implements CheckoutApi {

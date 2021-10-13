@@ -11,36 +11,13 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
-import ish.common.types.ClassFundingSource
-import ish.common.types.DeliveryMode
-import ish.common.types.MessageStatus
-import ish.common.types.MessageType
-import ish.common.types.TwoFactorAuthorizationStatus
+import ish.common.types.*
 import ish.oncourse.common.AvetmissConstants
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
-import static ish.oncourse.server.api.v1.function.LanguageFunctions.toRestLanguage
 import ish.oncourse.server.api.v1.function.PreferenceFunctions
-import static ish.oncourse.server.api.v1.function.PreferenceFunctions.getOrCreateUserPreference
-import static ish.oncourse.server.api.v1.function.PreferenceFunctions.toValue
-import ish.oncourse.server.api.v1.model.ColumnWidthDTO
-import ish.oncourse.server.api.v1.model.CountryDTO
-import ish.oncourse.server.api.v1.model.CurrencyDTO
-import ish.oncourse.server.api.v1.model.EnumItemDTO
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.ADDRESSSTATES
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.CLASSFUNDINGSOURCE
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.DELIVERYMODE
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.EXPORTJURISDICTION
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.MAINTENANCETIMES
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.TRAININGORG_TYPES
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.TWOFACTORAUTHSTATUS
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.fromValue
-import ish.oncourse.server.api.v1.model.LanguageDTO
-import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.PreferenceApi
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
@@ -59,9 +36,16 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate
+
+import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
+import static ish.oncourse.server.api.v1.function.LanguageFunctions.toRestLanguage
+import static ish.oncourse.server.api.v1.function.PreferenceFunctions.getOrCreateUserPreference
+import static ish.oncourse.server.api.v1.function.PreferenceFunctions.toValue
+import static ish.oncourse.server.api.v1.model.EnumNameDTO.*
 
 class PreferenceApiImpl implements PreferenceApi {
 

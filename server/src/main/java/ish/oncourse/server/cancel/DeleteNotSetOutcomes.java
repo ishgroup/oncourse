@@ -11,10 +11,10 @@
 
 package ish.oncourse.server.cancel;
 
-import ish.oncourse.types.FundingStatus;
 import ish.common.types.OutcomeStatus;
-import ish.oncourse.server.cayenne.Outcome;
 import ish.oncourse.server.cayenne.Enrolment;
+import ish.oncourse.server.cayenne.Outcome;
+import ish.oncourse.types.FundingStatus;
 import org.apache.cayenne.ObjectContext;
 
 import java.util.ArrayList;

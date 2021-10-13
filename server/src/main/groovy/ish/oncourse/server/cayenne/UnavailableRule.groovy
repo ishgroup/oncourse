@@ -16,7 +16,6 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._UnavailableRule
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 /**
  * Rule determining period of time when room or tutor is unavailable.

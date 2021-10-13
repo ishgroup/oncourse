@@ -19,8 +19,6 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
 import javax.annotation.Nonnull
-import java.util.Date
-import java.util.List
 
 /**
  * ConcessionTypes are a user definable set of concessions which can be linked to students. You might like to define

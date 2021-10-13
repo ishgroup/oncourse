@@ -19,7 +19,6 @@ import ish.oncourse.server.cayenne.Membership;
 import ish.persistence.CommonExpressionFactory;
 import ish.util.DateTimeUtil;
 import ish.util.ProductUtil;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PostUpdate;
 import org.apache.cayenne.annotation.PrePersist;

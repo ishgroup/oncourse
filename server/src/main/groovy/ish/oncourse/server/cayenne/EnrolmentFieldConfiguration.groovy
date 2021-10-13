@@ -16,8 +16,6 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._EnrolmentFieldConfiguration
 
 import javax.annotation.Nonnull
-import java.util.Date
-import java.util.List
 
 /**
  * A field configuration which is used to collect enrolment information

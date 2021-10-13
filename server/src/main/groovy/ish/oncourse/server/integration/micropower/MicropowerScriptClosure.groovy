@@ -11,11 +11,11 @@
 
 package ish.oncourse.server.integration.micropower
 
-
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.MembershipProduct
-import ish.oncourse.server.scripting.ScriptClosureTrait
 import ish.oncourse.server.scripting.ScriptClosure
+import ish.oncourse.server.scripting.ScriptClosureTrait
+
 /**
  * Retrieves new and recently changed profiles from Micropower and adds them to onCourse. Automatically creates
  * memeberships and invoices for the specifiec MemberProduct sku

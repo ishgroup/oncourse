@@ -11,26 +11,22 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.PreferenceController
-import static ish.oncourse.server.api.v1.function.DashboardCategoryFunctions.isPermitted
-import static ish.oncourse.server.api.v1.function.DashboardCategoryFunctions.toCategoryItems
-import ish.oncourse.server.api.v1.model.CategoryDTO
-import ish.oncourse.server.api.v1.model.CategoryItemDTO
-import ish.oncourse.server.api.v1.model.DashboardLinksDTO
-import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
-import ish.oncourse.server.api.v1.model.UserPreferenceDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.UserPreferenceApi
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.preference.UserPreferenceService
-import static ish.oncourse.server.preference.UserPreferenceService.JOIN_DELIMETER
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.services.ISystemUserService
 
+import javax.inject.Inject
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+
+import static ish.oncourse.server.api.v1.function.DashboardCategoryFunctions.isPermitted
+import static ish.oncourse.server.api.v1.function.DashboardCategoryFunctions.toCategoryItems
+import static ish.oncourse.server.preference.UserPreferenceService.JOIN_DELIMETER
 
 @CompileStatic
 class UserPreferenceApiImpl implements UserPreferenceApi {

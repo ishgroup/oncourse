@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import javax.inject.Inject
 import ish.common.types.InvoiceType
 import ish.math.Money
 import ish.oncourse.API
@@ -19,9 +18,9 @@ import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Quote
 import ish.oncourse.server.services.IAutoIncrementService
-import ish.util.InvoiceUtil
 
 import javax.annotation.Nonnull
+import javax.inject.Inject
 
 /**
  * Pre-invoice state

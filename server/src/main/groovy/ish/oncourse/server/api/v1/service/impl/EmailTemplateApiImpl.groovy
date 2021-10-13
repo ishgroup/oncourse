@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.api.v1.model.EmailTemplateDTO
@@ -20,6 +19,8 @@ import ish.oncourse.server.cayenne.EmailTemplate
 import ish.util.AbstractEntitiesUtil
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
+
+import javax.inject.Inject
 
 class EmailTemplateApiImpl implements EmailTemplateApi {
 

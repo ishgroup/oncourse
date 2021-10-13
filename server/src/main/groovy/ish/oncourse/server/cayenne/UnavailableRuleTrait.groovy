@@ -16,8 +16,8 @@ import groovy.time.TimeDuration
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.SessionRepetitionType
-import static ish.common.types.SessionRepetitionType.*
 
+import static ish.common.types.SessionRepetitionType.*
 
 trait UnavailableRuleTrait {
 

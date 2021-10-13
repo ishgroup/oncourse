@@ -14,7 +14,6 @@ package ish.oncourse.server.api.servlet;
 import ish.oncourse.server.cayenne.SystemUser;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.util.Date;
 
 
@@ -31,5 +30,5 @@ public interface ISessionManager {
     void logout(HttpServletRequest request);
 
     void doKickOut(SystemUser user);
-    
+
 }

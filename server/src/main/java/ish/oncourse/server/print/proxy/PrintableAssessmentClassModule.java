@@ -13,12 +13,10 @@ package ish.oncourse.server.print.proxy;
 
 import ish.common.types.NodeSpecialType;
 import ish.oncourse.server.cayenne.AssessmentClass;
-import ish.oncourse.server.cayenne.AssessmentClassModule;
 import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.Tag;
 import ish.print.PrintableObject;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class PrintableAssessmentClassModule implements PrintableObject {
