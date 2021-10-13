@@ -24,6 +24,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @DisallowConcurrentExecution
 public class UserDisableJob implements Job {
@@ -43,15 +44,24 @@ public class UserDisableJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
         DataContext dataContext = cayenneService.getNewContext();
-
+        logger.error("Get context " + dataContext.toString() );
         LocalDate time = LocalDate.now().minus(Period.ofYears(4));
+        logger.error("Extra time " + time.toString() );
         List<SystemUser> inActiveUsers = ObjectSelect.query(SystemUser.class)
                 .where((SystemUser.LAST_LOGIN_ON.lte(Date.valueOf(time)).andExp(SystemUser.IS_ACTIVE.isTrue()))
                         .orExp(SystemUser.LAST_LOGIN_ON.isNull()
                                 .andExp(SystemUser.CREATED_ON.lte(Date.valueOf(time)))
                                 .andExp(SystemUser.IS_ACTIVE.isTrue())
                         )).select(dataContext);
+
+        AtomicReference<String> str = new AtomicReference<>("");
+
+        inActiveUsers.forEach( systemUser -> str.set(str.get() + systemUser.getId() + "/"));
+
+        logger.error("Get isActiveUsers " + str);
         inActiveUsers.forEach(systemUser -> systemUser.setIsActive(false));
+        logger.error("set isActive = false in SystemUser");
         dataContext.commitChanges();
+        logger.error("commitchanges");
     }
 }
