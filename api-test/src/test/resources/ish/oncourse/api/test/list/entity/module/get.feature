@@ -17,7 +17,7 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
         And param entity = 'Module'
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
             {
                 "entity":"Module",
@@ -27,9 +27,11 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                 "sort":[{"attribute":"nationalCode","ascending":true,"complexAttribute":[]}],
                 "columns":
                     [
-                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100, "sortFields":[]},
-                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100, "sortFields":[]},
-                        {"title":"Is offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100, "sortFields":[]}
+                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100, "sortFields":[], "prefetches":[]},
+                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100, "sortFields":[], "prefetches":[]},
+                        {"title":"Is offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100, "sortFields":[], "prefetches":[]},
+                        {"title":"Credit points","attribute":"creditPoints","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Expiry days","attribute":"expiryDays","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
                     ],
                 "rows":
                     [
@@ -41,7 +43,9 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                         {"id":"5","values":["VU21349","Identify the Australian electoral system","false"]}
                     ],
                 "filteredCount":null,
-                "layout":"Three column","filterColumnWidth":200
+                "layout":"Three column",
+                "filterColumnWidth":200,
+                "tagsOrder":[]
             }
 
         """
@@ -60,7 +64,7 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
         And param entity = 'Module'
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
             {
                 "entity":"Module",
@@ -70,9 +74,11 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                 "sort":[{"attribute":"nationalCode","ascending":true,"complexAttribute":[]}],
                 "columns":
                     [
-                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]},
-                        {"title":"Is offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100,"sortFields":[]}
+                        {"title":"Code","attribute":"nationalCode","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Title","attribute":"title","type":null,"sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Is offered","attribute":"isOffered","type":"Boolean","sortable":true,"visible":true,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Credit points","attribute":"creditPoints","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
+                        {"title":"Expiry days","attribute":"expiryDays","type":null,"sortable":true,"visible":false,"system":null,"width":100,"sortFields":[],"prefetches":[]},
                     ],
                 "rows":
                     [
@@ -84,7 +90,9 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
                         {"id":"5","values":["VU21349","Identify the Australian electoral system","false"]}
                     ],
                 "filteredCount":null,
-                "layout":"Three column","filterColumnWidth":200
+                "layout":"Three column",
+                "filterColumnWidth":200,
+                "tagsOrder":[]
             }
 
         """
@@ -98,17 +106,17 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
 
         And match $ contains
             """
-                {
-                    "creditPoints":null,"expiryDays":null,
-                    "fieldOfEducation":"030701",
-                    "id":1,
-                    "isCustom":false,
-                    "isOffered":true,
-                    "nationalCode":"AUM1602A"
-                    ,"nominalHours":22.0,
-                    "specialization":null,
-                    "title":"Install plant, equipment or systems - Advanced"
-                }
+            {
+                "creditPoints":null,"expiryDays":null,
+                "fieldOfEducation":"030701",
+                "id":1,
+                "isCustom":false,
+                "isOffered":true,
+                "nationalCode":"AUM1602A"
+                ,"nominalHours":22.0,
+                "specialization":null,
+                "title":"Install plant, equipment or systems - Advanced"
+            }
             """
 
 
@@ -126,15 +134,15 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
 
         And match $ contains
             """
-                {
-                    "creditPoints":null,"expiryDays":null,
-                    "fieldOfEducation":"030701",
-                    "id":1,
-                    "isCustom":false,
-                    "isOffered":true,
-                    "nationalCode":"AUM1602A"
-                    ,"nominalHours":22.0,
-                    "specialization":null,
-                    "title":"Install plant, equipment or systems - Advanced"
-                }
+            {
+                "creditPoints":null,"expiryDays":null,
+                "fieldOfEducation":"030701",
+                "id":1,
+                "isCustom":false,
+                "isOffered":true,
+                "nationalCode":"AUM1602A"
+                ,"nominalHours":22.0,
+                "specialization":null,
+                "title":"Install plant, equipment or systems - Advanced"
+            }
             """

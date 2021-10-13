@@ -15,7 +15,6 @@ Feature: Main feature for all POST requests with path 'preference/'
             | 'LICENSE_SMS'              | 'license.sms'             | 'true' |
             | 'LICENSE_SCRIPTING'        | 'license.scripting'       | 'true' |
 
-        * call read('postReadOnlyPreferences.feature') readOnlyPreferences
 
 
 

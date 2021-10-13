@@ -26,7 +26,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         Given path ishPath + '/1000'
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "id":1000,
@@ -37,8 +37,6 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         "active":true,
         "description":"some description",
         "documents":[],
-        "createdOn": "#ignore",
-        "modifiedOn": "#ignore"
         }
         """
 
@@ -80,7 +78,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         Given path ishPath + '/1001'
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
         "id":1001,
@@ -90,8 +88,6 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
         "tags":[],
         "active":true,
         "description":"some description",
-        "createdOn": "#ignore",
-        "modifiedOn": "#ignore",
         "documents":
             [{
             "attachedRecordsCount":"#ignore",

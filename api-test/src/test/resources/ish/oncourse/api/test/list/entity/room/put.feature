@@ -39,7 +39,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["testRoom100","site1","25"])].id
+        * def id = get[0] response.rows[?(@.values == ["[212]","testRoom100","site1","25"])].id
 #       <--->
 
         * def roomToUpdate =
@@ -117,7 +117,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["testRoom101","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]","testRoom101","site1","5"])].id
 #       <--->
 
         * def roomToUpdate =
@@ -181,7 +181,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["testRoom104","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]","testRoom104","site1","5"])].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
@@ -250,7 +250,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["testRoom105","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]","testRoom105","site1","5"])].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
@@ -314,7 +314,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["testRoom101","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]","testRoom101","site1","5"])].id
 
 #       <--->  Update room to empty Name:
         * def roomToUpdate =
@@ -393,7 +393,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["testRoom101","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]","testRoom101","site1","5"])].id
 
 #       <--->  Update room to not existent Name:
         * def roomToUpdate =
@@ -451,7 +451,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["testRoom102","site1","5"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]","testRoom102","site1","5"])].id
 
 #       <--->  Update Name to >150 symbols:
         * def roomToUpdate =

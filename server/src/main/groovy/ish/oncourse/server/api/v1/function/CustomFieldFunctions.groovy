@@ -29,13 +29,16 @@ class CustomFieldFunctions {
 
         context.deleteObjects(dbCustomFields.findAll { !customFieldsToSave.contains(it.customFieldType.key) })
         customFields.each { k, v ->
-            CustomField cf = dbCustomFields.find { it.customFieldType.key == k } ?:
-                    context.newObject(relationClass).with { it ->
-                        it.relatedObject = dbObject
-                        it.customFieldType = getCustomFieldType(context, dbObject.class.simpleName, k)
-                        it
-                    }
-            cf.value = trimToNull(v)
+            CustomField cf = dbCustomFields.find { it.customFieldType.key == k }
+            
+            if (cf) {
+                cf.value = trimToNull(v)
+            } else if (v) {
+                cf = context.newObject(relationClass)
+                cf.relatedObject = dbObject
+                cf.customFieldType = getCustomFieldType(context, dbObject.class.simpleName, k)
+                cf.value = trimToNull(v)
+            }
         }
         dbObject.modifiedOn = new Date()
     }
