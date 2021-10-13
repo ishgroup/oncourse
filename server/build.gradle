@@ -31,20 +31,12 @@ configurations {
 sourceSets {
 	main {
 		groovy {
-			srcDirs += 'src/main/java'
-			srcDirs += 'src/main/groovy'
-			srcDirs += "$buildDir/antlr/java"
-			srcDirs += "${buildDir}/generated-resources/main/java"
+			srcDirs += "${buildDir}/generated-resources/antlr/java"
+			srcDirs += "${buildDir}/generated-resources/cayenne/java"
 		}
 		java {
 			srcDirs = []
 		}
-	}
-	test {
-		groovy {
-			srcDirs += 'src/test/groovy'
-		}
-
 	}
 }
 
@@ -163,7 +155,8 @@ jar {
 	archiveFileName = 'onCourseServer.jar'
 }
 
-task expandConfig(type: Copy) {
+task expandTestConfig(type: Copy) {
+	group = 'verification'
 	def dbUrl = project.findProperty('dbUrl') ?: ''
 
 	from("$rootDir/server/src/test/resources/") {
@@ -190,7 +183,7 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
-	dependsOn "expandConfig"
+	dependsOn "expandTestConfig"
 
 	maxParallelForks = 8
 }
@@ -205,7 +198,7 @@ task integration(type: Test) {
 	}
 
 	jvmArgs = ['-Xmx3000m','-Xms3000m']
-	dependsOn "expandConfig"
+	dependsOn "expandTestConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 }
@@ -327,7 +320,7 @@ publishing {
 }
 
 task queryGrammar(type: Aql) {
-	outputDir = file("${buildDir}/antlr/java/ish/oncourse/aql/impl")
+	outputDir = file("${buildDir}/generated-resources/antlr/java/ish/oncourse/aql/impl")
 	packageDir = 'ish.oncourse.aql.impl'
 	target = 'Java'
 }
@@ -340,7 +333,7 @@ cgen {
 	superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/superclass.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.server.cayenne.glue'
-	destDir = file("${buildDir}/generated-resources/main/java")
+	destDir = file("${buildDir}/generated-resources/cayenne/java")
 	doLast {
 		// remove subclass files which are already committed inside the app
 		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/server/cayenne") {
