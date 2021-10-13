@@ -24,10 +24,10 @@ const styles = (theme: AppTheme) =>
       height: "calc(100% - 64px)"
     },
     rightSideBar: {
-      backgroundColor:
-        theme.palette.mode === "light" ? theme.palette.background.paper : theme.palette.background.default,
+      backgroundColor: theme.palette.background.default,
       overflowY: "auto",
-      minWidth: 370
+      minWidth: 370,
+      paddingRight: theme.spacing(3),
     }
   });
 
@@ -128,7 +128,10 @@ class ActionBody extends React.PureComponent<Props, any> {
         <Grid
           item
           xs
-          className={clsx(classes.rightSideBar, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")}
+          className={clsx(
+            classes.rightSideBar,
+            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")
+          }
         >
           <NewsRender />
         </Grid>
