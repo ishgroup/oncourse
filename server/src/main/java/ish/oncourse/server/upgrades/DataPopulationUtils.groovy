@@ -62,7 +62,6 @@ class DataPopulationUtils {
 
 
     static void updateScript(ObjectContext context, Map<String, Object> props) {
-        boolean keepOldScript = false
         String name = getString(props, NAME)
         String keyCode = getString(props, KEY_CODE)
 
@@ -95,7 +94,7 @@ class DataPopulationUtils {
         newScript.systemEventType = get(props, ON_COURSE_EVENT_TYPE, SystemEventType)
 
         newScript.description = getString(props, DESCRIPTION)
-        newScript.body = getBody(props, BODY, SCRIPT)
+        newScript.body = getBody(props, BODY, ResourceType.SCRIPT)
 
         context.commitChanges()
 
@@ -171,8 +170,8 @@ class DataPopulationUtils {
 
         context.commitChanges()
 
-        BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbMessage, EmailTemplateAutomationBinding.class);
-        BindingUtils.updateVariables(context, get(props, VARIABLES, List), dbMessage, EmailTemplateAutomationBinding.class);
+        BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbMessage, EmailTemplateAutomationBinding.class)
+        BindingUtils.updateVariables(context, get(props, VARIABLES, List), dbMessage, EmailTemplateAutomationBinding.class)
     }
 
 
