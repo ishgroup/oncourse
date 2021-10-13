@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -13,7 +13,6 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -84,112 +83,15 @@ const styles = (theme: AppTheme) => createStyles({
     padding: "1px 6px",
     fontSize: 10,
     top: 5
-  }
+  },
+  listWrapper: {
+    backgroundColor: theme.palette.background.default,
+  },
+  newsItem: {
+    background: theme.palette.background.paper,
+    marginBottom: theme.spacing(3),
+  },
 });
-
-const Blog = ({
-  getBlogPosts, blogPosts, classes, preferencesNewsLatestReadDate, setDashboardNewsLatestReadDate
-}) => {
-  const [openPopper, setOpenPopper] = React.useState(false);
-  const [latestPost, setLatestPost] = React.useState([]);
-
-  useEffect(
-    () => {
-      getBlogPosts();
-      setInterval(() => getBlogPosts(), 1000 * 60 * 60);
-    },
-    [getBlogPosts]
-  );
-
-  const hideOlderEvent = post => {
-    if (post.event.length > 0) {
-      const eventHour = differenceInHours(new Date(), new Date(post.event));
-      return eventHour > 24;
-    }
-    return false;
-  };
-
-  React.useEffect(() => {
-    if (blogPosts.length > 0) {
-      setLatestPost(blogPosts.filter(post => !hideOlderEvent(post)));
-    }
-  }, [blogPosts, preferencesNewsLatestReadDate]);
-
-  const onGotIt = React.useCallback(() => {
-    setOpenPopper(false);
-    if (latestPost.length > 0) {
-      const firstPost = latestPost[0];
-      setDashboardNewsLatestReadDate(firstPost.published);
-    }
-  }, [latestPost, openPopper]);
-
-  React.useEffect(() => {
-    if (latestPost.length > 0) {
-      const firstPost = latestPost[0];
-      const element = document.getElementById(`post-${firstPost.id}`);
-      if (element) {
-        if (
-          preferencesNewsLatestReadDate === ""
-          || new Date(preferencesNewsLatestReadDate).getTime() < new Date(firstPost.published).getTime()
-        ) {
-          setOpenPopper(true);
-        } else {
-          setOpenPopper(false);
-        }
-      }
-    }
-  }, [latestPost]);
-
-  return (
-    <div className="d-flex p-0 align-content-start justify-content-center">
-      {latestPost.length ? (
-        <>
-          <div>
-            {openPopper && (
-              <div className="relative zIndex1">
-                <Paper square elevation={0} className={clsx("p-2 relative w-100 text-white", classes.highlightedPaper)}>
-                  <span className={classes.popperArrowRight} />
-                  <Typography variant="caption" component="div" className="mb-1 fontWeight600">
-                    Unread item
-                  </Typography>
-                  <Typography variant="caption" component="div" className="mb-1">
-                    Take a look at this news item for information which might be important to you.
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    color="primary"
-                    onClick={onGotIt}
-                    className={clsx("cursor-pointer text-uppercase fontWeight600", classes.gotItButton)}
-                    component="span"
-                  >
-                    Got it
-                  </Typography>
-                </Paper>
-              </div>
-            )}
-            <List className="w-100 paperBackgroundColor p-0">
-              {latestPost.map((post: any, i) => (
-                <React.Fragment key={i}>
-                  <BlogPostListItem
-                    index={i}
-                    post={post}
-                    classes={classes}
-                    openPopper={openPopper}
-                    defaultExpanded={i === 0}
-                    latestReadDate={preferencesNewsLatestReadDate}
-                  />
-                  {i !== (latestPost.length - 1) && <Divider variant="inset" component="li" />}
-                </React.Fragment>
-              ))}
-            </List>
-          </div>
-        </>
-      ) : (
-        <CircularProgress />
-      )}
-    </div>
-  );
-};
 
 const BlogPostListItem = React.memo<any>(props => {
   const {
@@ -198,13 +100,13 @@ const BlogPostListItem = React.memo<any>(props => {
 
   const isLatestItem = latestReadDate === "" || new Date(latestReadDate).getTime() < new Date(post.published).getTime();
 
-  const [expanded, setExpanded] = React.useState(defaultExpanded || isLatestItem);
+  const [expanded, setExpanded] = useState(defaultExpanded || isLatestItem);
 
-  const onClick = React.useCallback(() => {
+  const onClick = useCallback(() => {
     setExpanded(prev => !prev);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (expanded) {
       const links = document.querySelectorAll(`#post-${post.id} .blog-post-content a`);
       if (links) {
@@ -220,7 +122,7 @@ const BlogPostListItem = React.memo<any>(props => {
       id={`post-${post.id}`}
       alignItems="flex-start"
       onClick={!expanded ? onClick : null}
-      className={clsx({ "cursor-pointer": !expanded })}
+      className={clsx({ "cursor-pointer": !expanded }, classes.newsItem)}
     >
       <div className="w-100 d-block">
         {!expanded && <div className="cursor-pointer absolute zIndex9 top-0 left-0 right-0 bottom-0" />}
@@ -300,6 +202,109 @@ const BlogPostListItem = React.memo<any>(props => {
     </ListItem>
   );
 });
+
+const Blog = ({
+  getBlogPosts, blogPosts, classes, preferencesNewsLatestReadDate, setDashboardNewsLatestReadDate
+}) => {
+  const [openPopper, setOpenPopper] = React.useState(false);
+  const [latestPost, setLatestPost] = React.useState([]);
+
+  useEffect(
+    () => {
+      getBlogPosts();
+      setInterval(() => getBlogPosts(), 1000 * 60 * 60);
+    },
+    [getBlogPosts]
+  );
+
+  const hideOlderEvent = post => {
+    if (post.event.length > 0) {
+      const eventHour = differenceInHours(new Date(), new Date(post.event));
+      return eventHour > 24;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    if (blogPosts.length > 0) {
+      setLatestPost(blogPosts.filter(post => !hideOlderEvent(post)));
+    }
+  }, [blogPosts, preferencesNewsLatestReadDate]);
+
+  const onGotIt = useCallback(() => {
+    setOpenPopper(false);
+    if (latestPost.length > 0) {
+      const firstPost = latestPost[0];
+      setDashboardNewsLatestReadDate(firstPost.published);
+    }
+  }, [latestPost, openPopper]);
+
+  useEffect(() => {
+    if (latestPost.length > 0) {
+      const firstPost = latestPost[0];
+      const element = document.getElementById(`post-${firstPost.id}`);
+      if (element) {
+        if (
+          preferencesNewsLatestReadDate === ""
+          || new Date(preferencesNewsLatestReadDate).getTime() < new Date(firstPost.published).getTime()
+        ) {
+          setOpenPopper(true);
+        } else {
+          setOpenPopper(false);
+        }
+      }
+    }
+  }, [latestPost]);
+
+  return (
+    <div className={clsx("d-flex p-0 align-content-start justify-content-center")}>
+      {latestPost.length ? (
+        <>
+          <div>
+            {openPopper && (
+              <div className="relative zIndex1">
+                <Paper square elevation={0} className={clsx("p-2 relative w-100 text-white", classes.highlightedPaper)}>
+                  <span className={classes.popperArrowRight} />
+                  <Typography variant="caption" component="div" className="mb-1 fontWeight600">
+                    Unread item
+                  </Typography>
+                  <Typography variant="caption" component="div" className="mb-1">
+                    Take a look at this news item for information which might be important to you.
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="primary"
+                    onClick={onGotIt}
+                    className={clsx("cursor-pointer text-uppercase fontWeight600", classes.gotItButton)}
+                    component="span"
+                  >
+                    Got it
+                  </Typography>
+                </Paper>
+              </div>
+            )}
+            <List className={clsx("w-100 p-0", classes.listWrapper)}>
+              {latestPost.map((post: any, i) => (
+                <React.Fragment key={i}>
+                  <BlogPostListItem
+                    index={i}
+                    post={post}
+                    classes={classes}
+                    openPopper={openPopper}
+                    defaultExpanded={i === 0}
+                    latestReadDate={preferencesNewsLatestReadDate}
+                  />
+                </React.Fragment>
+              ))}
+            </List>
+          </div>
+        </>
+      ) : (
+        <CircularProgress />
+      )}
+    </div>
+  );
+};
 
 const mapStateToProps = (state: State) => ({
   blogPosts: state.dashboard.blogPosts
