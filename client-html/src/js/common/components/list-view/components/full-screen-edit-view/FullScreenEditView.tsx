@@ -33,7 +33,8 @@ const styles = theme => createStyles({
       justifyContent: "space-between",
       flexDirection: "row",
       alignItems: "center",
-      padding: theme.spacing(0, 3)
+      padding: theme.spacing(0, 3),
+      background: theme.palette.background.default,
     },
     root: {
       marginTop: theme.spacing(8),
@@ -184,6 +185,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 <FormSubmitButton
                   disabled={(!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
                   invalid={invalid}
+                  fab
                 />
               </div>
             </AppBar>
