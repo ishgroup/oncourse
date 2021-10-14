@@ -32,6 +32,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import ExitToApp from "@mui/icons-material/ExitToApp";
+import Divider from '@mui/material/Divider';
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
@@ -60,8 +61,11 @@ const TutorInitial: Tutor = {
 
 const styles = theme => createStyles({
   avatarWrapper: {
-    "&  img": {
-      width: "100%"
+    height: 90,
+    width: 90,
+    "& img": {
+      width: 90,
+      borderRadius: "100%",
     }
   },
   exitToApp: {
@@ -404,7 +408,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
   return (
     <div className="p-3">
-      <Grid container columnSpacing={3} className="mb-3">
+      <Grid container columnSpacing={3} className="mb-3 align-items-center">
         <Grid item xs={twoColumn ? 2 : 12}>
           <Field
             name="profilePicture"
@@ -435,8 +439,13 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         <Grid item xs={twoColumn ? 4 : 6}>
           <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
         </Grid>
-        <Grid item xs={12}>
-          <ButtonGroup aria-label="full width outlined button group" className="mt-1">
+      </Grid>
+      <Grid container columnSpacing={3}>
+        <Grid item xs={12} md={7}>
+          <Typography variant="caption" display="block" gutterBottom>
+            Type
+          </Typography>
+          <ButtonGroup aria-label="full width outlined button group" className="mb-3 mt-1">
             <Button color={isStudent ? "primary" : "inherit"} disabled={isCompany} onClick={toggleStudentRole}>
               <StyledCheckbox
                 checked={isStudent}
@@ -464,6 +473,18 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             </Button>
           </ButtonGroup>
         </Grid>
+        <Grid item xs={12} md={5}>
+          {isStudent && (
+            <Grid container columnSpacing={3} className="mt-1 mb-3">
+              <Grid item xs={12}>
+                <Typography variant="caption" display="block" gutterBottom>
+                  Timetable
+                </Typography>
+                <TimetableButton onClick={onCalendarClick} />
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
       </Grid>
       <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
         <Grid item xs={12}>
@@ -475,14 +496,8 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           />
         </Grid>
       </Grid>
-      {isStudent && (
-        <Grid container columnSpacing={3} className="pt-2 pb-2">
-          <Grid item xs={12} className="mb-2">
-            <TimetableButton onClick={onCalendarClick} />
-          </Grid>
-        </Grid>
-      )}
-      <Grid container columnSpacing={3}>
+      <Divider className="mt-3 mb-3" />
+      <Grid container columnSpacing={3} rowSpacing={3}>
         <Grid item {...gridItemProps}>
           <FormField
             type="text"
@@ -675,6 +690,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
                 </Typography>
               )}
             </Grid>
+            <Divider className="mt-3 mb-3" />
             <Grid item xs={12} className="pb-2 pt-2">
               <MinifiedEntitiesList
                 name="student.concessions"

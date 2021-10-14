@@ -6,7 +6,7 @@
 import React, { useCallback } from "react";
 import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
-import SettingsIcon from "@mui/icons-material/Settings";
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { IconButtonTypeMap } from "@mui/material";
 
 interface Props {
@@ -66,7 +66,7 @@ export const SettingsAdornment: React.FC<Props> = ({
           root: "inputAdornmentButton"
         }}
       >
-        <SettingsIcon className="inputAdornmentIcon" />
+        <SettingsOutlinedIcon className="inputAdornmentIcon" />
       </IconButton>
     </span>
   );

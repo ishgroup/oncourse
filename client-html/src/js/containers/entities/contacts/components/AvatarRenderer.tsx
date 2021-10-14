@@ -4,10 +4,13 @@
  */
 
 import React, { useCallback, useRef } from "react";
-import { FormHelperText } from "@mui/material";
-import Edit from "@mui/icons-material/Edit";
-import Gravatar from "react-awesome-gravatar";
 import { change } from "redux-form";
+import FormHelperText from "@mui/material/FormHelperText";
+import Edit from "@mui/icons-material/Edit";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
+import Avatar from "@mui/material/Avatar";
+import Gravatar from "react-awesome-gravatar";
 import noAvatarImg from "../../../../../images/no_pic.png";
 import FilePreview from "../../../../common/components/form/FilePreview";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
@@ -25,7 +28,9 @@ const AvatarRenderer: React.FC<any> = props => {
     email,
     input,
     form,
-    dispatch
+    dispatch,
+    disabled,
+    avatarSize,
   } = props;
 
   const fileRef = useRef<any>();
@@ -68,30 +73,42 @@ const AvatarRenderer: React.FC<any> = props => {
     }
   }, [form, input.name]);
 
+  const size = avatarSize || 90;
+
   return (
     <div>
-      <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
+      {!disabled && (<input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />)}
 
-      <div className={`h-100 centeredFlex justify-content-start pr-2 pb-2 ${classes.avatarWrapper}`}>
+      <div className={`centeredFlex justify-content-start mb-2 ${classes.avatarWrapper}`}>
         {input.value && input.value.thumbnail ? (
           <FilePreview
             actions={[
-              { actionLabel: "unlink", onAction: unlink },
-              { actionLabel: "upload", onAction: upload }
+              { actionLabel: "unlink", onAction: unlink, icon: <DeleteOutlineRoundedIcon /> },
+              { actionLabel: "upload", onAction: upload, icon: <FileUploadRoundedIcon /> }
             ]}
             data={input.value.thumbnail}
+            iconPlacementRow
+            avatarSize={size}
+            disabled={disabled}
           />
         ) : (
           <div onClick={upload} className={`relative cursor-pointer ${classes.profileThumbnail}`}>
-            <Gravatar email={email || ""} options={{ size: 55, defaultUrl: `${window.location.origin + noAvatarImg}` }}>
-              {url => <img src={url} alt="Profile picture" onError={handleGravatarError} />}
+            <Gravatar email={email || ""} options={{ size, default: 'mp' }}>
+              {url => (
+                <Avatar
+                  alt="Profile picture"
+                  src={url}
+                  sx={{ width: size, height: size }}
+                  onError={handleGravatarError}
+                />
+              )}
             </Gravatar>
-            <Edit className={classes.profileEditIcon} />
+            {!disabled && (<Edit className={classes.profileEditIcon} />)}
           </div>
         )}
       </div>
 
-      {error && (
+      {!disabled && error && (
         <FormHelperText error={invalid} className={classes.error}>
           <div style={{ maxWidth: "120px", padding: "0 10px 10px 0" }}>{typeof error === "string" ? error : ""}</div>
         </FormHelperText>

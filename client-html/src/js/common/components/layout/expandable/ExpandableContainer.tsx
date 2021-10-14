@@ -9,7 +9,7 @@ import React, {
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
-import AddCircle from "@mui/icons-material/AddCircle";
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
@@ -93,15 +93,17 @@ const ExpandableContainer: React.FC<Props> = ({
     <>
       <div ref={headerRef}>
         <div className="centeredFlex">
-          <div className="heading">{header}</div>
-          {onAdd && (
-            <IconButton onClick={onAdd}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
-          )}
+          <div className="flex-fill">
+            <div className="heading">{header}</div>
+            {onAdd && (
+              <IconButton onClick={onAdd}>
+                <AddCircleOutlineOutlinedIcon className="addButtonColor" />
+              </IconButton>
+            )}
+          </div>
           <IconButton onClick={toggleExpand} className={onAdd && classes.adornmentOffset}>
             <ExpandMore
-              className={clsx("addButtonColor", classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+              className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
             />
           </IconButton>
           {headerAdornment}

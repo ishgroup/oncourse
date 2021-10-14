@@ -140,7 +140,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       toogleFullScreenEditView,
       form,
       asyncValidating,
-      disabledSubmitCondition
+      disabledSubmitCondition,
+      customTitle
     } = this.props;
 
     const title = values && (nameCondition ? nameCondition(values) : values.name);
@@ -166,9 +167,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               className={clsx(classes.header, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
             >
               <div className="flex-fill">
-                <Typography className="appHeaderFontSize" color="inherit">
-                  {title}
-                </Typography>
+                {customTitle ? customTitle(values) : (
+                  <Typography className="appHeaderFontSize" color="inherit">
+                    {title}
+                  </Typography>
+                )}
               </div>
               <div>
                 {manualLink && (
