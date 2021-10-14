@@ -8,6 +8,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { createStyles, withStyles } from "@mui/styles";
 import { darken } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Avatar from "@mui/material/Avatar";
 import clsx from "clsx";
 import { AppTheme } from "../../../model/common/Theme";
 
@@ -16,9 +19,11 @@ const styles = (theme: AppTheme) => createStyles({
       height: "fit-content",
       width: "fit-content",
       position: "relative",
+      fontSize: 0,
       "&:hover $backdrop$active": {
         opacity: 1
-      }
+      },
+      color: "#fff",
     },
     backdrop: {
       display: "flex",
@@ -32,13 +37,9 @@ const styles = (theme: AppTheme) => createStyles({
       transition: theme.transitions.create("opacity", {
         duration: theme.transitions.duration.standard,
         easing: theme.transitions.easing.easeInOut
-      })
-    },
-    image: {
-      height: "100%",
-      width: "auto",
-      maxHeight: theme.spacing(30),
-      maxWidth: theme.spacing(30)
+      }),
+      borderRadius: "100%",
+      zIndex: 1,
     },
     actionButton: {
       background: theme.palette.background.paper,
@@ -60,51 +61,70 @@ interface Props {
   actions?: {
     actionLabel?: string;
     onAction?: any;
-    disabled?: boolean
+    disabled?: boolean,
+    icon?: any;
   }[];
   classes?: any;
+  iconPlacementRow?: boolean;
+  disabled?: boolean;
+  avatarSize?: number;
 }
 
 const FilePreview: React.FC<Props> = ({
- label, actions, data, classes
-}) => (
-  <>
-    {label && (
-    <Typography variant="caption" color="textSecondary" component="div" className="pb-1">
-      {label}
-    </Typography>
+ label, actions, data, classes, iconPlacementRow, disabled, avatarSize
+}) => {
+  const size = avatarSize || 90;
+  return (
+    <>
+      {label && (
+        <Typography variant="caption" color="textSecondary" component="div" className="pb-1">
+          {label}
+        </Typography>
       )}
 
-    {data ? (
-      <div className={classes.root}>
-        <div className={clsx(classes.backdrop, actions && classes.active)}>
-          <div className="flex-column">
-            {actions
-                && actions.map((a, i) => (
-                  <Button
-                    key={i}
-                    size="small"
-                    variant="outlined"
-                    color="secondary"
-                    classes={{
-                      root: classes.actionButton
-                    }}
-                    onClick={a.onAction}
-                    disabled={a.disabled}
-                  >
-                    {a.actionLabel}
-                  </Button>
-                ))}
-          </div>
+      {data ? (
+        <div className={classes.root}>
+          {!disabled && (
+            <div className={clsx(classes.backdrop, actions && classes.active)}>
+              <div className={iconPlacementRow ? "centeredFlex" : "flex-column"}>
+                {actions
+                    && actions.map((a, i) => (a.icon ? (
+                      <Tooltip key={i} title={a.actionLabel} placement={iconPlacementRow ? "top" : "right"}>
+                        <IconButton color="inherit" size="medium" onClick={a.onAction} disabled={a.disabled}>
+                          {a.icon}
+                        </IconButton>
+                      </Tooltip>
+                    ) : (
+                      <Button
+                        key={i}
+                        size="small"
+                        variant="outlined"
+                        color="secondary"
+                        classes={{
+                          root: classes.actionButton
+                        }}
+                        onClick={a.onAction}
+                        disabled={a.disabled}
+                      >
+                        {a.actionLabel}
+                      </Button>
+                    )))}
+              </div>
+            </div>
+          )}
+          <Avatar
+            alt="FilePreview"
+            src={`data:image/png;base64, ${data}`}
+            sx={{ width: size, height: size }}
+          />
         </div>
-        <img className={classes.image} src={`data:image/png;base64, ${data}`} alt="FilePreview" />
-      </div>
       ) : (
         <Typography variant="body1" className={classes.noValue}>
           No Value
         </Typography>
       )}
-  </>
+    </>
   );
+}
 
 export default withStyles(styles)(FilePreview);

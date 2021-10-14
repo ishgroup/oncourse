@@ -9,7 +9,7 @@
 import { isBefore } from "date-fns";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
+import { Field, initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
@@ -43,6 +43,27 @@ import person from "../../../../images/person.png";
 import { Classes } from "../../../model/entities/CourseClass";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
+import AvatarRenderer from "./components/AvatarRenderer";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+
+const styles = theme => createStyles({
+  avatarWrapper: {
+    height: 40,
+    width: 40,
+    marginBottom: "0 !important",
+    "& img": {
+      width: 40,
+      borderRadius: "100%",
+    }
+  },
+  profileThumbnail: {},
+  contactTitle: {
+    color: theme.palette.common.black,
+    marginLeft: theme.spacing(2),
+    fontWeight: theme.typography.fontWeightRegular,
+  }
+});
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
@@ -69,6 +90,7 @@ interface ContactsProps {
   isVerifyingUSI?: boolean;
   usiVerificationResult?: any;
   getPaymentTypes?: any;
+  classes?: any;
 }
 
 export const formatRelationsBeforeSave = relations => {
@@ -259,7 +281,8 @@ const Contacts: React.FC<ContactsProps> = props => {
     isVerifyingUSI,
     usiVerificationResult,
     onCreate,
-    getPaymentTypes
+    getPaymentTypes,
+    classes
   } = props;
 
   const [findRelatedItems, setFindRelatedItems] = useState([]);
@@ -350,6 +373,27 @@ const Contacts: React.FC<ContactsProps> = props => {
     onCreate(contactModel);
   }, []);
 
+  const customTitle = useCallback(values => {
+    return values && (
+      <div className="centeredFlex">
+        <Field
+          name="profilePicture"
+          label="Profile picture"
+          component={AvatarRenderer}
+          props={{
+            classes,
+            email: values.email,
+            avatarSize: 40,
+            disabled: true
+          }}
+        />
+        <Typography className={`appHeaderFontSize ${classes.contactTitle}`}>
+          {getContactFullName(values)}
+        </Typography>
+      </div>
+    );
+  }, []);
+
   return (
     <ListView
       listProps={{
@@ -379,6 +423,7 @@ const Contacts: React.FC<ContactsProps> = props => {
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
+      customTitle={customTitle}
     />
   );
 };
@@ -413,7 +458,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
-    dispatch(checkPermissions({path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST"}));
+    dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" }));
   },
   getPaymentTypes: () => dispatch(getPaymentTypes())
@@ -426,4 +471,4 @@ const mapStateToProps = (state: State) => ({
   usiVerificationResult: state.contacts.usiVerificationResult
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Contacts);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Contacts));
