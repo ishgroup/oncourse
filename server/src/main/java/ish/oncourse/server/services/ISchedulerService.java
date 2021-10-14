@@ -31,6 +31,7 @@ public interface ISchedulerService {
 	String CHRISTMAS_THEME_ENABLE_JOB_ID = "christmasThemeUpdateJob";
 	String CHRISTMAS_THEME_DISABLE_JOB_ID = "christmasThemeDisableJob";
 	String PERMANENTLY_DELETE_DOCUMENTS_ID = "permanentlyDeleteDocumentsJob";
+	String  USER_DISAIBLE_JOB_ID = "userDisableJob";
 
 	String BACKGROUND_JOBS_GROUP_ID = "backgroundJobs";
 	String CUSTOM_SCRIPT_JOBS_GROUP_ID = "customScriptJobs";
@@ -40,6 +41,7 @@ public interface ISchedulerService {
 	String VOUCHER_EXPIRY_JOB_CRON_SCHEDULE = "0 45 0am * * ?";
 	String INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 1am * * ?";
 	String AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 2am * * ?";
+	String USER_DISAIBLE_JOB_TEMPLATE = "0 %d 3 ? * MON *";
 
 	String FUNDING_CONTRACT_JOB_ID = "fundingContractJob";
 	String FUNDING_CONTRACT_JOB_INTERVAL = "1 15 0am * * ?";
