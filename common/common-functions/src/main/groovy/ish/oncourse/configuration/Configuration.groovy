@@ -144,7 +144,6 @@ class Configuration {
         BILLING_UPDATE('billing_update', 'billing.update'),
 
         CLIENT_ID('client_id', 'credential.client-id'),
-        API_KEY('api_key', 'credential.api-key'),
 
         IPV4_RANGE('website_ipv4_range',"website.range.ipv4"),
         IPV6_RANGE('website_ipv6_range','website.range.ipv6')

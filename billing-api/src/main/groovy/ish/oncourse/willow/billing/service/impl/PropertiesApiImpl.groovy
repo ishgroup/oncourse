@@ -10,7 +10,6 @@ import ish.oncourse.configuration.Configuration
 import ish.oncourse.willow.billing.v1.model.PropertiesDTO
 import ish.oncourse.willow.billing.v1.service.PropertiesApi
 
-import static ish.oncourse.configuration.Configuration.AdminProperty.API_KEY
 import static ish.oncourse.configuration.Configuration.AdminProperty.CLIENT_ID
 
 @CompileStatic
@@ -19,7 +18,6 @@ class PropertiesApiImpl implements PropertiesApi {
     @Override
     PropertiesDTO getProperties() {
         def clientId = Configuration.getValue(CLIENT_ID)
-        def apiKey = Configuration.getValue(API_KEY)
-        return new PropertiesDTO(clientId, apiKey)
+        return new PropertiesDTO(clientId)
     }
 }
