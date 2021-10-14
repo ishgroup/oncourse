@@ -2,9 +2,6 @@ package ish.oncourse.willow.billing.service.impl
 
 import com.amazonaws.services.identitymanagement.model.AccessKey
 import com.amazonaws.services.s3.model.Region
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.api.request.RequestService
@@ -17,30 +14,17 @@ import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.util.PreferenceUtil
 import ish.oncourse.willow.billing.v1.model.CollegeDTO
 import ish.oncourse.willow.billing.v1.model.Currency
-import ish.oncourse.willow.billing.v1.model.SiteDTO
 import ish.oncourse.willow.billing.v1.service.BillingApi
-import ish.oncourse.willow.billing.website.CreateNewWebSite
 import ish.oncourse.willow.billing.website.WebSiteService
 import ish.persistence.Preferences
 import ish.util.SecurityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.tmatesoft.svn.core.SVNDirEntry
-import org.tmatesoft.svn.core.SVNProperties
-import org.tmatesoft.svn.core.SVNURL
-import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager
-import org.tmatesoft.svn.core.io.ISVNEditor
-import org.tmatesoft.svn.core.io.SVNRepository
-import org.tmatesoft.svn.core.io.SVNRepositoryFactory
-import org.tmatesoft.svn.core.io.diff.SVNDeltaGenerator
-import org.tmatesoft.svn.core.wc.SVNWCUtil
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.InternalServerErrorException
-import java.time.LocalDate
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.*
 
@@ -61,9 +45,6 @@ class BillingApiImpl implements BillingApi {
     
     private static final String BUCKET_NAME_FORMAT = "ish-oncourse-%s"
     private static final String AWS_USER_NAME_FORMAT = "college.%s"
-    private static final String svnRepo =  Configuration.getValue(SVN_URL)
-    private static final String svnUser =  Configuration.getValue(SVN_USER)
-    private static final String svnPass =  Configuration.getValue(SVN_PASS)
     private static final String UPDATE_SCRIPT_PATH = Configuration.getValue(BILLING_UPDATE)
 
 
@@ -77,7 +58,6 @@ class BillingApiImpl implements BillingApi {
         }
         
         Boolean s3Done = false
-        Boolean svnDone = false
         Boolean dbDone = false
         Boolean saltDone = false
         
@@ -92,24 +72,10 @@ class BillingApiImpl implements BillingApi {
 
             s3Done = true
             
-            //2.Commit svn config
-            AngelConfig angelConfig = new AngelConfig()
-            
-            angelConfig.securityCode = SecurityUtil.generateRandomPassword(16)
-            angelConfig.collegeKey = collegeDTO.collegeKey
-
-            angelConfig.userFirstName = collegeDTO.userFirstName
-            angelConfig.userLastName = collegeDTO.userLastName
-            angelConfig.userEmail = collegeDTO.userEmail
-            angelConfig.userPhone = collegeDTO.userPhone
-            angelConfig.commit()
-            
-            svnDone = true
-            
-            //3.Create db records in on transaction
+            //2.Create db records in on transaction
             cayenneService.performTransaction {
 
-                College college = recordNewCollege(angelConfig.securityCode, angelConfig.collegeKey, collegeDTO.organisationName, context)
+                College college = recordNewCollege(SecurityUtil.generateRandomPassword(16), collegeDTO.collegeKey, collegeDTO.organisationName, context)
                 context.commitChanges()
 
                 PreferenceUtil.createPreference(context, college, Preferences.COLLEGE_NAME, collegeDTO.organisationName)
@@ -131,9 +97,12 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_ACCESS_KEY, key.secretAccessKey)
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
 
-                PreferenceUtil.createSetting(context, college, 'billing.users', '1')
-                PreferenceUtil.createSetting(context, college, 'billing.plan', 'starter-21')
-                PreferenceUtil.createSetting(context, college, 'billing.currency', (collegeDTO.currency ? collegeDTO.currency.toString() : Currency.AU.toString()))
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_USERS, '1')
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_PLAN, 'starter-21')
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_CURRENCY, (collegeDTO.currency ? collegeDTO.currency.toString() : Currency.AU.toString()))
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_NAME, "$collegeDTO.userFirstName $collegeDTO.userLastName")
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_EMAIL,  collegeDTO.userEmail)
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_PHONE,  collegeDTO.userPhone)
 
                 context.commitChanges()
 
@@ -162,7 +131,6 @@ class BillingApiImpl implements BillingApi {
             sendEmail('College was not created',
                             "Exception: ${e.toString()} \n"+ 
                             "s3 done: ${s3Done} \n"+ 
-                            "svn done: ${svnDone} \n"+
                             "db done: ${dbDone} \n"+ 
                             "salt done: ${saltDone} \n"+ 
                             "college info: $collegeDTO".toString()
@@ -214,72 +182,4 @@ class BillingApiImpl implements BillingApi {
         college.lastRemoteAuthentication = new Date(0)
         return college
     }
-    
-    
-    static class AngelConfig {
-        
-        String securityCode
-        String collegeKey
-        
-        String userFirstName
-        String userLastName
-        String userEmail
-        String userPhone
-
-        String paidUntil
-        
-        AngelConfig() {
-            LocalDate untilDate = LocalDate.now()
-            if (untilDate.getDayOfMonth() < 15) {
-                untilDate = untilDate.plusMonths(1)
-            } else {
-                untilDate = untilDate.plusMonths(2)
-            }
-            paidUntil = untilDate.format("yyyy-MM-01")
-        }
-        
-        String toString() {
-            return  "$collegeKey:\n"+
-                    "  server:\n" +
-                    "    minion: colo.splash\n" +
-                    "  user:\n"+
-                    "    firstName: $userFirstName\n" +
-                    "    lastName: $userLastName\n" +
-                    "    email: $userEmail\n" +
-                    "  billing:\n"+
-                    "    paid_until: \"$paidUntil\"\n"
-        }
-
-        void commit() {
-            ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
-
-            String fileName = "${collegeKey}.sls"
-            SVNRepository repository = SVNRepositoryFactory.create( SVNURL.parseURIEncoded(svnRepo))
-            ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(svnUser, svnPass.toCharArray())
-            repository.setAuthenticationManager(authManager)
-            
-            
-            ISVNEditor editor = repository.getCommitEditor( "Create $collegeKey angel instance", null)
-            
-            editor.openRoot(-1)
-            
-            editor.addFile(fileName, null, -1)
-            editor.applyTextDelta(fileName, null)
-            SVNDeltaGenerator deltaGenerator = new SVNDeltaGenerator()
-            editor.applyTextDelta(svnRepo, null)
-
-            String yaml = toString()
-            InputStream is = IOUtils.toInputStream(yaml, "UTF-8")
-            
-            String chksm = deltaGenerator.sendDelta(svnRepo, is, editor, true)
-
-            is.close()
-            editor.textDeltaEnd(fileName)
-            editor.closeFile(fileName, chksm)
-            editor.closeEdit()
-
-        }
-        
-    }
-    
 }
