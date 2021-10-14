@@ -284,7 +284,7 @@ const globalStyles = (theme: AppTheme) =>
         marginRight: "100px"
       },
       ".addButtonColor": {
-        color: theme.palette.mode === "light" ? darken(green[900], 0.1) : darken(grey[400], 0.1)
+        color: theme.palette.mode === "light" ? "#f7941d" : darken(grey[400], 0.1)
       },
       ".labelOffset": {
         marginLeft: "-14px"
