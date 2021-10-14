@@ -659,4 +659,13 @@
 			<column name="googleTagmanagerContainer" type="VARCHAR(256)"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet id="50" author="dmitriy" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="HALT">
+			<columnExists tableName="WebSite" columnName="googleTagmanagerAccount"/>
+		</preConditions>
+		<dropColumn tableName="WebSite">
+			<column name="googleTagmanagerAccount"/>
+		</dropColumn>
+	</changeSet>
 </databaseChangeLog>

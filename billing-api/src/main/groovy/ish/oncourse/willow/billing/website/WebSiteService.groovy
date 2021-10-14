@@ -117,7 +117,6 @@ class WebSiteService {
             dto.id = it.id
             dto.name = it.name
             dto.key = it.siteKey
-            dto.gtmAccountId = it.googleTagmanagerAccount
             dto.gtmContainerId = it.googleTagmanagerContainer
             dto.googleAnalyticsId = it.googleAnalyticAccount
             dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
@@ -206,13 +205,10 @@ class WebSiteService {
         if (dto.googleAnalyticsId)
             webSite.setGoogleAnalyticAccount(dto.googleAnalyticsId)
 
-        if (dto.gtmAccountId)
-            webSite.setGoogleTagmanagerAccount(dto.gtmAccountId)
-
         if(dto.gtmContainerId)
             webSite.setGoogleTagmanagerContainer(dto.gtmContainerId)
 
-        if (dto.googleAnalyticsId || dto.gtmAccountId || dto.gtmContainerId)
+        if (dto.googleAnalyticsId || dto.gtmContainerId)
             webSite.setConfiguredByUser(requestService.getSystemUser())
     }
 
