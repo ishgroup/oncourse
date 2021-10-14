@@ -23,6 +23,7 @@ import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.willow.functions.field.FieldHelper.separateFields
 
+@CompileStatic
 class CreateVoucher {
 
     private ObjectContext context

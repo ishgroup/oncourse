@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
@@ -8,6 +9,7 @@ import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.QueryCacheStrategy
 
+@CompileStatic
 class GetCoursesByClassIds {
 
     private List<String> classIds

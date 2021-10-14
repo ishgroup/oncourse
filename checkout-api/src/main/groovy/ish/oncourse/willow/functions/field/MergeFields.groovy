@@ -1,7 +1,9 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.Field
 
+@CompileStatic
 class MergeFields {
 
     private List<Field> fieldsToMerge

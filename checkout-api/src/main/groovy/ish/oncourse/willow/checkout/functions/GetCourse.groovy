@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class GetCourse extends Get<Course>{
     final static  Logger logger = LoggerFactory.getLogger(GetCourse.class)
 

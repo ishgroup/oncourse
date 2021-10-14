@@ -11,17 +11,13 @@ import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason
  */
 public interface ICacheEnabledService {
 
-	default boolean isCacheEnabled() {
-		return true;
-	}
+	boolean isCacheEnabled();
 
 	void setCacheEnabled(Boolean enabled);
 
 	void setCacheEnabled(CacheDisableReason reason, Boolean enabled);
 
-	default CacheDisableReason getDisableReason() {
-		return NONE;
-	}
+	CacheDisableReason getDisableReason();
 
 	enum CacheDisableReason {
 		EDITOR,

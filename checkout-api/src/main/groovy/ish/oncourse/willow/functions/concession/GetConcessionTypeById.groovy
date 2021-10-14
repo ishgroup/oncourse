@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.concession
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.ConcessionType
 import ish.oncourse.willow.model.common.CommonError
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class GetConcessionTypeById {
     
     ObjectContext context

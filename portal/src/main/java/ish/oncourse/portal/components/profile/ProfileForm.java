@@ -130,7 +130,7 @@ public class ProfileForm {
 	@Cached
 	public ContactFieldHelper getContactFieldHelper() {
 		if (contactFieldHelper == null) {
-			contactFieldHelper = new ContactFieldHelper(preferenceController, Preferences.ContactFieldSet.enrolment);
+			contactFieldHelper = new ContactFieldHelper(preferenceController);
 		}
 		return contactFieldHelper;
 	}

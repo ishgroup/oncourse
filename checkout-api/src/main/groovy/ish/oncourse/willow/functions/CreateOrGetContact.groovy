@@ -2,19 +2,18 @@ package ish.oncourse.willow.functions
 
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
+import ish.oncourse.model.WebSite
 import ish.oncourse.services.preference.GetPreference
 import ish.oncourse.services.preference.Preferences
 import ish.oncourse.willow.model.common.ValidationError
-import ish.oncourse.willow.model.web.ContactId
 import ish.oncourse.willow.model.web.CreateContactParams
+import ish.oncourse.willow.model.web.ContactId
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import static ish.oncourse.model.auto._Contact.*
-import static ish.oncourse.services.preference.Preferences.ConfigProperty.allowCreateContact
 
 class CreateOrGetContact  {
     final static Logger logger = LoggerFactory.getLogger(CreateOrGetContact.class)
@@ -27,7 +26,7 @@ class CreateOrGetContact  {
     ObjectContext context
     ContactId contactId = new ContactId()
     ValidationError validationError = new ValidationError()
-
+    WebSite site
 
     CreateOrGetContact perform() {
         Contact contact = findContact()
@@ -64,7 +63,7 @@ class CreateOrGetContact  {
         if (contact) {
             contactId.id = contact.id.toString()
             if (!contact.isCompany) {
-                CheckParent checkParent = new CheckParent(college, context, contact).perform()
+                CheckParent checkParent = new CheckParent(college, context, contact, site).perform()
                 contactId.parentRequired = checkParent.parentRequired
             }
         } else {
@@ -75,8 +74,7 @@ class CreateOrGetContact  {
     }
 
    private boolean isContactCreationAllowed() {
-        String value = new GetPreference(college, allowCreateContact.getPreferenceNameBy(Preferences.ContactFieldSet.valueOf(params.fieldSet.toString().toLowerCase())), context).getValue()
-        StringUtils.isBlank(value) ? true : Boolean.valueOf(value)
+       return new GetPreference(college, Preferences.CHECKOUT_createContactAllowed, context, site).booleanValue
     }
     
     private Contact findContact() {

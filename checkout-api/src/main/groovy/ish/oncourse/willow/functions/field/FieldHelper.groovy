@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.cayenne.FieldInterface
 import ish.oncourse.common.field.ContextType
 import ish.oncourse.common.field.FieldProperty
@@ -9,8 +10,9 @@ import ish.oncourse.model.Contact
 import ish.oncourse.model.Field
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.model.field.FieldHeading
-import org.apache.cayenne.PersistentObject 
+import org.apache.cayenne.PersistentObject
 
+@CompileStatic
 class FieldHelper {
 
     static FieldProperty[] credentialProperty = [FieldProperty.FIRST_NAME, FieldProperty.LAST_NAME, FieldProperty.EMAIL_ADDRESS] as FieldProperty[]

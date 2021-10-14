@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Product
@@ -9,8 +10,9 @@ import ish.oncourse.willow.model.checkout.Voucher
 import ish.oncourse.willow.model.checkout.request.ProductContainer
 import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory 
+import org.slf4j.LoggerFactory
 
+@CompileStatic
 class ProcessProducts {
 
     final static  Logger logger = LoggerFactory.getLogger(ProcessProducts.class)

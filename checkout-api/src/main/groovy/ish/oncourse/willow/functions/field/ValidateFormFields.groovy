@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.FieldProperty
 import ish.oncourse.model.College
 import ish.oncourse.willow.model.common.CommonError
@@ -7,8 +8,9 @@ import ish.oncourse.willow.model.common.FieldError
 import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.FieldHeading
 import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.StringUtils 
+import org.apache.commons.lang3.StringUtils
 
+@CompileStatic
 class ValidateFormFields {
 
     private List<FieldHeading> actual

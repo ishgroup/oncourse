@@ -1,18 +1,18 @@
-import localForage from "localforage";
+import localForage from 'localforage';
 import update from 'react-addons-update';
 import faker from 'faker';
 import {
   Page, Block, MenuItem, Theme, User, Version, WebsiteSettings, Redirects, VersionStatus,
   SkillsOnCourseSettings, ThemeBlocks, Layout, Condition, CheckoutSettings, State, SpecialPages,
-} from "../../js/model";
+} from '../../js/model';
 
 export const CreateMockDB = (): MockDB => {
   const result: MockDB = new MockDB();
-  localForage.getItem("MockCmsDB").then((db: MockDB) => {
+  localForage.getItem('MockCmsDB').then((db: MockDB) => {
     if (db) {
 
     } else {
-      localForage.setItem("MockCmsDB", result);
+      localForage.setItem('MockCmsDB', result);
     }
   });
   return result;
@@ -27,14 +27,20 @@ interface Settings {
 }
 
 export class MockDB {
-
   users: User[];
+
   pages: Page[];
+
   blocks: Block[];
+
   menus: MenuItem[];
+
   themes: Theme[];
+
   layouts: Layout[];
+
   versions: Version[];
+
   settings: Settings;
 
   constructor() {
@@ -54,8 +60,8 @@ export class MockDB {
 
   mockUser(): User {
     return {
-      firstName: "John",
-      lastName: "Doe",
+      firstName: 'John',
+      lastName: 'Doe',
     };
   }
 
@@ -72,7 +78,7 @@ export class MockDB {
           },
         ],
         suppressOnSitemap: true,
-        content: "<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>",
+        content: '<div>\n  <h1>Page Html 1</h1>\n  <p>Page text 1</p>\n</div>',
       },
       {
         id: 2,
@@ -89,7 +95,7 @@ export class MockDB {
           },
         ],
         suppressOnSitemap: true,
-        content: "<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n",
+        content: '<div>\n  <h2>Page Html 2</h2>\n  <p>\n    <small>Page text 2</small>\n  </p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n    Accusantium adipisci autem commodi culpa cupiditate distinctio dolore doloremque \n    eius eveniet exercitationem facere facilis fuga fugit illo illum iste magnam \n    maxime minima nam nemo numquam officia provident quas quidem reprehenderit \n    repudiandae rerum sed totam ullam unde, velit vero vitae voluptate? Error, \n    soluta.\n  </p>\n</div>\n',
       },
       {
         id: 3,
@@ -106,7 +112,7 @@ export class MockDB {
           },
         ],
         suppressOnSitemap: true,
-        content: "<div>\n  <h4>Page Html 3</h4>\n  <p>Page text 3</p>\n  <p>Other Page text 3</p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n  Beatae distinctio doloremque illum iure neque nisi perspiciatis quas quasi \n  repudiandae sed?\n  </p>\n</div>\n",
+        content: '<div>\n  <h4>Page Html 3</h4>\n  <p>Page text 3</p>\n  <p>Other Page text 3</p>\n  <p>\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. \n  Beatae distinctio doloremque illum iure neque nisi perspiciatis quas quasi \n  repudiandae sed?\n  </p>\n</div>\n',
       },
     ];
   }
@@ -116,37 +122,37 @@ export class MockDB {
       {
         id: 1,
         title: 'Header',
-        content: "<div>\n  <h1>Header Title</h1>\n</div>",
+        content: '<div>\n  <h1>Header Title</h1>\n</div>',
       },
       {
         id: 2,
         title: 'Footer',
-        content: "<div>\n  <footer>Lorem ipsum dolor sit amet.</footer>\n</div>",
+        content: '<div>\n  <footer>Lorem ipsum dolor sit amet.</footer>\n</div>',
       },
       {
         id: 3,
         title: 'Content1',
-        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
+        content: '<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>',
       },
       {
         id: 4,
         title: 'Content2',
-        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>",
+        content: '<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit!</li>\n</ul>\n</div>',
       },
       {
         id: 5,
         title: 'Content3',
-        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li></ul>\n</div>",
+        content: '<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li></ul>\n</div>',
       },
       {
         id: 6,
         title: 'Content4',
-        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
+        content: '<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>',
       },
       {
         id: 7,
         title: 'Content5',
-        content: "<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>",
+        content: '<div>\n<ul>\n  <li>Lorem ipsum dolor sit amet.</li>\n  <li>Lorem ipsum.</li>\n</ul>\n</div>',
       },
     ];
   }
@@ -333,12 +339,10 @@ export class MockDB {
         },
       },
       checkout: {
-        allowCreateContactOnEnrol: false,
-        allowCreateContactOnWaitingList: true,
-        allowCreateContactOnMailingList: false,
-        collectParentDetails: true,
+        allowCreateContact: false,
         contactAgeWhenNeedParent: 12,
-        enrolmentMinAge: 18,
+        termsLabel: 'terms',
+        termsUrl: '/terms',
       },
       redirect: {
         rules: [
@@ -356,27 +360,27 @@ export class MockDB {
         rules: [
           {
             from: '/page1',
-            specialPage: "TUTORS",
+            specialPage: 'TUTORS',
             matchType: 'STARTS WITH',
-            error: "",
+            error: '',
           },
           {
             from: '/page2',
-            specialPage: "TUTORS",
+            specialPage: 'TUTORS',
             matchType: 'STARTS WITH',
-            error: "",
+            error: '',
           },
           {
             from: '/page3',
-            specialPage: "TUTORS",
+            specialPage: 'TUTORS',
             matchType: 'STARTS WITH',
-            error: "",
+            error: '',
           },
           {
             from: '/page4',
-            specialPage: "TUTORS",
+            specialPage: 'TUTORS',
             matchType: 'STARTS WITH',
-            error: "",
+            error: '',
           },
 
         ],
@@ -385,7 +389,7 @@ export class MockDB {
   }
 
   deleteThemeById(id: number) {
-    const index = this.themes.findIndex(item => item.id == id);
+    const index = this.themes.findIndex((item) => item.id == id);
 
     this.themes = update(this.themes, {
       $splice: [
@@ -395,7 +399,7 @@ export class MockDB {
   }
 
   deletePageById(pageId: number) {
-    const index = this.pages.findIndex(item => item.id == pageId);
+    const index = this.pages.findIndex((item) => item.id == pageId);
     this.pages = update(this.pages, {
       $splice: [
         [index, 1],
@@ -415,31 +419,30 @@ export class MockDB {
   }
 
   editBlock(block: Block) {
-    this.blocks = this.blocks.map(item => item.id === block.id ? {...item, ...block} : item);
+    this.blocks = this.blocks.map((item) => (item.id === block.id ? { ...item, ...block } : item));
   }
 
   deleteBlockFromTheme(themeId, blockId) {
-    const theme = this.themes.find(theme => theme.id === themeId);
+    const theme = this.themes.find((theme) => theme.id === themeId);
     const layoutKeys = Object.keys(theme.blocks);
 
-    layoutKeys.forEach(key => {
-      const blockIndex = theme.blocks[key].findIndex(key => key.id === blockId);
+    layoutKeys.forEach((key) => {
+      const blockIndex = theme.blocks[key].findIndex((key) => key.id === blockId);
       if (blockIndex !== -1) {
         deleteBlockFromPart(themeId, key, blockIndex);
       }
     });
 
     const deleteBlockFromPart = (themeId, part, blockIndex) => {
-      const newTheme = this.themes.find(theme => theme.id === themeId);
+      const newTheme = this.themes.find((theme) => theme.id === themeId);
       newTheme.blocks[part] = update(theme.blocks[part], {
         $splice: [
           [blockIndex, 1],
         ],
       });
 
-      this.themes = this.themes.map(theme => theme.id === themeId ? newTheme : theme);
+      this.themes = this.themes.map((theme) => (theme.id === themeId ? newTheme : theme));
     };
-
   }
 
   addPage(page: Page) {
@@ -451,7 +454,7 @@ export class MockDB {
   }
 
   editPage(page: Page) {
-    this.pages = this.pages.map(item => item.id === page.id ? {...item, ...page} : item);
+    this.pages = this.pages.map((item) => (item.id === page.id ? { ...item, ...page } : item));
   }
 
   addTheme(theme: Theme) {
@@ -463,7 +466,7 @@ export class MockDB {
   }
 
   editTheme(theme: Theme) {
-    this.themes = this.themes.map(item => item.id === theme.id ? {...item, ...theme} : item);
+    this.themes = this.themes.map((item) => (item.id === theme.id ? { ...item, ...theme } : item));
   }
 
   saveMenu(items: MenuItem[]) {
@@ -475,12 +478,12 @@ export class MockDB {
   }
 
   getPageByUrl(url): Page {
-    return this.pages.find(page => !!page.urls.find(l => l.link === url));
+    return this.pages.find((page) => !!page.urls.find((l) => l.link === url));
   }
 
   createNewPage(): Page {
     const page = {} as Page;
-    const newNumber = Math.max(...this.pages.map(page => page.id)) + 1;
+    const newNumber = Math.max(...this.pages.map((page) => page.id)) + 1;
     page.title = `New Page ${isFinite(newNumber) ? newNumber : 1}`;
     page.id = isFinite(newNumber) ? newNumber : 1;
     page.urls = [];
@@ -491,7 +494,7 @@ export class MockDB {
 
   createNewBlock() {
     const block = {} as Block;
-    const newId = Math.max(...this.blocks.map(block => block.id)) + 1;
+    const newId = Math.max(...this.blocks.map((block) => block.id)) + 1;
     block.title = `New Block ${isFinite(newId) ? newId : 1}`;
     block.id = isFinite(newId) ? newId : 1;
 
@@ -501,7 +504,7 @@ export class MockDB {
 
   createNewTheme(): Theme {
     const theme = {} as Theme;
-    const newId = Math.max(...this.themes.map(theme => theme.id)) + 1;
+    const newId = Math.max(...this.themes.map((theme) => theme.id)) + 1;
     theme.title = `New Theme ${isFinite(newId) ? newId : 1}`;
     theme.id = isFinite(newId) ? newId : 1;
     theme.blocks = {} as ThemeBlocks;
@@ -523,4 +526,3 @@ export class MockDB {
     // return contact.id;
   }
 }
-

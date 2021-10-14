@@ -1,6 +1,4 @@
-
 export class Preferences {
-
   /**
    * is corporate pass enabled preference
    */
@@ -12,33 +10,17 @@ export class Preferences {
   creditCardEnabled?: boolean;
 
   /**
-   * After payment successful redirect user to URL
-   */
-  successLink?: string;
-
-  /**
-   * Terms and conditions page
-   */
-  refundPolicyUrl?: string;
-
-  /**
-   * Student Information
-   */
-  featureEnrolmentDisclosure?: string;
-
-  /**
-   * Google tag manager account
-   */
-  googleTagmanagerAccount?: string;
-
-  /**
    * Minimal age which not requiring parent
    */
   minAge?: number;
 
   /**
-   * Amex card payment enabled
+   * Terms and conditions checkbox label
    */
-  amexEnabled?: boolean;
-}
+  termsLabel?: string;
 
+  /**
+   * Terms and conditions link url
+   */
+  termsUrl?: string;
+}

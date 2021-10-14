@@ -50,12 +50,12 @@ class WebModule extends ConfigModule {
 
     @Singleton
     @Provides
-    MappedFilter<WillowTapestryFilter> createTapestryFilter(Injector injector) {
+    MappedFilter<WillowTapestryFilter> createTapestryFilter(Injector injector,ICacheEnabledService cacheEnabledService ) {
         new LogAppInfo(injector.getInstance(DataSourceFactory.class).forName(DATA_SOURCE_NAME)).log()
         Filter filter = new WillowTapestryFilterBuilder()
                 .moduleDef(new InjectorModuleDef(injector))
                 .moduleDef(new WillowModuleDef(injector.getInstance(DataSourceFactory).forName(LogAppInfo.DATA_SOURSE_NAME),
-                injector.getInstance(ServerRuntime), injector.getInstance(ICacheEnabledService)))
+                injector.getInstance(ServerRuntime), cacheEnabledService))
                 .appPackage("ish.oncourse.website").build()
         return new MappedFilter<>(filter,
                 Collections.singleton(URL_PATTERN),
@@ -71,6 +71,7 @@ class WebModule extends ConfigModule {
     }
 
     @Provides
+    @Singleton
     ICacheEnabledService createCacheEnabledModule() {
         new CacheEnabledService()
     }

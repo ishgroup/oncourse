@@ -67,6 +67,7 @@ class GetPreference {
         }
         return 0
     }
+    
     void setIntegerValue(Integer integer) {
         if (integer != null) {
             setValue(String.valueOf(integer))

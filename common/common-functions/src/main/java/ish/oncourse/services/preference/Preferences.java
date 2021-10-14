@@ -9,8 +9,6 @@ public interface Preferences {
 
     String NTIS_LAST_UPDATE = "ntis.lastupdate";
     String POSTCODES_LAST_UPDATE = "postcodes.lastupdate";
-    String ENROLMENT_MIN_AGE = "enrolment.min.age";
-    String REFUND_POLICY_URL = "enrolment.refund.policy.url";
     String HIDE_STUDENT_DETAILS_FROM_TUTOR = "student.details.hidden";
     String TUTOR_FEEDBACK_EMAIL = "tutor.feedbackemail";
     String OUTCOME_MARKING_VIA_PORTAL = "outcome.marking.via.portal";
@@ -19,26 +17,22 @@ public interface Preferences {
     String ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE = "website.webpage.medialinks.enabled";
     String ADDTHIS_PROFILE_ID = "website.medialinks.addthis";
     String ENROLMENT_CREDIT_NOTE_ENABLED = "enrolment.credit.note.enabled";
-    String ENROLMENT_collectParentDetails = "enrolment.collectParentDetails";
-    String ENROLMENT_contactAgeWhenNeedParent = "enrolment.contactAgeWhenNeedParent";
     String SUBURB_AUTOCOMPLITE_STATE = "feature.suburb.autocomplete.states";
+
+    String CHECKOUT_guardianRequiredAge = "checkout.guardianRequiredAge";
+
+    String CHECKOUT_TERMS_URL = "checkout.terms.url";
+    String CHECKOUT_TERMS_LABEL = "checkout.terms.label";
+    String CHECKOUT_createContactAllowed = "checkout.createContactAllowed";
     
     int DEFAULT_contactAgeWhenNeedParent = 18;
 
     String HIDE_CLASS_ON_WEB_AGE = "hide.class.on.web.age";
     String HIDE_CLASS_ON_WEB_AGE_TYPE = "hide.class.on.web.age.type";
-
-    enum ConfigProperty {
-        allowCreateContact;
-        public String getPreferenceNameBy(ContactFieldSet contactFieldSet) {
-            return String.format("%s.contact.%s", contactFieldSet.name(), this.name());
-        }
-    }
-
+    
     enum ContactFieldSet {
         enrolment,
         waitinglist,
-        mailinglist,
     }
     
 }

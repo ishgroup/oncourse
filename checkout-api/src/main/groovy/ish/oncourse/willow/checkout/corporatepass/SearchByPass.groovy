@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.corporatepass
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
@@ -10,8 +11,9 @@ import ish.oncourse.willow.model.checkout.corporatepass.GetCorporatePassRequest
 import ish.oncourse.willow.model.common.ValidationError
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils 
+import org.apache.commons.lang3.StringUtils
 
+@CompileStatic
 class SearchByPass {
     
     private ObjectContext context

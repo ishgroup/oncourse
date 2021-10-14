@@ -1,6 +1,7 @@
 package ish.oncourse.willow
 
 import com.google.inject.*
+import groovy.transform.CompileStatic
 import io.bootique.ConfigModule
 import io.bootique.cayenne.CayenneModule
 import io.bootique.jdbc.DataSourceFactory
@@ -24,6 +25,7 @@ import ish.oncourse.willow.search.SearchService
 import ish.oncourse.willow.service.impl.*
 import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature
 
+@CompileStatic
 class WillowApiModule extends ConfigModule {
     private static final TypeLiteral<MappedServlet<ISHHealthCheckServlet>> ISH_HEALTH_CHECK_SERVLET =
             new TypeLiteral<MappedServlet<ISHHealthCheckServlet>>() {

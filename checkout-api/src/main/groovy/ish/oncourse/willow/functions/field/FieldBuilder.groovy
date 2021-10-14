@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.common.types.YesNoOptions
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.model.Field
@@ -8,6 +9,7 @@ import ish.oncourse.willow.model.field.DataType
 
 import static ish.oncourse.common.field.FieldProperty.*
 
+@CompileStatic
 class FieldBuilder<T> {
     
     Field field

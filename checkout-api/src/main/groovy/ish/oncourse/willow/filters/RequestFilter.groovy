@@ -1,11 +1,13 @@
 package ish.oncourse.willow.filters
 
+import groovy.transform.CompileStatic
 import ish.oncourse.willow.service.CollegeInfo
 import javax.ws.rs.container.ContainerRequestContext
 import javax.ws.rs.container.ContainerRequestFilter
 
 import static ish.oncourse.services.site.GetWebSite.SITE_KEY_HEADER
 
+@CompileStatic
 @CollegeInfo
 class RequestFilter implements ContainerRequestFilter {
 

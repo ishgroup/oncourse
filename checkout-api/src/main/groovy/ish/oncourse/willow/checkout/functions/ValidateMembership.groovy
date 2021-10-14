@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.functions
 
+import groovy.transform.CompileStatic
 import ish.common.types.ExpiryType
 
 import ish.math.Money
@@ -12,6 +13,7 @@ import org.apache.cayenne.ObjectContext
 
 import static ish.common.types.ProductStatus.ACTIVE
 
+@CompileStatic
 class ValidateMembership extends Validate<Membership>{
 
 

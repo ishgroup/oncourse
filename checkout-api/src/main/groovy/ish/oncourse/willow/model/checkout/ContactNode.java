@@ -6,6 +6,9 @@ import java.util.List;
 public class ContactNode  {
   
     private String contactId = null;
+    private String contactFirstName = null;
+    private String contactLastName = null;
+    private String contactEmail = null;
     private List<Enrolment> enrolments = new ArrayList<Enrolment>();
     private List<Application> applications = new ArrayList<Application>();
     private List<Article> articles = new ArrayList<Article>();
@@ -29,6 +32,57 @@ public class ContactNode  {
 
     public ContactNode contactId(String contactId) {
       this.contactId = contactId;
+      return this;
+    }
+
+    /**
+     * Get contactFirstName
+     * @return contactFirstName
+     */
+    public String getContactFirstName() {
+        return contactFirstName;
+    }
+
+    public void setContactFirstName(String contactFirstName) {
+       this.contactFirstName = contactFirstName;
+    }
+
+    public ContactNode contactFirstName(String contactFirstName) {
+      this.contactFirstName = contactFirstName;
+      return this;
+    }
+
+    /**
+     * Get contactLastName
+     * @return contactLastName
+     */
+    public String getContactLastName() {
+        return contactLastName;
+    }
+
+    public void setContactLastName(String contactLastName) {
+       this.contactLastName = contactLastName;
+    }
+
+    public ContactNode contactLastName(String contactLastName) {
+      this.contactLastName = contactLastName;
+      return this;
+    }
+
+    /**
+     * Get contactEmail
+     * @return contactEmail
+     */
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+       this.contactEmail = contactEmail;
+    }
+
+    public ContactNode contactEmail(String contactEmail) {
+      this.contactEmail = contactEmail;
       return this;
     }
 
@@ -215,6 +269,9 @@ public class ContactNode  {
       sb.append("class ContactNode {\n");
       
       sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
+      sb.append("    contactFirstName: ").append(toIndentedString(contactFirstName)).append("\n");
+      sb.append("    contactLastName: ").append(toIndentedString(contactLastName)).append("\n");
+      sb.append("    contactEmail: ").append(toIndentedString(contactEmail)).append("\n");
       sb.append("    enrolments: ").append(toIndentedString(enrolments)).append("\n");
       sb.append("    applications: ").append(toIndentedString(applications)).append("\n");
       sb.append("    articles: ").append(toIndentedString(articles)).append("\n");

@@ -1,10 +1,12 @@
 package ish.oncourse.willow.checkout.corporatepass
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.CorporatePass
 import ish.oncourse.model.CourseClass
 import ish.oncourse.model.Product
 import ish.oncourse.willow.model.common.CommonError
 
+@CompileStatic
 class ValidateCorporatePass {
 
 

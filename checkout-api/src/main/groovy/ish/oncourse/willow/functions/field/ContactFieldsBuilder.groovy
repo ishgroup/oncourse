@@ -1,10 +1,12 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.Contact
 import ish.oncourse.model.Field
 import ish.oncourse.model.WebSite
 import ish.oncourse.willow.model.field.ContactFields
 
+@CompileStatic
 class ContactFieldsBuilder {
 
     private boolean mandatoryOnly

@@ -57,7 +57,7 @@ export const blockReducer = (state: BlocksState = new BlocksState(), action: IAc
 
         if (DOMBlock) {
           const blockIndex = stateBlocks.findIndex((elem) => elem.id === +DOMBlock.getAttribute("data-block-id"))
-          if (blockIndex) stateBlocks[blockIndex].renderHTML = DOMBlock.innerHTML;
+          if (blockIndex !== -1) stateBlocks[blockIndex].renderHTML = DOMBlock.innerHTML;
         }
       }
 

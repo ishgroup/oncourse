@@ -1,9 +1,11 @@
 package ish.oncourse.willow.checkout.payment
 
+import groovy.transform.CompileStatic
 import ish.common.types.ConfirmationStatus
 import ish.common.types.ProductType
 import ish.oncourse.util.payment.PaymentInModel
 
+@CompileStatic
 class SetConfirmationStatus {
     
     private PaymentInModel model

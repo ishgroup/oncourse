@@ -9,8 +9,8 @@ info:
   license:
     name: Proprietary
   version: v1
-  
-  
+
+
 schemes:
   - https
 produces:
@@ -70,8 +70,8 @@ paths:
       responses:
         '200':
           description: Valid session token
-          schema: 
-            type: string 
+          schema:
+            type: string
           headers:
             ESESSIONID:
               type: string
@@ -540,7 +540,7 @@ paths:
        Host: template-a.oncourse.cc
        Cookie: ESESSIONID=ypCWJgivYKMRM7Hpa8HS
        Content-Type: application/json
-       
+
        { "status": "published" }
       tags:
         - Version
@@ -568,7 +568,7 @@ paths:
           description: Version changed successfully
         '423':
           description: |
-           Version can not be modified at this time - locked by another background task. Please wait for a few minutes and try again. 
+           Version can not be modified at this time - locked by another background task. Please wait for a few minutes and try again.
         default:
           description: Unexpected error
           schema:
@@ -998,7 +998,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/ThemePath'
-  
+
   ThemePath:
     type: object
     description: theme the path pattern
@@ -1010,7 +1010,7 @@ definitions:
       exactMatch:
         type: boolean
         description: is exact matching, othervice starts with
-        
+
   MenuItem:
     type: object
     properties:
@@ -1105,7 +1105,7 @@ definitions:
         description: Describes reason why redirect item cannot be saved.
         example: |
           This URL is already being redirected
-        
+
   Redirects:
     type: object
     properties:
@@ -1123,7 +1123,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/SpecialPageItem'
-          
+
   SkillsOnCourseSettings:
     type: object
     properties:
@@ -1138,7 +1138,7 @@ definitions:
         type: string
         format: email
         example: tutors@acme.edu.au
-        
+
   Condition:
     type: string
     description: For the given offset, it is a certain number of days before or after the start or end of the class.
@@ -1148,7 +1148,7 @@ definitions:
       - afterClassEnds
       - beforeClassEnds
     example: afterClassStarts
-        
+
   ClassStateTransition:
     type: object
     properties:
@@ -1158,7 +1158,7 @@ definitions:
         example: 2
       condition:
         $ref: '#/definitions/Condition'
-      
+
   ClassAge:
     type: object
     properties:
@@ -1174,10 +1174,10 @@ definitions:
      description: List of default pages
      enum:
       - TUTORS
-        
+
   State:
     type: string
-    description: List of Australian states 
+    description: List of Australian states
     enum:
       - ACT
       - NSW
@@ -1194,7 +1194,7 @@ definitions:
     enum:
       - EXACT
       - STARTS WITH
-  
+
   WebsiteSettings:
     type: object
     properties:
@@ -1216,20 +1216,16 @@ definitions:
       suburbAutocompleteState:
         description: Show suburbs from selected state only. Show all suburbs if null.
         $ref: '#/definitions/State'
-      
+
   CheckoutSettings:
     type: object
     properties:
-      allowCreateContactOnEnrol:
-        type: boolean
-      allowCreateContactOnWaitingList:
-        type: boolean
-      allowCreateContactOnMailingList:
-        type: boolean
-      collectParentDetails:
+      allowCreateContact:
         type: boolean
       contactAgeWhenNeedParent:
         type: integer
-      enrolmentMinAge:
-        type: integer
-          
+      termsLabel:
+        type: string
+      termsUrl:
+        type: string
+

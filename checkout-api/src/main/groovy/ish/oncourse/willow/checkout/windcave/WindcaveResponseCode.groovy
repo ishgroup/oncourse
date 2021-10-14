@@ -5,6 +5,9 @@
 
 package ish.oncourse.willow.checkout.windcave
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 enum WindcaveResponseCode {
 
     _00("00", "Transaction Approved"),

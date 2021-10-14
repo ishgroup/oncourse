@@ -8,6 +8,7 @@ import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.common.CommonError
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class ValidatePaymentRequest {
 
     CheckoutModel checkoutModel

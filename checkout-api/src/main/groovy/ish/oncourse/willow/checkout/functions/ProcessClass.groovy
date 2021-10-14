@@ -17,6 +17,7 @@ import org.apache.cayenne.ObjectContext
 
 import static ish.common.types.CourseEnrolmentType.ENROLMENT_BY_APPLICATION
 
+@CompileStatic
 class ProcessClass {
     
     ObjectContext context
@@ -38,7 +39,6 @@ class ProcessClass {
         this.taxOverridden = taxOverridden
     }
 
-    @CompileStatic(TypeCheckingMode.SKIP)
     ProcessClass process() {
 
         persistentClass = new GetCourseClass(context, college, classId).get()

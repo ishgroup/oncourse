@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.persistent
 
+import groovy.transform.CompileStatic
 import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.model.Article
@@ -18,6 +19,7 @@ import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.willow.functions.field.FieldHelper.separateFields
 
+@CompileStatic
 class CreateArticle {
 
     private ObjectContext context

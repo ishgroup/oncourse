@@ -1,9 +1,11 @@
 package ish.oncourse.willow.functions.concession
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.willow.model.checkout.concession.ConcessionType
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class GetConcessionTypes {
     
     College college

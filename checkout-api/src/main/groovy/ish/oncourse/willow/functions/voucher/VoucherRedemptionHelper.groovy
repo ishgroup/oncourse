@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.voucher
 
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
@@ -23,6 +24,7 @@ import org.apache.cayenne.PersistenceState
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class VoucherRedemptionHelper {
 
     private ObjectContext context

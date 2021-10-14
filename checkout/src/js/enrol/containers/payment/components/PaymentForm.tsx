@@ -1,27 +1,31 @@
-import * as React from "react";
-import {reduxForm, FormErrors, getFormSyncErrors, getFormValues} from "redux-form";
-import classnames from "classnames";
-import CreditCardV2Comp from "./CreditCardV2Comp";
-import CorporatePassComp from "./CorporatePassComp";
-import PayLaterComp from "./PayLaterComp";
-import {Conditions} from "./Conditions";
-import {CreditCardFormValues, CorporatePassFormValues, FieldName} from "../services/PaymentService";
+import * as React from 'react';
+import {
+  reduxForm, FormErrors, getFormSyncErrors, getFormValues
+} from 'redux-form';
+import classnames from 'classnames';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { InjectedFormProps } from 'redux-form/lib/reduxForm';
+import CreditCardV2Comp from './CreditCardV2Comp';
+import CorporatePassComp from './CorporatePassComp';
+import PayLaterComp from './PayLaterComp';
+import { Conditions } from './Conditions';
+import { CreditCardFormValues, CorporatePassFormValues, FieldName } from '../services/PaymentService';
 import {
   changeTab, getCorporatePass, resetCorporatePass,
   submitPaymentCorporatePass, updatePaymentStatus, processPaymentV2,
-} from "../actions/Actions";
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
+} from '../actions/Actions';
 import {
   changePhase, getAmount, getCheckoutModelFromBackend, setPayer, showSyncErrors, togglePayNowVisibility, updatePayNow,
-} from "../../../actions/Actions";
-import {Phase} from "../../../reducers/State";
-import CheckoutService from "../../../services/CheckoutService";
-import {IshState} from "../../../../services/IshState";
-import {Tabs} from "../reducers/State";
-import {PaymentStatus, CorporatePass, Contact, Amount, ValidationError} from "../../../../model";
-import {setResultDetailsCorporatePass} from "../../summary/actions/Actions";
-import { InjectedFormProps } from 'redux-form/lib/reduxForm';
+} from '../../../actions/Actions';
+import { Phase } from '../../../reducers/State';
+import CheckoutService from '../../../services/CheckoutService';
+import { IshState } from '../../../../services/IshState';
+import { Tabs } from '../reducers/State';
+import {
+  PaymentStatus, CorporatePass, Contact, Amount, ValidationError
+} from '../../../../model';
+import { setResultDetailsCorporatePass } from '../../summary/actions/Actions';
 
 /**
  * @Deprecated will be remove, now it is used only as example
@@ -52,8 +56,8 @@ interface Props extends InjectedFormProps {
   payLaterAvailable?: boolean;
   updatePayNow: (val, validate) => void;
   conditions?: {
-    refundPolicyUrl?: string,
-    featureEnrolmentDisclosure?: string,
+    termsLabel?: string,
+    termsUrl?: string,
   };
   formSyncErrors?: FormErrors<any>;
   dispatch?: Dispatch<any>;
@@ -61,33 +65,33 @@ interface Props extends InjectedFormProps {
   formValues?: any;
 }
 
-export const NAME = "PaymentForm";
+export const NAME = 'PaymentForm';
 
 class PaymentForm extends React.Component<Props, any> {
   componentDidMount() {
-    const {onChangeTab} = this.props;
+    const { onChangeTab } = this.props;
     const validCurrentTab = this.getValidTab();
     onChangeTab(validCurrentTab);
   }
 
   getValidTab = () => {
-    const {currentTab, creditCardAvailable} = this.props;
+    const { currentTab, creditCardAvailable } = this.props;
 
     if (currentTab === Tabs.payLater) {
       return Tabs.payLater;
     }
 
     return currentTab === Tabs.creditCard && creditCardAvailable ? Tabs.creditCard : Tabs.corporatePass;
-  }
+  };
 
-  paymentTabOnClick = e => {
+  paymentTabOnClick = (e) => {
     e.preventDefault();
-    const {currentTab, onChangeTab} = this.props;
+    const { currentTab, onChangeTab } = this.props;
     const nextTab = Number(e.target.getAttribute('href').replace('#', ''));
 
     if (currentTab === nextTab) return;
     onChangeTab(nextTab);
-  }
+  };
 
   render() {
     const {
@@ -102,11 +106,12 @@ class PaymentForm extends React.Component<Props, any> {
     const agreementChecked = formValues && formValues[FieldName.agreementFlag];
 
     return (
-      <form onSubmit={handleSubmit} id="payment-form" className={classnames({submitting: fetching || submitting})}>
+      <form onSubmit={handleSubmit} id="payment-form" className={classnames({ submitting: fetching || submitting })}>
 
-        <Conditions conditions={conditions} agreementChecked={agreementChecked}/>
+        <Conditions conditions={conditions} agreementChecked={agreementChecked} />
 
-        {agreementChecked && (Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable) &&
+        {agreementChecked && (Number(amount.ccPayment) !== 0 || (Number(amount.ccPayment) === 0 && corporatePass.id) || payLaterAvailable)
+          && (
           <div>
             <div id="tabable-container">
               <PaymentFormNav
@@ -119,7 +124,8 @@ class PaymentForm extends React.Component<Props, any> {
 
               <div className="tab-content">
 
-                {currentTab === Tabs.creditCard && creditCardAvailable &&
+                {currentTab === Tabs.creditCard && creditCardAvailable
+                  && (
                   <CreditCardV2Comp
                     amount={amount}
                     contacts={contacts}
@@ -133,9 +139,10 @@ class PaymentForm extends React.Component<Props, any> {
                     disabled={!(formSyncErrors && Object.keys(formSyncErrors).length === 0)}
                     dispatch={dispatch}
                   />
-                }
+                  )}
 
-                {currentTab === Tabs.corporatePass && corporatePassAvailable &&
+                {currentTab === Tabs.corporatePass && corporatePassAvailable
+                  && (
                   <CorporatePassComp
                     onSubmitPass={onSubmitPass}
                     corporatePass={corporatePass}
@@ -143,9 +150,10 @@ class PaymentForm extends React.Component<Props, any> {
                     corporatePassError={corporatePassError}
                     fetching={fetching}
                   />
-                }
+                  )}
 
-                {currentTab === Tabs.payLater && payLaterAvailable &&
+                {currentTab === Tabs.payLater && payLaterAvailable
+                  && (
                   <PayLaterComp
                     onInit={() => updatePayNow(0, false)}
                     contacts={contacts}
@@ -155,61 +163,67 @@ class PaymentForm extends React.Component<Props, any> {
                     onAddCompany={onAddCompany}
                     voucherPayerEnabled={voucherPayerEnabled}
                   />
-                }
+                  )}
 
               </div>
             </div>
           </div>
-        }
+          )}
 
         {agreementChecked && !(currentTab === Tabs.creditCard && creditCardAvailable && amount.ccPayment > 0)
-          && <div className="form-controls enrolmentsSelected">
-                <input
-                  disabled={disabled}
-                  value="Confirm"
-                  className={classnames("btn btn-primary", {disabled})}
-                  id="paymentSubmit"
-                  name="paymentSubmit"
-                  type="submit"
-                />
-              </div>
-        }
+          && (
+          <div className="form-controls enrolmentsSelected">
+            <input
+              disabled={disabled}
+              value="Confirm"
+              className={classnames('btn btn-primary', { disabled })}
+              id="paymentSubmit"
+              name="paymentSubmit"
+              type="submit"
+            />
+          </div>
+          )}
       </form>
     );
   }
 }
 
-const PaymentFormNav = props => {
-  const {paymentTabOnClick, currentTab, corporatePassAvailable, creditCardAvailable, payLaterAvailable} = props;
+const PaymentFormNav = (props) => {
+  const {
+    paymentTabOnClick, currentTab, corporatePassAvailable, creditCardAvailable, payLaterAvailable
+  } = props;
 
   return (
     <ul className="nav">
-      {creditCardAvailable &&
-        <li className={classnames("first", {active: currentTab === Tabs.creditCard})}>
+      {creditCardAvailable
+        && (
+        <li className={classnames('first', { active: currentTab === Tabs.creditCard })}>
           <a href={`#${Tabs.creditCard}`} onClick={paymentTabOnClick.bind(this)}>Credit card</a>
         </li>
-      }
+        )}
 
-      {corporatePassAvailable &&
-        <li className={classnames({active: currentTab === Tabs.corporatePass})}>
+      {corporatePassAvailable
+        && (
+        <li className={classnames({ active: currentTab === Tabs.corporatePass })}>
           <a href={`#${Tabs.corporatePass}`} onClick={paymentTabOnClick.bind(this)}>Corporate Pass</a>
         </li>
-      }
+        )}
 
-      {payLaterAvailable &&
-        <li className={classnames({active: currentTab === Tabs.payLater})}>
+      {payLaterAvailable
+        && (
+        <li className={classnames({ active: currentTab === Tabs.payLater })}>
           <a href={`#${Tabs.payLater}`} onClick={paymentTabOnClick.bind(this)}>Pay later</a>
         </li>
-      }
+        )}
     </ul>
   );
 };
 
 const validateCorporatePass = (data, props) => {
-  const errors = {};
+  const errors: any = {};
 
   if (!props.corporatePass.id || !data.corporatePass) {
-    errors['corporatePass'] = "";
+    errors.corporatePass = '';
   }
 
   return errors;
@@ -221,14 +235,14 @@ const Form = reduxForm({
     const errors = {};
 
     if (props.currentTab === Tabs.corporatePass) {
-      return {...errors, ...validateCorporatePass(data, props)};
+      return { ...errors, ...validateCorporatePass(data, props) };
     }
 
     return errors;
   },
   onSubmit: (data: CreditCardFormValues & CorporatePassFormValues, dispatch, props): void => {
     if (props.currentTab === Tabs.corporatePass && Number(props.amount.subTotal) !== 0) {
-      dispatch(updatePaymentStatus({status: PaymentStatus.IN_PROGRESS}));
+      dispatch(updatePaymentStatus({ status: PaymentStatus.IN_PROGRESS }));
       dispatch(submitPaymentCorporatePass(data));
       dispatch(setResultDetailsCorporatePass(props.corporatePass));
     } else {
@@ -244,8 +258,8 @@ const Form = reduxForm({
 })(PaymentForm);
 
 const mapStateToProps = (state: IshState) => {
-  const corporatePassError = state.checkout.error &&
-    state.checkout.error.fieldsErrors && state.checkout.error.fieldsErrors.find(er => er.name === 'code');
+  const corporatePassError = state.checkout.error
+    && state.checkout.error.fieldsErrors && state.checkout.error.fieldsErrors.find((er) => er.name === 'code');
   return {
     contacts: Object.values(state?.checkout?.contacts?.entities?.contact || {}),
     amount: state.checkout.amount,
@@ -260,8 +274,8 @@ const mapStateToProps = (state: IshState) => {
     creditCardAvailable: state.preferences.hasOwnProperty('creditCardEnabled') ? state.preferences.creditCardEnabled : true,
     payLaterAvailable: state.checkout.amount.isEditable && Number(state.checkout.amount.minPayNow) === 0,
     conditions: {
-      refundPolicyUrl: state.config.termsAndConditions,
-      featureEnrolmentDisclosure: state.config.featureEnrolmentDisclosure,
+      termsUrl: state.preferences.termsUrl,
+      termsLabel: state.preferences.termsLabel
     },
     formSyncErrors: getFormSyncErrors(NAME)(state),
     stateErrors: state.checkout.error,
@@ -269,31 +283,29 @@ const mapStateToProps = (state: IshState) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onSetPayer: id => {
-      dispatch(setPayer(id));
-      dispatch(getCheckoutModelFromBackend());
-    },
-    onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
-    onAddCompany: () => dispatch(changePhase(Phase.AddContactAsCompany)),
-    onSubmitPass: code => dispatch(getCorporatePass(code)),
-    onChangeTab: tab => {
-      dispatch(changeTab(tab));
-    },
-    onUnmountPassComponent: () => {
-      dispatch(resetCorporatePass());
-      dispatch(togglePayNowVisibility(true));
-      dispatch(getAmount());
-    },
-    updatePayNow: (val, validate) => {
-      dispatch(updatePayNow(val, validate));
-    },
-    processPaymentV2: (xValidateOnly, sessionId) => {
-      dispatch(processPaymentV2(xValidateOnly, sessionId));
-    },
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  onSetPayer: (id) => {
+    dispatch(setPayer(id));
+    dispatch(getCheckoutModelFromBackend());
+  },
+  onAddPayer: () => dispatch(changePhase(Phase.AddContactAsPayer)),
+  onAddCompany: () => dispatch(changePhase(Phase.AddContactAsCompany)),
+  onSubmitPass: (code) => dispatch(getCorporatePass(code)),
+  onChangeTab: (tab) => {
+    dispatch(changeTab(tab));
+  },
+  onUnmountPassComponent: () => {
+    dispatch(resetCorporatePass());
+    dispatch(togglePayNowVisibility(true));
+    dispatch(getAmount());
+  },
+  updatePayNow: (val, validate) => {
+    dispatch(updatePayNow(val, validate));
+  },
+  processPaymentV2: (xValidateOnly, sessionId) => {
+    dispatch(processPaymentV2(xValidateOnly, sessionId));
+  },
+});
 
 export const Container = connect<any, any, any, IshState>(
   mapStateToProps,

@@ -5,12 +5,14 @@ import ish.oncourse.cache.ICacheProvider;
 import ish.oncourse.cache.caffeine.CaffeineFactory;
 import ish.oncourse.cache.caffeine.CaffeineProvider;
 import ish.oncourse.cayenne.cache.ICacheEnabledService;
+import ish.oncourse.cayenne.cache.ICacheInvalidationService;
 import ish.oncourse.cayenne.cache.JCacheQueryCache;
 import ish.oncourse.model.Country;
 import ish.oncourse.services.ServiceTestModule;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.test.tapestry.ServiceTest;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.cache.QueryCache;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 import org.junit.Before;
@@ -19,6 +21,7 @@ import org.junit.Test;
 import javax.cache.CacheManager;
 import java.util.concurrent.TimeUnit;
 
+import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.NONE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -51,10 +54,30 @@ public class TestCayenneCache extends ServiceTest {
 			}
 		}, new ICacheEnabledService() {
 			@Override
+			public boolean isCacheEnabled() {
+				return false;
+			}
+
+			@Override
 			public void setCacheEnabled(Boolean enabled) {}
 
 			@Override
 			public void setCacheEnabled(CacheDisableReason reason, Boolean enabled) {}
+
+			@Override
+			public CacheDisableReason getDisableReason() {
+				return NONE;
+			}
+		}, new ICacheInvalidationService() {
+			@Override
+			public void setCache(QueryCache cache) {
+				
+			}
+
+			@Override
+			public void init() {
+
+			}
 		});
 	}
 

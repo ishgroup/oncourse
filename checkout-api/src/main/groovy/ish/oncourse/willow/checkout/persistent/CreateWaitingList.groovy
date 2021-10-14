@@ -1,6 +1,6 @@
 package ish.oncourse.willow.checkout.persistent
 
-
+import groovy.transform.CompileStatic
 import ish.oncourse.common.field.PropertyGetSetFactory
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
@@ -8,8 +8,9 @@ import ish.oncourse.model.WaitingList
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.functions.field.FieldHelper
 import org.apache.cayenne.ObjectContext
-import org.apache.commons.lang3.StringUtils 
+import org.apache.commons.lang3.StringUtils
 
+@CompileStatic
 class CreateWaitingList {
 
     private ObjectContext context

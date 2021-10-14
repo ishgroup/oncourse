@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static ish.oncourse.cayenne.cache.ICacheEnabledService.CacheDisableReason.NONE;
+
 public class WillowModuleDef implements ModuleDef {
 
     private static final Logger logger = LogManager.getLogger();
@@ -36,6 +38,11 @@ public class WillowModuleDef implements ModuleDef {
 
             @Override
             public void setCacheEnabled(CacheDisableReason reason, Boolean enabled) {}
+
+            @Override
+            public CacheDisableReason getDisableReason() {
+                return NONE;
+            }
         });
     }
 

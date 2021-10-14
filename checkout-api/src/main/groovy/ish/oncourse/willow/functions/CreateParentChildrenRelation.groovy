@@ -1,9 +1,11 @@
 package ish.oncourse.willow.functions
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.Contact
 import ish.oncourse.model.ContactRelation
 import ish.oncourse.model.ContactRelationType
+import ish.oncourse.model.WebSite
 import ish.oncourse.willow.checkout.functions.GetContact
 import ish.oncourse.willow.model.checkout.CreateParentChildrenRequest
 import ish.oncourse.willow.model.common.CommonError
@@ -13,6 +15,7 @@ import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+@CompileStatic
 class CreateParentChildrenRelation {
     final static Logger logger = LoggerFactory.getLogger(CreateParentChildrenRelation.class)
 
@@ -21,11 +24,14 @@ class CreateParentChildrenRelation {
     protected ObjectContext context
     protected ContactRelationType parentRelationType
     private CommonError error
+    private WebSite site
     
-    CreateParentChildrenRelation(College college, ObjectContext context, CreateParentChildrenRequest request) {
+    CreateParentChildrenRelation(College college, ObjectContext context, CreateParentChildrenRequest request, WebSite site) {
         this.request = request
         this.college = college
         this.context = context
+        this.context = context
+        this.site = site
         this.parentRelationType = getGuardianRelationType()
         if (!parentRelationType) {
             throw new IllegalStateException("College (id: ${college.id}) has not predefined guardian relation type")
@@ -35,14 +41,14 @@ class CreateParentChildrenRelation {
     CreateParentChildrenRelation create() {
         Contact parent = new GetContact(context, college, request.parentId).get()
 
-        if (new IsParentRequired(college, context, parent).get()) {
+        if (new IsParentRequired(college, context, parent, site).get()) {
             error = new CommonError(message: 'Parent or Guardian has wrong age')
             return this
         }
         
         for (String id: request.childrenIds) {
             Contact child = new GetContact(context, college, id).get()
-            CheckParent checkParent = new CheckParent(college, context, child).perform()
+            CheckParent checkParent = new CheckParent(college, context, child, site).perform()
             
             if (!checkParent.parentRequired) {
                 setError(new CommonError(message: "Can not create parent relation for ${child.fullName}"))

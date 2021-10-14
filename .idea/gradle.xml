@@ -36,7 +36,6 @@
             <option value="$PROJECT_DIR$/common/tapestry-classes" />
             <option value="$PROJECT_DIR$/common/test-functions" />
             <option value="$PROJECT_DIR$/common/webservices-client" />
-            <option value="$PROJECT_DIR$/common/webservices-usi" />
             <option value="$PROJECT_DIR$/editor" />
             <option value="$PROJECT_DIR$/editor-api" />
             <option value="$PROJECT_DIR$/portal" />

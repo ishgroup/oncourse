@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.field
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.College
 import ish.oncourse.model.FieldConfiguration
 import org.apache.cayenne.ObjectContext
@@ -8,6 +9,7 @@ import org.apache.cayenne.query.QueryCacheStrategy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+@CompileStatic
 class GetDefaultFieldConfiguration {
     
     final static Logger logger = LoggerFactory.getLogger(GetDefaultFieldConfiguration)

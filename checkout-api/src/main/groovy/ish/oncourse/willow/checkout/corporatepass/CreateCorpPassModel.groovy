@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.corporatepass
 
+import groovy.transform.CompileStatic
 import ish.common.GetInvoiceDueDate
 import ish.common.types.ConfirmationStatus
 import ish.common.types.EnrolmentStatus
@@ -27,6 +28,7 @@ import org.apache.cayenne.ObjectContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+@CompileStatic
 class CreateCorpPassModel {
 
     final static Logger logger = LoggerFactory.getLogger(CreateCorpPassModel)

@@ -1,6 +1,7 @@
 package ish.oncourse.willow.checkout.corporatepass
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.WebSite
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class CorporatePassApiImpl implements CorporatePassApi {
     
     final static  Logger logger = LoggerFactory.getLogger(CorporatePassApiImpl)

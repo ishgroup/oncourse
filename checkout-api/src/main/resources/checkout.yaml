@@ -932,24 +932,15 @@ definitions:
       creditCardEnabled:
         type: boolean
         description: is credit card enabled preference
-      successLink:
-        type: string
-        description: After payment successful redirect user to URL
-      refundPolicyUrl:
-        type: string
-        description: Terms and conditions page
-      featureEnrolmentDisclosure:
-        type: string
-        description: Student Information
-      googleTagmanagerAccount:
-        type: string
-        description: Google tag manager account
       minAge:
         type: number
         description: Minimal age which not requiring parent
-      amexEnabled:
-        type: boolean
-        description: Amex card payment enabled
+      termsLabel:
+        type: string
+        description: Terms and conditions display label
+      termsUrl:
+        type: string
+        description: Terms and conditions page url
   field.Suburb:
     type: object
     properties:
@@ -1238,7 +1229,6 @@ definitions:
     enum:
       - ENROLMENT
       - WAITINGLIST
-      - MAILINGLIST
   web.CreateContactParams:
     type: object
     required:

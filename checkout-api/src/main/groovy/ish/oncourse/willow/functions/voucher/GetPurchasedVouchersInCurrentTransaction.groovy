@@ -1,5 +1,6 @@
 package ish.oncourse.willow.functions.voucher
 
+import groovy.transform.CompileStatic
 import ish.oncourse.model.InvoiceLine
 import ish.oncourse.model.ProductItem
 import ish.oncourse.model.Voucher
@@ -9,6 +10,7 @@ import ish.oncourse.willow.model.common.CommonError
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Response
 
+@CompileStatic
 class GetPurchasedVouchersInCurrentTransaction {
 
     List<VoucherPayment> voucherProductPayments

@@ -13,5 +13,12 @@ public class Settings extends _Settings {
     public static final String STORAGE_ACCESS_ID = "storage.access.id";
     public static final String STORAGE_ACCESS_KEY = "storage.access.key";
     public static final String STORAGE_REGION = "storage.region";
+    
+    public static final String BILLING_USERS = "billing.users";
+    public static final String BILLING_PLAN = "billing.plan";
+    public static final String BILLING_CURRENCY = "billing.currency";
+    public static final String BILLING_CONTACT_NAME = "billing.contact_name";
+    public static final String BILLING_CONTACT_EMAIL = "billing.contact_email";
+    public static final String BILLING_CONTACT_PHONE = "billing.contact_phone";
 
 }

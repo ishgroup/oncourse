@@ -1,5 +1,6 @@
 package ish.oncourse.willow.checkout.windcave
 
+import groovy.transform.CompileStatic
 import ish.math.Country
 import ish.oncourse.model.College
 import ish.oncourse.services.preference.GetPreference
@@ -10,6 +11,7 @@ import static ish.persistence.Preferences.ACCOUNT_CURRENCY
 import static ish.persistence.Preferences.PAYMENT_GATEWAY_PASS
 import static ish.persistence.Preferences.PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH
 
+@CompileStatic
 class PaymentServiceBuilder {
 
     IPaymentService build(College college, ObjectContext context) {

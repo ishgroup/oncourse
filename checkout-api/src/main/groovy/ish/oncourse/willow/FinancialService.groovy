@@ -1,6 +1,7 @@
 package ish.oncourse.willow
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.common.types.PaymentSource
 import ish.common.types.PaymentStatus
 import ish.math.Money
@@ -14,6 +15,7 @@ import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 
+@CompileStatic
 class FinancialService {
 
     private CayenneService cayenneService
