@@ -8,13 +8,17 @@ package ish.oncourse.willow.billing.utils
 
 import org.apache.commons.net.util.SubnetUtils
 
+import static ish.oncourse.configuration.Configuration.AdminProperty.IPV4_RANGE
+import static ish.oncourse.configuration.Configuration.AdminProperty.IPV6_RANGE
+import static ish.oncourse.configuration.Configuration.getValue
+
 class DomainUtils {
     static List<SubnetUtils> ipV4Ranges = getIp4Ranges()
     static String ipV6Address = getIp6Address()
 
 
     private static List<SubnetUtils> getIp4Ranges() {
-        def diapasonsStr = "202.167.247.64/27,202.177.213.64/27"//Configuration.getValue(IPV4_DIAPASON)
+        def diapasonsStr = getValue(IPV4_RANGE)
         if (diapasonsStr == null)
             throw new RuntimeException("Incorrect property: diapasons for ipv4 not set")
         return diapasonsStr.split(",")
@@ -22,7 +26,7 @@ class DomainUtils {
     }
 
     private static String getIp6Address() {
-        def ipV6 = "2404:4f00:1010:1:0:0:0:2"//Configuration.getValue(IPV6_DIAPASON)
+        def ipV6 = getValue(IPV6_RANGE)
         if (ipV6 == null)
             throw new RuntimeException("Incorrect property: ipv6 address not set")
         return ipV6
