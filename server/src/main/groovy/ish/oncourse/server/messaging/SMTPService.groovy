@@ -9,7 +9,8 @@
 package ish.oncourse.server.messaging
 
 import io.bootique.annotation.BQConfigProperty
-import ish.util.RuntimeUtil
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class SMTPService {
 
@@ -20,9 +21,11 @@ class SMTPService {
     private String password
     private Mode mode = Mode.ssl
 
+    private static final Logger logger = LogManager.logger
+
     @BQConfigProperty
     void setEmail_batch(Integer email_batch) {
-        RuntimeUtil.println("server will limit number of email batch to " + email_batch);
+        logger.warn("server will limit number of email batch to " + email_batch)
         this.email_batch = email_batch
     }
 
