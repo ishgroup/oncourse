@@ -121,6 +121,19 @@ export const ParseScriptBody = async (scriptItem: Script) => {
   return { ...scriptItem, components, imports };
 };
 
+export const getQueryReturnValueForRender = (closureReturnValue: string) => {
+  const closureReturnValueArray = closureReturnValue.split(" ");
+
+  if (closureReturnValueArray.length > 1) {
+    return {
+      prefix: closureReturnValueArray.slice(0, closureReturnValueArray.length - 1),
+      value: closureReturnValueArray[closureReturnValueArray.length - 1],
+    };
+  }
+
+  return closureReturnValue;
+};
+
 const getComponentBody = (component: any) => {
   switch (component.type) {
     case "Query": {
