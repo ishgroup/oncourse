@@ -15,12 +15,14 @@ const ContactsResume: React.FC<ContactsResumeProps> = props => {
   const { twoColumn } = props;
 
   return (
-    <Grid container columnSpacing={3} className="p-3">
+    <div className="p-3">
       <div className="heading mb-2">RESUME</div>
-      <Grid item xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-        <FormEditorField name="tutor.resume" label="Resume" />
+      <Grid container columnSpacing={3}>
+        <Grid item xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+          <FormEditorField name="tutor.resume" label="Resume" />
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 

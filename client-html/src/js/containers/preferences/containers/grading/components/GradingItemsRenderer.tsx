@@ -10,7 +10,6 @@ import clsx from "clsx";
 import React, { useMemo } from "react";
 import { Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import Delete from "@mui/icons-material/Delete";
 import { WrappedFieldArrayProps } from "redux-form";
 import { GradingItem, GradingType } from "@api/model";
@@ -18,6 +17,7 @@ import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 import { GradingFormData } from "./GradingTypesForm";
+import AddIcon from "../../../../../common/components/icons/AddIcon";
 
 interface Props {
   classes: any;
@@ -85,9 +85,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
         <Typography component="div" variant="caption" color="textSecondary" noWrap>
           {label}
         </Typography>
-        <IconButton onClick={onAdd} className="p-0-5">
-          <AddCircle className="addButtonColor" />
-        </IconButton>
+        <AddIcon onClick={onAdd} className="p-0-5" />
       </div>
       {error && (
         <Typography className="shakingError" component="div" variant="caption" color="error" noWrap>

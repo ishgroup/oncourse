@@ -6,7 +6,6 @@
 import React, { useCallback, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -16,6 +15,7 @@ import Grid from "@mui/material/Grid";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import { openInternalLink } from "../../../utils/links";
+import AddIcon from "../../icons/AddIcon";
 
 interface Props {
   entityName?: string;
@@ -69,9 +69,7 @@ const NestedEntity: React.FC<Props> = ({
   const addAction = useMemo(
     () =>
       (addLink ? (
-        <IconButton onClick={isNew ? saveAlert : openAddLink}>
-          <AddCircle className="addButtonColor" />
-        </IconButton>
+        <AddIcon onClick={isNew ? saveAlert : openAddLink} />
       ) : null),
     [isNew, addLink]
   );

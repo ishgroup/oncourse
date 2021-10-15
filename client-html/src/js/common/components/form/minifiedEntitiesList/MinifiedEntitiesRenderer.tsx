@@ -25,7 +25,7 @@ const styles = (theme: AppTheme) =>
     },
     expandIcon: {
       right: "unset",
-      left: "0px",
+      left: theme.spacing(1),
       position: "absolute"
     },
     deleteIcon: {

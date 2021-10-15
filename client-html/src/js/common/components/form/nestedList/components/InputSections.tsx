@@ -8,10 +8,10 @@ import clsx from "clsx";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse/Collapse";
 import Typography from "@mui/material/Typography";
-import AddCircle from "@mui/icons-material/AddCircle";
 import Close from "@mui/icons-material/Close";
-import SearchInput from "./SearchInput";
+import AddIcon from "../../../icons/AddIcon";
 import { Switch } from "../../formFields/Switch";
+import SearchInput from "./SearchInput";
 
 export const InputSection = React.memo<any>(props => {
   const {
@@ -71,7 +71,7 @@ export const InputSection = React.memo<any>(props => {
               </IconButton>
             )
             : (
-              <IconButton
+              <AddIcon
                 className={clsx(
                   "addButtonColor",
                   secondaryHeading && "p-0 ml-1",
@@ -79,9 +79,8 @@ export const InputSection = React.memo<any>(props => {
                 )}
                 onClick={toggleSearch}
                 disabled={disabled}
-              >
-                <AddCircle className="inherit" />
-              </IconButton>
+                iconClassName="inherit"
+              />
             )}
         </div>
 

@@ -8,7 +8,6 @@ import { arrayInsert, arrayRemove, change } from "redux-form";
 import { CourseClassPaymentPlan, Tax } from "@api/model";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import { addDays, format } from "date-fns";
@@ -27,6 +26,7 @@ import { BudgetCostModalContentProps } from "../../../../../../model/entities/Co
 import { stubFunction } from "../../../../../../common/utils/common";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
+import AddIcon from "../../../../../../common/components/icons/AddIcon";
 
 const StudentFeePaymentPlan: React.FC<any> = ({
  index, item, onDelete, onBlur, classStart
@@ -243,9 +243,7 @@ const StudentFeeContent: React.FC<Props> = ({
 
       <Grid item xs={12} className="centeredFlex">
         <div className="heading">Payment plans</div>
-        <IconButton onClick={addPaymentPlan}>
-          <AddCircle className="addButtonColor" />
-        </IconButton>
+        <AddIcon onClick={addPaymentPlan} />
       </Grid>
       <Grid container columnSpacing={3} item xs={6}>
         {values.paymentPlan.map((item, index) => {

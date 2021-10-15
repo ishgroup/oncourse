@@ -11,10 +11,8 @@ import {
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import IconButton from "@mui/material/IconButton";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
 import Typography from "@mui/material/Typography";
-import AddCircle from "@mui/icons-material/AddCircle";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
@@ -27,6 +25,7 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 import { mapSelectItems } from "../../../../common/utils/common";
+import AddIcon from "../../../../common/components/icons/AddIcon";
 
 const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
     ? [
@@ -241,13 +240,11 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                     <Typography component="span" variant="body1" color="textSecondary">
                       Add New Custom pay item
                     </Typography>
-                    <IconButton
+                    <AddIcon
                       onClick={this.addCustomPayLine}
                       disabled={values && values.status === PayslipStatus["Paid/Exported"]}
                       className="addButtonColor"
-                    >
-                      <AddCircle />
-                    </IconButton>
+                    />
                   </div>
                 </Grid>
 

@@ -5,10 +5,11 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { getTableWrapperHeight, THEME_SPACING } from "../utils";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import {EditViewProps} from "../../../../model/common/ListView";
 
-interface ContactsMessagesProps {
+interface ContactsMessagesProps extends EditViewProps<Contact> {
   twoColumn?: boolean;
-  values?: Contact;
 }
 
 const openRow = ({ messageId }) => {
@@ -16,7 +17,12 @@ const openRow = ({ messageId }) => {
 };
 
 const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
-  const { values } = props;
+  const {
+    values,
+    tabIndex,
+    expanded,
+    setExpanded,
+  } = props;
 
   const messagesColumns: NestedTableColumn[] = [
     {
@@ -55,28 +61,31 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
     values.messages
   ]);
 
-  const getMessagesTableTitle = () => (getMessagesCount() === 1 ? "message" : "messages");
+  const getMessagesTableTitle = () => (getMessagesCount() > 0 ? `${getMessagesCount()} ` : "") + (getMessagesCount() === 1 ? "message" : "messages");
 
   const tableWrapperHeight = getTableWrapperHeight(getMessagesCount());
 
   return values ? (
-    <div
-      className="flex-column"
-      style={{
-        height: tableWrapperHeight,
-        padding: THEME_SPACING * 3,
-        marginBottom: THEME_SPACING * 3
-      }}
-    >
-      <FieldArray
-        name="messages"
-        title={getMessagesTableTitle()}
-        component={NestedTable}
-        columns={messagesColumns}
-        onRowDoubleClick={openRow}
-        rerenderOnEveryChange
-        sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
-      />
+    <div className="p-3">
+      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header={getMessagesTableTitle()}>
+        <div
+          className="flex-column"
+          style={{
+            height: tableWrapperHeight,
+            marginBottom: THEME_SPACING * 3
+          }}
+        >
+          <FieldArray
+            name="messages"
+            component={NestedTable}
+            columns={messagesColumns}
+            onRowDoubleClick={openRow}
+            rerenderOnEveryChange
+            sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
+            hideHeader
+          />
+        </div>
+      </ExpandableContainer>
     </div>
   ) : null;
 };
