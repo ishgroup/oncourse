@@ -26,6 +26,7 @@ import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.persistence.Preferences;
 import ish.oncourse.server.services.*;
 import ish.util.RuntimeUtil;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
@@ -150,6 +151,15 @@ public class AngelServerFactory {
                     VOUCHER_EXPIRY_JOB_CRON_SCHEDULE,
                     prefController.getOncourseServerDefaultTimezone(),
                     true, false);
+
+            if ((Boolean) prefController.getValueForKey(Preferences.AUTO_DISABLE_INACTIVE_ACCOUNT)) {
+                // between 3:00 and 3:59 every Monday disable inactive 4 years or never loged in users
+                var randomSchedule = String.format(USER_DISAIBLE_JOB_TEMPLATE, random.nextInt(59));
+                schedulerService.scheduleCronJob(UserDisableJob.class,
+                        USER_DISAIBLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                        randomSchedule, prefController.getOncourseServerDefaultTimezone(),
+                        true, false);
+            }
 
             // between 1:00am and 1:59am update overdue amount for unpaid invoices
             var randomSchedule = String.format(INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE, random.nextInt(59));

@@ -11,7 +11,9 @@ import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.license.LicenseService;
+import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.ISystemUserService;
+import ish.oncourse.server.services.UserDisableJob;
 import ish.persistence.CommonPreferenceController;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.ObjectContext;
@@ -19,14 +21,19 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.JobKey;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Date;
+import java.util.Random;
 
 import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
 import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
 import static ish.persistence.Preferences.USI_SOFTWARE_ID;
+import static ish.oncourse.server.services.ISchedulerService.BACKGROUND_JOBS_GROUP_ID;
+import static ish.oncourse.server.services.ISchedulerService.USER_DISAIBLE_JOB_ID;
+import static ish.persistence.Preferences.*;
 
 @Singleton
 public class PreferenceController extends CommonPreferenceController {
@@ -41,6 +48,8 @@ public class PreferenceController extends CommonPreferenceController {
 	private final LicenseService licenseService;
 	private ObjectContext objectContext;
 
+    @Inject
+    private ISchedulerService schedulerService;
 
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,LicenseService licenseService) {
@@ -117,7 +126,23 @@ public class PreferenceController extends CommonPreferenceController {
         if (defaultAccountPreferences.contains(key)) {
             setDefaultAccountId(key, (Long)value);
         } else {
-            super.setValueForKey(key,value);
+            if (key.equals(AUTO_DISABLE_INACTIVE_ACCOUNT)) {
+                try {
+                    if ((Boolean) value) {
+                        var random = new Random();
+                        var randomSchedule = String.format(schedulerService.USER_DISAIBLE_JOB_TEMPLATE, random.nextInt(59));
+                        schedulerService.scheduleCronJob(UserDisableJob.class,
+                                USER_DISAIBLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                                randomSchedule, getOncourseServerDefaultTimezone(),
+                                true, false);
+                    } else {
+                        schedulerService.removeJob(JobKey.jobKey(ISchedulerService.USER_DISAIBLE_JOB_ID, ISchedulerService.BACKGROUND_JOBS_GROUP_ID));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            super.setValueForKey(key, value);
         }
 	}
 
