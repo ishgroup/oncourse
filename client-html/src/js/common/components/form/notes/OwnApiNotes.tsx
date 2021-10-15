@@ -8,8 +8,6 @@ import { Grid } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import { arrayInsert, change, FieldArray } from "redux-form";
 import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import { Note } from "@api/model";
 import { connect } from "react-redux";
 import styles from "./styles";
@@ -21,6 +19,7 @@ import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import uniqid from "../../../utils/uniqid";
+import AddIcon from "../../icons/AddIcon";
 
 interface Props {
   classes?: any;
@@ -108,9 +107,7 @@ const OwnApiNotes = React.memo<Props>(
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <IconButton onClick={addNote}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
+            <AddIcon onClick={addNote} />
           </div>
         </Grid>
 

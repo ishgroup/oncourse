@@ -9,10 +9,10 @@ import React, {
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
+import AddIcon from "../../icons/AddIcon";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -93,12 +93,10 @@ const ExpandableContainer: React.FC<Props> = ({
     <>
       <div ref={headerRef}>
         <div className="centeredFlex">
-          <div className="flex-fill">
+          <div className="centeredFlex flex-fill">
             <div className="heading">{header}</div>
             {onAdd && (
-              <IconButton onClick={onAdd}>
-                <AddCircleOutlineOutlinedIcon className="addButtonColor" />
-              </IconButton>
+              <AddIcon onClick={onAdd} />
             )}
           </div>
           <IconButton onClick={toggleExpand} className={onAdd && classes.adornmentOffset}>

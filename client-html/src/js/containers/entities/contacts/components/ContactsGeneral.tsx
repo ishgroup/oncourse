@@ -50,6 +50,7 @@ import TimetableButton from "../../../../common/components/buttons/TimetableButt
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -177,7 +178,10 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     concessionTypes,
     usiLocked,
     isNew,
-    syncErrors
+    syncErrors,
+    tabIndex,
+    expanded,
+    setExpanded,
   } = props;
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
@@ -498,200 +502,210 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
       </Grid>
       <Divider className="mt-3 mb-3" />
       <Grid container columnSpacing={3} rowSpacing={3}>
-        <Grid item {...gridItemProps}>
-          <FormField
-            type="text"
-            name="street"
-            label={setMarketingLabel("street")}
-            validate={greaterThanNullValidation}
-            labelAdornment={<SettingsAdornment clickHandler={e => setPostalSettingsMenu(e.currentTarget)} />}
-          />
-          <Menu
-            id="postalSettingsMenu"
-            anchorEl={showPostalSettingsMenu}
-            open={Boolean(showPostalSettingsMenu)}
-            onClose={() => setPostalSettingsMenu(null)}
-            disableAutoFocusItem
-          >
-            <MenuItem>
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<FormField type="checkbox" name="allowPost" color="secondary" />}
-                label="Accept postal marketing material"
-              />
-            </MenuItem>
-            <MenuItem>
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<Checkbox checked={isUndeliverablePostal()} onClick={handleUndeliverablePostalCheck} />}
-                label="Undeliverable"
-              />
-            </MenuItem>
-          </Menu>
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="suburb" label="Suburb" />
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="state" label="State" />
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="postcode" label="Postcode" />
-        </Grid>
-        <Grid item {...gridItemProps}>
-          {countries && (
-            <FormField
-              type="searchSelect"
-              selectValueMark="id"
-              selectLabelMark="name"
-              name="country"
-              label="Country"
-              returnType="object"
-              items={countries}
-            />
-          )}
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField
-            type="text"
-            name="mobilePhone"
-            label={setMarketingLabel("mobilePhone")}
-            validate={validatePhoneNumber}
-            labelAdornment={<SettingsAdornment clickHandler={e => setSmsSettingsMenu(e.currentTarget)} />}
-          />
-          <Menu
-            id="smsSettingsMenu"
-            anchorEl={showSmsSettingsMenu}
-            open={Boolean(showSmsSettingsMenu)}
-            onClose={() => setSmsSettingsMenu(null)}
-            disableAutoFocusItem
-          >
-            <MenuItem>
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<FormField type="checkbox" name="allowSms" color="secondary" />}
-                label="Accept sms marketing material"
-              />
-            </MenuItem>
-            <MenuItem>
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<Checkbox checked={isUndeliverableSms()} onClick={handleUndeliverableSmsCheck} />}
-                label="Undeliverable"
-              />
-            </MenuItem>
-          </Menu>
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField
-            type="text"
-            name="email"
-            label={setMarketingLabel("email")}
-            labelAdornment={<SettingsAdornment clickHandler={e => setEmailSettingsMenu(e.currentTarget)} />}
-            validate={validateEmail}
-          />
-          <Menu
-            id="emailSettingsMenu"
-            anchorEl={showEmailSettingsMenu}
-            open={Boolean(showEmailSettingsMenu)}
-            onClose={() => setEmailSettingsMenu(null)}
-            disableAutoFocusItem
-          >
-            <MenuItem>
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<FormField type="checkbox" name="allowEmail" color="secondary" />}
-                label="Accept email marketing material"
-              />
-            </MenuItem>
-            <MenuItem>
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<Checkbox checked={isUndeliverableEmail()} onClick={handleUndeliverableEmailCheck} />}
-                label="Undeliverable"
-              />
-            </MenuItem>
-          </Menu>
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="message" label="Message (alert for operator)" />
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="fax" label="Fax" />
-        </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField type="text" name="abn" label="Business number (ABN)" validate={validateABN} />
-        </Grid>
-        {!isCompany ? (
-          <>
-            <Grid item {...gridItemProps}>
-              <FormField
-                type="date"
-                name="birthDate"
-                label="Date of birth"
-                disabled={usiLocked}
-                validate={validateBirthDate}
-              />
-            </Grid>
-            <Grid item {...gridItemProps}>
-              <FormField
-                type="select"
-                name="gender"
-                label="Gender"
-                items={contactGenderItems}
-                className={classes.selectField}
-                placeholder="Not stated"
-                allowEmpty
-              />
-            </Grid>
-            <Grid item {...gridItemProps}>
-              <FormField type="text" name="honorific" label="Honorific" />
-            </Grid>
-          </>
-        ) : null}
+        <Grid item xs={12}>
+          <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Contact">
+            <Grid container columnSpacing={3} rowSpacing={3}>
+              <Grid item {...gridItemProps}>
+                <FormField
+                  type="text"
+                  name="street"
+                  label={setMarketingLabel("street")}
+                  validate={greaterThanNullValidation}
+                  labelAdornment={<SettingsAdornment clickHandler={e => setPostalSettingsMenu(e.currentTarget)} />}
+                />
+                <Menu
+                  id="postalSettingsMenu"
+                  anchorEl={showPostalSettingsMenu}
+                  open={Boolean(showPostalSettingsMenu)}
+                  onClose={() => setPostalSettingsMenu(null)}
+                  disableAutoFocusItem
+                >
+                  <MenuItem>
+                    <FormControlLabel
+                      className="checkbox pr-3"
+                      control={<FormField type="checkbox" name="allowPost" color="secondary" />}
+                      label="Accept postal marketing material"
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <FormControlLabel
+                      className="checkbox pr-3"
+                      control={<Checkbox checked={isUndeliverablePostal()} onClick={handleUndeliverablePostalCheck} />}
+                      label="Undeliverable"
+                    />
+                  </MenuItem>
+                </Menu>
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="suburb" label="Suburb" />
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="state" label="State" />
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="postcode" label="Postcode" />
+              </Grid>
+              <Grid item {...gridItemProps}>
+                {countries && (
+                  <FormField
+                    type="searchSelect"
+                    selectValueMark="id"
+                    selectLabelMark="name"
+                    name="country"
+                    label="Country"
+                    returnType="object"
+                    items={countries}
+                  />
+                )}
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField
+                  type="text"
+                  name="mobilePhone"
+                  label={setMarketingLabel("mobilePhone")}
+                  validate={validatePhoneNumber}
+                  labelAdornment={<SettingsAdornment clickHandler={e => setSmsSettingsMenu(e.currentTarget)} />}
+                />
+                <Menu
+                  id="smsSettingsMenu"
+                  anchorEl={showSmsSettingsMenu}
+                  open={Boolean(showSmsSettingsMenu)}
+                  onClose={() => setSmsSettingsMenu(null)}
+                  disableAutoFocusItem
+                >
+                  <MenuItem>
+                    <FormControlLabel
+                      className="checkbox pr-3"
+                      control={<FormField type="checkbox" name="allowSms" color="secondary" />}
+                      label="Accept sms marketing material"
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <FormControlLabel
+                      className="checkbox pr-3"
+                      control={<Checkbox checked={isUndeliverableSms()} onClick={handleUndeliverableSmsCheck} />}
+                      label="Undeliverable"
+                    />
+                  </MenuItem>
+                </Menu>
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField
+                  type="text"
+                  name="email"
+                  label={setMarketingLabel("email")}
+                  labelAdornment={<SettingsAdornment clickHandler={e => setEmailSettingsMenu(e.currentTarget)} />}
+                  validate={validateEmail}
+                />
+                <Menu
+                  id="emailSettingsMenu"
+                  anchorEl={showEmailSettingsMenu}
+                  open={Boolean(showEmailSettingsMenu)}
+                  onClose={() => setEmailSettingsMenu(null)}
+                  disableAutoFocusItem
+                >
+                  <MenuItem>
+                    <FormControlLabel
+                      className="checkbox pr-3"
+                      control={<FormField type="checkbox" name="allowEmail" color="secondary" />}
+                      label="Accept email marketing material"
+                    />
+                  </MenuItem>
+                  <MenuItem>
+                    <FormControlLabel
+                      className="checkbox pr-3"
+                      control={<Checkbox checked={isUndeliverableEmail()} onClick={handleUndeliverableEmailCheck} />}
+                      label="Undeliverable"
+                    />
+                  </MenuItem>
+                </Menu>
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="message" label="Message (alert for operator)" />
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="fax" label="Fax" />
+              </Grid>
+              <Grid item {...gridItemProps}>
+                <FormField type="text" name="abn" label="Business number (ABN)" validate={validateABN} />
+              </Grid>
+              {!isCompany ? (
+                <>
+                  <Grid item {...gridItemProps}>
+                    <FormField
+                      type="date"
+                      name="birthDate"
+                      label="Date of birth"
+                      disabled={usiLocked}
+                      validate={validateBirthDate}
+                    />
+                  </Grid>
+                  <Grid item {...gridItemProps}>
+                    <FormField
+                      type="select"
+                      name="gender"
+                      label="Gender"
+                      items={contactGenderItems}
+                      className={classes.selectField}
+                      placeholder="Not stated"
+                      allowEmpty
+                    />
+                  </Grid>
+                  <Grid item {...gridItemProps}>
+                    <FormField type="text" name="honorific" label="Honorific" />
+                  </Grid>
+                </>
+              ) : null}
 
-        <CustomFields
-          entityName="Contact"
-          fieldName="customFields"
-          entityValues={values}
-          dispatch={dispatch}
-          form={form}
-          gridItemProps={gridItemProps}
-        />
+              <CustomFields
+                entityName="Contact"
+                fieldName="customFields"
+                entityValues={values}
+                dispatch={dispatch}
+                form={form}
+                gridItemProps={gridItemProps}
+              />
 
-        {values.student && (
-          <>
-            <Grid item xs={twoColumn ? 6 : 12}>
-              <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
-            </Grid>
-            <Grid item xs={12}>
-              {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
-                <Typography display="inline" variant="body1">
-                  {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
-                  <Link
-                    href={`${window.location.origin}/waitingList?search=student.contact.id = ${values.id}`}
-                    target="_blank"
-                    color="textSecondary"
-                    underline="none"
-                    className="d-inline"
-                  >
-                    <ExitToApp className={clsx("ml-1 relative", classes.exitToApp)} />
-                  </Link>
-                </Typography>
-              ) : (
-                <Typography display="inline" variant="body1" className="pt-2">
-                  Student is not on any waiting list
-                </Typography>
+              {values.student && (
+                <>
+                  <Grid item xs={twoColumn ? 6 : 12}>
+                    <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
+                      <Typography display="inline" variant="body1">
+                        {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
+                        <Link
+                          href={`${window.location.origin}/waitingList?search=student.contact.id = ${values.id}`}
+                          target="_blank"
+                          color="textSecondary"
+                          underline="none"
+                          className="d-inline"
+                        >
+                          <ExitToApp className={clsx("ml-1 relative", classes.exitToApp)} />
+                        </Link>
+                      </Typography>
+                    ) : (
+                      <Typography display="inline" variant="body1" className="pt-2">
+                        Student is not on any waiting list
+                      </Typography>
+                    )}
+                  </Grid>
+                </>
               )}
             </Grid>
-            <Divider className="mt-3 mb-3" />
+          </ExpandableContainer>
+        </Grid>
+        {values.student && (
+          <>
             <Grid item xs={12} className="pb-2 pt-2">
+              <Divider className="mt-3 mb-3" />
               <MinifiedEntitiesList
                 name="student.concessions"
                 header="Concessions"

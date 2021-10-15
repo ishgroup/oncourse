@@ -3,10 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
-import Launch from "@mui/icons-material/Launch";
-import RemoveCircle from "@mui/icons-material/RemoveCircle";
 import React, {
   useMemo, useState
 } from "react";
@@ -24,11 +20,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Launch from "@mui/icons-material/Launch";
+import RemoveCircle from "@mui/icons-material/RemoveCircle";
 import clsx from "clsx";
 import { NestedTableColumn } from "../../../../../model/common/NestedTable";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { openInternalLink } from "../../../../utils/links";
+import AddIcon from "../../../icons/AddIcon";
 import StaticList from "./components/StaticList";
 import styles from "./styles";
 import { getNestedTableCell } from "./utils";
@@ -277,9 +277,7 @@ const ListRoot = React.memo<NestedListProps>(({
                 </IconButton>
               )}
               {onAdd && (
-                <IconButton className="addButtonColor p-1" onClick={onAdd}>
-                  <AddCircle className="inherit" />
-                </IconButton>
+                <AddIcon className="addButtonColor p-1" onClick={onAdd} iconClassName="inherit" />
               )}
               {Boolean(rows.length) && removeEnabled && (
                 <IconButton

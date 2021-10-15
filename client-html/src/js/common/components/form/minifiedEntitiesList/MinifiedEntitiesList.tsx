@@ -6,9 +6,8 @@
 import React, { useMemo } from "react";
 import { FieldArray } from "redux-form";
 import Typography from "@mui/material/Typography";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
+import AddIcon from "../../icons/AddIcon";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 
 const MinifiedEntitiesList = props => {
@@ -52,9 +51,7 @@ const MinifiedEntitiesList = props => {
         </Typography>
 
         {onAdd && (
-          <IconButton onClick={onAdd}>
-            <AddCircleOutlineOutlinedIcon className="addButtonColor" />
-          </IconButton>
+          <AddIcon onClick={onAdd} />
         )}
       </div>
 

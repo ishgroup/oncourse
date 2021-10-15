@@ -10,7 +10,6 @@ import React, {
 } from "react";
 import { Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import Delete from "@mui/icons-material/Delete";
 import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
@@ -18,6 +17,7 @@ import EditInPlaceField from "../../../../../common/components/form/formFields/E
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import AddIcon from "../../../../../common/components/icons/AddIcon";
 
 interface Props {
   label: string;
@@ -83,9 +83,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
           <Typography component="div" variant="caption" color="textSecondary" noWrap>
             {label}
           </Typography>
-          <IconButton onClick={onAdd} className="p-0-5">
-            <AddCircle className="addButtonColor" />
-          </IconButton>
+          <AddIcon onClick={onAdd} className="p-0-5" />
         </div>
         {error && (
           <Typography className="shakingError" component="div" variant="caption" color="error" noWrap>

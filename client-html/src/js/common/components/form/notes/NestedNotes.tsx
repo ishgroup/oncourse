@@ -11,14 +11,13 @@ import {
   arrayInsert, change, FieldArray
 } from "redux-form";
 import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import { Note } from "@api/model";
 import { connect } from "react-redux";
 import styles from "./styles";
 import { showConfirm } from "../../../actions";
 import NotesRenderer from "./components/NotesRenderer";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import AddIcon from "../../icons/AddIcon";
 
 interface Props {
   classes?: any;
@@ -87,9 +86,7 @@ const NestedNotes = React.memo<Props>(
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <IconButton onClick={addNote}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
+            <AddIcon onClick={addNote} />
           </div>
         </Grid>
 
