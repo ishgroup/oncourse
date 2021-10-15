@@ -13,7 +13,7 @@ buildscript {
         mariadbVersion = '2.7.2'
 		groovyVersion = '2.5.13'
 		bouncycastleVersion = '1.67'
-		bootiqueVersion = '2.0.B1'
+		bootiqueVersion = '2.0.B2-SNAPSHOT'
 		cfxVersion = '3.3.5'
 		jacksonVersion = '2.9.9'
 		javaxActivationVersion = '1.2.0'
@@ -46,6 +46,12 @@ subprojects {
 		maven {
 			//needed for itext
 			url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/"
+		}
+		maven {
+			url "https://oss.sonatype.org/content/repositories/snapshots/"
+			mavenContent {
+				snapshotsOnly()
+			}
 		}
 	}
 
