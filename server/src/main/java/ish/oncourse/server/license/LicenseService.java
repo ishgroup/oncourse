@@ -12,8 +12,9 @@
 package ish.oncourse.server.license;
 
 import io.bootique.annotation.BQConfigProperty;
-import ish.util.RuntimeUtil;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+        
 public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
@@ -28,11 +29,13 @@ public class LicenseService {
     private String security_key;
 
     private LicenseSmsService smsService;
+    private static final Logger logger = LogManager.getLogger();
+
 
 
     @BQConfigProperty
     public void setMax_concurrent_users(int max_concurrent_users) {
-        RuntimeUtil.println("server will limit number of concurrent users to " + max_concurrent_users);
+        logger.warn("server will limit number of concurrent users to " + max_concurrent_users);
         this.max_concurrent_users = max_concurrent_users;
     }
 
@@ -51,13 +54,13 @@ public class LicenseService {
         if (purge_audit_after_days < 1) {
             purge_audit_after_days = 1;
         }
-        RuntimeUtil.println("server will limit number of days for storing audit logs to " + purge_audit_after_days);
+        logger.warn("server will limit number of days for storing audit logs to " + purge_audit_after_days);
         this.purge_audit_after_days = purge_audit_after_days;
     }
 
     @BQConfigProperty
     public void setServices_host(String services_host) {
-        RuntimeUtil.println("server will use followed services url: " + services_host);
+        logger.warn("server will use followed services url: " + services_host);
         this.services_host = services_host;
     }
 
