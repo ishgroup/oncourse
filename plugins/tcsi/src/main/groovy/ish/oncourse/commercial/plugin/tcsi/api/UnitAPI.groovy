@@ -12,7 +12,6 @@ import ish.common.types.DeliveryMode
 import ish.common.types.EnrolmentStatus
 import ish.common.types.OutcomeStatus
 import ish.common.types.RecognitionOfPriorLearningIndicator
-import ish.common.types.StudentStatusForUnitOfStudy
 import ish.math.Money
 import ish.oncourse.commercial.plugin.tcsi.TCSIIntegration
 import ish.oncourse.common.ExportJurisdiction
@@ -67,21 +66,23 @@ class UnitAPI extends TCSI_API {
 
     String createUnit(String admissionUid, String campuseUid) {
         String message = "creating enrolment unit"
+
+        String jsonBody = JsonOutput.toJson([getUnitData(admissionUid, campuseUid)])
         client.request(POST, JSON) {
             uri.path = UNITS_PATH
             //POST as array with single JSON object inside
-            body = JsonOutput.toJson([getUnitData(admissionUid, campuseUid)])
+            body = jsonBody
             response.success = { resp, result -> 
                 handleResponce(result, message)
             }
             response.failure =  { resp, body ->
-                interraptExport("Something unexpected happend white $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}".toString())
+                interraptExport("Something unexpected happend white $message, please contact ish support for more details\n ${resp.toString()}\n ${body.toString()}\n requestBody: $jsonBody".toString())
             }
         }
     }
     
     void updateUnit(String unitUid, String admissionUid, String campuseUid) {
-        String message = "creating enrolment unit"
+        String message = "update enrolment unit"
         client.request(PUT, JSON) {
             uri.path = UNITS_PATH +"/$unitUid"
             //PUT as single JSON object
@@ -218,10 +219,8 @@ class UnitAPI extends TCSI_API {
                     break
             }
         }
-        
-        
 
-        BigDecimal feeCharged =  getFeeChargedAmount()
+        BigDecimal feeCharged =  getFeeChargedAmount().toBigDecimal()
         BigDecimal helpLoanAmount 
         if (enrolment.feeHelpAmount) {
             helpLoanAmount = enrolment.feeHelpAmount.toBigDecimal()
