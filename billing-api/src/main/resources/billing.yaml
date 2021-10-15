@@ -10,7 +10,6 @@ info:
     name: Proprietary
   version: v1
 
-
 schemes:
   - https
 produces:
@@ -29,3 +28,5 @@ paths:
     $ref: './path/college/key/api.yaml'
   /college/site:
     $ref: './path/college/site/api.yaml'
+  /college/settings:
+    $ref: './path/college/settings/api.yaml'

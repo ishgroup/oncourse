@@ -1,0 +1,34 @@
+get:
+  operationId: getSettings
+  description: |
+    Get college settings
+  tags:
+    - Settings
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
+  responses:
+    '200':
+      description: list of college sites
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/dto/SettingsDTO.yaml'
+          
+post:
+  operationId: updateSettings
+  description: |
+    Update college settings 
+  tags:
+    - Settings
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
+  parameters:
+    - name: setting
+      in: body
+      description: new site object to create
+      required: true
+      schema:
+        $ref: './def/entity/dto/SettingsDTO.yaml'
+  responses:
+    '200':
+      description: success responce

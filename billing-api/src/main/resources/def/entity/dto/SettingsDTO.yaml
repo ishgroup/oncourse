@@ -1,0 +1,14 @@
+type: object
+properties:
+  usersCount:
+    type: number
+    description: licensed concurrent users count
+  billingPlan:
+    $ref: '../../enum/BillingPlan.yaml'
+    description: used plan info
+  requestedUsersCount:
+    type: number
+    description: request to change users count limit
+  requestedBillingPlan:
+    $ref: '../../enum/BillingPlan.yaml'
+    description: request for update billing plan
