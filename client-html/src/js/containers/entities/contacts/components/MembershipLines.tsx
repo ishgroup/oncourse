@@ -23,7 +23,7 @@ export const MembershipHeader: React.FunctionComponent<any> = ({ row }) => (
 export const MembershipContent: React.FunctionComponent<any> = ({ row, item, twoColumn }) => {
   const gridSpacing = twoColumn ? 4 : 6;
   return (
-    <Grid container columnSpacing={3}>
+    <Grid container columnSpacing={3} rowSpacing={3}>
       <Grid item xs={gridSpacing}>
         <Uneditable
           value={row.productName}

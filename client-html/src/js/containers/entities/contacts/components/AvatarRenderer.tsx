@@ -7,9 +7,8 @@ import React, { useCallback, useRef } from "react";
 import { change } from "redux-form";
 import FormHelperText from "@mui/material/FormHelperText";
 import Edit from "@mui/icons-material/Edit";
-import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
-import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import Avatar from "@mui/material/Avatar";
+import DeleteIcon from '@mui/icons-material/Delete';
 import Gravatar from "react-awesome-gravatar";
 import noAvatarImg from "../../../../../images/no_pic.png";
 import FilePreview from "../../../../common/components/form/FilePreview";
@@ -83,8 +82,7 @@ const AvatarRenderer: React.FC<any> = props => {
         {input.value && input.value.thumbnail ? (
           <FilePreview
             actions={[
-              { actionLabel: "unlink", onAction: unlink, icon: <DeleteOutlineRoundedIcon /> },
-              { actionLabel: "upload", onAction: upload, icon: <FileUploadRoundedIcon /> }
+              { actionLabel: "unlink", onAction: unlink, icon: <DeleteIcon fontSize="small" /> }
             ]}
             data={input.value.thumbnail}
             iconPlacementRow

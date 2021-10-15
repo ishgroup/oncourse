@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import { withStyles, createStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import AddCircle from "@mui/icons-material/AddCircle";
 import clsx from "clsx";
+import AddIcon from "../../../../../../common/components/icons/AddIcon";
 
 const styles = theme =>
   createStyles({
@@ -101,9 +101,7 @@ const CardBase = props => {
           </div>
           {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
           {Boolean(onAddItem) && (
-            <IconButton className="addButtonColor fs2 p-1" onClick={onAddItem}>
-              <AddCircle color="inherit" fontSize="inherit" />
-            </IconButton>
+            <AddIcon className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
           )}
         </div>
         <div>

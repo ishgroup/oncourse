@@ -4,7 +4,6 @@
  */
 
 import { InvoicePaymentPlan } from "@api/model";
-import IconButton from "@mui/material/IconButton/IconButton";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import StepContent from "@mui/material/StepContent";
@@ -12,7 +11,6 @@ import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import { withStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
-import AddCircle from "@mui/icons-material/AddCircle";
 import clsx from "clsx";
 import { format } from "date-fns";
 import React, { useCallback, useMemo } from "react";
@@ -24,6 +22,7 @@ import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "../../../en
 import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
 import { getDeepValue } from "../../../../common/utils/common";
+import AddIcon from "../../../../common/components/icons/AddIcon";
 
 interface PaymentPlansProps {
   classes?: any;
@@ -110,9 +109,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
           Payment plan
         </Typography>
 
-        <IconButton onClick={addPaymentDue}>
-          <AddCircle className="addButtonColor" />
-        </IconButton>
+        <AddIcon onClick={addPaymentDue} />
       </div>
 
       {error}

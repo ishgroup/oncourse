@@ -3,8 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { change, Form, initialize, InjectedFormProps } from "redux-form";
+import React, {
+ useCallback, useEffect, useMemo, useRef, useState
+} from "react";
+import {
+  change, Form, initialize, InjectedFormProps
+} from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid/Grid";
@@ -14,6 +18,7 @@ import Typography from "@mui/material/Typography";
 import Grow from "@mui/material/Grow";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
@@ -179,8 +184,7 @@ const PdfReportsForm = React.memo<Props>(
       openConfirm({
         onConfirm: () => dispatch(change(form, "preview", null)),
         confirmMessage: "Report preview will be deleted permanently"
-      }
-    );
+      });
     }, [form]);
 
     const onBackgroundIdChange = useCallback(
@@ -362,7 +366,7 @@ const PdfReportsForm = React.memo<Props>(
                 {!isNew && (
                   <FilePreview
                     label="Preview"
-                    actions={[{ actionLabel: "Clear preview", onAction: handleClearPreview }]}
+                    actions={[{ actionLabel: "Clear preview", onAction: handleClearPreview, icon: <DeleteOutlineRoundedIcon /> }]}
                     data={values.preview}
                   />
                 )}

@@ -42,6 +42,9 @@ const styles = theme => createStyles({
     },
     fullEditViewBackground: {
       background: theme.palette.background.default
+    },
+    headerAlternate: {
+      background: theme.palette.common.white,
     }
   });
 
@@ -50,6 +53,13 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
 ));
 
 class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps, any> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isScrolling: false,
+    };
+  }
   componentDidUpdate(prevProps) {
     const {
       pending, dispatch, rootEntity, isNested
@@ -112,6 +122,13 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     }
   };
 
+  onScroll = e => {
+    if (e.target) {
+      if (e.target.scrollTop > 30) this.setState({ isScrolling: true });
+      else this.setState({ isScrolling: false });
+    }
+  };
+
   render() {
     const {
       fullScreenEditView,
@@ -164,7 +181,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
           {!hideFullScreenAppBar && (
             <AppBar
               elevation={0}
-              className={clsx(classes.header, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
+              className={clsx(
+                classes.header,
+                LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader",
+                { [classes.headerAlternate]: this.state.isScrolling }
+              )}
             >
               <div className="flex-fill">
                 {customTitle ? customTitle(values) : (
@@ -217,6 +238,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 showConfirm={showConfirm}
                 openNestedEditView={openNestedEditView}
                 toogleFullScreenEditView={toogleFullScreenEditView}
+                onEditViewScroll={this.onScroll}
               />
             </Grid>
           </Grid>

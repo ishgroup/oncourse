@@ -90,7 +90,8 @@ const ContactEditView = props => {
     manualLink,
     invalid,
     currencySymbol,
-    syncErrors
+    syncErrors,
+    onEditViewScroll
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -161,7 +162,8 @@ const ContactEditView = props => {
           setIsCompany,
           usiLocked: getUsiLocked(),
           setUsiUpdateLocked,
-          syncErrors
+          syncErrors,
+          onEditViewScroll
         }}
       />
     </>

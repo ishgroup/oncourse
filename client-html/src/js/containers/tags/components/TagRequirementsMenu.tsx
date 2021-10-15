@@ -5,11 +5,10 @@ import {
 } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import { TagRequirement, TagRequirementType } from "@api/model";
-import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import clsx from "clsx";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 import { State } from "../../../reducers/state";
+import AddIcon from "../../../common/components/icons/AddIcon";
 
 const requirements = Object.keys(TagRequirementType).map(
   (i: TagRequirementType) =>
@@ -169,7 +168,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
               {label}
             </Typography>
 
-            <IconButton
+            <AddIcon
               aria-owns={anchorEl ? "field-types-menu" : null}
               aria-haspopup="true"
               onClick={this.handleAddFieldClick}
@@ -178,9 +177,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
                 disabled: "disabled",
                 root: system ? "invisible" : undefined
               }}
-            >
-              <AddCircle className="addButtonColor" width={20} />
-            </IconButton>
+            />
           </div>
 
           {error && (
