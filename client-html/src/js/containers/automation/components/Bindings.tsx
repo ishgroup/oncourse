@@ -7,13 +7,13 @@ import React, { useCallback, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import Delete from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import { Binding } from "@api/model";
 import {
  arrayPush, arrayRemove, Field, FieldArray
 } from "redux-form";
 import { Dispatch } from "redux";
 import clsx from "clsx";
+import { makeStyles } from "@mui/styles";
 import { CommonListItem } from "../../../model/common/sidebar";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
@@ -22,9 +22,8 @@ import DataTypesMenu from "./DataTypesMenu";
 import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { renderAutomationItems } from "../utils";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
 import { AppTheme } from "../../../model/common/Theme";
-import { makeStyles } from "@mui/styles";
+import AddIcon from "../../../common/components/icons/AddIcon";
 
 export type BindingsItemType = "component" | "label";
 
@@ -237,15 +236,13 @@ const Bindings = React.memo<BindingsProps>( props => {
       <div className="centeredFlex pb-1">
         <div className="heading">{label}</div>
         {!disabled && (
-          <IconButton className="p-0 ml-1" onClick={handleClick}>
-            <AddCircle className="addButtonColor" width={20} />
-          </IconButton>
+          <AddIcon className="p-0 ml-1" onClick={handleClick} />
         )}
       </div>
 
       {defaultVariables && defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" />)}
 
-      <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange/>
+      <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange />
     </div>
   );
 });

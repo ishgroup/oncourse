@@ -12,11 +12,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
-import { AddCircle, ExpandMore } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import createStyles from "@mui/styles/createStyles";
 import debounce from "lodash.debounce";
 import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
 import { latestActivityStorageHandler } from "../../../utils/storage";
+import AddIcon from "../../icons/AddIcon";
 import CollapseSideBarListItem from "./CollapseSideBarListItem";
 
 const styles = theme => createStyles({
@@ -202,9 +203,7 @@ const CollapseMenuListBase = React.memo<Props>(
 
           {(plusIconPath || plusIconFullPath || customPlusHandler) && (
             <div className={classes.plusIconContainer}>
-              <IconButton className="p-1" onClick={onClickPlus}>
-                <AddCircle className="addButtonColor" width={20} />
-              </IconButton>
+              <AddIcon className="p-1" onClick={onClickPlus} />
             </div>
           )}
         </ListItem>

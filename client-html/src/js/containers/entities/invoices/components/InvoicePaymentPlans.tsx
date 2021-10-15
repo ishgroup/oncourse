@@ -11,8 +11,6 @@ import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Typography from "@mui/material/Typography";
 import { InvoicePaymentPlan } from "@api/model";
-import IconButton from "@mui/material/IconButton/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import { FieldArray, WrappedFieldArrayProps } from "redux-form";
 import StepButton from "@mui/material/StepButton";
 import { format } from "date-fns";
@@ -23,6 +21,7 @@ import { paymentPlanStyles } from "../styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../utils";
 import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "./InvoicePaymentPlanComponents";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import AddIcon from "../../../../common/components/icons/AddIcon";
 
 interface PaymentPlansProps {
   classes?: any;
@@ -109,9 +108,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
           Payment plan / payments
         </Typography>
 
-        <IconButton onClick={addPaymentDue}>
-          <AddCircle className="addButtonColor" />
-        </IconButton>
+        <AddIcon onClick={addPaymentDue} />
       </div>
 
       {error}

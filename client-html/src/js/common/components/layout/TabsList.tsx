@@ -51,7 +51,7 @@ const styles = theme => createStyles({
     listItemText: {
       fontWeight: "inherit",
       width: "100%",
-      transition: "all 0.5s ease-in-out",
+      transition: "all 0.2s ease-in-out",
     },
     indicator: {
       display: "none"
@@ -60,7 +60,7 @@ const styles = theme => createStyles({
     arrowIcon: {
       position: "absolute",
       transform: "translateX(-30px)",
-      transition: "all 0.5s ease-in-out",
+      transition: "all 0.2s ease-in-out",
     },
   });
 
@@ -138,6 +138,10 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
       }
 
       const isScrollingDown = scrolledPX.current < e.target.scrollTop;
+
+      if (itemProps.onEditViewScroll) {
+        itemProps.onEditViewScroll(e);
+      }
 
       scrolledPX.current = e.target.scrollTop;
 

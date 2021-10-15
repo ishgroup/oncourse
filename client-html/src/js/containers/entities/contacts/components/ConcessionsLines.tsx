@@ -24,7 +24,7 @@ const ConcessionsHeaderBase: React.FunctionComponent<any> = (props: any) => {
 export const ConcessionsHeader = ConcessionsHeaderBase;
 
 export const ConcessionsContent = React.memo<any>(({ item, row, concessionTypes }) => (
-  <Grid container columnSpacing={3}>
+  <Grid container columnSpacing={3} rowSpacing={3}>
     <Grid item xs={12}>
       <FormField
         type="select"

@@ -247,7 +247,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   return values ? (
     <div className="p-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={3}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField

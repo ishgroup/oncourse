@@ -10,7 +10,6 @@ import withStyles from "@mui/styles/withStyles";
 import Launch from "@mui/icons-material/Launch";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import AddCircle from "@mui/icons-material/AddCircle";
 import IconButton from "@mui/material/IconButton";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -32,6 +31,7 @@ import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/Doc
 import { getEntityTags } from "../../../../containers/tags/actions";
 import { EntityName } from "../../../../model/entities/common";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import AddIcon from "../../icons/AddIcon";
 
 const styles = (theme: AppTheme) => createStyles({
   dropInfo: {
@@ -339,9 +339,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
             >
               <Launch />
             </IconButton>
-            <IconButton onClick={e => this.toggleAdd(e, true)} className={classes.addButton}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
+            <AddIcon onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
             <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
               Drag and drop file or click to browse.
             </Typography>

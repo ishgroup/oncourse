@@ -16,8 +16,6 @@ import {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ForbiddenTagNames, Tag } from "@api/model";
-import { AddCircle } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
 import Button from "../../../common/components/buttons/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
@@ -38,6 +36,7 @@ import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
 import { COLORS, getAllTags } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import AddIcon from "../../../common/components/icons/AddIcon";
 import FormSubmitButton from "../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 
@@ -532,9 +531,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
               <div className="centeredFlex">
                 <Typography className="heading">Tags</Typography>
-                <IconButton onClick={this.addTag}>
-                  <AddCircle className="addButtonColor" width={20} />
-                </IconButton>
+                <AddIcon onClick={this.addTag} />
               </div>
 
               <DragDropContext onDragEnd={this.onDragEnd}>

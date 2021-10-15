@@ -2,13 +2,12 @@ import * as React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
 import { Grid } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
-import IconButton from "@mui/material/IconButton";
-import AddCircle from "@mui/icons-material/AddCircle";
 import { TutorRolePayRate } from "@api/model";
 import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AddIcon from "../../../../../common/components/icons/AddIcon";
 
 const styles = () => createStyles({
   payRateItem: {
@@ -63,9 +62,7 @@ class PayRates extends React.Component<Props, any> {
         <Grid item xs={12}>
           <div className="centeredFlex">
             <div className="heading">Pay Rate</div>
-            <IconButton onClick={this.addPayRate}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
+            <AddIcon onClick={this.addPayRate} />
           </div>
         </Grid>
 
