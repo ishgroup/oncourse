@@ -126,6 +126,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
   toogleFullScreenEditView?: any;
+  onEditViewScroll?: any;
 }
 
 export type ListAqlMenuItemsRenderer = (content: React.ReactNode, rowData: any, searchValue: string) => void;
