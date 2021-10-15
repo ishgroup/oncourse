@@ -12,7 +12,7 @@ buildscript {
 		jettyVersion = '10.0.6'
 		mariadbVersion = '2.7.3'
 		groovyVersion = '3.0.9'
-		bootiqueVersion = '2.0.B1'
+		bootiqueVersion = '2.0.B2-SNAPSHOT'
 		cfxVersion = '3.3.5'
 		jacksonVersion = '2.9.9'
 		javaxActivationVersion = '1.2.0'
@@ -57,6 +57,12 @@ subprojects {
 		}
 		maven {
 			url "https://repository.apache.org/snapshots/"
+			mavenContent {
+				snapshotsOnly()
+			}
+		}
+		maven {
+			url "https://oss.sonatype.org/content/repositories/snapshots/"
 			mavenContent {
 				snapshotsOnly()
 			}
