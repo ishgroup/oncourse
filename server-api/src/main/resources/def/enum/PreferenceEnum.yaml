@@ -4,6 +4,7 @@ enum:
 - html.dashboard.category.width
 - dashboard.news.last_read
 - dashboard.scripts.favorite.id
+- news.readed
 - html.global.theme
 - google.analytics.cid
 - google.analytics.ci

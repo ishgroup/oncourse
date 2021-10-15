@@ -15,6 +15,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
+import NewsRender from "../news/NewsRender";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -180,6 +181,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   return (
     <Grid container className={clsx("overflow-hidden", { "root": customAppBar && itemProps.twoColumn })}>
       <Grid item xs={layoutArray[0].xs}>
+        <NewsRender />
         <Grid container>
           <Grid
             item
