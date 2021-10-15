@@ -11,6 +11,7 @@ import com.github.psxpaul.task.JavaExecFork
 
 import java.security.MessageDigest
 
+apply plugin: 'jvm-test-suite'
 apply plugin: 'groovy'
 apply plugin: 'apidoc'
 apply plugin: 'org.apache.cayenne'
@@ -166,39 +167,55 @@ task expandTestConfig(type: Copy) {
 	expand(dbUrl: dbUrl)
 }
 
-test {
-	description = "Run unit tests which don't require a database."
-	useJUnitPlatform {
-		excludeTags "integration"
-	}
-	testLogging {
-		exceptionFormat = 'full'
-	}
+testing {
+	suites {
+		test {
+			description = "Run unit tests which don't require a database."
+			useJUnitPlatform {
+				excludeTags "integration"
+			}
+			testLogging {
+				exceptionFormat = 'full'
+			}
+			dependencies {
+				implementation project
+			}
 
-	doFirst {
-		println 'user.country:' + System.getProperty('user.country')
-		println 'user.language:' + System.getProperty('user.language')
-		println 'Locale.getDefault():' + Locale.getDefault()
-	}
-	dependsOn "expandTestConfig"
+			doFirst {
+				println 'user.country:' + System.getProperty('user.country')
+				println 'user.language:' + System.getProperty('user.language')
+				println 'Locale.getDefault():' + Locale.getDefault()
+			}
+			dependsOn "expandTestConfig"
 
-	maxParallelForks = 8
-}
+			maxParallelForks = 8
+		}
 
-task integration(type: Test) {
-	group = 'verification'
-	description = "Run integration tests requiring a database."
-	useJUnitPlatform {
-		includeTags "integration"
-	}
-	testLogging {
-		exceptionFormat = 'full'
-	}
+		integration(JvmTestSuite) {
+			group = 'verification'
+			description = "Run integration tests requiring a database."
+			useJUnitPlatform {
+				includeTags "integration"
+			}
+			testLogging {
+				exceptionFormat = 'full'
+			}
+			dependencies {
+				implementation project
+			}
+			targets {
+				all {
+					testTask.configure {
+						maxHeapSize = '3000m'
+					}
+				}
+			}
+			dependsOn "expandTestConfig"
 
-	jvmArgs = ['-Xmx3000m','-Xms3000m']
-	dependsOn "expandTestConfig"
-	// the database tests interfere with each other if run in parallel
-	maxParallelForks = 1
+			// the database tests interfere with each other if run in parallel
+			maxParallelForks = 1
+		}
+	}
 }
 
 task startDaemon(dependsOn: [classes], type: JavaExecFork) {
