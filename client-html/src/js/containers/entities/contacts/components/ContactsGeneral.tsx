@@ -445,7 +445,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         </Grid>
       </Grid>
       <Grid container columnSpacing={3}>
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
             Type
           </Typography>
@@ -477,7 +477,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             </Button>
           </ButtonGroup>
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid item xs={12} md={twoColumn ? 5 : 12}>
           {isStudent && (
             <Grid container columnSpacing={3} className="mt-1 mb-3">
               <Grid item xs={12}>
