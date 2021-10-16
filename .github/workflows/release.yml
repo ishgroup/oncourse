@@ -8,8 +8,12 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    - run: |
+        version="${GITHUB_REF##*v}"
+        echo $version
+        echo "::set-env name=version::version"
     env:
-      VERSION: ${GITHUB_REF##*v}
+      VERSION: ${{ github.version }}
     steps:
       - uses: actions/checkout@v2
 
