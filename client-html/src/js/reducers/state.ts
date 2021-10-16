@@ -43,6 +43,7 @@ import { CheckoutState } from "../model/checkout";
 import { SwipeableDrawer } from "../model/common/drawer/SwipeableDrawerModel";
 import { EnrolmentsState } from "../containers/entities/enrolments/reducers/state";
 import { CommonPlainRecordSearchState } from "../model/common/Plain";
+import { TabsListState } from "../common/components/layout/actions/tabListActions";
 
 // global app state
 export interface State {
@@ -96,4 +97,5 @@ export interface State {
   enrolments: EnrolmentsState;
   plainSearchRecords: CommonPlainRecordSearchState;
   nextLocation: string;
+  tabsList: TabsListState;
 }
