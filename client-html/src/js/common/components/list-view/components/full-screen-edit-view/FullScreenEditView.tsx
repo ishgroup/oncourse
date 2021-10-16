@@ -35,6 +35,7 @@ const styles = theme => createStyles({
       alignItems: "center",
       padding: theme.spacing(0, 3),
       background: theme.palette.background.default,
+      color: theme.palette.common.black,
     },
     root: {
       marginTop: theme.spacing(8),
