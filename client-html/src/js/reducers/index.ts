@@ -54,6 +54,7 @@ import { checkoutReducer } from "../containers/checkout/reducers";
 import { swipeableDrawerReducer } from "../common/components/layout/swipeable-sidebar/reducers";
 import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
 import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
+import { tabsListReducer } from "../common/components/layout/actions/tabListActions";
 
 export const combinedReducers = combineReducers({
   access: accessReducer,
@@ -105,4 +106,5 @@ export const combinedReducers = combineReducers({
   userPreferences: userPreferencesReducer,
   usiSoftwareId: usiSoftwareIdReducer,
   voucherProducts: voucherProductReducer,
+  tabsList: tabsListReducer,
 });

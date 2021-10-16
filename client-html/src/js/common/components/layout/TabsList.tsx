@@ -6,6 +6,8 @@
 import React, {
  useCallback, useEffect, useRef, useState
 } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import Typography from "@mui/material/Typography";
 import { withStyles } from "@mui/styles";
 import Grid, { GridSize } from "@mui/material/Grid";
@@ -15,7 +17,10 @@ import createStyles from "@mui/styles/createStyles";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
+import { State } from "../../../reducers/state";
 import { LSGetItem } from "../../utils/storage";
+import { toggleTabListExpanded } from "./reducers/tabListReducer";
+import { TabsListState } from "./actions/tabListActions";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -76,6 +81,8 @@ interface Props {
   customLabels?: any;
   customAppBar?: boolean;
   items: TabsListItem[];
+  expandedEntity?: TabsListState;
+  toggleExpanded?: (rootEntity: string, expanded: number[]) => void;
 }
 
 interface ScrollNodes {
@@ -84,16 +91,26 @@ interface ScrollNodes {
 
 const SCROLL_TARGET_ID = "TabsListScrollTarget";
 
-const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
+const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (
+  twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]
+);
 
 const TabsList = React.memo<Props & RouteComponentProps>(({
-   classes, items, customLabels, customAppBar, itemProps = {}, history, location
-  }) => {
+  classes,
+  items,
+  customLabels,
+  customAppBar,
+  itemProps = {},
+  history,
+  location,
+  expandedEntity,
+  toggleExpanded,
+}) => {
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<ScrollNodes>({});
 
   const [selected, setSelected] = useState<string>(null);
-  const [expanded, setExpanded] = useState<number[]>([]);
+  const [expanded, setTabExpanded] = useState<number[]>([]);
 
   useEffect(() => {
     if (items.length) {
@@ -101,12 +118,34 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
     }
   }, [items.length]);
 
+  const setExpanded = useCallback(expandedItem => {
+    toggleExpanded(itemProps.rootEntity, expandedItem);
+  }, [itemProps]);
+
+  useEffect(() => {
+    let expandedItem = [];
+
+    if (expandedEntity[itemProps.rootEntity]) {
+      expandedItem = expandedEntity[itemProps.rootEntity].expanded;
+    }
+
+    setTabExpanded(expandedItem);
+  }, [expandedEntity]);
+
+  const scrollToSelected = useCallback((i: TabsListItem, index) => {
+    setSelected(i.label);
+    scrollNodes.current[i.label].scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
+    if (i.expandable && !expanded.includes(index)) {
+      setExpanded([...expanded, index]);
+    }
+  }, [expanded]);
+
   useEffect(() => {
     if (location.search) {
       const search = new URLSearchParams(location.search);
       const expandTab = Number(search.get("expandTab"));
 
-      if (search.has("expandTab") && !isNaN(expandTab)) {
+      if (search.has("expandTab") && !Number.isNaN(expandTab)) {
         setTimeout(() => {
           if (!expanded.includes(expandTab)) {
             setExpanded([...expanded, expandTab]);
@@ -172,17 +211,6 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
       }
     },
     [selected, itemProps.twoColumn]
-  );
-
-  const scrollToSelected = useCallback(
-    (i: TabsListItem, index) => {
-      setSelected(i.label);
-      scrollNodes.current[i.label].scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
-      if (i.expandable && !expanded.includes(index)) {
-        setExpanded([...expanded, index]);
-      }
-    },
-    [expanded]
   );
 
   const setScrollNode = useCallback(node => {
@@ -259,4 +287,14 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   );
 });
 
-export default withStyles(styles)(withRouter(TabsList));
+const mapStateToProps = (state: State) => ({
+  expandedEntity: state.tabsList,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  toggleExpanded: (rootEntity, expanded) => dispatch(toggleTabListExpanded(rootEntity, expanded)),
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(withRouter(TabsList))
+);
