@@ -79,16 +79,6 @@ const ExpandableContainer: React.FC<Props> = ({
     [isExpanded, expanded, index]
   );
 
-  useEffect(() => {
-    if (isExpanded) {
-      setTimeout(() => {
-        if (headerRef.current) {
-          headerRef.current.scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
-        }
-      }, 400);
-    }
-  }, [isExpanded]);
-
   return (
     <>
       <div ref={headerRef}>
