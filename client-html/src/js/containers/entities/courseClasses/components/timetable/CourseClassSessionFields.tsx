@@ -17,11 +17,10 @@ import { addMinutes, differenceInMinutes, subMinutes } from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FormControl, FormHelperText } from "@material-ui/core";
-import Tooltip from "@material-ui/core/Tooltip";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
-import { ClashType, Room, SessionWarning, Site } from "@api/model";
+import {
+  ClashType, Room, SessionWarning, Site
+} from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -51,7 +50,6 @@ interface Props {
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
   prevTutorsState?: any;
-  timezones?: string[];
 }
 const siteRoomLabel = site => (typeof site === "object" ? site.name : "");
 
@@ -61,8 +59,7 @@ const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
 
-const CourseClassSessionFields: React.FC<Props> = (
-  {
+const CourseClassSessionFields: React.FC<Props> = ({
   form,
   dispatch,
   session,
@@ -74,7 +71,6 @@ const CourseClassSessionFields: React.FC<Props> = (
   warnings,
   prevTutorsState,
   sites,
-  timezones,
 }) => {
   const isMounted = useRef(false);
 
@@ -109,7 +105,7 @@ const CourseClassSessionFields: React.FC<Props> = (
     session.publicNotes
   ]);
 
-  const warningTypes = useMemo<{[P in ClashType]: SessionWarning[]}>(() => {
+  const warningTypes = useMemo<{ [P in ClashType]: SessionWarning[] }>(() => {
     const types = {
       Tutor: [],
       Room: [],
@@ -128,16 +124,19 @@ const CourseClassSessionFields: React.FC<Props> = (
       if (checked) {
         dispatch(arrayPush(form, `sessions[${session.index}].tutors`, tutor.tutorName));
         const courseClassTutorIds = session.courseClassTutorIds ? session.courseClassTutorIds : [];
-        tutor.id
-          ? dispatch(
-              change(form, `sessions[${session.index}].courseClassTutorIds`, [...courseClassTutorIds, tutor.id])
-            )
-          : dispatch(
-              change(form, `sessions[${session.index}].temporaryTutorIds`, [
-                ...session.temporaryTutorIds,
-                tutor.temporaryId
-              ])
-            );
+
+        if (tutor.id) {
+          dispatch(
+            change(form, `sessions[${session.index}].courseClassTutorIds`, [...courseClassTutorIds, tutor.id])
+          );
+        } else {
+          dispatch(
+            change(form, `sessions[${session.index}].temporaryTutorIds`, [
+              ...session.temporaryTutorIds,
+              tutor.temporaryId
+            ])
+          );
+        }
         dispatch(
           arrayPush(form, `sessions[${session.index}].contactIds`, tutor.contactId)
         );
@@ -284,8 +283,6 @@ const CourseClassSessionFields: React.FC<Props> = (
     [tutors, session.courseClassTutorIds, session.temporaryTutorIds, warningTypes.Tutor]
   );
 
-  const isVirtualSite = sites.find(site => site.id === session.siteId && site.isVirtual);
-
   return (
     <Grid container>
       <Grid item container xs={6}>
@@ -394,25 +391,6 @@ const CourseClassSessionFields: React.FC<Props> = (
         {warningTypes.Room
           .map(w => <ErrorMessage message={w.message} /> )}
       </Grid>
-      {session.siteId && session.roomId && isVirtualSite && (
-        <Grid item xs={6}>
-          <FormField
-            type="searchSelect"
-            name={`sessions[${session.index}].siteTimezone`}
-            label="Default timezone"
-            defaultValue={session.siteTimezone}
-            items={timezones || []}
-            labelAdornment={(
-              <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
-                <IconButton classes={{ root: "inputAdornmentButton" }}>
-                  <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
-                </IconButton>
-              </Tooltip>
-            )}
-          />
-        </Grid>
-      )}
-
       <Grid container item xs={12}>
         <Grid item xs={6}>
           <FormField
