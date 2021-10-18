@@ -11,7 +11,6 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import Button from "@material-ui/core/Button";
 import red from "@material-ui/core/colors/red";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { AvetmissExportFlavour, FundingSource } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -35,7 +34,7 @@ const styles = () =>
 
 const FundingContractItem = props => {
   const {
-    fields, onDelete, classes, hasLicence
+    fields, onDelete, classes
   } = props;
 
   return (
@@ -53,7 +52,6 @@ const FundingContractItem = props => {
                     name={`${item}.name`}
                     label="Name"
                     className={classes.inputWidth}
-                    disabled={!hasLicence}
                     fullWidth
                     required
                   />
@@ -62,7 +60,6 @@ const FundingContractItem = props => {
                   <Button
                     className={clsx("errorColor", classes.deleteButton)}
                     onClick={() => onDelete(field, index)}
-                    disabled={!hasLicence}
                   >
                     Delete
                   </Button>
@@ -75,7 +72,6 @@ const FundingContractItem = props => {
                   label="Flavour"
                   items={Flavours}
                   className="pr-3"
-                  disabled={!hasLicence}
                   fullWidth
                   required
                 />
@@ -88,9 +84,6 @@ const FundingContractItem = props => {
                 />
               </Grid>
             </Grid>
-            {!hasLicence && (
-              <Typography color="error">Your license does not allow you to edit funding contracts</Typography>
-            )}
           </Paper>
         );
       })}
