@@ -5,27 +5,25 @@
 
 import { MenuItem } from '@mui/material';
 import React from 'react';
+import { SelectRenderArgs } from '../models/Common';
+
+export const renderSelectItems = (
+  {
+    items = [],
+    valueKey,
+    labelKey,
+    labelCondition
+  }: SelectRenderArgs
+) => (items || []).map((i) => (
+  <MenuItem key={i[valueKey] || i} value={i[valueKey] || i}>
+    {labelCondition ? labelCondition(i) : (i[labelKey] || i)}
+  </MenuItem>
+));
 
 export const renderSelectItemsWithEmpty = (
-  items: any[],
-  valueKey?: string,
-  labelKey?: string
+  args: SelectRenderArgs
 ) => [
   <MenuItem key="empty" value="" className="text-placeholder">
     No value
   </MenuItem>
-].concat((items || []).map((i) => (
-  <MenuItem key={i[valueKey] || i} value={i[valueKey] || i}>
-    {i[labelKey] || i}
-  </MenuItem>
-)));
-
-export const renderSelectItems = (
-  items: any[],
-  valueKey?: string,
-  labelKey?: string
-) => (items || []).map((i) => (
-  <MenuItem key={i[valueKey] || i} value={i[valueKey] || i}>
-    {i[labelKey] || i}
-  </MenuItem>
-));
+].concat(renderSelectItems(args));

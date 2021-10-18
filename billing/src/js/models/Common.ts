@@ -8,6 +8,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+// Functions
 export type StringArgFunction = (arg: string) => void;
 
 export type BooleanArgFunction = (arg: boolean) => void;
@@ -23,3 +24,12 @@ export type AnyArgFunction<R = void> = (...args: any[]) => R;
 export type NoArgFunction = () => void;
 
 export type PromiseReturnFunction = (...args: any[]) => Promise<any>;
+
+// Helper types
+
+export interface SelectRenderArgs {
+  items: any[];
+  valueKey?: string;
+  labelKey?: string;
+  labelCondition?: (value: any) => string;
+}

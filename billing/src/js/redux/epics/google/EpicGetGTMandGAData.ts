@@ -3,20 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-/*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
- */
-
 import { Epic } from 'redux-observable';
-import * as EpicUtils from './EpicUtils';
-import { GET_GTM_AND_GA_DATA, getGtmAndGaDataFulfilled } from '../actions/Google';
-import GoogleService from '../../api/services/GoogleService';
+import { Request, Create } from '../EpicUtils';
+import { GET_GTM_AND_GA_DATA, getGtmAndGaDataFulfilled } from '../../actions/Google';
+import GoogleService from '../../../api/services/GoogleService';
+import { getTokenString } from '../../../utils/Google';
 
-const request: EpicUtils.Request = {
+const request: Request = {
   type: GET_GTM_AND_GA_DATA,
   getData: async (p, state) => {
-    const token = `Bearer ${state.google.token?.access_token}`;
+    const token = getTokenString(state);
     const gtmAccounts = await GoogleService.getGTMAccounts(token);
     const gtmContainers = {};
 
@@ -40,4 +36,4 @@ const request: EpicUtils.Request = {
   ]
 };
 
-export const EpicGetGTMandGAData: Epic<any, any> = EpicUtils.Create(request);
+export const EpicGetGTMandGAData: Epic<any, any> = Create(request);

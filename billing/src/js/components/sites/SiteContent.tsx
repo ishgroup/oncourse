@@ -3,21 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
-  Accordion,
   Autocomplete,
-  AccordionDetails,
-  AccordionSummary,
   Chip,
   Grid,
-  IconButton,
   TextField,
   Typography,
-  Switch,
-  Button, Collapse
+  Button,
+  Link,
+  AlertTitle,
+  Alert
 } from '@mui/material';
-import { Delete, ExpandMore } from '@mui/icons-material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { Cx } from 'tss-react/src/types';
 import { SiteDTO } from '@api/model';
 import { FormikErrors } from 'formik/dist/types';
@@ -25,337 +23,357 @@ import { renderSelectItemsWithEmpty } from '../../utils';
 import AutosizeInput from '../common/AutosizeInput';
 import { TemplateField } from '../common/TemplateChoser';
 import { SiteValues } from '../../models/Sites';
-import { useAppSelector } from '../../redux/hooks/redux';
 
 interface Props {
   cx: Cx,
   classes: any;
   isNew: boolean;
-  expanded: boolean | number;
-  handleExpand: any;
   collegeKey: string;
-  site: SiteDTO;
+  site: SiteValues;
   onClickDelete?: any;
-  index?: number;
-  initial: any;
-  error?: SiteDTO;
-  initialMatchPattern: boolean;
+  initial: SiteDTO;
+  error: SiteValues;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<FormikErrors<SiteValues>> | Promise<void>;
   setFieldError: any;
-  values: SiteValues;
   handleChange: any;
+  gaAccountItems: any;
+  gtmAccountItems: any;
+  gtmContainerItems: any;
+  loggedWithGoogle: boolean;
+  googleProfileEmail: string;
 }
 
-export const SiteContent = (
+const SiteContent = (
   {
     cx,
     classes,
     isNew,
-    expanded,
-    handleExpand,
     collegeKey,
     site,
-    onClickDelete,
-    index,
     initial,
     error,
     setFieldValue,
     setFieldError,
-    values,
     handleChange,
-    initialMatchPattern
+    gaAccountItems,
+    gtmAccountItems,
+    gtmContainerItems,
+    loggedWithGoogle,
+    googleProfileEmail
   }: Props
 ) => {
-  const [GTMEnabled, setGTMEnabled] = useState(Boolean(site.gtmContainerId));
-  const [GAEnabled, setGAEnabled] = useState(Boolean(site.googleAnalyticsId));
+  const hasNoGAAccounts = gaAccountItems.length === 1;
+  const hasNoGTMAccounts = gtmAccountItems.length === 1;
+  // const concurentAccounts = !isNew && site?.configuredByInfo?.email !== googleProfileEmail;
+  const concurentAccounts = false;
 
-  const {
-    profile,
-    gtmAccounts,
-    gaAccounts,
-    gtmContainers
-  } = useAppSelector((state) => state.google);
-
-  const loggedWithGoogle = Boolean(profile);
-
-  const onChangeGTMSwitch = (e, val) => {
-    setGTMEnabled(val);
-  };
-
-  const onChangeGASwitch = (e, val) => {
-    setGAEnabled(val);
-  };
+  const initialMatchPattern = initial && initial.key.includes(`${collegeKey}-`);
 
   const onKeyChange: any = (e) => {
     const { value } = e.target;
-    const name = `sites[${index}].key`;
     const newValue = initialMatchPattern ? `${collegeKey}-${value}` : value;
     let shouldValidte = true;
     if (initial && initial.key !== newValue && !newValue.match(`${collegeKey}-`)) {
       shouldValidte = false;
-      setFieldError(name, `Location should start with ${collegeKey}-`);
+      setFieldError('key', `Location should start with ${collegeKey}-`);
     }
     if (initial && initial.key !== newValue && newValue.match(`${collegeKey}-`) && !newValue.match(new RegExp(`${collegeKey}-[^\\s]`))) {
       shouldValidte = false;
-      setFieldError(name, 'Location has invalid format');
+      setFieldError('key', 'Location has invalid format');
     }
-    setFieldValue(name, newValue, shouldValidte);
+    setFieldValue('key', newValue, shouldValidte);
   };
 
   const onAddDomain = async (params) => {
-    await setFieldValue(`sites[${index}].domains`, [...site.domains, params.inputProps.value]);
-    if (!site.domains.length && !site.primaryDomain) setFieldValue(`sites[${index}].primaryDomain`, params.inputProps.value);
+    await setFieldValue('domains', [...site.domains, params.inputProps.value]);
+    if (!site.domains.length && !site.primaryDomain) setFieldValue('primaryDomain', params.inputProps.value);
   };
 
   useEffect(() => {
     if (site.primaryDomain && !site.domains.includes(site.primaryDomain)) {
-      setFieldValue(`sites[${index}].primaryDomain`, null);
+      setFieldValue('primaryDomain', null);
     }
   }, [site.domains]);
 
   useEffect(() => {
     if (!site.gtmAccountId && site.gtmContainerId) {
-      setFieldValue(`sites[${index}].gtmContainerId`, null);
+      setFieldValue('gtmContainerId', null);
     }
   }, [site.gtmAccountId]);
 
-  const domainItems = useMemo(() => renderSelectItemsWithEmpty(site.domains), [site.domains]);
+  useEffect(() => {
+    if (!site.googleAnalyticsId && site.gtmAccountId) {
+      setFieldValue('gtmAccountId', null);
+    }
+  }, [site.googleAnalyticsId]);
 
-  const gtmAccountItems = useMemo(() => renderSelectItemsWithEmpty(
-    gtmAccounts,
-    'accountId',
-    'name'
-  ), [gtmAccounts]);
-
-  const gtmContainerItems = useMemo(() => renderSelectItemsWithEmpty(
-    (gtmContainers || {})[site.gtmAccountId],
-    'containerId',
-    'name'
-  ), [gtmContainers, site.gtmAccountId]);
+  const domainItems = useMemo(() => renderSelectItemsWithEmpty({ items: site.domains }), [site.domains]);
 
   return (
-      <Grid container>
-        <Grid item xs={12}>
-          <h4 className={classes.coloredHeaderText}>Domain setup</h4>
-        </Grid>
-        <Grid item xs={6} className={classes.pr}>
-          <TextField
-            name={`sites[${index}].name`}
-            value={values?.sites[index]?.name}
-            onChange={handleChange}
-            error={Boolean(error.name)}
-            helperText={error.name}
-            variant="standard"
-            label="Website page title prefix"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="caption" color={error.key ? 'error' : 'textSecondary'} className={classes.floatLabel}>
-            Site
-            location
-          </Typography>
-          <div className={classes.textFieldWrapper2}>
-            {isNew ? (
-              <>
-                <Typography>
-                  https://
-                  {isNew || initialMatchPattern ? `${collegeKey}-` : ''}
-                </Typography>
-                <Typography variant="body1" component="span">
-                  <AutosizeInput
-                    value={initialMatchPattern ? site.key.replace(`${collegeKey}-`, '') : site.key}
-                    error={Boolean(error.key)}
-                    onChange={onKeyChange}
-                  />
-                </Typography>
-                <Typography>.oncourse.cc</Typography>
-              </>
-            ) : (
-              <Typography variant="body1">
-                https://
-                {isNew ? `${collegeKey}-` : ''}
-                {site.key}
-                .oncourse.cc
-              </Typography>
-            )}
-
-          </div>
-          {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
-        </Grid>
-        <Grid item xs={6} className={classes.pr}>
-          <Autocomplete
-            size="small"
-            options={[]}
-            value={site.domains}
-            classes={{
-              root: classes.domainsRoot,
-              inputRoot: classes.domainsInput,
-              hasClearIcon: classes.hasClearIcon
-            }}
-            renderInput={(params: any) => (
-              <TextField
-                {...params}
-                error={Boolean(error.domains)}
-                InputProps={{
-                  ...params.InputProps,
-                  margin: 'none',
-                  endAdornment: params.inputProps.value
-                    ? (
-                      <Chip
-                        size="small"
-                        label="Add"
-                        clickable
-                        onClick={() => onAddDomain(params)}
-                      />
-                    )
-                    : null
-                }}
-                helperText={Array.isArray(error.domains) ? error.domains.find((d) => d) : error.domains}
-                variant="standard"
-                label="Site domains"
-                margin="normal"
-                multiline
-              />
-            )}
-            onChange={(e, v) => setFieldValue(`sites[${index}].domains`, v)}
-            filterSelectedOptions
-            multiple
-            freeSolo
-          />
-        </Grid>
-        <Grid item xs={6} marginTop="auto">
-          <TextField
-            select
-            fullWidth
-            margin="normal"
-            label="Primary hostname"
-            value={site.primaryDomain || ''}
-            onChange={handleChange}
-            name={`sites[${index}].primaryDomain`}
-            variant="standard"
-          >
-            {domainItems}
-          </TextField>
-        </Grid>
-        {isNew && (
-          <Grid item xs={6} className={classes.pr}>
-            <TemplateField
-              label="Site template"
-              name={`sites[${index}].webSiteTemplate`}
-              onChange={(val) => setFieldValue(`sites[${index}].webSiteTemplate`, val)}
-              value={site.webSiteTemplate}
-              helperText={error.webSiteTemplate}
-              error={Boolean(error.webSiteTemplate)}
-              variant="standard"
-              margin="normal"
-              fullWidth
-            />
-          </Grid>
-        )}
-
-        <Grid item xs={12}>
-          <div className="centeredFlex mt-2">
-            <h4 className={cx(classes.coloredHeaderText, 'm-0')}>Google Tag Manager</h4>
-            <Switch
-              checked={GTMEnabled}
-              onChange={onChangeGTMSwitch}
-              disabled={!loggedWithGoogle}
-              color="primary"
-            />
-          </div>
-
-          <Collapse in={GTMEnabled}>
-            <Typography variant="caption" color="textSecondary">
-              You can select account and container associated with
-              {' '}
-              {profile?.email}
-              {' '}
-              from inputs below or let us create all required configurations
-            </Typography>
-            <div className="d-flex justify-content-end">
-              <Button disableElevation size="small" variant="contained">Configure</Button>
-            </div>
-            <Grid container>
-              <Grid item xs={6} className={classes.pr}>
-                <TextField
-                  select
-                  fullWidth
-                  margin="normal"
-                  label="Used account"
-                  value={site.gtmAccountId || ''}
-                  variant="standard"
-                  onChange={handleChange}
-                  name={`sites[${index}].gtmAccountId`}
-                >
-                  {gtmAccountItems}
-                </TextField>
-              </Grid>
-
-              <Grid item xs={6}>
-                <TextField
-                  select
-                  fullWidth
-                  margin="normal"
-                  label="Used container"
-                  value={site.gtmContainerId || ''}
-                  variant="standard"
-                  disabled={!site.gtmAccountId}
-                  onChange={handleChange}
-                  name={`sites[${index}].gtmContainerId`}
-                >
-                  {gtmContainerItems}
-                </TextField>
-              </Grid>
-            </Grid>
-
-            {/* <Alert severity="error"> */}
-            {/*  <AlertTitle>No access</AlertTitle> */}
-            {/*  Your account has no access to Google Tag Manager configuration. Current configuration is created by sam@gmail.com user. */}
-            {/*  You can contact him for access or completelly remove existing settings and create your own. This action can not be undone */}
-            {/*  <div className="d-flex justify-content-end"> */}
-            {/*    <Button disableElevation size="small" variant="contained">Overrite settings</Button> */}
-            {/*  </div> */}
-            {/* </Alert> */}
-
-          </Collapse>
-        </Grid>
-
-        <Grid item xs={12}>
-          <div className="centeredFlex mt-2 mb-2">
-            <h4 className={cx(classes.coloredHeaderText, 'm-0')}>Google Analytics</h4>
-            <Switch
-              checked={GAEnabled}
-              onChange={onChangeGASwitch}
-              disabled={!loggedWithGoogle}
-              color="primary"
-            />
-          </div>
-        </Grid>
-
-        {/* <Grid item xs={6} className={classes.pr}> */}
-        {/*  <TextField */}
-        {/*    select */}
-        {/*    fullWidth */}
-        {/*    margin="normal" */}
-        {/*    label="Used account" */}
-        {/*    value="Account 1" */}
-        {/*    variant="standard" */}
-        {/*  > */}
-        {/*    <MenuItem value="Account 1"> */}
-        {/*      Account 1 */}
-        {/*    </MenuItem> */}
-        {/*  </TextField> */}
-        {/* </Grid> */}
-
-        {/* <Grid item xs={12}> */}
-        {/*  <img */}
-        {/*    src={analytics} */}
-        {/*    loading="lazy" */}
-        {/*  /> */}
-
-        {/* </Grid> */}
-
+    <Grid container>
+      <Grid item xs={12}>
+        <h4 className={classes.coloredHeaderText}>Domain setup</h4>
       </Grid>
+      <Grid item xs={6} className={classes.pr}>
+        <TextField
+          name="name"
+          value={site?.name}
+          onChange={handleChange}
+          error={Boolean(error.name)}
+          helperText={error.name}
+          variant="standard"
+          label="Website page title prefix"
+          fullWidth
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <Typography variant="caption" color={error.key ? 'error' : 'textSecondary'} className={classes.floatLabel}>
+          Site
+          location
+        </Typography>
+        <div className={classes.textFieldWrapper2}>
+          {isNew ? (
+            <>
+              <Typography>
+                https://
+                {isNew || initialMatchPattern ? `${collegeKey}-` : ''}
+              </Typography>
+              <Typography variant="body1" component="span">
+                <AutosizeInput
+                  value={initialMatchPattern ? site.key.replace(`${collegeKey}-`, '') : site.key}
+                  error={Boolean(error.key)}
+                  onChange={onKeyChange}
+                />
+              </Typography>
+              <Typography>.oncourse.cc</Typography>
+            </>
+          ) : (
+            <Typography variant="body1">
+              https://
+              {isNew ? `${collegeKey}-` : ''}
+              {site.key}
+              .oncourse.cc
+            </Typography>
+          )}
+
+        </div>
+        {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
+      </Grid>
+      <Grid item xs={6} className={classes.pr}>
+        <Autocomplete
+          size="small"
+          options={[]}
+          value={site.domains}
+          classes={{
+            root: classes.domainsRoot,
+            inputRoot: classes.domainsInput,
+            hasClearIcon: classes.hasClearIcon
+          }}
+          renderInput={(params: any) => (
+            <TextField
+              {...params}
+              error={Boolean(error.domains)}
+              InputProps={{
+                ...params.InputProps,
+                margin: 'none',
+                endAdornment: params.inputProps.value
+                  ? (
+                    <Chip
+                      size="small"
+                      label="Add"
+                      clickable
+                      onClick={() => onAddDomain(params)}
+                    />
+                  )
+                  : null
+              }}
+              helperText={Array.isArray(error.domains) ? error.domains.find((d) => d) : error.domains}
+              variant="standard"
+              label="Site domains"
+              margin="normal"
+              multiline
+            />
+          )}
+          onChange={(e, v) => setFieldValue('domains', v)}
+          filterSelectedOptions
+          multiple
+          freeSolo
+        />
+      </Grid>
+      <Grid item xs={6} marginTop="auto">
+        <TextField
+          select
+          fullWidth
+          margin="normal"
+          label="Primary hostname"
+          value={site.primaryDomain || ''}
+          onChange={handleChange}
+          name="primaryDomain"
+          variant="standard"
+        >
+          {domainItems}
+        </TextField>
+      </Grid>
+      {isNew && (
+      <Grid item xs={6} className={classes.pr}>
+        <TemplateField
+          label="Site template"
+          name="webSiteTemplate"
+          onChange={(val) => setFieldValue('webSiteTemplate', val)}
+          value={site.webSiteTemplate}
+          helperText={error.webSiteTemplate}
+          error={Boolean(error.webSiteTemplate)}
+          variant="standard"
+          margin="normal"
+          fullWidth
+        />
+      </Grid>
+      )}
+
+      <Grid item xs={12}>
+        <div className="centeredFlex mt-2 mb-1">
+          <h4 className={cx(classes.coloredHeaderText, 'm-0')}>Google services setup</h4>
+        </div>
+      </Grid>
+
+      {
+       !concurentAccounts && !loggedWithGoogle && (
+       <>
+         <Alert severity="warning">
+           <AlertTitle>Not logged into Google</AlertTitle>
+           Please login with LOGIN button above to see google services settings and analytics
+         </Alert>
+       </>
+       )
+      }
+
+      {
+        !concurentAccounts && loggedWithGoogle && hasNoGAAccounts && (
+        <Alert severity="error">
+          <AlertTitle>Analytics account not found</AlertTitle>
+          We have't found any Google analytics accounts associated with
+          {' '}
+          {googleProfileEmail}
+          . Please create account
+          {' '}
+          <Link href="#">here</Link>
+          {' '}
+          to use tagmanager and analytics features on your site
+          <div className="d-flex justify-content-end">
+            <Button
+              disableElevation
+              size="small"
+              variant="contained"
+              startIcon={<RefreshIcon />}
+            >
+              Try again
+            </Button>
+          </div>
+        </Alert>
+        )
+      }
+
+      {
+        !concurentAccounts && loggedWithGoogle && !hasNoGAAccounts && hasNoGTMAccounts && (
+          <Alert severity="error">
+            <AlertTitle>Tag manager account not found</AlertTitle>
+            We have't found any Google Tag manager accounts associated with
+            {' '}
+            {googleProfileEmail}
+            . Please create account
+            {' '}
+            <Link href="#">here</Link>
+            {' '}
+            to use tagmanager and analytics features on your site
+            <div className="d-flex justify-content-end">
+              <Button
+                disableElevation
+                size="small"
+                variant="contained"
+                startIcon={<RefreshIcon />}
+              >
+                Try again
+              </Button>
+            </div>
+          </Alert>
+        )
+      }
+
+      {
+        loggedWithGoogle && concurentAccounts && (
+          <Alert severity="error">
+            <AlertTitle>No access</AlertTitle>
+            You have no access to the Google Tag Manager configuration for this website. Please ask
+            {' '}
+            {site?.configuredByInfo?.firstname}
+            {' '}
+            {site?.configuredByInfo?.lastname}
+            user with
+            {' '}
+            {site?.configuredByInfo?.email}
+            {' '}
+            to add you to the Google Tag Manager authorised users.
+            You can also set up this integration again from scratch.
+          </Alert>
+        )
+      }
+
+      {loggedWithGoogle && !hasNoGAAccounts && !hasNoGTMAccounts
+         && (
+           <>
+             <Grid item xs={6} className={classes.pr}>
+               <TextField
+                 select
+                 fullWidth
+                 margin="normal"
+                 label="Analytics account"
+                 variant="standard"
+                 value={site.googleAnalyticsId || ''}
+                 onChange={handleChange}
+                 name="googleAnalyticsId"
+               >
+                 {gaAccountItems}
+               </TextField>
+             </Grid>
+
+             <Grid item xs={6}>
+               <TextField
+                 select
+                 fullWidth
+                 margin="normal"
+                 label="Tag manager account"
+                 variant="standard"
+                 name="gtmAccountId"
+                 onChange={handleChange}
+                 value={site.gtmAccountId || ''}
+                 disabled={!site.googleAnalyticsId}
+                 error={Boolean(error.gtmAccountId)}
+                 helperText={error.gtmAccountId || (site.googleAnalyticsId ? '' : 'Select Analytics account first')}
+               >
+                 {gtmAccountItems}
+               </TextField>
+             </Grid>
+
+             <Grid item xs={6} className={classes.pr}>
+               <TextField
+                 select
+                 fullWidth
+                 margin="normal"
+                 label="Tag manager container"
+                 value={site.gtmContainerId || ''}
+                 variant="standard"
+                 disabled={!site.gtmAccountId}
+                 onChange={handleChange}
+                 name="gtmContainerId"
+                 helperText={site.gtmAccountId ? 'Leave empty to let us create container configuration' : 'Select Tag manager account first'}
+               >
+                 {gtmContainerItems}
+               </TextField>
+             </Grid>
+           </>
+         )}
+    </Grid>
   );
 };
+
+export default SiteContent;

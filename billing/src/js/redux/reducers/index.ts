@@ -11,6 +11,7 @@ import { sitesReducer } from './Sites';
 import { googleReducer } from './Google';
 import { formReducer } from './Form';
 import { messageReducer } from './Message';
+import { confirmReducer } from './Confirm';
 
 export const billingReducers = combineReducers<State>(
   {
@@ -19,6 +20,7 @@ export const billingReducers = combineReducers<State>(
     sites: sitesReducer,
     google: googleReducer,
     message: messageReducer,
-    form: formReducer
+    form: formReducer,
+    confirm: confirmReducer
   }
 );

@@ -5,8 +5,14 @@
 
 import { GoogleLoginResponse } from 'react-google-login';
 
+// Google Tag Manager
 export type GTMAccount = gapi.client.tagmanager.Account;
 export type GTMContainer = gapi.client.tagmanager.Container;
+export type GTMVariable = gapi.client.tagmanager.Variable;
+export type GTMTrigger = gapi.client.tagmanager.Trigger;
+export type GTMTag = gapi.client.tagmanager.Tag;
+
+// Google Analytics
 export type GAAccount = gapi.client.analytics.Account;
 
 export interface GoogleState {

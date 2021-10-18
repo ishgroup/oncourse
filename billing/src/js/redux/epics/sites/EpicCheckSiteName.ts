@@ -1,11 +1,16 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import { Epic } from 'redux-observable';
-import * as EpicUtils from './EpicUtils';
+import { Request, Create } from '../EpicUtils';
 import {
   SET_LOADING_VALUE, SET_SERVER_ERROR_VALUE,
   SHOW_MESSAGE
-} from '../actions';
-import BillingService from '../../api/services/BillingService';
-import { CHECK_SITENAME, SET_SEND_TOKEN_AGAIN_VALUE, SET_SITENAME_VALID_VALUE } from '../actions/College';
+} from '../../actions';
+import BillingService from '../../../api/services/BillingService';
+import { CHECK_SITENAME, SET_SEND_TOKEN_AGAIN_VALUE, SET_SITENAME_VALID_VALUE } from '../../actions/College';
 
 const errorHandler = (
   response: any,
@@ -54,7 +59,7 @@ const errorHandler = (
   }]);
 };
 
-const request: EpicUtils.Request = {
+const request: Request = {
   type: CHECK_SITENAME,
   getData: ({ name, token }) => BillingService.verifyCollegeName(name, token),
   processData: (response: boolean) => {
@@ -82,4 +87,4 @@ const request: EpicUtils.Request = {
   ]
 };
 
-export const EpicCheckSiteName: Epic<any, any> = EpicUtils.Create(request);
+export const EpicCheckSiteName: Epic<any, any> = Create(request);

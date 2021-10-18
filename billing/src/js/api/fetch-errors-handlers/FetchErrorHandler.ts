@@ -29,7 +29,7 @@ const FetchErrorHandler = (response: any, customMessage?: string): IAction<any>[
           type: FETCH_FAIL,
           payload: {
             formError: data,
-            message: data.errorMessage || customMessage
+            message: data?.errorMessage || data?.error?.message || customMessage
           }
         }
       ];
@@ -39,7 +39,7 @@ const FetchErrorHandler = (response: any, customMessage?: string): IAction<any>[
         {
           type: FETCH_FAIL,
           payload: {
-            message: data.errorMessage || customMessage
+            message: data?.errorMessage || data?.error?.message || customMessage
           }
         }
       ];

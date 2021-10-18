@@ -10,6 +10,7 @@
 
 import { IAction } from '../../models/IshAction';
 import {
+  FETCH_FAIL,
   SET_LOADING_VALUE,
 } from '../actions';
 import { GET_SITES, GET_SITES_FULFILLED, UPDATE_COLLEGE_SITES } from '../actions/Sites';
@@ -19,6 +20,7 @@ export const loadingReducer = (state = false, action: IAction): boolean => {
   switch (action.type) {
     case GET_SITES_FULFILLED:
     case SET_COLLEGE_KEY:
+    case FETCH_FAIL:
       return false;
     case GET_COLLEGE_KEY:
     case GET_SITES:

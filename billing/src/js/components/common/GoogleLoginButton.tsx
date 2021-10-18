@@ -113,7 +113,7 @@ const GoogleLoginButton = () => {
       </div>
       <Typography variant="caption" color="textSecondary">
         {
-          profile ? `Logged as ${profile.email}` : 'Login to connect your sites with google services'
+          profile ? `Logged into Google as ${profile.email}` : 'Login to connect your sites with google services'
         }
       </Typography>
     </div>

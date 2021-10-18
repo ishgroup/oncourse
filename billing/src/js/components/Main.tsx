@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+} from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
 import createCache from 'tss-react/@emotion/cache';
@@ -12,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks/redux';
 import { getSites } from '../redux/actions/Sites';
 import { getCollegeKey } from '../redux/actions/College';
 import Settings from './settings/Settings';
+import ConfirmProvider from './common/dialog/ConfirmProvider';
 
 export const muiCache = createCache({
   key: 'mui',
@@ -60,8 +64,11 @@ const Main = () => {
       >
 
         <ThemeProvider theme={theme}>
-          {isNewUser ? <Stepper /> : <Settings />}
+          <Router>
+            {isNewUser ? <Stepper /> : <Settings />}
+          </Router>
           <MessageProvider />
+          <ConfirmProvider />
         </ThemeProvider>
       </ThemeContext.Provider>
     </CacheProvider>

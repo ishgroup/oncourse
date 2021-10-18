@@ -10,7 +10,13 @@
 
 import { SiteDTO } from '@api/model';
 
-export interface SiteValues {
-  sites: SiteDTO[];
+export interface SiteValues extends SiteDTO {
   collegeKey: string;
+  gtmAccountId: string;
+}
+
+export interface SitesUpdateRequest {
+  changed?: SiteDTO[];
+  created?: SiteDTO[];
+  removed?: number[];
 }

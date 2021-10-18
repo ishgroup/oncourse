@@ -4,12 +4,13 @@
  */
 
 import { combineEpics } from 'redux-observable';
-import { EpicCheckSiteName } from './EpicCheckSiteName';
-import { EpicCreateCollege } from './EpicCreateCollege';
-import { EpicGetSites } from './EpicGetSites';
-import { EpicGetCollegeKey } from './EpicGetCollegeKey';
-import { EpicUpdateCollegeSites } from './EpicUpdateCollegeSites';
-import { EpicGetGTMandGAData } from './EpicGetGTMandGAData';
+import { EpicCheckSiteName } from './sites/EpicCheckSiteName';
+import { EpicCreateCollege } from './college/EpicCreateCollege';
+import { EpicGetSites } from './sites/EpicGetSites';
+import { EpicGetCollegeKey } from './college/EpicGetCollegeKey';
+import { EpicUpdateCollegeSites } from './sites/EpicUpdateCollegeSites';
+import { EpicGetGTMandGAData } from './google/EpicGetGTMandGAData';
+import { EpicConfigGoogleServicesForSite } from './google/EpicConfigGoogleServicesForSite';
 
 export const EpicRoot = combineEpics(
   EpicUpdateCollegeSites,
@@ -17,5 +18,6 @@ export const EpicRoot = combineEpics(
   EpicCreateCollege,
   EpicGetSites,
   EpicGetCollegeKey,
-  EpicGetGTMandGAData
+  EpicGetGTMandGAData,
+  EpicConfigGoogleServicesForSite
 );

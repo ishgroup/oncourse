@@ -5,10 +5,9 @@
 
 import React from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  NavLink
+  NavLink, useHistory
 } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -72,77 +71,79 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   };
 });
 
-const Settings = (
-
-) => {
-  const { classes, cx } = useStyles();
+const Settings = () => {
+  const { classes } = useStyles();
 
   const sites = useAppSelector((state) => state.sites);
 
-  return (
-    <Router>
-      <div className="root">
-        <LeftMenu>
-          <nav>
-            <ul className={classes.nav}>
-              <li>
-                <NavLink
-                  exact
-                  strict
-                  to="/"
-                  activeClassName={classes.activeNav}
-                >
-                  <Typography variant="body2" className={classes.navItem}>
-                    Billing
-                  </Typography>
-                </NavLink>
-              </li>
-              <li>
-                <Typography variant="body2" color="textSecondary" className="relative">
-                  Websites
-                  <IconButton size="small" className={classes.plusIcon}>
-                    <AddCircleOutlineIcon color="primary" />
-                  </IconButton>
-                </Typography>
-                <ul className={classes.nav}>
-                  {sites.map((s) => (
-                    <li key={s.id}>
-                      <NavLink
-                        exact
-                        strict
-                        to={`/websites/${s.id}`}
-                        activeClassName={classes.activeNav}
-                      >
-                        <Typography variant="body2" className={classes.navItem}>
-                          {s.key}
-                        </Typography>
-                      </NavLink>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            </ul>
-          </nav>
-        </LeftMenu>
+  const appHistory = useHistory();
 
-        <div className="formWrapper">
-          <div className="content">
-            <div className="contentInner">
-              <div className={classes.formItem}>
-                <Switch>
-                  <Route exact path="/">
-                    <Billing />
-                  </Route>
-                  <Route path="/websites/:id">
-                    <SitesPage />
-                  </Route>
-                </Switch>
-              </div>
+  const onAddSite = () => {
+    appHistory.push('/websites/new');
+  };
+
+  return (
+    <div className="root">
+      <LeftMenu>
+        <nav>
+          <ul className={classes.nav}>
+            <li>
+              <NavLink
+                exact
+                strict
+                to="/"
+                activeClassName={classes.activeNav}
+              >
+                <Typography variant="body2" className={classes.navItem}>
+                  Billing
+                </Typography>
+              </NavLink>
+            </li>
+            <li>
+              <Typography variant="body2" color="textSecondary" className="relative">
+                Websites
+                <IconButton size="small" className={classes.plusIcon} onClick={onAddSite}>
+                  <AddCircleOutlineIcon color="primary" />
+                </IconButton>
+              </Typography>
+              <ul className={classes.nav}>
+                {sites.map((s) => (
+                  <li key={s.id}>
+                    <NavLink
+                      exact
+                      strict
+                      to={`/websites/${s.id}`}
+                      activeClassName={classes.activeNav}
+                    >
+                      <Typography variant="body2" className={classes.navItem}>
+                        {s.key}
+                      </Typography>
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </LeftMenu>
+
+      <div className="formWrapper">
+        <div className="content">
+          <div className="contentInner">
+            <div className={classes.formItem}>
+              <Switch>
+                <Route exact path="/">
+                  <Billing />
+                </Route>
+                <Route path="/websites/:id">
+                  <SitesPage />
+                </Route>
+              </Switch>
             </div>
           </div>
         </div>
       </div>
-    </Router>
+    </div>
   );
 };
 

@@ -3,24 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useFormik } from 'formik';
 import { darken } from '@mui/material/styles';
-import { Button, IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import { green } from '@mui/material/colors';
-import { AddCircle } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
 import { SiteDTO } from '@api/model';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { FormikErrors } from 'formik/dist/types';
 import { makeAppStyles } from '../../styles/makeStyles';
-import { stopPropagation } from '../../utils';
+import { renderSelectItemsWithEmpty } from '../../utils';
 import Loading from '../common/Loading';
 import GoogleLoginButton from '../common/GoogleLoginButton';
-import { SiteContent } from './SiteContent';
+import SiteContent from './SiteContent';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import { updateCollegeSites } from '../../redux/actions/Sites';
 import { SiteValues } from '../../models/Sites';
+import { showConfirm } from '../../redux/actions/Confirm';
+import { GTMContainer } from '../../models/Google';
+import { renderContainerLabel } from '../../utils/Google';
+import { configureGoogleForSite } from '../../redux/actions/Google';
 
 const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
@@ -128,68 +132,73 @@ const useStyles = makeAppStyles()((theme, prop, createRef) => {
 });
 
 const validationSchema = yup.object({
-  sites: yup.array().of(yup.object().shape({
-    key: yup.string().nullable()
-      .required('Required')
-      .max(40, 'Maximum length is 40 characters')
-      .test('uniqueKey', 'Key should be unique', (value, context: any) => {
-        const { collegeKey, sites } = context.from[1].value;
-        return sites.filter((s) => (s.id ? s.key : `${collegeKey}-${s.key}`) === (context.parent.id ? value : `${collegeKey}-${value}`)).length === 1;
-      })
-      .matches(/^[0-9a-z-]+$/i, 'You can only use letters, numbers and "-"'),
-    primaryDomain: yup.string().nullable(),
-    name: yup.mixed().required('Required').test(
-      'uniqueName',
-      'Name should be unique',
-      (value, context: any) => context.from[1].value.sites.filter((s) => s.name === value).length === 1
-    ),
-    webSiteTemplate: yup.string().nullable().when('id', {
-      is: (val) => !val,
-      then: yup.string().nullable().required('Required'),
-    }),
-    domains: yup.array().of(yup.string().matches(/\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/, 'Domain name is invalid'))
-  }))
+  key: yup.string().nullable()
+    .required('Key is required')
+    .max(40, 'Maximum length is 40 characters')
+    .matches(/^[0-9a-z-]+$/i, 'You can only use letters, numbers and "-"'),
+  primaryDomain: yup.string().nullable(),
+  name: yup.mixed().required('Name is required'),
+  webSiteTemplate: yup.string().nullable().when('id', {
+    is: (val) => !val,
+    then: yup.string().nullable().required('Site template is required'),
+  }),
+  gtmAccountId: yup.string().nullable().when('googleAnalyticsId', {
+    is: (val) => val,
+    then: yup.string().nullable().required('Tag manager account is required'),
+  }),
+  domains: yup.array().of(yup.string().matches(/\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/, 'Domain name is invalid'))
 });
 
-const getChangedSites = (initial: SiteDTO[], current: SiteDTO[]) => {
-  const changed = [];
-  current.forEach((site) => {
-    const initialSite = initial.find((i) => i.id === site.id);
-    if (initialSite) {
-      Object.keys(site).forEach((key) => {
-        if (Array.isArray(site[key])) {
-          site[key].forEach((i, index) => {
-            if (site[key][index] !== initialSite[key][index]) {
-              changed.push(site);
-            }
-          });
-        } else if (site[key] !== initialSite[key]) {
-          changed.push(site);
-        }
-      });
-    }
-  });
-  return changed;
+const newSite: SiteDTO = {
+  id: null,
+  key: '',
+  name: '',
+  primaryDomain: '',
+  webSiteTemplate: null,
+  domains: [],
+  googleAnalyticsId: null,
+  gtmContainerId: null
 };
 
 export const SitesPage = () => {
   const loading = useAppSelector((state) => state.loading);
   const sites = useAppSelector((state) => state.sites);
   const collegeKey = useAppSelector((state) => state.college.collegeKey);
+  const { id } = useParams<any>();
+
+  const isNew = id === 'new';
 
   const dispatch = useAppDispatch();
+  const appHistory = useHistory();
 
-  const [expanded, setExpanded] = useState<number | boolean>(false);
+  const {
+    profile,
+    gtmAccounts,
+    gaAccounts,
+    gtmContainers
+  } = useAppSelector((state) => state.google);
 
-  const handleExpand = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const loggedWithGoogle = Boolean(profile);
+
+  const initialSite = useMemo(() => sites?.find((s) => s.id == id), [id, sites]);
+  const gtmContainer = useMemo(() => {
+    let container: GTMContainer = {};
+
+    for (const key in gtmContainers) {
+      gtmContainers[key]?.forEach((con) => {
+        if (con.containerId === initialSite?.gtmContainerId) {
+          container = con;
+        }
+      });
+    }
+    return container;
+  }, [gtmContainers, initialSite]);
+  const gtmAccountId = useMemo(() => gtmAccounts?.find((ga) => ga.accountId === gtmContainer?.accountId)?.accountId, [gtmAccounts, gtmContainer]);
 
   const {
     handleSubmit,
     setValues,
     setFieldError,
-    initialValues,
     dirty,
     handleChange,
     values,
@@ -198,57 +207,74 @@ export const SitesPage = () => {
     isValid,
     resetForm
   } = useFormik<SiteValues>({
-    initialValues: { sites, collegeKey },
+    initialValues: { ...initialSite, collegeKey, gtmAccountId },
     validationSchema,
-    onSubmit: (submitted) => {
-      const parsed = submitted.sites.map((s) => ({ ...s, domains: s.domains.map((d) => d.replace(/https?:\/\//, '')) }));
-      dispatch(updateCollegeSites({
-        changed: getChangedSites(initialValues.sites, parsed.filter((s) => s.id)),
-        created: parsed.filter((s) => !s.id).map((s) => ({ ...s, key: `${collegeKey}-${s.key}` })),
-        removed: initialValues.sites.filter((s) => s.id && !parsed.some((c) => c.id === s.id))
-      }));
+    onSubmit: (vals) => {
+      // dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
+      dispatch(configureGoogleForSite(vals));
     },
+    validate: (vals) => {
+      const errorsResult: FormikErrors<SiteValues> = {};
+      if (sites.length
+        && vals.key
+        && sites.filter((s) => s.key === `${collegeKey}-${vals.key}`).length === 1) {
+        errorsResult.key = 'Key should be unique';
+      }
+      return errorsResult;
+    }
   });
 
-  useEffect(() => {
-    if (sites || collegeKey) {
-      resetForm({ values: { sites, collegeKey } });
+  const gaAccountItems = useMemo(() => renderSelectItemsWithEmpty({
+    items: gaAccounts,
+    valueKey: 'id',
+    labelKey: 'name'
+  }), [gaAccounts]);
+
+  const gtmAccountItems = useMemo(() => renderSelectItemsWithEmpty(
+    {
+      items: gtmAccounts,
+      valueKey: 'accountId',
+      labelKey: 'name'
     }
-  }, [sites, collegeKey]);
+  ), [gtmAccounts]);
+
+  const gtmContainerItems = useMemo(() => renderSelectItemsWithEmpty(
+    {
+      items: (gtmContainers || {})[values.gtmAccountId],
+      valueKey: 'containerId',
+      labelKey: 'name',
+      labelCondition: renderContainerLabel
+    }
+  ), [gtmContainers, values.gtmAccountId]);
+
+  useEffect(() => {
+    if (initialSite) {
+      resetForm({ values: { ...initialSite || {}, collegeKey, gtmAccountId } });
+    }
+  }, [initialSite, collegeKey, gtmAccountId]);
+
+  useEffect(() => {
+    if (isNew) {
+      setValues({
+        ...newSite, collegeKey, gtmAccountId
+      });
+    }
+  }, [id]);
 
   const { classes, cx } = useStyles();
 
-  const onClickDelete = (index) => (e) => {
-    stopPropagation(e);
-    const updated = [...values.sites];
-    updated.splice(index, 1);
-    setFieldValue('sites', updated);
+  const onClickDelete = () => {
+    if (!isNew) {
+      dispatch(showConfirm({
+        confirmButtonText: 'Delete',
+        confirmMessage: 'Site will be removed with all settings and configuration. This action can not be undone',
+        onConfirm: () => {
+          dispatch(updateCollegeSites({ removed: [values.id] }));
+        }
+      }));
+    }
+    appHistory.push(`/websites/${sites[0]?.id}`);
   };
-
-  const onAddSite = () => {
-    setExpanded(0);
-    setValues({
-      sites: [
-        {
-          id: null,
-          key: null,
-          name: null,
-          primaryDomain: null,
-          webSiteTemplate: null,
-          domains: []
-        },
-        ...values.sites
-      ],
-      collegeKey,
-    });
-  };
-
-  const { id } = useParams<any>();
-  const site = values?.sites[id];
-  const isNew = typeof site?.id !== 'number';
-  // const error = (errors.sites && errors.sites[index]) || {};
-  const initial = site?.id && initialValues.sites.find((i) => i.id === site.id);
-  const initialMatchPattern = initial && initial.key.includes(`${collegeKey}-`);
 
   return (
     <div className={classes.container}>
@@ -264,30 +290,34 @@ export const SitesPage = () => {
               </div>
 
               <div>
-                {site && (
-                <SiteContent
-                  cx={cx}
-                  classes={classes}
-                  key={site.id}
-                  isNew={isNew}
-                  expanded={expanded}
-                  handleExpand={handleExpand}
-                  collegeKey={collegeKey}
-                  site={site}
-                  // onClickDelete={onClickDelete(index)}
-                  index={1}
-                  initial={initial}
-                  error={{}}
-                  initialMatchPattern={initialMatchPattern}
-                  setFieldValue={setFieldValue}
-                  setFieldError={setFieldError}
-                  values={values}
-                  handleChange={handleChange}
-                />
+                {values.hasOwnProperty('key') && (
+                  <SiteContent
+                    cx={cx}
+                    classes={classes}
+                    isNew={isNew}
+                    collegeKey={collegeKey}
+                    site={values}
+                    initial={initialSite}
+                    error={errors as any}
+                    setFieldValue={setFieldValue}
+                    setFieldError={setFieldError}
+                    handleChange={handleChange}
+                    gaAccountItems={gaAccountItems}
+                    gtmAccountItems={gtmAccountItems}
+                    gtmContainerItems={gtmContainerItems}
+                    loggedWithGoogle={loggedWithGoogle}
+                    googleProfileEmail={profile?.email}
+                  />
                 )}
               </div>
               <div className={classes.buttonsWrapper}>
-                <Button disableElevation color="error" variant="contained" className="mr-2">
+                <Button
+                  onClick={onClickDelete}
+                  disableElevation
+                  color="error"
+                  variant="contained"
+                  className="mr-2"
+                >
                   Delete
                 </Button>
                 <LoadingButton

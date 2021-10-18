@@ -25,6 +25,7 @@
   "rules": {
     "no-restricted-syntax": 0,
     "no-await-in-loop": 0,
+    "no-prototype-builtins": 0,
     "default-case": 0,
     "react/prop-types": 0,
     "global-require": 0,

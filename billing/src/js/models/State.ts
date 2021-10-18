@@ -8,6 +8,7 @@ import { CollegeState } from 'src/js/models/College';
 import { GoogleState } from './Google';
 import { MessageState } from './Message';
 import { FormsState } from './Forms';
+import { ConfirmState } from './Confirm';
 
 export interface State {
   college: CollegeState;
@@ -16,4 +17,5 @@ export interface State {
   google: GoogleState,
   message: MessageState,
   form: FormsState,
+  confirm: ConfirmState
 }
