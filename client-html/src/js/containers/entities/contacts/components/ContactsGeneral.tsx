@@ -4,7 +4,7 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import {
   ConcessionType,
@@ -61,6 +61,22 @@ const TutorInitial: Tutor = {
 };
 
 const styles = theme => createStyles({
+  profileTitleFields: {
+    transform: "scale(2) translateX(-100%)",
+    visibility: "hidden",
+    transition: "0.3s all ease-in-out",
+  },
+  profileTitleText: {
+    transform: "scale(2) translateX(-100%)",
+    visibility: "hidden",
+    transition: "0.3s all ease-in-out",
+    position: "absolute",
+    left: 0,
+  },
+  profileTitleIn: {
+    transform: "scale(1) translateX(0)",
+    visibility: "visible",
+  },
   avatarWrapper: {
     height: 90,
     width: 90,
@@ -69,22 +85,31 @@ const styles = theme => createStyles({
       borderRadius: "100%",
     }
   },
+  avatarBackdrop: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: theme.palette.action.active,
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+    transition: theme.transitions.create("opacity", {
+      duration: theme.transitions.duration.standard,
+      easing: theme.transitions.easing.easeInOut
+    }),
+    borderRadius: "100%",
+    zIndex: 1,
+    color: "#fff",
+  },
   exitToApp: {
     fontSize: "1.2rem",
     top: "5px"
   },
   profileThumbnail: {
-    "&:hover $profileEditIcon": {
-      color: theme.palette.primary.main,
-      fill: theme.palette.primary.main
-    }
-  },
-  profileEditIcon: {
-    fontSize: "14px",
-    color: theme.palette.divider,
-    position: "absolute",
-    bottom: 5,
-    right: -10
+    "&:hover $avatarBackdrop": {
+      opacity: 1,
+    },
   },
   customCheckbox: {
     margin: 0,
@@ -107,6 +132,7 @@ interface ContactsGeneralProps extends EditViewProps<Contact> {
   relationTypes?: ContactRelationType[];
   concessionTypes?: ConcessionType[];
   usiLocked?: boolean;
+  fullScreenEditView?: boolean;
 }
 
 const contactGenderItems = Object.keys(ContactGender).map(mapSelectItems);
@@ -182,7 +208,12 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     tabIndex,
     expanded,
     setExpanded,
+    fullScreenEditView,
   } = props;
+
+  const profileImageRef = useRef<any>();
+  const [hoverOnProfile, setHoverOnProfile] = useState<boolean>(false);
+  const [clickOnProfile, setClickOnProfile] = useState<boolean>(false);
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
   const isInitiallyTutor = initialValues && !!initialValues.tutor;
@@ -410,9 +441,51 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     lg: twoColumn ? 4 : 12
   };
 
+  const handleProfileImageWrappper = useCallback((e, eventType, isFullScreenEditView) => {
+    setTimeout(() => {
+      const hasCurrentContainer = profileImageRef.current && profileImageRef.current.contains(e.target);
+
+      if (hasCurrentContainer) {
+        if (eventType === "mousedown") setClickOnProfile(true);
+        if (eventType === "mouseover") setHoverOnProfile(true);
+      } else {
+        if (eventType === "mousedown") setClickOnProfile(false);
+        if (eventType === "mouseover") setHoverOnProfile(false);
+      }
+    }, 200);
+  }, []);
+
+  const profileImageWrapperClick = useCallback(e => {
+    handleProfileImageWrappper(e, "mousedown", fullScreenEditView);
+  }, [fullScreenEditView]);
+
+  const profileImageWrapperHover = useCallback(e => {
+    handleProfileImageWrappper(e, "mouseover", fullScreenEditView);
+  }, [fullScreenEditView]);
+
+  useEffect(() => {
+    if (fullScreenEditView) {
+      window.addEventListener("mousedown", profileImageWrapperClick);
+      window.addEventListener("mouseover", profileImageWrapperHover);
+    }
+
+    return () => {
+      window.removeEventListener("mousedown", profileImageWrapperClick);
+      window.removeEventListener("mouseover", profileImageWrapperHover);
+    };
+  }, [fullScreenEditView]);
+
+  const showProfileTitleText = twoColumn && !isNew && !hoverOnProfile && !clickOnProfile;
+
   return (
     <div className="p-3">
-      <Grid container columnSpacing={3} className="mb-3 align-items-center">
+      <Grid
+        container
+        columnSpacing={3}
+        className="mb-3 align-items-center overflow-hidden"
+        id="contact-profile-general"
+        ref={profileImageRef}
+      >
         <Grid item xs={twoColumn ? 2 : 12}>
           <Field
             name="profilePicture"
@@ -427,21 +500,32 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             }}
           />
         </Grid>
-        {!isCompany && (
-          <>
-            <Grid item xs={twoColumn ? 2 : 6}>
-              <FormField type="text" name="title" label="Title" />
+        <Grid container item xs={twoColumn ? 10 : 12} className="relative overflow-hidden">
+          <Grid container item xs={12} className={clsx(classes.profileTitleText, { [classes.profileTitleIn]: showProfileTitleText })}>
+            <Typography variant="h5" display="block">
+              {values && !isCompany && values.title}
+              {" "}
+              {values && getContactFullName(values)}
+            </Typography>
+          </Grid>
+          <Grid container item xs={12} className={clsx(classes.profileTitleFields, { [classes.profileTitleIn]: !showProfileTitleText })}>
+            {!isCompany && (
+              <>
+                <Grid item xs={twoColumn ? 2 : 6}>
+                  <FormField type="text" name="title" label="Title" />
+                </Grid>
+                <Grid item xs={twoColumn ? 2 : 6}>
+                  <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
+                </Grid>
+                <Grid item xs={twoColumn ? 2 : 6}>
+                  <FormField type="text" name="middleName" label="Middle name" />
+                </Grid>
+              </>
+            )}
+            <Grid item xs={twoColumn ? 4 : 6}>
+              <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
             </Grid>
-            <Grid item xs={twoColumn ? 2 : 6}>
-              <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
-            </Grid>
-            <Grid item xs={twoColumn ? 2 : 6}>
-              <FormField type="text" name="middleName" label="Middle name" />
-            </Grid>
-          </>
-        )}
-        <Grid item xs={twoColumn ? 4 : 6}>
-          <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
+          </Grid>
         </Grid>
       </Grid>
       <Grid container columnSpacing={3}>
@@ -758,7 +842,8 @@ const mapStateToProps = (state: State, props) => ({
   tags: state.tags.entityTags["Contact"],
   countries: state.countries,
   relationTypes: state.contacts.contactsRelationTypes,
-  concessionTypes: state.contacts.contactsConcessionTypes
+  concessionTypes: state.contacts.contactsConcessionTypes,
+  fullScreenEditView: state.list.fullScreenEditView
 });
 
 export default connect<any, any, any>(

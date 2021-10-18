@@ -178,7 +178,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
       const isScrollingDown = scrolledPX.current < e.target.scrollTop;
 
       if (itemProps.onEditViewScroll) {
-        itemProps.onEditViewScroll(e);
+        itemProps.onEditViewScroll(e, isScrollingDown);
       }
 
       scrolledPX.current = e.target.scrollTop;
