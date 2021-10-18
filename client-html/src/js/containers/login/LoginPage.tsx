@@ -39,6 +39,7 @@ import { State } from "../../reducers/state";
 import { LoginState } from "./reducers/state";
 import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
 import ishLogoSmall from "../../../images/logo_small.png";
+import EulaDialog from "./components/EulaDialog";
 
 const styles: any = theme => ({
   loginFormWrapper: {
@@ -210,6 +211,7 @@ interface Props extends LoginState {
   getEmailByToken: (value: string) => void;
   createPasswordRequest: (token: string, password: string) => void;
   email?: string;
+  eulaUrl?: string;
 }
 
 export class LoginPageBase extends React.PureComponent<Props, any> {
@@ -219,7 +221,12 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
 
   private token: string = '';
 
-  state = { passwordScore: 0, passwordFeedback: "", openCredits: false };
+  state = {
+    passwordScore: 0,
+    passwordFeedback: "",
+    openCredits: false,
+    eulaAccess: false
+  };
 
   constructor(props) {
     super(props);
@@ -312,6 +319,10 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       createPasswordRequest,
     } = this.props;
 
+    const {
+      eulaAccess
+    } = this.state;
+
     if (this.isInviteForm) {
       createPasswordRequest(this.token, values.newPassword);
       return;
@@ -333,7 +344,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
         kickOut: isKickOut || false,
         token: values.authCodeDigits ? values.authCodeDigits.join("") : "",
         secretCode: totpUrlParams && totpUrlParams.get("secret"),
-        skipTfa: isOptionalTOTP
+        skipTfa: isOptionalTOTP,
+        eulaAccess
       },
       values.host,
       values.port
@@ -381,6 +393,22 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       </div>
     );
   };
+  
+  onLogin = () => {
+    const {
+      isEnableTOTP,
+      isOptionalTOTP,
+      dispatch,
+    } = this.props;
+
+    return isEnableTOTP || isOptionalTOTP ? e => {
+        e.preventDefault();
+        this.savedTFAState = { isEnableTOTP, isOptionalTOTP };
+        setLoginState({ isTOTP: true, isNewTOTP: true });
+        dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+      }
+      : undefined;
+  };
 
   render() {
     const {
@@ -404,7 +432,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       asyncValidating,
       complexPass,
       dispatch,
-      email
+      email,
+      eulaUrl
     } = this.props;
 
     const { passwordScore, passwordFeedback, openCredits } = this.state;
@@ -675,10 +704,10 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   onClick={
                                     isTOTP && isNewTOTP
                                       ? e => {
-                                          e.preventDefault();
-                                          dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
-                                          setLoginState(this.savedTFAState);
-                                        }
+                                        e.preventDefault();
+                                        dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                        setLoginState(this.savedTFAState);
+                                      }
                                       : undefined
                                   }
                                 >
@@ -687,7 +716,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     || isKickOut
                                     || isEnableTOTP
                                     || (isTOTP && !isNewTOTP))
-                                    && "Quit"}
+                                  && "Quit"}
                                   {((isTOTP && isNewTOTP) || (isNewPassword && isUpdatePassword)) && "Cancel"}
                                   {isOptionalTOTP && "Maybe Later"}
                                 </Button>
@@ -702,22 +731,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                               root: classes.loginButton,
                               disabled: classes.loginButtonDisabled
                             }}
-                            onClick={
-                              isEnableTOTP || isOptionalTOTP
-                                ? e => {
-                                    e.preventDefault();
-                                    this.savedTFAState = {
-                                      isEnableTOTP,
-                                      isOptionalTOTP
-                                    };
-                                    setLoginState({
-                                      isTOTP: true,
-                                      isNewTOTP: true
-                                    });
-                                    dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
-                                  }
-                                : undefined
-                            }
+                            onClick={this.onLogin}
                           >
                             {((isTOTP && !isNewTOTP) || (isBasic && !this.isInviteForm)) && "Login"}
                             {((isTOTP && isNewTOTP) || isEnableTOTP || isOptionalTOTP) && "Enable"}
@@ -725,6 +739,23 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             {isKickOut && "Kick out"}
                             {this.isInviteForm && "Create password"}
                           </Button>
+                          {eulaUrl && (
+                          <EulaDialog
+                            eulaUrl={eulaUrl}
+                            onCancel={() => {
+                              const resetProps = { ...this.props };
+                              resetProps.eulaUrl = undefined;
+                              this.props.setLoginState(resetProps);
+                            }}
+                            onAccept={() => {
+                              this.onLogin();
+
+                              this.setState({
+                                eulaAccess: true
+                              });
+                            }}
+                          />
+                          )}
                         </div>
                       </div>
                     </Collapse>

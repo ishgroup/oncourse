@@ -18,7 +18,8 @@ const clearState: LoginState = {
   isKickOut: false,
   isUpdatePassword: false,
   withNetworkFields: false,
-  passwordChangeMessage: ""
+  passwordChangeMessage: "",
+  eulaUrl: undefined,
 };
 
 export const loginReducer = (state: LoginState = {}, action: IAction<any>): LoginState => {
