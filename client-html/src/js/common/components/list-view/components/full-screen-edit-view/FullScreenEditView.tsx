@@ -27,27 +27,37 @@ import { LSGetItem } from "../../../../utils/storage";
 import { APPLICATION_THEME_STORAGE_NAME } from "../../../../../constants/Config";
 
 const styles = theme => createStyles({
-    header: {
-      height: "64px",
-      display: "flex",
-      justifyContent: "space-between",
-      flexDirection: "row",
-      alignItems: "center",
-      padding: theme.spacing(0, 3),
-      background: theme.palette.background.default,
-      color: theme.palette.common.black,
-    },
-    root: {
-      marginTop: theme.spacing(8),
-      height: `calc(100vh - ${theme.spacing(8)}px)`
-    },
-    fullEditViewBackground: {
-      background: theme.palette.background.default
-    },
-    headerAlternate: {
-      background: theme.palette.common.white,
-    }
-  });
+  header: {
+    height: "64px",
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: theme.spacing(0, 3),
+    background: theme.palette.background.default,
+    color: theme.palette.common.black,
+  },
+  root: {
+    marginTop: theme.spacing(8),
+    height: `calc(100vh - ${theme.spacing(8)}px)`
+  },
+  fullEditViewBackground: {
+    background: theme.palette.background.default
+  },
+  headerAlternate: {
+    background: theme.palette.common.white,
+  },
+  titleWrapper: {
+    transition: "all 0.2s ease-in-out",
+    transform: "scale(2)",
+  },
+  scrollUp: {
+    transform: "scale(2)",
+  },
+  showTitle: {
+    transform: "scale(1)",
+  }
+});
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} />
@@ -59,8 +69,10 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
     this.state = {
       isScrolling: false,
+      hideTitleOnScrollUp: null
     };
   }
+
   componentDidUpdate(prevProps) {
     const {
       pending, dispatch, rootEntity, isNested
@@ -123,10 +135,13 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     }
   };
 
-  onScroll = e => {
+  onScroll = (e, isScrollingDown) => {
     if (e.target) {
       if (e.target.scrollTop > 30) this.setState({ isScrolling: true });
       else this.setState({ isScrolling: false });
+
+      if (isScrollingDown && e.target.scrollTop > 140) this.setState({ hideTitleOnScrollUp: false });
+      else this.setState({ hideTitleOnScrollUp: true });
     }
   };
 
@@ -188,7 +203,16 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 { [classes.headerAlternate]: this.state.isScrolling }
               )}
             >
-              <div className="flex-fill">
+              <div className={
+                clsx(
+                  "flex-fill",
+                  classes.titleWrapper,
+                  {
+                    [classes.scrollUp]: this.state.hideTitleOnScrollUp,
+                    [classes.showTitle]: this.state.hideTitleOnScrollUp === null ? false : !this.state.hideTitleOnScrollUp
+                  }
+                )}
+              >
                 {customTitle ? customTitle(values) : (
                   <Typography className="appHeaderFontSize" color="inherit">
                     {title}
