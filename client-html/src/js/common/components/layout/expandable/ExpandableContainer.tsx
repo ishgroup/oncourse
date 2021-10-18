@@ -4,7 +4,7 @@
  */
 
 import React, {
- useCallback, useRef, useEffect, useMemo 
+ useCallback, useRef, useMemo
 } from "react";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
