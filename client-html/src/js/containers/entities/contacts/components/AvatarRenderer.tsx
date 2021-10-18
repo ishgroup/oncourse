@@ -9,7 +9,10 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Edit from "@mui/icons-material/Edit";
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from '@mui/icons-material/Delete';
+import UploadIcon from '@mui/icons-material/Upload';
 import Gravatar from "react-awesome-gravatar";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import noAvatarImg from "../../../../../images/no_pic.png";
 import FilePreview from "../../../../common/components/form/FilePreview";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
@@ -82,7 +85,7 @@ const AvatarRenderer: React.FC<any> = props => {
         {input.value && input.value.thumbnail ? (
           <FilePreview
             actions={[
-              { actionLabel: "unlink", onAction: unlink, icon: <DeleteIcon fontSize="small" /> }
+              { actionLabel: "Unlink", onAction: unlink, icon: <DeleteIcon fontSize="small" /> }
             ]}
             data={input.value.thumbnail}
             iconPlacementRow
@@ -91,6 +94,17 @@ const AvatarRenderer: React.FC<any> = props => {
           />
         ) : (
           <div onClick={upload} className={`relative cursor-pointer ${classes.profileThumbnail}`}>
+            {!disabled && (
+              <div className={classes.avatarBackdrop}>
+                <div className="centeredFlex">
+                  <Tooltip title="Upload" placement="top">
+                    <IconButton color="inherit" size="medium">
+                      <UploadIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
+            )}
             <Gravatar email={email || ""} options={{ size, default: 'mp' }}>
               {url => (
                 <Avatar
@@ -101,7 +115,6 @@ const AvatarRenderer: React.FC<any> = props => {
                 />
               )}
             </Gravatar>
-            {!disabled && (<Edit className={classes.profileEditIcon} />)}
           </div>
         )}
       </div>
