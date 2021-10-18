@@ -8,11 +8,9 @@ get:
     - ish.oncourse.api.access.AuthFilter
   responses:
     '200':
-      description: list of college sites
+      description: college settings
       schema:
-        type: array
-        items:
-          $ref: './def/entity/dto/SettingsDTO.yaml'
+        $ref: './def/entity/dto/SettingsDTO.yaml'
           
 post:
   operationId: updateSettings
@@ -23,9 +21,9 @@ post:
   x-filter:
     - ish.oncourse.api.access.AuthFilter
   parameters:
-    - name: setting
+    - name: settings
       in: body
-      description: new site object to create
+      description: college settings to update
       required: true
       schema:
         $ref: './def/entity/dto/SettingsDTO.yaml'

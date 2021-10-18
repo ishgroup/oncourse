@@ -1,14 +1,25 @@
 type: object
 properties:
+  contactFullName:
+    type: string
+    description: contact full name information
+  contactEmail:
+    type: string
+    description: contact email information
+  invoiceReference:
+    type: string
+    description: licensed concurrent users count
   usersCount:
-    type: number
+    type: integer
+    format: int32
     description: licensed concurrent users count
   billingPlan:
     $ref: '../../enum/BillingPlan.yaml'
     description: used plan info
   requestedUsersCount:
-    type: number
-    description: request to change users count limit
+    type: integer
+    format: int32
   requestedBillingPlan:
     $ref: '../../enum/BillingPlan.yaml'
     description: request for update billing plan
+    
