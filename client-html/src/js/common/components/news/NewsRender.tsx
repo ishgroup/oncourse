@@ -36,7 +36,7 @@ const styles = (theme: AppTheme) => createStyles({
     background: theme.palette.background.paper,
     position: "relative",
     padding: theme.spacing(3),
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: theme.spacing(1),
     border: "2px solid",
     borderColor: fade(theme.palette.text.disabled, 0.1),
     "&:not(:last-child)": {
@@ -61,12 +61,17 @@ const styles = (theme: AppTheme) => createStyles({
       borderColor: theme.palette.primary.main,
     },
   },
+  newsTitle: {
+    fontSize: "16px",
+    fontColor: theme.palette.text.primary,
+    fontWeight: 600,
+  },
   postContentExpanded: {
     maxHeight: "none",
-    paddingBottom: 20,
+    fontWEight: 400,
     "&::after": {
       content: "none",
-    }
+    },
   },
 });
 
@@ -97,12 +102,12 @@ const NewsItemRender = props => {
         )}
         <ListItemText
           primary={(
-            <Typography component="span" variant="body1" className="text-bold heading">
+            <Typography component="span" variant="body1" className={classes.newsTitle}>
               {post.title}
             </Typography>
           )}
           secondary={(
-            <Box component="span" display="block" mt={1}>
+            <Box component="span" display="block">
               <Box component="span" display="block" position="relative">
                 <Typography
                   component="span"
@@ -116,12 +121,12 @@ const NewsItemRender = props => {
                 </Typography>
                 {" "}
               </Box>
-              <Box component="span" display="block" fontStyle="italic" textAlign="left">
+              <Box component="span" display="block" textAlign="left">
                 <Typography
                   component="span"
                   variant="caption"
                   color="textSecondary"
-                  className="mt-1 d-block"
+                  className="d-block"
                 >
                   {`Posted ${post.published && formatDate(new Date(post.published), D_MMM_YYYY)}`}
                 </Typography>
