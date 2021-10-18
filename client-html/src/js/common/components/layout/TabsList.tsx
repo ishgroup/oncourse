@@ -181,7 +181,6 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   return (
     <Grid container className={clsx("overflow-hidden", { "root": customAppBar && itemProps.twoColumn })}>
       <Grid item xs={layoutArray[0].xs}>
-        <NewsRender />
         <Grid container>
           <Grid
             item
@@ -190,6 +189,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
+            <NewsRender page={itemProps?.rootEntity} />
             {items.map((i, tabIndex) => (
               <div id={i.label} key={i.label} ref={setScrollNode}>
                 {i.component({
