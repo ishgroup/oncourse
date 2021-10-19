@@ -505,7 +505,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
             <Typography variant="h5" display="block">
               {values && !isCompany && values.title}
               {" "}
-              {values && getContactFullName(values)}
+              {values ? (!isCompany ? getContactFullName(values) : values.lastName) : ""}
             </Typography>
           </Grid>
           <Grid container item xs={12} className={clsx(classes.profileTitleFields, { [classes.profileTitleIn]: !showProfileTitleText })}>
