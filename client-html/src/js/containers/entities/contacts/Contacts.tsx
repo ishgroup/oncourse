@@ -388,7 +388,9 @@ const Contacts: React.FC<ContactsProps> = props => {
           }}
         />
         <Typography className={`appHeaderFontSize ${classes.contactTitle}`}>
-          {getContactFullName(values)}
+          {!values.isCompany && values.title}
+          {" "}
+          {!values.isCompany ? getContactFullName(values) : values.lastName}
         </Typography>
       </div>
     );
