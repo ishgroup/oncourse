@@ -264,23 +264,25 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             </Grid>
           </Collapse>
 
-          <Grid item xs={layoutArray[2].xs}>
-            {timezones && (
-              <FormField
-                type="searchSelect"
-                name="timezone"
-                label="Default timezone"
-                items={timezones}
-                labelAdornment={(
-                  <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
-                    <IconButton classes={{ root: "inputAdornmentButton" }}>
-                      <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                validate={validateSingleMandatoryField}
-              />
-            )}
+          <Grid container item xs={12}>
+            <Grid item xs={layoutArray[2].xs}>
+              {timezones && (
+                <FormField
+                  type="searchSelect"
+                  name="timezone"
+                  label="Default timezone"
+                  items={timezones}
+                  labelAdornment={(
+                    <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                      <IconButton classes={{ root: "inputAdornmentButton" }}>
+                        <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  validate={validateSingleMandatoryField}
+                />
+              )}
+            </Grid>
           </Grid>
 
           <Grid item xs={layoutArray[8].xs}>
