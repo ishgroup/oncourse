@@ -1,6 +1,7 @@
 
 package ish.oncourse.webservices.v24.stubs.replication;
 
+import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -19,6 +20,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent&gt;
  *     &lt;extension base="{http://repl.v24.soap.webservices.oncourse.ish/}replicationStub"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="startDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="attendanceType" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="sessionId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="tutorId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
@@ -34,6 +37,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "tutorAttendanceStub", propOrder = {
+    "endDate",
+    "startDate",
     "attendanceType",
     "sessionId",
     "tutorId",
@@ -44,6 +49,14 @@ public class TutorAttendanceStub
     extends ReplicationStub
 {
 
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date endDate;
+    @XmlElement(required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter2 .class)
+    @XmlSchemaType(name = "dateTime")
+    protected Date startDate;
     @XmlElement(required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter4 .class)
     @XmlSchemaType(name = "int")
@@ -62,6 +75,54 @@ public class TutorAttendanceStub
     protected Integer durationMinutes;
     @XmlElement(required = true)
     protected String note;
+
+    /**
+     * Gets the value of the endDate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * Sets the value of the endDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEndDate(Date value) {
+        this.endDate = value;
+    }
+
+    /**
+     * Gets the value of the startDate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * Sets the value of the startDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setStartDate(Date value) {
+        this.startDate = value;
+    }
 
     /**
      * Gets the value of the attendanceType property.

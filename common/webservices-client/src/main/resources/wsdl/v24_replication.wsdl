@@ -1242,6 +1242,8 @@
                 <xs:complexContent>
                     <xs:extension base="tns:replicationStub">
                         <xs:sequence>
+                            <xs:element name="endDate" type="xs:dateTime" />
+                            <xs:element name="startDate" type="xs:dateTime" />
                             <xs:element name="attendanceType" type="xs:int" />
                             <xs:element name="sessionId" type="xs:long" />
                             <xs:element name="tutorId" type="xs:long" />
