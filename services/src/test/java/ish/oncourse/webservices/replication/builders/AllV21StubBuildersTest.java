@@ -4,8 +4,8 @@
 package ish.oncourse.webservices.replication.builders;
 
 import ish.oncourse.model.*;
-import ish.oncourse.webservices.replication.v21.builders.*;
-import ish.oncourse.webservices.v21.stubs.replication.ContactStub;
+import ish.oncourse.webservices.replication.v24.builders.*;
+import ish.oncourse.webservices.v24.stubs.replication.ContactStub;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
 
-public class AllV21StubBuildersTest extends AbstractAllStubBuildersTest {
+public class AllV24StubBuildersTest extends AbstractAllStubBuildersTest {
     
     @Test
     public void testArticleProductStubBuilder() {
@@ -89,11 +89,6 @@ public class AllV21StubBuildersTest extends AbstractAllStubBuildersTest {
     public void testEnrolmentStubBuilder() {
         this.testStubBuilder(Enrolment.class, new EnrolmentStubBuilder(),
                 "invoiceLineId");
-    }
-
-    @Test
-    public void testEntityRelationStubBuilder() {
-        this.testStubBuilder(EntityRelation.class, new EntityRelationStubBuilder(), "fromEntityAngelId", "toEntityAngelId");
     }
 
     @Test

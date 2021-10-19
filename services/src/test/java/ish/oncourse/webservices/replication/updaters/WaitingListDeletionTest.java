@@ -10,8 +10,8 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v21.stubs.replication.DeletedStub;
-import ish.oncourse.webservices.v21.stubs.replication.ReplicatedRecord;
+import ish.oncourse.webservices.v24.stubs.replication.DeletedStub;
+import ish.oncourse.webservices.v24.stubs.replication.ReplicatedRecord;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConfig;
@@ -26,8 +26,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.webservices.util.SupportedVersions.V21;
-import static ish.oncourse.webservices.v21.stubs.replication.Status.SUCCESS;
+import static ish.oncourse.webservices.util.SupportedVersions.V24;
+import static ish.oncourse.webservices.v24.stubs.replication.Status.SUCCESS;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
@@ -54,7 +54,7 @@ public class WaitingListDeletionTest extends ServiceTest {
 
     @Test
     public void processDeleteWaitingListTransactionTest() {
-        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V21);
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
 
         DeletedStub deletedWaitingList = new DeletedStub();
         deletedWaitingList.setEntityIdentifier("WaitingList");
