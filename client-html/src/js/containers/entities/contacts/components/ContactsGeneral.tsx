@@ -503,8 +503,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         <Grid container item xs={twoColumn ? 10 : 12} className="relative overflow-hidden">
           <Grid container item xs={12} className={clsx(classes.profileTitleText, { [classes.profileTitleIn]: showProfileTitleText })}>
             <Typography variant="h5" display="block">
-              {values && !isCompany && values.title}
-              {" "}
+              {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
               {values ? (!isCompany ? getContactFullName(values) : values.lastName) : ""}
             </Typography>
           </Grid>

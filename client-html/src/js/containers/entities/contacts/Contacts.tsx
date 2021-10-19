@@ -388,13 +388,15 @@ const Contacts: React.FC<ContactsProps> = props => {
           }}
         />
         <Typography className={`appHeaderFontSize ${classes.contactTitle}`}>
-          {!values.isCompany && values.title}
-          {" "}
+          {!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
           {!values.isCompany ? getContactFullName(values) : values.lastName}
         </Typography>
       </div>
     );
   }, []);
+
+  const getContactFullNameWithTitle = (values: Contact) =>
+    `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
 
   return (
     <ListView
@@ -408,7 +410,7 @@ const Contacts: React.FC<ContactsProps> = props => {
       }}
       editViewProps={{
         manualLink,
-        nameCondition: getContactFullName,
+        nameCondition: getContactFullNameWithTitle,
         disabledSubmitCondition: getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult),
         asyncValidate: notesAsyncValidate,
         asyncBlurFields: ["notes[].message"]
