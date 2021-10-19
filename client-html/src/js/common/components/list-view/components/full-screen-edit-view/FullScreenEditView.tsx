@@ -49,13 +49,13 @@ const styles = theme => createStyles({
   },
   titleWrapper: {
     transition: "all 0.2s ease-in-out",
-    transform: "scale(2)",
+    transform: "scale(2) translateX(-100%)",
   },
   scrollUp: {
-    transform: "scale(2)",
+    transform: "scale(2) translateX(-100%)",
   },
   showTitle: {
-    transform: "scale(1)",
+    transform: "scale(1) translateX(0)",
   }
 });
 
