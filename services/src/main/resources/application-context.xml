@@ -28,7 +28,11 @@
 
     <bean id="v23_replicationPortType" class="ish.oncourse.webservices.soap.v23.ReplicationPortTypeImpl" />
 
-	<bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.CustomEscapeHandler"/>
+  <bean id="v24_paymentPortType" class="ish.oncourse.webservices.soap.v24.PaymentPortTypeImpl" />
+
+  <bean id="v24_replicationPortType" class="ish.oncourse.webservices.soap.v24.ReplicationPortTypeImpl" />
+
+  <bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.CustomEscapeHandler"/>
 
 	<bean name="headerInterceptor" class="ish.oncourse.webservices.soap.interceptors.MessageHeaderInterceptor" />
 
@@ -84,4 +88,43 @@
             </bean>
         </jaxws:dataBinding>
     </jaxws:endpoint>
+
+  <jaxws:endpoint id="v24_replication" implementor="#v24_replicationPortType"
+                  address="/v23/replication">
+    <jaxws:inInterceptors>
+      <ref bean="communicationKeyInterceptor" />
+      <ref bean="collegeRequestInterceptor" />
+      <ref bean="headerInterceptor" />
+    </jaxws:inInterceptors>
+
+    <jaxws:dataBinding>
+      <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+        <property name="marshallerProperties">
+          <map>
+            <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+          </map>
+        </property>
+      </bean>
+    </jaxws:dataBinding>
+  </jaxws:endpoint>
+  
+  <jaxws:endpoint id="v24_payment" implementor="#v24_paymentPortType"
+                  address="/v24/payment">
+    <jaxws:inInterceptors>
+      <ref bean="securityCodeInterceptor" />
+      <ref bean="collegeRequestInterceptor" />
+      <ref bean="headerInterceptor" />
+    </jaxws:inInterceptors>
+
+    <jaxws:dataBinding>
+      <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+        <property name="marshallerProperties">
+          <map>
+            <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+          </map>
+        </property>
+      </bean>
+    </jaxws:dataBinding>
+  </jaxws:endpoint>
+
 </beans>
