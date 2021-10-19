@@ -23,6 +23,7 @@ import { renderSelectItemsWithEmpty } from '../../utils';
 import AutosizeInput from '../common/AutosizeInput';
 import { TemplateField } from '../common/TemplateChoser';
 import { SiteValues } from '../../models/Sites';
+import WarningMessage from '../common/WarningMessage';
 
 interface Props {
   cx: Cx,
@@ -85,12 +86,12 @@ const SiteContent = (
   };
 
   const onAddDomain = async (params) => {
-    await setFieldValue('domains', [...site.domains, params.inputProps.value]);
+    await setFieldValue('domains', { ...site.domains, [params.inputProps.value]: '' });
     if (!site.domains.length && !site.primaryDomain) setFieldValue('primaryDomain', params.inputProps.value);
   };
 
   useEffect(() => {
-    if (site.primaryDomain && !site.domains.includes(site.primaryDomain)) {
+    if (site.primaryDomain && !Object.keys(site.domains).includes(site.primaryDomain)) {
       setFieldValue('primaryDomain', null);
     }
   }, [site.domains]);
@@ -107,7 +108,14 @@ const SiteContent = (
     }
   }, [site.googleAnalyticsId]);
 
-  const domainItems = useMemo(() => renderSelectItemsWithEmpty({ items: site.domains }), [site.domains]);
+  const domainItems = useMemo(() => renderSelectItemsWithEmpty(
+    { items: Object.keys(site.domains) }
+  ), [site.domains]);
+
+  const domainWarnings = useMemo(() => Object.keys(site.domains).map((d) => (site.domains[d]
+    ? <WarningMessage warning={`${d}: ${site.domains[d]}`} />
+    : null)),
+  [site.domains]);
 
   return (
     <Grid container>
@@ -163,7 +171,7 @@ const SiteContent = (
         <Autocomplete
           size="small"
           options={[]}
-          value={site.domains}
+          value={Object.keys(site.domains)}
           classes={{
             root: classes.domainsRoot,
             inputRoot: classes.domainsInput,
@@ -194,7 +202,10 @@ const SiteContent = (
               multiline
             />
           )}
-          onChange={(e, v) => setFieldValue('domains', v)}
+          onChange={(e, v) => setFieldValue(
+            'domains',
+            v.reduce((p, c: string) => ({ ...p, [c]: '' }), {})
+          )}
           filterSelectedOptions
           multiple
           freeSolo
@@ -213,6 +224,9 @@ const SiteContent = (
         >
           {domainItems}
         </TextField>
+      </Grid>
+      <Grid item xs={12}>
+        {domainWarnings}
       </Grid>
       {isNew && (
       <Grid item xs={6} className={classes.pr}>

@@ -17,28 +17,28 @@ export function BillingApiMock(this: MockAdapter) {
         id: 1,
         name: 'Site 1',
         key: 'nida-1',
-        domains: ['www.corporate.nida.edu.au', 'www.open.nida.edu.au'],
+        domains: { 'www.corporate.nida.edu.au': 'error', 'www.open.nida.edu.au': 'error' },
         webSiteTemplate: null
       },
       {
         id: 2,
         name: 'Site 2',
         key: 'nida-2',
-        domains: ['www.corporate.nida.edu.au', 'www.open.nida.edu.au'],
+        domains: { 'www.corporate.nida.edu.au': 'error', 'www.open.nida.edu.au': 'error' },
         webSiteTemplate: null
       },
       {
         id: 3,
         name: 'Site 3',
         key: 'nidatest',
-        domains: ['www.corporate.nida.edu.au', 'www.open.nida.edu.au'],
+        domains: { 'www.corporate.nida.edu.au': '', 'www.open.nida.edu.au': '' },
         webSiteTemplate: null
       },
       {
         id: 4,
         name: 'Site 4',
         key: 'nidatest2',
-        domains: ['www.corporate.nida.edu.au', 'www.open.nida.edu.au'],
+        domains: { 'www.corporate.nida.edu.au': '', 'www.open.nida.edu.au': '' },
         webSiteTemplate: null
       }
     ]));

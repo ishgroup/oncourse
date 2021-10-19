@@ -145,8 +145,7 @@ const validationSchema = yup.object({
   gtmAccountId: yup.string().nullable().when('googleAnalyticsId', {
     is: (val) => val,
     then: yup.string().nullable().required('Tag manager account is required'),
-  }),
-  domains: yup.array().of(yup.string().matches(/\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/, 'Domain name is invalid'))
+  })
 });
 
 const newSite: SiteDTO = {
@@ -155,7 +154,7 @@ const newSite: SiteDTO = {
   name: '',
   primaryDomain: '',
   webSiteTemplate: null,
-  domains: [],
+  domains: {},
   googleAnalyticsId: null,
   gtmContainerId: null
 };
@@ -210,8 +209,8 @@ export const SitesPage = () => {
     initialValues: { ...initialSite, collegeKey, gtmAccountId },
     validationSchema,
     onSubmit: (vals) => {
-      // dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
-      dispatch(configureGoogleForSite(vals));
+      dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
+      // dispatch(configureGoogleForSite(vals));
     },
     validate: (vals) => {
       const errorsResult: FormikErrors<SiteValues> = {};
