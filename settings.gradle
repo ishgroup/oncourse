@@ -19,5 +19,6 @@ include ':plugins:cloud-assess',
         ':plugins:xero',
         ':plugins:replication',
         ':plugins:tcsi',
-        ':plugins:service-nsw'
+        ':plugins:service-nsw',
+        ':plugins:myob'
 

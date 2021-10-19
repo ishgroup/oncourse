@@ -1,0 +1,13 @@
+name: MYOB integration
+body: ish.script.integrationMYOB.groovy
+keyCode: ish.script.integrationMYOB
+enabled: false
+triggerType: ON_DEMAND
+description: Export account transaction for MYOB
+variables:
+  - name: fromDate
+    label: Export from
+    dataType: DATE
+  - name: toDate
+    label: Export to
+    dataType: DATE
