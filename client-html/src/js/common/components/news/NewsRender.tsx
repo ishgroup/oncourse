@@ -73,10 +73,24 @@ const styles = (theme: AppTheme) => createStyles({
       content: "none",
     },
   },
+  newCaption: {
+    borderRadius: 16,
+    padding: "1px 6px",
+    fontSize: 12,
+    top: 0,
+    fontWeight: 600,
+    color: "#45AA05",
+    backgroundColor: "rgba(69, 170, 5, 0.1)",
+  },
+  videoWrapper: {
+    maxWidth: "100%",
+  },
 });
 
 const NewsItemRender = props => {
-  const { classes, latestReadDate, post, setReadedNews } = props;
+  const {
+    classes, latestReadDate, post, setReadedNews, fullScreenEditView
+  } = props;
 
   const isLatestItem = latestReadDate === "" || new Date(latestReadDate).getTime() < new Date(post.published).getTime();
 
@@ -90,21 +104,36 @@ const NewsItemRender = props => {
       alignItems="flex-start"
       className={classes.postWrapper}
     >
-      <div className="w-100 d-block">
-        {isLatestItem && (
-          <Typography
-            component="span"
-            variant="caption"
-            className={clsx("errorDarkBackgroundColor errorContrastColor boldText relative left-0 text-uppercase", classes.newCaption)}
-          >
-            NEW
-          </Typography>
+      <div className={clsx("w-100 d-block", fullScreenEditView && post.video && "d-flex")}>
+        {post.video && (
+          <iframe
+            allow="fullscreen"
+            width={fullScreenEditView ? "220px" : "100%"}
+            height="150"
+            src={`https://www.youtube.com/embed/${post.video}`}
+            title="video"
+            className={clsx(classes.videoWrapper, fullScreenEditView && "mr-2")}
+          />
         )}
         <ListItemText
           primary={(
-            <Typography component="span" variant="body1" className={classes.newsTitle}>
-              {post.title}
-            </Typography>
+            <>
+              {isLatestItem && (
+                <Typography
+                  component="span"
+                  variant="caption"
+                  className={clsx(
+                    "boldText relative left-0 text-uppercase mr-1",
+                    classes.newCaption,
+                  )}
+                >
+                  NEW
+                </Typography>
+              )}
+              <Typography component="span" variant="body1" className={classes.newsTitle}>
+                {post.title}
+              </Typography>
+            </>
           )}
           secondary={(
             <Box component="span" display="block">
@@ -128,7 +157,7 @@ const NewsItemRender = props => {
                   color="textSecondary"
                   className="d-block"
                 >
-                  {`Posted ${post.published && formatDate(new Date(post.published), D_MMM_YYYY)}`}
+                  {post.published && `Posted ${post.published && formatDate(new Date(post.published), D_MMM_YYYY)}`}
                 </Typography>
               </Box>
             </Box>
@@ -142,7 +171,7 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadedNews
+    blogPosts, classes, page, preferences, setReadedNews, fullScreenEditView
   } = props;
 
   const [postsForRender, setPostsForRender] = useState([]);
@@ -150,8 +179,8 @@ const NewsRender = props => {
   useEffect(() => {
     const readedNews = preferences[READED_NEWS] && preferences[READED_NEWS].split(",");
 
-    setPostsForRender(blogPosts.filter(post => ((!post.page && !page) || post.page === page)
-      && (!readedNews || !readedNews.includes(post.id))));
+    setPostsForRender(blogPosts.filter(post => ((!post.page && !page) || window.location.pathname.includes(post.page))
+      && (!readedNews || !readedNews.includes(post.id))).reverse());
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
@@ -163,6 +192,7 @@ const NewsRender = props => {
           classes={classes}
           latestReadDate={preferences[DASHBOARD_NEWS_LATEST_READ]}
           setReadedNews={setReadedNews}
+          fullScreenEditView={fullScreenEditView}
         />
       ))}
     </div>
@@ -171,6 +201,7 @@ const NewsRender = props => {
 
 const mapStateToProps = (state: State) => ({
   blogPosts: state.dashboard.blogPosts,
+  fullScreenEditView: state.list.fullScreenEditView,
   preferences: state.userPreferences,
 });
 

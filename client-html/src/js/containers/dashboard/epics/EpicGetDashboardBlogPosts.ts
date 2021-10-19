@@ -13,7 +13,7 @@ const request: EpicUtils.Request = {
   type: GET_BLOG_POSTS,
   getData: () => DashboardService.getBlogPosts(),
   processData: blogPosts => {
-    const posts = blogPosts ? JSON.parse(blogPosts) : { entry: [] };
+    const posts = blogPosts || { entry: [] };
     return [
       {
         type: GET_BLOG_POSTS_FULFILLED,
