@@ -18,6 +18,7 @@ public class SessionTutorUpdater extends AbstractWillowUpdater<TutorAttendanceSt
 		Session session = callback.updateRelationShip(stub.getSessionId(), Session.class);
 		entity.setSession(session);
 		entity.setStartDate(session.getStartDate());
-		
+		entity.setEndDate(session.getEndDate());
+
 	}
 }
