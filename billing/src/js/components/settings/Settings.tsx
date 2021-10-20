@@ -72,7 +72,7 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
 });
 
 const Settings = () => {
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
 
   const sites = useAppSelector((state) => state.sites);
 
@@ -86,7 +86,7 @@ const Settings = () => {
     <div className="root">
       <LeftMenu>
         <nav>
-          <ul className={classes.nav}>
+          <ul className={cx(classes.nav, 'pl-0')}>
             <li>
               <NavLink
                 exact
@@ -112,13 +112,44 @@ const Settings = () => {
                     <NavLink
                       exact
                       strict
-                      to={`/websites/${s.id}`}
-                      activeClassName={classes.activeNav}
+                      to={`/websites/${s.id}/analytics`}
                     >
                       <Typography variant="body2" className={classes.navItem}>
                         {s.key}
                       </Typography>
                     </NavLink>
+                    <ul className={classes.nav}>
+                      <NavLink
+                        exact
+                        strict
+                        to={`/websites/${s.id}/analytics`}
+                        activeClassName={classes.activeNav}
+                      >
+                        <Typography variant="body2" className={classes.navItem}>
+                          Analytics
+                        </Typography>
+                      </NavLink>
+                      <NavLink
+                        exact
+                        strict
+                        to={`/websites/${s.id}/urls`}
+                        activeClassName={classes.activeNav}
+                      >
+                        <Typography variant="body2" className={classes.navItem}>
+                          URLs
+                        </Typography>
+                      </NavLink>
+                      <NavLink
+                        exact
+                        strict
+                        to={`/websites/${s.id}/googleSettings`}
+                        activeClassName={classes.activeNav}
+                      >
+                        <Typography variant="body2" className={classes.navItem}>
+                          Google settings
+                        </Typography>
+                      </NavLink>
+                    </ul>
                   </li>
                 ))}
               </ul>
@@ -135,7 +166,7 @@ const Settings = () => {
                 <Route exact path="/">
                   <Billing />
                 </Route>
-                <Route path="/websites/:id">
+                <Route path="/websites/:id/:page">
                   <SitesPage />
                 </Route>
               </Switch>

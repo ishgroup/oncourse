@@ -5,9 +5,11 @@
 
 import { IAction } from '../../models/IshAction';
 import { GoogleState } from '../../models/Google';
-import { GET_GTM_AND_GA_DATA_FULFILLED, SET_GOOGLE_CREDENTIALS } from '../actions/Google';
+import { GET_GTM_AND_GA_DATA, GET_GTM_AND_GA_DATA_FULFILLED, SET_GOOGLE_CREDENTIALS } from '../actions/Google';
+import { FETCH_FAIL } from '../actions';
 
 const Initial: GoogleState = {
+  loading: false,
   profile: null,
   token: null,
   gtmAccounts: null,
@@ -18,10 +20,21 @@ const Initial: GoogleState = {
 
 export const googleReducer = (state: GoogleState = Initial, action: IAction): GoogleState => {
   switch (action.type) {
+    case GET_GTM_AND_GA_DATA:
+      return {
+        ...state,
+        loading: true
+      };
+    case FETCH_FAIL:
+      return {
+        ...state,
+        loading: false
+      };
     case GET_GTM_AND_GA_DATA_FULFILLED:
     case SET_GOOGLE_CREDENTIALS:
       return {
         ...state,
+        loading: false,
         ...action.payload
       };
 

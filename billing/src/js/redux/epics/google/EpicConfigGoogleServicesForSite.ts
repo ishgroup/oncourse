@@ -23,7 +23,6 @@ const request: Request<any, SiteValues> = {
   getData: async (site, state) => {
     const token = getTokenString(state.google);
 
-
     if (site.gtmContainerId) {
       const workspaces = await GoogleService.getGTMWorkspaces(
         token,

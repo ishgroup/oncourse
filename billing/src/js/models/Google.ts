@@ -17,6 +17,7 @@ export type GAAccount = gapi.client.analytics.Account;
 export type GAWebProperty = gapi.client.analytics.Webproperty;
 
 export interface GoogleState {
+  loading?: boolean;
   profile?: GoogleLoginResponse['profileObj'],
   token?: GoogleLoginResponse['tokenObj'],
   gtmAccounts: GTMAccount[],

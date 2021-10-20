@@ -17,7 +17,6 @@ import { makeAppStyles } from '../../styles/makeStyles';
 import { renderSelectItemsWithEmpty } from '../../utils';
 import Loading from '../common/Loading';
 import GoogleLoginButton from '../common/GoogleLoginButton';
-import SiteContent from './SiteContent';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import { updateCollegeSites } from '../../redux/actions/Sites';
 import { SiteValues } from '../../models/Sites';
@@ -28,6 +27,8 @@ import { configureGoogleForSite } from '../../redux/actions/Google';
 import GoogleService from '../../api/services/GoogleService';
 import { MAPS_API_KEY_NAME } from '../../constant/Google';
 import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
+import URLs from './URLs';
+import GoogleSetup from './GoogleSetup';
 
 const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
@@ -148,10 +149,6 @@ const validationSchema = yup.object({
   gtmAccountId: yup.string().nullable().when('googleAnalyticsId', {
     is: (val) => val,
     then: yup.string().nullable().required('Tag manager account is required'),
-  }),
-  gaWebPropertyId: yup.string().nullable().when('googleAnalyticsId', {
-    is: (val) => val,
-    then: yup.string().nullable().required('Web property is required'),
   })
 });
 
@@ -169,9 +166,7 @@ export const SitesPage = () => {
   const loading = useAppSelector((state) => state.loading);
   const sites = useAppSelector((state) => state.sites);
   const collegeKey = useAppSelector((state) => state.college.collegeKey);
-  const { id } = useParams<any>();
-
-  const isNew = id === 'new';
+  const { id, page } = useParams<any>();
 
   const dispatch = useAppDispatch();
   const appHistory = useHistory();
@@ -182,8 +177,10 @@ export const SitesPage = () => {
     gaAccounts,
     gtmContainers,
     gaWebProperties,
-    token
+    token,
   } = useAppSelector((state) => state.google);
+
+  const googleLoading = useAppSelector((state) => state.google.loading);
 
   const loggedWithGoogle = Boolean(profile);
 
@@ -265,6 +262,13 @@ export const SitesPage = () => {
     }
   ), [gaWebProperties, values.googleAnalyticsId]);
 
+  const concurentAccounts = values.gtmContainerId
+    && gtmContainers
+    && !Object.keys(gtmContainers)
+      .some((k) => gtmContainers[k]
+        .some((c) => c.containerId === values.gtmContainerId));
+
+
   useEffect(() => {
     if (initialSite) {
       resetForm({
@@ -322,7 +326,7 @@ export const SitesPage = () => {
   }, [values.gtmAccountId, values.gtmContainerId]);
 
   useEffect(() => {
-    if (isNew) {
+    if (values && !values.id) {
       setValues({
         ...newSite, collegeKey, gtmAccountId, googleMapsApiKey: '', gaWebPropertyId: '', googleAnalyticsId: ''
       });
@@ -332,7 +336,7 @@ export const SitesPage = () => {
   const { classes, cx } = useStyles();
 
   const onClickDelete = () => {
-    if (!isNew) {
+    if (values.id) {
       dispatch(showConfirm({
         confirmButtonText: 'Delete',
         confirmMessage: 'Site will be removed with all settings and configuration. This action can not be undone',
@@ -342,6 +346,47 @@ export const SitesPage = () => {
       }));
     }
     appHistory.push(`/websites/${sites[0]?.id}`);
+  };
+
+  const renderPage = () => {
+    switch (page) {
+      case 'urls':
+        return (
+          <URLs
+            classes={classes}
+            isNew={!values.id}
+            collegeKey={collegeKey}
+            site={values}
+            initial={initialSite}
+            error={errors as any}
+            setFieldValue={setFieldValue}
+            setFieldError={setFieldError}
+            handleChange={handleChange}
+          />
+        );
+      case 'googleSettings':
+        return (
+          <GoogleSetup
+            cx={cx}
+            classes={classes}
+            site={values}
+            error={errors as any}
+            setFieldValue={setFieldValue}
+            handleChange={handleChange}
+            gaAccountItems={gaAccountItems}
+            gtmAccountItems={gtmAccountItems}
+            gaWebPropertyItems={gaWebPropertyItems}
+            gtmContainerItems={gtmContainerItems}
+            loggedWithGoogle={loggedWithGoogle}
+            googleProfileEmail={profile?.email}
+            googleLoading={googleLoading}
+            concurentAccounts={concurentAccounts}
+          />
+        );
+      default:
+      case 'analytics':
+        return null;
+    }
   };
 
   return (
@@ -358,47 +403,33 @@ export const SitesPage = () => {
               </div>
 
               <div>
-                {values.hasOwnProperty('key') && (
-                  <SiteContent
-                    cx={cx}
-                    classes={classes}
-                    isNew={isNew}
-                    collegeKey={collegeKey}
-                    site={values}
-                    initial={initialSite}
-                    error={errors as any}
-                    setFieldValue={setFieldValue}
-                    setFieldError={setFieldError}
-                    handleChange={handleChange}
-                    gaAccountItems={gaAccountItems}
-                    gtmAccountItems={gtmAccountItems}
-                    gaWebPropertyItems={gaWebPropertyItems}
-                    gtmContainerItems={gtmContainerItems}
-                    loggedWithGoogle={loggedWithGoogle}
-                    googleProfileEmail={profile?.email}
-                  />
-                )}
+                {values.hasOwnProperty('key') && renderPage()}
               </div>
               <div className={classes.buttonsWrapper}>
-                <Button
-                  onClick={onClickDelete}
-                  disableElevation
-                  color="error"
-                  variant="contained"
-                  className="mr-2"
-                >
-                  Delete
-                </Button>
-                <LoadingButton
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  loading={loading}
-                  disabled={!isValid || !dirty}
-                  disableElevation
-                >
-                  Save
-                </LoadingButton>
+                {page === 'urls' && (
+                  <Button
+                    onClick={onClickDelete}
+                    disableElevation
+                    color="error"
+                    variant="contained"
+                    className="mr-2"
+                  >
+                    Delete
+                  </Button>
+                )}
+
+                {page !== 'analytics' && (
+                  <LoadingButton
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    loading={loading}
+                    disabled={!isValid || !dirty}
+                    disableElevation
+                  >
+                    Save
+                  </LoadingButton>
+                )}
               </div>
             </div>
           </form>
