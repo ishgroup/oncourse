@@ -665,11 +665,9 @@
 		<preConditions onFail="HALT">
 			<not>
 				<columnExists tableName="WebSite" columnName="configuredByUserId"/>
-				<columnExists tableName="WebSite" columnName="googleAnalyticAccount"/>
 			</not>
 		</preConditions>
 		<addColumn tableName="WebSite">
-			<column name="googleAnalyticAccount" type="VARCHAR(16)"/>
 			<column name="configuredByUserId" type="BIGINT"/>
 		</addColumn>
 		<addForeignKeyConstraint baseTableName="WebSite"
@@ -682,21 +680,8 @@
 
 	<changeSet id="49" author="dmitriy" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="HALT">
-			<not>
-				<columnExists tableName="WebSite" columnName="googleTagmanagerContainer"/>
-			</not>
-		</preConditions>
-		<addColumn tableName="WebSite">
-			<column name="googleTagmanagerContainer" type="VARCHAR(256)"/>
-		</addColumn>
-	</changeSet>
-
-	<changeSet id="50" author="dmitriy" runOnChange="false" runAlways="false" context="production">
-		<preConditions onFail="HALT">
 			<columnExists tableName="WebSite" columnName="googleTagmanagerAccount"/>
 		</preConditions>
-		<dropColumn tableName="WebSite">
-			<column name="googleTagmanagerAccount"/>
-		</dropColumn>
+		<renameColumn tableName="WebSite" oldColumnName="googleTagmanagerAccount" newColumnName="googleTagmanagerContainer"/>
 	</changeSet>
 </databaseChangeLog>

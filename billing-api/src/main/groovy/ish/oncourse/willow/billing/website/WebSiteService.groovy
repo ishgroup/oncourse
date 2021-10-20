@@ -118,7 +118,6 @@ class WebSiteService {
             dto.name = it.name
             dto.key = it.siteKey
             dto.gtmContainerId = it.googleTagmanagerContainer
-            dto.googleAnalyticsId = it.googleAnalyticAccount
             dto.configuredByInfo = getUserInfoFromSystemUser(it.configuredByUser)
             dto.primaryDomain = it.collegeDomains.find { WebHostNameStatus.PRIMARY == it.status }?.name
             dto.domains = it.collegeDomains
@@ -202,14 +201,10 @@ class WebSiteService {
     }
 
     private void configureAccountsFor(WebSite webSite, SiteDTO dto) {
-        if (dto.googleAnalyticsId)
-            webSite.setGoogleAnalyticAccount(dto.googleAnalyticsId)
-
-        if(dto.gtmContainerId)
+        if(dto.gtmContainerId){
             webSite.setGoogleTagmanagerContainer(dto.gtmContainerId)
-
-        if (dto.googleAnalyticsId || dto.gtmContainerId)
             webSite.setConfiguredByUser(requestService.getSystemUser())
+        }
     }
 
     private UserInfo getUserInfoFromSystemUser(SystemUser systemUser){
