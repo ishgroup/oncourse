@@ -51,6 +51,8 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import makeStyles from "@mui/styles/makeStyles";
+import {AppTheme} from "../../../../model/common/Theme";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -60,56 +62,13 @@ const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
 };
 
-const styles = theme => createStyles({
-  profileTitleFields: {
-    transform: "scale(2) translateX(-100%)",
-    visibility: "hidden",
-    transition: "0.3s all ease-in-out",
-  },
-  profileTitleText: {
-    transform: "scale(2) translateX(-100%)",
-    visibility: "hidden",
-    transition: "0.3s all ease-in-out",
-    position: "absolute",
-    left: 0,
-  },
-  profileTitleIn: {
-    transform: "scale(1) translateX(0)",
-    visibility: "visible",
-  },
-  avatarWrapper: {
-    height: 90,
-    width: 90,
-    "& img": {
-      width: 90,
-      borderRadius: "100%",
-    }
-  },
-  avatarBackdrop: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: theme.palette.action.active,
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    opacity: 0,
-    transition: theme.transitions.create("opacity", {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut
-    }),
-    borderRadius: "100%",
-    zIndex: 1,
-    color: "#fff",
+const styles = (theme: AppTheme) => createStyles({
+  contactGeneralWrapper: {
+    paddingTop: `${theme.spacing(10)} !important`,
   },
   exitToApp: {
     fontSize: "1.2rem",
     top: "5px"
-  },
-  profileThumbnail: {
-    "&:hover $avatarBackdrop": {
-      opacity: 1,
-    },
   },
   customCheckbox: {
     margin: 0,
@@ -183,6 +142,191 @@ const filterCompanyTags = (tag: Tag) => {
   return true;
 };
 
+const useProfileHeadingStyles = makeStyles((theme: AppTheme) => ({
+  profileTitleFields: {
+    transform: "translateY(100%)",
+    visibility: "hidden",
+    transition: theme.transitions.create("all", {
+      duration: theme.transitions.duration.standard,
+      easing: theme.transitions.easing.easeInOut
+    }),
+  },
+  profileTitleText: {
+    position: "absolute",
+    left: 0,
+    transform: "translateY(-100%)",
+    visibility: "hidden",
+    "&, & > h5": {
+      transition: theme.transitions.create("all", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+    }
+  },
+  profileTitleIn: {
+    transform: "translateY(0)",
+    visibility: "visible",
+  },
+  avatarWrapper: {
+    "&, & img": {
+      transition: theme.transitions.create("all", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+    },
+  },
+  avatarBackdrop: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: theme.palette.action.active,
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+    transition: theme.transitions.create("opacity", {
+      duration: theme.transitions.duration.standard,
+      easing: theme.transitions.easing.easeInOut
+    }),
+    borderRadius: "100%",
+    zIndex: 1,
+    color: "#fff",
+  },
+  profileThumbnail: {
+    "&:hover $avatarBackdrop": {
+      opacity: 1,
+    },
+  },
+  profileImage: {},
+  profileTitleWrapper: {
+    marginLeft: theme.spacing(3),
+  },
+}));
+
+export const ProfileHeading: React.FC<any> = props => {
+  const {
+    form,
+    dispatch,
+    showConfirm,
+    values,
+    twoColumn,
+    isNew,
+    isCompany,
+    usiLocked,
+    hide,
+    otherClasses,
+    isScrolling,
+  } = props;
+
+  const classes = { ...useProfileHeadingStyles(), ...otherClasses };
+
+  const profileImageRef = useRef<any>();
+  const [hoverOnProfile, setHoverOnProfile] = useState<boolean>(false);
+  const [clickOnProfile, setClickOnProfile] = useState<boolean>(false);
+
+  const handleProfileImageWrappper = useCallback((e, eventType) => {
+    setTimeout(() => {
+      const hasCurrentContainer = profileImageRef.current && profileImageRef.current.contains(e.target);
+
+      if (hasCurrentContainer) {
+        if (eventType === "mousedown") setClickOnProfile(true);
+        if (eventType === "mouseover") setHoverOnProfile(true);
+      } else {
+        if (eventType === "mousedown") setClickOnProfile(false);
+        if (eventType === "mouseover") setHoverOnProfile(false);
+      }
+    }, 200);
+  }, []);
+
+  const profileImageWrapperClick = useCallback(e => {
+    handleProfileImageWrappper(e, "mousedown");
+  }, []);
+
+  const profileImageWrapperHover = useCallback(e => {
+    handleProfileImageWrappper(e, "mouseover");
+  }, []);
+
+  useEffect(() => {
+    if (twoColumn) {
+      window.addEventListener("mousedown", profileImageWrapperClick);
+      window.addEventListener("mouseover", profileImageWrapperHover);
+    }
+
+    return () => {
+      window.removeEventListener("mousedown", profileImageWrapperClick);
+      window.removeEventListener("mouseover", profileImageWrapperHover);
+    };
+  }, [twoColumn]);
+
+  const showProfileTitleText = twoColumn && !isNew && !hoverOnProfile && !clickOnProfile;
+  const showTitleOnly = isScrolling && twoColumn;
+
+  return (
+    <Grid
+      container
+      columnSpacing={3}
+      className={clsx("align-items-center", hide && "d-none", !twoColumn && "mb-3")}
+      id="contact-profile-general"
+      ref={profileImageRef}
+    >
+      <Grid item xs={12} className={clsx("centeredFlex", !twoColumn && "flex-column")}>
+        <div className={clsx(classes.profileImage, !twoColumn && "w-100")}>
+          <Field
+            name="profilePicture"
+            label="Profile picture"
+            component={AvatarRenderer}
+            props={{
+              form,
+              classes,
+              dispatch,
+              showConfirm,
+              email: values.email,
+              avatarSize: isScrolling ? 40 : 90,
+              disabled: isScrolling,
+            }}
+          />
+        </div>
+        <Grid container item xs={twoColumn ? 10 : 12} className={clsx("relative overflow-hidden", classes.profileTitleWrapper)}>
+          <Grid
+            container
+            item
+            xs={12}
+            className={clsx(classes.profileTitleText, { [classes.profileTitleIn]: showProfileTitleText || showTitleOnly })}
+          >
+            <Typography variant="h5" display="block" className={clsx("mt-1", showTitleOnly && "appHeaderFontSize")}>
+              {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
+              {values ? (!isCompany ? getContactFullName(values) : values.lastName) : ""}
+            </Typography>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            className={clsx(classes.profileTitleFields, { [classes.profileTitleIn]: !showProfileTitleText && !showTitleOnly })}
+          >
+            {!isCompany && (
+              <>
+                <Grid item xs={twoColumn ? 2 : 6}>
+                  <FormField type="text" name="title" label="Title" />
+                </Grid>
+                <Grid item xs={twoColumn ? 2 : 6}>
+                  <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
+                </Grid>
+                <Grid item xs={twoColumn ? 2 : 6}>
+                  <FormField type="text" name="middleName" label="Middle name" />
+                </Grid>
+              </>
+            )}
+            <Grid item xs={twoColumn ? 4 : 6}>
+              <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
 const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   const {
     classes,
@@ -208,12 +352,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     tabIndex,
     expanded,
     setExpanded,
-    fullScreenEditView,
   } = props;
-
-  const profileImageRef = useRef<any>();
-  const [hoverOnProfile, setHoverOnProfile] = useState<boolean>(false);
-  const [clickOnProfile, setClickOnProfile] = useState<boolean>(false);
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
   const isInitiallyTutor = initialValues && !!initialValues.tutor;
@@ -441,92 +580,20 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     lg: twoColumn ? 4 : 12
   };
 
-  const handleProfileImageWrappper = useCallback((e, eventType, isFullScreenEditView) => {
-    setTimeout(() => {
-      const hasCurrentContainer = profileImageRef.current && profileImageRef.current.contains(e.target);
-
-      if (hasCurrentContainer) {
-        if (eventType === "mousedown") setClickOnProfile(true);
-        if (eventType === "mouseover") setHoverOnProfile(true);
-      } else {
-        if (eventType === "mousedown") setClickOnProfile(false);
-        if (eventType === "mouseover") setHoverOnProfile(false);
-      }
-    }, 200);
-  }, []);
-
-  const profileImageWrapperClick = useCallback(e => {
-    handleProfileImageWrappper(e, "mousedown", fullScreenEditView);
-  }, [fullScreenEditView]);
-
-  const profileImageWrapperHover = useCallback(e => {
-    handleProfileImageWrappper(e, "mouseover", fullScreenEditView);
-  }, [fullScreenEditView]);
-
-  useEffect(() => {
-    if (fullScreenEditView) {
-      window.addEventListener("mousedown", profileImageWrapperClick);
-      window.addEventListener("mouseover", profileImageWrapperHover);
-    }
-
-    return () => {
-      window.removeEventListener("mousedown", profileImageWrapperClick);
-      window.removeEventListener("mouseover", profileImageWrapperHover);
-    };
-  }, [fullScreenEditView]);
-
-  const showProfileTitleText = twoColumn && !isNew && !hoverOnProfile && !clickOnProfile;
-
   return (
-    <div className="p-3">
-      <Grid
-        container
-        columnSpacing={3}
-        className="mb-3 align-items-center overflow-hidden"
-        id="contact-profile-general"
-        ref={profileImageRef}
-      >
-        <Grid item xs={twoColumn ? 2 : 12}>
-          <Field
-            name="profilePicture"
-            label="Profile picture"
-            component={AvatarRenderer}
-            props={{
-              form,
-              classes,
-              dispatch,
-              showConfirm,
-              email: values.email
-            }}
-          />
-        </Grid>
-        <Grid container item xs={twoColumn ? 10 : 12} className="relative overflow-hidden">
-          <Grid container item xs={12} className={clsx(classes.profileTitleText, { [classes.profileTitleIn]: showProfileTitleText })}>
-            <Typography variant="h5" display="block">
-              {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
-              {values ? (!isCompany ? getContactFullName(values) : values.lastName) : ""}
-            </Typography>
-          </Grid>
-          <Grid container item xs={12} className={clsx(classes.profileTitleFields, { [classes.profileTitleIn]: !showProfileTitleText })}>
-            {!isCompany && (
-              <>
-                <Grid item xs={twoColumn ? 2 : 6}>
-                  <FormField type="text" name="title" label="Title" />
-                </Grid>
-                <Grid item xs={twoColumn ? 2 : 6}>
-                  <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
-                </Grid>
-                <Grid item xs={twoColumn ? 2 : 6}>
-                  <FormField type="text" name="middleName" label="Middle name" />
-                </Grid>
-              </>
-            )}
-            <Grid item xs={twoColumn ? 4 : 6}>
-              <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+    <div className={clsx("p-3", twoColumn && classes.contactGeneralWrapper)}>
+      <ProfileHeading
+        form={form}
+        classes={classes}
+        dispatch={dispatch}
+        showConfirm={showConfirm}
+        values={values}
+        twoColumn={twoColumn}
+        isNew={isNew}
+        isCompany={isCompany}
+        usiLocked={usiLocked}
+        hide={twoColumn}
+      />
       <Grid container columnSpacing={3}>
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>

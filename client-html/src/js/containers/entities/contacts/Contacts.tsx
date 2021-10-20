@@ -9,7 +9,10 @@
 import { isBefore } from "date-fns";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Field, initialize } from "redux-form";
+import { initialize } from "redux-form";
+import clsx from "clsx";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
@@ -43,26 +46,15 @@ import person from "../../../../images/person.png";
 import { Classes } from "../../../model/entities/CourseClass";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
-import AvatarRenderer from "./components/AvatarRenderer";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
+import { ProfileHeading } from "./components/ContactsGeneral";
 
 const styles = theme => createStyles({
-  avatarWrapper: {
-    height: 40,
-    width: 40,
-    marginBottom: "0 !important",
-    "& img": {
-      width: 40,
-      borderRadius: "100%",
-    }
+  titleWrapper: {
+    marginTop: theme.spacing(11),
   },
-  profileThumbnail: {},
-  contactTitle: {
-    color: theme.palette.common.black,
-    marginLeft: theme.spacing(2),
-    fontWeight: theme.typography.fontWeightRegular,
-  }
+  titleWrapperScrollIn: {
+    marginTop: theme.spacing(2),
+  },
 });
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
@@ -373,27 +365,37 @@ const Contacts: React.FC<ContactsProps> = props => {
     onCreate(contactModel);
   }, []);
 
-  const customTitle = useCallback(values => {
-    return values && (
-      <div className="centeredFlex">
-        <Field
-          name="profilePicture"
-          label="Profile picture"
-          component={AvatarRenderer}
-          props={{
-            classes,
-            email: values.email,
-            avatarSize: 40,
-            disabled: true
-          }}
-        />
-        <Typography className={`appHeaderFontSize ${classes.contactTitle}`}>
-          {!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
-          {!values.isCompany ? getContactFullName(values) : values.lastName}
-        </Typography>
+  const customTitle = useCallback((viewProps, viewState) => {
+    const { values } = viewProps;
+    const { isScrolling, tabsListItemProps, hideTitleOnScrollUp } = viewState;
+
+    return (
+      <div
+        className={clsx("flex-fill",
+          viewProps.classes.titleWrapper,
+          viewProps.classes.showTitle,
+          classes.titleWrapper,
+          { [viewProps.classes.scrollUp]: hideTitleOnScrollUp && isScrolling },
+          isScrolling && classes.titleWrapperScrollIn)}
+      >
+        {values && tabsListItemProps && (
+          <div className="centeredFlex">
+            <ProfileHeading
+              form={tabsListItemProps.form}
+              dispatch={tabsListItemProps.dispatch}
+              showConfirm={tabsListItemProps.showConfirm}
+              values={values}
+              twoColumn={tabsListItemProps.twoColumn}
+              isNew={tabsListItemProps.isNew}
+              isCompany={tabsListItemProps.isCompany}
+              usiLocked={tabsListItemProps.usiLocked}
+              isScrolling={isScrolling}
+            />
+          </div>
+        )}
       </div>
     );
-  }, []);
+  }, [classes]);
 
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
