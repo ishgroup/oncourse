@@ -1165,6 +1165,8 @@
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="tutorId" type="BIGINT" isMandatory="true" length="19"/>
 		<db-attribute name="type" type="INTEGER" length="10"/>
+		<db-attribute name="endDate" type="TIMESTAMP"/>
+		<db-attribute name="startDate" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="Site">
 		<db-attribute name="angelId" type="BIGINT" length="19"/>
@@ -2568,6 +2570,8 @@
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
+		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
+		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
 	</obj-entity>
 	<obj-entity name="Site" className="ish.oncourse.model.Site" dbEntityName="Site" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
