@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v23.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType",
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v24.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType",
 		targetNamespace = "http://repl.v24.soap.webservices.oncourse.ish/")
 public class PaymentPortTypeImpl implements PaymentPortType {
 
