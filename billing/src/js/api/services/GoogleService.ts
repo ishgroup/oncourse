@@ -11,6 +11,22 @@ import {
 class GoogleService {
   readonly http = new DefaultHttpService();
 
+  public getGAAccounts(Authorization: string): Promise<gapi.client.analytics.Accounts> {
+    return this.http.GET('https://www.googleapis.com/analytics/v3/management/accounts', {
+      headers: {
+        Authorization
+      }
+    });
+  }
+
+  public getGAWebProperties(Authorization: string, account: string): Promise<gapi.client.analytics.Webproperties> {
+    return this.http.GET(`https://www.googleapis.com/analytics/v3/management/accounts/${account}/webproperties`, {
+      headers: {
+        Authorization
+      }
+    });
+  }
+
   public getGTMAccounts(Authorization: string): Promise<{ account: GTMAccount[] }> {
     return this.http.GET('https://www.googleapis.com/tagmanager/v2/accounts', {
       headers: {
@@ -27,8 +43,8 @@ class GoogleService {
     });
   }
 
-  public getGAAccounts(Authorization: string): Promise<gapi.client.analytics.Accounts> {
-    return this.http.GET('https://www.googleapis.com/analytics/v3/management/accounts', {
+  public getGTMVariables(Authorization: string, account: string, container: string, workspace: string): Promise<gapi.client.tagmanager.ListVariablesResponse> {
+    return this.http.GET(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}/variables`, {
       headers: {
         Authorization
       }

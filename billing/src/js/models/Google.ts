@@ -14,11 +14,13 @@ export type GTMTag = gapi.client.tagmanager.Tag;
 
 // Google Analytics
 export type GAAccount = gapi.client.analytics.Account;
+export type GAWebProperty = gapi.client.analytics.Webproperty;
 
 export interface GoogleState {
-  profile: GoogleLoginResponse['profileObj'],
-  token: GoogleLoginResponse['tokenObj'],
+  profile?: GoogleLoginResponse['profileObj'],
+  token?: GoogleLoginResponse['tokenObj'],
   gtmAccounts: GTMAccount[],
   gtmContainers: Record<GTMAccount['accountId'], GTMContainer[]>,
   gaAccounts: GAAccount[],
+  gaWebProperties: Record<GAAccount['id'], GAWebProperty[]>,
 }

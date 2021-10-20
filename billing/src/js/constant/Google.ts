@@ -5,7 +5,7 @@
 
 import { GTMTrigger, GTMVariable } from '../models/Google';
 
-export const GAS_VARIABLE_DATA_DEFAULT: GTMVariable = {
+export const getGASVariable = (trakingId: string): GTMVariable => ({
   name: 'ish onCourse Google Analytics settings',
   type: 'gas',
   parameter: [
@@ -57,13 +57,15 @@ export const GAS_VARIABLE_DATA_DEFAULT: GTMVariable = {
     {
       key: 'trackingId',
       type: 'template',
-      value: 'UA-12345678-1'
+      value: `${trakingId}`
     }
   ],
-};
+});
 
-export const API_KEY_VARIABLE_DATA_DEFAULT: GTMVariable = {
-  name: 'Google API Key',
+export const MAPS_API_KEY_NAME = 'Google Maps API Key';
+
+export const MAPS_API_KEY_VARIABLE_DATA_DEFAULT: GTMVariable = {
+  name: MAPS_API_KEY_NAME,
   type: 'c',
   parameter: [
     {

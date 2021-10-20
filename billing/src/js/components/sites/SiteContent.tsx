@@ -39,6 +39,7 @@ interface Props {
   handleChange: any;
   gaAccountItems: any;
   gtmAccountItems: any;
+  gaWebPropertyItems: any;
   gtmContainerItems: any;
   loggedWithGoogle: boolean;
   googleProfileEmail: string;
@@ -57,6 +58,7 @@ const SiteContent = (
     setFieldError,
     handleChange,
     gaAccountItems,
+    gaWebPropertyItems,
     gtmAccountItems,
     gtmContainerItems,
     loggedWithGoogle,
@@ -355,6 +357,24 @@ const SiteContent = (
                  select
                  fullWidth
                  margin="normal"
+                 label="Analytics web property"
+                 variant="standard"
+                 value={site.gaWebPropertyId || ''}
+                 onChange={handleChange}
+                 name="gaWebPropertyId"
+                 disabled={!site.googleAnalyticsId}
+                 error={Boolean(error.gaWebPropertyId)}
+                 helperText={error.gaWebPropertyId || (site.googleAnalyticsId ? '' : 'Select Analytics account first')}
+               >
+                 {gaWebPropertyItems}
+               </TextField>
+             </Grid>
+
+             <Grid item xs={6} className={classes.pr}>
+               <TextField
+                 select
+                 fullWidth
+                 margin="normal"
                  label="Tag manager account"
                  variant="standard"
                  name="gtmAccountId"
@@ -368,7 +388,7 @@ const SiteContent = (
                </TextField>
              </Grid>
 
-             <Grid item xs={6} className={classes.pr}>
+             <Grid item xs={6}>
                <TextField
                  select
                  fullWidth
@@ -380,6 +400,33 @@ const SiteContent = (
                  onChange={handleChange}
                  name="gtmContainerId"
                  helperText={site.gtmAccountId ? 'Leave empty to let us create container configuration' : 'Select Tag manager account first'}
+               >
+                 {gtmContainerItems}
+               </TextField>
+             </Grid>
+
+             <Grid item xs={6} className={classes.pr}>
+               <TextField
+                 fullWidth
+                 margin="normal"
+                 label="Google maps API key"
+                 value={site.googleMapsApiKey || ''}
+                 variant="standard"
+                 disabled={!site.gtmAccountId}
+                 onChange={handleChange}
+                 name="googleMapsApiKey"
+                 helperText={
+                   site.gtmAccountId
+                     ? (
+                       <>
+                         Paste Google maps API key from
+                         {' '}
+                         <Link href="#">here</Link>
+                         {' '}
+                         to enable google maps on site
+                       </>
+                     ) : 'Select Tag manager account first'
+                }
                >
                  {gtmContainerItems}
                </TextField>

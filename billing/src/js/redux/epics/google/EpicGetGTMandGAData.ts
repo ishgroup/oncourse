@@ -8,13 +8,15 @@ import { Request, Create } from '../EpicUtils';
 import { GET_GTM_AND_GA_DATA, getGtmAndGaDataFulfilled } from '../../actions/Google';
 import GoogleService from '../../../api/services/GoogleService';
 import { getTokenString } from '../../../utils/Google';
+import { GoogleState } from '../../../models/Google';
 
-const request: Request = {
+const request: Request<GoogleState, null> = {
   type: GET_GTM_AND_GA_DATA,
   getData: async (p, state) => {
-    const token = getTokenString(state);
+    const token = getTokenString(state.google);
     const gtmAccounts = await GoogleService.getGTMAccounts(token);
     const gtmContainers = {};
+    const gaWebProperties = {};
 
     for (const acc of gtmAccounts.account) {
       const container = await GoogleService.getGTMContainers(token, acc.accountId);
@@ -25,14 +27,24 @@ const request: Request = {
 
     const gaAccounts = await GoogleService.getGAAccounts(token);
 
-    return [
-      gtmAccounts.account,
-      gaAccounts.items,
-      Object.keys(gtmContainers).length ? gtmContainers : null
-    ];
+    for (const acc of gaAccounts.items) {
+      const property = await GoogleService.getGAWebProperties(token, acc.id);
+      if (property) {
+        gaWebProperties[acc.id] = property.items;
+      }
+    }
+
+    const result: GoogleState = {
+      gaAccounts: gaAccounts.items,
+      gtmAccounts: gtmAccounts.account,
+      gtmContainers,
+      gaWebProperties
+    };
+
+    return result;
   },
-  processData: ([gtmAccounts, gaAccounts, gtmContainers]) => [
-    getGtmAndGaDataFulfilled(gtmAccounts, gaAccounts, gtmContainers)
+  processData: (res) => [
+    getGtmAndGaDataFulfilled(res)
   ]
 };
 

@@ -11,15 +11,18 @@ import { getTokenString } from '../../../utils/Google';
 import {
   ALL_EVENTS_TRIGGER_DEFAULT,
   ALL_PAGES_TRIGGER_DEFAULT,
-  API_KEY_VARIABLE_DATA_DEFAULT,
-  GAS_VARIABLE_DATA_DEFAULT, MAPS_PAGE_TRIGGER_DEFAULT
+  MAPS_API_KEY_VARIABLE_DATA_DEFAULT,
+  MAPS_PAGE_TRIGGER_DEFAULT,
+  MAPS_API_KEY_NAME,
+  getGASVariable
 } from '../../../constant/Google';
 import { SiteValues } from '../../../models/Sites';
 
 const request: Request<any, SiteValues> = {
   type: CONFIGURE_GOOGLE_FOR_SITE,
   getData: async (site, state) => {
-    const token = getTokenString(state);
+    const token = getTokenString(state.google);
+
 
     if (site.gtmContainerId) {
       const workspaces = await GoogleService.getGTMWorkspaces(
@@ -34,14 +37,15 @@ const request: Request<any, SiteValues> = {
         site.gtmAccountId,
         site.gtmContainerId,
         workspace,
-        GAS_VARIABLE_DATA_DEFAULT
+        // getGASVariable()
+        {}
       );
       await GoogleService.createGTMVariable(
         token,
         site.gtmAccountId,
         site.gtmContainerId,
         workspace,
-        API_KEY_VARIABLE_DATA_DEFAULT
+        MAPS_API_KEY_VARIABLE_DATA_DEFAULT
       );
 
       const trigger_all_pages = await GoogleService.createGTMTrigger(
@@ -142,7 +146,7 @@ const request: Request<any, SiteValues> = {
             {
               type: 'TEMPLATE',
               key: 'html',
-              value: '<script src="https://maps.googleapis.com/maps/api/js?key={{Google API Key}}&v=3.exp&callback=initMaps"></script>'
+              value: `<script src="https://maps.googleapis.com/maps/api/js?key={{${MAPS_API_KEY_NAME}}}&v=3.exp&callback=initMaps"></script>`
             },
             {
               type: 'BOOLEAN',

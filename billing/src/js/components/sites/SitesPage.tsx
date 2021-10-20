@@ -23,8 +23,11 @@ import { updateCollegeSites } from '../../redux/actions/Sites';
 import { SiteValues } from '../../models/Sites';
 import { showConfirm } from '../../redux/actions/Confirm';
 import { GTMContainer } from '../../models/Google';
-import { renderContainerLabel } from '../../utils/Google';
+import { getTokenString, renderContainerLabel, renderWebPropertyLabel } from '../../utils/Google';
 import { configureGoogleForSite } from '../../redux/actions/Google';
+import GoogleService from '../../api/services/GoogleService';
+import { MAPS_API_KEY_NAME } from '../../constant/Google';
+import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
 
 const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
@@ -145,6 +148,10 @@ const validationSchema = yup.object({
   gtmAccountId: yup.string().nullable().when('googleAnalyticsId', {
     is: (val) => val,
     then: yup.string().nullable().required('Tag manager account is required'),
+  }),
+  gaWebPropertyId: yup.string().nullable().when('googleAnalyticsId', {
+    is: (val) => val,
+    then: yup.string().nullable().required('Web property is required'),
   })
 });
 
@@ -155,7 +162,6 @@ const newSite: SiteDTO = {
   primaryDomain: '',
   webSiteTemplate: null,
   domains: {},
-  googleAnalyticsId: null,
   gtmContainerId: null
 };
 
@@ -174,7 +180,9 @@ export const SitesPage = () => {
     profile,
     gtmAccounts,
     gaAccounts,
-    gtmContainers
+    gtmContainers,
+    gaWebProperties,
+    token
   } = useAppSelector((state) => state.google);
 
   const loggedWithGoogle = Boolean(profile);
@@ -206,11 +214,13 @@ export const SitesPage = () => {
     isValid,
     resetForm
   } = useFormik<SiteValues>({
-    initialValues: { ...initialSite, collegeKey, gtmAccountId },
+    initialValues: {
+      ...initialSite, collegeKey, gtmAccountId, googleMapsApiKey: '', gaWebPropertyId: '', googleAnalyticsId: ''
+    },
     validationSchema,
     onSubmit: (vals) => {
-      dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
-      // dispatch(configureGoogleForSite(vals));
+      // dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
+      dispatch(configureGoogleForSite(vals));
     },
     validate: (vals) => {
       const errorsResult: FormikErrors<SiteValues> = {};
@@ -246,16 +256,75 @@ export const SitesPage = () => {
     }
   ), [gtmContainers, values.gtmAccountId]);
 
+  const gaWebPropertyItems = useMemo(() => renderSelectItemsWithEmpty(
+    {
+      items: (gaWebProperties || {})[values.googleAnalyticsId],
+      valueKey: 'id',
+      labelKey: 'name',
+      labelCondition: renderWebPropertyLabel
+    }
+  ), [gaWebProperties, values.googleAnalyticsId]);
+
   useEffect(() => {
     if (initialSite) {
-      resetForm({ values: { ...initialSite || {}, collegeKey, gtmAccountId } });
+      resetForm({
+        values: {
+          ...initialSite || {}, collegeKey, gtmAccountId, googleMapsApiKey: '', gaWebPropertyId: '', googleAnalyticsId: ''
+        }
+      });
     }
   }, [initialSite, collegeKey, gtmAccountId]);
+
+  const getGoogleMapsAPiKey = async (site: SiteValues) => {
+    try {
+      const googleToken = getTokenString({ token } as any);
+
+      if (token?.access_token && site.gtmAccountId && site.gtmContainerId) {
+        const workspaces = await GoogleService.getGTMWorkspaces(
+          googleToken,
+          site.gtmAccountId,
+          site.gtmContainerId
+        );
+        const workspace = workspaces?.workspace[0]?.workspaceId;
+
+        if (workspace) {
+          GoogleService.getGTMVariables(
+            googleToken,
+            site.gtmAccountId,
+            site.gtmContainerId,
+            workspace
+          ).then((res) => {
+            if (res.variable) {
+              res.variable.forEach((v) => {
+                if (v.name === MAPS_API_KEY_NAME) {
+                  v.parameter.forEach((p) => {
+                    if (p.key === 'value') {
+                      resetForm({
+                        values: {
+                          ...values, googleMapsApiKey: p.value
+                        }
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      }
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e);
+    }
+  };
+
+  useEffect(() => {
+    getGoogleMapsAPiKey(values);
+  }, [values.gtmAccountId, values.gtmContainerId]);
 
   useEffect(() => {
     if (isNew) {
       setValues({
-        ...newSite, collegeKey, gtmAccountId
+        ...newSite, collegeKey, gtmAccountId, googleMapsApiKey: '', gaWebPropertyId: '', googleAnalyticsId: ''
       });
     }
   }, [id]);
@@ -303,6 +372,7 @@ export const SitesPage = () => {
                     handleChange={handleChange}
                     gaAccountItems={gaAccountItems}
                     gtmAccountItems={gtmAccountItems}
+                    gaWebPropertyItems={gaWebPropertyItems}
                     gtmContainerItems={gtmContainerItems}
                     loggedWithGoogle={loggedWithGoogle}
                     googleProfileEmail={profile?.email}

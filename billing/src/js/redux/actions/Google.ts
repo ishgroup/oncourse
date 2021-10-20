@@ -20,13 +20,9 @@ export const getGtmAndGaData = (): IAction => ({
   type: GET_GTM_AND_GA_DATA
 });
 
-export const getGtmAndGaDataFulfilled = (
-  gtmAccounts: GoogleState['gaAccounts'],
-  gaAccounts: GoogleState['gaAccounts'],
-  gtmContainers: GoogleState['gtmContainers'],
-): IAction => ({
+export const getGtmAndGaDataFulfilled = (state: GoogleState): IAction => ({
   type: GET_GTM_AND_GA_DATA_FULFILLED,
-  payload: { gtmAccounts, gtmContainers, gaAccounts }
+  payload: state
 });
 
 export const setGoogleCredentials = (payload: {
