@@ -179,8 +179,13 @@ const NewsRender = props => {
   useEffect(() => {
     const readedNews = preferences[READED_NEWS] && preferences[READED_NEWS].split(",");
 
-    setPostsForRender(blogPosts.filter(post => ((!post.page && !page) || window.location.pathname.includes(post.page))
-      && (!readedNews || !readedNews.includes(post.id))).reverse());
+    const filteredPosts = blogPosts.filter(post => ((!post.page && !page) || window.location.pathname.includes(post.page))
+      && (!readedNews || !readedNews.includes(post.id))).reverse();
+
+    const newsWithoutDate = filteredPosts.filter(post => !post.published);
+    const newsWithDate = filteredPosts.filter(post => post.published);
+    const newsForRender = newsWithoutDate.concat(newsWithDate);
+    setPostsForRender(newsForRender);
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
