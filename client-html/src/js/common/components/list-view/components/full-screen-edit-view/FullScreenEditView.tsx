@@ -48,11 +48,14 @@ const styles = theme => createStyles({
     background: theme.palette.common.white,
   },
   titleWrapper: {
-    transition: "all 0.2s ease-in-out",
     transform: "scale(2) translateX(-100%)",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.standard,
+      easing: theme.transitions.easing.easeInOut
+    }),
   },
   scrollUp: {
-    transform: "scale(2) translateX(-100%)",
+    transform: "scale(2) translateX(-100%) !important",
   },
   showTitle: {
     transform: "scale(1) translateX(0)",
@@ -69,7 +72,10 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
     this.state = {
       isScrolling: false,
-      hideTitleOnScrollUp: null
+      hideTitleOnScrollUp: null,
+      scrollTarget: null,
+      isScrollingDown: false,
+      tabsListItemProps: null,
     };
   }
 
@@ -142,7 +148,16 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
       if (isScrollingDown && e.target.scrollTop > 140) this.setState({ hideTitleOnScrollUp: false });
       else this.setState({ hideTitleOnScrollUp: true });
+
+      if (isScrollingDown && e.target.scrollTop < 140) this.setState({ hideTitleOnScrollUp: false });
     }
+
+    this.setState({ scrollTarget: e.target });
+    this.setState({ isScrollingDown });
+  };
+
+  getTabsListItemProps = itemProps => {
+    this.setState({ tabsListItemProps: itemProps });
   };
 
   render() {
@@ -203,22 +218,17 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 { [classes.headerAlternate]: this.state.isScrolling }
               )}
             >
-              <div className={
-                clsx(
-                  "flex-fill",
-                  classes.titleWrapper,
-                  {
+              {customTitle ? customTitle(this.props, this.state) : (
+                <div className={clsx("flex-fill", classes.titleWrapper, {
                     [classes.scrollUp]: this.state.hideTitleOnScrollUp,
                     [classes.showTitle]: this.state.hideTitleOnScrollUp === null ? false : !this.state.hideTitleOnScrollUp
-                  }
-                )}
-              >
-                {customTitle ? customTitle(values) : (
+                  })}
+                >
                   <Typography className="appHeaderFontSize" color="inherit">
                     {title}
                   </Typography>
-                )}
-              </div>
+                </div>
+              )}
               <div>
                 {manualLink && (
                   <AppBarHelpMenu
@@ -264,6 +274,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 openNestedEditView={openNestedEditView}
                 toogleFullScreenEditView={toogleFullScreenEditView}
                 onEditViewScroll={this.onScroll}
+                getTabsListItemProps={this.getTabsListItemProps}
               />
             </Grid>
           </Grid>

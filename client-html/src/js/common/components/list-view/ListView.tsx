@@ -209,7 +209,7 @@ interface Props extends Partial<ListState> {
   setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
-  customTitle?: (values: any) => any;
+  customTitle?: (props: any, state?: any) => any;
 }
 
 interface ComponentState {
