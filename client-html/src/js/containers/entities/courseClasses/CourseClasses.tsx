@@ -787,7 +787,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         DEFAULT_MINIMUM_PLACES_KEY
       ])
     );
-    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),
