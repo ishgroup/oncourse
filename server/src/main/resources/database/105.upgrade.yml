@@ -51,10 +51,10 @@ databaseChangeLog:
             sql: 'select count(*) from SessionCourseClassTutor where endDatetime is null or startDatetime is null'
       changes:
         - addNotNullConstraint:
-          columnDataType: DATETIME
-          columnName: startDatetime
-          tableName: SessionCourseClassTutor
+            columnDataType: DATETIME
+            columnName: startDatetime
+            tableName: SessionCourseClassTutor
         - addNotNullConstraint:
-          columnDataType: DATETIME
-          columnName: endDatetime
-          tableName: SessionCourseClassTutor
+            columnDataType: DATETIME
+            columnName: endDatetime
+            tableName: SessionCourseClassTutor
