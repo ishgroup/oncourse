@@ -46,8 +46,8 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
                 ],
             "sites":
                 [
-                {"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
-                {"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
+                {"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
+                {"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
                 ],
             "customFields":{},
             "createdOn":"#ignore",
@@ -121,7 +121,7 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
             "courseId":2,
             "courseName":"Course2 course2",
             "tags":[],
-            "sites":[{"id":202,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site 2","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+            "sites":[{"id":202,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"Default site 2","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
             "customFields":{},
             "createdOn":"#ignore",
             "modifiedOn":"#ignore"

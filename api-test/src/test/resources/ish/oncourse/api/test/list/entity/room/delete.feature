@@ -20,7 +20,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         "name":"testRoom10",
         "seatedCapacity":100,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -62,7 +61,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         "name":"testRoom11",
         "seatedCapacity":100,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -109,7 +107,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         "name":"testRoom12",
         "seatedCapacity":100,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]

@@ -51,7 +51,6 @@ const Initial: Room = {
   name: null,
   seatedCapacity: 0,
   siteId: null,
-  kioskUrl: null,
   directions: null,
   facilities: null,
   tags: [],

@@ -61,7 +61,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
@@ -147,7 +147,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{"age":"18","passportNumber":"1234567890"},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
@@ -242,7 +242,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{"passportNumber":"1234567890"},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
@@ -447,7 +447,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[{"id":221,"name":"waitingList 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+        "sites":[{"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
         "customFields":{},
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"

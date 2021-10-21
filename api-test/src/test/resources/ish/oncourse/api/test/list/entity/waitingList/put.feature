@@ -165,7 +165,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "courseId":2,
             "courseName":"Course2 course2",
             "tags":[{"id":222,"name":"waitingList 2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-            "sites":[{"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+            "sites":[{"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
             "customFields":{},
             "createdOn":"#ignore",
             "modifiedOn":"#ignore"

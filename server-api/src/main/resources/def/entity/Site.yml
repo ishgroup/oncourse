@@ -18,11 +18,6 @@ properties:
     required: true
     description: True if the details of this site is shown on website
     example: true
-  kioskUrl:
-    type: string
-    required: true
-    description: The kiosk url generates a HTML page showing showing the current days classes in this site
-    example: https://ishoncourse.oncourse.cc/site/kiosk/340
   name:
     type: string
     example: Sydney Site

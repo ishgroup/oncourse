@@ -21,11 +21,6 @@ properties:
     type: string
     required: false
     example: Australia/Perth
-  kioskUrl:
-    type: string
-    required: true
-    description: The kiosk url generates a HTML page showing showing the current days classes in this room
-    example: https://ishoncourse.oncourse.cc/room/kiosk/362
   directions:
     type: string
   facilities:

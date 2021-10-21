@@ -20,7 +20,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom100",
         "seatedCapacity":25,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "tags":[{"id":212,"name":"1","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
@@ -49,7 +48,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom100_upd",
         "seatedCapacity":50,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "tags":[{"id":213,"name":"2","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
@@ -73,7 +71,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom100_upd",
         "seatedCapacity":50,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "tags":[{"id":213,"name":"2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null, "modified":null,"requirements":[],"childTags":[]}],
@@ -100,7 +97,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom101",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -127,7 +123,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150",
         "seatedCapacity":1234567890,
         "siteId":200,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "rules":[]
@@ -164,7 +159,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom104",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -192,7 +186,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom104_upd",
         "seatedCapacity":15,
         "siteId":200,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "rules":[]
@@ -233,7 +226,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom105",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -264,7 +256,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom105_upd",
         "seatedCapacity":52,
         "siteId":200,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "rules":[]
@@ -297,7 +288,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom101",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -324,7 +314,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"",
         "seatedCapacity":50,
         "siteId":200,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "rules":[]
@@ -345,7 +334,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom100_upd",
         "seatedCapacity":null,
         "siteId":200,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "rules":[]
@@ -376,7 +364,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom101",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -403,7 +390,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"room1",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -434,7 +420,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom102",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -461,7 +446,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom_A2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A151",
         "seatedCapacity":5,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -490,7 +474,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
         "name":"testRoom100_upd",
         "seatedCapacity":50,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections_upd",
         "facilities":"someFacilities_upd",
         "tags":[{"id":213,"name":"2","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
@@ -516,7 +499,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 #        "name":"testRoom103",
 #        "seatedCapacity":5,
 #        "siteId":201,
-#        "kioskUrl":null,
+#
 #        "directions":"someDirections",
 #        "facilities":"someFacilities",
 #        "rules":[]
@@ -543,7 +526,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 #        "name":"testRoom_103",
 #        "seatedCapacity":12345678901,
 #        "siteId":201,
-#        "kioskUrl":null,
 #        "directions":"someDirections",
 #        "facilities":"someFacilities",
 #        "rules":[]

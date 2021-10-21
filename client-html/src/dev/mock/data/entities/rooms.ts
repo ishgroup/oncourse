@@ -11,7 +11,6 @@ export function mockRooms() {
       documents: [],
       facilities: null,
       id: row.id,
-      kioskUrl: `https://ishoncourse.oncourse.cc/room/kiosk/${row.id}`,
       modifiedOn: "2021-01-30T10:17:48.295Z",
       name: row.values[0],
       notes: [],

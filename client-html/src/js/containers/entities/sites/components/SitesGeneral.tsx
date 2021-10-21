@@ -180,13 +180,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 />
               </Grid>
 
-              <Grid item className="centeredFlex">
-                <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
-                  <ScreenShare />
-                </IconButton>
-
-                <Typography variant="caption">Kiosk</Typography>
-              </Grid>
             </Grid>
           </Grid>
 

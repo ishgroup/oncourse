@@ -19,7 +19,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom1",
         "seatedCapacity":25,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "tags":[{"id":212,"name":"1","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
@@ -51,7 +50,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom1",
         "seatedCapacity":25,
         "siteId":"#number",
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "created":"#ignore",
@@ -95,7 +93,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150",
         "seatedCapacity":1234567890,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         }
@@ -135,7 +132,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom2",
         "seatedCapacity":25,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -180,7 +176,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom3",
         "seatedCapacity":25,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -203,7 +198,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"",
         "seatedCapacity":25,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -226,7 +220,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"room1",
         "seatedCapacity":25,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -249,7 +242,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom4",
         "seatedCapacity":null,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -272,7 +264,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
 #        "name":"testRoom4",
 #        "seatedCapacity":"abc",
 #        "siteId":201,
-#        "kioskUrl":null,
 #        "directions":"someDirections",
 #        "facilities":"someFacilities",
 #        "rules":[]
@@ -295,7 +286,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom5",
         "seatedCapacity":25,
         "siteId":null,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -318,7 +308,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom6",
         "seatedCapacity":25,
         "siteId":999,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]
@@ -341,7 +330,6 @@ Feature: Main feature for all POST requests with path 'list/entity/room'
         "name":"testRoom_A2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A151",
         "seatedCapacity":25,
         "siteId":201,
-        "kioskUrl":null,
         "directions":"someDirections",
         "facilities":"someFacilities",
         "rules":[]

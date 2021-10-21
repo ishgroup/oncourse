@@ -41,7 +41,6 @@ export type ManualType =
   | "generalPrefs_taxTypes"
   | "importExport"
   | "invoice"
-  | "kiosk"
   | "leads"
   | "payroll"
   | "processingEnrolments"

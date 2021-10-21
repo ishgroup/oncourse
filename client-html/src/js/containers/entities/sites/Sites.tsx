@@ -57,7 +57,6 @@ const Initial: Site = {
   isAdministrationCentre: false,
   isVirtual: false,
   isShownOnWeb: false,
-  kioskUrl: null,
   name: null,
   street: null,
   suburb: null,
