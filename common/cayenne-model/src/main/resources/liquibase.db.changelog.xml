@@ -677,11 +677,5 @@
 														 referencedColumnNames="id"
 														 validate="true"/>
 	</changeSet>
-
-	<changeSet id="49" author="dmitriy" runOnChange="false" runAlways="false" context="production">
-		<preConditions onFail="HALT">
-			<columnExists tableName="WebSite" columnName="googleTagmanagerAccount"/>
-		</preConditions>
-		<renameColumn tableName="WebSite" oldColumnName="googleTagmanagerAccount" newColumnName="googleTagmanagerContainer"/>
-	</changeSet>
+	
 </databaseChangeLog>

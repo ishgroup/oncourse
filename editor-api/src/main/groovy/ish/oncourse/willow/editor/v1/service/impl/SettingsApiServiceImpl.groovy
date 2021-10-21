@@ -76,7 +76,7 @@ class SettingsApiServiceImpl implements SettingsApi {
             settings.addThisId = new GetPreference(college, ADDTHIS_PROFILE_ID, context).stringValue?:StringUtils.EMPTY
             settings.enableForCourse = new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_COURSE, context).booleanValue
             settings.enableForWebpage = new GetPreference(college, ENABLE_SOCIAL_MEDIA_LINKS_WEB_PAGE, context).booleanValue
-            settings.googleTM =  webSite.googleTagmanagerContainer
+            settings.googleTM =  webSite.googleTagmanagerAccount
             settings.rootTagFilter = webSite.coursesRootTagName
             String state = new GetAutoCompleteState(college, context, webSite).get()
             settings.suburbAutocompleteState = state ? State.fromValue(state) : null as State
@@ -116,7 +116,7 @@ class SettingsApiServiceImpl implements SettingsApi {
         new GetPreference(college, STOP_WEB_ENROLMENTS_AGE, context).integerValue = settings.classAge?.stopWebEnrolment?.offset?.toInteger()
         new GetPreference(college, STOP_WEB_ENROLMENTS_AGE_TYPE, context).stringValue = settings.classAge?.stopWebEnrolment?.condition?.toString()
         new GetAutoCompleteState(college, context, webSite).stringValue = settings.suburbAutocompleteState?.toString()
-        webSite.googleTagmanagerContainer = StringUtils.trimToNull(settings.googleTM)
+        webSite.googleTagmanagerAccount = StringUtils.trimToNull(settings.googleTM)
         webSite.coursesRootTagName = StringUtils.trimToNull(settings.rootTagFilter)
         context.commitChanges()
         return settings
