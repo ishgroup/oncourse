@@ -752,6 +752,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           {eulaUrl && (
                           <EulaDialog
                             eulaUrl={eulaUrl}
+                            classes={classes}
                             onCancel={() => {
                               const resetProps = { ...this.props };
                               resetProps.eulaUrl = undefined;

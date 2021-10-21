@@ -10,29 +10,30 @@
  */
 
 import {
-  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  Dialog, DialogActions, DialogContent, DialogTitle
 } from "@material-ui/core";
 import React from "react";
 import { createStyles, withStyles } from "@material-ui/core/styles";
-import Button from "../../../common/components/buttons/Button";
+import Button from "@material-ui/core/Button";
 
 const styles = () => createStyles({
-  scrollWrapper: {
-    height: "100%",
-    width: "100%",
-    overflow: "hidden",
-  },
 
-  secondScrollWrapper: {
-    height: "100%",
+  dialogContent: {
+    overflow: "hidden",
+    height: window.innerHeight
+  },
+  iframe: {
+    border: 0,
     width: "100%",
+    height: "100%",
+  },
+  acceptButton: {
+    marginLeft: "16px"
   }
 });
 
 const EulaDialog = props => {
   const [open, setOpen] = React.useState(true);
-  const [canScroll, setCanScroll] = React.useState("no");
-  const [redirectCount, setRedirectCount] = React.useState(0);
   const [bottom, setBottom] = React.useState(false);
 
   const handleClose = () => {
@@ -41,16 +42,21 @@ const EulaDialog = props => {
     props.onCancel();
   };
 
-  const handleAccept = () => {
+  const handleEulaAccept = () => {
     setOpen(false);
     props.onAccept();
   };
 
-  const handleScroll = e => {
-    if (!bottom && canScroll !== "no") {
-      const isScrollToBottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-      setBottom(isScrollToBottom);
-    }
+  const getScrollToBottomMessage = () => {
+    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    const eventer = window[eventMethod];
+    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+
+    eventer(messageEvent, e => {
+      if (e.data === "userScrollToButtom" || e.message === "userScrollToButtom") {
+        setBottom(true);
+      }
+    });
   };
 
   const descriptionElementRef = React.useRef<HTMLElement>(null);
@@ -68,56 +74,52 @@ const EulaDialog = props => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-        fullScreen={true}
+        aria-labelledby="eula-dialog-title"
+        aria-describedby="eula-dialog-description"
+        maxWidth="md"
+        fullWidth={true}
       >
-        <DialogTitle id="scroll-dialog-title">EULA Agreement</DialogTitle>
+        <DialogTitle id="eula-dialog-title">EULA Agreement</DialogTitle>
         <DialogContent
           id="EulaContent"
+          className={props.classes.dialogContent}
           dividers={true}
-          style={{ overflow: "hidden" }}
         >
-          <div className={props.classes.scrollWrapper}>
-            <div
-              className={props.classes.secondScrollWrapper}
-              style={{ overflow: canScroll }}
-              onScroll={handleScroll}
-            >
-              <DialogContentText
-                id="scroll-dialog-description"
-                tabIndex={-1}
-              >
-                <iframe
-                  id="license_eula"
-                  src={props.eulaUrl}
-                  title="EULA Agreement"
-                  width="100%"
-                  height={window.innerHeight}
-                  frameBorder="0"
-                  scrolling={canScroll}
-                  onLoad={() => {
-                    setRedirectCount(redirectCount + 1);
-                    if (redirectCount >= 1) {
-                      setCanScroll("auto");
-                    }
-                  }}
-                />
-              </DialogContentText>
-            </div>
-          </div>
+          <iframe
+            id="license_eula"
+            className={props.classes.iframe}
+            src={props.eulaUrl}
+            title="EULA Agreement"
+            onLoad={getScrollToBottomMessage}
+          />
         </DialogContent>
         <DialogActions>
           <form>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={!bottom}
-              onClick={handleAccept}
-            >
-              I accept these conditions
-            </Button>
+            <div className={props.classes.buttonsContainer}>
+              <Button
+                color="primary"
+                classes={{
+                  root: props.classes.declineButton
+                }}
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={props.classes.acceptButton}
+                disabled={!bottom}
+                classes={{
+                  root: props.classes.loginButton,
+                  disabled: props.classes.loginButtonDisabled
+                }}
+                onClick={handleEulaAccept}
+              >
+                I accept these conditions
+              </Button>
+            </div>
           </form>
         </DialogActions>
       </Dialog>
