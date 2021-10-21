@@ -34,18 +34,19 @@ const styles = theme => createStyles({
     flexDirection: "row",
     alignItems: "center",
     padding: theme.spacing(0, 3),
-    background: theme.palette.background.default,
-    color: theme.palette.common.black,
+    background: theme.appBar.header.background,
+    color: theme.appBar.header.color,
   },
   root: {
     marginTop: theme.spacing(8),
     height: `calc(100vh - ${theme.spacing(8)}px)`
   },
   fullEditViewBackground: {
-    background: theme.palette.background.default
+    background: theme.appBar.header.background,
   },
   headerAlternate: {
-    background: theme.palette.common.white,
+    background: `${theme.appBar.headerAlternate.background} !important`,
+    color: `${theme.appBar.headerAlternate.color} !important`,
   },
   titleWrapper: {
     transform: "scale(2) translateX(-100%)",
@@ -236,9 +237,13 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                     modified={values ? new Date(values.modifiedOn) : null}
                     auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
                     manualUrl={manualLink}
+                    classes={{ buttonAlternate: this.state.isScrolling && classes.headerAlternate }}
                   />
                 )}
-                <Button onClick={this.onCloseClick} className="closeAppBarButton">
+                <Button
+                  onClick={this.onCloseClick}
+                  className={clsx("closeAppBarButton", this.state.isScrolling && classes.headerAlternate)}
+                >
                   Close
                 </Button>
                 <FormSubmitButton

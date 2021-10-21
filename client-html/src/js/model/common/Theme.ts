@@ -26,6 +26,7 @@ export interface AppTheme extends Theme {
   blog: StringKeyObject<StringKeyObject<ColorGetter>>;
   share: StringKeyObject<StringKeyObject<ColorGetter>>;
   statistics: StringKeyObject<StringKeyObject<ColorGetter>>;
+  appBar: StringKeyObject<StringKeyObject<ColorGetter>>;
   appBarButton: StringKeyObject<StringKeyObject<ColorGetter>>;
   tabList: StringKeyObject<StringKeyObject<ColorGetter>>;
   table: StringKeyObject<SimplePaletteColorOptions>;
