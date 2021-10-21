@@ -188,6 +188,8 @@ public class DuplicateCourseClass {
                         var tutorAttendance = context.newObject(TutorAttendance.class);
                         tutorAttendance.setSession(newSession);
                         tutorAttendance.setCourseClassTutor(cct);
+                        tutorAttendance.setStartDatetime(newSession.getStartDatetime());
+                        tutorAttendance.setEndDatetime(newSession.getEndDatetime());
                         tutorAttendance.setAttendanceType(AttendanceType.UNMARKED);
                     }
                 }

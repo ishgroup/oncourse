@@ -19,3 +19,15 @@ properties:
     type: integer
   hasPayslip:
     type: boolean
+  start:
+    type: string
+    format: date-time
+    description: tutor roster start date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'
+  end:
+    type: string
+    format: date-time
+    description: tutor roster end date/time in UTC ISO-8601 format
+    required: true
+    example: 2019-06-03'T'00:00:00.000'Z'

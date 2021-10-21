@@ -1367,6 +1367,8 @@
 		<db-attribute name="note" type="LONGVARCHAR" length="8000"/>
 		<db-attribute name="sessionId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="endDatetime" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="startDatetime" type="TIMESTAMP" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Session_Module">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -3153,6 +3155,8 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="note"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="endDatetime" type="java.util.Date" db-attribute-path="endDatetime"/>
+		<obj-attribute name="startDatetime" type="java.util.Date" db-attribute-path="startDatetime"/>
 	</obj-entity>
 	<obj-entity name="UnavailableRule" abstract="true" className="ish.oncourse.server.cayenne.UnavailableRule" clientClassName="ish.oncourse.cayenne.UnavailableRule" dbEntityName="UnavailableRule" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="allDay" type="java.lang.Boolean" db-attribute-path="allDay"/>

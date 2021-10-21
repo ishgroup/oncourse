@@ -17,6 +17,7 @@ import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
 import ish.oncourse.server.api.v1.model.TutorAttendanceTypeDTO
 import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.users.SystemUserService
+import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
 class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, TutorAttendance, TutorAttendanceDao> {
@@ -40,6 +41,8 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         dto.note = cayenneModel.note
         dto.durationMinutes = cayenneModel.durationMinutes
         dto.hasPayslip = cayenneModel.hasPayslips()
+        dto.start = LocalDateUtils.dateToTimeValue(cayenneModel.startDatetime)
+        dto.end = LocalDateUtils.dateToTimeValue(cayenneModel.endDatetime)
         dto
     }
 
@@ -49,6 +52,8 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         cayenneModel.note = dto.note
         cayenneModel.durationMinutes = dto.durationMinutes
         cayenneModel.markedByUser = cayenneModel.context.localObject(userService.currentUser)
+        cayenneModel.startDatetime = LocalDateUtils.timeValueToDate(dto.start)
+        cayenneModel.endDatetime = LocalDateUtils.timeValueToDate(dto.end)
         cayenneModel
     }
 

@@ -24,6 +24,8 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import java.math.RoundingMode
+import java.time.Duration
 
 /**
  * Sessions represent the classroom sessions a student attends when enrolled in a class. Sessions are a timetabled event. Not all classes have sessions.
@@ -72,10 +74,15 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	@API
 	BigDecimal getPayableDurationInHours() {
 		if (getEndDatetime() == null || getStartDatetime() == null) {
-			return new BigDecimal("0")
+			return BigDecimal.ZERO
 		}
-		return DurationFormatter.parseDurationInHours(getEndDatetime().getTime() - getStartDatetime().getTime() -
-				(getPayAdjustment() == null ? 0 : getPayAdjustment() * 60000))
+		Integer minutes = Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutesPart()
+		if (payAdjustment) {
+			minutes = minutes.minus(payAdjustment)
+		}
+		BigDecimal decimalValue = new BigDecimal(minutes)
+		decimalValue.setScale(4)
+		return decimalValue.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
 	}
 
 	/**

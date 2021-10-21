@@ -17,6 +17,8 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._TutorAttendance
 
 import javax.annotation.Nonnull
+import java.math.RoundingMode
+import java.time.Duration
 
 /**
  * This entity represents the relationship between a tutor and the sessions that comprise
@@ -115,5 +117,15 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	@Override
 	Session getSession() {
 		return super.getSession()
+	}
+
+	/**
+	 * @return  payable duration in hours
+	 */
+	BigDecimal getPayableDurationInHours() {
+		Integer minutes = durationMinutes?: Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutesPart()
+		BigDecimal decimalValue = new BigDecimal(minutes)
+		decimalValue.setScale(4)
+		return decimalValue.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
 	}
 }

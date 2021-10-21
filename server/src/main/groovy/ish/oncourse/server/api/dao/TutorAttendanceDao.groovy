@@ -28,6 +28,8 @@ class TutorAttendanceDao implements ClassRelatedDao<TutorAttendance> {
         tutorAttendance.session = session
         tutorAttendance.courseClassTutor = classTutor
         tutorAttendance.attendanceType = AttendanceType.UNMARKED
+        tutorAttendance.startDatetime = session.startDatetime
+        tutorAttendance.endDatetime = session.endDatetime
         return tutorAttendance
     }
 

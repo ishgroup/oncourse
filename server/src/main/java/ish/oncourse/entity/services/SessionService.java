@@ -53,15 +53,4 @@ public class SessionService {
 		}
 		return null;
 	}
-
-	/**
-	 * @return session payable duration in minutes
-	 */
-	public Integer getPayableDurationInMinutes(Session session) {
-		Integer adjustment = session.getPayAdjustment();
-		if (adjustment == null) {
-			return session.getDurationInMinutes();
-		}
-		return session.getDurationInMinutes() - adjustment;
-	}
 }
