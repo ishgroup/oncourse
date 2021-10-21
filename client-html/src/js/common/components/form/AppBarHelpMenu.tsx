@@ -17,6 +17,9 @@ const styles = theme =>
       color: theme.appBarButton.helpMenu.color,
       marginRight: "10px"
     },
+    buttonAlternate: {
+      color: theme.appBarButton.helpMenu.color,
+    },
     info: {
       display: "flex",
       flexDirection: "column",
@@ -68,8 +71,8 @@ class AppBarHelpMenu extends React.Component<Props, any> {
   render() {
     const { anchorEl } = this.state;
     const {
- classes, created, modified, iconClasses
-} = this.props;
+      classes, created, modified, iconClasses
+    } = this.props;
 
     return (
       <>
@@ -122,6 +125,7 @@ class AppBarHelpMenu extends React.Component<Props, any> {
             onClick={this.handleAddFieldClick}
             className={clsx({
               [classes.button]: !iconClasses,
+              [classes.buttonAlternate]: !iconClasses,
               [iconClasses]: !!iconClasses
             })}
           >
