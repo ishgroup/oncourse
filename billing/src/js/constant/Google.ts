@@ -5,8 +5,14 @@
 
 import { GTMTrigger, GTMVariable } from '../models/Google';
 
+export const GTM_CONTAINER_NAME_DEFAULT = 'ish onCourse Google Tag manager container';
+
+export const GA_PROPERTY_NAME_DEFAULT = 'ish onCourse Google Analytics web property';
+
+export const GAS_VARIABLE_NAME = 'ish onCourse Google Analytics settings';
+
 export const getGASVariable = (trakingId: string): GTMVariable => ({
-  name: 'ish onCourse Google Analytics settings',
+  name: GAS_VARIABLE_NAME,
   type: 'gas',
   parameter: [
     {
@@ -64,18 +70,18 @@ export const getGASVariable = (trakingId: string): GTMVariable => ({
 
 export const MAPS_API_KEY_NAME = 'Google Maps API Key';
 
-export const MAPS_API_KEY_VARIABLE_DATA_DEFAULT: GTMVariable = {
+export const getMapsApiKeyVariable = (apiKey: string): GTMVariable => ({
   name: MAPS_API_KEY_NAME,
   type: 'c',
   parameter: [
     {
       type: 'TEMPLATE',
       key: 'value',
-      value: 'abcxyz'
+      value: apiKey
     }
   ],
   formatValue: {}
-};
+});
 
 export const ALL_PAGES_TRIGGER_DEFAULT: GTMTrigger = {
   name: 'All pages',

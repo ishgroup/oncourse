@@ -5,7 +5,8 @@
 
 import { DefaultHttpService } from './HttpService';
 import {
-  GTMAccount, GTMTag, GTMTrigger, GTMVariable
+  GAWebProperty,
+  GTMAccount, GTMContainer, GTMTag, GTMTrigger, GTMVariable
 } from '../../models/Google';
 
 class GoogleService {
@@ -17,6 +18,20 @@ class GoogleService {
         Authorization
       }
     });
+  }
+
+  public createGAProperty(
+    Authorization: string,
+    account: string,
+    property: GAWebProperty
+  ): Promise<GAWebProperty> {
+    return this.http.POST(`https://www.googleapis.com/analytics/v3/management/accounts/${account}/webproperties`,
+      property,
+      {
+        headers: {
+          Authorization
+        }
+      });
   }
 
   public getGAWebProperties(Authorization: string, account: string): Promise<gapi.client.analytics.Webproperties> {
@@ -51,12 +66,34 @@ class GoogleService {
     });
   }
 
+  public getGTMPreview(Authorization: string, account: string, container: string, workspace: string): Promise<gapi.client.tagmanager.QuickPreviewResponse> {
+    return this.http.GET(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}:quick_preview`, {
+      headers: {
+        Authorization
+      }
+    });
+  }
+
   public getGTMWorkspaces(
     Authorization: string,
     account: string,
     container: string
   ): Promise<gapi.client.tagmanager.ListWorkspacesResponse> {
     return this.http.GET(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces`,
+      {
+        headers: {
+          Authorization
+        }
+      });
+  }
+
+  public createGTMContainer(
+    Authorization: string,
+    account: string,
+    container: GTMContainer
+  ): Promise<GTMContainer> {
+    return this.http.POST(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers`,
+      container,
       {
         headers: {
           Authorization

@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
 import { darken } from '@mui/material/styles';
 import { Button } from '@mui/material';
@@ -13,22 +13,25 @@ import * as yup from 'yup';
 import { SiteDTO } from '@api/model';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormikErrors } from 'formik/dist/types';
+import SettingsIcon from '@mui/icons-material/Settings';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { makeAppStyles } from '../../styles/makeStyles';
 import { renderSelectItemsWithEmpty } from '../../utils';
 import Loading from '../common/Loading';
 import GoogleLoginButton from '../common/GoogleLoginButton';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import { updateCollegeSites } from '../../redux/actions/Sites';
-import { SiteValues } from '../../models/Sites';
+import { SitePageParams, SiteValues } from '../../models/Sites';
 import { showConfirm } from '../../redux/actions/Confirm';
 import { GTMContainer } from '../../models/Google';
 import { getTokenString, renderContainerLabel, renderWebPropertyLabel } from '../../utils/Google';
 import { configureGoogleForSite } from '../../redux/actions/Google';
 import GoogleService from '../../api/services/GoogleService';
-import { MAPS_API_KEY_NAME } from '../../constant/Google';
+import { GAS_VARIABLE_NAME, MAPS_API_KEY_NAME } from '../../constant/Google';
 import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFetchErrorHandler';
 import URLs from './URLs';
 import GoogleSetup from './GoogleSetup';
+import TagManager from './TagManager';
 
 const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
@@ -163,10 +166,14 @@ const newSite: SiteDTO = {
 };
 
 export const SitesPage = () => {
+  const [isConfig, setIsConfig] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+
   const loading = useAppSelector((state) => state.loading);
   const sites = useAppSelector((state) => state.sites);
   const collegeKey = useAppSelector((state) => state.college.collegeKey);
-  const { id, page } = useParams<any>();
+
+  const { id, page } = useParams<SitePageParams>();
 
   const dispatch = useAppDispatch();
   const appHistory = useHistory();
@@ -184,20 +191,7 @@ export const SitesPage = () => {
 
   const loggedWithGoogle = Boolean(profile);
 
-  const initialSite = useMemo(() => sites?.find((s) => s.id == id), [id, sites]);
-  const gtmContainer = useMemo(() => {
-    let container: GTMContainer = {};
-
-    for (const key in gtmContainers) {
-      gtmContainers[key]?.forEach((con) => {
-        if (con.containerId === initialSite?.gtmContainerId) {
-          container = con;
-        }
-      });
-    }
-    return container;
-  }, [gtmContainers, initialSite]);
-  const gtmAccountId = useMemo(() => gtmAccounts?.find((ga) => ga.accountId === gtmContainer?.accountId)?.accountId, [gtmAccounts, gtmContainer]);
+  const initialSite = useMemo(() => sites?.find((s) => String(s.id) === id), [id, sites]);
 
   const {
     handleSubmit,
@@ -212,12 +206,23 @@ export const SitesPage = () => {
     resetForm
   } = useFormik<SiteValues>({
     initialValues: {
-      ...initialSite, collegeKey, gtmAccountId, googleMapsApiKey: '', gaWebPropertyId: '', googleAnalyticsId: ''
+      ...initialSite,
+      collegeKey,
+      gtmAccountId: '',
+      googleMapsApiKey: '',
+      gaWebPropertyId: '',
+      googleAnalyticsId: ''
     },
     validationSchema,
     onSubmit: (vals) => {
-      // dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
-      dispatch(configureGoogleForSite(vals));
+      switch (page) {
+        case 'urls':
+          dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
+          break;
+      }
+      if (isConfig) {
+        dispatch(configureGoogleForSite(vals));
+      }
     },
     validate: (vals) => {
       const errorsResult: FormikErrors<SiteValues> = {};
@@ -229,6 +234,23 @@ export const SitesPage = () => {
       return errorsResult;
     }
   });
+
+  const gtmContainer = useMemo(() => {
+    if (!values.gtmContainerId) {
+      return null;
+    }
+
+    let container: GTMContainer = {};
+
+    for (const key in gtmContainers) {
+      gtmContainers[key]?.forEach((con) => {
+        if (con.publicId === values.gtmContainerId) {
+          container = con;
+        }
+      });
+    }
+    return container;
+  }, [gtmContainers, values.gtmContainerId]);
 
   const gaAccountItems = useMemo(() => renderSelectItemsWithEmpty({
     items: gaAccounts,
@@ -247,7 +269,7 @@ export const SitesPage = () => {
   const gtmContainerItems = useMemo(() => renderSelectItemsWithEmpty(
     {
       items: (gtmContainers || {})[values.gtmAccountId],
-      valueKey: 'containerId',
+      valueKey: 'publicId',
       labelKey: 'name',
       labelCondition: renderContainerLabel
     }
@@ -266,72 +288,121 @@ export const SitesPage = () => {
     && gtmContainers
     && !Object.keys(gtmContainers)
       .some((k) => gtmContainers[k]
-        .some((c) => c.containerId === values.gtmContainerId));
-
+        .some((c) => c.publicId === values.gtmContainerId));
 
   useEffect(() => {
     if (initialSite) {
       resetForm({
         values: {
-          ...initialSite || {}, collegeKey, gtmAccountId, googleMapsApiKey: '', gaWebPropertyId: '', googleAnalyticsId: ''
+          ...initialSite,
+          collegeKey,
+          gtmAccountId: '',
+          googleMapsApiKey: '',
+          gaWebPropertyId: '',
+          googleAnalyticsId: ''
         }
       });
     }
-  }, [initialSite, collegeKey, gtmAccountId]);
+  }, [collegeKey, initialSite]);
 
-  const getGoogleMapsAPiKey = async (site: SiteValues) => {
+  const getGoogleData = async (site: SiteDTO) => {
+    setCustomLoading(true);
     try {
       const googleToken = getTokenString({ token } as any);
 
-      if (token?.access_token && site.gtmAccountId && site.gtmContainerId) {
+      const googleData = {
+        gtmAccountId: '',
+        googleMapsApiKey: '',
+        gaWebPropertyId: '',
+        googleAnalyticsId: ''
+      };
+
+      if (token?.access_token && site.gtmContainerId && gtmContainer) {
+        googleData.gtmAccountId = gtmContainer.accountId;
+
         const workspaces = await GoogleService.getGTMWorkspaces(
           googleToken,
-          site.gtmAccountId,
+          googleData.gtmAccountId,
           site.gtmContainerId
         );
         const workspace = workspaces?.workspace[0]?.workspaceId;
 
         if (workspace) {
-          GoogleService.getGTMVariables(
+          await GoogleService.getGTMPreview(
             googleToken,
-            site.gtmAccountId,
+            googleData.gtmAccountId,
             site.gtmContainerId,
             workspace
           ).then((res) => {
-            if (res.variable) {
-              res.variable.forEach((v) => {
+            if (res.containerVersion.accountId) {
+              googleData.gtmAccountId = res.containerVersion.accountId;
+            }
+            if (res.containerVersion.variable) {
+              res.containerVersion.variable.forEach((v) => {
                 if (v.name === MAPS_API_KEY_NAME) {
                   v.parameter.forEach((p) => {
                     if (p.key === 'value') {
-                      resetForm({
-                        values: {
-                          ...values, googleMapsApiKey: p.value
-                        }
-                      });
+                      googleData.googleMapsApiKey = p.value;
+                    }
+                  });
+                }
+                if (v.name === GAS_VARIABLE_NAME) {
+                  v.parameter.forEach((p) => {
+                    if (p.key === 'trackingId') {
+                      googleData.gaWebPropertyId = p.value;
                     }
                   });
                 }
               });
             }
           });
+
+          if (googleData.gaWebPropertyId && gaWebProperties) {
+            Object.keys(gaWebProperties).forEach((key) => {
+              gaWebProperties[key].forEach((pr) => {
+                googleData.googleAnalyticsId = pr.accountId;
+              });
+            });
+          }
+
+          resetForm({
+            values: {
+              ...initialSite,
+              ...googleData,
+              collegeKey,
+            }
+          });
         }
       }
+      setCustomLoading(false);
     } catch (e) {
+      setCustomLoading(false);
       instantFetchErrorHandler(dispatch, e);
     }
   };
 
   useEffect(() => {
-    getGoogleMapsAPiKey(values);
-  }, [values.gtmAccountId, values.gtmContainerId]);
+    if (initialSite?.gtmContainerId && initialSite?.id) {
+      getGoogleData(initialSite);
+    }
+  }, [initialSite?.id]);
 
   useEffect(() => {
-    if (values && !values.id) {
+    if (id === 'new') {
       setValues({
-        ...newSite, collegeKey, gtmAccountId, googleMapsApiKey: '', gaWebPropertyId: '', googleAnalyticsId: ''
+        ...newSite,
+        collegeKey,
+        gtmAccountId: '',
+        googleMapsApiKey: '',
+        gaWebPropertyId: '',
+        googleAnalyticsId: ''
       });
     }
   }, [id]);
+
+  useEffect(() => {
+    setIsConfig(false);
+  }, [id, page]);
 
   const { classes, cx } = useStyles();
 
@@ -345,10 +416,31 @@ export const SitesPage = () => {
         }
       }));
     }
-    appHistory.push(`/websites/${sites[0]?.id}`);
+    appHistory.push(`/websites/${sites[0]?.id}/urls`);
   };
 
   const renderPage = () => {
+    if (isConfig) {
+      return (
+        <GoogleSetup
+          cx={cx}
+          classes={classes}
+          site={values}
+          error={errors as any}
+          setFieldValue={setFieldValue}
+          handleChange={handleChange}
+          gaAccountItems={gaAccountItems}
+          gtmAccountItems={gtmAccountItems}
+          gaWebPropertyItems={gaWebPropertyItems}
+          gtmContainerItems={gtmContainerItems}
+          loggedWithGoogle={loggedWithGoogle}
+          googleProfileEmail={profile?.email}
+          googleLoading={googleLoading || customLoading}
+          concurentAccounts={concurentAccounts}
+        />
+      );
+    }
+
     switch (page) {
       case 'urls':
         return (
@@ -364,23 +456,11 @@ export const SitesPage = () => {
             handleChange={handleChange}
           />
         );
-      case 'googleSettings':
+
+      case 'tagManager':
         return (
-          <GoogleSetup
-            cx={cx}
-            classes={classes}
-            site={values}
-            error={errors as any}
-            setFieldValue={setFieldValue}
-            handleChange={handleChange}
-            gaAccountItems={gaAccountItems}
-            gtmAccountItems={gtmAccountItems}
-            gaWebPropertyItems={gaWebPropertyItems}
-            gtmContainerItems={gtmContainerItems}
-            loggedWithGoogle={loggedWithGoogle}
-            googleProfileEmail={profile?.email}
-            googleLoading={googleLoading}
-            concurentAccounts={concurentAccounts}
+          <TagManager
+            gtmContainer={gtmContainer}
           />
         );
       default:
@@ -418,7 +498,7 @@ export const SitesPage = () => {
                   </Button>
                 )}
 
-                {page !== 'analytics' && (
+                {(isConfig || page === 'urls') && (
                   <LoadingButton
                     variant="contained"
                     color="primary"
@@ -429,6 +509,33 @@ export const SitesPage = () => {
                   >
                     Save
                   </LoadingButton>
+                )}
+
+                {!isConfig && page === 'tagManager'
+                && (
+                  <Button
+                    onClick={() => window.open(`https://tagmanager.google.com/${gtmContainer.path}`, 'blank')}
+                    disableElevation
+                    color="primary"
+                    variant="contained"
+                    className="mr-2"
+                    endIcon={<OpenInNewIcon />}
+                    disabled={!gtmContainer?.path}
+                  >
+                    Open tag manager
+                  </Button>
+                )}
+
+                {!isConfig && page !== 'urls' && (
+                  <Button
+                    onClick={() => setIsConfig(true)}
+                    disableElevation
+                    color="primary"
+                    variant="contained"
+                    startIcon={<SettingsIcon />}
+                  >
+                    Configure
+                  </Button>
                 )}
               </div>
             </div>

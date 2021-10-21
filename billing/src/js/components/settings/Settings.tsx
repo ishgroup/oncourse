@@ -79,7 +79,7 @@ const Settings = () => {
   const appHistory = useHistory();
 
   const onAddSite = () => {
-    appHistory.push('/websites/new');
+    appHistory.push('/websites/new/urls');
   };
 
   return (
@@ -142,13 +142,23 @@ const Settings = () => {
                       <NavLink
                         exact
                         strict
-                        to={`/websites/${s.id}/googleSettings`}
+                        to={`/websites/${s.id}/tagManager`}
                         activeClassName={classes.activeNav}
                       >
                         <Typography variant="body2" className={classes.navItem}>
-                          Google settings
+                          Tag manager
                         </Typography>
                       </NavLink>
+                      {/*<NavLink*/}
+                      {/*  exact*/}
+                      {/*  strict*/}
+                      {/*  to={`/websites/${s.id}/googleSearch`}*/}
+                      {/*  activeClassName={classes.activeNav}*/}
+                      {/*>*/}
+                      {/*  <Typography variant="body2" className={classes.navItem}>*/}
+                      {/*    Google search*/}
+                      {/*  </Typography>*/}
+                      {/*</NavLink>*/}
                     </ul>
                   </li>
                 ))}

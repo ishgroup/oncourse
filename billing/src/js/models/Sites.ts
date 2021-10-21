@@ -23,3 +23,8 @@ export interface SitesUpdateRequest {
   created?: SiteDTO[];
   removed?: number[];
 }
+
+export interface SitePageParams {
+  id: string;
+  page: 'analytics' | 'urls' | 'tagManager' | 'googleSearch'
+}
