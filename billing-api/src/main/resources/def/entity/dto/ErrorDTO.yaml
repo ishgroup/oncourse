@@ -1,0 +1,6 @@
+type: object
+properties:
+  message:
+    type: string
+    description: Error description
+    example: College name is required

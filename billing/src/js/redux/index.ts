@@ -1,8 +1,10 @@
-import {applyMiddleware, compose, createStore, Store, StoreEnhancer} from 'redux';
-import { createLogger } from "redux-logger";
-import { createEpicMiddleware } from "redux-observable";
-import { createCollegeReducer } from "./reducers";
-import { EpicRoot } from "./epics";
+import {
+  applyMiddleware, compose, createStore, Store, StoreEnhancer
+} from 'redux';
+import { createLogger } from 'redux-logger';
+import { createEpicMiddleware } from 'redux-observable';
+import { billingReducers } from './reducers';
+import { EpicRoot } from './epics';
 
 export const epicMiddleware = createEpicMiddleware();
 
@@ -11,16 +13,15 @@ const getMiddleware = (): StoreEnhancer<any> => {
     collapsed: true,
   });
 
-  if (process.env.NODE_ENV ==="development") {
+  if (process.env.NODE_ENV === 'development') {
     return applyMiddleware(epicMiddleware, logger);
-  } else {
-    return applyMiddleware(epicMiddleware);
   }
+  return applyMiddleware(epicMiddleware);
 };
 
-export const CreateStore = (): Store<any> => {
+const CreateStore = (): Store<any> => {
   const store: Store<any> = createStore(
-    createCollegeReducer,
+    billingReducers,
     compose(getMiddleware()),
   ) as Store<any>;
 
@@ -28,3 +29,5 @@ export const CreateStore = (): Store<any> => {
 
   return store;
 };
+
+export const store = CreateStore();

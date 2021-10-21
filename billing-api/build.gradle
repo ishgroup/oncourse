@@ -20,5 +20,6 @@ dependencies {
     implementation project(':common:common-templates')
     implementation project(':common:common-bootique')
     implementation project(':common:common-services')
+    implementation 'commons-net:commons-net:3.8.0'
     implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 }

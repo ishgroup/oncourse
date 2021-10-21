@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FETCH_FAIL } from "../../redux/actions";
-import { IAction } from "../../redux/actions/IshAction";
+import { FETCH_FAIL } from '../../redux/actions';
+import { IAction } from '../../models/IshAction';
 
 const FetchErrorHandler = (response: any, customMessage?: string): IAction<any>[] => {
   if (!customMessage) {
-    customMessage = "Something went wrong";
+    customMessage = 'Something went wrong';
   }
 
   if (!response) {
@@ -29,7 +29,7 @@ const FetchErrorHandler = (response: any, customMessage?: string): IAction<any>[
           type: FETCH_FAIL,
           payload: {
             formError: data,
-            message: data.errorMessage || customMessage
+            message: data?.errorMessage || data?.error?.message || customMessage
           }
         }
       ];
@@ -39,7 +39,7 @@ const FetchErrorHandler = (response: any, customMessage?: string): IAction<any>[
         {
           type: FETCH_FAIL,
           payload: {
-            message: data.errorMessage || customMessage
+            message: data?.errorMessage || data?.error?.message || customMessage
           }
         }
       ];
@@ -50,7 +50,7 @@ const FetchErrorHandler = (response: any, customMessage?: string): IAction<any>[
       return [
         {
           type: FETCH_FAIL,
-          payload: { message: customMessage || "Something went wrong" }
+          payload: { message: customMessage || 'Something went wrong' }
         }
       ];
   }

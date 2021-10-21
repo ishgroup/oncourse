@@ -1,0 +1,69 @@
+get:
+  operationId: getSites
+  description: |
+    Get existing college sites
+  tags:
+    - WebSite
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
+  responses:
+    '200':
+      description: list of college sites
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/dto/SiteDTO.yaml'
+post:
+  operationId: createSite
+  description: |
+    crate new web site
+  tags:
+    - WebSite
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
+  parameters:
+    - name: site
+      in: body
+      description: new site object to create
+      required: true
+      schema:
+        $ref: './def/entity/dto/SiteDTO.yaml'
+  responses:
+    '200':
+      description: college sites responce
+put:
+  operationId: updateSite
+  description: |
+    Update existing college site
+  tags:
+    - WebSite
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
+  parameters:
+    - name: site
+      in: body
+      description: site to update
+      required: true
+      schema:
+        $ref: './def/entity/dto/SiteDTO.yaml'
+  responses:
+    '200':
+      description: success responce
+delete:
+  operationId: deleteSite
+  description: |
+    delete existing college site
+  tags:
+    - WebSite
+  x-filter:
+    - ish.oncourse.api.access.AuthFilter
+  parameters:
+    - name: id
+      in: path
+      description: unique cart identifier
+      required: true
+      type: integer
+      format: int64
+  responses:
+    '200':
+      description: success responce

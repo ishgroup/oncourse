@@ -1,0 +1,11 @@
+type: object
+properties:
+  firstname:
+    type: string
+    description: system user's first name
+  lastname:
+    type: string
+    description: system user's last name
+  email:
+    type: string
+    description: User's email

@@ -3,15 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observable';
+import {
+  ActionsObservable, Epic, ofType, StateObservable
+} from 'redux-observable';
 import { concat, from, Observable } from 'rxjs';
-import { catchError, delay, flatMap, mergeMap } from 'rxjs/operators';
-import { IAction } from '../actions/IshAction';
+import {
+  catchError, delay, flatMap, mergeMap
+} from 'rxjs/operators';
+import { IAction } from '../../models/IshAction';
 import { FETCH_FINISH, FETCH_START } from '../actions';
 import FetchErrorHandler from '../../api/fetch-errors-handlers/FetchErrorHandler';
 import { REJECTED } from '../actions/ActionUtils';
 import { EnvironmentConstants } from '../../constant/EnvironmentConstants';
-import { State } from '../reducers';
+import { State } from '../../models/State';
 
 export interface Request<V = any, P = any> {
   type: string;

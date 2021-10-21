@@ -1,0 +1,25 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  key:
+    type: string
+  name:
+    type: string
+  gtmContainerId:
+    type: string
+  webSiteTemplate:
+    description: web site template, neew to create new site only
+    $ref: '../../enum/SiteTemplate.yaml'
+  domains:
+    type: object
+    description: map where keys are domains, values are errors if some of this domain ip addresses are not in range
+    additionalProperties:
+      type: string
+  primaryDomain:
+    type: string
+    description: primary web site domain
+  configuredByInfo:
+    description: info about system user who configured google accounts of this website
+    $ref: '../UserInfo.yaml'

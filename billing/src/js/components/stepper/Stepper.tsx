@@ -6,9 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import Typography from '@mui/material/Typography';
 import { makeAppStyles } from '../../styles/makeStyles';
 import LeftMenu from '../common/LeftMenu';
@@ -17,13 +16,11 @@ import TemplateForm from './steps/TemplateForm';
 import ContactForm from './steps/ContactForm';
 import OrganisationForm from './steps/OrganisationForm';
 import FinishPage from './steps/FinishPage';
-import { setCaptchaToken } from '../../redux/actions';
 import ErrorPage from '../ErrorPage';
 import { SITE_KEY } from '../../constant/common';
-import { SitesPage } from './steps/SitesPage';
-import { State } from '../../redux/reducers';
-import { Step } from '../../models/User';
-import iconDots from '../../../images/icon-dots.png';
+import { NewCustomerSteps, Step } from '../../models/User';
+import { State } from '../../models/State';
+import LeftStepper from '../common/LeftStepper';
 
 export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const formItem = {
@@ -39,30 +36,8 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   } as const;
 
   return {
-    root: {
-      width: '100%',
-      marginTop: '0',
-      height: '100vh',
-      display: 'flex',
-      paddingLeft: 250
-    },
-    content: {
-      margin: 'auto',
+    maxWidth: {
       maxWidth: 1200,
-      padding: theme.spacing(10),
-      width: '100%',
-    },
-    contentInner: {
-      backgroundImage: `url(${iconDots})`,
-      backgroundPosition: '0 0',
-      backgroundSize: 18,
-      padding: '48px 48px 130px',
-    },
-    formWrapper: {
-      flex: 1,
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0px 20px 0px 20px'
     },
     instructions: {
       marginTop: theme.spacing(1),
@@ -113,23 +88,17 @@ const getComponent = (type: Step, props: any) => {
       return <OrganisationForm {...props} />;
     case 'All done!':
       return <FinishPage {...props} />;
-    case 'Sites':
-      return <SitesPage {...props} />;
   }
 };
 
 interface Props {
   serverError?: any;
-  setCaptchaToken?: any;
-  userKey?: string;
-  steps?: Step[];
 }
 
-const Stepper: React.FC<Props> = (
+const Stepper = (
   {
-    serverError,
-    steps
-  }
+    serverError
+  }: Props
 ) => {
   const { classes, cx } = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -151,7 +120,7 @@ const Stepper: React.FC<Props> = (
   }, []);
 
   const handleNext = () => {
-    if (activeStep === steps.length - 1) return;
+    if (activeStep === NewCustomerSteps.length - 1) return;
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -160,38 +129,37 @@ const Stepper: React.FC<Props> = (
   };
 
   const childrenProps = {
-    activeStep, steps, handleBack, handleNext
+    activeStep, handleBack, handleNext
   };
 
-  const activePage = React.useMemo(() => getComponent(steps[activeStep], childrenProps), [activeStep, steps]);
-  const hasSites = steps[activeStep] === 'Sites';
-  const completed = hasSites ? false : activeStep === steps.length - 1;
+  const activePage = useMemo(() => getComponent(NewCustomerSteps[activeStep], childrenProps), [activeStep]);
+  const completed = activeStep === NewCustomerSteps.length - 1;
 
   return (
-    <div className={classes.root}>
-      <LeftMenu
-        items={steps}
-        activeStep={activeStep}
-        completed={completed}
-      />
+    <div className="root">
+      <LeftMenu>
+        <LeftStepper
+          items={NewCustomerSteps as any}
+          activeStep={activeStep}
+          completed={completed}
+        />
+      </LeftMenu>
 
-      <div className={classes.formWrapper}>
-        <div className={classes.content}>
+      <div className="formWrapper">
+        <div className={cx('content', classes.maxWidth)}>
           {serverError ? (
-            <div className={cx(classes.contentInner, classes.hasError)}>
+            <div className={cx('contentInner', classes.hasError)}>
               <div className={classes.formItem}>
                 <ErrorPage />
               </div>
             </div>
           ) : (
-            <div className={cx(classes.contentInner, completed && classes.stepsCompleted)}>
+            <div className={cx('contentInner', completed && classes.stepsCompleted)}>
               <div className={classes.formItem}>
-                {!hasSites && (
-                  <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
-                    Step&nbsp;
-                    {activeStep + 1}
-                  </Typography>
-                )}
+                <Typography variant="subtitle2" gutterBottom className={classes.formStep}>
+                  Step&nbsp;
+                  {activeStep + 1}
+                </Typography>
                 {activePage}
               </div>
             </div>
@@ -203,11 +171,8 @@ const Stepper: React.FC<Props> = (
 };
 
 const mapStateToProps = (state: State) => ({
-  serverError: state.serverError
+  serverError: state.college.serverError
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCaptchaToken: (token) => dispatch(setCaptchaToken(token)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Stepper);
+export default connect(mapStateToProps)(Stepper);

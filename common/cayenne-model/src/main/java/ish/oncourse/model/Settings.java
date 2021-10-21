@@ -16,6 +16,11 @@ public class Settings extends _Settings {
     
     public static final String BILLING_USERS = "billing.users";
     public static final String BILLING_PLAN = "billing.plan";
+    public static final String BILLING_REQUEST_USERS = "billing.request.users";
+    public static final String BILLING_REQUEST_PLAN = "billing.request.plan";
+
+    public static final String BILLING_INVOICE_REFERENCE = "billing.theirref";
+
     public static final String BILLING_CURRENCY = "billing.currency";
     public static final String BILLING_CONTACT_NAME = "billing.contact_name";
     public static final String BILLING_CONTACT_EMAIL = "billing.contact_email";

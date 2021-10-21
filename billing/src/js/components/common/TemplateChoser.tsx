@@ -305,7 +305,7 @@ export const TemplateField = ({ onChange, value, ...rest }: TextFieldProps) => {
       </Dialog>
       <TextField
         {...rest}
-        value={imgData.find((img) => img.value === value)?.host}
+        value={imgData.find((img) => img.value === value)?.host || ""}
         onClick={rest.disabled ? null : () => setOpen(true)}
       />
     </>

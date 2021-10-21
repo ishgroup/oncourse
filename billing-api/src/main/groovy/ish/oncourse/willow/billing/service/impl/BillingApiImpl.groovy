@@ -5,13 +5,14 @@ import com.amazonaws.services.s3.model.Region
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.api.request.RequestService
-import ish.oncourse.configuration.Configuration
 import ish.oncourse.model.*
 import ish.oncourse.services.mail.EmailBuilder
 import ish.oncourse.services.mail.SendEmail
 import ish.oncourse.services.persistence.ICayenneService
 import ish.oncourse.services.s3.IS3Service
 import ish.oncourse.util.PreferenceUtil
+import ish.oncourse.willow.billing.env.EnvironmentService
+import ish.oncourse.willow.billing.v1.model.BillingPlan
 import ish.oncourse.willow.billing.v1.model.CollegeDTO
 import ish.oncourse.willow.billing.v1.model.Currency
 import ish.oncourse.willow.billing.v1.service.BillingApi
@@ -42,10 +43,12 @@ class BillingApiImpl implements BillingApi {
     
     @Inject
     private WebSiteService webSiteService
-    
+
+    @Inject
+    private EnvironmentService environmentService
+
     private static final String BUCKET_NAME_FORMAT = "ish-oncourse-%s"
     private static final String AWS_USER_NAME_FORMAT = "college.%s"
-    private static final String UPDATE_SCRIPT_PATH = Configuration.getValue(BILLING_UPDATE)
 
 
     private static final Logger logger = LogManager.logger
@@ -98,7 +101,7 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createSetting(context, college, Settings.STORAGE_REGION, Region.AP_Sydney.toString())
 
                 PreferenceUtil.createSetting(context, college, Settings.BILLING_USERS, '1')
-                PreferenceUtil.createSetting(context, college, Settings.BILLING_PLAN, 'starter-21')
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_PLAN, BillingPlan.STARTER_21.toString())
                 PreferenceUtil.createSetting(context, college, Settings.BILLING_CURRENCY, (collegeDTO.currency ? collegeDTO.currency.toString() : Currency.AU.toString()))
                 PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_NAME, "$collegeDTO.userFirstName $collegeDTO.userLastName")
                 PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_EMAIL,  collegeDTO.userEmail)
@@ -113,12 +116,9 @@ class BillingApiImpl implements BillingApi {
             
             dbDone = true
 
-            try {
-                Runtime.getRuntime().exec("$UPDATE_SCRIPT_PATH collegeCreate $collegeDTO.collegeKey")
-                saltDone = true
-            } catch (Exception e) {
-                logger.catching(e)
-            }
+            saltDone = environmentService.collegeCreated(collegeDTO.collegeKey)
+            
+
             
             logger.warn("College was created:$collegeDTO.collegeKey")
             sendEmail('College was created', "college info: $collegeDTO")

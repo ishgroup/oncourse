@@ -1,0 +1,5 @@
+type: string
+enum:
+  - starter-21
+  - basic-21
+  - premium-21

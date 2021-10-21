@@ -1,0 +1,6 @@
+type: object
+properties:
+  clientId:
+    type: string
+    description: client id from application properties
+    example: 123412341234-4a647as45tasd4as7asdfg818asd9h1.apps.googleusercontent.com

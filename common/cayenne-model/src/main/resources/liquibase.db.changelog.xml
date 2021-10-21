@@ -72,7 +72,7 @@
 	<changeSet id="8" author="rostislav" runOnChange="false" runAlways="false" context="production">
 		<modifyDataType tableName="Course" columnName="code" newDataType="VARCHAR(128)"/>
 	</changeSet>
-	
+
 	<changeSet id="9" author="rostislav" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
@@ -518,7 +518,7 @@
 								 referencedColumnNames="id"
 								 validate="true"/>
 	</changeSet>
-	
+
 	<changeSet id="43" author="artyom" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
@@ -529,7 +529,7 @@
 			<column name="sessionId" type="VARCHAR(256)"/>
 		</addColumn>
 	</changeSet>
-	
+
 	<changeSet id="44" author="artyom" runOnChange="false" runAlways="false" context="production">
 		<preConditions onFail="MARK_RAN">
 			<not>
@@ -661,4 +661,27 @@
 <!--		<addNotNullConstraint tableName="SessionTutor" columnName="endDate" columnDataType="DATETIME" />-->
 <!--	</changeSet>-->
 
+	<changeSet id="48" author="dmitriy" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="HALT">
+			<not>
+				<columnExists tableName="WebSite" columnName="configuredByUserId"/>
+			</not>
+		</preConditions>
+		<addColumn tableName="WebSite">
+			<column name="configuredByUserId" type="BIGINT"/>
+		</addColumn>
+		<addForeignKeyConstraint baseTableName="WebSite"
+														 baseColumnNames="configuredByUserId"
+														 constraintName="Website_ConfiguredBySystemUser_fk"
+														 referencedTableName="SystemUser"
+														 referencedColumnNames="id"
+														 validate="true"/>
+	</changeSet>
+
+	<changeSet id="49" author="dmitriy" runOnChange="false" runAlways="false" context="production">
+		<preConditions onFail="HALT">
+			<columnExists tableName="WebSite" columnName="googleTagmanagerAccount"/>
+		</preConditions>
+		<renameColumn tableName="WebSite" oldColumnName="googleTagmanagerAccount" newColumnName="googleTagmanagerContainer"/>
+	</changeSet>
 </databaseChangeLog>

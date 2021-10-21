@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import Message from "./Message";
-import { clearMessage } from "../../../redux/actions";
-import {State} from "../../../redux/reducers";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import Message from './Message';
+import { clearMessage } from '../../../redux/actions';
+import { State } from '../../../models/State';
 
-const MessageProvider = props => {
+const MessageProvider = (props) => {
   const {
-    message, clearMessage
+    message, clear
   } = props;
 
   return (
@@ -21,7 +21,7 @@ const MessageProvider = props => {
       text={message.message}
       isSuccess={message.success}
       persist={message.persist}
-      clearMessage={clearMessage}
+      clearMessage={clear}
     />
   );
 };
@@ -31,7 +31,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  clearMessage: () => dispatch(clearMessage())
+  clear: () => dispatch(clearMessage())
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(MessageProvider);

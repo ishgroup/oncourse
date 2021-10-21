@@ -16,11 +16,11 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { makeAppStyles } from '../../../styles/makeStyles';
 import CustomTextField from '../../common/TextField';
-import { createCollege, setOrganisationFormValues } from '../../../redux/actions';
 import Navigation from '../Navigations';
 import { countries, countriesTimeZone } from '../../../utils';
-import { State } from '../../../redux/reducers';
 import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps';
+import { State } from '../../../models/State';
+import { createCollege, setOrganisationFormValues } from '../../../redux/actions/College';
 
 const useStyles = makeAppStyles()((theme: any) => ({
   textFieldWrapper: {
@@ -284,11 +284,11 @@ const OrganisationForm = (props: any) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  collegeWasCreated: state.collegeWasCreated,
-  collegeKey: state.collegeKey,
-  webSiteTemplate: state.webSiteTemplate,
-  contactForm: state.contactForm,
-  organisationForm: state.organisationForm,
+  collegeWasCreated: state.college.collegeWasCreated,
+  collegeKey: state.college.collegeKey,
+  webSiteTemplate: state.college.webSiteTemplate,
+  contactForm: state.form.contactForm,
+  organisationForm: state.form.organisationForm,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
