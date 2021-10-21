@@ -5,13 +5,14 @@
 
 package ish.oncourse.willow.billing.utils
 
-
+import groovy.transform.CompileStatic
 import org.apache.commons.net.util.SubnetUtils
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.IPV4_RANGE
 import static ish.oncourse.configuration.Configuration.AdminProperty.IPV6_RANGE
 import static ish.oncourse.configuration.Configuration.getValue
 
+@CompileStatic
 class DomainUtils {
     static List<SubnetUtils> ipV4Ranges = getIp4Ranges()
     static String ipV6Address = getIp6Address()
@@ -35,10 +36,16 @@ class DomainUtils {
     /**
      * @return error if any of this domain ip addresses are not in range or null in other cases
      */
-    static String findNotInRangeIp(String domain) throws UnknownHostException {
+    static String findNotInRangeIp(String domain) {
         String host = domain.startsWith("http") ? new URL(domain).getHost() : domain
-        def notInRangesAddress = InetAddress.getAllByName(host)
-                .find { it -> !ipInRange(it) }
+        InetAddress notInRangesAddress
+        try {
+            notInRangesAddress = InetAddress.getAllByName(host)
+                    .find { it -> !ipInRange(it) }
+        } catch (UnknownHostException e) {
+            return "Unknown host"
+        }
+        
         return notInRangesAddress == null ? null : "${notInRangesAddress} is not in allowed range"
     }
 
@@ -49,7 +56,7 @@ class DomainUtils {
         if (inetAddress instanceof Inet6Address)
             return inetAddress.getHostAddress() == ipV6Address
 
-        throw new RuntimeException("Incorrect inet address format")
+        return false
     }
 
     private static boolean ipV4InOneOfRanges(String ipV4) {
