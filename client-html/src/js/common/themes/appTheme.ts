@@ -47,6 +47,16 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: alpha('rgba(0, 0, 0, 0.87)', 0.4)
       }
     },
+    appBar: {
+      header: {
+        background: "#fbf9f0",
+        color: "#222",
+      },
+      headerAlternate: {
+        background: "#fff",
+        color: "#222",
+      },
+    },
     appBarButton: {
       close: {
         color: "#f7941d",
@@ -114,6 +124,16 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       rightColumn: {
         color: alpha('rgba(255, 255, 255, 0.87)', 0.4)
       }
+    },
+    appBar: {
+      header: {
+        background: "#1b1b1b",
+        color: "#fff",
+      },
+      headerAlternate: {
+        background: "#fff",
+        color: "#222",
+      },
     },
     appBarButton: {
       close: {
@@ -183,6 +203,16 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: alpha('#222222', 0.4)
       }
     },
+    appBar: {
+      header: {
+        background: "#fff",
+        color: "#222",
+      },
+      headerAlternate: {
+        background: "#eaeaea",
+        color: "#222",
+      },
+    },
     appBarButton: {
       close: {
         color: '#222222'
@@ -249,12 +279,22 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: '#111111'
       }
     },
+    appBar: {
+      header: {
+        background: "#fff",
+        color: "#222",
+      },
+      headerAlternate: {
+        background: "#111",
+        color: "#fff",
+      },
+    },
     appBarButton: {
       close: {
-        color: '#fff'
+        color: '#222'
       },
       helpMenu: {
-        color: '#fff'
+        color: '#222'
       }
     },
     tabList: {
@@ -316,6 +356,16 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
       rightColumn: {
         color: alpha('rgba(0, 0, 0, 0.87)', 0.4)
       }
+    },
+    appBar: {
+      header: {
+        background: "#fff",
+        color: "#222",
+      },
+      headerAlternate: {
+        background: "#B3000C",
+        color: "#fff",
+      },
     },
     appBarButton: {
       close: {
