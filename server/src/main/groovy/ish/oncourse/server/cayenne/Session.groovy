@@ -78,7 +78,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 		}
 		Integer minutes = Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutesPart()
 		if (payAdjustment) {
-			minutes = minutes.minus(payAdjustment)
+			minutes = minutes - payAdjustment
 		}
 		BigDecimal decimalValue = new BigDecimal(minutes)
 		decimalValue.setScale(4)
