@@ -66,6 +66,7 @@ const OrganisationForm = (props: any) => {
     webSiteTemplate,
     contactForm,
     collegeWasCreated,
+    currency
   } = props;
 
   useEffect(() => {
@@ -90,6 +91,7 @@ const OrganisationForm = (props: any) => {
     createCollege({
       collegeKey,
       webSiteTemplate,
+      currency,
       ...contactForm,
       ...values,
     });
@@ -286,6 +288,7 @@ const mapStateToProps = (state: State) => ({
   webSiteTemplate: state.college.webSiteTemplate,
   contactForm: state.form.contactForm,
   organisationForm: state.form.organisationForm,
+  currency: state.college.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

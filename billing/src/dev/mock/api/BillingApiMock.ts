@@ -2,6 +2,9 @@ import { SettingsDTO, SiteDTO } from '@api/model';
 import { MockAdapter, promiseResolve } from '../MockAdapter';
 
 export function BillingApiMock(this: MockAdapter) {
+  this.api.onGet(new RegExp('v1/college/(?!site)(?!settings)(?!key)[^/]+$'))
+    .reply((config) => promiseResolve(config, true));
+
   this.api.onPost('/v1/college')
     .reply((config) => promiseResolve(config, true));
 

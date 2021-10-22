@@ -14,7 +14,7 @@ import {
   CHECK_SITENAME,
   COLLEGE_WAS_CREATED,
   SET_CAPTCHA_TOKEN,
-  SET_COLLEGE_KEY,
+  SET_COLLEGE_KEY, SET_CURRENCY,
   SET_SEND_TOKEN_AGAIN_VALUE,
   SET_SITENAME_VALID_VALUE,
   SET_TEMPLATE_VALUE
@@ -28,7 +28,8 @@ const initState: CollegeState = {
   token: '',
   collegeWasCreated: false,
   sendTokenAgain: true,
-  serverError: false
+  serverError: false,
+  currency: null
 };
 
 export const collegeReducer = (state: CollegeState = initState, action: IAction): CollegeState => {
@@ -78,6 +79,12 @@ export const collegeReducer = (state: CollegeState = initState, action: IAction)
       return {
         ...state,
         collegeWasCreated: action.payload
+      };
+
+    case SET_CURRENCY:
+      return {
+        ...state,
+        currency: action.payload
       };
 
     case SET_SERVER_ERROR_VALUE:

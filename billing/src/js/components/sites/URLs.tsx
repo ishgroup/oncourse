@@ -91,13 +91,13 @@ const URLs = (
   }, [site.googleAnalyticsId]);
 
   const domainItems = useMemo(() => renderSelectItemsWithEmpty(
-    { items: Object.keys(site.domains) }
+    { items: Object.keys(site.domains).filter((d) => !site.domains[d]) }
   ), [site.domains]);
 
   const domainWarnings = useMemo(() => Object.keys(site.domains).map((d) => (site.domains[d]
-      ? <WarningMessage warning={`${d}: ${site.domains[d]}`} />
-      : null)),
-    [site.domains]);
+    ? <WarningMessage warning={`${d}: ${site.domains[d]}`} />
+    : null)),
+  [site.domains]);
 
   return (
     <Grid container>
@@ -184,9 +184,9 @@ const URLs = (
               multiline
             />
           )}
-          onChange={(e, v) => setFieldValue(
+          onChange={(e, v: string[]) => setFieldValue(
             'domains',
-            v.reduce((p, c: string) => ({ ...p, [c]: '' }), {})
+            { ...site.domains, [v.find((val) => !Object.keys(site.domains).includes(val))]: '' }
           )}
           filterSelectedOptions
           multiple

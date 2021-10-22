@@ -3,6 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Currency } from '@api/model';
+
 export interface CollegeState {
   collegeKey: string;
   isValidName: boolean;
@@ -12,4 +14,5 @@ export interface CollegeState {
   collegeWasCreated: boolean;
   sendTokenAgain: boolean;
   serverError: boolean;
+  currency: Currency;
 }

@@ -5,6 +5,7 @@ import {
 import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
+import { Currency } from '@api/model';
 import Stepper from './stepper/Stepper';
 import { DefaultThemeKey } from '../models/Theme';
 import { currentTheme, getTheme } from '../themes/ishTheme';
@@ -13,7 +14,7 @@ import MessageProvider from './common/message/MessageProvider';
 import { defaultAxios } from '../api/services/DefaultHttpClient';
 import { useAppDispatch, useAppSelector } from '../redux/hooks/redux';
 import { getSites } from '../redux/actions/Sites';
-import { getCollegeKey } from '../redux/actions/College';
+import { getCollegeKey, setCurrency } from '../redux/actions/College';
 import Settings from './settings/Settings';
 import ConfirmProvider from './common/dialog/ConfirmProvider';
 
@@ -39,12 +40,16 @@ const Main = () => {
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const token = query.get('token');
+    const currency = query.get('currency') as Currency;
+    if (currency) {
+      dispatch(setCurrency(currency));
+    }
     if (token) {
       defaultAxios.defaults.headers = {
         Authorization: token
       };
-      window.history.replaceState(null, null, window.location.pathname);
     }
+    window.history.replaceState(null, null, window.location.pathname);
     dispatch(getCollegeKey());
   }, []);
 
