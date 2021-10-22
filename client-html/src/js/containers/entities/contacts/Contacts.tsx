@@ -367,34 +367,26 @@ const Contacts: React.FC<ContactsProps> = props => {
 
   const customTitle = useCallback((viewProps, viewState) => {
     const { values } = viewProps;
-    const { isScrolling, tabsListItemProps, hideTitleOnScrollUp } = viewState;
+    const { isScrolling, tabsListItemProps } = viewState;
 
-    return (
-      <div
-        className={clsx("flex-fill",
-          viewProps.classes.titleWrapper,
-          viewProps.classes.showTitle,
-          classes.titleWrapper,
-          { [viewProps.classes.scrollUp]: hideTitleOnScrollUp && isScrolling },
-          isScrolling && classes.titleWrapperScrollIn)}
-      >
-        {values && tabsListItemProps && (
-          <div className="centeredFlex">
-            <ProfileHeading
-              form={tabsListItemProps.form}
-              dispatch={tabsListItemProps.dispatch}
-              showConfirm={tabsListItemProps.showConfirm}
-              values={values}
-              twoColumn={tabsListItemProps.twoColumn}
-              isNew={tabsListItemProps.isNew}
-              isCompany={tabsListItemProps.isCompany}
-              usiLocked={tabsListItemProps.usiLocked}
-              isScrolling={isScrolling}
-            />
-          </div>
-        )}
-      </div>
-    );
+    return {
+      html: values && tabsListItemProps && (
+        <div className="centeredFlex">
+          <ProfileHeading
+            form={tabsListItemProps.form}
+            dispatch={tabsListItemProps.dispatch}
+            showConfirm={tabsListItemProps.showConfirm}
+            values={values}
+            twoColumn={tabsListItemProps.twoColumn}
+            isNew={tabsListItemProps.isNew}
+            isCompany={tabsListItemProps.isCompany}
+            usiLocked={tabsListItemProps.usiLocked}
+            isScrolling={isScrolling}
+          />
+        </div>
+      ),
+      otherClasses: clsx(classes.titleWrapper, isScrolling && classes.titleWrapperScrollIn),
+    };
   }, [classes]);
 
   const getContactFullNameWithTitle = (values: Contact) =>

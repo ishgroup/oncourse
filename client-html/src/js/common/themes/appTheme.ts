@@ -131,8 +131,8 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
         color: "#fff",
       },
       headerAlternate: {
-        background: "#fff",
-        color: "#222",
+        background: "#f7941d",
+        color: "#fff",
       },
     },
     appBarButton: {
@@ -145,7 +145,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     tabList: {
       listContainer: {
-        backgroundColor: '#302A22'
+        backgroundColor: '#292929'
       },
       listItemRoot: {
         color: "#fff",
