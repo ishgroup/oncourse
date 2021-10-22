@@ -65,8 +65,9 @@ export const SettingsAdornment: React.FC<Props> = ({
         classes={{
           root: "inputAdornmentButton"
         }}
+        color="inherit"
       >
-        <SettingsOutlinedIcon className="inputAdornmentIcon" />
+        <SettingsOutlinedIcon className="inputAdornmentIcon" color="inherit" />
       </IconButton>
     </span>
   );

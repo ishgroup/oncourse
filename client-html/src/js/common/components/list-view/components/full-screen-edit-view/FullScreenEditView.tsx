@@ -48,19 +48,16 @@ const styles = theme => createStyles({
     background: `${theme.appBar.headerAlternate.background} !important`,
     color: `${theme.appBar.headerAlternate.color} !important`,
   },
+  submitButtonAlternate: {
+    background: `${theme.appBar.headerAlternate.color} !important`,
+    color: `${theme.appBar.headerAlternate.background} !important`,
+  },
   titleWrapper: {
-    transform: "scale(2) translateX(-100%)",
     transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
     }),
   },
-  scrollUp: {
-    transform: "scale(2) translateX(-100%) !important",
-  },
-  showTitle: {
-    transform: "scale(1) translateX(0)",
-  }
 });
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
@@ -73,7 +70,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
     this.state = {
       isScrolling: false,
-      hideTitleOnScrollUp: null,
       scrollTarget: null,
       isScrollingDown: false,
       tabsListItemProps: null,
@@ -146,11 +142,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     if (e.target) {
       if (e.target.scrollTop > 30) this.setState({ isScrolling: true });
       else this.setState({ isScrolling: false });
-
-      if (isScrollingDown && e.target.scrollTop > 140) this.setState({ hideTitleOnScrollUp: false });
-      else this.setState({ hideTitleOnScrollUp: true });
-
-      if (isScrollingDown && e.target.scrollTop < 140) this.setState({ hideTitleOnScrollUp: false });
     }
 
     this.setState({ scrollTarget: e.target });
@@ -159,6 +150,35 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
   getTabsListItemProps = itemProps => {
     this.setState({ tabsListItemProps: itemProps });
+  };
+
+  getAppBarTitle = title => {
+    const { customTitle, classes } = this.props;
+
+    let appTilte = null;
+
+    if (customTitle) {
+      const { html, otherClasses } = customTitle(this.props, this.state);
+      if (html) {
+        appTilte = (
+          <div className={clsx("flex-fill", classes.titleWrapper, otherClasses)}>
+            {html}
+          </div>
+        );
+      }
+    }
+
+    if (!appTilte) {
+      appTilte = (
+        <div className={clsx("flex-fill", classes.titleWrapper)}>
+          <Typography className="appHeaderFontSize" color="inherit">
+            {title}
+          </Typography>
+        </div>
+      );
+    }
+
+    return appTilte;
   };
 
   render() {
@@ -190,12 +210,13 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       form,
       asyncValidating,
       disabledSubmitCondition,
-      customTitle
     } = this.props;
 
     const title = values && (nameCondition ? nameCondition(values) : values.name);
 
-    this.updateTitle(title);
+    this.updateTitle(title)
+
+    const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
 
     return (
       <Dialog
@@ -219,17 +240,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 { [classes.headerAlternate]: this.state.isScrolling }
               )}
             >
-              {customTitle ? customTitle(this.props, this.state) : (
-                <div className={clsx("flex-fill", classes.titleWrapper, {
-                    [classes.scrollUp]: this.state.hideTitleOnScrollUp,
-                    [classes.showTitle]: this.state.hideTitleOnScrollUp === null ? false : !this.state.hideTitleOnScrollUp
-                  })}
-                >
-                  <Typography className="appHeaderFontSize" color="inherit">
-                    {title}
-                  </Typography>
-                </div>
-              )}
+              {this.getAppBarTitle(title)}
               <div>
                 {manualLink && (
                   <AppBarHelpMenu
@@ -250,6 +261,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                   disabled={(!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
                   invalid={invalid}
                   fab
+                  className={isDarkTheme && classes.submitButtonAlternate}
                 />
               </div>
             </AppBar>
