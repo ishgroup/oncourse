@@ -92,7 +92,8 @@ const NewsItemRender = props => {
     classes, latestReadDate, post, setReadedNews, fullScreenEditView
   } = props;
 
-  const isLatestItem = latestReadDate === "" || new Date(latestReadDate).getTime() < new Date(post.published).getTime();
+  const isLatestItem = post.published && (latestReadDate === ""
+    || new Date(latestReadDate).getTime() < new Date(post.published).getTime());
 
   const setIdOfReadedNews = () => {
     setReadedNews(post.id);
@@ -171,8 +172,12 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadedNews, fullScreenEditView
+    blogPosts, classes, page, preferences, setReadedNews, fullScreenEditView, setDashboardNewsLatestReadDate
   } = props;
+
+  useEffect(() => {
+    setDashboardNewsLatestReadDate(new Date());
+  }, []);
 
   const [postsForRender, setPostsForRender] = useState([]);
 
@@ -212,6 +217,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setReadedNews: (newsId: string) => dispatch(setUserPreference({ key: READED_NEWS, value: newsId })),
+  setDashboardNewsLatestReadDate: (value: string) => dispatch(setUserPreference({ key: DASHBOARD_NEWS_LATEST_READ, value }))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewsRender));
