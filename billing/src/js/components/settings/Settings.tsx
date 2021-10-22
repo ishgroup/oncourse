@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Switch,
   Route,
@@ -15,9 +15,10 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { makeAppStyles } from '../../styles/makeStyles';
 import LeftMenu from '../common/LeftMenu';
 import arrowRight from '../../../images/icon-arrow-right.svg';
-import { useAppSelector } from '../../redux/hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import Billing from '../Billing';
 import { SitesPage } from '../sites/SitesPage';
+import { getSettings } from '../../redux/actions/Settings';
 
 export const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const navItem = {
@@ -75,12 +76,17 @@ const Settings = () => {
   const { classes, cx } = useStyles();
 
   const sites = useAppSelector((state) => state.sites);
+  const dispatch = useAppDispatch();
 
   const appHistory = useHistory();
 
   const onAddSite = () => {
     appHistory.push('/websites/new/urls');
   };
+
+  useEffect(() => {
+    dispatch(getSettings());
+  }, []);
 
   return (
     <div className="root">
@@ -149,16 +155,16 @@ const Settings = () => {
                           Tag manager
                         </Typography>
                       </NavLink>
-                      {/*<NavLink*/}
-                      {/*  exact*/}
-                      {/*  strict*/}
-                      {/*  to={`/websites/${s.id}/googleSearch`}*/}
-                      {/*  activeClassName={classes.activeNav}*/}
-                      {/*>*/}
-                      {/*  <Typography variant="body2" className={classes.navItem}>*/}
-                      {/*    Google search*/}
-                      {/*  </Typography>*/}
-                      {/*</NavLink>*/}
+                      {/* <NavLink */}
+                      {/*  exact */}
+                      {/*  strict */}
+                      {/*  to={`/websites/${s.id}/googleSearch`} */}
+                      {/*  activeClassName={classes.activeNav} */}
+                      {/* > */}
+                      {/*  <Typography variant="body2" className={classes.navItem}> */}
+                      {/*    Google search */}
+                      {/*  </Typography> */}
+                      {/* </NavLink> */}
                     </ul>
                   </li>
                 ))}

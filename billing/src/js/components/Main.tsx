@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
-import createCache from 'tss-react/@emotion/cache';
+import createCache from '@emotion/cache';
 import Stepper from './stepper/Stepper';
 import { DefaultThemeKey } from '../models/Theme';
 import { currentTheme, getTheme } from '../themes/ishTheme';

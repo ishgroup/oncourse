@@ -1,7 +1,7 @@
 import { BillingApi, CollegeDTO } from '@api/model';
 import { DefaultHttpService } from './HttpService';
 
-class BillingService {
+class CollegeService {
   readonly defaultHttpService = new DefaultHttpService();
 
   readonly billingApi = new BillingApi(this.defaultHttpService);
@@ -20,4 +20,4 @@ class BillingService {
   }
 }
 
-export default new BillingService();
+export default new CollegeService();

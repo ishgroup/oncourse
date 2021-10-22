@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material';
-import { adaptV4Theme } from '@mui/material/styles';
 import { theme } from './appTheme';
 import {
   AppTheme,
@@ -141,12 +140,12 @@ const defaultThemePalette = {
   },
 };
 
-export const defaultTheme = createTheme(adaptV4Theme({
+export const defaultTheme = createTheme({
   palette: defaultThemePalette,
   ...commonTypography,
   ...theme.default,
   ...createOverrides(defaultThemePalette)
-})) as AppTheme;
+}) as AppTheme;
 
 // Dark Theme
 
@@ -179,12 +178,12 @@ const darkThemePalette = {
   }
 };
 
-export const darkTheme = createTheme(adaptV4Theme({
+export const darkTheme = createTheme({
   palette: darkThemePalette,
   ...commonTypography,
   ...theme.dark,
   ...createOverrides(darkThemePalette)
-})) as AppTheme;
+}) as AppTheme;
 
 // Monochrome Theme
 
@@ -213,12 +212,12 @@ const monochromeThemePalette = {
   }
 };
 
-export const monochromeTheme = createTheme(adaptV4Theme({
+export const monochromeTheme = createTheme({
   palette: monochromeThemePalette,
   ...commonTypography,
   ...theme.monochrome,
   ...createOverrides(monochromeThemePalette)
-})) as AppTheme;
+}) as AppTheme;
 
 // High Contrast Theme
 
@@ -253,12 +252,12 @@ const highcontrastThemePalette = {
   divider: 'rgba(0, 0, 0, 0.40)'
 };
 
-export const highcontrastTheme = createTheme(adaptV4Theme({
+export const highcontrastTheme = createTheme({
   palette: highcontrastThemePalette,
   ...commonTypography,
   ...theme.highcontrast,
   ...createOverrides(highcontrastThemePalette)
-})) as AppTheme;
+}) as AppTheme;
 
 // High Contrast Theme
 
@@ -293,12 +292,12 @@ const christmasThemePalette = {
   }
 };
 
-export const christmasTheme = createTheme(adaptV4Theme({
+export const christmasTheme = createTheme({
   palette: christmasThemePalette,
   ...commonTypography,
   ...theme.christmas,
   ...createOverrides(christmasThemePalette)
-})) as AppTheme;
+}) as AppTheme;
 
 export const currentTheme = (themeName: ThemeValues): AppTheme => {
   switch (themeName) {

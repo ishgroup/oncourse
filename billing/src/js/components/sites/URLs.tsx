@@ -102,7 +102,7 @@ const URLs = (
   return (
     <Grid container>
       <Grid item xs={12}>
-        <h4 className={classes.coloredHeaderText}>Domain setup</h4>
+        <h4 className="coloredHeaderText">Domain setup</h4>
       </Grid>
       <Grid item xs={6} className={classes.pr}>
         <TextField

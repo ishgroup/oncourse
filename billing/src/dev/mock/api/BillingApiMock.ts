@@ -1,10 +1,7 @@
-import { SiteDTO } from '@api/model';
+import { SettingsDTO, SiteDTO } from '@api/model';
 import { MockAdapter, promiseResolve } from '../MockAdapter';
 
 export function BillingApiMock(this: MockAdapter) {
-  this.api.onGet(new RegExp('v1/college/(?!site)(?!key)[^/]+$'))
-    .reply((config) => promiseResolve(config, true));
-
   this.api.onPost('/v1/college')
     .reply((config) => promiseResolve(config, true));
 
@@ -50,5 +47,19 @@ export function BillingApiMock(this: MockAdapter) {
     ]));
 
   this.api.onPost('/v1/college/sites')
+    .reply((config) => promiseResolve(config));
+
+  this.api.onGet('/v1/college/settings')
+    .reply((config) => promiseResolve<SettingsDTO>(config, {
+      contactFullName: 'John',
+      contactEmail: 'Smith',
+      invoiceReference: '1234',
+      usersCount: 4,
+      billingPlan: 'basic-21',
+      requestedUsersCount: 2,
+      requestedBillingPlan: 'premium-21'
+    }));
+
+  this.api.onPost('/v1/college/settings')
     .reply((config) => promiseResolve(config));
 }

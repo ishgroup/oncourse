@@ -49,9 +49,6 @@ const useStyles = makeAppStyles()((theme, prop, createRef) => {
       display: 'flex',
       padding: 0
     },
-    coloredHeaderText: {
-      color: theme.statistics.coloredHeaderText.color,
-    },
     textFieldWrapper: {
       display: 'flex',
       alignItems: 'baseline',
@@ -325,6 +322,7 @@ export const SitesPage = () => {
           googleData.gtmAccountId,
           site.gtmContainerId
         );
+
         const workspace = workspaces?.workspace[0]?.workspaceId;
 
         if (workspace) {
@@ -423,7 +421,6 @@ export const SitesPage = () => {
     if (isConfig) {
       return (
         <GoogleSetup
-          cx={cx}
           classes={classes}
           site={values}
           error={errors as any}

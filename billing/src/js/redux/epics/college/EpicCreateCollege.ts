@@ -8,12 +8,12 @@ import { Request, Create } from '../EpicUtils';
 import {
   setLoadingValue, setServerErrorValue
 } from '../../actions';
-import BillingService from '../../../api/services/BillingService';
+import CollegeService from '../../../api/services/CollegeService';
 import { CREATE_COLLEGE, setCollegeWasCreatedValue } from '../../actions/College';
 
 const request: Request = {
   type: CREATE_COLLEGE,
-  getData: (data) => BillingService.createCollege(data),
+  getData: (data) => CollegeService.createCollege(data),
   processData: () => [
     setCollegeWasCreatedValue(true),
     setLoadingValue(false)

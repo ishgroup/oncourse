@@ -46,9 +46,6 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
     actionsContainer: {
       marginBottom: theme.spacing(2),
     },
-    coloredHeaderText: {
-      color: theme.statistics.coloredHeaderText.color,
-    },
     hasError: {
       padding: theme.spacing(6),
       [`& .${formItem.ref}`]: {

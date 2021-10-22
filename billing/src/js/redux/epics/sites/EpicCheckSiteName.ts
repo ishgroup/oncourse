@@ -9,7 +9,7 @@ import {
   SET_LOADING_VALUE, SET_SERVER_ERROR_VALUE,
   SHOW_MESSAGE
 } from '../../actions';
-import BillingService from '../../../api/services/BillingService';
+import CollegeService from '../../../api/services/CollegeService';
 import { CHECK_SITENAME, SET_SEND_TOKEN_AGAIN_VALUE, SET_SITENAME_VALID_VALUE } from '../../actions/College';
 
 const errorHandler = (
@@ -61,7 +61,7 @@ const errorHandler = (
 
 const request: Request = {
   type: CHECK_SITENAME,
-  getData: ({ name, token }) => BillingService.verifyCollegeName(name, token),
+  getData: ({ name, token }) => CollegeService.verifyCollegeName(name, token),
   processData: (response: boolean) => {
     const returnedValue:any[] = [
       { type: SET_SITENAME_VALID_VALUE, payload: response },

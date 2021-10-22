@@ -9,13 +9,13 @@ import {
   setIsNewUser,
   setLoadingValue
 } from '../../actions';
-import BillingService from '../../../api/services/BillingService';
+import CollegeService from '../../../api/services/CollegeService';
 import FetchErrorHandler from '../../../api/fetch-errors-handlers/FetchErrorHandler';
 import { GET_COLLEGE_KEY, setCollegeKey } from '../../actions/College';
 
 const request: Request = {
   type: GET_COLLEGE_KEY,
-  getData: () => BillingService.getCollegeKey(),
+  getData: () => CollegeService.getCollegeKey(),
   processData: (payload) => [
     setIsNewUser(false),
     setCollegeKey(payload)

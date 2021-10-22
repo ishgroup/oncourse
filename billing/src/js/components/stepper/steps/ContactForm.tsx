@@ -22,12 +22,9 @@ import { addEventListenerWithDeps } from '../../../hooks/addEventListnerWithDeps
 import { State } from '../../../models/State';
 import { setContactFormValues } from '../../../redux/actions/College';
 
-const useStyles = makeAppStyles()((theme: any) => ({
+const useStyles = makeAppStyles()(() => ({
   textFieldWrapper: {
     minHeight: '66px'
-  },
-  coloredHeaderText: {
-    color: theme.statistics.coloredHeaderText.color
   },
   subTitle: {
     marginBottom: 30,
@@ -100,7 +97,7 @@ const ContactForm = (props: any) => {
 
   return (
     <form>
-      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom>
+      <Typography variant="h4" component="h4" className="coloredHeaderText" color="primary" gutterBottom>
         Enter your contact details
       </Typography>
       <Typography variant="subtitle1" gutterBottom className={classes.subTitle}>

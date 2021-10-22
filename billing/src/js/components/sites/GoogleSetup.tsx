@@ -13,13 +13,11 @@ import {
   Alert
 } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Cx } from 'tss-react/src/types';
 import { FormikErrors } from 'formik/dist/types';
 import { SiteValues } from '../../models/Sites';
 import Loading from '../common/Loading';
 
 interface Props {
-  cx: Cx,
   classes: any;
   site: SiteValues;
   error: SiteValues;
@@ -37,7 +35,6 @@ interface Props {
 
 const GoogleSetup = (
   {
-    cx,
     classes,
     site,
     error,
@@ -83,7 +80,7 @@ const GoogleSetup = (
     <Grid container>
       <Grid item xs={12}>
         <div className="centeredFlex mt-2 mb-1">
-          <h4 className={cx(classes.coloredHeaderText, 'm-0')}>Google services setup</h4>
+          <h4 className="coloredHeaderText m-0">Google services setup</h4>
         </div>
       </Grid>
       {googleLoading && <Loading />}
@@ -263,9 +260,7 @@ const GoogleSetup = (
                     </>
                   ) : 'Select Tag manager account first'
               }
-            >
-              {gtmContainerItems}
-            </TextField>
+            />
           </Grid>
         </>
         )

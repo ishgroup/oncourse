@@ -11,6 +11,8 @@ import { EpicGetCollegeKey } from './college/EpicGetCollegeKey';
 import { EpicUpdateCollegeSites } from './sites/EpicUpdateCollegeSites';
 import { EpicGetGTMandGAData } from './google/EpicGetGTMandGAData';
 import { EpicConfigGoogleServicesForSite } from './google/EpicConfigGoogleServicesForSite';
+import { EpicGetSettings } from './settings/EpicGetSettings';
+import { EpicUpdateSettings } from './settings/EpicUpdateSettings';
 
 export const EpicRoot = combineEpics(
   EpicUpdateCollegeSites,
@@ -19,5 +21,7 @@ export const EpicRoot = combineEpics(
   EpicGetSites,
   EpicGetCollegeKey,
   EpicGetGTMandGAData,
-  EpicConfigGoogleServicesForSite
+  EpicConfigGoogleServicesForSite,
+  EpicGetSettings,
+  EpicUpdateSettings
 );

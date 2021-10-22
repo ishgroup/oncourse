@@ -26,9 +26,6 @@ const useStyles = makeAppStyles()((theme: any) => ({
   textFieldWrapper: {
     minHeight: '66px',
   },
-  coloredHeaderText: {
-    color: theme.statistics.coloredHeaderText.color,
-  },
   subTitle: {
     marginBottom: 30,
   },
@@ -116,7 +113,7 @@ const OrganisationForm = (props: any) => {
 
   return (
     <form>
-      <Typography variant="h4" component="h4" className={classes.coloredHeaderText} color="primary" gutterBottom>
+      <Typography variant="h4" component="h4" className="coloredHeaderText" color="primary" gutterBottom>
         Enter your organisation details
       </Typography>
       <Typography variant="subtitle1" gutterBottom className={classes.subTitle}>

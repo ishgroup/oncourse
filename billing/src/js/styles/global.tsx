@@ -290,6 +290,10 @@ export const GlobalClasses = () => {
         display: 'flex',
         alignItems: 'flex-start'
       },
+      '.d-flex-end': {
+        display: 'flex',
+        alignItems: 'flex-end'
+      },
       '.d-inline-flex-center': {
         display: 'inline-flex',
         alignItems: 'center'
@@ -477,7 +481,10 @@ export const GlobalClasses = () => {
         display: 'flex',
         alignItems: 'center',
         padding: '0px 20px 0px 20px'
-      }
+      },
+      '.coloredHeaderText': {
+        color: theme.statistics.coloredHeaderText.color,
+      },
     }}
     />
   );
