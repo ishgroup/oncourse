@@ -103,7 +103,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   alwaysFullScreenCreateView?: boolean;
   syncErrors?: any;
   disabledSubmitCondition?: boolean;
-  customTitle?: (props: any, state?: any) => React.Component;
+  customTitle?: (props: any, state?: any) => any;
 }
 
 export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
