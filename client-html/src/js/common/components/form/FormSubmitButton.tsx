@@ -13,13 +13,15 @@ interface Props {
   fab?: boolean;
   text?: string;
   errorText?: string;
+  className?: any;
 }
 
 const FormSubmitButton = React.memo<Props>(({
     disabled,
     invalid,
     fab = false,
-    text = "Save"
+    text = "Save",
+    className,
   }) => (
     <Button
       type="submit"
@@ -31,6 +33,7 @@ const FormSubmitButton = React.memo<Props>(({
       startIcon={invalid && <ErrorOutline color="error" />}
       variant="contained"
       color="primary"
+      className={className}
     >
       {text}
     </Button>
