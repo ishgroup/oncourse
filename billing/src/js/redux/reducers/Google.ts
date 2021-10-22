@@ -5,7 +5,12 @@
 
 import { IAction } from '../../models/IshAction';
 import { GoogleState } from '../../models/Google';
-import { GET_GTM_AND_GA_DATA, GET_GTM_AND_GA_DATA_FULFILLED, SET_GOOGLE_CREDENTIALS } from '../actions/Google';
+import {
+  GET_CLIENT_ID_FULFILLED,
+  GET_GTM_AND_GA_DATA,
+  GET_GTM_AND_GA_DATA_FULFILLED,
+  SET_GOOGLE_CREDENTIALS
+} from '../actions/Google';
 import { FETCH_FAIL } from '../actions';
 
 const Initial: GoogleState = {
@@ -32,6 +37,7 @@ export const googleReducer = (state: GoogleState = Initial, action: IAction): Go
       };
     case GET_GTM_AND_GA_DATA_FULFILLED:
     case SET_GOOGLE_CREDENTIALS:
+    case GET_CLIENT_ID_FULFILLED:
       return {
         ...state,
         loading: false,

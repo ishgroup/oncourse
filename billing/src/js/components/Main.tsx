@@ -17,6 +17,7 @@ import { getSites } from '../redux/actions/Sites';
 import { getCollegeKey, setCurrency } from '../redux/actions/College';
 import Settings from './settings/Settings';
 import ConfirmProvider from './common/dialog/ConfirmProvider';
+import { getClientId } from '../redux/actions/Google';
 
 export const muiCache = createCache({
   key: 'mui',
@@ -33,6 +34,7 @@ const Main = () => {
 
   useEffect(() => {
     if (!isNewUser) {
+      dispatch(getClientId());
       dispatch(getSites());
     }
   }, [isNewUser]);

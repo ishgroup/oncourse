@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { PropertiesApi, PropertiesDTO } from '@api/model';
 import { DefaultHttpService } from './HttpService';
 import {
   GAWebProperty,
@@ -11,6 +12,12 @@ import {
 
 class GoogleService {
   readonly http = new DefaultHttpService();
+
+  readonly propertiesApi = new PropertiesApi(this.http);
+
+  public getProperties(): Promise<PropertiesDTO> {
+    return this.propertiesApi.getProperties();
+  }
 
   public getGAAccounts(Authorization: string): Promise<gapi.client.analytics.Accounts> {
     return this.http.GET('https://www.googleapis.com/analytics/v3/management/accounts', {

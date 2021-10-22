@@ -47,6 +47,7 @@ const ButtonComp = ({ text, ...props }) => (
 const GoogleLoginButton = () => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.google.profile);
+  const clientId = useAppSelector((state) => state.google.clientId);
 
   const onFailure = (err?) => instantFetchErrorHandler(dispatch, err);
 
@@ -84,7 +85,7 @@ const GoogleLoginButton = () => {
             <GoogleLogout
               onLogoutSuccess={onLogoutSuccess}
               onFailure={onFailure}
-              clientId="581533795667-4u647nf45tmmu4gh7mqkgse818hgc9h1.apps.googleusercontent.com"
+              clientId={clientId}
               render={(props) => (
                 <ButtonComp
                   text="Logout"
@@ -95,7 +96,7 @@ const GoogleLoginButton = () => {
           )
           : (
             <GoogleLogin
-              clientId="581533795667-4u647nf45tmmu4gh7mqkgse818hgc9h1.apps.googleusercontent.com"
+              clientId={clientId}
               onSuccess={responseGoogle}
               onFailure={onFailure}
               scope={SCOPE}

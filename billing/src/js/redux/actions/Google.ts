@@ -11,10 +11,17 @@ import { SiteValues } from '../../models/Sites';
 
 export const SET_GOOGLE_CREDENTIALS = 'SET_GOOGLE_DATA';
 
+export const GET_CLIENT_ID = 'GET_CLIENT_ID';
+export const GET_CLIENT_ID_FULFILLED = FULFILLED(GET_CLIENT_ID);
+
 export const GET_GTM_AND_GA_DATA = 'GET_GTM_AND_GA_DATA';
 export const GET_GTM_AND_GA_DATA_FULFILLED = FULFILLED(GET_GTM_AND_GA_DATA);
 
 export const CONFIGURE_GOOGLE_FOR_SITE = 'CONFIGURE_GOOGLE_FOR_SITE';
+
+export const getClientId = (): IAction => ({
+  type: GET_CLIENT_ID
+});
 
 export const getGtmAndGaData = (): IAction => ({
   type: GET_GTM_AND_GA_DATA
@@ -23,6 +30,12 @@ export const getGtmAndGaData = (): IAction => ({
 export const getGtmAndGaDataFulfilled = (state: GoogleState): IAction => ({
   type: GET_GTM_AND_GA_DATA_FULFILLED,
   payload: state
+});
+
+
+export const getClientIdFulfilled = (clientId: string): IAction => ({
+  type: GET_CLIENT_ID_FULFILLED,
+  payload: clientId
 });
 
 export const setGoogleCredentials = (payload: {
