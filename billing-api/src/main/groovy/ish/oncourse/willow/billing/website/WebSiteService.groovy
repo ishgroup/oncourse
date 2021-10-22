@@ -202,7 +202,7 @@ class WebSiteService {
 
     private void configureAccountsFor(WebSite webSite, SiteDTO dto) {
         if(dto.gtmContainerId && dto.gtmContainerId != webSite.googleTagmanagerAccount){
-            webSite.setGoogleTagmanagerContainer(dto.gtmContainerId)
+            webSite.setGoogleTagmanagerAccount(dto.gtmContainerId)
             webSite.setConfiguredByUser(requestService.getSystemUser())
         }
     }
