@@ -15,45 +15,51 @@ import clsx from "clsx";
 import { AppTheme } from "../../../model/common/Theme";
 
 const styles = (theme: AppTheme) => createStyles({
-    root: {
-      height: "fit-content",
-      width: "fit-content",
-      position: "relative",
-      fontSize: 0,
-      "&:hover $backdrop$active": {
-        opacity: 1
-      },
-      color: "#fff",
+  root: {
+    height: "fit-content",
+    width: "fit-content",
+    position: "relative",
+    fontSize: 0,
+    "&:hover $backdrop$active": {
+      opacity: 1
     },
-    backdrop: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: theme.palette.action.active,
-      position: "absolute",
-      height: "100%",
-      width: "100%",
-      opacity: 0,
-      transition: theme.transitions.create("opacity", {
-        duration: theme.transitions.duration.standard,
-        easing: theme.transitions.easing.easeInOut
-      }),
-      borderRadius: "100%",
-      zIndex: 1,
+    color: "#fff",
+  },
+  backdrop: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: theme.palette.action.active,
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    opacity: 0,
+    transition: theme.transitions.create("opacity", {
+      duration: theme.transitions.duration.complex,
+      easing: theme.transitions.easing.easeInOut
+    }),
+    borderRadius: "100%",
+    zIndex: 1,
+  },
+  actionButton: {
+    background: theme.palette.background.paper,
+    "&:hover": {
+      background: darken(theme.palette.background.paper, 0.2)
     },
-    actionButton: {
-      background: theme.palette.background.paper,
-      "&:hover": {
-        background: darken(theme.palette.background.paper, 0.2)
-      },
-      marginTop: theme.spacing(1)
-    },
-    noValue: {
-      color: theme.palette.divider,
-      marginTop: theme.spacing(-1)
-    },
-    active: {}
-  });
+    marginTop: theme.spacing(1)
+  },
+  noValue: {
+    color: theme.palette.divider,
+    marginTop: theme.spacing(-1)
+  },
+  active: {},
+  avatarRoot: {
+    transition: theme.transitions.create("all", {
+      duration: theme.transitions.duration.complex,
+      easing: theme.transitions.easing.easeInOut
+    }),
+  },
+});
 
 interface Props {
   data: string;
@@ -116,6 +122,7 @@ const FilePreview: React.FC<Props> = ({
             alt="FilePreview"
             src={`data:image/png;base64, ${data}`}
             sx={{ width: size, height: size }}
+            classes={{ root: classes.avatarRoot }}
           />
         </div>
       ) : (

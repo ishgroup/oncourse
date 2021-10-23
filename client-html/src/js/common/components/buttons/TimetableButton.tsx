@@ -4,14 +4,19 @@
  */
 
 import React from "react";
-import DateRange from "@mui/icons-material/DateRange";
-import Button from "@mui/material/Button";
+import Launch from "@mui/icons-material/Launch";
+import IconButton from "@mui/material/IconButton";
 
 const TimetableButton: React.FC<any> = ({ title = "Timetable", onClick }) => (
-  <Button variant="contained" size="small" onClick={onClick}>
-    <DateRange className="mr-1" />
-    {title}
-  </Button>
+  <div className="centeredFlex">
+    <div className="heading">{title}</div>
+    <IconButton
+      color="primary"
+      onClick={onClick}
+    >
+      <Launch className="inputAdornmentIcon" />
+    </IconButton>
+  </div>
 );
 
 export default TimetableButton;
