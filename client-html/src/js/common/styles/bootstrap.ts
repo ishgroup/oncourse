@@ -442,5 +442,8 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".grid-temp-col-2-fr": {
     gridTemplateColumns: "1fr 1fr"
-  }
+  },
+  ".lh-1": {
+    lineHeight: 1,
+  },
 });

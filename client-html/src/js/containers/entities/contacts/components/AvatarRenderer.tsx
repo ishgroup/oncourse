@@ -112,6 +112,7 @@ const AvatarRenderer: React.FC<any> = props => {
                   src={url}
                   sx={{ width: size, height: size }}
                   onError={handleGravatarError}
+                  classes={{ root: classes.avatarRoot }}
                 />
               )}
             </Gravatar>
