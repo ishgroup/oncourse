@@ -456,7 +456,6 @@
 		<db-attribute name="endDatetime" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="payAdjustment" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="privateNotes" type="CLOB" length="32000"/>
 		<db-attribute name="publicNotes" type="CLOB" length="32000"/>
 		<db-attribute name="roomId" type="BIGINT"/>
@@ -1369,6 +1368,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="endDatetime" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="startDatetime" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="defaultDurationMinutes" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Session_Module">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -2913,7 +2913,6 @@
 		<obj-attribute name="endDatetime" type="java.util.Date" db-attribute-path="endDatetime"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-		<obj-attribute name="payAdjustment" type="java.lang.Integer" db-attribute-path="payAdjustment"/>
 		<obj-attribute name="privateNotes" type="java.lang.String" db-attribute-path="privateNotes"/>
 		<obj-attribute name="publicNotes" type="java.lang.String" db-attribute-path="publicNotes"/>
 		<obj-attribute name="startDatetime" type="java.util.Date" db-attribute-path="startDatetime"/>
@@ -3157,6 +3156,7 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="endDatetime" type="java.util.Date" db-attribute-path="endDatetime"/>
 		<obj-attribute name="startDatetime" type="java.util.Date" db-attribute-path="startDatetime"/>
+		<obj-attribute name="defaultDurationMinutes" type="java.lang.Integer" db-attribute-path="defaultDurationMinutes"/>
 	</obj-entity>
 	<obj-entity name="UnavailableRule" abstract="true" className="ish.oncourse.server.cayenne.UnavailableRule" clientClassName="ish.oncourse.cayenne.UnavailableRule" dbEntityName="UnavailableRule" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="allDay" type="java.lang.Boolean" db-attribute-path="allDay"/>

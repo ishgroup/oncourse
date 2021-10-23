@@ -58,3 +58,55 @@ databaseChangeLog:
             columnDataType: DATETIME
             columnName: endDatetime
             tableName: SessionCourseClassTutor
+
+  - changeSet:
+      id: 105-4
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - not:
+          - columnExists:
+              tableName: SessionCourseClassTutor
+              columnName: defaultDurationMinutes
+      changes:
+        - addColumn:
+            tableName: SessionCourseClassTutor
+            columns:
+              - column:
+                  name: defaultDurationMinutes
+                  type: INT
+                  
+  - changeSet:
+      id: 105-5
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: SessionCourseClassTutor
+            columnName: defaultDurationMinutes
+      changes:
+        - sql: 'UPDATE SessionCourseClassTutor a
+                JOIN CourseSession s ON a.sessionId = s.id
+                SET a.defaultDurationMinutes = TIMESTAMPDIFF(MINUTE, s.startDatetime, s.endDatetime) - s.payAdjustment;'
+          
+  - changeSet:
+      id: 105-6
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - sqlCheck:
+            expectedResult: 0
+            sql: 'SLECT count(*) FROM SessionCourseClassTutor WHERE defaultDurationMinutes IS NULL'
+      changes:
+        - addNotNullConstraint:
+            columnDataType: INT
+            columnName: defaultDurationMinutes
+            tableName: SessionCourseClassTutor
+            
+  - changeSet:
+      id: 105-7
+      author: artyom
+      changes:
+        - dropColumn:
+            tableName: CourseSession
+            columnName: payAdjustment

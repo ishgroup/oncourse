@@ -107,11 +107,6 @@ properties:
     required: false
     description: session private notes
     example: private notes
-  payAdjustment:
-    type: integer
-    required: false
-    description: payable duration in minytes
-    example: 300
   hasPaylines:
     type: boolean
     required: false

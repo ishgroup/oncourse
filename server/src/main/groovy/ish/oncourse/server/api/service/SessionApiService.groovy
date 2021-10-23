@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.CourseClassDao
 import ish.oncourse.server.api.dao.CourseClassTutorDao
 import ish.oncourse.server.api.dao.RoomDao
@@ -31,6 +32,7 @@ import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.validation.ValidationException
 
+@CompileStatic
 class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao> {
 
     @Inject
@@ -68,7 +70,6 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         dto.courseId = session.courseClass.course.id
         dto.privateNotes = session.privateNotes
         dto.publicNotes = session.publicNotes
-        dto.payAdjustment = session.payAdjustment
         dto.tutors = session.tutors*.contact*.fullName
         dto.name = session.courseClass.course.name
         if (session.room) {
@@ -92,7 +93,6 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         session.endDatetime = LocalDateUtils.timeValueToDate(dto.end)
         session.publicNotes = dto.publicNotes
         session.privateNotes = dto.privateNotes
-        session.payAdjustment = dto.payAdjustment
         List<TutorAttendance> tutorsToDelete = session.sessionTutors.findAll { !(it.courseClassTutor.id in dto.courseClassTutorIds) }
         session.context.deleteObjects(tutorsToDelete)
         dto.courseClassTutorIds.findAll { !(it in session.sessionTutors*.courseClassTutor.id) }.each { id ->
@@ -195,10 +195,6 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         }
         if (dto.start > dto.end) {
             validator.throwClientErrorException(id?:dto.temporaryId, 'end', 'End date should be after session start date.' )
-        }
-
-        if (dto.payAdjustment == null) {
-            validator.throwClientErrorException(id?:dto.temporaryId, 'payAdjustment', 'session duration .' )
         }
 
         dto.courseClassTutorIds.each { roleId ->

@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -33,6 +34,7 @@ import java.time.Duration
  */
 @API
 @QueueableEntity
+@CompileStatic
 class Session extends _Session implements SessionTrait, SessionInterface, Queueable, AttachableTrait {
 	private static final Logger logger = LogManager.getLogger()
 
@@ -40,15 +42,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	public static final String DISPLAY_END_DATETIME = 'displayEndDateTime'
 
 	public static final String COURSE_CLASS_KEY = "courseClass";
-
-	@Override
-	void onEntityCreation() {
-		super.onEntityCreation()
-
-		if (getPayAdjustment() == null) {
-			setPayAdjustment(0)
-		}
-	}
+	
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
@@ -76,10 +70,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 		if (getEndDatetime() == null || getStartDatetime() == null) {
 			return BigDecimal.ZERO
 		}
-		Integer minutes = Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutesPart()
-		if (payAdjustment) {
-			minutes = minutes - payAdjustment
-		}
+		Integer minutes = Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutes().intValue()
 		BigDecimal decimalValue = new BigDecimal(minutes)
 		decimalValue.setScale(4)
 		return decimalValue.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
@@ -179,17 +170,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	Date getModifiedOn() {
 		return super.getModifiedOn()
 	}
-
-	/**
-	 * @return difference between actual session duration and payable duration in minutes
-	 */
-	@Nonnull
-	@API
-	@Override
-	Integer getPayAdjustment() {
-		return super.getPayAdjustment()
-	}
-
+	
 /**
 	 * @return private notes for this session
 	 */

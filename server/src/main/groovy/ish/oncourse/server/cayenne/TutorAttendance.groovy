@@ -30,6 +30,13 @@ import java.time.Duration
 class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, Queueable {
 
 
+	@Override
+	void prePersist() {
+		if (getDefaultDurationMinutes() == null) {
+			setDefaultDurationMinutes(Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutes().intValue())
+		}
+	}
+
 
 	/**
 	 * @return type of attendance
@@ -123,7 +130,7 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	 * @return  payable duration in hours
 	 */
 	BigDecimal getPayableDurationInHours() {
-		Integer minutes = durationMinutes?: Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutesPart()
+		Integer minutes = durationMinutes ?: defaultDurationMinutes
 		BigDecimal decimalValue = new BigDecimal(minutes)
 		decimalValue.setScale(4)
 		return decimalValue.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
