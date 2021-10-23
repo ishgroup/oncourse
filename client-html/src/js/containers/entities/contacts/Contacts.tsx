@@ -371,19 +371,16 @@ const Contacts: React.FC<ContactsProps> = props => {
 
     return {
       html: values && tabsListItemProps && (
-        <div className="centeredFlex">
-          <ProfileHeading
-            form={tabsListItemProps.form}
-            dispatch={tabsListItemProps.dispatch}
-            showConfirm={tabsListItemProps.showConfirm}
-            values={values}
-            twoColumn={tabsListItemProps.twoColumn}
-            isNew={tabsListItemProps.isNew}
-            isCompany={tabsListItemProps.isCompany}
-            usiLocked={tabsListItemProps.usiLocked}
-            isScrolling={isScrolling}
-          />
-        </div>
+        <ProfileHeading
+          form={tabsListItemProps.form}
+          dispatch={tabsListItemProps.dispatch}
+          showConfirm={tabsListItemProps.showConfirm}
+          values={values}
+          twoColumn={tabsListItemProps.twoColumn}
+          isCompany={tabsListItemProps.isCompany}
+          usiLocked={tabsListItemProps.usiLocked}
+          isScrolling={isScrolling}
+        />
       ),
       otherClasses: clsx(classes.titleWrapper, isScrolling && classes.titleWrapperScrollIn),
     };
