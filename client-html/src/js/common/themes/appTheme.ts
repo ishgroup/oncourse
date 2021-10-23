@@ -145,7 +145,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     tabList: {
       listContainer: {
-        backgroundColor: '#292929'
+        backgroundColor: '#302A22'
       },
       listItemRoot: {
         color: "#fff",
@@ -299,7 +299,7 @@ export const theme: { [K in ThemeValues]: Partial<AppTheme> } = {
     },
     tabList: {
       listContainer: {
-        backgroundColor: '#727272'
+        backgroundColor: '#292929'
       },
       listItemRoot: {
         color: "#fff",
