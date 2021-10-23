@@ -10,6 +10,8 @@ import { Tax } from "@api/model";
 import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const formattedAccountTypes: any[] = [
   {
@@ -44,10 +46,38 @@ const getFormattedTaxes = (taxes: Tax[]) =>
     label: `${tax.code}`
   }));
 
+export const AccountHeading: React.FC<any> = props => {
+  const {
+    values,
+    twoColumn,
+    hide,
+    otherClasses,
+    isScrolling,
+  } = props;
+
+  return (
+    <FullScreenStickyHeader
+      hide={hide}
+      otherClasses={otherClasses}
+      isScrolling={isScrolling}
+      twoColumn={twoColumn}
+      title={values && values.accountCode}
+      fields={(
+        <FormField
+          type="text"
+          name="accountCode"
+          label="Code"
+          required
+        />
+      )}
+    />
+  );
+};
+
 const AccountsEditView = props => {
   const {
- twoColumn, taxTypes, isNew, values
-} = props;
+   twoColumn, taxTypes, isNew, values
+  } = props;
   const isCustom = values && values.isCustom === true;
   const isDisabled = isNew ? false : !isCustom;
 
@@ -65,11 +95,10 @@ const AccountsEditView = props => {
       <Grid item lg={twoColumn ? 11 : 11} md={twoColumn ? 11 : 11} xs={11}>
         <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="text"
-              name="accountCode"
-              label="Code"
-              required
+            <AccountHeading
+              values={values}
+              twoColumn={twoColumn}
+              hide={twoColumn}
             />
             <FormField
               type="select"
