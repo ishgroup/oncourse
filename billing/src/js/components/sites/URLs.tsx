@@ -95,7 +95,7 @@ const URLs = (
   ), [site.domains]);
 
   const domainWarnings = useMemo(() => Object.keys(site.domains).map((d) => (site.domains[d]
-    ? <WarningMessage warning={`${d}: ${site.domains[d]}`} />
+    ? <WarningMessage key={d} warning={`${d}: ${site.domains[d]}`} />
     : null)),
   [site.domains]);
 

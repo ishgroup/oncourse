@@ -55,6 +55,7 @@
     "react-google-login": "^5.2.2",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.3.0",
+    "react-use-analytics-api": "^1.4.16",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-observable": "^1.2.0",

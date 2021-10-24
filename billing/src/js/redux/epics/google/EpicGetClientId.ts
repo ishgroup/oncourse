@@ -15,7 +15,7 @@ import GoogleService from '../../../api/services/GoogleService';
 const request: Request<PropertiesDTO, null> = {
   type: GET_CLIENT_ID,
   getData: () => GoogleService.getProperties(),
-  processData: (res) => [getClientIdFulfilled(res.clientId)]
+  processData: (res) => [getClientIdFulfilled(res)]
 };
 
 export const EpicGetClientId: Epic<any, any> = Create(request);

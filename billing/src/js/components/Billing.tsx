@@ -169,7 +169,7 @@ const Billing = () => {
             </Grid>
           </Collapse>
           {!values.showPlanChangeFields && values.requestedBillingPlan && (
-            <Alert severity="info">
+            <Alert severity="info" classes={{ message: 'w-100' }}>
               <AlertTitle>Plan changes requested</AlertTitle>
               Plan downgrades will take effect on the first of next month.
               New plan is for

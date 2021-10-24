@@ -12,7 +12,13 @@ import { SitesUpdateRequest } from '../../../models/Sites';
 
 const request: Request<any, SitesUpdateRequest> = {
   type: UPDATE_COLLEGE_SITES,
-  getData: async ({ changed = [], created = [], removed = [] }, s) => {
+  getData: async (
+    {
+      changed = [],
+      created = [],
+      removed = [],
+    }
+  ) => {
     await changed.map((site) => () => WebSiteService.updateSite(site))
       .reduce(async (a, b) => {
         await a;

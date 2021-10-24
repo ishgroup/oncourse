@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
 } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
@@ -18,6 +18,7 @@ import { getCollegeKey, setCurrency } from '../redux/actions/College';
 import Settings from './settings/Settings';
 import ConfirmProvider from './common/dialog/ConfirmProvider';
 import { getClientId } from '../redux/actions/Google';
+import history from '../constant/History';
 
 export const muiCache = createCache({
   key: 'mui',
@@ -71,7 +72,7 @@ const Main = () => {
       >
 
         <ThemeProvider theme={theme}>
-          <Router>
+          <Router history={history}>
             {isNewUser ? <Stepper /> : <Settings />}
           </Router>
           <MessageProvider />

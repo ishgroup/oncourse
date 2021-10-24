@@ -27,7 +27,8 @@ const request: Request<any, SiteValues> = {
     const token = getTokenString(state.google);
 
     if (site.gtmAccountId) {
-      let { gtmContainerId, gaWebPropertyId } = site;
+      let { gaWebPropertyId } = site;
+      let gtmContainerId = state.google.gtmContainers[site.gtmAccountId].find((c) => c.publicId === site.gtmContainerId)?.containerId;
       if (!gtmContainerId) {
         await GoogleService.createGTMContainer(
           token,
@@ -40,7 +41,7 @@ const request: Request<any, SiteValues> = {
           }
         ).then((res) => {
           gtmContainerId = res.publicId;
-        }).catch();
+        });
       }
 
       if (!gaWebPropertyId) {
@@ -52,57 +53,62 @@ const request: Request<any, SiteValues> = {
           }
         ).then((res) => {
           gaWebPropertyId = res.id;
-        }).catch();
+        });
       }
 
       const workspaces = await GoogleService.getGTMWorkspaces(
         token,
         site.gtmAccountId,
         gtmContainerId
-      ).catch();
+      );
 
       const workspace = workspaces.workspace[0].workspaceId;
 
-      await GoogleService.createGTMVariable(
-        token,
-        site.gtmAccountId,
-        gtmContainerId,
-        workspace,
-        getGASVariable(gaWebPropertyId)
-      ).catch();
-
-      const trigger_all_pages = await GoogleService.createGTMTrigger(
-        token,
-        site.gtmAccountId,
-        gtmContainerId,
-        workspace,
-        ALL_PAGES_TRIGGER_DEFAULT
-      ).catch();
-
-      const trigger_all_events = await GoogleService.createGTMTrigger(
-        token,
-        site.gtmAccountId,
-        gtmContainerId,
-        workspace,
-        ALL_EVENTS_TRIGGER_DEFAULT
-      ).catch();
-
-      const trigger_maps_page = await GoogleService.createGTMTrigger(
-        token,
-        site.gtmAccountId,
-        gtmContainerId,
-        workspace,
-        MAPS_PAGE_TRIGGER_DEFAULT
-      ).catch();
-
-      const preview: any = await GoogleService.getGTMPreview(
+      const preview = await GoogleService.getGTMPreview(
         token,
         site.gtmAccountId,
         gtmContainerId,
         workspace
-      ).catch();
+      );
 
-      if (!preview?.containerVersion.tag.some((t) => t.type === 'ua')) {
+      if (!preview.containerVersion.variable?.find((v) => v.type === 'gas')) {
+        await GoogleService.createGTMVariable(
+          token,
+          site.gtmAccountId,
+          gtmContainerId,
+          workspace,
+          getGASVariable(gaWebPropertyId)
+        );
+      }
+
+      const trigger_all_pages = preview.containerVersion.trigger?.find((t) => t.name === ALL_PAGES_TRIGGER_DEFAULT.name)
+        || await GoogleService.createGTMTrigger(
+          token,
+          site.gtmAccountId,
+          gtmContainerId,
+          workspace,
+          ALL_PAGES_TRIGGER_DEFAULT
+        );
+
+      const trigger_all_events = preview.containerVersion.trigger?.find((t) => t.name === ALL_EVENTS_TRIGGER_DEFAULT.name)
+        || await GoogleService.createGTMTrigger(
+          token,
+          site.gtmAccountId,
+          gtmContainerId,
+          workspace,
+          ALL_EVENTS_TRIGGER_DEFAULT
+        );
+
+      const trigger_maps_page = preview.containerVersion.trigger?.find((t) => t.name === MAPS_PAGE_TRIGGER_DEFAULT.name)
+        || await GoogleService.createGTMTrigger(
+          token,
+          site.gtmAccountId,
+          gtmContainerId,
+          workspace,
+          MAPS_PAGE_TRIGGER_DEFAULT
+        );
+
+      if (!preview.containerVersion.tag?.some((t) => t.type === 'ua')) {
         await GoogleService.createGTMTag(
           token,
           site.gtmAccountId,
@@ -198,6 +204,13 @@ const request: Request<any, SiteValues> = {
           }
         );
       }
+
+      await GoogleService.publishGTM(
+        token,
+        site.gtmAccountId,
+        gtmContainerId,
+        workspace,
+      );
     }
 
     return site;

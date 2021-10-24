@@ -1,7 +1,10 @@
-import { SettingsDTO, SiteDTO } from '@api/model';
+import { PropertiesDTO, SettingsDTO, SiteDTO } from '@api/model';
 import { MockAdapter, promiseResolve } from '../MockAdapter';
 
 export function BillingApiMock(this: MockAdapter) {
+  this.api.onGet('/v1/properties')
+    .reply((config) => promiseResolve<PropertiesDTO>(config, { clientId: '581533795667-4u647nf45tmmu4gh7mqkgse818hgc9h1.apps.googleusercontent.com' }));
+
   this.api.onGet(new RegExp('v1/college/(?!site)(?!settings)(?!key)[^/]+$'))
     .reply((config) => promiseResolve(config, true));
 

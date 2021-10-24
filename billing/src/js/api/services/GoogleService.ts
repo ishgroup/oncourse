@@ -65,16 +65,8 @@ class GoogleService {
     });
   }
 
-  public getGTMVariables(Authorization: string, account: string, container: string, workspace: string): Promise<gapi.client.tagmanager.ListVariablesResponse> {
-    return this.http.GET(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}/variables`, {
-      headers: {
-        Authorization
-      }
-    });
-  }
-
   public getGTMPreview(Authorization: string, account: string, container: string, workspace: string): Promise<gapi.client.tagmanager.QuickPreviewResponse> {
-    return this.http.GET(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}:quick_preview`, {
+    return this.http.POST(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}:quick_preview`, null, {
       headers: {
         Authorization
       }
@@ -149,6 +141,29 @@ class GoogleService {
   ): Promise<GTMTag> {
     return this.http.POST(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}/tags`,
       tag,
+      {
+        headers: {
+          Authorization
+        }
+      });
+  }
+
+  public async publishGTM(
+    Authorization: string,
+    account: string,
+    container: string,
+    workspace: string
+  ): Promise<GTMTrigger> {
+    const version: gapi.client.tagmanager.CreateContainerVersionResponse = await this.http.POST(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}:create_version`,
+      null,
+      {
+        headers: {
+          Authorization
+        }
+      });
+
+    return this.http.POST(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/versions/${version.containerVersion.containerVersionId}:publish`,
+      null,
       {
         headers: {
           Authorization

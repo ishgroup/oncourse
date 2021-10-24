@@ -11,6 +11,7 @@
 import React from 'react';
 import { GoogleLogin, GoogleLoginResponse, GoogleLogout } from 'react-google-login';
 import { Button, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import google from '../../../images/google.svg';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks/redux';
 import { getGtmAndGaData, setGoogleCredentials } from '../../redux/actions/Google';
@@ -79,8 +80,18 @@ const GoogleLoginButton = () => {
   return (
     <div>
       <div className="d-flex justify-content-end">
-        {
-        profile
+        {!clientId && (
+          <LoadingButton
+            variant="contained"
+            color="primary"
+            loading
+            disableElevation
+            startIcon={<img height={20} width={20} src={google} alt="Google" />}
+          >
+            Login
+          </LoadingButton>
+        )}
+        {clientId && (profile
           ? (
             <GoogleLogout
               onLogoutSuccess={onLogoutSuccess}
@@ -109,8 +120,7 @@ const GoogleLoginButton = () => {
               )}
               isSignedIn
             />
-          )
-      }
+          ))}
       </div>
       <Typography variant="caption" color="textSecondary">
         {

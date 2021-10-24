@@ -155,16 +155,16 @@ const Settings = () => {
                           Tag manager
                         </Typography>
                       </NavLink>
-                      {/* <NavLink */}
-                      {/*  exact */}
-                      {/*  strict */}
-                      {/*  to={`/websites/${s.id}/googleSearch`} */}
-                      {/*  activeClassName={classes.activeNav} */}
-                      {/* > */}
-                      {/*  <Typography variant="body2" className={classes.navItem}> */}
-                      {/*    Google search */}
-                      {/*  </Typography> */}
-                      {/* </NavLink> */}
+                      <NavLink
+                        exact
+                        strict
+                        to={`/websites/${s.id}/googleSearch`}
+                        activeClassName={classes.activeNav}
+                      >
+                        <Typography variant="body2" className={classes.navItem}>
+                          Google search
+                        </Typography>
+                      </NavLink>
                     </ul>
                   </li>
                 ))}
@@ -179,7 +179,7 @@ const Settings = () => {
           <div className="contentInner">
             <div className={classes.formItem}>
               <Switch>
-                <Route exact path="/">
+                <Route exact path="/" >
                   <Billing />
                 </Route>
                 <Route path="/websites/:id/:page">

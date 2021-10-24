@@ -5395,6 +5395,11 @@ react-transition-group@^4.4.2:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-analytics-api@^1.4.16:
+  version "1.4.16"
+  resolved "https://repo.ish.com.au/repository/npm/react-use-analytics-api/-/react-use-analytics-api-1.4.16.tgz#4dfd6b3b981b7d3b666eea9b8be8545b4b80c3fd"
+  integrity sha512-7XLEH/UL3A+Dnkxa2/W/AX2Q/iwtu0jtHf1mrQVC0LfBJBZYHWcTeDUNI8qA9FX5USA97YElbKvFriXDrYksUQ==
+
 react@^17.0.1:
   version "17.0.2"
   resolved "https://repo.ish.com.au/repository/npm/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"

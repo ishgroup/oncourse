@@ -4,6 +4,7 @@
  */
 
 import { GoogleLoginResponse } from 'react-google-login';
+import { PropertiesDTO } from '@api/model';
 import { IAction } from '../../models/IshAction';
 import { FULFILLED } from './ActionUtils';
 import { GoogleState } from '../../models/Google';
@@ -32,10 +33,9 @@ export const getGtmAndGaDataFulfilled = (state: GoogleState): IAction => ({
   payload: state
 });
 
-
-export const getClientIdFulfilled = (clientId: string): IAction => ({
+export const getClientIdFulfilled = (props: PropertiesDTO): IAction => ({
   type: GET_CLIENT_ID_FULFILLED,
-  payload: clientId
+  payload: props
 });
 
 export const setGoogleCredentials = (payload: {

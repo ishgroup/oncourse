@@ -11,7 +11,7 @@ import { green } from '@mui/material/colors';
 import { LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
 import { SiteDTO } from '@api/model';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { FormikErrors } from 'formik/dist/types';
 import SettingsIcon from '@mui/icons-material/Settings';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -32,6 +32,7 @@ import instantFetchErrorHandler from '../../api/fetch-errors-handlers/InstantFet
 import URLs from './URLs';
 import GoogleSetup from './GoogleSetup';
 import TagManager from './TagManager';
+import Analytics from './Analytics';
 
 const useStyles = makeAppStyles()((theme, prop, createRef) => {
   const rootExpanded = {
@@ -171,6 +172,7 @@ export const SitesPage = () => {
   const collegeKey = useAppSelector((state) => state.college.collegeKey);
 
   const { id, page } = useParams<SitePageParams>();
+  const location = useLocation();
 
   const dispatch = useAppDispatch();
   const appHistory = useHistory();
@@ -399,10 +401,17 @@ export const SitesPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setIsConfig(false);
-  }, [id, page]);
+    const search = new URLSearchParams(location.search);
+    const openSettings = search.get('openSettings');
+    if (openSettings) {
+      window.history.replaceState(null, null, window.location.pathname);
+      setIsConfig(true);
+    } else {
+      setIsConfig(false);
+    }
+  }, [id, page, location]);
 
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
 
   const onClickDelete = () => {
     if (values.id) {
@@ -462,6 +471,7 @@ export const SitesPage = () => {
         );
       default:
       case 'analytics':
+        // return <Analytics />;
         return null;
     }
   };
