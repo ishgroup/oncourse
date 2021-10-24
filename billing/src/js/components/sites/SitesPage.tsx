@@ -469,9 +469,9 @@ export const SitesPage = () => {
             gtmContainer={gtmContainer}
           />
         );
-      default:
       case 'analytics':
         // return <Analytics />;
+      default:
         return null;
     }
   };

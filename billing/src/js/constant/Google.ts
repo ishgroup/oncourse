@@ -7,8 +7,6 @@ import { GTMTrigger, GTMVariable } from '../models/Google';
 
 export const GTM_CONTAINER_NAME_DEFAULT = 'ish onCourse Google Tag manager container';
 
-export const GA_PROPERTY_NAME_DEFAULT = 'ish onCourse Google Analytics web property';
-
 export const GAS_VARIABLE_NAME = 'ish onCourse Google Analytics settings';
 
 export const getGASVariable = (trakingId: string): GTMVariable => ({

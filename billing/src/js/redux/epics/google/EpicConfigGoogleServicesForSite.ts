@@ -14,7 +14,6 @@ import {
   MAPS_PAGE_TRIGGER_DEFAULT,
   MAPS_API_KEY_NAME,
   GTM_CONTAINER_NAME_DEFAULT,
-  GA_PROPERTY_NAME_DEFAULT,
   getMapsApiKeyVariable,
   getGASVariable,
 } from '../../../constant/Google';
@@ -49,7 +48,7 @@ const request: Request<any, SiteValues> = {
           token,
           site.googleAnalyticsId,
           {
-            name: GA_PROPERTY_NAME_DEFAULT
+            name: `${site.name} web property`
           }
         ).then((res) => {
           gaWebPropertyId = res.id;
