@@ -5,13 +5,17 @@
 import React from 'react';
 import { Grid, Typography } from '@mui/material';
 import { GTMContainer } from '../../models/Google';
+import Loading from '../common/Loading';
 
 interface Props {
   gtmContainer: GTMContainer;
+  loading: boolean;
 }
 
-const TagManager = ({ gtmContainer }: Props) => (
+const TagManager = ({ gtmContainer, loading }: Props) => (
   <Grid container>
+    {loading && <Loading />}
+    {!loading && (
     <Grid item xs={6}>
       <Typography variant="caption" color="textSecondary">
         Used container
@@ -20,9 +24,7 @@ const TagManager = ({ gtmContainer }: Props) => (
         {gtmContainer?.name ? `${gtmContainer.name} (${gtmContainer.publicId})` : <span className="text-placeholder">Not specified</span>}
       </Typography>
     </Grid>
-    <Grid item xs={6}>
-
-    </Grid>
+    )}
   </Grid>
 );
 

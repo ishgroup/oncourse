@@ -21,7 +21,8 @@ export function BillingApiMock(this: MockAdapter) {
         name: 'Site 1',
         key: 'nida-1',
         domains: { 'www.corporate.nida.edu.au': 'error', 'www.open.nida.edu.au': 'error' },
-        webSiteTemplate: null
+        webSiteTemplate: null,
+        gtmContainerId: 'GTM-KXC5NC7'
       },
       {
         id: 2,

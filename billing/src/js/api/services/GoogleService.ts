@@ -48,7 +48,7 @@ class GoogleService {
     profile: GAWebPropertyProfile
   ): Promise<GAWebPropertyProfile> {
     return this.http.POST(`https://www.googleapis.com/analytics/v3/management/accounts/${account}/webproperties/${property}/profiles`,
-      property,
+      profile,
       {
         headers: {
           Authorization
@@ -58,6 +58,14 @@ class GoogleService {
 
   public getGAWebProperties(Authorization: string, account: string): Promise<gapi.client.analytics.Webproperties> {
     return this.http.GET(`https://www.googleapis.com/analytics/v3/management/accounts/${account}/webproperties`, {
+      headers: {
+        Authorization
+      }
+    });
+  }
+
+  public getGAWebProfiles(Authorization: string, account: string, property: string): Promise<gapi.client.analytics.Profiles> {
+    return this.http.GET(`https://www.googleapis.com/analytics/v3/management/accounts/${account}/webproperties/${property}/profiles`, {
       headers: {
         Authorization
       }
@@ -123,6 +131,22 @@ class GoogleService {
     variable: GTMVariable
   ): Promise<GTMVariable> {
     return this.http.POST(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}/variables`,
+      variable,
+      {
+        headers: {
+          Authorization
+        }
+      });
+  }
+
+  public updateGTMVariable(
+    Authorization: string,
+    account: string,
+    container: string,
+    workspace: string,
+    variable: GTMVariable
+  ): Promise<GTMVariable> {
+    return this.http.PUT(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}/variables`,
       variable,
       {
         headers: {

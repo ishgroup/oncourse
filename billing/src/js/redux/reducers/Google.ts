@@ -20,7 +20,8 @@ const Initial: GoogleState = {
   gtmAccounts: null,
   gtmContainers: null,
   gaAccounts: null,
-  gaWebProperties: null
+  gaWebProperties: null,
+  gaWebProfiles: null
 };
 
 export const googleReducer = (state: GoogleState = Initial, action: IAction): GoogleState => {

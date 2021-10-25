@@ -1,26 +1,45 @@
-import * as React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   useAnalyticsApi,
   useAuthorize,
   useDataChart
 } from 'react-use-analytics-api';
-import { Typography } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
 import { useAppSelector } from '../../redux/hooks/redux';
 import Loading from '../common/Loading';
-import { GAWebProperty } from '../../models/Google';
+import { renderSelectItems } from '../../utils';
 
 interface Props {
-  gaWebProperty: GAWebProperty
+  gaWebPropertyId: string,
+  loading: boolean
 }
 
-const Analytics = ({ gaWebProperty }: Props) => {
+const Analytics = ({ gaWebPropertyId, loading }: Props) => {
+  const [authorizeCalled, setAuthorizeCalled] = useState(false);
+  const [profileId, setProfileId] = useState(null);
+
+  const gaWebProfiles = useAppSelector((state) => state.google.gaWebProfiles);
+
   const {
     ready, gapi, authorized, error
   } = useAnalyticsApi();
-  const viewSelectorContainerId = 'view-selector-container';
+
+  const gaProfileItems = useMemo(() => renderSelectItems(
+    {
+      items: (gaWebProfiles || {})[gaWebPropertyId],
+      valueKey: 'id',
+      labelKey: 'name'
+    }
+  ), [gaWebPropertyId, gaWebProfiles]);
+
+  useEffect(() => {
+    if (gaWebProfiles && gaWebPropertyId) {
+      setProfileId(gaWebProfiles[gaWebPropertyId][0].id);
+    }
+  }, [gaWebProfiles, gaWebPropertyId]);
 
   const query = {
-    ids: `ga:${gaWebProperty?.defaultProfileId}`,
+    ids: `ga:${profileId}`,
     'start-date': '28daysAgo',
     'end-date': 'today',
     metrics: 'ga:sessions',
@@ -35,9 +54,8 @@ const Analytics = ({ gaWebProperty }: Props) => {
       width: 600
     },
   };
-  useDataChart(authorized && gaWebProperty ? gapi : undefined, query, chart);
 
-  const [authorizeCalled, setAuthorizeCalled] = React.useState(false);
+  useDataChart(authorized && profileId && gaWebPropertyId ? gapi : undefined, query, chart);
 
   const access_token = useAppSelector((state) => state.google?.token?.access_token);
 
@@ -47,7 +65,7 @@ const Analytics = ({ gaWebProperty }: Props) => {
     }
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (ready && !error && !authorizeCalled && access_token) {
       authorize();
       setAuthorizeCalled(true);
@@ -56,25 +74,38 @@ const Analytics = ({ gaWebProperty }: Props) => {
 
   return (
     <div>
-      {!ready && <Loading />}
-      {ready && (
+      {(!ready || loading) && <div className="d-flex"><Loading /></div>}
+      {ready && !loading && (
         <div>
-          {authorized && (
+          {authorized && gaWebPropertyId && (
             <div>
+              <Grid container>
+                <Grid item xs={6}>
+                  <TextField
+                    select
+                    fullWidth
+                    margin="normal"
+                    label="Selected view"
+                    value={profileId || ''}
+                    variant="standard"
+                    onChange={(e) => setProfileId(e.target.value)}
+                    helperText={gaProfileItems.length ? null : 'No profiles (views) found on selected property'}
+                  >
+                    {gaProfileItems}
+                  </TextField>
+                </Grid>
+              </Grid>
               <div style={{ marginTop: '30px' }}>
-                <div className="data-chart" id="data-chart-container" style={{ width: '500px' }} />
+                <div className="data-chart" id="data-chart-container"/>
               </div>
-              <div id={viewSelectorContainerId} />
+              <div id="view-selector-container" />
             </div>
           )}
           {
             !authorized && <Typography color="textSecondary">Authorizie with google to see analytics data</Typography>
           }
           {
-            !gaWebProperty && <Typography color="textSecondary">Select or create web property in configure section to see analytics data</Typography>
-          }
-          {
-            gaWebProperty && !gaWebProperty?.defaultProfileId && <Typography color="textSecondary">No profiles (views) found on selected property</Typography>
+            !gaWebPropertyId && <Typography color="textSecondary">Select or create web property in configure section to see analytics data</Typography>
           }
         </div>
       )}

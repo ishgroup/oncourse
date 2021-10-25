@@ -15,7 +15,7 @@ import {
   MAPS_API_KEY_NAME,
   GTM_CONTAINER_NAME_DEFAULT,
   getMapsApiKeyVariable,
-  getGASVariable,
+  getGASVariable, GAS_VARIABLE_NAME,
 } from '../../../constant/Google';
 import { SiteValues } from '../../../models/Sites';
 import { updateCollegeSites } from '../../actions/Sites';
@@ -79,13 +79,29 @@ const request: Request<any, SiteValues> = {
         workspace
       );
 
-      if (!preview.containerVersion.variable?.find((v) => v.type === 'gas')) {
+      const gasVariable = preview.containerVersion.variable?.find((v) => v.type === 'gas' && v.name === GAS_VARIABLE_NAME);
+
+      if (!gasVariable) {
         await GoogleService.createGTMVariable(
           token,
           site.gtmAccountId,
           gtmContainerId,
           workspace,
           getGASVariable(gaWebPropertyId)
+        );
+      } else {
+        await GoogleService.updateGTMVariable(
+          token,
+          site.gtmAccountId,
+          gtmContainerId,
+          workspace,
+          {
+            ...gasVariable,
+            parameter: gasVariable.parameter.map((p) => ({
+              ...p,
+              value: p.key === 'trackingId' ? gaWebPropertyId : p.value
+            }))
+          }
         );
       }
 

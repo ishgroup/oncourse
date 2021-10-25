@@ -17,6 +17,7 @@ const request: Request<GoogleState, null> = {
     const gtmAccounts = await GoogleService.getGTMAccounts(token);
     const gtmContainers = {};
     const gaWebProperties = {};
+    const gaWebProfiles = {};
 
     for (const acc of gtmAccounts.account) {
       const container = await GoogleService.getGTMContainers(token, acc.accountId);
@@ -31,6 +32,17 @@ const request: Request<GoogleState, null> = {
       const property = await GoogleService.getGAWebProperties(token, acc.id);
       if (property) {
         gaWebProperties[acc.id] = property.items;
+
+        for (const pr of property.items) {
+          const profiles = await GoogleService.getGAWebProfiles(
+            token,
+            acc.id,
+            pr.id
+          );
+          if (profiles) {
+            gaWebProfiles[pr.id] = profiles.items;
+          }
+        }
       }
     }
 
@@ -38,7 +50,8 @@ const request: Request<GoogleState, null> = {
       gaAccounts: gaAccounts.items,
       gtmAccounts: gtmAccounts.account,
       gtmContainers,
-      gaWebProperties
+      gaWebProperties,
+      gaWebProfiles
     };
 
     return result;

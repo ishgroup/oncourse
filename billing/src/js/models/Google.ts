@@ -26,4 +26,5 @@ export interface GoogleState {
   gtmContainers: Record<GTMAccount['accountId'], GTMContainer[]>,
   gaAccounts: GAAccount[],
   gaWebProperties: Record<GAAccount['id'], GAWebProperty[]>,
+  gaWebProfiles: Record<GAWebProperty['id'], GAWebPropertyProfile[]>,
 }

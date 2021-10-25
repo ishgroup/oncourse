@@ -235,12 +235,12 @@ export const SitesPage = () => {
     }
   });
 
-  const gtmContainer = useMemo(() => {
-    if (!values.gtmContainerId) {
-      return null;
-    }
+  const gtmContainer = useMemo<GTMContainer>(() => {
+    let container: GTMContainer = null;
 
-    let container: GTMContainer = {};
+    if (!values.gtmContainerId) {
+      return container;
+    }
 
     for (const key in gtmContainers) {
       gtmContainers[key]?.forEach((con) => {
@@ -305,7 +305,7 @@ export const SitesPage = () => {
     }
   }, [collegeKey, initialSite]);
 
-  const getGoogleData = async (site: SiteDTO) => {
+  const getGoogleData = async () => {
     setCustomLoading(true);
     try {
       const googleToken = getTokenString({ token } as any);
@@ -317,63 +317,61 @@ export const SitesPage = () => {
         googleAnalyticsId: ''
       };
 
-      if (token?.access_token && site.gtmContainerId && gtmContainer) {
-        googleData.gtmAccountId = gtmContainer.accountId;
+      googleData.gtmAccountId = gtmContainer.accountId;
 
-        const workspaces = await GoogleService.getGTMWorkspaces(
+      const workspaces = await GoogleService.getGTMWorkspaces(
+        googleToken,
+        googleData.gtmAccountId,
+        gtmContainer.containerId
+      );
+
+      const workspace = workspaces?.workspace[0]?.workspaceId;
+
+      if (workspace) {
+        await GoogleService.getGTMPreview(
           googleToken,
           googleData.gtmAccountId,
-          site.gtmContainerId
-        );
-
-        const workspace = workspaces?.workspace[0]?.workspaceId;
-
-        if (workspace) {
-          await GoogleService.getGTMPreview(
-            googleToken,
-            googleData.gtmAccountId,
-            site.gtmContainerId,
-            workspace
-          ).then((res) => {
-            if (res.containerVersion.accountId) {
-              googleData.gtmAccountId = res.containerVersion.accountId;
-            }
-            if (res.containerVersion.variable) {
-              res.containerVersion.variable.forEach((v) => {
-                if (v.name === MAPS_API_KEY_NAME) {
-                  v.parameter.forEach((p) => {
-                    if (p.key === 'value') {
-                      googleData.googleMapsApiKey = p.value;
-                    }
-                  });
-                }
-                if (v.name === GAS_VARIABLE_NAME) {
-                  v.parameter.forEach((p) => {
-                    if (p.key === 'trackingId') {
-                      googleData.gaWebPropertyId = p.value;
-                    }
-                  });
-                }
-              });
-            }
-          });
-
-          if (googleData.gaWebPropertyId && gaWebProperties) {
-            Object.keys(gaWebProperties).forEach((key) => {
-              gaWebProperties[key].forEach((pr) => {
-                googleData.googleAnalyticsId = pr.accountId;
-              });
+          gtmContainer.containerId,
+          workspace
+        ).then((res) => {
+          if (res.containerVersion.accountId) {
+            googleData.gtmAccountId = res.containerVersion.accountId;
+          }
+          if (res.containerVersion.variable) {
+            res.containerVersion.variable.forEach((v) => {
+              if (v.name === MAPS_API_KEY_NAME) {
+                v.parameter.forEach((p) => {
+                  if (p.key === 'value') {
+                    googleData.googleMapsApiKey = p.value;
+                  }
+                });
+              }
+              if (v.name === GAS_VARIABLE_NAME) {
+                v.parameter.forEach((p) => {
+                  if (p.key === 'trackingId') {
+                    googleData.gaWebPropertyId = p.value;
+                  }
+                });
+              }
             });
           }
+        });
 
-          resetForm({
-            values: {
-              ...initialSite,
-              ...googleData,
-              collegeKey,
-            }
+        if (googleData.gaWebPropertyId && gaWebProperties) {
+          Object.keys(gaWebProperties).forEach((key) => {
+            gaWebProperties[key].forEach((pr) => {
+              googleData.googleAnalyticsId = pr.accountId;
+            });
           });
         }
+
+        resetForm({
+          values: {
+            ...initialSite,
+            ...googleData,
+            collegeKey,
+          }
+        });
       }
       setCustomLoading(false);
     } catch (e) {
@@ -383,10 +381,10 @@ export const SitesPage = () => {
   };
 
   useEffect(() => {
-    if (initialSite?.gtmContainerId && initialSite?.id) {
-      getGoogleData(initialSite);
+    if (initialSite?.id && initialSite?.gtmContainerId && !values.gtmAccountId && gtmContainer && token?.access_token) {
+      getGoogleData();
     }
-  }, [initialSite?.id]);
+  }, [initialSite?.id, gtmContainer, token?.access_token]);
 
   useEffect(() => {
     if (id === 'new') {
@@ -468,12 +466,15 @@ export const SitesPage = () => {
         return (
           <TagManager
             gtmContainer={gtmContainer}
+            loading={googleLoading || customLoading}
           />
         );
       case 'analytics':
         return (
           <Analytics
-            gaWebProperty={(gaWebProperties || {})[values.googleAnalyticsId]?.find((wp) => wp.id === values.gaWebPropertyId)}
+            key={values.gaWebPropertyId}
+            gaWebPropertyId={values.gaWebPropertyId}
+            loading={googleLoading || customLoading}
           />
         );
       default:
@@ -540,7 +541,7 @@ export const SitesPage = () => {
                 {!isConfig && page === 'tagManager'
                 && (
                   <Button
-                    onClick={() => window.open(`https://tagmanager.google.com/${gtmContainer.path}`, 'blank')}
+                    onClick={() => window.open(gtmContainer.tagManagerUrl, 'blank')}
                     disableElevation
                     color="primary"
                     variant="contained"
