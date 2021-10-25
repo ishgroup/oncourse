@@ -32,8 +32,14 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 
 	@Override
 	void prePersist() {
-		if (getDefaultDurationMinutes() == null) {
-			setDefaultDurationMinutes(Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutes().intValue())
+		if (startDatetime) {
+			startDatetime = session.startDatetime
+		}
+		if (endDatetime) {
+			endDatetime = session.endDatetime
+		}
+		if (actualPayableDurationMinutes == null) {
+			setActualPayableDurationMinutes(Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutes().intValue())
 		}
 	}
 
@@ -58,12 +64,12 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	}
 
 	/**
-	 * @return duration of the attendance
+	 * @return actual payable duration of the attendance
 	 */
 	@API
 	@Override
-	Integer getDurationMinutes() {
-		return super.getDurationMinutes()
+	Integer getActualPayableDurationMinutes() {
+		return super.getActualPayableDurationMinutes()
 	}
 
 	/**
@@ -130,7 +136,7 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	 * @return  payable duration in hours
 	 */
 	BigDecimal getPayableDurationInHours() {
-		Integer minutes = durationMinutes ?: defaultDurationMinutes
+		Integer minutes = actualPayableDurationMinutes
 		BigDecimal decimalValue = new BigDecimal(minutes)
 		decimalValue.setScale(4)
 		return decimalValue.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)

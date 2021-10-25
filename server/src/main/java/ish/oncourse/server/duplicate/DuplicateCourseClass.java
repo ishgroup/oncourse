@@ -184,14 +184,19 @@ public class DuplicateCourseClass {
                         var tutorAttendance = context.newObject(TutorAttendance.class);
                         tutorAttendance.setSession(newSession);
                         tutorAttendance.setCourseClassTutor(cct);
-                        tutorAttendance.setStartDatetime(newSession.getStartDatetime());
-                        tutorAttendance.setEndDatetime(newSession.getEndDatetime());
                         tutorAttendance.setAttendanceType(AttendanceType.UNMARKED);
                         if (request.isCopyPayableTimeForSessions()) {
                             oldSession.getSessionTutors().stream()
                                     .filter(a -> a.getCourseClassTutor().getTutor().equalsIgnoreContext(cct.getTutor())
                                             && a.getCourseClassTutor().getDefinedTutorRole() == cct.getDefinedTutorRole())
-                                    .findFirst().ifPresent(oldAttendance -> tutorAttendance.setDefaultDurationMinutes(oldAttendance.getDefaultDurationMinutes()));
+                                    .findFirst().ifPresent(oldAttendance -> { 
+                                        tutorAttendance.setStartDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getStartDatetime(), request.getDaysTo()));
+                                        tutorAttendance.setEndDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getEndDatetime(), request.getDaysTo()));
+
+                                    });
+                        } else {
+                            tutorAttendance.setStartDatetime(newSession.getStartDatetime());
+                            tutorAttendance.setEndDatetime(newSession.getEndDatetime());
                         }
                     }
                 }

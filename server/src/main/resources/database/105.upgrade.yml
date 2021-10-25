@@ -58,24 +58,21 @@ databaseChangeLog:
             columnDataType: DATETIME
             columnName: endDatetime
             tableName: SessionCourseClassTutor
-
+            
   - changeSet:
       id: 105-4
       author: artyom
       preConditions:
         - onFail: HALT
-        - not:
-          - columnExists:
-              tableName: SessionCourseClassTutor
-              columnName: defaultDurationMinutes
-      changes:
-        - addColumn:
+        - columnExists:
             tableName: SessionCourseClassTutor
-            columns:
-              - column:
-                  name: defaultDurationMinutes
-                  type: INT
-                  
+            columnName: durationMinutes
+      changes:
+        - sql: 'UPDATE SessionCourseClassTutor a
+                JOIN CourseSession s ON a.sessionId = s.id
+                SET a.durationMinutes = TIMESTAMPDIFF(MINUTE, s.startDatetime, s.endDatetime) - s.payAdjustment
+                WHERE a.durationMinutes IS NULL;'
+
   - changeSet:
       id: 105-5
       author: artyom
@@ -83,12 +80,14 @@ databaseChangeLog:
         - onFail: HALT
         - columnExists:
             tableName: SessionCourseClassTutor
-            columnName: defaultDurationMinutes
+            columnName: durationMinutes
       changes:
-        - sql: 'UPDATE SessionCourseClassTutor a
-                JOIN CourseSession s ON a.sessionId = s.id
-                SET a.defaultDurationMinutes = TIMESTAMPDIFF(MINUTE, s.startDatetime, s.endDatetime) - s.payAdjustment;'
-          
+        - renameColumn:
+            columnDataType: INT
+            newColumnName: actualPayableDurationMinutes
+            oldColumnName: durationMinutes
+            tableName: SessionCourseClassTutor
+
   - changeSet:
       id: 105-6
       author: artyom
@@ -96,11 +95,11 @@ databaseChangeLog:
         - onFail: HALT
         - sqlCheck:
             expectedResult: 0
-            sql: 'SELECT count(*) FROM SessionCourseClassTutor WHERE defaultDurationMinutes IS NULL'
+            sql: 'SELECT count(*) FROM SessionCourseClassTutor WHERE actualPayableDurationMinutes IS NULL'
       changes:
         - addNotNullConstraint:
             columnDataType: INT
-            columnName: defaultDurationMinutes
+            columnName: actualPayableDurationMinutes
             tableName: SessionCourseClassTutor
             
   - changeSet:

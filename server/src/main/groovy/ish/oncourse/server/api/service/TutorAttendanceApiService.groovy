@@ -39,7 +39,7 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         dto.contactName = cayenneModel.courseClassTutor.tutor.contact.fullName
         dto.attendanceType = TutorAttendanceTypeDTO.values()[0].fromDbType(cayenneModel.attendanceType)
         dto.note = cayenneModel.note
-        dto.durationMinutes = cayenneModel.durationMinutes
+        dto.actualPayableDurationMinutes = cayenneModel.actualPayableDurationMinutes
         dto.hasPayslip = cayenneModel.hasPayslips()
         dto.start = LocalDateUtils.dateToTimeValue(cayenneModel.startDatetime)
         dto.end = LocalDateUtils.dateToTimeValue(cayenneModel.endDatetime)
@@ -50,7 +50,7 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
     TutorAttendance toCayenneModel(TutorAttendanceDTO dto, TutorAttendance cayenneModel) {
         cayenneModel.attendanceType = dto.attendanceType.dbType
         cayenneModel.note = dto.note
-        cayenneModel.durationMinutes = dto.durationMinutes
+        cayenneModel.actualPayableDurationMinutes = dto.actualPayableDurationMinutes
         cayenneModel.markedByUser = cayenneModel.context.localObject(userService.currentUser)
         cayenneModel.startDatetime = LocalDateUtils.timeValueToDate(dto.start)
         cayenneModel.endDatetime = LocalDateUtils.timeValueToDate(dto.end)
