@@ -39,7 +39,7 @@ const styles = theme => createStyles({
   },
   root: {
     marginTop: theme.spacing(8),
-    height: `calc(100vh - ${theme.spacing(8)}px)`
+    height: `calc(100vh - ${theme.spacing(8)})`
   },
   fullEditViewBackground: {
     background: theme.appBar.header.background,
@@ -158,11 +158,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     let appTilte = null;
 
     if (customTitle) {
-      const { html, otherClasses } = customTitle(this.props, this.state);
-      if (html) {
+      const { Title, otherClasses } = customTitle(this.props, this.state);
+      if (Title) {
         appTilte = (
           <div className={clsx("flex-fill", classes.titleWrapper, otherClasses)}>
-            {html}
+            {Title}
           </div>
         );
       }
@@ -214,7 +214,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
     const title = values && (nameCondition ? nameCondition(values) : values.name);
 
-    this.updateTitle(title)
+    this.updateTitle(title);
 
     const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
 

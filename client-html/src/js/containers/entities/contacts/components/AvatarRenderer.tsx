@@ -33,6 +33,7 @@ const AvatarRenderer: React.FC<any> = props => {
     dispatch,
     disabled,
     avatarSize,
+    twoColumn,
   } = props;
 
   const fileRef = useRef<any>();
@@ -81,7 +82,7 @@ const AvatarRenderer: React.FC<any> = props => {
     <div>
       {!disabled && (<input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />)}
 
-      <div className={`centeredFlex justify-content-start mb-2 ${classes.avatarWrapper}`}>
+      <div className={`centeredFlex justify-content-start ${!twoColumn && "mb-2"} ${classes.avatarWrapper}`}>
         {input.value && input.value.thumbnail ? (
           <FilePreview
             actions={[
