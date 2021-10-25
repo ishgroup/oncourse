@@ -79,7 +79,7 @@ class Accounts extends React.Component<any, any> {
     const { isScrolling } = viewState;
 
     return {
-      html: values && (
+      Title: values && (
         <AccountHeading
           values={values}
           isScrolling={isScrolling}
