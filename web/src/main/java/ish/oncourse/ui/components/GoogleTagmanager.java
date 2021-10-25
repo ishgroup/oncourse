@@ -39,7 +39,7 @@ public class GoogleTagmanager extends ISHCommon {
     }
 
 	public String getAccount() {
-		String account = siteService.getCurrentWebSite().getGoogleTagmanagerContainer();
+		String account = siteService.getCurrentWebSite().getGoogleTagmanagerAccount();
 		return (StringUtils.trimToNull(account) == null) ? null : account.trim();
 	}
 
