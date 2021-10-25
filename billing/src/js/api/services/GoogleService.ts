@@ -6,7 +6,7 @@
 import { PropertiesApi, PropertiesDTO } from '@api/model';
 import { DefaultHttpService } from './HttpService';
 import {
-  GAWebProperty,
+  GAWebProperty, GAWebPropertyProfile,
   GTMAccount, GTMContainer, GTMTag, GTMTrigger, GTMVariable
 } from '../../models/Google';
 
@@ -33,6 +33,21 @@ class GoogleService {
     property: GAWebProperty
   ): Promise<GAWebProperty> {
     return this.http.POST(`https://www.googleapis.com/analytics/v3/management/accounts/${account}/webproperties`,
+      property,
+      {
+        headers: {
+          Authorization
+        }
+      });
+  }
+
+  public createGAProfile(
+    Authorization: string,
+    account: string,
+    property: string,
+    profile: GAWebPropertyProfile
+  ): Promise<GAWebPropertyProfile> {
+    return this.http.POST(`https://www.googleapis.com/analytics/v3/management/accounts/${account}/webproperties/${property}/profiles`,
       property,
       {
         headers: {

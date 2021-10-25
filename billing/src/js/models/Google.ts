@@ -15,6 +15,7 @@ export type GTMTag = gapi.client.tagmanager.Tag;
 // Google Analytics
 export type GAAccount = gapi.client.analytics.Account;
 export type GAWebProperty = gapi.client.analytics.Webproperty;
+export type GAWebPropertyProfile = gapi.client.analytics.Profile;
 
 export interface GoogleState {
   loading?: boolean;

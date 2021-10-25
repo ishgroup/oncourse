@@ -15,6 +15,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { FormikErrors } from 'formik/dist/types';
 import SettingsIcon from '@mui/icons-material/Settings';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { makeAppStyles } from '../../styles/makeStyles';
 import { renderSelectItemsWithEmpty } from '../../utils';
 import Loading from '../common/Loading';
@@ -470,7 +471,11 @@ export const SitesPage = () => {
           />
         );
       case 'analytics':
-        // return <Analytics />;
+        return (
+          <Analytics
+            gaWebProperty={(gaWebProperties || {})[values.googleAnalyticsId]?.find((wp) => wp.id === values.gaWebPropertyId)}
+          />
+        );
       default:
         return null;
     }
@@ -493,6 +498,20 @@ export const SitesPage = () => {
                 {values.hasOwnProperty('key') && renderPage()}
               </div>
               <div className={classes.buttonsWrapper}>
+                {isConfig && (
+                  <>
+                    <Button
+                      className="text-disabled"
+                      onClick={() => setIsConfig(false)}
+                      disabled={loading}
+                      startIcon={<ChevronLeftIcon fontSize="medium" />}
+                    >
+                      Back
+                    </Button>
+                    <div className="flex-1" />
+                  </>
+                )}
+
                 {page === 'urls' && (
                   <Button
                     onClick={onClickDelete}

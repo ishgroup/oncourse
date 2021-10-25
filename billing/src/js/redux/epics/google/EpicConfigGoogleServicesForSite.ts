@@ -53,6 +53,15 @@ const request: Request<any, SiteValues> = {
         ).then((res) => {
           gaWebPropertyId = res.id;
         });
+
+        await GoogleService.createGAProfile(
+          token,
+          site.googleAnalyticsId,
+          gaWebPropertyId,
+          {
+            name: `${site.name} profile`
+          }
+        );
       }
 
       const workspaces = await GoogleService.getGTMWorkspaces(

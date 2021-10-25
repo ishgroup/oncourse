@@ -2,40 +2,40 @@ import * as React from 'react';
 import {
   useAnalyticsApi,
   useAuthorize,
-  useDataChart,
-  useViewSelector,
+  useDataChart
 } from 'react-use-analytics-api';
 import { Typography } from '@mui/material';
 import { useAppSelector } from '../../redux/hooks/redux';
 import Loading from '../common/Loading';
+import { GAWebProperty } from '../../models/Google';
 
-function Analytics() {
+interface Props {
+  gaWebProperty: GAWebProperty
+}
+
+const Analytics = ({ gaWebProperty }: Props) => {
   const {
     ready, gapi, authorized, error
   } = useAnalyticsApi();
-  const [viewId, setViewId] = React.useState<any>();
   const viewSelectorContainerId = 'view-selector-container';
-  useViewSelector(
-    authorized ? gapi : undefined,
-    viewSelectorContainerId,
-    (viewId) => setViewId(viewId)
-  );
+
   const query = {
-    ids: viewId,
+    ids: `ga:${gaWebProperty?.defaultProfileId}`,
     'start-date': '28daysAgo',
     'end-date': 'today',
     metrics: 'ga:sessions',
     dimensions: 'ga:date',
   };
+
   const chart = {
     container: 'data-chart-container',
     type: 'LINE',
     options: {
       title: 'Sessions (28 Days)',
-      width: 500
+      width: 600
     },
   };
-  useDataChart(authorized ? gapi : undefined, query, chart);
+  useDataChart(authorized && gaWebProperty ? gapi : undefined, query, chart);
 
   const [authorizeCalled, setAuthorizeCalled] = React.useState(false);
 
@@ -68,13 +68,19 @@ function Analytics() {
             </div>
           )}
           {
-            !authorized && <Typography variant="caption" color="textSecondary">Authorizie with google to see data</Typography>
+            !authorized && <Typography color="textSecondary">Authorizie with google to see analytics data</Typography>
+          }
+          {
+            !gaWebProperty && <Typography color="textSecondary">Select or create web property in configure section to see analytics data</Typography>
+          }
+          {
+            gaWebProperty && !gaWebProperty?.defaultProfileId && <Typography color="textSecondary">No profiles (views) found on selected property</Typography>
           }
         </div>
       )}
       {error && <div className="error-color">{error.toString()}</div>}
     </div>
   );
-}
+};
 
 export default Analytics;
