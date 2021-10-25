@@ -250,50 +250,50 @@
 
   <SessionCourseClassTutor id="42" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="240" durationMinutes="60"/>
+                           sessionId="240" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="43" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="241" durationMinutes="60"/>
+                           sessionId="241" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="44" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="242" durationMinutes="60"/>
+                           sessionId="242" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="45" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="243" durationMinutes="60"/>
+                           sessionId="243" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="46" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="244" durationMinutes="60"/>
+                           sessionId="244" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="47" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="245" durationMinutes="60"/>
+                           sessionId="245" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="48" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="246" durationMinutes="60"/>
+                           sessionId="246" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="49" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="247" durationMinutes="60"/>
+                           sessionId="247" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="50" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="248" durationMinutes="60"/>
+                           sessionId="248" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="51" approvedByUserId="1" attendanceType="1" courseClassTutorId="5"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="249" durationMinutes="60"/>
+                           sessionId="249" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
 
   <SessionCourseClassTutor id="52" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="240" durationMinutes="60"/>
+                           sessionId="240" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="53" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="241" durationMinutes="60"/>
+                           sessionId="241" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="54" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="242" durationMinutes="60"/>
+                           sessionId="242" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="55" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="243" durationMinutes="60"/>
+                           sessionId="243" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
   <SessionCourseClassTutor id="56" approvedByUserId="1" attendanceType="1" courseClassTutorId="6"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="244" durationMinutes="60"/>
+                           sessionId="244" actualPayableDurationMinutes="60" endDatetime="2015-01-09 23:42:33.0" startDatetime="2015-01-03 22:42:33.0"/>
 
   <Enrolment courseClass_Id="204" createdOn="2014-10-17 22:47:53.0" id="200" modifiedOn="2014-10-17 22:47:57.0"
              source="O" status="3" studentId="201" studyReason="-1" vetFeeExemptionType="-1" vetIsFullTime="0"
