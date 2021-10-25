@@ -49,6 +49,6 @@
            usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
   <CourseSession id="1" courseClass_Id="1" startDatetime="[start_date1]" endDatetime="[end_date1]"
-                 payAdjustment="0.00"/>
+                 />
 
 </dataset>

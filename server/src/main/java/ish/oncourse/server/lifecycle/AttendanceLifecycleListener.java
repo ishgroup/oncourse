@@ -21,7 +21,7 @@ public class AttendanceLifecycleListener {
     public void preUpdate(TutorAttendance tutorAttendance) {
         if (AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON.equals(tutorAttendance.getAttendanceType())
                 && tutorAttendance.getDurationMinutes() != null) {
-            tutorAttendance.setDurationMinutes(null);
+            tutorAttendance.setDurationMinutes(0);
         }
     }
 }

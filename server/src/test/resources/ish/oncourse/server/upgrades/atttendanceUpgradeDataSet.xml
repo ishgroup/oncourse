@@ -177,18 +177,18 @@
            citizenship="9" feeHelpEligible="0" usiStatus="0"/>
 
   <CourseSession id="1" startDatetime="2012-01-01 15:00:00" endDatetime="2012-01-01 16:00:00" courseClass_Id="1"
-                 payAdjustment="0"/>
+                 />
   <CourseSession id="2" startDatetime="2012-01-03 17:00:00" endDatetime="2012-01-03 19:00:00" courseClass_Id="1"
-                 payAdjustment="0"/>
+                 />
   <CourseSession id="3" startDatetime="2012-01-05 17:00:00" endDatetime="2012-01-05 19:00:00" courseClass_Id="1"
-                 payAdjustment="0"/>
+                 />
 
   <CourseSession id="4" startDatetime="2012-02-01 17:00:00" endDatetime="2012-02-01 19:00:00" courseClass_Id="2"
-                 payAdjustment="0"/>
+                 />
   <CourseSession id="5" startDatetime="2012-02-03 17:00:00" endDatetime="2012-02-03 19:00:00" courseClass_Id="2"
-                 payAdjustment="0"/>
+                 />
   <CourseSession id="6" startDatetime="2012-02-05 17:00:00" endDatetime="2012-02-05 19:00:00" courseClass_Id="2"
-                 payAdjustment="0"/>
+                 />
 
   <DefinedTutorRole id="1" name="definedTutorRoleName" active="1"/>
 

@@ -56,7 +56,6 @@
 	<field name="id" class="java.lang.Long"/>
 	<field name="startDatetime" class="java.util.Date"/>
 	<field name="endDatetime" class="java.util.Date"/>
-	<field name="payAdjustment" class="java.lang.Integer"/>
 	<field name="datasource.sessionTutors" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.ish.onCourse.tutorAttendanceTutorPaySubreport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="datasource.tutors" class="net.sf.jasperreports.engine.JRDataSource"/>

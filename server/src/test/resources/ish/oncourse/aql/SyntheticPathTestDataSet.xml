@@ -319,15 +319,15 @@
 
   <!-- attendances -->
   <CourseSession id="1" courseClass_Id="1" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <Attendance id="1" sessionId="1" studentId="1" attendanceType="0" modifiedOn="2012-01-03 11:00:00"
               createdOn="2012-01-03 10:00:00"/>
   <CourseSession id="2" courseClass_Id="2" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <Attendance id="2" sessionId="2" studentId="2" attendanceType="0" modifiedOn="2012-01-03 11:00:00"
               createdOn="2012-01-03 10:00:00"/>
   <CourseSession id="3" courseClass_Id="3" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <!-- certificates -->
   <Module id="1" nationalCode="TESTCODE1" title="Test module 1" type="1" isOffered="1" createdOn="2013-01-01 00:00:00"
