@@ -18,7 +18,9 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FormControl, FormHelperText } from "@material-ui/core";
 import clsx from "clsx";
-import { ClashType, Room, SessionWarning, Site } from "@api/model";
+import {
+  ClashType, Room, SessionWarning, Site
+} from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -57,8 +59,7 @@ const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
 
-const CourseClassSessionFields: React.FC<Props> = (
-  {
+const CourseClassSessionFields: React.FC<Props> = ({
   form,
   dispatch,
   session,
@@ -69,7 +70,7 @@ const CourseClassSessionFields: React.FC<Props> = (
   classes,
   warnings,
   prevTutorsState,
-  sites
+  sites,
 }) => {
   const isMounted = useRef(false);
 
@@ -104,7 +105,7 @@ const CourseClassSessionFields: React.FC<Props> = (
     session.publicNotes
   ]);
 
-  const warningTypes = useMemo<{[P in ClashType]: SessionWarning[]}>(() => {
+  const warningTypes = useMemo<{ [P in ClashType]: SessionWarning[] }>(() => {
     const types = {
       Tutor: [],
       Room: [],
@@ -123,16 +124,19 @@ const CourseClassSessionFields: React.FC<Props> = (
       if (checked) {
         dispatch(arrayPush(form, `sessions[${session.index}].tutors`, tutor.tutorName));
         const courseClassTutorIds = session.courseClassTutorIds ? session.courseClassTutorIds : [];
-        tutor.id
-          ? dispatch(
-              change(form, `sessions[${session.index}].courseClassTutorIds`, [...courseClassTutorIds, tutor.id])
-            )
-          : dispatch(
-              change(form, `sessions[${session.index}].temporaryTutorIds`, [
-                ...session.temporaryTutorIds,
-                tutor.temporaryId
-              ])
-            );
+
+        if (tutor.id) {
+          dispatch(
+            change(form, `sessions[${session.index}].courseClassTutorIds`, [...courseClassTutorIds, tutor.id])
+          );
+        } else {
+          dispatch(
+            change(form, `sessions[${session.index}].temporaryTutorIds`, [
+              ...session.temporaryTutorIds,
+              tutor.temporaryId
+            ])
+          );
+        }
         dispatch(
           arrayPush(form, `sessions[${session.index}].contactIds`, tutor.contactId)
         );
@@ -289,7 +293,7 @@ const CourseClassSessionFields: React.FC<Props> = (
           <FormField
             type="dateTime"
             name={`sessions[${session.index}].start`}
-            label={`${session.room
+            label={`${session.roomId
               ? (session.siteTimezone 
                 ? `Start date (${session.siteTimezone})` 
                 : `Virtual start date (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
@@ -387,22 +391,23 @@ const CourseClassSessionFields: React.FC<Props> = (
         {warningTypes.Room
           .map(w => <ErrorMessage message={w.message} /> )}
       </Grid>
-
-      <Grid item xs={6}>
-        <FormField
-          type="multilineText"
-          name={`sessions[${session.index}].publicNotes`}
-          label="Public notes"
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <FormField
-          type="multilineText"
-          name={`sessions[${session.index}].privateNotes`}
-          label="Private notes"
-          fullWidth
-        />
+      <Grid container item xs={12}>
+        <Grid item xs={6}>
+          <FormField
+            type="multilineText"
+            name={`sessions[${session.index}].publicNotes`}
+            label="Public notes"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <FormField
+            type="multilineText"
+            name={`sessions[${session.index}].privateNotes`}
+            label="Private notes"
+            fullWidth
+          />
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -418,7 +423,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const mapStateToProps = (state: State, ownProps: Props) => ({
   rooms: state.plainSearchRecords["Room"].items,
   sites: state.plainSearchRecords["Site"].items,
-  session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {}
+  session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
+  timezones: state.timezones,
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClassSessionFields);

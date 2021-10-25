@@ -139,8 +139,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	@API
 	@Override
 	TimeZone getTimeZone() {
-		if (getRoom() == null || getRoom().getSite() == null ||
-				getRoom().getSite().getIsVirtual() || getRoom().getSite().getLocalTimezone() == null) {
+		if (getRoom() == null || getRoom().getSite() == null || getRoom().getSite().getLocalTimezone() == null) {
 			return TimeZone.getDefault()
 		}
 		return TimeZone.getTimeZone(getRoom().getSite().getLocalTimezone())
