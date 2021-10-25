@@ -501,7 +501,7 @@ export const SitesPage = () => {
                 {isConfig && (
                   <>
                     <Button
-                      className="text-disabled"
+                      className="text-secondary"
                       onClick={() => setIsConfig(false)}
                       disabled={loading}
                       startIcon={<ChevronLeftIcon fontSize="medium" />}

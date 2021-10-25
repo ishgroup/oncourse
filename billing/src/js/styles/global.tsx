@@ -368,6 +368,9 @@ export const GlobalClasses = () => {
       '.text-disabled': {
         color: theme.palette.text.disabled
       },
+      '.text-secondary': {
+        color: theme.palette.text.secondary
+      },
       '.text-placeholder': {
         color: theme.palette.divider
       },
