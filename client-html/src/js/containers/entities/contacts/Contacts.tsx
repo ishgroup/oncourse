@@ -10,9 +10,6 @@ import { isBefore } from "date-fns";
 import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import clsx from "clsx";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
@@ -48,15 +45,6 @@ import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
 import { ProfileHeading } from "./components/ContactsGeneral";
 
-const styles = theme => createStyles({
-  titleWrapper: {
-    marginTop: theme.spacing(11),
-  },
-  titleWrapperScrollIn: {
-    marginTop: theme.spacing(2),
-  },
-});
-
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
 interface ContactsProps {
@@ -82,7 +70,6 @@ interface ContactsProps {
   isVerifyingUSI?: boolean;
   usiVerificationResult?: any;
   getPaymentTypes?: any;
-  classes?: any;
 }
 
 export const formatRelationsBeforeSave = relations => {
@@ -274,7 +261,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     usiVerificationResult,
     onCreate,
     getPaymentTypes,
-    classes
   } = props;
 
   const [findRelatedItems, setFindRelatedItems] = useState([]);
@@ -370,21 +356,15 @@ const Contacts: React.FC<ContactsProps> = props => {
     const { isScrolling, tabsListItemProps } = viewState;
 
     return {
-      html: values && tabsListItemProps && (
+      Title: values && tabsListItemProps && (
         <ProfileHeading
-          form={tabsListItemProps.form}
-          dispatch={tabsListItemProps.dispatch}
-          showConfirm={tabsListItemProps.showConfirm}
+          {...tabsListItemProps}
           values={values}
-          twoColumn={tabsListItemProps.twoColumn}
-          isCompany={tabsListItemProps.isCompany}
-          usiLocked={tabsListItemProps.usiLocked}
           isScrolling={isScrolling}
         />
-      ),
-      otherClasses: clsx(classes.titleWrapper, isScrolling && classes.titleWrapperScrollIn),
+      )
     };
-  }, [classes]);
+  }, []);
 
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
@@ -466,4 +446,4 @@ const mapStateToProps = (state: State) => ({
   usiVerificationResult: state.contacts.usiVerificationResult
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Contacts));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Contacts);

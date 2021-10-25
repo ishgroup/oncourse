@@ -9,21 +9,21 @@ import { AppTheme } from "../../../../../model/common/Theme";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   titleFields: {
-    transform: "translateY(100%)",
+    transform: "translateY(200%)",
     visibility: "hidden",
     transition: theme.transitions.create("all", {
-      duration: theme.transitions.duration.complex,
+      duration: "0.6s",
       easing: theme.transitions.easing.easeInOut
     }),
   },
   titleText: {
     position: "absolute",
     left: 0,
-    transform: "translateY(-100%)",
+    transform: "translateY(-200%)",
     visibility: "hidden",
     "&, & > h5": {
       transition: theme.transitions.create("all", {
-        duration: theme.transitions.duration.complex,
+        duration: "0.6s",
         easing: theme.transitions.easing.easeInOut
       }),
     }
@@ -58,16 +58,28 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     zIndex: 1,
     color: "#fff",
   },
+  avatarRoot: {
+    transition: theme.transitions.create("all", {
+      duration: theme.transitions.duration.complex,
+      easing: theme.transitions.easing.easeInOut
+    }),
+  },
   profileThumbnail: {
     "&:hover $avatarBackdrop": {
       opacity: 1,
     },
   },
   titleWrapper: {},
+  hasAvatar: {
+    marginTop: theme.spacing(11),
+  },
+  hasAvatarScrollIn: {
+    marginTop: theme.spacing(0),
+  },
 }));
 
 interface Props {
-  avatar?: any;
+  avatar?: (classes?: any) => any;
   title: any;
   fields: any;
   isScrolling: boolean;
@@ -76,7 +88,7 @@ interface Props {
   otherClasses?: any;
 }
 
-const FullScreenStickyHeader: React.FC<Props> = props => {
+const FullScreenStickyHeader = React.memo<Props>(props => {
   const {
     avatar,
     title,
@@ -132,23 +144,25 @@ const FullScreenStickyHeader: React.FC<Props> = props => {
     <Grid
       container
       columnSpacing={3}
-      className={clsx("align-items-center", hide && "d-none", !twoColumn && "mb-3")}
+      className={clsx("align-items-center", hide && "d-none", !twoColumn && "mb-3", {
+        [classes.hasAvatar]: twoColumn && avatar && !isScrolling
+      })}
       ref={wrapperRef}
     >
       <Grid item xs={12} className={clsx("centeredFlex", !twoColumn && "flex-column")}>
         {avatar && (
           <div className={clsx(classes.avatarBlock, !twoColumn && "w-100", twoColumn && "mr-3")}>
-            {avatar}
+            {avatar(classes)}
           </div>
         )}
-        <Grid container item xs={twoColumn ? 10 : 12} className={clsx("relative overflow-hidden", classes.titleWrapper)}>
+        <Grid container item xs={twoColumn ? 10 : 12} className={clsx("relative overflow-hidden align-items-center", classes.titleWrapper)}>
           <Grid
             container
             item
             xs={12}
             className={clsx(classes.titleText, { [classes.titleIn]: showTitleText || showTitleOnly })}
           >
-            <Typography variant="h5" display="block" className={clsx("mt-1", showTitleOnly && "appHeaderFontSize")}>
+            <Typography variant="h5" display="block" className={clsx(!twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize")}>
               {title}
             </Typography>
           </Grid>
@@ -164,6 +178,6 @@ const FullScreenStickyHeader: React.FC<Props> = props => {
       </Grid>
     </Grid>
   );
-};
+});
 
 export default FullScreenStickyHeader;

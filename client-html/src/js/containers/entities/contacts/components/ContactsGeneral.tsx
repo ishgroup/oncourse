@@ -76,12 +76,6 @@ const styles = (theme: AppTheme) => createStyles({
     height: "24px",
     width: "30px",
   },
-  avatarRoot: {
-    transition: theme.transitions.create("all", {
-      duration: theme.transitions.duration.complex,
-      easing: theme.transitions.easing.easeInOut
-    }),
-  },
 });
 
 interface ContactsGeneralProps extends EditViewProps<Contact> {
@@ -163,27 +157,26 @@ export const ProfileHeading: React.FC<any> = props => {
     isScrolling,
   } = props;
 
-  const classes = { ...otherClasses };
-
   return (
     <FullScreenStickyHeader
       hide={hide}
       otherClasses={otherClasses}
       isScrolling={isScrolling}
       twoColumn={twoColumn}
-      avatar={(
+      avatar={aClasses => (
         <Field
           name="profilePicture"
           label="Profile picture"
           component={AvatarRenderer}
           props={{
             form,
-            classes,
+            classes: aClasses,
             dispatch,
             showConfirm,
             email: values.email,
             avatarSize: isScrolling ? 40 : 90,
             disabled: isScrolling,
+            twoColumn,
           }}
         />
       )}
@@ -225,7 +218,6 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     initialValues,
     form,
     dispatch,
-    showConfirm,
     isStudent,
     isTutor,
     isCompany,
@@ -472,17 +464,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
   return (
     <div className={clsx("p-3", twoColumn && classes.contactGeneralWrapper)}>
-      <ProfileHeading
-        form={form}
-        classes={classes}
-        dispatch={dispatch}
-        showConfirm={showConfirm}
-        values={values}
-        twoColumn={twoColumn}
-        isCompany={isCompany}
-        usiLocked={usiLocked}
-        hide={twoColumn}
-      />
+      <ProfileHeading {...props} hide={twoColumn} />
       <Grid container columnSpacing={3}>
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
