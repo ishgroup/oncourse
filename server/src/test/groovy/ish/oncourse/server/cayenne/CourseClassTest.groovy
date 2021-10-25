@@ -389,8 +389,6 @@ class CourseClassTest extends TestWithDatabase {
         }
 
         session.setRoom(room)
-        Integer payAdjustmentForSessions = 20
-        session.setPayAdjustment(payAdjustmentForSessions)
         cayenneContext.commitChanges()
 
         request = new ClassDuplicationRequest()
@@ -430,7 +428,6 @@ class CourseClassTest extends TestWithDatabase {
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount3))
         Assertions.assertTrue(newClassWithAll.getDiscounts().contains(discount3))
         Assertions.assertEquals(1, newClassWithAll.getSessions().size())
-        Assertions.assertEquals(payAdjustmentForSessions, newClassWithAll.getSessions().get(0).getPayAdjustment())
 
         //verify unchecked payableTimeForSessions
         request = new ClassDuplicationRequest()
@@ -447,7 +444,6 @@ class CourseClassTest extends TestWithDatabase {
         service.duplicateClasses(request)
         CourseClass newClassWithPayableTimeForSessions = ObjectSelect.query(CourseClass.class).orderBy(CourseClass.ID.getName(), SortOrder.DESCENDING).selectFirst(cayenneContext)
 
-        Assertions.assertEquals(new Integer(0), newClassWithPayableTimeForSessions.getSessions().get(0).getPayAdjustment())
     }
 
     @Test
@@ -574,7 +570,6 @@ class CourseClassTest extends TestWithDatabase {
         session.setEndDatetime(endTimeForFirstSession)
 
         session.setCourseClass(cc)
-        session.setPayAdjustment(4)
 
         Assertions.assertEquals(gc1.getTime(), cc.getStartDateTime(), "Checking startDateTime for CourseClasse ")
         Assertions.assertNull(cc.getEndDateTime(), "Checking endDateTime for CourseClasse ")
@@ -647,7 +642,6 @@ class CourseClassTest extends TestWithDatabase {
         secondSession.setEndDatetime(endTimeForFirstSession)
 
         secondSession.setCourseClass(cc)
-        secondSession.setPayAdjustment(4)
 
         Assertions.assertEquals(new Integer(1), cc.getSessionsCount(), "Checking sessionCount for CourseClasse ")
 
@@ -668,7 +662,6 @@ class CourseClassTest extends TestWithDatabase {
         nextSession.setEndDatetime(endTimeForFirstSession)
 
         nextSession.setCourseClass(cc)
-        nextSession.setPayAdjustment(4)
 
         cayenneContext.commitChanges()
 
