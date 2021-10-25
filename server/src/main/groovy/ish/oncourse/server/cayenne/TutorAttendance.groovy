@@ -15,6 +15,7 @@ import ish.common.types.AttendanceType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._TutorAttendance
+import ish.util.DurationFormatter
 
 import javax.annotation.Nonnull
 import java.math.RoundingMode
@@ -133,12 +134,16 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	}
 
 	/**
-	 * @return  payable duration in hours
+	 * @return actual payable duration in hours
 	 */
-	BigDecimal getPayableDurationInHours() {
-		Integer minutes = actualPayableDurationMinutes
-		BigDecimal decimalValue = new BigDecimal(minutes)
-		decimalValue.setScale(4)
-		return decimalValue.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
+	BigDecimal getActualPayableDurationHours() {
+		return DurationFormatter.durationInHoursFromMinutes(actualPayableDurationMinutes)
+	}
+
+	/**
+	 * @return  budgeted payable duration in hours, actually tutor roster duration
+	 */
+	BigDecimal getBudgetedPayableDurationHours() {
+		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
 	}
 }

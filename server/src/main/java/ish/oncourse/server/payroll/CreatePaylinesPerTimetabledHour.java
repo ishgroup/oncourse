@@ -90,9 +90,9 @@ public class CreatePaylinesPerTimetabledHour extends AbstractAttendanceBasedPayl
 				pl.setClassCost(classCost);
 				pl.setDescription(classCost.getDescription());
 
-				pl.setQuantity(attendanceItem.getPayableDurationInHours());
+				pl.setQuantity(attendanceItem.getActualPayableDurationHours());
 				
-				pl.setBudgetedQuantity(attendanceItem.getSession().getPayableDurationInHours());
+				pl.setBudgetedQuantity(attendanceItem.getBudgetedPayableDurationHours());
 
 				pl.setValue(eligibleRate);
 				pl.setBudgetedValue(pl.getValue());

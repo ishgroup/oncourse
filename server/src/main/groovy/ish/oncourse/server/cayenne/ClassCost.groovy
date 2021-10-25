@@ -79,7 +79,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 		if (ClassCostFlowType.WAGES == getFlowType() && getTutorRole() != null) {
 
 			for (TutorAttendance attendance : getTutorRole().getSessionsTutors()) {
-				if (attendance.getSession().getPayableDurationInHours() > new BigDecimal(0)) {
+				if (attendance.actualPayableDurationHours > new BigDecimal(0)) {
 					results.add(attendance.getSession())
 				}
 			}
@@ -129,7 +129,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 
 		for (TutorAttendance ta : getTutorRole().getSessionsTutors()) {
 			if (!ta.getSession().getEndDatetime().after(until)) {
-				result = result.add(ta.getSession().getPayableDurationInHours())
+				result = result.add(ta.actualPayableDurationHours)
 			}
 		}
 

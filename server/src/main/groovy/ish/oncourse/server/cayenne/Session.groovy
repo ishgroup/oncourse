@@ -60,20 +60,13 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	}
 
 	/**
-	 * The payable duration may differ from the actual session duration. If no adjustment has been made
-	 * to the regular session duration, then the regular session duration is returned here.
-	 *
 	 * @return duration in hours
+	 * @deprecated always the samme to {@link #getDurationInHours}
 	 */
 	@API
+	@Deprecated 
 	BigDecimal getPayableDurationInHours() {
-		if (getEndDatetime() == null || getStartDatetime() == null) {
-			return BigDecimal.ZERO
-		}
-		Integer minutes = Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutes().intValue()
-		BigDecimal decimalValue = new BigDecimal(minutes)
-		decimalValue.setScale(4)
-		return decimalValue.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
+		return getDurationInHours()
 	}
 
 	/**
@@ -81,10 +74,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	 */
 	@API
 	BigDecimal getDurationInHours() {
-		if (getEndDatetime() == null || getStartDatetime() == null) {
-			return new BigDecimal("0")
-		}
-		return DurationFormatter.parseDurationInHours(getEndDatetime().getTime() - getStartDatetime().getTime())
+		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
 	}
 
 	@Override

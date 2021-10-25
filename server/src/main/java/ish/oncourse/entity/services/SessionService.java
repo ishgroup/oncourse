@@ -29,16 +29,6 @@ public class SessionService {
 	}
 
 	/**
-	 * @return session duration in hours
-	 */
-	public BigDecimal getDurationInHours(Session session) {
-		if (session.getEndDatetime() == null || session.getStartDatetime() == null) {
-			return new BigDecimal("0");
-		}
-		return DurationFormatter.parseDurationInHours(session.getEndDatetime().getTime() - session.getStartDatetime().getTime());
-	}
-
-	/**
 	 * @param tutorRole
 	 * @return the TutorAttendance (used to be called SessionCourseClassTutor) for this tutor role (CourseClassTutor) for this session
 	 */
