@@ -57,6 +57,7 @@
 	<field name="id" class="java.lang.Long"/>
 	<field name="courseClassTutor.tutor.id" class="java.lang.Long"/>
 	<field name="courseClassTutor.definedTutorRole.name" class="java.lang.String"/>
+	<field name="actualPayableDurationMinutes" class="java.lang.Long"/>
 	<field name="datasource.session.courseClass.costs" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.ish.onCourse.classCostTutorPaySubreport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<variable name="tutorAttendanceTotalPayable" class="java.math.BigDecimal" calculation="Sum"/>
@@ -90,7 +91,7 @@
 						<subreportParameterExpression><![CDATA[$P{sessionNumber}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="payableTime">
-						<subreportParameterExpression><![CDATA[$P{payableTime}]]></subreportParameterExpression>
+						<subreportParameterExpression><![CDATA[$F{actualPayableDurationMinutes}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="attendanceNumber">
 						<subreportParameterExpression><![CDATA[$V{attendanceNumber}]]></subreportParameterExpression>
