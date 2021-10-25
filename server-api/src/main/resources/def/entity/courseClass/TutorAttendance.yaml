@@ -15,12 +15,9 @@ properties:
     $ref: './TutorAttendanceType.yaml'
   note:
     type: string
-  durationMinutes:
+  actuallPayableDurationMinutes:
     type: integer
     description: actual payable duration in minutes
-  defaultDurationMinutes:
-    type: integer
-    description: default payable duration in minutes
   hasPayslip:
     type: boolean
   start:
