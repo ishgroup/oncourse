@@ -96,7 +96,7 @@ databaseChangeLog:
         - onFail: HALT
         - sqlCheck:
             expectedResult: 0
-            sql: 'SLECT count(*) FROM SessionCourseClassTutor WHERE defaultDurationMinutes IS NULL'
+            sql: 'SELECT count(*) FROM SessionCourseClassTutor WHERE defaultDurationMinutes IS NULL'
       changes:
         - addNotNullConstraint:
             columnDataType: INT
