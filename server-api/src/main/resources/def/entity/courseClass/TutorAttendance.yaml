@@ -17,6 +17,10 @@ properties:
     type: string
   durationMinutes:
     type: integer
+    description: actual payable duration in minutes
+  defaultDurationMinutes:
+    type: integer
+    description: default payable duration in minutes
   hasPayslip:
     type: boolean
   start:
