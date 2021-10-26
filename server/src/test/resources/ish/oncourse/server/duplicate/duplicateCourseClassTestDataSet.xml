@@ -159,13 +159,13 @@
 
   <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0" ENDDATETIME="2030-05-07 05:00:00.0" id="42" approvedByUserId="1" attendanceType="1" courseClassTutorId="1"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="1" durationMinutes="60"/>
+                           sessionId="1"/>
   <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0" ENDDATETIME="2030-05-07 05:00:00.0" id="43" approvedByUserId="1" attendanceType="1" courseClassTutorId="1"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="2" durationMinutes="60"/>
+                           sessionId="2"/>
   <SessionCourseClassTutor ACTUALPAYABLEDURATIONMINUTES="180" STARTDATETIME="2030-04-30 09:00:00.0" ENDDATETIME="2030-05-07 05:00:00.0" id="44" approvedByUserId="1" attendanceType="1" courseClassTutorId="1"
                            createdOn="2014-10-17 22:44:15.0" modifiedOn="2014-10-17 22:44:15.0" markedByUserId="1"
-                           sessionId="3" durationMinutes="60"/>
+                           sessionId="3"/>
 
 
   <ClassCost createdbyUserID="1" createdOn="2014-10-17 22:44:15.0" courseClassId="1"
