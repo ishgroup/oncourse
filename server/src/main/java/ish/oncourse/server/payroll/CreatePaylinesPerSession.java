@@ -58,7 +58,7 @@ public class CreatePaylinesPerSession extends AbstractAttendanceBasedPaylinesCre
 
 			var alreadyGenerated = findPaylinesForAttendance(attendanceItem).size() > 0;
 			var eligibleToGenerate = shouldGeneratePaylineForAttendance(attendanceItem);
-			var eligibleRate = getPerUnitAmountExTax(attendanceItem.getSession().getStartDatetime());
+			var eligibleRate = getPerUnitAmountExTax(attendanceItem.getStartDatetime());
 
 			if (alreadyGenerated || !eligibleToGenerate) {
 				logger.debug("paylines exlude per session attendance...{}", attendanceItem);
@@ -84,7 +84,7 @@ public class CreatePaylinesPerSession extends AbstractAttendanceBasedPaylinesCre
 				pl.setValue(eligibleRate);
 				pl.setBudgetedValue(pl.getValue());
 
-				pl.setDateFor(LocalDateUtils.dateToValue(attendanceItem.getSession().getStartDatetime()));
+				pl.setDateFor(LocalDateUtils.dateToValue(attendanceItem.getStartDatetime()));
 				payLines.add(pl);
 			}
 		}

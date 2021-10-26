@@ -128,7 +128,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 		}
 
 		for (TutorAttendance ta : getTutorRole().getSessionsTutors()) {
-			if (!ta.getSession().getEndDatetime().after(until)) {
+			if (!ta.getEndDatetime().after(until)) {
 				result = result.add(ta.actualPayableDurationHours)
 			}
 		}

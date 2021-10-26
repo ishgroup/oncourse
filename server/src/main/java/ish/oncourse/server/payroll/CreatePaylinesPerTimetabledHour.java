@@ -96,9 +96,9 @@ public class CreatePaylinesPerTimetabledHour extends AbstractAttendanceBasedPayl
 
 				pl.setValue(eligibleRate);
 				pl.setBudgetedValue(pl.getValue());
-				pl.setDateFor(LocalDateUtils.dateToValue(attendanceItem.getSession().getStartDatetime()));
+				pl.setDateFor(LocalDateUtils.dateToValue(attendanceItem.getStartDatetime()));
 
-				logger.debug("timetable payline created (end date)... {}", pl.getSession().getEndDatetime());
+				logger.debug("timetable payline created (end date)... {}", attendanceItem.getEndDatetime());
 
 				payLines.add(pl);
 			}

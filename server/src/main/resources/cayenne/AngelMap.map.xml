@@ -5476,6 +5476,7 @@
 	<obj-relationship name="courseClassRoles" source="Tutor" target="CourseClassTutor" deleteRule="Deny" db-relationship-path="tutor_courseClasses"/>
 	<obj-relationship name="markedAttendances" source="Tutor" target="Attendance" deleteRule="Deny" db-relationship-path="markedAttendances"/>
 	<obj-relationship name="markedOutcomes" source="Tutor" target="Outcome" deleteRule="Deny" db-relationship-path="markedOutcomes"/>
+	<obj-relationship name="tutorAttendances" source="Tutor" target="TutorAttendance" db-relationship-path="tutor_courseClasses.sessionCourseClassTutors"/>
 	<obj-relationship name="sessions" source="Tutor" target="Session" db-relationship-path="tutor_courseClasses.sessionCourseClassTutors.session"/>
 	<obj-relationship name="attachedTutor" source="TutorAttachmentRelation" target="Tutor" deleteRule="Nullify" db-relationship-path="attachedTutor"/>
 	<obj-relationship name="approvedByUser" source="TutorAttendance" target="SystemUser" db-relationship-path="approvedByUser"/>

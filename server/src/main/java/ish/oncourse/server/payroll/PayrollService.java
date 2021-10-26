@@ -327,7 +327,7 @@ public class PayrollService {
                                     tutorAttendance.getEndDatetime().before(untilDate)
                                     && tutorAttendance.getActualPayableDurationHours().compareTo(BigDecimal.ZERO) > 0
                                     && !isAlreadyPaid(classCost, tutorAttendance.getSession())
-                                    && hasEligibleRateOnDate(classCost, tutorAttendance.getSession().getStartDatetime())
+                                    && hasEligibleRateOnDate(classCost, tutorAttendance.getStartDatetime())
                     );
                 }
                 break;
