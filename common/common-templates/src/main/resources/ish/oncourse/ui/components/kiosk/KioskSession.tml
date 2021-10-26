@@ -3,7 +3,7 @@
     <span style="display: none" class="current-time"><t:output format="literal:YYYY-MM-d HH:mm:ss" value="currentDate"/></span>
     <div class="col-full">
       <h3 class="class-title">
-        <a href="/class/${courseClass.uniqueIdentifier}">${course.name}</a>
+        ${course.name}
       </h3>
       <div class="class-time" data-time="${isoSessionStartTime}"></div>
       <div class="class-subtitle">

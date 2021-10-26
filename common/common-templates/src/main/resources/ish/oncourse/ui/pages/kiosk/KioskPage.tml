@@ -20,9 +20,7 @@
   <header id="header">
     <div class="container">
       <div class="header-logo">
-        <a class="logo" href="/">
           <img src="/s/kiosk/img/logo.png" />
-        </a>
       </div>
       <div class="header-title">
         <h3 class="site-name">${site.name}</h3>
@@ -46,9 +44,7 @@
   <footer>
     <div class="container">
       <div class="footer-logo">
-        <a target="_blank" href="http://www.ish.com.au/oncourse" class="popup">
-          <img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse" />
-        </a>
+        <img src="/s/img/poweredby.png" width="102" height="9" alt="powered by ish onCourse"/>
       </div>
     </div>
   </footer>
