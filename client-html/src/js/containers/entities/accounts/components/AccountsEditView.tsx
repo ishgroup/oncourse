@@ -51,14 +51,12 @@ export const AccountHeading: React.FC<any> = props => {
     values,
     twoColumn,
     hide,
-    otherClasses,
     isScrolling,
   } = props;
 
   return (
     <FullScreenStickyHeader
       hide={hide}
-      otherClasses={otherClasses}
       isScrolling={isScrolling}
       twoColumn={twoColumn}
       title={values && values.accountCode}
