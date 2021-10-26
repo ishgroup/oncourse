@@ -34,7 +34,7 @@ const Analytics = ({ gaWebPropertyId, loading }: Props) => {
 
   useEffect(() => {
     if (gaWebProfiles && gaWebPropertyId) {
-      setProfileId(gaWebProfiles[gaWebPropertyId][0].id);
+      setProfileId(gaWebProfiles[gaWebPropertyId][0]?.id);
     }
   }, [gaWebProfiles, gaWebPropertyId]);
 
