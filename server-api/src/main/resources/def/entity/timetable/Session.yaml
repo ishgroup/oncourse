@@ -37,6 +37,10 @@ properties:
     description: Tutor's names
     required: false
     example: John Smith, Devid Smith
+  tutorAttendances:
+    type: array
+    items:
+      $ref: '../courseClass/TutorAttendance.yaml'
   classId:
     type: integer
     format: int64
