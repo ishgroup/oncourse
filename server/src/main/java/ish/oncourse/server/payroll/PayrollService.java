@@ -325,7 +325,7 @@ public class PayrollService {
                     result = classCost.getTutorRole().getSessionsTutors().stream().anyMatch(
                             tutorAttendance ->
                                     tutorAttendance.getEndDatetime().before(untilDate)
-                                    && tutorAttendance.getPayableDurationInHours().compareTo(BigDecimal.ZERO) > 0
+                                    && tutorAttendance.getActualPayableDurationHours().compareTo(BigDecimal.ZERO) > 0
                                     && !isAlreadyPaid(classCost, tutorAttendance.getSession())
                                     && hasEligibleRateOnDate(classCost, tutorAttendance.getSession().getStartDatetime())
                     );
