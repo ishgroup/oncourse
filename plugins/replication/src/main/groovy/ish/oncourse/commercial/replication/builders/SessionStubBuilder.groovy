@@ -19,7 +19,6 @@ class SessionStubBuilder extends AbstractAngelStubBuilder<Session, SessionStub> 
 		def stub = new SessionStub()
 		stub.setCourseClassId(entity.getCourseClass().getId())
 		stub.setEndDate(entity.getEndDatetime())
-		stub.setPayAdjustment(entity.getPayAdjustment())
 		stub.setRoomId(entity.getRoom() != null ? entity.getRoom().getId() : null)
 		stub.setStartDate(entity.getStartDatetime())
 		stub.setCreated(entity.getCreatedOn())

@@ -106,7 +106,7 @@
         <variableExpression><![CDATA[DurationFormatter.parseDurationInMinutes($F{tutorAttendance}.session.startDatetime, $F{tutorAttendance}.session.endDatetime)]]></variableExpression>
     </variable>
     <variable name="payableHours" class="java.lang.String">
-        <variableExpression><![CDATA[new DurationFormatter(DurationFormatter.FORMAT_DD_HH_MM, DurationFormatter.MINUTE).valueToString($F{tutorAttendance}.session.payAdjustment ? $V{durationInMinutes} : ($V{durationInMinutes} - $F{tutorAttendance}.session.payAdjustment))]]></variableExpression>
+        <variableExpression><![CDATA[new DurationFormatter(DurationFormatter.FORMAT_DD_HH_MM, DurationFormatter.MINUTE).valueToString($F{tutorAttendance}.actualPayableDurationMinutes)]]></variableExpression>
     </variable>
     <group name="tutor" isStartNewPage="true">
         <groupExpression><![CDATA[$F{tutorAttendance}.courseClassTutor.tutor.contact.fullName]]></groupExpression>

@@ -235,7 +235,6 @@ class OutboundReplicationHandlerTest extends TestWithDatabase {
 	static Session createSession(ObjectContext ctx) {
 		Session session = ctx.newObject(Session.class)
 		session.setCourseClass(SelectById.query(CourseClass.class, 1).selectOne(ctx))
-		session.setPayAdjustment(4)
 		return session
 	}
 

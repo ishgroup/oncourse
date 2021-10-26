@@ -95,7 +95,7 @@
              highestSchoolLevel="0" indigenousStatus="0" isOverseasClient="0" priorEducationCode="0"
              studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
-	<CourseSession id="100" courseClass_Id="5" startDatetime="[start_date1]" endDatetime="[end_date1]" payAdjustment="0.00"/>
-	<CourseSession id="200" courseClass_Id="5" startDatetime="[start_date2]" endDatetime="[end_date2]" payAdjustment="0.00"/>
+	<CourseSession id="100" courseClass_Id="5" startDatetime="[start_date1]" endDatetime="[end_date1]"/>
+	<CourseSession id="200" courseClass_Id="5" startDatetime="[start_date2]" endDatetime="[end_date2]"/>
 
 </dataset>

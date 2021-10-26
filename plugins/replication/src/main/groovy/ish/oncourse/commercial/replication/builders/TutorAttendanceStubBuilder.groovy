@@ -19,7 +19,6 @@ class TutorAttendanceStubBuilder extends AbstractAngelStubBuilder<TutorAttendanc
 		def stub = new TutorAttendanceStub()
 		stub.setTutorId(entity.getCourseClassTutor().getTutor().getId())
 		stub.setSessionId(entity.getSession().getId())
-		stub.setDurationMinutes(entity.getDurationMinutes())
 		stub.setCreated(entity.getCreatedOn())
 		stub.setModified(entity.getModifiedOn())
 		if (entity.getAttendanceType() != null) {

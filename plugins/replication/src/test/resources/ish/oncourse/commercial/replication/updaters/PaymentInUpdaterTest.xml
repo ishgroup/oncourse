@@ -68,7 +68,7 @@
     <Tutor id="1" contactId="1" givenName_legal="Tutor1" familyName_legal="Tutor1" dateStarted="2010-01-03 09:18:09"  dateFinished="2010-01-03 09:18:09" payrollRef="Tutor1" resume="Tutor1" wwChildrenStatus="0"/>
     <Tutor id="2" contactId="2" givenName_legal="Tutor2" familyName_legal="Tutor2" dateStarted="2010-01-03 09:18:09"  dateFinished="2010-01-03 09:18:09" payrollRef="Tutor2" resume="Tutor2" wwChildrenStatus="0"/>
 
-    <CourseSession id="1" roomId="1" startDatetime="2010-01-03 09:18:09" endDatetime="2010-02-03 09:18:09" courseClass_Id="1" payAdjustment="1"/>
+    <CourseSession id="1" roomId="1" startDatetime="2010-01-03 09:18:09" endDatetime="2010-02-03 09:18:09" courseClass_Id="1"/>
 
     <DefinedTutorRole id="1" name="definedTutorRoleName" active="1"/>
 

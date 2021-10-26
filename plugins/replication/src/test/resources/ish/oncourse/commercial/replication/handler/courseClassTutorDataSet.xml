@@ -41,9 +41,9 @@
 	<Tutor id="1" contactId="1" givenName_legal="Test Name" familyName_legal="test" dateStarted="2010-01-03 09:18:09"  dateFinished="2010-01-03 09:18:09" payrollRef="test" resume="test" wwChildrenStatus="0"/>
 	<Tutor id="2" contactId="2" givenName_legal="Test Name2" familyName_legal="test2" dateStarted="2010-01-03 09:18:09"  dateFinished="2010-01-03 09:18:09" payrollRef="test" resume="test" wwChildrenStatus="0"/>
 
-	<CourseSession id="100" roomId="1" startDatetime="2010-01-03 09:18:09" endDatetime="2010-02-03 09:18:09" courseClass_Id="1" payAdjustment="1"/>
+	<CourseSession id="100" roomId="1" startDatetime="2010-01-03 09:18:09" endDatetime="2010-02-03 09:18:09" courseClass_Id="1"/>
 
-	<CourseSession id="200" courseClass_Id="1" payAdjustment="4" />
+	<CourseSession id="200" courseClass_Id="1"/>
 
 	<DefinedTutorRole id="100" name="definedTutorRoleName" active="1"/>
 
