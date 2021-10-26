@@ -122,7 +122,7 @@ const styles: any = theme => ({
     [theme.breakpoints.up("md")]: {
       display: "block"
     },
-    "& > img": {
+    "& > iframe": {
       position: "relative",
       maxWidth: "100%",
       minWidth: "100%",
@@ -132,6 +132,12 @@ const styles: any = theme => ({
       transform: "translateX(-50%) translateY(-50%)",
       objectFit: "cover"
     }
+  },
+  splashIframe: {
+    width: "100%",
+    height: "100%",
+    border: "0",
+    overflow: "hidden",
   },
   loginFormRight: {
     position: "relative"
@@ -416,7 +422,11 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
           <Grid item xs={12} md={6} className={classes.loginFormRight}>
             <Slide direction="right" in timeout={300}>
               <span className={classes.sideImageWrapper}>
-                <img src="https://www.ish.com.au/assets/onCourse/splash.jpg" alt="" />
+                <iframe
+                  src="https://www.ish.com.au/oncourse-news/splash.html"
+                  title="splash image"
+                  className={classes.splashIframe}
+                />
               </span>
             </Slide>
             <Slide direction="left" in timeout={300}>
