@@ -3,9 +3,6 @@ properties:
   id:
     type: integer
     format: int64
-  sessionId:
-    type: integer
-    format: int64
   courseClassTutorId:
     type: integer
     format: int64
