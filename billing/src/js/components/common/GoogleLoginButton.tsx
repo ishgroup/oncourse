@@ -49,7 +49,7 @@ const GoogleLoginButton = () => {
   const profile = useAppSelector((state) => state.google.profile);
   const clientId = useAppSelector((state) => state.google.clientId);
 
-  const onFailure = (err?) => instantFetchErrorHandler(dispatch, err);
+  const onFailure = (err?) => instantFetchErrorHandler(dispatch, err?.error);
 
   const setRefreshTokenTimeout = (response: GoogleLoginResponse, expiresIn: number) => {
     // auto refresh token

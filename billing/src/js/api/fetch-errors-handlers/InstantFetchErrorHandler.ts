@@ -12,6 +12,7 @@ const instantFetchErrorHandler = (
   response: ServerResponse,
   customMessage = 'Something went wrong'
 ) => {
+
   if (!response) {
     dispatch({
       type: SHOW_MESSAGE,
@@ -26,7 +27,7 @@ const instantFetchErrorHandler = (
     dispatch({
       type: SHOW_MESSAGE,
       payload: {
-        message: (data && data.errorMessage) || customMessage
+        message: data?.errorMessage || customMessage
       }
     });
   } else {
