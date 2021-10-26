@@ -38,6 +38,7 @@ interface Props {
   onAdd?: any;
   classes?: any;
   mountAll?: boolean;
+  inlineHeading?: boolean;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -50,7 +51,8 @@ const ExpandableContainer: React.FC<Props> = ({
   expanded,
   setExpanded,
   index,
-  mountAll
+  mountAll,
+  inlineHeading = false,
 }) => {
   const headerRef = useRef<any>();
 
@@ -83,7 +85,7 @@ const ExpandableContainer: React.FC<Props> = ({
     <>
       <div ref={headerRef}>
         <div className="centeredFlex">
-          <div className="centeredFlex flex-fill">
+          <div className={clsx("centeredFlex", { "flex-fill": !inlineHeading })}>
             <div className="heading">{header}</div>
             {onAdd && (
               <AddIcon onClick={onAdd} />

@@ -198,7 +198,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
   useEffect(() => {
     if (itemProps.getTabsListItemProps) itemProps.getTabsListItemProps(itemProps);
-  }, [itemProps]);
+  }, [itemProps.values]);
 
   const layoutArray = getLayoutArray(itemProps.twoColumn);
 

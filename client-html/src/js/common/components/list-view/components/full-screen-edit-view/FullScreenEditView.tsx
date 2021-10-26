@@ -25,6 +25,7 @@ import AppBarHelpMenu from "../../../form/AppBarHelpMenu";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import { LSGetItem } from "../../../../utils/storage";
 import { APPLICATION_THEME_STORAGE_NAME } from "../../../../../constants/Config";
+import FullScreenStickyHeader from "./FullScreenStickyHeader";
 
 const styles = theme => createStyles({
   header: {
@@ -171,9 +172,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     if (!appTilte) {
       appTilte = (
         <div className={clsx("flex-fill", classes.titleWrapper)}>
-          <Typography className="appHeaderFontSize" color="inherit">
-            {title}
-          </Typography>
+          <FullScreenStickyHeader title={title} isScrolling={this.state.isScrolling} twoColumn />
         </div>
       );
     }

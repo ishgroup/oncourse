@@ -69,7 +69,9 @@ const useStyles = makeStyles((theme: AppTheme) => ({
       opacity: 1,
     },
   },
-  titleWrapper: {},
+  titleWrapper: {
+    minHeight: 51,
+  },
   hasAvatar: {
     marginTop: theme.spacing(11),
   },
@@ -81,9 +83,9 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 interface Props {
   avatar?: (classes?: any) => any;
   title: any;
-  fields: any;
   isScrolling: boolean;
   twoColumn: boolean,
+  fields?: any;
   hide?: boolean;
   otherClasses?: any;
 }
@@ -160,20 +162,22 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
             container
             item
             xs={12}
-            className={clsx(classes.titleText, { [classes.titleIn]: showTitleText || showTitleOnly })}
+            className={clsx(classes.titleText, { [classes.titleIn]: showTitleText || showTitleOnly || !fields })}
           >
             <Typography variant="h5" display="block" className={clsx(!twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize")}>
               {title}
             </Typography>
           </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            className={clsx(classes.titleFields, { [classes.titleIn]: !showTitleText && !showTitleOnly })}
-          >
-            {fields}
-          </Grid>
+          {fields && (
+            <Grid
+              container
+              item
+              xs={12}
+              className={clsx(classes.titleFields, { [classes.titleIn]: !showTitleText && !showTitleOnly })}
+            >
+              {fields}
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Grid>
