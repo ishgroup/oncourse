@@ -27,7 +27,6 @@ interface Props {
   gtmAccountItems: any;
   gaWebPropertyItems: any;
   gtmContainerItems: any;
-  loggedWithGoogle: boolean;
   googleProfileEmail: string;
   googleLoading: boolean;
   concurentAccounts: boolean;
@@ -44,7 +43,6 @@ const GoogleSetup = (
     gaWebPropertyItems,
     gtmAccountItems,
     gtmContainerItems,
-    loggedWithGoogle,
     googleProfileEmail,
     googleLoading,
     concurentAccounts
@@ -86,18 +84,7 @@ const GoogleSetup = (
       {googleLoading && <Loading />}
 
       {
-        !googleLoading && !concurentAccounts && !loggedWithGoogle && (
-          <>
-            <Alert severity="warning">
-              <AlertTitle>Not logged into Google</AlertTitle>
-              Please login above to set up Google services and see website analytics
-            </Alert>
-          </>
-        )
-      }
-
-      {
-        !googleLoading && !concurentAccounts && loggedWithGoogle && hasNoGAAccounts && (
+        !googleLoading && !concurentAccounts && hasNoGAAccounts && (
           <Alert severity="error">
             <AlertTitle>Analytics account not found</AlertTitle>
             We have't found any Google analytics accounts associated with
@@ -105,7 +92,7 @@ const GoogleSetup = (
             {googleProfileEmail}
             . Please create account
             {' '}
-            <Link href="#">here</Link>
+            <Link href="https://analytics.google.com/analytics/web">here</Link>
             {' '}
             to use tagmanager and analytics features on your site
             <div className="d-flex justify-content-end">
@@ -123,7 +110,7 @@ const GoogleSetup = (
       }
 
       {
-        !googleLoading && !concurentAccounts && loggedWithGoogle && !hasNoGAAccounts && hasNoGTMAccounts && (
+        !googleLoading && !concurentAccounts && !hasNoGAAccounts && hasNoGTMAccounts && (
           <Alert severity="error">
             <AlertTitle>Tag manager account not found</AlertTitle>
             We have't found any Google Tag manager accounts associated with
@@ -131,7 +118,7 @@ const GoogleSetup = (
             {googleProfileEmail}
             . Please create account
             {' '}
-            <Link href="#">here</Link>
+            <Link href="https://tagmanager.google.com">here</Link>
             {' '}
             to use tagmanager and analytics features on your site
             <div className="d-flex justify-content-end">
@@ -149,7 +136,7 @@ const GoogleSetup = (
       }
 
       {
-        !googleLoading && loggedWithGoogle && concurentAccounts && (
+        !googleLoading && concurentAccounts && (
           <Alert severity="error">
             <AlertTitle>No access</AlertTitle>
             You have no access to the Google Tag Manager configuration for this website. Please ask
@@ -169,7 +156,7 @@ const GoogleSetup = (
       }
 
       {
-        !googleLoading && loggedWithGoogle && !hasNoGAAccounts && !hasNoGTMAccounts && (
+        !googleLoading && !hasNoGAAccounts && !hasNoGTMAccounts && (
         <>
           <Grid item xs={6} className={classes.pr}>
             <TextField
@@ -252,11 +239,11 @@ const GoogleSetup = (
                 site.gtmAccountId
                   ? (
                     <>
-                      Paste Google maps API key from
+                      Create Google maps API key
                       {' '}
-                      <Link href="#">here</Link>
+                      <Link href="https://developers.google.com/maps/documentation/javascript/get-api-key#creating-api-keys">here</Link>
                       {' '}
-                      to enable google maps on site
+                      and paste it to enable google maps on site
                     </>
                   ) : 'Select Tag manager account first'
               }

@@ -6,7 +6,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useFormik } from 'formik';
 import { darken } from '@mui/material/styles';
-import { Button } from '@mui/material';
+import { Button, Alert, AlertTitle } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { LoadingButton } from '@mui/lab';
 import * as yup from 'yup';
@@ -425,9 +425,16 @@ export const SitesPage = () => {
     appHistory.push(`/websites/${sites[0]?.id}/urls`);
   };
 
+  const notLoggedWarning = (
+    <Alert severity="warning">
+      <AlertTitle>Not logged into Google</AlertTitle>
+      Please login above to set up Google services and see website analytics
+    </Alert>
+  );
+
   const renderPage = () => {
     if (isConfig) {
-      return (
+      return loggedWithGoogle ? (
         <GoogleSetup
           classes={classes}
           site={values}
@@ -438,11 +445,12 @@ export const SitesPage = () => {
           gtmAccountItems={gtmAccountItems}
           gaWebPropertyItems={gaWebPropertyItems}
           gtmContainerItems={gtmContainerItems}
-          loggedWithGoogle={loggedWithGoogle}
           googleProfileEmail={profile?.email}
           googleLoading={googleLoading || customLoading}
           concurentAccounts={concurentAccounts}
         />
+      ) : (
+        notLoggedWarning
       );
     }
 
@@ -463,20 +471,20 @@ export const SitesPage = () => {
         );
 
       case 'tagManager':
-        return (
+        return loggedWithGoogle ? (
           <TagManager
             gtmContainer={gtmContainer}
             loading={googleLoading || customLoading}
           />
-        );
+        ) : notLoggedWarning;
       case 'analytics':
-        return (
+        return loggedWithGoogle ? (
           <Analytics
             key={values.gaWebPropertyId}
             gaWebPropertyId={values.gaWebPropertyId}
             loading={googleLoading || customLoading}
           />
-        );
+        ) : notLoggedWarning;
       default:
         return null;
     }
@@ -553,7 +561,7 @@ export const SitesPage = () => {
                   </Button>
                 )}
 
-                {!isConfig && page !== 'urls' && (
+                {loggedWithGoogle && !isConfig && page !== 'urls' && (
                   <Button
                     onClick={() => setIsConfig(true)}
                     disableElevation
