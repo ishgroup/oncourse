@@ -264,7 +264,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             {items.map((i, tabIndex) => (
               <div id={i.label} key={i.label} ref={setScrollNode}>
                 {i.component({
-                 ...itemProps, expanded, setExpanded, tabIndex, isScrolling
+                 ...itemProps, expanded, setExpanded, tabIndex, isScrolling: isScrolling || itemProps.isScrollingRoot
                 })}
               </div>
             ))}
