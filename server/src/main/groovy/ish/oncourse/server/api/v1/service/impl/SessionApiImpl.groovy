@@ -15,6 +15,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.SessionApiService
+import ish.oncourse.server.api.service.TutorAttendanceApiService
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
 import ish.oncourse.server.api.v1.service.SessionApi
@@ -25,7 +26,10 @@ class SessionApiImpl implements SessionApi {
 
     @Inject
     private SessionApiService sessionApiService
-
+    
+    @Inject
+    private TutorAttendanceApiService apiService
+    
     @Override
     List<SessionDTO> get(Long classId) {
         return sessionApiService.getList(classId)

@@ -34,7 +34,6 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
     TutorAttendanceDTO toRestModel(TutorAttendance cayenneModel) {
         TutorAttendanceDTO dto = new TutorAttendanceDTO()
         dto.id = cayenneModel.id
-        dto.sessionId = cayenneModel.session.id
         dto.courseClassTutorId = cayenneModel.courseClassTutor.id
         dto.contactName = cayenneModel.courseClassTutor.tutor.contact.fullName
         dto.attendanceType = TutorAttendanceTypeDTO.values()[0].fromDbType(cayenneModel.attendanceType)
