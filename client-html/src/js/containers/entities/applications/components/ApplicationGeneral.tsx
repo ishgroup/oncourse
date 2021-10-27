@@ -51,7 +51,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   } as any;
 
   return (
-    <Grid container columnSpacing={3} className="generalRoot mt-2">
+    <Grid container columnSpacing={3} rowSpacing={3} className={`generalRoot ${twoColumn ? "pt-10" : "pt-3"}`}>
       <Grid item xs={12}>
         <FormField
           type="remoteDataSearchSelect"
