@@ -61,8 +61,6 @@ const validateDuration = value => (value !== "" && (value < 5 || value > 1440)
   ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
   : undefined);
 
-const siteRoomLabel = site => site.name;
-
 const normalizeStartDate = (value, prevValue) => value || prevValue;
 
 const initialValues = {
@@ -120,6 +118,12 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
   }, [sessions]);
 
   const [initial, setInitial] = React.useState(bulkValues || initialValues);
+
+  const roomLabel = room => {
+    if (room["site.name"]) return `${room["site.name"]} - ${room.name}`;
+
+    return room.name;
+  };
 
   React.useEffect(() => {
     if (!bulkValues) {
@@ -198,22 +202,14 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
     [tutors, initial.courseClassTutorIds, initial.temporaryTutorIds]
   );
 
-  const onSiteIdChange = useCallback(
-    site => {
-      dispatch(change(form, "site", site.name));
-      dispatch(change(form, "siteTimezone", site.localTimezone));
-      dispatch(change(form, "room", null));
-      dispatch(change(form, "roomId", null));
-      getRooms(`site.id is ${site.id}`);
-    },
-    [form]
-  );
-
   const onRoomIdChange = useCallback(
     room => {
-      dispatch(change(form, "room", room.name));
+      dispatch(change(form, "room", room ? room.name : null));
+      dispatch(change(form, "site", room ? room["site.name"] : null));
+      dispatch(change(form, "siteId", room ? room["site.id"] : null));
+      dispatch(change(form, "siteTimezone", room ? room["site.localTimezone"] : null));
     },
-    []
+    [form]
   );
 
   const durationValue = useMemo(() => initial.duration, [initial.duration]);
@@ -294,33 +290,18 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
             <Grid item xs={12}>
               <BulkItemWrapper classes={classes} title="Location" name="location">
                 <Grid container>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <FormField
-                      type="searchSelect"
-                      name="siteId"
-                      label="Site"
-                      entity="Site"
-                      selectValueMark="id"
-                      selectLabelMark="name"
-                      aqlColumns="name,localTimezone"
-                      selectLabelCondition={siteRoomLabel}
-                      defaultDisplayValue={initial.site}
-                      onInnerValueChange={onSiteIdChange}
-                      rowHeight={36}
-                      items={sites}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="searchSelect"
+                      type="remoteDataSearchSelect"
+                      entity="Room"
                       name="roomId"
-                      label="Room"
+                      label="Site and room"
+                      aqlColumns="name,site.name,site.localTimezone,site.id"
                       selectValueMark="id"
-                      selectLabelMark="name"
-                      defaultValue={initial.room}
-                      items={rooms || []}
-                      disabled={!initial.siteId}
+                      selectLabelCondition={roomLabel}
                       onInnerValueChange={onRoomIdChange}
+                      rowHeight={36}
+                      allowEmpty
                     />
                   </Grid>
                 </Grid>
