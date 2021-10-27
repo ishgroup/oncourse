@@ -399,22 +399,6 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       </div>
     );
   };
-  
-  onLogin = () => {
-    const {
-      isEnableTOTP,
-      isOptionalTOTP,
-      dispatch,
-    } = this.props;
-
-    return isEnableTOTP || isOptionalTOTP ? e => {
-        e.preventDefault();
-        this.savedTFAState = { isEnableTOTP, isOptionalTOTP };
-        setLoginState({ isTOTP: true, isNewTOTP: true });
-        dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
-      }
-      : undefined;
-  };
 
   render() {
     const {
@@ -741,7 +725,15 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                               root: classes.loginButton,
                               disabled: classes.loginButtonDisabled
                             }}
-                            onClick={this.onLogin}
+                            onClick={
+                              isEnableTOTP || isOptionalTOTP ? e => {
+                                  e.preventDefault();
+                                  this.savedTFAState = { isEnableTOTP, isOptionalTOTP };
+                                  setLoginState({ isTOTP: true, isNewTOTP: true });
+                                  dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                }
+                                : undefined
+                            }
                           >
                             {((isTOTP && !isNewTOTP) || (isBasic && !this.isInviteForm)) && "Login"}
                             {((isTOTP && isNewTOTP) || isEnableTOTP || isOptionalTOTP) && "Enable"}
@@ -759,8 +751,6 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                               this.props.setLoginState(resetProps);
                             }}
                             onAccept={() => {
-                              this.onLogin();
-
                               this.setState({
                                 eulaAccess: true
                               });
