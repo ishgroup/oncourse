@@ -27,9 +27,6 @@ class SessionApiImpl implements SessionApi {
     @Inject
     private SessionApiService sessionApiService
     
-    @Inject
-    private TutorAttendanceApiService apiService
-    
     @Override
     List<SessionDTO> get(Long classId) {
         return sessionApiService.getList(classId)

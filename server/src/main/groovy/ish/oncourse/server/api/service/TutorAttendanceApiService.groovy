@@ -12,14 +12,17 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.TutorAttendanceDao
 import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
 import ish.oncourse.server.api.v1.model.TutorAttendanceTypeDTO
+import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
+@CompileStatic
 class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, TutorAttendance, TutorAttendanceDao> {
 
     @Inject
@@ -58,18 +61,38 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
 
     @Override
     void validateModelBeforeSave(TutorAttendanceDTO dto, ObjectContext context, Long id) {
-        if (id == null) {
-            validator.throwClientErrorException(id, 'id', "Attendance id should be specified")
-        }
 
         if (dto.attendanceType == null) {
             validator.throwClientErrorException(id, 'attendanceType', "Attendance type is required")
         }
-        TutorAttendance attendance = getEntityAndValidateExistence(context, dto.id)
-
-        if (attendance.hasPayslips() && (attendance.attendanceType != dto.attendanceType.dbType)) {
-            validator.throwClientErrorException(id, 'attendanceType', "Attendance with linked payslip cannot be changed")
+        if (dto.start == null) {
+            validator.throwClientErrorException(id, 'start', "Roster start is required")
         }
+        if (dto.end == null) {
+            validator.throwClientErrorException(id, 'end', "Roster end is required")
+        }
+        if (dto.actualPayableDurationMinutes == null) {
+            validator.throwClientErrorException(id, 'actualPayableDurationMinutes', "Roster end is required")
+        }
+        
+        if (id != null) {
+            TutorAttendance attendance = getEntityAndValidateExistence(context, dto.id)
+
+            if (attendance.hasPayslips() && (attendance.attendanceType != dto.attendanceType.dbType)) {
+                validator.throwClientErrorException(id, 'attendanceType', "Attendance with linked payslip cannot be changed")
+            }
+        }
+
+//        List<TutorAttendance> tutorsToDelete = session.sessionTutors.findAll { !(it.courseClassTutor.id in dto.courseClassTutorIds) }
+//        TutorAttendance attendance = tutorsToDelete.find { it.hasPayslips() }
+//        if (attendance) {
+//            validator.throwClientErrorException(id, 'courseClassTutorIds', "Unable to unlink tutor: $attendance.courseClassTutor.tutor.contact.fullName, payslip already generated for this session" )
+//        }
+//        dto.courseClassTutorIds.each { roleId ->
+//            if (classTutorDao.getById(context, roleId) == null) {
+//                validator.throwClientErrorException(id?:dto.temporaryId, 'courseClassTutorIds', "Tutor role doesn't exist")
+//            }
+//        }
 
     }
 
@@ -84,6 +107,12 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
     }
 
     void updateList(List<TutorAttendanceDTO> attendanceDTOList) {
+//        attendanceDTOList*.courseClassTutorId.findAll { !(it in session.sessionTutors*.courseClassTutor.id) }.each { id ->
+//            CourseClassTutor classTutor = classTutorDao.getById(context, id)
+//            tutorAttendanceDao.newObject(session.context, session, classTutor)
+//        }
+//        List<TutorAttendance> tutorsToDelete = session.sessionTutors.findAll { !(it.courseClassTutor.id in dto.courseClassTutorIds) }
+//        session.context.deleteObjects(tutorsToDelete)
         ObjectContext context = cayenneService.newContext
         attendanceDTOList.each { dto ->
             validateModelBeforeSave(dto, context, dto.id)
