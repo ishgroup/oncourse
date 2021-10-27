@@ -13,10 +13,12 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.oncourse.server.api.dao.CourseClassTutorDao
 import ish.oncourse.server.api.dao.TutorAttendanceDao
 import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
 import ish.oncourse.server.api.v1.model.TutorAttendanceTypeDTO
 import ish.oncourse.server.cayenne.CourseClassTutor
+import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
@@ -27,6 +29,9 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
 
     @Inject
     private SystemUserService userService
+
+    @Inject
+    private CourseClassTutorDao classTutorDao
 
     @Override
     Class<TutorAttendance> getPersistentClass() {
@@ -82,43 +87,46 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
                 validator.throwClientErrorException(id, 'attendanceType', "Attendance with linked payslip cannot be changed")
             }
         }
-
-//        List<TutorAttendance> tutorsToDelete = session.sessionTutors.findAll { !(it.courseClassTutor.id in dto.courseClassTutorIds) }
-//        TutorAttendance attendance = tutorsToDelete.find { it.hasPayslips() }
-//        if (attendance) {
-//            validator.throwClientErrorException(id, 'courseClassTutorIds', "Unable to unlink tutor: $attendance.courseClassTutor.tutor.contact.fullName, payslip already generated for this session" )
-//        }
-//        dto.courseClassTutorIds.each { roleId ->
-//            if (classTutorDao.getById(context, roleId) == null) {
-//                validator.throwClientErrorException(id?:dto.temporaryId, 'courseClassTutorIds', "Tutor role doesn't exist")
-//            }
-//        }
-
     }
+
+    
 
     @Override
     void validateModelBeforeRemove(TutorAttendance cayenneModel) {
-        throw new UnsupportedOperationException()
+        if (cayenneModel.hasPayslips()) {
+            validator.throwClientErrorException(cayenneModel.session.id, 'tutorAttendances', "Unable to unlink tutor: $cayenneModel.courseClassTutor.tutor.contact.fullName, payslip already generated for this session" )
+        }
     }
 
     @Override
-    List<TutorAttendanceDTO> getList(Long classId) {
-        entityDao.getByClassId(cayenneService.newContext, classId).collect {toRestModel(it)}
+    List<TutorAttendanceDTO> getList(Long sessionId) {
+        entityDao.getBySessionId(cayenneService.newContext, sessionId).collect {toRestModel(it)}
     }
 
-    void updateList(List<TutorAttendanceDTO> attendanceDTOList) {
-//        attendanceDTOList*.courseClassTutorId.findAll { !(it in session.sessionTutors*.courseClassTutor.id) }.each { id ->
-//            CourseClassTutor classTutor = classTutorDao.getById(context, id)
-//            tutorAttendanceDao.newObject(session.context, session, classTutor)
-//        }
-//        List<TutorAttendance> tutorsToDelete = session.sessionTutors.findAll { !(it.courseClassTutor.id in dto.courseClassTutorIds) }
-//        session.context.deleteObjects(tutorsToDelete)
-        ObjectContext context = cayenneService.newContext
+    void updateList(Session session, List<TutorAttendanceDTO> attendanceDTOList) {
+        ObjectContext context = session.objectContext
+
+        List<TutorAttendance> attendancesToDelete = session.sessionTutors.findAll {!(it.id in attendanceDTOList*.id) }
+        attendancesToDelete.each {validateModelBeforeRemove(it)}
+        context.deleteObjects(attendancesToDelete)
+        
         attendanceDTOList.each { dto ->
+            TutorAttendance attendance
+
+            if (!dto.id) {
+                attendance = entityDao.newObject(context)
+                attendance.session = session
+
+                CourseClassTutor tutorRole = classTutorDao.getById(context, dto.courseClassTutorId)
+                if (!tutorRole) {
+                    validator.throwClientErrorException(session.id, 'tutorAttendances', "Tutor role doesn't exist")
+                }
+                attendance.courseClassTutor = tutorRole
+            } else {
+                attendance = getEntityAndValidateExistence(context, dto.id)
+            }
             validateModelBeforeSave(dto, context, dto.id)
-            TutorAttendance attendance = getEntityAndValidateExistence(context, dto.id)
             toCayenneModel(dto, attendance)
         }
-        save(context)
     }
 }

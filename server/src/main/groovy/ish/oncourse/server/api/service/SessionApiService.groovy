@@ -69,6 +69,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         dto.publicNotes = session.publicNotes
         dto.tutors = session.tutors*.contact*.fullName
         dto.name = session.courseClass.course.name
+        dto.tutorAttendances = attendanceApiService.getList(session.id)
         if (session.room) {
             dto.siteTimezone = session.room.site.localTimezone
         }
@@ -90,7 +91,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         session.endDatetime = LocalDateUtils.timeValueToDate(dto.end)
         session.publicNotes = dto.publicNotes
         session.privateNotes = dto.privateNotes
-        attendanceApiService.updateList(dto.tutorAttendances)
+        attendanceApiService.updateList(session, dto.tutorAttendances)
         session
     }
 
@@ -194,6 +195,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         if (!session.payLines.empty) {
             validator.throwClientErrorException(session.id, null, "Unable to remove this session because it linked to paylines.")
         }
+        session.sessionTutors.each {attendanceApiService.validateModelBeforeRemove(it) }
     }
 
     List<SessionDTO> getList(Long classId) {
