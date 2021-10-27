@@ -10,7 +10,7 @@ import { initialize } from "redux-form";
 import { Account } from "@api/model";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
-import AccountsEditView, { AccountHeading } from "./components/AccountsEditView";
+import AccountsEditView from "./components/AccountsEditView";
 import {
   setListEditRecord,
   getFilters,
@@ -74,21 +74,6 @@ class Accounts extends React.Component<any, any> {
     return false;
   }
 
-  customTitle = (viewProps, viewState) => {
-    const { values } = viewProps;
-    const { isScrolling } = viewState;
-
-    return {
-      Title: values && (
-        <AccountHeading
-          values={values}
-          isScrolling={isScrolling}
-          twoColumn={true}
-        />
-      ),
-    };
-  };
-
   render() {
     const {
       onCreate, getAccountRecord, onDelete, onSave, onInit
@@ -115,7 +100,7 @@ class Accounts extends React.Component<any, any> {
           filterGroupsInitial={filterGroups}
           findRelated={findRelatedGroup}
           noListTags
-          customTitle={this.customTitle}
+          hideTitle
         />
       </div>
     );

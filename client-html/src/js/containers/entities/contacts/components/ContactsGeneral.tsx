@@ -51,7 +51,6 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { AppTheme } from "../../../../model/common/Theme";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
@@ -63,10 +62,7 @@ const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
 };
 
-const styles = (theme: AppTheme) => createStyles({
-  contactGeneralWrapper: {
-    paddingTop: `${theme.spacing(10)} !important`,
-  },
+const styles = () => createStyles({
   exitToApp: {
     fontSize: "1.2rem",
     top: "5px"
@@ -113,7 +109,10 @@ export const studentInitial: Student = {
 
 const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? undefined : "Date of birth cannot be in future.");
 
-const validateABN = v => (!v || (!Number.isNaN(parseFloat(v)) && Number.isFinite(v)) ? undefined : "Business Number (ABN) should be numeric.");
+const validateABN = v => (!v || (!Number.isNaN(parseFloat(v)) && Number.isFinite(v))
+  ? undefined
+  : "Business Number (ABN) should be numeric."
+);
 
 const filterStudentTags = (tag: Tag) => {
   const { requirements } = tag;
@@ -463,8 +462,8 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   };
 
   return (
-    <div className={clsx("p-3", twoColumn && classes.contactGeneralWrapper)}>
-      <ProfileHeading {...props} hide={twoColumn} />
+    <div className="p-3">
+      <ProfileHeading {...props} />
       <Grid container columnSpacing={3}>
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
