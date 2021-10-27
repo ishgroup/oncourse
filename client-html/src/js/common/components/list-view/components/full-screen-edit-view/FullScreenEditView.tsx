@@ -14,7 +14,6 @@ import Button from "@mui/material/Button";
 import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import Slide from "@mui/material/Slide";
-import Typography from "@mui/material/Typography";
 import { TransitionProps } from "@mui/material/transitions";
 import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";
@@ -53,12 +52,7 @@ const styles = theme => createStyles({
     background: `${theme.appBar.headerAlternate.color} !important`,
     color: `${theme.appBar.headerAlternate.background} !important`,
   },
-  titleWrapper: {
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut
-    }),
-  },
+  titleWrapper: {},
 });
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
@@ -71,15 +65,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
     this.state = {
       isScrolling: false,
-      scrollTarget: null,
-      isScrollingDown: false,
-      tabsListItemProps: null,
     };
   }
 
   componentDidUpdate(prevProps) {
     const {
-      pending, dispatch, rootEntity, isNested
+      pending, dispatch, rootEntity, isNested, fullScreenEditView
     } = this.props;
 
     if (window.performance.getEntriesByName("EditViewStart").length && prevProps.pending && !pending) {
@@ -112,6 +103,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       window.performance.clearMarks("NestedEditViewEnd");
       window.performance.clearMeasures("NestedEditViewView");
     }
+
+    if (!fullScreenEditView) this.setState({ isScrolling: false });
   }
 
   updateTitle = (title: string) => {
@@ -139,45 +132,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     }
   };
 
-  onScroll = (e, isScrollingDown) => {
-    if (e.target) {
-      if (e.target.scrollTop > 30) this.setState({ isScrolling: true });
-      else this.setState({ isScrolling: false });
-    }
-
-    this.setState({ scrollTarget: e.target });
-    this.setState({ isScrollingDown });
-  };
-
-  getTabsListItemProps = itemProps => {
-    this.setState({ tabsListItemProps: itemProps });
-  };
-
-  getAppBarTitle = title => {
-    const { customTitle, classes } = this.props;
-
-    let appTilte = null;
-
-    if (customTitle) {
-      const { Title, otherClasses } = customTitle(this.props, this.state);
-      if (Title) {
-        appTilte = (
-          <div className={clsx("flex-fill", classes.titleWrapper, otherClasses)}>
-            {Title}
-          </div>
-        );
-      }
-    }
-
-    if (!appTilte) {
-      appTilte = (
-        <div className={clsx("flex-fill", classes.titleWrapper)}>
-          <FullScreenStickyHeader title={title} isScrolling={this.state.isScrolling} twoColumn />
-        </div>
-      );
-    }
-
-    return appTilte;
+  onScroll = (e, isScrolling) => {
+    this.setState({ isScrolling });
   };
 
   render() {
@@ -209,7 +165,10 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       form,
       asyncValidating,
       disabledSubmitCondition,
+      hideTitle,
     } = this.props;
+
+    const { isScrolling } = this.state;
 
     const title = values && (nameCondition ? nameCondition(values) : values.name);
 
@@ -236,10 +195,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               className={clsx(
                 classes.header,
                 LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader",
-                { [classes.headerAlternate]: this.state.isScrolling }
+                { [classes.headerAlternate]: isScrolling }
               )}
             >
-              {this.getAppBarTitle(title)}
+              <div className={clsx("flex-fill", classes.titleWrapper)}>
+                {!hideTitle && (<FullScreenStickyHeader title={title} isScrolling={isScrolling} twoColumn />)}
+              </div>
               <div>
                 {manualLink && (
                   <AppBarHelpMenu
@@ -247,12 +208,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                     modified={values ? new Date(values.modifiedOn) : null}
                     auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
                     manualUrl={manualLink}
-                    classes={{ buttonAlternate: this.state.isScrolling && classes.headerAlternate }}
+                    classes={{ buttonAlternate: isScrolling && classes.headerAlternate }}
                   />
                 )}
                 <Button
                   onClick={this.onCloseClick}
-                  className={clsx("closeAppBarButton", this.state.isScrolling && classes.headerAlternate)}
+                  className={clsx("closeAppBarButton", isScrolling && classes.headerAlternate)}
                 >
                   Close
                 </Button>
@@ -290,7 +251,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 openNestedEditView={openNestedEditView}
                 toogleFullScreenEditView={toogleFullScreenEditView}
                 onEditViewScroll={this.onScroll}
-                getTabsListItemProps={this.getTabsListItemProps}
               />
             </Grid>
           </Grid>

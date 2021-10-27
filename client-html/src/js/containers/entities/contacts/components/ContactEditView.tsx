@@ -92,7 +92,6 @@ const ContactEditView = props => {
     currencySymbol,
     syncErrors,
     onEditViewScroll,
-    getTabsListItemProps,
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -165,7 +164,6 @@ const ContactEditView = props => {
           setUsiUpdateLocked,
           syncErrors,
           onEditViewScroll,
-          getTabsListItemProps,
         }}
       />
     </>
