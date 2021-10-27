@@ -74,21 +74,6 @@ properties:
     required: false
     description: Site timezone
     example: Australia/Brisbane
-  courseClassTutorIds:
-    type: array
-    required: false
-    items:
-      type: integer
-      format: int64
-    description: Course c lass tutor's ids
-    example: 200,302
-  temporaryTutorIds:
-    type: array
-    required: false
-    items:
-      type: string
-    description: Not saved course class tutor's ids
-    example: k6g5o090,n6r5u246
   start:
     type: string
     format: date-time
