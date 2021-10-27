@@ -146,7 +146,7 @@ class GoogleService {
     workspace: string,
     variable: GTMVariable
   ): Promise<GTMVariable> {
-    return this.http.PUT(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}/variables`,
+    return this.http.PUT(`https://www.googleapis.com/tagmanager/v2/accounts/${account}/containers/${container}/workspaces/${workspace}/variables/${variable.variableId}`,
       variable,
       {
         headers: {
