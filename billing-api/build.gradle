@@ -23,3 +23,9 @@ dependencies {
     implementation 'commons-net:commons-net:3.8.0'
     implementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 }
+
+task start(type: JavaExec) {
+    main = 'ish.oncourse.willow.billing.BillingApp'
+    classpath = sourceSets.main.runtimeClasspath
+    args  = []
+}
