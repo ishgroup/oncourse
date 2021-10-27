@@ -30,12 +30,9 @@ import { StyledCheckbox } from "../../../../../common/components/form/formFields
 import { State } from "../../../../../reducers/state";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { defaultContactName } from "../../../contacts/utils";
-import { openSiteLink } from "../../../sites/utils";
 import { openRoomLink } from "../../../rooms/utils";
-import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 
 interface Props {
   form: string;
@@ -44,14 +41,17 @@ interface Props {
   tutors: CourseClassTutorExtended[];
   classes: any;
   session?: TimetableSession;
-  rooms?: Room[];
   sites?: Site[];
-  getRooms?: StringArgFunction;
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
   prevTutorsState?: any;
 }
-const siteRoomLabel = site => (typeof site === "object" ? site.name : "");
+
+const roomLabel = room => {
+  if (room["site.name"]) return `${room["site.name"]} - ${room.name}`;
+
+  return room.name;
+};
 
 const normalizeStartDate = (value, prevValue) => value || prevValue;
 
@@ -63,29 +63,13 @@ const CourseClassSessionFields: React.FC<Props> = ({
   form,
   dispatch,
   session,
-  rooms,
-  getRooms,
   tutors,
   triggerDebounseUpdate,
   classes,
   warnings,
   prevTutorsState,
-  sites,
 }) => {
   const isMounted = useRef(false);
-
-  useEffect(() => {
-    if (isMounted.current && session.siteId && !session.roomId && rooms.length) {
-      dispatch(change(form, `sessions[${session.index}].roomId`, rooms[0].id));
-      dispatch(change(form, `sessions[${session.index}].room`, rooms[0].name));
-    }
-  }, [rooms]);
-
-  useEffect(() => {
-    if (!rooms.length && session.siteId) {
-      getRooms(`site.id is ${session.siteId}`);
-    }
-  }, []);
 
   useEffect(() => {
     if (isMounted.current && session.start) {
@@ -226,22 +210,12 @@ const CourseClassSessionFields: React.FC<Props> = ({
     [form, session.index, durationValue]
   );
 
-  const onSiteIdChange = useCallback(
-    site => {
-      dispatch(change(form, `sessions[${session.index}].site`, site ? site.name : null));
-      dispatch(change(form, `sessions[${session.index}].siteTimezone`, site ? site.localTimezone : null));
-      dispatch(change(form, `sessions[${session.index}].room`, null));
-      dispatch(change(form, `sessions[${session.index}].roomId`, null));
-      if (site) {
-        getRooms(`site.id is ${site.id}`);
-      }
-    },
-    [form, session.index, session.start, session.end]
-  );
-
   const onRoomIdChange = useCallback(
     room => {
-      dispatch(change(form, `sessions[${session.index}].room`, room ? room.label : null));
+      dispatch(change(form, `sessions[${session.index}].room`, room ? room.name : null));
+      dispatch(change(form, `sessions[${session.index}].site`, room ? room["site.name"] : null));
+      dispatch(change(form, `sessions[${session.index}].siteId`, room ? room["site.id"] : null));
+      dispatch(change(form, `sessions[${session.index}].siteTimezone`, room ? room["site.localTimezone"] : null));
     },
     [form, session.index]
   );
@@ -354,38 +328,18 @@ const CourseClassSessionFields: React.FC<Props> = ({
       </Grid>
       <Grid item xs={6}>
         <FormField
-          type="searchSelect"
-          entity="Site"
-          name={`sessions[${session.index}].siteId`}
-          label="Site"
-          aqlColumns="name,localTimezone"
-          selectValueMark="id"
-          selectLabelMark="name"
-          selectLabelCondition={siteRoomLabel}
-          defaultDisplayValue={session.site}
-          labelAdornment={<LinkAdornment linkHandler={openSiteLink} link={session.siteId} disabled={!session.siteId} />}
-          onInnerValueChange={onSiteIdChange}
-          className={warningTypes.Site.length ? "errorColor" : undefined}
-          rowHeight={36}
-          items={sites}
-          allowEmpty
-        />
-        {warningTypes.Site
-          .map(w => <ErrorMessage message={w.message} /> )}
-      </Grid>
-      <Grid item xs={6}>
-        <FormField
-          type="select"
+          type="remoteDataSearchSelect"
+          entity="Room"
           name={`sessions[${session.index}].roomId`}
-          label="Room"
+          label="Site and room"
+          aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
-          selectLabelMark="name"
-          defaultValue={session.room}
+          selectLabelCondition={roomLabel}
+          defaultDisplayValue={`${session.site} - ${session.room}`}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
-          items={rooms || []}
-          disabled={!session.siteId}
           onInnerValueChange={onRoomIdChange}
           className={warningTypes.Room.length ? "errorColor" : undefined}
+          rowHeight={36}
           allowEmpty
         />
         {warningTypes.Room
@@ -413,18 +367,10 @@ const CourseClassSessionFields: React.FC<Props> = ({
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getRooms: (search: string) => {
-    dispatch(setCommonPlainSearch("Room", search));
-    dispatch(getCommonPlainRecords("Room", 0, "name", true, "name"));
-  }
-});
-
 const mapStateToProps = (state: State, ownProps: Props) => ({
-  rooms: state.plainSearchRecords["Room"].items,
   sites: state.plainSearchRecords["Site"].items,
   session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
   timezones: state.timezones,
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClassSessionFields);
+export default connect<any, any, any>(mapStateToProps, null)(CourseClassSessionFields);

@@ -14,6 +14,7 @@ import React, {
 } from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { InputAdornment, withStyles } from "@material-ui/core";
+import CloseIcon from '@material-ui/icons/Close';
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -25,7 +26,6 @@ import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
-import { stubComponent } from "../../../utils/common";
 
 const searchStyles = theme => createStyles({
   inputEndAdornment: {
@@ -33,6 +33,12 @@ const searchStyles = theme => createStyles({
     color: theme.palette.primary.main,
     display: "flex",
     visibility: 'hidden'
+  },
+  clearIcon: {
+    fontSize: "1.2rem",
+    "&:hover": {
+      cursor: "pointer",
+    }
   },
   inputWrapper: {
     "&:hover $inputEndAdornment": {
@@ -559,6 +565,12 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                       ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
                       : (
                         <InputAdornment position="end" className={classes.inputEndAdornment}>
+                          {allowEmpty && (
+                            <CloseIcon
+                              onClick={onClear}
+                              className={clsx("hoverIcon", fieldClasses.editIcon, classes.clearIcon)}
+                            />
+                          ) }
                           <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
                         </InputAdornment>
                       )
