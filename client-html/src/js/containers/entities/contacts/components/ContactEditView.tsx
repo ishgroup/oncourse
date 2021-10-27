@@ -92,6 +92,7 @@ const ContactEditView = props => {
     currencySymbol,
     syncErrors,
     onEditViewScroll,
+    isScrollingRoot,
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -164,6 +165,7 @@ const ContactEditView = props => {
           setUsiUpdateLocked,
           syncErrors,
           onEditViewScroll,
+          isScrollingRoot,
         }}
       />
     </>

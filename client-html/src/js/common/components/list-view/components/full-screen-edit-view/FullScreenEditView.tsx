@@ -65,6 +65,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
     this.state = {
       isScrolling: false,
+      isScrollingRoot: false,
     };
   }
 
@@ -104,7 +105,10 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       window.performance.clearMeasures("NestedEditViewView");
     }
 
-    if (!fullScreenEditView) this.setState({ isScrolling: false });
+    if (!fullScreenEditView) {
+      this.setState({ isScrolling: false });
+      this.setState({ isScrollingRoot: false });
+    }
   }
 
   updateTitle = (title: string) => {
@@ -134,6 +138,14 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
   onScroll = (e, isScrolling) => {
     this.setState({ isScrolling });
+  };
+
+  onScrollRoot = e => {
+    if (e.target.scrollTop > 20) {
+      this.setState({ isScrollingRoot: true });
+    } else {
+      this.setState({ isScrollingRoot: false });
+    }
   };
 
   render() {
@@ -168,7 +180,9 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       hideTitle,
     } = this.props;
 
-    const { isScrolling } = this.state;
+    const { isScrolling, isScrollingRoot } = this.state;
+
+    const hasScrolling = isScrolling || isScrollingRoot;
 
     const title = values && (nameCondition ? nameCondition(values) : values.name);
 
@@ -195,11 +209,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               className={clsx(
                 classes.header,
                 LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader",
-                { [classes.headerAlternate]: isScrolling }
+                { [classes.headerAlternate]: hasScrolling }
               )}
             >
               <div className={clsx("flex-fill", classes.titleWrapper)}>
-                {!hideTitle && (<FullScreenStickyHeader title={title} isScrolling={isScrolling} twoColumn />)}
+                {!hideTitle && (<FullScreenStickyHeader title={title} isScrolling={hasScrolling} twoColumn />)}
               </div>
               <div>
                 {manualLink && (
@@ -208,12 +222,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                     modified={values ? new Date(values.modifiedOn) : null}
                     auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
                     manualUrl={manualLink}
-                    classes={{ buttonAlternate: isScrolling && classes.headerAlternate }}
+                    classes={{ buttonAlternate: hasScrolling && classes.headerAlternate }}
                   />
                 )}
                 <Button
                   onClick={this.onCloseClick}
-                  className={clsx("closeAppBarButton", isScrolling && classes.headerAlternate)}
+                  className={clsx("closeAppBarButton", hasScrolling && classes.headerAlternate)}
                 >
                   Close
                 </Button>
@@ -226,7 +240,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               </div>
             </AppBar>
           )}
-          <Grid container columnSpacing={3} className={hideFullScreenAppBar ? undefined : classes.root}>
+          <Grid
+            container
+            columnSpacing={3}
+            className={`overflow-y-auto ${hideFullScreenAppBar ? undefined : classes.root}`}
+            onScroll={this.onScrollRoot}
+          >
             <Grid item xs={12}>
               <LoadingIndicator appBarOffset position="fixed" />
 
@@ -251,6 +270,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 openNestedEditView={openNestedEditView}
                 toogleFullScreenEditView={toogleFullScreenEditView}
                 onEditViewScroll={this.onScroll}
+                isScrollingRoot={isScrollingRoot}
               />
             </Grid>
           </Grid>
