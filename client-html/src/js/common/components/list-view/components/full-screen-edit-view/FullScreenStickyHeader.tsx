@@ -8,11 +8,21 @@ import Typography from "@mui/material/Typography";
 import { AppTheme } from "../../../../../model/common/Theme";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
+  fullScreenTitleWrapper: {
+    minHeight: 51,
+  },
+  fullScreenTitleItem: {
+    position: "fixed",
+    top: 0,
+    maxWidth: "calc(100% - 224px)",
+    width: "100%",
+    zIndex: 9999,
+  },
   titleFields: {
     transform: "translateY(200%)",
     visibility: "hidden",
     transition: theme.transitions.create("all", {
-      duration: "0.6s",
+      duration: "0.8s",
       easing: theme.transitions.easing.easeInOut
     }),
   },
@@ -23,10 +33,13 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     visibility: "hidden",
     "&, & > h5": {
       transition: theme.transitions.create("all", {
-        duration: "0.6s",
+        duration: "0.8s",
         easing: theme.transitions.easing.easeInOut
       }),
     }
+  },
+  titleTextAlternate: {
+    color: `${theme.appBar.headerAlternate.color} !important`,
   },
   titleIn: {
     transform: "translateY(0)",
@@ -36,7 +49,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   avatarWrapper: {
     "&, & img": {
       transition: theme.transitions.create("all", {
-        duration: theme.transitions.duration.complex,
+        duration: "0.8s",
         easing: theme.transitions.easing.easeInOut
       }),
     },
@@ -60,7 +73,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   avatarRoot: {
     transition: theme.transitions.create("all", {
-      duration: theme.transitions.duration.complex,
+      duration: "0.8s",
       easing: theme.transitions.easing.easeInOut
     }),
   },
@@ -73,7 +86,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     minHeight: 51,
   },
   hasAvatar: {
-    marginTop: theme.spacing(11),
+    minHeight: 90,
   },
   hasAvatarScrollIn: {
     marginTop: theme.spacing(0),
@@ -83,11 +96,12 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 interface Props {
   avatar?: (classes?: any) => any;
   title: any;
-  isScrolling: boolean;
   twoColumn: boolean,
+  isScrolling?: boolean;
   fields?: any;
   hide?: boolean;
   otherClasses?: any;
+  hideGap?: boolean;
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -99,6 +113,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     hide,
     otherClasses,
     isScrolling,
+    hideGap,
   } = props;
 
   const classes = { ...useStyles(), ...otherClasses };
@@ -147,11 +162,17 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
       container
       columnSpacing={3}
       className={clsx("align-items-center", hide && "d-none", !twoColumn && "mb-3", {
-        [classes.hasAvatar]: twoColumn && avatar && !isScrolling
+        [classes.hasAvatar]: twoColumn && avatar,
+        [classes.fullScreenTitleWrapper]: twoColumn && !avatar && !hideGap,
       })}
       ref={wrapperRef}
     >
-      <Grid item xs={12} className={clsx("centeredFlex", !twoColumn && "flex-column")}>
+      <Grid
+        item
+        xs={12}
+        className={clsx("centeredFlex", !twoColumn && "flex-column",
+          { [classes.fullScreenTitleItem]: twoColumn, "pt-2": twoColumn, "pt-1": showTitleOnly })}
+      >
         {avatar && (
           <div className={clsx(classes.avatarBlock, !twoColumn && "w-100", twoColumn && "mr-3")}>
             {avatar(classes)}
@@ -164,7 +185,11 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
             xs={12}
             className={clsx(classes.titleText, { [classes.titleIn]: showTitleText || showTitleOnly || !fields })}
           >
-            <Typography variant="h5" display="block" className={clsx(!twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize")}>
+            <Typography
+              variant="h5"
+              display="block"
+              className={clsx(!twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize", { [classes.titleTextAlternate]: showTitleOnly })}
+            >
               {title}
             </Typography>
           </Grid>

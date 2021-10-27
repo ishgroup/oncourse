@@ -103,7 +103,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   alwaysFullScreenCreateView?: boolean;
   syncErrors?: any;
   disabledSubmitCondition?: boolean;
-  customTitle?: (props: any, state?: any) => any;
+  hideTitle?: boolean;
 }
 
 export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
@@ -124,8 +124,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
   toogleFullScreenEditView?: any;
-  onEditViewScroll?: (e: any, isScrollingDown?: boolean) => void;
-  getTabsListItemProps?: (itemProps?: any) => void;
+  onEditViewScroll?: (e: any, isScrolling?: boolean) => void;
 }
 
 export type ListAqlMenuItemsRenderer = (content: React.ReactNode, rowData: any, searchValue: string) => void;

@@ -209,7 +209,7 @@ interface Props extends Partial<ListState> {
   setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
-  customTitle?: (props: any, state?: any) => any;
+  hideTitle?: boolean;
 }
 
 interface ComponentState {
@@ -1041,7 +1041,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       searchQuery,
       getCustomBulkEditFields,
       filterEntity,
-      customTitle
+      hideTitle
     } = this.props;
 
     const {
@@ -1178,7 +1178,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           openNestedEditView={this.openNestedEditViewWithDirtyCheck}
           alwaysFullScreenCreateView={alwaysFullScreenCreateView}
           threeColumn={threeColumn}
-          customTitle={customTitle}
+          hideTitle={hideTitle}
         />
 
         <NestedEditView

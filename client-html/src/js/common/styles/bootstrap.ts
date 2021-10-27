@@ -65,6 +65,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".bottom-0": {
     bottom: 0
   },
+  ".pt-10": {
+    paddingTop: theme.spacing(10)
+  },
   ".pr-6": {
     paddingRight: theme.spacing(6)
   },

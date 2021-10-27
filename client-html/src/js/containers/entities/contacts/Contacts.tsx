@@ -7,7 +7,9 @@
  */
 
 import { isBefore } from "date-fns";
-import React, { Dispatch, useCallback, useEffect, useState } from "react";
+import React, {
+  Dispatch, useCallback, useEffect, useState
+} from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import Typography from "@mui/material/Typography";
@@ -29,7 +31,9 @@ import {
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
+import {
+  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
+} from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
@@ -43,7 +47,6 @@ import person from "../../../../images/person.png";
 import { Classes } from "../../../model/entities/CourseClass";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
 import { getContactFullName } from "./utils";
-import { ProfileHeading } from "./components/ContactsGeneral";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
@@ -351,21 +354,6 @@ const Contacts: React.FC<ContactsProps> = props => {
     onCreate(contactModel);
   }, []);
 
-  const customTitle = useCallback((viewProps, viewState) => {
-    const { values } = viewProps;
-    const { isScrolling, tabsListItemProps } = viewState;
-
-    return {
-      Title: values && tabsListItemProps && (
-        <ProfileHeading
-          {...tabsListItemProps}
-          values={values}
-          isScrolling={isScrolling}
-        />
-      )
-    };
-  }, []);
-
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
 
@@ -398,7 +386,7 @@ const Contacts: React.FC<ContactsProps> = props => {
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
-      customTitle={customTitle}
+      hideTitle
     />
   );
 };
