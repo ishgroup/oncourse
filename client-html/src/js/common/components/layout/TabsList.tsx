@@ -23,50 +23,58 @@ import { toggleTabListExpanded } from "./reducers/tabListReducer";
 import { TabsListState } from "./actions/tabListActions";
 
 const styles = theme => createStyles({
-    listContainer: {
-      flexDirection: "column",
-      backgroundColor: theme.tabList.listContainer.backgroundColor,
-      padding: theme.spacing(4)
-    },
-    listContainerInner: {
-      marginBottom: theme.spacing(8)
-    },
-    listItemRoot: {
-      alignItems: "flex-start",
-      marginBottom: theme.spacing(3),
-      color: theme.tabList.listItemRoot.color,
-      fontWeight: 600,
-      opacity: 0.6,
-      padding: 0,
-      overflow: "hidden",
-      position: "relative",
-      "&$selected": {
-        opacity: 1,
-        backgroundColor: "inherit",
-        color: theme.tabList.listItemRoot.selectedColor,
-        "& $arrowIcon": {
-          transform: "translateX(0)",
-        },
-        "& $listItemText": {
-          paddingLeft: 30,
-        },
-      }
-    },
-    listItemText: {
-      fontWeight: "inherit",
-      width: "100%",
-      transition: "all 0.2s ease-in-out",
-    },
-    indicator: {
-      display: "none"
-    },
-    selected: {},
-    arrowIcon: {
-      position: "absolute",
-      transform: "translateX(-30px)",
-      transition: "all 0.2s ease-in-out",
-    },
-  });
+  listContainer: {
+    flexDirection: "column",
+    backgroundColor: theme.tabList.listContainer.backgroundColor,
+    padding: theme.spacing(4)
+  },
+  listContainerInner: {
+    marginBottom: theme.spacing(8)
+  },
+  listItemRoot: {
+    alignItems: "flex-start",
+    marginBottom: theme.spacing(3),
+    color: theme.tabList.listItemRoot.color,
+    fontWeight: 600,
+    opacity: 0.6,
+    padding: 0,
+    overflow: "hidden",
+    position: "relative",
+    "&$selected": {
+      opacity: 1,
+      backgroundColor: "inherit",
+      color: theme.tabList.listItemRoot.selectedColor,
+      "& $arrowIcon": {
+        transform: "translateX(0)",
+      },
+      "& $listItemText": {
+        paddingLeft: 30,
+      },
+    }
+  },
+  listItemText: {
+    fontWeight: "inherit",
+    width: "100%",
+    transition: "all 0.2s ease-in-out",
+  },
+  indicator: {
+    display: "none"
+  },
+  selected: {},
+  arrowIcon: {
+    position: "absolute",
+    transform: "translateX(-30px)",
+    transition: "all 0.2s ease-in-out",
+  },
+  fullScreenContentItem: {
+    height: "100vh",
+    marginTop: -64,
+    paddingTop: theme.spacing(2),
+  },
+  threeColumnContentItem: {
+    height: "calc(100vh - 64px)",
+  }
+});
 
 export interface TabsListItem {
   label: string;
@@ -111,6 +119,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
   const [selected, setSelected] = useState<string>(null);
   const [expanded, setTabExpanded] = useState<number[]>([]);
+  const [isScrolling, setIsScrolling] = useState<boolean>(false);
 
   useEffect(() => {
     if (items.length) {
@@ -176,9 +185,20 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
       }
 
       const isScrollingDown = scrolledPX.current < e.target.scrollTop;
+      let triggerScrolling = false;
+
+      if (e.target) {
+        if (e.target.scrollTop > 20) {
+          setIsScrolling(true);
+          triggerScrolling = true;
+        } else {
+          setIsScrolling(false);
+          triggerScrolling = false;
+        }
+      }
 
       if (itemProps.onEditViewScroll) {
-        itemProps.onEditViewScroll(e, isScrollingDown);
+        itemProps.onEditViewScroll(e, triggerScrolling);
       }
 
       scrolledPX.current = e.target.scrollTop;
@@ -223,27 +243,28 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
     }
   }, []);
 
-  useEffect(() => {
-    if (itemProps.getTabsListItemProps) itemProps.getTabsListItemProps(itemProps);
-  }, [itemProps.values]);
-
   const layoutArray = getLayoutArray(itemProps.twoColumn);
 
   return (
-    <Grid container className={clsx("overflow-hidden", { "root": customAppBar && itemProps.twoColumn })}>
+    <Grid container className={clsx({ "root": customAppBar && itemProps.twoColumn })}>
       <Grid item xs={layoutArray[0].xs}>
         <Grid container>
           <Grid
             item
             xs={layoutArray[1].xs}
-            className={clsx("overflow-y-auto", customAppBar && itemProps.twoColumn ? "appBarContainer" : "fullHeightWithoutAppBar")}
+            className={clsx("overflow-y-auto",
+              customAppBar && itemProps.twoColumn ? "appBarContainer" : "",
+              {
+                [classes.fullScreenContentItem]: itemProps.twoColumn,
+                [classes.threeColumnContentItem]: !itemProps.twoColumn,
+              })}
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
             {items.map((i, tabIndex) => (
               <div id={i.label} key={i.label} ref={setScrollNode}>
                 {i.component({
-                 ...itemProps, expanded, setExpanded, tabIndex
+                 ...itemProps, expanded, setExpanded, tabIndex, isScrolling
                 })}
               </div>
             ))}

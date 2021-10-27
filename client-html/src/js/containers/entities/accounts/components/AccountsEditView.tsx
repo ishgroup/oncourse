@@ -46,32 +46,6 @@ const getFormattedTaxes = (taxes: Tax[]) =>
     label: `${tax.code}`
   }));
 
-export const AccountHeading: React.FC<any> = props => {
-  const {
-    values,
-    twoColumn,
-    hide,
-    isScrolling,
-  } = props;
-
-  return (
-    <FullScreenStickyHeader
-      hide={hide}
-      isScrolling={isScrolling}
-      twoColumn={twoColumn}
-      title={values && values.accountCode}
-      fields={(
-        <FormField
-          type="text"
-          name="accountCode"
-          label="Code"
-          required
-        />
-      )}
-    />
-  );
-};
-
 const AccountsEditView = props => {
   const {
    twoColumn, taxTypes, isNew, values
@@ -93,10 +67,18 @@ const AccountsEditView = props => {
       <Grid item lg={twoColumn ? 11 : 11} md={twoColumn ? 11 : 11} xs={11}>
         <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <AccountHeading
-              values={values}
+            <FullScreenStickyHeader
+              hideGap
               twoColumn={twoColumn}
-              hide={twoColumn}
+              title={values && values.accountCode}
+              fields={(
+                <FormField
+                  type="text"
+                  name="accountCode"
+                  label="Code"
+                  required
+                />
+              )}
             />
             <FormField
               type="select"
