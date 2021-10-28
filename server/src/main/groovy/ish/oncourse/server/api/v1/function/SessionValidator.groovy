@@ -151,7 +151,7 @@ class SessionValidator {
             sessionFilter = sessionFilter.andExp(Session.COURSE_CLASS.dot(CourseClass.ID).ne(classId))
         }
 
-        dto.contactIds.each { id ->
+        dto.tutorAttendances*.contactId.each { id ->
             Contact contact = contactDao.getById(context, id)
             List<Session> sessionClashes = getTutorSessionClashes(contact, sessionFilter)
             if (!sessionClashes.empty) {

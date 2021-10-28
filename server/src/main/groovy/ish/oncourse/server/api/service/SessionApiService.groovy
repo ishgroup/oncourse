@@ -63,7 +63,6 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         dto.room = session.room?.name
         dto.siteId = session.room?.site?.id
         dto.site = session.room?.site?.name
-        dto.contactIds = session.tutors*.contact*.id
         dto.courseId = session.courseClass.course.id
         dto.privateNotes = session.privateNotes
         dto.publicNotes = session.publicNotes
