@@ -12,14 +12,20 @@
 package ish.oncourse.server.license;
 
 import io.bootique.annotation.BQConfigProperty;
+import ish.util.LocalDateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-        
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+
 public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
     private Boolean access_control = null;
     private Boolean custom_scripts = null;
+    private String url = null;
+    private LocalDateTime modified = null;
+
     private Integer purge_audit_after_days = null;
 
     private String services_host =  "https://secure-payment.oncourse.net.au";
@@ -79,6 +85,12 @@ public class LicenseService {
         this.usi_host = usi_host;
     }
 
+    @BQConfigProperty
+    public void setEula(LinkedHashMap<String, String> eula) {
+        modified = LocalDateUtils.stringToTimeValue(eula.get("modified"));
+        url = eula.get("url");
+    }
+
     public String getUsi_host() {
         return usi_host;
     }
@@ -115,16 +127,28 @@ public class LicenseService {
         this.smsService = smsService;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+
     public Object getLisense(String key) {
 
         switch (key) {
-            case "license.access_control" : return access_control;
-            case "license.scripting" : return custom_scripts;
-            case "license.sms" : return smsService.getMessage_batch();
-            default: return null;
+            case "license.access_control":
+                return access_control;
+            case "license.scripting":
+                return custom_scripts;
+            case "license.sms":
+                return smsService.getMessage_batch();
+            default:
+                return null;
         }
     }
-
 }
 
 class LicenseSmsService {
