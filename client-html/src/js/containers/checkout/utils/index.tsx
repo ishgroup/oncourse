@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import * as _ from "lodash";
 import {
   CheckoutArticle,
   CheckoutEnrolment,
@@ -114,6 +115,11 @@ export const setSummaryListWithDefaultPayer = (summaryList, payerIndex = 0) => s
   }
   return { ...l, payer: false, sendInvoice: false };
 });
+
+export const getDefaultPayer = summaryList => {
+  const payerIndex = _.findIndex(summaryList, (item: any) => item.payer);
+  return payerIndex === -1 ? 0 : payerIndex;
+};
 
 export const modifySummaryLisItem = (summaryList, itemData, toggleCheck = false) => summaryList.map((l, li) => {
     if (li === itemData.listIndex) {

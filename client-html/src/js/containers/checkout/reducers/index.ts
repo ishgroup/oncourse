@@ -30,6 +30,7 @@ import {
   CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../actions";
 import {
+  getDefaultPayer,
   getUpdatedSummaryItem,
   getUpdatedSummaryVouchers,
   getUpdatedVoucherDiscounts,
@@ -185,7 +186,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
             sendInvoice: hasEmail && state.summary.list.length === 0,
             sendEmail: hasEmail,
             payer: false
-          }], isPayer ? state.summary.list.length : 0)
+          }], isPayer ? state.summary.list.length : getDefaultPayer(state.summary.list))
         };
 
       return {
