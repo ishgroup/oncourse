@@ -59,7 +59,19 @@ class MYOBBaseForm extends React.Component<any, any> {
 
     if (search && !hideConfig) {
       const params = new URLSearchParams(search);
+      const values = JSON.parse(params.get("values"));
+      const url = values.url;
+      const file = values.file;
+      const owner = values.owner;
+      const password = values.password;
       const code = params.get("code");
+
+      this.updateValue('url', "myobBaseUrl", url);
+      this.updateValue('owner', "myobUser", owner);
+      this.updateValue('file', "myobFileName", file);
+
+      this.props.dispatch(change("MYOBForm", "fields.myobPassword", password));
+      params.delete('values');
 
       if (code) {
         this.setState({
@@ -76,19 +88,49 @@ class MYOBBaseForm extends React.Component<any, any> {
     }
   }
 
+  updateValue(name: string, fieldKey: string, value: string) {
+    if (value) {
+      this.props.dispatch(change("MYOBForm", "fields." + fieldKey, value));
+    }
+  }
 
   showTokenField = () => {
     const { values } = this.props;
+    const url = values.fields.myobBaseUrl;
+    const filename = values.fields.myobFileName;
+    const owner = values.fields.myobUser;
+    const password = values.fields.myobPassword;
 
     this.setState({
       loading: true
     });
 
+    const map = new Map<string, string>();
+    this.checkAndSet(map, 'url', url);
+    this.checkAndSet(map, 'file', filename);
+    this.checkAndSet(map, 'owner', owner);
+
+    map.set('password', password);
+
+    let params = "";
+    if (map.size !== 0) {
+      const result = Object.fromEntries(map);
+      params = "?values=" + JSON.stringify(result);
+    }
+
+    const state = encodeURI(`${window.location.href}${values.id ? "" : `/${values.name}`}${params}`);
+
     window.open(
       // eslint-disable-next-line max-len
-      `https://secure.myob.com/oauth2/account/authorize?client_id=07545d14-9a95-4398-b907-75af3b3841ae&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/myob/auth.html&response_type=code&scope=CompanyFile&state=${window.location.href}${values.id ? "" : `/${values.name}`}`,
+      `https://secure.myob.com/oauth2/account/authorize?client_id=07545d14-9a95-4398-b907-75af3b3841ae&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/myob/auth.html&response_type=code&scope=CompanyFile&state=${state}`,
       "_self"
     );
+  }
+
+  checkAndSet(map: Map<string, string>, name: string, value: string) {
+    if (value !== "" && value !== undefined) {
+      map.set(name, value);
+    }
   }
 
   onDisconnect = () => {
@@ -101,7 +143,7 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, AppBarContent, values = {}, dirty, item, form
+      handleSubmit, onSubmit, AppBarContent, values = {}, dirty, item, form
     } = this.props;
     const configured = item && item.id;
     const { hideConfig, loading } = this.state;
@@ -114,9 +156,9 @@ class MYOBBaseForm extends React.Component<any, any> {
         <CustomAppBar>
           <AppBarContent />
         </CustomAppBar>
-        <FormField name="fields.myobBaseUrl" label="Base URL" type="text" fullWidth />
-        <FormField name="fields.myobFileName" label="File name" type="text" fullWidth />
-        <FormField name="fields.myobUser" label="File owner" type="text" fullWidth />
+        <FormField name="fields.myobBaseUrl" label="Base URL" type="text" fullWidth required />
+        <FormField name="fields.myobFileName" label="File name" type="text" fullWidth required />
+        <FormField name="fields.myobUser" label="File owner" type="text" fullWidth required />
         <FormField name="fields.myobPassword" type="password" label="File owner password" fullWidth />
 
         <Typography variant="caption" component="div">
@@ -125,7 +167,7 @@ class MYOBBaseForm extends React.Component<any, any> {
         {values?.fields?.active === "true" ? (
           <>
             <Typography variant="caption" component="div">
-              {`You are connected to Myob`}
+              { `You are connected to Myob` }
             </Typography>
             <Button
               text="Disconnect from Myob"
