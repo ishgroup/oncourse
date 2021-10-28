@@ -13,8 +13,8 @@ import ish.oncourse.commercial.replication.cayenne.QueuedRecordAction
 import ish.oncourse.commercial.replication.cayenne.QueuedTransaction
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.soap.v23.ReplicationPortType
-import ish.oncourse.webservices.v23.stubs.replication.InstructionStub
+import ish.oncourse.webservices.soap.v24.ReplicationPortType
+import ish.oncourse.webservices.v24.stubs.replication.InstructionStub
 import org.apache.cayenne.CayenneRuntimeException
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.ejbql.EJBQLException

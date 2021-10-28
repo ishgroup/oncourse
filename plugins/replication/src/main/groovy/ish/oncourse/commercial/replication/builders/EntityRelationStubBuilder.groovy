@@ -9,7 +9,7 @@ import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Qualification
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.webservices.v23.stubs.replication.EntityRelationStub
+import ish.oncourse.webservices.v24.stubs.replication.EntityRelationStub
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 

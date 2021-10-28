@@ -6,14 +6,16 @@
 apply plugin: 'org.apache.cayenne'
 
 ext {
-    webservicesVersion = '119'
+    webservicesVersion = '122'
     cayenneVersion = '4.1'
     derbyVersion = '10.14.2.0'
     bootiqueVersion = '1.0'
     groovyVersion ='2.5.13'
 }
 
+
 dependencies {
+    implementation files('/Users/Artem/_projects/git/server/build/libs/onCourseServer.jar')
     implementation("ish.oncourse.willow:webservices-client:$webservicesVersion")
     testImplementation group: "ish.oncourse.angel", name: "test", version: "99-SNAPSHOT", classifier: 'tests', changing: true
     testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"

@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.GradingType
-import ish.oncourse.webservices.v23.stubs.replication.AssessmentStub
+import ish.oncourse.webservices.v24.stubs.replication.AssessmentStub
 
 @CompileStatic
 class AssessmentUpdater extends AbstractAngelUpdater<AssessmentStub, Assessment> {

@@ -9,7 +9,7 @@ import groovy.transform.CompileStatic
 import ish.math.Money
 import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.webservices.v23.stubs.replication.ArticleProductStub
+import ish.oncourse.webservices.v24.stubs.replication.ArticleProductStub
 
 @CompileStatic
 class ArticleProductUpdater extends AbstractProductUpdater<ArticleProductStub, ArticleProduct> {

@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.common.types.GradingEntryType
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.GradingType
-import ish.oncourse.webservices.v23.stubs.replication.GradingTypeStub
+import ish.oncourse.webservices.v24.stubs.replication.GradingTypeStub
 
 class GradingTypeUpdater extends AbstractAngelUpdater<GradingTypeStub, GradingType> {
     @Override

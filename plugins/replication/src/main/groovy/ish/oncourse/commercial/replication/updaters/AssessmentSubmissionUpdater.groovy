@@ -10,7 +10,7 @@ import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.webservices.v23.stubs.replication.AssessmentSubmissionStub
+import ish.oncourse.webservices.v24.stubs.replication.AssessmentSubmissionStub
 import ish.util.LocalDateUtils
 
 @CompileStatic

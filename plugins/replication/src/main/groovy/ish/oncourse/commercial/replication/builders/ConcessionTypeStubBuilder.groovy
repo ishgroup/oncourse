@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.builders
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.ConcessionType
-import ish.oncourse.webservices.v23.stubs.replication.ConcessionTypeStub
+import ish.oncourse.webservices.v24.stubs.replication.ConcessionTypeStub
 
 @CompileStatic
 class ConcessionTypeStubBuilder extends AbstractAngelStubBuilder<ConcessionType, ConcessionTypeStub> {

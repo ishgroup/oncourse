@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.Checkout
-import ish.oncourse.webservices.v23.stubs.replication.CheckoutStub
+import ish.oncourse.webservices.v24.stubs.replication.CheckoutStub
 
 class CheckoutUpdater extends AbstractAngelUpdater<CheckoutStub, Checkout> {
     @Override

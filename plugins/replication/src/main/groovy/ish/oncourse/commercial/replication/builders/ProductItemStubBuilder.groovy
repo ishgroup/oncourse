@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.webservices.v23.stubs.replication.ProductItemStub
+import ish.oncourse.webservices.v24.stubs.replication.ProductItemStub
 
 /**
  */

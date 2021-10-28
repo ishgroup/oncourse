@@ -9,7 +9,7 @@ import groovy.transform.CompileStatic
 import ish.common.types.AttachmentSpecialType
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v23.stubs.replication.BinaryInfoRelationStub
+import ish.oncourse.webservices.v24.stubs.replication.BinaryInfoRelationStub
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

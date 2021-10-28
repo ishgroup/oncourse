@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.DiscountMembershipRelationType
-import ish.oncourse.webservices.v23.stubs.replication.DiscountMembershipRelationTypeStub
+import ish.oncourse.webservices.v24.stubs.replication.DiscountMembershipRelationTypeStub
 
 /**
  */

@@ -10,7 +10,7 @@ import ish.common.types.SurveyVisibility
 import ish.oncourse.commercial.replication.updaters.AngelUpdaterImpl
 import ish.oncourse.commercial.replication.updaters.RelationShipCallback
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v23.stubs.replication.SurveyStub
+import ish.oncourse.webservices.v24.stubs.replication.SurveyStub
 import org.apache.cayenne.ObjectId
 import org.junit.jupiter.api.Test
 

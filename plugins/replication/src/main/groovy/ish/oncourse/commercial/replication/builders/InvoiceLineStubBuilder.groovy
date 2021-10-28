@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.webservices.v23.stubs.replication.InvoiceLineStub
+import ish.oncourse.webservices.v24.stubs.replication.InvoiceLineStub
 
 /**
  */

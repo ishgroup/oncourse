@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.webservices.v23.stubs.replication.PaymentInLineStub
+import ish.oncourse.webservices.v24.stubs.replication.PaymentInLineStub
 
 /**
  */

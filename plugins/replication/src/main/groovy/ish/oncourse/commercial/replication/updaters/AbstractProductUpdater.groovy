@@ -8,7 +8,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.math.Money
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
-import ish.oncourse.webservices.v23.stubs.replication.ProductStub
+import ish.oncourse.webservices.v24.stubs.replication.ProductStub
 
 abstract class AbstractProductUpdater<S extends ProductStub, E extends Product> extends AbstractAngelUpdater<S, E> {
     protected void updateEntity(S stub, E entity, RelationShipCallback callback) {

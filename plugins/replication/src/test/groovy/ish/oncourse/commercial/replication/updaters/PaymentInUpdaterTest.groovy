@@ -14,7 +14,7 @@ import ish.oncourse.commercial.replication.handler.OutboundReplicationHandlerTes
 import ish.oncourse.commercial.replication.services.TransactionGroupProcessorImpl
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.v23.stubs.replication.*
+import ish.oncourse.webservices.v24.stubs.replication.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById

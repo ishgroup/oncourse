@@ -15,9 +15,9 @@ import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.commercial.replication.services.IAngelQueueService
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.webservices.soap.v23.ReplicationPortType
+import ish.oncourse.webservices.soap.v24.ReplicationPortType
 import ish.oncourse.webservices.util.GenericReplicationStub
-import ish.oncourse.webservices.v23.stubs.replication.*
+import ish.oncourse.webservices.v24.stubs.replication.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById

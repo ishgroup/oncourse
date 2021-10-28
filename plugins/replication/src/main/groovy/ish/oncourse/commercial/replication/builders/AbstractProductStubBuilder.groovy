@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Product
-import ish.oncourse.webservices.v23.stubs.replication.ProductStub
+import ish.oncourse.webservices.v24.stubs.replication.ProductStub
 
 abstract class AbstractProductStubBuilder<E extends Product, S extends ProductStub> extends AbstractAngelStubBuilder<E, S> {
 

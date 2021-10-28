@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.TutorAttendance
-import ish.oncourse.webservices.v23.stubs.replication.TutorAttendanceStub
+import ish.oncourse.webservices.v24.stubs.replication.TutorAttendanceStub
 
 /**
  */
@@ -25,6 +25,9 @@ class TutorAttendanceStubBuilder extends AbstractAngelStubBuilder<TutorAttendanc
 			stub.setAttendanceType(entity.getAttendanceType().getDatabaseValue())
 		}
 		stub.setNote(entity.getNote())
+		stub.setStartDate(entity.startDatetime)
+		stub.setEndDate(entity.endDatetime)
+		
 		return stub
 	}
 }

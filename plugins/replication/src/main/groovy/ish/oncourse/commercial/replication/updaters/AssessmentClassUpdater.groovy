@@ -9,7 +9,7 @@ import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.AssessmentClass
 import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.webservices.v23.stubs.replication.AssessmentClassStub
+import ish.oncourse.webservices.v24.stubs.replication.AssessmentClassStub
 
 @CompileStatic
 class AssessmentClassUpdater extends AbstractAngelUpdater<AssessmentClassStub, AssessmentClass>{

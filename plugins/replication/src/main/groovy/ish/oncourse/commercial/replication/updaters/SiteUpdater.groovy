@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.commercial.replication.reference.ReferenceUtil
-import ish.oncourse.webservices.v23.stubs.replication.SiteStub
+import ish.oncourse.webservices.v24.stubs.replication.SiteStub
 
 /**
  */
