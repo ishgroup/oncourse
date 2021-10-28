@@ -22,6 +22,7 @@ import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.TableModelDTO
 import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Preference
+import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.ISystemUserService
 import ish.persistence.Preferences
