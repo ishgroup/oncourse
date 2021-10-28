@@ -6,13 +6,17 @@ import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.IntegrationConfiguration
-import ish.oncourse.server.integration.myob.MyobIntegration
 import org.apache.cayenne.query.ObjectSelect
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 class IntegrationApiTest extends TestWithDatabase {
+    public static final String MYOB_BASE_URL = "myobBaseUrl"
+    public static final String MYOB_USER = "myobUser"
+    public static final String MYOB_PASSWORD = "myobPassword"
+    public static final String MYOB_FILE_NAME = "myobFileName"
+    public static final String MYOB_REFRESH_TOKEN = "myobRefreshToken"
 
     @Test
     void test() {
@@ -20,10 +24,11 @@ class IntegrationApiTest extends TestWithDatabase {
         integrationApi.cayenneService = cayenneService
 
         Assertions.assertEquals(0, integrationApi.get().size())
-        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: MyobIntegration.MYOB_BASE_URL, value: 'http://myob.com'),
-                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_USER, value: 'user'),
-                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_PASSWORD, value: 'pass'),
-                                           new IntegrationPropDTO(key: MyobIntegration.MYOB_REFRESH_TOKEN, value: 'token'),
+        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: MYOB_BASE_URL, value: 'http://myob.com'),
+                                           new IntegrationPropDTO(key: MYOB_USER, value: 'user'),
+                                           new IntegrationPropDTO(key: MYOB_PASSWORD, value: 'pass'),
+                                           new IntegrationPropDTO(key: MYOB_REFRESH_TOKEN, value: 'token'),
+                                           new IntegrationPropDTO(key: MYOB_FILE_NAME, value: 'fileName'),
 
         ]
         IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(6), props: fields)
