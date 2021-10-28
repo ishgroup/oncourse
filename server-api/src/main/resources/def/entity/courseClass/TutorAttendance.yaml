@@ -38,3 +38,9 @@ properties:
     type: integer
     format: int64
     description: Tutor's contact id, need for clash validation only (validate new class sessions tutor criteria)
+  payslipIds:
+    type: array
+    items:
+      type: integer
+      format: int64
+    description: Related payslip ids

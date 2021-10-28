@@ -51,6 +51,7 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         dto.start = LocalDateUtils.dateToTimeValue(cayenneModel.startDatetime)
         dto.end = LocalDateUtils.dateToTimeValue(cayenneModel.endDatetime)
         dto.contactId = cayenneModel.courseClassTutor.tutor.contact.id
+        dto.payslipIds = cayenneModel.payslips*.id
         dto
     }
 
