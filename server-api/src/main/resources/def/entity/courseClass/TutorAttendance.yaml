@@ -6,13 +6,11 @@ properties:
   courseClassTutorId:
     type: integer
     format: int64
-  temporaryTutorIds:
-    type: array
+  temporaryTutorId:
+    type: string
     required: false
-    items:
-      type: string
-    description: Not saved course class tutor's ids
-    example: k6g5o090,n6r5u246
+    description: Not saved course class tutor's id
+    example: k6g5o090
   contactName:
     type: string
   attendanceType:
