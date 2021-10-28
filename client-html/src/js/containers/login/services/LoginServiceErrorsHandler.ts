@@ -115,6 +115,11 @@ const LoginServiceErrorsHandler = (response: loginResponse, customMessage?: stri
           clearTokenFieldsAction = change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", ""));
           break;
         }
+        case "Eula required": {
+          hideError = true;
+          loginState.eulaUrl = data.eulaUrl;
+          loginState.isBasic = true;
+        }
       }
 
       const errorResponse = {
