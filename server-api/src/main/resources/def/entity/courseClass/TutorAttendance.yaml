@@ -34,3 +34,7 @@ properties:
     description: tutor roster end date/time in UTC ISO-8601 format
     required: true
     example: 2019-06-03'T'00:00:00.000'Z'
+  contactId:
+    type: integer
+    format: int64
+    description: Tutor's contact id, need for clash validation only (validate new class sessions tutor criteria)

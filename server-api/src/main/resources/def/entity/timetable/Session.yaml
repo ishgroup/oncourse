@@ -51,12 +51,6 @@ properties:
     format: int64
     required: true
     description: need for clash validation only (validate new class sessions by course unavailable rule criteria)
-  contactIds:
-    type: array
-    items:
-      type: integer
-      format: int64
-    description: Tutor's contact id, need for clash validation only (validate new class sessions tutor criteria)
   roomId:
     type: integer
     format: int64
