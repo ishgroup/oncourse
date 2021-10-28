@@ -90,8 +90,8 @@ class SessionValidator {
             }
 
             result += s.tutorAttendances.findAll {
-                    sessions.minus(s)*.tutorAttendances
-                    .flatten() as List<TutorAttendanceDTO>
+                (sessions.minus(s)*.tutorAttendances
+                    .flatten() as List<TutorAttendanceDTO>)
                     .findAll {  a -> a.contactId == it.contactId }
                     .any { a -> isClashed(it.start, it.end, a.start, a.end) }
                 }.collect {
