@@ -251,17 +251,15 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
         session.classId = createdClassId;
       }
 
-      session.courseClassTutorIds.forEach(id => {
-        if (!savedTutorsIds.includes(id)) {
-          session.courseClassTutorIds = session.courseClassTutorIds.filter(tId => tId !== id);
-        }
-      });
-
-      if (session.temporaryTutorIds.length) {
-        session.courseClassTutorIds = session.courseClassTutorIds.concat(
-          session.temporaryTutorIds.map(id => createdTutorsIds.find(tId => tId.tempId === id).createdId)
-        );
-      }
+      session.tutorAttendances = session.tutorAttendances
+        .filter(ta => savedTutorsIds.includes(ta.courseClassTutorId))
+        .map(ta => ({
+          ...ta,
+          courseClassTutorId: ta.temporaryTutorId
+            ? createdTutorsIds.find(tId => tId.tempId === ta.temporaryTutorId).createdId
+            : ta.courseClassTutorId,
+          temporaryTutorId: null
+        }));
     });
 
     if (!sessionUpdateAction.id) {
@@ -350,26 +348,6 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
           1
         );
       }))
-    .reduce(async (a, b) => {
-      await a;
-      await b();
-    }, Promise.resolve());
-
-  const tutorAttendanceActions = unprocessedAsyncActions.filter(
-    a => a.entity === "TutorAttendance" && a.method === "POST"
-  );
-
-  await tutorAttendanceActions
-    .map(a => () => {
-      const { id, tutorAttendance } = a.actionBody.payload;
-
-      return CourseClassAttendanceService.updateTutorAttendance(id, tutorAttendance).then(() => {
-        unprocessedAsyncActions.splice(
-          unprocessedAsyncActions.findIndex(u => u.id === a.id),
-          1
-        );
-      });
-    })
     .reduce(async (a, b) => {
       await a;
       await b();

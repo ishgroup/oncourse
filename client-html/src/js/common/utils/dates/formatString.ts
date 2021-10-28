@@ -48,19 +48,17 @@ const manageDatePart = (date: Date, part: string) => {
 
 const checkInvalidDate = (date: Date) => date.toString() !== "Invalid Date";
 
-export const formatStringDate = (dateString: string, type: string, customFormat?: string) => {
+export const formatStringDate = (dateString: string, type: string, baseDate: Date = new Date(), customFormat?: string) => {
   let result;
   let parsed;
   let formatted = dateString;
 
-  const today = new Date();
-
   if (type === "date") {
-    today.setHours(0, 0, 0, 0);
+    baseDate.setHours(0, 0, 0, 0);
   }
 
   if (customFormat) {
-    parsed = parse(dateString.replace(/^\w{3}/, "").trim(), customFormat, today);
+    parsed = parse(dateString.replace(/^\w{3}/, "").trim(), customFormat, baseDate);
     if (checkInvalidDate(parsed)) {
       return parsed;
     }
@@ -68,7 +66,7 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
   }
 
   if (type === "date") {
-    parsed = parse(dateString.replace(/^\w{3}/, "").trim(), DD_MMM_YYYY, today);
+    parsed = parse(dateString.replace(/^\w{3}/, "").trim(), DD_MMM_YYYY, baseDate);
     if (checkInvalidDate(parsed)) {
       return parsed;
     }
@@ -76,7 +74,7 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
   }
 
   if (type === "datetime") {
-    parsed = parse(dateString.replace(/^\w{3}/, "").trim(), DD_MMM_YYYY_HH_MM, today);
+    parsed = parse(dateString.replace(/^\w{3}/, "").trim(), DD_MMM_YYYY_HH_MM, baseDate);
     if (checkInvalidDate(parsed)) {
       return parsed;
     }
@@ -84,7 +82,7 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
   }
 
   if (type === "time") {
-    parsed = parse(dateString, HH_MM_COLONED, today);
+    parsed = parse(dateString, HH_MM_COLONED, baseDate);
     if (checkInvalidDate(parsed)) {
       return parsed;
     }
@@ -109,7 +107,7 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
 
   if (hasLetters) {
     for (const format of formatsWithLetters) {
-      parsed = parse(formatted.replace(/\s/g, ""), format, today);
+      parsed = parse(formatted.replace(/\s/g, ""), format, baseDate);
       if (checkInvalidDate(parsed)) {
         result = parsed;
         break;
@@ -130,7 +128,7 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
       formatString = formatString.replace(new RegExp("y$"), "yy");
     }
 
-    parsed = parse(formatted, formatString.trim(), today);
+    parsed = parse(formatted, formatString.trim(), baseDate);
     if (checkInvalidDate(parsed)) {
       result = parsed;
     }
@@ -140,14 +138,14 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
     switch (formatted.length) {
       case 1:
       case 2: {
-        parsed = parse(formatted, "dd", today);
+        parsed = parse(formatted, "dd", baseDate);
         if (checkInvalidDate(parsed)) {
           result = parsed;
         }
         break;
       }
       case 3: {
-        parsed = parse(formatted, "ddM", today);
+        parsed = parse(formatted, "ddM", baseDate);
         if (checkInvalidDate(parsed)) {
           result = parsed;
         }
@@ -186,7 +184,7 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
   }
 
   if (!(result instanceof Date)) {
-    result = today;
+    result = baseDate;
     for (const option of specialOptions) {
       if (formatted === option) {
         switch (option) {
@@ -212,7 +210,7 @@ export const formatStringDate = (dateString: string, type: string, customFormat?
   }
 
   if (time && (type === "time" || type === "datetime")) {
-    parsed = parse(time[0].trim(), "HH:mm", today);
+    parsed = parse(time[0].trim(), "HH:mm", baseDate);
     if (checkInvalidDate(parsed)) {
       result = setHours(result, parsed.getHours());
       result = setMinutes(result, parsed.getMinutes());

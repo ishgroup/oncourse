@@ -4,47 +4,42 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useRef
+  useCallback, useEffect, useMemo, useRef
 } from "react";
 import Grid from "@material-ui/core/Grid";
-import FormGroup from "@material-ui/core/FormGroup";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
- arrayPush, arrayRemove, change, Field, formValueSelector
+  arrayPush, arrayRemove, change, Field, formValueSelector
 } from "redux-form";
-import { addMinutes, differenceInMinutes, subMinutes } from "date-fns";
+import {
+ addMinutes, differenceInMinutes
+} from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { FormControl, FormHelperText } from "@material-ui/core";
-import clsx from "clsx";
 import {
-  ClashType, Room, SessionWarning, Site
+  ClashType, SessionWarning, Site,
 } from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
 import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
 import { stubFunction } from "../../../../../common/utils/common";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { State } from "../../../../../reducers/state";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import { defaultContactName } from "../../../contacts/utils";
 import { openRoomLink } from "../../../rooms/utils";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
+
+import CourseClassTutorRooster from "./CourseClassTutorRooster";
 
 interface Props {
   form: string;
   index: number;
   dispatch: Dispatch;
   tutors: CourseClassTutorExtended[];
-  classes: any;
   session?: TimetableSession;
   sites?: Site[];
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
-  prevTutorsState?: any;
 }
 
 const roomLabel = room => {
@@ -65,9 +60,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
   session,
   tutors,
   triggerDebounseUpdate,
-  classes,
-  warnings,
-  prevTutorsState,
+  warnings
 }) => {
   const isMounted = useRef(false);
 
@@ -82,9 +75,6 @@ const CourseClassSessionFields: React.FC<Props> = ({
     session.roomId,
     session.start,
     session.end,
-    session.payAdjustment,
-    session.temporaryTutorIds,
-    session.courseClassTutorIds,
     session.privateNotes,
     session.publicNotes
   ]);
@@ -102,56 +92,6 @@ const CourseClassSessionFields: React.FC<Props> = ({
     });
     return types;
   }, [warnings]);
-
-  const onTutorChange = useCallback(
-    (checked, tutor: CourseClassTutorExtended) => {
-      if (checked) {
-        dispatch(arrayPush(form, `sessions[${session.index}].tutors`, tutor.tutorName));
-        const courseClassTutorIds = session.courseClassTutorIds ? session.courseClassTutorIds : [];
-
-        if (tutor.id) {
-          dispatch(
-            change(form, `sessions[${session.index}].courseClassTutorIds`, [...courseClassTutorIds, tutor.id])
-          );
-        } else {
-          dispatch(
-            change(form, `sessions[${session.index}].temporaryTutorIds`, [
-              ...session.temporaryTutorIds,
-              tutor.temporaryId
-            ])
-          );
-        }
-        dispatch(
-          arrayPush(form, `sessions[${session.index}].contactIds`, tutor.contactId)
-        );
-      } else {
-        prevTutorsState.current = {
-          tutors: session.tutors,
-          contactIds: session.contactIds,
-          courseClassTutorIds: session.courseClassTutorIds
-        };
-
-        const tutorNameIndex = session.tutors ? session.tutors.findIndex(name => name === tutor.tutorName) : -1;
-        dispatch(arrayRemove(form, `sessions[${session.index}].tutors`, tutorNameIndex));
-
-        const contactIdIndex = session.contactIds ? session.contactIds.findIndex(id => id === tutor.contactId) : -1;
-        dispatch(arrayRemove(form, `sessions[${session.index}].contactIds`, contactIdIndex));
-
-        if (tutor.id) {
-          const tutorIdIndex = session.courseClassTutorIds.findIndex(tId => tId === tutor.id);
-          const updatedTutorIds = [...session.courseClassTutorIds];
-          updatedTutorIds.splice(tutorIdIndex, 1);
-          dispatch(change(form, `sessions[${session.index}].courseClassTutorIds`, updatedTutorIds));
-        } else {
-          const tutorIdIndex = session.temporaryTutorIds.findIndex(tId => tId === tutor.temporaryId);
-          const updatedTutorIds = [...session.temporaryTutorIds];
-          updatedTutorIds.splice(tutorIdIndex, 1);
-          dispatch(change(form, `sessions[${session.index}].temporaryTutorIds`, updatedTutorIds));
-        }
-      }
-    },
-    [form, tutors, session.index, session.courseClassTutorIds]
-  );
 
   const onDurationChange = useCallback(
     (durationMinutes: number) => {
@@ -175,23 +115,6 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
     return differenceInMinutes(endDate, startDate);
   }, [session.start, session.end]);
-
-  const payableDurationValue = useMemo(() => {
-    const startDate = new Date(session.start);
-    const endDate = subMinutes(new Date(session.end), session.payAdjustment || 0);
-
-    startDate.setSeconds(0, 0);
-    endDate.setSeconds(0, 0);
-
-    return differenceInMinutes(endDate, startDate);
-  }, [session.start, session.end, session.payAdjustment]);
-
-  const onPayableDurationChange = useCallback(
-    (durationMinutes: number) => {
-      dispatch(change(form, `sessions[${session.index}].payAdjustment`, durationValue - durationMinutes));
-    },
-    [form, session.index, durationValue]
-  );
 
   const durationError = useMemo(() => greaterThanNullValidation(durationValue) || validateDuration(durationValue), [
     durationValue
@@ -220,58 +143,20 @@ const CourseClassSessionFields: React.FC<Props> = ({
     [form, session.index]
   );
 
-  const courseClassTutorIdsField = useCallback(
-    ({ meta: { invalid, error }, input: { name } }) => (
-      <FormControl error={invalid} id={name}>
-        <Typography variant="body2" className={clsx("heading", (invalid || warningTypes.Tutor.length) && "errorColor")}>
-          Tutors
-        </Typography>
-        <FormGroup>
-          {tutors.filter(t => t.contactId).map(t => {
-            const tutorWarning = warningTypes.Tutor.find(w => w.referenceId === t.contactId);
-
-            return (
-              <div key={t.id || t.temporaryId}>
-                <FormControlLabel
-                  className={clsx("checkbox", tutorWarning && "errorColor")}
-                  control={(
-                    <StyledCheckbox
-                      checked={
-                      (session.courseClassTutorIds && session.courseClassTutorIds.includes(t.id))
-                      || (session.temporaryTutorIds && session.temporaryTutorIds.includes(t.temporaryId))
-                    }
-                      onChange={(e, v) => onTutorChange(v, t)}
-                      color="secondary"
-                    />
-                )}
-                  label={`${defaultContactName(t.tutorName)} (${t.roleName})`}
-                />
-                {tutorWarning && <ErrorMessage message={tutorWarning.message} className="m-0 p-0" />}
-              </div>
-            );
-          })}
-        </FormGroup>
-        {invalid && <FormHelperText className="shakingError">{error}</FormHelperText>}
-      </FormControl>
-      ),
-    [tutors, session.courseClassTutorIds, session.temporaryTutorIds, warningTypes.Tutor]
-  );
-
   return (
     <Grid container>
-      <Grid item container xs={6}>
-        <Grid item xs={12}>
+      <Grid container>
+        <Grid item xs={4}>
           <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />
-          <FormField type="stub" name={`sessions[${session.index}].payAdjustment`} />
           <FormField type="stub" name={`sessions[${session.index}].temporaryTutorIds`} />
           <FormField
             type="dateTime"
             name={`sessions[${session.index}].start`}
             label={`${session.roomId
               ? (session.siteTimezone 
-                ? `Start date (${session.siteTimezone})` 
-                : `Virtual start date (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
-              : "Start date"}`}
+                ? `Start (${session.siteTimezone})` 
+                : `Virtual start (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
+              : "Start"}`}
             normalize={normalizeStartDate}
             onChange={onStartDateChange}
             timezone={session.siteTimezone}
@@ -284,7 +169,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
             .map(w => <ErrorMessage message={w.message} /> )}
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={2}>
           <EditInPlaceDurationField
             label="Duration"
             meta={{
@@ -299,32 +184,14 @@ const CourseClassSessionFields: React.FC<Props> = ({
             }}
           />
         </Grid>
-        <Grid item xs={6}>
-          <EditInPlaceDurationField
-            label="Payable duration"
-            meta={{}}
-            input={{
-              value: payableDurationValue,
-              onChange: stubFunction,
-              onBlur: onPayableDurationChange,
-              onFocus: stubFunction
-            }}
-          />
-        </Grid>
 
-        <Grid item xs={12}>
-          <Typography variant="body2" className="heading pt-2 pb-1">
-            Location
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid item xs={6}>
-        <div className={classes.sessionTutors}>
-          <Field
-            name={`sessions[${session.index}].courseClassTutorIds`}
-            component={courseClassTutorIdsField}
+        <Grid item xs={2}>
+          <FormField
+            name={`sessions[${session.index}].end`}
+            type="time"
+            label="End"
           />
-        </div>
+        </Grid>
       </Grid>
       <Grid item xs={6}>
         <FormField
@@ -345,7 +212,20 @@ const CourseClassSessionFields: React.FC<Props> = ({
         {warningTypes.Room
           .map(w => <ErrorMessage message={w.message} /> )}
       </Grid>
+      <Grid item xs={12} className="mb-2">
+        <Field
+          name={`sessions[${session.index}].courseClassTutorIds`}
+          component={CourseClassTutorRooster}
+          warningTypes={warningTypes}
+          session={session}
+          tutors={tutors}
+        />
+      </Grid>
+
       <Grid container item xs={12}>
+        <Grid xs={12} className="heading mb-1">
+          Notes
+        </Grid>
         <Grid item xs={6}>
           <FormField
             type="multilineText"
@@ -373,4 +253,4 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
   timezones: state.timezones,
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(CourseClassSessionFields);
+export default connect(mapStateToProps)(CourseClassSessionFields);

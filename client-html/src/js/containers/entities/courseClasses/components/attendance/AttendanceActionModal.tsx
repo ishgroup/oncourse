@@ -30,7 +30,6 @@ import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../..
 import {
   AttandanceChangeType,
   StudentAttendanceExtended,
-  TutorAttendanceExtended,
   tutorStatusRoles
 } from "../../../../../model/entities/CourseClass";
 import AttendanceIcon from "./AttendanceIcon";
@@ -39,7 +38,6 @@ import { TimetableSession } from "../../../../../model/timetable";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { stubFunction } from "../../../../../common/utils/common";
-import { TutorAttendanceIconButton } from "./AttendanceIconButtons";
 import { getStudentAttendanceLabel } from "./utils";
 import {
   DD_MMM_YYYY_HH_MM_SS,
@@ -216,10 +214,10 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
 interface TutorAttendanceContentProps {
   change: any;
   sessionDuration: number;
-  values: TutorAttendanceExtended;
   setHasError: any;
   bindedSession: TimetableSession;
   tutors: CourseClassTutor[];
+  values: any;
 }
 
 const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
@@ -230,7 +228,7 @@ const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
   tutors
 }) => {
   const [durationLocked, setDurationLocked] = useState(
-    !(typeof values.durationMinutes === "number" && values.attendanceType === "Confirmed for payroll")
+    !(typeof values.actualPayableDurationMinutes === "number" && values.attendanceType === "Confirmed for payroll")
   );
 
   const onIconClick = useCallback(e => {
@@ -270,7 +268,6 @@ const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
       </Grid>
       <Grid item xs={6}>
         <div className="centeredFlex mt-2 mb-2">
-          <TutorAttendanceIconButton attendance={values} onClick={onIconClick} />
           <Typography variant="body1" className="pl-1">
             {values.attendanceType}
           </Typography>
@@ -319,10 +316,9 @@ interface AttendanceActionModalProps {
   setAttendanceChangeType: (arg: AttandanceChangeType) => void;
   onSubmit: (values: StudentAttendanceExtended) => void;
   sessions: TimetableSession[];
-  tutors: CourseClassTutor[];
   fetching?: boolean;
   dispatch?: any;
-  values?: StudentAttendanceExtended & TutorAttendanceExtended;
+  values?: StudentAttendanceExtended;
 }
 
 export const ATTENDANCE_COURSE_CLASS_FORM: string = "AttendanceCourseClassForm";
@@ -336,14 +332,10 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
   values,
   sessions,
   change,
-  tutors,
   handleSubmit,
   onSubmit
 }) => {
   const [hasError, setHasError] = useState(false);
-
-  const isStudent = useMemo(() => values.hasOwnProperty("attendedFrom"), [values.attendedFrom]);
-  const isTutor = useMemo(() => values.hasOwnProperty("courseClassTutorId"), [values.courseClassTutorId]);
 
   const onClose = useCallback(() => {
     setAttendanceChangeType(null);
@@ -373,25 +365,13 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
     >
       <DialogContent>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          {isStudent && (
-            <StudentAttendanceContent
-              change={change}
-              values={values}
-              sessionDuration={sessionDuration}
-              bindedSession={bindedSession}
-              setHasError={setHasError}
-            />
-          )}
-          {isTutor && (
-            <TutorAttendanceContent
-              change={change}
-              values={values}
-              tutors={tutors}
-              sessionDuration={sessionDuration}
-              bindedSession={bindedSession}
-              setHasError={setHasError}
-            />
-          )}
+          <StudentAttendanceContent
+            change={change}
+            values={values}
+            sessionDuration={sessionDuration}
+            bindedSession={bindedSession}
+            setHasError={setHasError}
+          />
         </Form>
       </DialogContent>
 

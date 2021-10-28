@@ -182,7 +182,6 @@ const Initial: CourseClassExtended = {
   tutors: [],
   budget: [],
   studentAttendance: [],
-  tutorAttendance: [],
   notes: [],
   assessments: [],
   isTraineeship: false,
@@ -278,7 +277,6 @@ const preformatBeforeSubmit = (value: CourseClassExtended): Course => {
   delete submitted.sessions;
   delete submitted.budget;
   delete submitted.studentAttendance;
-  delete submitted.tutorAttendance;
   delete submitted.notes;
   delete submitted.assessments;
   delete submitted.trainingPlan;

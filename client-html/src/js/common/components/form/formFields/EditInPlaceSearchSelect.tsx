@@ -13,7 +13,7 @@ import React, {
  useContext, useEffect, useMemo, useRef, useState
 } from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { InputAdornment, withStyles } from "@material-ui/core";
+import { IconButton, InputAdornment, withStyles } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
@@ -425,17 +425,15 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const handleInputChange = e => {
-    const searchValue = e.target.value;
-
     if (onInputChange) {
-      onInputChange(searchValue);
+      onInputChange(e.target.value);
     }
 
-    if (remoteData && !searchValue) {
+    if (remoteData && !e.target.value) {
       onClearRows();
     }
 
-    setSearchValue(searchValue);
+    setSearchValue(e.target.value);
   };
 
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
@@ -565,11 +563,14 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                       ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
                       : (
                         <InputAdornment position="end" className={classes.inputEndAdornment}>
-                          {allowEmpty && (
-                            <CloseIcon
+                          {allowEmpty && input.value && (
+                            <IconButton
+                              size="small"
                               onClick={onClear}
-                              className={clsx("hoverIcon", fieldClasses.editIcon, classes.clearIcon)}
-                            />
+                              color="inherit"
+                            >
+                              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+                            </IconButton>
                           ) }
                           <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
                         </InputAdornment>

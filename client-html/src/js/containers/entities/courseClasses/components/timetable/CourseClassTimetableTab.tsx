@@ -15,7 +15,7 @@ import {
   addBusinessDays, addDays, addHours, addMinutes, addMonths, addWeeks, addYears, differenceInMinutes, isWeekend, subDays
 } from "date-fns";
 
-import { Session, SessionWarning } from "@api/model";
+import { Session, SessionWarning, TutorAttendance } from "@api/model";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
@@ -165,15 +165,20 @@ const getSessionsWithRepeated = (
   return updated;
 };
 
-const prevTutorsState = React.createRef<TimetableSession>();
-
 let pendingSessionActionArgs = null;
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
   const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
-  const sessionWithNotSavedTutors = sessions.find(s => s.temporaryTutorIds && s.temporaryTutorIds.length);
 
-  const bindedActionId = sessionWithNotSavedTutors && sessionWithNotSavedTutors.temporaryTutorIds[0];
+  let bindedActionId;
+
+  for (const s of sessions) {
+    const temp = s.tutorAttendances.find(ta => ta.temporaryTutorId);
+    if (temp) {
+      bindedActionId = temp.temporaryTutorId;
+      break;
+    }
+  }
 
   dispatch(startAsyncValidation(form));
 
@@ -191,18 +196,12 @@ const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatc
       dispatch(stopAsyncValidation(form, null));
     })
     .catch(res => {
-      if (res && res.data && res.data.propertyName === "courseClassTutorIds" && res.data.errorMessage.includes("Unable to unlink tutor")) {
-        dispatch(change(form, "sessions", sessions.map(s => ({
-          ...s,
-          ...(s.id && (s.id.toString() === res.data.id)) ? prevTutorsState.current : {}
-        }))));
-      }
       instantFetchErrorHandler(dispatch, res);
       dispatch(stopAsyncValidation(form, instantAsyncValidateFieldArrayItemCallback("sessions", 0, res)));
     });
 };
 
-const sessionInitial: Session = {
+const sessionInitial: TimetableSession = {
   id: null,
   name: "",
   code: "",
@@ -212,11 +211,9 @@ const sessionInitial: Session = {
   classId: null,
   roomId: null,
   siteId: null,
-  courseClassTutorIds: [],
-  temporaryTutorIds: [],
+  tutorAttendances: [],
   publicNotes: null,
-  privateNotes: null,
-  payAdjustment: 0
+  privateNotes: null
 };
 
 const CourseClassTimetableTab: React.FC<Props> = ({
@@ -232,7 +229,6 @@ const CourseClassTimetableTab: React.FC<Props> = ({
   toogleFullScreenEditView,
   virualSites,
   isNew,
-  dirty,
   sessionWarnings,
   sessionSelection,
   bulkSessionModalOpened,
@@ -241,18 +237,18 @@ const CourseClassTimetableTab: React.FC<Props> = ({
   const [expandedSession, setExpandedSession] = useState(null);
   const [copyDialogAnchor, setCopyDialogAnchor] = useState(null);
   const [openCopyDialog, setOpenCopyDialog] = React.useState({ open: false, session: { id: -1 } });
-  const [attendanceChanged, setAttendanceChanged] = useState(false);
+  // const [attendanceChanged, setAttendanceChanged] = useState(false);
   const [months, setMonths] = useState<TimetableMonth[]>([]);
   const [sessionMenu, setSessionMenu] = useState(null);
 
-  useEffect(() => {
-    if (values.studentAttendance && values.tutorAttendance && !attendanceChanged && (values.studentAttendance.length || values.tutorAttendance.length) && dirty) {
-      setAttendanceChanged(true);
-    }
-    if (attendanceChanged && !dirty) {
-      setAttendanceChanged(false);
-    }
-  }, [values.studentAttendance, values.tutorAttendance]);
+  // useEffect(() => {
+  //   if (values.studentAttendance && values.tutorAttendance && !attendanceChanged && (values.studentAttendance.length || values.tutorAttendance.length) && dirty) {
+  //     setAttendanceChanged(true);
+  //   }
+  //   if (attendanceChanged && !dirty) {
+  //     setAttendanceChanged(false);
+  //   }
+  // }, [values.studentAttendance, values.tutorAttendance]);
 
   const onSelfPacedChange = useCallback(
     (e, value) => {
@@ -316,19 +312,26 @@ const CourseClassTimetableTab: React.FC<Props> = ({
     start = start.toISOString();
     end = end.toISOString();
 
-    const courseClassTutorIds = [];
-    const temporaryTutorIds = [];
+    const duration = differenceInMinutes(new Date(start), new Date(end));
+
     const tutors = [];
-    const contactIds = [];
+
+    const tutorAttendances: TutorAttendance[] = [];
 
     values.tutors.forEach(t => {
-      if (t.id) {
-        courseClassTutorIds.push(t.id);
-      }
-      if (t.temporaryId) {
-        temporaryTutorIds.push(t.temporaryId);
-      }
-      contactIds.push(t.contactId);
+      tutorAttendances.push({
+        id: null,
+        courseClassTutorId: t.id,
+        temporaryTutorId: t.temporaryId,
+        contactName: t.tutorName,
+        attendanceType: 'Not confirmed for payroll',
+        contactId: t.contactId,
+        note: null,
+        actualPayableDurationMinutes: duration,
+        hasPayslip: null,
+        start,
+        end
+      });
       tutors.push(t.tutorName);
     });
 
@@ -342,10 +345,8 @@ const CourseClassTimetableTab: React.FC<Props> = ({
             id: null,
             temporaryId,
             tutors,
-            contactIds,
-            courseClassTutorIds,
-            temporaryTutorIds,
             courseId,
+            tutorAttendances,
             name
           }
         : {
@@ -353,11 +354,9 @@ const CourseClassTimetableTab: React.FC<Props> = ({
             start,
             end,
             tutors,
-            contactIds,
             temporaryId,
-            courseClassTutorIds,
-            temporaryTutorIds,
             courseId,
+            tutorAttendances,
             name
           },
       ...values.sessions
@@ -556,7 +555,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         endDate.setSeconds(0, 0);
         session.end = endDate.toISOString();
 
-        session.payAdjustment = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
+        session.actualPayableDurationMinutes = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
       } else if (
         (bulkValue.startChecked && bulkValue.durationChecked)
         && bulkValue.start !== "" && bulkValue.duration !== 0
@@ -582,7 +581,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         endDate.setSeconds(0, 0);
         session.end = endDate.toISOString();
 
-        session.payAdjustment = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
+        session.actualPayableDurationMinutes = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
       } else if (
         (bulkValue.durationChecked && bulkValue.payableDurationChecked)
         && bulkValue.duration !== 0 && bulkValue.payableDuration !== 0
@@ -594,7 +593,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         endDate.setSeconds(0, 0);
         session.end = endDate.toISOString();
 
-        session.payAdjustment = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
+        session.actualPayableDurationMinutes = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
       } else if (bulkValue.startChecked && bulkValue.start !== "") {
         const newStartDate = new Date(bulkValue.start);
         const startDate = new Date(session.start);
@@ -607,7 +606,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
       } else if (bulkValue.durationChecked && bulkValue.duration !== 0) {
         session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
-        session.payAdjustment = durationValue - bulkValue.payableDuration;
+        session.actualPayableDurationMinutes = durationValue - bulkValue.payableDuration;
       }
       if (bulkValue.moveForwardChecked && bulkValue.moveForward !== "" && bulkValue.moveForward !== "0") {
         session.start = addDays(new Date(session.start), parseInt(bulkValue.moveForward)).toISOString();
@@ -685,7 +684,6 @@ const CourseClassTimetableTab: React.FC<Props> = ({
                       warnings={warnings}
                       setOpenCopyDialog={setOpenCopyDialog}
                       openCopyDialog={openCopyDialog}
-                      prevTutorsState={prevTutorsState}
                     />
                   );
                 })}
@@ -777,19 +775,20 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         </Grid>
       ) : (
         <>
-          <div className={clsx("pb-1", !attendanceChanged && "d-none")}>
-            <div className="centeredFlex">
-              <div>
-                <div className="heading pb-1">Timetable</div>
-                <Typography variant="caption" color="textSecondary">
-                  Please save your attendance changes before editing timetable
-                </Typography>
-              </div>
-              <div className="flex-fill" />
-              {selfPacedField}
-            </div>
-          </div>
-          <div className={clsx(attendanceChanged && "d-none")}>
+          {/* <div className={clsx("pb-1", !attendanceChanged && "d-none")}> */}
+          {/*  <div className="centeredFlex"> */}
+          {/*    <div> */}
+          {/*      <div className="heading pb-1">Timetable</div> */}
+          {/*      <Typography variant="caption" color="textSecondary"> */}
+          {/*        Please save your attendance changes before editing timetable */}
+          {/*      </Typography> */}
+          {/*    </div> */}
+          {/*    <div className="flex-fill" /> */}
+          {/*    {selfPacedField} */}
+          {/*  </div> */}
+          {/* </div> */}
+          {/* <div className={clsx(attendanceChanged && "d-none")}> */}
+          <div>
             <ExpandableContainer
               header="Timetable"
               index={tabIndex}

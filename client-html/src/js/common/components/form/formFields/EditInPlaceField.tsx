@@ -33,18 +33,18 @@ const styles = theme => createStyles({
     fontSize: "18px",
     color: theme.palette.primary.main,
     opacity: 0.5,
-    display: "none",
+    visibility: "hidden",
   },
   inputWrapper: {
     "&:hover $inputEndAdornment": {
-      display: "flex",
+      visibility: "visible",
     },
   },
   isEditing: {
-    borderBottom: "none!important",
+    borderBottom: "none",
     "& $inputEndAdornment": {
-      display: "flex!important",
-      borderBottom: "none!important",
+      display: "flex",
+      borderBottom: "none",
       opacity: 1,
     },
   },

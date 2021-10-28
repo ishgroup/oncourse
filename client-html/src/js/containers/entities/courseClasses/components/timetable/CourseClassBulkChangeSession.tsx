@@ -308,9 +308,9 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
               </BulkItemWrapper>
             </Grid>
             <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Payable duration" name="payableDuration">
+              <BulkItemWrapper classes={classes} title="Actual payable duration" name="payableDuration">
                 <EditInPlaceDurationField
-                  label="Payable duration"
+                  label="Actual payable duration"
                   meta={{}}
                   input={{
                     value: payableDurationValue,
