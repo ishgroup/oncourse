@@ -89,7 +89,7 @@ class SessionValidator {
                 result << warning
             }
 
-            result += s.tutorAttendances.findAll {
+            result += s.tutorAttendances.findAll { it ->
                 (sessions.minus(s)*.tutorAttendances
                     .flatten() as List<TutorAttendanceDTO>)
                     .findAll {  a -> a.contactId == it.contactId }
