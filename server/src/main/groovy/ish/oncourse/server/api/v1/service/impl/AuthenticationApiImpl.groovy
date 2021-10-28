@@ -263,6 +263,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
+        LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)
 
         user.lastLoginOn = new Date()
         user.passwordUpdateRequired = false
@@ -281,7 +282,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
             addTotpCookie(response, value, periodOfHours)
         }
 
-        return createAuthenticationContent(LOGIN_SUCCESSFUL)
+        return createAuthenticationContent(LOGIN_SUCCESSFUL, null, null, lastLoginOn)
     }
 
     @Override
