@@ -14,6 +14,7 @@ enum:
 - systemUser.defaultAdministrationCentre.name
 - license.scripting
 - license.access_control
+- eula.last_access_date
 - account.default.studentEnrolments.id
 - account.default.voucherLiability.id
 - account.default.voucherUnderpayment.id

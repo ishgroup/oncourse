@@ -15,4 +15,5 @@ export interface LoginState {
   passwordChangeMessage?: string;
   passwordComplexity?: PasswordComplexity;
   email?: string;
+  eulaUrl?: string;
 }
