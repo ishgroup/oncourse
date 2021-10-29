@@ -9,7 +9,8 @@
   <meta charset="UTF-8">
   <script>
     const params = new URLSearchParams(decodeURIComponent(window.location.search));
-    window.open(params.get("state") + "?code=" + params.get("code"), "_self");
+    let codeSymbol = params.get("state").indexOf("?") !== -1 ? "&" : "?";
+    window.open(params.get("state") + codeSymbol + "code=" + params.get("code"), "_self");
   </script>
 </head>
 <body>
