@@ -15,7 +15,6 @@ import debounce from "lodash.debounce";
 import clsx from "clsx";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -24,7 +23,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import OpenInNew from "@mui/icons-material/OpenInNew";
 import {
-  Binding,
+  Binding, DataType,
   EmailTemplate, MessageType, Recipients, SearchQuery
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -50,9 +49,6 @@ import previewSmsImage from "../../../../../images/preview-sms.png";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { getMessageRequestModel } from "../utils";
 import { openInternalLink, saveCategoryAQLLink } from "../../../../common/utils/links";
-import { getByType } from "../../../automation/containers/integrations/utils";
-import IntegrationImages from "../../../automation/containers/integrations/IntegrationImages";
-import IntegrationDescription from "../../../automation/containers/integrations/components/IntegrationDescription";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const styles = theme => createStyles({
@@ -219,8 +215,6 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     filteredCount,
     submitting,
     invalid,
-    isNew,
-    dirty,
     close
   } = props;
 
@@ -455,8 +449,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
   const textSmsCreditsCount = !isEmailView && preview && Math.ceil(preview.length / 160);
 
-  const filterTemplatesByVaribleCount = (): EmailTemplate[] =>
-    templates.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0);
+  const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
+    templates?.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
 
   return (
     <AppBarContainer
@@ -494,13 +488,13 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
             selectValueMark="id"
             selectLabelMark="name"
             categoryKey="entity"
-            items={filterTemplatesByVaribleCount() || []}
+            items={filteredTemplatesByVaribleCount}
             onChange={onTemplateChange}
             className="mb-2"
             required
           />
 
-          <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
+            <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
 
           {isEmailView && (
             <FormField type="text" name="fromAddress" label="From address" className="mb-2" />
