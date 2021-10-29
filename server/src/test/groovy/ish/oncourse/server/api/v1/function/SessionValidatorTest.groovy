@@ -11,6 +11,8 @@ import ish.TestWithDatabase
 import ish.oncourse.server.api.v1.model.ClashTypeDTO
 import ish.oncourse.server.api.v1.model.SessionDTO
 import ish.oncourse.server.api.v1.model.SessionWarningDTO
+import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
+import ish.oncourse.server.cayenne.TutorAttendance
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,17 +30,28 @@ class SessionValidatorTest extends TestWithDatabase {
         validator = injector.getInstance(SessionValidator)
     }
     
+    private static TutorAttendanceDTO createAttendance(String start, String end, Long contactId) {
+         new TutorAttendanceDTO().with {it ->
+            it.start = LocalDateTime.parse('start')
+            it.end = LocalDateTime.parse('end')
+            it.contactId = contactId
+            it
+        }
+    }
+    
     @Test
     void testTutor() {
         SessionDTO dto = new SessionDTO().with { it ->
             it.temporaryId = 'tmp'
-            it.contactIds = [1l]
             it.courseId = 200l
             it.start = LocalDateTime.parse('2120-12-03T00:15:00') //UTC time
             it.end = LocalDateTime.parse('2120-12-03T01:15:00') //UTC time
             it
         }
 
+        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 1l)
+        
+        
         List<SessionWarningDTO> warnings = validator.validate([dto], -1l)
 
         //single tutor clash
@@ -48,7 +61,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
 
         //both tutors clash
-        dto.contactIds << 2l
+        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 2l)
 
         warnings = validator.validate([dto], -1l)
 
@@ -151,8 +164,9 @@ class SessionValidatorTest extends TestWithDatabase {
                 'ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
 
         //class by room and tutors criteria
-
-        dto.contactIds = [1l, 2l]
+        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 1l)
+        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 2l)
+        
         warnings = validator.validate([dto], -1l)
         Assertions.assertEquals(3, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
@@ -177,21 +191,23 @@ class SessionValidatorTest extends TestWithDatabase {
             it.id = 199
             it.roomId = 200l
             it.courseId = 200l
-            it.contactIds = [1l, 2l]
             it.start = LocalDateTime.parse('2120-12-03T00:15:00') //UTC time
             it.end = LocalDateTime.parse('2120-12-03T01:15:00') //UTC time
             it
         }
+        dto1.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 1l)
+        dto1.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 2l)
 
         SessionDTO dto2 = new SessionDTO().with { it ->
             it.id = 200
             it.roomId = 200l
             it.courseId = 200l
-            it.contactIds = [1l, 2l]
             it.start = LocalDateTime.parse('2120-12-04T00:15:00') //UTC time
             it.end = LocalDateTime.parse('2120-12-04T01:15:00') //UTC time
             it
         }
+        dto2.tutorAttendances << createAttendance('2120-12-04T00:15:00', '2120-12-04T01:15:00', 1l)
+        dto2.tutorAttendances << createAttendance('2120-12-04T00:15:00', '2120-12-04T01:15:00', 2l)
 
         List<SessionWarningDTO> warnings = validator.validate([dto1, dto2], 200l)
         Assertions.assertEquals(0, warnings.size())
@@ -200,11 +216,13 @@ class SessionValidatorTest extends TestWithDatabase {
             it.temporaryId = 'tmp'
             it.roomId = 200l
             it.courseId = 200l
-            it.contactIds = [1l, 2l]
             it.start = LocalDateTime.parse('2120-12-03T00:15:00') //UTC time
             it.end = LocalDateTime.parse('2120-12-03T01:15:00') //UTC time
             it
         }
+        dto3.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 1l)
+        dto3.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 2l)
+
         warnings = validator.validate([dto1, dto2, dto3], 200l)
 
         Assertions.assertEquals(2, warnings.size())
@@ -352,7 +370,8 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(0, warnings.size())
 
         //tutor unavailability
-        dto.contactIds = [3l]
+        dto.tutorAttendances << createAttendance('2120-02-02T00:15:00', '2120-02-02T01:15:00', 3l)
+
         warnings = validator.validate([dto], -1)
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
