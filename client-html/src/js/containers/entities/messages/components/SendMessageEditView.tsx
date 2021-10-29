@@ -13,22 +13,23 @@ import {
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import OpenInNew from "@mui/icons-material/OpenInNew";
+import createStyles from "@material-ui/core/styles/createStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
   Binding, DataType,
-  EmailTemplate, MessageType, Recipients, SearchQuery
+  EmailTemplate, MessageType, Recipients, /* Recipients, */ SearchQuery
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import {
   clearListNestedEditRecord,
   clearRecipientsMessageData,
@@ -48,8 +49,6 @@ import { StyledCheckbox } from "../../../../common/components/form/formFields/Ch
 import previewSmsImage from "../../../../../images/preview-sms.png";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { getMessageRequestModel } from "../utils";
-import { openInternalLink, saveCategoryAQLLink } from "../../../../common/utils/links";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -215,6 +214,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     filteredCount,
     submitting,
     invalid,
+    isNew,
+    dirty,
     close
   } = props;
 
@@ -341,8 +342,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     getRecipientsMessageData(listEntity, values.messageType, listSearchQuery, v ? null : selection, values.templateId);
   }, [form, values]);
 
-  const totalCounter = useMemo<Recipients>(() => {
-    const counter: Recipients = {
+  const totalCounter = useMemo(() => {
+    const counter = {
       activeStudents: null,
       withdrawnStudents: null,
       students: null,
@@ -363,37 +364,20 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
     Object.keys(countersPath).forEach(recipientsName => {
       counter[recipientsName] = countersPath[recipientsName];
+      counter[recipientsName].total = Object.keys(countersPath[recipientsName]).reduce((p, c) => p + countersPath[recipientsName][c], 0);
     });
 
     return counter;
   }, [recipientsMessageData, values.messageType, values.selectAll]);
 
-  const openLink = ids => {
-    const aql = `id in (${ids.toString()})`;
-    let url = `/contact?search=${aql}`;
-    if (url.length >= 2048) {
-      const id = `f${(+new Date).toString(16)}`;
-      saveCategoryAQLLink({ AQL: aql, id, action: "add" });
-      url = `/contact?customSearch=${id}`;
-    }
-
-    setTimeout(() => {
-      openInternalLink(url);
-    }, 400);
-  };
-
   const counterItems = useMemo(() => Object.keys(totalCounter).map(recipientsName => {
-    if (!Object.keys(totalCounter[recipientsName] || {}).some(k => totalCounter[recipientsName][k]?.length)) {
+    if (!totalCounter[recipientsName] || !totalCounter[recipientsName].total) {
       return null;
     }
 
     const totalHeaderCount = suppressed
-      ? (totalCounter[recipientsName].sendIds?.length || 0) + (totalCounter[recipientsName].suppressToSendIds?.length || 0)
-      : totalCounter[recipientsName].sendIds?.length || 0;
-
-    const headerIds = suppressed
-      ? Array.from(new Set([...totalCounter[recipientsName].sendIds, ...totalCounter[recipientsName].suppressToSendIds]))
-      : totalCounter[recipientsName].sendIds;
+      ? totalCounter[recipientsName].sendSize + totalCounter[recipientsName].suppressToSendSize
+      : totalCounter[recipientsName].sendSize;
 
     return (
       <Fragment key={recipientsName}>
@@ -401,28 +385,19 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
           <Typography variant="body2" className="heading">
             {`${totalHeaderCount} ${labelsMap(recipientsName)}`}
           </Typography>
-          <IconButton size="small" color="secondary" onClick={() => openLink(headerIds)}>
-            <OpenInNew fontSize="inherit" />
-          </IconButton>
           <Switch onChange={(e, v) => setSelected(prev => ({ ...prev, [recipientsName]: v }))} checked={selected[recipientsName]} />
         </div>
         {selected[recipientsName] ? (
           <>
-            {totalCounter[recipientsName]?.withoutDestinationIds?.length > 0 && (
+            {totalCounter[recipientsName].withoutDestinationSize !== 0 && (
               <Typography variant="body2">
-                {`Skipping ${totalCounter[recipientsName].withoutDestinationIds?.length || 0} without ${
+                {`Skipping ${totalCounter[recipientsName].withoutDestinationSize} without ${
                   isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
-                <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].withoutDestinationIds)}>
-                  <OpenInNew fontSize="inherit" />
-                </IconButton>
               </Typography>
             )}
-            {isMarketing && totalCounter[recipientsName].suppressToSendIds?.length !== 0 && (
+            {isMarketing && totalCounter[recipientsName].suppressToSendSize !== 0 && (
               <Typography variant="body2">
-                {`Skipping ${totalCounter[recipientsName].suppressToSendIds?.length || 0} not accepting marketing material`}
-                <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].suppressToSendIds)}>
-                  <OpenInNew fontSize="inherit" />
-                </IconButton>
+                {`Skipping ${totalCounter[recipientsName].suppressToSendSize} not accepting marketing material`}
               </Typography>
             )}
           </>
@@ -436,10 +411,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
     Object.keys(totalCounter).forEach(k => {
       if (totalCounter[k] && selected[k]) {
-        recipientsCount += totalCounter[k]?.sendIds?.length || 0;
+        recipientsCount += totalCounter[k].sendSize;
 
         if (suppressed) {
-          recipientsCount += totalCounter[k]?.suppressToSendIds?.length || 0;
+          recipientsCount += totalCounter[k].suppressToSendSize;
         }
       }
     });
@@ -449,115 +424,134 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
   const textSmsCreditsCount = !isEmailView && preview && Math.ceil(preview.length / 160);
 
-  const filteredTemplatesByVaribleCount = useMemo<EmailTemplate[]>(() =>
-    templates?.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0) || [], [templates]);
+  const filterTemplatesByVaribleCount = (): EmailTemplate[] =>
+    templates.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0);
 
   return (
-    <AppBarContainer
-      disabledScrolling
-      disableInteraction
-      noDrawer
-      manualUrl={manualLink}
-      onCloseClick={close}
-      submitButtonText="Send"
-      title={(
-        <div>
-          Send
-          {' '}
-          { isEmailView ? "email" : "SMS" }
-        </div>
-      )}
-      containerClass="p-3"
-    >
-      <Grid container columnSpacing={3} spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Grid item xs className="centeredFlex mb-2">
-            <RecipientsSelectionSwitcher
-              selectedRecords={selection.length}
-              allRecords={filteredCount}
-              selectAll={values.selectAll}
-              setSelectAll={setSelectAll}
-              disabled={submitting /* count === null */}
-            />
-          </Grid>
+    <div className="appBarContainer">
+      <CustomAppBar>
+        <div className="centeredFlex w-100">
+          <div className="flex-fill">
+            <Typography className="appHeaderFontSize" color="inherit">
+              Send
+              {' '}
+              { isEmailView ? "email" : "SMS" }
+            </Typography>
+          </div>
+          <div>
+            {manualLink && (
+              <AppBarHelpMenu
+                manualUrl={manualLink}
+              />
+            )}
 
-          <FormField
-            type="select"
-            name="templateId"
-            label="Template"
-            selectValueMark="id"
-            selectLabelMark="name"
-            categoryKey="entity"
-            items={filteredTemplatesByVaribleCount}
-            onChange={onTemplateChange}
-            className="mb-2"
-            required
-          />
+            <Button onClick={close} className="closeAppBarButton">
+              Close
+            </Button>
+            <Button
+              type="submit"
+              classes={{
+                root: "whiteAppBarButton",
+                disabled: "whiteAppBarButtonDisabled"
+              }}
+              disabled={invalid || (!isNew && !dirty) || !values.recipientsCount}
+            >
+              Send
+            </Button>
+          </div>
+        </div>
+      </CustomAppBar>
+
+      <div className="p-3">
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Grid item xs className="centeredFlex mb-2">
+              <RecipientsSelectionSwitcher
+                selectedRecords={selection.length}
+                allRecords={filteredCount}
+                selectAll={values.selectAll}
+                setSelectAll={setSelectAll}
+                disabled={submitting /* count === null */}
+              />
+            </Grid>
+
+            <FormField
+              type="select"
+              name="templateId"
+              label="Template"
+              selectValueMark="id"
+              selectLabelMark="name"
+              categoryKey="entity"
+              items={filterTemplatesByVaribleCount() || []}
+              onChange={onTemplateChange}
+              required
+            />
 
             <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
 
-          {isEmailView && (
-            <FormField type="text" name="fromAddress" label="From address" className="mb-2" />
-          )}
-
-          <FormControlLabel
-            className="mb-2"
-            control={(
-              <StyledCheckbox
-                checked={isMarketing}
-                onChange={() => {
-                  setIsMarketing(!isMarketing);
-                  setSuppressed(!suppressed);
-                }}
-                color="secondary"
-              />
+            {isEmailView && (
+              <FormField type="text" name="fromAddress" label="From address" />
             )}
-            label="This is a marketing message"
-          />
 
-          <br />
-
-          {counterItems}
-        </Grid>
-
-        <Grid item xs={12} md={6} className="relative">
-          <Typography variant="body1" className={clsx(classes.noRecipients, { "d-none": values.recipientsCount })}>
-            No recipients
-          </Typography>
-          <div className={clsx({ "d-none": !values.recipientsCount })}>
-            <div className={isEmailView ? undefined : "d-none"}>
-              <Typography variant="caption" color="textSecondary">
-                Preview
-              </Typography>
-              <Card>
-                <CardContent>
-                  <div className={clsx("overflow-auto", classes.previewContent)} ref={htmlRef} />
-                </CardContent>
-              </Card>
-            </div>
-            <div className={clsx("relative w-100", isEmailView && "d-none", classes.previewSmsWrapper)}>
-              <div className={classes.previewSmsImage}>
-                <img src={previewSmsImage} alt="preview-sms" />
-              </div>
-              {preview && String(preview).length > 0 && (
-                <>
-                  <div className={clsx("text-pre-wrap", classes.previewSmsTextWrapper)}>
-                    <div className={classes.previewSmsText}>
-                      {preview}
-                    </div>
-                  </div>
-                  {textSmsCreditsCount > 1 && (
-                    <Typography variant="caption" color="textSecondary" className={classes.previewSmsCredits}>
-                      {`This message requires ${textSmsCreditsCount} credits to send.`}
-                    </Typography>
-                  )}
-                </>
+            <FormControlLabel
+              className="mb-2"
+              control={(
+                <StyledCheckbox
+                  checked={isMarketing}
+                  onChange={() => {
+                    setIsMarketing(!isMarketing);
+                    setSuppressed(!suppressed);
+                  }}
+                  color="secondary"
+                />
               )}
+              label="This is a marketing message"
+            />
+
+            <br />
+
+            {counterItems}
+          </Grid>
+
+          <Grid item xs={12} md={6} className="relative">
+            <Typography variant="body1" className={clsx(classes.noRecipients, { "d-none": values.recipientsCount })}>
+              No recipients
+            </Typography>
+            <div className={clsx({ "d-none": !values.recipientsCount })}>
+              <div className={isEmailView ? undefined : "d-none"}>
+                <Typography variant="caption" color="textSecondary">
+                  Preview
+                </Typography>
+                <Card>
+                  <CardContent>
+                    <div className={clsx("overflow-auto", classes.previewContent)} ref={htmlRef} />
+                  </CardContent>
+                </Card>
+              </div>
+              <div className={clsx("relative w-100", isEmailView && "d-none", classes.previewSmsWrapper)}>
+                <div className={classes.previewSmsImage}>
+                  <img src={previewSmsImage} alt="preview-sms" />
+                </div>
+                {preview && String(preview).length > 0 && (
+                  <>
+                    <div className={clsx("text-pre-wrap", classes.previewSmsTextWrapper)}>
+                      <div className={classes.previewSmsText}>
+                        {preview}
+                      </div>
+                    </div>
+                    {textSmsCreditsCount > 1 && (
+                      <Typography variant="caption" color="textSecondary" className={classes.previewSmsCredits}>
+                        {`This message requires ${textSmsCreditsCount} credits to send.`}
+                      </Typography>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          </Grid>
         </Grid>
-      </Grid>
-    </AppBarContainer>
+      </div>
+    </div>
   );
 });
 
