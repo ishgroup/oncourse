@@ -44,7 +44,7 @@ public class SitesService implements ISitesService {
 	 * @return
 	 */
 	private Expression getAvailabilityQualifier() {
-		return ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true);
+		return ExpressionFactory.matchExp(Site.IS_WEB_VISIBLE_PROPERTY, true).andExp(ExpressionFactory.matchExp(Site.IS_VIRTUAL_PROPERTY, false));
 	}
 
 	public Date getLatestModifiedDate() {

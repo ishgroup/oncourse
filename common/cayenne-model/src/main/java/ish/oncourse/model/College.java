@@ -54,7 +54,20 @@ public class College extends _College {
 				orderBy(Site.NAME.asc()).
 				select(getObjectContext()));
 	}
-	
+
+	/**
+	 * Returns college sites which marked as virtual.
+	 * @return list of sites
+	 */
+	public List<Site> getVirtualSites() {
+		return new ArrayList<>(ObjectSelect.query(Site.class).
+				cacheStrategy(QueryCacheStrategy.LOCAL_CACHE, Site.class.getSimpleName()).
+				where(Site.COLLEGE.eq(this)).
+				and(Site.IS_VIRTUAL.isTrue()).
+				orderBy(Site.NAME.asc()).
+				select(getObjectContext()));
+	}
+
 	public String getTimeZone() {
 		Preference timeZone = ObjectSelect.query(Preference.class).where(Preference.COLLEGE.eq(this))
 				.and(Preference.NAME.eq(Preferences.ONCOURSE_SERVER_DEFAULT_TZ))

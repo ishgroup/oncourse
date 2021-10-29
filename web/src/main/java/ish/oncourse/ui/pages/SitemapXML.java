@@ -100,7 +100,7 @@ public class SitemapXML extends ISHCommon {
 					.get();
 
 		sites = webSiteService.getCurrentCollege().getSites()
-				.stream().filter(Site::isWebVisible).collect(Collectors.toList());
+				.stream().filter(Site::isWebVisible).filter(site -> !site.isVirtual()).collect(Collectors.toList());
 		tutors = GetNotFinishedTutors.valueOf(cayenneService.sharedContext(),
 				null,
 				webSiteService.getCurrentCollege()).get();

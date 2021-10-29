@@ -22,4 +22,8 @@ public class Site extends _Site implements Queueable {
 	public boolean isWebVisible() {
 		return super.isWebVisible;
 	}
+
+	public boolean isVirtual() {
+		return super.isVirtual;
+	}
 }

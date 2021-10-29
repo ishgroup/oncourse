@@ -1,5 +1,6 @@
 package ish.oncourse.ui.pages;
 
+import ish.oncourse.model.College;
 import ish.oncourse.ui.base.ISHCommon;
 import ish.oncourse.model.Site;
 import ish.oncourse.services.site.IWebSiteService;
@@ -22,6 +23,9 @@ public class Sites extends ISHCommon {
 	
 	@SetupRender
 	void beginRender(){
-		this.sites = webSiteService.getCurrentCollege().getWebVisibleSites();
+		College currentColeege = webSiteService.getCurrentCollege();
+		List<Site> webVisibleSites = currentColeege.getWebVisibleSites();
+		webVisibleSites.removeAll(currentColeege.getVirtualSites());
+		this.sites = webVisibleSites;
 	}
 }
