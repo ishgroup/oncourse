@@ -194,6 +194,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    onKeyPress,
    placeholder,
    inlineMargin,
+    persistValue,
    ...custom
   }
 ) => {
@@ -201,8 +202,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   const [textValue, setTextValue] = useState("");
   const [pickerOpened, setPickerOpened] = useState(false);
 
-  const isAdornmentHovered = useRef<any>(false);
-  const isIconOvered = useRef<any>(false);
   const inputNode = useRef<any>(null);
 
   const isInline = formatting === "inline";
@@ -234,21 +233,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     return dateObj;
   }, [input.value, timezone]);
 
-  const onAdornmentOver = () => {
-    isAdornmentHovered.current = true;
-  };
-
-  const onAdornmentOut = () => {
-    isAdornmentHovered.current = false;
-  };
-
   const onAdornmentClick = e => {
-    if (isAdornmentHovered.current) {
-      e.preventDefault();
-    }
     setTimeout(() => {
-      isAdornmentHovered.current = false;
-      // onBlur();
       setIsEditing(false);
     }, 600);
   };
@@ -295,30 +281,33 @@ const EditInPlaceDateTimeField: React.FC<any> = (
       }
       setTextValue(formatDateInner(v));
       input.onChange(formatted);
-      input.onBlur(formatted);
       return;
     }
     setTextValue("");
     input.onChange(null);
-    input.onBlur(null);
   };
 
   const onBlur = () => {
-    if (isAdornmentHovered.current || isIconOvered.current) {
+    setIsEditing(false);
+
+    if (persistValue && !textValue) {
+      input.onBlur(input.value);
+      input.onChange(input.value);
+      setTextValue(formatDateInner(dateValue));
       return;
     }
 
-    setIsEditing(false);
-
     const parsed = textValue
       ? formatStringDate(textValue, type, dateValue, formatDate || formatDateTime || formatTime)
-      : "";
+      : null;
 
     if (parsed) {
-      setTextValue(formatDateInner(new Date(parsed)));
-      onChange(timezone ? appendTimezoneToUTC(parsed, timezone) : parsed);
+      const appended = timezone ? appendTimezoneToUTC(parsed, timezone) : parsed;
+      input.onBlur(appended.toISOString());
+      input.onChange(appended.toISOString());
     } else {
-      onChange(null);
+      input.onBlur(null);
+      input.onChange(null);
     }
   };
 
@@ -328,19 +317,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onFocus = () => {
-    setTextValue(formatDateInner(dateValue));
-    if (!isEditing) {
-      setIsEditing(true);
-    }
     input.onFocus();
-  };
-
-  const onButtonOver = () => {
-    isIconOvered.current = true;
-  };
-
-  const onButtonLeave = () => {
-    isIconOvered.current = false;
   };
 
   const onEnterPress = e => {
@@ -354,7 +331,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const labelContent = labelAdornment ? (
-    <span onMouseEnter={onAdornmentOver} onMouseLeave={onAdornmentOut} onMouseDown={onAdornmentClick}>
+    <span onMouseDown={onAdornmentClick}>
       {label}
       {" "}
       <span className={classes.labelAdornment}>{labelAdornment}</span>
@@ -437,8 +414,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 <IconButton
                   tabIndex={-1}
                   onClick={openPicker}
-                  onMouseOver={onButtonOver}
-                  onMouseLeave={onButtonLeave}
                   classes={{
                     root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
                   }}

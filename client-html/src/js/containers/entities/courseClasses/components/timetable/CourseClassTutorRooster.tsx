@@ -19,7 +19,7 @@ import AddCircle from "@material-ui/icons/AddCircle";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { isPast } from "date-fns";
-import { Field, WrappedFieldProps } from "redux-form";
+import { change, Field, WrappedFieldProps } from "redux-form";
 import { ClashType, SessionWarning } from "@api/model";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMore from "@material-ui/icons/ExpandMore";
@@ -31,6 +31,7 @@ import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
+import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 
 const useStyles = makeStyles(theme => ({
   tutorItem: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 400
   },
   tutorItemActions: {
+    display: "flex",
     marginLeft: theme.spacing(1),
     visibility: "hidden"
   },
@@ -105,6 +107,8 @@ interface TutorRoosterProps extends WrappedFieldProps {
   warningTypes: { [P in ClashType]: SessionWarning[] },
   session: TimetableSession;
   tutors: CourseClassTutorExtended[];
+  onDeleteTutor: NumberArgFunction;
+  onAddTutor: (tutor: CourseClassTutorExtended) => void;
 }
 
 const CourseClassTutorRooster = (
@@ -113,7 +117,9 @@ const CourseClassTutorRooster = (
     input: { name },
     warningTypes,
     session,
-    tutors
+    tutors,
+    onDeleteTutor,
+    onAddTutor
   }: TutorRoosterProps
 ) => {
   const [tutorsMenuOpened, setTutorsMenuOpened] = useState(false);
@@ -137,7 +143,7 @@ const CourseClassTutorRooster = (
   return (
     <FormControl error={invalid} id={name} className="w-100">
       <div className="centeredFlex">
-        <div className={clsx("heading mb-1 mt-1", (invalid || warningTypes.Tutor.length) && "errorColor")}>
+        <div className={clsx("secondaryHeading mb-1 mt-1", (invalid || warningTypes?.Tutor.length) && "errorColor")}>
           {roosterLabel}
         </div>
         <div>
@@ -153,7 +159,13 @@ const CourseClassTutorRooster = (
             onClose={() => setTutorsMenuOpened(false)}
           >
             {filteredTutors.map(t => (
-              <MenuItem key={t.id}>
+              <MenuItem
+                key={t.id}
+                onClick={() => {
+                onAddTutor(t);
+                setTutorsMenuOpened(false);
+              }}
+              >
                 {`${defaultContactName(t.tutorName)} (${t.roleName})`}
               </MenuItem>
               ))}
@@ -161,24 +173,25 @@ const CourseClassTutorRooster = (
         </div>
       </div>
 
-      <FormGroup>
+      <div>
         {session.tutorAttendances.map((t, index) => {
-          const tutor = tutors.find(tu => tu.temporaryId === t.temporaryTutorId || tu.id === t.courseClassTutorId);
-          const tutorWarning = warningTypes.Tutor.find(w => w.referenceId === tutor.contactId);
+          const tutor = tutors.find(tu => (t.courseClassTutorId && tu.id === t.courseClassTutorId)
+            || (t.temporaryTutorId && tu.temporaryId === t.temporaryTutorId));
+          const tutorWarning = warningTypes?.Tutor.find(w => w.referenceId === tutor.contactId);
           const fieldsName = `sessions[${session.index}].tutorAttendances[${index}]`;
 
           return (
             <div key={t.courseClassTutorId || t.temporaryTutorId} className={classes.tutorItem}>
               <Grid container>
                 <Grid item xs={4} className="centeredFlex">
-                  <Typography variant="body1" className={classes.tutorItemLabel}>
+                  <Typography variant="body1" className={classes.tutorItemLabel} noWrap>
                     {`${defaultContactName(t.contactName)} (${tutor.roleName})`}
                   </Typography>
                   <div className={classes.tutorItemActions}>
                     <IconButton size="small" onClick={() => setExpanded(expanded === index ? null : index)}>
                       <ExpandMore fontSize="inherit" className={expanded === index && classes.expanded} />
                     </IconButton>
-                    <IconButton size="small">
+                    <IconButton size="small" onClick={() => onDeleteTutor(index)}>
                       <DeleteIcon fontSize="inherit" />
                     </IconButton>
                   </div>
@@ -242,7 +255,7 @@ const CourseClassTutorRooster = (
             </div>
           );
         })}
-      </FormGroup>
+      </div>
       {invalid && <FormHelperText className="shakingError">{error}</FormHelperText>}
     </FormControl>
 );

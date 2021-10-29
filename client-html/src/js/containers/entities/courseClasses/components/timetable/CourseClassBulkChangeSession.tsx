@@ -23,6 +23,8 @@ import Typography from "@material-ui/core/Typography";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Collapse from "@material-ui/core/Collapse";
+import { Session, TutorAttendance } from "@api/model";
+import { isPast } from "date-fns";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -34,6 +36,7 @@ import { greaterThanNullValidation } from "../../../../../common/utils/validatio
 import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
 import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
+import CourseClassTutorRooster from "./CourseClassTutorRooster";
 
 const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
@@ -61,14 +64,8 @@ const validateDuration = value => (value !== "" && (value < 5 || value > 1440)
   ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
   : undefined);
 
-const normalizeStartDate = (value, prevValue) => value || prevValue;
-
 const initialValues = {
   tutorsChecked: false,
-  courseClassTutorIds: [],
-  temporaryTutorIds: [],
-  tutors: [],
-  contactIds: [],
   locationChecked: false,
   siteId: null,
   roomId: null,
@@ -87,7 +84,7 @@ const initialValues = {
   moveBackward: ""
 };
 
-const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
+const CourseClassBulkChangeSessionForm = props => {
   const {
     handleSubmit,
     form,
@@ -104,8 +101,7 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
     getRooms,
     rooms,
     bulkValues,
-    sessions,
-    sites
+    sessions
   } = props;
 
   const classTimezone = useMemo(() => {
@@ -145,62 +141,6 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
       getRooms(`site.id is ${initial.siteId}`);
     }
   }, []);
-
-  const onTutorChange = useCallback(
-    (checked, tutor: CourseClassTutorExtended) => {
-      if (checked) {
-        dispatch(arrayPush(form, "tutors", tutor.tutorName));
-        if (tutor.id) {
-          dispatch(arrayPush(form, "courseClassTutorIds", tutor.id));
-        } else {
-          dispatch(arrayPush(form, "temporaryTutorIds", tutor.temporaryId));
-        }
-        dispatch(
-          arrayPush(form, "contactIds", tutor.contactId)
-        );
-      } else {
-        const index = initial.tutors.findIndex(name => name === tutor.tutorName);
-        dispatch(arrayRemove(form, "tutors", index));
-
-        const contactIdIndex = initial.contactIds.findIndex(id => id === tutor.contactId);
-        dispatch(arrayRemove(form, "contactIds", contactIdIndex));
-
-        if (tutor.id) {
-          dispatch(arrayRemove(form, "courseClassTutorIds", index));
-        } else {
-          dispatch(arrayRemove(form, "temporaryTutorIds", index));
-        }
-      }
-    },
-    [form, tutors, initial.courseClassTutorIds, initial.temporaryTutorIds]
-  );
-
-  const courseClassTutorIdsField = useCallback(
-    ({ meta: { invalid, error } }) => tutors.length > 0 && (
-      <FormControl error={invalid}>
-        <FormGroup>
-          {tutors.map(t => (
-            <FormControlLabel
-              key={t.id || t.temporaryId}
-              className="checkbox"
-              control={(
-                <StyledCheckbox
-                  checked={
-                    initial.courseClassTutorIds.includes(t.id) || initial.temporaryTutorIds.includes(t.temporaryId)
-                  }
-                  onChange={(e, v) => onTutorChange(v, t)}
-                  color="secondary"
-                />
-              )}
-              label={`${defaultContactName(t.tutorName)} (${t.roleName})`}
-            />
-          ))}
-        </FormGroup>
-        {invalid && <FormHelperText>{error}</FormHelperText>}
-      </FormControl>
-    ),
-    [tutors, initial.courseClassTutorIds, initial.temporaryTutorIds]
-  );
 
   const onRoomIdChange = useCallback(
     room => {
@@ -247,6 +187,48 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
     dispatch(submit(form));
   };
 
+  const sessionStub: Session = {
+    id: null,
+    temporaryId: null,
+    name: null,
+    code: null,
+    room: null,
+    site: null,
+    tutors: null,
+    tutorAttendances: [],
+    classId: null,
+    courseId: null,
+    roomId: null,
+    siteId: null,
+    siteTimezone: null,
+    start: null,
+    end: null,
+    publicNotes: null,
+    privateNotes: null,
+    hasPaylines: null,
+  };
+
+  const onDeleteTutor = (index: number) => {
+    dispatch(arrayRemove(form, `tutorAttendances`, index));
+  };
+
+  const onAddTutor = (tutor: CourseClassTutorExtended) => {
+    dispatch(arrayPush(form, `tutorAttendances`, {
+      id: null,
+      courseClassTutorId: tutor.id,
+      temporaryTutorId: tutor.temporaryId,
+      contactName: tutor.tutorName,
+      attendanceType: 'Not confirmed for payroll',
+      note: null,
+      actualPayableDurationMinutes: durationValue,
+      hasPayslip: false,
+      start: sessionStub.start,
+      end: sessionStub.end,
+      contactId: tutor.contactId,
+      payslipIds: []
+    } as TutorAttendance));
+  };
+
   return (
     <Dialog
       open={opened}
@@ -277,11 +259,15 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
                 {`Update ${selection.length} timetable event${selection.length > 1 ? "s" : ""}`}
               </div>
               {tutors.length > 0 && (
-                <BulkItemWrapper classes={classes} title="Tutors" name="tutors">
+                <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
                   <div className={classes.sessionTutors}>
                     <Field
-                      name="courseClassTutorIds"
-                      component={courseClassTutorIdsField}
+                      name="tutorAttendances"
+                      component={CourseClassTutorRooster}
+                      session={sessionStub}
+                      tutors={tutors}
+                      onDeleteTutor={onDeleteTutor}
+                      onAddTutor={onAddTutor}
                     />
                   </div>
                 </BulkItemWrapper>
@@ -332,8 +318,8 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
                   type="time"
                   name="start"
                   label={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
-                  normalize={normalizeStartDate}
                   timezone={initial.siteTimezone || classTimezone}
+                  persistValue
                   hideLabel
                 />
               </BulkItemWrapper>
@@ -406,13 +392,19 @@ const CourseClassBulkChangeSessionForm: React.FC<any> = props => {
 
 const BulkItemWrapper: React.FC<any> = props => {
   const {
- classes, title, name, children
+ classes, title, name, children, noCollapse
 } = props;
   const [opened, setOpened] = React.useState(false);
 
   const onChange = React.useCallback(checked => {
     setOpened(checked);
   }, [name]);
+
+  const renderedTitle = (
+    <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
+      {title}
+    </Typography>
+);
 
   return (
     <div className="mb-2">
@@ -426,13 +418,9 @@ const BulkItemWrapper: React.FC<any> = props => {
             onChange={onChange}
           />
         )}
-        label={(
-          <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
-            {title}
-          </Typography>
-        )}
+        label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
       />
-      <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>
+      {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
     </div>
   );
 };
@@ -450,8 +438,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const mapStateToProps = (state: State) => ({
   bulkValues: getFormValues(COURSE_CLASS_BULK_UPDATE_FORM)(state),
   rooms: state.plainSearchRecords["Room"].items,
-  sites: state.plainSearchRecords["Site"].items,
-  tutors: state.courseClassesBulkSession.tutors,
   selection: state.courseClassesBulkSession.selection
 });
 

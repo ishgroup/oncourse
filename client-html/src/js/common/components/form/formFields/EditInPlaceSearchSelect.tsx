@@ -144,6 +144,7 @@ interface Props extends WrappedFieldProps {
   sort?: (a: any, b: any) => number | boolean;
   sortPropKey?: string;
   inHeader?: boolean;
+  hasError?: boolean;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -228,7 +229,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     placeholder,
     sort,
     sortPropKey,
-    inHeader
+    inHeader,
+    hasError
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -535,9 +537,9 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             }) => (
               <FormControl
                 {...params}
-                error={meta && meta.invalid}
+                error={meta?.invalid}
               >
-                {labelContent && <InputLabel shrink={true}>{labelContent}</InputLabel>}
+                {labelContent && <InputLabel shrink={true} error={meta?.invalid || hasError}>{labelContent}</InputLabel>}
                 <Input
                   {...InputProps}
                   disabled={disabled}
