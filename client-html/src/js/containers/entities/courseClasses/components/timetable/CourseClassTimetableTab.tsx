@@ -538,10 +538,6 @@ const CourseClassTimetableTab: React.FC<Props> = ({
       let actualPayableDurationMinutes;
       let sessionTimeChanged;
 
-      if (bulkValue.tutorsChecked) {
-        session.tutors = bulkValue.tutors;
-        session.tutorAttendances = bulkValue.tutorAttendances;
-      }
       if (bulkValue.siteId !== null && bulkValue.locationChecked) {
         session.siteId = bulkValue.siteId;
         session.site = bulkValue.site;
@@ -634,6 +630,38 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         session.start = subDays(new Date(session.start), parseInt(bulkValue.moveBackward)).toISOString();
         session.end = subDays(new Date(session.end), parseInt(bulkValue.moveBackward)).toISOString();
       }
+      if (bulkValue.tutorsChecked) {
+        const payslipAttendances = session.tutorAttendances.filter(pa => pa.hasPayslip);
+        session.tutorAttendances = bulkValue.tutorAttendances.map(ta => {
+          // Check for payslip
+          const payslipAttendanceIndex = payslipAttendances.findIndex(pa => pa.courseClassTutorId === ta.courseClassTutorId);
+          if (payslipAttendanceIndex !== -1) {
+            payslipAttendances.splice(payslipAttendanceIndex, 1);
+            return payslipAttendances[payslipAttendanceIndex];
+          }
+
+          const taStart = new Date(ta.start);
+          const taEnd = new Date(ta.end);
+
+          const start = set(new Date(session.start), {
+            hours: taStart.getHours(),
+            minutes: taStart.getMinutes(),
+            seconds: taStart.getSeconds()
+          }).toISOString();
+
+          const end = set(new Date(session.end), {
+            hours: taEnd.getHours(),
+            minutes: taEnd.getMinutes(),
+            seconds: taEnd.getSeconds()
+          }).toISOString();
+
+          return {
+            ...ta,
+            start,
+            end
+          };
+        }).concat(payslipAttendances);
+      }
 
       if (typeof actualPayableDurationMinutes === 'number') {
         session.tutorAttendances = session.tutorAttendances.map(ta => ({
@@ -643,19 +671,17 @@ const CourseClassTimetableTab: React.FC<Props> = ({
       }
 
       if (sessionTimeChanged) {
-        const sessionStart = new Date(session.start);
-        const sessionEnd = new Date(session.end);
         session.tutorAttendances = session.tutorAttendances.map(ta => {
           const taStart = new Date(ta.start);
           const taEnd = new Date(ta.end);
 
-          const start = set(sessionStart, {
+          const start = set(new Date(session.start), {
             hours: taStart.getHours(),
             minutes: taStart.getMinutes(),
             seconds: taStart.getSeconds()
           }).toISOString();
 
-          const end = set(sessionEnd, {
+          const end = set(new Date(session.end), {
             hours: taEnd.getHours(),
             minutes: taEnd.getMinutes(),
             seconds: taEnd.getSeconds()
@@ -668,6 +694,9 @@ const CourseClassTimetableTab: React.FC<Props> = ({
           };
         });
       }
+
+      session.tutors = session.tutorAttendances.map(ta => ta.contactName);
+
       updated.splice(session.index, 1, session);
     });
 
@@ -684,8 +713,8 @@ const CourseClassTimetableTab: React.FC<Props> = ({
       );
     }
 
-    dispatch(change(form, "sessions", updated));
     validateSessionUpdate(values.id, updated, dispatch, form);
+    dispatch(change(form, "sessions", updated));
     dispatch(courseClassSelectAllSession([]));
     dispatch(courseClassCloseBulkUpdateModal());
   };

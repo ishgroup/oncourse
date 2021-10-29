@@ -11,18 +11,19 @@ import React, {
 } from "react";
 import {
   Collapse,
-  FormControl, FormGroup, FormHelperText, makeStyles, Typography, Select
+  FormControl, FormHelperText, makeStyles, Typography, Select
 } from "@material-ui/core";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { isPast } from "date-fns";
-import { change, Field, WrappedFieldProps } from "redux-form";
+import { format, isPast } from "date-fns";
+import { Field, WrappedFieldProps } from "redux-form";
 import { ClashType, SessionWarning } from "@api/model";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import OpenInNew from "@material-ui/icons/OpenInNew";
 import ChatIcon from '@material-ui/icons/Chat';
 import Grid from "@material-ui/core/Grid";
 import { defaultContactName } from "../../../contacts/utils";
@@ -32,6 +33,8 @@ import { CourseClassTutorExtended } from "../../../../../model/entities/CourseCl
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
+import { H_MMAAA } from "../../../../../common/utils/dates/format";
+import { openInternalLink } from "../../../../../common/utils/links";
 
 const useStyles = makeStyles(theme => ({
   tutorItem: {
@@ -109,6 +112,7 @@ interface TutorRoosterProps extends WrappedFieldProps {
   tutors: CourseClassTutorExtended[];
   onDeleteTutor: NumberArgFunction;
   onAddTutor: (tutor: CourseClassTutorExtended) => void;
+  sessionDuration: number;
 }
 
 const CourseClassTutorRooster = (
@@ -119,7 +123,8 @@ const CourseClassTutorRooster = (
     session,
     tutors,
     onDeleteTutor,
-    onAddTutor
+    onAddTutor,
+    sessionDuration
   }: TutorRoosterProps
 ) => {
   const [tutorsMenuOpened, setTutorsMenuOpened] = useState(false);
@@ -136,8 +141,8 @@ const CourseClassTutorRooster = (
   const filteredTutors = useMemo<CourseClassTutorExtended[]>(() => tutors
     .filter(t => t.contactId
       && t.roleName
-      && !session.tutorAttendances.some(ta => ta.courseClassTutorId === t.id
-        || ta.temporaryTutorId === t.temporaryId)),
+      && !session.tutorAttendances.some(ta => (ta.courseClassTutorId && t.id === ta.courseClassTutorId)
+          || (ta.temporaryTutorId && t.temporaryId === ta.temporaryTutorId))),
     [tutors, session.tutorAttendances]);
 
   return (
@@ -174,48 +179,78 @@ const CourseClassTutorRooster = (
       </div>
 
       <div>
-        {session.tutorAttendances.map((t, index) => {
+        {session?.tutorAttendances?.map((t, index) => {
           const tutor = tutors.find(tu => (t.courseClassTutorId && tu.id === t.courseClassTutorId)
             || (t.temporaryTutorId && tu.temporaryId === t.temporaryTutorId));
-          const tutorWarning = warningTypes?.Tutor.find(w => w.referenceId === tutor.contactId);
-          const fieldsName = `sessions[${session.index}].tutorAttendances[${index}]`;
+          const tutorWarning = tutor ? warningTypes?.Tutor.find(w => w.referenceId === tutor.contactId) : null;
+          const fieldsName = `${name}[${index}]`;
+
+          const diffLabel = `${t.start && (t.start !== session.start || t.end !== session.end) 
+            ? `${format(new Date(t.start), H_MMAAA)}-${format(new Date(t.end), H_MMAAA)} ` 
+            : ""}
+          ${sessionDuration && t.actualPayableDurationMinutes !== sessionDuration 
+            ? `payable ${formatDurationMinutes(t.actualPayableDurationMinutes)}` 
+            : ""}`;
 
           return (
             <div key={t.courseClassTutorId || t.temporaryTutorId} className={classes.tutorItem}>
               <Grid container>
-                <Grid item xs={4} className="centeredFlex">
+                <Grid item xs={isStarted ? 4 : 6} className="centeredFlex">
                   <Typography variant="body1" className={classes.tutorItemLabel} noWrap>
-                    {`${defaultContactName(t.contactName)} (${tutor.roleName})`}
+                    {`${defaultContactName(t.contactName)}${tutor ? ` (${tutor.roleName})` : ""}`}
                   </Typography>
                   <div className={classes.tutorItemActions}>
-                    <IconButton size="small" onClick={() => setExpanded(expanded === index ? null : index)}>
+                    <IconButton size="small" disabled={t.hasPayslip} onClick={() => setExpanded(expanded === index ? null : index)}>
                       <ExpandMore fontSize="inherit" className={expanded === index && classes.expanded} />
                     </IconButton>
-                    <IconButton size="small" onClick={() => onDeleteTutor(index)}>
+                    <IconButton size="small" disabled={t.hasPayslip} onClick={() => onDeleteTutor(index)}>
                       <DeleteIcon fontSize="inherit" />
                     </IconButton>
                   </div>
                 </Grid>
-                <Grid item xs={2}>
-                  <div>
-                    {isStarted && (
-                      <Field
-                        name={`${fieldsName}.attendanceType`}
-                        component={RoosterStatuses}
-                        payableTime={formatDurationMinutes(session.tutorAttendances[index].actualPayableDurationMinutes)}
-                        className={clsx('hoverIconContainer', classes.statusSelect)}
-                      />
-                    )}
-                  </div>
-                </Grid>
-                <Grid item xs={6} className="centeredFlex">
-                  {isStarted && expanded !== index && session.tutorAttendances[index].note && (
+
+                {isStarted
+                  ? (
+                    <Grid item xs={2} className="centeredFlex">
+                      <div>
+                        {
+                          t.hasPayslip ? (
+                            <Typography variant="button" display="block" className="successColor centeredFlex" noWrap>
+                              Paid
+                              <IconButton className="ml-05" size="small" onClick={() => openInternalLink(`/payslip?search=id in (${t.payslipIds.toString()})`)}>
+                                <OpenInNew fontSize="inherit" color="secondary" />
+                              </IconButton>
+                            </Typography>
+                        ) : (
+                          <Field
+                            name={`${fieldsName}.attendanceType`}
+                            component={RoosterStatuses}
+                            payableTime={formatDurationMinutes(t.actualPayableDurationMinutes)}
+                            className={clsx('hoverIconContainer', classes.statusSelect)}
+                          />
+                        )
+                        }
+                      </div>
+                    </Grid>
+                  )
+                  : expanded !== index
+                  && (
+                  <Grid item xs={6} className="centeredFlex">
+                    <Typography variant="subtitle2">
+                      {diffLabel}
+                    </Typography>
+                  </Grid>
+                  )}
+
+                {isStarted && expanded !== index && t.note && (
+                  <Grid item xs={6} className="centeredFlex">
                     <Typography variant="body2" color="textSecondary">
                       <ChatIcon fontSize="inherit" className={classes.noteIcon} />
-                      {session.tutorAttendances[index].note}
+                      {t.note}
                     </Typography>
-                  )}
-                </Grid>
+                  </Grid>
+                )}
+
               </Grid>
               <Collapse in={expanded === index}>
                 <Grid container className="mt-1">

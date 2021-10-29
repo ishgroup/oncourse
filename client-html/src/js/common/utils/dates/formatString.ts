@@ -48,7 +48,7 @@ const manageDatePart = (date: Date, part: string) => {
 
 const checkInvalidDate = (date: Date) => date.toString() !== "Invalid Date";
 
-export const formatStringDate = (dateString: string, type: string, baseDate: Date = new Date(), customFormat?: string) => {
+export const formatStringDate = (dateString: string, type: string, baseDate: Date, customFormat?: string) => {
   let result;
   let parsed;
   let formatted = dateString;

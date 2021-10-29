@@ -298,7 +298,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     }
 
     const parsed = textValue
-      ? formatStringDate(textValue, type, dateValue, formatDate || formatDateTime || formatTime)
+      ? formatStringDate(textValue, type, dateValue || new Date(), formatDate || formatDateTime || formatTime)
       : null;
 
     if (parsed) {

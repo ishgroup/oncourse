@@ -289,6 +289,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           component={CourseClassTutorRooster}
           warningTypes={warningTypes}
           session={session}
+          sessionDuration={durationValue}
           tutors={tutors}
           onDeleteTutor={onDeleteTutor}
           onAddTutor={onAddTutor}

@@ -24,7 +24,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Collapse from "@material-ui/core/Collapse";
 import { Session, TutorAttendance } from "@api/model";
-import { isPast } from "date-fns";
+import { differenceInMinutes, isPast } from "date-fns";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -65,6 +65,7 @@ const validateDuration = value => (value !== "" && (value < 5 || value > 1440)
   : undefined);
 
 const initialValues = {
+  tutorAttendances: [],
   tutorsChecked: false,
   locationChecked: false,
   siteId: null,
@@ -121,7 +122,7 @@ const CourseClassBulkChangeSessionForm = props => {
     return room.name;
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!bulkValues) {
       init();
     } else {
@@ -187,27 +188,6 @@ const CourseClassBulkChangeSessionForm = props => {
     dispatch(submit(form));
   };
 
-  const sessionStub: Session = {
-    id: null,
-    temporaryId: null,
-    name: null,
-    code: null,
-    room: null,
-    site: null,
-    tutors: null,
-    tutorAttendances: [],
-    classId: null,
-    courseId: null,
-    roomId: null,
-    siteId: null,
-    siteTimezone: null,
-    start: null,
-    end: null,
-    publicNotes: null,
-    privateNotes: null,
-    hasPaylines: null,
-  };
-
   const onDeleteTutor = (index: number) => {
     dispatch(arrayRemove(form, `tutorAttendances`, index));
   };
@@ -220,10 +200,10 @@ const CourseClassBulkChangeSessionForm = props => {
       contactName: tutor.tutorName,
       attendanceType: 'Not confirmed for payroll',
       note: null,
-      actualPayableDurationMinutes: durationValue,
+      actualPayableDurationMinutes: durationValue || differenceInMinutes(new Date(sessions[0]?.end), new Date(sessions[0]?.start)),
       hasPayslip: false,
-      start: sessionStub.start,
-      end: sessionStub.end,
+      start: bulkValues.start || sessions[0]?.start,
+      end: bulkValues.end || sessions[0]?.end,
       contactId: tutor.contactId,
       payslipIds: []
     } as TutorAttendance));
@@ -236,7 +216,7 @@ const CourseClassBulkChangeSessionForm = props => {
       disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       classes={{
         paper: classes.paperDialog
@@ -264,7 +244,7 @@ const CourseClassBulkChangeSessionForm = props => {
                     <Field
                       name="tutorAttendances"
                       component={CourseClassTutorRooster}
-                      session={sessionStub}
+                      session={bulkValues}
                       tutors={tutors}
                       onDeleteTutor={onDeleteTutor}
                       onAddTutor={onAddTutor}
@@ -276,7 +256,7 @@ const CourseClassBulkChangeSessionForm = props => {
             <Grid item xs={12}>
               <BulkItemWrapper classes={classes} title="Location" name="location">
                 <Grid container>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormField
                       type="remoteDataSearchSelect"
                       entity="Room"
@@ -295,17 +275,21 @@ const CourseClassBulkChangeSessionForm = props => {
             </Grid>
             <Grid item xs={12}>
               <BulkItemWrapper classes={classes} title="Actual payable duration" name="payableDuration">
-                <EditInPlaceDurationField
-                  label="Actual payable duration"
-                  meta={{}}
-                  input={{
-                    value: payableDurationValue,
-                    onChange: stubFunction,
-                    onBlur: onPayableDurationChange,
-                    onFocus: stubFunction
-                  }}
-                  hideLabel
-                />
+                <Grid container>
+                  <Grid item xs={6}>
+                    <EditInPlaceDurationField
+                      label="Actual payable duration"
+                      meta={{}}
+                      input={{
+                        value: payableDurationValue,
+                        onChange: stubFunction,
+                        onBlur: onPayableDurationChange,
+                        onFocus: stubFunction
+                      }}
+                      hideLabel
+                    />
+                  </Grid>
+                </Grid>
               </BulkItemWrapper>
             </Grid>
             <Grid item xs={12}>
@@ -314,60 +298,76 @@ const CourseClassBulkChangeSessionForm = props => {
                 title={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
                 name="start"
               >
-                <FormField
-                  type="time"
-                  name="start"
-                  label={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
-                  timezone={initial.siteTimezone || classTimezone}
-                  persistValue
-                  hideLabel
-                />
+                <Grid container>
+                  <Grid item xs={6}>
+                    <FormField
+                      type="time"
+                      name="start"
+                      label={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
+                      timezone={initial.siteTimezone || classTimezone}
+                      persistValue
+                      hideLabel
+                    />
+                  </Grid>
+                </Grid>
               </BulkItemWrapper>
             </Grid>
             <Grid item xs={12}>
               <BulkItemWrapper classes={classes} title="Duration" name="duration">
-                <EditInPlaceDurationField
-                  label="Duration"
-                  meta={{
-                    error: durationError,
-                    invalid: Boolean(durationError)
-                  }}
-                  input={{
-                    value: durationValue,
-                    onChange: stubFunction,
-                    onBlur: onDurationChange,
-                    onFocus: stubFunction
-                  }}
-                  hideLabel
-                />
+                <Grid container>
+                  <Grid item xs={6}>
+                    <EditInPlaceDurationField
+                      label="Duration"
+                      meta={{
+                        error: durationError,
+                        invalid: Boolean(durationError)
+                      }}
+                      input={{
+                        value: durationValue,
+                        onChange: stubFunction,
+                        onBlur: onDurationChange,
+                        onFocus: stubFunction
+                      }}
+                      hideLabel
+                    />
+                  </Grid>
+                </Grid>
               </BulkItemWrapper>
             </Grid>
             <Grid item xs={12}>
               <BulkItemWrapper classes={classes} title="Move forward" name="moveForward">
-                <FormField
-                  type="number"
-                  name="moveForward"
-                  formatting="inline"
-                  step="1"
-                  className={classes.bulkChangeDaysInput}
-                  hideArrows
-                />
-                {" "}
-                days
+                <Grid container>
+                  <Grid item xs={6}>
+                    <FormField
+                      type="number"
+                      name="moveForward"
+                      formatting="inline"
+                      step="1"
+                      className={classes.bulkChangeDaysInput}
+                      hideArrows
+                    />
+                    {" "}
+                    days
+                  </Grid>
+                </Grid>
               </BulkItemWrapper>
             </Grid>
             <Grid item xs={12}>
               <BulkItemWrapper classes={classes} title="Move backward" name="moveBackward">
-                <FormField
-                  name="moveBackward"
-                  type="number"
-                  formatting="inline"
-                  step="1"
-                  className={classes.bulkChangeDaysInput}
-                  hideArrows
-                />
-                {" "}
-                days
+                <Grid container>
+                  <Grid item xs={6}>
+                    <FormField
+                      name="moveBackward"
+                      type="number"
+                      formatting="inline"
+                      step="1"
+                      className={classes.bulkChangeDaysInput}
+                      hideArrows
+                    />
+                    {" "}
+                    days
+                  </Grid>
+                </Grid>
               </BulkItemWrapper>
             </Grid>
           </Grid>
@@ -407,7 +407,7 @@ const BulkItemWrapper: React.FC<any> = props => {
 );
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 w-100">
       <FormControlLabel
         control={(
           <FormField
@@ -419,6 +419,10 @@ const BulkItemWrapper: React.FC<any> = props => {
           />
         )}
         label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
+        classes={{
+          root: 'd-flex',
+          label: 'w-100'
+        }}
       />
       {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
     </div>
