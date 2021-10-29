@@ -3,7 +3,6 @@ import * as React from "react";
 interface Props {
   onCancel: () => void;
   onAnotherCard: () => void;
-  successLink?: string;
   reason: string;
 }
 

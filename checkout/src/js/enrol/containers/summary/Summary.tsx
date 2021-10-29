@@ -36,7 +36,7 @@ import { mapPayload } from '../../../common/epics/EpicUtils';
 import { Actions, requestSuggestion } from '../../../web/actions/Actions';
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => ({
-  contact: state.checkout.contacts.entities.contact[e.contactId],
+  contact: (state.checkout.contacts.entities?.contact && state.checkout.contacts.entities.contact[e.contactId]) || {},
   courseClass: state.courses.entities[e.classId]
       || (e.relatedClassId || e.relatedProductId)
     ? e.classId
@@ -95,7 +95,7 @@ export const ContactPropsBy = (contactId: string, state: IshState): ContactProps
   const waitingLists = state.checkout.summary.entities.waitingLists || [];
 
   return {
-    contact: state.checkout.contacts.entities.contact[contactId],
+    contact: (state.checkout.contacts?.entities?.contact && state.checkout.contacts?.entities?.contact[contactId]) || {},
     isPayer: state.checkout.payerId === contactId,
     enrolments: enrolmentIds.filter((id) => enrolments[id]).map((id: string): EnrolmentProps => EnrolmentPropsBy(enrolments[id], state)),
     applications: applicationIds.filter((id) => applications[id]).map((id: string): ApplicationProps => ApplicationPropsBy(applications[id], state)),
@@ -124,7 +124,6 @@ export const SummaryPropsBy = (state: IshState): any => {
       fetching: state.checkout.summary.fetching,
       forms: state.form,
       isOnlyWaitingLists: CheckoutService.isOnlyWaitingCourseSelected(state.checkout.summary),
-      successLink: state.config.paymentSuccessURL
     };
   } catch (e) {
     console.log(e);

@@ -1,18 +1,17 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { PaymentStatus, PaymentResponse } from '../../../../model';
-import { Failed } from './Failed';
-import { Undefined } from './Undefined';
-import { InProgress } from './InProgress';
-import { SuccessfulWaitingCourses } from './SuccessfulWaitingCourses';
-import SummaryListComp from './SummaryListComp';
+import { PaymentStatus, PaymentResponse } from "../../../../model";
+import { Failed } from "./Failed";
+import { Undefined } from "./Undefined";
+import { InProgress } from "./InProgress";
+import { SuccessfulWaitingCourses } from "./SuccessfulWaitingCourses";
+import SummaryListComp from "./SummaryListComp";
 
 export interface Props {
   response: PaymentResponse;
   onAnotherCard?: () => void;
   onCancel?: () => void;
   onInit?: () => void;
-  successLink?: string;
   resetOnInit?: boolean;
   result?: any;
 }
@@ -26,9 +25,7 @@ export class ResultComp extends React.Component<Props, any> {
   }
 
   render() {
-    const {
-      response, onAnotherCard, onCancel, successLink, result
-    } = this.props;
+    const {response, onAnotherCard, onCancel, result} = this.props;
     return (
       <div>
         {response
@@ -47,7 +44,6 @@ export class ResultComp extends React.Component<Props, any> {
           <Failed
             onAnotherCard={onAnotherCard}
             onCancel={onCancel}
-            successLink={successLink}
             reason={response.responseText}
           />
           )}

@@ -75,7 +75,7 @@ export class CheckoutService {
   public hasPayer = (state: CheckoutState): boolean => !L.isNil(state.payerId);
 
   public getAllSingleChildIds = (state: CheckoutState): string[] => (
-    state.contacts.result.filter((id) => state.contacts.entities.contact[id].parentRequired)
+    state.contacts.result.filter((id) => state.contacts.entities.contact && state.contacts.entities.contact[id]?.parentRequired)
   );
 
   public hasActiveVoucherPayer = (state: CheckoutState): boolean => !!state.redeemVouchers.filter((v) => v.payer).length;

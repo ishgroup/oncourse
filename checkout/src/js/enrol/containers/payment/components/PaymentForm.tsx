@@ -51,7 +51,6 @@ interface Props extends InjectedFormProps {
   onChangeTab?: (tab) => void;
   onUnmountPassComponent?: () => void;
   corporatePassAvailable?: boolean;
-  amexEnabled?: boolean;
   creditCardAvailable?: boolean;
   payLaterAvailable?: boolean;
   updatePayNow: (val, validate) => void;

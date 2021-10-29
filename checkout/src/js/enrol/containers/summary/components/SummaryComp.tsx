@@ -48,7 +48,6 @@ export interface Props {
   onChangeCustomFields?: (form, type) => any;
   forms?: any;
   isOnlyWaitingLists?: boolean;
-  successLink?: string;
 }
 
 export class SummaryComp extends React.Component<Props, any> {
@@ -119,7 +118,7 @@ export class SummaryComp extends React.Component<Props, any> {
     const {
       contacts, amount, onAddContact, onAddCode, onProceedToPayment, fetching, onAddParent, forms, onProceedToJoin,
       redeemVouchers, hasSelected, promotions, onUpdatePayNow, onToggleVoucher, needParent, isOnlyWaitingLists,
-      successLink, redeemedVoucherProducts, onToggleVoucherProduct
+      redeemedVoucherProducts, onToggleVoucherProduct
     } = this.props;
 
     const { previewMode } = this.state;
@@ -137,7 +136,6 @@ export class SummaryComp extends React.Component<Props, any> {
 
     return previewMode ? <SummaryListComp
       contacts={contacts}
-      successLink={successLink}
       corporatePass={null}
     /> : (
       <div className="payment-summary">

@@ -11,7 +11,6 @@ import {IshAction} from "../../../actions/IshAction";
 const PropsBy = (state: IshState): any => {
   return {
     response: state.checkout.payment.value,
-    successLink: state.config.paymentSuccessURL,
     resetOnInit: state.checkout.payment.resetOnInit,
     result: state.checkout.payment.result,
   };

@@ -2,10 +2,11 @@ import {_toRequestType, FULFILLED} from "../../common/actions/ActionUtils";
 import {AmountState, Phase} from "../reducers/State";
 import * as L from "lodash";
 import {AxiosResponse} from "axios";
-import {Amount} from "../../model";
+import { Amount, Contact } from "../../model";
 import {IAction} from "../../actions/IshAction";
 import {GABuilder} from "../../services/GoogleAnalyticsService";
 import { RedeemVoucherProduct } from '../../model/checkout/RedeemVoucherProduct';
+import { Actions } from '../../web/actions/Actions';
 
 // initialize checkout application
 export const SHOW_MESSAGES: string = "checkout/messages/show";
@@ -27,6 +28,7 @@ export const SET_NEW_CONTACT_FLAG = "checkout/set/new/contact/flag";
 export const RESET_CHECKOUT_STATE = "checkout/reset/state";
 
 export const FINISH_CHECKOUT_PROCESS = "checkout/finish/process";
+export const GET_CART_DATA = "GET_CART_DATA";
 
 export const ADD_CODE: string = "checkout/summary/add/code";
 export const ADD_CODE_REQUEST: string = _toRequestType(ADD_CODE);
@@ -54,7 +56,12 @@ export const TOGGLE_PAYNOW_VISIBILITY: string = "checkout/update/payNow/visibili
 export const EPIC_REMOVE_CONTACT: string = "epic/checkout/remove/contact";
 export const REMOVE_CONTACT: string = "checkout/remove/contact";
 export const SET_CONTACT_WARNING_MESSAGE: string = "checkout/contact/warning/message";
+export const ADD_CONTACT_FROM_CHECKOUT_MODEL_TO_STATE: string = "ADD_CONTACT_FROM_CHECKOUT_MODEL_TO_STATE";
 
+export const getCartData = (cartId: string) => ({
+  type: GET_CART_DATA,
+  payload: cartId,
+});
 
 export const addRedeemVoucherProductsToState = (vouchers: RedeemVoucherProduct[]) => {
   return {
@@ -98,6 +105,11 @@ export const showFormValidation = (response: AxiosResponse, form: string): any =
     },
   };
 };
+
+export const addContactFromCheckoutNode = (contact: Contact) => ({
+  type: ADD_CONTACT_FROM_CHECKOUT_MODEL_TO_STATE,
+  payload: contact,
+});
 
 export const changePhase = (phase: Phase) => {
 

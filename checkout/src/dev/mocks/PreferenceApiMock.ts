@@ -14,10 +14,8 @@ export class PreferenceApiMock extends PreferenceApi {
     return this.config.createResponse({
       corporatePassEnabled: true,
       creditCardEnabled: true,
-      successLink: '/courses',
       refundPolicyUrl: '/courses',
       minAge: 17,
-      amexEnabled: true,
     });
   }
 }

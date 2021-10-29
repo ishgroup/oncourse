@@ -8,12 +8,11 @@ import {CorporatePass} from "../../../../model";
 interface StateProps {
   contacts: ContactProps[];
   corporatePass: CorporatePass;
-  successLink: string;
 }
 
 export class SummaryListComp extends React.Component<StateProps, any> {
   render() {
-    const { contacts, successLink, corporatePass } = this.props
+    const { contacts, corporatePass } = this.props
 
     if (!contacts) {
       return null;
@@ -34,7 +33,7 @@ export class SummaryListComp extends React.Component<StateProps, any> {
         isPayer={corporatePass ? false : item.isPayer}
         readonly
       />)}
-      <p><a className="link-continue" href={successLink}>Close</a></p>
+      <p><a className="link-continue" href="/courses">Close</a></p>
     </div>
   }
 }
@@ -44,7 +43,6 @@ export class SummaryListComp extends React.Component<StateProps, any> {
 const mapStateToProps = (state: IshState): any => ({
   contacts: state.checkout.summary.resultDetails && state.checkout.summary.resultDetails.contacts,
   corporatePass: state.checkout.summary.resultDetails && state.checkout.summary.resultDetails.corporatePass,
-  successLink: state.config.paymentSuccessURL
 });
 
 export default connect<StateProps,any,any>(mapStateToProps)(SummaryListComp);

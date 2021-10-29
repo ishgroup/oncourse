@@ -571,12 +571,10 @@ export const state = {
     checkoutPath: "/enrol/",
     paymentSuccessURL: "/courses",
     termsAndConditions: null,
-    featureEnrolmentDisclosure: null,
   },
   preferences: {
     corporatePassEnabled: true,
     creditCardEnabled: true,
-    successLink: "/courses",
     refundPolicyUrl: "/courses",
     minAge: 17,
   },

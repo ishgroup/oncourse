@@ -10,12 +10,13 @@ import {CheckoutState, Phase} from "../reducers/State";
 import Summary from "./summary/Summary";
 import {Payment} from "./payment/Payment";
 import {Result} from "./result/Result";
-import {changePhase, sendInitRequest} from "../actions/Actions";
+import { changePhase, getCartData, sendInitRequest } from "../actions/Actions";
 import {submitAddContact} from "./contact-add/actions/Actions";
 import CheckoutService from "../services/CheckoutService";
 import {FieldSet} from "../../model/field/FieldSet";
 import {IshState} from "../../services/IshState";
 import {updatePaymentSuccessUrl} from "../../common/actions/Actions";
+import { getCookie, setCookie } from '../../common/utils/Cookie';
 
 export const isOldIE = () => {
   const ua = window.navigator.userAgent;
@@ -30,6 +31,7 @@ interface Props {
   onInit: () => void;
   updatePaymentSuccessUrl: (url: string) => void;
   onProceedToPayment: () => void;
+  getCartData: (cartId) => void;
   changePhase: (phase) => void;
   isNewContact: boolean;
   fetching: boolean;
@@ -42,12 +44,17 @@ interface Props {
 }
 
 export class Checkout extends React.Component<Props, any> {
-
   componentDidMount() {
     this.props.onInit();
 
     const urlParsms = new URLSearchParams(window.location.search);
     const sourcePath = urlParsms.get("sourcePath");
+    const cartId = urlParsms.get("cartId");
+
+    if (cartId) {
+      if (getCookie("cartId")) setCookie("cartId", "");
+      this.props.getCartData(cartId);
+    }
 
     if (sourcePath) {
       history.replaceState(null,null, window.location.origin + window.location.pathname);
@@ -107,7 +114,6 @@ export class Checkout extends React.Component<Props, any> {
         <Concession />
         }
 
-
         {(phase === Phase.EditContact || phase === Phase.ComplementEditContact) && <ContactEditForm/>}
         {phase === Phase.Summary && <Summary/>}
         {phase === Phase.Payment && <Payment/>}
@@ -147,8 +153,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
       dispatch(changePhase(phase));
     },
     updatePaymentSuccessUrl: url => {
-      dispatch(updatePaymentSuccessUrl(url))
-    }
+      dispatch(updatePaymentSuccessUrl(url));
+    },
+    getCartData: (cartId: string) => dispatch(getCartData(cartId)),
   };
 };
 

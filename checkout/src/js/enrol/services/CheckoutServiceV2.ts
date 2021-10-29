@@ -21,6 +21,10 @@ class CheckoutServiceV2 {
 
   public getContactNode = (contact: Contact, summary: SummaryState, cart: CartState, payerId: string): Promise<ContactNode> => this.checkoutApi.getContactNodeV2(BuildContactNodeRequest.fromContact(contact, summary, cart, payerId));
 
+  public getContactNodeForCart = (params: ContactNodeRequest): Promise<ContactNode> => {
+    return this.checkoutApi.getContactNodeV2(params);
+  }
+
   public updateItem = (item: PurchaseItem, state: IshState): Promise<PurchaseItem> => {
     if (item.selected) {
       const request: ContactNodeRequest = BuildContactNodeRequest.fromPurchaseItem(item, state);

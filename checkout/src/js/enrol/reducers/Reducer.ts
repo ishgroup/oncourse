@@ -138,6 +138,15 @@ const ContactsReducer = (
       ns.result = Array.from(new Set([...ns.result, action.payload.result as any]));
       return ns;
 
+    case Actions.ADD_CONTACT_FROM_CHECKOUT_MODEL_TO_STATE:
+      ns = L.cloneDeep(state);
+      if (!ns.entities.contact) ns.entities.contact = {};
+
+      // @ts-ignore
+      ns.entities.contact[action.payload.id] = {...action.payload};
+
+      return ns;
+
     case Actions.UPDATE_PARENT_CHILDS_REQUEST:
       ns = L.cloneDeep(state);
       ns.result.map((id) => ns.entities.contact[id].parentRequired = false);

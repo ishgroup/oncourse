@@ -102,6 +102,7 @@ class ContactComp extends React.Component<Props, any> {
           </div>
         </div>
         }
+
         <div className="col-xs-24 checkoutList">
           {enrolments.map((props, index) =>
             props.courseClass && (readonly ? props.enrolment.selected : true) && <EnrolmentComp

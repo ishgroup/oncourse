@@ -6,6 +6,9 @@ class CartService extends CartApi {
   create(id: string, checkout: string): Promise<Token> {
     return super.create(id,checkout);
   }
+  get(id: string): Promise<any> {
+    return super.get(id);
+  }
   _delete(id: string): Promise<any> {
     return super._delete(id);
   }

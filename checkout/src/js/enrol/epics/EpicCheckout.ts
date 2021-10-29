@@ -32,6 +32,7 @@ import {EpicRemoveContact} from "./EpicRemoveContact";
 import {EpicStoreCartState} from "./EpicStoreCartState";
 import EpicRefreshRedeemVouchers from './EpicRefreshRedeemVouchers';
 import EpicToggleRedeemVoucherProduct from './EpicToggleRedeemVoucherProduct';
+import {EpicGetCartData} from './EpicGetCartData';
 
 const {
   contactApi,
@@ -64,7 +65,8 @@ export const EpicCheckout = combineEpics(
   createGetOrCreateContactEpic(IshActions.GET_OR_CREATE_CONTACT),
   EpicUpdateEnrolmentFields,
   EpicProcessingMandatoryFields,
-  EpicStoreCartState
+  EpicStoreCartState,
+  EpicGetCartData,
 );
 
 function createGetOrCreateContactEpic(actionType) {

@@ -1,15 +1,12 @@
 import {IshState} from "../../services/IshState";
-import {REMOVE_ITEM_FROM_SUMMARY, REWRITE_CONTACT_NODE_TO_STATE,} from "../containers/summary/actions/Actions";
-import { Store} from "redux";
+import {Store} from "redux";
+import {REWRITE_CONTACT_NODE_TO_STATE} from "../containers/summary/actions/Actions";
 import CartService from "../../services/CartService";
 import {getCookie} from "../../common/utils/Cookie";
-import {FULFILLED} from "../../common/actions/ActionUtils";
-import {Actions} from "../../web/actions/Actions";
 import CheckoutService, {BuildContactNodeRequest} from "../services/CheckoutService";
-import {ContactNodeRequest} from "../../model";
-import { DEFAULT_CONFIG_KEY, DefaultConfig } from '../../constants/Config';
-import { StoreCartRequest } from '../../model/checkout/request/StoreCart';
-import { UPDATE_AMOUNT } from '../actions/Actions';
+import {DEFAULT_CONFIG_KEY, DefaultConfig} from '../../constants/Config';
+import {StoreCartRequest} from '../../model/checkout/request/StoreCart';
+import {UPDATE_AMOUNT} from '../actions/Actions';
 
 export const EpicStoreCartState = (function () {
   return (action$, store: Store<IshState>) => action$
@@ -25,6 +22,7 @@ export const EpicStoreCartState = (function () {
     .filter(actions => actions.length)
     .do(() => {
       const cartId = getCookie("cartId");
+
       if (cartId) {
         const {checkout, cart} = store.getState();
 
@@ -42,10 +40,10 @@ export const EpicStoreCartState = (function () {
         } else if (contactNodes) {
           Object.keys(contactNodes).forEach(key => {
             const contacts = checkout?.contacts?.entities?.contact;
-            if(contacts && contacts[key]) {
+            if (contacts && contacts[key]) {
               storedCartData[key] = BuildContactNodeRequest.fromContact(checkout.contacts.entities.contact[key], checkout.summary, cart, checkout.payerId);
             }
-          })
+          });
 
           storedCartData.payerId = checkout.payerId;
           CartService.create(cartId, JSON.stringify(storedCartData))
