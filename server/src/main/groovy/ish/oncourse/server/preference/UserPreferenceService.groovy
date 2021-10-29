@@ -57,7 +57,7 @@ class UserPreferenceService {
 
     private static final String USER_PREF_PREFIX = "html.table"
     private static final String DASHBOARD_FAVORITE_CATEGORY = "html.dashboard.favorite"
-    private static final String NEWS = "news.readed"
+    private static final String NEWS = "news.read"
     public static final String JOIN_DELIMETER = ','
 
 
@@ -123,7 +123,7 @@ class UserPreferenceService {
         return userService.currentUser.preferences.find {it.uniqueKey == uniqueKey}
     }
 
-    private String getReadedNews() {
+    private String getReadNews() {
         List<Preference> preferenceList = userService.currentUser.preferences.findAll { it.name == NEWS}
         return preferenceList.stream().map({ preference -> preference.valueString })
                 .toArray()
@@ -192,8 +192,8 @@ class UserPreferenceService {
                 return AccountUtil.getDefaultVoucherExpenseAccount(preferenceController.objectContext, Account.class)?.id?.toString()
             case PreferenceEnumDTO.ONCOURSE_SERVER_TIMEZONE_DEFAULT:
                 return preferenceController.getOncourseServerDefaultTimezone()
-            case PreferenceEnumDTO.NEWS_READED:
-                return getReadedNews()
+            case PreferenceEnumDTO.NEWS_READ:
+                return getReadNews()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)
@@ -205,7 +205,7 @@ class UserPreferenceService {
         String name = key.toString()
         Preference preference
 
-        if (key == PreferenceEnumDTO.NEWS_READED) {
+        if (key == PreferenceEnumDTO.NEWS_READ) {
             preference = getUserPrefByUniqueKey(name)
             if (preference == null) {
                 preference = createUserPref(name)
