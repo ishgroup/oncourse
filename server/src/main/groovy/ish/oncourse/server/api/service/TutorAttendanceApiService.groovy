@@ -119,11 +119,14 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
                 attendance = entityDao.newObject(context)
                 attendance.session = session
 
-                CourseClassTutor tutorRole = classTutorDao.getById(context, dto.courseClassTutorId)
-                if (!tutorRole) {
-                    validator.throwClientErrorException(session.id, 'tutorAttendances', "Tutor role doesn't exist")
+                //handle x-validate request when attendance has no real tutor role id yet
+                if (dto.courseClassTutorId) {
+                    CourseClassTutor tutorRole = classTutorDao.getById(context, dto.courseClassTutorId)
+                    if (!tutorRole) {
+                        validator.throwClientErrorException(session.id, 'tutorAttendances', "Tutor role doesn't exist")
+                    }
+                    attendance.courseClassTutor = tutorRole
                 }
-                attendance.courseClassTutor = tutorRole
             } else {
                 attendance = getEntityAndValidateExistence(context, dto.id)
             }
