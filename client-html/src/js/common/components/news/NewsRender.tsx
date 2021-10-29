@@ -9,6 +9,7 @@
 import React, { useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
+import { utcToZonedTime } from "date-fns-tz";
 import CloseIcon from "@material-ui/icons/Close";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -23,10 +24,10 @@ import { State } from "../../../reducers/state";
 import { AppTheme } from "../../../model/common/Theme";
 import { D_MMM_YYYY } from "../../utils/dates/format";
 import {
-  DASHBOARD_NEWS_LATEST_READ,
-  READED_NEWS
+  READ_NEWS
 } from "../../../constants/Config";
 import { setUserPreference } from "../../actions";
+import { setReadNewsLocal } from "../list-view/actions";
 
 const styles = (theme: AppTheme) => createStyles({
   postsWrapper: {
@@ -89,14 +90,14 @@ const styles = (theme: AppTheme) => createStyles({
 
 const NewsItemRender = props => {
   const {
-    classes, latestReadDate, post, setReadedNews, fullScreenEditView
+    classes, post, setReadNews, fullScreenEditView, lastLoginOn, setReadNewsLocal
   } = props;
 
-  const isLatestItem = post.published && (latestReadDate === ""
-    || new Date(latestReadDate).getTime() < new Date(post.published).getTime());
+  const isLatestItem = post.published && (!lastLoginOn || new Date(lastLoginOn).getTime() <= new Date(post.published).getTime());
 
-  const setIdOfReadedNews = () => {
-    setReadedNews(post.id);
+  const setIdOfReadNews = () => {
+    setReadNews(post.id);
+    setReadNewsLocal(post.id);
   };
 
   return (
@@ -165,27 +166,26 @@ const NewsItemRender = props => {
           )}
         />
       </div>
-      <CloseIcon className={classes.closeIcon} onClick={setIdOfReadedNews} />
+      <CloseIcon className={classes.closeIcon} onClick={setIdOfReadNews} />
     </ListItem>
   );
 };
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadedNews, fullScreenEditView, setDashboardNewsLatestReadDate
+    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal
   } = props;
 
-  useEffect(() => {
-    setDashboardNewsLatestReadDate(new Date());
-  }, []);
+  const lastLoginOn = localStorage.getItem("lastLoginOn");
+  const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn, Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   const [postsForRender, setPostsForRender] = useState([]);
 
   useEffect(() => {
-    const readedNews = preferences[READED_NEWS] && preferences[READED_NEWS].split(",");
+    const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
 
     const filteredPosts = blogPosts.filter(post => ((!post.page && !page) || window.location.pathname.includes(post.page))
-      && (!readedNews || !readedNews.includes(post.id))).reverse();
+      && (!readNews || !readNews.includes(post.id))).reverse();
 
     const newsWithoutDate = filteredPosts.filter(post => !post.published);
     const newsWithDate = filteredPosts.filter(post => post.published);
@@ -200,9 +200,10 @@ const NewsRender = props => {
           key={post.id}
           post={post}
           classes={classes}
-          latestReadDate={preferences[DASHBOARD_NEWS_LATEST_READ]}
-          setReadedNews={setReadedNews}
+          setReadNews={setReadNews}
           fullScreenEditView={fullScreenEditView}
+          lastLoginOn={lastLoginOnWithTimeZone}
+          setReadNewsLocal={setReadNewsLocal}
         />
       ))}
     </div>
@@ -216,8 +217,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setReadedNews: (newsId: string) => dispatch(setUserPreference({ key: READED_NEWS, value: newsId })),
-  setDashboardNewsLatestReadDate: (value: string) => dispatch(setUserPreference({ key: DASHBOARD_NEWS_LATEST_READ, value }))
+  setReadNews: (newsId: string) => dispatch(setUserPreference({ key: READ_NEWS, value: newsId })),
+  setReadNewsLocal: (newsId: string) => dispatch(setReadNewsLocal(newsId))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewsRender));

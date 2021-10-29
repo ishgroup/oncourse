@@ -33,7 +33,6 @@ const styles = (theme: AppTheme) =>
 interface Props {
   classes?: any;
   setDashboardColumnWidth: (key: PreferenceEnum, value: string) => void;
-  setDashboardNewsLatestReadDate: (value: string) => void;
   preferencesCategoryWidth?: string;
   preferencesNewsLatestReadDate?: string;
   drawerOpened?: boolean;
