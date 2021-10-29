@@ -266,7 +266,7 @@ class SessionValidator {
             filter = filter.andExp(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.ID).ne(classId))
         }
         //time clash quilifier 
-        filter.andExp(
+        filter = filter.andExp(
                 TutorAttendance.START_DATETIME.gt(start).andExp(TutorAttendance.START_DATETIME.lt(end))
                         .orExp(TutorAttendance.END_DATETIME.gt(start).andExp(TutorAttendance.END_DATETIME.lt(end)))
                         .orExp(TutorAttendance.START_DATETIME.lte(start).andExp(TutorAttendance.END_DATETIME.gte(end)))
@@ -276,6 +276,7 @@ class SessionValidator {
         return ObjectSelect.query(TutorAttendance)
                 .where(filter)
                 .prefetch(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.COURSE).joint())
+                .limit(3)
                 .select(cayenneService.newContext)
     }
     
@@ -296,6 +297,7 @@ class SessionValidator {
         return ObjectSelect.query(Session)
                 .where(filter)
                 .prefetch(Session.COURSE_CLASS.dot(CourseClass.COURSE).joint())
+                .limit(3)
                 .select(cayenneService.newContext)
     }
 
