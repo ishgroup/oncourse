@@ -22,7 +22,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
-  Binding,
+  Binding, DataType,
   EmailTemplate, MessageType, Recipients, /* Recipients, */ SearchQuery
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -424,6 +424,9 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
   const textSmsCreditsCount = !isEmailView && preview && Math.ceil(preview.length / 160);
 
+  const filterTemplatesByVaribleCount = (): EmailTemplate[] =>
+    templates.filter(template => template.variables.filter(variable => variable.type === DataType.Object).length === 0);
+
   return (
     <div className="appBarContainer">
       <CustomAppBar>
@@ -479,7 +482,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
               selectValueMark="id"
               selectLabelMark="name"
               categoryKey="entity"
-              items={templates || []}
+              items={filterTemplatesByVaribleCount() || []}
               onChange={onTemplateChange}
               required
             />
