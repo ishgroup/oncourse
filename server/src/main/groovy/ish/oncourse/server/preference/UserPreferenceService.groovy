@@ -123,6 +123,15 @@ class UserPreferenceService {
         return preference
     }
 
+    private Preference createEulaUserPref(SystemUser user, String name) {
+        ObjectContext context = cayenneService.newContext
+        Preference preference = context.newObject(Preference)
+        preference.user =  context.localObject(user)
+        preference.name = name
+
+        return preference
+    }
+
     String get(PreferenceEnumDTO key) {
         switch (key) {
             case PreferenceEnumDTO.EMAIL_FROM:
@@ -145,6 +154,8 @@ class UserPreferenceService {
                 return licenseService.getLisense(PreferenceEnumDTO.LICENSE_ACCESS_CONTROL.toString());
             case PreferenceEnumDTO.LICENSE_SCRIPTING:
                 return licenseService.getLisense(PreferenceEnumDTO.LICENSE_SCRIPTING.toString())
+            case PreferenceEnumDTO.EULA_LAST_ACCESS_DATE:
+                 return preferenceController.getPreference(PreferenceEnumDTO.EULA_LAST_ACCESS_DATE.toString(),false)
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID:
                 return preferenceController.getPreference(ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID.toString(), false).getValueString()
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID:
@@ -180,4 +191,10 @@ class UserPreferenceService {
 
     }
 
+    void createEula(SystemUser user, String value) {
+        String name =  PreferenceEnumDTO.EULA_LAST_ACCESS_DATE.toString()
+        Preference preference = createEulaUserPref(user,name)
+        preference.valueString = StringUtils.trimToNull(value)
+        preference.context.commitChanges()
+    }
 }

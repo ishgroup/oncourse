@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
+import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
@@ -18,21 +19,27 @@ import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.api.v1.model.LoginRequestDTO
 import ish.oncourse.server.api.v1.model.LoginResponseDTO
+import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.service.AuthenticationApi
+import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.services.TOTPService
 import ish.oncourse.server.users.SystemUserService
 import ish.security.AuthenticationUtil
+import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
 import javax.inject.Inject
+
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 import static ish.common.types.TwoFactorAuthorizationStatus.*
 import static ish.oncourse.server.api.v1.function.AuthenticationFunctions.*
@@ -57,6 +64,9 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
     @Inject
     private SystemUserService systemUserService
+
+    @Inject
+    private UserPreferenceService userPreferenseService;
 
     @Inject
     private TOTPService totpService
@@ -110,6 +120,42 @@ class AuthenticationApiImpl implements AuthenticationApi {
             user.context.commitChanges()
             LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, errorMessage)
             throwUnauthorizedException(content)
+        }
+
+        // check eula agreements
+        if (licenseService.modified != null) {
+
+            Preference lastAccessDatePreferense = user.preferences.find { preference ->
+                preference.name == PreferenceEnumDTO.EULA_LAST_ACCESS_DATE.toString()
+            }
+
+            if (lastAccessDatePreferense) {
+                LocalDateTime eulaModifiedDate = licenseService.modified
+                LocalDateTime lastAccessDate = LocalDateUtils.stringToTimeValue(lastAccessDatePreferense.valueString)
+
+                if (eulaModifiedDate.isAfter(lastAccessDate)) {
+
+                    if (details.eulaAccess) {
+                        lastAccessDatePreferense.valueString = LocalDateUtils.timeValueToString(LocalDateTime.now())
+                        lastAccessDatePreferense.context.commitChanges()
+                    } else {
+                        LoginResponseDTO content = createAuthenticationContent(EULA_REQUIRED, 'Eula required')
+                        content.eulaUrl = licenseService.url
+                        throwUnauthorizedException(content)
+                    }
+                }
+
+            } else {
+
+                if (details.eulaAccess) {
+                    userPreferenseService.createEula(user, LocalDateUtils.timeValueToString(LocalDateTime.now()))
+                } else {
+                    LoginResponseDTO content = createAuthenticationContent(EULA_REQUIRED, 'Eula required')
+                    content.eulaUrl = licenseService.url
+                    throwUnauthorizedException(content)
+                }
+            }
+
         }
 
         //password to check

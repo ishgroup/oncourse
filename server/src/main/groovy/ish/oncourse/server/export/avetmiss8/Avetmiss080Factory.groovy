@@ -157,7 +157,7 @@ class Avetmiss080Factory extends AvetmissFactory {
             line.setIndigenous(0)
         }
 
-        // next is stupid AVETMISS rule that Aboriginals can only be born in Australia
+        // next is stupid AVETMISS validation error that indigenous people can only be born in Australia
         if (student.getCountryOfBirth() != null && !student.getCountryOfBirth().isAustralia()) {
             line.setIndigenous(4)
         }

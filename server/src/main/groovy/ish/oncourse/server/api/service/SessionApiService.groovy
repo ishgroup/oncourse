@@ -65,7 +65,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         dto.payAdjustment = session.payAdjustment
         dto.tutors = session.tutors*.contact*.fullName
         dto.name = session.courseClass.course.name
-        if (session.room && !session.room.site.isVirtual) {
+        if (session.room) {
             dto.siteTimezone = session.room.site.localTimezone
         }
         dto.hasPaylines = session.payLines != null && !session.payLines.empty

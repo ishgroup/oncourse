@@ -560,8 +560,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@API
 	@Override
 	TimeZone getTimeZone() {
-		if (getRoom() == null || getRoom().getSite() == null ||
-				getRoom().getSite().getIsVirtual() || getRoom().getSite().getLocalTimezone() == null) {
+		if (getRoom() == null || getRoom().getSite() == null || getRoom().getSite().getLocalTimezone() == null) {
 			return TimeZone.getDefault()
 		}
 		return TimeZone.getTimeZone(getRoom().getSite().getLocalTimezone())
@@ -571,8 +570,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * @return null if class has no location specified. Converted to browser time zone
 	 */
 	String getClientTimeZoneId() {
-		if (getRoom() == null || getRoom().getSite() == null ||
-				getRoom().getSite().getIsVirtual() || getRoom().getSite().getLocalTimezone() == null) {
+		if (getRoom() == null || getRoom().getSite() == null || getRoom().getSite().getLocalTimezone() == null) {
 			return null
 		}
 		return getRoom().getSite().getLocalTimezone()

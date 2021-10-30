@@ -16,14 +16,20 @@ import io.bootique.annotation.BQConfig;
 import io.bootique.di.Injector;
 import io.bootique.jdbc.hikaricp.HikariCPManagedDataSourceFactory;
 import io.bootique.jdbc.managed.ManagedDataSourceStarter;
+import io.bootique.jdbc.tomcat.TomcatManagedDataSourceFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ish.util.RuntimeUtil;
 
 @BQConfig("Pooling Hikari JDBC DataSource configuration.")
 @JsonTypeName("uri")
 public class URIDataSourceFactory extends HikariCPManagedDataSourceFactory {
+    private static final Logger logger = LogManager.getLogger();
 
     public ManagedDataSourceStarter create(String dataSourceName, Injector injector) {
         DbUriProvider provider = injector.getInstance(DbUriProvider.class);
+        setUrl(provider.getUri());
+        logger.warn("server will use database " + getUrl());
         setJdbcUrl(provider.getUri());
         RuntimeUtil.println("server will use database " + getJdbcUrl());
         return super.create(dataSourceName, injector);
