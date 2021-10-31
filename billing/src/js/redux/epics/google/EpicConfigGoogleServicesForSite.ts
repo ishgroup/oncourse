@@ -5,7 +5,7 @@
 
 import { Epic } from 'redux-observable';
 import { Request, Create } from '../EpicUtils';
-import { CONFIGURE_GOOGLE_FOR_SITE } from '../../actions/Google';
+import { CONFIGURE_GOOGLE_FOR_SITE, getGtmAndGaData } from '../../actions/Google';
 import GoogleService from '../../../api/services/GoogleService';
 import { getTokenString } from '../../../utils/Google';
 import {
@@ -28,6 +28,12 @@ const request: Request<any, SiteValues> = {
     if (site.gtmAccountId) {
       let { gaWebPropertyId } = site;
       let gtmContainerId = state.google.gtmContainers[site.gtmAccountId].find((c) => c.publicId === site.gtmContainerId)?.containerId;
+      const existingContainer = state.google.gtmContainers[site.gtmAccountId].find((c) => c.name === GTM_CONTAINER_NAME_DEFAULT);
+
+      if (existingContainer) {
+        gtmContainerId = existingContainer.containerId;
+      }
+
       if (!gtmContainerId) {
         await GoogleService.createGTMContainer(
           token,
@@ -240,7 +246,8 @@ const request: Request<any, SiteValues> = {
     return site;
   },
   processData: (site) => [
-    updateCollegeSites({ changed: [site] })
+    updateCollegeSites({ changed: [site] }),
+    getGtmAndGaData()
   ]
 };
 
