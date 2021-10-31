@@ -99,6 +99,14 @@ const URLs = (
     : null)),
   [site.domains]);
 
+  const onDomainsChange = (e, v: string[]) => {
+    const updated = v.reduce((p, c) => ({ ...p, [c]: site.domains[c] || '' }), {});
+    setFieldValue(
+      'domains',
+      updated
+    );
+  };
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -184,10 +192,7 @@ const URLs = (
               multiline
             />
           )}
-          onChange={(e, v: string[]) => setFieldValue(
-            'domains',
-            { ...site.domains, [v.find((val) => !Object.keys(site.domains).includes(val))]: '' }
-          )}
+          onChange={onDomainsChange}
           filterSelectedOptions
           multiple
           freeSolo

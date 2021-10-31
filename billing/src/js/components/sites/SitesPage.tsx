@@ -217,7 +217,15 @@ export const SitesPage = () => {
     onSubmit: (vals) => {
       switch (page) {
         case 'urls':
-          dispatch(updateCollegeSites({ [vals.id ? 'changed' : 'created']: [vals] }));
+          const {
+            collegeKey,
+            gtmAccountId,
+            googleMapsApiKey,
+            gaWebPropertyId,
+            googleAnalyticsId,
+            ...changedSite
+          } = vals;
+          dispatch(updateCollegeSites({ [changedSite.id ? 'changed' : 'created']: [changedSite] }));
           break;
       }
       if (isConfig) {

@@ -16,6 +16,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { FormikErrors } from 'formik/dist/types';
 import { SiteValues } from '../../models/Sites';
 import Loading from '../common/Loading';
+import { useAppDispatch } from '../../redux/hooks/redux';
+import { getGtmAndGaData } from '../../redux/actions/Google';
 
 interface Props {
   classes: any;
@@ -50,6 +52,8 @@ const GoogleSetup = (
 ) => {
   const hasNoGAAccounts = gaAccountItems.length === 1;
   const hasNoGTMAccounts = gtmAccountItems.length === 1;
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (site.primaryDomain && !Object.keys(site.domains).includes(site.primaryDomain)) {
@@ -101,6 +105,7 @@ const GoogleSetup = (
                 size="small"
                 variant="contained"
                 startIcon={<RefreshIcon />}
+                onClick={() => dispatch(getGtmAndGaData())}
               >
                 Try again
               </Button>

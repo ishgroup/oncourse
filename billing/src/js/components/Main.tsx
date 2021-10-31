@@ -42,7 +42,7 @@ const Main = () => {
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
-    const token = query.get('token');
+    const token = query.get('token') || localStorage.getItem('token');
     const currency = query.get('currency') as Currency;
     if (currency) {
       dispatch(setCurrency(currency));
@@ -51,6 +51,7 @@ const Main = () => {
       defaultAxios.defaults.headers = {
         Authorization: token
       };
+      localStorage.setItem('token', token);
     }
     window.history.replaceState(null, null, window.location.pathname);
     dispatch(getCollegeKey());
