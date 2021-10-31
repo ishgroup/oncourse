@@ -39,7 +39,7 @@ const request: Request<any, SiteValues> = {
             ]
           }
         ).then((res) => {
-          gtmContainerId = res.publicId;
+          gtmContainerId = res.containerId;
         });
       }
 
