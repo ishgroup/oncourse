@@ -50,7 +50,7 @@ const styles = createStyles(({ spacing }: Theme) => ({
     }
   },
   switch: {
-    marginLeft: `-${spacing(2)}px`
+    marginLeft: `-${spacing(2)}`
   },
   select1: {
     zIndex: 5
@@ -252,13 +252,18 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
   const foundOutcomes = useMemo(() => studentOutcomes.map(transformForNestedList), [studentOutcomes]);
 
   return (
-    <Grid container columnSpacing={3} className={clsx("pt-2 pr-3 pb-0 pl-3 relative h-100 align-content-start defaultBackgroundColor", classes.root)}>
+    <Grid
+      container
+      columnSpacing={3}
+      rowSpacing={3}
+      className={clsx("pt-2 pr-3 pb-0 pl-3 relative h-100 align-content-start defaultBackgroundColor", classes.root)}
+    >
       {isNew && <div className={clsx("backgroundText paperTextColor", { "fs19": twoColumn })}>Draft</div>}
       {Boolean(values.revokedOn) && (
         <div className={clsx("backgroundText errorColorFade-0-2", { "fs19": twoColumn })}>Revoked</div>
       )}
 
-      <Grid item xs={12} className={clsx(classes.switch, "pb-1", "centeredFlex")}>
+      <Grid item xs={12} className={clsx(classes.switch, "centeredFlex")}>
         <FormControlLabel
           control={<FormField type="switch" name="isQualification" color="primary" />}
           label={(
@@ -272,12 +277,12 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       </Grid>
 
       <Grid item xs={12}>
-        <Typography className="heading pb-1">
+        <Typography className="heading">
           {values.isQualification ? "This is to certify that" : "This is a statement that"}
         </Typography>
       </Grid>
 
-      <Grid item xs={twoColumn ? 12 : 6} className={clsx(classes.select1, "pb-1")}>
+      <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Contact"
@@ -303,7 +308,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       </Grid>
 
       <Grid item xs={12}>
-        <Typography className="heading pb-1">
+        <Typography className="heading">
           {values.isQualification ? "Has fulfilled the requirements for the" : "With competencies from"}
         </Typography>
       </Grid>
