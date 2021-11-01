@@ -12,13 +12,11 @@ import { addDays, compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import { Decimal } from "decimal.js-light";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -29,9 +27,9 @@ import { PaymentInType } from "../consts";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { openSiteLink } from "../../sites/utils";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -226,58 +224,39 @@ class BankingEditView extends React.PureComponent<any, any> {
       editRecord,
       openNestedView,
       values,
-      manualLink,
-      rootEntity,
-      onCloseClick,
-      invalid,
-      dirty
+      isScrollingRoot,
     } = this.props;
 
     return (
-      <div className={twoColumn ? "appBarContainer" : "h-100"}>
+      <div className={twoColumn ? "" : "h-100"}>
         {twoColumn && (
-          <CustomAppBar>
-            <Grid container columnSpacing={3} className="flex-fill">
-              <Grid item xs="auto">
-                <div className="d-flex align-items-baseline">
-                  {values && values.administrationCenterId && (
-                    <>
+          <FullScreenStickyHeader
+            title={(
+              <Grid container columnSpacing={3} className="flex-fill">
+                {values && values.administrationCenterId && (
+                  <Grid item xs="auto">
+                    <div className="d-flex align-items-baseline">
                       <Typography className="appHeaderFontSize">{values && values.adminSite}</Typography>
 
                       <LinkAdornment
                         linkColor="inherit"
                         link={values.administrationCenterId}
                         linkHandler={openSiteLink}
-                        className="appHeaderFontSize pl-0-5 pr-3 "
+                        className="appHeaderFontSize pl-0-5"
                       />
-                    </>
-                  )}
-                </div>
+                    </div>
+                  </Grid>
+                )}
+                <Grid item>
+                  {this.getHeader()}
+                </Grid>
               </Grid>
-              <Grid item>
-                <Typography className="appHeaderFontSize">{this.getHeader()}</Typography>
-              </Grid>
-            </Grid>
-            <div>
-              {manualLink && (
-                <AppBarHelpMenu
-                  created={values ? new Date(values.createdOn) : null}
-                  modified={values ? new Date(values.modifiedOn) : null}
-                  auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <Button onClick={onCloseClick} className="closeAppBarButton">
-                Close
-              </Button>
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
-            </div>
-          </CustomAppBar>
+            )}
+            twoColumn={twoColumn}
+            warpperGap={0}
+            titleGap={51}
+            isScrolling={isScrollingRoot}
+          />
         )}
         <div className="h-100 flex-column p-3">
           <Grid container columnSpacing={3}>

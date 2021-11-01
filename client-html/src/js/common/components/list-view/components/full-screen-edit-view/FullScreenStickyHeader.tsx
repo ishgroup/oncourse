@@ -13,10 +13,11 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   fullScreenTitleItem: {
     position: "fixed",
+    left: 0,
     top: 0,
     maxWidth: "calc(100% - 224px)",
     width: "100%",
-    zIndex: 9999,
+    zIndex: 1200,
   },
   titleFields: {
     transform: "translateY(200%)",
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     left: 0,
     transform: "translateY(-200%)",
     visibility: "hidden",
-    "&, & > h5": {
+    "&, & > div": {
       transition: theme.transitions.create("all", {
         duration: "0.8s",
         easing: theme.transitions.easing.easeInOut
@@ -102,6 +103,8 @@ interface Props {
   hide?: boolean;
   otherClasses?: any;
   hideGap?: boolean;
+  warpperGap?: number;
+  titleGap?: number;
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -114,6 +117,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     otherClasses,
     isScrolling,
     hideGap,
+    warpperGap = 51,
+    titleGap = 51,
   } = props;
 
   const classes = { ...useStyles(), ...otherClasses };
@@ -161,24 +166,32 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     <Grid
       container
       columnSpacing={3}
-      className={clsx("align-items-center", hide && "d-none", !twoColumn && "mb-3", {
-        [classes.hasAvatar]: twoColumn && avatar,
-        [classes.fullScreenTitleWrapper]: twoColumn && !avatar && !hideGap,
-      })}
+      className={clsx("align-items-center", hide && "d-none", !twoColumn && "mb-3")}
       ref={wrapperRef}
+      style={{ minHeight: twoColumn && !avatar && !hideGap ? `${warpperGap}px` : twoColumn && avatar ? "90px" : "auto" }}
     >
       <Grid
         item
         xs={12}
         className={clsx("centeredFlex", !twoColumn && "flex-column",
-          { [classes.fullScreenTitleItem]: twoColumn, "pt-2": twoColumn, "pt-1": showTitleOnly })}
+          { [classes.fullScreenTitleItem]: twoColumn, "mt-2": twoColumn, "mt-1": showTitleOnly })}
+        columnSpacing={3}
       >
         {avatar && (
-          <div className={clsx(classes.avatarBlock, !twoColumn && "w-100", twoColumn && "mr-3")}>
-            {avatar(classes)}
-          </div>
+          <Grid item>
+            <div className={clsx(classes.avatarBlock, !twoColumn && "w-100", twoColumn && "mr-3")}>
+              {avatar(classes)}
+            </div>
+          </Grid>
         )}
-        <Grid container item xs={twoColumn ? 10 : 12} className={clsx("relative overflow-hidden align-items-center", classes.titleWrapper)}>
+        <Grid
+          columnSpacing={3}
+          container
+          item
+          xs={twoColumn ? 10 : 12}
+          className={clsx("relative overflow-hidden align-items-center")}
+          style={{ minHeight: `${titleGap}px` }}
+        >
           <Grid
             container
             item
@@ -188,6 +201,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
             <Typography
               variant="h5"
               display="block"
+              component="div"
               className={clsx(!twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize", { [classes.titleTextAlternate]: showTitleOnly })}
             >
               {title}

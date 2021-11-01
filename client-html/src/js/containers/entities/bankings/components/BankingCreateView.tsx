@@ -10,13 +10,11 @@ import {
 } from "redux-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { addDays, format as formatDate } from "date-fns";
 import { Report } from "@api/model";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { getFormattedTotal } from "../../common/bankingPaymentUtils";
@@ -26,12 +24,12 @@ import { BankingReport } from "../consts";
 import { DD_MMM_YYYY_MINUSED, YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -177,8 +175,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
     return "Payment" + (payments.length !== 1 ? "s" : "");
   };
 
-  isReportAvailable = (): boolean => !!this.props.report;
-
   hasNoAccounts = () => {
     const { accounts, values } = this.props;
     return !accounts || accounts.length === 0 || (values && !values.payments);
@@ -195,68 +191,48 @@ class BankingCreateView extends React.PureComponent<any, any> {
       lockedDate,
       openNestedView,
       selectedAccountId,
-      manualLink,
       values,
       adminSites,
-      rootEntity,
-      onCloseClick,
-      invalid,
-      toogleFullScreenEditView
+      isScrollingRoot,
     } = this.props;
 
     const hasNoAccounts = this.hasNoAccounts();
 
     return (
-      <div className="appBarContainer">
-        <CustomAppBar noDrawer>
-          <Grid container columnSpacing={3} className="flex-fill">
-            <Grid item xs={6} className="mt-05">
-              <FormField
-                type="searchSelect"
-                name="administrationCenterId"
-                placeholder="Administration center"
-                defaultDisplayValue={values && values.adminSite}
-                selectLabelCondition={getAdminCenterLabel}
-                onChange={this.onSiteIdChange as any}
-                items={adminSites || []}
-                endAdornment={(
-                  <LinkAdornment
-                    link={values && values.administrationCenterId}
-                    linkHandler={openSiteLink}
-                    linkColor="inherit"
-                    className="appHeaderFontSize"
-                  />
-                )}
-                fieldClasses={{
-                  text: "appHeaderFontSize primaryContarstText primaryContarstHover",
-                  input: "primaryContarstText",
-                  underline: "primaryContarstUnderline",
-                  selectMenu: "textPrimaryColor",
-                  loading: "primaryContarstText",
-                  editIcon: "primaryContarstText"
-                }}
-                formatting="inline"
-                required
-              />
+      <div className="">
+        <FullScreenStickyHeader
+          title={values && adminSites && adminSites.filter(s => s.value === values.administrationCenterId).map(s => s.label)}
+          fields={(
+            <Grid container columnSpacing={0} className="flex-fill">
+              <Grid item xs={6}>
+                <FormField
+                  type="searchSelect"
+                  name="administrationCenterId"
+                  placeholder="Administration center"
+                  selectLabelCondition={getAdminCenterLabel}
+                  onChange={this.onSiteIdChange as any}
+                  items={adminSites || []}
+                  endAdornment={(
+                    <LinkAdornment
+                      link={values && values.administrationCenterId}
+                      linkHandler={openSiteLink}
+                      linkColor="inherit"
+                      className="appHeaderFontSize"
+                    />
+                  )}
+                  fieldClasses={{
+                    text: "appHeaderFontSize",
+                    selectMenu: "textPrimaryColor",
+                  }}
+                  required
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          <div>
-            {manualLink && (
-              <AppBarHelpMenu
-                auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                manualUrl={manualLink}
-              />
-            )}
-
-            <Button onClick={hasNoAccounts ? toogleFullScreenEditView : onCloseClick} className="closeAppBarButton">
-              Close
-            </Button>
-            <FormSubmitButton
-              disabled={(values && !values.payments)}
-              invalid={invalid}
-            />
-          </div>
-        </CustomAppBar>
+          )}
+          twoColumn
+          warpperGap={0}
+          isScrolling={isScrollingRoot}
+        />
         <div className="flex-column p-3 h-100">
           <Grid container columnSpacing={3}>
             <Grid item xs={4}>
