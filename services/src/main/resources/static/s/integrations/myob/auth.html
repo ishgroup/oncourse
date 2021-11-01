@@ -8,9 +8,10 @@
 <head>
   <meta charset="UTF-8">
   <script>
-    const params = new URLSearchParams(decodeURIComponent(window.location.search));
-    let codeSymbol = params.get("state").indexOf("?") !== -1 ? "&" : "?";
-    window.open(params.get("state") + codeSymbol + "code=" + params.get("code"), "_self");
+    const params = new URLSearchParams(decodeURIComponent(window.location.search))ж
+    const decodedState = decodeURI(params.get("state"));
+    let codeSymbol = decodedState.indexOf("?") !== -1 ? "&" : "?";
+    window.open(decodedState + codeSymbol + "code=" + params.get("code"), "_self");
   </script>
 </head>
 <body>
