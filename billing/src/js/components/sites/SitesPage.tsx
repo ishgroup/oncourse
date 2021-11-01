@@ -142,7 +142,9 @@ const validationSchema = yup.object({
     .required('Key is required')
     .max(40, 'Maximum length is 40 characters')
     .matches(/^[0-9a-z-]+$/i, 'You can only use letters, numbers and "-"'),
-  primaryDomain: yup.string().nullable(),
+  primaryDomain: yup.string().nullable().when('domains', (domains) => (Object.keys(domains).length
+    ? yup.string().nullable().required('Primary domain is required when domains specified')
+    : yup.string().nullable())),
   name: yup.mixed().required('Name is required'),
   webSiteTemplate: yup.string().nullable().when('id', {
     is: (val) => !val,

@@ -71,6 +71,7 @@ const URLs = (
     if (site.primaryDomain && !Object.keys(site.domains).includes(site.primaryDomain)) {
       setFieldValue('primaryDomain', null);
     }
+    if (!site.domains.length && !site.primaryDomain) setFieldValue('primaryDomain', Object.keys(site.domains)[0]);
   }, [site.domains]);
 
   useEffect(() => {
@@ -91,7 +92,7 @@ const URLs = (
   }, [site.googleAnalyticsId]);
 
   const domainItems = useMemo(() => renderSelectItemsWithEmpty(
-    { items: Object.keys(site.domains).filter((d) => !site.domains[d]) }
+    { items: Object.keys(site.domains) }
   ), [site.domains]);
 
   const domainWarnings = useMemo(() => Object.keys(site.domains).map((d) => (site.domains[d]
@@ -153,11 +154,10 @@ const URLs = (
               .oncourse.cc
             </Typography>
           )}
-
         </div>
         {Boolean(error.key) && (<Typography className={classes.errorMessage}>{error.key}</Typography>)}
       </Grid>
-      <Grid item xs={6} className={classes.pr}>
+      <Grid item xs={6} className={classes.pr} marginTop="auto">
         <Autocomplete
           size="small"
           options={[]}
@@ -206,6 +206,8 @@ const URLs = (
           label="Primary hostname"
           value={site.primaryDomain || ''}
           onChange={handleChange}
+          helperText={error.primaryDomain}
+          error={Boolean(error.primaryDomain)}
           name="primaryDomain"
           variant="standard"
         >
