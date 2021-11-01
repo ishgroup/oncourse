@@ -708,7 +708,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const payer = state.summary.list.find(i => i.payer);
 
       invoices.forEach(item => {
-        item.checked = !payer.contact.defaultSelectedOwing;
+        item.checked = payer?.contact && !payer.contact.defaultSelectedOwing;
         if (item.checked) {
           invoiceTotal = decimalPlus(invoiceTotal, parseFloat(item.amountOwing));
         }
@@ -738,7 +738,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const today = new Date();
 
       invoices.forEach(item => {
-        item.checked = payer.contact.defaultSelectedOwing
+        item.checked = payer?.contact?.defaultSelectedOwing
           ? payer.contact.defaultSelectedOwing === item.id
           : !(item.dateDue && (new Date(item.dateDue) > today));
 
