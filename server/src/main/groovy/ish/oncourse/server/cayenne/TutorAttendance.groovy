@@ -40,7 +40,7 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 			endDatetime = session.endDatetime
 		}
 		if (actualPayableDurationMinutes == null) {
-			setActualPayableDurationMinutes(Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutes().intValue())
+			actualPayableDurationMinutes = DurationFormatter.durationInMinutesBetween(startDatetime, endDatetime)
 		}
 	}
 

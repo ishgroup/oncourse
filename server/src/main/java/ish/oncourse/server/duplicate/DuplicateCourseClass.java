@@ -36,10 +36,7 @@ import ish.oncourse.server.cayenne.SessionModule;
 import ish.oncourse.server.cayenne.Tax;
 import ish.oncourse.server.cayenne.TutorAttendance;
 import ish.oncourse.server.cayenne.Session;
-import ish.util.AccountUtil;
-import ish.util.DateTimeUtil;
-import ish.util.DiscountUtil;
-import ish.util.MoneyUtil;
+import ish.util.*;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
@@ -192,11 +189,12 @@ public class DuplicateCourseClass {
                                     .findFirst().ifPresent(oldAttendance -> { 
                                         tutorAttendance.setStartDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getStartDatetime(), request.getDaysTo()));
                                         tutorAttendance.setEndDatetime(DateTimeUtil.addDaysDaylightSafe(oldAttendance.getEndDatetime(), request.getDaysTo()));
-
+                                        tutorAttendance.setActualPayableDurationMinutes(oldAttendance.getActualPayableDurationMinutes());
                                     });
                         } else {
                             tutorAttendance.setStartDatetime(newSession.getStartDatetime());
                             tutorAttendance.setEndDatetime(newSession.getEndDatetime());
+                            tutorAttendance.setActualPayableDurationMinutes(DurationFormatter.durationInMinutesBetween(newSession.getStartDatetime(), newSession.getEndDatetime()));
                         }
                     }
                 }
