@@ -91,7 +91,6 @@ class BankingListView extends React.Component<any, null> {
           onCreate={this.onCreateNewBanking}
           editViewProps={{
             manualLink,
-            hideFullScreenAppBar: true
           }}
           onDelete={onDelete}
           onSave={onSave}
@@ -106,6 +105,7 @@ class BankingListView extends React.Component<any, null> {
           CogwheelAdornment={BankingCogwheelOptions}
           alwaysFullScreenCreateView
           noListTags
+          hideTitle
         />
       </div>
     );

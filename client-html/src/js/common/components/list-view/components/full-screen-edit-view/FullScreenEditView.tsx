@@ -71,7 +71,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
   componentDidUpdate(prevProps) {
     const {
-      pending, dispatch, rootEntity, isNested, fullScreenEditView
+      pending, dispatch, rootEntity, isNested, fullScreenEditView, alwaysFullScreenCreateView, creatingNew
     } = this.props;
 
     if (window.performance.getEntriesByName("EditViewStart").length && prevProps.pending && !pending) {
@@ -105,7 +105,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       window.performance.clearMeasures("NestedEditViewView");
     }
 
-    if (!fullScreenEditView) {
+    if (!creatingNew && alwaysFullScreenCreateView && !fullScreenEditView) {
       this.setState({ isScrolling: false });
       this.setState({ isScrollingRoot: false });
     }
