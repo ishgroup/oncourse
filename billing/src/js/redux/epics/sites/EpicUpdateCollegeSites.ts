@@ -17,7 +17,8 @@ const request: Request<any, SitesUpdateRequest> = {
       changed = [],
       created = [],
       removed = [],
-    }
+    },
+    state
   ) => {
     await changed.map((site) => () => WebSiteService.updateSite(site))
       .reduce(async (a, b) => {
@@ -25,7 +26,7 @@ const request: Request<any, SitesUpdateRequest> = {
         await b();
       }, Promise.resolve());
 
-    await created.map((site) => () => WebSiteService.crateSite(site))
+    await created.map((site) => () => WebSiteService.crateSite({ ...site, key: `${state.college.collegeKey}-${site.key}` }))
       .reduce(async (a, b) => {
         await a;
         await b();
