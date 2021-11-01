@@ -429,10 +429,10 @@ export const SitesPage = () => {
         confirmMessage: 'Site will be removed with all settings and configuration. This action can not be undone',
         onConfirm: () => {
           dispatch(updateCollegeSites({ removed: [values.id] }));
+          appHistory.push(`/websites/${sites[0]?.id}/urls`);
         }
       }));
     }
-    appHistory.push(`/websites/${sites[0]?.id}/urls`);
   };
 
   const notLoggedWarning = (
