@@ -57,7 +57,7 @@ class SurveyTest extends TestWithDatabase {
         context.commitChanges()
 
         survey = ObjectSelect.query(Survey).selectFirst(cayenneService.getNewContext())
-        Assertions.assertEquals(1, survey.getComment())
+        Assertions.assertEquals(comment, survey.getComment())
         Assertions.assertEquals(1, survey.getCourseScore())
         Assertions.assertEquals(1, survey.getTutorScore())
         Assertions.assertEquals(1, survey.getVenueScore())

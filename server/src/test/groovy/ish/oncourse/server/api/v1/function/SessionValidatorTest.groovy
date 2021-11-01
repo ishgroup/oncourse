@@ -32,8 +32,8 @@ class SessionValidatorTest extends TestWithDatabase {
     
     private static TutorAttendanceDTO createAttendance(String start, String end, Long contactId) {
          new TutorAttendanceDTO().with {it ->
-            it.start = LocalDateTime.parse('start')
-            it.end = LocalDateTime.parse('end')
+            it.start = LocalDateTime.parse(start)
+            it.end = LocalDateTime.parse(end)
             it.contactId = contactId
             it
         }
