@@ -285,7 +285,7 @@ public class DurationFormatter extends DefaultFormatter {
 		if (startDatetime == null || endDatetime == null) {
 			return 0;
 		}
-		return Long.valueOf(Duration.between(endDatetime.toInstant(), startDatetime.toInstant()).toMinutes()).intValue();
+		return Long.valueOf(Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutes()).intValue();
 	}
 
 	public static BigDecimal durationInHoursFromMinutes(Integer minutes) {

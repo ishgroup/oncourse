@@ -15,6 +15,7 @@ import ish.oncourse.entity.services.CourseClassService
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.duplicate.DuplicateClassService
 import ish.util.AccountUtil
+import ish.util.DurationFormatter
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.access.DataContext
@@ -383,6 +384,9 @@ class CourseClassTest extends TestWithDatabase {
             if (cct.getTutor().equals(tutor)) {
                 TutorAttendance tutorAttendance = cayenneContext.newObject(TutorAttendance.class)
                 tutorAttendance.setSession(session)
+                tutorAttendance.startDatetime = session.startDatetime
+                tutorAttendance.endDatetime = session.endDatetime
+                tutorAttendance.actualPayableDurationMinutes = DurationFormatter.durationInMinutesBetween(session.startDatetime, session.endDatetime)
                 tutorAttendance.setCourseClassTutor(cct)
                 tutorAttendance.setAttendanceType(AttendanceType.UNMARKED)
             }
