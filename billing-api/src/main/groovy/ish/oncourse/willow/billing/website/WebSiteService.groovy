@@ -194,7 +194,7 @@ class WebSiteService {
             if (!dto.primaryDomain) {
                 throw new BadRequestException("Primary url is required")
             }
-            if (!(dto.primaryDomain in dto.domains)) {
+            if (!(dto.primaryDomain in dto.domains.keySet())) {
                 throw new BadRequestException("Primary url is wrong")
             }
         }
