@@ -62,13 +62,14 @@
 		<defaultValueExpression><![CDATA[new Boolean(false)]]></defaultValueExpression>
 	</parameter>
 	<field name="tutorAttendance" class="ish.oncourse.server.cayenne.TutorAttendance"/>
-	<field name="session" class="ish.oncourse.server.cayenne.Session"/>
-	<field name="session.room.name" class="java.lang.String"/>
-	<field name="session.room.site.name" class="java.lang.String"/>
-	<field name="session.courseClass.uniqueCode" class="java.lang.String"/>
-	<field name="session.courseClass.course.name" class="java.lang.String"/>
+	<field name="tutorAttendance.session" class="ish.oncourse.server.cayenne.Session"/>
+	<field name="tutorAttendance.session.room.name" class="java.lang.String"/>
+	<field name="tutorAttendance.session.room.site.name" class="java.lang.String"/>
+	<field name="tutorAttendance.session.courseClass.uniqueCode" class="java.lang.String"/>
+	<field name="tutorAttendance.session.courseClass.course.name" class="java.lang.String"/>
+	<field name="tutorAttendance.session.timeZone" class="java.lang.String"/>
+	<field name="tutorAttendance.startDatetime" class="java.util.Date"/>
 	<field name="subreport.ish.onCourse.tutorsSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
-	<field name="startDatetime" class="java.util.Date"/>
 	<sortField name="tutorAttendance.startDatetime"/>
 	<variable name="tutorNumber" class="java.math.BigDecimal"/>
 	<background>
@@ -119,23 +120,23 @@
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-2" style="data field (day)" x="0" y="2" width="115" height="14" uuid="b47c4f53-9f75-45cd-8656-9fbe274c7fe7"/>
-				<textFieldExpression><![CDATA[$F{tutorAttendance}.startDatetime?.format("d MMM yyyy h:mma", $F{tutorAttendance.session}.timeZone)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tutorAttendance.startDatetime}?.format("d MMM yyyy h:mma", $F{tutorAttendance.session.timeZone})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-3" style="data field (day)" x="115" y="2" width="115" height="14" uuid="3e730c1a-3d90-4d2c-984b-db499cf3bdae"/>
-				<textFieldExpression><![CDATA[$F{tutorAttendance}.endDatetime?.format("d MMM yyyy h:mma", $F{tutorAttendance.session}.timeZone)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tutorAttendance}.endDatetime?.format("d MMM yyyy h:mma", $F{tutorAttendance.session.timeZone})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-6" style="data field" x="420" y="2" width="119" height="14" uuid="ebe1b6ee-d5db-429b-87b3-55b83f8edd51"/>
-				<textFieldExpression><![CDATA[($F{room.name} != null) ? $F{room.site.name}+"-"+$F{room.name} : "Not set"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{tutorAttendance.session.room.name} != null) ? $F{tutorAttendance.session.room.site.name}+"-"+$F{tutorAttendance.session.room.name} : "Not set"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-3" style="data field" x="290" y="2" width="130" height="14" uuid="a6133083-4c12-47bb-b5be-b5f75a7fdf04"/>
-				<textFieldExpression><![CDATA[$F{courseClass.course.name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tutorAttendance.session.courseClass.course.name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-3" style="data field" x="230" y="2" width="58" height="14" uuid="4454ceaa-7050-4b1e-b82b-4b5279a4e54f"/>
-				<textFieldExpression><![CDATA[$F{courseClass.uniqueCode}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tutorAttendance.session.courseClass.uniqueCode}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
