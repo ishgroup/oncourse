@@ -421,9 +421,6 @@ const CourseClassEditView: React.FC<Props> = ({
   }, [values.sessions?.length, values.id, sessionsData]);
 
   useEffect(() => {
-    if (!twoColumn) {
-      return;
-    }
     setItems(prev => prev.map(i => {
       const updated = { ...i };
       if (i.type === "BUDGET") {
