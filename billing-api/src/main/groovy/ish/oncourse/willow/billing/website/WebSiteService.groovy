@@ -39,7 +39,7 @@ class WebSiteService {
         validateWebSiteBeforeCreate(dto)
         WebSite newSite = createWebSite(requestService.college, dto.webSiteTemplate, dto.name, dto.key)
         configureAccountsFor(newSite, dto)
-        updateDomains(newSite, dto.domains.keySet().collect(), dto.primaryDomain)
+        updateDomains(newSite, dto.domains.collect {it.key}, dto.primaryDomain)
         newSite.objectContext.commitChanges()
     }
 
@@ -190,7 +190,7 @@ class WebSiteService {
     }
 
     void validateDomains(SiteDTO dto) {
-        if (!dto.domains.empty) {
+        if (dto.domains.size() > 0) {
             if (!dto.primaryDomain) {
                 throw new BadRequestException("Primary url is required")
             }
