@@ -40,6 +40,7 @@ public class WebSiteDelete {
 		}
 		context.deleteObjects(site.getCollegeDomains());
 		context.deleteObjects(site.getLicenseFees());
+		context.deleteObject(site.getPreferences());
 		context.deleteObject(site);
 		context.commitChanges();
 	}
