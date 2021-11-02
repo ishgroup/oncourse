@@ -328,6 +328,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         CogwheelAdornment={EnrolmentCogWheel}
         defaultDeleteDisabled
         alwaysFullScreenCreateView
+        hideTitle
       />
       <Menu
         id="createMenu"
