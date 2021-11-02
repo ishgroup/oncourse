@@ -35,6 +35,7 @@ import { formatDurationMinutes } from "../../../../../common/utils/dates/formatS
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { H_MMAAA } from "../../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../../common/utils/links";
+import { appendTimezone, appendTimezoneToUTC } from "../../../../../common/utils/dates/formatTimezone";
 
 const useStyles = makeStyles(theme => ({
   tutorItem: {
@@ -186,9 +187,12 @@ const CourseClassTutorRooster = (
           const fieldsName = `${name}[${index}]`;
 
           const diffLabel = `${t.start && (t.start !== session.start || t.end !== session.end) 
-            ? `${format(new Date(t.start), H_MMAAA)}-${format(new Date(t.end), H_MMAAA)} ` 
+            ? session.siteTimezone 
+              ? `${format(appendTimezone(new Date(t.start), session.siteTimezone), H_MMAAA)}-${format(appendTimezone(new Date(t.end), session.siteTimezone), H_MMAAA)} `
+              : `${format(new Date(t.start), H_MMAAA)}-${format(new Date(t.end), H_MMAAA)} ` 
             : ""}
-          ${sessionDuration && t.actualPayableDurationMinutes !== sessionDuration 
+            
+          ${sessionDuration && t.actualPayableDurationMinutes && t.actualPayableDurationMinutes !== sessionDuration 
             ? `payable ${formatDurationMinutes(t.actualPayableDurationMinutes)}` 
             : ""}`;
 
@@ -225,7 +229,7 @@ const CourseClassTutorRooster = (
                           <Field
                             name={`${fieldsName}.attendanceType`}
                             component={RoosterStatuses}
-                            payableTime={formatDurationMinutes(t.actualPayableDurationMinutes)}
+                            payableTime={formatDurationMinutes(t.actualPayableDurationMinutes || sessionDuration)}
                             className={clsx('hoverIconContainer', classes.statusSelect)}
                           />
                         )
@@ -259,6 +263,7 @@ const CourseClassTutorRooster = (
                       name={`${fieldsName}.start`}
                       type="time"
                       label="Roster start"
+                      timezone={session.siteTimezone}
                     />
                   </Grid>
                   <Grid item xs={2}>
@@ -266,6 +271,7 @@ const CourseClassTutorRooster = (
                       name={`${fieldsName}.end`}
                       type="time"
                       label="Roster end"
+                      timezone={session.siteTimezone}
                     />
                   </Grid>
                   <Grid item xs={2}>

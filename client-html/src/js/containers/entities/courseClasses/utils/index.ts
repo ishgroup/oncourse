@@ -4,6 +4,7 @@
  */
 
 import { AssessmentClass, Session } from "@api/model";
+import { set } from "date-fns";
 import { openInternalLink } from "../../../../common/utils/links";
 import {
   ClassCostExtended,
@@ -394,4 +395,18 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
     }, Promise.resolve());
 
   return unprocessedAsyncActions;
+};
+
+export const getShiftedTutorAttendanseDates = (taStart: Date, taEnd: Date, sessionStart: Date, sessionEnd: Date) => {
+  const start = set(sessionStart, {
+    hours: taStart.getHours(),
+    minutes: taStart.getMinutes()
+  }).toISOString();
+
+  const end = set(sessionEnd, {
+    hours: taEnd.getHours(),
+    minutes: taEnd.getMinutes()
+  }).toISOString();
+  
+  return { start, end };
 };

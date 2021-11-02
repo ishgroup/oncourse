@@ -64,6 +64,7 @@ import { State } from "../../../../../reducers/state";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../../../common/utils/uniqid";
+import { getShiftedTutorAttendanseDates } from "../../utils";
 
 const styles = () => createStyles({
     root: {
@@ -142,7 +143,7 @@ const getSessionsWithRepeated = (
 
   const repeatedStart = new Date(repeatSession.start);
 
-  repeated = repeated.map((r, index) => {
+  repeated = repeated.map<TimetableSession>((r, index) => {
     let start = repeatHandler(new Date(repeatSession.start), index + indexIncrement);
     let end = repeatHandler(new Date(repeatSession.end), index + indexIncrement);
 
@@ -156,13 +157,20 @@ const getSessionsWithRepeated = (
         end = addHours(end, startHoursDiff);
       }
     }
+    
+    const tutorAttendances = repeatSession.tutorAttendances.map(ta => ({
+        ...ta,
+        id: null,
+        ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), start, end)
+      }));
 
     return {
       ...repeatSession,
       id: null,
       temporaryId: uniqid(),
       start: start.toISOString(),
-      end: end.toISOString()
+      end: end.toISOString(),
+      tutorAttendances
     };
   });
 
@@ -318,7 +326,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
     start = start.toISOString();
     end = end.toISOString();
 
-    const duration = differenceInMinutes(new Date(start), new Date(end));
+    const duration = differenceInMinutes(new Date(end), new Date(start));
 
     const tutors = [];
 
@@ -639,26 +647,9 @@ const CourseClassTimetableTab: React.FC<Props> = ({
             payslipAttendances.splice(payslipAttendanceIndex, 1);
             return payslipAttendances[payslipAttendanceIndex];
           }
-
-          const taStart = new Date(ta.start);
-          const taEnd = new Date(ta.end);
-
-          const start = set(new Date(session.start), {
-            hours: taStart.getHours(),
-            minutes: taStart.getMinutes(),
-            seconds: taStart.getSeconds()
-          }).toISOString();
-
-          const end = set(new Date(session.end), {
-            hours: taEnd.getHours(),
-            minutes: taEnd.getMinutes(),
-            seconds: taEnd.getSeconds()
-          }).toISOString();
-
           return {
             ...ta,
-            start,
-            end
+            ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), new Date(session.start), new Date(session.end))
           };
         }).concat(payslipAttendances);
       }
@@ -671,28 +662,10 @@ const CourseClassTimetableTab: React.FC<Props> = ({
       }
 
       if (sessionTimeChanged) {
-        session.tutorAttendances = session.tutorAttendances.map(ta => {
-          const taStart = new Date(ta.start);
-          const taEnd = new Date(ta.end);
-
-          const start = set(new Date(session.start), {
-            hours: taStart.getHours(),
-            minutes: taStart.getMinutes(),
-            seconds: taStart.getSeconds()
-          }).toISOString();
-
-          const end = set(new Date(session.end), {
-            hours: taEnd.getHours(),
-            minutes: taEnd.getMinutes(),
-            seconds: taEnd.getSeconds()
-          }).toISOString();
-
-          return {
+        session.tutorAttendances = session.tutorAttendances.map(ta => ({
             ...ta,
-            start,
-            end
-          };
-        });
+            ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), new Date(session.start), new Date(session.end))
+          }));
       }
 
       session.tutors = session.tutorAttendances.map(ta => ta.contactName);

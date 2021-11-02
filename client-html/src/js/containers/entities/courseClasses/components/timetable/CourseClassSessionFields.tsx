@@ -28,8 +28,8 @@ import { LinkAdornment } from "../../../../../common/components/form/FieldAdornm
 import { openRoomLink } from "../../../rooms/utils";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { getShiftedTutorAttendanseDates } from "../../utils";
 
 interface Props {
   form: string;
@@ -92,8 +92,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
     return types;
   }, [warnings]);
 
-  const onDurationChange = useCallback(
-    (durationMinutes: number) => {
+  const onDurationChange = (durationMinutes: number) => {
       const startDate = new Date(session.start);
       const endDate = addMinutes(new Date(session.start), durationMinutes);
 
@@ -105,35 +104,15 @@ const CourseClassSessionFields: React.FC<Props> = ({
         )
       );
 
-      const tutorAttendances = session.tutorAttendances.map(ta => {
-        const taStart = new Date(ta.start);
-        const taEnd = new Date(ta.end);
-
-        const start = set(startDate, {
-          hours: taStart.getHours(),
-          minutes: taStart.getMinutes(),
-          seconds: taStart.getSeconds()
-        }).toISOString();
-
-        const end = set(endDate, {
-          hours: taEnd.getHours(),
-          minutes: taEnd.getMinutes(),
-          seconds: taEnd.getSeconds()
-        }).toISOString();
-
-        return {
+      const tutorAttendances = session.tutorAttendances.map(ta => ({
           ...ta,
-          start,
-          end
-        };
-      });
+          ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), startDate, endDate)
+        }));
 
       dispatch(
         change(form, `sessions[${session.index}].tutorAttendances`, tutorAttendances)
       );
-    },
-    [session.start, form, session.index]
-  );
+    };
 
   const durationValue = useMemo(() => {
     const startDate = new Date(session.start);
@@ -158,28 +137,10 @@ const CourseClassSessionFields: React.FC<Props> = ({
         dispatch(
           change(form, `sessions[${session.index}].end`, endDate.toISOString())
         );
-        const tutorAttendances = session.tutorAttendances.map(ta => {
-          const taStart = new Date(ta.start);
-          const taEnd = new Date(ta.end);
-
-          const start = set(startDate, {
-            hours: taStart.getHours(),
-            minutes: taStart.getMinutes(),
-            seconds: taStart.getSeconds()
-          }).toISOString();
-
-          const end = set(endDate, {
-            hours: taEnd.getHours(),
-            minutes: taEnd.getMinutes(),
-            seconds: taEnd.getSeconds()
-          }).toISOString();
-
-          return {
+        const tutorAttendances = session.tutorAttendances.map(ta => ({
             ...ta,
-            start,
-            end
-          };
-        });
+            ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), startDate, endDate)
+          }));
 
         dispatch(
           change(form, `sessions[${session.index}].tutorAttendances`, tutorAttendances)
@@ -256,6 +217,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
       <Grid item xs={2}>
         <FormField
           name={`sessions[${session.index}].end`}
+          timezone={session.siteTimezone}
           type="time"
           label="End"
         />

@@ -23,7 +23,7 @@ const getSessionPayable = (
   p: number,
 ) => {
   const attendance = s.tutorAttendances?.find(a => a.attendanceType !== "Rejected for payroll"
-    && a.courseClassTutorId === item.courseClassTutorId);
+    && ((a.courseClassTutorId && a.courseClassTutorId === item.courseClassTutorId) || (a.temporaryTutorId && a.temporaryTutorId === item.temporaryTutorId)));
 
   if (item.flowType === "Wages") {
     let isApplied = true;
