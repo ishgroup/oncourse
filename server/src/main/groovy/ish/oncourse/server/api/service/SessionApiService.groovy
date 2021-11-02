@@ -137,7 +137,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         try {
             save(context)
         } catch (ValidationException e) {
-            if (validateOnly.get() && courseClass == null && e.validationResult?.failures?.find {it.description == "\"$Session.COURSE_CLASS.name\"  is required.".toString() || "\"$TutorAttendance.COURSE_CLASS_TUTOR.name\" is required.".toString() }) {
+            if (validateOnly.get() && courseClass == null && e.validationResult?.failures?.find {it.description == "\"$Session.COURSE_CLASS.name\"  is required.".toString() || "\"$TutorAttendance.COURSE_CLASS_TUTOR.name\"  is required.".toString() }) {
                 //Ignore class/tutorRole FK for validation of new record
             } else {
                 throw new RuntimeException("Can not save sessions: $dtoList", e)
