@@ -130,6 +130,7 @@ class Modules extends React.Component<any, any> {
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           noListTags
+          hideTitle
         />
       </div>
     );
