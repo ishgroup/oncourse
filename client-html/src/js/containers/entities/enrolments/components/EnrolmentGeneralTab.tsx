@@ -11,8 +11,6 @@ import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import {
   AssessmentClass,
   ClassFundingSource,
@@ -39,8 +37,6 @@ import {
 } from "../../../../common/utils/validation";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import { setSelectedContact } from "../../invoices/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
@@ -49,7 +45,8 @@ import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
@@ -67,6 +64,7 @@ interface Props extends Partial<EditViewProps> {
   tags?: Tag[];
   setSelectedContact?: AnyArgFunction;
   gradingTypes?: GradingType[];
+  isScrolling?: boolean;
 }
 
 const EnrolmentGeneralTab: React.FC<Props> = props => {
@@ -80,12 +78,9 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     dispatch,
     setSelectedContact,
     contracts,
-    manualLink,
-    rootEntity,
-    onCloseClick,
-    invalid,
     dirty,
-    gradingTypes
+    gradingTypes,
+    isScrolling
   } = props;
 
   const onContactChange = useCallback(
@@ -149,31 +144,11 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
   return (
     <>
       {twoColumn && (
-        <CustomAppBar noDrawer>
-          <div className="flex-fill">
-            <Typography className="appHeaderFontSize" color="inherit">
-              {defaultContactName(values.studentName)}
-            </Typography>
-          </div>
-          <div>
-            {manualLink && (
-              <AppBarHelpMenu
-                created={values ? new Date(values.createdOn) : null}
-                modified={values ? new Date(values.modifiedOn) : null}
-                auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                manualUrl={manualLink}
-              />
-            )}
-
-            <Button onClick={onCloseClick} className="closeAppBarButton">
-              Close
-            </Button>
-            <FormSubmitButton
-              disabled={(!isNew && !dirty)}
-              invalid={invalid}
-            />
-          </div>
-        </CustomAppBar>
+        <FullScreenStickyHeader
+          isScrolling={isScrolling}
+          twoColumn={twoColumn}
+          title={defaultContactName(values.studentName)}
+        />
       )}
       <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
