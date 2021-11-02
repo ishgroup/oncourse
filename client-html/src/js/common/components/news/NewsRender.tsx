@@ -177,7 +177,7 @@ const NewsRender = props => {
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
-  const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn, Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   const [postsForRender, setPostsForRender] = useState([]);
 
