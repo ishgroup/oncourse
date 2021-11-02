@@ -47,7 +47,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
 
   return (
     <div className="p-3">
-      <Uneditable value={values.subject} label="Subject" />
+      {!twoColumn && (<Uneditable value={values.subject} label="Subject" />)}
       <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
