@@ -67,6 +67,9 @@ class SessionValidator {
         List<SessionWarningDTO> result = []
         ObjectContext context = cayenneService.newContext
         sessions = sessions.findAll {it.end.isAfter(LocalDateTime.now()) }
+        if (sessions.empty) {
+            return result
+        }
         Course course = courseDao.getById(context, sessions[0].courseId)
         List<UnavailableRule> courseUnavailableRules = course.unavailableRuleRelations*.rule
         List<UnavailableRule> holidays = unavailableRuleDao.getHolidays(context)
