@@ -188,7 +188,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           columnSpacing={3}
           container
           item
-          xs={twoColumn ? 10 : 12}
+          xs={avatar ? 10 : 12}
           className={clsx("relative overflow-hidden align-items-center")}
           style={{ minHeight: `${titleGap}px` }}
         >
@@ -202,7 +202,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               variant="h5"
               display="block"
               component="div"
-              className={clsx(!twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize", { [classes.titleTextAlternate]: showTitleOnly })}
+              className={clsx("w-100",
+                !twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize", { [classes.titleTextAlternate]: showTitleOnly })}
             >
               {title}
             </Typography>
