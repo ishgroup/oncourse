@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <script>
-    const params = new URLSearchParams(decodeURIComponent(window.location.search))ж
+    const params = new URLSearchParams(decodeURIComponent(window.location.search));
     const decodedState = decodeURI(params.get("state"));
     let codeSymbol = decodedState.indexOf("?") !== -1 ? "&" : "?";
     window.open(decodedState + codeSymbol + "code=" + params.get("code"), "_self");
