@@ -66,7 +66,7 @@ class SessionValidator {
     List<SessionWarningDTO> validate(List<SessionDTO> sessions, Long classId) {
         List<SessionWarningDTO> result = []
         ObjectContext context = cayenneService.newContext
-
+        sessions = sessions.findAll {it.end.isAfter(LocalDateTime.now()) }
         Course course = courseDao.getById(context, sessions[0].courseId)
         List<UnavailableRule> courseUnavailableRules = course.unavailableRuleRelations*.rule
         List<UnavailableRule> holidays = unavailableRuleDao.getHolidays(context)
@@ -143,10 +143,7 @@ class SessionValidator {
 
     private List<SessionWarningDTO> validateSession(SessionDTO sessionDto, Date sessionStart, Date  sessionEnd, ObjectContext context, Long classId) {
         List<SessionWarningDTO> sessionWarning = []
-
-        if (sessionDto.end.isBefore(LocalDateTime.now())) {
-            return sessionWarning
-        }
+        
 
         sessionDto.tutorAttendances.each { ta ->
             Contact contact = contactDao.getById(context, ta.contactId)
