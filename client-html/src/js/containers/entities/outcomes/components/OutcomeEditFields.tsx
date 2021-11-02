@@ -119,10 +119,6 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     alignItems: "center",
     height: "40px",
   },
-  deleteIcon: {
-    padding: theme.spacing(0.5),
-    marginTop: theme.spacing(1)
-  },
   chip: {
     minWidth: "8em",
     height: "26px",
@@ -220,7 +216,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const today = new Date();
 
   return (
-    <Grid container columnSpacing={3} className={className}>
+    <Grid container columnSpacing={3} rowSpacing={3} className={className}>
       {!twoColumn && (
         <Grid item xs={12}>
           <Uneditable
@@ -230,72 +226,82 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           />
         </Grid>
       )}
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="remoteDataSearchSelect"
-          name={getFieldName("moduleCode")}
-          label="Module code"
-          entity="Module"
-          selectValueMark="nationalCode"
-          selectLabelMark="nationalCode"
-          defaultDisplayValue={values && values.moduleCode}
-          labelAdornment={(
-            <LinkAdornment
-              linkHandler={openModuleLink}
-              link={values && values.moduleId}
-              disabled={values && !values.moduleId}
-            />
-          )}
-          onInnerValueChange={onModuleCodeChange}
-          disabled={values && values.hasCertificate}
-          allowEmpty
-          fullWidth
-        />
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Module"
-          name={getFieldName("moduleName")}
-          label="Module name"
-          selectValueMark="title"
-          selectLabelMark="title"
-          defaultDisplayValue={values && values.moduleName}
-          labelAdornment={(
-            <LinkAdornment
-              linkHandler={openModuleLink}
-              link={values && values.moduleId}
-              disabled={values && !values.moduleId}
-            />
-          )}
-          onInnerValueChange={onModuleNameChange}
-          allowEmpty
-          disabled={values && values.hasCertificate}
-          fullWidth
-        />
-        <FormField
-          type="select"
-          name={getFieldName("deliveryMode")}
-          label="Delivery mode"
-          items={deliveryModeValues}
-          fullWidth
-        />
-        <FormField
-          type="number"
-          name={getFieldName("reportableHours")}
-          label="Reportable hours"
-          normalize={normalizeNumberToZero}
-        />
-        <FormField
-          type="select"
-          name={getFieldName("fundingSource")}
-          label="Funding source"
-          items={fundingSourceValues}
-          fullWidth
-        />
+      <Grid container item xs={twoColumn ? 4 : 12}>
+        <Grid item xs={12}>
+          <FormField
+            type="remoteDataSearchSelect"
+            name={getFieldName("moduleCode")}
+            label="Module code"
+            entity="Module"
+            selectValueMark="nationalCode"
+            selectLabelMark="nationalCode"
+            defaultDisplayValue={values && values.moduleCode}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openModuleLink}
+                link={values && values.moduleId}
+                disabled={values && !values.moduleId}
+              />
+            )}
+            onInnerValueChange={onModuleCodeChange}
+            disabled={values && values.hasCertificate}
+            allowEmpty
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Module"
+            name={getFieldName("moduleName")}
+            label="Module name"
+            selectValueMark="title"
+            selectLabelMark="title"
+            defaultDisplayValue={values && values.moduleName}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openModuleLink}
+                link={values && values.moduleId}
+                disabled={values && !values.moduleId}
+              />
+            )}
+            onInnerValueChange={onModuleNameChange}
+            allowEmpty
+            disabled={values && values.hasCertificate}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="select"
+            name={getFieldName("deliveryMode")}
+            label="Delivery mode"
+            items={deliveryModeValues}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="number"
+            name={getFieldName("reportableHours")}
+            label="Reportable hours"
+            normalize={normalizeNumberToZero}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="select"
+            name={getFieldName("fundingSource")}
+            label="Funding source"
+            items={fundingSourceValues}
+            fullWidth
+          />
+        </Grid>
       </Grid>
 
       <Grid item xs={twoColumn ? 8 : 12}>
         <Card className={classes.card}>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={3}>
             <Grid item xs={12}>
               <div className="heading">OUTCOME PROGRESSION</div>
             </Grid>
@@ -310,154 +316,162 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       </Grid>
 
       {priorLearningEditView ? (
-        <Grid container columnSpacing={3} item={true} xs={12}>
-          <Grid item xs={twoColumn ? 4 : 12} className="textField">
-            <div>
-              <FormField
-                type="date"
-                name={getFieldName("startDate")}
-                label="Start date"
-                validate={validateStartDate}
-                listSpacing={false}
-                placeHolder="Leave empty to calculate date from class"
-              />
-            </div>
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12} className="textField">
-            <div>
-              <FormField
-                type="date"
-                name={getFieldName("endDate")}
-                label="End date"
-                validate={validateEndtDate}
-                listSpacing={false}
-                placeholder="Leave empty to calculate date from class"
-              />
-            </div>
+        <Grid item xs={12}>
+          <Grid container columnSpacing={3} rowSpacing={3} item xs={12}>
+            <Grid item xs={twoColumn ? 4 : 12} className="textField">
+              <div>
+                <FormField
+                  type="date"
+                  name={getFieldName("startDate")}
+                  label="Start date"
+                  validate={validateStartDate}
+                  listSpacing={false}
+                  placeHolder="Leave empty to calculate date from class"
+                />
+              </div>
+            </Grid>
+            <Grid item xs={twoColumn ? 4 : 12} className="textField">
+              <div>
+                <FormField
+                  type="date"
+                  name={getFieldName("endDate")}
+                  label="End date"
+                  validate={validateEndtDate}
+                  listSpacing={false}
+                  placeholder="Leave empty to calculate date from class"
+                />
+              </div>
+            </Grid>
           </Grid>
         </Grid>
       ) : (
-        <Card className={classes.card}>
-          <Grid container columnSpacing={3}>
-            <Grid xs={twoColumn ? 3 : 12}>
-              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
-              <Tooltip
-                placement="top-start"
-                title="First session related to this outcome"
-              >
-                <div>
-                  <FormField
-                    type="date"
-                    name={getFieldName("trainingPlanStartDate")}
-                    label="Start date"
-                    disabled
-                  />
-                </div>
-              </Tooltip>
-              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
-                <div>
-                  <FormField
-                    type="date"
-                    name={getFieldName("trainingPlanEndDate")}
-                    label="End date"
-                    disabled
-                  />
-                </div>
-              </Tooltip>
-            </Grid>
-            <Grid xs={twoColumn ? 3 : 12}>
-              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
-              <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
-                <div>
-                  {values.actualStartDate && new Date(values.actualStartDate) > today
-                    ? <Uneditable label="Start date" value="Not yet started" />
-                    : (
-                      <FormField
-                        type="date"
-                        name={getFieldName("actualStartDate")}
-                        label="Start date"
-                        disabled
-                      />
-                    )}
-                </div>
-              </Tooltip>
-              <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
-                <div>
-                  {values.actualEndDate && new Date(values.actualEndDate) > today
-                    ? <Uneditable label="End date" value="Not yet finished" />
-                    : (
-                      <FormField
-                        type="date"
-                        name={getFieldName("actualEndDate")}
-                        label="End date"
-                        disabled
-                      />
-                    )}
-                </div>
-              </Tooltip>
-            </Grid>
-            <Grid xs={twoColumn ? 3 : 12}>
-              <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
-              <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
-                {values.startDateOverridden ? (
-                  <>
+        <Grid item xs={12}>
+          <Card className={classes.card}>
+            <Grid container columnSpacing={3} rowSpacing={3} className="p-3 pb-0">
+              <Grid xs={twoColumn ? 3 : 12}>
+                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
+                <Tooltip
+                  placement="top-start"
+                  title="First session related to this outcome"
+                >
+                  <div className="pb-2">
                     <FormField
                       type="date"
-                      name={getFieldName("startDate")}
-                      validate={validateStartDate}
-                      disabled={!isPriorLearningBinded && !values.startDateOverridden}
-                      placeholder={(!isPriorLearningBinded && !values.startDateOverridden)
-                        ? null : "Leave empty to calculate date from class"}
+                      name={getFieldName("trainingPlanStartDate")}
                       label="Start date"
+                      disabled
                     />
-                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockStartDate}>
-                      <DeleteIcon fontSize="inherit" color="disabled" />
-                    </IconButton>
-                  </>
-                ) : (
-                  <div>
-                    <p className={classes.label}>
-                      Start date
-                    </p>
-                    <div className={classes.buttonWrapper}>
-                      <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
-                    </div>
                   </div>
-                )}
-              </Grid>
-              <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
-                {values.endDateOverridden ? (
-                  <>
+                </Tooltip>
+                <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                  <div className="pb-2">
                     <FormField
                       type="date"
-                      name={getFieldName("endDate")}
-                      validate={validateEndtDate}
-                      disabled={!isPriorLearningBinded && !values.endDateOverridden}
-                      placeholder={(!isPriorLearningBinded && !values.endDateOverridden)
-                        ? null : "Leave empty to calculate date from class"}
+                      name={getFieldName("trainingPlanEndDate")}
                       label="End date"
+                      disabled
                     />
-                    <IconButton className={classes.deleteIcon} size="small" onClick={onLockEndDate}>
-                      <DeleteIcon fontSize="inherit" color="disabled" />
-                    </IconButton>
-                  </>
-                ) : (
-                  <div>
-                    <p className={classes.label}>
-                      End date
-                    </p>
-                    <div className={classes.buttonWrapper}>
-                      <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
-                    </div>
                   </div>
-                )}
+                </Tooltip>
+              </Grid>
+              <Grid xs={twoColumn ? 3 : 12}>
+                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
+                <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
+                  <div className="pb-2">
+                    {values.actualStartDate && new Date(values.actualStartDate) > today
+                      ? <Uneditable label="Start date" value="Not yet started" />
+                      : (
+                        <FormField
+                          type="date"
+                          name={getFieldName("actualStartDate")}
+                          label="Start date"
+                          disabled
+                        />
+                      )}
+                  </div>
+                </Tooltip>
+                <Tooltip placement="top-start" title="Last session or assessment due date related to this outcome">
+                  <div className="pb-2">
+                    {values.actualEndDate && new Date(values.actualEndDate) > today
+                      ? <Uneditable label="End date" value="Not yet finished" />
+                      : (
+                        <FormField
+                          type="date"
+                          name={getFieldName("actualEndDate")}
+                          label="End date"
+                          disabled
+                        />
+                      )}
+                  </div>
+                </Tooltip>
+              </Grid>
+              <Grid xs={twoColumn ? 3 : 12}>
+                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
+                <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                  <div className="pb-2">
+                    {values.startDateOverridden ? (
+                      <div className="d-flex align-items-start">
+                        <FormField
+                          type="date"
+                          name={getFieldName("startDate")}
+                          validate={validateStartDate}
+                          disabled={!isPriorLearningBinded && !values.startDateOverridden}
+                          placeholder={(!isPriorLearningBinded && !values.startDateOverridden)
+                            ? null : "Leave empty to calculate date from class"}
+                          label="Start date"
+                        />
+                        <IconButton size="small" onClick={onLockStartDate}>
+                          <DeleteIcon fontSize="inherit" color="disabled" />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <>
+                        <p className={classes.label}>
+                          Start date
+                        </p>
+                        <div className={classes.buttonWrapper}>
+                          <Chip label="Override start date" onClick={onLockStartDate} className={classes.chip} />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </Grid>
+                <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                  <div className="pb-2">
+                    {values.endDateOverridden ? (
+                      <div className="d-flex align-items-start">
+                        <FormField
+                          type="date"
+                          name={getFieldName("endDate")}
+                          validate={validateEndtDate}
+                          disabled={!isPriorLearningBinded && !values.endDateOverridden}
+                          placeholder={(!isPriorLearningBinded && !values.endDateOverridden)
+                            ? null : "Leave empty to calculate date from class"}
+                          label="End date"
+                        />
+                        <IconButton size="small" onClick={onLockEndDate}>
+                          <DeleteIcon fontSize="inherit" color="disabled" />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <>
+                        <p className={classes.label}>
+                          End date
+                        </p>
+                        <div className={classes.buttonWrapper}>
+                          <Chip label="Override end date" onClick={onLockEndDate} className={classes.chip} />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Card>
+          </Card>
+        </Grid>
       )}
       <Grid item xs={12}>
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="select"
@@ -489,7 +503,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="text"
