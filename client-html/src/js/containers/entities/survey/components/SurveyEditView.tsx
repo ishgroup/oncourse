@@ -63,7 +63,7 @@ const SurveyEditView = (props: Props) => {
   }, [classId]);
 
   return values ? (
-    <Grid container columnSpacing={3} className={classes.root} alignContent="flex-start">
+    <Grid container columnSpacing={3} rowSpacing={3} className={classes.root} alignContent="flex-start" alignItems="center">
       <Grid item xs={12}>
         <Uneditable
           value={values.studentName}
@@ -71,21 +71,21 @@ const SurveyEditView = (props: Props) => {
           url={`/contact/${values.studentContactId}`}
         />
       </Grid>
-      <Grid container columnSpacing={3} className="mw-800 pb-2" spacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={3} className="p-3">
         <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
           <Grid item>
             <Field name="netPromoterScore" label="Net Promoter Score" max={10} component={Score} />
           </Grid>
         </Grid>
         <Grid item xs={twoColumn ? 8 : 12}>
-          <Grid container columnSpacing={3} spacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
-            <Grid item xs={twoColumn ? "auto" : 12}>
+          <Grid container columnSpacing={3} rowSpacing={3} wrap={twoColumn ? "nowrap" : "wrap"}>
+            <Grid item xs={twoColumn ? 8 : 12}>
               <Field name="courseScore" label="Course" component={Score} />
               <Link href="#" onClick={openClass} color="textSecondary">
                 {values.className}
               </Link>
             </Grid>
-            <Grid item xs={twoColumn ? "auto" : 12}>
+            <Grid item xs={twoColumn ? 8 : 12}>
               <Field name="venueScore" label="Venue" component={Score} />
               <Typography variant="body2" component="div">
                 <Link href="#" className="pr-1" onClick={openSite} color="textSecondary">
@@ -96,7 +96,7 @@ const SurveyEditView = (props: Props) => {
                 </Link>
               </Typography>
             </Grid>
-            <Grid item xs={twoColumn ? "auto" : 12}>
+            <Grid item xs={twoColumn ? 8 : 12}>
               <Field name="tutorScore" label="Tutor" component={Score} />
               {Object.keys(values.tutors).map(id => (
                 <Link key={id} href={`/contact/${id}`} target="_blank" color="textSecondary" className="pr-1">
