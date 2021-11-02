@@ -10,6 +10,8 @@ import { ModuleType } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const moduleTypes = Object.keys(ModuleType).map(key => ({ value: ModuleType[key], label: key }));
 
@@ -30,7 +32,7 @@ const normalizeNominalHours = value => (value || value === 0 ? Number(value) : n
 
 const ModulesEditView = (props: any) => {
   const {
-    isNew, values, updateDeleteCondition, twoColumn
+    isNew, values, updateDeleteCondition, twoColumn, isScrollingRoot
   } = props;
 
   const isCustom = values && values.isCustom === true;
@@ -45,18 +47,43 @@ const ModulesEditView = (props: any) => {
     <Grid container columnSpacing={3} className="p-3 pt-1">
       <Grid item lg={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12} xs={12}>
         <Grid container columnSpacing={3}>
+          {twoColumn && (
+            <FullScreenStickyHeader
+              isScrolling={isScrollingRoot}
+              twoColumn={twoColumn}
+              title={(
+                <span className="d-block text-nowrap text-truncate">
+                  {values && values.title}
+                </span>
+              )}
+              fields={(
+                <Grid item xs={twoColumn ? 6 : 12}>
+                  <FormField
+                    type="text"
+                    disabled={isDisabled}
+                    name="title"
+                    label="Title"
+                    validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+                  />
+                </Grid>
+              )}
+              warpperGap={0}
+            />
+          )}
           <Grid item xs={12} className="d-flex">
             <div className="heading mt-2 mb-1">AVETMISS DATA</div>
           </Grid>
 
           <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="text"
-              disabled={isDisabled}
-              name="title"
-              label="Title"
-              validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
-            />
+            {!twoColumn && (
+              <FormField
+                type="text"
+                disabled={isDisabled}
+                name="title"
+                label="Title"
+                validate={isNew || isCustom ? validateSingleMandatoryField : undefined}
+              />
+            )}
             <FormField
               type="text"
               disabled={!isNew}
