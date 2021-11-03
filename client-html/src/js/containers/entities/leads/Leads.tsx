@@ -142,6 +142,7 @@ const Leads = props => {
         filterGroupsInitial={filterGroups}
         CogwheelAdornment={LeadCogWheel}
         preformatBeforeSubmit={preformatBeforeSubmit}
+        hideTitle
       />
     </div>
   );
