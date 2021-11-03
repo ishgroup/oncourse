@@ -664,8 +664,9 @@ const CourseClassTimetableTab: React.FC<Props> = ({
       if (sessionTimeChanged) {
         session.tutorAttendances = session.tutorAttendances.map(ta => ({
             ...ta,
-            ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), new Date(session.start), new Date(session.end))
-          }));
+          start: session.start,
+          end: session.end
+        }));
       }
 
       session.tutors = session.tutorAttendances.map(ta => ta.contactName);

@@ -29,7 +29,6 @@ import { openRoomLink } from "../../../rooms/utils";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
-import { getShiftedTutorAttendanseDates } from "../../utils";
 
 interface Props {
   form: string;
@@ -91,28 +90,33 @@ const CourseClassSessionFields: React.FC<Props> = ({
     });
     return types;
   }, [warnings]);
+  
+  const shiftSessionDates = (durationMinutes: number, sessionStart: string) => {
+    const startDate = new Date(sessionStart);
+    const endDate = addMinutes(startDate, durationMinutes);
+
+    dispatch(
+      change(
+        form,
+        `sessions[${session.index}].end`,
+        endDate.toISOString()
+      )
+    );
+
+    const tutorAttendances = session.tutorAttendances.map(ta => ({
+      ...ta,
+      start: startDate.toISOString(),
+      end: endDate.toISOString()
+    }));
+
+    dispatch(
+      change(form, `sessions[${session.index}].tutorAttendances`, tutorAttendances)
+    );
+  };
 
   const onDurationChange = (durationMinutes: number) => {
-      const startDate = new Date(session.start);
-      const endDate = addMinutes(new Date(session.start), durationMinutes);
-
-      dispatch(
-        change(
-          form,
-          `sessions[${session.index}].end`,
-          endDate.toISOString()
-        )
-      );
-
-      const tutorAttendances = session.tutorAttendances.map(ta => ({
-          ...ta,
-          ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), startDate, endDate)
-        }));
-
-      dispatch(
-        change(form, `sessions[${session.index}].tutorAttendances`, tutorAttendances)
-      );
-    };
+    shiftSessionDates(durationMinutes, session.start);
+  };
 
   const durationValue = useMemo(() => {
     const startDate = new Date(session.start);
@@ -131,22 +135,10 @@ const CourseClassSessionFields: React.FC<Props> = ({
   const validateSessionEnd = useCallback(() => durationError, [durationError]);
 
   const onStartDateChange = (e, newStart) => {
-      if (newStart) {
-        const startDate = new Date(newStart);
-        const endDate = addMinutes(startDate, durationValue);
-        dispatch(
-          change(form, `sessions[${session.index}].end`, endDate.toISOString())
-        );
-        const tutorAttendances = session.tutorAttendances.map(ta => ({
-            ...ta,
-            ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), startDate, endDate)
-          }));
-
-        dispatch(
-          change(form, `sessions[${session.index}].tutorAttendances`, tutorAttendances)
-        );
-      }
-    };
+    if (newStart) {
+      shiftSessionDates(durationValue, newStart);
+    }
+  };
 
   const onRoomIdChange = useCallback(
     room => {
