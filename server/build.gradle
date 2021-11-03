@@ -27,10 +27,14 @@ configurations {
 	all*.exclude module: "hessian"
 }
 
-// compile everything with the groovy plugin which can handle mixed groovy and Java files
+
 sourceSets {
 	main {
 		groovy {
+			// compile everything with the groovy plugin which can handle mixed groovy and Java files
+			// We cannot remove next two lines because we compile everything as groovy. Without these
+			// lines we will compile this directories as java code, but in java section we clear java sources,
+			// so we will get error because of java classes not found in build directories.
 			srcDirs += 'src/main/java'
 			srcDirs += 'src/main/groovy'
 			srcDirs += "${buildDir}/generated-resources/antlr/java"
