@@ -15,7 +15,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
 
     Scenario: (+) Update Enrolment by admin
 
-        * def enrolmentToUpdate = {"id":2,"tags":[{"id":236}],"studentContactId":2,"studentName":"stud1","courseClassId":3,"courseClassName":"Course1 course1-3","confirmationStatus":"Do not send","eligibilityExemptionIndicator":true,"outcomeIdTrainingOrg":"qwe","studentIndustryANZSICCode":null,"vetClientID":"qwerty","vetFundingSourceStateID":"qwe","vetIsFullTime":true,"vetTrainingContractID":"qwerty","status":"Active","source":"office","relatedFundingSourceId":5,"studyReason":"To get a job","vetFeeExemptionType":"Yes (Y)","fundingSource":"Commonwealth - specific","associatedCourseIdentifier":"qwerty","vetInSchools":true,"suppressAvetmissExport":true,"vetPurchasingContractID":"qwerty","cricosConfirmation":"qwerty","vetFeeIndicator":true,"trainingPlanDeveloped":true,"feeHelpAmount":100,"invoicesCount":1,"outcomesCount":1,"feeStatus":"Restricted Access Arrangement","attendanceType":"Part-time attendance","creditOfferedValue":"qwer","creditUsedValue":"qwer","creditFOEId":"qwer","creditProvider":"qwer","creditProviderType":"TAFE","creditTotal":"Unit of study is NOT an RPL unit of study","creditType":"Other","creditLevel":"Certificate IV","documents":[{"id":201}],"customFields":{}}
+        * def enrolmentToUpdate = {"id":2,"studentLoanStatus":"Eligible","tags":[{"id":236}],"studentContactId":2,"studentName":"stud1","courseClassId":3,"courseClassName":"Course1 course1-3","confirmationStatus":"Do not send","eligibilityExemptionIndicator":true,"outcomeIdTrainingOrg":"qwe","studentIndustryANZSICCode":null,"vetClientID":"qwerty","vetFundingSourceStateID":"qwe","vetIsFullTime":true,"vetTrainingContractID":"qwerty","status":"Active","source":"office","relatedFundingSourceId":5,"studyReason":"To get a job","vetFeeExemptionType":"Yes (Y)","fundingSource":"Commonwealth - specific","associatedCourseIdentifier":"qwerty","vetInSchools":true,"suppressAvetmissExport":true,"vetPurchasingContractID":"qwerty","cricosConfirmation":"qwerty","vetFeeIndicator":true,"trainingPlanDeveloped":true,"feeHelpAmount":100,"invoicesCount":1,"outcomesCount":1,"feeStatus":"Restricted Access Arrangement","attendanceType":"Part-time attendance","creditOfferedValue":"qwer","creditUsedValue":"qwer","creditFOEId":"qwer","creditProvider":"qwer","creditProviderType":"TAFE","creditTotal":"Unit of study is NOT an RPL unit of study","creditType":"Other","creditLevel":"Certificate IV","documents":[{"id":201}],"customFields":{}}
 
         Given path ishPath + '/2'
         And request enrolmentToUpdate
@@ -29,6 +29,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         """
         {
         "id":2,
+        "studentLoanStatus":"Eligible",
         "tags":[{"id":236,"name":"enrolments 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "studentContactId":2,
         "studentName":"stud1",
@@ -95,7 +96,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         
 #       <--->
 
-        * def enrolmentToUpdate = {"id":2,"tags":[{"id":236}],"studentContactId":2,"studentName":"stud1","courseClassId":3,"courseClassName":"Course1 course1-3","confirmationStatus":"Do not send","eligibilityExemptionIndicator":true,"outcomeIdTrainingOrg":"qwe","studentIndustryANZSICCode":null,"vetClientID":"qwerty","vetFundingSourceStateID":"qwe","vetIsFullTime":true,"vetTrainingContractID":"qwerty","status":"Active","source":"office","relatedFundingSourceId":5,"studyReason":"To get a job","vetFeeExemptionType":"Yes (Y)","fundingSource":"Commonwealth - specific","associatedCourseIdentifier":"qwerty","vetInSchools":true,"suppressAvetmissExport":true,"vetPurchasingContractID":"qwerty","cricosConfirmation":"qwerty","vetFeeIndicator":true,"trainingPlanDeveloped":true,"feeHelpAmount":100,"invoicesCount":1,"outcomesCount":1,"feeStatus":"Restricted Access Arrangement","attendanceType":"Part-time attendance","creditOfferedValue":"qwer","creditUsedValue":"qwer","creditFOEId":"qwer","creditProvider":"qwer","creditProviderType":"TAFE","creditTotal":"Unit of study is NOT an RPL unit of study","creditType":"Other","creditLevel":"Certificate IV","documents":[{"id":201}],"customFields":{}}
+        * def enrolmentToUpdate = {"id":2,"studentLoanStatus":"Eligible","tags":[{"id":236}],"studentContactId":2,"studentName":"stud1","courseClassId":3,"courseClassName":"Course1 course1-3","confirmationStatus":"Do not send","eligibilityExemptionIndicator":true,"outcomeIdTrainingOrg":"qwe","studentIndustryANZSICCode":null,"vetClientID":"qwerty","vetFundingSourceStateID":"qwe","vetIsFullTime":true,"vetTrainingContractID":"qwerty","status":"Active","source":"office","relatedFundingSourceId":5,"studyReason":"To get a job","vetFeeExemptionType":"Yes (Y)","fundingSource":"Commonwealth - specific","associatedCourseIdentifier":"qwerty","vetInSchools":true,"suppressAvetmissExport":true,"vetPurchasingContractID":"qwerty","cricosConfirmation":"qwerty","vetFeeIndicator":true,"trainingPlanDeveloped":true,"feeHelpAmount":100,"invoicesCount":1,"outcomesCount":1,"feeStatus":"Restricted Access Arrangement","attendanceType":"Part-time attendance","creditOfferedValue":"qwer","creditUsedValue":"qwer","creditFOEId":"qwer","creditProvider":"qwer","creditProviderType":"TAFE","creditTotal":"Unit of study is NOT an RPL unit of study","creditType":"Other","creditLevel":"Certificate IV","documents":[{"id":201}],"customFields":{}}
 
         Given path ishPath + '/2'
         And request enrolmentToUpdate
@@ -109,6 +110,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         """
         {
         "id":2,
+        "studentLoanStatus":"Eligible",
         "tags":[{"id":236,"name":"enrolments 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "studentContactId":2,
         "studentName":"stud1",
