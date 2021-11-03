@@ -91,6 +91,7 @@ class WaitingLists extends React.Component<any, any> {
           onSave={onSave}
           findRelated={findRelatedGroup}
           CogwheelAdornment={WaitingListCogWheel}
+          hideTitle
         />
       </div>
     );
