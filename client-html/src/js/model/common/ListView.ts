@@ -6,7 +6,9 @@
 import React, { ReactElement } from "react";
 import { InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
-import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
+import {
+  DataResponse, EmailTemplate, Filter, Script, SearchQuery
+} from "@api/model";
 import { MenuTag } from "../tags";
 import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
@@ -126,6 +128,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   toogleFullScreenEditView?: any;
   onEditViewScroll?: (e: any, isScrolling?: boolean) => void;
   isScrollingRoot?: boolean;
+  isScrolling?: boolean;
 }
 
 export type ListAqlMenuItemsRenderer = (content: React.ReactNode, rowData: any, searchValue: string) => void;
