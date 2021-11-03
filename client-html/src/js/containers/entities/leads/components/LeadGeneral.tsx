@@ -14,7 +14,6 @@ import Grid from "@mui/material/Grid";
 import {
  Lead, LeadStatus, Sale, Tag, User
 } from "@api/model";
-import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -28,15 +27,14 @@ import {
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getProductAqlType } from "../../sales/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
@@ -50,6 +48,7 @@ const useStyles = makeAppStyles()(() => ({
 interface Props extends EditViewProps<Lead> {
   tags?: Tag[];
   users?: User[];
+  isScrolling?: boolean;
 }
 
 const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relatedSellables: Sale[], places: number) => {
@@ -103,11 +102,8 @@ const LeadGeneral = (props: Props) => {
     submitSucceeded,
     twoColumn,
     isNew,
-    manualLink,
-    onCloseClick,
-    dirty,
-    invalid,
-    users
+    users,
+    isScrolling,
   } = props;
 
   const { classes } = useStyles();
@@ -171,30 +167,23 @@ const LeadGeneral = (props: Props) => {
   return (
     <>
       {twoColumn && (
-        <CustomAppBar>
-          <Grid container columnSpacing={3} className="flex-fill">
-            <Grid item xs={6}>
-              {contactIdField(true)}
-            </Grid>
-          </Grid>
-          <div>
-            {manualLink && (
-              <AppBarHelpMenu
-                created={values?.createdOn ? new Date(values.createdOn) : null}
-                modified={values?.modifiedOn ? new Date(values.modifiedOn) : null}
-                auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                manualUrl={manualLink}
+        <FullScreenStickyHeader
+          isScrolling={isScrolling}
+          twoColumn={twoColumn}
+          title={(
+            <div className="centeredFlex">
+              <span className="d-none">{contactIdField(true)}</span>
+              <span className="mr-1">
+                {values && defaultContactName(values.contactName)}
+              </span>
+              <LinkAdornment
+                linkHandler={() => openContactLink(values.contactId)}
+                link={values.contactId}
+                className="appHeaderFontSize"
               />
-            )}
-            <Button onClick={onCloseClick} className="closeAppBarButton">
-              Close
-            </Button>
-            <FormSubmitButton
-              disabled={(!isNew && !dirty)}
-              invalid={invalid}
-            />
-          </div>
-        </CustomAppBar>
+            </div>
+          )}
+        />
       )}
       <Grid container columnSpacing={3} className="generalRoot mt-2">
         {!twoColumn && (
