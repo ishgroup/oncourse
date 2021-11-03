@@ -11,14 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set version
-        run: |
-            version="${GITHUB_REF##*v}"
-            echo $version
-            echo "::set-env name=version::version"
-        env:
-          VERSION: ${{ github.version }}
-
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -39,11 +31,11 @@ jobs:
           restore-keys: 11-
 
       - name: Build artifacts
-        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${{ env.VERSION }}
+        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${GITHUB_REF}
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "server/build/distributions/onCourseServer-*.zip,server/build/distributions/onCourseServer-*.sha256"
-          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{ env.VERSION }}/release-notes.html"
+          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${GITHUB_REF}/release-notes.html"
           token: ${{ secrets.GITHUB_TOKEN }}

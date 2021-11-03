@@ -57,6 +57,7 @@ subprojects {
 	sourceCompatibility = 11
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
+	version = version.replace('v','') // remove the leading v from the version
 
 	dependencies {
 		implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
