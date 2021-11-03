@@ -38,14 +38,11 @@ import {
 import Button from "@mui/material/Button";
 import { addDays, format } from "date-fns";
 import { Document, DocumentVersion } from "@api/model";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import SimpleTagList from "../../../../common/components/form/simpleTagListComponent/SimpleTagList";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
 import {
   getLatestDocumentItem,
@@ -56,6 +53,8 @@ import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
 import { showMessage } from "../../../../common/actions";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
 
@@ -152,12 +151,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     hovered = true,
     form,
     dispatch,
-    rootEntity,
-    manualLink,
-    onCloseClick,
-    isNew,
-    dirty,
-    invalid
+    isScrollingRoot,
   } = props;
 
   const fileRef = useRef<any>();
@@ -206,7 +200,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     <FormField
       name="name"
       label="Name"
-      type={twoColumn ? "headerText" : "text"}
       required
       fullWidth
     />
@@ -220,33 +213,22 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         </div>
       )
       : (
-        <div className={twoColumn ? "appBarContainer" : "h-100"}>
+        <div className={twoColumn ? "" : "h-100"}>
           {twoColumn && (
-            <CustomAppBar>
-              <Grid container columnSpacing={3} className="flex-fill">
-                <Grid item xs={6} className="pr-2">
-                  {headerField}
+            <FullScreenStickyHeader
+              isScrolling={isScrollingRoot}
+              twoColumn={twoColumn}
+              title={values && values.name}
+              fields={(
+                <Grid container>
+                  <Grid item xs={8}>
+                    {headerField}
+                  </Grid>
                 </Grid>
-              </Grid>
-              <div>
-                {manualLink && (
-                  <AppBarHelpMenu
-                    created={values ? new Date(values.createdOn) : null}
-                    modified={values ? new Date(values.modifiedOn) : null}
-                    auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                    manualUrl={manualLink}
-                  />
-                )}
-
-                <Button onClick={onCloseClick} className="closeAppBarButton">
-                  Close
-                </Button>
-                <FormSubmitButton
-                  disabled={(!isNew && !dirty)}
-                  invalid={invalid}
-                />
-              </div>
-            </CustomAppBar>
+              )}
+              warpperGap={0}
+              truncateTitle
+            />
           )}
 
           <Grid container columnSpacing={3} className="p-3 relative">
