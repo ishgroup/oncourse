@@ -114,10 +114,6 @@ const CourseClassSessionFields: React.FC<Props> = ({
     );
   };
 
-  const onDurationChange = (durationMinutes: number) => {
-    shiftSessionDates(durationMinutes, session.start);
-  };
-
   const durationValue = useMemo(() => {
     const startDate = new Date(session.start);
     const endDate = new Date(session.end);
@@ -134,10 +130,18 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
   const validateSessionEnd = useCallback(() => durationError, [durationError]);
 
+  const onDurationChange = (durationMinutes: number) => {
+    shiftSessionDates(durationMinutes, session.start);
+  };
+
   const onStartDateChange = (e, newStart) => {
     if (newStart) {
       shiftSessionDates(durationValue, newStart);
     }
+  };
+
+  const onEndDateChange = (e, newEnd) => {
+    shiftSessionDates(differenceInMinutes(new Date(newEnd), new Date(session.start)), session.start);
   };
 
   const onRoomIdChange = useCallback(
@@ -210,6 +214,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
         <FormField
           name={`sessions[${session.index}].end`}
           timezone={session.siteTimezone}
+          onChange={onEndDateChange}
           type="time"
           label="End"
         />
