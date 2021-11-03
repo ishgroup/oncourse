@@ -568,7 +568,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         endDate.setSeconds(0, 0);
         session.end = endDate.toISOString();
 
-        actualPayableDurationMinutes = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
+        actualPayableDurationMinutes = bulkValue.payableDuration;
       } else if (
         (bulkValue.startChecked && bulkValue.durationChecked)
         && bulkValue.start !== "" && bulkValue.duration !== 0
@@ -597,7 +597,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         const endDate = addMinutes(startDate, durationValue);
         endDate.setSeconds(0, 0);
         session.end = endDate.toISOString();
-        actualPayableDurationMinutes = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
+        actualPayableDurationMinutes = bulkValue.payableDuration;
       } else if (
         (bulkValue.durationChecked && bulkValue.payableDurationChecked)
         && bulkValue.duration !== 0 && bulkValue.payableDuration !== 0
@@ -611,7 +611,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         endDate.setSeconds(0, 0);
         session.end = endDate.toISOString();
 
-        actualPayableDurationMinutes = differenceInMinutes(endDate, startDate) - bulkValue.payableDuration;
+        actualPayableDurationMinutes = bulkValue.payableDuration;
       } else if (bulkValue.startChecked && bulkValue.start !== "") {
         sessionTimeChanged = true;
 
@@ -627,7 +627,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         sessionTimeChanged = true;
         session.end = addMinutes(new Date(session.start), bulkValue.duration).toISOString();
       } else if (bulkValue.payableDurationChecked && bulkValue.payableDuration !== 0) {
-        actualPayableDurationMinutes = durationValue - bulkValue.payableDuration;
+        actualPayableDurationMinutes = bulkValue.payableDuration;
       }
       if (bulkValue.moveForwardChecked && bulkValue.moveForward !== "" && bulkValue.moveForward !== "0") {
         sessionTimeChanged = true;
