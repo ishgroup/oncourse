@@ -15,6 +15,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
+import NewsRender from "../news/NewsRender";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -188,6 +189,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
+            <NewsRender page={itemProps?.rootEntity} />
             {items.map((i, tabIndex) => (
               <div id={i.label} key={i.label} ref={setScrollNode}>
                 {i.component({

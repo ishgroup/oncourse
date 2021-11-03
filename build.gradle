@@ -33,15 +33,13 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.39.0' // adds the task 'dependencyUpdates -Drevision=release'
 	id 'com.github.node-gradle.node' version '3.0.1' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
+	id 'idea'
+	id 'org.barfuin.gradle.taskinfo' version '1.2.0' // adds the task 'tiTree [some task]' and the task 'tiOrder [some task]'
 
-	// adds the task 'tiTree [some task]'
-	// adds the task 'tiOrder [some task]'
-	id 'org.barfuin.gradle.taskinfo' version '1.2.0'
-
-	id 'application'
+	id 'java'
+	id 'groovy'
+	id 'maven-publish'
 }
-
-apply plugin: 'idea'
 
 subprojects {
 	repositories {
@@ -52,8 +50,8 @@ subprojects {
 		}
 	}
 
-	apply plugin: 'java-library'
 	apply plugin: 'java'
+	apply plugin: 'groovy'
 	apply plugin: 'maven-publish'
 
 	sourceCompatibility = 11
@@ -61,20 +59,20 @@ subprojects {
 	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
 
 	dependencies {
-		api "org.apache.logging.log4j:log4j-api:$log4j2Version"
-		api "org.apache.logging.log4j:log4j-core:$log4j2Version"
-		api "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
-		api "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+		implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
+		implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
+		implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+		implementation "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
 
-		api "org.codehaus.groovy:groovy:$groovyVersion"
-		api "org.codehaus.groovy:groovy-datetime:$groovyVersion"
-		api "org.codehaus.groovy:groovy-json:$groovyVersion"
-		api "org.codehaus.groovy:groovy-jsr223:$groovyVersion"
-		api "org.codehaus.groovy:groovy-macro:$groovyVersion"
-		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
-		api "org.codehaus.groovy:groovy-templates:$groovyVersion"
-		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
-		api "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-datetime:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-json:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-jsr223:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-macro:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-xml:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-templates:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-xml:$groovyVersion"
+		implementation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 
 		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
@@ -86,7 +84,7 @@ subprojects {
 		testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
 		testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
 	}
-	// uncomment when dbunit is detached from junit
+// uncomment when dbunit is detached from junit
 //	configurations {
 //		testImplementation.exclude group: 'junit' // exclude junit4
 //	}
