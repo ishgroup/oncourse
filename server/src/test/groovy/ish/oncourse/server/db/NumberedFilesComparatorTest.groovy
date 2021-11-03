@@ -16,14 +16,14 @@ class NumberedFilesComparatorTest {
     
     
     @Test
-    public test() {
+    void test() {
         List<String> sortedList = ['database/quartz.yml','database/105.upgrade.yml','database/replication.yml',
                                    'database/01.initial.schema.yml', 'database/45.upgrade.yml']
-                .sort(new NumberedFilesComparator())
+        sortedList.sort(new NumberedFilesComparator())
         assertEquals('database/01.initial.schema.yml', sortedList[0])
         assertEquals('database/45.upgrade.yml', sortedList[1])
-        assertEquals('database/105.upgrade.ym', sortedList[2])
-        assertEquals('database/replication.yml', sortedList[3])
-        assertEquals('database/quartz.yml', sortedList[4])
+        assertEquals('database/105.upgrade.yml', sortedList[2])
+        assertEquals('database/quartz.yml', sortedList[3])
+        assertEquals('database/replication.yml', sortedList[4])
     }
 }
