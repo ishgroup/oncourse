@@ -31,6 +31,8 @@ configurations {
 sourceSets {
 	main {
 		groovy {
+			srcDirs += 'src/main/java'
+			srcDirs += 'src/main/groovy'
 			srcDirs += "${buildDir}/generated-resources/antlr/java"
 			srcDirs += "${buildDir}/generated-resources/cayenne/java"
 		}
