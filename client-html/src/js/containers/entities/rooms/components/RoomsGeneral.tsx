@@ -19,6 +19,8 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { openSiteLink } from "../../sites/utils";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
 
@@ -60,7 +62,8 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       form,
       tags,
       sites,
-      twoColumn
+      twoColumn,
+      isScrolling,
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
@@ -69,12 +72,20 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       <>
         <Grid container columnSpacing={3} className="p-3">
           <Grid item xs={layoutArray[2].xs}>
-            <FormField
-              type="text"
-              name="name"
-              label="Name"
-              required
-              listSpacing={false}
+            <FullScreenStickyHeader
+              isScrolling={isScrolling}
+              twoColumn={twoColumn}
+              title={values && values.name}
+              fields={(
+                <FormField
+                  type="text"
+                  name="name"
+                  label="Name"
+                  required
+                  listSpacing={false}
+                />
+              )}
+              truncateTitle
             />
           </Grid>
           <Grid item xs={layoutArray[0].xs}>

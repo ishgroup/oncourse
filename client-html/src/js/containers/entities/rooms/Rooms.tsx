@@ -117,6 +117,7 @@ class Rooms extends React.Component<any, any> {
           onSave={onSave}
           filterGroupsInitial={filterGroups}
           findRelated={findRelatedGroup}
+          hideTitle
         />
       </div>
     );
