@@ -260,6 +260,7 @@ class EnrolmentTest extends TestWithDatabase {
 
         enrolment.setStatus(EnrolmentStatus.FAILED)
         newContext.commitChanges()
+        newContext = cayenneService.newContext
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
         assertEquals(0, enrolment.getOutcomes().size(), "Check outcomes ")
@@ -274,7 +275,7 @@ class EnrolmentTest extends TestWithDatabase {
         assertNull(SelectById.query(Outcome.class, idOutcome2).selectOne(cayenneService.getNewContext()))
         assertNull(SelectById.query(Outcome.class, idOutcome3).selectOne(cayenneService.getNewContext()))
 
-        newContext.deleteObjects(student)
+        newContext.deleteObjects(newContext.localObject(student))
         newContext.commitChanges()
     }
 
@@ -459,6 +460,7 @@ class EnrolmentTest extends TestWithDatabase {
 
         assertEquals(0, enrolment.getOutcomes().size(), "Check outcomes ")
         newContext.commitChanges()
+        newContext = cayenneService.newContext
         enrolment = SelectById.query(Enrolment.class, enrolment.getObjectId())
                 .selectOne(newContext)
         assertEquals(3, enrolment.getOutcomes().size(), "Check outcomes ")
@@ -490,8 +492,8 @@ class EnrolmentTest extends TestWithDatabase {
         assertNull(SelectById.query(Outcome.class, idOutcome3).selectOne(cayenneService.getNewContext()))
 
         enrolment = newContext.newObject(Enrolment.class)
-        enrolment.setStudent(student)
-        enrolment.setCourseClass(cc)
+        enrolment.setStudent(newContext.localObject(student))
+        enrolment.setCourseClass(newContext.localObject(cc))
         enrolment.setSource(PaymentSource.SOURCE_ONCOURSE)
 
         enrolment.setStatus(EnrolmentStatus.SUCCESS)
@@ -520,7 +522,7 @@ class EnrolmentTest extends TestWithDatabase {
         newContext.deleteObjects(enrolment)
         newContext.commitChanges()
 
-        newContext.deleteObjects(student)
+        newContext.deleteObjects(newContext.localObject(student))
         newContext.commitChanges()
     }
 
