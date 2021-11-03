@@ -105,6 +105,7 @@ interface Props {
   hideGap?: boolean;
   warpperGap?: number;
   titleGap?: number;
+  truncateTitle?: boolean;
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -119,6 +120,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     hideGap,
     warpperGap = 51,
     titleGap = 51,
+    truncateTitle,
   } = props;
 
   const classes = { ...useStyles(), ...otherClasses };
@@ -202,8 +204,9 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               variant="h5"
               display="block"
               component="div"
-              className={clsx("w-100",
-                !twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize", { [classes.titleTextAlternate]: showTitleOnly })}
+              className={clsx("w-100", !twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize",
+                { [classes.titleTextAlternate]: showTitleOnly },
+                { "text-truncate text-nowrap pr-2": truncateTitle })}
             >
               {title}
             </Typography>
