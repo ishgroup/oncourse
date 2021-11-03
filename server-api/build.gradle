@@ -10,8 +10,9 @@
  */
 
 
-apply plugin: 'groovy'
-apply plugin: 'java-library'
+plugins {
+    id 'java-library'
+}
 
 configurations {
     swagger
@@ -90,5 +91,5 @@ publishing {
             from components.java
         }
     }
-    
+
 }
