@@ -6,10 +6,9 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import { makeAppStyles } from '../../styles/makeStyles';
-import onCourseLogoChristmas from '../../../images/onCourseLogoChristmas.png';
 import onCourseLogoDark from '../../../images/onCourseLogoDark.png';
 
-const useStyles = makeAppStyles()((theme, _params, createRef) => ({
+const useStyles = makeAppStyles()((theme) => ({
   root: {
     width: '250px',
     height: '100vh',
@@ -28,13 +27,9 @@ const useStyles = makeAppStyles()((theme, _params, createRef) => ({
       maxWidth: 160,
       position: 'relative',
       left: -5
-    }
-  },
-  listContainerInner: {
-    marginBottom: theme.spacing(8),
-    paddingTop: '70%',
-    paddingLeft: 20,
-    textAlign: 'left'
+    },
+    display: 'flex',
+    height: '100%'
   }
 }));
 
@@ -43,27 +38,18 @@ const LeftMenu = ((
     children
   }
 ) => {
-  const isChristmas = localStorage.getItem('theme') === 'christmas';
-
   const { classes, cx } = useStyles();
 
   return (
     <Grid container className={classes.root}>
       <div className={cx('relative',
-        classes.listContainer,
-        localStorage.getItem('theme') === 'christmas' && 'christmasHeader')}
+        classes.listContainer)}
       >
-        {isChristmas ? (
-          <img src={onCourseLogoChristmas} alt="Logo" />
-        ) : (
-          <img
-            src={onCourseLogoDark}
-            alt="Logo"
-          />
-        )}
-        <div className={classes.listContainerInner}>
-          {children}
-        </div>
+        <img
+          src={onCourseLogoDark}
+          alt="Logo"
+        />
+        {children}
       </div>
     </Grid>
   );

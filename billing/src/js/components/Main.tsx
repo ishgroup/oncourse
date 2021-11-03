@@ -1,3 +1,8 @@
+/*
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
 import React, { useEffect, useState } from 'react';
 import {
   Router,
@@ -42,7 +47,7 @@ const Main = () => {
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
-    const token = query.get('token') || localStorage.getItem('token');
+    const token = query.get('token');
     const currency = query.get('currency') as Currency;
     if (currency) {
       dispatch(setCurrency(currency));
@@ -51,7 +56,6 @@ const Main = () => {
       defaultAxios.defaults.headers = {
         Authorization: token
       };
-      localStorage.setItem('token', token);
     }
     window.history.replaceState(null, null, window.location.pathname);
     dispatch(getCollegeKey());
@@ -71,7 +75,6 @@ const Main = () => {
           themeName
         }}
       >
-
         <ThemeProvider theme={theme}>
           <Router history={history}>
             {isNewUser ? <Stepper /> : <Settings />}

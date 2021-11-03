@@ -50,7 +50,16 @@ export const useStyles = makeAppStyles()((theme, prop, createRef) => {
       },
       '& a': {
         textDecoration: 'none'
-      }
+      },
+
+    },
+    navRoot: {
+      textAlign: 'left',
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: 70,
+      flex: 1,
+      overflow: 'auto'
     },
     activeNav: {
       [`& .${navItem.ref}`]: {
@@ -91,7 +100,7 @@ const Settings = () => {
   return (
     <div className="root">
       <LeftMenu>
-        <nav>
+        <nav className={classes.navRoot}>
           <ul className={cx(classes.nav, 'pl-0')}>
             <li>
               <NavLink
@@ -179,7 +188,7 @@ const Settings = () => {
           <div className="contentInner">
             <div className={classes.formItem}>
               <Switch>
-                <Route exact path="/" >
+                <Route exact path="/">
                   <Billing />
                 </Route>
                 <Route path="/websites/:id/:page">

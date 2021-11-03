@@ -44,7 +44,10 @@ const useStyles = makeAppStyles()((theme, _params, createRef) => {
     },
     stepperRoot: {
       backgroundColor: 'transparent',
-      padding: 0,
+      marginBottom: theme.spacing(8),
+      paddingTop: '70%',
+      paddingLeft: 20,
+      textAlign: 'left'
     },
     stepLabelIconContainer,
     stepLabelCompleted,
