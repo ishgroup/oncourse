@@ -29,6 +29,8 @@ import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { openRoomLink } from "../../rooms/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -76,6 +78,7 @@ interface Props {
   countries: any;
   timezones: any;
   validateDeleteRoom: any;
+  isScrolling?: boolean;
 }
 
 class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any> {
@@ -139,7 +142,8 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
       tags,
       countries,
       timezones,
-      syncErrors
+      syncErrors,
+      isScrolling,
     } = this.props;
 
     const { addressString } = this.state;
@@ -158,12 +162,19 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           />
 
           <Grid item xs={layoutArray[2].xs}>
-            <FormField
-              type="text"
-              name="name"
-              label="Name"
-              listSpacing={false}
-              required
+            <FullScreenStickyHeader
+              isScrolling={isScrolling}
+              twoColumn={twoColumn}
+              title={values && values.name}
+              fields={(
+                <FormField
+                  type="text"
+                  name="name"
+                  label="Name"
+                  listSpacing={false}
+                  required
+                />
+              )}
             />
           </Grid>
 
