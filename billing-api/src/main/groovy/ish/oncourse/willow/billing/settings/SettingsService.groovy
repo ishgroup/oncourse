@@ -64,7 +64,8 @@ class SettingsService {
     }
 
     Integer getRequestedUsersCount() {
-        return Integer.valueOf(getSettingsValue(Settings.BILLING_REQUEST_USERS))
+        String value = getSettingsValue(Settings.BILLING_REQUEST_USERS)
+        return value ? Integer.valueOf(value) : null
     }
     
     void setRequestedUsersCount(Integer requestedUsersCount) {
@@ -72,7 +73,9 @@ class SettingsService {
     }
 
     BillingPlan getRequestedBillingPlan() {
-        return BillingPlan.fromValue(getSettingsValue(Settings.BILLING_REQUEST_PLAN))
+        String value = BillingPlan.fromValue(getSettingsValue(Settings.BILLING_REQUEST_PLAN))
+        return value ? BillingPlan.fromValue(value) : null
+
     }
 
     void setRequestedBillingPlan(BillingPlan requestedBillingPlan) {
