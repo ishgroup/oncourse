@@ -190,6 +190,7 @@ class Sites extends React.Component<any, any> {
           onSave={this.onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
+          hideTitle
         />
       </div>
     );
