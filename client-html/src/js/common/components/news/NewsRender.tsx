@@ -184,7 +184,7 @@ const NewsRender = props => {
   useEffect(() => {
     const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
 
-    const filteredPosts = blogPosts.filter(post => ((!post.page && !page) || window.location.pathname.includes(post.page))
+    const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : true)
       && (!readNews || !readNews.includes(post.id))).reverse();
 
     const newsWithoutDate = filteredPosts.filter(post => !post.published);

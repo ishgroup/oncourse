@@ -189,7 +189,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
-            <NewsRender page={itemProps?.rootEntity} />
+            <NewsRender page />
             {items.map((i, tabIndex) => (
               <div id={i.label} key={i.label} ref={setScrollNode}>
                 {i.component({
