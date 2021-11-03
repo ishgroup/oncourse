@@ -37,11 +37,11 @@ jobs:
           restore-keys: 11-
 
       - name: Build artifacts
-        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${{steps.tag.outputs.tag}}
+        run: ./gradlew clean server:distZip types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.tag.outputs.tag}}
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "server/build/distributions/onCourseServer-*.zip,server/build/distributions/onCourseServer-*.sha256"
+          artifacts: "server/build/distributions/onCourseServer-*,types/build/libs/types-*"
           body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{steps.tag.outputs.tag}}/release-notes.html"
           token: ${{ secrets.GITHUB_TOKEN }}
