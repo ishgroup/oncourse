@@ -19,45 +19,17 @@ const items: TabsListItem[] = [
   }
 ];
 
-class WaitingListEditView extends React.Component<any, any> {
-  render() {
-    const {
-      values,
-      isNew,
-      isNested,
-      classes,
-      dispatch,
-      dirty,
-      form,
-      nestedIndex,
-      rootEntity,
-      twoColumn,
-      showConfirm,
-      openNestedEditView,
-      manualLink
-    } = this.props;
+const WaitingListEditView: React.FC<any> = props => {
+  const {
+    values,
+  } = props;
 
-    return values ? (
-      <TabsList
-        items={items}
-        itemProps={{
-          isNew,
-          isNested,
-          values,
-          classes,
-          dispatch,
-          dirty,
-          form,
-          nestedIndex,
-          rootEntity,
-          twoColumn,
-          showConfirm,
-          openNestedEditView,
-          manualLink
-        }}
-      />
-    ) : null;
-  }
-}
+  return values ? (
+    <TabsList
+      items={items}
+      itemProps={{ ...props }}
+    />
+  ) : null;
+};
 
 export default WaitingListEditView;
