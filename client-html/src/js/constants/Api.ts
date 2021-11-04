@@ -8,4 +8,5 @@ export const plainContactRelationTypePath = "/a/v1/list/plain?entity=ContactRela
 export const plainCorporatePassPath = "/a/v1/list/plain?entity=CorporatePass";
 export const courseClassBudgetPath = "/a/v1/list/entity/courseClass/budget/";
 export const courseClassTimetablePath = "/a/v1/list/entity/courseClass/timetable/";
+export const courseClassCancelPath = "/a/v1/list/entity/courseClass/cancel";
 export const fundingUploadsPath = "/a/v1/export/avetmiss8/uploads";
