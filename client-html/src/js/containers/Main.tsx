@@ -20,7 +20,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { connect } from "react-redux";
 import { CacheProvider } from '@emotion/react';
-import createCache from 'tss-react/@emotion/cache';
+import createCache from '@emotion/cache';
 import { Dispatch } from "redux";
 import { BrowserWarning } from "../common/components/dialog/BrowserWarning";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";

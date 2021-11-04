@@ -3,17 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Dialog } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Typography from "@mui/material/Typography";
+import {
+ Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography 
+} from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { getFormInitialValues, getFormValues, initialize } from "redux-form";
-
 import { format } from "date-fns";
 import {
   Account,
@@ -45,7 +41,9 @@ import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
+import {
+ createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass 
+} from "./actions";
 import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";

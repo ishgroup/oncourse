@@ -13,12 +13,13 @@
  * Wrapper component for DateTimeField with edit in place functional
  * */
 
-import React, { ComponentClass, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useEffect, useMemo, useRef, useState
+} from "react";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
-import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import DateRange from "@mui/icons-material/DateRange";
 import QueryBuilder from "@mui/icons-material/QueryBuilder";
@@ -27,144 +28,152 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
-import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
+import {
+ HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED
+} from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
+import { makeAppStyles } from "../../../styles/makeStyles";
 
-const styles = theme => createStyles({
-  textField: {
-    paddingLeft: "0",
-    paddingBottom: "9px",
-    height: "61px",
-  },
-  spanLabel: {
-    paddingLeft: "0.5px",
-    marginTop: "-3px",
-    display: "inline-block",
-    height: "17px",
-  },
-  inputEndAdornment: {
+const useStyles = makeAppStyles()((theme, _params, createRef) => {
+  const inputEndAdornment = {
+    ref: createRef(),
     color: theme.palette.primary.main,
     display: "none",
-  },
-  inputWrapper: {
-    fontWeight: 400,
-    "&:hover $inputEndAdornment": {
-      display: "flex",
+  };
+
+  return {
+    textField: {
+      paddingLeft: "0",
+      paddingBottom: "9px",
+      height: "61px",
     },
-    "&:before": {
-      borderBottom: "1px solid transparent",
+    spanLabel: {
+      paddingLeft: "0.5px",
+      marginTop: "-3px",
+      display: "inline-block",
+      height: "17px",
     },
-    "&:hover&:before": {
-      borderBottom: `1px solid ${theme.palette.primary.main}`,
+    inputWrapper: {
+      fontWeight: 400,
+      "&:hover $inputEndAdornment": {
+        display: "flex",
+      },
+      "&:before": {
+        borderBottom: "1px solid transparent",
+      },
+      "&:hover&:before": {
+        borderBottom: `1px solid ${theme.palette.primary.main}`,
+      },
     },
-  },
-  isEditing: {
-    borderBottom: "none!important",
-    "& $inputEndAdornment": {
-      display: "flex!important",
+    isEditing: {
       borderBottom: "none!important",
+      [`& ${inputEndAdornment.ref}`]: {
+        display: "flex!important",
+        borderBottom: "none!important",
+      },
     },
-  },
-  editing: {
-    paddingBottom: theme.spacing(1.25)
-  },
-  topMargin: {
-    marginTop: theme.spacing(1),
-    paddingLeft: "0"
-  },
-  hiddenContainer: {
-    display: "none"
-  },
-  editButton: {
-    padding: "4px",
-    "&:hover": {
-      color: theme.palette.primary.main,
-      fill: theme.palette.primary.main
-    }
-  },
-  editIcon: {
-    fontSize: "18px",
-    color: theme.palette.divider,
-    display: "inline-flex"
-  },
-  editable: {
-    color: theme.palette.text.primaryEditable,
-    fontWeight: 400,
-    "&:hover, &:hover $editButton": {
-      color: theme.palette.primary.main,
-      fill: theme.palette.primary.main,
-    }
-  },
-  readonly: {
-    fontWeight: 300,
-    pointerEvents: "none"
-  },
-  textFieldLeftMargin: {
-    marginLeft: theme.spacing(1)
-  },
-  viewMode: {
-    padding: 0,
-    margin: "-2px 0 0",
-  },
-  label: {
-    whiteSpace: "nowrap"
-  },
-  placeholderContent: {
-    color: theme.palette.text.disabled,
-    opacity: 0.4,
-    fontWeight: 400,
-  },
-  input: {
-    width: "100%"
-  },
-  inlinePickerButton: {
-    padding: "0.2em",
-    marginBottom: "0.2em",
-    fontSize: "1.3em",
-    "&:hover": {
-      color: theme.palette.primary.main,
-    }
-  },
-  pickerButton: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-    padding: theme.spacing(0.5),
-    "&:hover": {
-      color: theme.palette.primary.main,
-    }
-  },
-  inputLabel: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    paddingBottom: "4px",
-    right: "-46%",
-    maxWidth: "100%",
-    "& $labelAdornment": {
-      position: "absolute",
-      transform: "scale(1.3) translate(5px,0)"
+    editing: {
+      paddingBottom: theme.spacing(1.25)
     },
-    "&$labelShrink": {
-      maxWidth: "calc(100% * 1.4)"
-    }
-  },
-  inlineMargin: {
-    marginLeft: "0.3em"
-  },
-  inlineContainer: {
-    display: "inline-flex",
-    "&$hiddenContainer": {
+    topMargin: {
+      marginTop: theme.spacing(1),
+      paddingLeft: "0"
+    },
+    hiddenContainer: {
       display: "none"
-    }
-  },
-  inlineInput: {
-    padding: "0 0 1px 0",
-    minWidth: "2.2em",
-    fontSize: "inherit"
-  },
-  inline: {},
-  labelShrink: {},
-  labelAdornment: {}
+    },
+    editButton: {
+      padding: "4px",
+      "&:hover": {
+        color: theme.palette.primary.main,
+        fill: theme.palette.primary.main
+      }
+    },
+    editIcon: {
+      fontSize: "18px",
+      color: theme.palette.divider,
+      display: "inline-flex"
+    },
+    editable: {
+      color: theme.palette.text.primaryEditable,
+      fontWeight: 400,
+      "&:hover, &:hover $editButton": {
+        color: theme.palette.primary.main,
+        fill: theme.palette.primary.main,
+      }
+    },
+    readonly: {
+      fontWeight: 300,
+      pointerEvents: "none"
+    },
+    textFieldLeftMargin: {
+      marginLeft: theme.spacing(1)
+    },
+    viewMode: {
+      padding: 0,
+      margin: "-2px 0 0",
+    },
+    label: {
+      whiteSpace: "nowrap"
+    },
+    placeholderContent: {
+      color: theme.palette.text.disabled,
+      opacity: 0.4,
+      fontWeight: 400,
+    },
+    input: {
+      width: "100%"
+    },
+    inlinePickerButton: {
+      padding: "0.2em",
+      marginBottom: "0.2em",
+      fontSize: "1.3em",
+      "&:hover": {
+        color: theme.palette.primary.main,
+      }
+    },
+    pickerButton: {
+      width: theme.spacing(4),
+      height: theme.spacing(4),
+      padding: theme.spacing(0.5),
+      "&:hover": {
+        color: theme.palette.primary.main,
+      }
+    },
+    inputLabel: {
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      paddingBottom: "4px",
+      right: "-46%",
+      maxWidth: "100%",
+      "& $labelAdornment": {
+        position: "absolute",
+        transform: "scale(1.3) translate(5px,0)"
+      },
+      "&$labelShrink": {
+        maxWidth: "calc(100% * 1.4)"
+      }
+    },
+    inlineMargin: {
+      marginLeft: "0.3em"
+    },
+    inlineContainer: {
+      display: "inline-flex",
+      "&$hiddenContainer": {
+        display: "none"
+      }
+    },
+    inlineInput: {
+      padding: "0 0 1px 0",
+      minWidth: "2.2em",
+      fontSize: "inherit"
+    },
+    inline: {},
+    labelShrink: {},
+    labelAdornment: {},
+    inputEndAdornment
+  };
 });
 
 // @ts-ignore
@@ -187,7 +196,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    formatDateTime,
    timezone,
    input,
-   classes,
    fieldClasses = {},
    formatting = "primary",
    meta: { error, invalid },
@@ -208,6 +216,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    ...custom
   }
 ) => {
+  const { classes } = useStyles();
+
   const [isEditing, setIsEditing] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [pickerOpened, setPickerOpened] = useState(false);
@@ -405,9 +415,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
           margin="none"
           fullWidth
           className={clsx("pr-2", {
-            [classes.topMargin]: !listSpacing,
-            [classes.bottomMargin]: listSpacing && formatting !== "inline",
-            [classes.inlineTextField]: isInline
+            [classes.topMargin]: !listSpacing
           })}
         >
           {Boolean(label) && (
@@ -474,4 +482,4 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   );
 };
 
-export default withStyles(styles)(EditInPlaceDateTimeField) as ComponentClass<any>;
+export default EditInPlaceDateTimeField;
