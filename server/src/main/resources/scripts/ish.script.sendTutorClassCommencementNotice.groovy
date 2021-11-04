@@ -9,7 +9,7 @@ if (send_before_each_session) {
         message {
             template sessionCommencementTemplate
             to attendance.courseClassTutor.tutor.contact
-            tutorAttendance attendance
+            record attendance
         }
     }
 
