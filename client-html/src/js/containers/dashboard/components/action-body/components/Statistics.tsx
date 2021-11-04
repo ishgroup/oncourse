@@ -258,16 +258,10 @@ class Statistics extends React.Component<Props, any> {
     const { chartData } = this.state;
 
     return statisticData ? (
-      <Grid container columnSpacing={3} className={classes.root}>
-        <Grid item className="w-100">
-          <Grid container columnSpacing={3}>
-            <Grid item>
-              <Typography className="heading">Enrolments & Revenue</Typography>
-            </Grid>
-            <Grid item className={classes.pastWeeksCaption}>
-              <Typography variant="caption">Past 4 weeks</Typography>
-            </Grid>
-          </Grid>
+      <Grid container className={classes.root}>
+        <Grid item className="w-100 d-flex">
+          <Typography className="heading flex-fill">Enrolments & Revenue</Typography>
+          <Typography variant="caption">Past 4 weeks</Typography>
         </Grid>
         <Grid item xs={12}>
           <Chart data={chartData} />
@@ -331,7 +325,7 @@ class Statistics extends React.Component<Props, any> {
             classes open for enrolment
           </Typography>
           <List dense disablePadding>
-            <Grid container columnSpacing={3} className={classes.containerStatisticGroup}>
+            <Grid container className={classes.containerStatisticGroup}>
               <Grid item className={classes.statisticGroup} xs={6}>
                 <ListItem dense disableGutters className={classes.smallTextGroup}>
                   <Typography className={classes.smallText}>
@@ -351,7 +345,7 @@ class Statistics extends React.Component<Props, any> {
                 </ListItem>
               </Grid>
             </Grid>
-            <Grid container columnSpacing={3} className={classes.containerStatisticGroup}>
+            <Grid container className={classes.containerStatisticGroup}>
               <Grid item className={classes.statisticGroup} xs={6}>
                 <ListItem dense disableGutters className={classes.smallTextGroup}>
                   <Typography className={classes.smallText}>

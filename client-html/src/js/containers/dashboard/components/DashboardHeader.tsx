@@ -96,24 +96,20 @@ class DashboardHeader extends React.PureComponent<Props, any> {
           }}
         >
           <HamburgerMenu variant={VARIANTS.persistent} />
-          <Grid container columnSpacing={3} alignItems="center">
-            <Grid item xs={6}>
-              <Grid container columnSpacing={3} spacing={3} wrap="nowrap">
-                <Grid item>
-                  {isChristmas ? (
-                    <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
-                  ) : (
-                    <img
-                      src={theme.palette.mode === "dark" ? onCourseLogoDark : onCourseLogoLight}
-                      className={classes.logo}
-                      alt="Logo"
-                    />
-                  )}
-                </Grid>
-              </Grid>
+          <Grid container alignItems="center">
+            <Grid item container alignItems="center" xs={6}>
+              {isChristmas ? (
+                <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
+              ) : (
+                <img
+                  src={theme.palette.mode === "dark" ? onCourseLogoDark : onCourseLogoLight}
+                  className={classes.logo}
+                  alt="Logo"
+                />
+              )}
             </Grid>
             <Grid item xs={6}>
-              <Grid container columnSpacing={3} className="justify-content-end">
+              <Grid container className="justify-content-end">
                 <Grid item>
                   {upgradePlanLink && (
                     <Button

@@ -326,7 +326,7 @@ const Table: React.FC<ListTableProps> = ({
   };
 
   const Header = useMemo(() => (
-    <TableHead component="div" className={classes.header}>
+    <div className={classes.header} style={{ width: totalColumnsWidth }}>
       {headerGroups.map((headerGroup, groupIndex) => (
         <DragDropContext
           key={groupIndex}
@@ -338,18 +338,19 @@ const Table: React.FC<ListTableProps> = ({
         >
           <Droppable key={headerGroup.getHeaderGroupProps().key} droppableId="droppable" direction="horizontal">
             {provided => (
-              <TableRow
+              <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={classes.headerRow}
-                component="div"
               >
                 {headerGroup.headers.filter(column => column.id !== COLUMN_WITH_COLORS).map((column, columnIndex) => {
                   const disabledCell = ["selection", "chooser"].includes(column.id);
                   return (
-                    <TableCell
+                    <Typography
                       {...column.getHeaderProps()}
                       className={clsx(classes.headerCell, classes.listHeaderCell)}
+                      variant="subtitle2"
+                      color="textSecondary"
                       component="div"
                     >
                       <div
@@ -409,17 +410,17 @@ const Table: React.FC<ListTableProps> = ({
                         )}
                         {!isDraggingColumn && column.canResize && <div {...column.getResizerProps()} className={classes.resizer} />}
                       </div>
-                    </TableCell>
+                    </Typography>
                   );
                 })}
                 {provided.placeholder}
-              </TableRow>
+              </div>
             )}
           </Droppable>
         </DragDropContext>
       ))}
-    </TableHead>
-  ), [headerGroups, isDraggingColumn]);
+    </div>
+  ), [headerGroups, isDraggingColumn, totalColumnsWidth]);
 
   const List = useMemo(() => (rows.length ? (
     <InfiniteLoaderList
@@ -444,21 +445,18 @@ const Table: React.FC<ListTableProps> = ({
   )), [rows, totalColumnsWidth, selectedRowIdsObj, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
 
   return (
-    <>
+    <div
+      {...getTableProps()}
+      ref={tableRef}
+      className={clsx(classes.table, { [classes.hideOverflowY]: isDraggingColumn })}
+      onScroll={onScroll}
+    >
       {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
-      <MaUTable
-        {...getTableProps()}
-        ref={tableRef}
-        className={clsx(classes.table, { [classes.hideOverflowY]: isDraggingColumn })}
-        onScroll={onScroll}
-        component="div"
-      >
-        {!threeColumn && Header}
-        <div {...getTableBodyProps()} className={classes.tableBody}>
-          {List}
-        </div>
-      </MaUTable>
-    </>
+      {!threeColumn && Header}
+      <div {...getTableBodyProps()} className={classes.tableBody}>
+        {List}
+      </div>
+    </div>
   );
 };
 

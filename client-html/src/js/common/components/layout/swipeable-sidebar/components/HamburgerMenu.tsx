@@ -22,11 +22,11 @@ const HamburgerMenu = React.memo<Props>(props => {
   const { opened, toggleSwipeableDrawer } = props;
   return (
     <IconButton
-      className="mr-2"
       color="inherit"
       aria-label="Open drawer"
       edge="start"
       onClick={toggleSwipeableDrawer}
+      size="large"
     >
       {opened ? <CloseIcon /> : <MenuIcon />}
     </IconButton>

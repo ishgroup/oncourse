@@ -252,7 +252,7 @@ const Favorites: React.FC<Props> = props => {
         }}
         scriptId={scriptIdSelected}
       />
-      <Grid container columnSpacing={3} alignItems="center">
+      <Grid container alignItems="center">
         <Grid item xs={12} className={classes.topBar}>
           <Typography className="heading">{isEditing ? "" : "Navigation"}</Typography>
           <div className="flex-fill" />

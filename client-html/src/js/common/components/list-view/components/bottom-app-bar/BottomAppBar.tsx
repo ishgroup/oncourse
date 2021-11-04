@@ -410,6 +410,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                       root: classes.actionsBarButton,
                       disabled: classes.buttonDisabledFade
                     }}
+                    size="large"
                   >
                     <PlusIcon />
                   </IconButton>
@@ -432,6 +433,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                       root: showExportDrawer ? classes.shareOnBackdrop : classes.actionsBarButton,
                       disabled: classes.buttonDisabledFade
                     }}
+                    size="large"
                   >
                     <Share />
                   </IconButton>
@@ -449,6 +451,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                     aria-owns={showSettingsMenu ? "settings" : undefined}
                     aria-haspopup="true"
                     onClick={this.handleClickSettings}
+                    size="large"
                   >
                     <Settings />
                   </IconButton>

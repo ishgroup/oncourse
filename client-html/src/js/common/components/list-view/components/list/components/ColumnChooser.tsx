@@ -102,7 +102,7 @@ const ColumnChooserButton = React.forwardRef<any, any>((props, ref) => {
 
   return (
     <div className={className}>
-      <IconButton onClick={onToggle} ref={ref}>
+      <IconButton onClick={onToggle} ref={ref} size="large">
         <Visibility />
       </IconButton>
     </div>
