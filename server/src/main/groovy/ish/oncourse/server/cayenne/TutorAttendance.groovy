@@ -33,10 +33,10 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 
 	@Override
 	void prePersist() {
-		if (startDatetime) {
+		if (!startDatetime) {
 			startDatetime = session.startDatetime
 		}
-		if (endDatetime) {
+		if (!endDatetime) {
 			endDatetime = session.endDatetime
 		}
 		if (actualPayableDurationMinutes == null) {
