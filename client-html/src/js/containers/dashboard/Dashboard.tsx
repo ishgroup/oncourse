@@ -16,7 +16,6 @@ import DashboardHeader from "./components/DashboardHeader";
 import ActionBody from "./components/action-body/ActionBody";
 import { getUserPreferences, showConfirm, setUserPreference } from "../../common/actions";
 import {
-  DASHBOARD_NEWS_LATEST_READ,
   DASHBOARD_CATEGORY_WIDTH_KEY,
   DASHBOARD_THEME_KEY,
   APPLICATION_THEME_STORAGE_NAME
@@ -68,7 +67,6 @@ class Dashboard extends React.PureComponent<any, any> {
       openConfirm,
       drawerOpened,
       dispatch,
-      setDashboardNewsLatestReadDate
     } = this.props;
 
     return (
@@ -95,9 +93,7 @@ class Dashboard extends React.PureComponent<any, any> {
         <Grid item xs={12} className={classes.containerHeight}>
           <ActionBody
             preferencesCategoryWidth={preferences[DASHBOARD_CATEGORY_WIDTH_KEY]}
-            preferencesNewsLatestReadDate={preferences[DASHBOARD_NEWS_LATEST_READ]}
             setDashboardColumnWidth={setDashboardColumnWidth}
-            setDashboardNewsLatestReadDate={setDashboardNewsLatestReadDate}
             drawerOpened={drawerOpened}
           />
         </Grid>
@@ -114,12 +110,11 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY, DASHBOARD_NEWS_LATEST_READ])),
+  getDashboardPreferences: () => dispatch(getUserPreferences([DASHBOARD_CATEGORY_WIDTH_KEY])),
   setDashboardColumnWidth: (key: PreferenceEnum, value: string) => dispatch(setUserPreference({ key, value })),
   setPreferencesTheme: (value: ThemeValues) => dispatch(setUserPreference({ key: DASHBOARD_THEME_KEY, value })),
   openConfirm: props => dispatch(showConfirm(props)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(VARIANTS.persistent)),
-  setDashboardNewsLatestReadDate: (value: string) => dispatch(setUserPreference({ key: DASHBOARD_NEWS_LATEST_READ, value }))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dashboard));

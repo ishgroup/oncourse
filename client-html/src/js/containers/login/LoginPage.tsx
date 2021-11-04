@@ -767,6 +767,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             {this.getCreditsItem("Product design", ["Aristedes Maniatis", "Natalie Morton"])}
                             {this.getCreditsItem("System architecture", ["Aristedes Maniatis"])}
                             {this.getCreditsItem("Engineering leads", [
+                              "Yury Yasuchenya",
                               "Artyom Kravchenko",
                               "Andrey Koyro",
                               "Anton Sakalouski",
@@ -774,22 +775,26 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                               "Marek Wawrzyczny"
                             ])}
                             {this.getCreditsItem("Software engineering", [
-                              "Dzmitry Kazimirchyk",
-                              "Andrey Narut",
-                              "Viacheslav Davidovich",
-                              "Xenia Khailenka",
-                              "Olga Tkachova",
-                              "Marcin Skladaniec",
-                              "Nikita Timofeev",
-                              "Arseni Bulatski",
-                              "Rostislav Zenov",
-                              "Maxim Petrusevich",
-                              "Alexandr Petkov",
-                              "Artyom Kochetkov",
-                              "Pavel Nikanovich",
-                              "Andrey Davidovich",
+                              "Dmitry Tarasenko",
+                              "Kristina Trukhan",
+                              "Chintan Kotadia",
                               "Victor Yarmolovich",
-                              "Yury Yasuchenya"
+                              "Vadim Haponov",
+                              "Rostislav Zenov",
+                              "Andrey Davidovich",
+                              "Pavel Nikanovich",
+                              "Artyom Kochetkov",
+                              "Alexandr Petkov",
+                              "Maxim Petrusevich",
+                              "Rostislav Zenov",
+                              "Arseni Bulatski",
+                              "Nikita Timofeev",
+                              "Marcin Skladaniec",
+                              "Olga Tkachova",
+                              "Xenia Khailenka",
+                              "Viacheslav Davidovich",
+                              "Andrey Narut",
+                              "Dzmitry Kazimirchyk",
                             ])}
                           </div>
                         </Grid>
@@ -801,7 +806,6 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             "Rex Chan"
                           ])}
                           {this.getCreditsItem("Icon design", ["Bruce Martin"])}
-                          {this.getCreditsItem("UI development", ["Chintan Kotadia"])}
                           {this.getCreditsItem("Additional programming", [
                             "Matthias Moeser",
                             "Abdul Abdul-Latif",
@@ -812,9 +816,9 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             "Sasha Shestak"
                           ])}
                           {this.getCreditsItem("Documentation", [
-                            "Stephen McIlwaine",
+                            "James Swinbanks",
                             "Charlotte Tanner",
-                            "James Swinbanks"
+                            "Stephen McIlwaine",
                           ])}
                         </Grid>
                       </Grid>

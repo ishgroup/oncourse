@@ -46,6 +46,7 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
         """
         {
         "id":1,
+        "studentLoanStatus":"Eligible",
         "tags":[{"id":236,"name":"enrolments 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "studentContactId":2,
         "studentName":"stud1",
@@ -122,6 +123,7 @@ Feature: Main feature for all GET requests with path 'list/entity/enrolment'
         """
         {
         "id":1,
+        "studentLoanStatus":"Eligible",
         "tags":[{"id":236,"name":"enrolments 1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
         "studentContactId":2,
         "studentName":"stud1",

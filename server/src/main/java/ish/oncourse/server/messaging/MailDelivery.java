@@ -68,7 +68,7 @@ public class MailDelivery {
 					var plus = addr.indexOf('+');
 					var at = addr.indexOf('@');
 					if (plus > -1 && plus < at) {
-						bounceInfo.put(new Long(addr.substring(plus + 1, at)), bounceMail.getContent());
+						bounceInfo.put(Long.parseLong(addr.substring(plus + 1, at)), bounceMail.getContent());
 					}
 				}
 			}

@@ -26,6 +26,8 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import { updateUserRole, removeUserRole } from "../../../actions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { setNextLocation } from "../../../../../common/actions";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("users_roles");
 
@@ -134,7 +136,8 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       validateUniqueNames,
       submitSucceeded,
       hasLicense,
-      form
+      form,
+      invalid
     } = this.props;
 
     return (
@@ -177,14 +180,9 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
                   manualUrl={manualUrl}
                 />
 
-                <Button
-                  text="Save"
-                  type="submit"
-                  size="small"
-                  variant="text"
-                  disabled={!hasLicense || !dirty}
-                  rootClasses="whiteAppBarButton"
-                  disabledClasses="whiteAppBarButtonDisabled"
+                <FormSubmitButton
+                  disabled={!dirty}
+                  invalid={invalid}
                 />
               </Grid>
             </Grid>
@@ -215,7 +213,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 const UserRolesForm = reduxForm({
-  form: "UserRolesForm"
+  form: "UserRolesForm",
+  onSubmitFail
 })(
   connect<any, any, any>(
     mapStateToProps,

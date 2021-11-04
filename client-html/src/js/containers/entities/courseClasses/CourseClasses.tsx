@@ -31,7 +31,12 @@ import Button from "../../../common/components/buttons/Button";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { courseClassBudgetPath, courseClassTimetablePath, plainEnrolmentPath } from "../../../constants/Api";
+import {
+  courseClassBudgetPath,
+  courseClassCancelPath,
+  courseClassTimetablePath,
+  plainEnrolmentPath
+} from "../../../constants/Api";
 import { FilterGroup } from "../../../model/common/ListView";
 import {
   clearListState,
@@ -778,6 +783,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));
     dispatch(checkPermissions({ path: courseClassTimetablePath, method: "POST" }));
+    dispatch(checkPermissions({ path: courseClassCancelPath, method: "POST" }));
     dispatch(checkPermissions({ path: plainEnrolmentPath, method: "GET" }));
     dispatch(
       getUserPreferences([

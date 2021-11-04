@@ -15,7 +15,7 @@ class DashboardService {
   }
 
   public getBlogPosts(): Promise<JSON> {
-    return this.service.GET("https://www.ish.com.au/dashboard.json");
+    return this.service.GET("https://www.ish.com.au/oncourse-news/news.json");
   }
 
   public logout(): Promise<any> {

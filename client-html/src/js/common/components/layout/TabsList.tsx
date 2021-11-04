@@ -15,6 +15,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
+import NewsRender from "../news/NewsRender";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -48,16 +49,16 @@ const styles = theme => createStyles({
   });
 
 export interface TabsListItem {
-  label: string;
+  readonly type?: string;
   component: (props: any) => React.ReactNode;
   labelAdornment?: React.ReactNode;
   expandable?: boolean;
+  label: string;
 }
 
 interface Props {
   classes?: any;
   itemProps?: any;
-  customLabels?: any;
   customAppBar?: boolean;
   items: TabsListItem[];
 }
@@ -71,7 +72,7 @@ const SCROLL_TARGET_ID = "TabsListScrollTarget";
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
 
 const TabsList = React.memo<Props & RouteComponentProps>(({
-   classes, items, customLabels, customAppBar, itemProps = {}, history, location
+   classes, items, customAppBar, itemProps = {}, history, location
   }) => {
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<ScrollNodes>({});
@@ -188,6 +189,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
+            <NewsRender page />
             {items.map((i, tabIndex) => (
               <div id={i.label} key={i.label} ref={setScrollNode}>
                 {i.component({
@@ -218,7 +220,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
                   key={index}
                 >
                   <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                    <div className="text-uppercase">{customLabels && customLabels[index] ? customLabels[index] : i.label}</div>
+                    <div className="text-uppercase">{i.label}</div>
                     {i.labelAdornment && (
                       <Typography variant="caption" component="div" className="text-pre-wrap">
                         {i.labelAdornment}

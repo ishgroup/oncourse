@@ -25,6 +25,8 @@ import { State } from "../../../../../reducers/state";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { getAccountsList } from "../../../utils";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("generalPrefs_financial");
 
@@ -51,7 +53,7 @@ class FinancialBaseForm extends React.Component<any, any> {
 
   public render() {
     const {
-     handleSubmit, onSave, accounts = [], dirty, data, values, form
+     handleSubmit, onSave, accounts = [], dirty, data, invalid, form
     } = this.props;
 
     return (
@@ -76,14 +78,9 @@ class FinancialBaseForm extends React.Component<any, any> {
                 />
               )}
 
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
+              <FormSubmitButton
                 disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+                invalid={invalid}
               />
             </Grid>
           </Grid>
@@ -242,7 +239,8 @@ const mapStateToProps = (state: State) => ({
 
 const FinancialForm = reduxForm({
   form: "FinancialForm",
-  validate: validateMultipleMandatoryFields
+  validate: validateMultipleMandatoryFields,
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, null)(FinancialBaseForm));
 
 export default FinancialForm;
