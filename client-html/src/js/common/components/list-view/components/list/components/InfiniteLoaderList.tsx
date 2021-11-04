@@ -58,14 +58,13 @@ const ListRow = memo<any>(({ data, index, style }) => {
           </Typography>
         </div>
       ) : row.cells.filter(cell => cell.column.id !== COLUMN_WITH_COLORS).map(cell => (
-        <TableCell
-          component="div"
+        <div
           {...cell.getCellProps()}
           className={clsx(classes.bodyCell, cell.column.cellClass)}
           onMouseOver={!["selection", "chooser"].includes(cell.column.id) && onMouseOver ? () => onMouseOver(cell.column.id) : undefined}
         >
           {cell.render("Cell")}
-        </TableCell>
+        </div>
       ))}
     </div>
   );

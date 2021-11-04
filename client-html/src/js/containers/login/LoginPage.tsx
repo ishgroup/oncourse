@@ -96,9 +96,6 @@ const styles: any = theme => ({
     width: theme.spacing(10),
     marginLeft: theme.spacing(3)
   },
-  flexDivider: {
-    flex: 1
-  },
   link: {
     textDecoration: "none"
   },
@@ -472,7 +469,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <div className={classes.flexDivider} />
+                  <div className="flex-fill" />
                   <Grid item xs={12}>
                     <Collapse in={!openCredits} timeout="auto" unmountOnExit>
                       <div className={classes.loginModalWrapper}>
@@ -521,7 +518,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   name="host"
                                   placeholder="Host"
                                   autoComplete="host"
-                                  className={classes.flexDivider}
+                                  className="flex-fill"
                                   component={FormTextField}
                                   validate={validateSingleMandatoryField}
                                   onChange={(e, v, prev) => this.autocompleteHost(v, prev)}
@@ -684,7 +681,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           </>
                         )}
 
-                        <div className={classes.flexDivider} />
+                        <div className="flex-fill" />
 
                         <div className={classes.buttonsContainer}>
                           {!this.isInviteForm && (
@@ -824,7 +821,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                       </Grid>
                     </Collapse>
                   </Grid>
-                  <div className={classes.flexDivider} />
+                  <div className="flex-fill" />
                   <Grid container columnSpacing={3} alignItems="center" className="mt-3">
                     <div className="flex-fill">
                       <div>
