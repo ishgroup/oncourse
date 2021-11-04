@@ -112,7 +112,7 @@ class ActionBody extends React.PureComponent<Props, any> {
     const { statisticsColumnWidth } = this.state;
 
     return (
-      <Grid container columnSpacing={3} wrap="nowrap" className={classes.root}>
+      <Grid container wrap="nowrap" className={classes.root}>
         <ResizableWrapper
           minWidth="20%"
           maxWidth="60%"
