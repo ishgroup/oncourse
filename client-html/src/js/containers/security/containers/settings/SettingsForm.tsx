@@ -25,6 +25,8 @@ import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
 import { State } from "../../../../reducers/state";
 import { getManualLink } from "../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("users_Users");
 
@@ -108,7 +110,7 @@ class SettingsForm extends React.Component<any, any> {
 
   render() {
     const {
-      enums, handleSubmit, onSave, dirty, data, form
+      enums, handleSubmit, onSave, dirty, data, form, invalid
     } = this.props;
     const { enablePasswordScheduleField, enableTOTPScheduleField } = this.state;
 
@@ -132,14 +134,9 @@ class SettingsForm extends React.Component<any, any> {
                 manualUrl={manualUrl}
               />
 
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
+              <FormSubmitButton
                 disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+                invalid={invalid}
               />
             </Grid>
           </Grid>
@@ -303,7 +300,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const SettingsFormWrapped = reduxForm({
-  form: "SecuritySettingsForm"
+  form: "SecuritySettingsForm",
+  onSubmitFail
 })(
   connect<any, any, any>(
     mapStateToProps,

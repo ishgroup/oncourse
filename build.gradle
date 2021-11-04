@@ -7,10 +7,10 @@
  */
 buildscript {
 	ext {
-		log4j2Version = '2.14.0'
+		log4j2Version = '2.14.1'
 		cayenneVersion = '4.1'
-		jettyVersion = '10.0.6'
-        mariadbVersion = '2.7.2'
+		jettyVersion = '10.0.7'
+    mariadbVersion = '2.7.3'
 		groovyVersion = '2.5.13'
 		bouncycastleVersion = '1.67'
 		bootiqueVersion = '2.0.B2-SNAPSHOT'
@@ -62,6 +62,7 @@ subprojects {
 	sourceCompatibility = 11
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
+	version = version.replace('v','') // remove the leading v from the version
 
 	dependencies {
 		implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
