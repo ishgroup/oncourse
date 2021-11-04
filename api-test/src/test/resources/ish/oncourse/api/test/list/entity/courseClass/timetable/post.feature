@@ -35,8 +35,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         * def newTimetable =
             """
             [
-            {"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
-            {"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
+            {"tutorAttendances":[],"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
+            {"tutorAttendances":[],"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
             ]
             """
 
@@ -52,8 +52,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         And match $ ==
             """
             [
-            {"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"siteTimezone":"Australia/Sydney","courseClassTutorIds":[],"temporaryTutorIds":[],"start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z","publicNotes":"notes1","privateNotes":"private notes1","hasPaylines":false},
-            {"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room2","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"siteTimezone":"Australia/Sydney","courseClassTutorIds":[],"temporaryTutorIds":[],"start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z","publicNotes":"notes2","privateNotes":"private notes2","hasPaylines":false}
+            {"tutorAttendances":[],"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"siteTimezone":"Australia/Sydney","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z","publicNotes":"notes1","privateNotes":"private notes1","hasPaylines":false},
+            {"tutorAttendances":[],"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room2","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"siteTimezone":"Australia/Sydney","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z","publicNotes":"notes2","privateNotes":"private notes2","hasPaylines":false}
             ]
             """
 
@@ -92,8 +92,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         * def newTimetable =
             """
             [
-            {"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
-            {"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
+            {"tutorAttendances":[],"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
+            {"tutorAttendances":[],"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
             ]
             """
 
@@ -109,8 +109,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         And match $ ==
             """
             [
-            {"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"siteTimezone":"Australia/Sydney","courseClassTutorIds":[],"temporaryTutorIds":[],"start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z","publicNotes":"notes1","privateNotes":"private notes1","hasPaylines":false},
-            {"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room2","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"siteTimezone":"Australia/Sydney","courseClassTutorIds":[],"temporaryTutorIds":[],"start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z","publicNotes":"notes2","privateNotes":"private notes2","hasPaylines":false}
+            {"tutorAttendances":[],"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"siteTimezone":"Australia/Sydney","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z","publicNotes":"notes1","privateNotes":"private notes1","hasPaylines":false},
+            {"tutorAttendances":[],"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room2","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"siteTimezone":"Australia/Sydney","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z","publicNotes":"notes2","privateNotes":"private notes2","hasPaylines":false}
             ]
             """
 
@@ -148,8 +148,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         * def newTimetable =
             """
             [
-            {"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
-            {"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
+            {"tutorAttendances":[],"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
+            {"tutorAttendances":[],"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
             ]
             """
 
@@ -162,7 +162,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         * def newTimetable =
             """
             [
-            {"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-10T12:00:00.000Z","end":"2020-02-10T13:00:00.000Z"}
+            {"tutorAttendances":[],"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,,"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-10T12:00:00.000Z","end":"2020-02-10T13:00:00.000Z"}
             ]
             """
 
@@ -178,7 +178,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         And match $ ==
             """
             [
-            {"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"siteTimezone":"Australia/Sydney","courseClassTutorIds":[],"temporaryTutorIds":[],"start":"2020-02-10T12:00:00.000Z","end":"2020-02-10T13:00:00.000Z","publicNotes":"notes1","privateNotes":"private notes1","hasPaylines":false}
+            {"tutorAttendances":[],"id":"#number","temporaryId":null,"name":"Course4","code":null,"room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"siteTimezone":"Australia/Sydney","start":"2020-02-10T12:00:00.000Z","end":"2020-02-10T13:00:00.000Z","publicNotes":"notes1","privateNotes":"private notes1","hasPaylines":false}
             ]
             """
 
@@ -217,8 +217,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         * def newTimetable =
             """
             [
-            {"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
-            {"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"contactIds":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"courseClassTutorIds":[],"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
+            {"id":null,"name":"Course4","code":"","room":"room1","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":1,"siteId":201,"publicNotes":"notes1","privateNotes":"private notes1","start":"2020-02-06T12:00:00.000Z","end":"2020-02-06T13:00:00.000Z"},
+            {"id":null,"name":"Course4","code":"","room":"room2","site":"site1","tutors":[],"courseId":4,"classId":null,"roomId":2,"siteId":201,"publicNotes":"notes2","privateNotes":"private notes2","start":"2020-02-07T12:00:00.000Z","end":"2020-02-09T13:00:00.000Z"}
             ]
             """
 
@@ -236,66 +236,4 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass/t
         Given path ishPathClass + '/' + classId
         When method DELETE
         Then status 204
-
-
-
-#    Scenario: (-) Create Timetable for not existing class
-#
-#        * def newTimetable =
-#            """
-#            {
-#            "classId":99999,
-#            "contactId":5,
-#            "roleId":1,
-#            "confirmedOn":null,
-#            "isInPublicity":false
-#            }
-#            """
-#
-#        Given path ishPath
-#        And request newTimetable
-#        When method POST
-#        Then status 400
-#        And match $.errorMessage == "Class is wrong"
-#
-#
-#
-#    Scenario: (-) Create Timetable for not existing contact
-#
-#        * def newTimetable =
-#            """
-#            {
-#            "classId":6,
-#            "contactId":99999,
-#            "roleId":1,
-#            "confirmedOn":null,
-#            "isInPublicity":false
-#            }
-#            """
-#
-#        Given path ishPath
-#        And request newTimetable
-#        When method POST
-#        Then status 400
-#        And match $.errorMessage == "Tutor is wrong"
-#
-#
-#
-#    Scenario: (-) Create Timetable for with existing role
-#
-#        * def newTimetable =
-#            """
-#            {
-#            "classId":6,
-#            "contactId":5,
-#            "roleId":99999,
-#            "confirmedOn":null,
-#            "isInPublicity":false
-#            }
-#            """
-#
-#        Given path ishPath
-#        And request newTimetable
-#        When method POST
-#        Then status 400
-#        And match $.errorMessage == "Defined tutor role is wrong"
+        
