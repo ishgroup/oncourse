@@ -39,6 +39,17 @@ class SessionValidatorTest extends TestWithDatabase {
         }
     }
     
+    private static void changeSessionTime(SessionDTO dto, String start, String end) {
+        LocalDateTime startDate = LocalDateTime.parse(start)
+        LocalDateTime endDate = LocalDateTime.parse(end)
+        dto.start = startDate
+        dto.end = endDate
+        dto.tutorAttendances.each {
+            it.start = startDate
+            it.end = endDate
+        }
+    }
+    
     @Test
     void testTutor() {
         SessionDTO dto = new SessionDTO().with { it ->
@@ -75,8 +86,7 @@ class SessionValidatorTest extends TestWithDatabase {
 
 
         //single tutor clash at other day
-        dto.start = LocalDateTime.parse('2120-12-04T00:15:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-12-04T01:15:00') //UTC time
+        changeSessionTime(dto, '2120-12-04T00:15:00', '2120-12-04T01:15:00')
 
         warnings = validator.validate([dto], -1l)
 
@@ -89,8 +99,8 @@ class SessionValidatorTest extends TestWithDatabase {
         //partial time overlap - end date time
         // new session                       |--------------|
         // existed session           |--------------|
-        dto.start = LocalDateTime.parse('2120-12-04T00:45:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-12-04T01:45:00') //UTC time
+
+        changeSessionTime(dto, '2120-12-04T00:45:00', '2120-12-04T01:45:00')
 
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
@@ -101,8 +111,7 @@ class SessionValidatorTest extends TestWithDatabase {
         //partial time overlap - start date time
         // new session        |--------------|
         // existed session           |--------------|
-        dto.start = LocalDateTime.parse('2120-12-04T00:00:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-12-04T01:00:00') //UTC time
+        changeSessionTime(dto, '2120-12-04T00:00:00', '2120-12-04T01:00:00')
 
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
@@ -113,8 +122,7 @@ class SessionValidatorTest extends TestWithDatabase {
         //all time overlap
         // new session        |----------------------------|
         // existed session           |--------------|
-        dto.start = LocalDateTime.parse('2120-12-04T00:00:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-12-04T02:00:00') //UTC time
+        changeSessionTime(dto, '2120-12-04T00:00:00', '2120-12-04T02:00:00')
 
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
@@ -124,8 +132,8 @@ class SessionValidatorTest extends TestWithDatabase {
         //all time overlap
         // new session                    |-----|
         // existed session           |--------------|
-        dto.start = LocalDateTime.parse('2120-12-04T00:30:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-12-04T01:00:00') //UTC time
+        
+        changeSessionTime(dto, '2120-12-04T00:30:00', '2120-12-04T01:00:00')
 
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
@@ -151,11 +159,10 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(ClashTypeDTO.ROOM, warnings[0].type)
         Assertions.assertEquals(200l, warnings[0].referenceId)
         Assertions.assertEquals('Room Test Room1 is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
-
+        
         //new session overlap two existed session by room criteria
-        dto.start = LocalDateTime.parse('2120-12-03T00:15:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-12-04T01:15:00') //UTC time
-
+        changeSessionTime(dto, '2120-12-03T00:15:00','2120-12-04T01:15:00')
+        
         warnings = validator.validate([dto], -1l)
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.ROOM, warnings[0].type)
@@ -164,8 +171,8 @@ class SessionValidatorTest extends TestWithDatabase {
                 'ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
 
         //class by room and tutors criteria
-        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 1l)
-        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 2l)
+        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-04T01:15:00', 1l)
+        dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-04T01:15:00', 2l)
         
         warnings = validator.validate([dto], -1l)
         Assertions.assertEquals(3, warnings.size())
@@ -225,16 +232,40 @@ class SessionValidatorTest extends TestWithDatabase {
 
         warnings = validator.validate([dto1, dto2, dto3], 200l)
 
-        Assertions.assertEquals(2, warnings.size())
+        Assertions.assertEquals(6, warnings.size())
+        
         Assertions.assertEquals(ClashTypeDTO.SESSION, warnings[0].type)
         Assertions.assertEquals(199, warnings[0].sessionId)
+        Assertions.assertEquals('Class already has session for that time', warnings[0].message)
 
-        Assertions.assertEquals(ClashTypeDTO.SESSION, warnings[1].type)
-        Assertions.assertEquals('tmp', warnings[1].temporaryId)
+        Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[1].type)
+        Assertions.assertEquals(1, warnings[1].referenceId)
+        Assertions.assertEquals(199, warnings[1].sessionId)
+        Assertions.assertEquals('Tutor already has roster for that time', warnings[1].message)
 
+        Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[2].type)
+        Assertions.assertEquals(2, warnings[2].referenceId)
+        Assertions.assertEquals(199, warnings[2].sessionId)
+        Assertions.assertEquals('Tutor already has roster for that time', warnings[2].message)
 
+        Assertions.assertEquals(ClashTypeDTO.SESSION, warnings[3].type)
+        Assertions.assertEquals('tmp', warnings[3].temporaryId)
+        Assertions.assertEquals('Class already has session for that time', warnings[3].message)
+
+        Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[4].type)
+        Assertions.assertEquals(1, warnings[4].referenceId)
+        Assertions.assertEquals('tmp', warnings[4].temporaryId)
+        Assertions.assertEquals('Tutor already has roster for that time', warnings[4].message)
+
+        Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[5].type)
+        Assertions.assertEquals(2, warnings[5].referenceId)
+        Assertions.assertEquals('tmp', warnings[5].temporaryId)
+        Assertions.assertEquals('Tutor already has roster for that time', warnings[5].message)
+
+        
         dto3.start = LocalDateTime.parse('2120-12-04T01:15:00') //UTC time
         dto3.end = LocalDateTime.parse('2120-12-04T02:15:00') //UTC time
+        changeSessionTime(dto3,'2120-12-04T01:15:00','2120-12-04T02:15:00')
         warnings = validator.validate([dto1, dto2, dto3], 200l)
 
         // no wornings since we allow to sessions with no gap between them |00:15:00---01:15:00| no gap here |01:15:00---02:15:00| 
@@ -380,12 +411,13 @@ class SessionValidatorTest extends TestWithDatabase {
         //push session after unavailability
         dto.start = LocalDateTime.parse('2120-02-02T01:15:00') //UTC time
         dto.end = LocalDateTime.parse('2120-02-02T02:15:00') //UTC time
+        changeSessionTime(dto,'2120-02-02T01:15:00', '2120-02-02T02:15:00')
         warnings = validator.validate([dto], -1)
         Assertions.assertEquals(0, warnings.size())
 
         //room unavailability
-        dto.start = LocalDateTime.parse('2120-07-01T00:00:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-07-01T02:00:00') //UTC time
+        changeSessionTime(dto,'2120-07-01T00:00:00', '2120-07-01T02:00:00')
+
         dto.roomId = 203
         warnings = validator.validate([dto], -1)
         Assertions.assertEquals(1, warnings.size())
@@ -393,12 +425,10 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals('Room Test Room4 is busy: Room cleaning \n', warnings[0].message)
 
         //push session after room unavailability
-        dto.start = LocalDateTime.parse('2120-02-02T02:00:00') //UTC time
-        dto.end = LocalDateTime.parse('2120-02-02T03:00:00') //UTC time
+        changeSessionTime(dto,'2120-02-02T02:00:00', '2120-02-02T03:00:00')
+
         warnings = validator.validate([dto], -1)
         Assertions.assertEquals(0, warnings.size())
-
-
     }
 
     @Test
