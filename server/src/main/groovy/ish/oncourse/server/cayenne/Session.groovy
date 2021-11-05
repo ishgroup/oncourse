@@ -77,6 +77,25 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
 	}
 
+	/**
+	 * @return number of round hours of this session duratiom
+	 */
+	@API
+	Integer getDurationHoursPart() {
+		//Usage ClassTimetableReport.jrxml
+		return Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toHoursPart()
+	}
+	
+	/**
+	 * @return number of round minutes of this session duratiom 
+	 */
+	@API
+	Integer getDurationMinutesPart() {
+		//Usage ClassTimetableReport.jrxml
+		return Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutesPart()
+	}
+
+
 	@Override
 	void postPersist() {
 		updateRelatedOutcomes()
