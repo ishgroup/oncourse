@@ -5,14 +5,10 @@ if (send_before_each_session) {
         query "session.courseClass.startDateTime not is null and session.courseClass.isCancelled is false and startDatetime after today + 1 days and startDatetime before today + 3 days"
     }
 
-    records.each { attendance ->
-        message {
-            template sessionCommencementTemplate
-            to attendance.courseClassTutor.tutor.contact
-            record attendance
-        }
+    message {
+        template sessionCommencementTemplate
+        record records
     }
-
 } else {
     records = query {
         entity "CourseClass"
