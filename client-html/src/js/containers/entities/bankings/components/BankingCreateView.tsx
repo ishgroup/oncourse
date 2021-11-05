@@ -193,7 +193,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
       selectedAccountId,
       values,
       adminSites,
-      isScrollingRoot,
     } = this.props;
 
     const hasNoAccounts = this.hasNoAccounts();
@@ -231,7 +230,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
           )}
           twoColumn
           warpperGap={0}
-          isScrolling={isScrollingRoot}
         />
         <div className="flex-column p-3 h-100">
           <Grid container columnSpacing={3}>

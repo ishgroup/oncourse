@@ -40,7 +40,6 @@ const RoomEditView = props => {
     manualLink,
     rootEntity,
     onEditViewScroll,
-    isScrollingRoot,
   } = props;
 
   return (
@@ -60,8 +59,7 @@ const RoomEditView = props => {
       showConfirm,
       manualLink,
       rootEntity,
-      onEditViewScroll,
-      isScrollingRoot,
+      onEditViewScroll
     }}
     />
 );

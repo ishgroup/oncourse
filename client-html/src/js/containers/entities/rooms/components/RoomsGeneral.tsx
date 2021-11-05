@@ -63,7 +63,6 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       tags,
       sites,
       twoColumn,
-      isScrolling,
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
@@ -73,7 +72,6 @@ class RoomsGeneral extends React.PureComponent<any, any> {
         <Grid container columnSpacing={3} className="p-3">
           <Grid item xs={layoutArray[2].xs}>
             <FullScreenStickyHeader
-              isScrolling={isScrolling}
               twoColumn={twoColumn}
               title={values && values.name}
               fields={(

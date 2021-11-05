@@ -18,7 +18,8 @@ export default (theme: AppTheme) => createStyles({
     display: "flex",
     flexDirection: "column",
     overflow: "auto",
-    position: "relative"
+    position: "relative",
+    height: "100%"
   },
   nestedTable: {
     background: theme.palette.background.paper,
@@ -27,6 +28,7 @@ export default (theme: AppTheme) => createStyles({
     overflow: "auto hidden",
     position: "relative",
     border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius
   },
   tableBody: {
     flex: "1 1 auto"

@@ -6,6 +6,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { AppTheme } from "../../../../../model/common/Theme";
+import { STICKY_HEADER_EVENT } from "../../../../../constants/Config";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   fullScreenTitleWrapper: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     transform: "translateY(200%)",
     visibility: "hidden",
     transition: theme.transitions.create("all", {
-      duration: "0.8s",
+      duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
     }),
   },
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     visibility: "hidden",
     "&, & > div": {
       transition: theme.transitions.create("all", {
-        duration: "0.8s",
+        duration: theme.transitions.duration.standard,
         easing: theme.transitions.easing.easeInOut
       }),
     }
@@ -45,43 +46,6 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   titleIn: {
     transform: "translateY(0)",
     visibility: "visible",
-  },
-  avatarBlock: {},
-  avatarWrapper: {
-    "&, & img": {
-      transition: theme.transitions.create("all", {
-        duration: "0.8s",
-        easing: theme.transitions.easing.easeInOut
-      }),
-    },
-  },
-  avatarBackdrop: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: theme.palette.action.active,
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    opacity: 0,
-    transition: theme.transitions.create("opacity", {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut
-    }),
-    borderRadius: "100%",
-    zIndex: 1,
-    color: "#fff",
-  },
-  avatarRoot: {
-    transition: theme.transitions.create("all", {
-      duration: "0.8s",
-      easing: theme.transitions.easing.easeInOut
-    }),
-  },
-  profileThumbnail: {
-    "&:hover $avatarBackdrop": {
-      opacity: 1,
-    },
   },
   titleWrapper: {
     minHeight: 51,
@@ -95,10 +59,12 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 }));
 
 interface Props {
-  avatar?: (classes?: any) => any;
+  Avatar?: React.FC<{
+    avatarSize: number,
+    disabled: boolean
+  }>;
   title: any;
   twoColumn: boolean,
-  isScrolling?: boolean;
   fields?: any;
   hide?: boolean;
   otherClasses?: any;
@@ -110,13 +76,12 @@ interface Props {
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
   const {
-    avatar,
+    Avatar,
     title,
     fields,
     twoColumn,
     hide,
     otherClasses,
-    isScrolling,
     hideGap,
     warpperGap = 51,
     titleGap = 51,
@@ -128,6 +93,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   const wrapperRef = useRef<any>();
   const [onItemHover, setOnItemHover] = useState<boolean>(false);
   const [onItemClick, setOnItemClick] = useState<boolean>(false);
+  const [isStuck, setIsStuck] = useState<boolean>(false);
 
   const handlerWrappper = useCallback((e, eventType) => {
     const hasCurrentContainer = wrapperRef.current && wrapperRef.current.contains(e.target);
@@ -149,48 +115,55 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     handlerWrappper(e, "mouseover");
   }, []);
 
-  useEffect(() => {
-    if (twoColumn) {
-      window.addEventListener("mousedown", onWrapperClick);
-      window.addEventListener("mouseover", onWrapperHover);
+  const onStickyChange = useCallback(e => {
+    if (isStuck !== e.detail.stuck) {
+      setIsStuck(e.detail.stuck);
     }
+  }, [isStuck]);
 
+  useEffect(() => {
+    document.addEventListener(STICKY_HEADER_EVENT, onStickyChange);
+    return () => {
+      document.removeEventListener(STICKY_HEADER_EVENT, onStickyChange);
+    };
+  }, [onStickyChange]);
+
+  useEffect(() => {
+    window.addEventListener("mousedown", onWrapperClick);
+    window.addEventListener("mouseover", onWrapperHover);
     return () => {
       window.removeEventListener("mousedown", onWrapperClick);
       window.removeEventListener("mouseover", onWrapperHover);
     };
-  }, [twoColumn]);
+  }, []);
 
-  const showTitleText = twoColumn && !onItemHover && !onItemClick;
-  const showTitleOnly = isScrolling && twoColumn;
+  const showTitleText = !onItemHover && !onItemClick;
+
+  const showTitleOnly = twoColumn && isStuck;
 
   return (
     <Grid
       container
       columnSpacing={3}
-      className={clsx("align-items-center", hide && "d-none", !twoColumn && "mb-3")}
+      className={clsx("align-items-center", hide && "d-none")}
       ref={wrapperRef}
-      style={{ minHeight: twoColumn && !avatar && !hideGap ? `${warpperGap}px` : twoColumn && avatar ? "90px" : "auto" }}
+      style={{ minHeight: !Avatar && !hideGap ? `${warpperGap}px` : Avatar ? "60px" : "auto" }}
     >
       <Grid
         item
         xs={12}
-        className={clsx("centeredFlex", !twoColumn && "flex-column",
-          { [classes.fullScreenTitleItem]: twoColumn, "mt-2": twoColumn, "mt-1": showTitleOnly })}
+        className={clsx("centeredFlex", twoColumn && classes.fullScreenTitleItem, "mt-3", showTitleOnly && "mt-1")}
         columnSpacing={3}
       >
-        {avatar && (
-          <Grid item>
-            <div className={clsx(classes.avatarBlock, !twoColumn && "w-100", twoColumn && "mr-3")}>
-              {avatar(classes)}
-            </div>
-          </Grid>
-        )}
+        <Avatar
+          avatarSize={showTitleOnly ? 40 : 90}
+          disabled={showTitleOnly}
+        />
         <Grid
           columnSpacing={3}
           container
           item
-          xs={avatar ? 10 : 12}
+          xs={Avatar ? 10 : 12}
           className={clsx("relative overflow-hidden align-items-center")}
           style={{ minHeight: `${titleGap}px` }}
         >
@@ -204,7 +177,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               variant="h5"
               display="block"
               component="div"
-              className={clsx("w-100", !twoColumn && "mt-1", showTitleOnly && "appHeaderFontSize",
+              className={clsx("w-100", showTitleOnly && "appHeaderFontSize",
                 { [classes.titleTextAlternate]: showTitleOnly },
                 { "text-truncate text-nowrap pr-2": truncateTitle })}
             >

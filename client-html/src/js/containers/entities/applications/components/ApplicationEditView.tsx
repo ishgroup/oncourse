@@ -49,7 +49,6 @@ interface ApplicationEditViewProps {
   openNestedEditView?: any;
   manualLink?: string;
   onEditViewScroll?: (e: any, isScrolling?: boolean) => void;
-  isScrollingRoot?: boolean;
 }
 
 const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
@@ -68,7 +67,6 @@ const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
     openNestedEditView,
     manualLink,
     onEditViewScroll,
-    isScrollingRoot,
   } = props;
 
   return (
@@ -89,7 +87,6 @@ const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
         openNestedEditView,
         manualLink,
         onEditViewScroll,
-        isScrollingRoot,
       }}
     />
   );

@@ -79,8 +79,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     setSelectedContact,
     contracts,
     dirty,
-    gradingTypes,
-    isScrolling
+    gradingTypes
   } = props;
 
   const onContactChange = useCallback(
@@ -145,7 +144,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     <>
       {twoColumn && (
         <FullScreenStickyHeader
-          isScrolling={isScrolling}
           twoColumn={twoColumn}
           title={defaultContactName(values.studentName)}
         />

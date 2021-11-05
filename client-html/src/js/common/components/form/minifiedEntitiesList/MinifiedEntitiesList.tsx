@@ -44,14 +44,13 @@ const MinifiedEntitiesList = props => {
   return (
     <div id={name}>
       <div className="centeredFlex">
-        <Typography className={clsx("heading pt-2 pb-2", { "errorColor": error })}>
+        <Typography className={clsx("heading mb-2 mt-2", { "errorColor": error })}>
           {count > 0 ? count : ""}
           {' '}
           {count !== 1 ? header : oneItemHeader}
         </Typography>
-
         {onAdd && (
-          <AddIcon onClick={onAdd} />
+          <AddIcon color="primary" onClick={onAdd} iconFontSize="inherit" />
         )}
       </div>
 
