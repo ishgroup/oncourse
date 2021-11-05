@@ -151,7 +151,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     hovered = true,
     form,
     dispatch,
-    isScrollingRoot,
   } = props;
 
   const fileRef = useRef<any>();
@@ -216,7 +215,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         <div className={twoColumn ? "" : "h-100"}>
           {twoColumn && (
             <FullScreenStickyHeader
-              isScrolling={isScrollingRoot}
               twoColumn={twoColumn}
               title={values && values.name}
               fields={(

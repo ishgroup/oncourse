@@ -41,8 +41,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
       tags,
       dispatch,
       form,
-      twoColumn,
-      isScrolling
+      twoColumn
     } = this.props;
 
     const gridItemProps: any = {
@@ -54,7 +53,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
         {twoColumn && (
           <Grid item xs={12}>
             <FullScreenStickyHeader
-              isScrolling={isScrolling}
               twoColumn={twoColumn}
               title={values && values.courseName}
               fields={(

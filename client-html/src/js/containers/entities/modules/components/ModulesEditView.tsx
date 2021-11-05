@@ -32,7 +32,7 @@ const normalizeNominalHours = value => (value || value === 0 ? Number(value) : n
 
 const ModulesEditView = (props: any) => {
   const {
-    isNew, values, updateDeleteCondition, twoColumn, isScrollingRoot
+    isNew, values, updateDeleteCondition, twoColumn
   } = props;
 
   const isCustom = values && values.isCustom === true;
@@ -49,7 +49,6 @@ const ModulesEditView = (props: any) => {
         <Grid container columnSpacing={3}>
           {twoColumn && (
             <FullScreenStickyHeader
-              isScrolling={isScrollingRoot}
               twoColumn={twoColumn}
               title={(
                 <span className="d-block text-nowrap text-truncate">

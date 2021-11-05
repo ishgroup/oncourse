@@ -82,9 +82,6 @@ const styles = theme =>
       minHeight: theme.spacing(2),
       background: "red",
       borderRadius: "100%"
-    },
-    unfocusedWrapper: {
-      marginTop: "14px",
     }
   });
 
@@ -422,7 +419,7 @@ const SimpleTagList: React.FC<Props> = props => {
 
           <ListItemText
             classes={{
-              root: clsx("pl-0 mb-0", classes.unfocusedWrapper),
+              root: "pl-0 mb-0",
               primary: "d-flex"
             }}
             primary={(

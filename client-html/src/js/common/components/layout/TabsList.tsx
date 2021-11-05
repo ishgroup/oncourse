@@ -14,9 +14,10 @@ import ListItem from "@mui/material/ListItem";
 import createStyles from "@mui/styles/createStyles";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
-import { LSGetItem } from "../../utils/storage";
 import NewsRender from "../news/NewsRender";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../constants/Config";
+import { LSGetItem, LSSetItem } from "../../utils/storage";
+import { EditViewProps } from "../../../model/common/ListView";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -36,16 +37,20 @@ const styles = theme => createStyles({
       padding: 0,
       overflow: "hidden",
       position: "relative",
-      "&$selected": {
-        opacity: 1,
-        backgroundColor: "inherit",
-        color: theme.tabList.listItemRoot.selectedColor,
-        "& $arrowIcon": {
-          transform: "translateX(0)",
-        },
-        "& $listItemText": {
-          paddingLeft: 30,
-        },
+      cursor: 'pointer',
+    "&$selected": {
+      opacity: 1,
+      backgroundColor: "inherit",
+      color: theme.tabList.listItemRoot.selectedColor,
+      "& $arrowIcon": {
+        transform: "translateX(0)",
+      },
+      "& $listItemText": {
+        paddingLeft: 30,
+      },
+    },
+    "&:hover": {
+      opacity: 0.8,
       }
     },
     listItemText: {
@@ -74,7 +79,7 @@ export interface TabsListItem {
 
 interface Props {
   classes?: any;
-  itemProps?: any;
+  itemProps?: EditViewProps & any;
   customAppBar?: boolean;
   items: TabsListItem[];
 }
@@ -84,6 +89,13 @@ interface ScrollNodes {
 }
 
 const SCROLL_TARGET_ID = "TabsListScrollTarget";
+
+const TABLIST_LOCAL_STORAGE_KEY = "localstorage_key_tab_list";
+
+function fire(stuck) {
+  const evt = new CustomEvent(STICKY_HEADER_EVENT, { detail: { stuck } });
+  document.dispatchEvent(evt);
+}
 
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
 
@@ -95,6 +107,23 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
   const [selected, setSelected] = useState<string>(null);
   const [expanded, setExpanded] = useState<number[]>([]);
+
+  useEffect(() => {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    if (stored && stored[itemProps.rootEntity]) {
+      setExpanded(stored[itemProps.rootEntity]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    let updated = {};
+    if (stored) {
+      updated = { ...stored };
+    }
+    updated[itemProps.rootEntity] = expanded;
+    LSSetItem(TABLIST_LOCAL_STORAGE_KEY, JSON.stringify(updated));
+  }, [expanded, itemProps.rootEntity]);
 
   useEffect(() => {
     if (items.length) {
@@ -129,6 +158,10 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
   const onScroll = useCallback(
     e => {
+      if (e.target) {
+        fire(e.target.scrollTop > 20);
+      }
+
       if (!itemProps.twoColumn) {
         return;
       }
@@ -138,10 +171,6 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
       }
 
       const isScrollingDown = scrolledPX.current < e.target.scrollTop;
-
-      if (itemProps.onEditViewScroll) {
-        itemProps.onEditViewScroll(e, isScrollingDown);
-      }
 
       scrolledPX.current = e.target.scrollTop;
 
@@ -232,7 +261,6 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
                 const itemSelected = i.label === selected;
                 return (
                   <ListItem
-                    // button
                     selected={itemSelected}
                     classes={{
                       root: classes.listItemRoot,
@@ -243,7 +271,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
                   >
                     <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
                     <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                      <div className="text-uppercase">{customLabels && customLabels[index] ? customLabels[index] : i.label}</div>
+                      <div className="text-uppercase">{i.label}</div>
                       {i.labelAdornment && (
                         <Typography variant="caption" component="div" className="text-pre-wrap">
                           {i.labelAdornment}

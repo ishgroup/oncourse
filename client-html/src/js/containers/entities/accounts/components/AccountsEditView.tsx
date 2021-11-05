@@ -48,7 +48,7 @@ const getFormattedTaxes = (taxes: Tax[]) =>
 
 const AccountsEditView = props => {
   const {
-   twoColumn, taxTypes, isNew, values, isScrollingRoot
+   twoColumn, taxTypes, isNew, values
   } = props;
   const isCustom = values && values.isCustom === true;
   const isDisabled = isNew ? false : !isCustom;
@@ -79,7 +79,6 @@ const AccountsEditView = props => {
                   required
                 />
               )}
-              isScrolling={isScrollingRoot}
             />
             <FormField
               type="select"
