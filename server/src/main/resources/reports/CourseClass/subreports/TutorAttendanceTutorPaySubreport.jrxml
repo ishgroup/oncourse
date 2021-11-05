@@ -53,11 +53,12 @@
 		</conditionalStyle>
 	</style>
 	<parameter name="sessionNumber" class="java.lang.Integer" isForPrompting="false"/>
-	<parameter name="payableTime" class="java.lang.Long" isForPrompting="false"/>
+<!--	<parameter name="payableTime" class="java.lang.Long" isForPrompting="false"/>-->
+	<field name="tutorAttendance" class="ish.oncourse.server.cayenne.TutorAttendance"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="courseClassTutor.tutor.id" class="java.lang.Long"/>
 	<field name="courseClassTutor.definedTutorRole.name" class="java.lang.String"/>
-	<field name="actualPayableDurationMinutes" class="java.lang.Long"/>
+	<field name="actualPayableDurationMinutes" class="java.lang.Integer"/>
 	<field name="datasource.session.courseClass.costs" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.ish.onCourse.classCostTutorPaySubreport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<variable name="tutorAttendanceTotalPayable" class="java.math.BigDecimal" calculation="Sum"/>
