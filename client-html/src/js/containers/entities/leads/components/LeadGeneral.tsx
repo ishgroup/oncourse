@@ -102,8 +102,7 @@ const LeadGeneral = (props: Props) => {
     submitSucceeded,
     twoColumn,
     isNew,
-    users,
-    isScrolling,
+    users
   } = props;
 
   const { classes } = useStyles();
@@ -168,7 +167,6 @@ const LeadGeneral = (props: Props) => {
     <>
       {twoColumn && (
         <FullScreenStickyHeader
-          isScrolling={isScrolling}
           twoColumn={twoColumn}
           title={(
             <div className="centeredFlex">

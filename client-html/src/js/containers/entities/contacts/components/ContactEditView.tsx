@@ -12,6 +12,7 @@ import ContactsFinancial from "./ContactsFinancial";
 import ContactsMessages from "./ContactsMessages";
 import ContactsVET from "./ContactsVET";
 import ContactsEducation from "./ContactsEducation";
+import ContactsDetails from "./ContactDetails";
 import ContactsDocuments from "./ContactsDocuments";
 import ContactsResume from "./ContactsResume";
 import ContactsTutor from "./ContactsTutor";
@@ -49,6 +50,10 @@ const items: TabsListItem[] = [
   {
     label: "General",
     component: props => <ContactsGeneral {...props} />
+  },
+  {
+    label: "Contact",
+    component: props => <ContactsDetails {...props} />
   },
   {
     label: "Financial",
@@ -91,8 +96,7 @@ const ContactEditView = props => {
     invalid,
     currencySymbol,
     syncErrors,
-    onEditViewScroll,
-    isScrollingRoot,
+    onEditViewScroll
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -110,7 +114,7 @@ const ContactEditView = props => {
       });
     }
 
-    activeItems[1].labelAdornment = React.useMemo(
+    activeItems[activeItems.findIndex(i => i.label === "Financial")].labelAdornment = React.useMemo(
       () =>
         (twoColumn ? (
           <span className="money centeredFlex">
@@ -165,7 +169,6 @@ const ContactEditView = props => {
           setUsiUpdateLocked,
           syncErrors,
           onEditViewScroll,
-          isScrollingRoot,
         }}
       />
     </>

@@ -13,6 +13,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
 import AddIcon from "../../icons/AddIcon";
+import Divider from "@mui/material/Divider";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -83,8 +84,9 @@ const ExpandableContainer: React.FC<Props> = ({
 
   return (
     <>
+      <Divider className="mb-2"/>
       <div ref={headerRef}>
-        <div className="centeredFlex">
+        <div className="centeredFlex mb-2">
           <div className={clsx("centeredFlex", { "flex-fill": !inlineHeading })}>
             <div className="heading">{header}</div>
             {onAdd && (

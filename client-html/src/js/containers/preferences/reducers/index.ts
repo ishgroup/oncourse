@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Currency } from "@api/model";
+import { Country, Currency, Language } from "@api/model";
 import { IAction } from "../../../common/actions/IshAction";
 import { Categories } from "../../../model/preferences";
 
@@ -324,7 +324,7 @@ export const timezonesReducer = (state: string[] = [], action: IAction<any>): st
   }
 };
 
-export const countriesReducer = (state: string[] = [], action: IAction<any>): string[] => {
+export const countriesReducer = (state: Country[] = [], action: IAction<any>): Country[] => {
   switch (action.type) {
     case GET_COUNTRIES_REQUEST_FULFILLED: {
       return action.payload.countries;
@@ -334,7 +334,7 @@ export const countriesReducer = (state: string[] = [], action: IAction<any>): st
   }
 };
 
-export const languagesReducer = (state: string[] = [], action: IAction<any>): string[] => {
+export const languagesReducer = (state: Language[] = [], action: IAction<any>): Language[] => {
   switch (action.type) {
     case GET_LANGUAGES_REQUEST_FULFILLED: {
       return action.payload.languages;

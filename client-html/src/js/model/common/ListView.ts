@@ -127,7 +127,6 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
   toogleFullScreenEditView?: any;
   onEditViewScroll?: (e: any, isScrolling?: boolean) => void;
-  isScrollingRoot?: boolean;
   isScrolling?: boolean;
 }
 

@@ -27,6 +27,8 @@ export const LIST_PAGE_SIZE = 50;
 
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
 
+export const STICKY_HEADER_EVENT = 'sticky-change';
+
 export const APPLICATION_THEME_STORAGE_NAME = "theme";
 
 export const DASHBOARD_ACTIVITY_STORAGE_NAME = "dashboardActivityState";

@@ -433,7 +433,6 @@ const CourseClassEditView: React.FC<Props> = ({
   return (
     <TabsList
       items={values.isTraineeship ? [...usedItems, ...traineeshipItems] : usedItems}
-      customLabels={customLabels}
       itemProps={{
         isNew,
         isNested,

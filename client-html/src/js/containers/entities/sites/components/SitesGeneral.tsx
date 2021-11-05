@@ -142,8 +142,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
       tags,
       countries,
       timezones,
-      syncErrors,
-      isScrolling,
+      syncErrors
     } = this.props;
 
     const { addressString } = this.state;
@@ -163,7 +162,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
 
           <Grid item xs={layoutArray[2].xs}>
             <FullScreenStickyHeader
-              isScrolling={isScrolling}
               twoColumn={twoColumn}
               title={values && values.name}
               fields={(

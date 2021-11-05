@@ -224,7 +224,6 @@ class BankingEditView extends React.PureComponent<any, any> {
       editRecord,
       openNestedView,
       values,
-      isScrollingRoot,
     } = this.props;
 
     return (
@@ -255,7 +254,6 @@ class BankingEditView extends React.PureComponent<any, any> {
             twoColumn={twoColumn}
             warpperGap={0}
             titleGap={51}
-            isScrolling={isScrollingRoot}
           />
         )}
         <div className="h-100 flex-column p-3">

@@ -6,8 +6,6 @@
 import React, {
  useCallback, useEffect, useRef, useState
 } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import Typography from "@mui/material/Typography";
 import { withStyles } from "@mui/styles";
 import Grid, { GridSize } from "@mui/material/Grid";
@@ -16,11 +14,9 @@ import ListItem from "@mui/material/ListItem";
 import createStyles from "@mui/styles/createStyles";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
-import { State } from "../../../reducers/state";
-import { LSGetItem } from "../../utils/storage";
-import { toggleTabListExpanded } from "./reducers/tabListReducer";
-import { TabsListState } from "./actions/tabListActions";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../constants/Config";
+import { LSGetItem, LSSetItem } from "../../utils/storage";
+import { EditViewProps } from "../../../model/common/ListView";
 
 const styles = theme => createStyles({
   listContainer: {
@@ -40,6 +36,7 @@ const styles = theme => createStyles({
     padding: 0,
     overflow: "hidden",
     position: "relative",
+    cursor: 'pointer',
     "&$selected": {
       opacity: 1,
       backgroundColor: "inherit",
@@ -50,6 +47,9 @@ const styles = theme => createStyles({
       "& $listItemText": {
         paddingLeft: 30,
       },
+    },
+    "&:hover": {
+      opacity: 0.8,
     }
   },
   listItemText: {
@@ -77,20 +77,18 @@ const styles = theme => createStyles({
 });
 
 export interface TabsListItem {
-  label: string;
+  readonly type?: string;
   component: (props: any) => React.ReactNode;
   labelAdornment?: React.ReactNode;
   expandable?: boolean;
+  label: string;
 }
 
 interface Props {
   classes?: any;
-  itemProps?: any;
-  customLabels?: any;
+  itemProps?: EditViewProps & any;
   customAppBar?: boolean;
   items: TabsListItem[];
-  expandedEntity?: TabsListState;
-  toggleExpanded?: (rootEntity: string, expanded: number[]) => void;
 }
 
 interface ScrollNodes {
@@ -99,27 +97,40 @@ interface ScrollNodes {
 
 const SCROLL_TARGET_ID = "TabsListScrollTarget";
 
-const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (
-  twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]
-);
+const TABLIST_LOCAL_STORAGE_KEY = "localstorage_key_tab_list";
+
+function fire(stuck) {
+  const evt = new CustomEvent(STICKY_HEADER_EVENT, { detail: { stuck } });
+  document.dispatchEvent(evt);
+}
+
+const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
 
 const TabsList = React.memo<Props & RouteComponentProps>(({
-  classes,
-  items,
-  customLabels,
-  customAppBar,
-  itemProps = {},
-  history,
-  location,
-  expandedEntity,
-  toggleExpanded,
-}) => {
+   classes, items, customAppBar, itemProps = {}, history, location
+  }) => {
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<ScrollNodes>({});
 
   const [selected, setSelected] = useState<string>(null);
-  const [expanded, setTabExpanded] = useState<number[]>([]);
-  const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<number[]>([]);
+
+  useEffect(() => {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    if (stored && stored[itemProps.rootEntity]) {
+      setExpanded(stored[itemProps.rootEntity]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    let updated = {};
+    if (stored) {
+      updated = { ...stored };
+    }
+    updated[itemProps.rootEntity] = expanded;
+    LSSetItem(TABLIST_LOCAL_STORAGE_KEY, JSON.stringify(updated));
+  }, [expanded, itemProps.rootEntity]);
 
   useEffect(() => {
     if (items.length) {
@@ -127,34 +138,12 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
     }
   }, [items.length]);
 
-  const setExpanded = useCallback(expandedItem => {
-    toggleExpanded(itemProps.rootEntity, expandedItem);
-  }, [itemProps]);
-
-  useEffect(() => {
-    let expandedItem = [];
-
-    if (expandedEntity[itemProps.rootEntity]) {
-      expandedItem = expandedEntity[itemProps.rootEntity].expanded;
-    }
-
-    setTabExpanded(expandedItem);
-  }, [expandedEntity]);
-
-  const scrollToSelected = useCallback((i: TabsListItem, index) => {
-    setSelected(i.label);
-    scrollNodes.current[i.label].scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
-    if (i.expandable && !expanded.includes(index)) {
-      setExpanded([...expanded, index]);
-    }
-  }, [expanded]);
-
   useEffect(() => {
     if (location.search) {
       const search = new URLSearchParams(location.search);
       const expandTab = Number(search.get("expandTab"));
 
-      if (search.has("expandTab") && !Number.isNaN(expandTab)) {
+      if (search.has("expandTab") && !isNaN(expandTab)) {
         setTimeout(() => {
           if (!expanded.includes(expandTab)) {
             setExpanded([...expanded, expandTab]);
@@ -176,6 +165,10 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
   const onScroll = useCallback(
     e => {
+      if (e.target) {
+        fire(e.target.scrollTop > 20);
+      }
+
       if (!itemProps.twoColumn) {
         return;
       }
@@ -185,21 +178,6 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
       }
 
       const isScrollingDown = scrolledPX.current < e.target.scrollTop;
-      let triggerScrolling = false;
-
-      if (e.target) {
-        if (e.target.scrollTop > 20) {
-          setIsScrolling(true);
-          triggerScrolling = true;
-        } else {
-          setIsScrolling(false);
-          triggerScrolling = false;
-        }
-      }
-
-      if (itemProps.onEditViewScroll) {
-        itemProps.onEditViewScroll(e, triggerScrolling);
-      }
 
       scrolledPX.current = e.target.scrollTop;
 
@@ -233,6 +211,17 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
     [selected, itemProps.twoColumn]
   );
 
+  const scrollToSelected = useCallback(
+    (i: TabsListItem, index) => {
+      setSelected(i.label);
+      scrollNodes.current[i.label].scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
+      if (i.expandable && !expanded.includes(index)) {
+        setExpanded([...expanded, index]);
+      }
+    },
+    [expanded]
+  );
+
   const setScrollNode = useCallback(node => {
     if (!node) {
       return;
@@ -246,25 +235,20 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   const layoutArray = getLayoutArray(itemProps.twoColumn);
 
   return (
-    <Grid container className={clsx({ "root": customAppBar && itemProps.twoColumn })}>
+    <Grid container className={clsx("overflow-hidden", { "root": customAppBar && itemProps.twoColumn })}>
       <Grid item xs={layoutArray[0].xs}>
         <Grid container>
           <Grid
             item
             xs={layoutArray[1].xs}
-            className={clsx("overflow-y-auto",
-              customAppBar && itemProps.twoColumn ? "appBarContainer" : "",
-              {
-                [classes.fullScreenContentItem]: itemProps.twoColumn,
-                [classes.threeColumnContentItem]: !itemProps.twoColumn,
-              })}
+            className={clsx("overflow-y-auto", customAppBar && itemProps.twoColumn ? "appBarContainer" : "fullHeightWithoutAppBar")}
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
             {items.map((i, tabIndex) => (
               <div id={i.label} key={i.label} ref={setScrollNode}>
                 {i.component({
-                 ...itemProps, expanded, setExpanded, tabIndex, isScrolling: isScrolling || itemProps.isScrollingRoot
+                 ...itemProps, expanded, setExpanded, tabIndex
                 })}
               </div>
             ))}
@@ -283,7 +267,6 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
                 const itemSelected = i.label === selected;
                 return (
                   <ListItem
-                    // button
                     selected={itemSelected}
                     classes={{
                       root: classes.listItemRoot,
@@ -294,7 +277,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
                   >
                     <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
                     <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                      <div className="text-uppercase">{customLabels && customLabels[index] ? customLabels[index] : i.label}</div>
+                      <div className="text-uppercase">{i.label}</div>
                       {i.labelAdornment && (
                         <Typography variant="caption" component="div" className="text-pre-wrap">
                           {i.labelAdornment}
@@ -312,14 +295,4 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   );
 });
 
-const mapStateToProps = (state: State) => ({
-  expandedEntity: state.tabsList,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  toggleExpanded: (rootEntity, expanded) => dispatch(toggleTabListExpanded(rootEntity, expanded)),
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(withRouter(TabsList))
-);
+export default withStyles(styles)(withRouter(TabsList));

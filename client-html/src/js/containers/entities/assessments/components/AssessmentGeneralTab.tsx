@@ -28,8 +28,7 @@ const AssessmentGeneralTab = React.memo<Props>(
     tags,
     twoColumn,
     values,
-    gradingTypes = [],
-    isScrolling,
+    gradingTypes = []
   }
 ) => {
     const validateTagListCallback = useCallback(
@@ -59,7 +58,6 @@ const AssessmentGeneralTab = React.memo<Props>(
       <>
         {twoColumn && (
           <FullScreenStickyHeader
-            isScrolling={isScrolling}
             twoColumn={twoColumn}
             title={(
               <Grid container columnSpacing={3}>
