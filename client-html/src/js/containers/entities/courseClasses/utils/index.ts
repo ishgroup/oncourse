@@ -4,7 +4,7 @@
  */
 
 import { AssessmentClass, Session } from "@api/model";
-import { set } from "date-fns";
+import { differenceInMinutes, addMinutes } from "date-fns";
 import { openInternalLink } from "../../../../common/utils/links";
 import {
   ClassCostExtended,
@@ -397,16 +397,26 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
   return unprocessedAsyncActions;
 };
 
-export const getShiftedTutorAttendanseDates = (taStart: Date, taEnd: Date, sessionStart: Date, sessionEnd: Date) => {
-  const start = set(sessionStart, {
-    hours: taStart.getHours(),
-    minutes: taStart.getMinutes()
-  }).toISOString();
+export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSession: TimetableSession) => {
+  const sessionStartMinutesDiff = differenceInMinutes(new Date(newSession.start), new Date(prevSession.start));
+  const sessionEndMinutesDiff = differenceInMinutes(new Date(newSession.end), new Date(prevSession.end));
 
-  const end = set(sessionEnd, {
-    hours: taEnd.getHours(),
-    minutes: taEnd.getMinutes()
-  }).toISOString();
-  
-  return { start, end };
+  newSession.tutorAttendances = newSession.tutorAttendances.map((ta, index) => {
+    const taStartMinutesDiff = differenceInMinutes(new Date(ta.start), new Date(prevSession.tutorAttendances[index].start));
+    const taEndMinutesDiff = differenceInMinutes(new Date(ta.end), new Date(prevSession.tutorAttendances[index].end));
+    
+    const start = addMinutes(new Date(ta.start), sessionStartMinutesDiff + taStartMinutesDiff);
+    const end = addMinutes(new Date(ta.end), sessionEndMinutesDiff + taEndMinutesDiff);
+
+    const taDurationDiff = differenceInMinutes(end, start) - differenceInMinutes(new Date(ta.end), new Date(ta.start));
+
+    const actualPayableDurationMinutes = ta.actualPayableDurationMinutes + taDurationDiff;
+    
+    return {
+      ...ta,
+      end: end.toISOString(),
+      start: start.toISOString(),
+      actualPayableDurationMinutes: actualPayableDurationMinutes >= 0 ? actualPayableDurationMinutes : 0
+    };
+  });
 };

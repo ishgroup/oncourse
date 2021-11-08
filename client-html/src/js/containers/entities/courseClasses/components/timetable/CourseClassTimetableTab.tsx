@@ -21,7 +21,6 @@ import {
   addYears,
   differenceInMinutes,
   isWeekend,
-  set,
   subDays
 } from "date-fns";
 import { Session, SessionWarning, TutorAttendance } from "@api/model";
@@ -64,7 +63,7 @@ import { State } from "../../../../../reducers/state";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../../../common/utils/uniqid";
-import { getShiftedTutorAttendanseDates } from "../../utils";
+import { setShiftedTutorAttendances } from "../../utils";
 
 const styles = () => createStyles({
     root: {
@@ -158,20 +157,17 @@ const getSessionsWithRepeated = (
       }
     }
     
-    const tutorAttendances = repeatSession.tutorAttendances.map(ta => ({
-        ...ta,
-        id: null,
-        ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), start, end)
-      }));
-
-    return {
+    const result = {
       ...repeatSession,
       id: null,
       temporaryId: uniqid(),
       start: start.toISOString(),
       end: end.toISOString(),
-      tutorAttendances
     };
+
+    setShiftedTutorAttendances(repeatSession, result);
+
+    return result;
   });
 
   const updated = [...allSessions, ...repeated];
@@ -231,7 +227,7 @@ const sessionInitial: TimetableSession = {
   privateNotes: null
 };
 
-const CourseClassTimetableTab: React.FC<Props> = ({
+const CourseClassTimetableTab = ({
   values,
   showConfirm,
   dispatch,
@@ -247,22 +243,12 @@ const CourseClassTimetableTab: React.FC<Props> = ({
   sessionWarnings,
   sessionSelection,
   bulkSessionModalOpened
-}) => {
+}: Props) => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [copyDialogAnchor, setCopyDialogAnchor] = useState(null);
   const [openCopyDialog, setOpenCopyDialog] = React.useState({ open: false, session: { id: -1 } });
-  // const [attendanceChanged, setAttendanceChanged] = useState(false);
   const [months, setMonths] = useState<TimetableMonth[]>([]);
   const [sessionMenu, setSessionMenu] = useState(null);
-
-  // useEffect(() => {
-  //   if (values.studentAttendance && values.tutorAttendance && !attendanceChanged && (values.studentAttendance.length || values.tutorAttendance.length) && dirty) {
-  //     setAttendanceChanged(true);
-  //   }
-  //   if (attendanceChanged && !dirty) {
-  //     setAttendanceChanged(false);
-  //   }
-  // }, [values.studentAttendance, values.tutorAttendance]);
 
   const onSelfPacedChange = useCallback(
     (e, value) => {
@@ -535,7 +521,8 @@ const CourseClassTimetableTab: React.FC<Props> = ({
     const updated = [...values.sessions];
 
     sessionSelection.forEach(sid => {
-      const session: TimetableSession = JSON.parse(JSON.stringify(updated.find(s => s.id === sid || s.temporaryId === sid)));
+      const originalSession = updated.find(s => s.id === sid || s.temporaryId === sid);
+      const session: TimetableSession = JSON.parse(JSON.stringify(originalSession));
       const startDate = new Date(session.start);
       const endDate = new Date(session.end);
 
@@ -639,6 +626,7 @@ const CourseClassTimetableTab: React.FC<Props> = ({
         session.end = subDays(new Date(session.end), parseInt(bulkValue.moveBackward)).toISOString();
       }
       if (bulkValue.tutorsChecked) {
+        setShiftedTutorAttendances(originalSession, session);
         const payslipAttendances = session.tutorAttendances.filter(pa => pa.hasPayslip);
         session.tutorAttendances = bulkValue.tutorAttendances.map(ta => {
           // Check for payslip
@@ -649,23 +637,18 @@ const CourseClassTimetableTab: React.FC<Props> = ({
           }
           return {
             ...ta,
-            ...getShiftedTutorAttendanseDates(new Date(ta.start), new Date(ta.end), new Date(session.start), new Date(session.end))
           };
         }).concat(payslipAttendances);
+      }
+
+      if (sessionTimeChanged) {
+        setShiftedTutorAttendances(originalSession, session);
       }
 
       if (typeof actualPayableDurationMinutes === 'number') {
         session.tutorAttendances = session.tutorAttendances.map(ta => ({
           ...ta,
           actualPayableDurationMinutes
-        }));
-      }
-
-      if (sessionTimeChanged) {
-        session.tutorAttendances = session.tutorAttendances.map(ta => ({
-            ...ta,
-          start: session.start,
-          end: session.end
         }));
       }
 

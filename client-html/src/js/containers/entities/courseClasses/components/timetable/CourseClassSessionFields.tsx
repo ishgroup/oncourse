@@ -29,6 +29,7 @@ import { openRoomLink } from "../../../rooms/utils";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { setShiftedTutorAttendances } from "../../utils";
 
 interface Props {
   form: string;
@@ -102,15 +103,17 @@ const CourseClassSessionFields: React.FC<Props> = ({
         endDate.toISOString()
       )
     );
-
-    const tutorAttendances = session.tutorAttendances.map(ta => ({
-      ...ta,
+    
+    const updatedSession = {
+      ...session,
       start: startDate.toISOString(),
       end: endDate.toISOString()
-    }));
+    };
 
+    setShiftedTutorAttendances(session, updatedSession);
+    
     dispatch(
-      change(form, `sessions[${session.index}].tutorAttendances`, tutorAttendances)
+      change(form, `sessions[${session.index}].tutorAttendances`, updatedSession.tutorAttendances)
     );
   };
 
@@ -219,10 +222,12 @@ const CourseClassSessionFields: React.FC<Props> = ({
           label="End"
         />
       </Grid>
-      {warningTypes.Session
+      <Grid item xs={12}>
+        {warningTypes.Session
           .map(w => <ErrorMessage message={w.message} /> )}
-      {warningTypes.UnavailableRule
+        {warningTypes.UnavailableRule
           .map(w => <ErrorMessage message={w.message} /> )}
+      </Grid>
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"

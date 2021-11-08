@@ -240,7 +240,7 @@ const CourseClassBulkChangeSessionForm = props => {
               </div>
               {tutors.length > 0 && (
                 <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
-                  <div className={classes.sessionTutors}>
+                  <div className={classes.sessionTutors} onClick={e => e.preventDefault()}>
                     <Field
                       name="tutorAttendances"
                       component={CourseClassTutorRooster}
