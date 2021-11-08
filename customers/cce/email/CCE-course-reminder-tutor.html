@@ -27,7 +27,7 @@ ${render("Header", [title: "Course reminder"])}
 
 ${render("CCE-Body-Start")}
 
-<h1> Hello ${contact.fullName}, </h1>
+<h1> Hello ${record.tutor.contact.fullName}, </h1>
 <p> This is a courtesy email to remind you that <strong>${courseClass.course.name}</strong> with Centre for Continuing Education is due to commence soon. </p>
 <p> A brief summary of your course is provided below. <p>
 
@@ -88,7 +88,7 @@ ${render("CCE-Body-End")}
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
             <!-- Right Cell -->
-            ${courseClass.course.name}
+            ${record.courseClass.course.name}
           </td>
           <td width="20"></td>
         </tr>
@@ -129,7 +129,7 @@ ${render("CCE-Body-End")}
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
             <!-- Right Cell -->
-            ${courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${courseClass.sessionsCount} sessions)
+            ${record.courseClass.startDateTime.format("d MMM YYYY h:mm a")} - ${record.courseClass.endDateTime.format("d MMM YYYY h:mm a")} (${record.courseClass.sessionsCount} sessions)
           </td>
           <td width="20"></td>
         </tr>
@@ -170,9 +170,9 @@ ${render("CCE-Body-End")}
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
             <!-- Right Cell -->
-            <% if (courseClass?.firstSession.tutors == null) { %>
+            <% if (record.courseClass?.firstSession.tutors == null) { %>
               <font style="background-color:#ce1126; color:white; padding:3px;">To be confirmed</font>
-            <% } else { courseClass.firstSession.tutors.unique().each { t -> %>
+            <% } else { record.courseClass.firstSession.tutors.unique().each { t -> %>
               ${t.contact.firstName} ${t.contact.lastName}
             <% } } %>
           </td>
@@ -216,10 +216,10 @@ ${render("CCE-Body-End")}
           <td></td>
           <td class="data-table-desc" style="color:#7d7d7d; font:'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size:14px; font-weight:normal; line-height:18px;">
             <!-- Right Cell -->
-            <% if (courseClass.room == null) { %>
+            <% if (record.courseClass.room == null) { %>
               <font style="background-color:#ce1126; color:white; padding:3px;">To be confirmed</font>
             <% } else { %>
-              <a href="https://cce.sydney.edu.au/room/${courseClass.room.id}" target="_blank"> ${courseClass.room.name} - ${courseClass.room.site.name} </a>
+              <a href="https://cce.sydney.edu.au/room/${courseClass.room.id}" target="_blank"> ${record.courseClass.room.name} - ${record.courseClass.room.site.name} </a>
             <% } %>
           </td>
           <td width="20"></td>
@@ -256,7 +256,7 @@ ${render("CCE-Body-End")}
 
 <!-- SESSIONS -->
 <!-- HEADER SESSIONS -->
-<% courseClass.sessions.sort{it.startDatetime}.each { s -> %>
+<% record.sessionsTutors.sort{it.startDatetime}.each { at -> %>
 <table width="660" border="0" cellspacing="0" cellpadding="0">
 <tbody>
   <tr>
@@ -275,17 +275,17 @@ ${render("CCE-Body-End")}
                   <tr>
                 <!-- MAIN LOOP SESSION -->
 
-                    <td valign="top"><h2>${s.startDatetime.format("d MMM YYYY h:mm a")} - ${s.endDatetime.format("h:mm a")}</h2>
+                    <td valign="top"><h2>${at.startDatetime.format("d MMM YYYY h:mm a")} - ${at.endDatetime.format("h:mm a")}</h2>
                     <p><em>
-                      <% if (s.room == null) { %>
+                      <% if (at.session.room == null) { %>
                         <font style="background-color:#ce1126;color:white;padding:3px;">Venue to be confirmed</font> |
                       <% } else { %>
-                        <a href="https://cce.sydney.edu.au/room/${courseClass.room.id}" target="_blank"> ${s.room.name} - ${s.room.site.name} </a> |
+                        <a href="https://cce.sydney.edu.au/room/${courseClass.room.id}" target="_blank"> ${at.session.room.name} - ${at.session.room.site.name} </a> |
                       <% } %>
-                      <% if (s.tutors == null || s.tutors.isEmpty()) { %>
+                      <% if (at.session.tutors == null || at.session.tutors.isEmpty()) { %>
                         <font style="background-color:#ce1126;color:white;padding:3px;">Tutor to be confirmed</font>
                       <% } else { %>
-                        ${s?.tutors?.first().contact.firstName} ${s?.tutors?.first().contact.lastName}
+                        ${at.session.tutors?.first().contact.firstName} ${at.session.tutors?.first().contact.lastName}
                       <% } %>
                     </em></p>
 

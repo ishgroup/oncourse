@@ -1,0 +1,6 @@
+name: CCE-course-reminder-tutor
+type: email
+keyCode: CCE-course-reminder-tutor
+txtTemplate: CCE-course-reminder-tutor.txt
+htmlTemplate: CCE-course-reminder-tutor.html
+entityClass: CourseClassTutor

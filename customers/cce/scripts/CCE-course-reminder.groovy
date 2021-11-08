@@ -23,11 +23,10 @@ def run (args) {
     		}
     	}
 
-        cc?.tutorRoles.each { tr ->
+        if (!cc.tutorRoles.empty) { 
             email {
                 template "CCE Course Reminder Tutor"
-                to tr.tutor.contact
-                bindings contact : tr.tutor.contact, courseClass : cc
+                record cc.tutorRoles
             }
         }
     }
