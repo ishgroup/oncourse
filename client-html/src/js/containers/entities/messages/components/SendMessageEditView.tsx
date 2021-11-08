@@ -392,7 +392,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     }
 
     const totalHeaderCount = suppressed
-      ? totalCounter[recipientsName].sendIds?.length || 0 + totalCounter[recipientsName].suppressToSendIds?.length || 0
+      ? (totalCounter[recipientsName].sendIds?.length || 0) + (totalCounter[recipientsName].suppressToSendIds?.length || 0)
       : totalCounter[recipientsName].sendIds?.length || 0;
 
     const headerIds = suppressed
