@@ -25,5 +25,6 @@ public class Settings extends _Settings {
     public static final String BILLING_CONTACT_NAME = "billing.contact_name";
     public static final String BILLING_CONTACT_EMAIL = "billing.contact_email";
     public static final String BILLING_CONTACT_PHONE = "billing.contact_phone";
+    public static final String BILLING_PAID_UNTIL = "billing.paid_until";
 
 }

@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.InternalServerErrorException
+import java.time.LocalDate
 
 import static ish.oncourse.configuration.Configuration.AdminProperty.*
 
@@ -106,6 +107,15 @@ class BillingApiImpl implements BillingApi {
                 PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_NAME, "$collegeDTO.userFirstName $collegeDTO.userLastName")
                 PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_EMAIL,  collegeDTO.userEmail)
                 PreferenceUtil.createSetting(context, college, Settings.BILLING_CONTACT_PHONE,  collegeDTO.userPhone)
+
+                LocalDate untilDate = LocalDate.now()
+                if (untilDate.getDayOfMonth() < 15) {
+                    untilDate = untilDate.plusMonths(1)
+                } else {
+                    untilDate = untilDate.plusMonths(2)
+                }
+                
+                PreferenceUtil.createSetting(context, college, Settings.BILLING_PAID_UNTIL,  untilDate.format("yyyy-MM-01"))
 
                 context.commitChanges()
 
