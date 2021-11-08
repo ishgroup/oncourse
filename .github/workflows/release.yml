@@ -42,6 +42,7 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "server/build/distributions/onCourseServer-*,types/build/libs/types-*"
+          artifacts: "server/build/distributions/onCourseServer-*"
+          allowUpdates: true
           body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{steps.tag.outputs.tag}}/release-notes.html"
           token: ${{ secrets.GITHUB_TOKEN }}
