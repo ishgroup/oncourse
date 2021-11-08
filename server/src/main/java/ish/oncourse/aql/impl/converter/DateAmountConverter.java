@@ -21,6 +21,7 @@ import org.apache.cayenne.exp.parser.SimpleNode;
 import java.time.Duration;
 import java.time.Period;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -44,6 +45,17 @@ public class DateAmountConverter implements Converter<AqlParser.DateAmountTermCo
                 .collect(Collectors.toList());
         var units = amount.unit().stream().map(RuleContext::getText).collect(Collectors.toList());
 
+        SimpleNode value = buildNode(values,units,ctx);
+
+        if (value == null) {
+            ctx.reportError(amount.unit().get(0).start.getLine(), amount.unit().get(0).start.getCharPositionInLine(),
+                    "Unknown value: " + values + " " + units);
+            return null;
+        }
+        return value;
+    }
+
+    private SimpleNode buildNode(List<Long> values, List<String> units, CompilationContext ctx) {
         var classifier = TypeClassifier.of(ctx.getCurrentPathJavaType());
         var converter = unitConverters.get(classifier);
 
@@ -52,17 +64,26 @@ public class DateAmountConverter implements Converter<AqlParser.DateAmountTermCo
             Duration durationUnitValue = Duration.ZERO;
             Period periodUnitValue = Period.ZERO;
             for (int i = 0; i < values.size(); i++) {
-                Object value = converter.apply(values.get(i), units.get(i));
+                try {
+                    Object value = converter.apply(values.get(i), units.get(i));
 
-                if (value instanceof Duration) {
-                    durationUnitValue = durationUnitValue.plus((Duration) value);
-                } else {
-                    periodUnitValue = periodUnitValue.plus((Period) value);
+                    if (value == null) {
+                        return null;
+                    }
+
+                    if (value instanceof Duration) {
+                        durationUnitValue = durationUnitValue.plus((Duration) value);
+                    } else {
+                        periodUnitValue = periodUnitValue.plus((Period) value);
+                    }
+
+                } catch (IndexOutOfBoundsException e) {
+                    return null;
                 }
             }
 
             if (durationUnitValue != Duration.ZERO ^ periodUnitValue != Period.ZERO) {
-                if (durationUnitValue != Duration.ZERO ) {
+                if (durationUnitValue != Duration.ZERO) {
                     return new ASTScalar(durationUnitValue);
                 } else {
                     return new ASTScalar(periodUnitValue);
@@ -76,9 +97,6 @@ public class DateAmountConverter implements Converter<AqlParser.DateAmountTermCo
                 throw new IllegalArgumentException("Time period " + sb + " not supported");
             }
         }
-
-        ctx.reportError(amount.unit().get(0).start.getLine(), amount.unit().get(0).start.getCharPositionInLine(),
-                "Unknown value: " + values + " " + units);
         return null;
     }
 
