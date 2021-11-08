@@ -387,13 +387,13 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
   };
 
   const counterItems = useMemo(() => Object.keys(totalCounter).map(recipientsName => {
-    if (!totalCounter[recipientsName]) {
+    if (!Object.keys(totalCounter[recipientsName] || {}).some(k => totalCounter[recipientsName][k]?.length)) {
       return null;
     }
 
     const totalHeaderCount = suppressed
-      ? totalCounter[recipientsName].sendIds.length + totalCounter[recipientsName].suppressToSendIds.length
-      : totalCounter[recipientsName].sendIds.length;
+      ? totalCounter[recipientsName].sendIds?.length || 0 + totalCounter[recipientsName].suppressToSendIds?.length || 0
+      : totalCounter[recipientsName].sendIds?.length || 0;
 
     const headerIds = suppressed
       ? Array.from(new Set([...totalCounter[recipientsName].sendIds, ...totalCounter[recipientsName].suppressToSendIds]))
@@ -412,18 +412,18 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
         </div>
         {selected[recipientsName] ? (
           <>
-            {totalCounter[recipientsName].withoutDestinationIds.length !== 0 && (
+            {totalCounter[recipientsName]?.withoutDestinationIds?.length > 0 && (
               <Typography variant="body2">
-                {`Skipping ${totalCounter[recipientsName].withoutDestinationIds.length} without ${
+                {`Skipping ${totalCounter[recipientsName].withoutDestinationIds?.length || 0} without ${
                   isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
                 <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].withoutDestinationIds)}>
                   <OpenInNew fontSize="inherit" />
                 </IconButton>
               </Typography>
             )}
-            {isMarketing && totalCounter[recipientsName].suppressToSendIds.length !== 0 && (
+            {isMarketing && totalCounter[recipientsName].suppressToSendIds?.length !== 0 && (
               <Typography variant="body2">
-                {`Skipping ${totalCounter[recipientsName].suppressToSendIds.length} not accepting marketing material`}
+                {`Skipping ${totalCounter[recipientsName].suppressToSendIds?.length || 0} not accepting marketing material`}
                 <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].suppressToSendIds)}>
                   <OpenInNew fontSize="inherit" />
                 </IconButton>
@@ -440,10 +440,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
     Object.keys(totalCounter).forEach(k => {
       if (totalCounter[k] && selected[k]) {
-        recipientsCount += totalCounter[k].sendIds.length;
+        recipientsCount += totalCounter[k]?.sendIds?.length || 0;
 
         if (suppressed) {
-          recipientsCount += totalCounter[k].suppressToSendIds.length;
+          recipientsCount += totalCounter[k]?.suppressToSendIds?.length || 0;
         }
       }
     });
