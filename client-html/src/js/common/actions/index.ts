@@ -261,4 +261,4 @@ export const clearMessage = () => ({
 export const setNextLocation = (nextLocation: string) => ({
   type: NEXT_LOCATION,
   payload: nextLocation
-})
+});

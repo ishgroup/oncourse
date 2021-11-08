@@ -57,6 +57,7 @@ class UserPreferenceService {
 
     private static final String USER_PREF_PREFIX = "html.table"
     private static final String DASHBOARD_FAVORITE_CATEGORY = "html.dashboard.favorite"
+    private static final String NEWS = "news.read"
     public static final String JOIN_DELIMETER = ','
 
 
@@ -116,6 +117,17 @@ class UserPreferenceService {
 
     private Preference getUserPref(String name) {
         return userService.currentUser.preferences.find {it.name == name}
+    }
+
+    private Preference getUserPrefByUniqueKey(String uniqueKey) {
+        return userService.currentUser.preferences.find {it.uniqueKey == uniqueKey}
+    }
+
+    private String getReadNews() {
+        List<Preference> preferenceList = userService.currentUser.preferences.findAll { it.name == NEWS}
+        return preferenceList.stream().map({ preference -> preference.valueString })
+                .toArray()
+                .join(JOIN_DELIMETER)
     }
 
     private Preference createUserPref(String name) {
@@ -180,6 +192,8 @@ class UserPreferenceService {
                 return AccountUtil.getDefaultVoucherExpenseAccount(preferenceController.objectContext, Account.class)?.id?.toString()
             case PreferenceEnumDTO.ONCOURSE_SERVER_TIMEZONE_DEFAULT:
                 return preferenceController.getOncourseServerDefaultTimezone()
+            case PreferenceEnumDTO.NEWS_READ:
+                return getReadNews()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)
@@ -189,7 +203,19 @@ class UserPreferenceService {
 
     void set(PreferenceEnumDTO key, String value) {
         String name = key.toString()
-        Preference preference = getUserPref(name)?:createUserPref(name)
+        Preference preference
+
+        if (key == PreferenceEnumDTO.NEWS_READ) {
+            preference = getUserPrefByUniqueKey(name)
+            if (preference == null) {
+                preference = createUserPref(name)
+                // we save preference in db to be able to change unique key
+                preference.context.commitChanges()
+            }
+            preference.uniqueKey = userService.currentUser.id + key.toString() + value
+        } else {
+            preference = getUserPref(name) ?: createUserPref(name)
+        }
         preference.valueString = StringUtils.trimToNull(value)
         preference.context.commitChanges()
 

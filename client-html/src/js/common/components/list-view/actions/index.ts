@@ -29,6 +29,7 @@ export const GET_FILTERS_FULFILLED = FULFILLED(GET_FILTERS_REQUEST);
 export const GET_RECIPIENTS_MESSAGE_DATA = _toRequestType("get/recipients");
 export const SET_RECIPIENTS_MESSAGE_DATA = "set/recipients";
 export const CLEAR_RECIPIENTS_MESSAGE_DATA = "clear/recipients";
+export const SET_READ_NEWS_LOCAL = "SET_READ_NEWS_LOCAL";
 
 export const DELETE_FILTER_REQUEST = _toRequestType("delete/filter");
 
@@ -258,4 +259,9 @@ export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({
 export const setListEntity = (entity: EntityName) => ({
   type: SET_LIST_ENTITY,
   payload: entity
+});
+
+export const setReadNewsLocal = (id: string) => ({
+  type: SET_READ_NEWS_LOCAL,
+  payload: id,
 });
