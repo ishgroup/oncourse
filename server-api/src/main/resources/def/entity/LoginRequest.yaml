@@ -35,3 +35,7 @@ properties:
     required: false
     description: GA secret code. Send when enabling TFA first time
     example: 'IJLGJ4NXPE2B4YA7'
+  eulaAccess:
+    type: boolean
+    required: true
+    description: License agreement. User cannot authorize into system without it.

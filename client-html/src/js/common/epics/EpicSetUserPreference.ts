@@ -13,7 +13,7 @@ import UserPreferenceService from "../services/UserPreferenceService";
 const request: EpicUtils.Request<any, UserPreference> = {
   type: SET_USER_PREFERENCE,
   getData: userPreference => UserPreferenceService.setUserPreferenceByKey(userPreference),
-  processData: () => []
+  processData: () => [],
 };
 
 export const EpicSetUserPreference: Epic<any, any> = EpicUtils.Create(request);

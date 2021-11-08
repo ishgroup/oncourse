@@ -277,7 +277,6 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
       form,
       entity,
       setDocumentFile,
-      showConfirm,
       clearSearchDocuments,
       meta: { dirty }
     } = this.props;
@@ -293,8 +292,6 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
     } = this.state;
 
     const editItem = fields.get(editingDocumentIndex);
-
-    const renderedItems = fields.getAll();
 
     return (
       <>
@@ -351,18 +348,22 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
           </div>
         </Grid>
         <Grid container spacing={3} wrap="wrap">
-          {renderedItems && renderedItems.map((item, index) => (
-            <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
-              <DocumentItem
-                entity={entity}
-                index={index}
-                item={item}
-                editItem={this.setEditingItem}
-                viewItem={this.setViewItem}
-                unlink={this.unlinkDocument}
-              />
-            </Grid>
-          ))}
+          {fields.map((f, index) => {
+            const item = fields.get(index);
+
+            return (
+              <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
+                <DocumentItem
+                  entity={entity}
+                  index={index}
+                  item={item}
+                  editItem={this.setEditingItem}
+                  viewItem={this.setViewItem}
+                  unlink={this.unlinkDocument}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </>
     );

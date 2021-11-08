@@ -3,7 +3,7 @@ import {
   CHECK_PASSWORD_FULFILLED,
   GET_EMAIL_BY_TOKEN_FULFILLED,
   POST_UPDATE_PASSWORD_FULFILLED,
-  SET_LOGIN_STATE
+  SET_LOGIN_STATE,
 } from "../../../common/actions";
 import { LoginState } from "./state";
 
@@ -18,7 +18,8 @@ const clearState: LoginState = {
   isKickOut: false,
   isUpdatePassword: false,
   withNetworkFields: false,
-  passwordChangeMessage: ""
+  passwordChangeMessage: "",
+  eulaUrl: undefined,
 };
 
 export const loginReducer = (state: LoginState = {}, action: IAction<any>): LoginState => {

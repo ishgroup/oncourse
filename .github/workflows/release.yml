@@ -8,13 +8,13 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    - run: |
-        version="${GITHUB_REF##*v}"
-        echo $version
-        echo "::set-env name=version::version"
-    env:
-      VERSION: ${{ github.version }}
     steps:
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+        with:
+          strip_v: true
+
       - uses: actions/checkout@v2
 
       - name: Set up JDK
@@ -37,11 +37,12 @@ jobs:
           restore-keys: 11-
 
       - name: Build artifacts
-        run: ./gradlew clean server:distZip -x server:test -x client-html:test -PreleaseVersion=${{ env.VERSION }}
+        run: ./gradlew clean server:distZip types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.tag.outputs.tag}}
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "server/build/distributions/onCourseServer-*.zip,server/build/distributions/onCourseServer-*.sha256"
-          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{ env.VERSION }}/release-notes.html"
+          artifacts: "server/build/distributions/onCourseServer-*"
+          allowUpdates: true
+          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{steps.tag.outputs.tag}}/release-notes.html"
           token: ${{ secrets.GITHUB_TOKEN }}

@@ -10,7 +10,6 @@
  * See the GNU Affero General Public License for more details.
  */
 
-apply plugin: 'java'
 ext {
     karateVersion = '1.0.1'
 }
@@ -53,10 +52,10 @@ test {
     testLogging {
         events "failed", "standardOut"
     }
-    
+
     tasks.getByName('prepareTestDb').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
 
-    dependsOn "copyConfig" 
+    dependsOn "copyConfig"
     dependsOn ":server:startDaemon"
     dependsOn "prepareTestDb"
     // pull cucumber options into the cucumber jvm
