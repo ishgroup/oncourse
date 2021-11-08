@@ -34,3 +34,22 @@ and look for APP_VERSION variable
 
 editor:
 https://template-a.oncourse.cc/s/oncourse-releases/editor/stable/editor.js
+
+#run willow app
+lets review unexample of admin app
+Admin, as an almost all app, require zk srver, so
+1. unzip solr-7.zip (se root dir) to any dir on your mashine
+2. Run zk cluster by followed command
+`{zkDir}/zk.sh start`
+3. Copy config file example
+
+    from /admin/src/dist/application.properties
+   
+    to /admin/application.properties
+4. Change db props to your ones (db_user, db_pass ,db_url)
+5. Run admin via intellij run congiguration
+
+    main class: ish.oncourse.admin.AdminApp
+
+    working dir: /admin
+6. http://127.0.0.1/8306/willowAdmin
