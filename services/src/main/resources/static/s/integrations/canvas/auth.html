@@ -1,0 +1,20 @@
+<!--The page deployed under https://secure-payment.oncourse.net.au/services/myob/auth URL
+    ~ in case of moving this page to another address we need register new redirect URL in myob
+    ~ https://my.myob.com.au/Bd/pages/DevAppList.aspx
+    ~ We also need adjust angel end to use different redirect page address
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    const params = new URLSearchParams(decodeURIComponent(window.location.search));
+    const decodedState = decodeURI(params.get("state"));
+    let codeSymbol = decodedState.indexOf("?") !== -1 ? "&" : "?";
+    window.open(decodedState + codeSymbol + "code=" + params.get("code"), "_self");
+  </script>
+</head>
+<body>
+</body>
+</html>
+
