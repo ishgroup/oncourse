@@ -34,7 +34,7 @@ jobs:
           paths_ignore: '["customers/**"]'
 
       - name: Setup timezone
-        uses: zcong1993/setup-timezone@v1.1.1
+        uses: zcong1993/setup-timezone@v1.1.2
         with:
           timezone: "Australia/Sydney"
 
