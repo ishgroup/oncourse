@@ -5,8 +5,9 @@ import { Card, CardActions, CardContent } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import { withRouter } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from "@mui/material/Button";
 import IntegrationDescription from "./components/IntegrationDescription";
-import Button from "../../../../common/components/buttons/Button";
+
 import * as IntegrationTypes from "../../../../model/automation/integrations/IntegrationTypes";
 import IntegrationImages from "./IntegrationImages";
 import AppBar from "../../../../common/components/layout/AppBar";
@@ -58,12 +59,13 @@ const Integrations = React.memo<any>(({
                   <CardActions className="justify-content-end">
                     <Button
                       onClick={() => handleClick(int)}
-                      text="Add"
                       variant="contained"
                       size="small"
                       color="primary"
-                      rootClasses="integrationsButton"
-                    />
+                      className="integrationsButton"
+                    >
+                      Add
+                    </Button>
                   </CardActions>
                 </div>
               </Card>

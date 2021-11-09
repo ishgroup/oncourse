@@ -4,15 +4,16 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import { getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
+import {
+ getFormValues, InjectedFormProps, reduxForm, submit 
+} from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import MuiButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import { connect } from "react-redux";
 import { Account, ClassCostRepetitionType, Tax } from "@api/model";
-import Button from "../../../../../../common/components/buttons/Button";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { State } from "../../../../../../reducers/state";
 import StudentFeeContent from "./StudentFeeContent";
@@ -173,10 +174,10 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
           {content}
         </DialogContent>
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
-          <Button color="primary" onClick={onSubmit} disabled={(values.id && !dirty) || invalid}>
+          </Button>
+          <Button variant="contained" color="primary" onClick={onSubmit} disabled={(values.id && !dirty) || invalid}>
             Save
           </Button>
         </DialogActions>

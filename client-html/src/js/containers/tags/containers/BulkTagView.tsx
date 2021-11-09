@@ -18,9 +18,9 @@ import MuiButton from "@mui/material/Button/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../common/components/form/AppBarActions";
-import Button from "../../../common/components/buttons/Button";
 import Content from "../../../common/components/layout/Content";
 import TagsTree from "../components/TagsTree";
+import Button from "@mui/material/Button";
 
 const styles = theme =>
   createStyles({
@@ -199,9 +199,9 @@ const BulkTagViewForm: React.FC<BulkTagViewProps> = props => {
                     <div className="heading">Tags</div>
                     <TagsTree tags={tags} />
                     <div className={clsx("pt-2", classes.buttons)}>
-                      <MuiButton color="primary" onClick={() => {}}>
+                      <Button color="primary" onClick={() => {}}>
                         Cancel
-                      </MuiButton>
+                      </Button>
                       <Button variant="contained" type="submit" color="primary" onClick={() => {}}>
                         Save
                       </Button>

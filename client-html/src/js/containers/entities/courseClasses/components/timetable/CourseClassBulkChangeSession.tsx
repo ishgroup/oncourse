@@ -14,22 +14,16 @@ import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid/Grid";
 import DialogContent from "@mui/material/DialogContent";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import DialogActions from "@mui/material/DialogActions";
-import MuiButton from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Collapse from "@mui/material/Collapse";
-import { Session, TutorAttendance } from "@api/model";
-import { differenceInMinutes, isPast } from "date-fns";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
-import Button from "../../../../../common/components/buttons/Button";
+import { TutorAttendance } from "@api/model";
+import { differenceInMinutes } from "date-fns";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import { defaultContactName } from "../../../contacts/utils";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { stubFunction } from "../../../../../common/utils/common";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -373,9 +367,9 @@ const CourseClassBulkChangeSessionForm = props => {
           </Grid>
         </DialogContent>
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
           <Button
             variant="contained"
             color="primary"

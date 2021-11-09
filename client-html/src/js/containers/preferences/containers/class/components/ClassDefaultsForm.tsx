@@ -13,7 +13,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import * as Model from "../../../../../model/preferences/ClassDefaults";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";

@@ -118,12 +118,21 @@ const FilePreview: React.FC<Props> = ({
               </div>
             </div>
           )}
-          <Avatar
-            alt="FilePreview"
-            src={`data:image/png;base64, ${data}`}
-            sx={{ width: size, height: size }}
-            classes={{ root: classes.avatarRoot }}
-          />
+          {avatarSize
+          ? (
+            <Avatar
+              alt="FilePreview"
+              src={`data:image/png;base64, ${data}`}
+              sx={{ width: size, height: size }}
+              classes={{ root: classes.avatarRoot }}
+            />
+            ) : (
+              <img
+                alt="FilePreview"
+                src={`data:image/png;base64, ${data}`}
+                className={classes.avatarRoot}
+              />
+            )}
         </div>
       ) : (
         <Typography variant="body1" className={classes.noValue}>
@@ -132,6 +141,6 @@ const FilePreview: React.FC<Props> = ({
       )}
     </>
   );
-}
+};
 
 export default withStyles(styles)(FilePreview);

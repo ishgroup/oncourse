@@ -16,7 +16,6 @@ import {
 import withStyles from "@mui/styles/withStyles";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import MuiButton from "@mui/material/Button";
 import DialogContent from "@mui/material/DialogContent";
 import Grid from "@mui/material/Grid/Grid";
 import FormGroup from "@mui/material/FormGroup";
@@ -29,7 +28,7 @@ import { Typography } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { courseFilterCondition } from "../../../courses/utils";
@@ -473,9 +472,9 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
 
         <DialogActions className="p-3">
           {!disableClose && (
-            <MuiButton color="primary" onClick={onClose}>
+            <Button color="primary" onClick={onClose}>
               Cancel
-            </MuiButton>
+            </Button>
           )}
 
           <Button

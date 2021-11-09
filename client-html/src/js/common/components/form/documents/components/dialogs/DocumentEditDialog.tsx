@@ -17,9 +17,10 @@ import LinearProgress from "@mui/material/LinearProgress";
 import FormField from "../../../formFields/FormField";
 import DocumentIconsChooser from "../items/DocumentIconsChooser";
 import { dialogStyles } from "./dialogStyles";
-import Button from "../../../../buttons/Button";
+
 import { getLatestDocumentItem } from "../utils";
 import DocumentShare from "../items/DocumentShare";
+import Button from "@mui/material/Button";
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -125,12 +126,12 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
         </Grid>
 
         <DialogActions classes={{ root: classes.actions }}>
-          <Button variant="text" color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             {type === "view" ? "Close" : "Cancel"}
           </Button>
           {type !== "view" && (
             <Button
-              variant="text"
+              variant="contained"
               disabled={!item.name}
               className="documentsSubmitButton"
               onClick={type === "create" ? this.onAdd : onSave}

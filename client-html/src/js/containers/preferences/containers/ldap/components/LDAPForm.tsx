@@ -15,8 +15,8 @@ import {
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
+import Button from "@mui/material/Button";
 import ConfirmBase from "../../../../../common/components/dialog/confirm/ConfirmBase";
-import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../../model/preferences/Ldap";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
@@ -27,6 +27,8 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("generalPrefs_ldap");
 
@@ -72,7 +74,7 @@ class LDAPBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form
+      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form, invalid
     } = this.props;
 
     const simpleAuthEnabled = values && values[this.formModel.LdapSimpleAuthentication.uniqueKey] === "true";
@@ -108,14 +110,9 @@ class LDAPBaseForm extends React.Component<any, any> {
                 />
               )}
 
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
+              <FormSubmitButton
                 disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+                invalid={invalid}
               />
             </Grid>
           </Grid>
@@ -246,11 +243,12 @@ class LDAPBaseForm extends React.Component<any, any> {
 
           <Grid item xs={12} className="mb-2 mt-2">
             <Button
-              text="Test connection"
               className="m-0"
               onClick={testLdapConnection}
               disabled={!licence || !simpleAuthEnabled}
-            />
+            >
+              Test connection
+            </Button>
           </Grid>
         </Grid>
 
@@ -296,19 +294,21 @@ class LDAPBaseForm extends React.Component<any, any> {
           <Grid item xs={12} className="mt-1">
             {!licence || !simpleAuthEnabled ? (
               <Button
-                text="Test user"
                 href="ldapUserAccess"
                 className="m-0"
                 disabled={!licence || !simpleAuthEnabled}
-              />
+              >
+                Test user
+              </Button>
             ) : (
               <a href="ldapUserAccess" className="link">
                 <Button
-                  text="Test user"
                   href="ldapUserAccess"
                   className="m-0"
                   disabled={!licence || !simpleAuthEnabled}
-                />
+                >
+                  Test user
+                </Button>
               </a>
             )}
           </Grid>
@@ -417,7 +417,8 @@ const mapStateToProps = (state: State) => ({
 
 const LDAPForm = reduxForm({
   form: "LDAPForm",
-  validate: validateMultipleMandatoryFields
+  validate: validateMultipleMandatoryFields,
+  onSubmitFail
 })(
   connect<any, any, any>(
     mapStateToProps,

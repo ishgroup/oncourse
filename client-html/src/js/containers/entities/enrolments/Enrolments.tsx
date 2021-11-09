@@ -24,7 +24,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Enrolment, CustomFieldType } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import Button from "../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import {
