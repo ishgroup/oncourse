@@ -16,7 +16,6 @@ import {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ForbiddenTagNames, Tag } from "@api/model";
-import Button from "../../../common/components/buttons/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
 import AppBarHelpMenu from "../../../common/components/form/AppBarHelpMenu";
@@ -37,6 +36,8 @@ import { setNextLocation, showConfirm } from "../../../common/actions";
 import { COLORS, getAllTags } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import AddIcon from "../../../common/components/icons/AddIcon";
+import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import FormSubmitButton from "src/js/common/components/form/FormSubmitButton";
 
 const styles = () => ({
   noTransform: {
