@@ -15,31 +15,27 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import groovy.transform.CompileStatic
-import ish.oncourse.API
-import ish.oncourse.DefaultAccount
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.CategoryDTO
-import ish.oncourse.server.cayenne.Account
-import ish.util.AccountUtil
-
-import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID
-import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.TableModelDTO
+import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.ISystemUserService
 import ish.persistence.Preferences
+import ish.util.AccountUtil
 import org.apache.cayenne.CayenneRuntimeException
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID
+import static ish.oncourse.server.api.v1.model.PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID
 
 @Singleton
 @CompileStatic
@@ -61,6 +57,7 @@ class UserPreferenceService {
 
     private static final String USER_PREF_PREFIX = "html.table"
     private static final String DASHBOARD_FAVORITE_CATEGORY = "html.dashboard.favorite"
+    private static final String NEWS = "news.read"
     public static final String JOIN_DELIMETER = ','
 
 
@@ -122,10 +119,30 @@ class UserPreferenceService {
         return userService.currentUser.preferences.find {it.name == name}
     }
 
+    private Preference getUserPrefByUniqueKey(String uniqueKey) {
+        return userService.currentUser.preferences.find {it.uniqueKey == uniqueKey}
+    }
+
+    private String getReadNews() {
+        List<Preference> preferenceList = userService.currentUser.preferences.findAll { it.name == NEWS}
+        return preferenceList.stream().map({ preference -> preference.valueString })
+                .toArray()
+                .join(JOIN_DELIMETER)
+    }
+
     private Preference createUserPref(String name) {
         ObjectContext context = cayenneService.newContext
         Preference preference = context.newObject(Preference)
         preference.user =  context.localObject(userService.currentUser)
+        preference.name = name
+
+        return preference
+    }
+
+    private Preference createEulaUserPref(SystemUser user, String name) {
+        ObjectContext context = cayenneService.newContext
+        Preference preference = context.newObject(Preference)
+        preference.user =  context.localObject(user)
         preference.name = name
 
         return preference
@@ -153,6 +170,8 @@ class UserPreferenceService {
                 return licenseService.getLisense(PreferenceEnumDTO.LICENSE_ACCESS_CONTROL.toString());
             case PreferenceEnumDTO.LICENSE_SCRIPTING:
                 return licenseService.getLisense(PreferenceEnumDTO.LICENSE_SCRIPTING.toString())
+            case PreferenceEnumDTO.EULA_LAST_ACCESS_DATE:
+                 return preferenceController.getPreference(PreferenceEnumDTO.EULA_LAST_ACCESS_DATE.toString(),false)
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID:
                 return preferenceController.getPreference(ACCOUNT_DEFAULT_STUDENTENROLMENTS_ID.toString(), false).getValueString()
             case PreferenceEnumDTO.ACCOUNT_DEFAULT_VOUCHERLIABILITY_ID:
@@ -173,6 +192,8 @@ class UserPreferenceService {
                 return AccountUtil.getDefaultVoucherExpenseAccount(preferenceController.objectContext, Account.class)?.id?.toString()
             case PreferenceEnumDTO.ONCOURSE_SERVER_TIMEZONE_DEFAULT:
                 return preferenceController.getOncourseServerDefaultTimezone()
+            case PreferenceEnumDTO.NEWS_READ:
+                return getReadNews()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)
@@ -182,10 +203,28 @@ class UserPreferenceService {
 
     void set(PreferenceEnumDTO key, String value) {
         String name = key.toString()
-        Preference preference = getUserPref(name)?:createUserPref(name)
+        Preference preference
+
+        if (key == PreferenceEnumDTO.NEWS_READ) {
+            preference = getUserPrefByUniqueKey(name)
+            if (preference == null) {
+                preference = createUserPref(name)
+                // we save preference in db to be able to change unique key
+                preference.context.commitChanges()
+            }
+            preference.uniqueKey = userService.currentUser.id + key.toString() + value
+        } else {
+            preference = getUserPref(name) ?: createUserPref(name)
+        }
         preference.valueString = StringUtils.trimToNull(value)
         preference.context.commitChanges()
 
     }
 
+    void createEula(SystemUser user, String value) {
+        String name =  PreferenceEnumDTO.EULA_LAST_ACCESS_DATE.toString()
+        Preference preference = createEulaUserPref(user,name)
+        preference.valueString = StringUtils.trimToNull(value)
+        preference.context.commitChanges()
+    }
 }

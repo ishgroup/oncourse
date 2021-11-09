@@ -26,8 +26,7 @@ import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
 import {
   StudentAttendanceIconButton,
-  TrainingPlanIconButton,
-  TutorAttendanceIconButton
+  TrainingPlanIconButton
 } from "./AttendanceIconButtons";
 import { TimetableSession } from "../../../../../model/timetable";
 import { D_MMM } from "../../../../../common/utils/dates/format";
@@ -78,8 +77,6 @@ const getMenuLabelByType = (type: AttendanceGridType) => {
   switch (type) {
     case "Student":
       return "Mark ALL sessions for this student as...";
-    case "Tutor":
-      return "Mark ALL sessions for this tutor as...";
     case "Training plan":
       return "Mark ALL sessions and tasks for this module as...";
   }
@@ -123,10 +120,6 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
       if (type === "Student") {
         setAttendanceChangeType("singleStudent");
       }
-
-      if (type === "Tutor") {
-        setAttendanceChangeType("singleTutor");
-      }
     },
     [type]
   );
@@ -155,23 +148,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
             return;
           }
 
-          if (type === "Training plan") {
             changeAllItems(attendanceType, item.attendances[0].index);
-            return;
-          }
-
-          const updated = [];
-
-          item.attendances.forEach(t => {
-            if (t.hasPayslip) {
-              return;
-            }
-            const updatedItem = { ...t, attendanceType };
-            dispatch(change(form, `tutorAttendance[${t.index}]`, { ...t, attendanceType }));
-            updated.push(updatedItem);
-          });
-
-          validateAttendanceUpdate(updated, "Tutor");
         }
       }
     },
@@ -233,7 +210,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
             key={attendance.id}
             item
             xs={2}
-            className={clsx(classes.sessionItem, attendance.hasPayslip && "disabled")}
+            className={classes.sessionItem}
           >
             <span>
               {type === "Student" && (
@@ -241,9 +218,6 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
                   attendance={attendance}
                   onClick={e => onStudentIconClick(e, attendance.index)}
                 />
-              )}
-              {type === "Tutor" && (
-                <TutorAttendanceIconButton onClick={e => onTutorIconClick(e, attendance)} attendance={attendance} />
               )}
 
               <IconButton

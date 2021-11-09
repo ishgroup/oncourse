@@ -51,7 +51,8 @@ export const GOOGLE_TAG_MANAGER_DEFAULT_APP_NAME = "onCourse Client";
 export const DEFAULT_TIMEZONE_KEY: PreferenceEnum = "timezone.default";
 
 export const DASHBOARD_CATEGORY_WIDTH_KEY: PreferenceEnum = "html.dashboard.category.width";
-export const DASHBOARD_NEWS_LATEST_READ: PreferenceEnum = "dashboard.news.last_read";
+
+export const READ_NEWS: PreferenceEnum = "news.read";
 
 export const ACCOUNT_INVOICE_TERMS: PreferenceEnum = "account.invoice.terms";
 

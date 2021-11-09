@@ -19,6 +19,7 @@ import CancelCourseClassModal from "./cancel/CancelCourseClassModal";
 import DuplicateCourseClassModal from "./duplicate-courseClass/DuplicateCourseClassModal";
 import DuplicateTraineeshipModal from "./duplicate-courseClass/DuplicateTraineeshipModal";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
+import { courseClassCancelPath, courseClassTimetablePath } from "../../../../constants/Api";
 
 const CourseClassCogWheel = memo<any>(props => {
   const {
@@ -30,7 +31,8 @@ const CourseClassCogWheel = memo<any>(props => {
     data,
     showConfirm,
     setCourseClassPlainRequest,
-    getCourseClassPlainRecord
+    getCourseClassPlainRecord,
+    access
   } = props;
   const [dialogOpened, setDialogOpened] = useState(null);
   const [isTraneeship, setIsTraneeship] = useState(false);
@@ -73,7 +75,11 @@ const CourseClassCogWheel = memo<any>(props => {
     return !(rowValues[rowValueIndex] === "true");
   };
 
-  const isCancelEnable = useMemo(() => selection.length === 1 && selection[0] !== "NEW" && isCancelable(selection[0]),
+  const isCancelEnabled = useMemo(() => selection.length === 1
+      && selection[0] !== "NEW"
+      && isCancelable(selection[0])
+      && access[courseClassCancelPath]
+      && access[courseClassCancelPath]["POST"],
     [selection, editRecord, data]);
 
   const onClick = useCallback(
@@ -150,10 +156,12 @@ const CourseClassCogWheel = memo<any>(props => {
           Duplicate Traineeship and enrol
         </MenuItem>
       )}
+      {isCancelEnabled && (
+        <MenuItem className={menuItemClass} role="Cancel" onClick={onClick}>
+          Cancel class
+        </MenuItem>
+      )}
 
-      <MenuItem disabled={!isCancelEnable} className={menuItemClass} role="Cancel" onClick={onClick}>
-        Cancel class
-      </MenuItem>
       <PayslipGenerateCogwheelAction
         entity="CourseClass"
         generateLabel={`Generate tutor pay${
@@ -175,7 +183,8 @@ const CourseClassCogWheel = memo<any>(props => {
 const mapStateToProps = (state: State) => ({
   search: state.list.searchQuery,
   data: state.list.records,
-  editRecord: state.list.editRecord
+  editRecord: state.list.editRecord,
+  access: state.access
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

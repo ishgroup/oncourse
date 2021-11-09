@@ -71,9 +71,9 @@
            studentNumber="1" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
   <CourseSession id="1" courseClass_Id="1" startDatetime="[start_date1]" endDatetime="[end_date1]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="2" courseClass_Id="1" startDatetime="[start_date2]" endDatetime="[end_date2]"
-                 payAdjustment="0.00"/>
+                 />
 
   <Invoice allowAutoPay="1" type="1" overdue="0.00" id="1" amoutOwing="20.00" contactId="1" dateDue="[start_date1]"
            debtorsAccountId="50" invoiceDate="[start_date1]" invoiceNumber="1" source="O" confirmationStatus="2"/>

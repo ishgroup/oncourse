@@ -10,15 +10,16 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
 import React, {
- useContext, useEffect, useMemo, useRef, useState 
+ useContext, useEffect, useMemo, useRef, useState
 } from "react";
-import { InputAdornment, Autocomplete } from "@mui/material";
+import { InputAdornment, Autocomplete, IconButton } from "@mui/material";
 import { withStyles, createStyles } from "@mui/styles";
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import CloseIcon from "@mui/icons-material/Close";
 import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
@@ -150,6 +151,7 @@ interface Props extends WrappedFieldProps {
   sort?: (a: any, b: any) => number | boolean;
   sortPropKey?: string;
   inHeader?: boolean;
+  hasError?: boolean;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -234,7 +236,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     placeholder,
     sort,
     sortPropKey,
-    inHeader
+    inHeader,
+    hasError
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -431,17 +434,15 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const handleInputChange = e => {
-    const searchValue = e.target.value;
-
     if (onInputChange) {
-      onInputChange(searchValue);
+      onInputChange(e.target.value);
     }
 
-    if (remoteData && !searchValue) {
+    if (remoteData && !e.target.value) {
       onClearRows();
     }
 
-    setSearchValue(searchValue);
+    setSearchValue(e.target.value);
   };
 
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
@@ -543,9 +544,9 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             }) => (
               <FormControl
                 {...params}
-                error={meta && meta.invalid}
+                error={meta?.invalid}
               >
-                {labelContent && <InputLabel shrink={true} variant="standard">{labelContent}</InputLabel>}
+                {labelContent && <InputLabel shrink={true} error={meta?.invalid || hasError}>{labelContent}</InputLabel>}
                 <Input
                   {...InputProps}
                   disabled={disabled}
@@ -570,6 +571,15 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                       ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
                       : (
                         <InputAdornment position="end" className={classes.inputEndAdornment}>
+                          {allowEmpty && input.value && (
+                            <IconButton
+                              size="small"
+                              onClick={onClear}
+                              color="inherit"
+                            >
+                              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+                            </IconButton>
+                          ) }
                           <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
                         </InputAdornment>
                       )

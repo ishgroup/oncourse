@@ -92,8 +92,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
       [tutorNamesWarnings]
     );
 
-    const onDeleteTutor = useCallback(
-      (index: number, tutor: CourseClassTutorExtended, fields: WrappedFieldArrayProps["fields"]) => {
+    const onDeleteTutor = (index: number, tutor: CourseClassTutorExtended, fields: WrappedFieldArrayProps["fields"]) => {
         const hasWages = isTutorWageExist(values.budget, tutor);
 
         showConfirm({
@@ -121,6 +120,13 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
                   )
                 );
               }
+              
+              if (values.sessions.some(s => s.tutorAttendances.some(ta => (ta.courseClassTutorId && ta.courseClassTutorId === tutor.id) || (ta.temporaryTutorId && ta.temporaryTutorId === tutor.temporaryId)))) {
+                dispatch(change(form, 'sessions', values.sessions.map(s => ({
+                  ...s,
+                  tutorAttendances: s.tutorAttendances.filter(sta => (sta.courseClassTutorId ? sta.courseClassTutorId !== tutor.id : sta.temporaryTutorId ? sta.temporaryTutorId !== tutor.temporaryId : true))
+                }))));
+              }
             };
 
             if (tutor.id) {
@@ -132,7 +138,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
                 .catch(response => instantFetchErrorHandler(dispatch, response));
               return;
             }
-            dispatch(dispatch(removeActionsFromQueue([{ entity: "CourseClassTutor", id: tutor.temporaryId }])));
+            dispatch(removeActionsFromQueue([{ entity: "CourseClassTutor", id: tutor.temporaryId }]));
 
             onDeleteConfirm();
           },
@@ -141,9 +147,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
             : "Tutor will be deleted permanently",
           cancelButtonText: "Delete"
         });
-      },
-      [expanded, values.budget && values.budget.length, values.sessions]
-    );
+      };
 
     const onAddTutor = useCallback(() => {
       const newTutor = { ...TutorInitial, classId: values.id };

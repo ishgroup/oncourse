@@ -26,6 +26,8 @@ import { validateSingleMandatoryField } from "../../../../../common/utils/valida
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualLink = getManualLink("dataCollection");
 
@@ -48,7 +50,7 @@ interface Props {
   match: any;
   history: any;
   dirty: boolean;
-  valid: boolean;
+  invalid: boolean;
   form: string;
   collectionForms: DataCollectionForm[];
   collectionRules: DataCollectionRule[];
@@ -194,7 +196,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, handleSubmit, match, value, dirty, valid, form, onSubmit
+     classes, handleSubmit, match, value, dirty, form, onSubmit, invalid
     } = this.props;
     const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
@@ -250,14 +252,9 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                 />
               )}
 
-              <Button
-                type="submit"
-                size="small"
-                variant="text"
-                text="Save"
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
-                disabled={!dirty || !valid}
+              <FormSubmitButton
+                disabled={!dirty}
+                invalid={invalid}
               />
             </Grid>
           </Grid>
@@ -395,7 +392,8 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 }
 
 const CollectionRulesForm = reduxForm({
-  form: "CollectionRulesForm"
+  form: "CollectionRulesForm",
+  onSubmitFail
 })(withStyles(styles)(withRouter(CollectionRulesBaseForm)) as any);
 
 export default CollectionRulesForm;

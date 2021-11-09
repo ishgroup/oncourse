@@ -34,7 +34,6 @@ interface Props {
   warnings: SessionWarning[];
   setOpenCopyDialog?: ({ open, session }) => void;
   openCopyDialog?: { open?: boolean, session: { id: any } };
-  prevTutorsState?: any;
 }
 
 const CourseClassExpandableSession = React.memo<Props>(props => {
@@ -53,8 +52,7 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
     sessionSelection,
     warnings,
     setOpenCopyDialog,
-    openCopyDialog,
-    prevTutorsState
+    openCopyDialog
   } = props;
 
   const onCopyClick = React.useCallback(e => {
@@ -119,9 +117,7 @@ const CourseClassExpandableSession = React.memo<Props>(props => {
             dispatch={dispatch}
             triggerDebounseUpdate={triggerDebounseUpdate}
             tutors={tutors}
-            classes={classes}
             warnings={warnings}
-            prevTutorsState={prevTutorsState}
           />
         )
       }

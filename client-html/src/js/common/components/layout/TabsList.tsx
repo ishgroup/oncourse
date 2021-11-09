@@ -18,6 +18,7 @@ import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } f
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
 import { useStickyScrollSpy } from "../../utils/hooks";
+import NewsRender from "../news/NewsRender";
 
 const styles = theme => createStyles({
   listContainer: {
@@ -244,6 +245,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
+            <NewsRender page />
             {items.map((i, tabIndex) => (
               <div
                 id={i.label}

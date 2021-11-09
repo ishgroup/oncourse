@@ -40,6 +40,9 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
+          paths-ignore:
+            - **/build/generated-resources/**
+            - **/build/generated-sources/**
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v1

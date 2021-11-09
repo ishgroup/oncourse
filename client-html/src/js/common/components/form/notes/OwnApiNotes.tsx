@@ -102,7 +102,7 @@ const OwnApiNotes = React.memo<Props>(
         <Grid item xs={12}>
           <div className={clsx("centeredFlex", { "pl-3": !leftOffset })}>
             <div className="heading">
-              {values.notes && values.notes.length}
+              {values.notes && values.notes.length > 0 && values.notes.length}
               {' '}
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}

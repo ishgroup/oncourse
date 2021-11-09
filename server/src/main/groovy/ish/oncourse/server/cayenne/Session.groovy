@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -24,6 +25,8 @@ import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import java.math.RoundingMode
+import java.time.Duration
 
 /**
  * Sessions represent the classroom sessions a student attends when enrolled in a class. Sessions are a timetabled event. Not all classes have sessions.
@@ -31,6 +34,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
+@CompileStatic
 class Session extends _Session implements SessionTrait, SessionInterface, Queueable, AttachableTrait {
 	private static final Logger logger = LogManager.getLogger()
 
@@ -38,15 +42,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	public static final String DISPLAY_END_DATETIME = 'displayEndDateTime'
 
 	public static final String COURSE_CLASS_KEY = "courseClass";
-
-	@Override
-	void onEntityCreation() {
-		super.onEntityCreation()
-
-		if (getPayAdjustment() == null) {
-			setPayAdjustment(0)
-		}
-	}
+	
 
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
@@ -64,18 +60,13 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	}
 
 	/**
-	 * The payable duration may differ from the actual session duration. If no adjustment has been made
-	 * to the regular session duration, then the regular session duration is returned here.
-	 *
 	 * @return duration in hours
+	 * @deprecated always the samme to {@link #getDurationInHours}
 	 */
 	@API
+	@Deprecated 
 	BigDecimal getPayableDurationInHours() {
-		if (getEndDatetime() == null || getStartDatetime() == null) {
-			return new BigDecimal("0")
-		}
-		return DurationFormatter.parseDurationInHours(getEndDatetime().getTime() - getStartDatetime().getTime() -
-				(getPayAdjustment() == null ? 0 : getPayAdjustment() * 60000))
+		return getDurationInHours()
 	}
 
 	/**
@@ -83,11 +74,27 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	 */
 	@API
 	BigDecimal getDurationInHours() {
-		if (getEndDatetime() == null || getStartDatetime() == null) {
-			return new BigDecimal("0")
-		}
-		return DurationFormatter.parseDurationInHours(getEndDatetime().getTime() - getStartDatetime().getTime())
+		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
 	}
+
+	/**
+	 * @return number of round hours of this session duratiom
+	 */
+	@API
+	Integer getDurationHoursPart() {
+		//Usage ClassTimetableReport.jrxml
+		return Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toHoursPart()
+	}
+	
+	/**
+	 * @return number of round minutes of this session duratiom 
+	 */
+	@API
+	Integer getDurationMinutesPart() {
+		//Usage ClassTimetableReport.jrxml
+		return Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutesPart()
+	}
+
 
 	@Override
 	void postPersist() {
@@ -139,8 +146,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	@API
 	@Override
 	TimeZone getTimeZone() {
-		if (getRoom() == null || getRoom().getSite() == null ||
-				getRoom().getSite().getIsVirtual() || getRoom().getSite().getLocalTimezone() == null) {
+		if (getRoom() == null || getRoom().getSite() == null || getRoom().getSite().getLocalTimezone() == null) {
 			return TimeZone.getDefault()
 		}
 		return TimeZone.getTimeZone(getRoom().getSite().getLocalTimezone())
@@ -173,17 +179,7 @@ class Session extends _Session implements SessionTrait, SessionInterface, Queuea
 	Date getModifiedOn() {
 		return super.getModifiedOn()
 	}
-
-	/**
-	 * @return difference between actual session duration and payable duration in minutes
-	 */
-	@Nonnull
-	@API
-	@Override
-	Integer getPayAdjustment() {
-		return super.getPayAdjustment()
-	}
-
+	
 /**
 	 * @return private notes for this session
 	 */

@@ -10,18 +10,11 @@ export const GET_COURSE_CLASS_ATTENDANCE = _toRequestType("get/courseClass/atten
 
 export const UPDATE_COURSE_CLASS_STUDENT_ATTENDANCE = _toRequestType("post/courseClass/studentAttendance");
 
-export const UPDATE_COURSE_CLASS_TUTOR_ATTENDANCE = _toRequestType("post/courseClass/tutorAttendance");
-
 export const UPDATE_COURSE_CLASS_TRAINING_PLANS = _toRequestType("post/courseClass/trainingPlans");
 
 export const updateCourseClassStudentAttendance = (id: number, studentAttendance: StudentAttendance[]) => ({
   type: UPDATE_COURSE_CLASS_STUDENT_ATTENDANCE,
   payload: { id, studentAttendance }
-});
-
-export const updateCourseClassTutorAttendance = (id: number, tutorAttendance: TutorAttendance[]) => ({
-  type: UPDATE_COURSE_CLASS_TUTOR_ATTENDANCE,
-  payload: { id, tutorAttendance }
 });
 
 export const updateCourseClassTrainingPlans = (id: number, trainingPlans: TrainingPlan[]) => ({

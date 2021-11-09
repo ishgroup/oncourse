@@ -31,7 +31,7 @@ import { currentTheme, getTheme } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY,
+  DASHBOARD_THEME_KEY, READ_NEWS,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
 import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
@@ -45,6 +45,7 @@ import ConfirmProvider from "../common/components/dialog/confirm/ConfirmProvider
 import Message from "../common/components/dialog/message/Message";
 import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
 import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
+import { getDashboardBlogPosts } from "./dashboard/actions";
 
 export const muiCache = createCache({
   key: 'mui',
@@ -293,7 +294,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER]));
+    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS]));
+    dispatch(getDashboardBlogPosts());
   }
 });
 

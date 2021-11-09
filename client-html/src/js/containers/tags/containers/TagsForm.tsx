@@ -481,15 +481,9 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
                   manualUrl={manualUrl}
                 />
 
-                <Button
-                  text="Save"
-                  type="submit"
-                  size="small"
-                  variant="text"
-                  className="appBarSaveButton"
-                  disabled={!dirty || invalid}
-                  rootClasses="whiteAppBarButton"
-                  disabledClasses="whiteAppBarButtonDisabled"
+                <FormSubmitButton
+                  disabled={!dirty}
+                  invalid={invalid}
                 />
               </Grid>
             </Grid>
@@ -589,7 +583,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 const TagsForm = reduxForm({
-  form: "TagsForm"
+  form: "TagsForm",
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(withRouter(TagsFormBase))));
 
 export default TagsForm as ComponentClass<Props>;

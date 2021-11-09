@@ -21,7 +21,6 @@ import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
 
-
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
 const Initial: Script = { enabled: false, content: "", keyCode: null };

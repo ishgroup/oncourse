@@ -27,7 +27,12 @@ import Button from "../../../common/components/buttons/Button";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { courseClassBudgetPath, courseClassTimetablePath, plainEnrolmentPath } from "../../../constants/Api";
+import {
+  courseClassBudgetPath,
+  courseClassCancelPath,
+  courseClassTimetablePath,
+  plainEnrolmentPath
+} from "../../../constants/Api";
 import { FilterGroup } from "../../../model/common/ListView";
 import {
   clearListState,
@@ -180,7 +185,6 @@ const Initial: CourseClassExtended = {
   tutors: [],
   budget: [],
   studentAttendance: [],
-  tutorAttendance: [],
   notes: [],
   assessments: [],
   isTraineeship: false,
@@ -276,7 +280,6 @@ const preformatBeforeSubmit = (value: CourseClassExtended): Course => {
   delete submitted.sessions;
   delete submitted.budget;
   delete submitted.studentAttendance;
-  delete submitted.tutorAttendance;
   delete submitted.notes;
   delete submitted.assessments;
   delete submitted.trainingPlan;
@@ -776,6 +779,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));
     dispatch(checkPermissions({ path: courseClassTimetablePath, method: "POST" }));
+    dispatch(checkPermissions({ path: courseClassCancelPath, method: "POST" }));
     dispatch(checkPermissions({ path: plainEnrolmentPath, method: "GET" }));
     dispatch(
       getUserPreferences([
@@ -785,7 +789,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         DEFAULT_MINIMUM_PLACES_KEY
       ])
     );
-    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Site", 0, "name,localTimezone,isVirtual", true, "name", PLAIN_LIST_MAX_PAGE_SIZE));
   },
   getCourseClass: (id: string) => dispatch(getCourseClass(id)),
   onUpdate: (id: number, courseClass: CourseClass) => dispatch(updateCourseClass(id, courseClass)),

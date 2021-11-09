@@ -14,8 +14,8 @@ import ResizableWrapper from "../../../../common/components/layout/resizable/Res
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
 import { APPLICATION_THEME_STORAGE_NAME, DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
 import Statistics from "./components/Statistics";
-import Blog from "./components/Blog";
 import { LSGetItem } from "../../../../common/utils/storage";
+import NewsRender from "../../../../common/components/news/NewsRender";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -34,7 +34,6 @@ const styles = (theme: AppTheme) =>
 interface Props {
   classes?: any;
   setDashboardColumnWidth: (key: PreferenceEnum, value: string) => void;
-  setDashboardNewsLatestReadDate: (value: string) => void;
   preferencesCategoryWidth?: string;
   preferencesNewsLatestReadDate?: string;
   drawerOpened?: boolean;
@@ -109,7 +108,7 @@ class ActionBody extends React.PureComponent<Props, any> {
   };
 
   render() {
-    const { classes, preferencesNewsLatestReadDate, setDashboardNewsLatestReadDate } = this.props;
+    const { classes } = this.props;
     const { statisticsColumnWidth } = this.state;
 
     return (
@@ -134,10 +133,7 @@ class ActionBody extends React.PureComponent<Props, any> {
             LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")
           }
         >
-          <Blog
-            preferencesNewsLatestReadDate={preferencesNewsLatestReadDate}
-            setDashboardNewsLatestReadDate={setDashboardNewsLatestReadDate}
-          />
+          <NewsRender />
         </Grid>
       </Grid>
     );

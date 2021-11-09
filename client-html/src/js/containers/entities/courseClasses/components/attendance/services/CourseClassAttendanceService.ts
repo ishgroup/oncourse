@@ -8,8 +8,7 @@ import {
   CourseClassApi,
   TrainingPlan,
   StudentAttendance,
-  TutorAttendance,
-  TutorAttendanceApi
+  TutorAttendance
 } from "@api/model";
 import { DefaultHttpService } from "../../../../../../common/services/HttpService";
 
@@ -17,7 +16,6 @@ class CourseClassAttendanceService {
   readonly service = new DefaultHttpService();
   readonly courseClassApi = new CourseClassApi(this.service);
   readonly attendanceApi = new AttendanceApi(this.service);
-  readonly tutorAttendanceApi = new TutorAttendanceApi(this.service);
 
   public getStudentAttendance(id: number): Promise<StudentAttendance[]> {
     return this.attendanceApi.get(id);
@@ -29,20 +27,6 @@ class CourseClassAttendanceService {
 
   public validateUpdateStudentAttendance(id: number, studentAttendance: StudentAttendance[]): Promise<any> {
     return this.service.POST(`/v1/list/entity/courseClass/attendance/student/${id}`, studentAttendance, {
-      headers: { "X-validate-only": true }
-    });
-  }
-
-  public getTutorAttendance(id: number): Promise<TutorAttendance[]> {
-    return this.tutorAttendanceApi.get(id);
-  }
-
-  public updateTutorAttendance(id: number, tutorAttendance: TutorAttendance[]): Promise<any> {
-    return this.tutorAttendanceApi.update(id, tutorAttendance);
-  }
-
-  public validateUpdateTutorAttendance(id: number, tutorAttendance: TutorAttendance[]): Promise<any> {
-    return this.service.POST(`/v1/list/entity/courseClass/attendance/tutor/${id}`, tutorAttendance, {
       headers: { "X-validate-only": true }
     });
   }

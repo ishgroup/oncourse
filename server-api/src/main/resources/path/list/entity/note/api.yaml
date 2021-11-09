@@ -54,7 +54,7 @@ post:
     default:
       description: Unexpected error
   x-permission:
-    mask: create
+    mask: edit
     keyCode: LAZY/entityName
     errorMessage: Sorry, you have no permissions to create note. Please contact your administrator
 

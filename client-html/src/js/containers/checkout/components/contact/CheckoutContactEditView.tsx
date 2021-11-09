@@ -20,6 +20,8 @@ import { getContactName } from "../../../entities/contacts/utils";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import CheckoutAppBar from "../CheckoutAppBar";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
 
@@ -100,16 +102,10 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
                 Close
               </Button>
             )}
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled"
-              }}
+            <FormSubmitButton
               disabled={invalid || (!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
-            >
-              Save
-            </Button>
+              invalid={invalid}
+            />
           </div>
         </CustomAppBar>
         <div className="appBarContainer overflow-hidden">
@@ -152,7 +148,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const CheckoutContactEditView = reduxForm({
   form: CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME,
   asyncValidate: notesAsyncValidate,
-  asyncBlurFields: ["notes[].message"]
+  asyncBlurFields: ["notes[].message"],
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(QuickEnrolContactEditViewForm));
 
 export default CheckoutContactEditView as any;

@@ -191,7 +191,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    editableComponent,
    disabled,
    formatValue,
-   fullWidth,
    className,
    onKeyPress,
    placeholder,
@@ -434,7 +433,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
             </FormControl>
 )}
         />
-        
+
       </div>
     </div>
   );

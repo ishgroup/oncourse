@@ -19,6 +19,8 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("generalPrefs_classdefaults");
 
@@ -45,7 +47,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSave, dirty, enums, data, form
+     handleSubmit, onSave, dirty, enums, data, form, invalid
     } = this.props;
 
     return (
@@ -70,14 +72,9 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 />
               )}
 
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
+              <FormSubmitButton
                 disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+                invalid={invalid}
               />
             </Grid>
           </Grid>
@@ -134,7 +131,8 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
 
 const ClassDefaultsForm = reduxForm({
   form: "ClassDefaultsForm",
-  validate: validateMultipleMandatoryFields
+  validate: validateMultipleMandatoryFields,
+  onSubmitFail
 })(
   connect<any, any, any>(null, null, null, { forwardRef: true })(ClassDefaultsBaseForm)
 );

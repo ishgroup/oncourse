@@ -33,6 +33,8 @@ import { usePrevious } from "../../../common/utils/hooks";
 import { mapSelectItems } from "../../../common/utils/common";
 import { LSGetItem } from "../../../common/utils/storage";
 import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
+import FormSubmitButton from "../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 
 const tagStatusValues = Object.keys(TagStatus).map(mapSelectItems);
 
@@ -153,16 +155,10 @@ const TagItemEditView = React.memo<Props>(props => {
             <Button onClick={onCloseClick} className="closeAppBarButton">
               Close
             </Button>
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled"
-              }}
-              disabled={invalid || !dirty}
-            >
-              Save
-            </Button>
+            <FormSubmitButton
+              disabled={!dirty}
+              invalid={invalid}
+            />
           </div>
         </AppBar>
 
@@ -246,5 +242,6 @@ const mapStateToProps = (state: State) => ({
 
 export default (reduxForm({
   form: "TagItemForm",
-  initialValues: {}
+  initialValues: {},
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(TagItemEditView))) as unknown) as React.FC<Props>;

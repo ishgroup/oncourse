@@ -12,7 +12,7 @@ import {
   CLEAR_LAST_LOCATION,
   FETCH_SUCCESS,
   POST_AUTHENTICATION_FULFILLED,
-  POST_AUTHENTICATION_REQUEST
+  POST_AUTHENTICATION_REQUEST,
 } from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 import history from "../../../constants/History";
@@ -32,6 +32,8 @@ const request: EpicUtils.Request<any, {body: LoginRequest, host, port}> = {
       history.push("/");
     }
 
+    if (data.lastLoginOn) localStorage.setItem("lastLoginOn", data.lastLoginOn);
+
     return [
       ...(state.lastLocation
         ? [
@@ -47,7 +49,7 @@ const request: EpicUtils.Request<any, {body: LoginRequest, host, port}> = {
       {
         type: FETCH_SUCCESS,
         payload: { message: "You have logged in" }
-      }
+      },
     ];
   },
   processError: response => LoginServiceErrorsHandler(response)

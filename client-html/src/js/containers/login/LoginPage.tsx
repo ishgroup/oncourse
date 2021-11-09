@@ -40,6 +40,7 @@ import { State } from "../../reducers/state";
 import { LoginState } from "./reducers/state";
 import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
 import ishLogoSmall from "../../../images/logo_small.png";
+import EulaDialog from "./components/EulaDialog";
 
 const styles: any = theme => ({
   loginFormWrapper: {
@@ -120,7 +121,7 @@ const styles: any = theme => ({
     [theme.breakpoints.up("md")]: {
       display: "block"
     },
-    "& > img": {
+    "& > iframe": {
       position: "relative",
       maxWidth: "100%",
       minWidth: "100%",
@@ -130,6 +131,12 @@ const styles: any = theme => ({
       transform: "translateX(-50%) translateY(-50%)",
       objectFit: "cover"
     }
+  },
+  splashIframe: {
+    width: "100%",
+    height: "100%",
+    border: "0",
+    overflow: "hidden",
   },
   loginFormRight: {
     position: "relative"
@@ -208,6 +215,7 @@ interface Props extends LoginState {
   getEmailByToken: (value: string) => void;
   createPasswordRequest: (token: string, password: string) => void;
   email?: string;
+  eulaUrl?: string;
 }
 
 export class LoginPageBase extends React.PureComponent<Props, any> {
@@ -217,7 +225,12 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
 
   private token: string = '';
 
-  state = { passwordScore: 0, passwordFeedback: "", openCredits: false };
+  state = {
+    passwordScore: 0,
+    passwordFeedback: "",
+    openCredits: false,
+    eulaAccess: false
+  };
 
   constructor(props) {
     super(props);
@@ -310,6 +323,10 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       createPasswordRequest,
     } = this.props;
 
+    const {
+      eulaAccess
+    } = this.state;
+
     if (this.isInviteForm) {
       createPasswordRequest(this.token, values.newPassword);
       return;
@@ -331,7 +348,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
         kickOut: isKickOut || false,
         token: values.authCodeDigits ? values.authCodeDigits.join("") : "",
         secretCode: totpUrlParams && totpUrlParams.get("secret"),
-        skipTfa: isOptionalTOTP
+        skipTfa: isOptionalTOTP,
+        eulaAccess
       },
       values.host,
       values.port
@@ -402,7 +420,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       asyncValidating,
       complexPass,
       dispatch,
-      email
+      email,
+      eulaUrl
     } = this.props;
 
     const { passwordScore, passwordFeedback, openCredits } = this.state;
@@ -414,7 +433,11 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
           <Grid item xs={12} md={6} className={classes.loginFormRight}>
             <Slide direction="right" in timeout={300}>
               <span className={classes.sideImageWrapper}>
-                <img src="https://www.ish.com.au/assets/onCourse/splash.jpg" alt="" />
+                <iframe
+                  src="https://www.ish.com.au/oncourse-news/splash.html"
+                  title="splash image"
+                  className={classes.splashIframe}
+                />
               </span>
             </Slide>
             <Slide direction="left" in timeout={300}>
@@ -672,10 +695,10 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   onClick={
                                     isTOTP && isNewTOTP
                                       ? e => {
-                                          e.preventDefault();
-                                          dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
-                                          setLoginState(this.savedTFAState);
-                                        }
+                                        e.preventDefault();
+                                        dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                        setLoginState(this.savedTFAState);
+                                      }
                                       : undefined
                                   }
                                 >
@@ -684,7 +707,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     || isKickOut
                                     || isEnableTOTP
                                     || (isTOTP && !isNewTOTP))
-                                    && "Quit"}
+                                  && "Quit"}
                                   {((isTOTP && isNewTOTP) || (isNewPassword && isUpdatePassword)) && "Cancel"}
                                   {isOptionalTOTP && "Maybe Later"}
                                 </Button>
@@ -700,19 +723,12 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                               disabled: classes.loginButtonDisabled
                             }}
                             onClick={
-                              isEnableTOTP || isOptionalTOTP
-                                ? e => {
-                                    e.preventDefault();
-                                    this.savedTFAState = {
-                                      isEnableTOTP,
-                                      isOptionalTOTP
-                                    };
-                                    setLoginState({
-                                      isTOTP: true,
-                                      isNewTOTP: true
-                                    });
-                                    dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
-                                  }
+                              isEnableTOTP || isOptionalTOTP ? e => {
+                                  e.preventDefault();
+                                  this.savedTFAState = { isEnableTOTP, isOptionalTOTP };
+                                  setLoginState({ isTOTP: true, isNewTOTP: true });
+                                  dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                }
                                 : undefined
                             }
                           >
@@ -722,6 +738,22 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             {isKickOut && "Kick out"}
                             {this.isInviteForm && "Create password"}
                           </Button>
+                          {eulaUrl && (
+                          <EulaDialog
+                            eulaUrl={eulaUrl}
+                            classes={classes}
+                            onCancel={() => {
+                              const resetProps = { ...this.props };
+                              resetProps.eulaUrl = undefined;
+                              this.props.setLoginState(resetProps);
+                            }}
+                            onAccept={() => {
+                              this.setState({
+                                eulaAccess: true
+                              });
+                            }}
+                          />
+                          )}
                         </div>
                       </div>
                     </Collapse>
@@ -732,6 +764,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             {this.getCreditsItem("Product design", ["Aristedes Maniatis", "Natalie Morton"])}
                             {this.getCreditsItem("System architecture", ["Aristedes Maniatis"])}
                             {this.getCreditsItem("Engineering leads", [
+                              "Yury Yasuchenya",
                               "Artyom Kravchenko",
                               "Andrey Koyro",
                               "Anton Sakalouski",
@@ -739,22 +772,26 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                               "Marek Wawrzyczny"
                             ])}
                             {this.getCreditsItem("Software engineering", [
-                              "Dzmitry Kazimirchyk",
-                              "Andrey Narut",
-                              "Viacheslav Davidovich",
-                              "Xenia Khailenka",
-                              "Olga Tkachova",
-                              "Marcin Skladaniec",
-                              "Nikita Timofeev",
-                              "Arseni Bulatski",
-                              "Rostislav Zenov",
-                              "Maxim Petrusevich",
-                              "Alexandr Petkov",
-                              "Artyom Kochetkov",
-                              "Pavel Nikanovich",
-                              "Andrey Davidovich",
+                              "Dmitry Tarasenko",
+                              "Kristina Trukhan",
+                              "Chintan Kotadia",
                               "Victor Yarmolovich",
-                              "Yury Yasuchenya"
+                              "Vadim Haponov",
+                              "Rostislav Zenov",
+                              "Andrey Davidovich",
+                              "Pavel Nikanovich",
+                              "Artyom Kochetkov",
+                              "Alexandr Petkov",
+                              "Maxim Petrusevich",
+                              "Rostislav Zenov",
+                              "Arseni Bulatski",
+                              "Nikita Timofeev",
+                              "Marcin Skladaniec",
+                              "Olga Tkachova",
+                              "Xenia Khailenka",
+                              "Viacheslav Davidovich",
+                              "Andrey Narut",
+                              "Dzmitry Kazimirchyk",
                             ])}
                           </div>
                         </Grid>
@@ -766,7 +803,6 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             "Rex Chan"
                           ])}
                           {this.getCreditsItem("Icon design", ["Bruce Martin"])}
-                          {this.getCreditsItem("UI development", ["Chintan Kotadia"])}
                           {this.getCreditsItem("Additional programming", [
                             "Matthias Moeser",
                             "Abdul Abdul-Latif",
@@ -777,9 +813,9 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             "Sasha Shestak"
                           ])}
                           {this.getCreditsItem("Documentation", [
-                            "Stephen McIlwaine",
+                            "James Swinbanks",
                             "Charlotte Tanner",
-                            "James Swinbanks"
+                            "Stephen McIlwaine",
                           ])}
                         </Grid>
                       </Grid>

@@ -61,6 +61,13 @@ const createOverrides = (palette):{ components: Components } => ({
         }
       }
     },
+    MuiInputLabel: {
+      shrink: {
+        "& .inputAdornmentIcon": {
+          transform: 'scale(1.25)'
+        }
+      }
+    },
     MuiSelect: {
       styleOverrides: {
         select: {

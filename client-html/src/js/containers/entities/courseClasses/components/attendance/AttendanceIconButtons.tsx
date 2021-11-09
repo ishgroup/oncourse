@@ -34,24 +34,6 @@ const StudentAttendanceIconButtonBase: React.FC<StudentAttendanceIconButtonProps
 
 export const StudentAttendanceIconButton = withStyles(styles)(StudentAttendanceIconButtonBase);
 
-interface TutorAttendanceIconButtonProps {
-  attendance: TutorAttendanceExtended;
-  onClick: any;
-  classes?: any;
-}
-
-const TutorAttendanceIconButtonBase: React.FC<TutorAttendanceIconButtonProps> = ({ attendance, classes, onClick }) => {
-  const onIconCLick = useCallback(e => onClick(e, attendance.index), [attendance.index]);
-
-  return (
-    <IconButton role={attendance.attendanceType} size="small" className={`p-0 ${classes.iconButton}`} onClick={onIconCLick}>
-      <AttendanceIcon type={attendance.attendanceType} />
-    </IconButton>
-  );
-};
-
-export const TutorAttendanceIconButton = withStyles(styles)(TutorAttendanceIconButtonBase);
-
 interface TrainingPlanIconButtonProps {
   attended: boolean;
   onClick: any;

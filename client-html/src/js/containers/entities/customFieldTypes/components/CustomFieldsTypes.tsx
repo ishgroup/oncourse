@@ -241,9 +241,8 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
 
     return (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
       ? customFieldTypes[entityName].map((type, i) => (
-        <Grid item {...gridItemProps} className="pr-2">
+        <Grid key={i} item {...gridItemProps} className="pr-2">
           <CustomField
-            key={i}
             type={type}
             value={entityValues[fieldName][type.fieldKey]}
             fieldName={fieldName}

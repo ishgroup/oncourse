@@ -1,4 +1,3 @@
-import { DefaultHttpService } from "./HttpService";
 import {
   UserPreferenceApi,
   Category,
@@ -6,6 +5,7 @@ import {
   PreferenceEnum,
   DashboardLinks
 } from "@api/model";
+import { DefaultHttpService } from "./HttpService";
 
 class UserPreferenceService {
   readonly userPreferenceApi = new UserPreferenceApi(new DefaultHttpService());

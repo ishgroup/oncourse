@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TutorSessionSubReport" language="groovy" pageWidth="539" pageHeight="514" orientation="Landscape" columnWidth="539" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d5084253-cfb4-417b-9c73-d85931b6610b">
 	<property name="name" value="Session Subreport (Tutor)"/>
-	<property name="entity" value="Session"/>
+	<property name="entity" value="TutorAttendance"/>
 	<property name="isSubreport" value="true"/>
 	<property name="isVisible" value="false"/>
 
@@ -61,14 +61,16 @@
 	<parameter name="printRoom" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Boolean(false)]]></defaultValueExpression>
 	</parameter>
+	<field name="tutorAttendance" class="ish.oncourse.server.cayenne.TutorAttendance"/>
 	<field name="session" class="ish.oncourse.server.cayenne.Session"/>
-	<field name="room.name" class="java.lang.String"/>
-	<field name="room.site.name" class="java.lang.String"/>
-	<field name="courseClass.uniqueCode" class="java.lang.String"/>
-	<field name="courseClass.course.name" class="java.lang.String"/>
-	<field name="datasource.tutorRoles" class="net.sf.jasperreports.engine.JRDataSource"/>
-	<field name="subreport.ish.onCourse.tutorsSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="session.room.name" class="java.lang.String"/>
+	<field name="session.room.site.name" class="java.lang.String"/>
+	<field name="session.courseClass.uniqueCode" class="java.lang.String"/>
+	<field name="session.courseClass.course.name" class="java.lang.String"/>
+	<field name="session.timeZone" class="java.util.TimeZone"/>
 	<field name="startDatetime" class="java.util.Date"/>
+	<field name="endDatetime" class="java.util.Date"/>
+	<field name="subreport.ish.onCourse.tutorsSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<sortField name="startDatetime"/>
 	<variable name="tutorNumber" class="java.math.BigDecimal"/>
 	<background>
@@ -119,23 +121,23 @@
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-2" style="data field (day)" x="0" y="2" width="115" height="14" uuid="b47c4f53-9f75-45cd-8656-9fbe274c7fe7"/>
-				<textFieldExpression><![CDATA[$F{session}.startDatetime?.format("d MMM yyyy h:mma", $F{session}.timeZone)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{startDatetime}?.format("d MMM yyyy h:mma", $F{session.timeZone})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-3" style="data field (day)" x="115" y="2" width="115" height="14" uuid="3e730c1a-3d90-4d2c-984b-db499cf3bdae"/>
-				<textFieldExpression><![CDATA[$F{session}.endDatetime?.format("d MMM yyyy h:mma", $F{session}.timeZone)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{endDatetime}?.format("d MMM yyyy h:mma", $F{session.timeZone})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-6" style="data field" x="420" y="2" width="119" height="14" uuid="ebe1b6ee-d5db-429b-87b3-55b83f8edd51"/>
-				<textFieldExpression><![CDATA[($F{room.name} != null) ? $F{room.site.name}+"-"+$F{room.name} : "Not set"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{session.room.name} != null) ? $F{session.room.site.name}+"-"+$F{session.room.name} : "Not set"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-3" style="data field" x="290" y="2" width="130" height="14" uuid="a6133083-4c12-47bb-b5be-b5f75a7fdf04"/>
-				<textFieldExpression><![CDATA[$F{courseClass.course.name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{session.courseClass.course.name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-3" style="data field" x="230" y="2" width="58" height="14" uuid="4454ceaa-7050-4b1e-b82b-4b5279a4e54f"/>
-				<textFieldExpression><![CDATA[$F{courseClass.uniqueCode}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{session.courseClass.uniqueCode}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
