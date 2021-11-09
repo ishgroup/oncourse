@@ -197,6 +197,7 @@ export function mockInvoices() {
           "invoiceDate": "2020-05-08",
           "dateDue": "2020-05-15",
           "overdue": null,
+          "payDueAmounts": true,
           "invoiceLines": [
 
           ],
@@ -247,6 +248,7 @@ export function mockInvoices() {
           "invoiceDate": "2020-05-08",
           "dateDue": "2020-05-15",
           "overdue": null,
+          "payDueAmounts": true,
           "invoiceLines": [
 
           ],
@@ -289,6 +291,7 @@ export function mockInvoices() {
           "invoiceDate": "2020-05-08",
           "dateDue": "2020-05-15",
           "overdue": null,
+          "payDueAmounts": true,
           "invoiceLines": [
 
           ],
@@ -331,6 +334,7 @@ export function mockInvoices() {
           "invoiceDate": "2020-06-05",
           "dateDue": "2020-07-31",
           "overdue": null,
+          "payDueAmounts": true,
           "invoiceLines": [
 
           ],
@@ -365,6 +369,7 @@ export function mockInvoices() {
           "invoiceDate": "2020-06-05",
           "dateDue": "2020-06-12",
           "overdue": null,
+          "payDueAmounts": true,
           "invoiceLines": [
 
           ],
