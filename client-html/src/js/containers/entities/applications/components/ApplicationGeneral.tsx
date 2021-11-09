@@ -6,7 +6,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Application, ApplicationStatus } from "@api/model";
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { State } from "../../../../reducers/state";
@@ -18,6 +19,9 @@ import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { openInternalLink } from "../../../../common/utils/links";
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -42,7 +46,8 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     values,
     isNew,
     dispatch,
-    form
+    form,
+    invalid
   } = props;
 
   const gridItemProps = {
@@ -51,8 +56,48 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   } as any;
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={3} className={`generalRoot ${twoColumn ? "pt-10" : "pt-3"}`}>
+    <Grid container columnSpacing={3} rowSpacing={2} className="generalRoot pt-3">
       <Grid item xs={12}>
+        <FullScreenStickyHeader
+          opened={isNew || invalid}
+          disableInteraction={!isNew}
+          twoColumn={twoColumn}
+          title={(
+            <div className="centeredFlex">
+              {values && defaultContactName(values.studentName)}
+              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+          )}
+          fields={(
+            <Grid item {...gridItemProps}>
+              <FormField
+                type="remoteDataSearchSelect"
+                entity="Contact"
+                aqlFilter="isStudent is true"
+                name="contactId"
+                label="Student"
+                selectValueMark="id"
+                selectLabelCondition={contactLabelCondition}
+                disabled={!isNew}
+                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                labelAdornment={(
+                  <LinkAdornment
+                    linkHandler={openContactLink}
+                    link={values && values.contactId}
+                    disabled={!values || !values.contactId}
+                  />
+                )}
+                itemRenderer={ContactSelectItemRenderer}
+                rowHeight={55}
+                required
+              />
+            </Grid>
+          )}
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Course"
@@ -73,29 +118,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
             )}
           disabled={!isNew}
           itemRenderer={CourseItemRenderer}
-          rowHeight={55}
-          required
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Contact"
-          aqlFilter="isStudent is true"
-          name="contactId"
-          label="Student"
-          selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          disabled={!isNew}
-          defaultDisplayValue={values && defaultContactName(values.studentName)}
-          labelAdornment={(
-            <LinkAdornment
-              linkHandler={openContactLink}
-              link={values && values.contactId}
-              disabled={!values || !values.contactId}
-            />
-            )}
-          itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}
           required
         />

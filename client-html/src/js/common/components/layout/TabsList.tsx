@@ -19,6 +19,7 @@ import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
 import { useStickyScrollSpy } from "../../utils/hooks";
 import NewsRender from "../news/NewsRender";
+import { useStickyScrollSpy } from "../../utils/hooks";
 
 const styles = theme => createStyles({
   listContainer: {
