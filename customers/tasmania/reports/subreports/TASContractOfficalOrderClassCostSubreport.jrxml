@@ -81,7 +81,7 @@
 	<sortField name="startDatetime"/>
 	<variable name="tutorNumber" class="java.math.BigDecimal"/>
 	<variable name="isWageType" class="java.lang.Boolean">
-		<variableExpression><![CDATA[ish.common.types.ClassCostFlowType.WAGES.equals($F{flowType})]]></variableExpression>
+		<variableExpression><![CDATA[ish.common.types.ClassCostFlowType.WAGES.equals($F{flowType}) && !$F{classCost}.tutorRole?.sessionsTutors?.empty]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -108,7 +108,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{classCost}.perUnitAmountExTax*$F{classCost}.courseClass.sessions.first().durationInHours]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{classCost}.perUnitAmountExTax*$F{classCost}.tutorRole.sessionsTutors.first().actualPayableDurationHours]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
