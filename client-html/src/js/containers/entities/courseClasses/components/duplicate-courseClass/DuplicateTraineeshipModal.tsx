@@ -22,7 +22,7 @@ import {
 import withStyles from "@mui/styles/withStyles";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import MuiButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import DialogContent from "@mui/material/DialogContent";
 import Grid from "@mui/material/Grid/Grid";
 import FormGroup from "@mui/material/FormGroup";
@@ -34,7 +34,6 @@ import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import EntityService from "../../../../../common/services/EntityService";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../../../common/components/buttons/Button";
 import { getPlainAccounts } from "../../../accounts/actions";
 import { getPlainTaxes } from "../../../taxes/actions";
 import {
@@ -523,9 +522,9 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
 
         <DialogActions className="p-3">
           {!disableClose && (
-            <MuiButton color="primary" onClick={onClose}>
+            <Button color="primary" onClick={onClose}>
               Cancel
-            </MuiButton>
+            </Button>
           )}
 
           <Button

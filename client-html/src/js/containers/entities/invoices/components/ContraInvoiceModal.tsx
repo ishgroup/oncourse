@@ -4,7 +4,7 @@
  */
 
 import { Currency } from "@api/model";
-import MuiButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -17,7 +17,7 @@ import { Dispatch } from "redux";
 import {
   change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm
 } from "redux-form";
-import Button from "../../../../common/components/buttons/Button";
+
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
@@ -216,11 +216,11 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
         </DialogContent>
 
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
 
-          <Button color="primary" type="submit" disabled={!dirty}>
+          <Button variant="contained" color="primary" type="submit" disabled={!dirty}>
             Save
           </Button>
         </DialogActions>

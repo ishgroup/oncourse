@@ -13,7 +13,6 @@ import {
 } from "redux-form";
 import DialogActions from "@mui/material/DialogActions/DialogActions";
 import Launch from "@mui/icons-material/Launch";
-import Dialog from "@mui/material/Dialog/Dialog";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FinalisePeriodInfo } from "@api/model";
@@ -26,6 +25,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import Collapse from "@mui/material/Collapse/Collapse";
 import HelpOutline from "@mui/icons-material/HelpOutline";
 import IconButton from "@mui/material/IconButton/IconButton";
+import Button from "@mui/material/Button";
 import FormField from "../../common/components/form/formFields/FormField";
 import { getFinaliseInfo, updateFinaliseDate } from "./actions";
 import { StringArgFunction } from "../../model/common/CommonFunctions";
@@ -35,7 +35,6 @@ import { EEE_D_MMM_YYYY } from "../../common/utils/dates/format";
 import { validateSingleMandatoryField, validateMinMaxDate } from "../../common/utils/validation";
 import { State } from "../../reducers/state";
 import { openInternalLink } from "../../common/utils/links";
-import Button from "../../common/components/buttons/Button";
 
 interface Props {
   handleSubmit: any;

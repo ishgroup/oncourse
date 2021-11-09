@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 
 const styles = theme => createStyles({
   uploadContainer: {

@@ -12,8 +12,8 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import ExecuteScriptModal from "../../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { getHighlightedPartLabel } from "../../../../../utils/formatting";
-import Button from "../../../../buttons/Button";
 import UserSearch from "../UserSearch";
+import Button from "@mui/material/Button";
 
 const styles = theme => createStyles({
   scriptHeading: {
@@ -72,7 +72,7 @@ const SidebarScriptsList: React.FC<any> = props => {
 
             <Collapse in={scriptIdSelected === s.id} mountOnEnter unmountOnExit className="pl-2 pr-2">
               <div className="d-flex justify-content-end pt-2 pb-2">
-                <Button color="primary" onClick={() => setExecMenuOpened(true)}>
+                <Button variant="contained" color="primary" onClick={() => setExecMenuOpened(true)}>
                   Run now
                 </Button>
               </div>

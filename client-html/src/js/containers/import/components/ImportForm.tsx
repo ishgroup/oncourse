@@ -19,11 +19,10 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import MuiButton from "@mui/material/Button";
 import HelpOutline from "@mui/icons-material/HelpOutline";
+import Button from "@mui/material/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { State } from "../../../reducers/state";
-import Button from "../../../common/components/buttons/Button";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../common/components/form/AppBarActions";
 import { getManualLink } from "../../../common/utils/getManualLink";
@@ -151,9 +150,9 @@ const ImportForm: React.FC<Props> = props => {
                 />
               </div>
               <div className={clsx("pt-2", classes.buttons)}>
-                <MuiButton color="primary" onClick={() => {}}>
+                <Button color="primary" onClick={() => {}}>
                   Cancel
-                </MuiButton>
+                </Button>
                 <Button variant="contained" type="submit" color="primary" onClick={() => {}}>
                   Import
                 </Button>

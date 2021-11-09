@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneRounded from "@mui/icons-material/DoneRounded";
 import Paper from "@mui/material/Paper";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";

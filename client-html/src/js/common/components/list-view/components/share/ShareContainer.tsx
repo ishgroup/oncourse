@@ -5,6 +5,8 @@
 
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -14,7 +16,9 @@ import ListItem from "@mui/material/ListItem";
 import { Help, PlayArrow, Publish } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from "redux-form";
+import {
+ change, Field, FieldArray, getFormValues, initialize, reduxForm, 
+} from "redux-form";
 import IconButton from "@mui/material/IconButton";
 import {
   Binding,
@@ -32,8 +36,9 @@ import clsx from "clsx";
 import FormField from "../../../form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import bottomDrawerStyles from "../bottomDrawerStyles";
-import { addPrintOverlay, doPrintRequest, getExportTemplates, getShareList, runExport, } from "./actions";
-import Button from "../../../buttons/Button";
+import {
+ addPrintOverlay, doPrintRequest, getExportTemplates, getShareList, runExport, 
+} from "./actions";
 import SelectionSwitcher from "./SelectionSwitcher";
 import { ProcessState } from "../../../../reducers/processReducer";
 import { interruptProcess } from "../../../../actions";
@@ -460,7 +465,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     return (
       <>
-        <Grid container columnSpacing={3}>
+        <Grid container>
           <Grid item xs={preview ? 8 : 12}>
             {pdfActive && pdfActive.description && (
               <Grid item xs={12} className="mb-2">
@@ -470,7 +475,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               </Grid>
             )}
             <Grid item xs={12}>
-              <Grid container columnSpacing={3}>
+              <Grid container>
                 <Grid item xs={12}>
                   <FormField
                     type="select"
@@ -580,7 +585,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     return (
       <Grid item xs={12}>
-        <Grid container columnSpacing={3}>
+        <Grid container>
           <Grid item xs={12}>
             <Typography variant="body2" color="inherit">
               {values && values.description}
@@ -642,8 +647,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           className={classes.fileInput}
           onChange={this.handleBackgroundUpload}
         />
-        <Grid container columnSpacing={3} className={classes.content}>
-          <Grid container columnSpacing={3} className={classes.header} wrap="nowrap" alignItems="center">
+        <Grid container className={classes.content}>
+          <Grid container className={classes.header} wrap="nowrap" alignItems="center">
             <Grid item xs={2}>
               <Typography variant="body2" className={classes.headerText}>
                 Share
@@ -666,7 +671,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             </Grid>
           </Grid>
 
-          <Grid container columnSpacing={3} className={classes.body} wrap="nowrap" spacing={3}>
+          <Grid container className={classes.body} wrap="nowrap" spacing={3}>
             <Grid item zeroMinWidth className={classes.menuColumn}>
               <List disablePadding className={classes.list}>
                 {Boolean(pdfReports.length) && (
@@ -761,7 +766,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             </Grid>
             <Grid item xs className={classes.menuColumn}>
               <form autoComplete="off" onSubmit={handleSubmit(this.onSave)} className={classes.form}>
-                <Grid container columnSpacing={3} className={classes.formContent}>
+                <Grid container className={classes.formContent}>
                   {AlertComponent && (
                     <Grid item xs={12}>
                       <AlertComponent
@@ -785,7 +790,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {templateSelected
                   && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
                   && (
-                    <Button
+                    <LoadingButton
                       disabled={invalid || validating}
                       className={classes.closeButton}
                       type="submit"
@@ -795,18 +800,19 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                     >
                       Copy to clipboard
-                    </Button>
+                    </LoadingButton>
                   )}
-                  <Button
+                  <LoadingButton
                     disabled={invalid || validating}
-                    rootClasses={classes.shareButton}
+                    className={classes.shareButton}
                     type="submit"
                     datatype="share"
+                    variant="contained"
                     onClick={this.onSubmitClick}
                     loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                   >
                     Share
-                  </Button>
+                  </LoadingButton>
                 </Grid>
               </form>
             </Grid>

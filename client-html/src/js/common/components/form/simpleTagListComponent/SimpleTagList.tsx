@@ -377,14 +377,14 @@ const SimpleTagList: React.FC<Props> = props => {
               InputProps={{
                 ...params.InputProps,
                 classes: {
-                  root: fieldClasses.text,
                   underline: fieldClasses.underline
                 },
               }}
               // eslint-disable-next-line react/jsx-no-duplicate-props
               inputProps={{
                 ...params.inputProps,
-                value: inputValue
+                value: inputValue,
+                className: fieldClasses.text
               }}
               error={meta && meta.invalid}
               helperText={(

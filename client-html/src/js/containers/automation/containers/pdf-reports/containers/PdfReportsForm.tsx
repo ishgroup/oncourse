@@ -25,7 +25,7 @@ import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import Bindings from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";

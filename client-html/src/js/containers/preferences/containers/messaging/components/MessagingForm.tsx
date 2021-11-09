@@ -15,7 +15,6 @@ import {
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
-import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
@@ -30,6 +29,7 @@ import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu
 import DynamicText from "./DynamicText";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import Button from "@mui/material/Button";
 
 const manualUrl = getManualLink("generalPrefs_messaging");
 
@@ -157,7 +157,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                 variant="text"
                 className={classes.subheadingButton}
                 onClick={() => openInternalLink("/message?filter=@Email&search=messagePersons.status is QUEUED")}
-                rightIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
+                endIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
               />
             </Typography>
           </Grid>
@@ -255,7 +255,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                 variant="text"
                 className={classes.subheadingButton}
                 onClick={() => openInternalLink("/message?filter=@SMS&search=messagePersons.status is QUEUED")}
-                rightIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
+                endIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
               />
             </Typography>
           </Grid>

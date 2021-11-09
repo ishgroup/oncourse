@@ -14,8 +14,8 @@ import IconButton from "@mui/material/IconButton";
 import AccordionActions from "@mui/material/AccordionActions";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
+import Button from "@mui/material/Button";
 import { getDeepValue } from "../../../utils/common";
-import Button from "../../buttons/Button";
 import { AppTheme } from "../../../../model/common/Theme";
 
 const styles = (theme: AppTheme) =>
@@ -140,8 +140,10 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
               <AccordionActions>
                 {field.id && (
                   <Button
-                    rootClasses="moreOptions"
-                    disabledClasses="moreOptionsDisabled"
+                    className="moreOptions"
+                    classes={{
+                      disabled: "moreOptionsDisabled"
+                    }}
                     onClick={() => onViewMore(entity, field.id, field)}
                   >
                     More options

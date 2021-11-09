@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import React, {
   useCallback, useEffect, useMemo
 } from "react";
-import MuiButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,9 +18,9 @@ import { Dispatch } from "redux";
 import {
   destroy, Field, FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { interruptProcess } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import Button from "../../../../../common/components/buttons/Button";
 import DataTypeRenderer from "../../../../../common/components/form/DataTypeRenderer";
 import { ProcessState } from "../../../../../common/reducers/processReducer";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
@@ -178,17 +178,18 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogContent>
 
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onDialogClose}>
+          <Button color="primary" onClick={onDialogClose}>
             Cancel
-          </MuiButton>
-          <Button
+          </Button>
+          <LoadingButton
+            variant="contained"
             color="primary"
             type="submit"
             disabled={invalid || submitting || executing}
             loading={submitting || executing}
           >
             Run import
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </Dialog>

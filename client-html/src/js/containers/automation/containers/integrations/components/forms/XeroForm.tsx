@@ -4,10 +4,13 @@
  */
 
 import * as React from "react";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
+import {
+ change, getFormValues, initialize, reduxForm 
+} from "redux-form";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
-import Button from "../../../../../../common/components/buttons/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -124,11 +127,12 @@ class XeroBaseForm extends React.Component<any, any> {
               {`You are connected to Xero organisation: ${values?.fields?.companyName}`}
             </Typography>
             <Button
-              text="Disconnect from Xero"
               variant="contained"
               className="mt-1"
               onClick={this.onDisconnect}
-            />
+            >
+              Disconnect from Xero
+            </Button>
           </>
         ) : (
           <>
@@ -149,14 +153,15 @@ class XeroBaseForm extends React.Component<any, any> {
             </Typography>
 
             {!hideConfig && (
-              <Button
-                text="Connect to Xero"
+              <LoadingButton
                 variant="contained"
                 className="mt-1"
                 disabled={!values.name}
                 loading={loading}
                 onClick={this.showTokenField}
-              />
+              >
+                Connect to Xero
+              </LoadingButton>
             )}
           </>
       )}

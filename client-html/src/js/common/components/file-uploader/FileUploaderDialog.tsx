@@ -12,8 +12,8 @@ import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
 import { AppTheme } from "../../../model/common/Theme";
-import Button from "../buttons/Button";
 
 const styles = createStyles((theme: AppTheme) => ({
   fileContainer: {
@@ -109,11 +109,13 @@ const FileUploaderDialog: React.FC<Props> = (props => {
             <Typography variant="subtitle1" gutterBottom className="mb-0">Drop files here</Typography>
             <Typography variant="caption" className="mb-1">or</Typography>
             <Button
+              variant="contained"
               size="small"
-              text="Browse"
               color="primary"
               className="mb-1 fontWeight-normal"
-            />
+            >
+              Browse 
+            </Button>
             {accept && (
               <Typography variant="caption" color="error">
                 Please upload only:

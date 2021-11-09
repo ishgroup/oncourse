@@ -26,6 +26,12 @@ const styles = theme => createStyles({
     checkboxFontSize: {
       fontSize: "18px"
     },
+    checkboxLabelRoot: {
+      marginRight: theme.spacing(0.5),
+      "& $checkboxLabel": {
+        fontSize: "12px",
+      }
+    },
     checkboxLabel: {
       fontSize: "12px",
     },
@@ -40,16 +46,13 @@ const styles = theme => createStyles({
       marginLeft: "12px"
     },
     root: {
-      ["&:hover > $content $label, "
-      + "&:focus > $content $label, &:focus > $content $label:hover, "
-      + "&$selected > $content $label, &$selected > $content $label:hover,"
-      + "&$selected:focus > $content $label"]: {
+      "& $content:hover, & $content$selected, & $content$focused": {
         backgroundColor: "inherit"
       }
     },
     label: {},
     rootExpanded: {
-      "& > $content $collapseButton": {
+      "& > $label $collapseButton": {
         transform: "rotate(180deg)"
       }
     },
@@ -63,6 +66,7 @@ const styles = theme => createStyles({
       width: 0,
     },
     selected: {},
+    focused: {},
     content: {
       padding: `0 ${theme.spacing(1)} 0 0`,
       "& $iconContainer": {
@@ -95,14 +99,15 @@ const ListTagItem: React.FC<Props> = ({
   <TreeItem
     nodeId={nodeId}
     classes={{
-        root: classes.root,
-        expanded: classes.rootExpanded,
-        selected: classes.selected,
-        content: classes.content,
-        label: classes.label,
-        iconContainer: classes.iconContainer,
-        group: "ml-2"
-      }}
+      root: classes.root,
+      expanded: classes.rootExpanded,
+      selected: classes.selected,
+      content: classes.content,
+      label: classes.label,
+      focused: classes.focused,
+      iconContainer: classes.iconContainer,
+      group: "ml-2"
+    }}
     label={(
       <div className={clsx("centeredFlex", hasOffset ? classes.parentOffset : classes.parentWithChildrenOffset)}>
         <IconButton
@@ -117,8 +122,9 @@ const ListTagItem: React.FC<Props> = ({
         <FormControlLabel
           className="overflow-hidden"
           classes={{
-              label: clsx("text-nowrap text-truncate", classes.checkboxLabel),
-            }}
+            root: classes.checkboxLabelRoot,
+            label: clsx("text-nowrap text-truncate", classes.checkboxLabel),
+          }}
           control={(
             <Checkbox
               value={nodeId}
