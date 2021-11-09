@@ -25,6 +25,7 @@ import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayNa
 import { LSGetItem } from "../../../../utils/storage";
 import { APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../../../constants/Config";
 import FullScreenStickyHeader from "./FullScreenStickyHeader";
+import { useStickyScrollSpy } from "../../../../utils/hooks";
 
 const styles = theme => createStyles({
   header: {
@@ -180,6 +181,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
 
     const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
 
+    const { scrollSpy } = useStickyScrollSpy();
+
     return (
       <Dialog
         fullScreen
@@ -233,7 +236,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
           )}
           <Grid
             container
-            columnSpacing={3}
+            onScroll={scrollSpy}
             className={`overflow-y-auto ${hideFullScreenAppBar ? undefined : classes.root}`}
           >
             <Grid item xs={12}>

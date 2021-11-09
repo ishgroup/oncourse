@@ -45,6 +45,7 @@ function fire(stuck) {
 
 export const useStickyScrollSpy = () => {
   const scrollSpy = (e) => {
+    console.log(e);
     if (e.target) {
       fire(e.target.scrollTop > 20);
     }
