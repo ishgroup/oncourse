@@ -15,6 +15,7 @@ Feature: Main feature for all GET requests with path 'checkout/discount'
     And param membershipIds = 1003
     And param classIds = 3
     And param purchaseTotal = 0
+    And param payerId = contactId
     When method GET
     Then status 200
     And match karate.sizeOf(response) == 1
@@ -29,6 +30,7 @@ Feature: Main feature for all GET requests with path 'checkout/discount'
     And param membershipIds = null
     And param enrolmentsCount = 1
     And param purchaseTotal = 0
+    And param payerId = contactId
     When method GET
     Then status 200
     And match $ == []
