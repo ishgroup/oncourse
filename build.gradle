@@ -9,7 +9,7 @@ buildscript {
         mariadbVersion = '2.7.2'
         tapestryVersion = '5.4.3'
 		bootiqueVersion = '1.1'
-        webservicesVersion = '122'
+        webservicesVersion = '123'
         caffeineVersion = '2.6.2'
     }
 
