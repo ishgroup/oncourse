@@ -646,29 +646,5 @@
 														 referencedColumnNames="id"
 														 validate="true"/>
 	</changeSet>
-
-
-	<changeSet id="49" author="dmitriy" runOnChange="false" runAlways="false" context="production">
-		<preConditions onFail="HALT">
-			<not>
-				<columnExists tableName="Message" columnName="numberOfAttempts"/>
-				<columnExists tableName="Message" columnName="destinationAddress"/>
-				<columnExists tableName="Message" columnName="response"/>
-				<columnExists tableName="Message" columnName="timeOfDelivery"/>
-				<columnExists tableName="Message" columnName="status"/>
-				<columnExists tableName="Message" columnName="type"/>
-				<columnExists tableName="Message" columnName="contactId"/>
-			</not>
-		</preConditions>
-		<addColumn tableName="Message">
-			<column name="numberOfAttempts" type="int(11)"/>
-			<column name="status" type="int(11)"/>
-			<column name="type" type="int(11)"/>
-			<column name="destinationAddress" type="mediumtext"/>
-			<column name="response" type="mediumtext"/>
-			<column name="timeOfDelivery" type="datetime"/>
-			<column name="contactId" type="BIGINT"/>
-		</addColumn>
-	</changeSet>
 	
 </databaseChangeLog>
