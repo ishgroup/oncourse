@@ -50,6 +50,13 @@ const createOverrides = palette => ({
         }
       }
     },
+    MuiInputLabel: {
+      shrink: {
+        "& .inputAdornmentIcon": {
+          transform: 'scale(1.25)'
+        }
+      }
+    },
     MuiSelect: {
       select: {
         "&:focus": {

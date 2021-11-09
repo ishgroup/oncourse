@@ -8,7 +8,7 @@ import { AppTheme } from "../../../../model/common/Theme";
 
 export default (theme: AppTheme) => createStyles({
   root: {
-    marginTop: `-${theme.spacing(1)}px`,
+    marginTop: "-12px",
     paddingBottom: `${theme.spacing(2) - 3}px`
   },
   icon: {

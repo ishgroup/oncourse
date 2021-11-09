@@ -76,6 +76,8 @@ const getDefaultColumns = entity => {
       return "firstName,lastName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id";
     case "Site":
       return "name,localTimezone";
+    case "Room":
+      return "name,site.name,site.localTimezone,site.id";
     case "Qualification":
       return "nationalCode,title,level,fieldOfEducation,isOffered";
     case "Course":

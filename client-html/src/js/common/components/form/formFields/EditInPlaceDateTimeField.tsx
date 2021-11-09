@@ -13,7 +13,9 @@
  * Wrapper component for DateTimeField with edit in place functional
  * */
 
-import React, { ComponentClass, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ ComponentClass, useEffect, useMemo, useRef, useState
+} from "react";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
@@ -27,7 +29,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
-import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
+import {
+ HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED
+} from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
 const styles = theme => createStyles({
@@ -44,18 +48,11 @@ const styles = theme => createStyles({
   },
   inputEndAdornment: {
     color: theme.palette.primary.main,
-    display: "none",
+    visibility: "hidden",
   },
   inputWrapper: {
     "&:hover $inputEndAdornment": {
-      display: "flex",
-    },
-  },
-  isEditing: {
-    borderBottom: "none!important",
-    "& $inputEndAdornment": {
-      display: "flex!important",
-      borderBottom: "none!important",
+      visibility: "visible"
     },
   },
   editing: {
@@ -193,11 +190,11 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    editableComponent,
    disabled,
    formatValue,
-   fullWidth,
    className,
    onKeyPress,
    placeholder,
    inlineMargin,
+    persistValue,
    ...custom
   }
 ) => {
@@ -205,8 +202,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   const [textValue, setTextValue] = useState("");
   const [pickerOpened, setPickerOpened] = useState(false);
 
-  const isAdornmentHovered = useRef<any>(false);
-  const isIconOvered = useRef<any>(false);
   const inputNode = useRef<any>(null);
 
   const isInline = formatting === "inline";
@@ -238,21 +233,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     return dateObj;
   }, [input.value, timezone]);
 
-  const onAdornmentOver = () => {
-    isAdornmentHovered.current = true;
-  };
-
-  const onAdornmentOut = () => {
-    isAdornmentHovered.current = false;
-  };
-
   const onAdornmentClick = e => {
-    if (isAdornmentHovered.current) {
-      e.preventDefault();
-    }
     setTimeout(() => {
-      isAdornmentHovered.current = false;
-      // onBlur();
       setIsEditing(false);
     }, 600);
   };
@@ -299,30 +281,33 @@ const EditInPlaceDateTimeField: React.FC<any> = (
       }
       setTextValue(formatDateInner(v));
       input.onChange(formatted);
-      input.onBlur(formatted);
       return;
     }
     setTextValue("");
     input.onChange(null);
-    input.onBlur(null);
   };
 
   const onBlur = () => {
-    if (isAdornmentHovered.current || isIconOvered.current) {
+    setIsEditing(false);
+
+    if (persistValue && !textValue) {
+      input.onBlur(input.value);
+      input.onChange(input.value);
+      setTextValue(formatDateInner(dateValue));
       return;
     }
 
-    setIsEditing(false);
-
     const parsed = textValue
-      ? formatStringDate(textValue, type, formatDate || formatDateTime || formatTime)
-      : "";
+      ? formatStringDate(textValue, type, dateValue || new Date(), formatDate || formatDateTime || formatTime)
+      : null;
 
     if (parsed) {
-      setTextValue(formatDateInner(new Date(parsed)));
-      onChange(timezone ? appendTimezoneToUTC(parsed, timezone) : parsed);
+      const appended = timezone ? appendTimezoneToUTC(parsed, timezone) : parsed;
+      input.onBlur(appended.toISOString());
+      input.onChange(appended.toISOString());
     } else {
-      onChange(null);
+      input.onBlur(null);
+      input.onChange(null);
     }
   };
 
@@ -332,19 +317,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onFocus = () => {
-    setTextValue(formatDateInner(dateValue));
-    if (!isEditing) {
-      setIsEditing(true);
-    }
     input.onFocus();
-  };
-
-  const onButtonOver = () => {
-    isIconOvered.current = true;
-  };
-
-  const onButtonLeave = () => {
-    isIconOvered.current = false;
   };
 
   const onEnterPress = e => {
@@ -358,7 +331,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const labelContent = labelAdornment ? (
-    <span onMouseEnter={onAdornmentOver} onMouseLeave={onAdornmentOut} onMouseDown={onAdornmentClick}>
+    <span onMouseDown={onAdornmentClick}>
       {label}
       {" "}
       <span className={classes.labelAdornment}>{labelAdornment}</span>
@@ -387,10 +360,9 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
       <div
         id={input.name}
-        className={clsx({
+        className={clsx('w-100', {
           [classes.readonly]: disabled,
           [classes.editing]: formatting !== "inline",
-          fullWidth
         })}
       >
         <FormControl
@@ -433,7 +405,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
             value={textValue}
             classes={{
               root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
-                classes.inputWrapper, isEditing && classes.isEditing),
+                classes.inputWrapper),
               underline: fieldClasses.underline,
               input: clsx(classes.input, fieldClasses.text)
             }}
@@ -442,8 +414,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 <IconButton
                   tabIndex={-1}
                   onClick={openPicker}
-                  onMouseOver={onButtonOver}
-                  onMouseLeave={onButtonLeave}
                   classes={{
                     root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
                   }}

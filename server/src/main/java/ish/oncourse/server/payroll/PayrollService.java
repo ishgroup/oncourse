@@ -324,10 +324,10 @@ public class PayrollService {
                     assert classCost.getTutorRole() != null;
                     result = classCost.getTutorRole().getSessionsTutors().stream().anyMatch(
                             tutorAttendance ->
-                                    isSessionEndBefore(tutorAttendance.getSession(), untilDate)
-                                    && hasPayableDuration(tutorAttendance.getSession())
+                                    tutorAttendance.getEndDatetime().before(untilDate)
+                                    && tutorAttendance.getActualPayableDurationHours().compareTo(BigDecimal.ZERO) > 0
                                     && !isAlreadyPaid(classCost, tutorAttendance.getSession())
-                                    && hasEligibleRateOnDate(classCost, tutorAttendance.getSession().getStartDatetime())
+                                    && hasEligibleRateOnDate(classCost, tutorAttendance.getStartDatetime())
                     );
                 }
                 break;
@@ -360,7 +360,7 @@ public class PayrollService {
         if (classCost.getRepetitionType() == PER_SESSION || classCost.getRepetitionType() == PER_TIMETABLED_HOUR) {
             return classCost.getTutorRole().getSessionsTutors().stream()
                     .anyMatch(tutorAttendance ->
-                            isSessionEndBefore(tutorAttendance.getSession(), date)
+                            tutorAttendance.getEndDatetime().before(date)
                             && !isAlreadyPaid(classCost, tutorAttendance.getSession())
                             && !AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON.equals(tutorAttendance.getAttendanceType())
                             && !AttendanceType.UNMARKED.equals(tutorAttendance.getAttendanceType()));
@@ -390,15 +390,7 @@ public class PayrollService {
     private boolean hasValidEnrolments(CourseClass courseClass) {
         return courseClass.getValidEnrolmentCount() > 0;
     }
-
-    private boolean hasPayableDuration(Session session) {
-        return session.getPayableDurationInHours().compareTo(new BigDecimal(0)) > 0;
-    }
-
-    private boolean isSessionEndBefore(Session session, Date untilDate) {
-        return session.getEndDatetime().before(untilDate);
-    }
-
+    
     private boolean hasZeroOrMoreUnits(ClassCost classCost){
         return BigDecimal.ZERO.compareTo(classCost.getUnitCount()) >= 0;
     }

@@ -60,7 +60,7 @@ class AttendanceApiService  extends EntityApiService<StudentAttendanceDTO, Atten
         cayenneModel.attendedUntil = LocalDateUtils.timeValueToDate(dto.attendedUntil)
 
         if (AttendanceTypeDTO.PARTIAL == dto.attendanceType && dto.attendedFrom  && dto.attendedUntil) {
-            cayenneModel.durationMinutes = DurationFormatter.parseDurationInMinutes(
+            cayenneModel.durationMinutes = DurationFormatter.durationInMinutesBetween(
                     LocalDateUtils.timeValueToDate(dto.attendedFrom), LocalDateUtils.timeValueToDate(dto.attendedUntil))
         } else {
             cayenneModel.durationMinutes = null

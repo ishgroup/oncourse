@@ -87,10 +87,10 @@ class OutcomeTraitTest extends TestWithDatabase {
         assertEquals(8, outcome.getOutcomeSessions().size())
         assertEquals(7, outcome.getPastSessions().size())
 
-        assertEquals(100.00, outcome.futureTimetable)
-        assertEquals(50.00, outcome.absentAttendancesDuration)
-        assertEquals(50.00, outcome.attendedAttendancesDuration)
-        assertEquals(10.00, outcome.notMarkedAttendancesDuration)
+        assertEquals(100, outcome.futureTimetable.intValue())
+        assertEquals(50, outcome.absentAttendancesDuration.intValue())
+        assertEquals(50, outcome.attendedAttendancesDuration.intValue())
+        assertEquals(10, outcome.notMarkedAttendancesDuration.intValue())
 
         newContext.deleteObjects(s8)
         newContext.commitChanges()

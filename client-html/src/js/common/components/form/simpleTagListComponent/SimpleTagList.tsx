@@ -144,8 +144,8 @@ const SimpleTagList: React.FC<Props> = props => {
     if (!arrayOfTags?.length) return "";
 
     return arrayOfTags.map((tag: Tag, index) => (
-      <span className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")} key={tag.id}>
-        <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
+      <span key={tag.id} className={clsx("d-flex align-items-center", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
+        <div className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
         {`#${tag.name} `}
       </span>
     ));

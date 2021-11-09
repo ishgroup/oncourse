@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { StudentAttendanceExtended, TutorAttendanceExtended } from "../../../../../model/entities/CourseClass";
+import { StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
 import AttendanceIcon from "./AttendanceIcon";
 
 const styles = {
@@ -33,24 +33,6 @@ const StudentAttendanceIconButtonBase: React.FC<StudentAttendanceIconButtonProps
   );
 
 export const StudentAttendanceIconButton = withStyles(styles)(StudentAttendanceIconButtonBase);
-
-interface TutorAttendanceIconButtonProps {
-  attendance: TutorAttendanceExtended;
-  onClick: any;
-  classes?: any;
-}
-
-const TutorAttendanceIconButtonBase: React.FC<TutorAttendanceIconButtonProps> = ({ attendance, classes, onClick }) => {
-  const onIconCLick = useCallback(e => onClick(e, attendance.index), [attendance.index]);
-
-  return (
-    <IconButton role={attendance.attendanceType} size="small" className={`p-0 ${classes.iconButton}`} onClick={onIconCLick}>
-      <AttendanceIcon type={attendance.attendanceType} />
-    </IconButton>
-  );
-};
-
-export const TutorAttendanceIconButton = withStyles(styles)(TutorAttendanceIconButtonBase);
 
 interface TrainingPlanIconButtonProps {
   attended: boolean;

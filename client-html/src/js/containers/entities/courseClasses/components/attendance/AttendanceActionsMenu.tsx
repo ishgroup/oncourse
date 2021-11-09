@@ -25,8 +25,6 @@ const getMenuItemsBaseByType = (type: AttendanceGridType) => {
     default:
     case "Student":
       return AttendanceType;
-    case "Tutor":
-      return TutorAttendanceType;
   }
 };
 

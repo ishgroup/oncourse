@@ -30,21 +30,24 @@ import { InputAdornment } from "@material-ui/core";
 
 const styles = theme => createStyles({
   inputEndAdornment: {
+    display: "flex",
     fontSize: "18px",
     color: theme.palette.primary.main,
     opacity: 0.5,
-    display: "none",
   },
   inputWrapper: {
-    "&:hover $inputEndAdornment": {
+    "&:hover $hiddenContainer": {
       display: "flex",
+    },
+    "&:hover $invisibleContainer": {
+      visibility: "visible",
     },
   },
   isEditing: {
-    borderBottom: "none!important",
+    borderBottom: "none",
     "& $inputEndAdornment": {
-      display: "flex!important",
-      borderBottom: "none!important",
+      display: "flex",
+      borderBottom: "none",
       opacity: 1,
     },
   },
@@ -778,7 +781,14 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                   }}
                   disabled={disabled}
                   endAdornment={!isInline && !disabled && (
-                    <InputAdornment position="end" className={classes.inputEndAdornment}>
+                    <InputAdornment
+                      position="end"
+                      className={clsx(classes.inputEndAdornment, {
+                        [classes.hiddenContainer]: rightAligned,
+                        [classes.invisibleContainer]: !rightAligned
+                      })}
+                      onClick={() => this.inputNode.focus()}
+                    >
                       <CreateIcon />
                     </InputAdornment>
                   )}
