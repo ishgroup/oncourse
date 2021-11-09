@@ -13,12 +13,13 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     minHeight: 51,
   },
   fullScreenTitleItem: {
+    marginTop: theme.spacing(3),
     position: "fixed",
     left: 0,
     top: 0,
     maxWidth: "calc(100% - 224px)",
     width: "100%",
-    zIndex: 1200,
+    zIndex: theme.zIndex.appBar + 1,
   },
   titleFields: {
     transform: "translateY(200%)",
@@ -39,9 +40,6 @@ const useStyles = makeStyles((theme: AppTheme) => ({
         easing: theme.transitions.easing.easeInOut
       }),
     }
-  },
-  titleTextAlternate: {
-    color: `${theme.appBar.headerAlternate.color} !important`,
   },
   titleIn: {
     transform: "translateY(0)",
@@ -65,11 +63,9 @@ interface Props {
   }>;
   title: any;
   twoColumn: boolean,
+  disableInteraction?: boolean,
+  opened?: boolean,
   fields?: any;
-  hide?: boolean;
-  otherClasses?: any;
-  hideGap?: boolean;
-  warpperGap?: number;
   titleGap?: number;
   truncateTitle?: boolean;
 }
@@ -78,17 +74,15 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   const {
     Avatar,
     title,
+    opened,
     fields,
     twoColumn,
-    hide,
-    otherClasses,
-    hideGap,
-    warpperGap = 51,
     titleGap = 51,
     truncateTitle,
+    disableInteraction
   } = props;
 
-  const classes = { ...useStyles(), ...otherClasses };
+  const classes = useStyles();
 
   const wrapperRef = useRef<any>();
   const [onItemHover, setOnItemHover] = useState<boolean>(false);
@@ -129,71 +123,74 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   }, [onStickyChange]);
 
   useEffect(() => {
-    window.addEventListener("mousedown", onWrapperClick);
-    window.addEventListener("mouseover", onWrapperHover);
+    if (!disableInteraction) {
+      window.addEventListener("mousedown", onWrapperClick);
+      window.addEventListener("mouseover", onWrapperHover);
+    }
     return () => {
       window.removeEventListener("mousedown", onWrapperClick);
       window.removeEventListener("mouseover", onWrapperHover);
     };
-  }, []);
+  }, [disableInteraction]);
 
   const showTitleText = !onItemHover && !onItemClick;
 
-  const showTitleOnly = twoColumn && isStuck;
+  const showTitleOnly = !opened && twoColumn && isStuck;
 
   return (
     <Grid
       container
       columnSpacing={3}
-      className={clsx("align-items-center", hide && "d-none")}
+      className="align-items-center"
       ref={wrapperRef}
-      style={{ minHeight: !Avatar && !hideGap ? `${warpperGap}px` : Avatar ? "60px" : "auto" }}
+      style={Avatar ? { minHeight: "60px" } : null}
     >
       <Grid
         item
         xs={12}
-        className={clsx("centeredFlex", twoColumn && classes.fullScreenTitleItem, "mt-3", showTitleOnly && "mt-1")}
+        className={clsx(
+          "centeredFlex",
+          !opened && twoColumn ? classes.fullScreenTitleItem : 'mb-2',
+          showTitleOnly && "mt-1"
+        )}
         columnSpacing={3}
       >
-        <Avatar
-          avatarSize={showTitleOnly ? 40 : 90}
-          disabled={showTitleOnly}
-        />
+        {Avatar && (
+          <Avatar
+            avatarSize={showTitleOnly ? 40 : 90}
+            disabled={showTitleOnly}
+          />
+        )}
         <Grid
           columnSpacing={3}
           container
           item
           xs={Avatar ? 10 : 12}
-          className={clsx("relative overflow-hidden align-items-center")}
           style={{ minHeight: `${titleGap}px` }}
+          className="relative overflow-hidden align-items-center"
         >
           <Grid
-            container
             item
             xs={12}
-            className={clsx(classes.titleText, { [classes.titleIn]: showTitleText || showTitleOnly || !fields })}
+            className={clsx(classes.titleText, { [classes.titleIn]: !opened && (showTitleText || showTitleOnly) })}
           >
             <Typography
               variant="h5"
               display="block"
               component="div"
               className={clsx("w-100", showTitleOnly && "appHeaderFontSize",
-                { [classes.titleTextAlternate]: showTitleOnly },
                 { "text-truncate text-nowrap pr-2": truncateTitle })}
             >
               {title}
             </Typography>
           </Grid>
-          {fields && (
-            <Grid
-              container
-              item
-              xs={12}
-              className={clsx(classes.titleFields, { [classes.titleIn]: !showTitleText && !showTitleOnly })}
-            >
-              {fields}
-            </Grid>
-          )}
+          <Grid
+            item
+            xs={12}
+            className={clsx(classes.titleFields, { [classes.titleIn]: opened || (!showTitleText && !showTitleOnly) })}
+          >
+            {fields}
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

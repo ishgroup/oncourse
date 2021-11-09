@@ -178,7 +178,8 @@ class Sites extends React.Component<any, any> {
           editViewProps={{
             manualLink,
             asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"]
+            asyncBlurFields: ["notes[].message"],
+            hideTitle: true
           }}
           CogwheelAdornment={BulkEditCogwheelOption}
           EditViewContent={SiteEditView}
@@ -190,7 +191,6 @@ class Sites extends React.Component<any, any> {
           onSave={this.onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
-          hideTitle
         />
       </div>
     );

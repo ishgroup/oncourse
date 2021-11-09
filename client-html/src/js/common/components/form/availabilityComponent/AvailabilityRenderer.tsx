@@ -61,7 +61,7 @@ const AvailabilityRenderer = ({
 
   return (
     <Grid container columnSpacing={3}>
-      <Grid item xs={availabilityLayout[0].xs} className="p-3">
+      <Grid item xs={availabilityLayout[0].xs}>
         {fields.map((item, index) => {
           const field: Holiday = fields.get(index);
 

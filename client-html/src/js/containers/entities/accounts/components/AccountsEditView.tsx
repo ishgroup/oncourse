@@ -68,7 +68,6 @@ const AccountsEditView = props => {
         <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FullScreenStickyHeader
-              hideGap
               twoColumn={twoColumn}
               title={values && values.accountCode}
               fields={(
@@ -86,6 +85,7 @@ const AccountsEditView = props => {
               name="type"
               label="Type"
               items={formattedAccountTypes}
+              className="mb-2"
               required
             />
             <FormField
@@ -93,10 +93,11 @@ const AccountsEditView = props => {
               name="description"
               label="Description"
               required={isNew || isCustom}
+              className="mb-2"
               multiline
             />
             <FormControlLabel
-              className="checkbox pr-3"
+              className="checkbox pr-3 mb-2"
               control={
                 <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" />
               }

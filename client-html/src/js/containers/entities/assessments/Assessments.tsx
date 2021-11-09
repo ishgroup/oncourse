@@ -110,7 +110,8 @@ const Assessments: React.FC<AssessmentsProps> = props => {
       editViewProps={{
         manualLink,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"]
+        asyncBlurFields: ["notes[].message"],
+        hideTitle: true
       }}
       EditViewContent={AssessmentEditView}
       CogwheelAdornment={BulkEditCogwheelOption}
@@ -122,7 +123,6 @@ const Assessments: React.FC<AssessmentsProps> = props => {
       onSave={onSave}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
-      hideTitle
     />
   );
 };

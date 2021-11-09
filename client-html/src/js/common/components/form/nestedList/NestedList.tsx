@@ -575,4 +575,4 @@ const mapStateToProps = (state: State) => ({
   entityTags: state.tags.entityTags
 });
 
-export default connect<any, any, Props>(mapStateToProps, null)(withStyles(styles)(withStyles(styles)(NestedList)));
+export default connect<any, any, Props>(mapStateToProps, null)(withStyles(styles)(NestedList));

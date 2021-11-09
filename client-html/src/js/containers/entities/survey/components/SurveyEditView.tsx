@@ -8,17 +8,22 @@
 
 import React, { useCallback } from "react";
 import { createStyles, withStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
+import { IconButton, Theme } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { change, Field } from "redux-form";
 import { SurveyItem } from "@api/model";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import Score from "./Score";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { openSiteLink } from "../../sites/utils";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { openContactLink } from "../../contacts/utils";
 
 interface Props {
   classes?: any;
@@ -63,22 +68,29 @@ const SurveyEditView = (props: Props) => {
   }, [classId]);
 
   return values ? (
-    <Grid container columnSpacing={3} rowSpacing={3} className={classes.root} alignContent="flex-start" alignItems="center">
+    <Grid container columnSpacing={3} rowSpacing={2} className={classes.root} alignContent="flex-start" alignItems="center">
       <Grid item xs={12}>
-        <Uneditable
-          value={values.studentName}
-          label="Student"
-          url={`/contact/${values.studentContactId}`}
+        <FullScreenStickyHeader
+          disableInteraction
+          twoColumn={twoColumn}
+          title={(
+            <div className="centeredFlex">
+              {values.studentName}
+              <IconButton size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+          )}
         />
       </Grid>
-      <Grid container columnSpacing={3} rowSpacing={3} className="p-3">
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
           <Grid item>
             <Field name="netPromoterScore" label="Net Promoter Score" max={10} component={Score} />
           </Grid>
         </Grid>
         <Grid item xs={twoColumn ? 8 : 12}>
-          <Grid container columnSpacing={3} rowSpacing={3} wrap={twoColumn ? "nowrap" : "wrap"}>
+          <Grid container columnSpacing={3} rowSpacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
             <Grid item xs={twoColumn ? 8 : 12}>
               <Field name="courseScore" label="Course" component={Score} />
               <Link href="#" onClick={openClass} color="textSecondary">

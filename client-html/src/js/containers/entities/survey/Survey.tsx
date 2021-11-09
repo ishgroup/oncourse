@@ -91,7 +91,8 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
           secondaryColumn: "enrolment.courseClass.course.name"
         }}
         editViewProps={{
-          nameCondition: values => values && defaultContactName(values.studentName)
+          nameCondition: values => values && defaultContactName(values.studentName),
+          hideTitle: true
         }}
         EditViewContent={SurveyEditView}
         getEditRecord={getStudentFeedbackRecord}

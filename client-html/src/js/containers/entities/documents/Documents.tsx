@@ -333,6 +333,7 @@ const Documents: React.FC<DocumentProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          hideTitle: true
         }}
         CogwheelAdornment={BinCogwheel}
         EditViewContent={DocumentEditView}
@@ -346,7 +347,6 @@ const Documents: React.FC<DocumentProps> = props => {
         filterGroupsInitial={filterGroups}
         defaultDeleteDisabled
         noListTags
-        hideTitle
       />
       <FileUploaderDialog
         dialog

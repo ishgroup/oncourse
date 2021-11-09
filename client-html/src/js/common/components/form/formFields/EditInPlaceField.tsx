@@ -5,25 +5,17 @@
  */
 
 /**
- * Wrapper component for Material Select and Text Field with edit in place functional
+ * Wrapper component for Material Select and Text Field with edit in plaxce functional
  * */
 
 import React from "react";
 import { change } from "redux-form";
 import clsx from "clsx";
-import ListItem from "@mui/material/ListItem";
-import Edit from "@mui/icons-material/Edit";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import CreateIcon from '@mui/icons-material/Create';
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import { InputAdornment } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import { Edit, ExpandMore } from "@mui/icons-material";
+import {
+ ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem, ListItemText
+} from "@mui/material";
 
 const styles = theme => createStyles({
   inputEndAdornment: {
@@ -672,8 +664,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       },
       value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
       onFocus: this.onFocus,
-      onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v)),
-      variant: restInputProps.variant || "standard",
+      onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v))
     };
 
     const editIcon = select ? (
@@ -709,9 +700,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           })}
         >
           <FormControl
-            error={invalid}
-            margin="none"
             fullWidth
+            error={invalid}
+            variant="standard"
+            margin="none"
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
               [classes.bottomMargin]: listSpacing && formatting !== "inline",
@@ -728,7 +720,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 }}
                 {...InputLabelProps}
                 shrink={Boolean(label || input.value)}
-                variant={restInputProps.variant || "standart"}
               >
                 {labelContent}
               </InputLabel>
@@ -761,7 +752,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onClose={this.onSelectClose}
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
-                    variant="standard"
+                    MenuProps={{
+                      anchorOrigin: { vertical: 'top', horizontal: 'left' }
+                    }}
                     displayEmpty
                   >
                     {selectItems}
@@ -789,7 +782,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       })}
                       onClick={() => this.inputNode.focus()}
                     >
-                      <CreateIcon />
+                      <Edit />
                     </InputAdornment>
                   )}
                 />

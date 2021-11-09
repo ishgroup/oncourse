@@ -248,7 +248,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
   const certificatesPermissions = access["/a/v1/list/plain?entity=Certificate"] && access["/a/v1/list/plain?entity=Certificate"]["GET"];
 
   return (
-    <div className="p-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Education">
         <Grid container columnSpacing={3}>
           {enrolmentsPermissions && (

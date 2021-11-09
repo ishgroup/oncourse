@@ -4,7 +4,7 @@
  */
 
 import { CertificateOutcome, Contact } from "@api/model";
-import { FormControlLabel, Theme } from "@mui/material";
+import { FormControlLabel, IconButton, Theme } from "@mui/material";
 import Grid from "@mui/material/Grid/Grid";
 import Link from "@mui/material/Link";
 import { createStyles, withStyles } from "@mui/styles";
@@ -18,6 +18,7 @@ import React, {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { arrayRemove, change } from "redux-form";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
@@ -31,6 +32,8 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 interface Props extends EditViewProps {
   status?: string;
@@ -96,10 +99,9 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     studentOutcomes,
     studentOutcomesLoading,
     setCertificateOutcomesSearch,
-    submitSucceeded
+    submitSucceeded,
+    invalid
   } = props;
-
-  const listRef = useRef(null);
 
   useEffect(() => {
     if (isNew && window.location.search) {
@@ -144,9 +146,6 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       dispatch(change(form, "studentName", contactLabelCondition(contact)));
       dispatch(change(form, "outcomes", []));
       clearCertificateOutcomes(false);
-      if (listRef.current.state.searchEnabled) {
-        listRef.current.toggleSearch();
-      }
     },
     [form]
   );
@@ -254,215 +253,242 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
   return (
     <Grid
       container
-      columnSpacing={3}
-      rowSpacing={3}
-      className={clsx("pt-2 pr-3 pb-0 pl-3 relative h-100 align-content-start defaultBackgroundColor", classes.root)}
+      className="pt-3 pr-3 pb-0 pl-3 relative h-100 align-content-start"
     >
-      {isNew && <div className={clsx("backgroundText paperTextColor", { "fs19": twoColumn })}>Draft</div>}
-      {Boolean(values.revokedOn) && (
-        <div className={clsx("backgroundText errorColorFade-0-2", { "fs19": twoColumn })}>Revoked</div>
-      )}
-
-      <Grid item xs={12} className={clsx(classes.switch, "centeredFlex")}>
-        <FormControlLabel
-          control={<FormField type="switch" name="isQualification" color="primary" />}
-          label={(
-            <Typography display="inline" variant="body2">
-              Full qualification or skillset
-            </Typography>
-          )}
-          labelPlacement="start"
-          disabled={!!values.printedOn}
-        />
-      </Grid>
-
       <Grid item xs={12}>
-        <Typography className="heading">
-          {values.isQualification ? "This is to certify that" : "This is a statement that"}
-        </Typography>
-      </Grid>
-
-      <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Contact"
-          aqlFilter="isStudent is true"
-          name="studentContactId"
-          label="Student name"
-          selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values && defaultContactName(values.studentName)}
-          onInnerValueChange={onStudentIdChange}
-          labelAdornment={(
-            <LinkAdornment
-              linkHandler={openContactLink}
-              link={values.studentContactId}
-              disabled={!values.studentContactId}
-            />
+        <FullScreenStickyHeader
+          opened={isNew || invalid}
+          disableInteraction={!isNew}
+          twoColumn={twoColumn}
+          title={(
+            <div className="centeredFlex">
+              {values && defaultContactName(values.studentName)}
+              <IconButton disabled={!values?.studentContactId} size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
           )}
-          disabled={!isNew}
-          itemRenderer={ContactSelectItemRenderer}
-          rowHeight={55}
-          required
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <Typography className="heading">
-          {values.isQualification ? "Has fulfilled the requirements for the" : "With competencies from"}
-        </Typography>
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12} className={classes.select2}>
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Qualification"
-          name="nationalCode"
-          label="National code"
-          selectValueMark="nationalCode"
-          selectLabelMark="nationalCode"
-          validate={values.isQualification ? validateSingleMandatoryField : undefined}
-          onInnerValueChange={onQualificationCodeChange}
-          labelAdornment={(
-            <LinkAdornment
-              linkHandler={openQualificationLink}
-              link={values.qualificationId}
-              disabled={!values.qualificationId}
-            />
+          fields={(
+            <Grid item xs={twoColumn ? 6 : 12}>
+              <FormField
+                type="remoteDataSearchSelect"
+                entity="Contact"
+                aqlFilter="isStudent is true"
+                name="studentContactId"
+                label="Student name"
+                selectValueMark="id"
+                selectLabelCondition={contactLabelCondition}
+                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                onInnerValueChange={onStudentIdChange}
+                labelAdornment={(
+                  <LinkAdornment
+                    linkHandler={openContactLink}
+                    link={values.studentContactId}
+                    disabled={!values.studentContactId}
+                  />
+                )}
+                disabled={!isNew}
+                itemRenderer={ContactSelectItemRenderer}
+                rowHeight={55}
+                required
+              />
+            </Grid>
           )}
-          allowEmpty={!values.isQualification}
-          disabled={!!values.printedOn}
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12} className={classes.select3}>
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Qualification"
-          name="title"
-          label="Qualification"
-          selectValueMark="title"
-          selectLabelMark="title"
-          validate={values.isQualification ? validateSingleMandatoryField : undefined}
-          onInnerValueChange={onQualificationTitleChange}
-          labelAdornment={(
-            <LinkAdornment
-              linkHandler={openQualificationLink}
-              link={values.qualificationId}
-              disabled={!values.qualificationId}
-            />
-          )}
-          disabled={!!values.printedOn}
-          allowEmpty={!values.isQualification}
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12} className="textField">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Level
-          </Typography>
-          <Typography variant="body1">{values.level || <span className="textSecondaryColor">None</span>}</Typography>
-        </div>
-      </Grid>
-
-      {twoColumn && <Grid item xs={3} />}
-
-      <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField
-            type="multilineText"
-            name="publicNotes"
-            label="Printed public notes / Specialization"
-            fullWidth
-          />
-        </Grid>
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField
-          type="date"
-          name="awardedOn"
-          label="Awarded"
-          required
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12} className="textField">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Printed
-          </Typography>
-          <Typography variant="body1">{printedValue}</Typography>
-        </div>
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12} className="textField">
-        <div className={clsx({ "d-none": isNew })}>
-          <Typography variant="caption" color="textSecondary">
-            Certificate Number
-          </Typography>
-          <Typography variant="body1">{certificateNumber}</Typography>
-        </div>
-      </Grid>
-
-      {twoColumn && <Grid item xs={3} />}
-
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="date" name="issuedOn" label="Issued" />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="date" name="expiryDate" label="Expiry" />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 3 : 12} className="textField">
-        <div className={clsx({ "d-none": isNew })}>
-          <Typography variant="caption" color="textSecondary">
-            Revoked
-          </Typography>
-          <Typography variant="body1">{revokedValue}</Typography>
-        </div>
-      </Grid>
-
-      {twoColumn && <Grid item xs={3} />}
-
-      <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
-        </Grid>
-      </Grid>
-
-      <Grid item xs={twoColumn ? 8 : 12} className={clsx({ "saveButtonTableOffset": twoColumn })}>
-        <NestedList
-          formId={values.id}
-          name="outcomes"
-          title="Transcript"
-          searchType="immediate"
-          ref={listRef}
-          values={outcomes}
-          validate={validateOutcomes}
-          hideAddButton={!!values.printedOn}
-          dataRowClass={classes.dataRowClass}
-          onSearch={searchOutcomes}
-          clearSearchResult={clearCertificateOutcomes}
-          pending={studentOutcomesLoading}
-          searchValues={foundOutcomes}
-          onAdd={addOutcome}
-          onDelete={deleteOutcome}
-          onToggleSearch={onToggleOutcomesSearch}
-          resetSearch={submitSucceeded}
         />
       </Grid>
 
       <Grid
         item
-        xs={twoColumn ? 4 : 12}
-        className={clsx("saveButtonTableOffset", {
-          "d-flex align-items-end justify-content-end": twoColumn
-        })}
+        xs={12}
+        container
+        columnSpacing={3}
+        rowSpacing={2}
+        className={clsx( classes.root)}
       >
-        {qrCode}
+        {isNew && <div className={clsx("backgroundText paperTextColor", { "fs19": twoColumn })}>Draft</div>}
+        {Boolean(values.revokedOn) && (
+          <div className={clsx("backgroundText errorColorFade-0-2", { "fs19": twoColumn })}>Revoked</div>
+        )}
+
+        <Grid item xs={12} className={clsx(classes.switch, "centeredFlex")}>
+          <FormControlLabel
+            control={<FormField type="switch" name="isQualification" color="primary" />}
+            label={(
+              <Typography display="inline" variant="body2">
+                Full qualification or skillset
+              </Typography>
+            )}
+            labelPlacement="start"
+            disabled={!!values.printedOn}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography className="heading">
+            {values.isQualification ? "This is to certify that" : "This is a statement that"}
+          </Typography>
+        </Grid>
+
+        <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
+          {values && defaultContactName(values.studentName)}
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography className="heading">
+            {values.isQualification ? "Has fulfilled the requirements for the" : "With competencies from"}
+          </Typography>
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12} className={classes.select2}>
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Qualification"
+            name="nationalCode"
+            label="National code"
+            selectValueMark="nationalCode"
+            selectLabelMark="nationalCode"
+            validate={values.isQualification ? validateSingleMandatoryField : undefined}
+            onInnerValueChange={onQualificationCodeChange}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openQualificationLink}
+                link={values.qualificationId}
+                disabled={!values.qualificationId}
+              />
+            )}
+            allowEmpty={!values.isQualification}
+            disabled={!!values.printedOn}
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12} className={classes.select3}>
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Qualification"
+            name="title"
+            label="Qualification"
+            selectValueMark="title"
+            selectLabelMark="title"
+            validate={values.isQualification ? validateSingleMandatoryField : undefined}
+            onInnerValueChange={onQualificationTitleChange}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openQualificationLink}
+                link={values.qualificationId}
+                disabled={!values.qualificationId}
+              />
+            )}
+            disabled={!!values.printedOn}
+            allowEmpty={!values.isQualification}
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12} className="textField">
+          <div>
+            <Typography variant="caption" color="textSecondary">
+              Level
+            </Typography>
+            <Typography variant="body1">{values.level || <span className="textSecondaryColor">None</span>}</Typography>
+          </div>
+        </Grid>
+
+        {twoColumn && <Grid item xs={3} />}
+
+        <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+          <Grid item xs={twoColumn ? 6 : 12}>
+            <FormField
+              type="multilineText"
+              name="publicNotes"
+              label="Printed public notes / Specialization"
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <FormField
+            type="date"
+            name="awardedOn"
+            label="Awarded"
+            required
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12} className="textField">
+          <div>
+            <Typography variant="caption" color="textSecondary">
+              Printed
+            </Typography>
+            <Typography variant="body1">{printedValue}</Typography>
+          </div>
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12} className="textField">
+          <div className={clsx({ "d-none": isNew })}>
+            <Typography variant="caption" color="textSecondary">
+              Certificate Number
+            </Typography>
+            <Typography variant="body1">{certificateNumber}</Typography>
+          </div>
+        </Grid>
+
+        {twoColumn && <Grid item xs={3} />}
+
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <FormField type="date" name="issuedOn" label="Issued" />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <FormField type="date" name="expiryDate" label="Expiry" />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 3 : 12} className="textField">
+          <div className={clsx({ "d-none": isNew })}>
+            <Typography variant="caption" color="textSecondary">
+              Revoked
+            </Typography>
+            <Typography variant="body1">{revokedValue}</Typography>
+          </div>
+        </Grid>
+
+        {twoColumn && <Grid item xs={3} />}
+
+        <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
+          <Grid item xs={twoColumn ? 6 : 12}>
+            <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          </Grid>
+        </Grid>
+
+        <Grid item xs={twoColumn ? 8 : 12} className={clsx({ "saveButtonTableOffset": twoColumn })}>
+          <NestedList
+            formId={values.id}
+            name="outcomes"
+            title="Transcript"
+            searchType="immediate"
+            values={outcomes}
+            validate={validateOutcomes}
+            hideAddButton={!!values.printedOn}
+            dataRowClass={classes.dataRowClass}
+            onSearch={searchOutcomes}
+            clearSearchResult={clearCertificateOutcomes}
+            pending={studentOutcomesLoading}
+            searchValues={foundOutcomes}
+            onAdd={addOutcome}
+            onDelete={deleteOutcome}
+            onToggleSearch={onToggleOutcomesSearch}
+            resetSearch={submitSucceeded}
+          />
+        </Grid>
+
+        <Grid
+          item
+          xs={twoColumn ? 4 : 12}
+          className={clsx("saveButtonTableOffset", {
+            "d-flex align-items-end justify-content-end": twoColumn
+          })}
+        >
+          {qrCode}
+        </Grid>
       </Grid>
     </Grid>
   );

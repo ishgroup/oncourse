@@ -204,7 +204,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               )}
             >
               <div className={clsx("flex-fill", classes.titleWrapper)}>
-                {!hideTitle && (<FullScreenStickyHeader title={title} twoColumn />)}
+                {!hideTitle && (<FullScreenStickyHeader title={title} twoColumn disableInteraction />)}
               </div>
               <div>
                 {manualLink && (

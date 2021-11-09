@@ -9,45 +9,55 @@ import {
   MonochromeThemeKey,
   ThemeValues
 } from "../../model/common/Theme";
+import { Components } from "@mui/material/styles/components";
 
-const createOverrides = palette => ({
-  overrides: {
+const createOverrides = (palette):{ components: Components } => ({
+  components: {
     MuiButtonBase: {
-      root: {
-        userSelect: "auto",
+      styleOverrides: {
+        root: {
+          userSelect: "auto",
+        }
       }
     },
     MuiCollapse: {
-      entered: {
-        height: "auto",
-        overflow: "visible"
+      styleOverrides: {
+        entered: {
+          height: "auto",
+          overflow: "visible"
+        }
       }
     },
     MuiFormControl: {
-      root: {
-        maxWidth: "100%",
-      },
+      styleOverrides: {
+        root: {
+          maxWidth: "100%",
+        }
+      }
     },
     MuiFormControlLabel: {
-      label: {
-        fontSize: "14px",
-        "&$disabled": {
-          color: "unset"
-        }
-      },
-      disabled: {}
+      styleOverrides: {
+        label: {
+          fontSize: "14px",
+          "&$disabled": {
+            color: "unset"
+          }
+        },
+        disabled: {}
+      }
     },
     MuiInput: {
-      underline: {
-        "&:before": {
-          borderBottom: `1px solid transparent`,
-          visibility: "hidden",
-        },
-        "&:hover:not($disabled):not(.primaryContarstUnderline):before": {
-          borderBottom: `1px solid ${palette.primary.main}`
-        },
-        "&.primaryContarstUnderline:hover:not($disabled):before": {
-          borderBottom: `1px solid ${palette.primary.contrastText}`
+      styleOverrides: {
+        underline: {
+          "&:before": {
+            borderBottom: `1px solid transparent`,
+          },
+          "&:hover:not(.Mui-disabled):not(.primaryContarstUnderline):before": {
+            borderBottom: `1px solid ${palette.primary.main}`
+          },
+          "&.primaryContarstUnderline:hover:not(.Mui-disabled):before": {
+            borderBottom: `1px solid ${palette.primary.contrastText}`
+          }
         }
       }
     },
@@ -59,110 +69,128 @@ const createOverrides = palette => ({
       }
     },
     MuiSelect: {
-      select: {
-        "&:focus": {
-          backgroundColor: "none",
+      styleOverrides: {
+        select: {
+          "&:focus": {
+            backgroundColor: "none",
+          },
         },
-      },
+      }
     },
     MuiFormLabel: {
-      root: {
-        lineHeight: 1.2,
-        whiteSpace: 'nowrap'
-      },
+      styleOverrides: {
+        root: {
+          lineHeight: 1.2,
+          whiteSpace: 'nowrap'
+        },
+      }
     },
     MuiInputBase: {
-      root: {
-        maxWidth: "100%",
-        width: "100%",
-        MuiInput: {
-          root: {
-            "&:before": {
-              borderBottom: `1px solid transparent`,
-              visibility: "hidden",
+      styleOverrides: {
+        root: {
+          maxWidth: "100%",
+          width: "100%",
+          MuiInput: {
+            root: {
+              "&:before": {
+                borderBottom: `1px solid transparent`,
+              },
+              "&:hover:not(.Mui-disabled):not(.primaryContarstUnderline):before": {
+                borderBottom: `1px solid ${palette.primary.main}`
+              },
+              "&.primaryContarstUnderline:hover:not(.Mui-disabled):before": {
+                borderBottom: `1px solid ${palette.primary.contrastText}`
+              }
             },
           },
         },
-      },
-      input: {
-        "&::placeholder": {
-          color: palette.text.disabled,
-          fill: palette.text.disabled,
-        },
-        textOverflow: "ellipsis",
-        color: palette.text.primaryEditable,
-        fontWeight: 400,
-        "&:hover:not($disabled):not(&:focus):not(.primaryContarstHover)": {
-          color: palette.primary.main,
-          MuiSelect: {
-            icon: {
-              color: palette.primary.main,
+        input: {
+          "&::placeholder": {
+            color: palette.text.disabled,
+            fill: palette.text.disabled,
+          },
+          textOverflow: "ellipsis",
+          color: palette.text.primaryEditable,
+          fontWeight: 400,
+          "&:hover:not(.Mui-disabled):not(&:focus):not(.primaryContarstHover)": {
+            color: palette.primary.main,
+            MuiSelect: {
+              icon: {
+                color: palette.primary.main,
+              },
             },
           },
         },
-      },
-      inputMultiline: {
-        lineHeight: "1.5em"
-      },
+        inputMultiline: {
+          lineHeight: "1.5em"
+        },
+      }
     },
     MuiCssBaseline: {
-      "@global": {
-        body: {
-          fontFeatureSettings:
-            '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
-            + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
-            + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
-            + '"cv10", "cv11", "calt", "liga", "kern"'
+      styleOverrides: {
+        "@global": {
+          body: {
+            fontFeatureSettings:
+              '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
+              + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
+              + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
+              + '"cv10", "cv11", "calt", "liga", "kern"'
+          }
         }
       }
     },
-    MuiPickerDTTabs: {
-      tabs: {
-        color: palette.primary.contrastText
-      }
-    },
-    PrivateTabIndicator: {
-      colorSecondary: {
-        backgroundColor: palette.primary.contrastText
-      }
-    },
+    // MuiPickerDTTabs: {
+    //   styleOverrides: {
+    //     tabs: {
+    //       color: palette.primary.contrastText
+    //     }
+    //   }
+    // },
+    // PrivateTabIndicator: {
+    //   styleOverrides: {
+    //     colorSecondary: {
+    //       backgroundColor: palette.primary.contrastText
+    //     }
+    //   }
+    // },
     MuiMenuItem: {
-      root: {
-        fontWeight: 400,
-        "@media (min-width: 600px)": {
-          minHeight: "36px"
+      styleOverrides: {
+        root: {
+          fontWeight: 400,
+          "@media (min-width: 600px)": {
+            minHeight: "36px"
+          }
         }
-      }
-    },
-    MuiTableCell: {
-      root: {
-        fontWeight: 400
-      },
-      head: {
-        fontWeight: 600,
-        color: palette.text.secondary,
-        lineHeight: "1.3rem",
-        fontSize: "0.75rem",
-        padding: "14px 40px 14px 16px"
       }
     },
     MuiTableSortLabel: {
-      root: {
-        "&:hover": {
-          color: palette.text.primary
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            color: palette.text.primary
+          },
+          "&$active": {
+            color: palette.text.primary
+          }
         },
-        "&$active": {
-          color: palette.text.primary
+        active: {},
+        icon: {
+          fontSize: "18px"
         }
-      },
-      active: {},
-      icon: {
-        fontSize: "18px"
       }
     },
     MuiAutocomplete: {
-      inputRoot: {
-        flexWrap: 'inherit',
+      styleOverrides: {
+        inputRoot: {
+          flexWrap: 'inherit',
+        }
+      }
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0
+        }
       }
     }
   }

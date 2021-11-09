@@ -80,8 +80,8 @@ const NestedEntity: React.FC<Props> = ({
         <div className="centeredFlex">
           <Typography className="heading pt-2 pb-2">{entityName}</Typography>
           {goToLink && (
-            <IconButton style={{ marginRight: "-8px" }} color="secondary" onClick={() => openInternalLink(goToLink)}>
-              <Launch />
+            <IconButton size="small" color="primary" onClick={() => openInternalLink(goToLink)}>
+              <Launch fontSize="inherit" />
             </IconButton>
           )}
           {addAction}

@@ -9,11 +9,11 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Popper from "@mui/material/Popper";
+import { InputAdornment, Autocomplete, IconButton } from "@mui/material";
+import { withStyles, createStyles } from "@mui/styles";
 import React, {
  useContext, useEffect, useMemo, useRef, useState
 } from "react";
-import Autocomplete from '@mui/lab/Autocomplete';
-import { IconButton, InputAdornment } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
@@ -21,7 +21,6 @@ import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import createStyles from "@mui/styles/createStyles";
 import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
@@ -29,6 +28,7 @@ import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 
 const searchStyles = theme => createStyles({
+  root: {},
   inputEndAdornment: {
     fontSize: "18px",
     color: theme.palette.primary.main,
@@ -48,6 +48,9 @@ const searchStyles = theme => createStyles({
     "&:focus $inputEndAdornment": {
       visibility: 'hidden',
     },
+    "& $readonly": {
+      "-webkit-text-fill-color": "inherit"
+    }
   },
   validUnderline: {
     "&:after": {
@@ -89,14 +92,18 @@ const searchStyles = theme => createStyles({
   labelShrink: {},
   labelAdornment: {},
   hasPopup: {
-    "& $inputWrapper": {
+    "&$root $inputWrapper": {
       paddingRight: 0
     },
-    "&$hasClear $inputWrapper": {
+    "&$root$hasClear $inputWrapper": {
       paddingRight: 0
     }
   },
-  hasClear: {},
+  hasClear: {
+    "&$root $inputWrapper": {
+      paddingRight: 0
+    }
+  },
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
@@ -522,11 +529,11 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             getOptionSelected={getOptionSelected}
             onChange={handleChange}
             classes={{
-              root: "d-inline-flex",
+              root: clsx("d-inline-flex", classes.root),
               option: itemRenderer ? null : classes.option,
-              // @ts-ignore
               hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear
+              hasClearIcon: classes.hasClear,
+              inputRoot: clsx(classes.inputWrapper, isEditing && classes.isEditing)
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
@@ -553,7 +560,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   inputRef={inputNode}
                   disableUnderline={inline}
                   classes={{
-                    root: clsx(classes.inputWrapper, isEditing && classes.isEditing),
                     underline: fieldClasses.underline,
                     input: clsx(inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
                   }}
