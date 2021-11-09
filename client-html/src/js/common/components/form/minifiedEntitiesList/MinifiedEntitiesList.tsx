@@ -50,7 +50,7 @@ const MinifiedEntitiesList = props => {
           {count !== 1 ? header : oneItemHeader}
         </Typography>
         {onAdd && (
-          <AddIcon color="primary" onClick={onAdd} iconFontSize="inherit" />
+          <AddIcon size="small" color="primary" onClick={onAdd} iconFontSize="inherit" />
         )}
       </div>
 

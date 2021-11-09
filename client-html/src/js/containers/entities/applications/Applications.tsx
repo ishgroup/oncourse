@@ -147,7 +147,8 @@ class Applications extends React.Component<ApplicationsProps, any> {
             manualLink,
             asyncValidate: notesAsyncValidate,
             asyncBlurFields: ["notes[].message"],
-            nameCondition
+            nameCondition,
+            hideTitle: true
           }}
           nestedEditFields={nestedEditFields}
           EditViewContent={ApplicationEditView}
@@ -160,6 +161,7 @@ class Applications extends React.Component<ApplicationsProps, any> {
           onSave={onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
+
         />
       </div>
     );

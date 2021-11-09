@@ -83,8 +83,6 @@
     "@ckeditor/ckeditor5-paragraph": "latest",
     "@ckeditor/ckeditor5-react": "latest",
     "@ckeditor/ckeditor5-theme-lark": "latest",
-    "@date-io/core": "1.3.*",
-    "@date-io/date-fns": "1.3.*",
     "@emotion/cache": "^11.5.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",

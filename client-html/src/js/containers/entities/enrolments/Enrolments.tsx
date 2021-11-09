@@ -312,7 +312,8 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           manualLink,
           nameCondition,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"]
+          asyncBlurFields: ["notes[].message"],
+          hideTitle: true
         }}
         EditViewContent={EnrolmentEditView}
         getEditRecord={getEnrolmentRecord}
@@ -328,7 +329,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         CogwheelAdornment={EnrolmentCogWheel}
         defaultDeleteDisabled
         alwaysFullScreenCreateView
-        hideTitle
       />
       <Menu
         id="createMenu"

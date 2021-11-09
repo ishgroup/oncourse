@@ -118,7 +118,8 @@ class Modules extends React.Component<any, any> {
           }}
           editViewProps={{
             nameCondition,
-            manualLink
+            manualLink,
+            hideTitle: true
           }}
           EditViewContent={ModulesEditView}
           getEditRecord={getModuleRecord}
@@ -130,7 +131,6 @@ class Modules extends React.Component<any, any> {
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           noListTags
-          hideTitle
         />
       </div>
     );

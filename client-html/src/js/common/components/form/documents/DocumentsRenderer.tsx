@@ -333,13 +333,13 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
               {fields.length === 1 ? label.replace(/s$/, "") : label}
             </div>
             <IconButton
-              style={{ marginRight: "-8px" }}
-              color="secondary"
+              size="small"
+              color="primary"
               onClick={() => openInternalLink("/document")}
             >
-              <Launch />
+              <Launch fontSize="inherit" />
             </IconButton>
-            <AddIcon onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
+            <AddIcon size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
             <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
               Drag and drop file or click to browse.
             </Typography>

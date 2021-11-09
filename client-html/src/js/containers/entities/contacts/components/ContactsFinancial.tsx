@@ -128,7 +128,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
   const paymentInPermissions = access["/a/v1/list/plain?entity=PaymentIn"] && access["/a/v1/list/plain?entity=PaymentIn"]["GET"];
 
   return values ? (
-    <div className="p-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
         <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 3 : 12}>

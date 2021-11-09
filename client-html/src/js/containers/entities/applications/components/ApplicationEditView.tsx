@@ -12,10 +12,11 @@ import TabsList, { TabsListItem } from "../../../../common/components/layout/Tab
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import ApplicationGeneral from "./ApplicationGeneral";
 import ApplicationDocuments from "./ApplicationDocuments";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const styles = theme => createStyles({
   documentsRoot: {
-    padding: theme.spacing(0, 3, 9, 3)
+    padding: theme.spacing(3)
   }
 });
 
@@ -34,24 +35,7 @@ const items: TabsListItem[] = [
   }
 ];
 
-interface ApplicationEditViewProps {
-  values?: Application;
-  isNew?: boolean;
-  isNested?: boolean;
-  classes?: any;
-  dispatch?: Dispatch<any>;
-  dirty?: boolean;
-  form?: string;
-  nestedIndex?: number;
-  rootEntity?: string;
-  twoColumn?: boolean;
-  showConfirm?: any;
-  openNestedEditView?: any;
-  manualLink?: string;
-  onEditViewScroll?: (e: any, isScrolling?: boolean) => void;
-}
-
-const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
+const ApplicationEditView: React.FC<EditViewProps<Application> & { classes: any }> = props => {
   const {
     values,
     isNew,
@@ -66,7 +50,7 @@ const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
     showConfirm,
     openNestedEditView,
     manualLink,
-    onEditViewScroll,
+    invalid
   } = props;
 
   return (
@@ -86,7 +70,7 @@ const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
         showConfirm,
         openNestedEditView,
         manualLink,
-        onEditViewScroll,
+        invalid
       }}
     />
   );

@@ -88,7 +88,8 @@ class Accounts extends React.Component<any, any> {
           }}
           editViewProps={{
             nameCondition,
-            manualLink
+            manualLink,
+            hideTitle: true
           }}
           EditViewContent={AccountsEditView}
           getEditRecord={getAccountRecord}
@@ -100,7 +101,6 @@ class Accounts extends React.Component<any, any> {
           filterGroupsInitial={filterGroups}
           findRelated={findRelatedGroup}
           noListTags
-          hideTitle
         />
       </div>
     );

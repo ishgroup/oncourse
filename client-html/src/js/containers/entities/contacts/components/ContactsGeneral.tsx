@@ -109,14 +109,13 @@ export const ProfileHeading: React.FC<any> = props => {
     twoColumn,
     isCompany,
     usiLocked,
-    hide,
-    otherClasses
+    isNew,
+    invalid
   } = props;
 
   return (
     <FullScreenStickyHeader
-      hide={hide}
-      otherClasses={otherClasses}
+      opened={isNew || invalid}
       twoColumn={twoColumn}
       Avatar={aProps => (
         <Field
@@ -140,7 +139,7 @@ export const ProfileHeading: React.FC<any> = props => {
         </>
       )}
       fields={(
-        <>
+        <Grid container>
           {!isCompany && (
             <>
               <Grid item xs={twoColumn ? 2 : 6}>
@@ -157,7 +156,7 @@ export const ProfileHeading: React.FC<any> = props => {
           <Grid item xs={twoColumn ? 4 : 6}>
             <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
           </Grid>
-        </>
+        </Grid>
       )}
     />
   );
@@ -253,7 +252,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
 
   return (
     <div className="pt-3 pl-3 pr-3">
-      <ProfileHeading {...props} />
+      <ProfileHeading {...props} isNew={isNew} />
       <Grid container columnSpacing={3}>
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>

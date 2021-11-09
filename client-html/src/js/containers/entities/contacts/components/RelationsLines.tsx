@@ -87,7 +87,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
   );
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={3}>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12} className={classes.select1}>
         <FormField
           type="remoteDataSearchSelect"

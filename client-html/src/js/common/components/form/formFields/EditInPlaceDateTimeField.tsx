@@ -27,6 +27,7 @@ import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import { format, isValid } from "date-fns";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
 import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
@@ -345,17 +346,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
         [classes.inlineMargin]: inlineMargin
       })}
     >
-      <div className={classes.hiddenContainer}>
-        <DateTimeField
-          type={type}
-          open={pickerOpened}
-          value={dateValue}
-          onChange={onPickerChange}
-          onClose={onClose}
-          {...custom}
-        />
-      </div>
-
       <div
         id={input.name}
         className={clsx('w-100', {
@@ -363,73 +353,85 @@ const EditInPlaceDateTimeField: React.FC<any> = (
           [classes.editing]: formatting !== "inline",
         })}
       >
-        <FormControl
-          error={invalid}
-          margin="none"
-          fullWidth
-          className={clsx("pr-2", {
-            [classes.topMargin]: !listSpacing,
-            [classes.bottomMargin]: listSpacing && formatting !== "inline",
-            [classes.inlineTextField]: isInline
-          })}
-        >
-          {Boolean(label) && (
-            <InputLabel
-              classes={{
-                root: classes.inputLabel,
-                shrink: classes.labelShrink
-              }}
-              shrink={true}
+
+        <DateTimeField
+          type={type}
+          open={pickerOpened}
+          value={dateValue}
+          onChange={onPickerChange}
+          onClose={onClose}
+          renderInput={pickerProps => (
+            <FormControl
+              {...pickerProps}
+              error={invalid}
               variant="standard"
+              margin="none"
+              fullWidth
+              className={clsx("pr-2", {
+              [classes.topMargin]: !listSpacing,
+              [classes.bottomMargin]: listSpacing && formatting !== "inline",
+              [classes.inlineTextField]: isInline
+            })}
             >
-              {labelContent}
-            </InputLabel>
-          )}
-          <Input
-            type="text"
-            onKeyPress={onKeyPress}
-            onChange={onInputChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onKeyDown={onEnterPress}
-            inputRef={inputNode}
-            inputProps={{
-              size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
-              className: clsx({
-                [classes.inlineInput]: isInline,
-                [classes.readonly]: disabled,
-              }),
-              placeholder: placeholder || (!isEditing && "No value"),
-            }}
-            value={textValue}
-            classes={{
-              root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
-                classes.inputWrapper),
-              underline: fieldClasses.underline,
-              input: clsx(classes.input, fieldClasses.text)
-            }}
-            endAdornment={(
-              <InputAdornment position="end" className={classes.inputEndAdornment}>
-                <IconButton
-                  tabIndex={-1}
-                  onClick={openPicker}
-                  classes={{
-                    root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
-                  }}
-                >
-                  {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
-                </IconButton>
-              </InputAdornment>
+              {Boolean(label) && (
+              <InputLabel
+                classes={{
+                  root: classes.inputLabel,
+                  shrink: classes.labelShrink
+                }}
+                shrink={true}
+              >
+                {labelContent}
+              </InputLabel>
             )}
-          />
-          <FormHelperText
-            classes={{
-              error: "shakingError"
-            }}
-          >
-            {error || helperText}
-          </FormHelperText>
-        </FormControl>
+              <Input
+                type="text"
+                onKeyPress={onKeyPress}
+                onChange={onInputChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onKeyDown={onEnterPress}
+                inputRef={inputNode}
+                inputProps={{
+                size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
+                className: clsx({
+                  [classes.inlineInput]: isInline,
+                  [classes.readonly]: disabled,
+                }),
+                placeholder: placeholder || (!isEditing && "No value"),
+              }}
+                value={textValue}
+                classes={{
+                root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
+                  classes.inputWrapper),
+                underline: fieldClasses.underline,
+                input: clsx(classes.input, fieldClasses.text)
+              }}
+                endAdornment={(
+                  <InputAdornment position="end" className={classes.inputEndAdornment}>
+                    <IconButton
+                      tabIndex={-1}
+                      onClick={openPicker}
+                      classes={{
+                      root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
+                    }}
+                    >
+                      {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
+                    </IconButton>
+                  </InputAdornment>
+              )}
+              />
+              <FormHelperText
+                classes={{
+                error: "shakingError"
+              }}
+              >
+                {error || helperText}
+              </FormHelperText>
+            </FormControl>
+)}
+        />
+
       </div>
     </div>
   );

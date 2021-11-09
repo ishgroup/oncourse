@@ -66,7 +66,6 @@ const ModulesEditView = (props: any) => {
                   />
                 </Grid>
               )}
-              warpperGap={0}
             />
           )}
           <Grid item xs={12} className="d-flex">

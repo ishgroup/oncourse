@@ -53,7 +53,8 @@ const items: TabsListItem[] = [
   },
   {
     label: "Contact",
-    component: props => <ContactsDetails {...props} />
+    component: props => <ContactsDetails {...props} />,
+    expandable: true
   },
   {
     label: "Financial",
@@ -118,10 +119,10 @@ const ContactEditView = props => {
       () =>
         (twoColumn ? (
           <span className="money centeredFlex">
-            {`Owing ${formatCurrency(totalOwing, currencySymbol)}`}
+            {`(Owing ${formatCurrency(totalOwing, currencySymbol)})`}
           </span>
         ) : null),
-       [twoColumn, values.financialData]
+       [twoColumn, values.financialData, currencySymbol]
     );
 
     if (isStudent) {
@@ -141,37 +142,35 @@ const ContactEditView = props => {
   );
 
   return (
-    <>
-      <TabsList
-        items={values ? getActiveItems() : []}
-        itemProps={{
-          isNew,
-          isNested,
-          values,
-          classes,
-          dispatch,
-          dirty,
-          invalid,
-          form,
-          nestedIndex,
-          rootEntity,
-          twoColumn,
-          showConfirm,
-          openNestedEditView,
-          manualLink,
-          isStudent,
-          isTutor,
-          isCompany,
-          setIsStudent,
-          setIsTutor,
-          setIsCompany,
-          usiLocked: getUsiLocked(),
-          setUsiUpdateLocked,
-          syncErrors,
-          onEditViewScroll,
-        }}
-      />
-    </>
+    <TabsList
+      items={values ? getActiveItems() : []}
+      itemProps={{
+        isNew,
+        isNested,
+        values,
+        classes,
+        dispatch,
+        dirty,
+        invalid,
+        form,
+        nestedIndex,
+        rootEntity,
+        twoColumn,
+        showConfirm,
+        openNestedEditView,
+        manualLink,
+        isStudent,
+        isTutor,
+        isCompany,
+        setIsStudent,
+        setIsTutor,
+        setIsCompany,
+        usiLocked: getUsiLocked(),
+        setUsiUpdateLocked,
+        syncErrors,
+        onEditViewScroll,
+      }}
+    />
   );
 };
 

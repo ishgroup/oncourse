@@ -372,7 +372,8 @@ const Contacts: React.FC<ContactsProps> = props => {
         nameCondition: getContactFullNameWithTitle,
         disabledSubmitCondition: getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult),
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"]
+        asyncBlurFields: ["notes[].message"],
+        hideTitle: true
       }}
       EditViewContent={ContactEditView}
       nestedEditFields={nestedEditFields}
@@ -386,7 +387,6 @@ const Contacts: React.FC<ContactsProps> = props => {
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
-      hideTitle
     />
   );
 };

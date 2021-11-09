@@ -91,7 +91,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
   return values ? (
     <>
       <div className="heading p-3 pt-2 pb-0">TUTOR</div>
-      <Grid container columnSpacing={3} rowSpacing={3} className="p-3">
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={12} className="mb-2 pt-2 pb-2">
           <TimetableButton onClick={onCalendarClick} />
         </Grid>

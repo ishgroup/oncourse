@@ -224,7 +224,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                   </Grid>
                 </Grid>
               )}
-              warpperGap={0}
               truncateTitle
             />
           )}
