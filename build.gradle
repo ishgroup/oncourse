@@ -53,6 +53,9 @@ subprojects {
 	apply plugin: 'java'
 	apply plugin: 'groovy'
 	apply plugin: 'maven-publish'
+	// java-library required since we release separate server-jar artifact, needed as plugin dependency
+	// added it exactly here since api dep doesn't work without that plugin
+	apply plugin: 'java-library'
 
 	sourceCompatibility = 11
 	// get the version from the command line properties
