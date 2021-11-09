@@ -14,7 +14,7 @@ import HelpOutline from "@mui/icons-material/HelpOutline";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import MuiButton from "@mui/material/Button/Button";
+import MuiButton from "@mui/material/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../common/components/form/AppBarActions";

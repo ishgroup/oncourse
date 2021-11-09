@@ -5,7 +5,7 @@
 
 import { CertificateOutcome, Contact } from "@api/model";
 import { FormControlLabel, IconButton, Theme } from "@mui/material";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { createStyles, withStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";

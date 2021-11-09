@@ -19,7 +19,7 @@ import { connect } from "react-redux";
 import Slide from "@mui/material/Slide";
 import Typography from "@mui/material/Typography";
 import { TransitionProps } from "@mui/material/transitions";
-import IconButton from "@mui/material/IconButton/IconButton";
+import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import { Tag, TagStatus } from "@api/model";

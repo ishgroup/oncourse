@@ -17,7 +17,7 @@ import Grid from "@mui/material/Grid";
 import { differenceInMinutes, format } from "date-fns";
 import { Typography } from "@mui/material";
 import SvgIcon from "@mui/material/SvgIcon";
-import IconButton from "@mui/material/IconButton/IconButton";
+import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import { CourseClassTutor } from "@api/model";

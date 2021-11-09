@@ -13,7 +13,7 @@ import DialogContent from "@mui/material/DialogContent";
 import {
  change, clearFields, DecoratedComponentClass, getFormValues, reduxForm 
 } from "redux-form";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import { Dispatch } from "redux";
 import { Account, ProductItemCancel, Tax } from "@api/model";
 import { FormControlLabel } from "@mui/material";

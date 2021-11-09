@@ -12,7 +12,7 @@ import { change, Field as FormField } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { GridProps, GridTypeMap } from "@mui/material/Grid/Grid";
+import { GridProps, GridTypeMap } from "@mui/material/Grid";
 import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
 import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";

@@ -5,12 +5,14 @@
 
 import { EmailTemplate, MessageType } from "@api/model";
 import { Grow } from "@mui/material";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import { Dispatch } from "redux";
 import { Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";

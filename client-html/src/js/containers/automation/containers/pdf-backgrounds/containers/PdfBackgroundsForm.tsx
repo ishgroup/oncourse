@@ -6,7 +6,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import { ReportOverlay } from "@api/model";
 import { Dispatch } from "redux";
 import Typography from "@mui/material/Typography";

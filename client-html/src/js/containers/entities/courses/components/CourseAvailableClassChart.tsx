@@ -8,7 +8,7 @@
 
 import React, { useEffect, useState } from "react";
 import withTheme from "@mui/styles/withTheme";
-import green from "@mui/material/colors/green";
+import { green } from "@mui/material/colors";
 import { differenceInDays, format, parseISO } from "date-fns";
 import { Paper, Typography } from "@mui/material";
 import clsx from "clsx";

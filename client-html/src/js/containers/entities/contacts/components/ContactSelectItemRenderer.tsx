@@ -5,8 +5,8 @@
 
 import React, { useMemo } from "react";
 import { format } from "date-fns";
-import Tooltip from "@mui/material/Tooltip/Tooltip";
-import Typography from "@mui/material/Typography/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
 

@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import { arrayInsert, arrayRemove } from "redux-form";
 import Typography from "@mui/material/Typography";
 import { AssessmentClass, GradingType } from "@api/model";

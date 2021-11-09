@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import DialogActions from "@mui/material/DialogActions";

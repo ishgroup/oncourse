@@ -6,12 +6,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { change } from "redux-form";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography/Typography";
+import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { createStyles, withStyles } from "@mui/styles";
 import { ClassCostRepetitionType } from "@api/model";
 import { Collapse, Divider } from "@mui/material";
-import IconButton from "@mui/material/IconButton/IconButton";
+import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import FormField from "../../../../../../common/components/form/formFields/FormField";

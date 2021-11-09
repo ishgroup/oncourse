@@ -11,7 +11,7 @@ import {
   arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit
 } from "redux-form";
 import Dialog from "@mui/material/Dialog";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import DialogContent from "@mui/material/DialogContent";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import DialogActions from "@mui/material/DialogActions";
