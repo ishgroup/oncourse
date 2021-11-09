@@ -38,7 +38,7 @@ ${render("ish.email.header")}
         <td class="ish_content_container center" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 35px;padding-right: 17px;padding-bottom: 0;padding-left: 17px;" align="left">
             <table border="0" width="100%" style="border:0">
                 <tbody class="ish_invoice_content">
-                <% record.courseClass.sessions.sort { s -> s.startDatetime }.eachWithIndex { s, i -> %>
+                <% record.sessionsTutors.sort { at -> at.startDatetime }.eachWithIndex { at, i -> %>
                 <% if (i % 2 == 0) { %>
                 <tr style="background-color: rgba(0,0,0,.05)" bgcolor="rgba(0,0,0,.05)">
                     <td colspan="2" style="padding-top: 17px;padding-right: 17px;padding-bottom: 17px; padding-left: 17px; color: #000000  !important; font-weight: normal !important; vertical-align: top; line-height:13px; font-size:13px;">
@@ -46,7 +46,7 @@ ${render("ish.email.header")}
                             <tbody>
                             <tr>
                                 <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse; color: #000000  !important;" width="50%" valign="top" align="left">
-                                    ${s.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${s.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
+                                    ${at.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${at.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
                                 </td>
                             </tr>
                             </tbody>
@@ -60,7 +60,7 @@ ${render("ish.email.header")}
                             <tbody>
                             <tr>
                                 <td width="70%" class="ish_invoice_row left" style="border-collapse: collapse; color: #000000  !important;" width="50%" valign="top" align="left">
-                                    ${s.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${s.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
+                                    ${at.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${at.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
                                 </td>
                             </tr>
                             </tbody>
@@ -95,7 +95,7 @@ ${render("ish.email.header")}
                     costRate = "per enrolment"
                     break
                     case ish.common.types.ClassCostRepetitionType.PER_SESSION:
-                    costRate = "per session for " + record.courseClass.sessions.size() + " sessions"
+                    costRate = "per session for " + record.sessionsTutors.size() + " sessions"
                     break
                     case ish.common.types.ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR:
                     costRate = "per student contact hour"

@@ -11,8 +11,8 @@ notice should the course have insufficient enrolments to run. Please
 respond to this email by email stating "I agree to the terms and conditions outlined in this contract".
 
 ${record.courseClass.course.name} is due to run on the following sessions:
-<% record.courseClass.sessions.sort { s -> s.startDatetime }.each { s -> %>
-${s.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${s.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
+<% record.sessionsTutors.sort { at -> at.startDatetime }.each { at -> %>
+${at.startDatetime.format("EEEE d MMMM yyyy h:mm a", record.courseClass.getTimeZone())} to ${at.endDatetime.format("h:mm a", record.courseClass.getTimeZone())}
 <% } %>
 at ${record.courseClass.displayableLocation}
 <% record.courseClass.costs.findAll { it.contact == record.tutor.contact }.each { cost -> %>
@@ -27,7 +27,7 @@ at ${record.courseClass.displayableLocation}
         costRate = "per enrolment"
         break
     case ish.common.types.ClassCostRepetitionType.PER_SESSION:
-        costRate = "per session for " + record.courseClass.sessions.size() + " sessions"
+        costRate = "per session for " + record.sessionsTutors.size() + " sessions"
         break
     case ish.common.types.ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR:
         costRate = "per student contact hour"
