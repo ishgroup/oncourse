@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Diff, FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
+import {
+ Diff, FundingSource, SearchQuery, Sorting, Tag 
+} from "@api/model";
 import Drawer from "@mui/material/Drawer";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -12,14 +14,17 @@ import ListItem from "@mui/material/ListItem";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import { Help } from "@mui/icons-material";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, Field, reduxForm } from "redux-form";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
 import { getEntityTags } from "../../../../../containers/tags/actions";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../buttons/Button";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
 import FormField from "../../../form/formFields/FormField";
 import { validateTagsList } from "../../../form/simpleTagListComponent/validateTagsList";
@@ -54,7 +59,7 @@ interface BulkEditProps {
   hasAql?: boolean;
   contracts?: FundingSource[];
   dataCollectionRules: PreferencesState["dataCollectionRules"];
-  entityTags?: {[key: string]: Tag[]};
+  entityTags?: { [key: string]: Tag[] };
   getEntityTags?: (entity: string) => void;
   showConfirm?: any;
   getCustomBulkEditFields?: any;
@@ -259,8 +264,8 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
         }
       }}
     >
-      <Grid container columnSpacing={3} className={classes.content}>
-        <Grid container columnSpacing={3} className={classes.header} wrap="nowrap" alignItems="center">
+      <Grid container className={classes.content}>
+        <Grid container className={classes.header} wrap="nowrap" alignItems="center">
           <Grid item xs={2}>
             <Typography variant="body2" className={classes.headerText}>
               Bulk edit
@@ -282,7 +287,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid container columnSpacing={3} className={classes.body} wrap="nowrap" spacing={3}>
+        <Grid container className={classes.body} wrap="nowrap" spacing={3}>
           <Grid item zeroMinWidth className={classes.menuColumn}>
             <List disablePadding className={classes.list}>
               {bulkEditFields
@@ -313,7 +318,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           </Grid>
           <Grid item xs className={classes.menuColumn}>
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
-              <Grid container columnSpacing={3} className={classes.formContent}>
+              <Grid container className={classes.formContent}>
                 <Grid item xs={12}>
                   {BulkEditFieldRendered}
                 </Grid>
@@ -323,14 +328,15 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                 <Button className={classes.closeButton} onClick={onClose} variant="text">
                   Cancel
                 </Button>
-                <Button
+                <LoadingButton
+                  variant="contained"
                   disabled={invalid || validating || !selectedKeyCode}
-                  rootClasses={classes.shareButton}
+                  className={classes.shareButton}
                   type="submit"
                   loading={submitting || validating}
                 >
                   Make changes
-                </Button>
+                </LoadingButton>
               </Grid>
             </form>
           </Grid>

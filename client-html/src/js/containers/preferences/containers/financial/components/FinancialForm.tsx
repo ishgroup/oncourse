@@ -12,7 +12,7 @@ import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
 import { AccountType } from "@api/model";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../../model/preferences/Financial";
 import { currency, postPrepaidFees } from "../ListItems";

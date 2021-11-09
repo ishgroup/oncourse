@@ -11,7 +11,6 @@ import { format } from "date-fns";
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-import MuiButton from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,7 +23,6 @@ import {
 } from "redux-form";
 import { interruptProcess } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import Button from "../../../../../common/components/buttons/Button";
 import DataTypeRenderer from "../../../../../common/components/form/DataTypeRenderer";
 import ScriptRunAudit from "../../../../../common/components/layout/swipeable-sidebar/components/SidebarScripts/ScriptRunAudit";
 import { getExpression } from "../../../../../common/components/list-view/utils/listFiltersUtils";
@@ -37,6 +35,8 @@ import { State } from "../../../../../reducers/state";
 import RecipientsSelectionSwitcher from "../../../../entities/messages/components/RecipientsSelectionSwitcher";
 import { runScript } from "../actions";
 import ScriptsService from "../services/ScriptsService";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 
 const FORM = "ExecuteScriptForm";
 
@@ -251,17 +251,18 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
 
         <DialogActions className="p-3">
           <ScriptRunAudit lastRun={lastRun} selectedScriptAudits={selectedScriptAudits} scriptIdSelected={scriptId} />
-          <MuiButton color="primary" onClick={onDialogClose}>
+          <Button color="primary" onClick={onDialogClose}>
             Cancel
-          </MuiButton>
-          <Button
+          </Button>
+          <LoadingButton
+            variant="contained"
             color="primary"
             type="submit"
             disabled={invalid || submitting || executing}
             loading={submitting || executing}
           >
             Run script
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </Dialog>

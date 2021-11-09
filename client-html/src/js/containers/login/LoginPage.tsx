@@ -86,7 +86,10 @@ const styles: any = theme => ({
     }
   },
   textFieldWrapper: {
-    minHeight: "61px"
+    minHeight: "61px",
+    "& input": {
+      borderBottom: `1px solid ${theme.palette.divider}`
+    }
   },
   extLink: {
     marginLeft: theme.spacing(2),
@@ -655,6 +658,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     className={classes.extLink}
                                     target="_blank"
                                     href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en"
+                                    rel="noreferrer"
                                   >
                                     Android
                                   </a>
@@ -662,6 +666,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     className={classes.extLink}
                                     target="_blank"
                                     href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"
+                                    rel="noreferrer"
                                   >
                                     iPhone
                                   </a>

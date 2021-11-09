@@ -16,7 +16,7 @@ import { Dispatch } from "redux";
 import {
   getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
@@ -94,9 +94,9 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
           </Grid>
         </DialogContent>
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
           <Button color="primary" type="submit" disabled={invalid}>
             Delete
           </Button>

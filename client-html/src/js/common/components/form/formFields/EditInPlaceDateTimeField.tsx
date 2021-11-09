@@ -378,7 +378,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
               {Boolean(label) && (
               <InputLabel
                 classes={{
-                  root: classes.inputLabel,
+                  root: clsx(classes.inputLabel, fieldClasses.label),
                   shrink: classes.labelShrink
                 }}
                 shrink={true}

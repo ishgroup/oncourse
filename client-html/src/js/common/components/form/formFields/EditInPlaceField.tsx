@@ -634,7 +634,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             selected: classes.emptySelect
           }}
         >
-          <span className={classes.placeholderContent}>{placeholder || "No value"}</span>
+          <span className={clsx(classes.placeholderContent,fieldClasses.placeholder)}>{placeholder || "No value"}</span>
         </MenuItem>,
         ...selectItems || []
       ];
@@ -715,7 +715,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               label && (
               <InputLabel
                 classes={{
-                  root: clsx(classes.label, !label && classes.labelTopZeroOffset),
+                  root: clsx(fieldClasses.label, classes.label, !label && classes.labelTopZeroOffset),
                   shrink: classes.labelShrink
                 }}
                 {...InputLabelProps}
@@ -739,8 +739,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                         : input.value || ""}
                     inputRef={this.setInputNode}
                     classes={{
-                      root: clsx(classes.textFieldBorderModified, fieldClasses.text),
-                      select: clsx(isInline && classes.inlineSelect),
+                      root: classes.textFieldBorderModified,
+                      select: clsx(fieldClasses.text, isInline && classes.inlineSelect),
                       // @ts-ignore
                       underline: fieldClasses.underline
                     }}

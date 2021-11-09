@@ -23,7 +23,7 @@ import {
   TableModel
 } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import Button from "../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";

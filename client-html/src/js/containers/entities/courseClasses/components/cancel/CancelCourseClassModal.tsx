@@ -13,7 +13,6 @@ import {
 import Dialog from "@mui/material/Dialog";
 import Typography from "@mui/material/Typography";
 import DialogActions from "@mui/material/DialogActions";
-import MuiButton from "@mui/material/Button";
 import DialogContent from "@mui/material/DialogContent";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -21,7 +20,7 @@ import Grid from "@mui/material/Grid";
 import { CancelCourseClass } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { cancelCourseClass } from "../../actions";
 import {clearCommonPlainRecords, setCommonPlainSearch} from "../../../../../common/actions/CommonPlainRecordsActions";
@@ -183,9 +182,9 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
           </DialogContent>
 
           <DialogActions className="p-3">
-            <MuiButton color="primary" onClick={this.onClose}>
+            <Button color="primary" onClick={this.onClose}>
               Cancel
-            </MuiButton>
+            </Button>
 
             <Button disabled={fetching || invalid} variant="contained" color="primary" type="submit">
               Proceed

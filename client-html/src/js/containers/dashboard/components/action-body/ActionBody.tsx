@@ -26,8 +26,7 @@ const styles = (theme: AppTheme) =>
     rightSideBar: {
       backgroundColor: theme.palette.background.default,
       overflowY: "auto",
-      minWidth: 370,
-      paddingRight: theme.spacing(3),
+      minWidth: 370
     }
   });
 

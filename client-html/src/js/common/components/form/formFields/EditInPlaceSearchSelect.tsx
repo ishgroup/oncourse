@@ -544,6 +544,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             }) => (
               <FormControl
                 {...params}
+                variant="standard"
                 error={meta?.invalid}
               >
                 {labelContent && <InputLabel shrink={true} error={meta?.invalid || hasError}>{labelContent}</InputLabel>}

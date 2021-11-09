@@ -20,9 +20,12 @@ const styles = (theme: AppTheme) =>
     checkboxFontSize: {
       fontSize: "18px"
     },
-    checkboxLabel: {
-      fontSize: "12px",
+    labelRoot: {
+      "& $checkboxLabel": {
+        fontSize: "12px",
+      }
     },
+    checkboxLabel: {},
     root: {
       display: "flex",
       alignItems: "center",
@@ -52,9 +55,9 @@ const FilterItem = props => {
     <div className={classes.root}>
       <FormControlLabel
         classes={{
+          root: clsx("flex-fill overflow-hidden", classes.labelRoot),
           label: clsx("overflow-hidden text-nowrap", classes.checkboxLabel),
         }}
-        className="flex-fill overflow-hidden"
         control={(
           <Checkbox
             checked={checked}

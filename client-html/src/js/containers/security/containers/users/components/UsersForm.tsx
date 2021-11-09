@@ -19,7 +19,6 @@ import { format as formatDate } from "date-fns";
 import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
 import debounce from "lodash.debounce";
 import { User, UserRole } from "@api/model";
-import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
@@ -37,6 +36,7 @@ import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import Button from "@mui/material/Button";
 
 const manualUrl = getManualLink("users");
 

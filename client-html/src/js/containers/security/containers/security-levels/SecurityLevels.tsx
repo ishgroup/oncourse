@@ -12,13 +12,13 @@ import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import CustomButton from "../../../../common/components/buttons/Button";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { Switch } from "../../../../common/components/form/formFields/Switch";
 import AppBarActions from "../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import SecurityLevelsTagsGroup from "./components/SecurityLevelsTagsGroup";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 
 const data = {
   roles: [
@@ -53,7 +53,7 @@ class SecurityLevels extends React.Component<any, any> {
   }
 
   render() {
-    const { classes, className } = this.props;
+    const { classes, className, dirty, invalid } = this.props;
 
     return (
       <div className={className}>
@@ -89,13 +89,9 @@ class SecurityLevels extends React.Component<any, any> {
                 manualUrl="https://www.ish.com.au/s/onCourse/doc/SNAPSHOT/manual/generalPrefs.html#generalPrefs-college"
               />
 
-              <CustomButton
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+              <FormSubmitButton
+                disabled={!dirty}
+                invalid={invalid}
               />
             </Grid>
           </Grid>

@@ -5,7 +5,9 @@
 
 import React from "react";
 import posed from "react-pose";
-import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
+import {
+ format as formatDate, getDaysInMonth, setDate, setMonth, setYear 
+} from "date-fns";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
@@ -22,9 +24,11 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { withStyles } from "@mui/styles";
+import { withStyles, createStyles } from "@mui/styles";
 import { ExpandMore, HelpOutline } from "@mui/icons-material";
-import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
+import {
+ arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm 
+} from "redux-form";
 import clsx from "clsx";
 import {
   AvetmissExportFee,
@@ -35,6 +39,8 @@ import {
   FundingStatus,
   FundingUpload
 } from "@api/model";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import ErrorMessage from "../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
@@ -42,7 +48,6 @@ import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/c
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import { State } from "../../../reducers/state";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
-import Button from "../../../common/components/buttons/Button";
 import AvetmissExportResults from "../components/AvetmissExportResults";
 import {
   clearAvetmiss8ExportID,
@@ -64,7 +69,6 @@ import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExpor
 import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
 import { AppTheme } from "../../../model/common/Theme";
 import { AvetmissExportSettingsReqired } from "../../../model/preferences";
-import { createStyles } from "@mui/styles";
 
 export const FORM: string = "AvetmissExportForm";
 
@@ -888,14 +892,15 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                   {!hasOutcomesOrExport && (
                     <div className="centeredFlex justify-content-center pt-3 pb-3">
                       {!hasNoResults && (
-                        <Button
-                          text="Find"
+                        <LoadingButton
                           color="primary"
                           type="submit"
                           disabled={invalid || !checkboxesValid}
                           loading={pending}
-                          rootClasses="avetmissButton"
-                        />
+                          className="avetmissButton"
+                        >
+                          Find
+                        </LoadingButton>
                       )}
 
                       {hasNoResults && (

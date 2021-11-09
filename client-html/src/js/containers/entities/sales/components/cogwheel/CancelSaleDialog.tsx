@@ -7,10 +7,12 @@ import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import MuiButton from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import { change, clearFields, DecoratedComponentClass, getFormValues, reduxForm } from "redux-form";
+import {
+ change, clearFields, DecoratedComponentClass, getFormValues, reduxForm 
+} from "redux-form";
 import Grid from "@mui/material/Grid/Grid";
 import { Dispatch } from "redux";
 import { Account, ProductItemCancel, Tax } from "@api/model";
@@ -18,7 +20,6 @@ import { FormControlLabel } from "@mui/material";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../../../common/components/buttons/Button";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { accountLabelCondition } from "../../../accounts/utils";
 import { cancelSale } from "../../actions";
@@ -174,11 +175,11 @@ const CancelSaleDialog = React.memo<Props>(props => {
         </DialogContent>
 
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
 
-          <Button color="primary" type="submit" disabled={invalid}>
+          <Button variant="contained" color="primary" type="submit" disabled={invalid}>
             Proceed
           </Button>
         </DialogActions>
