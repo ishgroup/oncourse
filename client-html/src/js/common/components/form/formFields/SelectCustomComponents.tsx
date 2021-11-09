@@ -9,7 +9,7 @@ import React from "react";
 import ListSubheader from '@mui/material/ListSubheader';
 import { areEqual, FixedSizeList as List } from 'react-window';
 import { createStyles } from "@mui/styles";
-import green from "@mui/material/colors/green";
+import { green } from "@mui/material/colors";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
 

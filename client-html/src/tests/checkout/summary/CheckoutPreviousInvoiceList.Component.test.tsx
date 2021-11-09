@@ -39,10 +39,11 @@ describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
       const count = initialValues.length;
       let i;
 
-      expect(shallow.find("input[type='checkbox']").at(0).props().checked).toEqual(true);
+
+      expect(shallow.find("input[type='checkbox']").props().checked).toEqual(true);
 
       for (i = 1; i <= count; i++) {
-        expect(shallow.find("input[type='checkbox']").at(i).props().checked).toEqual(true);
+        expect(shallow.find("input[type='checkbox']").props().checked).toEqual(true);
       }
     }
   });

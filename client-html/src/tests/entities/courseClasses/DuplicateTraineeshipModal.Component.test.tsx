@@ -6,39 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-// import { createMount } from "@mui/material/test-utils";
-import { shallow } from 'enzyme';
-import * as React from "react";
-import { TestEntry } from "../../TestEntry";
-import DuplicateTraineeshipModal from "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
 import { stubFunction } from "../../../js/common/utils/common";
+import * as React from "react";
+import DuplicateTraineeshipModal from "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
+import { defaultComponents } from "../../common/Default.Components";
 
 describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
-  // let mount;
-
-  // beforeAll(() => {
-  //   mount = createMount();
-  // });
-  //
-  // afterAll(() => {
-  //   mount.cleanUp();
-  // });
-
-  const defaultProps = {
-    opened: true,
-    selection: [],
-    setDialogOpened: stubFunction
-  };
-
-  const MockedEditView = pr => <DuplicateTraineeshipModal {...{ ...pr, ...defaultProps }} />;
-
-  it(`DuplicateTraineeshipModal should render with default store`, () => {
-    const wrapper = shallow(
-      <TestEntry>
-        <MockedEditView />
-      </TestEntry>
-    );
-
-    expect(wrapper.find("div.heading").at(0).text()).toContain("Duplicate traineeship class");
+  defaultComponents({
+    entity: "CheckoutPreviousInvoiceList",
+    View: props => <DuplicateTraineeshipModal {...props} />,
+    record: () => null,
+    defaultProps: () => ({
+      opened: true,
+      selection: [],
+      setDialogOpened: stubFunction
+    }),
+    render: (wrapper, initialValues, shallow) => {
+      expect(shallow.find("div.heading").at(0).text().toContain("Duplicate traineeship class"));
+    }
   });
 });
+

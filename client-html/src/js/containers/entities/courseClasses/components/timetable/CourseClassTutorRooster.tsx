@@ -80,6 +80,7 @@ const RoosterStatuses = ({
    className
 }: StatusesProps) => (
   <Select
+    variant="standard"
     value={value}
     onChange={onChange}
     className={className}

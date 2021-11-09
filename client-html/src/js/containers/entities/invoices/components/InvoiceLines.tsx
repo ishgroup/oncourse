@@ -7,8 +7,8 @@ import { Course } from "@api/model";
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-import Typography from "@mui/material/Typography/Typography";
-import Grid from "@mui/material/Grid/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Dispatch } from "redux";
 import { Decimal } from "decimal.js-light";

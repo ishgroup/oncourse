@@ -9,10 +9,8 @@ import { withStyles
 } from "@mui/styles";
 import clsx from "clsx";
 import Edit from "@mui/icons-material/Edit";
-import React, {
- useCallback, useMemo, useRef, useState
-} from "react";
-import ButtonBase from "@mui/material/ButtonBase/ButtonBase";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { ButtonBase }  from "@mui/material";
 
 const styles = theme => ({
   titleControls: {

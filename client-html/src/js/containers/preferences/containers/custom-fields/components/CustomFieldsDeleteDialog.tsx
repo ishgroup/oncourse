@@ -4,7 +4,7 @@
  */
 
 import { CustomFieldType } from "@api/model";
-import MuiButton from "@mui/material/Button/Button";
+import MuiButton from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";

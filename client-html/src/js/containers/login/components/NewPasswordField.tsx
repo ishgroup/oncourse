@@ -7,7 +7,7 @@ import React, { StatelessComponent } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
 import { withStyles, createStyles } from "@mui/styles";
-import green from "@mui/material/colors/green";
+import { green } from "@mui/material/colors";
 import ClassNames from "clsx";
 import debounce from "lodash.debounce";
 import { TextField } from "../../../common/components/form/formFields/TextField";

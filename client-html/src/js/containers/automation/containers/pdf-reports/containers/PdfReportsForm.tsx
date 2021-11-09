@@ -11,7 +11,7 @@ import {
 } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import { Report } from "@api/model";
 import { Dispatch } from "redux";
 import Typography from "@mui/material/Typography";
