@@ -60,20 +60,23 @@ subprojects {
 	version = version.replace('v','') // remove the leading v from the version
 
 	dependencies {
-		implementation "org.apache.logging.log4j:log4j-api:$log4j2Version"
-		implementation "org.apache.logging.log4j:log4j-core:$log4j2Version"
-		implementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
-		implementation "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
+		// we are using server-jar and all api dep (log4j+groovy) for plugins
+		//so it is important to use api config,
+		//implementation config do not export the libs to level down (plugins project)
+		api "org.apache.logging.log4j:log4j-api:$log4j2Version"
+		api "org.apache.logging.log4j:log4j-core:$log4j2Version"
+		api "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
+		api "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
 
-		implementation "org.codehaus.groovy:groovy:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-datetime:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-json:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-jsr223:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-macro:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-xml:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-templates:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-xml:$groovyVersion"
-		implementation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
+		api "org.codehaus.groovy:groovy:$groovyVersion"
+		api "org.codehaus.groovy:groovy-datetime:$groovyVersion"
+		api "org.codehaus.groovy:groovy-json:$groovyVersion"
+		api "org.codehaus.groovy:groovy-jsr223:$groovyVersion"
+		api "org.codehaus.groovy:groovy-macro:$groovyVersion"
+		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
+		api "org.codehaus.groovy:groovy-templates:$groovyVersion"
+		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
+		api "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 
 		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
