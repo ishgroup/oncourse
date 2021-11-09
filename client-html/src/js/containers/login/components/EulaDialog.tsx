@@ -9,12 +9,11 @@
  *  Public License for more details.
  */
 
-import {
-  Dialog, DialogActions, DialogContent, DialogTitle
-} from "@material-ui/core";
 import React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import {
+  Dialog, DialogActions, DialogContent, DialogTitle, Button
+} from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
 
 const styles = () => createStyles({
 
