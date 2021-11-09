@@ -175,6 +175,7 @@ interface Props extends Partial<ListState> {
     disabledSubmitCondition?: boolean;
     enableReinitialize?: boolean;
     keepDirtyOnReinitialize?: boolean;
+    hideTitle?: boolean;
   };
   CogwheelAdornment?: React.ReactNode;
   location?: any;
@@ -209,7 +210,6 @@ interface Props extends Partial<ListState> {
   setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
-  hideTitle?: boolean;
 }
 
 interface ComponentState {
@@ -1040,8 +1040,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       fullScreenEditView,
       searchQuery,
       getCustomBulkEditFields,
-      filterEntity,
-      hideTitle
+      filterEntity
     } = this.props;
 
     const {
@@ -1178,7 +1177,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           openNestedEditView={this.openNestedEditViewWithDirtyCheck}
           alwaysFullScreenCreateView={alwaysFullScreenCreateView}
           threeColumn={threeColumn}
-          hideTitle={hideTitle}
         />
 
         <NestedEditView

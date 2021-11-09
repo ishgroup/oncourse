@@ -268,24 +268,24 @@ const ListRoot = React.memo<NestedListProps>(({
               </Typography>
               {goToLink && (
                 <IconButton
-                  className="p-1"
-                  style={{ marginRight: "-8px" }}
-                  color="secondary"
+                  color="primary"
+                  size="small"
                   onClick={() => openInternalLink(goToLink)}
                 >
-                  <Launch />
+                  <Launch fontSize="inherit" />
                 </IconButton>
               )}
               {onAdd && (
-                <AddIcon className="addButtonColor p-1" onClick={onAdd} iconClassName="inherit" />
+                <AddIcon size="small" onClick={onAdd} />
               )}
               {Boolean(rows.length) && removeEnabled && (
                 <IconButton
-                  className="errorColor p-1"
+                  size="small"
+                  className="errorColor"
                   disabled={selection.length !== 1}
                   onClick={removeRow}
                 >
-                  <RemoveCircle color="inherit" />
+                  <RemoveCircle color="inherit" fontSize="inherit" />
                 </IconButton>
               )}
             </div>

@@ -17,6 +17,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../constants/Config";
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
+import { useStickyScrollSpy } from "../../utils/hooks";
 
 const styles = theme => createStyles({
   listContainer: {
@@ -44,7 +45,7 @@ const styles = theme => createStyles({
       "& $arrowIcon": {
         transform: "translateX(0)",
       },
-      "& $listItemText": {
+      "& $listItemLabel": {
         paddingLeft: 30,
       },
     },
@@ -55,10 +56,13 @@ const styles = theme => createStyles({
   listItemText: {
     fontWeight: "inherit",
     width: "100%",
-    transition: "all 0.2s ease-in-out",
   },
   indicator: {
     display: "none"
+  },
+  listItemLabel: {
+    textTransform: 'uppercase',
+    transition: "all 0.2s ease-in-out",
   },
   selected: {},
   arrowIcon: {
@@ -99,16 +103,13 @@ const SCROLL_TARGET_ID = "TabsListScrollTarget";
 
 const TABLIST_LOCAL_STORAGE_KEY = "localstorage_key_tab_list";
 
-function fire(stuck) {
-  const evt = new CustomEvent(STICKY_HEADER_EVENT, { detail: { stuck } });
-  document.dispatchEvent(evt);
-}
-
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
 
 const TabsList = React.memo<Props & RouteComponentProps>(({
    classes, items, customAppBar, itemProps = {}, history, location
   }) => {
+  const { scrollSpy } = useStickyScrollSpy();
+
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<ScrollNodes>({});
 
@@ -165,9 +166,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
   const onScroll = useCallback(
     e => {
-      if (e.target) {
-        fire(e.target.scrollTop > 20);
-      }
+      scrollSpy(e);
 
       if (!itemProps.twoColumn) {
         return;
@@ -246,7 +245,12 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             id={SCROLL_TARGET_ID}
           >
             {items.map((i, tabIndex) => (
-              <div id={i.label} key={i.label} ref={setScrollNode}>
+              <div
+                id={i.label}
+                key={tabIndex}
+                ref={setScrollNode}
+                className={!itemProps.twoColumn && tabIndex === items.length - 1 && "saveButtonTableOffset"}
+              >
                 {i.component({
                  ...itemProps, expanded, setExpanded, tabIndex
                 })}
@@ -275,9 +279,10 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
                     onClick={() => scrollToSelected(i, index)}
                     key={index}
                   >
-                    <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
+
                     <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                      <div className="text-uppercase">{i.label}</div>
+                      <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
+                      <div className={classes.listItemLabel}>{i.label}</div>
                       {i.labelAdornment && (
                         <Typography variant="caption" component="div" className="text-pre-wrap">
                           {i.labelAdornment}

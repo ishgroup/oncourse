@@ -99,9 +99,9 @@ const AvailabilityItem: React.FC<Props> = ({
 
   return (
     <Card id={`holidays-item-${index}`} className={threeColumn ? classes.threeColumnCard : "card"}>
-      <Grid container columnSpacing={3} spacing={2}>
+      <Grid container>
         <Grid item xs={availabilityLayout[1].xs}>
-          <Grid container columnSpacing={3}>
+          <Grid container>
             <Grid
               item
               xs={availabilityLayout[2].xs}
@@ -135,7 +135,6 @@ const AvailabilityItem: React.FC<Props> = ({
                 label="Start"
                 maxDate={field.endDate}
                 validate={validateMaxDate}
-                className="pr-2"
                 required
               />
             </Grid>
@@ -148,7 +147,6 @@ const AvailabilityItem: React.FC<Props> = ({
                 label="End"
                 minDate={field.startDate}
                 validate={validateMinDate}
-                className="pr-2"
                 required
               />
             </Grid>

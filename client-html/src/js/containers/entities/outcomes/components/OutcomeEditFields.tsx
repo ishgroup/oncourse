@@ -216,7 +216,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const today = new Date();
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={3} className={className}>
+    <Grid container columnSpacing={3} rowSpacing={2} className={className}>
       {!twoColumn && (
         <Grid item xs={12}>
           <Uneditable
@@ -301,7 +301,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
       <Grid item xs={twoColumn ? 8 : 12}>
         <Card className={classes.card}>
-          <Grid container columnSpacing={3} rowSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12}>
               <div className="heading">OUTCOME PROGRESSION</div>
             </Grid>
@@ -317,7 +317,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
       {priorLearningEditView ? (
         <Grid item xs={12}>
-          <Grid container columnSpacing={3} rowSpacing={3} item xs={12}>
+          <Grid container columnSpacing={3} rowSpacing={2} item xs={12}>
             <Grid item xs={twoColumn ? 4 : 12} className="textField">
               <div>
                 <FormField
@@ -347,7 +347,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       ) : (
         <Grid item xs={12}>
           <Card className={classes.card}>
-            <Grid container columnSpacing={3} rowSpacing={3} className="p-3 pb-0">
+            <Grid container columnSpacing={3} rowSpacing={2} className="p-3 pb-0">
               <Grid xs={twoColumn ? 3 : 12}>
                 <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
                 <Tooltip
@@ -471,7 +471,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Grid>
       )}
       <Grid item xs={12}>
-        <Grid container columnSpacing={3} rowSpacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="select"
@@ -503,7 +503,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Grid container columnSpacing={3} rowSpacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="text"

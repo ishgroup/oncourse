@@ -1,12 +1,13 @@
 import React, { useCallback } from "react";
 import { Contact } from "@api/model";
 import { FieldArray } from "redux-form";
+import Divider from "@mui/material/Divider";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { getTableWrapperHeight, THEME_SPACING } from "../utils";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import {EditViewProps} from "../../../../model/common/ListView";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 interface ContactsMessagesProps extends EditViewProps<Contact> {
   twoColumn?: boolean;
@@ -66,7 +67,7 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
   const tableWrapperHeight = getTableWrapperHeight(getMessagesCount());
 
   return values ? (
-    <div className="p-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header={getMessagesTableTitle()}>
         <div
           className="flex-column"
@@ -86,6 +87,7 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
           />
         </div>
       </ExpandableContainer>
+      <Divider className="mb-2" />
     </div>
   ) : null;
 };

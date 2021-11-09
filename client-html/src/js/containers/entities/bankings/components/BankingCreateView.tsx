@@ -229,7 +229,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
             </Grid>
           )}
           twoColumn
-          warpperGap={0}
         />
         <div className="flex-column p-3 h-100">
           <Grid container columnSpacing={3}>

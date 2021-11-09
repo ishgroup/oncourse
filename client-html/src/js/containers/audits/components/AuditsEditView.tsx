@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import FormField from "../../../common/components/form/formFields/FormField";
 
 const AuditsEditView = () => (
-  <Grid container columnSpacing={3} rowSpacing={3} className="p-3 overflow-hidden">
+  <Grid container columnSpacing={3} rowSpacing={2} className="p-3 overflow-hidden">
     <Grid item xs={12}>
       <FormField disabled type="dateTime" name="created" label="Date and time" />
     </Grid>

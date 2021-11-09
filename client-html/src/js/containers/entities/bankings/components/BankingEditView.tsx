@@ -16,6 +16,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import { Decimal } from "decimal.js-light";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
@@ -30,6 +32,7 @@ import { openSiteLink } from "../../sites/utils";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { defaultContactName, openContactLink } from "../../contacts/utils";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -224,94 +227,76 @@ class BankingEditView extends React.PureComponent<any, any> {
       editRecord,
       openNestedView,
       values,
+      isNew,
+      invalid
     } = this.props;
 
     return (
-      <div className={twoColumn ? "" : "h-100"}>
-        {twoColumn && (
-          <FullScreenStickyHeader
-            title={(
-              <Grid container columnSpacing={3} className="flex-fill">
-                {values && values.administrationCenterId && (
-                  <Grid item xs="auto">
-                    <div className="d-flex align-items-baseline">
-                      <Typography className="appHeaderFontSize">{values && values.adminSite}</Typography>
-
-                      <LinkAdornment
-                        linkColor="inherit"
-                        link={values.administrationCenterId}
-                        linkHandler={openSiteLink}
-                        className="appHeaderFontSize pl-0-5"
-                      />
-                    </div>
-                  </Grid>
-                )}
-                <Grid item>
-                  {this.getHeader()}
-                </Grid>
-              </Grid>
+      <div className="h-100 flex-column p-3">
+        <FullScreenStickyHeader
+          opened={isNew || invalid}
+          disableInteraction={!isNew}
+          twoColumn={twoColumn}
+          title={(
+            <div className="centeredFlex">
+              {values?.administrationCenterId
+                ? (
+                <>
+                  {values?.adminSite}
+                  <IconButton size="small" color="primary" onClick={() => openSiteLink(values?.administrationCenterId)}>
+                    <Launch fontSize="inherit" />
+                  </IconButton>
+                </>
+                )
+                : this.getHeader()}
+            </div>
             )}
-            twoColumn={twoColumn}
-            warpperGap={0}
-            titleGap={51}
-          />
-        )}
-        <div className="h-100 flex-column p-3">
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className={twoColumn ? "d-none" : undefined}>
-              {values && values.administrationCenterId && (
-                <Uneditable
-                  url={`/site/${values.administrationCenterId}`}
-                  value={values && values.adminSite}
-                  label="Site"
-                />
-              )}
-            </Grid>
-            <Grid item xs={twoColumn ? 3 : 6}>
-              <FormField
-                type="date"
-                disabled={this.isDateLocked(lockedDate, editRecord)}
-                name="settlementDate"
-                label="Settlement Date"
-                onBlur={this.onSettlementDateChanged}
-                validate={[validateSingleMandatoryField, this.validateSettlementDate]}
-                minDate={
+        />
+        <Grid container columnSpacing={3}>
+          <Grid item xs={twoColumn ? 3 : 6}>
+            <FormField
+              type="date"
+              disabled={this.isDateLocked(lockedDate, editRecord)}
+              name="settlementDate"
+              label="Settlement Date"
+              onBlur={this.onSettlementDateChanged}
+              validate={[validateSingleMandatoryField, this.validateSettlementDate]}
+              minDate={
                   lockedDate
                     ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
                     : undefined
                 }
-              />
-            </Grid>
-            <Grid item xs={twoColumn ? 3 : 6}>
-              <Typography variant="caption" color="textSecondary">
-                Created by
-              </Typography>
-              {this.getEditRecordProp("createdBy")}
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                className={clsx("pr-3", {
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 3 : 6}>
+            <Typography variant="caption" color="textSecondary">
+              Created by
+            </Typography>
+            {this.getEditRecordProp("createdBy")}
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              className={clsx("pr-3", {
                   "mt-2": !twoColumn
                 })}
-                control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
-                label="Reconcile this banking deposit"
-                disabled={this.isReconcileAllDisabled()}
-              />
-            </Grid>
+              control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
+              label="Reconcile this banking deposit"
+              disabled={this.isReconcileAllDisabled()}
+            />
           </Grid>
-          <FieldArray
-            name="payments"
-            className="saveButtonTableOffset"
-            goToLink="/paymentIn"
-            title={this.paymentsTitle()}
-            component={NestedTable}
-            removeEnabled={!this.isDateLocked(lockedDate, editRecord)}
-            columns={twoColumn ? paymentColumns : paymentColumnsMinified}
-            onRowDoubleClick={openNestedView}
-            total={this.totalAmount()}
-            rerenderOnEveryChange
-          />
-        </div>
+        </Grid>
+        <FieldArray
+          name="payments"
+          className="saveButtonTableOffset"
+          goToLink="/paymentIn"
+          title={this.paymentsTitle()}
+          component={NestedTable}
+          removeEnabled={!this.isDateLocked(lockedDate, editRecord)}
+          columns={twoColumn ? paymentColumns : paymentColumnsMinified}
+          onRowDoubleClick={openNestedView}
+          total={this.totalAmount()}
+          rerenderOnEveryChange
+        />
       </div>
     );
   }

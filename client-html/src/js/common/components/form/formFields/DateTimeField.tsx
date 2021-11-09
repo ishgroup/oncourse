@@ -5,8 +5,9 @@
 
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import { DatePicker, DateTimePicker, TimePicker } from "@mui/lab";
+import { MobileDatePicker, MobileDateTimePicker, MobileTimePicker } from "@mui/lab";
 import { DD_MM_YYYY_HH_MM_SPECIAL, DD_MMM_YYYY_MINUSED, HH_MM_COLONED } from "../../../utils/dates/format";
+import { stubComponent } from "../../../utils/common";
 
 export const DateTimeField = props => {
   const {
@@ -14,7 +15,7 @@ export const DateTimeField = props => {
   } = props;
 
   const picker = type === "date" ? (
-    <DatePicker
+    <MobileDatePicker
       ref={setPickerRef}
       onChange={onChange}
       ampm={ampm || "false"}
@@ -23,11 +24,11 @@ export const DateTimeField = props => {
       maxDate={maxDate || undefined}
       minDate={minDate || undefined}
       renderInput={props => <TextField {...props} />}
-      variant={props.variant || "standard"}
+      variant="standard"
       {...rest}
     />
     ) : type === "time" ? (
-      <TimePicker
+      <MobileTimePicker
         ref={setPickerRef}
         onChange={onChange}
         ampm={ampm || "false"}
@@ -36,11 +37,11 @@ export const DateTimeField = props => {
         maxDate={maxDate || undefined}
         minDate={minDate || undefined}
         renderInput={props => <TextField {...props} />}
-        {props.variant || "standard"}
+        variant="standard"
         {...rest}
       />
     ) : type === "datetime" ? (
-      <DateTimePicker
+      <MobileDateTimePicker
         ref={setPickerRef}
         onChange={onChange}
         ampm={ampm || false}
@@ -49,7 +50,7 @@ export const DateTimeField = props => {
         maxDate={maxDate || undefined}
         minDate={minDate || undefined}
         renderInput={props => <TextField {...props} />}
-        {props.variant || "standard"}
+        variant="standard"
         {...rest}
       />
     ) : null;
