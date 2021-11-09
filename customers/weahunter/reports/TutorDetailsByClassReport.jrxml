@@ -102,9 +102,6 @@
     <sortField name="courseClassTutor.courseClass.uniqueCode"/>
     <sortField name="courseClassTutor.id"/>
     <sortField name="session.startDatetime"/>
-    <variable name="durationInMinutes" class="java.lang.Integer">
-        <variableExpression><![CDATA[DurationFormatter.parseDurationInMinutes($F{tutorAttendance}.session.startDatetime, $F{tutorAttendance}.session.endDatetime)]]></variableExpression>
-    </variable>
     <variable name="payableHours" class="java.lang.String">
         <variableExpression><![CDATA[new DurationFormatter(DurationFormatter.FORMAT_DD_HH_MM, DurationFormatter.MINUTE).valueToString($F{tutorAttendance}.actualPayableDurationMinutes)]]></variableExpression>
     </variable>
@@ -287,14 +284,14 @@
                     <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
                 </reportElement>
                 <textElement verticalAlignment="Middle"/>
-                <textFieldExpression><![CDATA[$F{tutorAttendance}.session.startDatetime?.format("d MMM yyyy h:mma", $F{tutorAttendance}.session.timeZone)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{tutorAttendance}.startDatetime?.format("d MMM yyyy h:mma", $F{tutorAttendance}.session.timeZone)]]></textFieldExpression>
             </textField>
             <textField isBlankWhenNull="true">
                 <reportElement style="data field (datetime)" x="120" y="1" width="110" height="18">
                     <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
                 </reportElement>
                 <textElement verticalAlignment="Middle"/>
-                <textFieldExpression><![CDATA[$F{tutorAttendance}.session.endDatetime?.format("d MMM yyyy h:mma", $F{tutorAttendance}.session.timeZone)]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{tutorAttendance}.endDatetime?.format("d MMM yyyy h:mma", $F{tutorAttendance}.session.timeZone)]]></textFieldExpression>
             </textField>
             <textField isBlankWhenNull="true">
                 <reportElement style="data field" x="240" y="1" width="100" height="18">
