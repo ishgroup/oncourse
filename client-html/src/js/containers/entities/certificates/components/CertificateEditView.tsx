@@ -13,7 +13,7 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import QRCode from "qrcode.react";
 import React, {
- useCallback, useEffect, useMemo, useRef
+ useCallback, useEffect, useMemo
 } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
