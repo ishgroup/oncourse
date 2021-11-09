@@ -12,7 +12,7 @@ import Delete from "@mui/icons-material/Delete";
 import Edit from "@mui/icons-material/Edit";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography/Typography";
+import Typography from "@mui/material/Typography";
 import TagItemsRenderer from "./TagItemsRenderer";
 
 const styles = theme => createStyles({

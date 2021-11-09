@@ -6,7 +6,7 @@
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-import DialogTitle from "@mui/material/DialogTitle/DialogTitle";
+import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent/DialogContent";
 import {
   DecoratedComponentClass, getFormValues, reduxForm
@@ -22,9 +22,9 @@ import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import Collapse from "@mui/material/Collapse/Collapse";
+import Collapse from "@mui/material/Collapse";
 import HelpOutline from "@mui/icons-material/HelpOutline";
-import IconButton from "@mui/material/IconButton/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import FormField from "../../common/components/form/formFields/FormField";
 import { getFinaliseInfo, updateFinaliseDate } from "./actions";

@@ -2,7 +2,7 @@ import React from "react";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { OverridableStringUnion } from "@mui/types";
-import { IconButtonPropsColorOverrides, IconButtonPropsSizeOverrides } from "@mui/material/IconButton/IconButton";
+import { IconButtonPropsColorOverrides, IconButtonPropsSizeOverrides } from "@mui/material/IconButton";
 
 interface Props extends Partial<IconButtonProps>{
   onClick?: any;

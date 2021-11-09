@@ -19,7 +19,7 @@ import { AppTheme } from "../../model/common/Theme";
 
 const styles = (theme: AppTheme) => createStyles({
   container: {
-    height: `calc(100vh - ${theme.spacing(14)}px)`
+    height: `calc(100vh - ${theme.spacing(14)})`
   },
   bgImage: {
     position: "fixed",

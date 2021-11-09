@@ -17,7 +17,7 @@ import { differenceInCalendarWeeks } from "date-fns";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import withTheme from "@mui/styles/withTheme";
-import green from "@mui/material/colors/green";
+import { green } from "@mui/material/colors";
 import Paper from "@mui/material/Paper";
 import Edit from "@mui/icons-material/Edit";
 import { CourseClassState } from "../../reducers";

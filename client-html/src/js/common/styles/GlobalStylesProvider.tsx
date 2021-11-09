@@ -7,7 +7,7 @@ import * as React from "react";
 import { alpha, darken } from '@mui/material/styles';
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { green, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
 import christmasHeaderBackground from "../../../images/beach-header.jpg";

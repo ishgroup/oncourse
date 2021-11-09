@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import withStyles from "@mui/styles/withStyles";
-import green from "@mui/material/colors/green";
+import { green } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import Clear from "@mui/icons-material/Clear";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";

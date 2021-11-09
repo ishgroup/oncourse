@@ -146,6 +146,7 @@ class FundingUploadComponent extends Component<Props, any> {
           <div className={classes.actionGroup}>
             <FormControl>
               <Select
+                variant="standard"
                 IconComponent={readOnly ? stubComponent : KeyboardArrowDown}
                 value={fundingUpload.status}
                 disableUnderline

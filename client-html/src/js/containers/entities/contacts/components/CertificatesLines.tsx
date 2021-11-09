@@ -5,7 +5,7 @@
 
 import React from "react";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";

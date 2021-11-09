@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
-import TreeView from "@mui/lab/TreeView/TreeView";
+import TreeView from "@mui/lab/TreeView";
 import IconButton from "@mui/material/IconButton";
 import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
-import TreeItem from "@mui/lab/TreeItem/TreeItem";
+import TreeItem from "@mui/lab/TreeItem";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";

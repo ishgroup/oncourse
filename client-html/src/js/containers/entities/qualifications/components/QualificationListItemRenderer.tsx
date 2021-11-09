@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from "react";
-import Typography from "@mui/material/Typography/Typography";
+import Typography from "@mui/material/Typography";
 import { Qualification } from "@api/model";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
 

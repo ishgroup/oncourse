@@ -15,7 +15,7 @@ import React, {
 import { change } from "redux-form";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import IconButton from "@mui/material/IconButton/IconButton";
+import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { makeStyles } from "@mui/styles";
 import {

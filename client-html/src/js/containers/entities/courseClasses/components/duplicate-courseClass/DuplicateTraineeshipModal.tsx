@@ -24,7 +24,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Account, ClassCost, CourseClassDuplicate, Tax } from "@api/model";
