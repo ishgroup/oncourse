@@ -148,7 +148,7 @@
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-24" style="data field" positionType="Float" x="300" y="2" width="240" height="22" uuid="509971e4-1795-4291-b8f0-07da701886ee"/>
 					<textElement textAlignment="Right" verticalAlignment="Top"/>
-					<textFieldExpression><![CDATA["Total duration: " + $F{courseClassTutor}.courseClass.classroomHours.toBigInteger().toString() + " h"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Total duration: " + $F{courseClassTutor}.courseClass.classroomHours.toPlainString() + " h"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-24" style="data field" positionType="Float" x="90" y="53" width="130" height="15" uuid="c55b6b7a-7467-4bb1-baaa-e49c80d9f0b0">

@@ -74,8 +74,8 @@
 	<field name="room.site.name" class="java.lang.String"/>
 	<field name="courseClass.code" class="java.lang.String"/>
 	<field name="courseClass.course.code" class="java.lang.String"/>
-	<field name="datasource.tutorRoles" class="net.sf.jasperreports.engine.JRDataSource"/>
-	<field name="subreport.ish.onCourse.tutorsSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<field name="datasource.sessionTutors" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="subreport.tas.LetterOfOfferRosterSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<sortField name="startDatetime"/>
 	<variable name="tutorNumber" class="java.math.BigDecimal"/>
 	<background>
@@ -155,22 +155,14 @@
 				<textElement verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$F{session}?.room.name]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-3" style="data field (day)" x="469" y="0" width="42" height="26" uuid="18667a79-7a93-4314-9d0b-a8277cf87f32">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="2" y="0" width="512" height="24">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
-				<textElement verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{session}?.payableDurationInHours.doubleValue().toString()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-3" style="data field (day)" x="427" y="0" width="42" height="26" uuid="910e242d-f39f-4e7c-961f-19b6f8c0fb83">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$F{session}?.durationInHours.doubleValue().toString()]]></textFieldExpression>
-			</textField>
+				<dataSourceExpression><![CDATA[$F{datasource.sessionTutors}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$F{subreport.tas.LetterOfOfferRosterSubreport}]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
