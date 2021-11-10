@@ -9,7 +9,6 @@
 import React from "react";
 import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { ServiceNSWVoucherTypes } from "../../../../../../model/automation/integrations/IntegrationsFields";
@@ -36,14 +35,14 @@ class NSWBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-        <FormField name="fields.voucher" label="Voucher type" type="select" items={ServiceNSWVoucherTypes} required fullWidth />
-        <FormField name="fields.chanelCode" label="Store channel code" type="text" required fullWidth />
-        <FormField name="fields.terminalId" label="POS terminal id" type="text" required fullWidth />
-        <FormField name="fields.programme" label="Programme" type="text" required fullWidth />
-        <FormField name="fields.apiKey" label="API key" type="password" required fullWidth />
+
+        <AppBarContent>
+          <FormField name="fields.voucher" label="Voucher type" type="select" items={ServiceNSWVoucherTypes} required fullWidth />
+          <FormField name="fields.chanelCode" label="Store channel code" type="text" required fullWidth />
+          <FormField name="fields.terminalId" label="POS terminal id" type="text" required fullWidth />
+          <FormField name="fields.programme" label="Programme" type="text" required fullWidth />
+          <FormField name="fields.apiKey" label="API key" type="password" required fullWidth />
+        </AppBarContent>
       </form>
     );
   }
