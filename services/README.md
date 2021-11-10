@@ -15,7 +15,7 @@ By default all existed Attendancies should be populated with values from related
 
 ###### **Important note - willow should not care about certain college angel version, if you feel such necessity - you might doing something wrong**
 
-##Schema changes
+## Schema changes
 1. always do willow schema changes first. Willow should always has actual data model. No matter if angel is not up to date yet
  - create nullable column via liquibase [common/cayenne-model/src/main/resources/liquibase.db.changelog.xml]()
  - release/deploy admin app to appply liquibase
@@ -96,7 +96,7 @@ like that:
 So now services app support old and new angel servers.
 
 
-###new replication version
+### new replication version
 In case of adding new entities to replication or adding new ports, you need to add ne replication version
 1. add version name here:
    [build.gradle](build.gradle)
@@ -123,7 +123,7 @@ ext {
 emuneration with new V26 item
 5. repeate 1-6 steps from **reuse current replication version** article.
 
-### implement new replication version for willow
+## implement new replication version for willow
 
 1. Pass through all steps from **new replication version** article
 2. run
