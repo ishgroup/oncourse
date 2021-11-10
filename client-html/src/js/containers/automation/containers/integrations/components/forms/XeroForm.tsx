@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import {
- change, getFormValues, initialize, reduxForm 
+  change, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
@@ -97,7 +97,7 @@ class XeroBaseForm extends React.Component<any, any> {
       `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${window.location.href}${values.id ? "" : `/${values.name}`}`,
       "_self"
     );
-  }
+  };
 
   onDisconnect = () => {
     const { dispatch } = this.props;
@@ -105,7 +105,7 @@ class XeroBaseForm extends React.Component<any, any> {
       hideConfig: true
     });
     dispatch(change("XeroForm", "fields.active", "false"));
-  }
+  };
 
   render() {
     const {

@@ -1,16 +1,14 @@
-import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
+import { withRouter } from "react-router-dom";
+import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import { Card, CardActions, CardContent } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import { withRouter } from "react-router-dom";
-import useMediaQuery from '@mui/material/useMediaQuery';
 import Button from "@mui/material/Button";
-import IntegrationDescription from "./components/IntegrationDescription";
-
 import * as IntegrationTypes from "../../../../model/automation/integrations/IntegrationTypes";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import IntegrationDescription from "./components/IntegrationDescription";
 import IntegrationImages from "./IntegrationImages";
-import AppBar from "../../../../common/components/layout/AppBar";
 import { getByType } from "./utils";
 
 const styles = theme => ({
@@ -27,7 +25,7 @@ const styles = theme => ({
 });
 
 const Integrations = React.memo<any>(({
- classes, history, sidebarWidth
+ classes, history
 }) => {
   const handleClick = useCallback(
     int => {
@@ -39,8 +37,13 @@ const Integrations = React.memo<any>(({
   const types = useMemo(() => Object.keys(IntegrationTypes).map(item => IntegrationTypes[item]), []);
 
   return (
-    <div className="appBarContainer p-3">
-      <AppBar title="Integrations" withDrawer sidebarWidth={sidebarWidth} />
+    <AppBarContainer
+      disableInteraction
+      hideSubmitButton
+      hideHelpMenu
+      noDrawer
+      title="Integrations"
+    >
       <Grid container columnSpacing={3} spacing={5}>
         {types.map((int, index: number) => (
           <Grid item xs={12} lg={6} key={int.type}>
@@ -73,7 +76,7 @@ const Integrations = React.memo<any>(({
           </Grid>
         ))}
       </Grid>
-    </div>
+    </AppBarContainer>
   );
 });
 

@@ -66,6 +66,7 @@ interface Props {
   disableInteraction?: boolean,
   opened?: boolean,
   fields?: any;
+  otherClasses?: any;
   titleGap?: number;
   truncateTitle?: boolean;
 }
@@ -77,12 +78,13 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     opened,
     fields,
     twoColumn,
+    otherClasses,
     titleGap = 51,
     truncateTitle,
     disableInteraction
   } = props;
 
-  const classes = useStyles();
+  const classes = { ...useStyles(), ...otherClasses };
 
   const wrapperRef = useRef<any>();
   const [onItemHover, setOnItemHover] = useState<boolean>(false);
