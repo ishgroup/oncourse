@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import { initialize, reduxForm } from "redux-form";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
 class LearnDashFormBase extends React.Component<any, any> {
@@ -34,18 +33,16 @@ class LearnDashFormBase extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        <FormField type="text" name="fields.baseUrl" label="Base url" fullWidth />
-        <FormField type="text" name="fields.userLogin" label="User login" fullWidth />
-        <FormField
-          type="password"
-          name="fields.userPassword"
-          label="User password"
-          fullWidth
-        />
+        <AppBarContent>
+          <FormField type="text" name="fields.baseUrl" label="Base url" fullWidth />
+          <FormField type="text" name="fields.userLogin" label="User login" fullWidth />
+          <FormField
+            type="password"
+            name="fields.userPassword"
+            label="User password"
+            fullWidth
+          />
+        </AppBarContent>
       </form>
     );
   }

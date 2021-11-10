@@ -8,7 +8,6 @@ import { initialize, reduxForm } from "redux-form";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
@@ -39,20 +38,20 @@ class MYOBBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-        <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
-        <FormField name="fields.user" label="User" type="text" fullWidth />
-        <FormField name="fields.password" type="password" label="Password" fullWidth />
 
-        <Typography variant="caption" component="div">
-          {configured ? configuredLabel : unconfiguredLabel}
-        </Typography>
+        <AppBarContent>
+          <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
+          <FormField name="fields.user" label="User" type="text" fullWidth />
+          <FormField name="fields.password" type="password" label="Password" fullWidth />
 
-        <a href="myobAuthAccess" className="link">
-          <Button variant="contained" className="mt-1">Configure</Button>
-        </a>
+          <Typography variant="caption" component="div">
+            {configured ? configuredLabel : unconfiguredLabel}
+          </Typography>
+
+          <a href="myobAuthAccess" className="link">
+            <Button variant="contained" className="mt-1">Configure</Button>
+          </a>
+        </AppBarContent>
       </form>
     );
   }
