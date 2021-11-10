@@ -13,7 +13,7 @@ By default all existed Attendancies should be populated with values from related
 `Attendance.startDate = Attendance.session.startDate
 `
 
-###### **Important note - willow should not care about certain college angel version, if you feel such necessity - you might doing something wrong**
+> **Important note - willow should not care about certain college angel version, if you feel such necessity - you might doing something wrong**
 
 ## Schema changes
 1. always do willow schema changes first. Willow should always has actual data model. No matter if angel is not up to date yet
@@ -51,9 +51,10 @@ Services app should be also deployed (anyway) since it guaranteed has changes of
 That is all. The willow end absalutelly up to date
 
 Now we need to implement sending new data from angel side
-###### **Important note - alway think about currenty deployed production apps after liquibase passed. They use same database**
-###### **so you can not drop/rename columns/tables in one go**
-###### **You need intermidiate step in this case, like deploying app with new schema**
+
+> **Important note - alway think about currenty deployed production apps after liquibase passed. They use same database**
+> **so you can not drop/rename columns/tables in one go**
+> **You need intermidiate step in this case, like deploying app with new schema**
 
 
 ## replication
