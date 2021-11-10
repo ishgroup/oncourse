@@ -1,4 +1,4 @@
-#Replication and data model upgrade
+# Replication and data model upgrade
 If we have a necessity to change schema (add more columns, move existing column to different table) on willow and angel.
 The algorithm below guarantee the safety migration of data and data model with no downtime and support back compatibility of old angel servers.
 simultaneously support work of old and new angel versions.
@@ -55,14 +55,14 @@ Now we need to implement sending new data from angel side
 ###### **You need intermidiate step in this case, like deploying app with new schema**
 
 
-##replication
+## replication
 
 Since we do not add new entities (just extend existing one) into replication and do not add new soap ports - new replication version is not really needed.
 We can reuse current version.
 
 So let's review both cases.
 
-###reuse current replication version
+### reuse current replication version
 
 1. add new field to replication stub here:
 
@@ -123,7 +123,7 @@ ext {
 emuneration with new V26 item
 5. repeate 1-6 steps from **reuse current replication version** article.
 
-###implement new replication version for willow
+### implement new replication version for willow
 
 1. Pass through all steps from **new replication version** article
 2. run
@@ -147,14 +147,14 @@ Remamber that you created new replication for exact purpose, this is exact time 
 7.run services app and verify by opening URL:
    [https://128.0.0.1:8090/services/v25/payment](https://secure-payment.oncourse.net.au/services/v25/payment)
 
-###implement new replication version for angel
+### implement new replication version for angel
 see 
 
 [https://github.com/ishgroup/oncourse-secret/blob/main/plugins/replication/README.md
 ](https://github.com/ishgroup/oncourse-secret/blob/main/plugins/replication/build.gradle)
 
 
-###remove support of old replication versions 
+### remove support of old replication versions 
 see 
 [build.gradle](build.gradle)
 ```
