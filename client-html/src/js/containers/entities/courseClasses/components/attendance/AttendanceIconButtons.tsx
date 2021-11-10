@@ -4,8 +4,8 @@
  */
 
 import React, { useMemo } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import withStyles from "@material-ui/core/styles/withStyles";
+import IconButton from "@mui/material/IconButton";
+import withStyles from "@mui/styles/withStyles";
 import { StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
 import AttendanceIcon from "./AttendanceIcon";
 

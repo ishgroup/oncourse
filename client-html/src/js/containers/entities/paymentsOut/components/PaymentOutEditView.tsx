@@ -7,7 +7,7 @@ import React, { useCallback } from "react";
 import { FieldArray, getFormInitialValues } from "redux-form";
 import { connect } from "react-redux";
 import { addDays, compareAsc, format } from "date-fns";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { PaymentMethod, PaymentOut } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
@@ -157,7 +157,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
 
   return (
     <div className="flex-column p-3 h-100">
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 6 : 12}>
           <Uneditable
             value={defaultContactName(values.payeeName)}
@@ -184,12 +184,12 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
           <Uneditable value={values.status} label="Status" />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={6}>
           <Uneditable value={getAccountById(accountItems, values.accountOut)} label="Account" />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
         <Grid item xs={twoColumn ? 2 : 6}>
           {Object.keys(values.chequeSummary).map(item => (
@@ -201,7 +201,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
           <Uneditable value={values.amount} money label="Amount" />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 2 : 6}>
           {datePayedDisabled
             ? <Uneditable value={values.datePayed} format={v => v && format(new Date(v), III_DD_MMM_YYYY)} label="Date paid" />

@@ -1,6 +1,6 @@
-import { Theme } from "@material-ui/core";
+import { Theme } from "@mui/material";
+import { Palette, SimplePaletteColorOptions, TypeText } from '@mui/material/styles/createPalette';
 import { StringKeyObject } from "./CommomObjects";
-import { SimplePaletteColorOptions } from "@material-ui/core/styles/createPalette";
 
 enum ThemeValuesEnum {
   "default",
@@ -21,12 +21,16 @@ export const ChristmasThemeKey: ThemeValues = "christmas";
 
 type ColorGetter = string | ((props: {}) => string);
 
+type TextExtended = TypeText & { primaryEditable: string; hint: string; };
+
 export interface AppTheme extends Theme {
   heading: StringKeyObject<ColorGetter>;
   blog: StringKeyObject<StringKeyObject<ColorGetter>>;
   share: StringKeyObject<StringKeyObject<ColorGetter>>;
   statistics: StringKeyObject<StringKeyObject<ColorGetter>>;
+  appBar: StringKeyObject<StringKeyObject<ColorGetter>>;
   appBarButton: StringKeyObject<StringKeyObject<ColorGetter>>;
   tabList: StringKeyObject<StringKeyObject<ColorGetter>>;
   table: StringKeyObject<SimplePaletteColorOptions>;
+  palette: Palette & { text: TextExtended };
 }

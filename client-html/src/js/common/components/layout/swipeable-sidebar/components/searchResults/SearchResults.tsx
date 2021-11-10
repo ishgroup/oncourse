@@ -6,11 +6,11 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/styles/createStyles";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import CircularProgress from "@mui/material/CircularProgress";
 import { getHighlightedPartLabel } from "../../../../../utils/formatting";
 import { getEntityDisplayName } from "../../../../../utils/getEntityDisplayName";
 import { State } from "../../../../../../reducers/state";

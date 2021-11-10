@@ -6,12 +6,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
 import {
  arrayInsert, change, FieldArray, initialize, WrappedFieldArrayProps
 } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { ClassCost, CourseClassTutor, DefinedTutorRole } from "@api/model";
 
 import { EditViewProps } from "../../../../../model/common/ListView";
@@ -30,6 +28,7 @@ import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import { setCourseClassBudgetModalOpened } from "../../actions";
 import history from "../../../../../constants/History";
 import uniqid from "../../../../../common/utils/uniqid";
+import AddIcon from "../../../../../common/components/icons/AddIcon";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -202,12 +201,10 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
     );
 
     return (
-      <Grid container className="pl-3 pr-3 pb-3">
+      <Grid container columnSpacing={3} className="pl-3 pr-3 pb-3">
         <Grid item xs={12} className="centeredFlex">
           <div className="heading">Tutors</div>
-          <IconButton onClick={onAddTutor}>
-            <AddCircle className="addButtonColor" />
-          </IconButton>
+          <AddIcon onClick={onAddTutor} />
         </Grid>
 
         <Grid item xs={twoColumn ? 6 : 12}>

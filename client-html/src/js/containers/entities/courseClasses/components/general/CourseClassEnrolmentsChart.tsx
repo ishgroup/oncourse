@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from "@mui/styles/makeStyles";
 import clsx from "clsx";
 import React, {
  useCallback, useEffect, useMemo, useRef, useState
@@ -14,12 +14,12 @@ import {
  ResponsiveContainer, Area, AreaChart, XAxis, ReferenceLine, Tooltip
 } from "recharts";
 import { differenceInCalendarWeeks } from "date-fns";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import withTheme from "@material-ui/core/styles/withTheme";
-import green from "@material-ui/core/colors/green";
-import Paper from "@material-ui/core/Paper";
-import Edit from "@material-ui/icons/Edit";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import withTheme from "@mui/styles/withTheme";
+import { green } from "@mui/material/colors";
+import Paper from "@mui/material/Paper";
+import Edit from "@mui/icons-material/Edit";
 import { CourseClassState } from "../../reducers";
 import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
@@ -145,7 +145,7 @@ const CustomizedAxisTick = ({
   </g>
 );
 
-const useStules = makeStyles({
+const useStyles = makeStyles(() => ({
   showAllWeeks: show => show ? { maxWidth: "unset" } : { maxWidth: "400px" },
   hasOverlay: {
     opacity: 0.2,
@@ -161,7 +161,7 @@ const useStules = makeStyles({
     width: "100%",
     justifyContent: "center"
   }
-})
+}));
 
 const CourseClassEnrolmentsChart = React.memo<Props>(
   ({
@@ -191,7 +191,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     const maxLabelEl = useRef<SVGAElement>();
     const minLabelEl = useRef<SVGAElement>();
 
-    const classes = useStules(showAllWeeks);
+    const classes = useStyles(showAllWeeks);
 
     const clearData = useCallback(() => {
       setData(prev => prev.map(({ week }) => ({ week, enrolments: 0, value: 0 })));

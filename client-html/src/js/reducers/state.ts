@@ -57,7 +57,6 @@ export interface State {
   countries: Country[];
   languages: Language[];
   fetch: Fetch;
-  lead: {},
   enums: any;
   form: any;
   drawer: Drawer;

@@ -5,27 +5,27 @@
 
 import React, { useCallback, useState } from "react";
 import clsx from "clsx";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import {
   reduxForm, change, getFormValues
 } from "redux-form";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import Collapse from "@material-ui/core/Collapse";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import Collapse from "@mui/material/Collapse";
 import { format as formatDate } from "date-fns";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { PayrollRequest, WagesToProcess } from "@api/model";
 import { connect } from "react-redux";
+import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { openInternalLink } from "../../../../common/utils/links";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import Button from "../../../../common/components/buttons/Button";
 import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
 
 export const PAYSLIP_GENERATE_FORM = "PayslipGenerateForm";
@@ -134,11 +134,12 @@ const PayslipGenerateDialog: React.FC<Props> = ({
         </DialogContent>
 
         <DialogActions className="pr-2 pb-2">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
 
-          <Button
+          <LoadingButton
+            variant="contained"
             color="primary"
             className="payslipButton"
             type="submit"
@@ -146,7 +147,7 @@ const PayslipGenerateDialog: React.FC<Props> = ({
             disabled={invalid || !preparedWages.totalWagesCount}
           >
             Generate
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </Dialog>

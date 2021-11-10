@@ -3,11 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import * as React from "react";
 import { connect } from "react-redux";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
-import Button from "../../../../../../common/components/buttons/Button";
+import {
+ change, getFormValues, initialize, reduxForm 
+} from "redux-form";
+
+import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
@@ -83,12 +86,13 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
 
         <div>
           <Button
-            text="Get activation code"
             variant="contained"
             className="mt-1"
             onClick={this.getToken}
             disabled={!hasIdAndSecret || (values && values.fields.activationCode)}
-          />
+          >
+            Get activation code
+          </Button>
         </div>
 
         {!hasIdAndSecret

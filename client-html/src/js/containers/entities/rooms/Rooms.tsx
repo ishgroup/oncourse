@@ -104,7 +104,8 @@ class Rooms extends React.Component<any, any> {
           editViewProps={{
             manualLink,
             asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"]
+            asyncBlurFields: ["notes[].message"],
+            hideTitle: true
           }}
           updateTableModel={updateTableModel}
           CogwheelAdornment={BulkEditCogwheelOption}

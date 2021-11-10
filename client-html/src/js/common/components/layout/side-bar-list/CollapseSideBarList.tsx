@@ -6,22 +6,23 @@
 import React, {
  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import { AddCircle, ExpandMore } from "@material-ui/icons";
-import createStyles from "@material-ui/core/styles/createStyles";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import { ExpandMore } from "@mui/icons-material";
+import createStyles from "@mui/styles/createStyles";
 import debounce from "lodash.debounce";
 import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
 import { latestActivityStorageHandler } from "../../../utils/storage";
+import AddIcon from "../../icons/AddIcon";
 import CollapseSideBarListItem from "./CollapseSideBarListItem";
 
 const styles = theme => createStyles({
     listItemPadding: {
-      padding: `${theme.spacing(1) - 4}px ${theme.spacing(3)}px`,
+      padding: `${theme.spacing(0.5)} ${theme.spacing(3)}`,
       minHeight: "unset"
     },
     listHeadingPadding: {
@@ -49,7 +50,7 @@ const styles = theme => createStyles({
     },
     collapseButton: {
       position: "absolute",
-      bottom: theme.spacing(-0.5),
+      bottom: `-${theme.spacing(0.5)}`,
       height: theme.spacing(3),
       width: theme.spacing(3),
       transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
@@ -202,9 +203,7 @@ const CollapseMenuListBase = React.memo<Props>(
 
           {(plusIconPath || plusIconFullPath || customPlusHandler) && (
             <div className={classes.plusIconContainer}>
-              <IconButton className="p-1" onClick={onClickPlus}>
-                <AddCircle className="addButtonColor" width={20} />
-              </IconButton>
+              <AddIcon className="p-1" onClick={onClickPlus} />
             </div>
           )}
         </ListItem>

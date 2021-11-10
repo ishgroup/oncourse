@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import { VerticalSplit, ViewHeadline } from "@material-ui/icons";
-import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import { VerticalSplit, ViewHeadline } from "@mui/icons-material";
+import Tooltip from "@mui/material/Tooltip";
 import clsx from "clsx";
 
 export default ({

@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback } from "react";
-import Dialog from "@material-ui/core/Dialog";
+import Dialog from "@mui/material/Dialog";
 import { AvetmissExportSettings } from "@api/model";
 import AvetmissExportForm from "../../containers/AvetmissExportForm";
 import Content from "../../../../common/components/layout/Content";

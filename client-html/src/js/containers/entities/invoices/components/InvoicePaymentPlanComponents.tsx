@@ -5,14 +5,14 @@
 
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { InvoicePaymentPlan, Currency } from "@api/model";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import { change } from "redux-form";
 import { format, isBefore } from "date-fns";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { useHoverShowStyles } from "../../../../common/styles/hooks";
 import { openInternalLink } from "../../../../common/utils/links";

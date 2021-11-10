@@ -5,8 +5,9 @@
 
 import React, { ComponentClass } from "react";
 import {
- withStyles, FormControlLabel, FormGroup, Typography, Grid, Paper, Collapse
-} from "@material-ui/core";
+ FormControlLabel, FormGroup, Typography, Grid, Paper, Collapse
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 import {
   Form, getFormValues, startAsyncValidation, initialize, reduxForm, change
@@ -15,10 +16,9 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { format as formatDate } from "date-fns";
-import IconPhoneLocked from "@material-ui/icons/ScreenLockPortrait";
+import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
 import debounce from "lodash.debounce";
 import { User, UserRole } from "@api/model";
-import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
@@ -36,6 +36,7 @@ import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import Button from "@mui/material/Button";
 
 const manualUrl = getManualLink("users");
 
@@ -284,7 +285,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
         <Message opened={showMessage} isSuccess text={messageText} clearMessage={this.clearMessage} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography color="inherit" className="appHeaderFontSize pl-2" noWrap>
                 {values.email ? values.email : "No email"}
@@ -317,7 +318,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
           }}
         />
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={5} lg={5} xl={3}>
             <FormField
               type="text"

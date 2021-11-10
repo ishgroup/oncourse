@@ -1,7 +1,8 @@
 import React from "react";
 import { Contact } from "@api/model";
 import { FieldArray } from "redux-form";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface ContactsDocumentsProps {
@@ -19,7 +20,11 @@ const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
   } = props;
 
   return values ? (
-    <Grid container className="p-3">
+    <Grid container columnSpacing={3} className="pl-3 pr-3">
+      <Grid item xs={12}>
+        <Divider className="mb-3 mt-2" />
+      </Grid>
+      
       <FieldArray
         name="documents"
         label="Documents"
@@ -34,6 +39,10 @@ const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
         showConfirm={showConfirm}
         rerenderOnEveryChange
       />
+
+      <Grid item xs={12}>
+        <Divider className="mb-2 mt-3" />
+      </Grid>
     </Grid>
   ) : null;
 };

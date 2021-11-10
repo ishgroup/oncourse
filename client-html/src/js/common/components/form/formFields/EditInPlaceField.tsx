@@ -5,28 +5,17 @@
  */
 
 /**
- * Wrapper component for Material Select and Text Field with edit in place functional
+ * Wrapper component for Material Select and Text Field with edit in plaxce functional
  * */
 
 import React from "react";
 import { change } from "redux-form";
 import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
-import Edit from "@material-ui/icons/Edit";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import MenuItem from "@material-ui/core/MenuItem";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import CreateIcon from '@material-ui/icons/Create';
-import ListItemText from "@material-ui/core/ListItemText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { InputAdornment } from "@material-ui/core";
+import { createStyles, withStyles } from "@mui/styles";
+import { Edit, ExpandMore } from "@mui/icons-material";
+import {
+ ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem, ListItemText
+} from "@mui/material";
 
 const styles = theme => createStyles({
   inputEndAdornment: {
@@ -645,7 +634,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             selected: classes.emptySelect
           }}
         >
-          <span className={classes.placeholderContent}>{placeholder || "No value"}</span>
+          <span className={clsx(classes.placeholderContent,fieldClasses.placeholder)}>{placeholder || "No value"}</span>
         </MenuItem>,
         ...selectItems || []
       ];
@@ -711,9 +700,10 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
           })}
         >
           <FormControl
-            error={invalid}
-            margin="none"
             fullWidth
+            error={invalid}
+            variant="standard"
+            margin="none"
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
               [classes.bottomMargin]: listSpacing && formatting !== "inline",
@@ -725,7 +715,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               label && (
               <InputLabel
                 classes={{
-                  root: clsx(classes.label, !label && classes.labelTopZeroOffset),
+                  root: clsx(fieldClasses.label, classes.label, !label && classes.labelTopZeroOffset),
                   shrink: classes.labelShrink
                 }}
                 {...InputLabelProps}
@@ -749,8 +739,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                         : input.value || ""}
                     inputRef={this.setInputNode}
                     classes={{
-                      root: clsx(classes.textFieldBorderModified, fieldClasses.text),
-                      select: clsx(isInline && classes.inlineSelect),
+                      root: classes.textFieldBorderModified,
+                      select: clsx(fieldClasses.text, isInline && classes.inlineSelect),
                       // @ts-ignore
                       underline: fieldClasses.underline
                     }}
@@ -762,6 +752,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     onClose={this.onSelectClose}
                     onChange={this.onSelectChange}
                     IconComponent={() => (!disabled && <ExpandMore className={classes.selectIconInput} onClick={this.onFocus} />)}
+                    MenuProps={{
+                      anchorOrigin: { vertical: 'top', horizontal: 'left' }
+                    }}
                     displayEmpty
                   >
                     {selectItems}
@@ -789,7 +782,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       })}
                       onClick={() => this.inputNode.focus()}
                     >
-                      <CreateIcon />
+                      <Edit />
                     </InputAdornment>
                   )}
                 />

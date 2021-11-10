@@ -4,18 +4,18 @@
  */
 
 import * as React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import green from "@material-ui/core/colors/green";
-import IconButton from "@material-ui/core/IconButton";
-import Clear from "@material-ui/icons/Clear";
-import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
-import BookmarkTwoTone from "@material-ui/icons/BookmarkTwoTone";
-import createStyles from "@material-ui/core/styles/createStyles";
-import HelpOutline from "@material-ui/icons/HelpOutline";
+import withStyles from "@mui/styles/withStyles";
+import { green } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
+import Clear from "@mui/icons-material/Clear";
+import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
+import BookmarkTwoTone from "@mui/icons-material/BookmarkTwoTone";
+import createStyles from "@mui/styles/createStyles";
+import HelpOutline from "@mui/icons-material/HelpOutline";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { darken } from "@material-ui/core/styles";
+import { darken } from "@mui/material/styles";
 import debounce from "lodash.debounce";
 import { CustomFieldType } from "@api/model";
 import { getAllMenuTags } from "../../../../../../containers/tags/utils";
@@ -44,7 +44,7 @@ export const styles = (theme: AppTheme) => createStyles({
       zIndex: 1,
       top: "50%",
       backgroundColor:
-        theme.palette.type === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4)
+        theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4)
     },
     search: {
       width: "100%",

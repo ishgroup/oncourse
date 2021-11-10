@@ -10,16 +10,15 @@ import React, { useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { utcToZonedTime } from "date-fns-tz";
-import CloseIcon from "@material-ui/icons/Close";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Typography from "@material-ui/core/Typography";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from '@mui/styles';
+import { alpha } from '@mui/material/styles';
 import clsx from "clsx";
-import ListItemText from "@material-ui/core/ListItemText";
-import Box from "@material-ui/core/Box";
+import ListItemText from "@mui/material/ListItemText";
+import Box from "@mui/material/Box";
 import { format as formatDate } from "date-fns";
-import ListItem from "@material-ui/core/ListItem";
+import ListItem from "@mui/material/ListItem";
 import { State } from "../../../reducers/state";
 import { AppTheme } from "../../../model/common/Theme";
 import { D_MMM_YYYY } from "../../utils/dates/format";
@@ -39,7 +38,7 @@ const styles = (theme: AppTheme) => createStyles({
     padding: theme.spacing(3),
     borderRadius: theme.spacing(1),
     border: "2px solid",
-    borderColor: fade(theme.palette.text.disabled, 0.1),
+    borderColor: alpha(theme.palette.text.disabled, 0.1),
     "&:not(:last-child)": {
       marginBottom: theme.spacing(2),
     },
@@ -52,8 +51,8 @@ const styles = (theme: AppTheme) => createStyles({
     padding: theme.spacing(0.5),
     background: theme.palette.background.paper,
     border: "2px solid",
-    color: fade(theme.palette.text.disabled, 0.3),
-    borderColor: fade(theme.palette.text.disabled, 0.1),
+    color: alpha(theme.palette.text.disabled, 0.3),
+    borderColor: alpha(theme.palette.text.disabled, 0.1),
     width: "30px",
     height: "30px",
     "&:hover": {

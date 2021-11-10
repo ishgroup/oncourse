@@ -6,11 +6,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { arrayInsert, arrayRemove, change } from "redux-form";
 import { CourseClassPaymentPlan, Tax } from "@api/model";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Typography from "@mui/material/Typography";
 import { addDays, format } from "date-fns";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import {
@@ -27,6 +26,7 @@ import { BudgetCostModalContentProps } from "../../../../../../model/entities/Co
 import { stubFunction } from "../../../../../../common/utils/common";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
+import AddIcon from "../../../../../../common/components/icons/AddIcon";
 
 const StudentFeePaymentPlan: React.FC<any> = ({
  index, item, onDelete, onBlur, classStart
@@ -201,7 +201,7 @@ const StudentFeeContent: React.FC<Props> = ({
   }, [values.paymentPlan, form, namePrefix]);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={3}>
         <FormField type="text" name="description" label="Invoice line title" fullWidth />
       </Grid>
@@ -243,11 +243,9 @@ const StudentFeeContent: React.FC<Props> = ({
 
       <Grid item xs={12} className="centeredFlex">
         <div className="heading">Payment plans</div>
-        <IconButton onClick={addPaymentPlan}>
-          <AddCircle className="addButtonColor" />
-        </IconButton>
+        <AddIcon onClick={addPaymentPlan} />
       </Grid>
-      <Grid container item xs={6}>
+      <Grid container columnSpacing={3} item xs={6}>
         {values.paymentPlan.map((item, index) => {
           if (item.dayOffset === null) {
             return null;
@@ -266,7 +264,7 @@ const StudentFeeContent: React.FC<Props> = ({
         })}
       </Grid>
 
-      <Grid container item xs={12} className="pt-2">
+      <Grid container columnSpacing={3} item xs={12} className="pt-2">
         <Grid item xs={3} className="centeredFlex pt-1 summaryTopBorder">
           <Typography variant="subtitle2">{totalLabel}</Typography>
         </Grid>

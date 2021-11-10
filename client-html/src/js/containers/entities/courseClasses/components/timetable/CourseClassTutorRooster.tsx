@@ -11,21 +11,25 @@ import React, {
 } from "react";
 import {
   Collapse,
-  FormControl, FormHelperText, makeStyles, Typography, Select
-} from "@material-ui/core";
+  FormControl, 
+  FormHelperText, 
+  Typography, 
+  Select,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem
+} from "@mui/material";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import AddCircle from "@mui/icons-material/AddCircle";
 import { format, isPast } from "date-fns";
 import { Field, WrappedFieldProps } from "redux-form";
 import { ClashType, SessionWarning } from "@api/model";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import OpenInNew from "@material-ui/icons/OpenInNew";
-import ChatIcon from '@material-ui/icons/Chat';
-import Grid from "@material-ui/core/Grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import OpenInNew from "@mui/icons-material/OpenInNew";
+import ChatIcon from '@mui/icons-material/Chat';
+import { makeStyles } from "@mui/styles";
 import { defaultContactName } from "../../../contacts/utils";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import { TimetableSession } from "../../../../../model/timetable";
@@ -35,9 +39,10 @@ import { formatDurationMinutes } from "../../../../../common/utils/dates/formatS
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { H_MMAAA } from "../../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../../common/utils/links";
-import { appendTimezone, appendTimezoneToUTC } from "../../../../../common/utils/dates/formatTimezone";
+import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import { AppTheme } from "../../../../../model/common/Theme";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: AppTheme) => ({
   tutorItem: {
     "&:hover $tutorItemActions": {
       visibility: 'visible'
@@ -75,6 +80,7 @@ const RoosterStatuses = ({
    className
 }: StatusesProps) => (
   <Select
+    variant="standard"
     value={value}
     onChange={onChange}
     className={className}

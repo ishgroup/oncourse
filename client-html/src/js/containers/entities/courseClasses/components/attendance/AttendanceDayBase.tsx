@@ -5,13 +5,13 @@
 
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@mui/styles";
 import { AttendanceType } from "@api/model";
-import Launch from "@material-ui/icons/Launch";
-import IconButton from "@material-ui/core/IconButton";
+import Launch from "@mui/icons-material/Launch";
+import IconButton from "@mui/material/IconButton";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import { AttandanceStepItem } from "../../../../../model/entities/CourseClass";
 import { AppTheme } from "../../../../../model/common/Theme";

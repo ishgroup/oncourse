@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import PlayArrow from "@material-ui/icons/PlayArrow";
+import PlayArrow from "@mui/icons-material/PlayArrow";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, initialize, InjectedFormProps } from "redux-form";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import FileCopy from "@material-ui/icons/FileCopy";
-import Grid from "@material-ui/core/Grid/Grid";
-import Grow from "@material-ui/core/Grow/Grow";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import IconButton from "@material-ui/core/IconButton/IconButton";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import FileCopy from "@mui/icons-material/FileCopy";
+import Grid from "@mui/material/Grid";
+import Grow from "@mui/material/Grow";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 import { ImportModel } from "@api/model";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
@@ -214,7 +214,7 @@ const ImportTemplatesForm = React.memo<Props>(
             />
           </CustomAppBar>
 
-          <Grid container className="p-3 appBarContainer">
+          <Grid container columnSpacing={3} className="p-3 appBarContainer">
             <Grid item xs={9} className="pr-3">
               <ScriptCard
                 heading="Script"
@@ -292,7 +292,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   fullWidth
                 />
 
-                <Grid container>
+                <Grid container columnSpacing={3}>
                   <Grid item xs className="d-flex">
                     <div className="flex-fill">
                       <Typography variant="caption" color="textSecondary">

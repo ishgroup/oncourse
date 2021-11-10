@@ -7,16 +7,16 @@
  */
 
 import React from "react";
-import { ButtonBase, IconButton, Typography } from "@material-ui/core";
+import { ButtonBase, IconButton, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeAppStyles } from "../../../../../common/styles/makeStyles";
 
 interface AssessmentSubmissionIconButtonProps {
   onClick?: any;
   grade?: string;
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   iconGrey: {
     color: "#d4d4d4"
   },
@@ -33,7 +33,7 @@ const GradeButton: React.FC<AssessmentSubmissionIconButtonProps> = (
    grade
  }
 ) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return grade ? (
     <ButtonBase className="p-0" onClick={onClick}>

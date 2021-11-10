@@ -4,8 +4,8 @@
  */
 
 import React, { useEffect, useMemo } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Help from "@material-ui/icons/Help";
+import IconButton from "@mui/material/IconButton";
+import Help from "@mui/icons-material/Help";
 import * as Entities from "@aql/queryLanguageModel";
 import { change } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";

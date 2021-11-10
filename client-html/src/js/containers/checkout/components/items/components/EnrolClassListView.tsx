@@ -5,15 +5,15 @@
 import { isBefore } from "date-fns";
 import React from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Typography from "@material-ui/core/Typography";
-import ListItem from "@material-ui/core/ListItem";
-import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
-import Button from "@material-ui/core/Button";
-import { Radio } from "@material-ui/core";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Typography from "@mui/material/Typography";
+import ListItem from "@mui/material/ListItem";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import Button from "@mui/material/Button";
+import { Radio } from "@mui/material";
 import { prefixer } from "../../../../../common/styles/mixins/prefixer";
 import { filterPastClasses } from "../../../utils";
 import { AppTheme } from "../../../../../model/common/Theme";
@@ -146,7 +146,7 @@ const EnrolClassListView = React.memo<any>(props => {
                           className={clsx("text-left", classes.sessionButton)}
                           disabled={isSelected || isTransfered}
                         >
-                          <Grid container>
+                          <Grid container columnSpacing={3}>
                             <Grid item xs={1}>
                               <Radio color="primary" checked={isSelected} />
                             </Grid>
@@ -162,7 +162,7 @@ const EnrolClassListView = React.memo<any>(props => {
                               />
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                              <Grid container>
+                              <Grid container columnSpacing={3}>
                                 <Grid item xs={6}>
                                   <Typography component="div">
                                     {isTraineeship ? "1 place" : `${s.placesLeft} place${s.placesLeft > 1 ? "s" : ""}`}

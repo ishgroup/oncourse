@@ -4,18 +4,19 @@
  */
 
 import React from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import { Application } from "@api/model";
 import { Dispatch } from "redux";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import ApplicationGeneral from "./ApplicationGeneral";
 import ApplicationDocuments from "./ApplicationDocuments";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const styles = theme => createStyles({
   documentsRoot: {
-    padding: theme.spacing(0, 3, 9, 3)
+    padding: theme.spacing(3)
   }
 });
 
@@ -34,23 +35,7 @@ const items: TabsListItem[] = [
   }
 ];
 
-interface ApplicationEditViewProps {
-  values?: Application;
-  isNew?: boolean;
-  isNested?: boolean;
-  classes?: any;
-  dispatch?: Dispatch<any>;
-  dirty?: boolean;
-  form?: string;
-  nestedIndex?: number;
-  rootEntity?: string;
-  twoColumn?: boolean;
-  showConfirm?: any;
-  openNestedEditView?: any;
-  manualLink?: string;
-}
-
-const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
+const ApplicationEditView: React.FC<EditViewProps<Application> & { classes: any }> = props => {
   const {
     values,
     isNew,
@@ -64,7 +49,8 @@ const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
     twoColumn,
     showConfirm,
     openNestedEditView,
-    manualLink
+    manualLink,
+    invalid
   } = props;
 
   return (
@@ -83,7 +69,8 @@ const ApplicationEditView: React.FC<ApplicationEditViewProps> = props => {
         twoColumn,
         showConfirm,
         openNestedEditView,
-        manualLink
+        manualLink,
+        invalid
       }}
     />
   );

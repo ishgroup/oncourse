@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import {
  arrayInsert, arrayRemove, change, initialize
 } from "redux-form";
@@ -12,8 +12,8 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { Account, Currency, Tag, Tax } from "@api/model";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { addDays } from "date-fns";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
@@ -35,7 +35,6 @@ import { setSelectedContact } from "../actions";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { usePrevious } from "../../../../common/utils/hooks";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -278,7 +277,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
   }, [values.id]);
 
   return (
-    <Grid container className="p-3 saveButtonTableOffset defaultBackgroundColor">
+    <Grid container columnSpacing={3} rowSpacing={2} className="p-3 saveButtonTableOffset defaultBackgroundColor">
       <Grid item xs={12}>
         <FormField
           type="tags"

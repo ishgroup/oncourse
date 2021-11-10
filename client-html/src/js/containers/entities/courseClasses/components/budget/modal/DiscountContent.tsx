@@ -4,12 +4,12 @@
  */
 
 import React, { useCallback, useMemo, useState } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { addDays, format } from "date-fns";
-import IconButton from "@material-ui/core/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
 import { Discount, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
@@ -182,7 +182,7 @@ const DiscountContent: React.FC<Props> = ({
   }, [classFee, taxOnDiscount, values.courseClassDiscount.discount.rounding]);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={4} className="pr-1">
         <Uneditable
           value={

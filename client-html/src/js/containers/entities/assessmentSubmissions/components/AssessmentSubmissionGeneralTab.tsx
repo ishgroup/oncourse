@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { FormControlLabel, Grid } from "@material-ui/core";
+import { FormControlLabel, Grid } from "@mui/material";
 import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
@@ -58,7 +58,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
   };
 
   return (
-    <Grid container className="pt-3 pl-3 pr-3">
+    <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
           label="Student name"
@@ -87,7 +87,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
         />
       </Grid>
 
-      <Grid container className="pb-2">
+      <Grid container columnSpacing={3} className="pb-2">
         <Grid item xs={twoColumn ? 4 : 12} className="d-flex align-items-center">
           <FormControlLabel
             className="checkbox"
@@ -117,7 +117,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
         </Grid>
       </Grid>
 
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
             label="Submitted on"

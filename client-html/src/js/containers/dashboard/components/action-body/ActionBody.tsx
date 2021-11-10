@@ -5,9 +5,9 @@
 
 import React from "react";
 import clsx from "clsx";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Grid from "@mui/material/Grid";
 import { PreferenceEnum } from "@api/model";
 import { AppTheme } from "../../../../model/common/Theme";
 import ResizableWrapper from "../../../../common/components/layout/resizable/ResizableWrapper";
@@ -111,7 +111,7 @@ class ActionBody extends React.PureComponent<Props, any> {
     const { statisticsColumnWidth } = this.state;
 
     return (
-      <Grid container justify="flex-end" wrap="nowrap" className={classes.root}>
+      <Grid container wrap="nowrap" className={classes.root}>
         <ResizableWrapper
           minWidth="20%"
           maxWidth="60%"
@@ -127,7 +127,10 @@ class ActionBody extends React.PureComponent<Props, any> {
         <Grid
           item
           xs
-          className={clsx(classes.rightSideBar, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")}
+          className={clsx(
+            classes.rightSideBar,
+            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")
+          }
         >
           <NewsRender />
         </Grid>

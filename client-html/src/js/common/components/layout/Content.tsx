@@ -3,14 +3,14 @@
  **/
 
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 
 const styles: any = theme => ({
   content: {
     backgroundColor: theme.palette.background.default,
     width: "100%",
     padding: theme.spacing(3),
-    height: `calc(100% - ${theme.spacing(8)}px)`,
+    height: `calc(100% - ${theme.spacing(8)})`,
     marginTop: theme.spacing(8),
     "overflow-y": "auto"
   }

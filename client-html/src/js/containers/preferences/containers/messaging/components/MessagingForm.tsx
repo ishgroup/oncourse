@@ -4,18 +4,17 @@
  */
 
 import * as React from "react";
-import { FormControlLabel } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import { ExitToApp } from "@material-ui/icons";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import { FormControlLabel } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Hidden from "@mui/material/Hidden";
+import { ExitToApp } from "@mui/icons-material";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import {
   Form, reduxForm, initialize, getFormValues
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
-import Button from "../../../../../common/components/buttons/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
@@ -30,6 +29,7 @@ import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu
 import DynamicText from "./DynamicText";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import Button from "@mui/material/Button";
 
 const manualUrl = getManualLink("generalPrefs_messaging");
 
@@ -82,7 +82,7 @@ class MessagingBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 Messaging
@@ -111,7 +111,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           Outgoing Emails
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={5} lg={4}>
             <FormField
               type="text"
@@ -157,12 +157,12 @@ class MessagingBaseForm extends React.Component<any, any> {
                 variant="text"
                 className={classes.subheadingButton}
                 onClick={() => openInternalLink("/message?filter=@Email&search=messagePersons.status is QUEUED")}
-                rightIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
+                endIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
               />
             </Typography>
           </Grid>
 
-          <Grid container spacing={5}>
+          <Grid container columnSpacing={3} spacing={5}>
             <Grid item xs={12} lg={8}>
               <Divider />
             </Grid>
@@ -211,7 +211,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           </Grid>
         </Grid>
 
-        <Grid container className="mb-1">
+        <Grid container columnSpacing={3} className="mb-1">
           <Grid item xs={12} sm={5} lg={4}>
             <FormField
               type="text"
@@ -236,7 +236,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           </Grid>
         </Grid>
 
-        <Grid container spacing={5} className="mb-1">
+        <Grid container columnSpacing={3} spacing={5} className="mb-1">
           <Grid item xs={12} lg={8}>
             <Divider />
           </Grid>
@@ -246,7 +246,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           SMS
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={5} lg={4}>
             <Typography variant="subtitle1" className="centeredFlex">
               <DynamicText defaultValue="0" text=" SMS queued" value={smsCount} function={smsQueued} />
@@ -255,7 +255,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                 variant="text"
                 className={classes.subheadingButton}
                 onClick={() => openInternalLink("/message?filter=@SMS&search=messagePersons.status is QUEUED")}
-                rightIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
+                endIcon={() => <ExitToApp color="secondary" className={classes.buttonIcon} />}
               />
             </Typography>
           </Grid>

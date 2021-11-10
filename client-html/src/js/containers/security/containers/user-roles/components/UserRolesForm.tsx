@@ -4,8 +4,8 @@
  */
 
 import React, { ComponentClass } from "react";
-import { Grid } from "@material-ui/core/";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import { Grid } from "@mui/material/";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import { withRouter } from "react-router";
 import {
   Form, getFormValues, initialize, reduxForm
@@ -17,7 +17,6 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import Categories from "../../../../../model/user-roles/index";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import Button from "../../../../../common/components/buttons/Button";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import UserRolePreference from "./UserRolePreference";
@@ -144,9 +143,9 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
         {!this.disableConfirm && !submitSucceeded && dirty && <RouteChangeConfirm form={form} when={dirty && hasLicense} />}
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <CustomAppBar>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={12} className="centeredFlex">
                 <FormField
                   type="headerText"

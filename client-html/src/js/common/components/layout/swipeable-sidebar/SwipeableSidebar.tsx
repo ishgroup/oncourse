@@ -7,9 +7,10 @@ import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { darken, createStyles, withStyles } from "@material-ui/core/styles";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import Divider from "@material-ui/core/Divider";
+import { createStyles, withStyles } from "@mui/styles";
+import { darken } from "@mui/material/styles";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Divider from "@mui/material/Divider";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import { getDashboardCategories, getDashboardSearch, getFavoriteScripts } from "../../../../containers/dashboard/actions";
@@ -39,7 +40,7 @@ const styles = (theme: AppTheme) =>
     },
     appBar: {
       backgroundColor:
-        theme.palette.type === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4)
+        theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4)
     },
     searchInput: {
       backgroundColor: theme.palette.background.default,

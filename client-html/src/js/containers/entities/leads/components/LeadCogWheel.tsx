@@ -8,7 +8,7 @@
 
 import React, { memo, useCallback, useMemo } from "react";
 import { connect } from "react-redux";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 

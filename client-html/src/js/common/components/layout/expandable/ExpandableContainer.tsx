@@ -4,15 +4,16 @@
  */
 
 import React, {
- useCallback, useRef, useEffect, useMemo 
+ useCallback, useRef, useMemo
 } from "react";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import AddCircle from "@material-ui/icons/AddCircle";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
+import AddIcon from "../../icons/AddIcon";
+import Divider from "@mui/material/Divider";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -38,6 +39,7 @@ interface Props {
   onAdd?: any;
   classes?: any;
   mountAll?: boolean;
+  inlineHeading?: boolean;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -50,7 +52,8 @@ const ExpandableContainer: React.FC<Props> = ({
   expanded,
   setExpanded,
   index,
-  mountAll
+  mountAll,
+  inlineHeading = false,
 }) => {
   const headerRef = useRef<any>();
 
@@ -79,29 +82,20 @@ const ExpandableContainer: React.FC<Props> = ({
     [isExpanded, expanded, index]
   );
 
-  useEffect(() => {
-    if (isExpanded) {
-      setTimeout(() => {
-        if (headerRef.current) {
-          headerRef.current.scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
-        }
-      }, 400);
-    }
-  }, [isExpanded]);
-
   return (
     <>
+      <Divider className="mb-2"/>
       <div ref={headerRef}>
-        <div className="centeredFlex">
-          <div className="heading">{header}</div>
-          {onAdd && (
-            <IconButton onClick={onAdd}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
-          )}
+        <div className="centeredFlex mb-2">
+          <div className={clsx("centeredFlex", { "flex-fill": !inlineHeading })}>
+            <div className="heading">{header}</div>
+            {onAdd && (
+              <AddIcon onClick={onAdd} />
+            )}
+          </div>
           <IconButton onClick={toggleExpand} className={onAdd && classes.adornmentOffset}>
             <ExpandMore
-              className={clsx("addButtonColor", classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+              className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
             />
           </IconButton>
           {headerAdornment}

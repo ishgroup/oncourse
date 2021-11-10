@@ -6,13 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { FormControlLabel, Grid } from "@material-ui/core";
+import { FormControlLabel, Grid } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { change, Field as FormField } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { GridProps, GridTypeMap } from "@material-ui/core/Grid/Grid";
+import { GridProps, GridTypeMap } from "@mui/material/Grid";
 import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
 import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";

@@ -9,7 +9,7 @@
 import React, {
   useEffect, useMemo, useState
 } from "react";
-import { Grid, } from "@material-ui/core";
+import { Grid, } from "@mui/material";
 import clsx from "clsx";
 import {
  CourseClassTutor, GradingItem, GradingType
@@ -85,7 +85,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
   const gradeErrors = useGradeErrors(elem?.submission?.grade, gradeType);
 
   return (
-    <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
+    <Grid container columnSpacing={3} key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
       <Grid item xs={4} className="d-inline-flex-center pl-1">
         {elem.studentName}
       </Grid>

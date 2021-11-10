@@ -4,20 +4,21 @@
  */
 
 import React from "react";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import {
-  FormControlLabel, FormGroup, Grid, Paper, Checkbox, withStyles
-} from "@material-ui/core/";
+  FormControlLabel, FormGroup, Grid, Paper, Checkbox
+} from "@mui/material/";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import CustomButton from "../../../../common/components/buttons/Button";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { Switch } from "../../../../common/components/form/formFields/Switch";
 import AppBarActions from "../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import SecurityLevelsTagsGroup from "./components/SecurityLevelsTagsGroup";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 
 const data = {
   roles: [
@@ -52,12 +53,12 @@ class SecurityLevels extends React.Component<any, any> {
   }
 
   render() {
-    const { classes, className } = this.props;
+    const { classes, className, dirty, invalid } = this.props;
 
     return (
       <div className={className}>
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item md={12} lg={12} xl={9} className="centeredFlex">
               <FormField
                 type="headerText"
@@ -88,13 +89,9 @@ class SecurityLevels extends React.Component<any, any> {
                 manualUrl="https://www.ish.com.au/s/onCourse/doc/SNAPSHOT/manual/generalPrefs.html#generalPrefs-college"
               />
 
-              <CustomButton
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+              <FormSubmitButton
+                disabled={!dirty}
+                invalid={invalid}
               />
             </Grid>
           </Grid>
@@ -108,7 +105,7 @@ class SecurityLevels extends React.Component<any, any> {
           }}
           className={classes.topCustomSwitchMargin}
         />
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xl={6} lg={6} md={6} xs={12}>
             <SecurityLevelsTagsGroup
               heading="User roles"

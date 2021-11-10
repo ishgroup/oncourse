@@ -10,21 +10,20 @@ import { connect } from "react-redux";
 import {
   reduxForm, getFormValues, InjectedFormProps, Form
 } from "redux-form";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
 import { differenceInMinutes, format } from "date-fns";
-import { Typography } from "@material-ui/core";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
+import { Typography } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
 import { CourseClassTutor } from "@api/model";
+import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../../../common/components/buttons/Button";
 import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
@@ -46,6 +45,7 @@ import {
   III_DD_MMM_YYYY_HH_MM_SS
 } from "../../../../../common/utils/dates/format";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import Button from "@mui/material/Button";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);
@@ -133,7 +133,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
   );
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={12}>
         <div className="centeredFlex mt-2 mb-2">
           <SvgIcon fontSize="small">
@@ -147,7 +147,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
           <Typography variant="body1">{getStudentAttendanceLabel(values.attendanceType)}</Typography>
         </div>
         <div className="pb-2">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={6}>
               {values.attendanceType === "Partial" ? (
                 <FormField
@@ -262,7 +262,7 @@ const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
   ]);
 
   return (
-    <Grid container className="pb-2">
+    <Grid container columnSpacing={3} className="pb-2">
       <Grid item xs={6}>
         <Uneditable value={values.contactName} label="Tutor" url={tutorContactLink} />
       </Grid>
@@ -376,11 +376,11 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
       </DialogContent>
 
       <DialogActions className="p-3">
-        <MuiButton color="primary" onClick={onClose}>
+        <Button color="primary" onClick={onClose}>
           Cancel
-        </MuiButton>
+        </Button>
 
-        <Button
+        <LoadingButton
           onClick={handleSubmit}
           disabled={invalid || hasError}
           loading={fetching}
@@ -388,7 +388,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
           color="primary"
         >
           OK
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

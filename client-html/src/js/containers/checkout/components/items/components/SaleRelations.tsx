@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import React, { useMemo } from "react";
-import { Card } from "@material-ui/core";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { Card } from "@mui/material";
 import { CheckoutItem, CheckoutSaleRelationExtended } from "../../../../../model/checkout";
 import { NestedListRow } from "../../../../../common/components/form/nestedList/components/ListRenderer";
 import { AppTheme } from "../../../../../model/common/Theme";
+import { makeAppStyles } from "../../../../../common/styles/makeStyles";
 
 interface Props {
   relations: CheckoutSaleRelationExtended[];
@@ -15,7 +15,7 @@ interface Props {
   onSelect?: any;
 }
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeAppStyles()((theme: AppTheme) => ({
   listRoot: {
     listStyle: "none",
     padding: theme.spacing(1, 0, 0, 0),
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
 }));
 
 const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const groupedRelations = useMemo(() => {
     const result = {};

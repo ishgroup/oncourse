@@ -4,13 +4,16 @@
  */
 
 import * as React from "react";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
+import {
+ change, getFormValues, initialize, reduxForm 
+} from "redux-form";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
+import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import Button from "../../../../../../common/components/buttons/Button";
+
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../../../reducers/state";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
@@ -117,13 +120,14 @@ class CanvasBaseForm extends React.Component<any, any> {
                   Press ‘Configure’ to proceed with authorising onCourse to access your Canvas account.
                 </Typography>
                 <div>
-                  <Button
+                  <LoadingButton
                     loading={loading}
-                    text="Configure"
                     variant="contained"
                     className="mt-1"
                     onClick={this.configure}
-                  />
+                  >
+                    Configure
+                  </LoadingButton>
                 </div>
               </>
             )

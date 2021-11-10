@@ -1,12 +1,13 @@
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
-import Grid from "@material-ui/core/Grid";
-import { Card, CardActions, CardContent } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import { Card, CardActions, CardContent } from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { withRouter } from "react-router-dom";
-import withWidth from "@material-ui/core/withWidth";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Button from "@mui/material/Button";
 import IntegrationDescription from "./components/IntegrationDescription";
-import Button from "../../../../common/components/buttons/Button";
+
 import * as IntegrationTypes from "../../../../model/automation/integrations/IntegrationTypes";
 import IntegrationImages from "./IntegrationImages";
 import AppBar from "../../../../common/components/layout/AppBar";
@@ -26,7 +27,7 @@ const styles = theme => ({
 });
 
 const Integrations = React.memo<any>(({
- classes, history, width, sidebarWidth
+ classes, history, sidebarWidth
 }) => {
   const handleClick = useCallback(
     int => {
@@ -40,12 +41,11 @@ const Integrations = React.memo<any>(({
   return (
     <div className="appBarContainer p-3">
       <AppBar title="Integrations" withDrawer sidebarWidth={sidebarWidth} />
-      <Grid container spacing={5}>
+      <Grid container columnSpacing={3} spacing={5}>
         {types.map((int, index: number) => (
           <Grid item xs={12} lg={6} key={int.type}>
             <Grid
               container
-              justify={width === "sm" || width === "md" ? "center" : index % 2 === 0 ? "flex-end" : "flex-start"}
               className="h-100"
             >
               <Card className="flex-row">
@@ -59,12 +59,13 @@ const Integrations = React.memo<any>(({
                   <CardActions className="justify-content-end">
                     <Button
                       onClick={() => handleClick(int)}
-                      text="Add"
                       variant="contained"
                       size="small"
                       color="primary"
-                      rootClasses="integrationsButton"
-                    />
+                      className="integrationsButton"
+                    >
+                      Add
+                    </Button>
                   </CardActions>
                 </div>
               </Card>
@@ -76,4 +77,4 @@ const Integrations = React.memo<any>(({
   );
 });
 
-export default withWidth()(withStyles(styles)(withRouter(Integrations)));
+export default (withStyles(styles)(withRouter(Integrations)));

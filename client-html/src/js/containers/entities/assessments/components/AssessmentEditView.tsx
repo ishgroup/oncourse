@@ -26,6 +26,7 @@ interface AssessmentEditViewProps {
   manualLink?: string;
   onCloseClick?: any;
   toogleFullScreenEditView?: any;
+  onEditViewScroll?: (e: any, isScrolling: boolean) => any;
 }
 
 const items: TabsListItem[] = [
@@ -57,7 +58,7 @@ const AssessmentEditView: React.FC<AssessmentEditViewProps> = props => {
     showConfirm,
     rootEntity,
     onCloseClick,
-    toogleFullScreenEditView
+    toogleFullScreenEditView,
   } = props;
 
   return (

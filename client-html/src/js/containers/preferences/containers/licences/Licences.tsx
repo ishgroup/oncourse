@@ -1,10 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import {
  List, ListItem, ListSubheader, ListItemText
-} from "@material-ui/core";
-import Button from "../../../../common/components/buttons/Button";
+} from "@mui/material";
+
+import Button from "@mui/material/Button";
 import { State } from "../../../../reducers/state";
 import * as Model from "../../../../model/preferences/Licences";
 import AppBar from "../../../../common/components/layout/AppBar";
@@ -75,14 +76,14 @@ class Licences extends React.Component<any, any> {
             subheader={(
               <ListSubheader disableSticky className="heading">
                 Inactive Features
-                <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link">
+                <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
                   <Button
                     color="primary"
-                    text="Upgrade now"
                     size="small"
-                    className="m-1"
-                    rootClasses="licencesUpgradeButton"
-                  />
+                    className="m-1 licencesUpgradeButton"
+                  >
+                    Upgrade now
+                  </Button>
                 </a>
               </ListSubheader>
             )}

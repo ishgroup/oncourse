@@ -5,12 +5,11 @@
 
 import React, { useEffect, useState } from "react";
 import { Contact, PayslipPayType, WorkingWithChildrenStatus } from "@api/model";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import NumberFormat from "react-number-format";
 import { change } from "redux-form";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Typography from "@material-ui/core/Typography";
 import { openInternalLink } from "../../../../common/utils/links";
 import { getContactFullName } from "../utils";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
@@ -19,7 +18,7 @@ import { mapSelectItems } from "../../../../common/utils/common";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { Switch } from "../../../../common/components/form/formFields/Switch";
-import { AppTheme } from "../../../../model/common/Theme";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
 
 interface ContactsTutorProps {
   twoColumn?: boolean;
@@ -28,7 +27,7 @@ interface ContactsTutorProps {
   dispatch?: any;
 }
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeAppStyles()(() => ({
   switchWrapper: {
     display: "flex",
     flexDirection: "column",
@@ -60,7 +59,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
   const [switchChanged, setSwitchChangedValue] = useState(false);
   const [switchValue, setSwitchValue] = useState(false)
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   useEffect(() => {
     if (isNew && !switchChanged) setSwitchValue(true)
@@ -92,7 +91,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
   return values ? (
     <>
       <div className="heading p-3 pt-2 pb-0">TUTOR</div>
-      <Grid container className="p-3">
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={12} className="mb-2 pt-2 pb-2">
           <TimetableButton onClick={onCalendarClick} />
         </Grid>

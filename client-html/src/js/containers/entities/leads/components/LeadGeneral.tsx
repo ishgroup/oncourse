@@ -6,17 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import {
  Lead, LeadStatus, Sale, Tag, User
 } from "@api/model";
-import Button from "@material-ui/core/Button";
-import Chip from "@material-ui/core/Chip";
-import { makeStyles } from "@material-ui/core";
+import Chip from "@mui/material/Chip";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -29,18 +27,18 @@ import {
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getProductAqlType } from "../../sales/utils";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   chipButton: {
     fontSize: "12px",
     height: "20px",
@@ -50,6 +48,7 @@ const useStyles = makeStyles(() => ({
 interface Props extends EditViewProps<Lead> {
   tags?: Tag[];
   users?: User[];
+  isScrolling?: boolean;
 }
 
 const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relatedSellables: Sale[], places: number) => {
@@ -103,14 +102,10 @@ const LeadGeneral = (props: Props) => {
     submitSucceeded,
     twoColumn,
     isNew,
-    manualLink,
-    onCloseClick,
-    dirty,
-    invalid,
     users
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
 
@@ -171,32 +166,24 @@ const LeadGeneral = (props: Props) => {
   return (
     <>
       {twoColumn && (
-        <CustomAppBar>
-          <Grid container className="flex-fill">
-            <Grid item xs={6}>
-              {contactIdField(true)}
-            </Grid>
-          </Grid>
-          <div>
-            {manualLink && (
-              <AppBarHelpMenu
-                created={values?.createdOn ? new Date(values.createdOn) : null}
-                modified={values?.modifiedOn ? new Date(values.modifiedOn) : null}
-                auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                manualUrl={manualLink}
+        <FullScreenStickyHeader
+          twoColumn={twoColumn}
+          title={(
+            <div className="centeredFlex">
+              <span className="d-none">{contactIdField(true)}</span>
+              <span className="mr-1">
+                {values && defaultContactName(values.contactName)}
+              </span>
+              <LinkAdornment
+                linkHandler={() => openContactLink(values.contactId)}
+                link={values.contactId}
+                className="appHeaderFontSize"
               />
-            )}
-            <Button onClick={onCloseClick} className="closeAppBarButton">
-              Close
-            </Button>
-            <FormSubmitButton
-              disabled={(!isNew && !dirty)}
-              invalid={invalid}
-            />
-          </div>
-        </CustomAppBar>
+            </div>
+          )}
+        />
       )}
-      <Grid container className="generalRoot mt-2">
+      <Grid container columnSpacing={3} className="generalRoot mt-2">
         {!twoColumn && (
           <Grid item xs={12} className="pt-2">
             {contactIdField(false)}

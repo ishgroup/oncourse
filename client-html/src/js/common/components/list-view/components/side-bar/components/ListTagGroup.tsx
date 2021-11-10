@@ -5,10 +5,10 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
-import TreeView from "@material-ui/lab/TreeView";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import TreeView from "@mui/lab/TreeView";
+import makeStyles from "@mui/styles/makeStyles";
 import { Draggable } from "react-beautiful-dnd";
-import DragIndicator from "@material-ui/icons/DragIndicator";
+import DragIndicator from "@mui/icons-material/DragIndicator";
 import ListTagItem from "./ListTagItem";
 import { MenuTag } from "../../../../../../model/tags";
 import { updateIndeterminateState, getUpdated } from "../../../utils/listFiltersUtils";

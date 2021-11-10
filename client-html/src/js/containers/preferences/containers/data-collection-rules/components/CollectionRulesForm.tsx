@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import { withStyles } from "@mui/styles";
 import { withRouter } from "react-router-dom";
 import {
   reduxForm, initialize
@@ -15,9 +15,9 @@ import {
   DataCollectionRule,
   DataCollectionType
 } from "@api/model";
-import createStyles from "@material-ui/core/styles/createStyles";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import Button from "../../../../../common/components/buttons/Button";
+import createStyles from "@mui/styles/createStyles";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
@@ -260,9 +260,9 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} md={10}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={6}>
                 <FormField
                   type="select"
