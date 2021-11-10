@@ -14,7 +14,6 @@ import { withStyles, createStyles } from "@mui/styles";
 import React, {
  useContext, useEffect, useMemo, useRef, useState
 } from "react";
-import { withStyles } from "@mui/styles";
 import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
@@ -456,7 +455,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const renderOption = (optionProps, data) => {
-    const option = getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
+    const option = getHighlightedPartLabel(getOptionLabel(data), searchValue);
 
     if (typeof itemRenderer === "function") {
       return itemRenderer(option, data, searchValue) as any;
@@ -526,7 +525,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             loading={loading}
             freeSolo={creatable}
             disableClearable={!allowEmpty}
-            getOptionSelected={getOptionSelected}
+            isOptionEqualToValue={getOptionSelected}
             onChange={handleChange}
             classes={{
               root: clsx("d-inline-flex", classes.root),

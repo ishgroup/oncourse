@@ -248,7 +248,7 @@ const SimpleTagList: React.FC<Props> = props => {
 
   const renderOption = (optionProps, option) => {
     const label = option?.tagBody?.name;
-    const highlightedLabel = getHighlightedPartLabel(label, currentInputString, optionProps);
+    const highlightedLabel = getHighlightedPartLabel(label, currentInputString);
     return getOptionText(option, highlightedLabel);
   };
 

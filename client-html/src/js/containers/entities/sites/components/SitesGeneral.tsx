@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import Collapse from "@mui/material/Collapse";
 import Tooltip from "@mui/material/Tooltip";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
