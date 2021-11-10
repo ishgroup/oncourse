@@ -24,6 +24,7 @@ not null columns can brak them. For example currently deployed servises app  (in
 and try to insert `Attendance` without `startDate` value into updated db - insert will be failed since NotNull constraint
  - do not try use 'not null default={some value}' - we just loose control of managing data,
 only business logik of application should assign values (using cayenne models).
+
 2. adjust cayenne  data model
  - add what ever you need at  [common/cayenne-model/src/main/resources/oncourse.map.xml]()
  - run `:common:cayenne-model:cgen` gradle task to rebuild cayenne classes
@@ -71,6 +72,7 @@ So let's review both cases.
 
    `common:webservices-client:wsdl2Java` gradlew task. Note that target replication version hadrcoded in task source code
 3. push changes to remote
+
 4. release new webservices-client.jar library here:
 
    [https://build.ish.com.au/#/builders/124](https://build.ish.com.au/#/builders/124)
@@ -79,11 +81,13 @@ So let's review both cases.
    [build.gradle](build.gradle)
 
   ` ebservicesVersion = '122'` ->` webservicesVersion = '123'`
+
 6. Adjust corresponded entity updater. in our case:
 
    [ish.oncourse.webservices.replication.v25.updaters.AttendanceUpdater]()
 
 like that:
+
 ```
  if (stub.getStartDate() != null) {
       entity.setStartDate(stub.getStartDate());
@@ -91,6 +95,7 @@ like that:
       entity.setStartDate(entity.getSession().getStartDate());
    }
 ```
+
 7. release/deploy services 
 
 So now services app support old and new angel servers.
@@ -100,7 +105,9 @@ So now services app support old and new angel servers.
 In case of adding new entities to replication or adding new ports, you need to add ne replication version
 1. add version name here:
    [build.gradle](build.gradle)
+
 like that:
+
 ```
 ext {
       replicationVersions = [
@@ -114,23 +121,29 @@ ext {
        ]
    }
 ```   
+
 2. copy
    [common/webservices-client/src/main/resources/wsdl/replication25_binding.xml]() to [common/webservices-client/src/main/resources/wsdl/replication26_binding.xml]()
    [common/webservices-client/src/main/resources/wsdl/v25_replication.wsdl]() to [common/webservices-client/src/main/resources/wsdl/v26_replication.wsdl]()
+
 3. change all `v25` entries in new files to `v26` (case sensitive) 
+
 4. extend
    [ish.oncourse.webservices.util.SupportedVersions]()
 emuneration with new V26 item
+
 5. repeate 1-6 steps from **reuse current replication version** article.
 
 ## implement new replication version for willow
 
 1. Pass through all steps from **new replication version** article
+
 2. run
    
 `services:generateSOAPstubs`
 
 to update generated sources 
+
 3. copy packages with all content inside
 
    [services/src/main/java/ish/oncourse/webservices/replication/v25/builders]() to [services/src/main/java/ish/oncourse/webservices/replication/v26/builders]()
@@ -138,12 +151,16 @@ to update generated sources
    [services/src/main/java/ish/oncourse/webservices/replication/v25/updaters]() to [services/src/main/java/ish/oncourse/webservices/replication/v26/updaters]()
 
    [services/src/main/java/ish/oncourse/webservices/soap/v25]() to [services/src/main/java/ish/oncourse/webservices/soap/v26]()
+
 4. change all `v25` entries in new packages to `v26` (case sensitive) 
+
 5. add new `v26` endpoints here:
    
 [services/src/main/resources/application-context.xml]()
+
 6. Make all required changes in certain stubBuilder/updater entity classe (that we just created in previous step). 
 Remamber that you created new replication for exact purpose, this is exact time to do it now
+
 7.run services app and verify by opening URL:
    [https://128.0.0.1:8090/services/v25/payment](https://secure-payment.oncourse.net.au/services/v25/payment)
 
