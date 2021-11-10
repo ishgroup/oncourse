@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
@@ -117,54 +116,53 @@ class XeroBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent disableName={Boolean(values?.id)} />
-        </CustomAppBar>
 
-        {values?.fields?.active === "true" ? (
-          <>
-            <Typography variant="caption" component="div">
-              {`You are connected to Xero organisation: ${values?.fields?.companyName}`}
-            </Typography>
-            <Button
-              variant="contained"
-              className="mt-1"
-              onClick={this.onDisconnect}
-            >
-              Disconnect from Xero
-            </Button>
-          </>
-        ) : (
-          <>
-            {
-              !hideConfig && (
-                <FormField
-                  type="stub"
-                  name="verificationCode"
-                  validate={validateSingleMandatoryField}
-                />
-              )
-            }
-
-            <Typography variant="caption" component="div">
-              {hideConfig
-                ? 'Xero access has been set up. Press "Save" to complete configuration process.'
-                : 'Press to proceed with authorising onCourse to access your Xero account.'}
-            </Typography>
-
-            {!hideConfig && (
-              <LoadingButton
+        <AppBarContent disableName={Boolean(values?.id)}>
+          {values?.fields?.active === "true" ? (
+            <>
+              <Typography variant="caption" component="div">
+                {`You are connected to Xero organisation: ${values?.fields?.companyName}`}
+              </Typography>
+              <Button
                 variant="contained"
                 className="mt-1"
-                disabled={!values.name}
-                loading={loading}
-                onClick={this.showTokenField}
+                onClick={this.onDisconnect}
               >
-                Connect to Xero
-              </LoadingButton>
-            )}
-          </>
-      )}
+                Disconnect from Xero
+              </Button>
+            </>
+          ) : (
+            <>
+              {
+                !hideConfig && (
+                  <FormField
+                    type="stub"
+                    name="verificationCode"
+                    validate={validateSingleMandatoryField}
+                  />
+                )
+              }
+
+              <Typography variant="caption" component="div">
+                {hideConfig
+                  ? 'Xero access has been set up. Press "Save" to complete configuration process.'
+                  : 'Press to proceed with authorising onCourse to access your Xero account.'}
+              </Typography>
+
+              {!hideConfig && (
+                <LoadingButton
+                  variant="contained"
+                  className="mt-1"
+                  disabled={!values.name}
+                  loading={loading}
+                  onClick={this.showTokenField}
+                >
+                  Connect to Xero
+                </LoadingButton>
+              )}
+            </>
+          )}
+        </AppBarContent>
       </form>
     );
   }

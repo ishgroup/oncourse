@@ -7,7 +7,6 @@ import * as React from "react";
 import { initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
@@ -34,21 +33,20 @@ class MoodleBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
 
-        <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
-        <FormField name="fields.username" label="Username" type="text" fullWidth />
-        <FormField name="fields.password" label="Password" type="password" fullWidth />
-        <FormField name="fields.serviceName" label="Service name" type="text" fullWidth />
-        <FormField
-          name="fields.courseTag"
-          label="Only activate for enrolments in courses tagged with"
-          listSpacing
-          type="text"
-          fullWidth
-        />
+        <AppBarContent>
+          <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
+          <FormField name="fields.username" label="Username" type="text" fullWidth />
+          <FormField name="fields.password" label="Password" type="password" fullWidth />
+          <FormField name="fields.serviceName" label="Service name" type="text" fullWidth />
+          <FormField
+            name="fields.courseTag"
+            label="Only activate for enrolments in courses tagged with"
+            listSpacing
+            type="text"
+            fullWidth
+          />
+        </AppBarContent>
       </form>
     );
   }

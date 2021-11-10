@@ -57,11 +57,8 @@ const styles: any = theme => createStyles({
     position: "relative",
     maxWidth: "100%",
     zIndex: 1,
-    marginTop: 13,
+    marginTop: 8,
   },
-  showTitleOnly: {
-    marginTop: 0,
-  }
 });
 
 interface Props extends InjectedFormProps {
@@ -79,12 +76,13 @@ interface Props extends InjectedFormProps {
   fields?: any;
   disableInteraction?: boolean;
   hideSubmitButton?: boolean;
+  disabledScrolling?: boolean;
 }
 
 const AppBarContainer: React.FC<Props> = props => {
   const {
     classes, title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
-    disableInteraction, hideSubmitButton
+    disableInteraction, hideSubmitButton, disabledScrolling
   } = props;
 
   const { scrollSpy } = useStickyScrollSpy();
@@ -134,7 +132,6 @@ const AppBarContainer: React.FC<Props> = props => {
             fields={fields}
             otherClasses={{
               fullScreenTitleItem: classes.fullScreenTitleItem,
-              showTitleOnly: classes.showTitleOnly,
             }}
             disableInteraction={disableInteraction}
             twoColumn
@@ -143,7 +140,7 @@ const AppBarContainer: React.FC<Props> = props => {
           <div className="flex-fill" />
           {actions}
 
-          {!hideHelpMenu && (
+          {!hideHelpMenu && values && (
             <AppBarHelpMenu
               created={values && values.createdOn ? new Date(values.createdOn) : null}
               modified={values && values.modifiedOn ? new Date(values.modifiedOn) : null}
@@ -163,7 +160,7 @@ const AppBarContainer: React.FC<Props> = props => {
           )}
         </Toolbar>
       </AppBar>
-      <div className={clsx("appBarContainer p-3", classes.container)} onScroll={onScroll}>
+      <div className={clsx({ "appBarContainer p-3": !disabledScrolling }, classes.container)} onScroll={onScroll}>
         {children}
       </div>
     </>

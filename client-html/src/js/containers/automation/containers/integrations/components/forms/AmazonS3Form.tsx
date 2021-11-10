@@ -10,7 +10,6 @@ import React from "react";
 import { initialize, reduxForm } from "redux-form";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
 class AmazonS3FormBase extends React.Component<any, any> {
@@ -35,14 +34,12 @@ class AmazonS3FormBase extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        <FormField type="text" name="fields.account" label="Account" required fullWidth />
-        <FormField type="text" name="fields.key" label="Key" required fullWidth />
-        <FormField type="text" name="fields.bucket" label="Bucket" required fullWidth />
-        <FormField type="text" name="fields.region" label="Region" required fullWidth />
+        <AppBarContent>
+          <FormField type="text" name="fields.account" label="Account" required fullWidth />
+          <FormField type="text" name="fields.key" label="Key" required fullWidth />
+          <FormField type="text" name="fields.bucket" label="Bucket" required fullWidth />
+          <FormField type="text" name="fields.region" label="Region" required fullWidth />
+        </AppBarContent>
       </form>
     );
   }
