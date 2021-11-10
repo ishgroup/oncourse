@@ -12,6 +12,7 @@ import { createStyles } from "@mui/styles";
 import { green } from "@mui/material/colors";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
+import { Typography } from "@mui/material";
 
 export const selectStyles = theme => createStyles({
     textField: {
@@ -84,12 +85,18 @@ export const selectStyles = theme => createStyles({
 
 const listRef = React.createRef<any>();
 
-export const ListRow = React.memo<any>(({ data, index, style }) => React.cloneElement(data[index], {
-  style: {
+export const ListRow = React.memo<any>(({ data, index, style }) => {
+  const inlineStyle = {
     ...style,
-    top: style.top + 8,
-  },
-}), areEqual);
+    top: (style.top as number) + 8,
+  };
+
+  return (
+    <Typography component="li" noWrap style={inlineStyle}>
+      {data[index]}
+    </Typography>
+  );
+}, areEqual);
 
 const OuterElementContext = React.createContext({});
 

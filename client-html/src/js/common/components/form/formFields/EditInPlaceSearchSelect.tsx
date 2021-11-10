@@ -78,13 +78,6 @@ const searchStyles = theme => createStyles({
       maxWidth: "calc(100% * 1.4)"
     }
   },
-  option: {
-    whiteSpace: "nowrap",
-    "& > span:last-child": {
-      overflow: "hidden",
-      textOverflow: "ellipsis"
-    }
-  },
   inline: {
     fontSize: "inherit"
   },
@@ -251,7 +244,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       : [...items]
   ), [items, selectLabelCondition, selectLabelMark, sortPropKey]);
 
-  const isAdornmentHovered = useRef<boolean>(false);
   const inputNode = useRef<any>(null);
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -273,10 +265,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   }, [selectLabelCondition, formattedDisplayValue, defaultDisplayValue, sortedItems, input.value]);
 
   const onBlur = () => {
-    if (isAdornmentHovered.current) {
-      return;
-    }
-
     setIsEditing(false);
 
     if (!inline) {
@@ -287,24 +275,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       onInputChange("");
       onClearRows();
     }
-  };
-
-  const onAdornmentOver = () => {
-    isAdornmentHovered.current = true;
-  };
-
-  const onAdornmentOut = () => {
-    isAdornmentHovered.current = false;
-  };
-
-  const onAdornmentClick = e => {
-    if (isAdornmentHovered.current) {
-      e.preventDefault();
-    }
-    setTimeout(() => {
-      isAdornmentHovered.current = false;
-      onBlur();
-    }, 1000);
   };
 
   const formatCreateLabel = inputValue => `${createLabel} "${inputValue}"`;
@@ -455,13 +425,11 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const renderOption = (optionProps, data) => {
-    const option = getHighlightedPartLabel(getOptionLabel(data), searchValue);
-
     if (typeof itemRenderer === "function") {
-      return itemRenderer(option, data, searchValue) as any;
+      return itemRenderer(getHighlightedPartLabel(getOptionLabel(data), searchValue), data, searchValue, optionProps) as any;
     }
 
-    return option as any;
+    return getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
   };
 
   const displayedValue = useMemo(() => {
@@ -488,7 +456,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   }, [formattedDisplayValue, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
 
   const labelContent = useMemo(() => (labelAdornment ? (
-    <span onMouseEnter={onAdornmentOver} onMouseLeave={onAdornmentOut} onMouseDown={onAdornmentClick}>
+    <span>
       {label}
       {' '}
       <span className={classes.labelAdornment}>{labelAdornment}</span>
@@ -529,7 +497,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             onChange={handleChange}
             classes={{
               root: clsx("d-inline-flex", classes.root),
-              option: itemRenderer ? null : classes.option,
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
               inputRoot: clsx(classes.inputWrapper, isEditing && classes.isEditing)
@@ -649,7 +616,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           />
         </div>
       </div>
-)}
+    )}
     </div>
   );
 };

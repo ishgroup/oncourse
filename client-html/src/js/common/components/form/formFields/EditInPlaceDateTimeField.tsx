@@ -30,7 +30,9 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
-import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
+import {
+ HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED 
+} from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
 const styles = theme => createStyles({
@@ -180,13 +182,10 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    fieldClasses = {},
    formatting = "primary",
    meta: { error, invalid },
-   InputProps = {},
    labelAdornment,
    helperText,
    label,
    listSpacing = true,
-   hideLabel,
-   editableComponent,
    disabled,
    formatValue,
    className,
@@ -194,7 +193,6 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    placeholder,
    inlineMargin,
     persistValue,
-   ...custom
   }
 ) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -393,20 +391,20 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 onKeyDown={onEnterPress}
                 inputRef={inputNode}
                 inputProps={{
-                size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
-                className: clsx({
-                  [classes.inlineInput]: isInline,
-                  [classes.readonly]: disabled,
-                }),
-                placeholder: placeholder || (!isEditing && "No value"),
-              }}
+                  size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
+                  className: clsx({
+                    [classes.inlineInput]: isInline,
+                    [classes.readonly]: disabled,
+                  }),
+                  placeholder: placeholder || (!isEditing && "No value"),
+                }}
                 value={textValue}
                 classes={{
-                root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
-                  classes.inputWrapper),
-                underline: fieldClasses.underline,
-                input: clsx(classes.input, fieldClasses.text)
-              }}
+                  root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
+                    classes.inputWrapper),
+                  underline: fieldClasses.underline,
+                  input: clsx(classes.input, fieldClasses.text)
+                }}
                 endAdornment={(
                   <InputAdornment position="end" className={classes.inputEndAdornment}>
                     <IconButton

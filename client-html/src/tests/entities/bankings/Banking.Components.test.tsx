@@ -5,16 +5,16 @@ import { mockedEditView } from "../../common/MockedEditView.Components";
 
 // TODO Enable test on fix
 
-describe("Virtual rendered BankingEditView", () => {
+describe.skip("Virtual rendered BankingEditView", () => {
   mockedEditView({
     entity: "Banking",
     EditView: BankingEditView,
     record: mockecApi => mockecApi.db.getBanking(1),
     render: (wrapper, initialValues) => {
-      // expect(wrapper.find("div.textField").text()).toContain(initialValues.adminSite);
-      // expect(wrapper.find("#settlementDate input").val()).toContain(
-      //   format(new Date(initialValues.settlementDate), III_DD_MMM_YYYY).toString()
-      // );
+      expect(wrapper.find("div.textField").text()).toContain(initialValues.adminSite);
+      expect(wrapper.find("#settlementDate input").val()).toContain(
+        format(new Date(initialValues.settlementDate), III_DD_MMM_YYYY).toString()
+      );
     }
   });
 });
