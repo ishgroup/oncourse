@@ -17,9 +17,6 @@ const styles = theme =>
   ({
     mainButton: {
       boxShadow: "none",
-      "&:hover": {
-        backgroundColor: "inherit"
-      }
     },
     actions: {},
     directionLeft: {

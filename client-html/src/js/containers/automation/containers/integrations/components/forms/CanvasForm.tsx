@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import {
- change, getFormValues, initialize, reduxForm 
+  change, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
@@ -13,7 +13,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../../../reducers/state";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
