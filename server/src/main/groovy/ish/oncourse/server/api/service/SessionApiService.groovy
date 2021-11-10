@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.CourseClassDao
 import ish.oncourse.server.api.dao.CourseClassTutorDao
 import ish.oncourse.server.api.dao.RoomDao
@@ -31,16 +32,15 @@ import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.validation.ValidationException
 
+@CompileStatic
 class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao> {
 
     @Inject
     private CourseClassDao classDao
-
+    
     @Inject
-    private TutorAttendanceDao tutorAttendanceDao
-
-    @Inject
-    private CourseClassTutorDao classTutorDao
+    private TutorAttendanceApiService attendanceApiService
+    
 
     @Inject
     private RoomDao roomDao
@@ -63,15 +63,13 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         dto.room = session.room?.name
         dto.siteId = session.room?.site?.id
         dto.site = session.room?.site?.name
-        dto.courseClassTutorIds = session.sessionTutors*.courseClassTutor*.id
-        dto.contactIds = session.tutors*.contact*.id
         dto.courseId = session.courseClass.course.id
         dto.privateNotes = session.privateNotes
         dto.publicNotes = session.publicNotes
-        dto.payAdjustment = session.payAdjustment
         dto.tutors = session.tutors*.contact*.fullName
         dto.name = session.courseClass.course.name
-        if (session.room && !session.room.site.isVirtual) {
+        dto.tutorAttendances = attendanceApiService.getList(session.id)
+        if (session.room) {
             dto.siteTimezone = session.room.site.localTimezone
         }
         dto.hasPaylines = session.payLines != null && !session.payLines.empty
@@ -92,13 +90,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         session.endDatetime = LocalDateUtils.timeValueToDate(dto.end)
         session.publicNotes = dto.publicNotes
         session.privateNotes = dto.privateNotes
-        session.payAdjustment = dto.payAdjustment
-        List<TutorAttendance> tutorsToDelete = session.sessionTutors.findAll { !(it.courseClassTutor.id in dto.courseClassTutorIds) }
-        session.context.deleteObjects(tutorsToDelete)
-        dto.courseClassTutorIds.findAll { !(it in session.sessionTutors*.courseClassTutor.id) }.each { id ->
-            CourseClassTutor classTutor = classTutorDao.getById(context, id)
-            tutorAttendanceDao.newObject(session.context, session, classTutor)
-        }
+        attendanceApiService.updateList(session, dto.tutorAttendances)
         session
     }
 
@@ -145,7 +137,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         try {
             save(context)
         } catch (ValidationException e) {
-            if (validateOnly.get() && courseClass == null && e.validationResult?.failures?.find {it.description == "\"$Session.COURSE_CLASS.name\"  is required.".toString() }) {
+            if (validateOnly.get() && e.validationResult?.failures?.find {(it.description == "\"$Session.COURSE_CLASS.name\"  is required.".toString()  && courseClass == null) || "\"$TutorAttendance.COURSE_CLASS_TUTOR.name\"  is required.".toString() }) {
                 //Ignore class/tutorRole FK for validation of new record
             } else {
                 throw new RuntimeException("Can not save sessions: $dtoList", e)
@@ -167,14 +159,9 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
             if (!session.courseClass.equalsIgnoreContext(courseClass)) {
                     validator.throwClientErrorException(id, 'name',  "Session id:$id doesn't belong to Class: $courseClass.uniqueCode" )
             }
-            List<TutorAttendance> tutorsToDelete = session.sessionTutors.findAll { !(it.courseClassTutor.id in dto.courseClassTutorIds) }
-            TutorAttendance attendance = tutorsToDelete.find { it.hasPayslips() }
-            if (attendance) {
-                validator.throwClientErrorException(id, 'courseClassTutorIds', "Unable to unlink tutor: $attendance.courseClassTutor.tutor.contact.fullName, payslip already generated for this session" )
-            }
         }
         if (courseClass != null && courseClass.course.isTraineeship &&
-                (dto.courseClassTutorIds == null || (dto.courseClassTutorIds.isEmpty() && dto.temporaryTutorIds.isEmpty()))) {
+                (dto.tutorAttendances == null || dto.tutorAttendances.isEmpty())) {
             validator.throwClientErrorException(id, 'courseClassTutorIds', 'At least one tutor required for traineeship session.')
         }
         validateModelBeforeSave(dto, context, id)
@@ -197,16 +184,6 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
             validator.throwClientErrorException(id?:dto.temporaryId, 'end', 'End date should be after session start date.' )
         }
 
-        if (dto.payAdjustment == null) {
-            validator.throwClientErrorException(id?:dto.temporaryId, 'payAdjustment', 'session duration .' )
-        }
-
-        dto.courseClassTutorIds.each { roleId ->
-             if (classTutorDao.getById(context, roleId) == null) {
-                 validator.throwClientErrorException(id?:dto.temporaryId, 'courseClassTutorIds', "Tutor role doesn't exist")
-             }
-        }
-
         if (dto.roomId != null && roomDao.getById(context, dto.roomId) == null) {
             validator.throwClientErrorException(id?:dto.temporaryId, 'roomId', "Room doesn't exist")
         }
@@ -217,6 +194,7 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
         if (!session.payLines.empty) {
             validator.throwClientErrorException(session.id, null, "Unable to remove this session because it linked to paylines.")
         }
+        session.sessionTutors.each {attendanceApiService.validateModelBeforeRemove(it) }
     }
 
     List<SessionDTO> getList(Long classId) {

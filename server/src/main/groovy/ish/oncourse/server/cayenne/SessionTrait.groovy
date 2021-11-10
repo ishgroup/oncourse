@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ISession
+
 import ish.util.DurationFormatter
 
 import java.time.ZoneId
@@ -48,7 +48,7 @@ trait SessionTrait {
      * @return session duration in minutes
      */
     Integer getDurationInMinutes() {
-        return DurationFormatter.parseDurationInMinutes(getStartDatetime(), getEndDatetime())
+        return DurationFormatter.durationInMinutesBetween(getStartDatetime(), getEndDatetime())
     }
 
 }

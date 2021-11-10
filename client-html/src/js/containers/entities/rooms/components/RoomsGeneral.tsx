@@ -4,13 +4,13 @@
  */
 
 import * as React from "react";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Grid, { GridSize } from "@mui/material/Grid";
 import { FieldArray, change } from "redux-form";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import ScreenShare from "@mui/icons-material/ScreenShare";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -19,6 +19,8 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { openSiteLink } from "../../sites/utils";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
 
@@ -60,25 +62,32 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       form,
       tags,
       sites,
-      twoColumn
+      twoColumn,
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
 
     return (
       <>
-        <Grid container className="p-3">
+        <Grid container columnSpacing={3} className="p-3">
           <Grid item xs={layoutArray[2].xs}>
-            <FormField
-              type="text"
-              name="name"
-              label="Name"
-              required
-              listSpacing={false}
+            <FullScreenStickyHeader
+              twoColumn={twoColumn}
+              title={values && values.name}
+              fields={(
+                <FormField
+                  type="text"
+                  name="name"
+                  label="Name"
+                  required
+                  listSpacing={false}
+                />
+              )}
+              truncateTitle
             />
           </Grid>
           <Grid item xs={layoutArray[0].xs}>
-            <Grid container className="flex-nowrap align-items-center mb-1">
+            <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
               <Grid item xs={12} className="container">
                 <FormField
                   type="tags"
@@ -103,7 +112,7 @@ class RoomsGeneral extends React.PureComponent<any, any> {
           </Grid>
 
           <Grid item xs={layoutArray[1].xs}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={layoutArray[3].xs}>
                 <FormField
                   type="text"

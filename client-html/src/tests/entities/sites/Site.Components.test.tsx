@@ -7,22 +7,12 @@ describe("Virtual rendered SiteEditView", () => {
     EditView: SiteEditView,
     record: mockecApi => mockecApi.db.getSite(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#name").text()).toContain(initialValues.name);
-      expect(wrapper.find("#tags").text()).toContain("#name 1 ");
-
-      expect(wrapper.find('input[type="checkbox"]').at(0).props().checked).toEqual(true);
-      expect(wrapper.find('input[type="checkbox"]').at(1).props().checked).toEqual(false);
-      expect(wrapper.find('input[type="checkbox"]').at(2).props().checked).toEqual(true);
-
-      expect(wrapper.find("#street").text()).toContain(initialValues.street);
-      expect(wrapper.find("#suburb").text()).toContain(initialValues.suburb);
-      expect(wrapper.find("#state").text()).toContain("No value");
-      expect(wrapper.find("#postcode").text()).toContain(initialValues.postcode);
-      expect(wrapper.find("#country").text()).toContain(initialValues.country.name);
-      expect(wrapper.find("#timezone").text()).toContain(initialValues.timezone);
-      expect(wrapper.find("#drivingDirections").text()).toContain("No value");
-      expect(wrapper.find("#publicTransportDirections").text()).toContain("No value");
-      expect(wrapper.find("#specialInstructions").text()).toContain("No value");
+      expect(wrapper.find("#name input").val()).toContain(initialValues.name);
+      expect(wrapper.find("#street input").val()).toContain(initialValues.street);
+      expect(wrapper.find("#suburb input").val()).toContain(initialValues.suburb);
+      expect(wrapper.find("#postcode input").val()).toContain(initialValues.postcode);
+      expect(wrapper.find("#country input").val()).toContain(initialValues.country.name);
+      expect(wrapper.find("#timezone input").val()).toContain(initialValues.timezone);
     }
   });
 });

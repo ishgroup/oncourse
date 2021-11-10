@@ -8,16 +8,16 @@
 
 import React from "react";
 
-import Grid from "@material-ui/core/Grid";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
 import {
   arrayInsert, arrayRemove, FieldArray, getFormValues, InjectedFormProps, reduxForm
 } from "redux-form";
 import { Dispatch } from "redux";
-import Alert from "@material-ui/lab/Alert";
-import { AlertTitle } from "@material-ui/lab";
+import Alert from "@mui/lab/Alert";
+import { AlertTitle } from "@mui/lab";
 import { connect } from "react-redux";
 import { User } from "@api/model";
 import { v4 as uuidv4 } from 'uuid';
@@ -82,7 +82,7 @@ const ApiTokensBase:React.FC<Props> = (
     <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
       <RouteChangeConfirm form={form} when={dirty} />
       <CustomAppBar>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} className="centeredFlex relative">
             <Fab
               type="button"
@@ -118,7 +118,7 @@ const ApiTokensBase:React.FC<Props> = (
         </Grid>
       </CustomAppBar>
 
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={12} md={10}>
           <Alert severity="info" className="mb-2">
             <AlertTitle>

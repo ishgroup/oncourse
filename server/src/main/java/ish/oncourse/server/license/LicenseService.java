@@ -12,11 +12,20 @@
 package ish.oncourse.server.license;
 
 import io.bootique.annotation.BQConfigProperty;
-import ish.util.RuntimeUtil;
+import ish.util.LocalDateUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 
 public class LicenseService {
     public static final String SERVICES_SECURITYKEY = "services.securitykey";
     private Integer max_concurrent_users = null;
+    private Boolean access_control = null;
+    private Boolean custom_scripts = null;
+    private String url = null;
+    private LocalDateTime modified = null;
+
     private Integer purge_audit_after_days = null;
 
     private String services_host =  "https://secure-payment.oncourse.net.au";
@@ -25,12 +34,25 @@ public class LicenseService {
     private String college_key;
     private String security_key;
 
+    private LicenseSmsService smsService;
+    private static final Logger logger = LogManager.getLogger();
+
 
 
     @BQConfigProperty
     public void setMax_concurrent_users(int max_concurrent_users) {
-        RuntimeUtil.println("server will limit number of concurrent users to " + max_concurrent_users);
+        logger.warn("server will limit number of concurrent users to " + max_concurrent_users);
         this.max_concurrent_users = max_concurrent_users;
+    }
+
+    @BQConfigProperty
+    public void setAccess_control(boolean access_control) {
+        this.access_control = access_control;
+    }
+
+    @BQConfigProperty
+    public void setCustom_scripts(boolean custom_scripts) {
+        this.custom_scripts = custom_scripts;
     }
 
     @BQConfigProperty
@@ -38,13 +60,13 @@ public class LicenseService {
         if (purge_audit_after_days < 1) {
             purge_audit_after_days = 1;
         }
-        RuntimeUtil.println("server will limit number of days for storing audit logs to " + purge_audit_after_days);
+        logger.warn("server will limit number of days for storing audit logs to " + purge_audit_after_days);
         this.purge_audit_after_days = purge_audit_after_days;
     }
 
     @BQConfigProperty
     public void setServices_host(String services_host) {
-        RuntimeUtil.println("server will use followed services url: " + services_host);
+        logger.warn("server will use followed services url: " + services_host);
         this.services_host = services_host;
     }
 
@@ -61,6 +83,12 @@ public class LicenseService {
     @BQConfigProperty
     public void setUsi_host(String usi_host) {
         this.usi_host = usi_host;
+    }
+
+    @BQConfigProperty
+    public void setEula(LinkedHashMap<String, String> eula) {
+        modified = LocalDateUtils.stringToTimeValue(eula.get("modified"));
+        url = eula.get("url");
     }
 
     public String getUsi_host() {
@@ -94,4 +122,46 @@ public class LicenseService {
     public String getCurrentHostName() {
         return college_key == null ? null : String.format("https://%s.cloud.oncourse.cc", college_key);
     }
+
+    public void setSmsService(LicenseSmsService smsService) {
+        this.smsService = smsService;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+
+    public Object getLisense(String key) {
+
+        switch (key) {
+            case "license.access_control":
+                return access_control;
+            case "license.scripting":
+                return custom_scripts;
+            case "license.sms":
+                return smsService.getMessage_batch();
+            default:
+                return null;
+        }
+    }
 }
+
+class LicenseSmsService {
+
+    private Integer message_batch = null;
+
+    @BQConfigProperty
+    public void setMessage_batch(int message_batch) {
+        this.message_batch = message_batch;
+    }
+
+    public Integer getMessage_batch() {
+        return message_batch;
+    }
+}
+

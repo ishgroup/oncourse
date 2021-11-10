@@ -5,17 +5,17 @@
 
 import React from "react";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import IconButton from "@material-ui/core/IconButton";
-import PlusIcon from "@material-ui/icons/Add";
-import Share from "@material-ui/icons/Share";
-import Settings from "@material-ui/icons/Settings";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from "@material-ui/core/Tooltip";
-import { fade, darken } from "@material-ui/core/styles/colorManipulator";
-import FindInPage from "@material-ui/icons/FindInPage";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import IconButton from "@mui/material/IconButton";
+import PlusIcon from "@mui/icons-material/Add";
+import Share from "@mui/icons-material/Share";
+import Settings from "@mui/icons-material/Settings";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { List, ListItem, Tooltip } from "@mui/material";
+import { alpha, darken } from '@mui/material/styles';
+import FindInPage from "@mui/icons-material/FindInPage";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
@@ -32,6 +32,7 @@ import { getEmailTemplatesWithKeyCode, getScripts, getUserPreferences } from "..
 import { LSGetItem } from "../../../../utils/storage";
 
 const SendMessageEntities = [
+  "AbstractInvoice",
   "Invoice",
   "Application",
   "Contact",
@@ -41,11 +42,12 @@ const SendMessageEntities = [
   "PaymentOut",
   "Payslip",
   "ProductItem",
-  "WaitingList"
+  "WaitingList",
+  "Lead"
 ];
 
 const EntitiesToMessageTemplateEntitiesMap = {
-  Invoice: ["Contact", "Invoice"],
+  Invoice: ["Contact", "Invoice", "AbstractInvoice"],
   Application: ["Contact", "Application"],
   Contact: ["Contact"],
   Enrolment: ["Contact", "Enrolment"],
@@ -54,7 +56,8 @@ const EntitiesToMessageTemplateEntitiesMap = {
   PaymentOut: ["Contact", "PaymentOut"],
   Payslip: ["Contact", "Payslip"],
   ProductItem: ["Contact", "Voucher", "Membership", "Article", "ProductItem"],
-  WaitingList: ["Contact", "WaitingList"]
+  WaitingList: ["Contact", "WaitingList"],
+  Lead: ["Contact", "Lead"]
 };
 
 const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMap[entity] || [entity];
@@ -62,7 +65,7 @@ const getMessageTemplateEntities = entity => EntitiesToMessageTemplateEntitiesMa
 const styles = theme => createStyles({
     root: {
       backgroundColor:
-        theme.palette.type === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
+        theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
       height: `${APP_BAR_HEIGHT}px`,
       bottom: 0,
       width: "100%",
@@ -85,7 +88,7 @@ const styles = theme => createStyles({
         opacity: 0.5
       },
       "&$buttonDisabledFade": {
-        color: fade(theme.palette.primary.contrastText, 0.5)
+        color: alpha(theme.palette.primary.contrastText, 0.5)
       }
     },
     buttonDisabledOpacity: {},
@@ -104,7 +107,7 @@ const styles = theme => createStyles({
       color: theme.palette.error.main
     },
     customIconButton: {
-      padding: `${theme.spacing(1)}px 2.5px`,
+      padding: `${theme.spacing(1)} 2.5px`,
       height: theme.spacing(6),
       width: theme.spacing(6)
     },
@@ -115,7 +118,7 @@ const styles = theme => createStyles({
       color: theme.palette.primary.contrastText
     },
     switcherDisabled: {
-      color: fade(theme.palette.primary.contrastText, 0.3)
+      color: alpha(theme.palette.primary.contrastText, 0.3)
     },
     findRelated: {
       display: "flex",
@@ -407,6 +410,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                       root: classes.actionsBarButton,
                       disabled: classes.buttonDisabledFade
                     }}
+                    size="large"
                   >
                     <PlusIcon />
                   </IconButton>
@@ -429,6 +433,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                       root: showExportDrawer ? classes.shareOnBackdrop : classes.actionsBarButton,
                       disabled: classes.buttonDisabledFade
                     }}
+                    size="large"
                   >
                     <Share />
                   </IconButton>
@@ -446,6 +451,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                     aria-owns={showSettingsMenu ? "settings" : undefined}
                     aria-haspopup="true"
                     onClick={this.handleClickSettings}
+                    size="large"
                   >
                     <Settings />
                   </IconButton>

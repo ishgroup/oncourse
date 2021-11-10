@@ -14,24 +14,23 @@ package ish.oncourse.server.cayenne
 import ish.budget.ClassCostUtil
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.cayenne.ClassCostInterface
 
-trait ClassCostTrait implements ClassCostInterface<CourseClass, DiscountCourseClass> {
+trait ClassCostTrait {
 
     @API
     Money getCalcPerUnitAmountExTax() {
-        return ClassCostUtil.getPerUnitAmountExTax(this)
+        return ClassCostUtil.getPerUnitAmountExTax(this as ClassCost)
     }
 
 
     @API
     Money getCalcMaximumCost() {
-        return ClassCostUtil.getMaximumCost(this)
+        return ClassCostUtil.getMaximumCost(this as ClassCost)
     }
 
     @API
     Money getCalcActualCost() {
-        return ClassCostUtil.getActualCost(this)
+        return ClassCostUtil.getActualCost(this as ClassCost)
     }
 
 

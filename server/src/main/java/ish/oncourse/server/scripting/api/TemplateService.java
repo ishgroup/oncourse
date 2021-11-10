@@ -13,16 +13,17 @@ package ish.oncourse.server.scripting.api;
 import com.google.inject.Inject;
 import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
-import ish.oncourse.entity.services.ContactService;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.EmailTemplate;
+import ish.oncourse.server.cayenne.*;
 import ish.oncourse.server.document.DocumentService;
+import ish.oncourse.server.entity.mixins.ContactMixin;
 import ish.util.DateFormatter;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -41,17 +42,16 @@ public class TemplateService {
 	public static final String TEMPLATE_BINDING = "Template";
 	public static final String COLLEGE_PREFERENCE_SERVICE = "Preference";
 	public static final String PREFERENCES_BINDING = "Preferences";
-	public static final String CONTACT_SERVICE_BINDING = "ContactService";
 	public static final String DATE_FORMATTER = "DateFormatter";
 	public static final String IMAGE = "image";
 	private static final String JAVA_POUND = "\u00A3";
 	private static final String HTML_POUND = "&pound;";
 	private static final String JAVA_EURO = "\u20AC";
 	private static final String HTML_EURO = "&euro;";
+	public static final String CONTACT_SERVICE_BINDING = "ContactService";
 
 	private ICayenneService cayenneService;
 	private CollegePreferenceService preferenceService;
-	private ContactService contactService;
 	private DocumentService documentService;
 
 	private SimpleTemplateEngine templateEngine;
@@ -59,11 +59,10 @@ public class TemplateService {
 	@Inject
 	public TemplateService(ICayenneService cayenneService,
 						   CollegePreferenceService preferenceService,
-						   ContactService contactService, DocumentService documentService) {
+						   DocumentService documentService) {
 		this.cayenneService = cayenneService;
 		this.templateEngine = new SimpleTemplateEngine();
 		this.preferenceService = preferenceService;
-		this.contactService = contactService;
 		this.documentService = documentService;
 	}
 
@@ -81,7 +80,10 @@ public class TemplateService {
 		template.getOptions().forEach(opt ->
 				bindings.put(opt.getName(), opt.getValue())
 		);
-		var html = createHtmlTemplate(template).make(putBaseBindings(bindings)).toString();
+		Template htmlTemplate = createHtmlTemplate(template);
+		var html = htmlTemplate.make(putBaseBindings(bindings)).toString();
+		MetaclassCleaner.clearGroovyCache(htmlTemplate);
+		
 		return html
 				.replaceAll(JAVA_POUND, HTML_POUND)
 				.replaceAll(JAVA_EURO, HTML_EURO);
@@ -101,7 +103,11 @@ public class TemplateService {
 		template.getOptions().forEach(opt ->
 				bindings.put(opt.getName(), opt.getValue())
 		);
-		return createPlainTemplate(template).make(putBaseBindings(bindings)).toString();
+		Template htmlTemplate = createPlainTemplate(template);
+		String result =  htmlTemplate.make(putBaseBindings(bindings)).toString();
+		MetaclassCleaner.clearGroovyCache(htmlTemplate);
+
+		return result;
 	}
 
 	public Template createSubjectTemplate(EmailTemplate template) {
@@ -118,6 +124,8 @@ public class TemplateService {
 		}
 		putBaseBindings(plainBindings);
 		String subject = subjectTemplate.make(plainBindings).toString();
+		MetaclassCleaner.clearGroovyCache(subjectTemplate);
+
 		plainBindings.put(SUBJECT, subject);
 		if (htmlBindings != null) {
 			htmlBindings.put(SUBJECT, subject);
@@ -148,11 +156,12 @@ public class TemplateService {
 	public Map<String, Object> putBaseBindings(Map<String, Object> bindings) {
 		bindings.put(TEMPLATE_BINDING, this);
 		bindings.put(PREFERENCES_BINDING, preferenceService);
-		bindings.put(CONTACT_SERVICE_BINDING, contactService);
 		bindings.put(IMAGE, documentService.getImageClosure());
 		bindings.put(CollegePreferenceService.PREFERENCE_ALIAS, preferenceService.getPrefHelper());
 		bindings.put(COLLEGE_PREFERENCE_SERVICE, preferenceService);
 		bindings.put(DATE_FORMATTER, new DateFormatter(TimeZone.getDefault()));
+		bindings.put(CONTACT_SERVICE_BINDING, new ContactTrait.ContactService());
+
 		bindings.put(BINDINGS, bindings);
 
 		return bindings;

@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { STICKY_HEADER_EVENT } from "../../../constants/Config";
 
 export const usePrevious = <T = any>(value: any) => {
   const ref = useRef<T>();
@@ -34,3 +35,21 @@ export const useComponentVisible = initialIsVisible => {
 
   return { ref, isComponentVisible, setIsComponentVisible };
 };
+
+
+// Sticky scroll spy
+function fire(stuck) {
+  const evt = new CustomEvent(STICKY_HEADER_EVENT, { detail: { stuck } });
+  document.dispatchEvent(evt);
+}
+
+export const useStickyScrollSpy = () => {
+  const scrollSpy = (e) => {
+    console.log(e);
+    if (e.target) {
+      fire(e.target.scrollTop > 20);
+    }
+  }
+
+  return { scrollSpy };
+}

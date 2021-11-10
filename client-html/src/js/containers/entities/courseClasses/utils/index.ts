@@ -4,6 +4,7 @@
  */
 
 import { AssessmentClass, Session } from "@api/model";
+import { differenceInMinutes, addMinutes } from "date-fns";
 import { openInternalLink } from "../../../../common/utils/links";
 import {
   ClassCostExtended,
@@ -11,8 +12,7 @@ import {
   ClassCostTypes,
   Classes,
   CourseClassStatus,
-  CourseClassTutorExtended,
-  TutorAttendanceExtended
+  CourseClassTutorExtended
 } from "../../../../model/entities/CourseClass";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
@@ -94,7 +94,6 @@ export const getClassCostTypes = (
   sessions: TimetableSession[],
   tutors: CourseClassTutorExtended[],
   tutorRoles: any[],
-  tutorAttendance: TutorAttendanceExtended[]
 ) => {
   const types: ClassCostTypes = {
     income: {
@@ -113,6 +112,7 @@ export const getClassCostTypes = (
       max: 0,
       projected: 0,
       actual: 0,
+      percentage: null,
       items: []
     },
     cost: {
@@ -140,7 +140,6 @@ export const getClassCostTypes = (
         budgetedPlaces,
         successAndQueuedEnrolmentsCount,
         sessions,
-        tutorAttendance
       );
 
       item.max = fee.max;
@@ -159,6 +158,7 @@ export const getClassCostTypes = (
           types.discount.max = decimalPlus(types.discount.max, item.max);
           types.discount.projected = decimalPlus(types.discount.projected, item.projected);
           types.discount.actual = decimalPlus(types.discount.actual, item.actual);
+          types.discount.percentage = decimalPlus(types.discount.percentage, item.value.actualUsePercent || 0);
           break;
         case "Wages":
           const tutor = tutors.find(
@@ -166,10 +166,10 @@ export const getClassCostTypes = (
           );
           const role = tutor && tutorRoles.find(r => r.id === tutor.roleId);
           const defaultOnCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
+          const onCostToUse = typeof value.onCostRate === "number" ? value.onCostRate : defaultOnCostRate;
 
-          item.max = decimalMul(item.max, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
-          item.projected = decimalMul(item.projected, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
-          item.actual = decimalMul(item.actual, decimalPlus(value.onCostRate || defaultOnCostRate, 1));
+          item.max = decimalMul(item.max, decimalPlus(onCostToUse, 1));
+          item.projected = decimalMul(item.projected, decimalPlus(onCostToUse, 1));
 
           types.cost.items.push(item);
           types.cost.max = decimalPlus(types.cost.max, item.max);
@@ -252,17 +252,15 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
         session.classId = createdClassId;
       }
 
-      session.courseClassTutorIds.forEach(id => {
-        if (!savedTutorsIds.includes(id)) {
-          session.courseClassTutorIds = session.courseClassTutorIds.filter(tId => tId !== id);
-        }
-      });
-
-      if (session.temporaryTutorIds.length) {
-        session.courseClassTutorIds = session.courseClassTutorIds.concat(
-          session.temporaryTutorIds.map(id => createdTutorsIds.find(tId => tId.tempId === id).createdId)
-        );
-      }
+      session.tutorAttendances = session.tutorAttendances
+        .filter(ta => savedTutorsIds.includes(ta.courseClassTutorId))
+        .map(ta => ({
+          ...ta,
+          courseClassTutorId: ta.temporaryTutorId
+            ? createdTutorsIds.find(tId => tId.tempId === ta.temporaryTutorId).createdId
+            : ta.courseClassTutorId,
+          temporaryTutorId: null
+        }));
     });
 
     if (!sessionUpdateAction.id) {
@@ -356,26 +354,6 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
       await b();
     }, Promise.resolve());
 
-  const tutorAttendanceActions = unprocessedAsyncActions.filter(
-    a => a.entity === "TutorAttendance" && a.method === "POST"
-  );
-
-  await tutorAttendanceActions
-    .map(a => () => {
-      const { id, tutorAttendance } = a.actionBody.payload;
-
-      return CourseClassAttendanceService.updateTutorAttendance(id, tutorAttendance).then(() => {
-        unprocessedAsyncActions.splice(
-          unprocessedAsyncActions.findIndex(u => u.id === a.id),
-          1
-        );
-      });
-    })
-    .reduce(async (a, b) => {
-      await a;
-      await b();
-    }, Promise.resolve());
-
   const sessionModuleActions = unprocessedAsyncActions.filter(
     a => a.entity === "SessionModule" && a.method === "POST"
   );
@@ -417,4 +395,28 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
     }, Promise.resolve());
 
   return unprocessedAsyncActions;
+};
+
+export const setShiftedTutorAttendances = (prevSession: TimetableSession, newSession: TimetableSession) => {
+  const sessionStartMinutesDiff = differenceInMinutes(new Date(newSession.start), new Date(prevSession.start));
+  const sessionEndMinutesDiff = differenceInMinutes(new Date(newSession.end), new Date(prevSession.end));
+
+  newSession.tutorAttendances = newSession.tutorAttendances.map((ta, index) => {
+    const taStartMinutesDiff = differenceInMinutes(new Date(ta.start), new Date(prevSession.tutorAttendances[index].start));
+    const taEndMinutesDiff = differenceInMinutes(new Date(ta.end), new Date(prevSession.tutorAttendances[index].end));
+    
+    const start = addMinutes(new Date(ta.start), sessionStartMinutesDiff + taStartMinutesDiff);
+    const end = addMinutes(new Date(ta.end), sessionEndMinutesDiff + taEndMinutesDiff);
+
+    const taDurationDiff = differenceInMinutes(end, start) - differenceInMinutes(new Date(ta.end), new Date(ta.start));
+
+    const actualPayableDurationMinutes = ta.actualPayableDurationMinutes + taDurationDiff;
+    
+    return {
+      ...ta,
+      end: end.toISOString(),
+      start: start.toISOString(),
+      actualPayableDurationMinutes: actualPayableDurationMinutes >= 0 ? actualPayableDurationMinutes : 0
+    };
+  });
 };

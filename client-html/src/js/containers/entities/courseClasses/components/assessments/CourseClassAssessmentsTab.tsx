@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Grid from "@material-ui/core/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import { arrayInsert, arrayRemove } from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { AssessmentClass, GradingType } from "@api/model";
 import { connect } from "react-redux";
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";

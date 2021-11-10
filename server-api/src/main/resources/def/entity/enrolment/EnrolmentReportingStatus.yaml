@@ -1,0 +1,6 @@
+type: string
+enum:
+  - Eligible
+  - Not eligible
+  - Ongoing
+  - Finalized

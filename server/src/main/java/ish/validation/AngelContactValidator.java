@@ -11,7 +11,7 @@
 
 package ish.validation;
 
-import ish.messaging.IContact;
+import ish.oncourse.server.cayenne.Contact;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,13 +28,13 @@ public class AngelContactValidator {
     private static final Logger logger = LogManager.getLogger();
 
     private org.apache.cayenne.validation.ValidationResult validationResult;
-    private IContact contact;
+    private Contact contact;
 
     private AngelContactValidator() {
 
     }
 
-    public static AngelContactValidator valueOf(org.apache.cayenne.validation.ValidationResult validationResult, IContact contact) {
+    public static AngelContactValidator valueOf(org.apache.cayenne.validation.ValidationResult validationResult, Contact contact) {
         AngelContactValidator angelContactValidator = new AngelContactValidator();
         angelContactValidator.validationResult = validationResult;
         angelContactValidator.contact = contact;
@@ -48,7 +48,7 @@ public class AngelContactValidator {
         errors.entrySet().stream().map(this::createFailureBy).forEach(validationResult::addFailure);
 
         if (StringUtils.isNotBlank(contact.getMessage()) && contact.getMessage().length() > 500) {
-            validationResult.addFailure(new ValidationFailure(contact, IContact.MESSAGE_KEY, "The message cannot be longer than 500 characters."));
+            validationResult.addFailure(new ValidationFailure(contact, Contact.MESSAGE_KEY, "The message cannot be longer than 500 characters."));
         }
     }
 

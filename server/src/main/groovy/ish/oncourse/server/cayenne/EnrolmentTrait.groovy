@@ -13,12 +13,8 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
 import ish.common.types.EnrolmentStatus
-import ish.messaging.IAttendance
+import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.entity.services.EnrolmentService
-import static ish.oncourse.server.entity.mixins.MixinHelper.getService
-
-import javax.annotation.Nonnull
 
 trait EnrolmentTrait {
 
@@ -30,6 +26,7 @@ trait EnrolmentTrait {
 
     abstract Student getStudent()
 
+    abstract List<InvoiceLine> getInvoiceLines()
 
     /**
      * @return display status name
@@ -42,7 +39,6 @@ trait EnrolmentTrait {
             getStatus() ? getStatus().displayName : null
         }
     }
-
 
     /**
      * @return related attendance list

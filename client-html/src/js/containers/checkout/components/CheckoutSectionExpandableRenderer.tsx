@@ -5,14 +5,14 @@
 
 import React from "react";
 import clsx from "clsx";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Accordion from "@material-ui/core/Accordion";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Accordion from "@mui/material/Accordion";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import { AppTheme } from "../../../model/common/Theme";
 
 const styles = (theme: AppTheme) =>
@@ -36,7 +36,7 @@ const styles = (theme: AppTheme) =>
       }
     },
     expansionPanelSummaryRoot: {
-      padding: `0 ${theme.spacing(2)}px`,
+      padding: `0 ${theme.spacing(2)}`,
       "&$expansionPanelSummaryExpanded": {
         minHeight: 48
       }

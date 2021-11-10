@@ -17,7 +17,7 @@ export const validateTagsList = (tags: Tag[], value, allValues, props) => {
   const rootTagsWithRequirements = {};
 
   tags.forEach(t => {
-    const match = t.requirements.filter(r => (r.type === props.rootEntity && r.mandatory) || r.limitToOneTag);
+    const match = t.requirements.filter(r => (r.type === props.rootEntity && (r.mandatory || r.limitToOneTag)));
 
     if (match.length) {
       rootTagsWithRequirements[t.id] = { name: t.name, requirements: match[0] };

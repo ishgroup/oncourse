@@ -16,17 +16,7 @@ import com.google.inject.Scopes;
 import ish.oncourse.GoogleGuiceInjector;
 import ish.oncourse.aql.AqlService;
 import ish.oncourse.aql.impl.AntlrAqlService;
-import ish.oncourse.entity.services.CertificateService;
-import ish.oncourse.entity.services.ContactService;
-import ish.oncourse.entity.services.CourseClassService;
-import ish.oncourse.entity.services.CourseService;
-import ish.oncourse.entity.services.EnrolmentService;
-import ish.oncourse.entity.services.InvoiceLineService;
-import ish.oncourse.entity.services.OutcomeService;
-import ish.oncourse.entity.services.SessionService;
-import ish.oncourse.entity.services.StudentConcessionService;
-import ish.oncourse.entity.services.StudentService;
-import ish.oncourse.entity.services.TagService;
+import ish.oncourse.entity.services.*;
 import ish.oncourse.server.AuditListener;
 import ish.oncourse.server.CayenneListenersService;
 import ish.oncourse.server.accounting.AccountTransactionService;
@@ -66,7 +56,7 @@ public class ServiceModule implements Module {
 		// jobs
 		binder.bind(EmailDequeueJob.class);
 		binder.bind(StatsService.class).in(Scopes.SINGLETON);
-		
+
 		binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON);
 		binder.bind(AuditService.class).in(Scopes.SINGLETON);
 		binder.bind(AuditListener.class).in(Scopes.SINGLETON);
@@ -83,12 +73,10 @@ public class ServiceModule implements Module {
 		binder.bind(GoogleGuiceInjector.class).asEagerSingleton();
 
 		// entity service classes
-		binder.bind(ContactService.class).in(Scopes.SINGLETON);
 		binder.bind(CourseClassService.class).in(Scopes.SINGLETON);
 		binder.bind(StudentConcessionService.class).in(Scopes.SINGLETON);
 		binder.bind(TagService.class).in(Scopes.SINGLETON);
 		binder.bind(SessionService.class).in(Scopes.SINGLETON);
-		binder.bind(OutcomeService.class).in(Scopes.SINGLETON);
 		binder.bind(CourseService.class).in(Scopes.SINGLETON);
 		binder.bind(CertificateService.class).in(Scopes.SINGLETON);
 		binder.bind(StudentService.class).in(Scopes.SINGLETON);

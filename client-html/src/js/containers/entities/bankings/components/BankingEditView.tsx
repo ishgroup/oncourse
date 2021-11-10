@@ -11,14 +11,14 @@ import {
 import { addDays, compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Checkbox from "@mui/material/Checkbox";
 import { Decimal } from "decimal.js-light";
-import FormField from "../../../../common/components/form/form-fields/FormField";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -29,9 +29,10 @@ import { PaymentInType } from "../consts";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { openSiteLink } from "../../sites/utils";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import Uneditable from "../../../../common/components/form/Uneditable";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { defaultContactName, openContactLink } from "../../contacts/utils";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -195,7 +196,7 @@ class BankingEditView extends React.PureComponent<any, any> {
 
   onSettlementDateChanged = (v: any, newValue: string, prevValue: string) => {
     const { values, form } = this.props;
-    if (newValue !== prevValue) {
+    if (newValue !== prevValue && values) {
       values.payments.filter(v => v.reconcilable).forEach(v => (v.reconciled = false));
       change(form, "payments", values.payments);
     }
@@ -226,116 +227,76 @@ class BankingEditView extends React.PureComponent<any, any> {
       editRecord,
       openNestedView,
       values,
-      manualLink,
-      rootEntity,
-      onCloseClick,
-      invalid,
-      dirty
+      isNew,
+      invalid
     } = this.props;
 
     return (
-      <div className={twoColumn ? "appBarContainer" : "h-100"}>
-        {twoColumn && (
-          <CustomAppBar>
-            <Grid container className="flex-fill">
-              <Grid item xs="auto">
-                <div className="d-flex align-items-baseline">
-                  {values && values.administrationCenterId && (
-                    <>
-                      <Typography className="appHeaderFontSize">{values && values.adminSite}</Typography>
-
-                      <LinkAdornment
-                        linkColor="inherit"
-                        link={values.administrationCenterId}
-                        linkHandler={openSiteLink}
-                        className="appHeaderFontSize pl-0-5 pr-3 "
-                      />
-                    </>
-                  )}
-                </div>
-              </Grid>
-              <Grid item>
-                <Typography className="appHeaderFontSize">{this.getHeader()}</Typography>
-              </Grid>
-            </Grid>
-            <div>
-              {manualLink && (
-                <AppBarHelpMenu
-                  created={values ? new Date(values.createdOn) : null}
-                  modified={values ? new Date(values.modifiedOn) : null}
-                  auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <Button onClick={onCloseClick} className="closeAppBarButton">
-                Close
-              </Button>
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
+      <div className="h-100 flex-column p-3">
+        <FullScreenStickyHeader
+          opened={isNew || invalid}
+          disableInteraction={!isNew}
+          twoColumn={twoColumn}
+          title={(
+            <div className="centeredFlex">
+              {values?.administrationCenterId
+                ? (
+                <>
+                  {values?.adminSite}
+                  <IconButton size="small" color="primary" onClick={() => openSiteLink(values?.administrationCenterId)}>
+                    <Launch fontSize="inherit" />
+                  </IconButton>
+                </>
+                )
+                : this.getHeader()}
             </div>
-          </CustomAppBar>
-        )}
-        <div className="h-100 flex-column p-3">
-          <Grid container>
-            <Grid item xs={12} className={twoColumn ? "d-none" : undefined}>
-              {values && values.administrationCenterId && (
-                <Uneditable
-                  url={`/site/${values.administrationCenterId}`}
-                  value={values && values.adminSite}
-                  label="Site"
-                />
-              )}
-            </Grid>
-            <Grid item xs={twoColumn ? 3 : 6}>
-              <FormField
-                type="date"
-                disabled={this.isDateLocked(lockedDate, editRecord)}
-                name="settlementDate"
-                label="Settlement Date"
-                onBlur={this.onSettlementDateChanged}
-                validate={[validateSingleMandatoryField, this.validateSettlementDate]}
-                minDate={
+            )}
+        />
+        <Grid container columnSpacing={3}>
+          <Grid item xs={twoColumn ? 3 : 6}>
+            <FormField
+              type="date"
+              disabled={this.isDateLocked(lockedDate, editRecord)}
+              name="settlementDate"
+              label="Settlement Date"
+              onBlur={this.onSettlementDateChanged}
+              validate={[validateSingleMandatoryField, this.validateSettlementDate]}
+              minDate={
                   lockedDate
                     ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
                     : undefined
                 }
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={twoColumn ? 3 : 6}>
-              <Typography variant="caption" color="textSecondary">
-                Created by
-              </Typography>
-              {this.getEditRecordProp("createdBy")}
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                className={clsx("pr-3", {
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 3 : 6}>
+            <Typography variant="caption" color="textSecondary">
+              Created by
+            </Typography>
+            {this.getEditRecordProp("createdBy")}
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              className={clsx("pr-3", {
                   "mt-2": !twoColumn
                 })}
-                control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
-                label="Reconcile this banking deposit"
-                disabled={this.isReconcileAllDisabled()}
-              />
-            </Grid>
+              control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
+              label="Reconcile this banking deposit"
+              disabled={this.isReconcileAllDisabled()}
+            />
           </Grid>
-          <FieldArray
-            name="payments"
-            className="saveButtonTableOffset"
-            goToLink="/paymentIn"
-            title={this.paymentsTitle()}
-            component={NestedTable}
-            removeEnabled={!this.isDateLocked(lockedDate, editRecord)}
-            columns={twoColumn ? paymentColumns : paymentColumnsMinified}
-            onRowDoubleClick={openNestedView}
-            total={this.totalAmount()}
-            rerenderOnEveryChange
-          />
-        </div>
+        </Grid>
+        <FieldArray
+          name="payments"
+          className="saveButtonTableOffset"
+          goToLink="/paymentIn"
+          title={this.paymentsTitle()}
+          component={NestedTable}
+          removeEnabled={!this.isDateLocked(lockedDate, editRecord)}
+          columns={twoColumn ? paymentColumns : paymentColumnsMinified}
+          onRowDoubleClick={openNestedView}
+          total={this.totalAmount()}
+          rerenderOnEveryChange
+        />
       </div>
     );
   }

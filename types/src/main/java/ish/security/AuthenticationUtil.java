@@ -21,6 +21,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 
+/**
+ * Use password hashing options which make it difficult for an attacker to brute force the hashes
+ *
+ * We do this by aiming for iterations and threads which use approximately 700ms per password attempt, and significant memory.
+ */
 public class AuthenticationUtil {
 
 	private static final int ITERATIONS = 9;
@@ -41,20 +46,11 @@ public class AuthenticationUtil {
 	 * Computes password hash and checks if it matches stored value.
 	 */
 	public static boolean checkPassword(String password, String hash) {
-		if (hash.startsWith("$")) {
-			Instant start = Instant.now();
-			boolean result = encoder.matches(password, hash);
-			Instant end = Instant.now();
-			LOGGER.warn("Matches password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
-			return result;
-			
-		} else {
-			try {
-				return PasswordUtil.validateOldPassword(password, hash);
-			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-				throw new RuntimeException("Password cannot be verified.", e);
-			}
-		}
+		Instant start = Instant.now();
+		boolean result = encoder.matches(password, hash);
+		Instant end = Instant.now();
+		LOGGER.warn("Matches password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
+		return result;
 	}
 
 	/**
@@ -63,11 +59,6 @@ public class AuthenticationUtil {
 	 * @return
 	 */
 	public static boolean upgradeEncoding(String hash) {
-		// new password algorithms all generate hashes starting with '$'
-		if (!hash.startsWith("$")) {
-			LOGGER.warn("Upgrading old pasword hash.");
-			return true;
-		}
 		boolean upgrade = encoder.upgradeEncoding(hash);
 		if (upgrade) {
 			LOGGER.warn("Upgrading pasword hash with lower iterations or memory.");

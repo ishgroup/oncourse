@@ -11,9 +11,12 @@
 
 package ish.oncourse.server.cayenne
 
-
+import com.google.inject.Inject
 import ish.oncourse.API
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.CourseStatusDTO
+import org.apache.cayenne.query.ObjectSelect
+
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.COURSE_DISABLED
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.ENABLED_AND_VISIBLE_ONLINE
@@ -28,6 +31,9 @@ trait CourseTrait {
 
     abstract Boolean getCurrentlyOffered()
 
+    @Inject
+    private ICayenneService cayenneService
+
     /**
      * @return count of current classes for the course
      */
@@ -37,6 +43,15 @@ trait CourseTrait {
         Date tomorrow = CommonExpressionFactory.nextMidnight(now)
         Date today = CommonExpressionFactory.previousMidnight(now)
         getCourseClasses().findAll { it.startDateTime != null && it.endDateTime != null && it.startDateTime <  tomorrow && it.endDateTime >= today && !it.isCancelled }.size()
+    }
+
+    /**
+     * @return number of all courseClasses, whether current, past or future
+     */
+    Integer getAllClassesCount() {
+        return ObjectSelect.query(CourseClass.class)
+                .where(CourseClass.COURSE.eq((Course)this))
+                .selectCount(cayenneService.newReadonlyContext)
     }
 
     /**

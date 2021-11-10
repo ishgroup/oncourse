@@ -1,16 +1,16 @@
 import * as React from "react";
 import ClassNames from "clsx";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { withRouter } from "react-router";
-import { withStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@mui/styles";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { Tax } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@material-ui/core/Fab";
+import Fab from "@mui/material/Fab";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -180,7 +180,7 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
               <Fab
                 type="button"
@@ -216,9 +216,9 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container className={classes.marginTop}>
+        <Grid container columnSpacing={3} className={classes.marginTop}>
           <Grid item sm={12} lg={10}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               {data && (
                 <FieldArray
                   name="types"

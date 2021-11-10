@@ -16,32 +16,25 @@
 import React, { useEffect } from "react";
 import { isDirty } from "redux-form";
 import { Route, Switch, withRouter } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { connect } from "react-redux";
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 import { Dispatch } from "redux";
 import { BrowserWarning } from "../common/components/dialog/BrowserWarning";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import store from "../constants/Store";
 import { loginRoute, routes } from "../routes";
 import MessageProvider from "../common/components/dialog/message/MessageProvider";
-import {
-  darkTheme, defaultTheme, monochromeTheme, highcontrastTheme, christmasTheme
-} from "../common/themes/ishTheme";
+import { currentTheme, getTheme } from "../common/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY,
+  DASHBOARD_THEME_KEY, READ_NEWS,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
-import {
-  DarkThemeKey,
-  DefaultThemeKey,
-  MonochromeThemeKey,
-  HighcontrastThemeKey,
-  ChristmasThemeKey,
-  ThemeValues
-} from "../model/common/Theme";
+import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
 import { State } from "../reducers/state";
 import { AnyArgFunction } from "../model/common/CommonFunctions";
 import GlobalStylesProvider from "../common/styles/GlobalStylesProvider";
@@ -52,6 +45,12 @@ import ConfirmProvider from "../common/components/dialog/confirm/ConfirmProvider
 import Message from "../common/components/dialog/message/Message";
 import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
 import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
+import { getDashboardBlogPosts } from "./dashboard/actions";
+
+export const muiCache = createCache({
+  key: 'mui',
+  prepend: true,
+});
 
 const isAnyFormDirty = (state: State) => {
   const forms = Object.getOwnPropertyNames(state.form);
@@ -108,29 +107,6 @@ const RouteWithSubRoutes = route => (
   />
 );
 
-const currentTheme = themeName => {
-  switch (themeName) {
-    case DarkThemeKey: {
-      return darkTheme;
-    }
-    case DefaultThemeKey: {
-      return defaultTheme;
-    }
-    case MonochromeThemeKey: {
-      return monochromeTheme;
-    }
-    case HighcontrastThemeKey: {
-      return highcontrastTheme;
-    }
-    case ChristmasThemeKey: {
-      return christmasTheme;
-    }
-    default: {
-      return defaultTheme;
-    }
-  }
-};
-
 interface Props {
   getPreferencesTheme: AnyArgFunction;
   history: any;
@@ -147,30 +123,19 @@ export class MainBase extends React.PureComponent<Props, any> {
 
     this.state = {
       themeName: DefaultThemeKey,
-      theme: this.getTheme(defaultTheme),
+      theme: getTheme(),
       showMessage: false,
       successMessage: false,
       messageText: ""
     };
   }
 
-  getTheme = theme => {
-    let actualTheme = theme;
-
-    const storageThemeName = LSGetItem(APPLICATION_THEME_STORAGE_NAME);
-    if (storageThemeName) {
-      actualTheme = currentTheme(storageThemeName);
-    }
-
-    return actualTheme;
-  };
-
   updateStateFromStorage = () => {
     this.setState({
       themeName: LSGetItem(APPLICATION_THEME_STORAGE_NAME)
         ? LSGetItem(APPLICATION_THEME_STORAGE_NAME)
         : DefaultThemeKey,
-      theme: this.getTheme(defaultTheme)
+      theme: getTheme()
     });
   };
 
@@ -283,35 +248,37 @@ export class MainBase extends React.PureComponent<Props, any> {
     const { isLogged } = this.props;
 
     return (
-      <ThemeContext.Provider
-        value={{
-          themeHandler: this.themeHandler,
-          themeName
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <GlobalStylesProvider>
-            <BrowserWarning />
-            <Message
-              opened={showMessage}
-              isSuccess={successMessage}
-              text={messageText}
-              clearMessage={this.clearMessage}
-            />
-            <Switch>
-              {isLogged ? (
-                routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
-              ) : (
-                loginRoute.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
-              )}
-            </Switch>
-            <ConfirmProvider />
-            {isLogged && <SwipeableSidebar />}
-          </GlobalStylesProvider>
-          <MessageProvider />
-        </ThemeProvider>
-      </ThemeContext.Provider>
+      <CacheProvider value={muiCache}>
+        <ThemeContext.Provider
+          value={{
+            themeHandler: this.themeHandler,
+            themeName
+          }}
+        >
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <GlobalStylesProvider>
+              <BrowserWarning />
+              <Message
+                opened={showMessage}
+                isSuccess={successMessage}
+                text={messageText}
+                clearMessage={this.clearMessage}
+              />
+              <Switch>
+                {isLogged ? (
+                  routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
+                ) : (
+                  loginRoute.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
+                )}
+              </Switch>
+              <ConfirmProvider />
+              {isLogged && <SwipeableSidebar />}
+            </GlobalStylesProvider>
+            <MessageProvider />
+          </ThemeProvider>
+        </ThemeContext.Provider>
+      </CacheProvider>
     );
   }
 }
@@ -327,7 +294,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER]));
+    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS]));
+    dispatch(getDashboardBlogPosts());
   }
 });
 

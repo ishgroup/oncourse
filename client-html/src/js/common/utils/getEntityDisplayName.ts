@@ -14,6 +14,9 @@ export const getEntityDisplayName = (entity: string): Category => {
     case "CorporatePass": {
       return "Corporate Pass";
     }
+    case "AbstractInvoice": {
+      return "Invoices";
+    }
     case "Invoice": {
       return "Invoices";
     }
@@ -49,6 +52,9 @@ export const getEntityDisplayName = (entity: string): Category => {
     }
     case "Enrolment": {
       return "Enrolments";
+    }
+    case "Lead": {
+      return "Leads";
     }
     case "WaitingList": {
       return "Waiting lists";
@@ -115,6 +121,9 @@ export const getSingleEntityDisplayName = (entity: string): string => {
     case "Module": {
       return "Unit Of Competency";
     }
+    case "AbstractInvoice": {
+      return "Invoice";
+    }
     case "PaymentIn": {
       return "Payment In";
     }
@@ -129,6 +138,9 @@ export const getSingleEntityDisplayName = (entity: string): string => {
     }
     case "CourseClass": {
       return "Class";
+    }
+    case "Lead": {
+      return "Lead";
     }
     case "WaitingList": {
       return "Waiting list";

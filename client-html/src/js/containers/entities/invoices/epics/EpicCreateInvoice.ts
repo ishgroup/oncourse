@@ -39,7 +39,7 @@ const request: EpicUtils.Request = {
       },
       {
         type: GET_RECORDS_REQUEST,
-        payload: { entity: "Invoice", listUpdate: true }
+        payload: { entity: "AbstractInvoice", listUpdate: true }
       },
       setListSelection([]),
       clearListNestedEditRecord(0),

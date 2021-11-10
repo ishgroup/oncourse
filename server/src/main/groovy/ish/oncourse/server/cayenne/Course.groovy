@@ -11,14 +11,11 @@
 
 package ish.oncourse.server.cayenne
 
-
 import ish.common.types.CourseEnrolmentType
-import ish.messaging.ICourse
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseReportableHours
-import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Course
 import ish.util.CourseUtil
@@ -40,7 +37,15 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Course extends _Course implements ICourse, Queueable, NotableTrait, ExpandableTrait, CourseTrait, AttachableTrait {
+class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait, CourseTrait, AttachableTrait {
+
+	public static final int COURSE_CODE_MAX_LENGTH = 32;
+	public static final int COURSE_NAME_MAX_LENGTH = 200;
+
+	public static final String CURRENT_CLASS_COUNT_PROPERTY = "currentClassesCount";
+	public static final String TOTAL_CLASS_COUNT_PROPERTY = "totalClassesCount";
+	public static final String DATA_COLLECTION_RULE_KEY = "dataCollectionRuleName";
+	public static final String ENROLMENT_TYPE_KEY = "displayableEnrolmentType"
 
 
 	private static final Logger logger = LogManager.getLogger()
@@ -287,7 +292,7 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	@Nonnull
 	@API
 	@Override
-	List<CourseClass> getCourseClasses() {
+    List<CourseClass> getCourseClasses() {
 		return super.getCourseClasses()
 	}
 
@@ -309,6 +314,20 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	@Override
 	List<Enrolment> getEnrolments() {
 		return super.getEnrolments()
+	}
+
+	/**
+	 * @return the name of field configuration schema
+	 */
+	String getDataCollectionRuleName() {
+		return fieldConfigurationSchema.getName();
+	}
+
+	/**
+	 * @return a total classes count of this course
+	 */
+	Integer getTotalClassesCount() {
+		return getAllClassesCount()
 	}
 
 	/**
@@ -518,6 +537,14 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 		return tagList
 	}
 
+	/**
+	 *
+	 * @return EnrolmentType property in displayable view
+	 */
+	String getDisplayableEnrolmentType(){
+		return enrolmentType.columnDisplayName
+	}
+
 	@Override
 	void addToModules(Module module) {
 		CourseUtil.addModule(this, module, CourseModule.class)
@@ -538,5 +565,10 @@ class Course extends _Course implements ICourse, Queueable, NotableTrait, Expand
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return CourseCustomField
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return CourseTagRelation.class
 	}
 }

@@ -72,6 +72,7 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("CustomField", "ContactCustomField");
 
 		ANGEL_TO_WILLOW.put("FieldConfiguration", "EnrolmentFieldConfiguration");
+		ANGEL_TO_WILLOW.put("Invoice", "AbstractInvoice");
 
 		WILLOW_TO_ANGEL.put("BinaryData", "AttachmentData");
 		WILLOW_TO_ANGEL.put("BinaryInfo", "AttachmentInfo");

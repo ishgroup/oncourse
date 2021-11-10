@@ -6,16 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { FormControlLabel } from "@material-ui/core";
+import { FormControlLabel, Grid } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { change, Field as FormField } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { CheckboxField } from "../../../../common/components/form/form-fields/CheckboxField";
-import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import EditInPlaceMoneyField from "../../../../common/components/form/form-fields/EditInPlaceMoneyField";
+import { GridProps, GridTypeMap } from "@mui/material/Grid";
+import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
+import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceMoneyField from "../../../../common/components/form/formFields/EditInPlaceMoneyField";
 import {
   validateEmail,
   validateSingleMandatoryField,
@@ -23,7 +24,7 @@ import {
   validatePattern
 } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import EditInPlaceSearchSelect from "../../../../common/components/form/form-fields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
 import { getCustomFieldTypes } from "../actions";
 import { EntityName } from "../../../../model/entities/common";
 
@@ -146,7 +147,6 @@ interface CustomFieldProps {
   dispatch?: any;
   form?: string;
   fieldName?: string;
-  fullWidth?: boolean;
 }
 
 const CustomField: React.FC<CustomFieldProps> = ({
@@ -154,8 +154,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
  value,
  dispatch,
  form,
- fieldName,
- fullWidth
+ fieldName
 }) => {
   const [items, setItems] = useState([]);
 
@@ -208,7 +207,6 @@ const CustomField: React.FC<CustomFieldProps> = ({
         component={component}
         items={items}
         {...componentProps}
-        fullWidth={fullWidth}
       />
     );
 };
@@ -221,19 +219,19 @@ interface CustomFieldsProps {
   entityValues: any;
   dispatch?: any;
   form?: string;
-  fullWidth?: boolean;
+  gridItemProps: GridProps;
 }
 
 const CustomFieldsTypes = React.memo<CustomFieldsProps>(
   ({
      getCustomFieldTypes,
+     gridItemProps,
      entityName,
      customFieldTypes,
      fieldName,
      entityValues,
      dispatch,
      form,
-     fullWidth
   }) => {
     useEffect(() => {
       if (!customFieldTypes || !customFieldTypes[entityName]) {
@@ -243,15 +241,15 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
 
     return (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
       ? customFieldTypes[entityName].map((type, i) => (
-        <CustomField
-          key={i}
-          type={type}
-          value={entityValues[fieldName][type.fieldKey]}
-          fieldName={fieldName}
-          dispatch={dispatch}
-          form={form}
-          fullWidth={fullWidth}
-        />
+        <Grid key={i} item {...gridItemProps} className="pr-2">
+          <CustomField
+            type={type}
+            value={entityValues[fieldName][type.fieldKey]}
+            fieldName={fieldName}
+            dispatch={dispatch}
+            form={form}
+          />
+        </Grid>
       ))
       : null);
   }

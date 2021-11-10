@@ -5,12 +5,12 @@
 
 import * as React from "react";
 import { change } from "redux-form";
-import { FormControlLabel, Typography } from "@material-ui/core";
+import { FormControlLabel, Typography } from "@mui/material";
 import { connect } from "react-redux";
 import { Sale } from "@api/model";
 import { Dispatch } from "redux";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import { createStyles, withStyles } from "@mui/styles";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
 import { clearCourseClassSales, getCourseClassSales } from "../../sales/actions";
@@ -44,7 +44,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
 
   onDeleteDiscountClass = (item: NestedListItem) => {
     const { values, dispatch, form } = this.props;
-    const classes = values.discountCourseClasses.filter(c => item.entityId !== c.id);
+    const { classes } = values.discountCourseClasses.filter(c => item.entityId !== c.id);
     dispatch(change(form, "discountCourseClasses", classes));
   };
 
@@ -52,7 +52,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
     const {
       values, dispatch, form, foundDiscountClasses
     } = this.props;
-    const classes = values.discountCourseClasses.concat(
+    const { classes } = values.discountCourseClasses.concat(
       items.map(item => foundDiscountClasses.find(c => item.entityId === c.id))
     );
     dispatch(change(form, "discountCourseClasses", classes));

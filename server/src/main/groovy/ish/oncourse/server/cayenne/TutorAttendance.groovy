@@ -12,13 +12,14 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
-import ish.messaging.ITutorAttendance
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._TutorAttendance
+import ish.util.DurationFormatter
 
 import javax.annotation.Nonnull
-import java.util.Date
+import java.math.RoundingMode
+import java.time.Duration
 
 /**
  * This entity represents the relationship between a tutor and the sessions that comprise
@@ -27,8 +28,21 @@ import java.util.Date
  */
 @API
 @QueueableEntity
-class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, ITutorAttendance, Queueable {
+class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, Queueable {
 
+
+	@Override
+	void prePersist() {
+		if (!startDatetime) {
+			startDatetime = session.startDatetime
+		}
+		if (!endDatetime) {
+			endDatetime = session.endDatetime
+		}
+		if (actualPayableDurationMinutes == null) {
+			actualPayableDurationMinutes = DurationFormatter.durationInMinutesBetween(startDatetime, endDatetime)
+		}
+	}
 
 
 	/**
@@ -51,12 +65,12 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	}
 
 	/**
-	 * @return duration of the attendance
+	 * @return actual payable duration of the attendance
 	 */
 	@API
 	@Override
-	Integer getDurationMinutes() {
-		return super.getDurationMinutes()
+	Integer getActualPayableDurationMinutes() {
+		return super.getActualPayableDurationMinutes()
 	}
 
 	/**
@@ -117,5 +131,19 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	@Override
 	Session getSession() {
 		return super.getSession()
+	}
+
+	/**
+	 * @return actual payable duration in hours
+	 */
+	BigDecimal getActualPayableDurationHours() {
+		return DurationFormatter.durationInHoursFromMinutes(actualPayableDurationMinutes)
+	}
+
+	/**
+	 * @return  budgeted payable duration in hours, actually tutor roster duration
+	 */
+	BigDecimal getBudgetedPayableDurationHours() {
+		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
 	}
 }

@@ -5,8 +5,8 @@
 
 import React from "react";
 import { change } from "redux-form";
-import { ButtonBase, Divider, Typography } from "@material-ui/core";
-import Launch from "@material-ui/icons/Launch";
+import { ButtonBase, Divider, Typography } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import {
   AvetmissExportOutcome,
   AvetmissExportOutcomeCategory,
@@ -16,9 +16,10 @@ import {
   AvetmissExportType
 } from "@api/model";
 import clsx from "clsx";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
+import FormField from "../../../common/components/form/formFields/FormField";
 import SpeechCard from "../../../common/components/layout/SpeechCard";
-import Button from "../../../common/components/buttons/Button";
 import { openInternalLink, saveCategoryAQLLink } from "../../../common/utils/links";
 
 interface ExtendedValues extends AvetmissExportSettings {
@@ -607,13 +608,15 @@ class AvetmissExportResults extends React.Component<Props, any> {
 
         <div className="centeredFlex">
           <div className="flex-fill" />
-          <Button
-            text="Export"
+          <LoadingButton
+            variant="contained"
             color="primary"
-            rootClasses="avetmissButton"
+            className="avetmissButton"
             onClick={() => this.export(outcome)}
             loading={pending}
-          />
+          >
+            Export
+          </LoadingButton>
         </div>
       </>
     );

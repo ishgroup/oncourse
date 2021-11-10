@@ -5,9 +5,9 @@
 
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
-import LockOutlined from "@material-ui/icons/LockOutlined";
-import CropLandscapeIcon from "@material-ui/icons/CropLandscape";
-import CropPortraitIcon from "@material-ui/icons/CropPortrait";
+import LockOutlined from "@mui/icons-material/LockOutlined";
+import CropLandscapeIcon from "@mui/icons-material/CropLandscape";
+import CropPortraitIcon from "@mui/icons-material/CropPortrait";
 import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
 import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
 import { State } from "../../../reducers/state";

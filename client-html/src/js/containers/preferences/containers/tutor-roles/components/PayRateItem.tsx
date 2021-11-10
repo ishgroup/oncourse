@@ -4,12 +4,12 @@
  */
 
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Tooltip from "@material-ui/core/Tooltip";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Tooltip from "@mui/material/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import {
   formatFieldPercent,
@@ -27,7 +27,7 @@ const PayRateItem = props => {
 
   return fields.map((item, index) => (
     <Grid key={index} item xs={12} className={classes.payRateItem}>
-      <Grid container alignContent="space-between">
+      <Grid container columnSpacing={3} alignContent="space-between">
         <Grid item xs={3}>
           <FormField
             type="date"
@@ -39,7 +39,7 @@ const PayRateItem = props => {
           />
         </Grid>
         <Grid item xs={7}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={3}>
               <FormField
                 type="money"

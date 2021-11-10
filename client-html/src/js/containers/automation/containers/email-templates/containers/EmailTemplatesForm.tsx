@@ -4,21 +4,21 @@
  */
 
 import { EmailTemplate, MessageType } from "@api/model";
-import { Grow } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import { FileCopy } from "@material-ui/icons";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import { Grow } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import { FileCopy } from "@mui/icons-material";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import React, {
-  useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState 
 } from "react";
 import { Dispatch } from "redux";
 import { Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { mapSelectItems } from "../../../../../common/utils/common";
@@ -216,9 +216,9 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           />
         </CustomAppBar>
 
-        <Grid container className="p-3 appBarContainer">
+        <Grid container columnSpacing={3} className="p-3 appBarContainer">
           <Grid item xs={9} className="pr-3">
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={6}>
                 <div className="heading">Type</div>
                 <FormField
@@ -242,7 +242,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
             </Grid>
 
             {values.type === 'Email' && (
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 <Grid item xs={6}>
                   <div className="heading">Subject</div>
                   <FormField

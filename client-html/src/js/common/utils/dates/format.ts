@@ -37,8 +37,6 @@ export const DD_MM_YYYY_SLASHED: string = "dd/MM/yyyy";
 
 export const HH_MM_COLONED: string = "HH:mm";
 
-export const DD_MM_YYYY_SLASHED_HH_MM_COLONED: string = "dd/MM/yyyy HH:mm";
-
 export const HA: string = "ha";
 
 export const DD_MM_YYYY_HH_MM_SPECIAL: string = "dd.MM.yyyy HH:mm";
@@ -50,3 +48,5 @@ export const DD_MMM_YYYY_AT_HH_MM_A_SPECIAL: string = "dd MMM yyyy 'at' hh:mm a"
 export const DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL: string = "dd MMM yyyy 'at' hh:mm aaaa";
 
 export const III_DD_MMM_YYYY_HH_MM_AAAA: string = "iii d MMM yyyy h:mm aaaa";
+
+export const H_MMAAA: string = "h:mmaaa";

@@ -10,7 +10,6 @@ records.each { Invoice i ->
 			"amountOwing"     : i.amountOwing?.toPlainString(),
 			"billToAddress"   : i.billToAddress,
 			"dateDue"         : i.dateDue?.format("yyyy-MM-dd"),
-			"description"     : i.description,
 			"invoiceDate"     : i.invoiceDate?.format("yyyy-MM-dd"),
 			"invoiceNumber"   : i.invoiceNumber,
 			"privateNotes"    : i.notes,

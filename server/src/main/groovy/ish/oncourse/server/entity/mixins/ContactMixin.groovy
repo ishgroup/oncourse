@@ -15,13 +15,7 @@ import groovy.time.TimeCategory
 import groovy.transform.CompileDynamic
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.entity.services.ContactService
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Invoice
-import static ish.oncourse.server.entity.mixins.MixinHelper.getService
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.print.proxy.PrintableStatementLine
 import ish.util.ContactUtils
@@ -29,9 +23,10 @@ import ish.util.UrlUtil
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.ObjectSelect
 
-import javax.annotation.Nullable
 import java.text.ParseException
 import java.time.LocalDate
+
+import static ish.oncourse.server.entity.mixins.MixinHelper.getService
 
 @CompileDynamic
 class ContactMixin {
@@ -39,29 +34,6 @@ class ContactMixin {
 	private static final int DEFAULT_PORTAL_URL_SIGNATURE_TIMEOUT = 7
 	private static final String PORTAL_USI_TARGET = "USI"
 
-    /**
-     * Instead of using this, put this type of formatting code in the email template or report
-     */
-	@Deprecated
-	static String getPhones(Contact self) {
-		getService(ContactService).getPhones(self)
-	}
-
-    /**
-     * A simple convenience function to assemble the address in a formatted block.
-     *
-     * ```
-     * Street
-     * Suburb State Postcode
-     * ```
-     *
-     * @param self
-     * @return address concatenated from street, suburb, state and postcode fields
-     */
-	@API
-	static String getAddress(Contact self) {
-		getService(ContactService).getAddress(self)
-	}
 
     /**
      * For this contact, find all the statement lines (invoices, credit notes, payments)

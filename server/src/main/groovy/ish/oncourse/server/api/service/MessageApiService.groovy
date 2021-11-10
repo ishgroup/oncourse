@@ -13,15 +13,21 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import groovy.text.Template
+import groovy.transform.CompileStatic
 import ish.common.types.EnrolmentStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.MessageDao
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.api.model.RecipientGroupModel
 import ish.oncourse.server.api.model.RecipientsModel
+import ish.oncourse.server.scripting.api.MetaclassCleaner
+import ish.util.AbstractEntitiesUtil
 import org.apache.cayenne.validation.ValidationException
 
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getEntityTransformationProperty
@@ -41,6 +47,8 @@ import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.WaitingList
 import static ish.oncourse.server.messaging.MessageService.createMessagePerson
 import org.apache.commons.lang3.StringUtils
+
+
 import static org.apache.commons.lang3.StringUtils.EMPTY
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import static ish.oncourse.server.api.v1.function.MessageFunctions.getRecipientsListFromEntity
@@ -71,11 +79,11 @@ import org.apache.logging.log4j.Logger
 
 import java.time.ZoneOffset
 
+@CompileStatic
 class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageDao> {
     private static final Logger logger = LogManager.logger
     private static final String CREATED_SUCCESS = "Messages created successfully"
     private static final int BATCH_SIZE = 50
-
 
     @Inject private AqlService aql
 
@@ -88,6 +96,8 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     @Inject private SystemUserService systemUserService
 
     @Inject private SMTPService smtpService
+
+    @Inject private LicenseService licenseService
 
 
     @Override
@@ -157,41 +167,44 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    RecipientsDTO getRecipients(String entityName, String messageType, SearchQueryDTO request) {
+    RecipientsDTO getRecipients(String entityName, String messageType, SearchQueryDTO request, Long templateId) {
         ObjectContext context = cayenneService.newReadonlyContext
-        List<Long> entitiesIds = getEntityIds(entityName, request, context)
+
+        def template = getTemplate(templateId, context)
+        List<Long> entitiesIds = getEntityIds(entityName, request, context, template)
+        
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
-        RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
+        RecipientsModel model = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
 
         new RecipientsDTO().with { dto ->
             dto.students = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.students.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.students.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.students.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.students.suitableForSend
+                typeDto.suppressToSendIds = model.students.suppressToSend
+                typeDto.withoutDestinationIds = model.students.withoutDestination
                 typeDto
             }
             dto.activeStudents = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.activeStudents.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.activeStudents.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.activeStudents.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.activeStudents.suitableForSend
+                typeDto.suppressToSendIds = model.activeStudents.suppressToSend
+                typeDto.withoutDestinationIds = model.activeStudents.withoutDestination
                 typeDto
             }
             dto.withdrawnStudents = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.withdrawStudents.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.withdrawStudents.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.withdrawStudents.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.withdrawStudents.suitableForSend
+                typeDto.suppressToSendIds = model.withdrawStudents.suppressToSend
+                typeDto.withoutDestinationIds = model.withdrawStudents.withoutDestination
                 typeDto
             }
             dto.tutors = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.tutors.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.tutors.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.tutors.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.tutors.suitableForSend
+                typeDto.suppressToSendIds = model.tutors.suppressToSend
+                typeDto.withoutDestinationIds = model.tutors.withoutDestination
                 typeDto
             }
             dto.other = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.other.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.other.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.other.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.other.suitableForSend
+                typeDto.suppressToSendIds = model.other.suppressToSend
+                typeDto.withoutDestinationIds = model.other.withoutDestination
                 typeDto
             }
             dto
@@ -199,9 +212,12 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    RecipientsModel getRecipientsModel(String entityName, MessageTypeDTO messageType, List<Long> entitiesIds) {
+    private RecipientsModel getRecipientsModel(String entityName, MessageTypeDTO messageType, List<Long> entitiesIds, EmailTemplate template) {
         RecipientsModel recipientsModel = new RecipientsModel()
-
+        if (AbstractEntitiesUtil.isAbstract(entityName)) {
+            entityName = template.entity
+        }
+            
         Expression exp = null
         Property<Long> contactFindProperty = getFindContactProperty(entityName)
         if ( contactFindProperty != null ) {
@@ -216,11 +232,13 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             case Application.ENTITY_NAME:
             case Contact.ENTITY_NAME:
             case Invoice.ENTITY_NAME:
+            case Quote.ENTITY_NAME:
             case PaymentIn.ENTITY_NAME:
             case PaymentOut.ENTITY_NAME:
             case ProductItem.ENTITY_NAME:
             case Article.ENTITY_NAME:
             case Membership.ENTITY_NAME:
+            case Lead.ENTITY_NAME:
                 addRecipientsToGroup(recipientsModel.students, exp.andExp(Contact.STUDENT.isNotNull()), messageType)
                 addRecipientsToGroup(recipientsModel.tutors, exp.andExp(Contact.TUTOR.isNotNull()), messageType)
                 addRecipientsToGroup(recipientsModel.other, exp.andExp(Contact.STUDENT.outer().isNull()).andExp(Contact.TUTOR.outer().isNull()), messageType)
@@ -297,9 +315,16 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
         validateBeforeSend(messageType, recipientsCount, request)
         MessageTypeDTO messageTypeDTO = MessageTypeDTO.fromValue(messageType)
 
+        EmailTemplate template = getTemplate(request.templateId, context)
+        if (template == null || template.type != messageTypeDTO.dbType) {
+            logger.error("The message template didn't find out. MessageType: {}, Id: {}", messageTypeDTO.toString(), request.templateId)
+            validator.throwClientErrorException("templateId", "The message template didn't find out.")
+        }
+        
+        List<Long> entitiesIds = getEntityIds(request.entity, request.searchQuery, context, template)
         String entityName = request.entity
-        List<Long> entitiesIds = getEntityIds(entityName, request.searchQuery, context)
-        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds)
+
+        RecipientsModel recipientsModel = getRecipientsModel(entityName, messageTypeDTO, entitiesIds, template)
         List<Long> recipientsToSend = new ArrayList<>()
 
         addRecipientsToSend(recipientsToSend, recipientsModel.students, request.sendToStudents, request.sendToSuppressStudents)
@@ -323,17 +348,18 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${smtpService.email_batch} emails in one batch. " +
                     "Please send in smaller batches or upgrade to a plan with a higher limit.")
         }
+        if (licenseService.getLisense("license.sms") != null && recipientsToSend.size() > (Integer)licenseService.getLisense("license.sms") && MessageTypeDTO.SMS == messageTypeDTO) {
+            logger.error("A recipients number higher than allowed by license. License: {}, Real: {}",
+                    licenseService.getLisense("license.sms"), recipientsToSend.size().toString())
+            if (licenseService.getLisense("license.sms") == 0) {
+                validator.throwClientErrorException("recipientsCount", "Your license does not allow sending sms. " +
+                        "Please, contact onCourse administrator to upgrade your plan.")
+            }
+            validator.throwClientErrorException("recipientsCount", "Your license does not allow sending more than ${licenseService.getLisense("license.sms")} sms in one batch. " +
+                    "Please send in smaller batches or upgrade to a plan with a higher limit.")
+        }
 
         SystemUser user = context.localObject(systemUserService.currentUser)
-
-        EmailTemplate template = ObjectSelect.query(EmailTemplate.class)
-                .where(EmailTemplate.ID.eq(request.templateId).andExp(EmailTemplate.TYPE.eq(messageTypeDTO.dbType)))
-                .selectOne(context)
-
-        if (template == null) {
-            logger.error("The message template didn't find out. MessageType: {}, Id: {}", messageTypeDTO.toString(), request.templateId)
-            validator.throwClientErrorException("templateId", "The message template didn't find out.")
-        }
 
         Map<String, Object> plainBindings = templateApiService.getVariablesMap(request.variables, template)
         Map<String, Object> htmlBindings = templateApiService.getVariablesMap(request.variables, template, true)
@@ -385,23 +411,35 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             }
         }
 
-        Template plainTemplate = templateService.createPlainTemplate(template)
-        Template htmlTemplate = templateService.createHtmlTemplate(template)
+        Template plainTemplate
+        Template htmlTemplate
 
         Closure<Message> fillMessage
         switch(messageTypeDTO) {
             case MessageTypeDTO.EMAIL:
                 fillMessage = { Message message ->
-                    message.emailSubject  = templateService.addSubject(template, plainBindings, htmlBindings)
-                    message.emailBody     = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
+                    plainTemplate = templateService.createPlainTemplate(template)
+                    htmlTemplate = templateService.createHtmlTemplate(template)
+
+                    message.emailSubject = templateService.addSubject(template, plainBindings, htmlBindings)
+
+                    message.emailBody = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
+                    MetaclassCleaner.clearGroovyCache(plainTemplate);
+
                     message.emailHtmlBody = htmlTemplate ? htmlTemplate.make(htmlBindings).toString() : null
+                    MetaclassCleaner.clearGroovyCache(htmlTemplate);
+
                     message.emailFrom = request.fromAddress
                     message
                 }
                 break
             case MessageTypeDTO.SMS:
                 fillMessage = { Message message ->
+                    plainTemplate = templateService.createPlainTemplate(template)
+
                     message.smsText = plainTemplate ? plainTemplate.make(plainBindings).toString() : null
+                    MetaclassCleaner.clearGroovyCache(plainTemplate)
+
                     message
                 }
                 break
@@ -448,16 +486,24 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
     }
 
 
-    List<Long> getEntityIds(String entityName, SearchQueryDTO request, ObjectContext context) {
+    List<Long> getEntityIds(String entityName, SearchQueryDTO request, ObjectContext context, EmailTemplate template = null) {
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entityName)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
-
-        parseSearchQuery(objectSelect, context, aql, entityName, request.search, request.filter, request.tagGroups)
+        def columnSelect = parseSearchQuery(objectSelect, context, aql, entityName, request.search, request.filter, request.tagGroups)
                 .column(Property.create("id", Long))
-                .select(context)
+
+        if (template != null && !template.entity.equals(entityName) && AbstractEntitiesUtil.isAbstract(entityName)) {
+            Expression isCurrentInheritorExp = AbstractEntitiesUtil.getIsCurrentInheritorExp(entityName, template.entity)
+            columnSelect = columnSelect.and(isCurrentInheritorExp)
+        }
+           
+        return columnSelect.select(context)
     }
 
-
+    private EmailTemplate getTemplate(Long templateId, ObjectContext context){
+        return SelectById.query(EmailTemplate, templateId).selectOne(context)
+    }
+    
     static List<Long> addRecipientsToSend(List<Long> recipients, RecipientGroupModel group, boolean suitableForSend, boolean suppressToSend) {
         if (suitableForSend) {
             recipients.addAll(group.suitableForSend)

@@ -4,21 +4,23 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { Form, reduxForm, initialize } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import * as Model from "../../../../../model/preferences/ClassDefaults";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("generalPrefs_classdefaults");
 
@@ -45,7 +47,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSave, dirty, enums, data, form
+     handleSubmit, onSave, dirty, enums, data, form, invalid
     } = this.props;
 
     return (
@@ -53,7 +55,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 Class Defaults
@@ -70,20 +72,15 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 />
               )}
 
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
+              <FormSubmitButton
                 disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+                invalid={invalid}
               />
             </Grid>
           </Grid>
         </CustomAppBar>
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <Grid item xs={12} sm={3}>
             <FormField
               type="number"
@@ -105,7 +102,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <Grid item xs={12} sm={3}>
             <FormField
               type="number"
@@ -134,7 +131,8 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
 
 const ClassDefaultsForm = reduxForm({
   form: "ClassDefaultsForm",
-  validate: validateMultipleMandatoryFields
+  validate: validateMultipleMandatoryFields,
+  onSubmitFail
 })(
   connect<any, any, any>(null, null, null, { forwardRef: true })(ClassDefaultsBaseForm)
 );

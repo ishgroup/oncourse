@@ -6,15 +6,15 @@
 import * as React from "react";
 import clsx from "clsx";
 import { change } from "redux-form";
-import { FormControlLabel, Theme } from "@material-ui/core";
+import { FormControlLabel, Theme } from "@mui/material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ConcessionType, Discount, DiscountMembership } from "@api/model";
-import Collapse from "@material-ui/core/Collapse";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import Collapse from "@mui/material/Collapse";
+import { createStyles, withStyles } from "@mui/styles";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
-import { CheckboxField } from "../../../../common/components/form/form-fields/CheckboxField";
+import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
 import NestedList, {
   NestedListItem,
   NestedListPanelItem

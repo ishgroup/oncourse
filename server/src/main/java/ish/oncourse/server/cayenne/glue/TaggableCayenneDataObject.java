@@ -12,17 +12,19 @@ package ish.oncourse.server.cayenne.glue;
 
 
 import com.google.inject.Inject;
-import ish.messaging.ITag;
-import ish.messaging.ITaggableObject;
 import ish.oncourse.API;
 import ish.oncourse.cayenne.Taggable;
+import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.entity.services.TagService;
+import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.TagRelation;
 import org.apache.cayenne.Cayenne;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +32,7 @@ import java.util.Set;
 /**
  * Entities which can be tagged. Some helper methods here are useful for manipulating tags.
  */
-public abstract class TaggableCayenneDataObject extends CayenneDataObject implements ITaggableObject {
+public abstract class TaggableCayenneDataObject extends CayenneDataObject implements Taggable {
 
 	public static final String BULK_TAG_PROPERTY = "bulkTag";
 	public static final String BULK_UNTAG_PROPERTY = "bulkUntag";
@@ -50,6 +52,25 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 			return null;
 		}
 		return Cayenne.longPKForObject(this);
+	}
+
+	/**
+	 * Get firts 3   related tags colors.
+	 *
+	 * @return List of colors
+	 */
+	public List<Long> getTagIds() {
+		TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName());
+		if (taggable != null) {
+			return ObjectSelect.columnQuery(Tag.class, Tag.ID)
+					.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
+							.eq(taggable.getDatabaseValue()))
+					.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
+					.select(this.getContext());
+		} else {
+			return Collections.emptyList();
+		}
+
 	}
 
 	/**
@@ -82,9 +103,9 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 			if(tag.getRoot().getTagRequirement(this.getClass()) == null) {
 				return false;
 			}
-			Class<? extends Taggable> type = this.getClass();
-			var taggedEntity = getContext().getEntityResolver().getObjEntity(type);
-			var joinEntity = getContext().getEntityResolver().getObjEntity(taggedEntity.getName() + TagRelation.class.getSimpleName());
+
+			var taggedEntity = getContext().getEntityResolver().getObjEntity(getTagRelationClass());
+			var joinEntity = getContext().getEntityResolver().getObjEntity(taggedEntity.getName());
 
 			var relation = (TagRelation) getContext().newObject(joinEntity.getJavaClass());
 			relation.setTag(tag);
@@ -93,6 +114,8 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		}
 		return false;
 	}
+
+	public abstract Class<? extends TagRelation> getTagRelationClass();
 
 	/**
 	 * Remove a tag from this object. If the tag isn't already attached, this method does nothing and returns false.
@@ -180,7 +203,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		var rootExpression = Tag.NAME.eq(tagNames[0])
 				.andExp(Tag.PARENT_TAG.isNull());
 		var selectQuery = new SelectQuery<>(Tag.class, rootExpression);
-		List<? extends ITag> rootTags = getContext().select(selectQuery);
+		List<? extends Tag> rootTags = getContext().select(selectQuery);
 
 		if (rootTags.isEmpty()) {
 			return null;

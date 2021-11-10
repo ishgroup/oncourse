@@ -52,7 +52,7 @@ class PayslipApiService extends TaggableApiService<PayslipDTO, Payslip, PayslipD
             payslip.tutorId = dbModel.contact.id
             payslip.tutorFullName = dbModel.contact.fullName
             payslip.tags = dbModel.tags.collect { toRestTagMinimized(it) }
-            payslip.paylines dbModel.paylines.collect { toRestPayLine(it) }
+            payslip.paylines = dbModel.paylines.collect { toRestPayLine(it) }
                     .sort { a, b -> (!a.className ? !b.className ? 0 : 1 : !b.className ? -1 : a.className <=> b.className) ?: a.type <=> b.type ?: a.dateFor <=> b.dateFor }
             payslip.createdOn = dbModel.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             payslip.modifiedOn = dbModel.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()

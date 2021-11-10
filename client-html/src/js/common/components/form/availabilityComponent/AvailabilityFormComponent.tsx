@@ -5,14 +5,13 @@
 
 import React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import { Dispatch } from "redux";
 import { addHours } from "date-fns";
 import AvailabilityRenderer from "./AvailabilityRenderer";
 import { getLabelWithCount } from "../../../utils/strings";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import AddIcon from "../../icons/AddIcon";
 
 const addRule = (dispatch: any, form: string) => {
   const item = {} as Holiday;
@@ -53,17 +52,21 @@ interface Props {
 
 const AvailabilityFormComponent = React.memo<Props>(
   ({
- values, dispatch, showConfirm, twoColumn, form, className, name = "rules", timezone
+     values,
+     dispatch,
+     showConfirm,
+     twoColumn,
+     form,
+     className,
+     name = "rules",
+     timezone,
 }) => (
-  <div className={className}>
-    <div className="centeredFlex pl-3">
-      <div className="heading">
+  <div className={`${className} pl-3 pr-3`}>
+    <div className="centeredFlex">
+      <div className="heading mt-2 mb-2">
         {getLabelWithCount("Availability Rule", values[name] ? values[name].length : 0)}
       </div>
-
-      <IconButton onClick={addRule.bind(null, dispatch, form, name)}>
-        <AddCircle className="addButtonColor" />
-      </IconButton>
+      <AddIcon onClick={addRule.bind(null, dispatch, form, name)} />
     </div>
 
     <FieldArray

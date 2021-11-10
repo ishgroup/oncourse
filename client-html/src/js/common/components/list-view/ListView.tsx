@@ -8,20 +8,17 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import {
-  getFormSyncErrors, initialize, isDirty, isInvalid, submit
-} from "redux-form";
+import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
 import clsx from "clsx";
-import { createStyles, ThemeProvider, withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { ThemeProvider } from "@mui/material/styles";
+import { createStyles, withStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel
-} from "@api/model";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
-import Button from "@material-ui/core/Button";
+import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
+import { createTheme } from '@mui/material';
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
 import SideBar from "./components/side-bar/SideBar";
@@ -50,12 +47,11 @@ import {
   setListSelection,
   setListUserAQLSearch,
   setSearch,
-  updateTableModel
+  setShowColoredDots,
+  updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import {
-  closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
-} from "../../actions";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -109,7 +105,7 @@ const styles = () => createStyles({
   }
 });
 
-const sideBarTheme = theme => createMuiTheme({
+const sideBarTheme = theme => createTheme({
   ...theme,
   overrides: {
     MuiFormControlLabel: {
@@ -145,6 +141,7 @@ interface Props extends Partial<ListState> {
   nestedEditFields?: { [key: string]: (props: any) => React.ReactNode };
   fetch?: Fetch;
   menuTags?: MenuTag[];
+  filterEntity?: EntityName;
   filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
   onSearch?: StringArgFunction;
@@ -178,6 +175,7 @@ interface Props extends Partial<ListState> {
     disabledSubmitCondition?: boolean;
     enableReinitialize?: boolean;
     keepDirtyOnReinitialize?: boolean;
+    hideTitle?: boolean;
   };
   CogwheelAdornment?: React.ReactNode;
   location?: any;
@@ -194,6 +192,7 @@ interface Props extends Partial<ListState> {
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
+  showColoredDots?: boolean;
   editRecordFetching?: boolean;
   recordsLeft?: number;
   searchQuery?: SearchQuery;
@@ -208,6 +207,7 @@ interface Props extends Partial<ListState> {
   setListviewMainContentWidth?: (value: string) => void;
   submitForm?: any;
   closeConfirm?: () => void;
+  setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
 }
@@ -320,7 +320,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       menuTagsLoaded,
       filterGroupsLoaded,
       noListTags,
-      preferences
+      preferences,
+      showColoredDots,
     } = this.props;
 
     const { threeColumn } = this.state;
@@ -751,7 +752,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   };
 
   onChangeModel = (model: TableModel, listUpdate?: boolean) => {
-    this.props.updateTableModel(model, listUpdate);
+    if (this.props.records?.columns.length || model?.columns?.length) this.props.updateTableModel(model, listUpdate);
   };
 
   checkDirty = (handler, args, reset?: boolean) => {
@@ -880,7 +881,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     resetEditView();
 
     setTimeout(() => {
-      updateTableModel({ layout });
+      if (this.props.records?.columns.length) updateTableModel({ layout });
     }, 500);
 
     this.setState({
@@ -918,7 +919,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     });
 
     setTimeout(() => {
-      this.props.updateTableModel({ filterColumnWidth: sidebarWidth });
+      if (this.props.records?.columns.length) this.props.updateTableModel({ filterColumnWidth: sidebarWidth });
     }, 500);
   };
 
@@ -958,9 +959,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       {
         onConfirm: () => this.checkDirty(this.onDeleteFilter, args, true),
         confirmMessage,
-        cancelButtonText: 'DELETE'
+        confirmButtonText: 'DELETE'
       }
-);
+    );
   };
 
   onChangeFiltersWithDirtyCheck = (...args) => this.checkDirty(this.onChangeFilters, args, true);
@@ -985,7 +986,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   renderTableList = () => {
     const {
-      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns
+      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns, setShowColoredDots, showColoredDots
     } = this.props;
     const { threeColumn } = this.state;
     return (
@@ -997,6 +998,8 @@ class ListView extends React.PureComponent<Props, ComponentState> {
         recordsLeft={recordsLeft}
         threeColumn={threeColumn}
         updateColumns={updateColumns}
+        setShowColoredDots={setShowColoredDots}
+        showColoredDots={showColoredDots}
         shortCurrencySymbol={currency.shortCurrencySymbol}
         onRowDoubleClick={this.onRowDoubleClick}
         onSelectionChange={this.onSelection}
@@ -1037,6 +1040,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       fullScreenEditView,
       searchQuery,
       getCustomBulkEditFields,
+      filterEntity
     } = this.props;
 
     const {
@@ -1062,6 +1066,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
                 onChangeFilters={this.onChangeFiltersWithDirtyCheck}
                 filterGroups={filterGroups}
                 rootEntity={rootEntity}
+                filterEntity={filterEntity}
                 deleteFilter={this.onDeleteFilterWithDirtyCheck}
               />
             </ThemeProvider>
@@ -1199,7 +1204,8 @@ const mapStateToProps = (state: State) => ({
   syncErrors: getFormSyncErrors(LIST_EDIT_VIEW_FORM_NAME)(state),
   ...state.list,
   ...state.share,
-  preferences: state.userPreferences
+  preferences: state.userPreferences,
+  showColoredDots: state.list.showColoredDots,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
@@ -1230,7 +1236,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
-  closeConfirm: () => dispatch(closeConfirm())
+  closeConfirm: () => dispatch(closeConfirm()),
+  setShowColoredDots: (value: boolean) => dispatch(setShowColoredDots(value)),
 });
 
 export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView)));

@@ -14,10 +14,10 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle
-} from "@material-ui/core";
+} from "@mui/material";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 
 const SubmissionModal = (
   {
@@ -59,7 +59,7 @@ const SubmissionModal = (
       <DialogContent>
         <DialogTitle className="p-0 mb-2">{title}</DialogTitle>
         {opened && (
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={6}>
             <EditInPlaceDateTimeField
               type="datetime"

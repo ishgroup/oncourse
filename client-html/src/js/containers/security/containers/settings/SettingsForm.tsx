@@ -4,27 +4,28 @@
  */
 
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import {
   Form, change, reduxForm, initialize, getFormValues, Field
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../model/preferences/security/SecuritySettings";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
-import Button from "../../../../common/components/buttons/Button";
-import { Switch } from "../../../../common/components/form/form-fields/Switch";
-import FormRadioButtons from "../../../../common/components/form/form-fields/FormRadioButtons";
+import { Switch } from "../../../../common/components/form/formFields/Switch";
+import FormRadioButtons from "../../../../common/components/form/formFields/FormRadioButtons";
 import RouteChangeConfirm from "../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
 import { State } from "../../../../reducers/state";
 import { getManualLink } from "../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
+import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("users_Users");
 
@@ -108,7 +109,7 @@ class SettingsForm extends React.Component<any, any> {
 
   render() {
     const {
-      enums, handleSubmit, onSave, dirty, data, form
+      enums, handleSubmit, onSave, dirty, data, form, invalid
     } = this.props;
     const { enablePasswordScheduleField, enableTOTPScheduleField } = this.state;
 
@@ -117,7 +118,7 @@ class SettingsForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit">
                 Settings
@@ -132,20 +133,15 @@ class SettingsForm extends React.Component<any, any> {
                 manualUrl={manualUrl}
               />
 
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
+              <FormSubmitButton
                 disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+                invalid={invalid}
               />
             </Grid>
           </Grid>
         </CustomAppBar>
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <Grid item xs={12} sm={8} className="d-flex">
             <FormGroup>
               <FormControlLabel
@@ -303,7 +299,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const SettingsFormWrapped = reduxForm({
-  form: "SecuritySettingsForm"
+  form: "SecuritySettingsForm",
+  onSubmitFail
 })(
   connect<any, any, any>(
     mapStateToProps,

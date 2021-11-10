@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ICourseClassTutor
+
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._CourseClassTutor
@@ -19,8 +19,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
-import java.util.List
 
 /**
  * A CourseClass record may have one or more Tutors attached to it. The same Tutor may even
@@ -31,7 +29,7 @@ import java.util.List
  */
 @QueueableEntity
 @API
-class CourseClassTutor extends _CourseClassTutor implements ICourseClassTutor, Queueable {
+class CourseClassTutor extends _CourseClassTutor implements Queueable {
 
 
 	private static Logger logger = LogManager.getLogger()

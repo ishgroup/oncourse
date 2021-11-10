@@ -7,23 +7,23 @@ import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
 import clsx from "clsx";
-import Dialog from "@material-ui/core/Dialog";
-import AppBar from "@material-ui/core/AppBar";
-import { createStyles, withStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import Dialog from "@mui/material/Dialog";
+import AppBar from "@mui/material/AppBar";
+import { createStyles, withStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import {
  change, Field, getFormValues, reduxForm, Validator
 } from "redux-form";
 import { connect } from "react-redux";
-import Slide from "@material-ui/core/Slide";
-import Typography from "@material-ui/core/Typography";
-import { TransitionProps } from "@material-ui/core/transitions";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
+import Slide from "@mui/material/Slide";
+import Typography from "@mui/material/Typography";
+import { TransitionProps } from "@mui/material/transitions";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
 import { Tag, TagStatus } from "@api/model";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
 import ColorPicker from "../../../common/components/color-picker/ColorPicker";
@@ -33,6 +33,8 @@ import { usePrevious } from "../../../common/utils/hooks";
 import { mapSelectItems } from "../../../common/utils/common";
 import { LSGetItem } from "../../../common/utils/storage";
 import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
+import FormSubmitButton from "../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 
 const tagStatusValues = Object.keys(TagStatus).map(mapSelectItems);
 
@@ -43,7 +45,7 @@ const styles = theme => createStyles({
   },
   root: {
     marginTop: theme.spacing(8),
-    height: `calc(100vh - ${theme.spacing(8)}px)`
+    height: `calc(100vh - ${theme.spacing(8)})`
   }
 });
 
@@ -153,21 +155,15 @@ const TagItemEditView = React.memo<Props>(props => {
             <Button onClick={onCloseClick} className="closeAppBarButton">
               Close
             </Button>
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled"
-              }}
-              disabled={invalid || !dirty}
-            >
-              Save
-            </Button>
+            <FormSubmitButton
+              disabled={!dirty}
+              invalid={invalid}
+            />
           </div>
         </AppBar>
 
         <div className={clsx("p-3 defaultBackgroundColor", classes.root)}>
-          <Grid container className="defaultBackgroundColor">
+          <Grid container columnSpacing={3} className="defaultBackgroundColor">
             <Grid item xs={4}>
               <FormField
                 type="text"
@@ -246,5 +242,6 @@ const mapStateToProps = (state: State) => ({
 
 export default (reduxForm({
   form: "TagItemForm",
-  initialValues: {}
+  initialValues: {},
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(TagItemEditView))) as unknown) as React.FC<Props>;

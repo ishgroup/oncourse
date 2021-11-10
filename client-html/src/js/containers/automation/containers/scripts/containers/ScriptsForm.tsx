@@ -3,23 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FileCopy from "@material-ui/icons/FileCopy";
-import React, {
- useCallback, useEffect, useMemo, useState,
-} from "react";
+import FileCopy from "@mui/icons-material/FileCopy";
+import React, { useCallback, useEffect, useMemo, useState, } from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core/styles";
-import {
-  Form, arrayInsert, change, FieldArray, initialize,
-} from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import { withStyles } from "@mui/styles";
+import { arrayInsert, change, FieldArray, Form, initialize, } from "redux-form";
+import Typography from "@mui/material/Typography";
 import { OutputType, Script, TriggerType } from "@api/model";
-import createStyles from "@material-ui/core/styles/createStyles";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
-import CodeIcon from '@material-ui/icons/Code';
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import createStyles from "@mui/styles/createStyles";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import CodeIcon from '@mui/icons-material/Code';
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
@@ -38,9 +34,7 @@ import { setScriptComponents } from "../actions";
 import { ScriptComponentType, ScriptViewMode } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import {
- getQueryComponent, getScriptComponent, getMessageComponent, getReportComponent,
-} from "../constants";
+import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent, } from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -138,6 +132,7 @@ interface Props {
   onDelete?: any;
   formsState?: any;
   emailTemplates?: CommonListItem[];
+  timeZone?: string;
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType) => {
@@ -159,7 +154,7 @@ const getInitComponentBody = (componentName: ScriptComponentType) => {
   }
 };
 
-const outputTypes = [...Object.keys(OutputType).map(mapSelectItems), { label: "no output", value: null }];
+const outputTypes = [...Object.keys(OutputType).map(mapSelectItems), { label: "no output", value: "" }];
 
 const ScriptsForm = React.memo<Props>(props => {
   const {
@@ -182,7 +177,8 @@ const ScriptsForm = React.memo<Props>(props => {
     emailTemplates,
     history,
     nextLocation,
-    setNextLocation
+    setNextLocation,
+    timeZone
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -330,7 +326,7 @@ const ScriptsForm = React.memo<Props>(props => {
       <Form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
         <CustomAppBar fullWidth noDrawer>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className={clsx("centeredFlex", "relative")}>
               {!isInternal && viewMode !== "Code" && (
                 <ScriptAddMenu
@@ -402,7 +398,7 @@ const ScriptsForm = React.memo<Props>(props => {
 
         <div className="appBarContainer">
           {values && (
-            <Grid container className={classes.root}>
+            <Grid container columnSpacing={3} className={classes.root}>
               <Grid item xs={9} className={classes.cardsBox}>
                 <div>
                   <ScriptCard className="mt-3" heading="Trigger" disableExpandedBottomMargin expanded>
@@ -414,6 +410,7 @@ const ScriptsForm = React.memo<Props>(props => {
                       enableEntityNameField={enableEntityNameField}
                       values={values}
                       isInternal={isInternal}
+                      timeZone={timeZone}
                     />
                   </ScriptCard>
                 </div>
@@ -526,7 +523,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   fullWidth
                 />
 
-                <Grid container>
+                <Grid container columnSpacing={3}>
                   <Grid item xs className="d-flex">
                     <div className="flex-fill">
                       <Typography variant="caption" color="textSecondary">

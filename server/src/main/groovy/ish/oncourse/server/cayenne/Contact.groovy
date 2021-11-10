@@ -11,25 +11,21 @@
 
 package ish.oncourse.server.cayenne
 
-
+import com.google.inject.Inject
 import ish.common.types.ContactType
 import ish.common.types.Gender
 import ish.math.Money
-import ish.messaging.IContact
 import ish.oncourse.API
-import ish.oncourse.cayenne.InvoiceInterface
-import ish.oncourse.cayenne.PaymentInterface
-import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.cayenne.Taggable
+import ish.oncourse.cayenne.*
 import ish.oncourse.function.GetContactFullName
+import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.glue._Contact
+import ish.util.InvoiceUtil
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
 import ish.validation.AngelContactValidator
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.cayenne.validation.BeanValidationFailure
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.commons.lang3.StringUtils
@@ -45,8 +41,19 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContact, Queueable, NotableTrait, AttachableTrait {
+class Contact extends _Contact implements ContactTrait, ExpandableTrait, ContactInterface, Queueable, NotableTrait, AttachableTrait {
 
+	public static final String TOTAL_OVERDUE_KEY = "totalOverdue";
+	public static final String ENROLMENTS_COUNT_KEY = "enrolmentsCount";
+	public static final String ACTIVE_MEMBERSHIPS_COUNT_KEY = "activeMembershipsCount";
+	public static final String ATTACHMENTS_COUNT_KEY = "attachmentsCount";
+	public static final String ACTIVE_CONSESSIONS_COUNT_KEY = "consessionsCount";
+	public static final String NOTES_COUNT_KEY = "notesCount";
+	public static final String LEADS_COUNT_KEY = "leadsCount";
+	public static final String FULL_NAME_KEY = "fullName"
+	public static final String IS_MALE_KEY = "isMale"
+	public static final String PHONES_PROP = "phones"
+	public static final String MESSAGE_KEY = "message"
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -129,23 +136,19 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	/***
 	 * @return the full name for this contact including the middle name, or just the name of the company
 	 */
-	@Nullable
+	@Nonnull
 	@API
-	@Override
 	String getFullName() {
-		return GetContactFullName.valueOf(this).get()
-	}
+		if (isCompany || StringUtils.equals(firstName, lastName)) {
+			return StringUtils.trimToEmpty(lastName);
+		}
+		StringBuilder builder = new StringBuilder();
 
-	/**
-	 * @return the webcal:// URL for a student or tutor to subscribe to their personal calendar
-	 */
-	@Deprecated
-	@Override
-	String getCalendarUrl() {
-		// TODO: shouldn't this point to the skillsOnCourse URL?
-		// TODO: this isn't used anywhere and should be removed from ContactInterface and from here after update to newer waCommon version
+		if (StringUtils.isNotBlank(firstName)) { builder.append(firstName); }
+		if (StringUtils.isNotBlank(middleName)) { builder.append(StringUtils.SPACE).append(middleName); }
+		if (StringUtils.isNotBlank(lastName)) { builder.append(StringUtils.SPACE).append(lastName); }
 
-		throw new UnsupportedOperationException()
+		return builder.toString();
 	}
 
 	/**
@@ -177,7 +180,58 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	@API
 	@Override
 	Money getTotalOwing() {
-		return Invoice.amountOwingForPayer(this)
+		return InvoiceUtil.amountOwingForPayer(this)
+	}
+
+	/**
+	 * @return total of all overdue amounts for this contact
+	 */
+	Money getTotalOverdue() {
+		return InvoiceUtil.amountOverdueForPayer(this)
+	}
+
+	/**
+	 * @return count of attachments
+	 */
+	Long getAttachmentsCount() {
+		return attachmentRelations.size();
+	}
+
+	/**
+	 * @return count of enrolments
+	 */
+	Long getEnrolmentsCount() {
+		return getStudent() != null ? getStudent().getEnrolments().size() : 0
+	}
+
+	/**
+	 * @return count of attachments
+	 */
+	Long getActiveMembershipsCount() {
+		return memberships
+				.findAll {membership -> membership.expiryDate.before(new Date())}
+				.size()
+	}
+
+	/**
+	 * @return count of notes
+	 */
+	Long getNotesCount() {
+		return allNotes.size();
+	}
+
+	/**
+	 * @return count of authorized consessions
+	 */
+	Long getConsessionsCount() {
+		return student == null ? 0 : student.getActiveConcessionsCount()
+	}
+
+	/**
+	 * @return count of leads
+	 */
+	Long getLeadsCount() {
+		return leads.size();
 	}
 
 	/**
@@ -263,14 +317,10 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 	}
 
 	/**
-	 * A method for returning a formatted contact name. See also fullName() if you want the middle name as well.
-	 * This method works for companies.
-	 *
-	 * @param firstNameFirst - true for "John Smith", false for "Smith, John"
-	 * @return formatted name
+	 * Use getFullName() instead
 	 */
 	@Nullable
-	@API
+	@Deprecated
 	@Override
 	String getName(boolean firstNameFirst) {
 		return GetContactFullName.valueOf(this, firstNameFirst).get()
@@ -420,9 +470,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 		return super.getDeliveryStatusSms()
 	}
 
-	/**
-	 * @return the contact's main email address
-	 */
 	@API
 	@Nullable
 	@Override
@@ -507,7 +554,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 		return super.getGender()
 	}
 
-		/**
+	/**
 	 * @return last name of this contact
 	 */
 	@API
@@ -698,6 +745,16 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 		return super.getInvoices()
 	}
 
+	/**
+	 * @return all the quotes linked to this contact
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<Quote> getQuotes() {
+		return super.getQuotes()
+	}
+
 
 	/**
 	 * @return the contact's date of birth as Date
@@ -813,6 +870,11 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, IContac
 			tagList.add(relation.getTag())
 		}
 		return tagList
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return ContactTagRelation.class
 	}
 
 	/**

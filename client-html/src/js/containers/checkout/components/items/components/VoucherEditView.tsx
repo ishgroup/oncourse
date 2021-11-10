@@ -2,9 +2,9 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 
 const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
@@ -20,7 +20,7 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
       ? summaryVoucher.price : values.value;
 
   return (
-    <Grid container className="p-3">
+    <Grid container columnSpacing={3} className="p-3">
       <Grid item sm={2}>
         <Uneditable value={values.code} label="SKU" />
       </Grid>

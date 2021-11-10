@@ -5,13 +5,13 @@
 
 import React, { useMemo } from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { Currency } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
@@ -48,9 +48,9 @@ const PayslipPaylineItem = (props: Props) => {
 
   return (
     <Card className={clsx(threeColumn ? classes.threeColumnCard : "card", "relative")}>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={paylineLayout[1].xs} className="d-flex">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             {field.type && (
               <Typography variant="body1" color="textSecondary" className={threeColumn ? "flex-fill" : undefined}>
                 {field.type}
@@ -84,7 +84,7 @@ const PayslipPaylineItem = (props: Props) => {
         </Grid>
 
         <Grid item xs={paylineLayout[4].xs}>
-          <Grid container className="h-100">
+          <Grid container columnSpacing={3} className="h-100">
             <Grid item xs={12}>
               {field.className && (
                 <Grid item xs={paylineLayout[2].xs}>
@@ -110,7 +110,7 @@ const PayslipPaylineItem = (props: Props) => {
         </Grid>
 
         <Grid item xs={paylineLayout[5].xs}>
-          <Grid container className={classes.infoContainer}>
+          <Grid container columnSpacing={3} className={classes.infoContainer}>
             {hasQuantityAndTotal && (
               <>
                 <Grid item xs={2} />

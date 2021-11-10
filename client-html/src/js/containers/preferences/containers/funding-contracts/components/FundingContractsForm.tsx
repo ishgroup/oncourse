@@ -5,9 +5,9 @@
 
 import clsx from "clsx";
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import AddIcon from "@mui/icons-material/Add";
+import Typography from "@mui/material/Typography";
 import { withRouter } from "react-router";
 import {
   Form,
@@ -22,7 +22,7 @@ import {
 import { connect } from "react-redux";
 import { FundingSource } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@material-ui/core/Fab";
+import Fab from "@mui/material/Fab";
 import { Dispatch } from "redux";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
@@ -49,7 +49,6 @@ interface Props {
   dispatch: any;
   handleSubmit: any;
   initialized: boolean;
-  hasLicence: boolean;
   form: string;
   timestamps: Date[];
   openConfirm?: ShowConfirmCaller;
@@ -129,7 +128,7 @@ class FundingContractsForm extends React.Component<Props, any> {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      this.props.onSave(this.getTouchedAndNew(value.fundingContracts), this.props.hasLicence ? "POST" : "PATCH");
+      this.props.onSave(this.getTouchedAndNew(value.fundingContracts),   "POST");
     })
       .then(() => {
         const {
@@ -188,7 +187,7 @@ class FundingContractsForm extends React.Component<Props, any> {
 
   render() {
     const {
-     values, dirty, invalid, handleSubmit, hasLicence, timestamps, form
+     values, dirty, invalid, handleSubmit, timestamps, form
     } = this.props;
 
     return (
@@ -196,9 +195,9 @@ class FundingContractsForm extends React.Component<Props, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex relative">
-              {hasLicence && (
+              {(
                 <Fab
                   type="button"
                   size="small"
@@ -215,8 +214,7 @@ class FundingContractsForm extends React.Component<Props, any> {
               <Typography
                 color="inherit"
                 noWrap
-                className={clsx("appHeaderFontSize",
-                  hasLicence ? "pl-2" : undefined)}
+                className={clsx("appHeaderFontSize", "pl-2" )}
               >
                 Funding Contracts
               </Typography>
@@ -240,14 +238,13 @@ class FundingContractsForm extends React.Component<Props, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item sm={12} lg={10} className="mt-1">
             {values && (
               <FieldArray
                 name="fundingContracts"
                 component={FundingContractItem}
                 onDelete={this.onClickDelete}
-                hasLicence={hasLicence}
               />
             )}
           </Grid>
@@ -262,9 +259,6 @@ const mapStateToProps = (state: State) => ({
   fundingContracts: state.preferences.fundingContracts,
   timestamps: state.preferences.fundingContracts && getTimestamps(state.preferences.fundingContracts),
   fetch: state.fetch,
-  hasLicence:
-    state.preferences.licences && state.preferences.licences[Model.LicenseFundingContract.uniqueKey] === "true",
-  nextLocation: state.nextLocation
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

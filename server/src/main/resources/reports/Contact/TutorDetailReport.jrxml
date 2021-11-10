@@ -64,7 +64,7 @@
 	<field name="postcode" class="java.lang.String"/>
 	<field name="birthDate" class="java.util.Date"/>
 	<field name="state" class="java.lang.String"/>
-	<field name="datasource.tutor.sessions" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="datasource.tutor.tutorAttendances" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.ish.onCourse.tutorSessionSubReport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="tfn" class="java.lang.String"/>
 	<field name="tutor.dateStarted" class="java.util.Date"/>
@@ -230,7 +230,7 @@
 				<elementGroup>
 					<subreport isUsingCache="true">
 						<reportElement key="subreport-2" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="2" width="539" height="15" uuid="a2df3cb9-b31b-472d-922a-04530040ea31"/>
-						<dataSourceExpression><![CDATA[$F{datasource.tutor.sessions}]]></dataSourceExpression>
+						<dataSourceExpression><![CDATA[$F{datasource.tutor.tutorAttendances}]]></dataSourceExpression>
 						<subreportExpression><![CDATA[$F{subreport.ish.onCourse.tutorSessionSubReport}]]></subreportExpression>
 					</subreport>
 				</elementGroup>

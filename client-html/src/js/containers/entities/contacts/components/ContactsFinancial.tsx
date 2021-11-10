@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import React, {
  useCallback, useState
 } from "react";
 import { Contact, PaymentMethod, Tax } from "@api/model";
 import { change, FieldArray } from "redux-form";
-import IconButton from "@material-ui/core/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import { Grid } from "@mui/material";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
 import { State } from "../../../../reducers/state";
@@ -34,14 +34,10 @@ interface ContactsFinancialProps extends EditViewProps<Contact> {
   access?: AccessState;
 }
 
-const getFormattedTaxes = (taxes: Tax[]) => {
-  const formattedTaxes = taxes.map(tax => ({
-    value: tax.id,
-    label: `${tax.code}`
-  }));
-  formattedTaxes.push({ value: null, label: "Not set" });
-  return formattedTaxes;
-};
+const getFormattedTaxes = (taxes: Tax[]) => taxes.map(tax => ({
+  value: tax.id,
+  label: `${tax.code}`
+}));
 
 const financialColumns: NestedTableColumn[] = [
   {
@@ -105,7 +101,8 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
   const [lockedTerms, setLockedTerms] = useState(true);
 
-  const onLockClick = useCallback(() => {
+  const onLockClick = useCallback(e => {
+    e.preventDefault();
     if (!lockedTerms) {
       dispatch(change(form, "invoiceTerms", null));
     }
@@ -131,9 +128,9 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
   const paymentInPermissions = access["/a/v1/list/plain?entity=PaymentIn"] && access["/a/v1/list/plain?entity=PaymentIn"]["GET"];
 
   return values ? (
-    <div className="p-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 3 : 12}>
             <FormField
               type="number"
@@ -143,7 +140,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               disabled={lockedTerms}
               labelAdornment={(
                 <span>
-                  <IconButton className="inputAdornmentButton" onClick={onLockClick}>
+                  <IconButton className="inputAdornmentButton" onClick={e => onLockClick(e)}>
                     {!lockedTerms && <LockOpen className="inputAdornmentIcon" />}
                     {lockedTerms && <Lock className="inputAdornmentIcon" />}
                   </IconButton>
@@ -157,12 +154,13 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               name="taxId"
               label="Tax type"
               items={getFormattedTaxes(taxTypes) || []}
-              fullWidth
+              placeholder="Not set"
+              allwowEmpty
             />
           </Grid>
           {paymentInPermissions && storedCard && !values.removeCChistory
           && (
-            <Grid item xs={12} className="centeredFlex mb-3">
+            <Grid item xs={12} className="centeredFlex mb-3 mt-2">
               <Typography variant="body2">
                 <div>
                   A credit card was collected on
@@ -218,4 +216,4 @@ const mapStateToProps = (state: State) => ({
   access: state.access
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(ContactsFinancial);
+export default connect<any, any, any>(mapStateToProps)(ContactsFinancial);

@@ -10,21 +10,21 @@ import {
   reduxForm, getFormValues, InjectedFormProps, change
 } from "redux-form";
 import { format as formatDate } from "date-fns";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import MuiButton from "@material-ui/core/Button";
-import Collapse from "@material-ui/core/Collapse";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import IconButton from "@material-ui/core/IconButton";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Collapse from "@mui/material/Collapse";
+import DialogContentText from "@mui/material/DialogContentText";
+import IconButton from "@mui/material/IconButton";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import { PayrollRequest } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import LoadingButton from "@mui/lab/LoadingButton";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import Button from "../../../../common/components/buttons/Button";
 import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../common/utils/links";
+import Button from "@mui/material/Button";
 
 interface Props extends InjectedFormProps {
   opened: boolean;
@@ -148,11 +148,12 @@ const GenerateTutorPayModalForm: React.FC<Props> = props => {
         </DialogContent>
 
         <DialogActions className="p-1">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
 
-          <Button
+          <LoadingButton
+            variant="contained"
             color="primary"
             className="payslipButton"
             type="submit"
@@ -160,7 +161,7 @@ const GenerateTutorPayModalForm: React.FC<Props> = props => {
             disabled={!item.totalWagesCount}
           >
             Generate
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </Dialog>

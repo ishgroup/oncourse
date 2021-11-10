@@ -13,8 +13,11 @@ package ish.oncourse.aql.impl.converter;
 
 import ish.oncourse.aql.impl.Op;
 import org.apache.cayenne.exp.parser.ASTObjPath;
+import org.apache.cayenne.exp.parser.ASTOr;
 import org.apache.cayenne.exp.parser.ASTScalar;
 import org.apache.cayenne.exp.parser.SimpleNode;
+
+import java.util.List;
 
 public class LazyRoomComparisonNode extends LazyEntityComparisonNode {
 
@@ -24,29 +27,31 @@ public class LazyRoomComparisonNode extends LazyEntityComparisonNode {
 
     @Override
     protected SimpleNode createNode() {
-        var pathString = ((ASTObjPath)this.jjtGetChild(0)).getPath();
-        if(!pathString.isEmpty()) {
+        var pathString = ((ASTObjPath) this.jjtGetChild(0)).getPath();
+        if (!pathString.isEmpty()) {
             pathString += '.';
         }
-        var value = new NameValue(((ASTScalar)this.jjtGetChild(1)).getValue().toString(), getOp());
-        return createComparisionNode(pathString + "name", value.getRoomName());
+        var value = new NameValue(((ASTScalar) this.jjtGetChild(1)).getValue().toString(), getOp());
+        var nameNode = createComparisionNode(pathString + "name", value.getValue());
+        var siteNameNode = createComparisionNode(pathString + "site.name", value.getValue());
+        return new ASTOr(List.of(nameNode, siteNameNode));
     }
 
     private static class NameValue {
 
         private final Op op;
-        private String roomName;
+        private String value;
 
         private NameValue(String nameString, Op op) {
             this.op = op;
-            roomName = nameString.replaceAll("%", "");
+            value = nameString.replaceAll("%", "");
         }
 
-        private String getRoomName() {
+        private String getValue() {
             if ((op == Op.EQ) || (op == Op.NE)) {
-                return roomName;
+                return value;
             }
-            return roomName == null ? null : roomName + "%";
+            return value == null ? null : value + "%";
         }
     }
 }

@@ -11,16 +11,16 @@ import {
   Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError
 } from "redux-form";
 import { DeliveryScheduleType } from "@api/model";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import FileCopy from "@material-ui/icons/FileCopy";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import { createStyles, withStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import FileCopy from "@mui/icons-material/FileCopy";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
@@ -513,9 +513,9 @@ class DataCollectionWrapper extends React.Component<any, any> {
               </Grid>
             </CustomAppBar>
 
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item sm={12} lg={10} xl={6}>
-                <Grid container>
+                <Grid container columnSpacing={3}>
                   <Grid item xs={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
                     <div className="pt-2 pb-2">
                       <Typography variant="caption">Type</Typography>

@@ -14,37 +14,22 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import ish.common.types.KeyCode
-import ish.common.types.Mask
 import ish.common.types.OutcomeStatus
 import ish.common.types.UsiStatus
-import ish.oncourse.function.GetContactFullName
-import ish.oncourse.server.api.dao.CertificateDao
-import ish.oncourse.server.api.dao.CertificateOutcomeDao
-import ish.oncourse.server.api.dao.ContactDao
-import ish.oncourse.server.api.dao.EnrolmentDao
-import ish.oncourse.server.api.dao.OutcomeDao
-import ish.oncourse.server.api.dao.QualificationDao
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.CertificateCreateForEnrolmentsRequestDTO
 import ish.oncourse.server.api.v1.model.CertificateDTO
 import ish.oncourse.server.api.v1.model.CertificateOutcomeDTO
-import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.server.cayenne.CertificateOutcome
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.Outcome
-import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.CertificatePrintStatus
-import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
-import ish.validation.ValidationResult
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.SelectById
-import org.apache.cayenne.validation.ValidationFailure
-import static org.apache.commons.lang3.StringUtils.isEmpty
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.LocalDate
+
+import static org.apache.commons.lang3.StringUtils.isEmpty
+import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class CertificateApiService extends EntityApiService<CertificateDTO, Certificate, CertificateDao> {
 
@@ -78,7 +63,7 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
             certificateDTO.id = certificate.id
             certificate.student.contact.with { contact ->
                 certificateDTO.studentContactId = contact.id
-                certificateDTO.studentName = contact.with { GetContactFullName.valueOf(it, true).get() }
+                certificateDTO.studentName = contact.with { it.getFullName() }
                 certificateDTO.studentSuburb = contact.suburb
                 certificateDTO.studentDateOfBirth = LocalDateUtils.dateToValue(contact.dateOfBirth)
             }

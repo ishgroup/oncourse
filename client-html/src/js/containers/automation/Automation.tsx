@@ -7,7 +7,7 @@ import React, { useEffect, useMemo } from "react";
 import { isDirty, reset } from "redux-form";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Lock from "@material-ui/icons/LockOutlined";
+import Lock from "@mui/icons-material/LockOutlined";
 import { LICENSE_SCRIPTING_KEY, ADMIN_EMAIL_KEY } from "../../constants/Config";
 import { State } from "../../reducers/state";
 import { CommonListFilter } from "../../model/common/sidebar";
@@ -18,7 +18,7 @@ import { getColumnsWidth, updateColumnsWidth, getPreferencesByKeys } from "../pr
 import SideBar from "./components/AutomationSideBar";
 import AutomatiomAppFrame from "./components/AutomationAppFrame";
 import { getIntegrations } from "./actions";
-import { getScriptsList } from "./containers/scripts/actions";
+import { getScriptsList, getTimeZone } from "./containers/scripts/actions";
 import { getExportTemplatesList } from "./containers/export-templates/actions";
 import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
 import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
@@ -85,6 +85,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getImportTemplatesList());
     dispatch(getAutomationPdfReportsList());
     dispatch(getAutomationPdfBackgroundsList());
+    dispatch(getTimeZone());
   },
   updateColumnsWidth: (automationLeftColumnWidth: number) => {
     dispatch(updateColumnsWidth({ automationLeftColumnWidth }));

@@ -9,7 +9,7 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -26,26 +26,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { arrayInsert, change, Field, } from "redux-form";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Collapse from "@material-ui/core/Collapse";
+import { createStyles, withStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Collapse from "@mui/material/Collapse";
 import {
   ExpandMore,
   OpenWith
-} from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+} from "@mui/icons-material";
+import Button from "@mui/material/Button";
 import { addDays, format } from "date-fns";
 import { Document, DocumentVersion } from "@api/model";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import SimpleTagList from "../../../../common/components/form/simpleTagListComponent/SimpleTagList";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
 import {
   getLatestDocumentItem,
@@ -56,6 +53,8 @@ import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
 import { showMessage } from "../../../../common/actions";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
 
@@ -152,12 +151,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     hovered = true,
     form,
     dispatch,
-    rootEntity,
-    manualLink,
-    onCloseClick,
-    isNew,
-    dirty,
-    invalid
   } = props;
 
   const fileRef = useRef<any>();
@@ -206,7 +199,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     <FormField
       name="name"
       label="Name"
-      type={twoColumn ? "headerText" : "text"}
       required
       fullWidth
     />
@@ -220,36 +212,23 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         </div>
       )
       : (
-        <div className={twoColumn ? "appBarContainer" : "h-100"}>
+        <div className={twoColumn ? "" : "h-100"}>
           {twoColumn && (
-            <CustomAppBar>
-              <Grid container className="flex-fill">
-                <Grid item xs={6} className="pr-2">
-                  {headerField}
+            <FullScreenStickyHeader
+              twoColumn={twoColumn}
+              title={values && values.name}
+              fields={(
+                <Grid container>
+                  <Grid item xs={8}>
+                    {headerField}
+                  </Grid>
                 </Grid>
-              </Grid>
-              <div>
-                {manualLink && (
-                  <AppBarHelpMenu
-                    created={values ? new Date(values.createdOn) : null}
-                    modified={values ? new Date(values.modifiedOn) : null}
-                    auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                    manualUrl={manualLink}
-                  />
-                )}
-
-                <Button onClick={onCloseClick} className="closeAppBarButton">
-                  Close
-                </Button>
-                <FormSubmitButton
-                  disabled={(!isNew && !dirty)}
-                  invalid={invalid}
-                />
-              </div>
-            </CustomAppBar>
+              )}
+              truncateTitle
+            />
           )}
 
-          <Grid container className="p-3 relative">
+          <Grid container columnSpacing={3} className="p-3 relative">
             <Grid item xs={twoColumn ? 4 : 12}>
               {Boolean(values.removed) && (
               <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>

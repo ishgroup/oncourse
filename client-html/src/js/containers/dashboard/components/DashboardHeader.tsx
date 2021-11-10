@@ -1,17 +1,17 @@
 import React from "react";
 import clsx from "clsx";
-import { AppBar } from "@material-ui/core";
-import Toolbar from "@material-ui/core/Toolbar";
-import Grid from "@material-ui/core/Grid";
-import withStyles from "@material-ui/core/styles/withStyles";
-import IconButton from "@material-ui/core/IconButton";
-import PaletteIcon from "@material-ui/icons/Palette";
-import LogoutIcon from "@material-ui/icons/PowerSettingsNew";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from "@material-ui/core/Tooltip";
-import Button from "@material-ui/core/Button";
-import { darken } from "@material-ui/core/styles";
+import { AppBar } from "@mui/material";
+import Toolbar from "@mui/material/Toolbar";
+import Grid from "@mui/material/Grid";
+import withStyles from "@mui/styles/withStyles";
+import IconButton from "@mui/material/IconButton";
+import PaletteIcon from "@mui/icons-material/Palette";
+import LogoutIcon from "@mui/icons-material/PowerSettingsNew";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import { darken } from "@mui/material/styles";
 import { Dispatch } from "redux";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { ThemeContext } from "../../ThemeContext";
@@ -28,7 +28,7 @@ import { ShowConfirmCaller } from "../../../model/common/Confirm";
 const styles = theme => ({
   appBar: {
     backgroundColor:
-      theme.palette.type === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
+      theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
     zIndex: theme.zIndex.drawer + 1
   },
   toolBarGutters: {
@@ -97,23 +97,19 @@ class DashboardHeader extends React.PureComponent<Props, any> {
         >
           <HamburgerMenu variant={VARIANTS.persistent} />
           <Grid container alignItems="center">
-            <Grid item xs={6}>
-              <Grid container spacing={3} wrap="nowrap">
-                <Grid item>
-                  {isChristmas ? (
-                    <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
-                  ) : (
-                    <img
-                      src={theme.palette.type === "dark" ? onCourseLogoDark : onCourseLogoLight}
-                      className={classes.logo}
-                      alt="Logo"
-                    />
-                  )}
-                </Grid>
-              </Grid>
+            <Grid item container alignItems="center" xs={6}>
+              {isChristmas ? (
+                <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
+              ) : (
+                <img
+                  src={theme.palette.mode === "dark" ? onCourseLogoDark : onCourseLogoLight}
+                  className={classes.logo}
+                  alt="Logo"
+                />
+              )}
             </Grid>
             <Grid item xs={6}>
-              <Grid container justify="flex-end">
+              <Grid container className="justify-content-end">
                 <Grid item>
                   {upgradePlanLink && (
                     <Button

@@ -8,16 +8,15 @@ import {
   Typography,
   Button,
   ButtonBase,
-  createStyles,
-  withStyles,
   FormControl,
   Select,
   MenuItem
-} from "@material-ui/core";
+} from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
 import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model";
 import clsx from "clsx";
 import { format } from "date-fns";
-import { KeyboardArrowDown, OpenInNew } from "@material-ui/icons";
+import { KeyboardArrowDown, OpenInNew } from "@mui/icons-material";
 import { stubComponent } from "../../utils/common";
 import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../utils/dates/format";
 import { AnyArgFunction } from "../../../model/common/CommonFunctions";
@@ -147,6 +146,7 @@ class FundingUploadComponent extends Component<Props, any> {
           <div className={classes.actionGroup}>
             <FormControl>
               <Select
+                variant="standard"
                 IconComponent={readOnly ? stubComponent : KeyboardArrowDown}
                 value={fundingUpload.status}
                 disableUnderline

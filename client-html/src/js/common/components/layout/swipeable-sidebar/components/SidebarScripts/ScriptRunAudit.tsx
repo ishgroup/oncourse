@@ -1,11 +1,11 @@
-import Link from "@material-ui/core/Link";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Tooltip from "@material-ui/core/Tooltip";
+import Link from "@mui/material/Link";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Tooltip from "@mui/material/Tooltip";
 import { format } from "date-fns";
 import React, { useMemo } from "react";
-import { Typography } from "@material-ui/core";
-import { Check, Clear } from "@material-ui/icons";
+import { Typography } from "@mui/material";
+import { Check, Clear } from "@mui/icons-material";
 import clsx from "clsx";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../../utils/dates/format";
 

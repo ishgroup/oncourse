@@ -19,8 +19,6 @@ import ish.oncourse.server.cayenne.glue._Payslip
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
-import java.util.List
 
 /**
  * A payslip is a collection of paylines for a specific tutor, generated at one time. They can be altered until exported
@@ -31,6 +29,8 @@ import java.util.List
  */
 @API
 class Payslip extends _Payslip {
+	public static final String BUDGET_TOTAL_KEY = "budgetAmount";
+	public static final String PAID_TOTAL_KEY = "actualAmount";
 
 	@Override
 	protected void postAdd() {
@@ -123,7 +123,7 @@ class Payslip extends _Payslip {
 		if(getContact() == null) {
 			return super.getSummaryDescription()
 		}
-		return "pay for " + getContact().getName(true)
+		return "pay for " + getContact().getFullName()
 	}
 
 	/**
@@ -135,7 +135,33 @@ class Payslip extends _Payslip {
 		return super.getPayType()
 	}
 
+	/**
+	 * If payline was created from a classCost record, sums that values and return
+	 * @return a total budget
+	 */
+	Money getBudgetAmount() {
+		super.getPaylines().sum { it ->
+			if (it.budgetedQuantity != null && it.budgetedValue != null)
+				return it.budgetedValue * it.budgetedQuantity
+			else
+				return Money.ZERO
+		} as Money
+	}
+
+	/**
+	 * @return sum of all paylines amounts
+	 */
+	Money getActualAmount() {
+		super.getPaylines().sum { it -> it.value * it.quantity } as Money
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return PayslipTagRelation.class
+	}
+
 	Money getFullAmount() {
 		super.getPaylines().sum { it -> it.amount } as Money
 	}
+	
 }

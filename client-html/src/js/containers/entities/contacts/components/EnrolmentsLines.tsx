@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid/Grid";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 
 const EnrolmentsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
@@ -29,7 +29,7 @@ export const EnrolmentsContentLine: React.FunctionComponent<any> = React.memo((p
   const { row, item } = props;
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={6}>
         <Uneditable value={row.invoiceNumber} label="Invoice#" />
       </Grid>

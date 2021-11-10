@@ -6,13 +6,13 @@
 import React, { useMemo } from "react";
 import clsx from "clsx";
 import { change } from "redux-form";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import { withStyles, createStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import debounce from "lodash.debounce";
 import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { normalizeNumberToZero, preventDecimalEnter } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -88,7 +88,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
   );
 
   return (
-    <Grid container direction="row" className={classes.root}>
+    <Grid container columnSpacing={3} direction="row" className={classes.root}>
       <Grid item xs={3} className="centeredFlex">
         <Typography variant="body1">Enrolments</Typography>
       </Grid>

@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import React from "react";
 import { formatDistanceStrict } from "date-fns";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import ListItem from "@material-ui/core/ListItem";
-import Typography from "@material-ui/core/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import ListItem from "@mui/material/ListItem";
+import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
 
 const styles = theme => createStyles({

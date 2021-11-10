@@ -29,6 +29,7 @@ interface Props {
   submitSucceeded: boolean;
   form: string;
   rootEntity: EntityName;
+  customAqlEntities?: string[];
   name?: string;
   validate?: Validator;
   courses?: Course[];
@@ -51,7 +52,8 @@ interface Props {
   relationTypesFilter?: {
     entities: EntityName[];
     filter: (relation: EntityRelationTypeRendered) => boolean;
-  }
+  },
+  dataRowClass?: string;
 }
 
 const RelationsCommon: React.FC<Props> = (
@@ -80,7 +82,9 @@ const RelationsCommon: React.FC<Props> = (
     modules,
     modulesPending,
     rootEntity,
-    relationTypesFilter
+    relationTypesFilter,
+    customAqlEntities,
+    dataRowClass = "grid-temp-col-3-fr"
   }
 ) => {
   const relationTypes = useMemo<EntityRelationTypeRendered[]>(() =>
@@ -175,11 +179,13 @@ const RelationsCommon: React.FC<Props> = (
     />
   );
 
+  const aqlEntities = ["Course", "Product", "Module", "Qualification"];
+
   return (
     <NestedList
       name={name}
       validate={validate ? [validate, validateRelations] : validateRelations}
-      title={`${listValues.length || ""} relations`}
+      title={`${listValues.length || ""} relation${listValues.length === 1 ? "" : "s"}`}
       formId={values.id}
       values={listValues}
       searchValues={searchValues}
@@ -221,8 +227,8 @@ const RelationsCommon: React.FC<Props> = (
       }}
       sort={salesSort}
       resetSearch={submitSucceeded}
-      dataRowClass="grid-temp-col-3-fr"
-      aqlEntities={["Course", "Product", "Module", "Qualification"]}
+      dataRowClass={dataRowClass}
+      aqlEntities={customAqlEntities || aqlEntities}
       CustomCell={relationCell}
     />
 );

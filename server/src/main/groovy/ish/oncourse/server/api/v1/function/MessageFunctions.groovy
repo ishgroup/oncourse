@@ -13,30 +13,9 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileDynamic
 import ish.common.types.EnrolmentStatus
-import ish.common.types.MessageStatus
-import ish.oncourse.server.api.v1.model.MessageTypeDTO
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.Enrolment
-import ish.oncourse.server.cayenne.EntityRelationType
-import ish.oncourse.server.cayenne.Invoice
-import ish.oncourse.server.cayenne.InvoiceLine
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.cayenne.PaymentOut
-import ish.oncourse.server.cayenne.Payslip
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import org.apache.cayenne.ObjectContext
+import ish.util.AbstractEntitiesUtil
 import org.apache.cayenne.exp.Property
 
 import java.util.function.Function
@@ -63,8 +42,15 @@ class MessageFunctions {
                     "Membership": ProductItem.ID,
                     "Article": ProductItem.ID
             ],
+            "AbstractInvoice" : [
+                    "Invoice" : AbstractInvoice.ID,
+                    "Quote" : AbstractInvoice.ID,
+                    "Contact": Contact.INVOICES.dot(Invoice.ID)
+            ],
             "Enrolment" : ["Contact" : Contact.STUDENT.dot(Student.ENROLMENTS).dot(Enrolment.ID)],
             "Invoice" : ["Contact" : Contact.INVOICES.dot(Invoice.ID)],
+            "Quote" : ["Contact" : Contact.QUOTES.dot(Quote.ID)],
+            "Lead" : ["Contact" : Contact.LEADS.dot(Lead.ID)],
             "Application" : ["Contact" : Contact.STUDENT.dot(Student.APPLICATIONS).dot(Application.ID)],
             "Student" : ["Contact" : Contact.STUDENT.dot(Student.ID)],
             "Tutor" : ["Contact" : Contact.TUTOR.dot(Tutor.ID)],
@@ -78,6 +64,8 @@ class MessageFunctions {
         switch (clazz) {
             case Invoice:
                 return { e -> (e as Invoice).contact }
+            case Quote:
+                return { e -> (e as Quote).contact }
             case Application:
                 return { e -> (e as Application).student.contact }
             case Contact:
@@ -88,6 +76,8 @@ class MessageFunctions {
                 return { e -> (e as Tutor).contact }
             case CourseClassTutor:
                 return { e -> (e as CourseClassTutor).tutor.contact }
+            case TutorAttendance:
+                return { e -> (e as TutorAttendance).courseClassTutor.tutor.contact }
             case Enrolment:
                 return { e -> (e as Enrolment).student.contact }
             case PaymentIn:
@@ -104,6 +94,8 @@ class MessageFunctions {
                 return { e -> (e as WaitingList).student.contact }
             case Payslip:
                 return { e -> (e as Payslip).contact }
+            case Lead:
+                return { e -> (e as Lead).customer }
             default:
                 null
         }
@@ -134,6 +126,8 @@ class MessageFunctions {
         switch (entityName) {
             case Invoice.ENTITY_NAME:
                 return Contact.INVOICES.dot(Invoice.ID)
+            case Quote.ENTITY_NAME:
+                return Contact.QUOTES.dot(Quote.ID)
             case Application.ENTITY_NAME:
                 return Contact.STUDENT.dot(Student.APPLICATIONS).dot(Application.ID)
             case Contact.ENTITY_NAME:
@@ -156,6 +150,8 @@ class MessageFunctions {
                 return Contact.STUDENT.dot(Student.WAITING_LISTS).dot(WaitingList.ID)
             case Payslip.ENTITY_NAME:
                 return Contact.PAYSLIPS.dot(WaitingList.ID)
+            case Lead.ENTITY_NAME:
+                return Contact.LEADS.dot(Lead.ID)
             default:
                 null
         }

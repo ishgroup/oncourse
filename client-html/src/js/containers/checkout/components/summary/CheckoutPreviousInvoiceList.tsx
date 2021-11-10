@@ -8,9 +8,10 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import clsx from "clsx";
 import {
-  Chip, Paper, Typography, Grid, withStyles, FormControlLabel
-} from "@material-ui/core";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+  Chip, Paper, Typography, Grid, FormControlLabel
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -131,7 +132,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
             </Typography>
           </div>
 
-          <Grid container>
+          <Grid container columnSpacing={3}>
             {previousInvoices.invoices.map((item, index) => (
               <InvoiceItemRow
                 key={index}
@@ -148,7 +149,6 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
                 item
                 xs={4}
                 container
-                justify="flex-end"
                 className={clsx("pt-1", "summaryTopBorder", classes.summaryItemPrice)}
               >
                 <Typography variant="body2" className="money">

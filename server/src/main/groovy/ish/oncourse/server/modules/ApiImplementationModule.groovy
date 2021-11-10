@@ -13,7 +13,6 @@ package ish.oncourse.server.modules
 
 import com.google.inject.Binder
 import com.google.inject.Module
-import ish.oncourse.server.api.v1.AssessmentSubmissionApiImpl
 import ish.oncourse.server.api.v1.service.AccessApi
 import ish.oncourse.server.api.v1.service.AccountApi
 import ish.oncourse.server.api.v1.service.ApplicationApi
@@ -58,6 +57,7 @@ import ish.oncourse.server.api.v1.service.HolidayApi
 import ish.oncourse.server.api.v1.service.ImportApi
 import ish.oncourse.server.api.v1.service.IntegrationApi
 import ish.oncourse.server.api.v1.service.InvoiceApi
+import ish.oncourse.server.api.v1.service.LeadApi
 import ish.oncourse.server.api.v1.service.MembershipProductApi
 import ish.oncourse.server.api.v1.service.MessageApi
 import ish.oncourse.server.api.v1.service.ModuleApi
@@ -86,7 +86,6 @@ import ish.oncourse.server.api.v1.service.TaxApi
 import ish.oncourse.server.api.v1.service.TimetableApi
 import ish.oncourse.server.api.v1.service.TokenApi
 import ish.oncourse.server.api.v1.service.TransactionApi
-import ish.oncourse.server.api.v1.service.TutorAttendanceApi
 import ish.oncourse.server.api.v1.service.TutorRoleApi
 import ish.oncourse.server.api.v1.service.UserApi
 import ish.oncourse.server.api.v1.service.UserPreferenceApi
@@ -100,6 +99,7 @@ import ish.oncourse.server.api.v1.service.impl.ApplicationApiImpl
 import ish.oncourse.server.api.v1.service.impl.ArticleProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentClassApiImpl
+import ish.oncourse.server.api.v1.service.impl.AssessmentSubmissionApiImpl
 import ish.oncourse.server.api.v1.service.impl.AttendanceApiImpl
 import ish.oncourse.server.api.v1.service.impl.AuditApiImpl
 import ish.oncourse.server.api.v1.service.impl.AuthenticationApiImpl
@@ -137,6 +137,7 @@ import ish.oncourse.server.api.v1.service.impl.HolidayApiImpl
 import ish.oncourse.server.api.v1.service.impl.ImportApiImpl
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.api.v1.service.impl.InvoiceApiImpl
+import ish.oncourse.server.api.v1.service.impl.LeadApiImpl
 import ish.oncourse.server.api.v1.service.impl.MembershipProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.MessageApiImpl
 import ish.oncourse.server.api.v1.service.impl.ModuleApiImpl
@@ -164,14 +165,12 @@ import ish.oncourse.server.api.v1.service.impl.TagApiImpl
 import ish.oncourse.server.api.v1.service.impl.TaxApiImpl
 import ish.oncourse.server.api.v1.service.impl.TimetableApiImpl
 import ish.oncourse.server.api.v1.service.impl.TransactionApiImpl
-import ish.oncourse.server.api.v1.service.impl.TutorAttendanceApiImpl
 import ish.oncourse.server.api.v1.service.impl.TutorRoleApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserPreferenceApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserRoleApiImpl
 import ish.oncourse.server.api.v1.service.impl.VoucherProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.WaitingListApiImpl
-import ish.oncourse.server.cayenne.AssessmentSubmission
 
 class ApiImplementationModule implements Module {
 
@@ -221,6 +220,7 @@ class ApiImplementationModule implements Module {
         binder.bind(ImportApi).to(ImportApiImpl)
         binder.bind(IntegrationApi).to(IntegrationApiImpl)
         binder.bind(InvoiceApi).to(InvoiceApiImpl)
+        binder.bind(LeadApi).to(LeadApiImpl)
         binder.bind(MessageApi).to(MessageApiImpl)
         binder.bind(MembershipProductApi).to(MembershipProductApiImpl)
         binder.bind(ModuleApi).to(ModuleApiImpl)
@@ -269,7 +269,6 @@ class ApiImplementationModule implements Module {
         binder.bind(CourseClassTutorApi).to(CourseClassTutorApiImpl)
         binder.bind(ClassCostApi).to(ClassCostApiImpl)
         binder.bind(AttendanceApi).to(AttendanceApiImpl)
-        binder.bind(TutorAttendanceApi).to(TutorAttendanceApiImpl)
         binder.bind(AssessmentClassApi).to(AssessmentClassApiImpl)
         binder.bind(SessionApi).to(SessionApiImpl)
         binder.bind(CheckoutApi).to(CheckoutApiImpl)

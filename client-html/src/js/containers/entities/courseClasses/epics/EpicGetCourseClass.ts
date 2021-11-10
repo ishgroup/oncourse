@@ -30,7 +30,6 @@ const request: EpicUtils.Request<any, number> = {
     courseClass.sessions = [];
     courseClass.assessments = [];
     courseClass.studentAttendance = [];
-    courseClass.tutorAttendance = [];
     courseClass.trainingPlan = [];
     courseClass.budget = [];
     courseClass.notes = [];

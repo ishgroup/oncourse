@@ -27,7 +27,7 @@ class SampleEntityBuilder {
     
     Enrolment createEnrolment(InvoiceLine invoiceLine, Student student, CourseClass courseClass) {
         Enrolment enrl = this.ctx.newObject(Enrolment.class)
-        enrl.addToInvoiceLines(invoiceLine)
+        enrl.addToAbstractInvoiceLines(invoiceLine)
         enrl.setSource(PaymentSource.SOURCE_WEB)
         enrl.setStatus(EnrolmentStatus.SUCCESS)
         enrl.setStudent(student)

@@ -12,32 +12,32 @@ package ish.oncourse.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import ish.common.types.DeliverySchedule;
 import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.server.cayenne.Preference;
-import ish.oncourse.server.cayenne.SurveyFieldConfiguration;
-import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.license.LicenseService;
+import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.ISystemUserService;
+import ish.oncourse.server.services.UserDisableJob;
 import ish.persistence.CommonPreferenceController;
-import ish.persistence.Preferences;
 import ish.util.SecurityUtil;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.JobKey;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 
 import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
+import static ish.oncourse.server.services.ISchedulerService.BACKGROUND_JOBS_GROUP_ID;
+import static ish.oncourse.server.services.ISchedulerService.USER_DISAIBLE_JOB_ID;
 import static ish.persistence.Preferences.*;
 
 @Singleton
-public class PreferenceController extends CommonPreferenceController implements IPreferenceController {
+public class PreferenceController extends CommonPreferenceController {
 
 	public static final Integer DEFAULT_TIMEOUT_SEC = 3600;
 	public static final Long DEFAULT_TIMEOUT_MS = DEFAULT_TIMEOUT_SEC * 1000L;
@@ -49,6 +49,8 @@ public class PreferenceController extends CommonPreferenceController implements 
 	private final LicenseService licenseService;
 	private ObjectContext objectContext;
 
+    @Inject
+    private ISchedulerService schedulerService;
 
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,LicenseService licenseService) {
@@ -84,10 +86,13 @@ public class PreferenceController extends CommonPreferenceController implements 
 		return  new Date(timeoutThresholdMs);
 	}
 
-	@Override
 	public Object getValueForKey(String key) {
 		if (defaultAccountPreferences.contains(key)) {
 			return getDefaultAccountId(key);
+		}
+
+		if (key.startsWith("license.")) {
+			return licenseService.getLisense(key);
 		}
 
 		switch (key) {
@@ -98,36 +103,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 				} else {
 					return null;
 				}
-			case LICENSE_ACCESS_CONTROL:
-				return getLicenseAccessControl();
-			case LICENSE_LDAP:
-				return getLicenseLdap();
-			case LICENSE_BUDGET :
-				return getLicenseBudget();
-			case LICENSE_EXTENRNAL_DB:
-				return getLicenseExternalDB();
-			case LICENSE_SSL:
-				return null;
-			case LICENSE_SMS:
-				return getLicenseSms();
-			case LICENSE_CC_PROCESSING:
-				return getLicenseCCProcessing();
-			case LICENSE_PAYROLL:
-				return getLicensePayroll();
-			case LICENSE_VOUCHER :
-				return getLicenseVoucher();
-			case LICENSE_MEMBERSHIP:
-				return getLicenseMembership();
-			case LICENSE_ATTENDANCE:
-				return getLicenseAttendance();
-			case LICENSE_SCRIPTING:
-				return getLicenseScripting();
-			case LICENSE_FEE_HELP_EXPORT :
-				return getLicenseFeeHelpExport();
-			case LICENSE_FUNDING_CONTRACT:
-				return getLicenseFundingContract();
-			case DATABASE_USED:
-				return getDatabaseUsed();
 			case USI_SOFTWARE_ID:
 				return getUsiSoftwareId();
 			default:
@@ -152,7 +127,23 @@ public class PreferenceController extends CommonPreferenceController implements 
         if (defaultAccountPreferences.contains(key)) {
             setDefaultAccountId(key, (Long)value);
         } else {
-            super.setValueForKey(key,value);
+            if (key.equals(AUTO_DISABLE_INACTIVE_ACCOUNT)) {
+                try {
+                    if ((Boolean) value) {
+                        var random = new Random();
+                        var randomSchedule = String.format(schedulerService.USER_DISAIBLE_JOB_TEMPLATE, random.nextInt(59));
+                        schedulerService.scheduleCronJob(UserDisableJob.class,
+                                USER_DISAIBLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                                randomSchedule, getOncourseServerDefaultTimezone(),
+                                true, false);
+                    } else {
+                        schedulerService.removeJob(JobKey.jobKey(ISchedulerService.USER_DISAIBLE_JOB_ID, ISchedulerService.BACKGROUND_JOBS_GROUP_ID));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            super.setValueForKey(key, value);
         }
 	}
 
@@ -228,13 +219,6 @@ public class PreferenceController extends CommonPreferenceController implements 
 		logger.debug("committing changes to prefs with value: {}", value);
 
 		context.commitChanges();
-	}
-
-	public boolean hasSurveyForm() {
-		return !ObjectSelect.query(SurveyFieldConfiguration.class)
-				.where(SurveyFieldConfiguration.INT_TYPE.eq(4))
-				.and(SurveyFieldConfiguration.DELIVERY_SCHEDULE.eq(DeliverySchedule.ON_ENROL))
-				.select(cayenneService.getNewContext()).isEmpty();
 	}
 
 }

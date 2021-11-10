@@ -6,19 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useMemo,
-} from "react";
+import React, { useMemo, } from "react";
 import { connect } from "react-redux";
 import { change, getFormValues } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { CustomFieldType } from "@api/model";
 import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../../reducers/state";
 import { ADMIN_EMAIL_KEY } from "../../../../../../constants/Config";
-import { Switch } from "../../../../../../common/components/form/form-fields/Switch";
+import { Switch } from "../../../../../../common/components/form/formFields/Switch";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
@@ -101,7 +99,7 @@ const MessageCardContent = React.memo<Props>(props => {
   );
 
   return (
-    <Grid container className="mt-2">
+    <Grid container columnSpacing={3} className="mt-2">
       <Grid item xs={12} className="centeredFlex">
         <Typography variant="caption" color="textSecondary">
           Use template

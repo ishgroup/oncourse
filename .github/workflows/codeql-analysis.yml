@@ -23,7 +23,7 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
 
       - name: Cache
@@ -39,11 +39,14 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           languages: ${{ matrix.language }}
+          queries: security-and-quality
+          paths-ignore:
+            - **/build/generated-resources/**
+            - **/build/generated-sources/**
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v1
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
-        with:
-          config-file: ./.github/codeql-config.yml
+

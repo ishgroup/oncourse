@@ -15,8 +15,8 @@ import {
 } from "@api/model";
 import { change, FieldArray } from "redux-form";
 import { compareAsc, format as formatDate, startOfDay } from "date-fns";
-import { Grid } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import { Grid } from "@mui/material";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
@@ -115,7 +115,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         url={productUrl(values)}
       />
 
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 6 : 12}>
           <Uneditable
             value={values.purchasedByName}
@@ -126,17 +126,19 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         <Grid item xs={twoColumn ? 6 : 12}>
           <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
         </Grid>
+        <CustomFields
+          entityName={customFieldType}
+          fieldName="customFields"
+          entityValues={values}
+          dispatch={dispatch}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 6 : 12
+          }}
+        />
       </Grid>
 
-      <CustomFields
-        entityName={customFieldType}
-        fieldName="customFields"
-        entityValues={values}
-        dispatch={dispatch}
-        form={form}
-      />
-
-      <Grid container>
+      <Grid container columnSpacing={3}>
         {type === ProductType.Voucher && (
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
@@ -180,7 +182,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           </Grid>
         )}
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable value={values.purchasePrice} label="Purchase price" money />
         </Grid>
@@ -189,7 +191,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         </Grid>
       </Grid>
       {type === ProductType.Voucher && (
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 2 : 6}>
             <Uneditable value={values.valueRemaining} label="Value remaining" />
           </Grid>

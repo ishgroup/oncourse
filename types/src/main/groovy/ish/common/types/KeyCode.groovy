@@ -186,7 +186,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always disabled: delete
 	 */
 	@API
-	INVOICE(22, "Invoice", NONE, DELETE),
+	INVOICE(22, "Invoice", NONE),
 
 	/**
 	 * Database value: 23
@@ -393,7 +393,7 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Special single option.
 	 */
 	@API
-	SPECIAL_CLASS_CANCEL(71, "Class cancellation", ALL - VIEW),
+	SPECIAL_CLASS_CANCEL(71, "Class cancellation", ALL - EDIT),
 
 	/**
 	 * Database value: 72

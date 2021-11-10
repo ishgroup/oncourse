@@ -5,25 +5,12 @@ import { Categories } from "../../../../model/preferences";
 import { State } from "../../../../reducers/state";
 import LDAPForm from "./components/LDAPForm";
 import FormContainer from "../FormContainer";
-import * as licencesModel from "../../../../model/preferences/Licences";
 import * as ldapModel from "../../../../model/preferences/Ldap";
 import { getLdapConnection } from "../../../../common/actions";
 import { getPreferences } from "../../actions";
 import { IAction } from "../../../../common/actions/IshAction";
 
 class LDAP extends React.Component<any, any> {
-  private getLicence(licences) {
-    const licence = licences[licencesModel.LicenseLDAP.uniqueKey];
-
-    switch (licence) {
-      case "false":
-        return false;
-      case "true":
-        return true;
-      default:
-        return licence;
-    }
-  }
 
   handleTestLdapConnection() {
     const host = this.props.ldap[ldapModel.LdapHost.uniqueKey];
@@ -41,7 +28,7 @@ class LDAP extends React.Component<any, any> {
       <FormContainer
         data={ldap}
         testLdapConnection={this.handleTestLdapConnection.bind(this)}
-        licence={licences && this.getLicence(licences)}
+        licence={licences}
         category={Categories.ldap}
         form={<LDAPForm />}
       />

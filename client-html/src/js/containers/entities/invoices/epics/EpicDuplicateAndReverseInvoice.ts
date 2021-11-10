@@ -24,6 +24,7 @@ const request: EpicUtils.Request = {
       l.priceEachExTax = -l.priceEachExTax;
       l.discountEachExTax = -l.discountEachExTax;
       l.taxEach = -l.taxEach;
+      l.id = null;
     });
 
     data.paymentPlans = [data.paymentPlans[0]];
@@ -37,6 +38,7 @@ const request: EpicUtils.Request = {
     data.overdue = 0;
     data.id = null;
     data.invoiceNumber = null;
+    data.quoteNumber = null;
 
     return [initialize(LIST_EDIT_VIEW_FORM_NAME, data)];
   },

@@ -9,12 +9,12 @@ import {
   change,
   FieldArray
 } from "redux-form";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
@@ -78,7 +78,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   };
 
   return (
-    <Grid container className="align-content-between">
+    <Grid container columnSpacing={3} className="align-content-between">
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
@@ -107,7 +107,6 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           name={`fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`}
           label="Purchasing contract identifier (NSW Commitment ID)"
           validate={validateVetPurchasingContractIdentifier}
-          fullWidth
         />
       </Grid>
       <Grid item xs={12} className="pb-3">
@@ -123,7 +122,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           form={form}
         />
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         {fundingInvoice && fundingInvoice.paymentPlans && (
           <Grid item sm={6} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans

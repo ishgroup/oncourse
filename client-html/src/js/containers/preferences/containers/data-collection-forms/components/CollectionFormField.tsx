@@ -4,14 +4,14 @@
  */
 
 import * as React from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@mui/styles";
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import Delete from "@material-ui/icons/Delete";
-import DragIndicator from "@material-ui/icons/DragIndicator";
-import IconButton from "@material-ui/core/IconButton";
+import Typography from "@mui/material/Typography";
+import Delete from "@mui/icons-material/Delete";
+import DragIndicator from "@mui/icons-material/DragIndicator";
+import IconButton from "@mui/material/IconButton";
 import { Field } from "redux-form";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { PillCheckboxField } from "../../../../../common/components/form/PillCheckbox";
 
 const styles = () => createStyles({

@@ -6,14 +6,14 @@
 import { PaymentMethod } from "@api/model";
 import React from "react";
 import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepButton from "@material-ui/core/StepButton";
-import Stepper from "@material-ui/core/Stepper";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import StepButton from "@mui/material/StepButton";
+import Stepper from "@mui/material/Stepper";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { normalizeNumberToPositive } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import { paymentPlanStyles } from "../../../../../entities/invoices/styles/paymentPlanStyles";
@@ -27,6 +27,13 @@ const styles = () => createStyles({
   },
   inlineItem: {
     marginLeft: "0.3em"
+  },
+  stepLabel: {
+    width: '100%',
+    height: 48
+  },
+  container: {
+    marginBottom: 50
   }
 });
 
@@ -77,7 +84,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
   } = props;
 
   return (
-    <div className="mb-3">
+    <div className={classes.container}>
       <div className="centeredFlex mb-2">
         <Typography className="secondaryHeading">
           Payment plan
@@ -102,8 +109,8 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
           const stepContent = (
             <StepLabel
               classes={{
-              root: "w-100"
-            }}
+                labelContainer: classes.stepLabel
+              }}
               className={first && selected ? "centeredFlex relative selectedItemArrow" : ""}
             >
 
@@ -160,7 +167,9 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
             <Step
               key={f}
               disabled={disabledStep}
-              classes={{ root: classes.step }}
+              classes={{
+                root: classes.step,
+              }}
             >
               {first ? (
                 <StepButton onClick={onPayNowFocus} className="text-left">

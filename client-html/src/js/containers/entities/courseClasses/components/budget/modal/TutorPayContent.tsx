@@ -5,16 +5,16 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { createStyles, withStyles } from "@mui/styles";
 import { ClassCostRepetitionType } from "@api/model";
-import { Collapse, Divider } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import { Collapse, Divider } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { PayRateTypes } from "./BudgetCostModal";
@@ -96,15 +96,13 @@ const TutorPayContent: React.FC<Props> = ({
         classValues.budgetedPlaces,
         classValues.successAndQueuedEnrolmentsCount,
         classValues.sessions,
-        classValues.tutorAttendance
       ).projected,
     [
       values,
       classValues.maximumPlaces,
       classValues.budgetedPlaces,
       classValues.successAndQueuedEnrolmentsCount,
-      classValues.sessions,
-      classValues.tutorAttendance
+      classValues.sessions
     ]
   );
 
@@ -137,7 +135,7 @@ const TutorPayContent: React.FC<Props> = ({
   }, []);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={6}>
         <Uneditable label="Contact" value={values.contactName} url={`/contact/${values.contactId}`} />
       </Grid>
@@ -157,7 +155,7 @@ const TutorPayContent: React.FC<Props> = ({
       </Grid>
       <Grid item xs={12}>
         <Collapse in={values.isOverriden}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={4}>
               <Uneditable label="Tutor Role" value={tutor.roleName} url={`/preferences/tutorRoles/${tutor.roleId}`} />
               {isNaN(rate) && <WarningMessage warning="The chosen role has no defined rate for class period" />}
@@ -266,7 +264,7 @@ const TutorPayContent: React.FC<Props> = ({
       </Grid>
       <Grid item xs={12}>
         <Collapse in={hasMinMaxFields}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={6}>
               <FormField type="money" name="minimumCost" label="Minimum pay for this class" />
             </Grid>

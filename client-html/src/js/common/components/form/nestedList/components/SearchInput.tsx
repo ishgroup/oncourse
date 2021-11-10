@@ -3,16 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useMemo
-} from "react";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-import Input from "@material-ui/core/Input";
-import EditInPlaceQuerySelect from "../../form-fields/EditInPlaceQuerySelect";
+import React, { useMemo } from "react";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
+import Input from "@mui/material/Input";
+import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
 import { mapSelectItems, stubFunction } from "../../../../utils/common";
-import EditInPlaceField from "../../form-fields/EditInPlaceField";
+import EditInPlaceField from "../../formFields/EditInPlaceField";
 
 const getAqlLabel = entity => {
   switch (entity) {

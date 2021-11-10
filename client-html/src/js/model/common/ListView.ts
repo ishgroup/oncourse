@@ -6,7 +6,9 @@
 import React, { ReactElement } from "react";
 import { InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
-import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
+import {
+  DataResponse, EmailTemplate, Filter, Script, SearchQuery
+} from "@api/model";
 import { MenuTag } from "../tags";
 import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
@@ -60,6 +62,7 @@ export interface ListState {
   editRecord: any;
   fetching: boolean;
   editRecordFetching: boolean;
+  showColoredDots: boolean;
   selection: string[];
   search?: string;
   // current filters state
@@ -102,6 +105,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   alwaysFullScreenCreateView?: boolean;
   syncErrors?: any;
   disabledSubmitCondition?: boolean;
+  hideTitle?: boolean;
 }
 
 export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {

@@ -12,8 +12,8 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
-import ish.messaging.IAttendance
 import ish.oncourse.API
+import ish.oncourse.cayenne.AttendanceInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Attendance
 import ish.util.DurationFormatter
@@ -29,7 +29,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Attendance extends _Attendance implements IAttendance, Queueable {
+class Attendance extends _Attendance implements AttendanceInterface, Queueable {
 
 	@Override
 	void preUpdate() {
@@ -95,7 +95,7 @@ class Attendance extends _Attendance implements IAttendance, Queueable {
 		if (getAttendedFrom() == null || getAttendedUntil()  == null) {
 			return BigDecimal.ZERO
 		}
-		return DurationFormatter.parseDurationInHours(getAttendedUntil().getTime() - getAttendedFrom().getTime())
+		return DurationFormatter.durationInHoursBetween(attendedFrom, attendedUntil)
 	}
 
 
@@ -135,7 +135,7 @@ class Attendance extends _Attendance implements IAttendance, Queueable {
 	@Nonnull
 	@API
 	@Override
-	Session getSession() {
+    Session getSession() {
 		return super.getSession()
 	}
 

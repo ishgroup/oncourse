@@ -1,4 +1,4 @@
-import { Invoice, InvoiceApi } from "@api/model";
+import { Diff, Invoice, InvoiceApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class InvoiceService {
@@ -6,6 +6,10 @@ class InvoiceService {
 
   public getInvoice(id: number): Promise<Invoice> {
     return this.invoiceApi.get(id);
+  }
+
+  public deleteQuote(id: number): Promise<Invoice> {
+    return this.invoiceApi.remove(id);
   }
 
   public updateInvoice(id: number, invoice: Invoice): Promise<any> {
@@ -22,6 +26,10 @@ class InvoiceService {
 
   public searchInvoices(search: string): Promise<Invoice[]> {
     return this.invoiceApi.search(search);
+  }
+
+  public bulkChange(diff: Diff): Promise<any> {
+    return this.invoiceApi.bulkChange(diff);
   }
 }
 

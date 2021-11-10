@@ -14,18 +14,12 @@ import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.cayenne.ClassCostInterface
 import ish.oncourse.server.cayenne.glue._ClassCost
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.math.BigDecimal
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Date
-import java.util.List
 
 /**
  * Object representing income or expense associated with running particular class.
@@ -85,7 +79,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 		if (ClassCostFlowType.WAGES == getFlowType() && getTutorRole() != null) {
 
 			for (TutorAttendance attendance : getTutorRole().getSessionsTutors()) {
-				if (attendance.getSession().getPayableDurationInHours() > new BigDecimal(0)) {
+				if (attendance.actualPayableDurationHours > new BigDecimal(0)) {
 					results.add(attendance.getSession())
 				}
 			}
@@ -118,7 +112,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 	 * @return the tutor role for this class cost. This may determine pay rates based on the date of the class or session.
 	 */
 	@API @Nullable @Override
-	CourseClassTutor getTutorRole() {
+    CourseClassTutor getTutorRole() {
 		return super.getTutorRole()
 	}
 
@@ -134,8 +128,8 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 		}
 
 		for (TutorAttendance ta : getTutorRole().getSessionsTutors()) {
-			if (!ta.getSession().getEndDatetime().after(until)) {
-				result = result.add(ta.getSession().getPayableDurationInHours())
+			if (!ta.getEndDatetime().after(until)) {
+				result = result.add(ta.actualPayableDurationHours)
 			}
 		}
 
@@ -364,7 +358,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 	@Nonnull
 	@API
 	@Override
-	DiscountCourseClass getDiscountCourseClass() {
+    DiscountCourseClass getDiscountCourseClass() {
 		return super.getDiscountCourseClass()
 	}
 

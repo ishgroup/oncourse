@@ -5,11 +5,11 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import AppEntry from "./AppEntry";
 import { ErrorBoundary } from "./constants/Bugsnag";
 import { DEFAULT_CONFIG } from "./constants/Config";
 import store from "./constants/Store";
-import { Provider } from "react-redux";
 import { EnvironmentConstants } from "./constants/EnvironmentConstants";
 
 if (process.env.NODE_ENV === EnvironmentConstants.production) {
@@ -27,15 +27,11 @@ if (process.env.NODE_ENV === EnvironmentConstants.production) {
   }
 }
 
-const start = () => {
-  ReactDOM.render(
-    <ErrorBoundary>
-      <Provider store={store as any}>
-        <AppEntry />
-      </Provider>
-    </ErrorBoundary>,
-    document.getElementById(DEFAULT_CONFIG.CONTAINER_ID)
-  );
-};
-
-start();
+ReactDOM.render(
+  <ErrorBoundary>
+    <Provider store={store as any}>
+      <AppEntry />
+    </Provider>
+  </ErrorBoundary>,
+  document.getElementById(DEFAULT_CONFIG.CONTAINER_ID)
+);

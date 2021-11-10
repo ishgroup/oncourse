@@ -10,11 +10,11 @@ import MessageService from "../../../../containers/entities/messages/services/Me
 import { GET_RECIPIENTS_MESSAGE_DATA, setRecipientsMessageData } from "../actions";
 
 const request:
-  EpicUtils.Request<Recipients, { entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[] }> = {
+  EpicUtils.Request<Recipients, { entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[], templateId: number }> = {
     type: GET_RECIPIENTS_MESSAGE_DATA,
     hideLoadIndicator: true,
     getData: ({
-     entityName, messageType, searchQuery, selection
+     entityName, messageType, searchQuery, selection, templateId
     }) => {
       if (Array.isArray(selection) && selection.length) {
         const selectionSearch: SearchQuery = {
@@ -23,9 +23,9 @@ const request:
           tagGroups: []
         };
 
-        return MessageService.getRecipients(entityName, messageType, selectionSearch);
+        return MessageService.getRecipients(entityName, messageType, selectionSearch, templateId);
       }
-      return MessageService.getRecipients(entityName, messageType, searchQuery);
+      return MessageService.getRecipients(entityName, messageType, searchQuery, templateId);
     },
     processData: (r: Recipients, s, { selection, messageType }) => {
       const payload: MessageData = {

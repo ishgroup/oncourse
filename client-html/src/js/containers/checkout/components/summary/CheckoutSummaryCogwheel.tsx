@@ -4,13 +4,13 @@
  */
 
 import React, { useRef, useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Settings from "@material-ui/icons/Settings";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Settings from "@mui/icons-material/Settings";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import { CheckoutSummary } from "../../../../model/checkout";
 import {
   checkoutSetDisableDiscounts,

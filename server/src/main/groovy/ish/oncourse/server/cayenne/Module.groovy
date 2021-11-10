@@ -12,8 +12,8 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.ModuleType
-import ish.messaging.IModule
 import ish.oncourse.API
+import ish.oncourse.cayenne.ModuleInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Module
@@ -29,8 +29,9 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Module extends _Module implements Queueable, IModule {
+class Module extends _Module implements Queueable, ModuleInterface {
 
+	public static final String NATIONAL_CODE_KEY = "nationalCode";
 
 	@Override
 	void postAdd() {

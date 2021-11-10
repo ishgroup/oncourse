@@ -3,29 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
 import React, { RefObject } from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 import debounce from "lodash.debounce";
 import { format } from "date-fns";
-import Collapse from "@material-ui/core/Collapse";
-import Dialog from "@material-ui/core/Dialog";
-import withStyles from "@material-ui/core/styles/withStyles";
+import Collapse from "@mui/material/Collapse";
+import Dialog from "@mui/material/Dialog";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import withTheme from "@material-ui/core/styles/withTheme";
+import LinearProgress from "@mui/material/LinearProgress";
+import withTheme from "@mui/styles/withTheme";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Tooltip from "@mui/material/Tooltip";
 import { Dispatch } from "redux";
 import { KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL } from "../../../../../utils/dates/format";
 import FileUploaderDialog from "../../../../file-uploader/FileUploaderDialog";
 import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { State } from "../../../../../../reducers/state";
 import { dialogStyles } from "./dialogStyles";
-import EditInPlaceSearchSelect from "../../../form-fields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../formFields/EditInPlaceSearchSelect";
 import { DocumentSearchItem as DocumentSearchItemType } from "../../epics/EpicSearchExistingDocumentByName";
 import { stubFunction } from "../../../../../utils/common";
 

@@ -3,14 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CheckoutSaleRelationExtended } from "../../../model/checkout";
+import {
+  CheckoutEnrolmentCustom,
+  CheckoutProductPurchase,
+  CheckoutSaleRelationExtended
+} from "../../../model/checkout";
 
 export const CHECKOUT_ADD_CONTACT = "checkout/add/contact";
 export const CHECKOUT_REMOVE_CONTACT = "checkout/remove/contact";
 export const CHECKOUT_UPDATE_CONTACT = "checkout/update/contact";
 
 export const CHECKOUT_ADD_ITEM = "checkout/add/item";
-export const CHECKOUT_ADD_ENROLMENTS = "checkout/add/enrolments";
+export const CHECKOUT_ADD_ITEMS = "checkout/add/items";
 export const CHECKOUT_UPDATE_CLASS_ITEM = "checkout/update/classItem";
 export const CHECKOUT_REMOVE_ITEM = "checkout/remove/item";
 
@@ -83,9 +87,9 @@ export const toggleSendContext = (listIndex: number, type: string) => ({
   payload: { listIndex, type }
 });
 
-export const checkoutAddEnrolments = enrolments => ({
-  type: CHECKOUT_ADD_ENROLMENTS,
-  payload: enrolments
+export const checkoutAddItems = (items: { enrolments?: CheckoutEnrolmentCustom[], purchases?: CheckoutProductPurchase[] }) => ({
+  type: CHECKOUT_ADD_ITEMS,
+  payload: items
 });
 
 export const checkoutSetHasErrors = hasErrors => ({

@@ -1,7 +1,7 @@
 import { Sale } from "@api/model";
 import { change } from "redux-form";
 import React, { useMemo } from "react";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import { stubFunction } from "../../../../common/utils/common";
 
 export default (
@@ -53,7 +53,7 @@ export default (
 
   return (
     <div className="ml-2">
-      {relationTypes.length && (
+      {Boolean(relationTypes.length) && (
         <EditInPlaceField
           meta={{
             error: hasError && "No available relation types",

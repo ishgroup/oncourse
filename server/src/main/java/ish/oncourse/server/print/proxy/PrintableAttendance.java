@@ -13,7 +13,6 @@ package ish.oncourse.server.print.proxy;
 import ish.common.types.AttendanceType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.Gender;
-import ish.oncourse.entity.services.ContactService;
 import ish.oncourse.entity.services.EnrolmentService;
 import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Session;
@@ -58,7 +57,6 @@ public class PrintableAttendance implements PrintableObject {
     public static final String ATTENDANCE_TYPE = "attendanceType";
     public static final String DISPLAYABLE_STATUS = "displayableStatus";
 
-	private ContactService contactService;
 	private EnrolmentService enrolmentService;
 
 	private String text;
@@ -231,7 +229,7 @@ public class PrintableAttendance implements PrintableObject {
 		if (getEnrolment() == null) {
 			return "";
 		}
-		var age = contactService.getAge(getStudent().getContact());
+		var age = getStudent().getContact().getAge();
 		if (age != null) {
 			return age.toString();
 		}
@@ -375,31 +373,26 @@ public class PrintableAttendance implements PrintableObject {
         }
     }
 
-	public void setContactService(ContactService contactService) {
-		this.contactService = contactService;
-	}
-
 	public void setEnrolmentService(EnrolmentService enrolmentService) {
 		this.enrolmentService = enrolmentService;
 	}
 
 
-	public static PrintableAttendance valueOf(ContactService contactService, EnrolmentService enrolmentService, Enrolment enrolment, Session session, AttendanceType type) {
-		return valueOf(contactService, enrolmentService, true, enrolment, null, session, type, null);
+	public static PrintableAttendance valueOf(EnrolmentService enrolmentService, Enrolment enrolment, Session session, AttendanceType type) {
+		return valueOf(enrolmentService, true, enrolment, null, session, type, null);
 	}
 
-	public static PrintableAttendance valueOf(ContactService contactService, EnrolmentService enrolmentService, Tutor tutor, Session session, AttendanceType type) {
-		return valueOf(contactService, enrolmentService, null, null, tutor, session, type, null);
+	public static PrintableAttendance valueOf(EnrolmentService enrolmentService, Tutor tutor, Session session, AttendanceType type) {
+		return valueOf(enrolmentService, null, null, tutor, session, type, null);
 	}
 
-	public static PrintableAttendance valueOf(ContactService contactService, EnrolmentService enrolmentService, Session session, String text) {
-		return valueOf(contactService, enrolmentService, false, null, null, session, null, text);
+	public static PrintableAttendance valueOf(EnrolmentService enrolmentService, Session session, String text) {
+		return valueOf(enrolmentService, false, null, null, session, null, text);
 	}
 
-	public static PrintableAttendance valueOf(ContactService contactService, EnrolmentService enrolmentService, Boolean isSortable,
+	public static PrintableAttendance valueOf(EnrolmentService enrolmentService, Boolean isSortable,
 											  Enrolment enrolment, Tutor tutor, Session session, AttendanceType type, String text) {
 		var printableAttendance = new PrintableAttendance();
-		printableAttendance.contactService = contactService;
 		printableAttendance.enrolmentService = enrolmentService;
 		printableAttendance.isSortable = isSortable;
 		printableAttendance.enrolment = enrolment;

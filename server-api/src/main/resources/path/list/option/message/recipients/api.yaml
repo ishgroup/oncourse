@@ -22,6 +22,14 @@ post:
       required: true
       schema:
         $ref: './def/list/SearchQuery.yaml'
+    - name: templateId
+      in: query
+      required: false
+      type: integer
+      format: int64
+      description:
+        Id of template with AbstractInvoices or null in other cases
+      example: 413
   responses:
     '200':
       description: Success response.

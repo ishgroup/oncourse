@@ -6,15 +6,19 @@
 import React, {
  useCallback, useEffect, useRef, useState
 } from "react";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import { withStyles } from "@mui/styles";
+import Grid, { GridSize } from "@mui/material/Grid";
 import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
-import createStyles from "@material-ui/core/styles/createStyles";
+import ListItem from "@mui/material/ListItem";
+import createStyles from "@mui/styles/createStyles";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
-import { LSGetItem } from "../../utils/storage";
+import NewsRender from "../news/NewsRender";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../constants/Config";
+import { LSGetItem, LSSetItem } from "../../utils/storage";
+import { EditViewProps } from "../../../model/common/ListView";
+import { useStickyScrollSpy } from "../../utils/hooks";
 
 const styles = theme => createStyles({
     listContainer: {
@@ -28,36 +32,58 @@ const styles = theme => createStyles({
     listItemRoot: {
       alignItems: "flex-start",
       marginBottom: theme.spacing(3),
-      color: theme.palette.common.white,
+      color: theme.tabList.listItemRoot.color,
       fontWeight: 600,
       opacity: 0.6,
       padding: 0,
-      "&$selected": {
-        opacity: 1,
-        backgroundColor: "inherit"
+      overflow: "hidden",
+      position: "relative",
+      cursor: 'pointer',
+    "&$selected": {
+      opacity: 1,
+      backgroundColor: "inherit",
+      color: theme.tabList.listItemRoot.selectedColor,
+      "& $arrowIcon": {
+        transform: "translateX(0)",
+      },
+      "& $listItemLabel": {
+        paddingLeft: 30,
+      },
+    },
+    "&:hover": {
+      opacity: 0.8,
       }
     },
     listItemText: {
       fontWeight: "inherit",
-      width: "100%"
+      width: "100%",
     },
-    indicator: {
-      display: "none"
+  indicator: {
+    display: "none"
+  },
+  listItemLabel: {
+    textTransform: 'uppercase',
+    transition: "all 0.2s ease-in-out",
     },
-    selected: {}
+    selected: {},
+    arrowIcon: {
+      position: "absolute",
+      transform: "translateX(-30px)",
+      transition: "all 0.2s ease-in-out",
+    },
   });
 
 export interface TabsListItem {
-  label: string;
+  readonly type?: string;
   component: (props: any) => React.ReactNode;
   labelAdornment?: React.ReactNode;
   expandable?: boolean;
+  label: string;
 }
 
 interface Props {
   classes?: any;
-  itemProps?: any;
-  customLabels?: any;
+  itemProps?: EditViewProps & any;
   customAppBar?: boolean;
   items: TabsListItem[];
 }
@@ -68,16 +94,37 @@ interface ScrollNodes {
 
 const SCROLL_TARGET_ID = "TabsListScrollTarget";
 
+const TABLIST_LOCAL_STORAGE_KEY = "localstorage_key_tab_list";
+
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
 
 const TabsList = React.memo<Props & RouteComponentProps>(({
-   classes, items, customLabels, customAppBar, itemProps = {}, history, location
+   classes, items, customAppBar, itemProps = {}, history, location
   }) => {
+  const { scrollSpy } = useStickyScrollSpy();
+
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<ScrollNodes>({});
 
   const [selected, setSelected] = useState<string>(null);
   const [expanded, setExpanded] = useState<number[]>([]);
+
+  useEffect(() => {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    if (stored && stored[itemProps.rootEntity]) {
+      setExpanded(stored[itemProps.rootEntity]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    let updated = {};
+    if (stored) {
+      updated = { ...stored };
+    }
+    updated[itemProps.rootEntity] = expanded;
+    LSSetItem(TABLIST_LOCAL_STORAGE_KEY, JSON.stringify(updated));
+  }, [expanded, itemProps.rootEntity]);
 
   useEffect(() => {
     if (items.length) {
@@ -112,6 +159,8 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
   const onScroll = useCallback(
     e => {
+      scrollSpy(e);
+
       if (!itemProps.twoColumn) {
         return;
       }
@@ -188,8 +237,14 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             onScroll={onScroll}
             id={SCROLL_TARGET_ID}
           >
+            <NewsRender page />
             {items.map((i, tabIndex) => (
-              <div id={i.label} key={i.label} ref={setScrollNode}>
+              <div
+                id={i.label}
+                key={tabIndex}
+                ref={setScrollNode}
+                className={!itemProps.twoColumn && tabIndex === items.length - 1 && "saveButtonTableOffset"}
+              >
                 {i.component({
                  ...itemProps, expanded, setExpanded, tabIndex
                 })}
@@ -206,27 +261,31 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
             LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
           >
             <div className={classes.listContainerInner}>
-              {items.map((i, index) => (
-                <ListItem
-                  button
-                  selected={i.label === selected}
-                  classes={{
-                    root: classes.listItemRoot,
-                    selected: classes.selected
-                  }}
-                  onClick={() => scrollToSelected(i, index)}
-                  key={index}
-                >
-                  <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                    <div className="text-uppercase">{customLabels && customLabels[index] ? customLabels[index] : i.label}</div>
-                    {i.labelAdornment && (
-                      <Typography variant="caption" component="div" className="text-pre-wrap">
-                        {i.labelAdornment}
-                      </Typography>
-                    )}
-                  </Typography>
-                </ListItem>
-              ))}
+              {items.map((i, index) => {
+                const itemSelected = i.label === selected;
+                return (
+                  <ListItem
+                    selected={itemSelected}
+                    classes={{
+                      root: classes.listItemRoot,
+                      selected: classes.selected
+                    }}
+                    onClick={() => scrollToSelected(i, index)}
+                    key={index}
+                  >
+
+                    <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
+                      <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
+                      <div className={classes.listItemLabel}>{i.label}</div>
+                      {i.labelAdornment && (
+                        <Typography variant="caption" component="div" className="text-pre-wrap">
+                          {i.labelAdornment}
+                        </Typography>
+                      )}
+                    </Typography>
+                  </ListItem>
+                );
+              })}
             </div>
           </div>
         </Grid>

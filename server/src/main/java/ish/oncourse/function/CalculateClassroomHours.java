@@ -11,19 +11,19 @@
 
 package ish.oncourse.function;
 
-import ish.messaging.ICourseClass;
-import ish.messaging.ISession;
+import ish.oncourse.server.cayenne.CourseClass;
+import ish.oncourse.server.cayenne.Session;
 import ish.util.DurationFormatter;
 
 import java.math.BigDecimal;
 
 public class CalculateClassroomHours {
 
-    private ICourseClass courseClass;
+    private CourseClass courseClass;
 
     private CalculateClassroomHours() {}
 
-    public static CalculateClassroomHours valueOf(ICourseClass courseClass) {
+    public static CalculateClassroomHours valueOf(CourseClass courseClass) {
         CalculateClassroomHours obj = new CalculateClassroomHours();
         obj.courseClass = courseClass;
         return obj;
@@ -32,19 +32,12 @@ public class CalculateClassroomHours {
     public BigDecimal calculate() {
         BigDecimal sum = BigDecimal.ZERO;
         if (courseClass.getSessions() != null && courseClass.getSessions().size() > 0) {
-            for (ISession s : courseClass.getSessions()) {
-                sum = sum.add(getDurationInHours(s));
+            for (Session s : courseClass.getSessions()) {
+                sum = sum.add(s.getDurationInHours());
             }
         } else if (courseClass.getSessionsCount() != null && courseClass.getMinutesPerSession() != null) {
             return BigDecimal.valueOf(courseClass.getSessionsCount() * courseClass.getMinutesPerSession() / 60L);
         }
         return sum;
-    }
-
-    private BigDecimal getDurationInHours(ISession session) {
-        if (session.getEndDatetime() == null || session.getStartDatetime() == null) {
-            return new BigDecimal("0");
-        }
-        return DurationFormatter.parseDurationInHours(session.getEndDatetime().getTime() - session.getStartDatetime().getTime());
     }
 }

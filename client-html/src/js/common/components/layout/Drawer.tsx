@@ -4,12 +4,12 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
+import { withStyles } from "@mui/styles";
+import Drawer from "@mui/material/Drawer";
+import Hidden from "@mui/material/Hidden";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { createStyles } from "@material-ui/styles";
+import { createStyles } from "@mui/styles";
 import { State } from "../../../reducers/state";
 import { closeDrawer } from "../../actions";
 import { AppTheme } from "../../../model/common/Theme";
@@ -34,10 +34,10 @@ const styles = (theme: AppTheme) =>
       padding: theme.spacing(0.75, 3)
     },
     listHeadingPadding: {
-      padding: `${theme.spacing(1) + 4}px ${theme.spacing(3)}px`
+      padding: `${theme.spacing(1) + 4} ${theme.spacing(3)}`
     },
     listPadding: {
-      padding: `12px 0px ${theme.spacing(2)}px 0px`
+      padding: `12px 0px ${theme.spacing(2)} 0px`
     }
   });
 

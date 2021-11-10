@@ -11,20 +11,17 @@
 
 package ish.oncourse.function;
 
-import ish.messaging.ICourseClass;
-import ish.messaging.IModule;
-import ish.messaging.ISession;
-import ish.util.DurationFormatter;
+import ish.oncourse.server.cayenne.CourseClass;
 
 import java.math.BigDecimal;
 
 public class CalculateCourseClassNominalHours {
 
-    private ICourseClass courseClass;
+    private CourseClass courseClass;
 
     private CalculateCourseClassNominalHours() {}
 
-    public static CalculateCourseClassNominalHours valueOf(ICourseClass courseClass) {
+    public static CalculateCourseClassNominalHours valueOf(CourseClass courseClass) {
         CalculateCourseClassNominalHours obj = new CalculateCourseClassNominalHours();
         obj.courseClass = courseClass;
         return obj;

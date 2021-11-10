@@ -115,9 +115,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onInit: () => {
-      dispatch(getAdministrationSites());
-    }
-  });
+  onInit: () => {
+    dispatch(getAdministrationSites());
+  }
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Users);

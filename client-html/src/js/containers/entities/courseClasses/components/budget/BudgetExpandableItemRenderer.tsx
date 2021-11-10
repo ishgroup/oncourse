@@ -5,12 +5,12 @@
 
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Grid from "@material-ui/core/Grid";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Grid from "@mui/material/Grid";
 import { ClassCost } from "@api/model";
 import Decimal from "decimal.js-light";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -63,14 +63,16 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
 
   const percentOfProjectedValue = useMemo(
     () =>
-      (rowsValues.projected <= 0
-        ? 0
-        : new Decimal(rowsValues.actual)
-            .div(rowsValues.projected || 1)
-            .mul(100)
-            .toDecimalPlaces(0)
-            .toFixed(2)),
-    [rowsValues.projected, rowsValues.actual]
+      (typeof rowsValues.percentage === 'number'
+        ? rowsValues.percentage.toFixed(2)
+        : (rowsValues.projected <= 0
+          ? 0
+          : new Decimal(rowsValues.actual)
+              .div(rowsValues.projected || 1)
+              .mul(100)
+              .toDecimalPlaces(0)
+              .toFixed(2))),
+    [rowsValues.projected, rowsValues.actual, rowsValues.percentage]
   );
 
   return rowsValues.items.length || showEmpty ? (
@@ -87,11 +89,11 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
         <AccordionSummary
           classes={{
             root: classes.panelSumRoot,
-            focused: classes.panelSumFocus
+            focusVisible: classes.panelSumFocus,
           }}
           expandIcon={<ExpandMoreIcon />}
         >
-          <Grid container direction="row">
+          <Grid container columnSpacing={3} direction="row">
             <Grid item xs={5}>
               {headerComponent || <div className="secondaryHeading">{header}</div>}
             </Grid>
@@ -118,7 +120,7 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             {customRowsRenderer
               ? customRowsRenderer({
                rowsValues, openEditModal, onDeleteClassCost, currencySymbol, classes

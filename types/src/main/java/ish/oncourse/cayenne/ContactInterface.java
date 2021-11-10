@@ -17,8 +17,6 @@ import java.util.List;
 
 /**
  * Interface uniting server and client Contact entity
- *
- * @author ldeck, marcin
  */
 public interface ContactInterface {
 	String CALENDAR_URL_KEY = "calendarUrl";
@@ -40,8 +38,6 @@ public interface ContactInterface {
 
 	String FULLNAME_FIRSTNAME_LASTNAME_PROP = "contactName";
 	String FULLNAME_LASTNAME_FIRSTNAME_PROP = "full_name";
-
-	String getCalendarUrl();
 
 	String getEmail();
 

@@ -4,17 +4,17 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { createStyles, withStyles } from "@mui/styles";
 import { CourseClassTutor } from "@api/model";
 import { format } from "date-fns";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import clsx from "clsx";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { AppTheme } from "../../../../../model/common/Theme";
@@ -143,7 +143,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
         </div>
       )}
       detailsContent={(
-        <Grid container spacing={3}>
+        <Grid container columnSpacing={3} spacing={3}>
           <Grid item xs={12}>
             <FormField
               type="remoteDataSearchSelect"

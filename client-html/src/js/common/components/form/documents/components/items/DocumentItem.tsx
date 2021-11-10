@@ -1,8 +1,8 @@
 import React from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Grid } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { Grid } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import clsx from "clsx";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import DocumentHeader from "./DocumentHeader";
@@ -10,7 +10,7 @@ import DocumentTags from "./DocumentTags";
 
 const styles = (theme: AppTheme) => createStyles({
   container: {
-    paddingLeft: `${theme.spacing(10.5)}px !important`
+    paddingLeft: `${theme.spacing(10.5)} !important`
   },
   documentNoTags: {
     fontSize: 13
@@ -39,7 +39,7 @@ class DocumentItem extends React.PureComponent<any, any> {
     } = this.props;
     return (
       <Paper onClick={this.openDocumentView} classes={{ root: clsx("cursor-pointer h-100", classes.documentPaper) }}>
-        <Grid container className={clsx("p-1 relative h-100 align-content-between", classes.container)}>
+        <Grid container columnSpacing={3} className={clsx("p-1 relative h-100 align-content-between", classes.container)}>
           <DocumentHeader
             item={item}
             unlink={unlink}

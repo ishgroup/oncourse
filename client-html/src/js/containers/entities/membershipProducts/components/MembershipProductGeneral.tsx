@@ -7,10 +7,10 @@ import React from "react";
 import { change } from "redux-form";
 import { Account, ExpiryType, MembershipProduct, ProductStatus, Tax } from "@api/model";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
@@ -129,14 +129,13 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
   return (
     <div className="generalRoot">
       <div className="pt-1">
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name="name"
               label="Name"
               required
-              fullWidth
             />
           </Grid>
           <Grid item xs={twoColumn ? 2 : 12}>
@@ -150,7 +149,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         </Grid>
       </div>
 
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormEditorField name="description" label="Description" />
         </Grid>
@@ -167,7 +166,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           selectLabelCondition={a => `${a.accountCode}, ${a.description}`}
         />
       </div>
-      <Grid container className="mr-2 mb-2">
+      <Grid container columnSpacing={3} className="mr-2 mb-2">
         <Grid item xs={twoColumn ? 2 : 4}>
           <FormField
             type="money"
@@ -223,7 +222,6 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
             selectLabelMark="name"
             items={dataCollectionRules || []}
             format={normalizeString}
-            fullWidth
             required
             sort
           />

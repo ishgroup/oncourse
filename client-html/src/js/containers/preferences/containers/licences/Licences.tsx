@@ -1,10 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import {
  List, ListItem, ListSubheader, ListItemText
-} from "@material-ui/core";
-import Button from "../../../../common/components/buttons/Button";
+} from "@mui/material";
+
+import Button from "@mui/material/Button";
 import { State } from "../../../../reducers/state";
 import * as Model from "../../../../model/preferences/Licences";
 import AppBar from "../../../../common/components/layout/AppBar";
@@ -23,19 +24,8 @@ const styles: any = () => ({
 
 const LicenseNames = {
   [Model.LicenseSMS.uniqueKey]: "SMS",
-  [Model.LicenseCreditCard.uniqueKey]: "Credit card",
-  [Model.LicenseBudget.uniqueKey]: "Budget",
   [Model.LicenseAccessControl.uniqueKey]: "Access control",
-  [Model.LicenseExternalDB.uniqueKey]: "External database",
-  [Model.LicensePayroll.uniqueKey]: "Payroll",
-  [Model.LicenseVoucher.uniqueKey]: "Vouchers",
-  [Model.LicenseAttendance.uniqueKey]: "Attendance",
-  [Model.LicenseMembership.uniqueKey]: "Membership",
   [Model.LicenseScripting.uniqueKey]: "Scripting",
-  [Model.LicenseFeeHelpExport.uniqueKey]: "VET Fee Help exports",
-  [Model.LicenseFundingContract.uniqueKey]: "Funding contract",
-  [Model.LicenseGravatar.uniqueKey]: "Gravatar",
-  [Model.LicenseLDAP.uniqueKey]: "LDAP"
 };
 
 class Licences extends React.Component<any, any> {
@@ -58,7 +48,8 @@ class Licences extends React.Component<any, any> {
 
     const inactive = licences
       && Object.keys(licences)
-        .filter(item => licences[item] === "false")
+        .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+          && (licences[item].toLowerCase() === "false" || licences[item] === "0"))
         .map(item => this.listItem(item, false));
 
     return (
@@ -73,9 +64,10 @@ class Licences extends React.Component<any, any> {
           )}
         >
           {licences
-            && Object.keys(licences)
-              .filter(item => licences[item] === "true")
-              .map(item => this.listItem(item, true))}
+          && Object.keys(licences)
+            .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+              && (licences[item].toLowerCase() === "true" || Number(licences[item]) > 0))
+            .map(item => this.listItem(item, true))}
         </List>
 
         {inactive && Boolean(inactive.length) && (
@@ -84,14 +76,14 @@ class Licences extends React.Component<any, any> {
             subheader={(
               <ListSubheader disableSticky className="heading">
                 Inactive Features
-                <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link">
+                <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
                   <Button
                     color="primary"
-                    text="Upgrade now"
                     size="small"
-                    className="m-1"
-                    rootClasses="licencesUpgradeButton"
-                  />
+                    className="m-1 licencesUpgradeButton"
+                  >
+                    Upgrade now
+                  </Button>
                 </a>
               </ListSubheader>
             )}

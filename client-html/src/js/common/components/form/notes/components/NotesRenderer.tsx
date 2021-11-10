@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import Button from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core";
-import Collapse from "@material-ui/core/Collapse";
+import Button from "@mui/material/Button";
+import { Grid } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
 import clsx from "clsx";
 import NoteItem from "./NoteItem";
 
@@ -54,7 +54,7 @@ const NotesRenderer = props => {
         </Collapse>
       </Grid>
 
-      <Grid item xs={12} container justify="center">
+      <Grid item xs={12} container>
         {fields.length > 6 && (
           <>
             <span className={classes.showMore}>

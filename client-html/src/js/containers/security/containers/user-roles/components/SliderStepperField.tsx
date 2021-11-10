@@ -1,9 +1,9 @@
 import React, { ComponentClass } from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@mui/styles";
 import clsx from "clsx";
-import Slider from "@material-ui/core/Slider";
-import * as colorManipulator from "@material-ui/core/styles/colorManipulator";
-import Lock from "@material-ui/icons/Lock";
+import Slider from "@mui/material/Slider";
+import { lighten } from '@mui/material/styles';
+import Lock from "@mui/icons-material/Lock";
 
 import { AccessStatus } from "@api/model";
 
@@ -30,7 +30,7 @@ const styles = theme =>
       transform: "translate(-50%, -50%)",
       top: "50%",
       borderRadius: "50%",
-      backgroundColor: colorManipulator.lighten(theme.palette.primary.main, 0.76),
+      backgroundColor: lighten(theme.palette.primary.main, 0.76),
       pointerEvents: "none"
     },
     checkedMark: {

@@ -17,12 +17,14 @@ import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
 import ish.util.LocalDateUtils
+import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate
 
 trait DiscountTrait {
 
+    abstract Long getId()
     abstract Integer getStudentEnrolledWithinDays()
     abstract String getStudentAge()
     abstract List<DiscountConcessionType> getDiscountConcessionTypes()
@@ -32,7 +34,9 @@ trait DiscountTrait {
     abstract List<CorporatePassDiscount> getCorporatePassDiscount()
     abstract Integer getMinEnrolments()
     abstract Money getMinValue()
-        /**
+    abstract ObjectContext getObjectContext()
+
+    /**
      * Determines if the given student is eligible for this Discount. Note that this checks just the student attributes
      * and not whether enrolment, time or other restrictions of the discount might prevent its application.
      *
@@ -40,7 +44,7 @@ trait DiscountTrait {
      * @return true if student is eligible
      */
     @API
-    boolean isStudentEligibile(Contact contact, List<MembershipProduct> newMemberships, CourseClassTrait courseClass, Integer enrolmentsCount, Money purchaseTotal ) {
+    boolean isStudentEligibile(Contact contact, List<MembershipProduct> newMemberships, CourseClassTrait courseClass, List<CourseClass> enrolledClasses, Money purchaseTotal ) {
 
         return  (enrolledWithinDaysEligibile(contact)
                 && studenAgeDateEligibile(contact)
@@ -48,7 +52,7 @@ trait DiscountTrait {
                 && postcodesEligibile(contact)
                 && membershipEligibile(contact, newMemberships)
                 && previousEnrolmentEligibile(contact, courseClass)
-                && enrolmentsCount >= minEnrolments
+                && countEnrolmentsEligible(enrolledClasses)
                 && purchaseTotal >= minValue)
 
     }
@@ -66,7 +70,7 @@ trait DiscountTrait {
     }
 
     @CompileDynamic
-    private boolean enrolledWithinDaysEligibile(Contact contact) {
+    boolean enrolledWithinDaysEligibile(Contact contact) {
         if (studentEnrolledWithinDays == null) {
             return true
         } else if (contact.student == null || contact.student.enrolments.empty) {
@@ -81,7 +85,7 @@ trait DiscountTrait {
         }
     }
 
-    private boolean studenAgeDateEligibile(Contact contact) {
+    boolean studenAgeDateEligibile(Contact contact) {
         if (studentAge == null  || !studentAge.matches(/[<>]\s\d+/) ) {
             return true
         } else if (contact.birthDate == null) {
@@ -103,7 +107,7 @@ trait DiscountTrait {
         }
     }
 
-    private boolean concessionEligibile(Contact contact) {
+    boolean concessionEligibile(Contact contact) {
 
         if (discountConcessionTypes.empty) {
             return true
@@ -118,7 +122,7 @@ trait DiscountTrait {
     }
 
 
-    private boolean postcodesEligibile(Contact contact) {
+    boolean postcodesEligibile(Contact contact) {
         if (studentPostcodes != null) {
             return true
         } else if (StringUtils.trimToNull(contact.postcode) == null) {
@@ -154,6 +158,36 @@ trait DiscountTrait {
             }
 
             return false
+        }
+    }
+
+    private boolean countEnrolmentsEligible(List<CourseClass> enrolledClasses) {
+        int currentAppropriateEnrolmentCount = 0
+        enrolledClasses.each {courseClass ->
+            if (courseClass.discounts*.id.contains(id)) {
+                currentAppropriateEnrolmentCount++
+            }
+        }
+
+        return currentAppropriateEnrolmentCount >= minEnrolments
+    }
+    /**
+     * Add the discount to given  class available discounts list
+     */
+    @API
+    void addCourseClass(CourseClass courseClass) {
+        if (courseClass) {
+            objectContext.localObject(courseClass).addDiscount(this as Discount)
+        }
+    }
+
+    /**
+     * Remove the discount from given class available discounts list
+     */
+    @API
+    void removeCourseClass(CourseClass courseClass) {
+        if (courseClass) {
+            objectContext.localObject(courseClass).removeDiscount(this as Discount)
         }
     }
 

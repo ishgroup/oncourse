@@ -6,10 +6,10 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { change, FieldArray, initialize } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { compareAsc, format as formatDate } from "date-fns";
 import { Currency, PaymentMethod } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
@@ -141,6 +141,11 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
     lockedDate,
     selection
   } = props;
+
+  useEffect(() => {
+    dispatch(change(form, "selectedPaymentMethod", paymentOutMethods?.find(p => p.id === values.paymentMethodId)?.type));
+  }, [paymentOutMethods, values.paymentMethodId]);
+
 
   const addPaymentOutTitle = useMemo(
     () => `pay item${values && values.invoices && values.invoices.length !== 1 ? "s" : ""}`,
@@ -281,7 +286,8 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   const validatePaymentMethodField = useCallback(
     (value, allValues) => {
-      if (value === 2) {
+
+      if (values.selectedPaymentMethod === "Credit card") {
         if (!refundablePayments) {
           return "There are no refundable payments. Choose another payment method.";
         }
@@ -292,7 +298,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
       }
       return undefined;
     },
-    [refundablePaymentRecords]
+    [refundablePaymentRecords, values.selectedPaymentMethod]
   );
 
   const validateInvoices = useCallback(
@@ -353,7 +359,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   return values ? (
     <div className="p-3 h-100 flex-column">
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={12}>
           <Uneditable value={values.payeeName} label="Payment to" url={`/contact/${values.payeeId}`} />
         </Grid>
@@ -377,7 +383,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             defaultDisplayValue={values.administrationCenterName}
             selectLabelCondition={getAdminCenterLabel}
             validate={
-              typeof values.paymentMethodId === "number" && values.paymentMethodId !== 2
+              typeof values.paymentMethodId === "number" && values.selectedPaymentMethod !== "Credit card"
                 ? validateSingleMandatoryField
                 : undefined
             }
@@ -388,7 +394,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         <Grid item xs={4} />
 
-        {values.paymentMethodId === 2 && Boolean(refundablePaymentRecords && refundablePaymentRecords.length) && (
+        {values.selectedPaymentMethod === "Credit card" && Boolean(refundablePaymentRecords && refundablePaymentRecords.length) && (
           <Grid item xs={12}>
             <FormField
               type="select"
@@ -400,7 +406,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           </Grid>
         )}
 
-        {values.paymentMethodId === 1 && <ChequeSummaryRenderer />}
+        {values.selectedPaymentMethod === "Cheque" && <ChequeSummaryRenderer />}
 
         <Grid item xs={4}>
           <FormField

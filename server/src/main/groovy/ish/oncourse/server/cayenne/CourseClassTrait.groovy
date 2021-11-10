@@ -13,6 +13,8 @@ package ish.oncourse.server.cayenne
 
 import groovy.time.TimeCategory
 import groovy.transform.CompileDynamic
+import ish.common.types.ClassCostFlowType
+import ish.common.types.ClassCostRepetitionType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.function.CalculateClassroomHours
@@ -36,7 +38,46 @@ trait CourseClassTrait {
     abstract Date getEndDateTime()
     abstract Long getId()
     abstract ObjectContext getObjectContext()
+    abstract List<Discount> getDiscounts()
+    abstract List<DiscountCourseClass> getDiscountCourseClasses()
 
+
+    /**
+     * Add given discount to available class discounts list
+     */
+    @API
+    void addDiscount(Discount discount) {
+       if (discount && !(discount.id in  discounts*.id)) {
+           DiscountCourseClass discountCourseClass = objectContext.newObject(DiscountCourseClass)
+           discountCourseClass.courseClass = this as CourseClass
+           discountCourseClass.discount = objectContext.localObject(discount)
+           
+           ClassCost classCost = objectContext.newObject(ClassCost)
+           classCost.courseClass = this as CourseClass
+           classCost.discountCourseClass = discountCourseClass
+           classCost.description = discount.name
+           classCost.flowType = ClassCostFlowType.DISCOUNT
+           classCost.repetitionType = ClassCostRepetitionType.DISCOUNT
+           classCost.taxAdjustment = Money.ZERO
+           classCost.invoiceToStudent = false
+           classCost.payableOnEnrolment = true
+           classCost.isSunk = false
+       }
+    }
+
+    /**
+     * Remove given discount from available class discounts list
+     */
+    @API
+    void removeDiscount(Discount discount) {
+        if (discount) {
+            discount = objectContext.localObject(discount)
+            List<DiscountCourseClass> discountCourseClasses =  discountCourseClasses.findAll {it.discount.id == discount.id }
+            objectContext.deleteObjects(discountCourseClasses*.classCost)
+            objectContext.deleteObjects(discountCourseClasses)
+        }
+    }
+    
     @API
     BigDecimal getQualificationHours() {
         getCourse().qualification?.nominalHours
@@ -90,8 +131,8 @@ trait CourseClassTrait {
 
 
     List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, List<Long> courseIds,
-                                                   List<Long> productIds, List<Long> promoIds,
-                                                   List<MembershipProduct> newMemberships, Integer enrolmentsCount, Money purchaseTotal ) {
+                                                   List<Long> productIds, List<Long> promoIds, List<CourseClass> classes,
+                                                   List<MembershipProduct> newMemberships, Money purchaseTotal ) {
         List<EntityRelation> relations = EntityRelationDao.getRelatedFrom(objectContext, Course.simpleName, course.id)
                 .findAll {
                     (Course.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in courseIds) ||
@@ -106,6 +147,6 @@ trait CourseClassTrait {
                     dcc.discount.entityRelationTypes.empty || dcc.discount in discountsViaRelations
                 }.
                 findAll { it.discount.code == null || it.discount.id in promoIds }.
-                findAll { it.discount.isStudentEligibile(contact, newMemberships, this, enrolmentsCount, purchaseTotal) }
+                findAll { it.discount.isStudentEligibile(contact, newMemberships, this, classes, purchaseTotal) }
     }
 }

@@ -10,7 +10,6 @@
  * See the GNU Affero General Public License for more details.
  */
 
-apply plugin: 'java'
 ext {
     karateVersion = '1.0.1'
 }
@@ -46,7 +45,6 @@ task prepareTestDb(type: JavaExec) {
     main = 'ish.oncourse.api.test.task.PrepareTestDb'
     classpath = sourceSets.test.runtimeClasspath
     def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
-
     args = [dbUrl, "$rootDir/api-test/src/test/resources/test-dataset.xml"]
 }
 
@@ -54,10 +52,10 @@ test {
     testLogging {
         events "failed", "standardOut"
     }
-    
+
     tasks.getByName('prepareTestDb').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
 
-    dependsOn "copyConfig" 
+    dependsOn "copyConfig"
     dependsOn ":server:startDaemon"
     dependsOn "prepareTestDb"
     // pull cucumber options into the cucumber jvm

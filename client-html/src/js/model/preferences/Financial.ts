@@ -65,9 +65,3 @@ export const PaymentInfo: PreferenceSchema = {
   mandatory: false,
   editable: true
 };
-
-export const QePaymentDefaultZero: PreferenceSchema = {
-  uniqueKey: "qe.payment.default.zero",
-  mandatory: false,
-  editable: true
-};

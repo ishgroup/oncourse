@@ -8,7 +8,6 @@ import ish.DatabaseSetup
 import ish.TestWithDatabase
 import ish.common.types.*
 import ish.math.Money
-import ish.messaging.ISessionModule
 import ish.oncourse.cayenne.CourseClassUtil
 import ish.oncourse.generator.DataGenerator
 import ish.oncourse.server.cayenne.*
@@ -95,7 +94,7 @@ class CourseClassUtilTest extends TestWithDatabase {
 
     @Test
     void testAddModuleToAllSessions() throws Exception {
-        ISessionModule sessionModule = Mockito.mock(SessionModule.class)
+        SessionModule sessionModule = Mockito.mock(SessionModule.class)
 
         ObjectContext context = Mockito.mock(ObjectContext.class)
         when(context.newObject(SessionModule.class)).thenReturn((SessionModule) sessionModule)
@@ -110,7 +109,7 @@ class CourseClassUtilTest extends TestWithDatabase {
 
         Module module = Mockito.mock(Module.class)
 
-        CourseClassUtil.addModuleToAllSessions(courseClass, module, SessionModule.class)
+        CourseClassUtil.addModuleToAllSessions(courseClass, module)
 
         verify(sessionModule, Mockito.times(1)).setSession(any())
         verify(sessionModule, Mockito.times(1)).setModule(any())

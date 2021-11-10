@@ -1,6 +1,6 @@
 package ish.validation
 
-import ish.messaging.IStudent
+import ish.oncourse.server.cayenne.Student
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -13,7 +13,7 @@ class StudentCompletedYearValidatorTest {
     @Test
     void test() {
         String propKey = "propertyKey"
-        IStudent student = mock(IStudent.class)
+        Student student = mock(Student.class)
         when(student.getYearSchoolCompleted()).thenReturn(1939)
 
         ValidationResult res = StudentYearCompletedValidator.valueOf(student, propKey).validate()

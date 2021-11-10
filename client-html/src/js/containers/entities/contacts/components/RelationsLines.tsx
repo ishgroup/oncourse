@@ -4,11 +4,11 @@
  */
 
 import React, { useCallback } from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { defaultContactName, getContactFullName, openContactLink } from "../utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
@@ -87,7 +87,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
   );
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12} className={classes.select1}>
         <FormField
           type="remoteDataSearchSelect"

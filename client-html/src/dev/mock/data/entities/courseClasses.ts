@@ -1,5 +1,7 @@
 import { CourseClass } from "@api/model";
 import { generateArraysOfRecords, getEntityResponse } from "../../mockUtils";
+import { CourseClass as CourseClassQueryModel } from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
+import * as Models from "../../../../../build/generated-sources/aql-model/queryLanguageModel";
 
 export function mockCourseClasses() {
   this.getCourseClass = id => {
@@ -17,6 +19,7 @@ export function mockCourseClasses() {
       roomSite: value[7],
       validEnrolmentCount: value[8],
       placesLeft: value[9],
+      createdOn: value[10],
       attendanceType: "No information",
       censusDate: "",
       deliveryMode: "Classroom",
@@ -55,6 +58,23 @@ export function mockCourseClasses() {
   this.getPlainCourseClassList = params => {
     let rows: any[];
     const columns = params.columns;
+    const keysForGeneratingArrayOfRecords = [{ name: "id", type: "number" }];
+
+    columns && columns.split(",").forEach(column => {
+      let newItem;
+      if (column.includes(".")) {
+        // const numberOfDots = column.match(/\./g).length;
+        const updColumn = column[0].toUpperCase() + column.substring(1);
+        const entityName = updColumn.slice(0, updColumn.indexOf('.'));
+        const fieldName = column.slice(column.lastIndexOf('.') + 1);
+        const field = Models[entityName][fieldName];
+        newItem = { name: column, type: field };
+      } else {
+        newItem = { name: column, type: CourseClassQueryModel[column] };
+      }
+
+      keysForGeneratingArrayOfRecords.push(newItem);
+    });
 
     if (columns.includes("course.name,course.code,code,feeIncGst,startDateTime,endDateTime")) {
       rows = generateArraysOfRecords(20, [
@@ -80,6 +100,7 @@ export function mockCourseClasses() {
         { name: "sessionsId", type: "number" },
         { name: "fundingProviderId", type: "number" },
         { name: "vetPurchasingContractID", type: "number" },
+        { name: "createdOn", type: "Datetime" },
       ]).map(l => ({
         id: l.id,
         values: [
@@ -103,19 +124,25 @@ export function mockCourseClasses() {
           null,
           l.sessionsId,
           null,
-          null
+          null,
+          l.createdOn
         ]
       }));
     } else {
-      rows = generateArraysOfRecords(20, [
-        { name: "id", type: "number" },
-        { name: "courseName", type: "string" },
-        { name: "code", type: "string" },
-        { name: "price", type: "number" }
-      ]).map(l => ({
-        id: l.id,
-        values: [l.courseName, l.code, l.code, l.price]
-      }));
+      rows = generateArraysOfRecords(20, keysForGeneratingArrayOfRecords).map(l => {
+        const copiedObject = { ...l };
+        delete copiedObject.id;
+
+        const result = [];
+        for (let key in copiedObject) {
+          result.push(l[key]);
+        }
+
+        return {
+          id: l.id,
+          values: result
+        };
+      });
     }
 
     return getEntityResponse({
@@ -124,7 +151,7 @@ export function mockCourseClasses() {
       plain: true
     });
   };
-  
+
   this.getCourseClassBudget = () => [
       {
         "id": 6455,
@@ -595,7 +622,8 @@ export function mockCourseClasses() {
     { name: "tutorsAbridged", type: "string" },
     { name: "roomSite", type: "string" },
     { name: "validEnrolmentCount", type: "number" },
-    { name: "placesLeft", type: "number" }
+    { name: "placesLeft", type: "number" },
+    { name: "createdOn", type: "Datetime" }
   ]).map(l => ({
     id: l.id,
     values: [
@@ -608,7 +636,8 @@ export function mockCourseClasses() {
       "not set",
       "ish.oncourse.server.entity.mixins.SiteMixin@e41ab61",
       10,
-      20
+      20,
+      l.createdOn,
     ]
   }));
 
@@ -705,7 +734,16 @@ export function mockCourseClasses() {
         visible: true,
         width: 200,
         sortFields: []
-      }
+      },
+      {
+        title: "Created",
+        attribute: "createdOn",
+        type: "Datetime",
+        sortable: true,
+        visible: true,
+        width: 200,
+        sortFields: []
+      },
     ],
     res: {
       sort: [

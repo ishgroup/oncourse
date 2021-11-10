@@ -5,7 +5,7 @@
 
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import NestedEntity from "../../../../../common/components/form/nestedEntity/NestedEntity";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";

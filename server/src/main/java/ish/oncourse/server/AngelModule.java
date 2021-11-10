@@ -18,10 +18,10 @@ import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.command.CommandDecorator;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
+import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.ApiFilter;
 import ish.oncourse.server.api.servlet.ISessionManager;
@@ -150,7 +150,7 @@ public class AngelModule extends ConfigModule {
                 .addModule(CommitLogModuleExt.class);
 
 
-        JettyModule.extend(binder)
+        AngelJettyModule.extend(binder)
                 .addMappedFilter(API_FILTER)
                 .addMappedServlet(HEALTHCHECK_SERVLET)
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
@@ -158,8 +158,8 @@ public class AngelModule extends ConfigModule {
         binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
-        binder.bind(IPreferenceController.class).to(PreferenceController.class).in(Scopes.SINGLETON);
-        binder.bind(UserPreferenceService.class).in(Scopes.SINGLETON);
+        binder.bind(PreferenceController.class);
+        binder.bind(UserPreferenceService.class);
         binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
         binder.bind(EmailService.class).in(Scopes.SINGLETON);
         binder.bind(PluginService.class).in(Scopes.SINGLETON);
@@ -219,6 +219,7 @@ public class AngelModule extends ConfigModule {
         System.setProperty("org.quartz.scheduler.skipUpdateCheck", "true");
         // reduce default thread priority for jobs from 5 to 3
         System.setProperty("org.quartz.threadPool.threadPriority", "3");
+        System.setProperty("org.quartz.jobStore.misfireThreshold", "14400000");
 
         // provide connection via Cayenne datasource
         DBConnectionManager.getInstance().addConnectionProvider("quarz-cayenne-ds", new CayenneConnectionProvider(injector));

@@ -10,10 +10,11 @@ import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import clsx from "clsx";
-import TableCell from "@material-ui/core/TableCell";
+import TableCell from "@mui/material/TableCell";
 import debounce from "lodash.debounce";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { LIST_PAGE_SIZE } from "../../../../../../constants/Config";
+import { COLUMN_WITH_COLORS } from "../utils";
 
 const ListRow = memo<any>(({ data, index, style }) => {
   const {
@@ -56,15 +57,14 @@ const ListRow = memo<any>(({ data, index, style }) => {
             {row.original.primary}
           </Typography>
         </div>
-      ) : row.cells.map(cell => (
-        <TableCell
-          component="div"
+      ) : row.cells.filter(cell => cell.column.id !== COLUMN_WITH_COLORS).map(cell => (
+        <div
           {...cell.getCellProps()}
           className={clsx(classes.bodyCell, cell.column.cellClass)}
           onMouseOver={!["selection", "chooser"].includes(cell.column.id) && onMouseOver ? () => onMouseOver(cell.column.id) : undefined}
         >
           {cell.render("Cell")}
-        </TableCell>
+        </div>
       ))}
     </div>
   );

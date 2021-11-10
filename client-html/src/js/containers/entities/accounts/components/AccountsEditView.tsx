@@ -4,12 +4,14 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { Tax } from "@api/model";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const formattedAccountTypes: any[] = [
   {
@@ -46,8 +48,8 @@ const getFormattedTaxes = (taxes: Tax[]) =>
 
 const AccountsEditView = props => {
   const {
- twoColumn, taxTypes, isNew, values
-} = props;
+   twoColumn, taxTypes, isNew, values
+  } = props;
   const isCustom = values && values.isCustom === true;
   const isDisabled = isNew ? false : !isCustom;
 
@@ -61,16 +63,21 @@ const AccountsEditView = props => {
   }
 
   return (
-    <Grid container className="p-3">
+    <Grid container columnSpacing={3} className="p-3">
       <Grid item lg={twoColumn ? 11 : 11} md={twoColumn ? 11 : 11} xs={11}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="text"
-              name="accountCode"
-              label="Code"
-              required
-              fullWidth
+            <FullScreenStickyHeader
+              twoColumn={twoColumn}
+              title={values && values.accountCode}
+              fields={(
+                <FormField
+                  type="text"
+                  name="accountCode"
+                  label="Code"
+                  required
+                />
+              )}
             />
             <FormField
               type="select"
@@ -78,21 +85,21 @@ const AccountsEditView = props => {
               name="type"
               label="Type"
               items={formattedAccountTypes}
+              className="mb-2"
               required
-              fullWidth
             />
             <FormField
               type="text"
               name="description"
               label="Description"
               required={isNew || isCustom}
+              className="mb-2"
               multiline
-              fullWidth
             />
             <FormControlLabel
-              className="checkbox pr-3"
+              className="checkbox pr-3 mb-2"
               control={
-                <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" fullWidth />
+                <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" />
               }
               label="Enabled"
             />
@@ -103,7 +110,6 @@ const AccountsEditView = props => {
                 label="Tax type"
                 required={isNew || isCustom}
                 items={getFormattedTaxes(taxTypes) || []}
-                fullWidth
               />
             ) : null}
           </Grid>

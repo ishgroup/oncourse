@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { Decimal } from "decimal.js-light";
 import React, { useCallback } from "react";
 import { change } from "redux-form";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
 

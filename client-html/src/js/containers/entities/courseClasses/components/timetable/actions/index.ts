@@ -29,9 +29,8 @@ export const courseClassSelectSingleSession = session => ({
   payload: { session }
 });
 
-export const courseClassOpenBulkUpdateModal = (onUpdate, tutors) => ({
+export const courseClassOpenBulkUpdateModal = () => ({
   type: COURSE_CLASS_OPEN_BULK_UPDATE_MODAL,
-  payload: { onUpdate, tutors }
 });
 
 export const courseClassCloseBulkUpdateModal = () => ({

@@ -9,7 +9,7 @@
 import React, {
   useEffect, useMemo, useState
 } from "react";
-import { Grid, } from "@material-ui/core";
+import { Grid, } from "@mui/material";
 import clsx from "clsx";
 import {
  CourseClassTutor, GradingItem, GradingType
@@ -19,9 +19,9 @@ import { D_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { StudentForRender } from "./CourseClassAssessmentItems";
 import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 
 interface Props {
   elem: StudentForRender;
@@ -85,7 +85,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
   const gradeErrors = useGradeErrors(elem?.submission?.grade, gradeType);
 
   return (
-    <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
+    <Grid container columnSpacing={3} key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
       <Grid item xs={4} className="d-inline-flex-center pl-1">
         {elem.studentName}
       </Grid>

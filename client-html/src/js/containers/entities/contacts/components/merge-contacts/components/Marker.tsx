@@ -1,7 +1,7 @@
 import React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import { Theme } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import { AppTheme } from "../../../../../../model/common/Theme";
 
 interface Props {
   classes?: any;
@@ -9,14 +9,14 @@ interface Props {
   letter: string;
 }
 
-const styles = createStyles(({ palette, spacing }: Theme) => ({
+const styles = createStyles((theme: AppTheme) => ({
   marker: {
-    borderRadius: spacing(1),
-    backgroundColor: palette.text.primary,
-    width: spacing(2),
-    height: spacing(2),
+    borderRadius: theme.spacing(1),
+    backgroundColor: theme.palette.text.primary,
+    width: theme.spacing(2),
+    height: theme.spacing(2),
     fontSize: "12px",
-    color: palette.getContrastText(palette.text.hint)
+    color: theme.palette.getContrastText(theme.palette.text.disabled)
   }
 }));
 

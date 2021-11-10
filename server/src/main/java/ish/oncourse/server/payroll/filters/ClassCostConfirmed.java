@@ -41,7 +41,7 @@ public class ClassCostConfirmed {
                         classCost.getTutorRole().getSessionsTutors().stream()
                                 .noneMatch(tutorAttendance ->
                                         AttendanceType.UNMARKED.equals(tutorAttendance.getAttendanceType()) &&
-                                                tutorAttendance.getSession().getStartDatetime().before(until));
+                                                tutorAttendance.getStartDatetime().before(until));
     }
 
     public boolean isTrue() {

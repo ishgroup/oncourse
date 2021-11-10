@@ -14,12 +14,7 @@ package ish.oncourse.aql.model.attribute;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.aql.model.EntityFactory;
 import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
-import ish.oncourse.server.cayenne.Banking;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentInLine;
-import ish.oncourse.server.cayenne.PaymentOut;
-import ish.oncourse.server.cayenne.PaymentOutLine;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
@@ -35,7 +30,7 @@ public class BankingInvoice implements SyntheticAttributeDescriptor {
 
     @Override
     public Class<? extends Persistent> getEntityType() {
-        return Invoice.class;
+        return AbstractInvoice.class;
     }
 
     @Override
@@ -51,9 +46,9 @@ public class BankingInvoice implements SyntheticAttributeDescriptor {
     @Override
     public SimpleNode spawnNode() {
         return new SyntheticCompoundNodeTemplate(getAttributeName(),
-                Invoice.PAYMENT_IN_LINES.dot(PaymentInLine.PAYMENT_IN)
+                AbstractInvoice.PAYMENT_IN_LINES.dot(PaymentInLine.PAYMENT_IN)
                 .dot(PaymentIn.BANKING).getExpression(),
-                Invoice.PAYMENT_OUT_LINES.dot(PaymentOutLine.PAYMENT_OUT)
+                AbstractInvoice.PAYMENT_OUT_LINES.dot(PaymentOutLine.PAYMENT_OUT)
                         .dot(PaymentOut.BANKING).getExpression());
     }
 }

@@ -6,18 +6,18 @@
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { withStyles, createStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
  faAdjust, faCheck, faTimes, faCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { change, initialize } from "redux-form";
 import { AttendanceType } from "@api/model";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import Typography from "@material-ui/core/Typography";
+import IconButton from "@mui/material/IconButton";
+import ChevronRight from "@mui/icons-material/ChevronRight";
+import ChevronLeft from "@mui/icons-material/ChevronLeft";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 
 import { AppTheme } from "../../../../../model/common/Theme";
@@ -34,7 +34,7 @@ import {
   // AttandanceMonth,
   AttandanceStepItem,
   AttendanceGridType,
-  tutorStatusRoles,
+  // tutorStatusRoles,
   StudentAttendanceExtended
 } from "../../../../../model/entities/CourseClass";
 import { EditViewProps } from "../../../../../model/common/ListView";
@@ -42,8 +42,7 @@ import CourseClassAttendanceService from "./services/CourseClassAttendanceServic
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import {
   updateCourseClassStudentAttendance,
-  updateCourseClassTrainingPlans,
-  updateCourseClassTutorAttendance
+  updateCourseClassTrainingPlans
 } from "./actions";
 import { addActionToQueue } from "../../../../../common/actions";
 import { TimetableSession } from "../../../../../model/timetable";
@@ -161,12 +160,6 @@ const validateByType = (
           )
         );
       });
-    case "Tutor":
-      return CourseClassAttendanceService.validateUpdateTutorAttendance(id, preparedUpdated).then(() => {
-        dispatch(
-          addActionToQueue(updateCourseClassTutorAttendance(id, preparedUpdated), "POST", "TutorAttendance", actionId)
-        );
-      });
     case "Training plan":
       return CourseClassAttendanceService.validateUpdateTrainingPlans(id, preparedUpdated).then(() => {
         dispatch(
@@ -224,7 +217,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
   }) => {
     const [selectedItems, setSelectedItems] = useState<AttandanceStepItem[]>([]);
     const [studentsToAttend, setStudentsToAttend] = useState<ContactAttendanceItem[]>([]);
-    const [tutorsToAttend, setTutorsToAttend] = useState<ContactAttendanceItem[]>([]);
+    // const [tutorsToAttend, setTutorsToAttend] = useState<ContactAttendanceItem[]>([]);
     const [modulesToAttend, setModulesToAttend] = useState<ContactAttendanceItem[]>([]);
     const [changeType, setAttendanceChangeType] = useState<AttandanceChangeType>(null);
     const [sliderValue, setSliderValue] = useState<number[]>([0, 7]);
@@ -251,7 +244,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     useEffect(() => {
       setStudentsToAttend([]);
-      setTutorsToAttend([]);
+      // setTutorsToAttend([]);
       setModulesToAttend([]);
       lastUpdated = null;
     }, [values.id]);
@@ -305,11 +298,11 @@ const CourseClassAttendanceTab = React.memo<Props>(
       let addAction = setStudentsToAttend;
       let titlePath = null;
 
-      if (type === "Tutor") {
-        valuesPath = "tutorAttendance";
-        idPath = "courseClassTutorId";
-        addAction = setTutorsToAttend;
-      }
+      // if (type === "Tutor") {
+      //   valuesPath = "tutorAttendance";
+      //   idPath = "courseClassTutorId";
+      //   addAction = setTutorsToAttend;
+      // }
 
       if (type === "Training plan") {
         valuesPath = "trainingPlan";
@@ -337,7 +330,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
       resultArray.sort((a, b) => (a.name > b.name ? 1 : -1));
 
       addAction(resultArray);
-    }, [setStudentsToAttend, setTutorsToAttend, setModulesToAttend, form]);
+    }, [setStudentsToAttend, setModulesToAttend, form]);
 
     useEffect(() => {
       if (values.studentAttendance && values.studentAttendance.length) {
@@ -345,11 +338,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
       }
     }, [values.studentAttendance]);
 
-    useEffect(() => {
-      if (values.tutorAttendance && values.tutorAttendance.length) {
-        setAttendanceItems("Tutor", values);
-      }
-    }, [values.tutorAttendance]);
 
     useEffect(() => {
       if (showTrainingPlans && values.trainingPlan && values.trainingPlan.length) {
@@ -450,12 +438,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
             validateAttendanceUpdate([attendance], "Student");
             break;
           }
-
-          case "singleTutor": {
-            dispatch(change(form, `tutorAttendance[${attendance.index}]`, attendance));
-            validateAttendanceUpdate([attendance], "Tutor");
-            break;
-          }
         }
         setAttendanceChangeType(null);
       },
@@ -464,7 +446,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
         changeType,
         values.id,
         values.studentAttendance,
-        values.tutorAttendance,
         values.sessions,
         values.sessions && values.sessions.length,
         setAttendanceChangeType,
@@ -475,13 +456,8 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     const changeAttendancesByType = useCallback(
       (attendanceType: AttendanceType, changeType: AttandanceChangeType) => {
-        let attendances: any = values.studentAttendance;
-        let field = "studentAttendance";
-
-        if (changeType === "allTutors") {
-          attendances = values.tutorAttendance;
-          field = "tutorAttendance";
-        }
+        const attendances: any = values.studentAttendance;
+        const field = "studentAttendance";
 
         switch (attendanceType) {
           case "Partial":
@@ -493,16 +469,13 @@ const CourseClassAttendanceTab = React.memo<Props>(
           default: {
             const updated = attendances.map(s => ({ ...s, attendanceType }));
             dispatch(change(form, field, updated));
-            validateAttendanceUpdate(updated, field === "studentAttendance" ? "Student" : "Tutor");
+            validateAttendanceUpdate(updated, "Student");
           }
         }
       },
       [
         form,
         values.studentAttendance,
-        values.studentAttendance && values.studentAttendance.length,
-        values.tutorAttendance,
-        values.tutorAttendance && values.tutorAttendance.length,
         setAttendanceChangeType,
         validateAttendanceUpdate
       ]
@@ -514,11 +487,11 @@ const CourseClassAttendanceTab = React.memo<Props>(
       values.studentAttendance && values.studentAttendance.length
     ]);
 
-    const onChangeAllTutorsAttendance = useCallback(type => changeAttendancesByType(type, "allTutors"), [
-      changeAttendancesByType,
-      values.tutorAttendance,
-      values.tutorAttendance && values.tutorAttendance.length
-    ]);
+    // const onChangeAllTutorsAttendance = useCallback(type => changeAttendancesByType(type, "allTutors"), [
+    //   changeAttendancesByType,
+    //   values.tutorAttendance,
+    //   values.tutorAttendance && values.tutorAttendance.length
+    // ]);
 
     const onChangeAllTrainingPlansAttendance = useCallback(
       (type, index?: number) => {
@@ -672,17 +645,17 @@ const CourseClassAttendanceTab = React.memo<Props>(
       [form, values.studentAttendance, studentStatusRoles, validateAttendanceUpdate]
     );
 
-    const onTutorIconClick = (e, attendance) => {
-      const roleIndex = tutorStatusRoles.indexOf(e.currentTarget.getAttribute("role"));
-
-      const attendanceType = [2, -1].includes(roleIndex) ? tutorStatusRoles[0] : tutorStatusRoles[roleIndex + 1];
-
-      dispatch(change(form, `tutorAttendance[${attendance.index}].attendanceType`, attendanceType));
-
-      const updated = { ...attendance, attendanceType };
-
-      validateAttendanceUpdate([updated], "Tutor");
-    };
+    // const onTutorIconClick = (e, attendance) => {
+    //   const roleIndex = tutorStatusRoles.indexOf(e.currentTarget.getAttribute("role"));
+    //
+    //   const attendanceType = [2, -1].includes(roleIndex) ? tutorStatusRoles[0] : tutorStatusRoles[roleIndex + 1];
+    //
+    //   dispatch(change(form, `tutorAttendance[${attendance.index}].attendanceType`, attendanceType));
+    //
+    //   const updated = { ...attendance, attendanceType };
+    //
+    //   validateAttendanceUpdate([updated], "Tutor");
+    // };
 
     const sessionsLeftScroller = useMemo(
       () => selectedItems.length
@@ -703,9 +676,9 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     const renderedDays = useCallback(
       (attendanceType?: string) => (
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={10} className={classes.attendanceDayBase}>
-            <Grid container className={clsx(checkAnimationClass())}>
+            <Grid container columnSpacing={3} className={clsx(checkAnimationClass())}>
               {selectedItems.map((sd, si) => (
                 <AttendanceDayBase
                   // eslint-disable-next-line react/no-array-index-key
@@ -742,7 +715,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
         stepItems,
         stepItems.length,
         values.studentAttendance,
-        values.tutorAttendance,
         values.trainingPlan,
         animateDays
       ]
@@ -792,48 +764,48 @@ const CourseClassAttendanceTab = React.memo<Props>(
       ]
     );
 
-    const renderedTutorAttendances = useMemo(
-      () => (tutorsToAttend.length ? (
-        <>
-          <div className={clsx("d-inline-flex-center pt-0 pr-0 pb-2 pl-1", classes.attendanceGroupHeading)}>
-            <div className="heading">Tutors</div>
-            <AttendanceActionsMenu
-              className="invisible"
-              type="Tutor"
-              onChange={onChangeAllTutorsAttendance}
-              label="Mark ALL sessions for ALL tutors as..."
-            />
-          </div>
-          {tutorsToAttend.map(sa => (
-            <AttendanceGridItem
-              type="Tutor"
-              key={sa.contactId}
-              item={sa}
-              selectedItems={selectedItems}
-              setAttendanceChangeType={setAttendanceChangeType}
-              validateAttendanceUpdate={validateAttendanceUpdate}
-              onTutorIconClick={onTutorIconClick}
-              dispatch={dispatch}
-              form={form}
-              checkAnimationClass={checkAnimationClass}
-            />
-            ))}
-        </>
-        ) : null),
-      [
-        form,
-        onChangeAllTutorsAttendance,
-        setAttendanceChangeType,
-        validateAttendanceUpdate,
-        checkAnimationClass,
-        onTutorIconClick,
-        tutorsToAttend,
-        selectedItems,
-        animateDays,
-        values.tutorAttendance,
-        values.tutorAttendance && values.tutorAttendance.length
-      ]
-    );
+    // const renderedTutorAttendances = useMemo(
+    //   () => (tutorsToAttend.length ? (
+    //     <>
+    //       <div className={clsx("d-inline-flex-center pt-0 pr-0 pb-2 pl-1", classes.attendanceGroupHeading)}>
+    //         <div className="heading">Tutors</div>
+    //         <AttendanceActionsMenu
+    //           className="invisible"
+    //           type="Tutor"
+    //           onChange={onChangeAllTutorsAttendance}
+    //           label="Mark ALL sessions for ALL tutors as..."
+    //         />
+    //       </div>
+    //       {tutorsToAttend.map(sa => (
+    //         <AttendanceGridItem
+    //           type="Tutor"
+    //           key={sa.contactId}
+    //           item={sa}
+    //           selectedItems={selectedItems}
+    //           setAttendanceChangeType={setAttendanceChangeType}
+    //           validateAttendanceUpdate={validateAttendanceUpdate}
+    //           onTutorIconClick={onTutorIconClick}
+    //           dispatch={dispatch}
+    //           form={form}
+    //           checkAnimationClass={checkAnimationClass}
+    //         />
+    //         ))}
+    //     </>
+    //     ) : null),
+    //   [
+    //     form,
+    //     onChangeAllTutorsAttendance,
+    //     setAttendanceChangeType,
+    //     validateAttendanceUpdate,
+    //     checkAnimationClass,
+    //     onTutorIconClick,
+    //     tutorsToAttend,
+    //     selectedItems,
+    //     animateDays,
+    //     values.tutorAttendance,
+    //     values.tutorAttendance && values.tutorAttendance.length
+    //   ]
+    // );
 
     const renderedTrainingPlans = useMemo(
       () => (modulesToAttend.length ? (
@@ -933,13 +905,13 @@ const CourseClassAttendanceTab = React.memo<Props>(
 
     const daysScroller = (type?: string) => (
       <>
-        <Grid container className={clsx("sticky top-0 pt-1 zIndex1", classes.timeline)}>
+        <Grid container columnSpacing={3} className={clsx("sticky top-0 pt-1 zIndex1", classes.timeline)}>
           <Grid item xs={3}>
             &nbsp;
           </Grid>
           <Grid item xs={9} />
 
-          <Grid item container xs={3} alignItems="center" justify="flex-end" className="pr-2">
+          <Grid item container xs={3} alignItems="center" className="pr-2">
             {sessionsLeftScroller}
           </Grid>
           <Grid item xs={9} className="centeredFlex">
@@ -956,7 +928,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
           <div className="w-100">
             <div className="heading">Training plan</div>
             {daysScroller("Training plan")}
-            <Grid container className={classes.sessionsLine}>
+            <Grid container columnSpacing={3} className={classes.sessionsLine}>
               <Grid item xs={12} className={classes.items}>
                 {renderedTrainingPlans}
               </Grid>
@@ -967,7 +939,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
               changeType={changeType}
               setAttendanceChangeType={setAttendanceChangeType}
               sessions={values.sessions}
-              tutors={values.tutors}
             />
           </div>
         ) : changedWarningForTrainingPlans}
@@ -985,12 +956,9 @@ const CourseClassAttendanceTab = React.memo<Props>(
             {stepItems.length > 0 && !sessionsChanged && !assessmentsChanged && !isNew ? (
               <>
                 {daysScroller("")}
-                <Grid container className={classes.sessionsLine}>
+                <Grid container columnSpacing={3} className={classes.sessionsLine}>
                   <Grid item xs={12} className={classes.items}>
                     {renderedStudentAttendances}
-                  </Grid>
-                  <Grid item xs={12} className={classes.items}>
-                    {renderedTutorAttendances}
                   </Grid>
                 </Grid>
 
@@ -999,7 +967,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
                   changeType={changeType}
                   setAttendanceChangeType={setAttendanceChangeType}
                   sessions={values.sessions}
-                  tutors={values.tutors}
                 />
               </>
             ) : changedWarning}

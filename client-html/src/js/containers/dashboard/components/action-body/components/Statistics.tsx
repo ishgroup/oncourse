@@ -10,22 +10,23 @@ import {
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
  Grid, List, ListItem, Typography
-} from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { Person } from "@material-ui/icons";
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import { Person } from "@mui/icons-material";
 import clsx from "clsx";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from '@mui/material/styles';
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Currency, StatisticData } from "@api/model";
-import Paper from "@material-ui/core/Paper";
+import Paper from "@mui/material/Paper";
 import { State } from "../../../../../reducers/state";
 import { getDashboardStatistic } from "../../../actions";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import ScriptStatistic from "./ScriptStatistic";
+import { checkPermissions } from "../../../../../common/actions";
 
 const styles = theme => createStyles({
     root: {
@@ -33,7 +34,7 @@ const styles = theme => createStyles({
       alignContent: "flex-start"
     },
     totalText: {
-      color: fade(theme.palette.text.primary, 0.5),
+      color: alpha(theme.palette.text.primary, 0.5),
       display: "flex",
       alignItems: "baseline",
       "& span": {
@@ -70,7 +71,7 @@ const styles = theme => createStyles({
       fontSize: "12px"
     },
     grayText: {
-      color: fade(theme.palette.text.primary, 0.4)
+      color: alpha(theme.palette.text.primary, 0.4)
     },
     coloredHeaderText: {
       color: theme.statistics.coloredHeaderText.color
@@ -191,8 +192,9 @@ interface Props {
   getCurrency?: AnyArgFunction;
   currency?: Currency;
   isUpdating?: boolean;
-  hasScriptsPermissions?: boolean;
+  hasAuditPermissions?: boolean;
   dispatch?: Dispatch;
+  getAuditPermissions?: () => void;
 }
 
 class Statistics extends React.Component<Props, any> {
@@ -207,11 +209,12 @@ class Statistics extends React.Component<Props, any> {
   }
 
   componentDidMount() {
-    const { getStatistic } = this.props;
+    const { getStatistic, getAuditPermissions } = this.props;
     getStatistic();
 
     // Statistic update interval
     this.interval = setInterval(getStatistic, 120000);
+    getAuditPermissions();
   }
 
   componentDidUpdate(prevProps) {
@@ -249,22 +252,16 @@ class Statistics extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, hasScriptsPermissions, statisticData, currency, dispatch
+     classes, hasAuditPermissions, statisticData, currency, dispatch
     } = this.props;
 
     const { chartData } = this.state;
 
     return statisticData ? (
       <Grid container className={classes.root}>
-        <Grid item className="w-100">
-          <Grid container justify="space-between">
-            <Grid item>
-              <Typography className="heading">Enrolments & Revenue</Typography>
-            </Grid>
-            <Grid item className={classes.pastWeeksCaption}>
-              <Typography variant="caption">Past 4 weeks</Typography>
-            </Grid>
-          </Grid>
+        <Grid item className="w-100 d-flex">
+          <Typography className="heading flex-fill">Enrolments & Revenue</Typography>
+          <Typography variant="caption">Past 4 weeks</Typography>
         </Grid>
         <Grid item xs={12}>
           <Chart data={chartData} />
@@ -371,7 +368,7 @@ class Statistics extends React.Component<Props, any> {
           </List>
         </Grid>
 
-        {hasScriptsPermissions && (
+        {hasAuditPermissions && (
           <Grid item xs={12} className="mt-2">
             <Typography className={clsx("heading", classes.headingMargin)}>
               Automation status
@@ -387,13 +384,14 @@ class Statistics extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   statisticData: state.dashboard.statistics.data,
   isUpdating: state.dashboard.statistics.updating,
-  hasScriptsPermissions: state.access["ADMIN"],
+  hasAuditPermissions: state.access["/a/v1/list/plain?entity=Audit"] && state.access["/a/v1/list/plain?entity=Audit"]["GET"],
   currency: state.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  getStatistic: () => dispatch(getDashboardStatistic())
+  getStatistic: () => dispatch(getDashboardStatistic()),
+  getAuditPermissions: () => dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Audit", method: "GET" })),
 });
 
 export default connect<any, any, any>(

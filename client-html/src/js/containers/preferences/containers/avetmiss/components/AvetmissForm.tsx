@@ -6,15 +6,15 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
-import Hidden from "@material-ui/core/Hidden";
-import Help from "@material-ui/icons/Help";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import Hidden from "@mui/material/Hidden";
+import Help from "@mui/icons-material/Help";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { Form, reduxForm, initialize } from "redux-form";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import * as Model from "../../../../../model/preferences/Avetmiss";
@@ -63,7 +63,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 AVETMISS
@@ -88,7 +88,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12}>
             <FormControlLabel
               classes={{

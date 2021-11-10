@@ -6,11 +6,11 @@
 import React, { useCallback } from "react";
 import { addDays, compareAsc, format as formatDate } from "date-fns";
 import { PaymentIn } from "@api/model";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { FieldArray, getFormInitialValues } from "redux-form";
-import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
@@ -104,7 +104,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
 
   return values ? (
     <div className="p-3 h-100 flex-column">
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 4 : 12}>
           <Uneditable
             value={defaultContactName(values.payerName)}
@@ -136,7 +136,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           <Uneditable value={values.status} label="Status" />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         {values.ccSummary && values.ccSummary.length > 0 && (
           <Grid item xs={twoColumn ? 2 : 6}>
             <div className="textField">
@@ -162,7 +162,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           <Uneditable value={values.amount} money label="Amount" />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable value={values.accountInName} label="Account" />
         </Grid>
@@ -170,7 +170,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           <Uneditable value={values.source} label="Source" />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable value={values.ccTransaction} label="CC transaction" />
         </Grid>
@@ -183,7 +183,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
           />
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
             value={values.datePayed}

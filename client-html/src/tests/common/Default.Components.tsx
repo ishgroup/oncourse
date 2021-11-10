@@ -1,12 +1,13 @@
 import * as React from "react";
-import { createMount } from "@material-ui/core/test-utils";
+// import { createMount } from "@mui/material/test-utils";
+import { shallow } from 'enzyme';
 import { mockedAPI, TestEntry } from "../TestEntry";
 
 interface Props {
   entity: string;
   View: (props: any) => any;
   record: (mockedApi: any) => object;
-  render: (wrapper: any, initialValues: any) => any;
+  render: (wrapper: any, initialValues: any, shallow?: any) => any;
   defaultProps?: ({ entity, initialValues, mockedApi }) => object;
   beforeFn?: () => void;
 }
@@ -17,15 +18,15 @@ export const defaultComponents: ({
   entity, View, record, render, defaultProps, beforeFn,
 }) => {
   const initialValues = record(mockedAPI);
-  let mount;
+  // let mount;
 
-  beforeAll(() => {
-    mount = createMount();
-  });
-
-  afterAll(() => {
-    mount.cleanUp();
-  });
+  // beforeAll(() => {
+  //   mount = createMount();
+  // });
+  //
+  // afterAll(() => {
+  //   mount.cleanUp();
+  // });
 
   let viewProps = { initialValues, values: initialValues };
 
@@ -39,8 +40,8 @@ export const defaultComponents: ({
     beforeFn();
   }
 
-  it(`${entity} components should render with given values`, () => {
-    const wrapper = mount(
+  it(`${entity} components should render with given values`, async () => {
+    const wrapper = await shallow(
       <TestEntry>
         <MockedEditView />
       </TestEntry>,
@@ -48,9 +49,9 @@ export const defaultComponents: ({
 
     return new Promise<void>(resolve => {
       setTimeout(() => {
-        render(wrapper, initialValues);
+        render(wrapper.render(), initialValues, wrapper);
         resolve();
-      }, 1000);
+      }, 2000);
     });
   });
 };

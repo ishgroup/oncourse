@@ -3,9 +3,16 @@ properties:
   id:
     type: integer
     format: int64
+  type:
+    $ref: ../../enum/InvoiceType.yaml
   contactId:
     type: integer
     format: int64
+  leadId:
+    type: integer
+    format: int64
+  leadCustomerName:
+    type: string
   contactName:
     type: string
   customerReference:
@@ -13,10 +20,17 @@ properties:
   invoiceNumber:
     type: integer
     format: int64
+  quoteNumber:
+    type: integer
+    format: int64
   relatedFundingSourceId:
     type: integer
     format: int64
   billToAddress:
+    type: string
+  title:
+    type: string
+  description:
     type: string
   shippingAddress:
     type: string
@@ -50,6 +64,10 @@ properties:
   sendEmail:
     type: boolean
     required: true
+  tags:
+    type: array
+    items:
+      $ref: '../Tag.yaml'
   createdOn:
     type: string
     format: date-time

@@ -14,8 +14,11 @@ package ish.oncourse.server.api.v1.function
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
+import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.Qualification
 import ish.oncourse.server.entity.mixins.CourseClassMixin
 
 class SaleFunctions {
@@ -45,6 +48,39 @@ class SaleFunctions {
             sale.type = saleTypeMap[product.type]
             sale.active = true
             sale
+        }
+    }
+
+    static SaleDTO toRestSale(Course course) {
+        new SaleDTO().with { s ->
+            s.id = course.id
+            s.active =  course.currentlyOffered || course.isShownOnWeb
+            s.code = course.code
+            s.name = course.with { "$it.name $it.code" }
+            s.type = SaleTypeDTO.COURSE
+            s
+        }
+    }
+
+    static SaleDTO toRestSale(Module module) {
+        new SaleDTO().with { s ->
+            s.id = module.id
+            s.name = module.title
+            s.code = module.nationalCode
+            s.active = module.isOffered
+            s.type = SaleTypeDTO.MODULE
+            s
+        }
+    }
+
+    static SaleDTO toRestSale(Qualification qualification) {
+        new SaleDTO().with { s ->
+            s.id = qualification.id
+            s.name = qualification.title
+            s.code = qualification.nationalCode
+            s.active = qualification.isOffered
+            s.type = SaleTypeDTO.QUALIFICATION
+            s
         }
     }
 }

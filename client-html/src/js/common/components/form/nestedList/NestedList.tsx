@@ -4,18 +4,18 @@
  */
 
 import React from "react";
-import { Typography } from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Typography } from "@mui/material";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import debounce from "lodash.debounce";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Field, Validator } from "redux-form";
 import { connect } from "react-redux";
 import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperListRenderer";
 import ListRenderer from "./components/ListRenderer";
 import { InputSection, InputSectionWithToggle } from "./components/InputSections";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX, TAGS_REGEX } from "../../../../constants/Config";
-import { Suggestion } from "../form-fields/EditInPlaceQuerySelect";
+import { Suggestion } from "../formFields/EditInPlaceQuerySelect";
 import { State } from "../../../../reducers/state";
 import { getTagNamesSuggestions } from "../../../../containers/tags/utils";
 
@@ -575,4 +575,4 @@ const mapStateToProps = (state: State) => ({
   entityTags: state.tags.entityTags
 });
 
-export default connect<any, any, Props>(mapStateToProps, null)(withStyles(styles)(withStyles(styles)(NestedList)));
+export default connect<any, any, Props>(mapStateToProps, null)(withStyles(styles)(NestedList));

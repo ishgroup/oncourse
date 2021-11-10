@@ -4,14 +4,14 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import {
   arrayInsert, arrayRemove, change, FieldArray
 } from "redux-form";
 import {
   Outcome, PriorLearning, Qualification
 } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -115,7 +115,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
   return values ? (
     <div className="p-3">
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={12}>
           <FormField type="text" name="title" label="Title" required />
         </Grid>

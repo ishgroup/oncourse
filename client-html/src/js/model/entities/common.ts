@@ -18,6 +18,7 @@ export interface FindEntityState {
 
 export const ENTITIES = stringLiterals(
   "Account",
+  "AbstractInvoice",
   "AccountTransaction",
   "Application",
   "Article",
@@ -40,6 +41,7 @@ export const ENTITIES = stringLiterals(
   "Enrolment",
   "Invoice",
   "InvoiceLine",
+  "Lead",
   "Membership",
   "MembershipProduct",
   "Message",

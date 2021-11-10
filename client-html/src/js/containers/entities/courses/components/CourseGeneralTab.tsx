@@ -8,11 +8,11 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -26,6 +26,8 @@ import TimetableButton from "../../../../common/components/buttons/TimetableButt
 import { CourseExtended } from "../../../../model/entities/Course";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
+import CourseAvailableClassChart from "./CourseAvailableClassChart";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
@@ -36,6 +38,12 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   dispatch: any;
   form: string;
 }
+
+const useStyles = makeAppStyles()(() => ({
+  chartWrapper: {
+    height: "250px",
+  },
+}));
 
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
@@ -53,6 +61,8 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
+    const { classes } = useStyles();
+
     const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
 
     const onCalendarClick = useCallback(() => {
@@ -89,7 +99,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
         label="Name"
         placeholder={twoColumn ? "Name" : undefined}
         required
-        fullWidth
       />
     );
     const codeField = (
@@ -99,7 +108,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
         label="Code"
         placeholder={twoColumn ? "Code" : undefined}
         required
-        fullWidth
       />
     );
 
@@ -107,7 +115,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
       <>
         {twoColumn && (
           <CustomAppBar>
-            <Grid container className="flex-fill">
+            <Grid container columnSpacing={3} className="flex-fill">
               <Grid item xs={6}>
                 {nameField}
               </Grid>
@@ -137,7 +145,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           </CustomAppBar>
         )}
 
-        <Grid container className="pt-3 pl-3 pr-3">
+        <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
           {!twoColumn && (
             <>
               <Grid item xs={12}>
@@ -157,6 +165,10 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               tags={tags}
               validate={tags && tags.length ? validateTagList : undefined}
             />
+          </Grid>
+
+          <Grid item xs={12} className={classes.chartWrapper}>
+            <CourseAvailableClassChart courseId={values.id} isNew={isNew} />
           </Grid>
 
           <Grid item xs={12} className="mb-2">
@@ -246,17 +258,20 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               type="multilineText"
               name="brochureDescription"
               label="Print brochure description"
-              fullWidth
-            />
-
-            <CustomFields
-              entityName="Course"
-              fieldName="customFields"
-              entityValues={values}
-              dispatch={dispatch}
-              form={form}
             />
           </Grid>
+
+          <CustomFields
+            entityName="Course"
+            fieldName="customFields"
+            entityValues={values}
+            dispatch={dispatch}
+            form={form}
+            gridItemProps={{
+              xs: twoColumn ? 6 : 12,
+              lg: twoColumn ? 4 : 12
+            }}
+          />
         </Grid>
       </>
     );

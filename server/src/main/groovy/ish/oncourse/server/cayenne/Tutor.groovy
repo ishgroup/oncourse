@@ -12,7 +12,6 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.PayslipPayType
-import ish.messaging.ITutor
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -38,9 +37,9 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Tutor extends _Tutor implements ITutor, Queueable, Taggable, AttachableTrait {
+class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait {
 
-
+	String CONTACT_KEY = "contact";
 	private static Logger logger = LogManager.getLogger()
 
 	@Override
@@ -309,6 +308,18 @@ class Tutor extends _Tutor implements ITutor, Queueable, Taggable, AttachableTra
 	}
 
 	/**
+	 * This returns a list of every single session attendance this tutor has/had/will has.
+	 *
+	 * @return all tutor attendances linked to this tutor
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<TutorAttendance> getTutorAttendances() {
+		return super.getTutorAttendances()
+	}
+
+	/**
 	 * By default, what type of Payslip to create for tutor pay associated with this tutor.
 	 * If NULL, then don't create tutor pay at all.
 	 * @return
@@ -316,5 +327,27 @@ class Tutor extends _Tutor implements ITutor, Queueable, Taggable, AttachableTra
 	@API @Nullable @Override
 	PayslipPayType getPayType() {
 		return super.getPayType()
+	}
+
+	/**
+	 * @return a list of all the tags for this tutor
+	 */
+	@Nonnull
+	@API
+	@Override
+	List<Tag> getTags() {
+		List<ContactTagRelation> contactTagRelations = getContact().getTaggingRelations()
+		List<Tag> tagList = new ArrayList<>(contactTagRelations.size())
+		for (ContactTagRelation relation : contactTagRelations) {
+			if (relation.getTag() != null && relation.getTag().getTagRequirement(Tutor.class) != null) {
+				tagList.add(relation.getTag())
+			}
+		}
+		return tagList
+	}
+
+	@Override
+	List<Long> getTagIds() {
+		return contact.tagIds
 	}
 }

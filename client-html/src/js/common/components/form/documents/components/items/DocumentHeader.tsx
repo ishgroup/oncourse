@@ -9,19 +9,19 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "@mui/material/Avatar";
 import {
  Directions, Language, Link, MoreVert
-} from "@material-ui/icons";
-import { AlertTitle } from "@material-ui/lab";
-import Alert from "@material-ui/lab/Alert";
+} from "@mui/icons-material";
+import { AlertTitle } from "@mui/lab";
+import Alert from "@mui/lab/Alert";
 import clsx from "clsx";
 import React, { MouseEvent } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { Grid, Popover } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import { Grid, Popover } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faFile,
@@ -33,11 +33,11 @@ import {
   faFilePowerpoint,
   faFileWord
 } from "@fortawesome/free-solid-svg-icons";
-import Tooltip from "@material-ui/core/Tooltip";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import Tooltip from "@mui/material/Tooltip";
+import ButtonBase from "@mui/material/ButtonBase";
 import { Document } from "@api/model";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import { formatRelativeDate } from "../../../../../utils/dates/formatRelative";
 import DocumentIconsChooser from "./DocumentIconsChooser";
@@ -174,7 +174,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
     const validUrl = latestItem && latestItem.url;
 
     return (
-      <Grid container justify="space-between" className="mb-1">
+      <Grid container columnSpacing={3} className="mb-1">
         <div className="d-flex overflow-hidden">
           <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
             <ButtonBase

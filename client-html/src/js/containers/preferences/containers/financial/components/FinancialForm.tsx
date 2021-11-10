@@ -4,17 +4,16 @@
  */
 
 import * as React from "react";
-import { FormControlLabel } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import Grid from "@mui/material/Grid";
+import Hidden from "@mui/material/Hidden";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
 import { AccountType } from "@api/model";
-import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import Button from "@mui/material/Button";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../../model/preferences/Financial";
 import { currency, postPrepaidFees } from "../ListItems";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
@@ -26,6 +25,8 @@ import { State } from "../../../../../reducers/state";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { getAccountsList } from "../../../utils";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("generalPrefs_financial");
 
@@ -43,16 +44,16 @@ class FinancialBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate() {
     // Initializing form with values
-    if (!isEmpty(nextProps.formData) && !this.props.initialized) {
-      this.props.dispatch(initialize("FinancialForm", nextProps.formData));
+    if (!isEmpty(this.props.formData) && !this.props.initialized) {
+      this.props.dispatch(initialize("FinancialForm", this.props.formData));
     }
   }
 
   public render() {
     const {
-     handleSubmit, onSave, accounts = [], dirty, data, values, form
+     handleSubmit, onSave, accounts = [], dirty, data, invalid, form
     } = this.props;
 
     return (
@@ -60,7 +61,7 @@ class FinancialBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 Financial
@@ -77,20 +78,15 @@ class FinancialBaseForm extends React.Component<any, any> {
                 />
               )}
 
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
+              <FormSubmitButton
                 disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+                invalid={invalid}
               />
             </Grid>
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item sm={8} xs={12}>
             <FormField
               type="multilineText"
@@ -231,33 +227,6 @@ class FinancialBaseForm extends React.Component<any, any> {
               fullWidth
             />
           </Grid>
-
-          <Hidden smDown>
-            <Grid item md={4} />
-          </Hidden>
-
-          <Grid item xs={12}>
-            <FormControlLabel
-              classes={{
-                root: "checkbox"
-              }}
-              control={(
-                <FormField
-                  type="checkbox"
-                  name={this.formModel.QePaymentDefaultZero.uniqueKey}
-                  color="primary"
-                  value="true"
-                  stringValue
-                  fullWidth
-                />
-              )}
-              label={`Quick Enrol payment defaults to ${
-                values
-                  ? currency.find(i => i.value === values[this.formModel.AccountDefaultCurrency.uniqueKey]).symbol
-                  : ""
-              }0`}
-            />
-          </Grid>
         </Grid>
       </Form>
     );
@@ -270,7 +239,8 @@ const mapStateToProps = (state: State) => ({
 
 const FinancialForm = reduxForm({
   form: "FinancialForm",
-  validate: validateMultipleMandatoryFields
+  validate: validateMultipleMandatoryFields,
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, null)(FinancialBaseForm));
 
 export default FinancialForm;

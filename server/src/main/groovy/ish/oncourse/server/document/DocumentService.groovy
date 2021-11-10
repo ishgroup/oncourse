@@ -24,8 +24,9 @@ import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.scripting.api.DocumentSpec
 import ish.s3.AmazonS3Service
 import ish.s3.AmazonS3Service.UploadResult
-import ish.util.RuntimeUtil
 import org.apache.cayenne.ObjectContext
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.scripting.api.DocumentSpec.ATTACH_ACTION
@@ -49,9 +50,11 @@ import org.apache.cayenne.query.ObjectSelect
  */
 
 @API
+@CompileStatic
 class DocumentService {
 
 	private ICayenneService cayenneService
+	private static final Logger logger = LogManager.logger
 
 	DocumentService createDocumentService(ICayenneService cayenneService) {
 		this.cayenneService = cayenneService
@@ -66,19 +69,16 @@ class DocumentService {
 
 	@BQConfigProperty
 	void setBucket(String bucket) {
-		RuntimeUtil.println("S3 bucket name is " + bucket)
 		this.bucketName = bucket
 	}
 
 	@BQConfigProperty
 	void setAccessKeyId(String accessKeyId) {
-		RuntimeUtil.println("S3 access key Id is " + accessKeyId)
 		this.accessKeyId = accessKeyId
 	}
 
 	@BQConfigProperty
 	void setAccessSecretKey(String accessSecretKey) {
-		RuntimeUtil.println("S3 access secret key is " + accessSecretKey)
 		this.accessSecretKey = accessSecretKey
 	}
 
@@ -89,7 +89,7 @@ class DocumentService {
 
 	@BQConfigProperty
 	void setLimit(String limit) {
-		RuntimeUtil.println("S3 bucket storage will limit to " + limit)
+		logger.warn("S3 bucket storage will limit to " + limit)
 		Long value = Long.valueOf(limit.substring(0, limit.length()-1))
 		String unit = limit.toLowerCase().substring(limit.length()-1)
 		if (unit == 'm') {
@@ -97,7 +97,7 @@ class DocumentService {
 		} else if (unit == 'g') {
 			value = value * 1024 * 1024 * 1024
 		} else if (value != 0) {
-			RuntimeUtil.println("Unsupported type of storage limit: " + limit)
+			logger.error("Unsupported type of storage limit: " + limit)
 			value = null
 		}
 		this.storageLimit = value

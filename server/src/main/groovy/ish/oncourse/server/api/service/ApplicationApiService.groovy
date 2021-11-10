@@ -18,11 +18,19 @@ import ish.common.types.ConfirmationStatus
 import ish.common.types.CourseEnrolmentType
 import ish.common.types.PaymentSource
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.api.dao.ApplicationDao
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
+import ish.oncourse.server.api.v1.model.ApplicationDTO
+import ish.oncourse.server.api.v1.model.ApplicationStatusDTO
+import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.users.SystemUserService
+import org.apache.cayenne.ObjectContext
+
+import java.time.ZoneOffset
+
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATION_SOURCE_MAP
 import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATION_STATUS_MAP
@@ -30,24 +38,8 @@ import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCus
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import static ish.oncourse.server.api.v1.function.TagFunctions.validateRelationsForSave
-import ish.oncourse.server.api.v1.model.ApplicationDTO
-import ish.oncourse.server.api.v1.model.ApplicationStatusDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.cayenne.Application
-import ish.oncourse.server.cayenne.ApplicationAttachmentRelation
-import ish.oncourse.server.cayenne.ApplicationCustomField
-import ish.oncourse.server.cayenne.ApplicationTagRelation
-import ish.oncourse.server.cayenne.Course
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.users.SystemUserService
-import org.apache.cayenne.ObjectContext
+import static ish.oncourse.server.api.v1.function.TagFunctions.*
 import static org.apache.commons.lang3.StringUtils.trimToNull
-
-import java.time.ZoneOffset
 
 @CompileStatic
 class ApplicationApiService extends TaggableApiService<ApplicationDTO, Application, ApplicationDao> {
@@ -74,7 +66,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
         new ApplicationDTO().with { applicationDTO ->
             applicationDTO.id = application.id
             applicationDTO.contactId = application.student.contact.id
-            applicationDTO.studentName = application.student.contact.with { GetContactFullName.valueOf(it, true).get() }
+            applicationDTO.studentName = application.student.contact.with {it.getFullName() }
             applicationDTO.courseId = application.course.id
             applicationDTO.courseName = application.course.with { "$it.name $it.code" }
             applicationDTO.applicationDate = application.createdOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDate()

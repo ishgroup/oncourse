@@ -1,4 +1,4 @@
-import { PaymentInvoice, PaymentMethod, PaymentOut } from "@api/model";
+import { PaymentInvoice, PaymentMethod, PaymentOut, PayType } from "@api/model";
 
 export interface PaymentInvoiceModel extends PaymentInvoice {
   payable?: boolean;
@@ -7,6 +7,7 @@ export interface PaymentInvoiceModel extends PaymentInvoice {
 
 export interface PaymentOutModel extends PaymentOut {
   invoices?: PaymentInvoiceModel[];
+  selectedPaymentMethod?: PayType;
 }
 
 export interface PaymentOutState {

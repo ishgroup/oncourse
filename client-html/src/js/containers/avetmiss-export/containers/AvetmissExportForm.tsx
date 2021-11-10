@@ -5,7 +5,9 @@
 
 import React from "react";
 import posed from "react-pose";
-import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
+import {
+ format as formatDate, getDaysInMonth, setDate, setMonth, setYear 
+} from "date-fns";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
@@ -21,10 +23,12 @@ import {
   IconButton,
   Tooltip,
   Typography,
-  withStyles
-} from "@material-ui/core";
-import { ExpandMore, HelpOutline } from "@material-ui/icons";
-import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
+} from "@mui/material";
+import { withStyles, createStyles } from "@mui/styles";
+import { ExpandMore, HelpOutline } from "@mui/icons-material";
+import {
+ arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm 
+} from "redux-form";
 import clsx from "clsx";
 import {
   AvetmissExportFee,
@@ -35,14 +39,15 @@ import {
   FundingStatus,
   FundingUpload
 } from "@api/model";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import ErrorMessage from "../../../common/components/form/fieldMessage/ErrorMessage";
-import FormField from "../../../common/components/form/form-fields/FormField";
+import FormField from "../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import { State } from "../../../reducers/state";
-import { StyledCheckbox } from "../../../common/components/form/form-fields/CheckboxField";
-import Button from "../../../common/components/buttons/Button";
+import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import AvetmissExportResults from "../components/AvetmissExportResults";
 import {
   clearAvetmiss8ExportID,
@@ -67,7 +72,7 @@ import { AvetmissExportSettingsReqired } from "../../../model/preferences";
 
 export const FORM: string = "AvetmissExportForm";
 
-const styles: any = (theme: AppTheme) => ({
+const styles = theme => createStyles({
   divider: {
     margin: theme.spacing(3, -3)
   },
@@ -673,7 +678,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
       <form className="container" onSubmit={handleSubmit(this.onFind)}>
         <CustomAppBar fullWidth>
           <HamburgerMenu variant={VARIANTS.temporary} />
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography variant="h6" color="inherit" noWrap>
                 AVETMISS 8
@@ -696,7 +701,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         </CustomAppBar>
 
         {values && (
-          <Grid container spacing={2}>
+          <Grid container columnSpacing={3} spacing={2}>
             {uploads && uploads.length > 0 && !skipAnimation && (
               <Grid item xs={12} lg={8}>
                 <Box
@@ -887,14 +892,15 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                   {!hasOutcomesOrExport && (
                     <div className="centeredFlex justify-content-center pt-3 pb-3">
                       {!hasNoResults && (
-                        <Button
-                          text="Find"
+                        <LoadingButton
                           color="primary"
                           type="submit"
                           disabled={invalid || !checkboxesValid}
                           loading={pending}
-                          rootClasses="avetmissButton"
-                        />
+                          className="avetmissButton"
+                        >
+                          Find
+                        </LoadingButton>
                       )}
 
                       {hasNoResults && (

@@ -92,7 +92,7 @@ class ExpressionsTest2 extends TestWithDatabase {
         List<Tag> list = new ArrayList<>()
         list.add(tag)
 
-        Expression expression = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag).hashCode() + "", list, TaggableClasses.COURSE)
+        Expression expression = TagUtil.createExpressionForTagsWithinOneTagTree(tag.getRoot().hashCode() + "", list, TaggableClasses.COURSE)
         query.setQualifier(expression)
         String alias = "alias" + tag.getRoot().hashCode()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias)
@@ -114,7 +114,7 @@ class ExpressionsTest2 extends TestWithDatabase {
         List<Tag> list = new ArrayList<>()
         list.add(tag)
 
-        Expression expression = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag).hashCode() + "", list, TaggableClasses.COURSE)
+        Expression expression = TagUtil.createExpressionForTagsWithinOneTagTree(tag.getRoot().hashCode() + "", list, TaggableClasses.COURSE)
         expression = expression.andExp(ExpressionFactory.matchExp(Course.CODE_PROPERTY, "BB"))
         query.setQualifier(expression)
         String alias = "alias" + tag.getRoot().hashCode()
@@ -140,7 +140,7 @@ class ExpressionsTest2 extends TestWithDatabase {
             list.add(tag1)
             list.add(tag2)
 
-            TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag1).hashCode() + "", list, TaggableClasses.COURSE)
+            TagUtil.createExpressionForTagsWithinOneTagTree(tag1.getRoot().hashCode() + "", list, TaggableClasses.COURSE)
         })
 
     }
@@ -160,8 +160,8 @@ class ExpressionsTest2 extends TestWithDatabase {
         List<Tag> list2 = new ArrayList<>()
         list2.add(tag2)
 
-        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag1).hashCode() + "", list1, TaggableClasses.COURSE)
-        Expression expression2 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag2).hashCode() + "", list2, TaggableClasses.COURSE)
+        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(tag1.getRoot().hashCode() + "", list1, TaggableClasses.COURSE)
+        Expression expression2 = TagUtil.createExpressionForTagsWithinOneTagTree(tag2.getRoot().hashCode() + "", list2, TaggableClasses.COURSE)
         Expression expression = expression1.orExp(expression2)
         query.setQualifier(expression)
         String alias1 = "alias" + tag1.getRoot().hashCode()
@@ -188,8 +188,8 @@ class ExpressionsTest2 extends TestWithDatabase {
         List<Tag> list2 = new ArrayList<>()
         list2.add(tag2)
 
-        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag1).hashCode() + "", list1, TaggableClasses.COURSE)
-        Expression expression2 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag2).hashCode() + "", list2, TaggableClasses.COURSE)
+        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(tag1.getRoot().hashCode() + "", list1, TaggableClasses.COURSE)
+        Expression expression2 = TagUtil.createExpressionForTagsWithinOneTagTree(tag2.getRoot().hashCode() + "", list2, TaggableClasses.COURSE)
         Expression expression = expression1.andExp(expression2)
         query.setQualifier(expression)
         String alias1 = "alias" + tag1.getRoot().hashCode()
@@ -218,8 +218,8 @@ class ExpressionsTest2 extends TestWithDatabase {
         List<Tag> list2 = new ArrayList<>()
         list2.add(tag2)
 
-        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag1).hashCode() + "", list1, TaggableClasses.COURSE)
-        Expression expression2 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(tag2).hashCode() + "", list2, TaggableClasses.COURSE)
+        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(tag1.getRoot().hashCode() + "", list1, TaggableClasses.COURSE)
+        Expression expression2 = TagUtil.createExpressionForTagsWithinOneTagTree(tag2.getRoot().hashCode() + "", list2, TaggableClasses.COURSE)
         Expression expression = expression1.andExp(expression2)
         query.setQualifier(expression)
         String alias1 = "alias" + tag1.getRoot().hashCode()
@@ -246,7 +246,7 @@ class ExpressionsTest2 extends TestWithDatabase {
         list1.add(getRecordWithId(cayenneContext, Tag.class, 20L))
         list1.add(getRecordWithId(cayenneContext, Tag.class, 21L))
         list1.add(getRecordWithId(cayenneContext, Tag.class, 22L))
-        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(TagUtil.getRoot(list1.get(0)).getName(), list1, TaggableClasses.COURSE)
+        Expression expression1 = TagUtil.createExpressionForTagsWithinOneTagTree(list1.get(0).getRoot().getName(), list1, TaggableClasses.COURSE)
         query.setQualifier(expression1)
         String alias1 = "alias" + list1.get(0).getRoot().getName()
         query.aliasPathSplits(Course.TAGGING_RELATIONS_PROPERTY, alias1)

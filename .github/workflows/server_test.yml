@@ -12,13 +12,13 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        java: [ 11 ]
+        java: [11]
 
     steps:
       - uses: actions/checkout@v2
 
       - id: skip_check
-        uses: fkirc/skip-duplicate-actions@v3.4.0
+        uses: fkirc/skip-duplicate-actions@v3.4.1
         with:
           cancel_others: 'true'
           skip_after_successful_duplicate: 'true'
@@ -32,7 +32,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
 
       - name: Grant execute permission for gradlew
@@ -51,7 +51,6 @@ jobs:
       - name: Types unit tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew types:test --stacktrace -Duser.language=en -Duser.country=AU
-        continue-on-error: true
 
 #      - name: Build types coverage report
 #        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
@@ -68,7 +67,6 @@ jobs:
       - name: Server unit tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:test --stacktrace -Duser.language=en -Duser.country=AU
-        continue-on-error: true
 
 #      - name: Build server coverage report
 #        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
@@ -113,7 +111,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - id: skip_check
-        uses: fkirc/skip-duplicate-actions@v3.4.0
+        uses: fkirc/skip-duplicate-actions@v3.4.1
         with:
           cancel_others: 'true'
           skip_after_successful_duplicate: 'true'
@@ -127,7 +125,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
 
       - name: Grant execute permission for gradlew
@@ -146,7 +144,6 @@ jobs:
       - name: Integration tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         run: ./gradlew server:integration -PdbUrl=jdbc:mariadb://localhost:3306/angelTest_trunk --stacktrace -Duser.language=en -Duser.country=AU
-        continue-on-error: true
 
 #      - name: Build coverage report
 #        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}

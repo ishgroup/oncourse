@@ -27,6 +27,8 @@ export const LIST_PAGE_SIZE = 50;
 
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
 
+export const STICKY_HEADER_EVENT = 'sticky-change';
+
 export const APPLICATION_THEME_STORAGE_NAME = "theme";
 
 export const DASHBOARD_ACTIVITY_STORAGE_NAME = "dashboardActivityState";
@@ -49,7 +51,8 @@ export const GOOGLE_TAG_MANAGER_DEFAULT_APP_NAME = "onCourse Client";
 export const DEFAULT_TIMEZONE_KEY: PreferenceEnum = "timezone.default";
 
 export const DASHBOARD_CATEGORY_WIDTH_KEY: PreferenceEnum = "html.dashboard.category.width";
-export const DASHBOARD_NEWS_LATEST_READ: PreferenceEnum = "dashboard.news.last_read";
+
+export const READ_NEWS: PreferenceEnum = "news.read";
 
 export const ACCOUNT_INVOICE_TERMS: PreferenceEnum = "account.invoice.terms";
 
@@ -67,7 +70,7 @@ export const GOOGLE_ANALYTICS_USER_ID_KEY: PreferenceEnum = "google.analytics.ui
 
 export const LICENSE_SCRIPTING_KEY: PreferenceEnum = "license.scripting";
 
-export const LICENSE_ACCESS_CONTROL_KEY: PreferenceEnum = "license.accesscontrol";
+export const LICENSE_ACCESS_CONTROL_KEY: PreferenceEnum = "license.access_control";
 
 export const ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID: PreferenceEnum = "account.default.studentEnrolments.id";
 
@@ -89,6 +92,8 @@ export const DEFAULT_MAXIMUM_PLACES_KEY: PreferenceEnum = "courseclass_default_m
 export const DEFAULT_MINIMUM_PLACES_KEY: PreferenceEnum = "courseclass_default_minimumPlaces";
 
 export const LISTVIEW_MAIN_CONTENT_WIDTH: PreferenceEnum = "listview.main.content.width";
+
+export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default";
 
 export const ADMIN_EMAIL_KEY = 'email.admin';
 

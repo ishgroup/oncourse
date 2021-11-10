@@ -7,12 +7,10 @@ import React, { useCallback, useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { change, FieldArray } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Divider from "@mui/material/Divider";
 import {
   AssessmentClass,
   ClassFundingSource,
@@ -23,7 +21,7 @@ import {
   PaymentSource,
   Tag
 } from "@api/model";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { formatFundingSourceId } from "../../common/utils";
@@ -39,8 +37,6 @@ import {
 } from "../../../../common/utils/validation";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
 import { setSelectedContact } from "../../invoices/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
@@ -49,7 +45,8 @@ import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
@@ -67,6 +64,7 @@ interface Props extends Partial<EditViewProps> {
   tags?: Tag[];
   setSelectedContact?: AnyArgFunction;
   gradingTypes?: GradingType[];
+  isScrolling?: boolean;
 }
 
 const EnrolmentGeneralTab: React.FC<Props> = props => {
@@ -80,10 +78,6 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     dispatch,
     setSelectedContact,
     contracts,
-    manualLink,
-    rootEntity,
-    onCloseClick,
-    invalid,
     dirty,
     gradingTypes
   } = props;
@@ -149,33 +143,12 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
   return (
     <>
       {twoColumn && (
-        <CustomAppBar noDrawer>
-          <div className="flex-fill">
-            <Typography className="appHeaderFontSize" color="inherit">
-              {defaultContactName(values.studentName)}
-            </Typography>
-          </div>
-          <div>
-            {manualLink && (
-              <AppBarHelpMenu
-                created={values ? new Date(values.createdOn) : null}
-                modified={values ? new Date(values.modifiedOn) : null}
-                auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                manualUrl={manualLink}
-              />
-            )}
-
-            <Button onClick={onCloseClick} className="closeAppBarButton">
-              Close
-            </Button>
-            <FormSubmitButton
-              disabled={(!isNew && !dirty)}
-              invalid={invalid}
-            />
-          </div>
-        </CustomAppBar>
+        <FullScreenStickyHeader
+          twoColumn={twoColumn}
+          title={defaultContactName(values.studentName)}
+        />
       )}
-      <Grid container className="pt-3 pl-3 pr-3">
+      <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
           <FormField
             type="tags"
@@ -419,20 +392,19 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
             <Grid item xs={12} className="pb-3">
               <Divider />
             </Grid>
-          </>
-        )}
-
-        <Grid container>
-          <Grid item xs={12} className="mb-2">
             <CustomFields
               entityName="Enrolment"
               fieldName="customFields"
               entityValues={values}
               dispatch={dispatch}
               form={form}
+              gridItemProps={{
+                xs: twoColumn ? 6 : 12,
+                lg: twoColumn ? 4 : 12
+              }}
             />
-          </Grid>
-        </Grid>
+          </>
+        )}
 
         <FieldArray
           name="assessments"

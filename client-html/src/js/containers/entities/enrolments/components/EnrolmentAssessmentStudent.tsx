@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import clsx from "clsx";
 import { GradingItem, GradingType } from "@api/model";
 import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
@@ -16,8 +16,8 @@ import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../mode
 import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
 import GradeContent from "../../courseClasses/components/assessments/GradeContent";
 import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
@@ -88,7 +88,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
   const gradeErrors = useGradeErrors(submission?.grade, gradeType);
 
   return (
-    <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
+    <Grid container columnSpacing={3} key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
       <Grid item xs={3} className="d-inline-flex-center pl-1">
         {elem.name}
       </Grid>

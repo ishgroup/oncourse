@@ -16,84 +16,16 @@ import groovy.transform.CompileStatic
 import ish.common.types.AttachmentSpecialType
 import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
-import ish.oncourse.server.api.v1.model.PayslipPayTypeDTO
-import ish.oncourse.server.document.DocumentService
-import org.apache.commons.lang3.StringUtils
-
-import static ish.common.types.USIVerificationStatus.VALID
 import ish.common.types.UsiStatus
-import ish.oncourse.function.GetContactFullName
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.dao.ContactDao
-import ish.oncourse.server.api.dao.ContactRelationDao
-import ish.oncourse.server.api.dao.ContactRelationTypeDao
-import ish.oncourse.server.api.dao.CountryDao
-import ish.oncourse.server.api.dao.CustomFieldTypeDao
-import ish.oncourse.server.api.dao.LanguageDao
-import ish.oncourse.server.api.dao.PaymentInDao
-import ish.oncourse.server.api.dao.TagDao
-import ish.oncourse.server.api.dao.TaxDao
-import static ish.oncourse.server.api.v1.function.ContactFunctions.getFinancialDataForContact
-import static ish.oncourse.server.api.v1.function.ContactFunctions.getProfilePictureDocument
-import static ish.oncourse.server.api.v1.function.ContactFunctions.isValidEmailAddress
-import static ish.oncourse.server.api.v1.function.ContactFunctions.isValidUsiString
-import static ish.oncourse.server.api.v1.function.ContactFunctions.toRestMessagePerson
-import static ish.oncourse.server.api.v1.function.ContactFunctions.updateContactRelations
-import static ish.oncourse.server.api.v1.function.ContactFunctions.updateProfilePicture
-import static ish.oncourse.server.api.v1.function.ContactFunctions.validateContactRelations
-import static ish.oncourse.server.api.v1.function.ContactFunctions.validateStudentConcessions
-import static ish.oncourse.server.api.v1.function.ContactFunctions.validateStudentYearSchoolCompleted
+import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.function.CountryFunctions
-import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentMinimized
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.validateFoUpdate
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.validateForDelete
 import ish.oncourse.server.api.v1.function.LanguageFunctions
-import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.toRestConcession
-import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.updateStudentConcessions
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import ish.oncourse.server.api.v1.model.AvetmissStudentDisabilityTypeDTO
-import ish.oncourse.server.api.v1.model.AvetmissStudentEnglishProficiencyDTO
-import ish.oncourse.server.api.v1.model.AvetmissStudentIndigenousStatusDTO
-import ish.oncourse.server.api.v1.model.AvetmissStudentLabourStatusDTO
-import ish.oncourse.server.api.v1.model.AvetmissStudentPriorEducationDTO
-import ish.oncourse.server.api.v1.model.AvetmissStudentSchoolLevelDTO
-import ish.oncourse.server.api.v1.model.ClientIndustryEmploymentTypeDTO
-import ish.oncourse.server.api.v1.model.ClientOccupationIdentifierTypeDTO
-import ish.oncourse.server.api.v1.model.ContactDTO
-import ish.oncourse.server.api.v1.model.ContactGenderDTO
-import ish.oncourse.server.api.v1.model.ContactRelationDTO
-import ish.oncourse.server.api.v1.model.DocumentDTO
-import ish.oncourse.server.api.v1.model.HolidayDTO
-import ish.oncourse.server.api.v1.model.StudentCitizenshipDTO
-import ish.oncourse.server.api.v1.model.StudentDTO
-import ish.oncourse.server.api.v1.model.TutorDTO
-import ish.oncourse.server.api.v1.model.UsiStatusDTO
-import ish.oncourse.server.api.v1.model.UsiVerificationResultDTO
-import ish.oncourse.server.api.v1.model.UsiVerificationStatusDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
-import ish.oncourse.server.api.v1.model.WorkingWithChildrenStatusDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.ContactAttachmentRelation
-import ish.oncourse.server.cayenne.ContactCustomField
-import ish.oncourse.server.cayenne.ContactRelation
-import ish.oncourse.server.cayenne.ContactTagRelation
-import ish.oncourse.server.cayenne.ContactUnavailableRuleRelation
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseTrait
-import ish.oncourse.server.cayenne.Document
-import ish.oncourse.server.cayenne.IntegrationConfiguration
-import ish.oncourse.server.cayenne.Student
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.Tax
-import ish.oncourse.server.cayenne.Tutor
+import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.usi.USIIntegration
 import ish.oncourse.server.license.LicenseService
@@ -101,17 +33,24 @@ import ish.oncourse.server.services.ISystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import static org.apache.commons.lang.StringUtils.EMPTY
-import static org.apache.commons.lang.StringUtils.isBlank
-import static org.apache.commons.lang.StringUtils.isNotBlank
-import static org.apache.commons.lang.StringUtils.isNumericSpace
-import static org.apache.commons.lang.StringUtils.trimToNull
+import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.time.LocalDate
+
+import static ish.common.types.USIVerificationStatus.VALID
+import static ish.oncourse.server.api.v1.function.ContactFunctions.*
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.*
+import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
+import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.toRestConcession
+import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.updateStudentConcessions
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static org.apache.commons.lang.StringUtils.*
 
 @CompileStatic
 class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactDao> {
@@ -672,7 +611,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         new ContactRelationDTO().with { dto ->
             dto.id = rel.id
             dto.contactFromId = rel.fromContact.id
-            dto.contactFromName = GetContactFullName.valueOf(rel.fromContact, true).get()
+            dto.contactFromName = rel.fromContact.getFullName()
             dto.relationId = rel.relationType.id
             dto
         }
@@ -682,7 +621,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         new ContactRelationDTO().with { dto ->
             dto.id = rel.id
             dto.contactToId = rel.toContact.id
-            dto.contactToName = GetContactFullName.valueOf(rel.toContact, true).get()
+            dto.contactToName = rel.toContact.getFullName()
             dto.relationId = rel.relationType.id
             dto
         }

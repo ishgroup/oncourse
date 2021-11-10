@@ -21,7 +21,6 @@ import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
 
-
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
 const Initial: Script = { enabled: false, content: "", keyCode: null };
@@ -35,6 +34,7 @@ const ScriptsBase = React.memo<any>(props => {
     emailTemplates,
     pdfReports,
     pdfBackgrounds,
+    timeZone,
     match: {
       params: { id }
     },
@@ -73,6 +73,7 @@ const ScriptsBase = React.memo<any>(props => {
       pdfReports={pdfReports}
       pdfBackgrounds={pdfBackgrounds}
       history={history}
+      timeZone={timeZone}
       {...rest}
     />
   );
@@ -85,7 +86,8 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
-  nextLocation: state.nextLocation
+  nextLocation: state.nextLocation,
+  timeZone: state.automation.timeZone,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

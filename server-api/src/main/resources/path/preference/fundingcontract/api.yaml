@@ -34,10 +34,6 @@ post:
       description: Success response.
     default:
       description: Unexpected error
-  x-permission:
-    license:
-      code: license.fundingContract
-      errorMessage: You have not license for funding contracts
 
 patch:
   operationId: patch
@@ -76,7 +72,3 @@ delete:
       description: Funding contract successfully deleted
     default:
       description: Unexpected error
-  x-permission:
-    license:
-      code: license.fundingContract
-      errorMessage: You have not license for funding contracts

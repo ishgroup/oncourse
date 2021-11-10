@@ -10,27 +10,25 @@ import { connect } from "react-redux";
 import {
   reduxForm, getFormValues, InjectedFormProps, Form
 } from "redux-form";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
 import { differenceInMinutes, format } from "date-fns";
-import { Typography } from "@material-ui/core";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
+import { Typography } from "@mui/material";
+import SvgIcon from "@mui/material/SvgIcon";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
 import { CourseClassTutor } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import LoadingButton from "@mui/lab/LoadingButton";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../../../common/components/buttons/Button";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
   AttandanceChangeType,
   StudentAttendanceExtended,
-  TutorAttendanceExtended,
   tutorStatusRoles
 } from "../../../../../model/entities/CourseClass";
 import AttendanceIcon from "./AttendanceIcon";
@@ -39,7 +37,6 @@ import { TimetableSession } from "../../../../../model/timetable";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { stubFunction } from "../../../../../common/utils/common";
-import { TutorAttendanceIconButton } from "./AttendanceIconButtons";
 import { getStudentAttendanceLabel } from "./utils";
 import {
   DD_MMM_YYYY_HH_MM_SS,
@@ -48,6 +45,7 @@ import {
   III_DD_MMM_YYYY_HH_MM_SS
 } from "../../../../../common/utils/dates/format";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import Button from "@mui/material/Button";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);
@@ -135,7 +133,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
   );
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={12}>
         <div className="centeredFlex mt-2 mb-2">
           <SvgIcon fontSize="small">
@@ -149,7 +147,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
           <Typography variant="body1">{getStudentAttendanceLabel(values.attendanceType)}</Typography>
         </div>
         <div className="pb-2">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={6}>
               {values.attendanceType === "Partial" ? (
                 <FormField
@@ -216,10 +214,10 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
 interface TutorAttendanceContentProps {
   change: any;
   sessionDuration: number;
-  values: TutorAttendanceExtended;
   setHasError: any;
   bindedSession: TimetableSession;
   tutors: CourseClassTutor[];
+  values: any;
 }
 
 const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
@@ -230,7 +228,7 @@ const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
   tutors
 }) => {
   const [durationLocked, setDurationLocked] = useState(
-    !(typeof values.durationMinutes === "number" && values.attendanceType === "Confirmed for payroll")
+    !(typeof values.actualPayableDurationMinutes === "number" && values.attendanceType === "Confirmed for payroll")
   );
 
   const onIconClick = useCallback(e => {
@@ -264,13 +262,12 @@ const TutorAttendanceContent: React.FC<TutorAttendanceContentProps> = ({
   ]);
 
   return (
-    <Grid container className="pb-2">
+    <Grid container columnSpacing={3} className="pb-2">
       <Grid item xs={6}>
         <Uneditable value={values.contactName} label="Tutor" url={tutorContactLink} />
       </Grid>
       <Grid item xs={6}>
         <div className="centeredFlex mt-2 mb-2">
-          <TutorAttendanceIconButton attendance={values} onClick={onIconClick} />
           <Typography variant="body1" className="pl-1">
             {values.attendanceType}
           </Typography>
@@ -319,10 +316,9 @@ interface AttendanceActionModalProps {
   setAttendanceChangeType: (arg: AttandanceChangeType) => void;
   onSubmit: (values: StudentAttendanceExtended) => void;
   sessions: TimetableSession[];
-  tutors: CourseClassTutor[];
   fetching?: boolean;
   dispatch?: any;
-  values?: StudentAttendanceExtended & TutorAttendanceExtended;
+  values?: StudentAttendanceExtended;
 }
 
 export const ATTENDANCE_COURSE_CLASS_FORM: string = "AttendanceCourseClassForm";
@@ -336,14 +332,10 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
   values,
   sessions,
   change,
-  tutors,
   handleSubmit,
   onSubmit
 }) => {
   const [hasError, setHasError] = useState(false);
-
-  const isStudent = useMemo(() => values.hasOwnProperty("attendedFrom"), [values.attendedFrom]);
-  const isTutor = useMemo(() => values.hasOwnProperty("courseClassTutorId"), [values.courseClassTutorId]);
 
   const onClose = useCallback(() => {
     setAttendanceChangeType(null);
@@ -373,34 +365,22 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
     >
       <DialogContent>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          {isStudent && (
-            <StudentAttendanceContent
-              change={change}
-              values={values}
-              sessionDuration={sessionDuration}
-              bindedSession={bindedSession}
-              setHasError={setHasError}
-            />
-          )}
-          {isTutor && (
-            <TutorAttendanceContent
-              change={change}
-              values={values}
-              tutors={tutors}
-              sessionDuration={sessionDuration}
-              bindedSession={bindedSession}
-              setHasError={setHasError}
-            />
-          )}
+          <StudentAttendanceContent
+            change={change}
+            values={values}
+            sessionDuration={sessionDuration}
+            bindedSession={bindedSession}
+            setHasError={setHasError}
+          />
         </Form>
       </DialogContent>
 
       <DialogActions className="p-3">
-        <MuiButton color="primary" onClick={onClose}>
+        <Button color="primary" onClick={onClose}>
           Cancel
-        </MuiButton>
+        </Button>
 
-        <Button
+        <LoadingButton
           onClick={handleSubmit}
           disabled={invalid || hasError}
           loading={fetching}
@@ -408,7 +388,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
           color="primary"
         >
           OK
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

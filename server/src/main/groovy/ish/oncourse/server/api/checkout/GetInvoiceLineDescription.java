@@ -60,7 +60,7 @@ public class GetInvoiceLineDescription {
             }
         } else if (productItem != null) {
             if (productItem.getContact() != null) {
-                description.append(productItem.getContact().getName(true));
+                description.append(productItem.getContact().getFullName());
                 description.append(" (");
             }
             description.append(productItem.getProduct().getSku());

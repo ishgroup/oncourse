@@ -55,7 +55,7 @@ public class CourseClassOutcomeTransformation  extends PrintTransformation {
 					.where(ExpressionFactory.inExp("enrolment.courseClass.id", sourceIds.subList(offset, Math.min(offset + getBatchSize(), sourceIds.size()))))
 					.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH);
 
-			if (Boolean.TRUE.equals(additionalValues.get(AdditionalParameters.BOOLEAN_FLAG))) {
+			if (Boolean.TRUE.equals(additionalValues.get(AdditionalParameters.BOOLEAN_FLAG.toString()))) {
 				objectSelect.and(ExpressionFactory.inExp("enrolment.status", EnrolmentStatus.STATUSES_LEGIT));
 			}
 

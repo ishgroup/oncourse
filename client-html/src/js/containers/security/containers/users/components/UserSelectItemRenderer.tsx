@@ -8,8 +8,7 @@
 
 import React, { useMemo } from "react";
 import { User } from "@api/model";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import Typography from "@material-ui/core/Typography";
+import { Tooltip, Typography } from "@mui/material";
 import { contactLabelCondition } from "../../../../entities/contacts/utils";
 
 const UserSelectItemRenderer = React.memo<{ content: string; data: User }>(props => {

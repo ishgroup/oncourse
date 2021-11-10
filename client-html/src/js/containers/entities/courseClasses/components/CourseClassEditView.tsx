@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import Decimal from "decimal.js-light";
 import React, {
@@ -13,11 +12,11 @@ import { format } from "date-fns";
 import { connect, useSelector } from "react-redux";
 import { Tax } from "@api/model";
 import debounce from "lodash.debounce";
-import Edit from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
+import Edit from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
@@ -50,65 +49,76 @@ import history from "../../../../constants/History";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import { discountsSort } from "./budget/utils";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
 
-const items: TabsListItem[] = [
+const itemsBase: TabsListItem[] = [
   {
     label: "GENERAL",
+    type: "GENERAL",
     component: props => <CourseClassGeneralTab {...props} />
   },
   {
     label: "WEB",
+    type: "WEB",
     component: props => <CourseClassWebTab {...props} />
   },
   {
     label: "VET",
+    type: "VET",
     component: props => <CourseClassVetTab {...props} />,
     expandable: true
   },
   {
     label: "TUTORS",
+    type: "TUTORS",
     component: props => <CourseClassTutorsTab {...props} />
   },
   {
     label: "BUDGET",
+    type: "BUDGET",
     component: props => <CourseClassBudgetTab {...props} />,
     expandable: true
   },
   {
     label: "ASSESSMENTS",
+    type: "ASSESSMENTS",
     component: props => <CourseClassAssessmentsTab {...props} />
   },
   {
     label: "TIMETABLE",
+    type: "TIMETABLE",
     component: props => <CourseClassTimetableTab {...props} />,
     expandable: true
   },
   {
     label: "ATTENDANCE",
+    type: "ATTENDANCE",
     component: props => <CourseClassAttendanceTab {...props} />,
     expandable: true
   },
   {
     label: "DOCUMENTS",
+    type: "DOCUMENTS",
     component: props => <CourseClassDocumentsTab {...props} />
   },
   {
     label: "NOTES",
+    type: "NOTES",
     component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pb-2" />
   },
   {
     label: "ENROLMENTS",
+    type: "ENROLMENTS",
     component: props => <CourseClassEnrolmentsTab {...props} />
   },
   {
     label: "OUTCOMES",
+    type: "OUTCOMES",
     component: props => <CourseClassOutcomesTab {...props} />
-  }
-];
-
-const traineeshipItems: TabsListItem[] = [
+  },
   {
     label: "DET export",
+    type: "DET export",
     component: props => <CourseClassDetTab {...props} />
   }
 ];
@@ -167,13 +177,13 @@ const FeeEditButton = ({ onClick, className }) => (
   </IconButton>
 );
 
-const useBudgetAdornmentStyles = makeStyles((theme: AppTheme) => ({
+const useBudgetAdornmentStyles = makeAppStyles()((theme: AppTheme) => ({
   root: {
     display: "grid",
     gridTemplateColumns: "1fr auto",
     alignItems: "end",
     position: "relative",
-    rowGap: `${theme.spacing(0.5)}px`,
+    rowGap: `${theme.spacing(0.5)}`,
     columnGap: theme.spacing(1),
     paddingTop: theme.spacing(0.5)
   },
@@ -213,7 +223,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax
 }) => {
-  const classes = useBudgetAdornmentStyles();
+  const { classes } = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"
@@ -330,6 +340,23 @@ const CourseClassEditView: React.FC<Props> = ({
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
   const [expandedBudget, setExpandedBudget] = useState([]);
+  const [items, setItems] = useState([...itemsBase]);
+
+  const hasBudgetPermissions = useSelector<State, any>(
+    state => state && state.access["/a/v1/list/entity/courseClass/budget/"] && state.access["/a/v1/list/entity/courseClass/budget/"]["GET"]
+  );
+
+  useEffect(() => {
+    setItems(itemsBase.filter(i => {
+      if (!hasBudgetPermissions && i.type === "BUDGET") {
+        return false;
+      }
+      if (values.isDistantLearningCourse && i.type === "ATTENDANCE") {
+        return false;
+      }
+      return !(!values.isTraineeship && i.type === "DET export");
+    }));
+  }, [hasBudgetPermissions, values.isDistantLearningCourse, values.isTraineeship]);
 
   const currentTax = useMemo(() => getCurrentTax(taxes, values.taxId), [values.taxId, taxes]);
 
@@ -350,15 +377,7 @@ const CourseClassEditView: React.FC<Props> = ({
     getSessionsData(values.sessions, setClassRooms, setSessionsData, dispatch);
   }, [values.sessions, values.id]);
 
-  const customLabels = useMemo(() => {
-    const labels = [];
-    if (values.documents) {
-      labels[8] = getLabelWithCount("document", values.documents.length);
-    }
-    return labels;
-  }, [values.documents && values.documents.length]);
-
-  items[4].labelAdornment = useMemo(
+  const budgetLabelAdornment = useMemo(
     () => {
       const studentFee = values.budget && values.budget.find(
         b => b.flowType === "Income" && b.repetitionType === "Per enrolment" && b.invoiceToStudent
@@ -380,7 +399,7 @@ const CourseClassEditView: React.FC<Props> = ({
     [values.budget, twoColumn, isNew, currencySymbol, expandedBudget, currentTax]
   );
 
-  items[6].labelAdornment = useMemo(() => {
+  const timetableLabelAdornment = useMemo(() => {
     if (!twoColumn) {
       return null;
     }
@@ -399,41 +418,51 @@ const CourseClassEditView: React.FC<Props> = ({
         ? "All sessions in " + values.sessions[0].room
         : "No rooms have been set in the timetable"
     }`;
-  }, [values.sessions && values.sessions.length, values.id, sessionsData]);
+  }, [values.sessions?.length, values.id, sessionsData]);
 
-  items[5].label = useMemo(() => getLabelWithCount("assessment", values.assessments ? values.assessments.length : 0), [
-    values.assessments && values.assessments.length
-  ]);
+  useEffect(() => {
+    setItems(prev => prev.map(i => {
+      const updated = { ...i };
+      if (i.type === "BUDGET") {
+        updated.labelAdornment = budgetLabelAdornment;
+      }
+      if (i.type === "TIMETABLE") {
+        updated.labelAdornment = timetableLabelAdornment;
+      }
+      if (i.type === "ASSESSMENTS") {
+        updated.label = getLabelWithCount("assessment", values.assessments ? values.assessments.length : 0);
+      }
+      if (i.type === "NOTES") {
+        updated.label = getLabelWithCount("note", values.notes ? values.notes.length : 0);
+      }
+      if (i.type === "DOCUMENTS") {
+        updated.label = getLabelWithCount("document", values.documents ? values.documents.length : 0);
+      }
+      if (i.type === "ENROLMENTS") {
+        updated.label = getLabelWithCount("enrolment", values.allEnrolmentsCount);
+      }
+      if (i.type === "OUTCOMES") {
+        updated.label = getLabelWithCount("outcome", values.allOutcomesCount);
+      }
 
-  items[9].label = useMemo(() => getLabelWithCount("note", values.notes ? values.notes.length : 0), [values.notes && values.notes.length]);
-  items[10].label = useMemo(() => getLabelWithCount("enrolment", values.allEnrolmentsCount), [
-    values.allEnrolmentsCount
+      return updated;
+    }));
+  }, [
+    twoColumn,
+    budgetLabelAdornment,
+    timetableLabelAdornment,
+    values.assessments?.length,
+    values.notes?.length,
+    values.documents?.length,
+    values.allEnrolmentsCount,
+    values.allOutcomesCount
   ]);
-  items[11].label = useMemo(() => getLabelWithCount("outcome", values.allOutcomesCount), [values.allOutcomesCount]);
 
   const savedTutors = useMemo(() => (values.tutors ? values.tutors.filter(t => t.id) : []), [values.tutors]);
 
-  const hasBudgetPermissions = useSelector<State, any>(
-    state => state && state.access["/a/v1/list/entity/courseClass/budget/"] && state.access["/a/v1/list/entity/courseClass/budget/"]["GET"]
-  );
-
-  const usedItems = useMemo(() => {
-    let result = items;
-    if (!hasBudgetPermissions) {
-      result = items.filter(i => i.label !== "BUDGET");
-    }
-    if (values.isDistantLearningCourse) {
-      result = items.filter(i => i.label !== "ATTENDANCE");
-    }
-    return result;
-  }, [
-    hasBudgetPermissions
-  ]);
-
   return (
     <TabsList
-      items={values.isTraineeship ? [...usedItems, ...traineeshipItems] : usedItems}
-      customLabels={customLabels}
+      items={items}
       itemProps={{
         isNew,
         isNested,

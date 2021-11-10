@@ -11,6 +11,9 @@
 package ish.oncourse.cayenne;
 
 import ish.oncourse.API;
+import ish.oncourse.server.cayenne.Tag;
+
+import java.util.List;
 
 /**
  * Entities which implement this interface may have TagRequirement, for example Student, Tutor but real TagRelation always created for Contact entity
@@ -19,6 +22,10 @@ import ish.oncourse.API;
 public interface Taggable {
 
 	String TAGGING_RELATIONS_PROPERTY = "taggingRelations";
+	String TAG_IDS = "tagIds";
 
 	Long getId();
+	List<? extends Tag> getTags();
+	List<Long> getTagIds();
+
 }

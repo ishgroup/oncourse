@@ -13,16 +13,10 @@ package ish.budget;
 import ish.common.types.ClassCostFlowType;
 import ish.common.types.ClassCostRepetitionType;
 import ish.math.Money;
-import ish.messaging.IDiscount;
-import ish.messaging.IEnrolment;
-import ish.messaging.IInvoiceLine;
-import ish.messaging.IPayRate;
-import ish.oncourse.cayenne.ClassCostInterface;
 import ish.oncourse.cayenne.DiscountCourseClassInterface;
 import ish.oncourse.cayenne.DiscountInterface;
+import ish.oncourse.server.cayenne.*;
 import ish.util.DiscountUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,7 +31,7 @@ public class ClassCostUtil {
 	 *
 	 * @param classCost
 	 */
-	public static void resetUnitCount(ClassCostInterface classCost) {
+	public static void resetUnitCount(ClassCost classCost) {
 		ClassCostRepetitionType type = classCost.getRepetitionType();
 
 		// fixed type always has count of 1
@@ -60,7 +54,7 @@ public class ClassCostUtil {
 	 * @param classCost
 	 * @return the money value of the cost
 	 */
-	public static Money getBudgetedCost(ClassCostInterface classCost) {
+	public static Money getBudgetedCost(ClassCost classCost) {
 		if (classCost.getCourseClass() != null) {
 			return getBudgetedCost(classCost, null, classCost.getCourseClass().getBudgetedPlaces());
 		}
@@ -76,7 +70,7 @@ public class ClassCostUtil {
 	 * @param plannedEnrolmentsCount (when null defaults to current valid enrolment count for the class)
 	 * @return Money value
 	 */
-	public static Money getCost(ClassCostInterface classCost, Date until, Integer plannedEnrolmentsCount, String type) {
+	public static Money getCost(ClassCost classCost, Date until, Integer plannedEnrolmentsCount, String type) {
 		Money cost = Money.ZERO;
 		if (classCost.getCourseClass() == null) {
 			return cost;
@@ -117,7 +111,7 @@ public class ClassCostUtil {
 			Money feeExGst = classCost.getCourseClass().getFeeExGst();
 			BigDecimal rate = null;
 
-			for (ClassCostInterface costInterface : classCost.getCourseClass().getCosts()) {
+			for (ClassCost costInterface : classCost.getCourseClass().getCosts()) {
 				if (ClassCostFlowType.INCOME.equals(costInterface.getFlowType())) {
 					rate = costInterface.getTax().getRate();
 				}
@@ -151,7 +145,7 @@ public class ClassCostUtil {
 					if (ClassCostFlowType.INCOME.equals(classCost.getFlowType()) && classCost.getInvoiceToStudent()) {
 						Money result = Money.ZERO;
 						if (classCost.getCourseClass().getSuccessAndQueuedEnrolments() != null) {
-							for (IEnrolment e : classCost.getCourseClass().getSuccessAndQueuedEnrolments()) {
+							for (Enrolment e : classCost.getCourseClass().getSuccessAndQueuedEnrolments()) {
                                 result = result.add(e.getOriginalInvoiceLine().getPriceTotalExTax());
 							}
 						}
@@ -202,7 +196,7 @@ public class ClassCostUtil {
 	 * @param plannedEnrolmentsCount (when null defaults to current valid enrolment count for the class)
 	 * @return Money value
 	 */
-	public static Money getBudgetedCost(ClassCostInterface classCost, Date until, Integer plannedEnrolmentsCount) {
+	public static Money getBudgetedCost(ClassCost classCost, Date until, Integer plannedEnrolmentsCount) {
 		return getCost(classCost, until, plannedEnrolmentsCount, ClassBudgetUtil.BUDGETED);
 	}
 
@@ -213,7 +207,7 @@ public class ClassCostUtil {
 	 * @param classCost
 	 * @return Money value
 	 */
-	public static Money getActualCost(ClassCostInterface classCost) {
+	public static Money getActualCost(ClassCost classCost) {
 		return getCost(classCost, null, null, ClassBudgetUtil.ACTUAL);
 	}
 
@@ -221,7 +215,7 @@ public class ClassCostUtil {
 	 * @param classCost
 	 * @return Money value
 	 */
-	public static Money getMaximumCost(ClassCostInterface classCost) {
+	public static Money getMaximumCost(ClassCost classCost) {
 		return getCost(classCost, null, null, ClassBudgetUtil.MAXIMUM);
 	}
 
@@ -302,10 +296,10 @@ public class ClassCostUtil {
 	 * @param costs
 	 * @return calculated fee
 	 */
-	public static Money calculateFee(List<? extends ClassCostInterface> costs) {
+	public static Money calculateFee(List<ClassCost> costs) {
 		Money fee = Money.ZERO;
 		if (costs != null && costs.size() != 0) {
-			for (ClassCostInterface cc : costs) {
+			for (ClassCost cc : costs) {
 				if (ClassCostFlowType.INCOME.equals(cc.getFlowType()) && Boolean.TRUE.equals(cc.getInvoiceToStudent())) {
 					fee = fee.add(getPerUnitAmountExTax(cc));
 				}
@@ -320,10 +314,10 @@ public class ClassCostUtil {
 	 * @param costs
 	 * @return calculated deposit
 	 */
-	public static Money calculateDeposit(List<? extends ClassCostInterface> costs) {
+	public static Money calculateDeposit(List<ClassCost> costs) {
 		Money deposit = Money.ZERO;
 		if (costs != null && costs.size() != 0) {
-			for (ClassCostInterface cc : costs) {
+			for (ClassCost cc : costs) {
 				if (ClassCostFlowType.INCOME.equals(cc.getFlowType()) && Boolean.TRUE.equals(cc.getPayableOnEnrolment())) {
 					deposit = deposit.add(getPerUnitAmountExTax(cc));
 				}
@@ -332,55 +326,32 @@ public class ClassCostUtil {
 		return deposit;
 	}
 
-	private static Money getActualDiscountedAmount(ClassCostInterface cost) {
-		if (ClassCostFlowType.DISCOUNT.equals(cost.getFlowType()) && (ClassCostRepetitionType.DISCOUNT.equals(cost.getRepetitionType()))) {
-
-			Money discounted = Money.ZERO;
-			List<? extends IEnrolment> enrolments = cost.getCourseClass().getSuccessAndQueuedEnrolments();
-			for (IEnrolment e : enrolments) {
-				for (IInvoiceLine invoiceLine : e.getInvoiceLines()) {
-					List<? extends IDiscount> discounts = invoiceLine.getDiscounts();
-					Money currentTotalDiscountAmount = Money.ZERO;
-					Money currentDiscountAmount = Money.ZERO;
-					for (DiscountInterface discount : discounts) {
-
-						DiscountCourseClassInterface classDiscount = null;
-						for (DiscountCourseClassInterface dcc : cost.getCourseClass().getDiscountCourseClasses()) {
-							if (dcc.getDiscount().equals(discount)) {
-								classDiscount = dcc;
-								break;
-							}
-						}
-
-						Money discountValue = DiscountUtils.discountValue(classDiscount, invoiceLine.getPriceTotalExTax(), invoiceLine.getTax().getRate());
-						currentTotalDiscountAmount = currentTotalDiscountAmount.add(discountValue);
-
-						if (discount.equals(cost.getDiscountCourseClass().getDiscount())) {
-							currentDiscountAmount = discountValue;
-						}
-					}
-
-					if (currentTotalDiscountAmount.compareTo(Money.ZERO) != 0) {
-						discounted = discounted.add(invoiceLine.getDiscountTotalExTax()
-								.multiply(currentDiscountAmount.divide(currentTotalDiscountAmount)));
-					}
-				}
-			}
-
-			return discounted;
-		}
-		return Money.ZERO;
+	private static Money getActualDiscountedAmount(ClassCost cost) {
+		Discount discount = cost.getDiscountCourseClass().getDiscount();
+		// assume only one discount can be applied to inviceLine. the many-to-many is just legasy stuff.
+		return cost.getCourseClass()
+				// get all class enrolments
+				.getSuccessAndQueuedEnrolments().stream()
+				// take all invoiceLines from them 
+				.map(Enrolment::getInvoiceLines)
+				// flatten them since previous line returns stream of lists of invoiceLines
+				.flatMap(List::stream)
+				// filter invoiceLines that was discounted by certain discount: cost.getDiscountCourseClass().getDiscount()
+				.filter(il -> !il.getInvoiceLineDiscounts().isEmpty() && il.getInvoiceLineDiscounts()
+						.stream().anyMatch(ild -> ild.getDiscount() != null && ild.getDiscount().equalsIgnoreContext(discount)))
+				// summ of discount values
+				.map(AbstractInvoiceLine::getDiscountEachExTax).reduce(Money.ZERO, Money::add);
 	}
 
-	public static Money getPerUnitAmountExTax(ClassCostInterface cost) {
+	public static Money getPerUnitAmountExTax(ClassCost cost) {
 
 		if (ClassCostFlowType.DISCOUNT.equals(cost.getFlowType()) && ClassCostRepetitionType.DISCOUNT.equals(cost.getRepetitionType())) {
 			Money feeExGst = cost.getCourseClass().getFeeExGst();
 			BigDecimal rate = null;
 
-			for (ClassCostInterface costInterface : cost.getCourseClass().getCosts()) {
-				if (ClassCostFlowType.INCOME.equals(costInterface.getFlowType()) && costInterface.getTax() != null) {
-					rate = costInterface.getTax().getRate();
+			for (ClassCost classCost : cost.getCourseClass().getCosts()) {
+				if (ClassCostFlowType.INCOME.equals(classCost.getFlowType()) && classCost.getTax() != null) {
+					rate = classCost.getTax().getRate();
 					break;
 				}
 			}
@@ -401,13 +372,13 @@ public class ClassCostUtil {
 		return result;
 	}
 
-	public static Money calculateWageCost(ClassCostInterface cost) {
+	public static Money calculateWageCost(ClassCost cost) {
 		if (ClassCostFlowType.WAGES.equals(cost.getFlowType()) && cost.getTutorRole() !=null && cost.getTutorRole().getDefinedTutorRole() != null && cost.getCourseClass() != null) {
 
 			// if class has no start date assigned then calculating pay rate for current date
 			Date payRateDate = cost.getCourseClass().getStartDateTime() != null ? cost.getCourseClass().getStartDateTime() : new Date();
 
-			IPayRate pr = cost.getTutorRole().getDefinedTutorRole().getPayRateForDate(payRateDate);
+			PayRate pr = cost.getTutorRole().getDefinedTutorRole().getPayRateForDate(payRateDate);
 			if (pr != null) {
 				return pr.getRate();
 			} else {
@@ -419,7 +390,7 @@ public class ClassCostUtil {
 		return null;
 	}
 
-	public static String getUnit2(ClassCostInterface classCost) {
+	public static String getUnit2(ClassCost classCost) {
 		if (ClassCostRepetitionType.PER_UNIT.equals(classCost.getRepetitionType())) {
 			return "per unit";
 		} else if (ClassCostRepetitionType.PER_TIMETABLED_HOUR.equals(classCost.getRepetitionType())) {
@@ -436,7 +407,7 @@ public class ClassCostUtil {
 		return "";
 	}
 
-	public static boolean isAmountOverride(ClassCostInterface classCost) {
+	public static boolean isAmountOverride(ClassCost classCost) {
 		return classCost.getPerUnitAmountExTax() != null;
 	}
 }

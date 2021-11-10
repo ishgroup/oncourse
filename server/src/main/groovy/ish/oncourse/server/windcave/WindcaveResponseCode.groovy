@@ -15,6 +15,10 @@ enum WindcaveResponseCode {
 
     _00("00", "Transaction Approved", "APPROVED"),
 
+    _01("01", "Refer to Card Issuer - customer’s bank (Card Issuer) indicates possible issue with the card number.", "REFER TO CARD ISSUER"),
+    
+    _04("04", "Pick up card", "DECLINED"),
+
     _05("05", "Credit transaction is not allowed", "DO NOT HONOUR"),
 
     _12("12", "Invalid Transaction - declined", "ERROR - INVLD TRAN"),
@@ -47,12 +51,12 @@ enum WindcaveResponseCode {
         this.explanation = explanation
         this.message = message
     }
+    
+    String toString() {
+        return "$explanation ($message)"
+    }
 
     static String getExplanationByCode(String code) {
-        String explanation = values().find {it.code == code}?.explanation
-        if (explanation && values().find {it.code == code}?.message) {
-            explanation += " (" + values().find {it.code == code}?.message + ")"
-        }
-        return explanation
+        return values().find {it.code == code}?.toString()
     }
 }

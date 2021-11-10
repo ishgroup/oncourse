@@ -4,14 +4,13 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import Collapse from "@material-ui/core/Collapse";
-import { CircularProgress, Typography } from "@material-ui/core";
+import Grid from "@mui/material/Grid";
+import Collapse from "@mui/material/Collapse";
+import { CircularProgress, Typography } from "@mui/material";
 import * as Entities from "@aql/queryLanguageModel";
 import debounce from "lodash.debounce";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../../common/utils/common";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
 import EntityService from "../../../../../../common/services/EntityService";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
 
@@ -64,12 +63,22 @@ const QueryCardContent = props => {
     debounseSearch(isValidQuery, field.entity, field.query, queryResultsPending);
   }, [field.query]);
 
+  const validateQueryClosureReturnValue = useCallback(value => {
+    if (!value) return "";
+
+    const matches = value.match(/[a-zA-Z\s]*/g);
+
+    if (!matches || matches[0] !== value) return "You can only use letters";
+
+    return "";
+  }, [field]);
+
   const queryAvailable = Boolean(field.entity);
 
   const validateExpression = useCallback(() => (isValidQuery ? undefined : "Expression is invalid"), [isValidQuery]);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={12}>
         <FormField
           type="select"
@@ -85,7 +94,7 @@ const QueryCardContent = props => {
           <Collapse
             in={queryAvailable}
             classes={{
-              container: field.entity ? "overflow-visible" : undefined
+              wrapper: field.entity ? "overflow-visible" : undefined
             }}
           >
             <div className={classes.queryField}>
@@ -106,13 +115,16 @@ const QueryCardContent = props => {
 
         <Grid item={true} container xs={12}>
           <Grid xs={6}>
-            <Uneditable
+            <FormField
+              name={`${name}.queryClosureReturnValue`}
+              type="text"
               value={field.queryClosureReturnValue}
               label="Returned results name"
+              validate={validateQueryClosureReturnValue}
             />
           </Grid>
 
-          <Grid xs={6} className="d-flex p-2" alignItems="flex-end" justify="flex-end">
+          <Grid xs={6} className="d-flex p-2" alignItems="flex-end">
             {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
             {!queryResultsPending && !hideQueryResults && (
               <Typography variant="caption" color="textSecondary">

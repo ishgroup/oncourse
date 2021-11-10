@@ -6,23 +6,23 @@
 import React, {
   useCallback, useEffect, useMemo, useState
 } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
 import {
   getFormValues, InjectedFormProps, reduxForm
 } from "redux-form";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { State } from "../../../../reducers/state";
 import { getCertificatesRevokeStatus, revokeCertificate, setCertificatesRevokeStatus } from "../actions";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 
 interface RevokeConfirmProps extends InjectedFormProps {
   open: boolean;

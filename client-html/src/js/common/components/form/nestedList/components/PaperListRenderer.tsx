@@ -1,15 +1,15 @@
 import React, { PureComponent } from "react";
-import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Delete from "@material-ui/icons/Delete";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
+import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Delete from "@mui/icons-material/Delete";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
  List, ListItem, ListItemText, Checkbox, Collapse
-} from "@material-ui/core";
+} from "@mui/material";
 import { openInternalLink } from "../../../../utils/links";
 import { NestedListItem, NestedListPanelItem } from "../NestedList";
 
@@ -29,7 +29,7 @@ const styles = theme =>
       alignItems: "flex-start"
     },
     deleteButton: {
-      margin: `-${theme.spacing(1) - 2}px -${theme.spacing(1) - 2}px -${theme.spacing(1)}px 0px`
+      margin: `-${theme.spacing(1)} -${theme.spacing(1)} -${theme.spacing(1)} 0`
     },
     fade: {
       opacity: 0.5

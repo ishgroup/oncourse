@@ -1,0 +1,53 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 103-1
+      author: dmitriy
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Enrolment
+              columnName: studentLoanStatus
+      changes:
+        - addColumn:
+            tableName: Enrolment
+            columns:
+              - column:
+                  name: studentLoanStatus
+                  type: SMALLINT
+
+  - changeSet:
+      id: 103-2
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Enrolment
+            columnName: studentLoanStatus
+      changes:
+        - sql: 'update Enrolment e
+              join CourseClass cc on e.courseClass_Id = cc.id
+              join Course c on cc.courseId = c.id
+              set e.studentLoanStatus = 3
+              where c.feeHelpClass is true and (e.feeHelpAmount != 0 or e.feeStatus is not null); '
+        - sql: 'update Enrolment e
+              join CourseClass cc on e.courseClass_Id = cc.id
+              join Course c on cc.courseId = c.id
+              set e.studentLoanStatus = 1
+              where c.feeHelpClass is true and (e.feeHelpAmount = 0 and e.feeStatus is null);'
+        - sql: 'update Enrolment e set e.studentLoanStatus = 2 where e.studentLoanStatus is null;'
+
+  - changeSet:
+      id: 103-3
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Enrolment
+            columnName: studentLoanStatus
+      changes:
+        - addNotNullConstraint:
+            tableName: Enrolment
+            columnName: studentLoanStatus
+            columnDataType: SMALLINT

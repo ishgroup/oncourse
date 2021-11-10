@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ITax
+import ish.common.payable.TaxInterface
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Tax
@@ -25,10 +25,9 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Tax extends _Tax implements ITax, Queueable {
+class Tax extends _Tax implements TaxInterface, Queueable {
 
-
-
+	private static final String DESCRIPTION_KEY = "description";
 	private static final Logger logger = LogManager.getLogger()
 
 	@Override

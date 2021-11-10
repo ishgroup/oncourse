@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@material-ui/core/styles/createStyles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import createStyles from "@mui/styles/createStyles";
+import { alpha } from '@mui/material/styles';
 
 const styles = theme =>
   createStyles({
@@ -15,7 +15,7 @@ const styles = theme =>
       borderTop: `1px solid ${theme.palette.divider}`
     },
     dateInfo: {
-      color: fade(theme.palette.text.primary, 0.5),
+      color: alpha(theme.palette.text.primary, 0.5),
       fontSize: "12px"
     },
     leftOffset: {

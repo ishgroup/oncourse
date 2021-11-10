@@ -4,16 +4,12 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import { FormControlLabel } from "@material-ui/core";
-import {
-  Form, reduxForm, initialize, getFormValues
-} from "redux-form";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import isEmpty from "lodash.isempty";
 import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import * as Model from "../../../../../model/preferences/Maintenance";
@@ -34,6 +30,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
+
     if (!isEmpty(props.formData)) {
       props.dispatch(initialize("MaintenanceForm", props.formData));
     }
@@ -41,13 +38,10 @@ class MaintenanceBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate() {
     // Initializing form with values
-    if (!isEmpty(nextProps.formData) && !this.props.initialized) {
-      this.props.dispatch(initialize("MaintenanceForm", nextProps.formData));
-      this.setState({
-        disableBackupFields: !nextProps.formData[Model.BackupEnabled.uniqueKey.replace(/\./, "-")]
-      });
+    if (!isEmpty(this.props.formData) && !this.props.initialized) {
+      this.props.dispatch(initialize("MaintenanceForm", this.props.formData));
     }
   }
 
@@ -57,21 +51,15 @@ class MaintenanceBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      classes, handleSubmit, onSave, values, dirty, data, enums, invalid, form
+      handleSubmit, onSave, dirty, data, invalid, form
     } = this.props;
-
-    const disableBackupFields = values && values[this.formModel.BackupEnabled.uniqueKey] === "false";
-
-    const databaseDerby = values
-      && (values[this.formModel.DatabaseUsed.uniqueKey] === "database.derby"
-        || values[this.formModel.DatabaseUsed.uniqueKey] === "derby");
 
     return (
       <Form className="container" onSubmit={handleSubmit(onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 Maintenance
@@ -100,7 +88,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
           Automatic logout
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={6}>
             <FormField
               type="number"
@@ -108,86 +96,8 @@ class MaintenanceBaseForm extends React.Component<any, any> {
               label="Minutes of inactivity until automatic logout"
               parse={val => val || "0"}
               validate={[validateSingleMandatoryField, this.validateTimeoutRange]}
-              fullWidth
             />
           </Grid>
-
-          {databaseDerby && (
-            <Grid item xs={12}>
-              <Grid container spacing={5}>
-                <Grid item xs={12} sm={6}>
-                  <Divider className="mb-1" />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    classes={{
-                      root: classes.checkbox
-                    }}
-                    control={(
-                      <FormField
-                        type="checkbox"
-                        name={this.formModel.BackupEnabled.uniqueKey}
-                        color="primary"
-                        stringValue
-                        fullWidth
-                      />
-                    )}
-                    label="Automatic server data backup"
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={4}>
-                  <FormField
-                    type="text"
-                    name={this.formModel.BackupDir.uniqueKey}
-                    label="Server backup directory"
-                    disabled={disableBackupFields}
-                    fullWidth
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={2}>
-                  <FormField
-                    type="select"
-                    name={this.formModel.BackupTimeOfDay.uniqueKey}
-                    label="Backup time"
-                    items={enums.MaintenanceTimes}
-                    disabled={disableBackupFields}
-                    listSpacing
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography variant="subtitle1" className="heading">
-                    Retained backup history
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={2}>
-                  <FormField
-                    type="number"
-                    name={this.formModel.BackupMaxHistory.uniqueKey}
-                    label="Maximum backup kept"
-                    disabled={disableBackupFields}
-                    fullWidth
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={2}>
-                  <FormField
-                    type="number"
-                    name={this.formModel.BackupNextNumber.uniqueKey}
-                    label="Next backup number"
-                    disabled={disableBackupFields}
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-          )}
         </Grid>
       </Form>
     );

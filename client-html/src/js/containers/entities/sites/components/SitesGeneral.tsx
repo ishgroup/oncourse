@@ -5,18 +5,20 @@
 
 import { Room, Site } from "@api/model";
 import * as React from "react";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Grid, { GridSize } from "@mui/material/Grid";
 import {
   arrayInsert, arrayRemove
 } from "redux-form";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import { FormControlLabel } from "@material-ui/core";
+import ScreenShare from "@mui/icons-material/ScreenShare";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { FormControlLabel } from "@mui/material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import Collapse from "@material-ui/core/Collapse";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import Collapse from "@mui/material/Collapse";
+import Tooltip from "@mui/material/Tooltip";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
@@ -29,6 +31,8 @@ import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { openRoomLink } from "../../rooms/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -76,6 +80,7 @@ interface Props {
   countries: any;
   timezones: any;
   validateDeleteRoom: any;
+  isScrolling?: boolean;
 }
 
 class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any> {
@@ -148,7 +153,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
 
     return (
       <>
-        <Grid container className="p-3">
+        <Grid container columnSpacing={3} className="p-3">
           <CoordinatesValueUpdater
             dispatch={dispatch}
             latPath="latitude"
@@ -158,18 +163,23 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
           />
 
           <Grid item xs={layoutArray[2].xs}>
-            <FormField
-              type="text"
-              name="name"
-              label="Name"
-              listSpacing={false}
-              fullWidth
-              required
+            <FullScreenStickyHeader
+              twoColumn={twoColumn}
+              title={values && values.name}
+              fields={(
+                <FormField
+                  type="text"
+                  name="name"
+                  label="Name"
+                  listSpacing={false}
+                  required
+                />
+              )}
             />
           </Grid>
 
           <Grid item xs={layoutArray[0].xs}>
-            <Grid container className="flex-nowrap align-items-center mb-1">
+            <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
               <Grid item xs={12}>
                 <FormField
                   type="tags"
@@ -197,26 +207,26 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             <div className="container centeredFlex mb-2">
               <FormControlLabel
                 className="checkbox pr-3"
-                control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" />}
                 label="Administration center"
               />
 
               <FormControlLabel
                 className="checkbox pr-3"
-                control={<FormField type="checkbox" name="isVirtual" color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name="isVirtual" color="secondary" />}
                 label="Virtual site"
               />
 
               <FormControlLabel
                 className="checkbox"
-                control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" fullWidth />}
+                control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" />}
                 label="Show this site on the website"
               />
             </div>
           </Grid>
 
           <Collapse in={!values.isVirtual}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={layoutArray[2].xs}>
                 <FormField
                   type="text"
@@ -250,17 +260,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                       />
                     )}
                   </Grid>
-                  <Grid item xs={layoutArray[6].xs}>
-                    {timezones && (
-                      <FormField
-                        type="searchSelect"
-                        name="timezone"
-                        label="Timezone"
-                        items={timezones}
-                        validate={values.isVirtual ? undefined : validateSingleMandatoryField}
-                      />
-                    )}
-                  </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={layoutArray[7].xs}>
@@ -273,6 +272,27 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               </Grid>
             </Grid>
           </Collapse>
+
+          <Grid container item xs={12}>
+            <Grid item xs={layoutArray[2].xs}>
+              {timezones && (
+                <FormField
+                  type="searchSelect"
+                  name="timezone"
+                  label="Default timezone"
+                  items={timezones}
+                  labelAdornment={(
+                    <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                      <IconButton classes={{ root: "inputAdornmentButton" }}>
+                        <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  validate={validateSingleMandatoryField}
+                />
+              )}
+            </Grid>
+          </Grid>
 
           <Grid item xs={layoutArray[8].xs}>
             <MinifiedEntitiesList

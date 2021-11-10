@@ -4,11 +4,11 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { reduxForm, initialize, Form } from "redux-form";
 import isEmpty from "lodash.isempty";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
@@ -53,7 +53,7 @@ class CollegeBaseForm extends React.Component<any, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="centeredFlex">
               <Typography className="appHeaderFontSize" color="inherit" noWrap>
                 College
@@ -78,7 +78,7 @@ class CollegeBaseForm extends React.Component<any, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <Grid item xs={12} sm={6} lg={4}>
             <FormField
               type="text"

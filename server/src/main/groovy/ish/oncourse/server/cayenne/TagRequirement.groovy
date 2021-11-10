@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.messaging.ITagRequirement
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -33,7 +32,7 @@ import java.util.Map
  */
 @API
 @QueueableEntity
-class TagRequirement extends _TagRequirement implements ITagRequirement, Queueable {
+class TagRequirement extends _TagRequirement implements Queueable {
 
 	private static final Logger logger = LogManager.getLogger(TagRequirement.class)
 
@@ -57,7 +56,11 @@ class TagRequirement extends _TagRequirement implements ITagRequirement, Queueab
 		taggableClasses.put(Enrolment.class, TaggableClasses.ENROLMENT)
 		taggableClasses.put(Payslip.class, TaggableClasses.PAYSLIP)
 		taggableClasses.put(WaitingList.class, TaggableClasses.WAITING_LIST)
+		taggableClasses.put(Lead.class, TaggableClasses.LEAD)
 		taggableClasses.put(Assessment.class, TaggableClasses.ASSESSMENT)
+		taggableClasses.put(Invoice.class, TaggableClasses.INVOICE)
+		taggableClasses.put(Quote.class, TaggableClasses.INVOICE)
+		taggableClasses.put(AbstractInvoice.class, TaggableClasses.INVOICE)
 		TAGGABLE_CLASSES = Collections.unmodifiableMap(taggableClasses)
 	}
 
