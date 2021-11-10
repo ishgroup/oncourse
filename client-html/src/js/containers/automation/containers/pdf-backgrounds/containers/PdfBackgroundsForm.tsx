@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import { Form, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import Grid from "@mui/material/Grid";
 import { ReportOverlay } from "@api/model";
 import { Dispatch } from "redux";
 import Typography from "@mui/material/Typography";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import Button from "@mui/material/Button";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import FilePreview from "../../../../../common/components/form/FilePreview";
 import Uneditable from "../../../../../common/components/form/Uneditable";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("reports_background");
 
@@ -122,64 +122,64 @@ const PdfBackgroundsForm = React.memo<Props>(
             <RouteChangeConfirm form={form} when={(dirty || isNew || fileIsChosen) && !disableRouteConfirm} />
           )}
 
-          <CustomAppBar>
-            <FormField
-              type="headerText"
-              name="name"
-              placeholder="Name"
-              margin="none"
-              className="pl-1"
-              listSpacing={false}
-              required
-            />
-
-            <div className="flex-fill" />
-
-            {!isNew && (
-              <AppBarActions
-                actions={[
-                  {
-                    action: handleDelete,
-                    icon: <DeleteForever />,
-                    confirm: true,
-                    tooltip: "Delete PDF background",
-                    confirmText: "PDF background will be deleted permanently",
-                    confirmButtonText: "DELETE"
-                  }
-                ]}
-              />
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl={() => 'audit?search=~"ReportOverlay"'}
+            disabled={(isNew && !fileIsChosen)
+            || (!isNew && !dirty && !fileIsChosen)
+            || (!isNew && !values.preview && !fileIsChosen)}
+            invalid={invalid}
+            title={(isNew && (!values.name || values.name.trim().length === 0)) ? "New" : values.name.trim()}
+            fields={(
+              <Grid item xs={12}>
+                <FormField
+                  name="name"
+                  placeholder="Name"
+                  margin="none"
+                  className="pl-1"
+                  listSpacing={false}
+                  required
+                />
+              </Grid>
             )}
+            actions={(
+              <>
+                {!isNew && (
+                  <AppBarActions
+                    actions={[
+                      {
+                        action: handleDelete,
+                        icon: <DeleteForever />,
+                        confirm: true,
+                        tooltip: "Delete PDF background",
+                        confirmText: "PDF background will be deleted permanently",
+                        confirmButtonText: "DELETE"
+                      }
+                    ]}
+                  />
+                )}
+              </>
+            )}
+          >
+            <Grid container columnSpacing={3}>
+              <Grid item xs={12}>
+                <FilePreview data={values.preview} label="Preview" />
 
-            <AppBarHelpMenu
-              manualUrl={manualUrl}
-              auditsUrl={'audit?search=~"ReportOverlay"'}
-            />
+                <Button variant="outlined" color="secondary" className="mt-2" onClick={handleUploadClick}>
+                  Upload New Version
+                </Button>
 
-            <FormSubmitButton
-              disabled={(isNew && !fileIsChosen)
-                || (!isNew && !dirty && !fileIsChosen)
-                || (!isNew && !values.preview && !fileIsChosen)}
-              invalid={invalid}
-            />
-          </CustomAppBar>
+                {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" className="mt-1" />}
 
-          <Grid container columnSpacing={3} className="p-3 appBarContainer">
-            <Grid item xs={12}>
-              <FilePreview data={values.preview} label="Preview" />
-
-              <Button variant="outlined" color="secondary" className="mt-2" onClick={handleUploadClick}>
-                Upload New Version
-              </Button>
-
-              {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" className="mt-1" />}
-
-              {!chosenFileName && !values.preview ? (
-                <Typography color="error" variant="body2" className="mt-1" paragraph>
-                  File must be added
-                </Typography>
-              ) : null}
+                {!chosenFileName && !values.preview ? (
+                  <Typography color="error" variant="body2" className="mt-1" paragraph>
+                    File must be added
+                  </Typography>
+                ) : null}
+              </Grid>
             </Grid>
-          </Grid>
+          </AppBarContainer>
         </Form>
       </>
     );

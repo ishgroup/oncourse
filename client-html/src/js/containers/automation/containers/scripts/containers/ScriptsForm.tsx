@@ -4,11 +4,14 @@
  */
 
 import FileCopy from "@mui/icons-material/FileCopy";
-import React, { useCallback, useEffect, useMemo, useState, } from "react";
-import clsx from "clsx";
+import React, {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
-import { arrayInsert, change, FieldArray, Form, initialize, } from "redux-form";
+import {
+  arrayInsert, change, FieldArray, Form, initialize
+} from "redux-form";
 import Typography from "@mui/material/Typography";
 import { OutputType, Script, TriggerType } from "@api/model";
 import createStyles from "@mui/styles/createStyles";
@@ -16,9 +19,6 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import CodeIcon from '@mui/icons-material/Code';
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { CommonListItem } from "../../../../../model/common/sidebar";
@@ -34,12 +34,15 @@ import { setScriptComponents } from "../actions";
 import { ScriptComponentType, ScriptViewMode } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent, } from "../constants";
+import {
+  getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent
+} from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -91,6 +94,20 @@ const styles = theme =>
       margin: theme.spacing(1, 0, 3, 0),
     },
     queryField: {},
+    fullScreenTitleItem: {
+      paddingLeft: `${theme.spacing(12)} !important`,
+      marginTop: theme.spacing(1),
+    },
+    scriptAddMenu: {
+      position: "absolute",
+      zIndex: theme.zIndex.drawer + 2,
+      left: 26,
+      top: 43,
+      "& > .appBarFab": {
+        top: 0,
+        left: 0,
+      }
+    },
   });
 
 const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
@@ -325,20 +342,20 @@ const ScriptsForm = React.memo<Props>(props => {
 
       <Form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)} />}
-        <CustomAppBar fullWidth noDrawer>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className={clsx("centeredFlex", "relative")}>
-              {!isInternal && viewMode !== "Code" && (
-                <ScriptAddMenu
-                  addComponent={addComponent}
-                  form={form}
-                  dispatch={dispatch}
-                  values={values}
-                  hasUpdateAccess={hasUpdateAccess}
-                />
-              )}
+
+        <AppBarContainer
+          values={values}
+          manualUrl={manualUrl}
+          getAuditsUrl={getAuditsUrl}
+          disabled={!dirty}
+          invalid={invalid}
+          title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+          disableInteraction={isInternal}
+          classes={{ fullScreenTitleItem: !isInternal && viewMode !== "Code" ? classes.fullScreenTitleItem : null }}
+          noDrawer
+          fields={(
+            <Grid item xs={12}>
               <FormField
-                type="headerText"
                 name="name"
                 placeholder="Name"
                 margin="none"
@@ -347,56 +364,50 @@ const ScriptsForm = React.memo<Props>(props => {
                 disabled={isInternal}
                 required
               />
-
-              <div className="flex-fill" />
-
-              {!isNew && (
-                <AppBarActions
-                  actions={[
-                    isInternal
-                      ? {
-                          action: onInternalSaveClick,
-                          icon: <FileCopy />,
-                          tooltip: "Save as new script"
-                        }
-                      : {
-                          action: handleDelete,
-                          icon: <DeleteForever />,
-                          tooltip: "Delete script",
-                          confirmText: "Script component will be deleted permanently",
-                          confirmButtonText: "DELETE",
-                        },
-                    viewMode === "Cards"
-                      ? {
-                          action: toogleViewMode,
-                          icon: <CodeIcon />,
-                          tooltip: "Switch to code view"
-                        }
-                      : {
-                          action: toogleViewMode,
-                          icon: <ViewAgendaIcon />,
-                          tooltip: "Switch to cards view"
-                        }
-                  ]}
-                />
-              )}
-
-              <AppBarHelpMenu
-                created={values && values.created ? new Date(values.created) : null}
-                modified={values && values.modified ? new Date(values.modified) : null}
-                manualUrl={manualUrl}
-                auditsUrl={getAuditsUrl(values.id)}
-              />
-
-              <FormSubmitButton
-                disabled={!dirty || invalid}
-                invalid={invalid}
-              />
             </Grid>
-          </Grid>
-        </CustomAppBar>
-
-        <div className="appBarContainer">
+          )}
+          actions={!isNew && (
+            <AppBarActions
+              actions={[
+                isInternal
+                  ? {
+                    action: onInternalSaveClick,
+                    icon: <FileCopy />,
+                    tooltip: "Save as new script"
+                  }
+                  : {
+                    action: handleDelete,
+                    icon: <DeleteForever />,
+                    tooltip: "Delete script",
+                    confirmText: "Script component will be deleted permanently",
+                    confirmButtonText: "DELETE",
+                  },
+                viewMode === "Cards"
+                  ? {
+                    action: toogleViewMode,
+                    icon: <CodeIcon />,
+                    tooltip: "Switch to code view"
+                  }
+                  : {
+                    action: toogleViewMode,
+                    icon: <ViewAgendaIcon />,
+                    tooltip: "Switch to cards view"
+                  }
+              ]}
+            />
+          )}
+        >
+          {!isInternal && viewMode !== "Code" && (
+            <div className={classes.scriptAddMenu}>
+              <ScriptAddMenu
+                addComponent={addComponent}
+                form={form}
+                dispatch={dispatch}
+                values={values}
+                hasUpdateAccess={hasUpdateAccess}
+              />
+            </div>
+          )}
           {values && (
             <Grid container columnSpacing={3} className={classes.root}>
               <Grid item xs={9} className={classes.cardsBox}>
@@ -547,7 +558,7 @@ const ScriptsForm = React.memo<Props>(props => {
               </Grid>
             </Grid>
           )}
-        </div>
+        </AppBarContainer>
       </Form>
     </>
   );

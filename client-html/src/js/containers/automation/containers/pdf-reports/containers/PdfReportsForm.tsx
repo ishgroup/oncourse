@@ -18,14 +18,11 @@ import Typography from "@mui/material/Typography";
 import Grow from "@mui/material/Grow";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import Button from "@mui/material/Button";
 import Bindings from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";
@@ -38,6 +35,7 @@ import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationMod
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { EntityItems } from "../../../../../model/entities/common";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
@@ -222,157 +220,156 @@ const PdfReportsForm = React.memo<Props>(
 
           {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
 
-          <CustomAppBar>
-            <FormField
-              type="headerText"
-              name="name"
-              placeholder="Name"
-              margin="none"
-              className="pl-1"
-              listSpacing={false}
-              disabled={isInternal}
-              required
-            />
-
-            <div className="flex-fill" />
-
-            {!isNew && !isInternal && (
-              <AppBarActions
-                actions={[
-                  {
-                    action: handleDelete,
-                    icon: <DeleteForever />,
-                    confirm: true,
-                    tooltip: "Delete PDF template",
-                    confirmText: "PDF template will be deleted permanently",
-                    confirmButtonText: "DELETE"
-                  }
-                ]}
-              />
-            )}
-
-            {isInternal && (
-              <Grow in={isInternal}>
-                <Tooltip title="Save as new PDF report">
-                  <IconButton onClick={onInternalSaveClick} color="inherit">
-                    <FileCopy color="inherit" />
-                  </IconButton>
-                </Tooltip>
-              </Grow>
-            )}
-
-            <AppBarHelpMenu
-              created={values.createdOn ? new Date(values.createdOn) : null}
-              modified={values.modifiedOn ? new Date(values.modifiedOn) : null}
-              manualUrl={manualUrl}
-              auditsUrl={getAuditsUrl(values.id)}
-            />
-
-            <FormSubmitButton
-              disabled={!isNew && !dirty}
-              invalid={invalid}
-            />
-          </CustomAppBar>
-
-          <Grid container columnSpacing={3} className="p-3 appBarContainer">
-            <Grid item xs={7} className="pr-3">
-              <div className="heading">Type</div>
-              <FormField
-                name="entity"
-                type="select"
-                items={EntityItems}
-                disabled={isInternal}
-                required
-              />
-
-              <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
-
-              <FormField
-                type="text"
-                label="Description"
-                name="description"
-                disabled={isInternal}
-                fullWidth
-                multiline
-              />
-
-              <FormField
-                type="select"
-                label="PDF background"
-                name="backgroundId"
-                selectValueMark="id"
-                selectLabelMark="name"
-                items={pdfBackgrounds}
-                onChange={onBackgroundIdChange}
-                allowEmpty
-              />
-
-              <FormField
-                type="text"
-                label="Keycode"
-                name="keyCode"
-                validate={isNew || !isInternal ? validateKeycode : undefined}
-                disabled={!isNew}
-                required
-              />
-
-              {!isNew && (
-                <div className="pt-2">
-                  <Button variant="outlined" color="secondary" onClick={handleEdit} disabled={isInternal}>
-                    Edit
-                  </Button>
-                </div>
-              )}
-
-              <div className="pt-2">
-                <Button variant="outlined" color="secondary" onClick={handleUploadClick} disabled={isInternal}>
-                  Upload New Version
-                </Button>
-              </div>
-
-              {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" className="mt-1" />}
-
-              {isNew && !values.body && (
-                <Typography id="body" variant="caption" color="error" className="mt-1 shakingError" paragraph>
-                  Report body is required. Press &quot;Upload New Version&quot; to attach xml
-                </Typography>
-              )}
-            </Grid>
-            <Grid item xs={5}>
-              <div>
-                <FormField type="switch" name="enabled" label="Enabled" color="primary" fullWidth />
-              </div>
-              <div className="mt-3 pt-1 pb-2">
-                <Bindings
-                  dispatch={dispatch}
-                  form={form}
-                  name="variables"
-                  label="Variables"
-                  itemsType="label"
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl={getAuditsUrl}
+            disabled={!isNew && !dirty}
+            invalid={invalid}
+            title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+            disableInteraction={isInternal}
+            fields={(
+              <Grid item xs={12}>
+                <FormField
+                  name="name"
+                  placeholder="Name"
+                  margin="none"
+                  className="pl-1"
+                  listSpacing={false}
                   disabled={isInternal}
+                  required
                 />
-              </div>
-              <div className="mt-3">
-                <Bindings
-                  dispatch={dispatch}
-                  form={form}
-                  itemsType="component"
-                  name="options"
-                  label="Options"
-                  disabled={isInternal}
-                />
-              </div>
-              <div className="mt-3">
-                {!isNew && (
-                  <FilePreview
-                    label="Preview"
-                    actions={[{ actionLabel: "Clear preview", onAction: handleClearPreview, icon: <DeleteOutlineRoundedIcon /> }]}
-                    data={values.preview}
+              </Grid>
+            )}
+            actions={(
+              <>
+                {!isNew && !isInternal && (
+                  <AppBarActions
+                    actions={[
+                      {
+                        action: handleDelete,
+                        icon: <DeleteForever />,
+                        confirm: true,
+                        tooltip: "Delete PDF template",
+                        confirmText: "PDF template will be deleted permanently",
+                        confirmButtonText: "DELETE"
+                      }
+                    ]}
                   />
                 )}
-              </div>
+
+                {isInternal && (
+                  <Grow in={isInternal}>
+                    <Tooltip title="Save as new PDF report">
+                      <IconButton onClick={onInternalSaveClick} color="inherit">
+                        <FileCopy color="inherit" />
+                      </IconButton>
+                    </Tooltip>
+                  </Grow>
+                )}
+              </>
+            )}
+          >
+            <Grid container columnSpacing={3}>
+              <Grid item xs={7} className="pr-3">
+                <div className="heading">Type</div>
+                <FormField
+                  name="entity"
+                  type="select"
+                  items={EntityItems}
+                  disabled={isInternal}
+                  required
+                />
+
+                <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
+
+                <FormField
+                  type="text"
+                  label="Description"
+                  name="description"
+                  disabled={isInternal}
+                  fullWidth
+                  multiline
+                />
+
+                <FormField
+                  type="select"
+                  label="PDF background"
+                  name="backgroundId"
+                  selectValueMark="id"
+                  selectLabelMark="name"
+                  items={pdfBackgrounds}
+                  onChange={onBackgroundIdChange}
+                  allowEmpty
+                />
+
+                <FormField
+                  type="text"
+                  label="Keycode"
+                  name="keyCode"
+                  validate={isNew || !isInternal ? validateKeycode : undefined}
+                  disabled={!isNew}
+                  required
+                />
+
+                {!isNew && (
+                  <div className="pt-2">
+                    <Button variant="outlined" color="secondary" onClick={handleEdit} disabled={isInternal}>
+                      Edit
+                    </Button>
+                  </div>
+                )}
+
+                <div className="pt-2">
+                  <Button variant="outlined" color="secondary" onClick={handleUploadClick} disabled={isInternal}>
+                    Upload New Version
+                  </Button>
+                </div>
+
+                {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" className="mt-1" />}
+
+                {isNew && !values.body && (
+                  <Typography id="body" variant="caption" color="error" className="mt-1 shakingError" paragraph>
+                    Report body is required. Press &quot;Upload New Version&quot; to attach xml
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={5}>
+                <div>
+                  <FormField type="switch" name="enabled" label="Enabled" color="primary" fullWidth />
+                </div>
+                <div className="mt-3 pt-1 pb-2">
+                  <Bindings
+                    dispatch={dispatch}
+                    form={form}
+                    name="variables"
+                    label="Variables"
+                    itemsType="label"
+                    disabled={isInternal}
+                  />
+                </div>
+                <div className="mt-3">
+                  <Bindings
+                    dispatch={dispatch}
+                    form={form}
+                    itemsType="component"
+                    name="options"
+                    label="Options"
+                    disabled={isInternal}
+                  />
+                </div>
+                <div className="mt-3">
+                  {!isNew && (
+                    <FilePreview
+                      label="Preview"
+                      actions={[{ actionLabel: "Clear preview", onAction: handleClearPreview, icon: <DeleteOutlineRoundedIcon /> }]}
+                      data={values.preview}
+                    />
+                  )}
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
+          </AppBarContainer>
         </Form>
       </>
     );

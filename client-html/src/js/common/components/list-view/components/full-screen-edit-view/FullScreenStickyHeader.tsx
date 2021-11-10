@@ -4,7 +4,7 @@ import React, {
 import clsx from "clsx";
 import makeStyles from "@mui/styles/makeStyles";
 import {
- ClickAwayListener, Collapse, Typography, Grid 
+ ClickAwayListener, Collapse, Typography, Grid
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { AppTheme } from "../../../../../model/common/Theme";
@@ -107,7 +107,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   } = props;
 
   const classes = useStyles();
-  
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isStuck, setIsStuck] = useState<boolean>(false);
 
@@ -130,7 +130,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
       document.removeEventListener(STICKY_HEADER_EVENT, onStickyChange);
     };
   }, [onStickyChange]);
-  
+
   const showTitleOnly = twoColumn && isStuck;
 
   const titleExpanded = opened ? false : !isEditing;
