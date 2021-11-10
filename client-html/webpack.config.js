@@ -14,6 +14,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const __common = require("./webpack/__common");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || "development";
@@ -86,6 +87,10 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
             },
           ],
         },
+        {
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          type: "asset",
+        },
       ],
     },
     bail: false,
@@ -123,6 +128,22 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
       verbose: true,
     }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
+    new ImageMinimizerPlugin({
+      minimizerOptions: {
+        plugins: [
+          ["gifsicle", { interlaced: true, optimizationLevel: 3 }],
+          ["jpegtran", { progressive: true, arithmetic: true }],
+          [
+            "pngquant",
+            {
+              strip: true,
+              quality: [0.7, 0.9]
+            }
+          ],
+          "svgo",
+        ],
+      },
+    }),
     __common.DefinePlugin(NODE_ENV, BUILD_NUMBER),
     __common.PwaManifestPlugin(),
     __common.GenerateSW(),
