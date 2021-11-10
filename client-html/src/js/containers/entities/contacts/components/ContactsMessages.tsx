@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { getTableWrapperHeight, THEME_SPACING } from "../utils";
+import { THEME_SPACING } from "../utils";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { EditViewProps } from "../../../../model/common/ListView";
 
@@ -64,17 +64,11 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
 
   const getMessagesTableTitle = () => (getMessagesCount() > 0 ? `${getMessagesCount()} ` : "") + (getMessagesCount() === 1 ? "message" : "messages");
 
-  const tableWrapperHeight = getTableWrapperHeight(getMessagesCount());
-
   return values ? (
     <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header={getMessagesTableTitle()}>
         <div
-          className="flex-column"
-          style={{
-            height: tableWrapperHeight,
-            marginBottom: THEME_SPACING * 3
-          }}
+          className="flex-column pb-3"
         >
           <FieldArray
             name="messages"

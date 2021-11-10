@@ -1171,7 +1171,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
     const label = this.getOptionLabel(data);
 
-    const content = getHighlightedPartLabel(label, searchValue);
+    const content = getHighlightedPartLabel(label, searchValue, optionProps);
 
     let option = content;
 

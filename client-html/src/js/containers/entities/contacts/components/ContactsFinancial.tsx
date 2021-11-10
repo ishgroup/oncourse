@@ -22,7 +22,6 @@ import { State } from "../../../../reducers/state";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { ContactsState } from "../reducers";
-import { getTableWrapperHeight } from "../utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 
@@ -130,7 +129,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
   return values ? (
     <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} className="pb-3">
           <Grid item xs={twoColumn ? 3 : 12}>
             <FormField
               type="number"
@@ -189,9 +188,6 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
             item
             xs={12}
             className="flex-column"
-            style={{
-              height: values.financialData && getTableWrapperHeight(values.financialData.length)
-            }}
           >
             <FieldArray
               name="financialData"
