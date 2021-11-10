@@ -148,9 +148,10 @@ trait CourseClassTrait {
                 findAll { it.discount.code == null || it.discount.id in promoIds }.
                 findAll { it.discount.isStudentEligibile(contact, newMemberships, this, classes, purchaseTotal) }.
                 findAll {
-                    !it.discount.corporatePassDiscount.
-                            findAll { payerContact != null && it.corporatePass.contact == payerContact }
-                            .isEmpty()
+                    it.discount.corporatePassDiscount.isEmpty() ? true :
+                            !it.discount.corporatePassDiscount.findAll {
+                                payerContact != null && it.corporatePass.contact == payerContact
+                            }.isEmpty()
                 }
     }
 }
