@@ -77,12 +77,14 @@ interface Props extends InjectedFormProps {
   disableInteraction?: boolean;
   hideSubmitButton?: boolean;
   disabledScrolling?: boolean;
+  createdOn?: (values: any) => string;
+  modifiedOn?: (values: any) => string;
 }
 
 const AppBarContainer: React.FC<Props> = props => {
   const {
     classes, title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
-    disableInteraction, hideSubmitButton, disabledScrolling
+    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn
   } = props;
 
   const { scrollSpy } = useStickyScrollSpy();
@@ -142,8 +144,8 @@ const AppBarContainer: React.FC<Props> = props => {
 
           {!hideHelpMenu && values && (
             <AppBarHelpMenu
-              created={values && values.createdOn ? new Date(values.createdOn) : null}
-              modified={values && values.modifiedOn ? new Date(values.modifiedOn) : null}
+              created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
+              modified={values && (modifiedOn ? modifiedOn(values) : (values.modifiedOn ? new Date(values.modifiedOn) : null))}
               manualUrl={manualUrl}
               auditsUrl={values && getAuditsUrl && getAuditsUrl(values.id)}
               classes={{ buttonAlternate: hasScrolling && classes.headerAlternate }}
