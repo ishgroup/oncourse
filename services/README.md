@@ -16,6 +16,7 @@ By default all existed Attendancies should be populated with values from related
 > **Important note - willow should not care about certain college angel version, if you feel such necessity - you might doing something wrong**
 
 ## Schema changes
+### Note: merge of two tables is specific case. Case you need to do that, see merge of two tables article at first.
 1. always do willow schema changes first. Willow should always has actual data model. No matter if angel is not up to date yet
  - create nullable column via liquibase [common/cayenne-model/src/main/resources/liquibase.db.changelog.xml]()
  - release/deploy admin app to appply liquibase
@@ -56,6 +57,24 @@ Now we need to implement sending new data from angel side
 > **so you can not drop/rename columns/tables in one go**
 > **You need intermidiate step in this case, like deploying app with new schema**
 
+### Merge of two tables
+
+1. It is only one case, when database must be updated on the angel-side first, because merge on willow is very
+problematic: you need to generate two stubs from one model, because you must support old versions of replication
+   
+2. Upgrade replication. Add new fields to stubs, implement on willow-side in services updaters for new version
+   with new fields, but old database model. It will be replaced later.
+   
+3. Go to angel, upgrade database with new fields, upgrade models, remove model which needs to be removed.   
+   
+4. Upgrade replication plugin with new model: generate stubs, which were updated on the 1 step, from new model
+   
+5. test, that all this scheme works with new version of replication
+
+6. After deployment of angel, if everything works ok, we can drop old table and remove old replication versions 
+from willow (upgrade updaters, builders and willow database with new models).
+
+For the detailed instruction for each step see main and replication articles.    
 
 ## replication
 
