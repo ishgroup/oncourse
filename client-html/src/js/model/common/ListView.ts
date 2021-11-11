@@ -99,7 +99,6 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   match?: any;
   nestedIndex?: number;
   nameCondition?: AnyArgFunction;
-  hideFullScreenAppBar?: boolean;
   updateCaption?: (arg: string) => React.Component;
   threeColumn?: boolean;
   alwaysFullScreenCreateView?: boolean;
