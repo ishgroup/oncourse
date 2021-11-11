@@ -55,5 +55,19 @@ export const cardsFormStyles = theme => createStyles({
   },
   fromNameLabelOnEdit: {
     paddingRight: 17
-  }
+  },
+  fullScreenTitleItem: {
+    paddingLeft: `${theme.spacing(12)} !important`,
+    marginTop: theme.spacing(1),
+  },
+  scriptAddMenu: {
+    position: "absolute",
+    zIndex: theme.zIndex.drawer + 2,
+    left: 26,
+    top: 43,
+    "& > .appBarFab": {
+      top: 0,
+      left: 0,
+    }
+  },
 });
