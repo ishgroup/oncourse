@@ -12,7 +12,7 @@
 package ish.oncourse.server.messaging
 
 import groovy.transform.CompileDynamic
-import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Tag
 
 @CompileDynamic
@@ -20,20 +20,20 @@ class GetUnsubscribeLink {
 
     private static final String MAILING_LIST_UNSUBSCRIBE_URL = 'https://www.skillsoncourse.com.au/portal/unsubscribe/'
 
-    private MessagePerson messagePerson
+    private Message message
 
-    static GetUnsubscribeLink valueOf(MessagePerson messagePerson) {
+    static GetUnsubscribeLink valueOf(Message message) {
         GetUnsubscribeLink getUnsubscribeLink = new GetUnsubscribeLink()
-        getUnsubscribeLink.messagePerson = messagePerson
+        getUnsubscribeLink.message = message
         getUnsubscribeLink
     }
 
     String get() {
-        if (!messagePerson.message.taggingRelations.empty) {
-            Tag mailingList = messagePerson.message.taggingRelations[0].tag
+        if (!message.message.taggingRelations.empty) {
+            Tag mailingList = message.message.taggingRelations[0].tag
 
             if (mailingList && mailingList.willowId) {
-                return "${MAILING_LIST_UNSUBSCRIBE_URL}${mailingList.willowId}-${messagePerson.contact.uniqueCode}".toString()
+                return "${MAILING_LIST_UNSUBSCRIBE_URL}${mailingList.willowId}-${message.contact.uniqueCode}".toString()
             }
         }
 

@@ -771,7 +771,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@Nonnull
 	@API
 	@Override
-	List<MessagePerson> getMessages() {
+	List<Message> getMessages() {
 		return super.getMessages()
 	}
 
