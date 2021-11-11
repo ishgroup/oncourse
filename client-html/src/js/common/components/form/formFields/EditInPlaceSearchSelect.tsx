@@ -25,6 +25,7 @@ import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
+import { SelectItemRendererProps } from "../../../../model/common/Fields";
 
 const searchStyles = theme => createStyles({
   root: {},
@@ -129,7 +130,7 @@ interface Props extends WrappedFieldProps {
   remoteRowCount?: number;
   loadMoreRows?: AnyArgFunction;
   onCreateOption?: AnyArgFunction;
-  itemRenderer?: AnyArgFunction;
+  itemRenderer?: AnyArgFunction<React.FC<SelectItemRendererProps>>;
   onInputChange?: AnyArgFunction;
   onClearRows?: AnyArgFunction;
   onInnerValueChange?: AnyArgFunction;

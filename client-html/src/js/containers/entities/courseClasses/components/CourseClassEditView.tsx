@@ -489,7 +489,6 @@ const CourseClassEditView: React.FC<Props> = ({
         expandBudgetItem,
         currentTax
       }}
-      customAppBar
     />
   );
 };

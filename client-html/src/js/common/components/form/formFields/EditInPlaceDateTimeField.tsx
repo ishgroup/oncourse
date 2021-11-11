@@ -27,7 +27,6 @@ import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import { format, isValid } from "date-fns";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
 import {
@@ -230,7 +229,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     return dateObj;
   }, [input.value, timezone]);
 
-  const onAdornmentClick = e => {
+  const onAdornmentClick = () => {
     setTimeout(() => {
       setIsEditing(false);
     }, 600);
@@ -354,6 +353,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
         <DateTimeField
           type={type}
+          toolbarTitle={label}
           open={pickerOpened}
           value={dateValue}
           onChange={onPickerChange}

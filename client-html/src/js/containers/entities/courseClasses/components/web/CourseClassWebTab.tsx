@@ -15,7 +15,7 @@ class CourseClassWebTab extends React.Component<any, any> {
           <div className="heading mt-2 mb-2">Web</div>
         </div>
 
-        <Grid container columnSpacing={3} className="pl-3 pr-3">
+        <Grid container columnSpacing={3} className="pl-3 pr-3 pb-3">
           <Grid item xs={12}>
             <FormEditorField name="webDescription" label="Class specific web description" />
           </Grid>

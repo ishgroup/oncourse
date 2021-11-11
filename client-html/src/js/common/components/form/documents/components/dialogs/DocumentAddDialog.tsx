@@ -41,13 +41,13 @@ const addDialogStyles = theme => createStyles({
   }
 });
 
-const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: string; classes: any }>(props => {
+const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: string; classes: any, props: any }>(props => {
   const { classes, data, content } = props;
 
   const formattedDate = format(new Date(data.added), KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL).replace(/\./g, "");
 
   return (
-    <>
+    <div {...props}>
       <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
         <Tooltip title={content}>
           <Typography variant="body2" component="span" className="text-truncate">
@@ -72,7 +72,7 @@ const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: s
           </Typography>
         </Tooltip>
       </Grid>
-    </>
+    </div>
   );
 });
 
@@ -188,8 +188,8 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
     clearSearchDocuments();
   };
 
-  searchItemsRenderer = (content, data) => (
-    <DocumentSearchItem classes={this.props.classes} data={data} content={content} />
+  searchItemsRenderer = (content, data, search, props) => (
+    <DocumentSearchItem classes={this.props.classes} data={data} content={content} props={props} />
   );
 
   componentWillUnmount() {

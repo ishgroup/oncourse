@@ -23,13 +23,12 @@ import {
   isWeekend,
   subDays
 } from "date-fns";
-import { Session, SessionWarning, TutorAttendance } from "@api/model";
+import { SessionWarning, TutorAttendance } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import Typography from "@mui/material/Typography";
 import debounce from "lodash.debounce";
-import clsx from "clsx";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Settings from "@mui/icons-material/Settings";
@@ -294,6 +293,12 @@ const CourseClassTimetableTab = ({
       );
     }
   }, [expandedSession, values.sessions && values.sessions.length, values.courseName]);
+
+  useEffect(() => {
+    if (!twoColumn && expanded.includes(tabIndex)) {
+      setExpanded(prev => prev.filter(p => p !== tabIndex));
+    }
+  }, [twoColumn, expanded, tabIndex]);
 
   const onChangeBase = useCallback(
     id => {

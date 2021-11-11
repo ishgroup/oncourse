@@ -47,7 +47,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
   return (
     <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>
             <FormControlLabel
               className="switchWrapper pb-2"
