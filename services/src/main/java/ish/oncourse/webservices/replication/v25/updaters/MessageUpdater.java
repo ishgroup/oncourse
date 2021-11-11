@@ -5,19 +5,24 @@ import ish.common.types.MessageType;
 import ish.common.types.TypesUtil;
 import ish.oncourse.model.Contact;
 import ish.oncourse.model.Message;
+import ish.oncourse.model.MessagePerson;
 import ish.oncourse.webservices.replication.updaters.AbstractWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
 import ish.oncourse.webservices.v25.stubs.replication.MessageStub;
 
-public class MessageUpdater extends AbstractWillowUpdater<MessageStub, Message> {
+public class MessageUpdater extends AbstractWillowUpdater<MessageStub, MessagePerson> {
 
 	@Override
-	protected void updateEntity(MessageStub stub, Message entity, RelationShipCallback callback) {
+	protected void updateEntity(MessageStub stub, MessagePerson entity, RelationShipCallback callback) {
 		entity.setCreated(stub.getCreated());
-		entity.setEmailBody(stub.getEmailBody());
-		entity.setEmailSubject(stub.getEmailSubject());
 		entity.setModified(stub.getModified());
-		entity.setSmsText(stub.getSmsText());
+
+		Message message = new Message();
+		message.setEmailBody(stub.getEmailBody());
+		message.setEmailSubject(stub.getEmailSubject());
+		message.setSmsText(stub.getSmsText());
+
+		entity.setMessage(message);
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class));
 		entity.setDestinationAddress(stub.getDestinationAddress());
 		entity.setNumberOfAttempts(stub.getNumberOfAttempts());

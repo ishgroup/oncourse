@@ -6,13 +6,14 @@
 package ish.oncourse.webservices.replication.v25.builders;
 
 import ish.oncourse.model.Message;
+import ish.oncourse.model.MessagePerson;
 import ish.oncourse.webservices.replication.builders.AbstractWillowStubBuilder;
 import ish.oncourse.webservices.v25.stubs.replication.MessageStub;
 
-public class MessageStubBuilder extends AbstractWillowStubBuilder<Message, MessageStub> {
+public class MessageStubBuilder extends AbstractWillowStubBuilder<MessagePerson, MessageStub> {
 
     @Override
-    protected MessageStub createFullStub(Message entity) {
+    protected MessageStub createFullStub(MessagePerson entity) {
         MessageStub stub = new MessageStub();
         stub.setNumberOfAttempts(entity.getNumberOfAttempts());
         stub.setContactId(entity.getContact().getId());
@@ -24,6 +25,11 @@ public class MessageStubBuilder extends AbstractWillowStubBuilder<Message, Messa
         stub.setStatus(entity.getStatus().getDatabaseValue());
         stub.setTimeOfDelivery(entity.getTimeOfDelivery());
         stub.setType(entity.getType().getDatabaseValue());
+
+        Message message = entity.getMessage();
+        stub.setSmsText(message.getSmsText());
+        stub.setEmailBody(message.getEmailBody());
+        stub.setEmailSubject(message.getEmailSubject());
         return stub;
     }
 }
