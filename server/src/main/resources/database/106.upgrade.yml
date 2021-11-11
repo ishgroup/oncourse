@@ -1,0 +1,113 @@
+databaseChangeLog:
+
+    - changeSet:
+        id: 106-1
+        author: dmitriy
+        preConditions:
+          - onFail: HALT
+          - and:
+              - not:
+                  - columnExists:
+                      tableName: Message
+                      columnName: attemptCount
+                  - columnExists:
+                      tableName: Message
+                      columnName: destinationAddress
+                  - columnExists:
+                      tableName: Message
+                      columnName: response
+                  - columnExists:
+                      tableName: Message
+                      columnName: status
+                  - columnExists:
+                      tableName: Message
+                      columnName: type
+                  - columnExists:
+                      tableName: Message
+                      columnName: contactId
+                  - columnExists:
+                      tableName: Message
+                      columnName: timeOfDelivery
+        changes:
+          - addColumn:
+              tableName: Message
+              columns:
+                - column:
+                    name: contactId
+                    type: BIGINT
+                - column:
+                    name: type
+                    type: int(11)
+                - column:
+                    name: status
+                    type: int(11)
+                - column:
+                    name: response
+                    type: VARCHAR(500)
+                - column:
+                    name: destinationAddress
+                    type: VARCHAR(500)
+                - column:
+                    name: numberOfAttempts
+                    type: int(11)
+                - column:
+                    name: timeOfDelivery
+                    type: DATETIME
+
+    - changeSet:
+          id: 106-2
+          author: dmitriy
+          preConditions:
+              - onFail: HALT
+              - and:
+                  - columnExists:
+                        tableName: Message
+                        columnName: numberOfAttempts
+                  - columnExists:
+                        tableName: Message
+                        columnName: destinationAddress
+                  - columnExists:
+                        tableName: Message
+                        columnName: response
+                  - columnExists:
+                        tableName: Message
+                        columnName: status
+                  - columnExists:
+                        tableName: Message
+                        columnName: type
+                  - columnExists:
+                        tableName: Message
+                        columnName: contactId
+                  - columnExists:
+                        tableName: Message
+                        columnName: timeOfDelivery
+          changes:
+              - addColumn:
+                    tableName: Message
+                    columns:
+                        - column:
+                              name: messagePersonId
+                              type: BIGINT
+              - sql: 'UPDATE Message_Person mp, Message m
+                        SET m.messagePersonId = mp.id
+                        WHERE mp.messageId = m.id'
+              - sql: 'UPDATE MESSAGE m, Message_Person mp
+                        SET m.numberOfAttempts = mp.attemptCount,
+                                m.destinationAddress = mp.destinationAddress,
+                                m.response = mp.response,
+                                m.timeOfDelivery = mp.sentOn,
+                                m.status = mp.status,
+                                m.type = mp.type,
+                                m.contactId = mp.contactId
+                        WHERE m.messagePersonId = mp.Id'
+              - sql: 'INSERT INTO Message (willowId, createdOn, modifiedOn, emailSubject, emailBody, smsText,
+							    numberOfAttempts, status, type, destinationAddress, response, timeOfDelivery, contactId,
+							    creatorKey, createdByUserId, emailFrom, emailHtmlBody, postDescription)
+                            SELECT mp.willowId, mp.createdOn, mp.modifiedOn, m.emailSubject, m.emailBody, m.smsText,
+                                   mp.attemptCount, mp.status, mp.type, mp.destinationAddress, mp.response, mp.sentOn,
+                                   mp.contactId, m.creatorKey, m.createdByUserId, m.emailFrom, m.emailHtmlBody, m.postDescription
+                            FROM Message_Person mp INNER JOIN Message m ON mp.messageId = m.Id
+                            WHERE mp.Id NOT IN (select messagePersonId from Message)'
+              - dropColumn:
+                  tableName: Message
+                  columnName: messagePersonId
