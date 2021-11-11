@@ -162,7 +162,7 @@ const AppBarContainer: React.FC<Props> = props => {
           )}
         </Toolbar>
       </AppBar>
-      <div className={clsx({ "appBarContainer p-3": !disabledScrolling }, classes.container)} onScroll={onScroll}>
+      <div className={clsx("w-100", { "appBarContainer p-3": !disabledScrolling }, classes.container)} onScroll={onScroll}>
         {children}
       </div>
     </>
