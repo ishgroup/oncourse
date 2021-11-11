@@ -110,14 +110,14 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   const [expanded, setExpanded] = useState<number[]>([]);
 
   useEffect(() => {
-    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY));
     if (stored && stored[itemProps.rootEntity]) {
       setExpanded(stored[itemProps.rootEntity]);
     }
   }, []);
 
   useEffect(() => {
-    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY) || "");
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY));
     let updated = {};
     if (stored) {
       updated = { ...stored };

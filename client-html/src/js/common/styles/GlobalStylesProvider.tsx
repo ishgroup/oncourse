@@ -331,19 +331,13 @@ const globalStyles = (theme: AppTheme) =>
         }
       },
       ".errorColor": {
-        color: theme.palette.error.main
+        color: theme.palette.error.light
       },
       ".errorBackgroundColor": {
         backgroundColor: theme.palette.error.main
       },
       ".errorColorFade-0-2": {
         color: alpha(theme.palette.error.main, 0.2)
-      },
-      ".errorDarkColor": {
-        color: theme.palette.error.dark
-      },
-      ".errorDarkBackgroundColor": {
-        backgroundColor: theme.palette.error.dark
       },
       ".errorContrastColor": {
         color: theme.palette.error.contrastText
@@ -352,13 +346,13 @@ const globalStyles = (theme: AppTheme) =>
         color: theme.palette.primary.main
       },
       ".warningColor": {
-        color: theme.palette.warning.main
+        color: theme.palette.warning.light
       },
       ".successColor": {
-        color: theme.palette.success.main
+        color: theme.palette.success.light
       },
       ".successBackgroundColor": {
-        backgroundColor: theme.palette.success.main
+        backgroundColor: theme.palette.success.light
       },
       ".primaryContarstText": {
         color: theme.palette.primary.contrastText
@@ -432,10 +426,7 @@ const globalStyles = (theme: AppTheme) =>
         padding: theme.spacing(1)
       },
       ".listHeadingPadding": {
-        padding: `${theme.spacing(1) + 4}px ${theme.spacing(3)}px`,
-        display: "flex",
-        justifyContent: "space-between",
-        height: "auto"
+        padding: theme.spacing(1.5,3),
       },
       ".appHeaderFontSize": {
         fontSize: "1.125rem"

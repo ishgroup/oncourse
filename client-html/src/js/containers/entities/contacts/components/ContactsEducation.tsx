@@ -11,7 +11,6 @@ import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
 import { State } from "../../../../reducers/state";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { getTableWrapperHeight } from "../utils";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -256,9 +255,6 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             item
             xs={12}
             className="flex-column"
-            style={{
-              height: getTableWrapperHeight(enrolmentsCount)
-            }}
           >
             <FieldArray
               name="student.education.enrolments"
@@ -281,9 +277,6 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
               item
               xs={12}
               className="flex-column"
-              style={{
-                height: getTableWrapperHeight(priorLearningsCount)
-              }}
             >
               <FieldArray
                 name="student.education.priorLearnings"
@@ -305,9 +298,6 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
               item
               xs={12}
               className="flex-column"
-              style={{
-                height: getTableWrapperHeight(outcomesCount)
-              }}
             >
               <FieldArray
                 name="student.education.outcomes"
@@ -329,9 +319,6 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
               item
               xs={12}
               className="flex-column"
-              style={{
-                height: getTableWrapperHeight(certificatesCount)
-              }}
             >
               <FieldArray
                 name="student.education.certificates"

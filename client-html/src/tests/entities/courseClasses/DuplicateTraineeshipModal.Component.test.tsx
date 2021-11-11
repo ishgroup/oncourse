@@ -13,7 +13,7 @@ import { defaultComponents } from "../../common/Default.Components";
 
 // TODO Enable test when find solution to test @mui dialogs
 
-describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
+describe.skip("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
   defaultComponents({
     entity: "CheckoutPreviousInvoiceList",
     View: props => <div><DuplicateTraineeshipModal {...props} /></div>,
@@ -24,7 +24,7 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
       setDialogOpened: stubFunction
     }),
     render: (wrapper, initial, shallow) => {
-      // expect(wrapper.find("div.heading").text()).toContain("Duplicate traineeship class");
+      expect(wrapper.find("div.heading").text()).toContain("Duplicate traineeship class");
     }
   });
 });

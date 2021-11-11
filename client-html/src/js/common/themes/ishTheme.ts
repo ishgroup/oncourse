@@ -130,31 +130,15 @@ const createOverrides = (palette):{ components: Components } => ({
     },
     MuiCssBaseline: {
       styleOverrides: {
-        "@global": {
-          body: {
-            fontFeatureSettings:
-              '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
-              + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
-              + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
-              + '"cv10", "cv11", "calt", "liga", "kern"'
-          }
+        body: {
+          fontFeatureSettings:
+            '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
+            + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
+            + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
+            + '"cv10", "cv11", "calt", "liga", "kern"'
         }
       }
     },
-    // MuiPickerDTTabs: {
-    //   styleOverrides: {
-    //     tabs: {
-    //       color: palette.primary.contrastText
-    //     }
-    //   }
-    // },
-    // PrivateTabIndicator: {
-    //   styleOverrides: {
-    //     colorSecondary: {
-    //       backgroundColor: palette.primary.contrastText
-    //     }
-    //   }
-    // },
     MuiMenuItem: {
       styleOverrides: {
         root: {

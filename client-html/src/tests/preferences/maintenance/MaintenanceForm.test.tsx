@@ -6,16 +6,16 @@ import Maintenance from "../../../js/containers/preferences/containers/maintenan
 
 // TODO Enable test on fix
 
-describe("Virtual rendered MaintenanceForm", () => {
+describe.skip("Virtual rendered MaintenanceForm", () => {
   defaultComponents({
     entity: "MaintenanceForm",
     View: props => <Maintenance {...props} />,
     record: () => ({}),
     defaultProps: () => ({}),
     render: wrapper => {
-      // expect(wrapper.find("#logout-timeout input").val()).toEqual(
-      //   mockedAPI.db.preference[PreferencesModel.LogoutTimeout.uniqueKey].toString()
-      // );
+      expect(wrapper.find("#logout-timeout input").val()).toEqual(
+        mockedAPI.db.preference[PreferencesModel.LogoutTimeout.uniqueKey].toString()
+      );
     }
   });
 });

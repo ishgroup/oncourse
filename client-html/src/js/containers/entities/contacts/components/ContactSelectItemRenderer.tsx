@@ -10,9 +10,13 @@ import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
 
-const ContactSelectItemRenderer = React.memo<{ content: string; data: Contact }>(props => {
-  const { content, data } = props;
+interface Props {
+  content: string;
+  data: Contact ;
+  parentProps: any
+}
 
+const ContactSelectItemRenderer = React.memo<Props>(({ content, data, parentProps }) => {
   const caption = useMemo(
     () => (
       <span>
@@ -25,17 +29,19 @@ const ContactSelectItemRenderer = React.memo<{ content: string; data: Contact }>
   );
 
   return (
-    <div className="overflow-hidden">
-      <div className="text-nowrap text-truncate">
-        {content}
+    <div {...parentProps || {}}>
+      <div className="overflow-hidden">
+        <div className="text-nowrap text-truncate">
+          {content}
+        </div>
+        <Tooltip title={caption}>
+          <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">
+            {caption}
+          </Typography>
+        </Tooltip>
       </div>
-      <Tooltip title={caption}>
-        <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">
-          {caption}
-        </Typography>
-      </Tooltip>
     </div>
   );
 });
 
-export default (content, data) => <ContactSelectItemRenderer data={data} content={content} />;
+export default (content, data, search, parentProps) => <ContactSelectItemRenderer data={data} content={content} parentProps={parentProps} />;
