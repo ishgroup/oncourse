@@ -4,9 +4,9 @@
  */
 package ish.oncourse.commercial.replication.builders
 
-import ish.oncourse.server.cayenne.Message
-import ish.oncourse.webservices.v24.stubs.replication.MessageStub
 
+import ish.oncourse.server.cayenne.Message
+import ish.oncourse.webservices.v25.stubs.replication.MessageStub
 /**
  */
 class MessageStubBuilder extends AbstractAngelStubBuilder<Message, MessageStub> {
@@ -22,6 +22,14 @@ class MessageStubBuilder extends AbstractAngelStubBuilder<Message, MessageStub> 
 		stub.setEmailSubject(m.getEmailSubject())
 		stub.setModified(m.getModifiedOn())
 		stub.setSmsText(m.getSmsText())
+		stub.setNumberOfAttempts(m.getNumberOfAttempts())
+		stub.setContactId(m.getContact().getId())
+		stub.setDestinationAddress(m.getDestinationAddress())
+		stub.setResponse(m.getResponse())
+		stub.setTimeOfDelivery(m.getTimeOfDelivery())
+		stub.setStatus(m.getStatus().databaseValue)
+		stub.setType(m.getType().databaseValue)
+
 		return stub
 	}
 }

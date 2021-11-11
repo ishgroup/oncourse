@@ -9,27 +9,28 @@ import ish.common.types.MessageType
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
-import ish.oncourse.webservices.v24.stubs.replication.MessagePersonStub
+import ish.oncourse.webservices.v25.stubs.replication.MessageStub
 
 /**
  */
-class MessagePersonUpdater extends AbstractAngelUpdater<MessagePersonStub, MessagePerson> {
+class MessageUpdater extends AbstractAngelUpdater<MessageStub, Message> {
 
 	/**
 	 * @see AbstractAngelUpdater#updateEntity(ish.oncourse.webservices.util.GenericReplicationStub,
 	 *      ish.oncourse.server.cayenne.Queueable, RelationShipCallback)
 	 */
 	@Override
-	protected void updateEntity(MessagePersonStub stub, MessagePerson entity, RelationShipCallback callback) {
-		entity.setAttemptCount(stub.getNumberOfAttempts())
+	protected void updateEntity(MessageStub stub, Message entity, RelationShipCallback callback) {
+		entity.setNumberOfAttempts(stub.getNumberOfAttempts())
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class))
-		entity.setCreatedOn(entity.getCreatedOn())
-		entity.setDestinationAddress(entity.getDestinationAddress())
-		entity.setMessage(callback.updateRelationShip(stub.getMessageId(), Message.class))
+		entity.setCreatedOn(stub.getCreated())
+		entity.setDestinationAddress(stub.getDestinationAddress())
+		entity.setEmailBody(stub.getEmailBody())
+		entity.setEmailSubject(stub.getEmailSubject())
 		entity.setModifiedOn(stub.getModified())
 		entity.setResponse(stub.getResponse())
-		entity.setSentOn(stub.getTimeOfDelivery())
+		entity.setTimeOfDelivery(stub.getTimeOfDelivery())
+		entity.setSmsText(stub.getSmsText())
 		entity.setStatus(TypesUtil.getEnumForDatabaseValue(stub.getStatus(), MessageStatus.class))
 		entity.setType(TypesUtil.getEnumForDatabaseValue(stub.getType(), MessageType.class))
 	}
