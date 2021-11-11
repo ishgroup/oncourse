@@ -40,16 +40,17 @@ class AvetmissBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // Initializing form with values
     if (!isEmpty(nextProps.formData) && !this.props.initialized) {
       this.props.dispatch(initialize("AvetmissForm", nextProps.formData));
     }
   }
 
-  providerCodeLengthValidation(value) {
-    return value && value.length !== 4 ? "AVETMISS FEE HELP Provider code should be 4 characters" : undefined;
-  }
+  providerCodeLengthValidation = value => (
+    value && value.length !== 4 ? "AVETMISS FEE HELP Provider code should be 4 characters" : undefined
+  );
 
   render() {
     const {
