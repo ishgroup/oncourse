@@ -175,7 +175,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
                   variant="h5"
                   className={clsx(
                     classes.titleText,
-                    showTitleOnly ? "appHeaderFontSize ceneredFlex" : classes.title,
+                    showTitleOnly ? "appHeaderFontSize centeredFlex" : classes.title,
                     disableInteraction && classes.disableInteraction
                   )}
                   onClick={showTitleOnly || disableInteraction || opened ? null : () => setIsEditing(true)}
