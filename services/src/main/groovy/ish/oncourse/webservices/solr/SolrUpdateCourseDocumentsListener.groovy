@@ -24,7 +24,20 @@ import org.apache.logging.log4j.Logger
 import org.apache.solr.client.solrj.SolrClient
 
 import static ish.oncourse.webservices.ServicesModule.*
-
+/**
+ * Track all cayenne data bject changes.
+ * Filter only changes of:
+ *  - Course sensitive fields changed (that present in ish.oncourse.solr.model.SCourse index model)
+ *  - new web visible Course created - put new index
+ *  - Course become web invisible - remove index
+ *  - Course related classes changed
+ *  - new Course classes added 
+ *  - Course classs became disabled or not visible  
+ *  
+ *  Class changes also affect Course index since Course index has 'tutors', 'startDate' fields which esentially
+ *  agregation of Course classes values.
+ *  
+ **/
 class SolrUpdateCourseDocumentsListener extends ish.oncourse.solr.update.listener.SolrUpdateCourseDocumentsListener {
 
     private static final Logger logger = LogManager.logger
