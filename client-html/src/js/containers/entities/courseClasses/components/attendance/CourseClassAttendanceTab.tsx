@@ -217,7 +217,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
   }) => {
     const [selectedItems, setSelectedItems] = useState<AttandanceStepItem[]>([]);
     const [studentsToAttend, setStudentsToAttend] = useState<ContactAttendanceItem[]>([]);
-    // const [tutorsToAttend, setTutorsToAttend] = useState<ContactAttendanceItem[]>([]);
     const [modulesToAttend, setModulesToAttend] = useState<ContactAttendanceItem[]>([]);
     const [changeType, setAttendanceChangeType] = useState<AttandanceChangeType>(null);
     const [sliderValue, setSliderValue] = useState<number[]>([0, 7]);
@@ -243,8 +242,13 @@ const CourseClassAttendanceTab = React.memo<Props>(
     ]);
 
     useEffect(() => {
+      if (!twoColumn && expanded.includes(tabIndex)) {
+        setExpanded(prev => prev.filter(p => p !== tabIndex));
+      }
+    }, [twoColumn, expanded, tabIndex]);
+
+    useEffect(() => {
       setStudentsToAttend([]);
-      // setTutorsToAttend([]);
       setModulesToAttend([]);
       lastUpdated = null;
     }, [values.id]);

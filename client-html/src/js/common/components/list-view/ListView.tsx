@@ -8,14 +8,18 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
+import {
+ getFormSyncErrors, initialize, isDirty, isInvalid, submit 
+} from "redux-form";
 import clsx from "clsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { createStyles, withStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
+import {
+ Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
+} from "@api/model";
 import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import Button from "@mui/material/Button";
@@ -51,7 +55,9 @@ import {
   updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
+import {
+ closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm 
+} from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -171,11 +177,10 @@ interface Props extends Partial<ListState> {
     shouldAsyncValidate?: AnyArgFunction<boolean>;
     asyncBlurFields?: string[];
     asyncChangeFields?: string[];
-    hideFullScreenAppBar?: EditViewContainerProps["hideFullScreenAppBar"];
     disabledSubmitCondition?: boolean;
     enableReinitialize?: boolean;
     keepDirtyOnReinitialize?: boolean;
-    hideTitle?: boolean;
+    hideTitle?: EditViewContainerProps["hideTitle"];
   };
   CogwheelAdornment?: React.ReactNode;
   location?: any;
@@ -321,7 +326,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterGroupsLoaded,
       noListTags,
       preferences,
-      showColoredDots,
     } = this.props;
 
     const { threeColumn } = this.state;

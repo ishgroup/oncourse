@@ -653,7 +653,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].contactIds",
             "assessments[].submissions"
           ],
-          hideFullScreenAppBar: true,
+          hideTitle: true,
           enableReinitialize: true,
           keepDirtyOnReinitialize: true
         }}

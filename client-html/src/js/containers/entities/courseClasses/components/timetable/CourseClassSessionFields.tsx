@@ -7,22 +7,17 @@ import React, {
   useCallback, useEffect, useMemo, useRef
 } from "react";
 import Grid from "@mui/material/Grid";
-import FormGroup from "@mui/material/FormGroup";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   arrayPush, arrayRemove, change, Field, formValueSelector
 } from "redux-form";
 import {
-  addMinutes, differenceInMinutes, set, setDate
+  addMinutes, differenceInMinutes
 } from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
   ClashType, SessionWarning, Site, TutorAttendance,
 } from "@api/model";
-import { FormControl, FormHelperText } from "@mui/material";
-import clsx from "clsx";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -250,8 +245,10 @@ const CourseClassSessionFields: React.FC<Props> = ({
           allowEmpty
         />
       </Grid>
-      {warningTypes.Room
-        .map(w => <ErrorMessage message={w.message} /> )}
+      <Grid item xs={12}>
+        {warningTypes.Room
+          .map(w => <ErrorMessage message={w.message} /> )}
+      </Grid>
       <Grid item xs={12} className="mb-2">
         <Field
           name={`sessions[${session.index}].tutorAttendances`}
@@ -264,7 +261,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           onAddTutor={onAddTutor}
         />
       </Grid>
-      <Grid xs={12} className="secondaryHeading mb-1">
+      <Grid item xs={12} className="secondaryHeading mb-1">
         Notes
       </Grid>
       <Grid item xs={6}>

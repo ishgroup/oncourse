@@ -5,15 +5,19 @@
 
 import { Popover } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import { darken } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
-import { arrayInsert, arraySplice, change, initialize } from "redux-form";
+import {
+ arrayInsert, arraySplice, change, initialize 
+} from "redux-form";
 import { isAfter, isBefore, isEqual } from 'date-fns';
-import { ClassCost, CourseClassTutor, Discount, Tax } from "@api/model";
+import {
+ ClassCost, CourseClassTutor, Discount, Tax 
+} from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
@@ -345,6 +349,12 @@ const CourseClassBudgetTab = React.memo<Props>(
       setAnchorEl(null);
       setTutorsMenuOpened(false);
     }, []);
+    
+    useEffect(() => {
+      if (!twoColumn && expanded.includes(tabIndex)) {
+        setExpanded(prev => prev.filter(p => p !== tabIndex));
+      }
+    }, [twoColumn, expanded, tabIndex]);
 
     const onExpand = useCallback(
       (e, expanded) => {
