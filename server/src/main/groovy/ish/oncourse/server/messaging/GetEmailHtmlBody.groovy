@@ -49,8 +49,8 @@ class GetEmailHtmlBody {
 
     String get() {
         if (message) {
-            String html = message.message.emailHtmlBody
-            if (message.message.mailingListMessage) {
+            String html = message.emailHtmlBody
+            if (message.mailingListMessage) {
                 GetUnsubscribeLink getUnsubscribeLink = GetUnsubscribeLink.valueOf(message)
                 html += "\n<br/>\n<p><small><a href=\"${getUnsubscribeLink.get()}\">Unsubsribe</a></small></p>".toString()
             }

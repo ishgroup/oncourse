@@ -122,7 +122,7 @@ class MessageService {
 			case MessageType.POST:
 				throw new UnsupportedOperationException()
 		}
-		message.attemptCount = 0
+		message.numberOfAttempts = 0
 		message.status = MessageStatus.QUEUED
 		message.type = type
 

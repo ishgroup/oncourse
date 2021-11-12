@@ -118,9 +118,9 @@ public class EmailMessage {
 	public boolean send() {
 		var context = template.getObjectContext();
 
-		var messagePersons = createMessages(template, bindings, recipients);
+		var messages = createMessages(template, bindings, recipients);
 
-		if (!messagePersons.isEmpty()) {
+		if (!messages.isEmpty()) {
 			context.commitChanges();
 
 			return true;
