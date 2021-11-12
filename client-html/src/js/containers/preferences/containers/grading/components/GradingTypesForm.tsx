@@ -111,7 +111,7 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
             <AddIcon />
           </Fab>
         </div>
-        <Grid container className="mt-3">
+        <Grid container className="mt-1">
           <FieldArray
             name="types"
             component={GradingsRenderer}
