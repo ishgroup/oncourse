@@ -183,7 +183,7 @@ const LeadGeneral = (props: Props) => {
           )}
         />
       )}
-      <Grid container columnSpacing={3} className="generalRoot mt-2">
+      <Grid container columnSpacing={3} className="mt-2">
         {!twoColumn && (
           <Grid item xs={12} className="pt-2">
             {contactIdField(false)}

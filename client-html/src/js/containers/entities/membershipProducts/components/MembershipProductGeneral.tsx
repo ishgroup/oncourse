@@ -127,7 +127,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
   return (
-    <div className="generalRoot">
+    <div>
       <div className="pt-1">
         <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 12}>

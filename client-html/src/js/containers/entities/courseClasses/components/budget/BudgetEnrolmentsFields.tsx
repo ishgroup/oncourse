@@ -110,7 +110,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />
@@ -130,7 +130,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />
@@ -151,7 +151,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />

@@ -206,7 +206,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
 
   return (
-    <div className="generalRoot">
+    <div>
       <div className="pt-1">
         <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 4 : 6}>

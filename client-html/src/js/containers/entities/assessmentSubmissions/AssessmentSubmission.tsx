@@ -114,7 +114,8 @@ const AssessmentSubmission = (props: any) => {
       editViewProps={{
         nameCondition,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"]
+        asyncBlurFields: ["notes[].message"],
+        hideTitle: true
       }}
       EditViewContent={AssessmentSubmissionEditView}
       getEditRecord={getAssessmentSubmissionsItem}

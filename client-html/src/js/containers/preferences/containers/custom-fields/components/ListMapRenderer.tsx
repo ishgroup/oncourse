@@ -77,7 +77,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
   }, [fields]);
 
   return (
-    <div id={name} className="textField">
+    <div id={name}>
       <div>
         <div className="centeredFlex">
           <Typography component="div" variant="caption" color="textSecondary" noWrap>
