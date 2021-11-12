@@ -221,8 +221,8 @@ class FundingContractsForm extends React.Component<Props, any> {
               <AddIcon />
             </Fab>
           </div>
-          <Grid container>
-            <Grid item sm={12} lg={10} className="mt-1">
+          <Grid container className="mt-1">
+            <Grid item sm={12} lg={10}>
               {values && (
                 <FieldArray
                   name="fundingContracts"
