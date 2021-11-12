@@ -71,7 +71,7 @@ class AppBarHelpMenu extends React.Component<Props, any> {
   render() {
     const { anchorEl } = this.state;
     const {
-      classes, created, modified, iconClasses
+      classes, created, modified, iconClasses, auditsUrl
     } = this.props;
 
     return (
@@ -112,9 +112,9 @@ class AppBarHelpMenu extends React.Component<Props, any> {
           <MenuItem className={created || modified ? classes.divider : undefined} onClick={this.openManual}>
             Open manual
           </MenuItem>
-          <MenuItem onClick={this.openAudits}>
+          {auditsUrl && <MenuItem onClick={this.openAudits}>
             View audit trail
-          </MenuItem>
+          </MenuItem>}
         </Menu>
 
         <Tooltip title="Additional information">

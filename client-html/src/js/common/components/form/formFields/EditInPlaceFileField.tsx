@@ -94,11 +94,6 @@ const styles = theme => createStyles({
       maxWidth: "calc(100% * 1.4)"
     }
   },
-  labelTopZeroOffset: {
-    "& + $textFieldBorderModified": {
-      marginTop: 0
-    }
-  },
   labelShrink: {},
   labelAdornment: {},
   placeholderContent: {
@@ -134,11 +129,6 @@ const styles = theme => createStyles({
     position: "absolute",
     right: "-14px",
     bottom: "4px"
-  },
-  textFieldBorderModified: {
-    "&:after": {
-      borderBottomColor: theme.palette.primary.main
-    }
   },
   hideArrows: {
     "&::-webkit-outer-spin-button": {

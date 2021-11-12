@@ -77,7 +77,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
                   </Grid>
                 </Grid>
               )}
-              truncateTitle
             />
           </Grid>
         )}

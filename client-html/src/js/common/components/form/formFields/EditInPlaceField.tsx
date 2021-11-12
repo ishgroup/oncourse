@@ -31,6 +31,9 @@ const styles = theme => createStyles({
     "&:hover $invisibleContainer": {
       visibility: "visible",
     },
+    "& $readonly": {
+      "-webkit-text-fill-color": "inherit"
+    }
   },
   isEditing: {
     borderBottom: "none",
@@ -122,11 +125,6 @@ const styles = theme => createStyles({
       maxWidth: "calc(100% * 1.4)"
     }
   },
-  labelTopZeroOffset: {
-    "& + $textFieldBorderModified": {
-      marginTop: 0
-    }
-  },
   labelShrink: {
     "& $labelAdornment": {
       position: "absolute",
@@ -189,11 +187,6 @@ const styles = theme => createStyles({
     position: "absolute",
     right: "-14px",
     bottom: "4px"
-  },
-  textFieldBorderModified: {
-    "&:after": {
-      borderBottomColor: theme.palette.primary.main
-    },
   },
   selectIcon: {
     fontSize: "24px",

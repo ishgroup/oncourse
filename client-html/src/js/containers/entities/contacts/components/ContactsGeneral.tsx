@@ -33,7 +33,6 @@ import { getContactFullName } from "../utils";
 import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 

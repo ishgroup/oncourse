@@ -10,6 +10,7 @@ export type ManualType =
   | "advancedSetup_Export"
   | "advancedSetup_Import"
   | "advancedSetup_Tutor"
+  | "advancedSetup_Help"
   | "applications"
   | "assessment"
   | "certification"

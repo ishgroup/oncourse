@@ -14,7 +14,7 @@ import ListItem from "@mui/material/ListItem";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
 import NewsRender from "../news/NewsRender";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
 import { useStickyScrollSpy } from "../../utils/hooks";
@@ -87,25 +87,48 @@ interface Props {
   classes?: any;
   itemProps?: EditViewProps & any;
   items: TabsListItem[];
+  newsOffset?: string;
 }
-
-const SCROLL_TARGET_ID = "TabsListScrollTarget";
 
 const TABLIST_LOCAL_STORAGE_KEY = "localstorage_key_tab_list";
 
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 2 }] : [{ xs: 12 }, { xs: "auto" }]);
 
-const TabsList = React.memo<Props & RouteComponentProps>(({
-   items, itemProps = {}, history, location
-  }) => {
+const TabsList = React.memo<Props & RouteComponentProps>((
+  {
+    items, 
+    itemProps = {},
+    history, 
+    location,
+    newsOffset
+  }
+) => {
   const { scrollSpy } = useStickyScrollSpy();
   const classes = useStyles();
 
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<HTMLElement[]>([]);
+  const scrollContainer = useRef<HTMLDivElement>(null);
 
   const [selected, setSelected] = useState<string>(null);
   const [expanded, setExpanded] = useState<number[]>([]);
+
+  const scrollToSelected = (i: TabsListItem, index) => {
+    setSelected(i.label);
+    
+    const item = scrollNodes.current.find(sn => sn.id === i.label);
+
+    scrollContainer.current.scrollTo({
+      top: item.offsetTop - APP_BAR_HEIGHT,
+      behavior: 'smooth'
+    });
+
+    if (i.expandable && !expanded.includes(index)) {
+      setTimeout(() => {
+        setExpanded([...expanded, index]);
+      }, 300);
+    }
+  };
 
   useEffect(() => {
     const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY));
@@ -154,51 +177,43 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   }, [items]);
 
   const onScroll = e => {
-      scrollSpy(e);
+    if (!itemProps.twoColumn) {
+      return;
+    }
 
-      if (!itemProps.twoColumn) {
-        return;
+    scrollSpy(e);
+
+    if (e.target.id !== TAB_LIST_SCROLL_TARGET_ID) {
+      return;
+    }
+
+    const isScrollingDown = scrolledPX.current < e.target.scrollTop;
+
+    scrolledPX.current = e.target.scrollTop;
+
+    // scrolled to bottom
+    if (e.target.scrollTop + e.target.offsetHeight === e.target.scrollHeight) {
+      setSelected(scrollNodes.current[scrollNodes.current.length - 1].id);
+      return;
+    }
+
+    const selectedIndex = scrollNodes.current.findIndex(sn => sn.id === selected);
+
+    if (
+      isScrollingDown
+      && e.target.scrollTop
+        >= scrollNodes.current[selectedIndex].offsetHeight + scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT
+    ) {
+      if (selectedIndex + 1 <= scrollNodes.current.length - 1) {
+        setSelected(scrollNodes.current[selectedIndex + 1].id);
       }
+      return;
+    }
 
-      if (e.target.id !== SCROLL_TARGET_ID) {
-        return;
+    if (!isScrollingDown && e.target.scrollTop < scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT) {
+      if (selectedIndex - 1 >= 0) {
+        setSelected(scrollNodes.current[selectedIndex - 1].id);
       }
-
-      const isScrollingDown = scrolledPX.current < e.target.scrollTop;
-
-      scrolledPX.current = e.target.scrollTop;
-
-      // scrolled to bottom
-      if (e.target.scrollTop + e.target.offsetHeight === e.target.scrollHeight) {
-        setSelected(scrollNodes.current[scrollNodes.current.length - 1].id);
-        return;
-      }
-
-      const selectedIndex = scrollNodes.current.findIndex(sn => sn.id === selected);
-
-      if (
-        isScrollingDown
-        && e.target.scrollTop
-          >= scrollNodes.current[selectedIndex].offsetHeight + scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT
-      ) {
-        if (selectedIndex + 1 <= scrollNodes.current.length - 1) {
-          setSelected(scrollNodes.current[selectedIndex + 1].id);
-        }
-        return;
-      }
-
-      if (!isScrollingDown && e.target.scrollTop < scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT) {
-        if (selectedIndex - 1 >= 0) {
-          setSelected(scrollNodes.current[selectedIndex - 1].id);
-        }
-      }
-    };
-
-  const scrollToSelected = (i: TabsListItem, index) => {
-    setSelected(i.label);
-    scrollNodes.current.find(sn => sn.id === i.label).scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
-    if (i.expandable && !expanded.includes(index)) {
-      setExpanded([...expanded, index]);
     }
   };
 
@@ -211,9 +226,10 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
         xs={layoutArray[0].xs}
         className="overflow-y-auto h-100"
         onScroll={onScroll}
-        id={SCROLL_TARGET_ID}
+        id={TAB_LIST_SCROLL_TARGET_ID}
+        ref={scrollContainer}
       >
-        <NewsRender page />
+        <NewsRender newsOffset={newsOffset} page />
         {items.map((i, tabIndex) => (
           <div
             id={i.label}

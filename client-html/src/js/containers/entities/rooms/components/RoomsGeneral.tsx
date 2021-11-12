@@ -83,7 +83,6 @@ class RoomsGeneral extends React.PureComponent<any, any> {
                   listSpacing={false}
                 />
               )}
-              truncateTitle
             />
           </Grid>
           <Grid item xs={layoutArray[0].xs}>

@@ -103,3 +103,5 @@ const stringProto = String.prototype as any;
 stringProto.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
+
+export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";
