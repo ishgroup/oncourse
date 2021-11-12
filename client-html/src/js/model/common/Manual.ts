@@ -33,6 +33,7 @@ export type ManualType =
   | "generalPrefs_sellableItemsRelationTypes"
   | "generalPrefs_customFields"
   | "generalPrefs_financial"
+  | "generalPrefs-fundingContractsPrefs"
   | "generalPrefs_holidays"
   | "generalPrefs_ldap"
   | "generalPrefs_maintenance"
