@@ -30,9 +30,6 @@ const styles = theme => createStyles({
     },
     "&:hover $invisibleContainer": {
       visibility: "visible",
-    },
-    "& $readonly": {
-      "-webkit-text-fill-color": "inherit"
     }
   },
   isEditing: {
@@ -42,13 +39,6 @@ const styles = theme => createStyles({
       borderBottom: "none",
       opacity: 1,
     },
-  },
-  textField: {
-    paddingBottom: "9px",
-    height: "60px",
-    paddingLeft: "0",
-    overflow: "hidden",
-    display: "flex"
   },
   inlineTextField: {
     verticalAlign: "baseline",
@@ -97,9 +87,6 @@ const styles = theme => createStyles({
   readonly: {
     fontWeight: 300,
     pointerEvents: "none"
-  },
-  textFieldLeftMargin: {
-    marginLeft: theme.spacing(1)
   },
   rightPadding: {
     paddingRight: theme.spacing(2)
@@ -749,6 +736,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       anchorOrigin: { vertical: 'top', horizontal: 'left' }
                     }}
                     displayEmpty
+                    fullWidth
                   >
                     {selectItems}
                   </Select>
@@ -793,7 +781,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         <div
           className={clsx({
             [classes.hiddenContainer]: isEditing || invalid || !isInline,
-            [classes.textField]: listSpacing && formatting !== "inline",
             [classes.rightAligned]: rightAligned,
             "d-inline": isInline && !(isEditing || invalid)
           })}

@@ -15,9 +15,7 @@ import { AppTheme } from "../../../../model/common/Theme";
 import { Typography } from "@mui/material";
 
 export const selectStyles = theme => createStyles({
-    textField: {
-      paddingBottom: `${theme.spacing(2) + 1}px`
-    },
+    root: {},
     bottomMargin: {
       marginBottom: `${theme.spacing(1) + 1}px`
     },
@@ -80,7 +78,34 @@ export const selectStyles = theme => createStyles({
     readonly: {
       fontWeight: 300,
       pointerEvents: "none"
-    }
+    },
+    clearIcon: {
+      fontSize: "1.2rem",
+      "&:hover": {
+        cursor: "pointer",
+      }
+    },
+    inputWrapper: {
+      "&:hover $inputEndAdornment": {
+        visibility: 'visible'
+      },
+      "&:focus $inputEndAdornment": {
+        visibility: 'hidden',
+      }
+    },
+    hasPopup: {
+      "&$root $inputWrapper": {
+        paddingRight: 0
+      },
+      "&$root$hasClear $inputWrapper": {
+        paddingRight: 0
+      }
+    },
+    hasClear: {
+      "&$root $inputWrapper": {
+        paddingRight: 0
+      }
+    },
   });
 
 const listRef = React.createRef<any>();

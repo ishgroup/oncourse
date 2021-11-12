@@ -245,7 +245,7 @@ const TutorPayContent: React.FC<Props> = ({
             </span>
           </Typography>
         </Grid>
-        <Grid item xs={6} className="textField" alignItems="center" container>
+        <Grid item xs={6} alignItems="center" container>
           <Typography variant="body1" className="money pt-2">
             {onCostTotalLabel}
           </Typography>

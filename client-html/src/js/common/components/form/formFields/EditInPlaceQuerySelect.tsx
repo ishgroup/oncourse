@@ -1309,7 +1309,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
           />
         </div>
         <div
-          className={clsx(classes.textField, {
+          className={clsx({
             "d-none": inline || isEditing || (!isValidQuery && (meta.invalid || error)),
             "pointer-events-none": disabled
           })}

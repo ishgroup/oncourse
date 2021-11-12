@@ -29,6 +29,7 @@ import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getDiscountAmountExTax } from "../../discounts/utils";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 const calculateInvoiceLineTotal = (
   priceEachExTax: number,
@@ -499,13 +500,12 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           />
         </Grid>
 
-        <Grid item xs={6} className="textField">
-          <div>
-            <Typography variant="caption" color="textSecondary">
-              Tax amount
-            </Typography>
-            <Typography className="money">{taxDisplayedAmount}</Typography>
-          </div>
+        <Grid item xs={6}>
+          <Uneditable
+            label="Tax amount"
+            value={taxDisplayedAmount}
+            money
+          />
         </Grid>
       </Grid>
 

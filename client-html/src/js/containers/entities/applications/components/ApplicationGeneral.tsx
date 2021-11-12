@@ -55,7 +55,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   } as any;
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={1} className="generalRoot pt-3 mt-0">
+    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item xs={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("contactId")}
@@ -121,13 +121,15 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           required
         />
       </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
-          validate={tags && tags.length ? validateTagList : undefined}
-        />
+      <Grid item container xs={12}>
+        <Grid {...gridItemProps}>
+          <FormField
+            type="tags"
+            name="tags"
+            tags={tags}
+            validate={tags && tags.length ? validateTagList : undefined}
+          />
+        </Grid>
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
@@ -138,7 +140,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         />
       </Grid>
       <Grid item {...gridItemProps}>
-        <FormField type="text" name="source" label="Source" disabled />
+        <Uneditable value={values.source} label="Source" />
       </Grid>
       <Grid item {...gridItemProps}>
         {values && values.status !== ApplicationStatus.Accepted ? (

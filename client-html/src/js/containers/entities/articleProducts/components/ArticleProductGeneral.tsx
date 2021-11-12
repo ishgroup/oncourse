@@ -69,7 +69,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   return (
 
-    <Grid container columnSpacing={3} className="pt-1 generalRoot">
+    <Grid container columnSpacing={3} className="pt-1">
       <Grid item {...gridItemProps}>
         <FormField
           type="text"

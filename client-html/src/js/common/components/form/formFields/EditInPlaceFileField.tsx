@@ -20,12 +20,6 @@ import InputLabel from "@mui/material/InputLabel";
 import { Attachment } from "@mui/icons-material";
 
 const styles = theme => createStyles({
-  textField: {
-    paddingBottom: "13px",
-    paddingLeft: "0",
-    overflow: "hidden",
-    display: "flex"
-  },
   inlineTextField: {
     verticalAlign: "baseline"
   },
@@ -72,9 +66,6 @@ const styles = theme => createStyles({
   rightAligned: {},
   readonly: {
     pointerEvents: "none"
-  },
-  textFieldLeftMargin: {
-    marginLeft: theme.spacing(1)
   },
   rightPadding: {
     paddingRight: theme.spacing(2)
@@ -511,7 +502,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
         <div
           className={clsx({
             [classes.hiddenContainer]: isEditing || invalid,
-            [classes.textField]: listSpacing && formatting !== "inline",
             [classes.rightAligned]: rightAligned
           })}
         >

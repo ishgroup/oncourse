@@ -7,16 +7,23 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { FormControlLabel, Grid } from "@mui/material";
+import { FormControlLabel, Grid, IconButton } from "@mui/material";
 import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { getContactName } from "../../contacts/utils";
+import {
+ contactLabelCondition, defaultContactName, getContactName, openContactLink 
+} from "../../contacts/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 
 const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmission>> = props => {
   const {
@@ -58,14 +65,19 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
   };
 
   return (
-    <Grid container columnSpacing={3} className="pt-3 pl-3 pr-3">
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          label="Student name"
-          name="studentName"
-          type="text"
-          placeholder={twoColumn ? "Name" : undefined}
-          disabled
+    <Grid container columnSpacing={3} rowSpacing={1} className="pt-3 pl-3 pr-3">
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          disableInteraction
+          twoColumn={twoColumn}
+          title={(
+            <div className="d-inline-flex-center">
+              {values && defaultContactName(values.studentName)}
+              <IconButton disabled={!values?.studentId} size="small" color="primary" onClick={() => openContactLink(values?.studentId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+          )}
         />
       </Grid>
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -87,7 +99,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
         />
       </Grid>
 
-      <Grid container columnSpacing={3} className="pb-2">
+      <Grid item container columnSpacing={3} rowSpacing={1} className="pb-2">
         <Grid item xs={twoColumn ? 4 : 12} className="d-flex align-items-center">
           <FormControlLabel
             className="checkbox"
@@ -117,7 +129,7 @@ const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmissio
         </Grid>
       </Grid>
 
-      <Grid container columnSpacing={3}>
+      <Grid item container columnSpacing={3} rowSpacing={1}>
         <Grid item xs={twoColumn ? 4 : 12}>
           <FormField
             label="Submitted on"

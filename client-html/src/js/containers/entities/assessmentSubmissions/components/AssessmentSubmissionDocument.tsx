@@ -25,7 +25,7 @@ const AssessmentSubmissionDocuments: React.FC<AssessmentDocumentsProps> = props 
   } = props;
 
   return (
-    <Grid container columnSpacing={3} className="p-3 saveButtonTableOffset">
+    <Grid container className="p-3 saveButtonTableOffset">
       <FieldArray
         name="documents"
         label="Documents"

@@ -14,14 +14,18 @@ import { FormControlLabel } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+ useEffect, useMemo, useRef, useState 
+} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
-import { Attachment, Directions, Language, Link, LockOutlined, OpenInNew, SupervisorAccount } from "@mui/icons-material";
+import {
+ Attachment, Directions, Language, Link, LockOutlined, OpenInNew, SupervisorAccount 
+} from "@mui/icons-material";
 import { AlertTitle } from "@mui/lab";
 import Alert from "@mui/lab/Alert";
 import { Dispatch } from "redux";
@@ -133,7 +137,7 @@ const DocumentShare:React.FC<Props> = ({
 
   const groupedAttachmentRelations = groupAttachmentsByEntity(documentSource.attachmentRelations);
 
-  const [availableOptions, setAvailableOptions] = useState<{[O in DocumentShareOption]?: boolean}>(getAvailableOptions(groupedAttachmentRelations));
+  const [availableOptions, setAvailableOptions] = useState<{ [O in DocumentShareOption]?: boolean }>(getAvailableOptions(groupedAttachmentRelations));
 
   const onAttachmentsOver = () => {
     const nodes = attachmentRef.current.querySelectorAll(".highlight");
@@ -322,7 +326,7 @@ const DocumentShare:React.FC<Props> = ({
         <AlertTitle>Who can view this document</AlertTitle>
         {SummaryLabel}
       </Alert>
-      <Card className="mb-2" elevation={cardsElevation}>
+      <Card className="mb-2" elevation={cardsElevation}>F
         <CardHeader
           classes={cardHeaderClasses}
           avatar={(
@@ -332,7 +336,7 @@ const DocumentShare:React.FC<Props> = ({
           )}
           title="Attached to"
         />
-        <CardContent ref={attachmentRef}>
+        <CardContent classes={{ root: "pl-0 pr-0" }} ref={attachmentRef}>
           {AttachmentRelations}
         </CardContent>
       </Card>
@@ -368,7 +372,7 @@ const DocumentShare:React.FC<Props> = ({
           {contactRelated
           ? (
             <Collapse in={tutorsAndStudents}>
-              <CardContent>
+              <CardContent classes={{ root: "pl-0 pr-0" }}>
                 <Typography>
                   Shared with
                   {" "}
@@ -383,7 +387,7 @@ const DocumentShare:React.FC<Props> = ({
               {availableOptions["Tutor&Student"]
               && (
               <Collapse in={tutorsAndStudents}>
-                <CardContent>
+                <CardContent classes={{ root: "pl-0 pr-0" }}>
                   <FormControlLabel
                     classes={{
                     root: "checkbox",
@@ -447,7 +451,7 @@ const DocumentShare:React.FC<Props> = ({
         />
         {validUrl
           && linkOrPublic && (
-            <CardContent>
+            <CardContent classes={{ root: "pl-0 pr-0" }}>
               <div className="centeredFlex">
                 <Typography color="textSecondary" className="flex-fill">
                   <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
@@ -460,7 +464,7 @@ const DocumentShare:React.FC<Props> = ({
           )}
         {!linkOrPublic
           && (
-            <CardContent>
+            <CardContent classes={{ root: "pl-0 pr-0" }}>
               <Alert severity="warning" icon={<LockOutlined />}>
                 Document can not be accessed by direct link
               </Alert>

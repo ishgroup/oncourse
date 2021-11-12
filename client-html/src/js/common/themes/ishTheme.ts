@@ -107,6 +107,10 @@ const createOverrides = (palette):{ components: Components } => ({
           },
         },
         input: {
+          '&.Mui-disabled': {
+            fontWeight: 300,
+            "-webkit-text-fill-color": 'inherit'
+          },
           "&::placeholder": {
             color: palette.text.disabled,
             fill: palette.text.disabled,
@@ -125,7 +129,7 @@ const createOverrides = (palette):{ components: Components } => ({
         },
         inputMultiline: {
           lineHeight: "1.5em"
-        },
+        }
       }
     },
     MuiCssBaseline: {

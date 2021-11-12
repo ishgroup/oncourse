@@ -320,16 +320,6 @@ const globalStyles = (theme: AppTheme) =>
           color: theme.palette.primary.contrastText
         }
       },
-      ".textField": {
-        // @ts-ignore
-        paddingBottom: `${theme.spacing(2) - 3}px`,
-        paddingLeft: "0",
-        overflow: "hidden",
-        display: "flex",
-        "&.d-none": {
-          display: "none"
-        }
-      },
       ".errorColor": {
         color: theme.palette.error.light
       },
@@ -426,7 +416,7 @@ const globalStyles = (theme: AppTheme) =>
         padding: theme.spacing(1)
       },
       ".listHeadingPadding": {
-        padding: theme.spacing(1.5,3),
+        padding: theme.spacing(1.5, 3),
       },
       ".appHeaderFontSize": {
         fontSize: "1.125rem"
@@ -512,9 +502,6 @@ const globalStyles = (theme: AppTheme) =>
           color: "inherit",
           visibility: "visible",
         }
-      },
-      ".generalRoot": {
-        padding: theme.spacing(1, 3, 0)
       },
       ".gridTemplateColumns-1fr": {
         gridTemplateColumns: "minmax(0, 1fr) auto"

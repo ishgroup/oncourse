@@ -49,7 +49,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
     };
 
     return (
-      <Grid container columnSpacing={3} className="generalRoot">
+      <Grid container columnSpacing={3}>
         {twoColumn && (
           <Grid item xs={12}>
             <FullScreenStickyHeader

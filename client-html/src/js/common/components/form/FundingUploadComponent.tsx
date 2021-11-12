@@ -74,10 +74,7 @@ const styles = (theme: AppTheme) => createStyles({
     linkButtonIcon: { fontSize: "1.2em" },
     rootSelect: {
       fontWeight: 700,
-      paddingRight: `${theme.spacing(2.5)}px`,
-      "&$disabled": {
-        "-webkit-text-fill-color": "inherit"
-      }
+      paddingRight: `${theme.spacing(2.5)}px`
     },
     disabled: {}
   });

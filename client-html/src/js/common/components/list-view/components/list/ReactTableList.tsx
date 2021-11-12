@@ -451,7 +451,7 @@ const Table: React.FC<ListTableProps> = ({
       ref={tableRef}
       className={clsx(classes.table, { [classes.hideOverflowY]: isDraggingColumn })}
       style={{
-        minWidth: `calc(100vw - ${sidebarWidth}px)`
+        minWidth: !threeColumn && `calc(100vw - ${sidebarWidth}px)`
       }}
       onScroll={onScroll}
     >

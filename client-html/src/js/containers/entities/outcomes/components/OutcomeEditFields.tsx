@@ -328,8 +328,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       {priorLearningEditView ? (
         <Grid item xs={12}>
           <Grid container columnSpacing={3} rowSpacing={2} item xs={12}>
-            <Grid item xs={twoColumn ? 4 : 12} className="textField">
-              <div>
+            <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="date"
                   name={getFieldName("startDate")}
@@ -338,19 +337,16 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   listSpacing={false}
                   placeHolder="Leave empty to calculate date from class"
                 />
-              </div>
             </Grid>
-            <Grid item xs={twoColumn ? 4 : 12} className="textField">
-              <div>
-                <FormField
-                  type="date"
-                  name={getFieldName("endDate")}
-                  label="End date"
-                  validate={validateEndtDate}
-                  listSpacing={false}
-                  placeholder="Leave empty to calculate date from class"
-                />
-              </div>
+            <Grid item xs={twoColumn ? 4 : 12}>
+              <FormField
+                type="date"
+                name={getFieldName("endDate")}
+                label="End date"
+                validate={validateEndtDate}
+                listSpacing={false}
+                placeholder="Leave empty to calculate date from class"
+              />
             </Grid>
           </Grid>
         </Grid>

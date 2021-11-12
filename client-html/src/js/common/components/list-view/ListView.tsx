@@ -1115,7 +1115,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
             ) : this.renderTableList() }
 
             {threeColumn && !fullScreenEditView && (
-              <Grid item xs className={clsx("d-flex overflow-y-auto", classes.editViewColumn)}>
+              <Grid item xs className={clsx("d-flex", classes.editViewColumn)}>
                 <EditView
                   {...editViewProps}
                   form={LIST_EDIT_VIEW_FORM_NAME}

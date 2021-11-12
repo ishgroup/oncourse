@@ -220,7 +220,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
   const layoutArray = getLayoutArray(itemProps.twoColumn);
 
   return (
-    <Grid container className={clsx("overflow-hidden", itemProps.twoColumn ? "h-100" : "root")}>
+    <Grid container className={clsx("overflow-hidden", itemProps.twoColumn ? "h-100" : "fullHeightWithoutAppBar")}>
       <Grid
         item
         xs={layoutArray[0].xs}

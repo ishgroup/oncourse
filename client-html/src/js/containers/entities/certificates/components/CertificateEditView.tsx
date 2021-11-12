@@ -34,6 +34,7 @@ import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 interface Props extends EditViewProps {
   status?: string;
@@ -201,7 +202,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     [values.printedOn]
   );
 
-  const revokedValue = useMemo(
+  const revokedValue = useMemo<any>(
     () => (values.revokedOn ? (
         format(new Date(values.revokedOn), III_DD_MMM_YYYY)
       ) : (
@@ -211,7 +212,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     [values.revokedOn]
   );
 
-  const printedValue = useMemo(
+  const printedValue = useMemo<any>(
     () => (values.printedOn ? (
         format(new Date(values.printedOn), III_DD_MMM_YYYY)
       ) : (
@@ -383,13 +384,11 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12} className="textField">
-          <div>
-            <Typography variant="caption" color="textSecondary">
-              Level
-            </Typography>
-            <Typography variant="body1">{values.level || <span className="textSecondaryColor">None</span>}</Typography>
-          </div>
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <Uneditable
+            label="Level"
+            value={values.level}
+          />
         </Grid>
 
         {twoColumn && <Grid item xs={3} />}
@@ -414,22 +413,18 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12} className="textField">
-          <div>
-            <Typography variant="caption" color="textSecondary">
-              Printed
-            </Typography>
-            <Typography variant="body1">{printedValue}</Typography>
-          </div>
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <Uneditable
+            label="Printed"
+            value={printedValue}
+          />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12} className="textField">
-          <div className={clsx({ "d-none": isNew })}>
-            <Typography variant="caption" color="textSecondary">
-              Certificate Number
-            </Typography>
-            <Typography variant="body1">{certificateNumber}</Typography>
-          </div>
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <Uneditable
+            label="Certificate Number"
+            value={certificateNumber}
+          />
         </Grid>
 
         {twoColumn && <Grid item xs={3} />}
@@ -442,13 +437,11 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <FormField type="date" name="expiryDate" label="Expiry" />
         </Grid>
 
-        <Grid item xs={twoColumn ? 3 : 12} className="textField">
-          <div className={clsx({ "d-none": isNew })}>
-            <Typography variant="caption" color="textSecondary">
-              Revoked
-            </Typography>
-            <Typography variant="body1">{revokedValue}</Typography>
-          </div>
+        <Grid item xs={twoColumn ? 3 : 12} className={clsx({ "d-none": isNew })}>
+          <Uneditable
+            label="Revoked"
+            value={revokedValue}
+          />
         </Grid>
 
         {twoColumn && <Grid item xs={3} />}
