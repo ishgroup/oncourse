@@ -4,7 +4,7 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useRef, useState 
+ useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import {
   useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, UseSortByOptions, useTable
@@ -452,8 +452,8 @@ const Table: React.FC<ListTableProps> = ({
       {...getTableProps()}
       ref={tableRef}
       className={clsx(
-        classes.table, { 
-          [classes.hideOverflowY]: isDraggingColumn, 
+        classes.table, {
+          [classes.hideOverflowY]: isDraggingColumn,
         }
       )}
       style={{

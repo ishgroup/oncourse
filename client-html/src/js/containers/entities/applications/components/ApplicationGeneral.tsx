@@ -55,7 +55,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   } as any;
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+    <Grid container columnSpacing={3} rowSpacing={1} className="p-3 mt-0">
       <Grid item xs={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("contactId")}
