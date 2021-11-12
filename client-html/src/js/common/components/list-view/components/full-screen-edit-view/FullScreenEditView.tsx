@@ -177,7 +177,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     } = this.props;
 
     const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
-    
+
     const { hasScrolling } = this.state;
     
     const title = values && (nameCondition ? nameCondition(values) : values.name);

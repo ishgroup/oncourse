@@ -133,8 +133,6 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
 
   const showTitleOnly = twoColumn && isStuck;
 
-  const titleExpanded = opened ? false : !isEditing;
-
   return (
     <Grid
       container
