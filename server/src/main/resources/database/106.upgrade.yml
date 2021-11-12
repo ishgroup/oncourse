@@ -8,51 +8,57 @@ databaseChangeLog:
           - and:
               - not:
                   - columnExists:
-                      tableName: Message
-                      columnName: attemptCount
+                      tableName: Message_Person
+                      columnName: emailSubject
                   - columnExists:
-                      tableName: Message
-                      columnName: destinationAddress
+                      tableName: Message_Person
+                      columnName: emailBody
                   - columnExists:
-                      tableName: Message
-                      columnName: response
+                      tableName: Message_Person
+                      columnName: emailFrom
                   - columnExists:
-                      tableName: Message
-                      columnName: status
+                      tableName: Message_Person
+                      columnName: emailHtmlBody
                   - columnExists:
-                      tableName: Message
-                      columnName: type
+                      tableName: Message_Person
+                      columnName: creatorKey
                   - columnExists:
-                      tableName: Message
-                      columnName: contactId
+                      tableName: Message_Person
+                      columnName: postDescription
                   - columnExists:
-                      tableName: Message
-                      columnName: timeOfDelivery
+                      tableName: Message_Person
+                      columnName: smsText
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: createdByUserId
         changes:
           - addColumn:
-              tableName: Message
+              tableName: Message_Person
               columns:
                 - column:
-                    name: contactId
+                    name: emailSubject
+                    type: VARCHAR(500)
+                - column:
+                    name: emailBody
+                    type: TEXT
+                - column:
+                    name: emailFrom
+                    type: VARCHAR(200)
+                - column:
+                    name: emailHtmlBody
+                    type: mediumtext
+                - column:
+                    name: creatorKey
+                    type: VARCHAR(256)
+                - column:
+                    name: postDescription
+                    type: VARCHAR(1000)
+                - column:
+                    name: smsText
+                    type: longtext
+                - column:
+                    name: createdByUserId
                     type: BIGINT
-                - column:
-                    name: type
-                    type: int(11)
-                - column:
-                    name: status
-                    type: int(11)
-                - column:
-                    name: response
-                    type: VARCHAR(500)
-                - column:
-                    name: destinationAddress
-                    type: VARCHAR(500)
-                - column:
-                    name: numberOfAttempts
-                    type: int(11)
-                - column:
-                    name: timeOfDelivery
-                    type: DATETIME
 
     - changeSet:
           id: 106-2
@@ -61,53 +67,111 @@ databaseChangeLog:
               - onFail: HALT
               - and:
                   - columnExists:
-                        tableName: Message
-                        columnName: numberOfAttempts
+                      tableName: Message_Person
+                      columnName: emailSubject
                   - columnExists:
-                        tableName: Message
-                        columnName: destinationAddress
+                      tableName: Message_Person
+                      columnName: emailBody
                   - columnExists:
-                        tableName: Message
-                        columnName: response
+                      tableName: Message_Person
+                      columnName: emailFrom
                   - columnExists:
-                        tableName: Message
-                        columnName: status
+                      tableName: Message_Person
+                      columnName: emailHtmlBody
                   - columnExists:
-                        tableName: Message
-                        columnName: type
+                      tableName: Message_Person
+                      columnName: creatorKey
                   - columnExists:
-                        tableName: Message
-                        columnName: contactId
+                      tableName: Message_Person
+                      columnName: postDescription
                   - columnExists:
-                        tableName: Message
-                        columnName: timeOfDelivery
+                      tableName: Message_Person
+                      columnName: smsText
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: createdByUserId
           changes:
-              - addColumn:
-                    tableName: Message
-                    columns:
-                        - column:
-                              name: messagePersonId
-                              type: BIGINT
-              - sql: 'UPDATE Message_Person mp, Message m
-                        SET m.messagePersonId = mp.id
-                        WHERE mp.messageId = m.id'
               - sql: 'UPDATE MESSAGE m, Message_Person mp
-                        SET m.numberOfAttempts = mp.attemptCount,
-                                m.destinationAddress = mp.destinationAddress,
-                                m.response = mp.response,
-                                m.timeOfDelivery = mp.sentOn,
-                                m.status = mp.status,
-                                m.type = mp.type,
-                                m.contactId = mp.contactId
-                        WHERE m.messagePersonId = mp.Id'
-              - sql: 'INSERT INTO Message (willowId, createdOn, modifiedOn, emailSubject, emailBody, smsText,
-							    numberOfAttempts, status, type, destinationAddress, response, timeOfDelivery, contactId,
-							    creatorKey, createdByUserId, emailFrom, emailHtmlBody, postDescription)
-                            SELECT mp.willowId, mp.createdOn, mp.modifiedOn, m.emailSubject, m.emailBody, m.smsText,
-                                   mp.attemptCount, mp.status, mp.type, mp.destinationAddress, mp.response, mp.sentOn,
-                                   mp.contactId, m.creatorKey, m.createdByUserId, m.emailFrom, m.emailHtmlBody, m.postDescription
-                            FROM Message_Person mp INNER JOIN Message m ON mp.messageId = m.Id
-                            WHERE mp.Id NOT IN (select messagePersonId from Message)'
-              - dropColumn:
+                        SET mp.emailSubject = m.emailSubject,
+                            mp.emailBody = m.emailBody,
+                            mp.emailFrom = m.emailFrom,
+                            mp.emailHtmlBody = m.emailHtmlBody,
+                            mp.creatorKey = m.creatorKey,
+                            mp.postDescription = m.postDescription,
+                            mp.smsText = m.smsText,
+                            mp.createdByUserId = m.createdByUserId
+                        WHERE mp.messageId = m.Id'
+
+    - changeSet:
+          id: 106-3
+          author: dmitriy
+          preConditions:
+              - onFail: HALT
+              - and:
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailSubject
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailFrom
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: emailHtmlBody
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: creatorKey
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: postDescription
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: smsText
+                  - columnExists:
+                      tableName: Message_Person
+                      columnName: createdByUserId
+          changes:
+              - addForeignKeyConstraint:
+                  baseColumnNames: createdByUserId
+                  baseTableName: Message_Person
+                  constraintName: fk_Message_CreatedBy_SystemUser
+                  referencedColumnNames: id
+                  referencedTableName: SystemUser
+              - renameColumn:
+                  columnDataType: int(11)
+                  newColumnName: numberOfAttempts
+                  oldColumnName: attemptCount
+                  tableName: Message_Person
+              - renameColumn:
+                  columnDataType: DATETIME
+                  newColumnName: timeOfDelivery
+                  oldColumnName: sentOn
+                  tableName: Message_Person
+
+    - changeSet:
+        id: 106-4
+        author: dmitriy
+        preConditions:
+          - onFail: HALT
+          - and:
+              - columnExists:
+                  tableName: Message_Person
+                  columnName: messageId
+              - tableExists:
                   tableName: Message
-                  columnName: messagePersonId
+              - tableExists:
+                  tableName: Message_Person
+        changes:
+          - dropForeignKeyConstraint:
+              baseTableName: Message_Person
+              constraintName: fk_MessPers_Message
+          - dropTable:
+              tableName: Message
+          - dropColumn:
+                tableName: Message_Person
+                columnName: messageId
+          - renameTable:
+              newTableName: Message
+              oldTableName: Message_Person

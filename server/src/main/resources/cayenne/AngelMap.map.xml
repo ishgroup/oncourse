@@ -943,20 +943,6 @@
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
-	<db-entity name="Message_Person">
-		<db-attribute name="attemptCount" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="destinationAddress" type="VARCHAR" isMandatory="true" length="500"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="messageId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="response" type="VARCHAR" length="500"/>
-		<db-attribute name="sentOn" type="TIMESTAMP"/>
-		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="willowId" type="BIGINT"/>
-	</db-entity>
 	<db-entity name="Module">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="creditPoints" type="DECIMAL" length="10" scale="2"/>
@@ -4181,14 +4167,8 @@
 	<db-relationship name="taggingRelations" source="Message" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
-	<db-relationship name="contact" source="Message_Person" target="Contact">
-		<db-attribute-pair source="contactId" target="id"/>
-	</db-relationship>
 	<db-relationship name="contact" source="Message" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
-	</db-relationship>
-	<db-relationship name="message" source="Message_Person" target="Message">
-		<db-attribute-pair source="messageId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
