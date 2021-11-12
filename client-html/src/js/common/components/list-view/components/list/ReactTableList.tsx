@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
+import React, {
+ useCallback, useEffect, useMemo, useRef, useState 
+} from "react";
+import {
+ useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable 
+} from "react-table";
 import makeStyles from "@mui/styles/makeStyles";
-import MaUTable from "@mui/material/Table";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import debounce from "lodash.debounce";
 import Typography from "@mui/material/Typography";
@@ -35,7 +35,7 @@ const listRef = React.createRef<any>();
 
 const getRowId = row => row.id;
 
-interface ListTableProps extends Partial<ListProps>{
+interface ListTableProps extends Partial<TableListProps>{
   columns: any;
   data: any;
   sorting: any;
@@ -61,6 +61,7 @@ const Table: React.FC<ListTableProps> = ({
   onChangeColumnsOrder,
   setShowColoredDots,
   showColoredDots,
+  sidebarWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
 
@@ -326,7 +327,7 @@ const Table: React.FC<ListTableProps> = ({
   };
 
   const Header = useMemo(() => (
-    <div className={classes.header} style={{ width: totalColumnsWidth }}>
+    <div className={classes.header}>
       {headerGroups.map((headerGroup, groupIndex) => (
         <DragDropContext
           key={groupIndex}
@@ -449,6 +450,9 @@ const Table: React.FC<ListTableProps> = ({
       {...getTableProps()}
       ref={tableRef}
       className={clsx(classes.table, { [classes.hideOverflowY]: isDraggingColumn })}
+      style={{
+        minWidth: `calc(100vw - ${sidebarWidth}px)`
+      }}
       onScroll={onScroll}
     >
       {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
@@ -460,11 +464,12 @@ const Table: React.FC<ListTableProps> = ({
   );
 };
 
-export interface ListProps {
+export interface TableListProps {
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   shortCurrencySymbol?: string;
   records?: DataResponse;
   recordsLeft?: number;
+  sidebarWidth?: number;
   onChangeModel?: (model: TableModel, listUpdate?: boolean) => void;
   customColumnFormats?: CustomColumnFormats;
   setRowClasses?: AnyArgFunction<string>;
@@ -483,7 +488,7 @@ export interface ListProps {
   updateColumns?: (columns: Column[]) => void;
 }
 
-const ListRoot = React.memo<ListProps>(({
+const ListRoot = React.memo<TableListProps>(({
   records,
   recordsLeft,
   shortCurrencySymbol,
@@ -504,6 +509,7 @@ const ListRoot = React.memo<ListProps>(({
   getContainerNode,
   updateColumns,
   showColoredDots,
+  sidebarWidth
 }) => {
   const columns = useMemo(
     () => {
@@ -592,6 +598,7 @@ const ListRoot = React.memo<ListProps>(({
         getContainerNode={getContainerNode}
         setShowColoredDots={setShowColoredDots}
         showColoredDots={showColoredDots}
+        sidebarWidth={sidebarWidth}
       />
     )
     : null;

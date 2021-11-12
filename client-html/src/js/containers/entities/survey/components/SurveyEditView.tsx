@@ -18,9 +18,7 @@ import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import Score from "./Score";
-import Uneditable from "../../../../common/components/form/Uneditable";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { openSiteLink } from "../../sites/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { openContactLink } from "../../contacts/utils";
@@ -74,7 +72,7 @@ const SurveyEditView = (props: Props) => {
           disableInteraction
           twoColumn={twoColumn}
           title={(
-            <div className="centeredFlex">
+            <div className="d-inline-flex-center">
               {values.studentName}
               <IconButton size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
                 <Launch fontSize="inherit" />

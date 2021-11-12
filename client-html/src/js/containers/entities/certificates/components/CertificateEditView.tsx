@@ -261,7 +261,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="centeredFlex">
+            <div className="d-inline-flex-center">
               {values && defaultContactName(values.studentName)}
               <IconButton disabled={!values?.studentContactId} size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
                 <Launch fontSize="inherit" />

@@ -27,12 +27,9 @@ import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../co
 import { DD_MMM_YYYY_MINUSED, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { PaymentInType } from "../consts";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { openSiteLink } from "../../sites/utils";
-import Uneditable from "../../../../common/components/form/Uneditable";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -228,17 +225,15 @@ class BankingEditView extends React.PureComponent<any, any> {
       openNestedView,
       values,
       isNew,
-      invalid
     } = this.props;
 
     return (
       <div className="h-100 flex-column p-3">
         <FullScreenStickyHeader
-          opened={isNew || invalid}
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="centeredFlex">
+            <div className="d-inline-flex-center">
               {values?.administrationCenterId
                 ? (
                 <>

@@ -22,7 +22,11 @@ import { EditViewContainerProps } from "../../../../../model/common/ListView";
 import AppBarHelpMenu from "../../../form/AppBarHelpMenu";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import { LSGetItem } from "../../../../utils/storage";
-import { APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../../../constants/Config";
+import {
+  APPLICATION_THEME_STORAGE_NAME,
+  STICKY_HEADER_EVENT,
+  TAB_LIST_SCROLL_TARGET_ID
+} from "../../../../../constants/Config";
 import FullScreenStickyHeader from "./FullScreenStickyHeader";
 import { useStickyScrollSpy } from "../../../../utils/hooks";
 
@@ -171,6 +175,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       disabledSubmitCondition,
       hideTitle,
     } = this.props;
+
+    const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
     
     const { hasScrolling } = this.state;
     
@@ -212,7 +218,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 <AppBarHelpMenu
                   created={values ? new Date(values.createdOn) : null}
                   modified={values ? new Date(values.modifiedOn) : null}
-                  auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
+                  auditsUrl={rootEntity !== "Audit" && `audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
                   manualUrl={manualLink}
                   classes={{ buttonAlternate: hasScrolling && classes.headerAlternate }}
                 />
@@ -232,8 +238,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
             </div>
           </AppBar>
           <div
-            className={clsx(classes.root, hideTitle && "overflow-y-auto")}
-            onScroll={hideTitle && scrollSpy}
+            className={clsx(classes.root, noTabList && "overflow-y-auto")}
+            onScroll={noTabList && scrollSpy}
           >
             <EditViewContent
               twoColumn

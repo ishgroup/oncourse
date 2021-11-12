@@ -81,7 +81,7 @@ import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../c
 import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
-import ReactTableList, { ListProps } from "./components/list/ReactTableList";
+import ReactTableList, { TableListProps } from "./components/list/ReactTableList";
 import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
@@ -123,7 +123,7 @@ const sideBarTheme = theme => createTheme({
 });
 
 interface Props extends Partial<ListState> {
-  listProps: ListProps;
+  listProps: TableListProps;
   getEditRecord: (id: string) => void;
   rootEntity: EntityName;
   EditViewContent: any;
@@ -992,10 +992,11 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const {
       listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns, setShowColoredDots, showColoredDots
     } = this.props;
-    const { threeColumn } = this.state;
+    const { threeColumn, sidebarWidth } = this.state;
     return (
       <ReactTableList
         {...listProps}
+        sidebarWidth={sidebarWidth}
         onLoadMore={onLoadMore}
         selection={selection}
         records={records}
@@ -1212,7 +1213,7 @@ const mapStateToProps = (state: State) => ({
   showColoredDots: state.list.showColoredDots,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {
@@ -1244,4 +1245,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   setShowColoredDots: (value: boolean) => dispatch(setShowColoredDots(value)),
 });
 
-export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;
