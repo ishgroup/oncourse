@@ -30,6 +30,9 @@ export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
 const styles = (theme: AppTheme) =>
   createStyles({
+    drawerRoot: {
+      zIndex: theme.zIndex.drawer + 2,
+    },
     drawerPaper: {
       overflowX: "hidden"
     },
@@ -314,7 +317,8 @@ const SwipeableSidebar: React.FC<Props> = props => {
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
         classes={{
-          paper: classes.drawerPaper
+          paper: classes.drawerPaper,
+          root: classes.drawerRoot,
         }}
       >
         <div className={classes.drawerWidth}>
