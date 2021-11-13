@@ -20,6 +20,7 @@ const styles = theme =>
       flexDirection: "column",
       width: "100%",
       userSelect: "text",
+      position: "relative"
     },
     actionButtonsGroup: {
       position: "absolute",

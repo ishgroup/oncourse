@@ -109,7 +109,7 @@ const createOverrides = (palette):{ components: Components } => ({
         input: {
           '&.Mui-disabled': {
             fontWeight: 300,
-            "-webkit-text-fill-color": 'inherit'
+            WebkitTextFillColor: 'inherit'
           },
           "&::placeholder": {
             color: palette.text.disabled,
