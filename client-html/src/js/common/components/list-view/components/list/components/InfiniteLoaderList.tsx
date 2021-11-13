@@ -112,8 +112,6 @@ export default ({
     rows.length
   ]);
 
-  console.log(totalColumnsWidth);
-
   return (
     <div className={clsx("w-100 h-100 d-block", classes.infiniteLoaderListRoot)}>
       <InfiniteLoader
