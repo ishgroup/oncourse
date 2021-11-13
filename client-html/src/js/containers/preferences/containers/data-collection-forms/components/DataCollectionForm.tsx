@@ -456,7 +456,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
               invalid={valid}
               title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
                 ? "New"
-                : values.form.name.trim()}
+                : values && values.form.name.trim()}
               hideHelpMenu={isNew}
               createdOn={v => new Date(v.form.created)}
               modifiedOn={v => new Date(v.form.modified)}
