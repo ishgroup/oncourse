@@ -10,15 +10,13 @@ import Grid from "@mui/material/Grid";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { DefinedTutorRole } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import PayRates from "./PayRates";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import PayRates from "./PayRates";
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
@@ -36,7 +34,7 @@ interface Props extends InjectedFormProps {
   fetch?: any;
 }
 
-const manualLink = getManualLink("advancedSetup_Tutor");
+const manualUrl = getManualLink("advancedSetup_Tutor");
 
 const TutorRolesForm = React.memo<Props>(
   ({
@@ -54,20 +52,29 @@ const TutorRolesForm = React.memo<Props>(
   }) => (
     <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       {!disableRouteConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-      <CustomAppBar>
-        <FormField
-          type="headerText"
-          name="name"
-          placeholder="Name"
-          margin="none"
-          className="pl-1"
-          listSpacing={false}
-          required
-        />
 
-        <div className="flex-fill" />
-
-        {!isNew && (
+      <AppBarContainer
+        values={value}
+        manualUrl={manualUrl}
+        getAuditsUrl={id => `audit?search=~"DefinedTutorRole" and entityId == ${id}`}
+        disabled={!dirty}
+        invalid={valid}
+        title={(isNew && (!value || !value.name || value.name.trim().length === 0))
+          ? "New"
+          : value && value.name && value.name.trim()}
+        fields={(
+          <Grid item xs={12}>
+            <FormField
+              name="name"
+              placeholder="Name"
+              margin="none"
+              className="pl-1"
+              listSpacing={false}
+              required
+            />
+          </Grid>
+        )}
+        actions={!isNew && (
           <AppBarActions
             actions={[
               {
@@ -81,37 +88,27 @@ const TutorRolesForm = React.memo<Props>(
             ]}
           />
         )}
-
-        <AppBarHelpMenu
-          auditsUrl={`audit?search=~"DefinedTutorRole" and entityId == ${value.id}`}
-          manualUrl={manualLink}
-        />
-
-        <FormSubmitButton
-          disabled={!dirty}
-          invalid={!valid}
-        />
-      </CustomAppBar>
-
-      <Grid container columnSpacing={3}>
-        <Grid item xs={9}>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={9}>
-              <FormField
-                type="text"
-                name="description"
-                label="Public label"
-                required
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+      >
+        <Grid container>
+          <Grid item xs={9}>
+            <Grid container columnSpacing={3}>
+              <Grid item xs={9}>
+                <FormField
+                  type="text"
+                  name="description"
+                  label="Public label"
+                  required
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <PayRates value={value} form={form} dispatch={dispatch} showConfirm={showConfirm} />
+        <PayRates value={value} form={form} dispatch={dispatch} showConfirm={showConfirm} />
+      </AppBarContainer>
     </form>
   )
 );
