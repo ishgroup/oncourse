@@ -17,19 +17,16 @@ import {
 } from "@api/model";
 import createStyles from "@mui/styles/createStyles";
 import DeleteForever from "@mui/icons-material/DeleteForever";
-import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("dataCollection");
+const manualUrl = getManualLink("dataCollection");
 
 const styles = () =>
   createStyles({
@@ -59,9 +56,13 @@ interface Props {
 
 class CollectionRulesBaseForm extends React.Component<Props, any> {
   private resolvePromise;
+
   private rejectPromise;
+
   private unlisten;
+
   private promisePending: boolean = false;
+
   private skipValidation: boolean;
 
   constructor(props) {
@@ -78,7 +79,8 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.promisePending && nextProps.item && (!this.props.item || this.props.item.id !== nextProps.item.id)) {
       this.props.dispatch(initialize("CollectionRulesForm", nextProps.item));
       return;
@@ -196,27 +198,30 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, handleSubmit, match, value, dirty, form, onSubmit, invalid
+      classes, handleSubmit, match, value, dirty, form, onSubmit, invalid
     } = this.props;
     const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
 
-    const created = value && value.created;
-    const modified = value && value.modified;
-
     return (
       <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <Grid
-            container
-            classes={{
-              container: classes.fitSmallWidth
-            }}
-          >
-            <Grid item xs={12} className="centeredFlex relative">
+
+        <AppBarContainer
+          values={value}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"FieldConfigurationScheme" and entityId == ${value.id}`}
+          disabled={!dirty}
+          invalid={invalid}
+          title={(isNew && (!value || !value.name || value.name.trim().length === 0))
+            ? "New"
+            : value && value.name.trim()}
+          hideHelpMenu={isNew}
+          createdOn={v => new Date(v.created)}
+          modifiedOn={v => new Date(v.modified)}
+          fields={(
+            <Grid item xs={12}>
               <FormField
-                type="headerText"
                 name="name"
                 placeholder="Name"
                 margin="none"
@@ -224,168 +229,151 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                 listSpacing={false}
                 validate={[validateSingleMandatoryField, this.validateUniqueNames]}
               />
-
-              <div className="flex-fill" />
-              {!isNew && (
-                <AppBarActions
-                  actions={[
-                    {
-                      action: () => {
-                        this.onRuleDelete(value.id);
-                      },
-                      icon: <DeleteForever />,
-
-                      tooltip: "Delete form",
-                      confirmText: "Rule will be deleted permanently",
-                      confirmButtonText: "DELETE"
-                    }
-                  ]}
-                />
-              )}
-
-              {!isNew && value && (
-                <AppBarHelpMenu
-                  created={created ? new Date(created) : null}
-                  modified={modified ? new Date(modified) : null}
-                  auditsUrl={`audit?search=~"FieldConfigurationScheme" and entityId == ${value.id}`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
             </Grid>
-          </Grid>
-        </CustomAppBar>
+          )}
+          actions={!isNew && (
+            <AppBarActions
+              actions={[
+                {
+                  action: () => {
+                    this.onRuleDelete(value.id);
+                  },
+                  icon: <DeleteForever />,
+                  tooltip: "Delete form",
+                  confirmText: "Rule will be deleted permanently",
+                  confirmButtonText: "DELETE"
+                }
+              ]}
+            />
+          )}
+        >
+          <Grid container>
+            <Grid item xs={12} md={10}>
+              <Grid container columnSpacing={3}>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="enrolmentFormName"
+                    label="Enrolment"
+                    items={this.getItems("Enrolment") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                    required
+                  />
+                </Grid>
 
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} md={10}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="enrolmentFormName"
-                  label="Enrolment"
-                  items={this.getItems("Enrolment") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="surveyForms"
+                    label="Student Feedback"
+                    multiple
+                    allowEmpty
+                    items={this.getItems("Survey") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="surveyForms"
-                  label="Student Feedback"
-                  multiple
-                  allowEmpty
-                  items={this.getItems("Survey") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="applicationFormName"
+                    label="Application"
+                    items={this.getItems("Application") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="applicationFormName"
-                  label="Application"
-                  items={this.getItems("Application") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="payerFormName"
+                    label="Payer"
+                    allowEmpty
+                    items={this.getItems("Payer") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="payerFormName"
-                  label="Payer"
-                  allowEmpty
-                  items={this.getItems("Payer") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="waitingListFormName"
+                    label="Waiting List"
+                    items={this.getItems("WaitingList") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="waitingListFormName"
-                  label="Waiting List"
-                  items={this.getItems("WaitingList") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="parentFormName"
+                    label="Parent"
+                    allowEmpty
+                    items={this.getItems("Parent") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="parentFormName"
-                  label="Parent"
-                  allowEmpty
-                  items={this.getItems("Parent") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="productFormName"
+                    label="Product"
+                    allowEmpty
+                    items={this.getItems("Product") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="productFormName"
-                  label="Product"
-                  allowEmpty
-                  items={this.getItems("Product") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="voucherFormName"
+                    label="Voucher"
+                    allowEmpty
+                    items={this.getItems("Voucher") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                    required
+                  />
+                </Grid>
 
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="voucherFormName"
-                  label="Voucher"
-                  allowEmpty
-                  items={this.getItems("Voucher") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <FormField
-                  type="select"
-                  name="membershipFormName"
-                  label="Membership"
-                  allowEmpty
-                  items={this.getItems("Membership") || []}
-                  margin="none"
-                  className={classes.selectField}
-                  fullWidth
-                  required
-                />
+                <Grid item xs={6}>
+                  <FormField
+                    type="select"
+                    name="membershipFormName"
+                    label="Membership"
+                    allowEmpty
+                    items={this.getItems("Membership") || []}
+                    margin="none"
+                    className={classes.selectField}
+                    fullWidth
+                    required
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </AppBarContainer>
       </form>
     );
   }
