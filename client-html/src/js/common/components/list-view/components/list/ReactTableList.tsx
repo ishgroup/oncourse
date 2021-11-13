@@ -7,7 +7,7 @@ import React, {
  useCallback, useEffect, useMemo, useRef, useState 
 } from "react";
 import {
- useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable 
+  useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, UseSortByOptions, useTable
 } from "react-table";
 import makeStyles from "@mui/styles/makeStyles";
 import TableSortLabel from "@mui/material/TableSortLabel";
@@ -61,7 +61,8 @@ const Table: React.FC<ListTableProps> = ({
   onChangeColumnsOrder,
   setShowColoredDots,
   showColoredDots,
-  sidebarWidth
+  sidebarWidth,
+  mainContentWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
 
@@ -435,6 +436,7 @@ const Table: React.FC<ListTableProps> = ({
       recordsLeft={recordsLeft}
       threeColumn={threeColumn}
       onRowDoubleClick={onRowDoubleClick}
+      mainContentWidth={mainContentWidth}
       onMouseOver={() => {}}
     />
   ) : (
@@ -443,15 +445,20 @@ const Table: React.FC<ListTableProps> = ({
         No data
       </Typography>
     </div>
-  )), [rows, totalColumnsWidth, selectedRowIdsObj, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
+  )), [rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
 
   return (
     <div
       {...getTableProps()}
       ref={tableRef}
-      className={clsx(classes.table, { [classes.hideOverflowY]: isDraggingColumn })}
+      className={clsx(
+        classes.table, { 
+          [classes.hideOverflowY]: isDraggingColumn, 
+        }
+      )}
       style={{
-        minWidth: !threeColumn && `calc(100vw - ${sidebarWidth}px)`
+        minWidth: !threeColumn && `calc(100vw - ${sidebarWidth}px)`,
+        width: threeColumn && `${mainContentWidth}.px`
       }}
       onScroll={onScroll}
     >
@@ -470,6 +477,7 @@ export interface TableListProps {
   records?: DataResponse;
   recordsLeft?: number;
   sidebarWidth?: number;
+  mainContentWidth?: number;
   onChangeModel?: (model: TableModel, listUpdate?: boolean) => void;
   customColumnFormats?: CustomColumnFormats;
   setRowClasses?: AnyArgFunction<string>;
@@ -509,7 +517,8 @@ const ListRoot = React.memo<TableListProps>(({
   getContainerNode,
   updateColumns,
   showColoredDots,
-  sidebarWidth
+  sidebarWidth,
+  mainContentWidth
 }) => {
   const columns = useMemo(
     () => {
@@ -599,6 +608,7 @@ const ListRoot = React.memo<TableListProps>(({
         setShowColoredDots={setShowColoredDots}
         showColoredDots={showColoredDots}
         sidebarWidth={sidebarWidth}
+        mainContentWidth={mainContentWidth}
       />
     )
     : null;

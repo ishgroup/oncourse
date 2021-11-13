@@ -89,8 +89,8 @@ const TagDotRenderer = ({ colors = [], dotsWrapperStyle, menuTags, tagsOrder }) 
 
   return (
     <div className={clsx("centeredFlex", dotsWrapperStyle)}>
-      {sortedColors.map((color: string) => (
-        <div key={color} className={clsx(classes.tagColorDotExtraSmall, "mr-0-5")} style={{ background: "#" + color }} />
+      {sortedColors.map((color: string, index) => (
+        <div key={color + index} className={clsx(classes.tagColorDotExtraSmall, "mr-0-5")} style={{ background: "#" + color }} />
       ))}
     </div>
   );

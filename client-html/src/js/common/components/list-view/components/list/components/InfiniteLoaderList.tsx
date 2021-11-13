@@ -81,7 +81,8 @@ export default ({
   listRef,
   threeColumn,
   onRowDoubleClick,
-  onMouseOver
+  onMouseOver,
+  mainContentWidth
 }) => {
   const isItemLoaded = index => rows[index];
 
@@ -111,6 +112,8 @@ export default ({
     rows.length
   ]);
 
+  console.log(totalColumnsWidth);
+
   return (
     <div className={clsx("w-100 h-100 d-block", classes.infiniteLoaderListRoot)}>
       <InfiniteLoader
@@ -129,7 +132,7 @@ export default ({
                 itemData={itemData}
                 itemSize={threeColumn ? 64 : 27}
                 height={height}
-                width={!threeColumn && totalColumnsWidth > width ? totalColumnsWidth : width}
+                width={threeColumn ? mainContentWidth : (totalColumnsWidth > width ? totalColumnsWidth : width)}
                 onItemsRendered={onItemsRendered}
                 ref={r => {
                   if (r) {
