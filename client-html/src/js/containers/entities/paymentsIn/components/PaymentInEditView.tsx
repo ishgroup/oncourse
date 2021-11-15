@@ -101,7 +101,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
   const dateBankedDisabled = initialValues && values ? isDateLocked(lockedDate, initialValues.dateBanked)
     || ["Contra", "Internal", "Reverse", "Voucher"].find(item => item === values.paymentInType)
     || !["Success", "Reversed"].find(item => item === values.status) : true;
-  
+
   const gridItemProps = { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 };
 
   return values ? (
