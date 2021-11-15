@@ -63,20 +63,6 @@ const styles = theme => createStyles({
     boxShadow: theme.shadows[2],
     background: theme.palette.background.default
   },
-  fullScreenTitleItem: {
-    paddingLeft: `${theme.spacing(12)} !important`,
-    marginTop: theme.spacing(1),
-  },
-  scriptAddMenu: {
-    position: "absolute",
-    zIndex: theme.zIndex.drawer + 2,
-    left: 26,
-    top: 43,
-    "& > .appBarFab": {
-      top: 0,
-      left: 0,
-    }
-  },
 });
 
 const setParents = targets => {
@@ -443,118 +429,113 @@ class DataCollectionWrapper extends React.Component<any, any> {
     const id = !isNew && values && values.form.id;
 
     return (
-      <div className={clsx(classes.mainContainer, "overflow-hidden")}>
-        <div className="h-100 overflow-y-auto" ref={this.getFormRef}>
-          <Form className="container p-3" onSubmit={handleSubmit(this.onSave)}>
-            {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+      <div ref={this.getFormRef}>
+        <Form className="container" onSubmit={handleSubmit(this.onSave)}>
+          {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
-            <AppBarContainer
-              values={values}
-              manualUrl={manualUrl}
-              getAuditsUrl={() => `audit?search=~"${type}FieldConfiguration" and entityId == ${values.form.id}`}
-              disabled={!dirty}
-              invalid={valid}
-              title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
-                ? "New"
-                : values && values.form.name.trim()}
-              hideHelpMenu={isNew}
-              createdOn={v => new Date(v.form.created)}
-              modifiedOn={v => new Date(v.form.modified)}
-              classes={{ fullScreenTitleItem: classes.fullScreenTitleItem }}
-              fields={(
-                <Grid item xs={12}>
-                  <FormField
-                    name="form.name"
-                    placeholder="Name"
-                    margin="none"
-                    listSpacing={false}
-                    validate={[validateSingleMandatoryField, this.validateUniqueNames]}
-                  />
-                </Grid>
-              )}
-              actions={values && !isNew && (
-                <AppBarActions
-                  actions={[
-                    {
-                      action: () => {
-                        this.onDelete(id);
-                      },
-                      icon: <DeleteForever />,
-
-                      confirmText: "Form will be deleted permanently",
-                      tooltip: "Delete form",
-                      confirmButtonText: "DELETE"
-                    },
-                    {
-                      action: () => {
-                        this.duplicateForm(history, values.form, values.items);
-                      },
-                      icon: <FileCopy />,
-                      confirm: false,
-                      tooltip: "Copy form"
-                    }
-                  ]}
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl={() => `audit?search=~"${type}FieldConfiguration" and entityId == ${values.form.id}`}
+            disabled={!dirty}
+            invalid={valid}
+            title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
+              ? "New"
+              : values && values.form.name.trim()}
+            hideHelpMenu={isNew}
+            createdOn={v => new Date(v.form.created)}
+            modifiedOn={v => new Date(v.form.modified)}
+            fields={(
+              <Grid item xs={12}>
+                <FormField
+                  name="form.name"
+                  placeholder="Name"
+                  margin="none"
+                  listSpacing={false}
+                  validate={[validateSingleMandatoryField, this.validateUniqueNames]}
                 />
-              )}
-            >
-              {values && (
-                <div className={classes.scriptAddMenu}>
-                  <CollectionFormFieldTypesMenu
-                    items={values.items}
-                    formType={type}
-                    addField={this.addField}
-                    addHeading={this.addHeading}
-                    className="ml-0"
-                  />
-                </div>
-              )}
-              <Grid container>
-                <Grid item sm={12} lg={10} xl={6}>
-                  <Grid container columnSpacing={3}>
-                    <Grid item xs={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
-                      <div className="pt-2 pb-2">
-                        <Typography variant="caption">Type</Typography>
+              </Grid>
+            )}
+            actions={values && !isNew && (
+              <AppBarActions
+                actions={[
+                  {
+                    action: () => {
+                      this.onDelete(id);
+                    },
+                    icon: <DeleteForever />,
 
-                        <Typography id="form.type" variant="subtitle1">{type === "Survey" ? "Student Feedback" : type}</Typography>
-                      </div>
+                    confirmText: "Form will be deleted permanently",
+                    tooltip: "Delete form",
+                    confirmButtonText: "DELETE"
+                  },
+                  {
+                    action: () => {
+                      this.duplicateForm(history, values.form, values.items);
+                    },
+                    icon: <FileCopy />,
+                    confirm: false,
+                    tooltip: "Copy form"
+                  }
+                ]}
+              />
+            )}
+            customAddMenu={values && (
+              <CollectionFormFieldTypesMenu
+                items={values.items}
+                formType={type}
+                addField={this.addField}
+                addHeading={this.addHeading}
+                className="ml-0"
+              />
+            )}
+          >
+            <Grid container>
+              <Grid item sm={12} lg={10} xl={6}>
+                <Grid container columnSpacing={3}>
+                  <Grid item xs={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
+                    <div className="pt-2 pb-2">
+                      <Typography variant="caption">Type</Typography>
 
-                      <div className="flex-fill" />
+                      <Typography id="form.type" variant="subtitle1">{type === "Survey" ? "Student Feedback" : type}</Typography>
+                    </div>
 
-                      {values && type === "Survey" && (
-                        <FormField
-                          type="select"
-                          name="form.deliverySchedule"
-                          label="Delivery Schedule"
-                          autoWidth
-                          items={deliveryScheduleTypes}
-                          className={clsx("pt-2", classes.selectField)}
-                          required
-                        />
-                      )}
-                    </Grid>
+                    <div className="flex-fill" />
 
-                    <Grid item xs={12} className="mb-1">
-                      <Divider />
-                    </Grid>
+                    {values && type === "Survey" && (
+                      <FormField
+                        type="select"
+                        name="form.deliverySchedule"
+                        label="Delivery Schedule"
+                        autoWidth
+                        items={deliveryScheduleTypes}
+                        className={clsx("pt-2", classes.selectField)}
+                        required
+                      />
+                    )}
+                  </Grid>
 
-                    <Grid item xs={12} className="mb-3">
-                      {values && values.items && (
-                        <FieldArray
-                          name="items"
-                          component={renderCollectionFormFields}
-                          deleteField={this.deleteField}
-                          dispatch={dispatch}
-                          classes={classes}
-                          rerenderOnEveryChange
-                        />
-                      )}
-                    </Grid>
+                  <Grid item xs={12} className="mb-1">
+                    <Divider />
+                  </Grid>
+
+                  <Grid item xs={12} className="mb-3">
+                    {values && values.items && (
+                      <FieldArray
+                        name="items"
+                        component={renderCollectionFormFields}
+                        deleteField={this.deleteField}
+                        dispatch={dispatch}
+                        classes={classes}
+                        rerenderOnEveryChange
+                      />
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
-            </AppBarContainer>
-          </Form>
-        </div>
+            </Grid>
+          </AppBarContainer>
+        </Form>
       </div>
     );
   }
