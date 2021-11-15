@@ -20,9 +20,6 @@ import { FundingSource } from "@api/model";
 import isEqual from "lodash.isequal";
 import { Dispatch } from "redux";
 import Grid from "@mui/material/Grid";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
-import withStyles from "@mui/styles/withStyles";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import { Fetch } from "../../../../../model/common/Fetch";
@@ -34,13 +31,11 @@ import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { setNextLocation } from "../../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { formCommonStyles } from "../../../styles/formCommonStyles";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 
 const manualUrl = getManualLink("generalPrefs-fundingContractsPrefs");
 
 interface Props {
-  classes?: any;
   values: any;
   fundingContracts: FundingSource[];
   onSave: (items: FundingSource[], method?: ApiMethods) => void;
@@ -189,7 +184,7 @@ class FundingContractsForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, values, dirty, invalid, handleSubmit, timestamps, form
+      values, dirty, invalid, handleSubmit, timestamps, form
     } = this.props;
 
     return (
@@ -206,22 +201,9 @@ class FundingContractsForm extends React.Component<Props, any> {
           disableInteraction
           createdOn={() => timestamps && timestamps[0]}
           modifiedOn={() => timestamps && timestamps[1]}
-          classes={{ fullScreenTitleItem: classes.fullScreenTitleItem }}
+          onAddMenu={() => this.onAddNew()}
         >
-          <div className={classes.scriptAddMenu}>
-            <Fab
-              type="button"
-              size="small"
-              color="primary"
-              classes={{
-                sizeSmall: "appBarFab"
-              }}
-              onClick={() => this.onAddNew()}
-            >
-              <AddIcon />
-            </Fab>
-          </div>
-          <Grid container className="mt-1">
+          <Grid container className="mt-2">
             <Grid item sm={12} lg={10}>
               {values && (
                 <FieldArray
@@ -252,6 +234,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default reduxForm({
   onSubmitFail,
   form: "FundingContractsForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(formCommonStyles)(withRouter(FundingContractsForm))
-)) as React.ComponentClass<any>;
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(FundingContractsForm))) as React.ComponentClass<any>;

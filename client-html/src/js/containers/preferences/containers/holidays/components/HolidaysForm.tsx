@@ -5,9 +5,6 @@
 
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
 import { Dispatch } from "redux";
 import isEqual from "lodash.isequal";
 import { withRouter } from "react-router";
@@ -33,7 +30,6 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { setNextLocation } from "../../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import { formCommonStyles } from "../../../styles/formCommonStyles";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_holidays");
@@ -44,7 +40,6 @@ interface Props {
   onSave: (items: Holiday[]) => void;
   onDelete: (id: number) => void;
   timestamps: Date[];
-  classes: any;
   initialized: boolean;
   invalid: boolean;
   dirty: boolean;
@@ -190,7 +185,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, values, dirty, invalid, timestamps, dispatch, form
+      handleSubmit, values, dirty, invalid, timestamps, dispatch, form
     } = this.props;
     const created = timestamps && timestamps[0];
     const modified = timestamps && timestamps[1];
@@ -209,22 +204,9 @@ class HolidaysBaseForm extends React.Component<Props, any> {
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}
-          classes={{ fullScreenTitleItem: classes.fullScreenTitleItem }}
+          onAddMenu={() => this.onAddNew()}
         >
-          <div className={classes.scriptAddMenu}>
-            <Fab
-              type="button"
-              size="small"
-              color="primary"
-              classes={{
-                sizeSmall: "appBarFab"
-              }}
-              onClick={() => this.onAddNew()}
-            >
-              <AddIcon />
-            </Fab>
-          </div>
-          <Grid container className="mt-1">
+          <Grid container className="mt-2">
             <Grid item sm={12} lg={10}>
               {values && (
                 <FieldArray
@@ -259,7 +241,7 @@ const HolidaysForm = reduxForm({
   onSubmitFail,
   form: "HolidaysForm"
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(formCommonStyles)(withRouter(HolidaysBaseForm))
+  withRouter(HolidaysBaseForm)
 ));
 
 export default HolidaysForm;
