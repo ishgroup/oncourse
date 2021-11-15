@@ -15,7 +15,6 @@ ext {
 
 
 dependencies {
-    implementation files('/Users/Artem/_projects/git/server/build/libs/onCourseServer.jar')
     implementation("ish.oncourse.willow:webservices-client:$webservicesVersion")
     testImplementation group: "ish.oncourse.angel", name: "test", version: "99-SNAPSHOT", classifier: 'tests', changing: true
     testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"

@@ -10,7 +10,7 @@ import ish.common.types.ProductStatus
 import ish.common.types.TypesUtil
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.webservices.v24.stubs.replication.ProductItemStub
+import ish.oncourse.webservices.v25.stubs.replication.ProductItemStub
 
 @CompileStatic
 abstract class AbstractProductItemUpdater<S extends ProductItemStub, E extends ProductItem> extends AbstractAngelUpdater<S, E> {

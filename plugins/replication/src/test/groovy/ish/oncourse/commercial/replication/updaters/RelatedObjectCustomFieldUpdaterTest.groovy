@@ -21,7 +21,7 @@ import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.cayenne.WaitingListCustomField
 import ish.oncourse.webservices.util.GenericReplicationStub
-import ish.oncourse.webservices.v24.stubs.replication.CustomFieldStub
+import ish.oncourse.webservices.v25.stubs.replication.CustomFieldStub
 import static org.junit.Assert.assertNotNull
 import org.junit.Test
 import static org.mockito.Mockito.mock

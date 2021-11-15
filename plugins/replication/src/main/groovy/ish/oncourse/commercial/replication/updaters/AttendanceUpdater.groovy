@@ -11,7 +11,7 @@ import ish.oncourse.server.cayenne.Attendance
 import ish.oncourse.server.cayenne.Session
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.webservices.v24.stubs.replication.AttendanceStub
+import ish.oncourse.webservices.v25.stubs.replication.AttendanceStub
 
 @CompileStatic
 class AttendanceUpdater extends AbstractAngelUpdater<AttendanceStub, Attendance> {

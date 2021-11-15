@@ -63,7 +63,6 @@ class AngelStubBuilderImpl implements IAngelStubBuilder {
 		builderMap.put(Tag.class.getSimpleName(), new TagStubBuilder())
 		builderMap.put(TagRequirement.class.getSimpleName(), new TagRequirementStubBuilder())
 		builderMap.put(Message.class.getSimpleName(), new MessageStubBuilder())
-		builderMap.put(MessagePerson.class.getSimpleName(), new MessagePersonStubBuilder())
 		builderMap.put(MessageTemplate.class.getSimpleName(), new MessageTemplateStubBuilder())
 		builderMap.put(ContactTagRelation.class.getSimpleName(), new TagRelationStubBuilder())
 		builderMap.put(CourseClassTagRelation.class.getSimpleName(), new TagRelationStubBuilder())

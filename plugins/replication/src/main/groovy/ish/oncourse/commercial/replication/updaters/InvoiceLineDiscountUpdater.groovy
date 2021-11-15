@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.Discount
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.InvoiceLineDiscount
-import ish.oncourse.webservices.v24.stubs.replication.InvoiceLineDiscountStub
+import ish.oncourse.webservices.v25.stubs.replication.InvoiceLineDiscountStub
 
 /**
  */

@@ -6,8 +6,8 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.FieldHeading
-import ish.oncourse.webservices.v24.stubs.replication.FieldConfigurationStub
-import ish.oncourse.webservices.v24.stubs.replication.FieldHeadingStub
+import ish.oncourse.webservices.v25.stubs.replication.FieldConfigurationStub
+import ish.oncourse.webservices.v25.stubs.replication.FieldHeadingStub
 
 /**
  * Created by Artem on 16/11/2016.

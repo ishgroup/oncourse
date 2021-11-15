@@ -105,10 +105,8 @@ class QueueableLifecycleListenerTest extends TestWithDatabase {
 
 		assertTrue( entities.containsKey(Contact.class.getSimpleName()))
         assertTrue( entities.containsKey(Message.class.getSimpleName()))
-        assertTrue(entities.containsKey(MessagePerson.class.getSimpleName()))
         assertEquals(2, (int) entities.get(Contact.class.getSimpleName()))
         assertEquals(2, (int) entities.get(Message.class.getSimpleName()))
-        assertEquals(2, (int) entities.get(MessagePerson.class.getSimpleName()))
     }
 
 	@Test
@@ -150,7 +148,6 @@ class QueueableLifecycleListenerTest extends TestWithDatabase {
         assertFalse( entities.containsKey(MessagePerson.class.getSimpleName()))
         assertNull(entities.get(Contact.class.getSimpleName()))
         assertNull(entities.get(Message.class.getSimpleName()))
-        assertNull(entities.get(MessagePerson.class.getSimpleName()))
         ctx.commitChanges()
         queuedRecordList = ObjectSelect.query(QueuedRecord).select(ctx)
         assertEquals( 3, queuedRecordList.size())

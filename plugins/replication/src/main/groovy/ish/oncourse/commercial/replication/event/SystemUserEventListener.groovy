@@ -13,12 +13,12 @@ import ish.oncourse.common.SystemEvent
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.integration.OnCourseEventListener
-import ish.oncourse.webservices.soap.v24.ReplicationPortType
+import ish.oncourse.webservices.soap.v25.ReplicationPortType
 import ish.oncourse.webservices.util.GenericReplicationResult
 import ish.oncourse.webservices.util.GenericReplicationStub
-import ish.oncourse.webservices.v24.stubs.replication.ReplicationRecords
-import ish.oncourse.webservices.v24.stubs.replication.ReplicationStub
-import ish.oncourse.webservices.v24.stubs.replication.TransactionGroup
+import ish.oncourse.webservices.v25.stubs.replication.ReplicationRecords
+import ish.oncourse.webservices.v25.stubs.replication.ReplicationStub
+import ish.oncourse.webservices.v25.stubs.replication.TransactionGroup
 import org.apache.cayenne.ObjectId
 import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager

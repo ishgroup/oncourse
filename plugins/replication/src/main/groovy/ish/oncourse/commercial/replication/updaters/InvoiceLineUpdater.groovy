@@ -13,7 +13,7 @@ import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.server.cayenne.Quote
-import ish.oncourse.webservices.v24.stubs.replication.InvoiceLineStub
+import ish.oncourse.webservices.v25.stubs.replication.InvoiceLineStub
 
 /**
  */

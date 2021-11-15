@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 
 import ish.oncourse.server.cayenne.GradingItem
 import ish.oncourse.server.cayenne.GradingType
-import ish.oncourse.webservices.v24.stubs.replication.GradingItemStub
+import ish.oncourse.webservices.v25.stubs.replication.GradingItemStub
 
 class GradingItemUpdater extends AbstractAngelUpdater<GradingItemStub, GradingItem> {
     @Override

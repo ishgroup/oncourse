@@ -10,9 +10,9 @@ import ish.TestWithDatabase
 import ish.common.types.*
 import ish.oncourse.commercial.replication.modules.ISoapPortLocator
 import ish.oncourse.webservices.ITransactionGroupProcessor
-import ish.oncourse.webservices.soap.v24.ReplicationPortType
+import ish.oncourse.webservices.soap.v25.ReplicationPortType
 import ish.oncourse.webservices.util.GenericTransactionGroup
-import ish.oncourse.webservices.v24.stubs.replication.*
+import ish.oncourse.webservices.v25.stubs.replication.*
 import ish.util.SecurityUtil
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.*

@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.builders
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.AssessmentSubmission
-import ish.oncourse.webservices.v24.stubs.replication.AssessmentSubmissionStub
+import ish.oncourse.webservices.v25.stubs.replication.AssessmentSubmissionStub
 import ish.util.LocalDateUtils
 
 @CompileStatic

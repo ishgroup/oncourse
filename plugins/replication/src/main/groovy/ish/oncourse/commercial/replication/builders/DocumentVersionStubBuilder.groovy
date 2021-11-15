@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.DocumentVersion
-import ish.oncourse.webservices.v24.stubs.replication.DocumentVersionStub
+import ish.oncourse.webservices.v25.stubs.replication.DocumentVersionStub
 
 class DocumentVersionStubBuilder extends AbstractAngelStubBuilder<DocumentVersion, DocumentVersionStub> {
 

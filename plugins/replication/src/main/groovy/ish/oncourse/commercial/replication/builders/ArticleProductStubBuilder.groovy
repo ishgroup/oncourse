@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.builders
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.ArticleProduct
-import ish.oncourse.webservices.v24.stubs.replication.ArticleProductStub
+import ish.oncourse.webservices.v25.stubs.replication.ArticleProductStub
 
 @CompileStatic
 class ArticleProductStubBuilder extends AbstractProductStubBuilder<ArticleProduct, ArticleProductStub>{

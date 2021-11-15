@@ -5,8 +5,8 @@
 
 package ish.oncourse.commercial.replication.modules
 
-import ish.oncourse.webservices.soap.v24.PaymentPortType;
-import ish.oncourse.webservices.soap.v24.ReplicationPortType;
+import ish.oncourse.webservices.soap.v25.PaymentPortType;
+import ish.oncourse.webservices.soap.v25.ReplicationPortType;
 import ish.oncourse.webservices.soap.v7.ReferencePortType;
 
 /**

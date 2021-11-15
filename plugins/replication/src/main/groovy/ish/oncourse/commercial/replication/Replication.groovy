@@ -11,9 +11,9 @@ import ish.oncourse.webservices.util.SupportedVersions;
 @CompileStatic
 class Replication {
 
-    static final SupportedVersions ACTUAL_REPLICATION_VERSION = SupportedVersions.V24
+    static final SupportedVersions ACTUAL_REPLICATION_VERSION = SupportedVersions.V25
 
-    static final String ACTUAL_REPLICATION_VERSION_STRING = "v24"
+    static final String ACTUAL_REPLICATION_VERSION_STRING = "v25"
 
     static final String ACTUAL_REFERENCE_VERSION_STRING = "v7"
 }

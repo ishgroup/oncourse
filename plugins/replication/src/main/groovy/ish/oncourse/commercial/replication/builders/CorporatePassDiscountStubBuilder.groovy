@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.CorporatePassDiscount
-import ish.oncourse.webservices.v24.stubs.replication.CorporatePassDiscountStub
+import ish.oncourse.webservices.v25.stubs.replication.CorporatePassDiscountStub
 
 class CorporatePassDiscountStubBuilder extends AbstractAngelStubBuilder<CorporatePassDiscount, CorporatePassDiscountStub> {
 

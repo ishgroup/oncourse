@@ -9,7 +9,7 @@ import ish.math.Money
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.webservices.v24.stubs.replication.EnrolmentStub
+import ish.oncourse.webservices.v25.stubs.replication.EnrolmentStub
 
 /**
  */

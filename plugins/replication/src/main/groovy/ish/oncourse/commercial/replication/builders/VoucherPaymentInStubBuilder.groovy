@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.VoucherPaymentIn
-import ish.oncourse.webservices.v24.stubs.replication.VoucherPaymentInStub
+import ish.oncourse.webservices.v25.stubs.replication.VoucherPaymentInStub
 
 /**
  */

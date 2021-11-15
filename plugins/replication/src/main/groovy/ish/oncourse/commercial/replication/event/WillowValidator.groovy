@@ -19,9 +19,9 @@ import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.webservices.util.GenericParameterEntry
 import ish.oncourse.webservices.util.GenericParametersMap
 import ish.oncourse.webservices.util.PortHelper
-import ish.oncourse.webservices.v24.stubs.replication.ParametersMap
-import ish.oncourse.webservices.v24.stubs.replication.TransactionGroup
-import ish.oncourse.webservices.v24.stubs.replication.VoucherStub
+import ish.oncourse.webservices.v25.stubs.replication.ParametersMap
+import ish.oncourse.webservices.v25.stubs.replication.TransactionGroup
+import ish.oncourse.webservices.v25.stubs.replication.VoucherStub
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectQuery
 import org.apache.logging.log4j.LogManager

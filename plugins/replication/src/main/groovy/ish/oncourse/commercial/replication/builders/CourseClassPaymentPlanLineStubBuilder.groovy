@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.CourseClassPaymentPlanLine
-import ish.oncourse.webservices.v24.stubs.replication.CourseClassPaymentPlanLineStub
+import ish.oncourse.webservices.v25.stubs.replication.CourseClassPaymentPlanLineStub
 
 class CourseClassPaymentPlanLineStubBuilder extends AbstractAngelStubBuilder<CourseClassPaymentPlanLine, CourseClassPaymentPlanLineStub>  {
 	@Override

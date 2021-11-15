@@ -5,7 +5,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Student
-import ish.oncourse.webservices.v24.stubs.replication.StudentStub
+import ish.oncourse.webservices.v25.stubs.replication.StudentStub
 
 /**
  */

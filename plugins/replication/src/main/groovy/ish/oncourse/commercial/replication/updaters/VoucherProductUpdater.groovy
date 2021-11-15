@@ -9,7 +9,7 @@ import ish.common.types.TypesUtil
 import ish.math.Money
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.VoucherProduct
-import ish.oncourse.webservices.v24.stubs.replication.VoucherProductStub
+import ish.oncourse.webservices.v25.stubs.replication.VoucherProductStub
 
 class VoucherProductUpdater extends AbstractProductUpdater<VoucherProductStub, VoucherProduct> {
 

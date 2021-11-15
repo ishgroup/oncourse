@@ -6,7 +6,7 @@
 package ish.oncourse.commercial.replication.builders
 
 import ish.oncourse.server.cayenne.Survey
-import ish.oncourse.webservices.v24.stubs.replication.SurveyStub
+import ish.oncourse.webservices.v25.stubs.replication.SurveyStub
 
 class SurveyStubBuilder  extends AbstractAngelStubBuilder<Survey, SurveyStub> {
     @Override

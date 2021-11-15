@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.builders
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Assessment
-import ish.oncourse.webservices.v24.stubs.replication.AssessmentStub
+import ish.oncourse.webservices.v25.stubs.replication.AssessmentStub
 
 @CompileStatic
 class AssessmentStubBuilder extends AbstractAngelStubBuilder<Assessment, AssessmentStub> {

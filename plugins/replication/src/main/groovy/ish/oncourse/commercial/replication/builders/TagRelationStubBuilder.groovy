@@ -8,7 +8,7 @@ import ish.common.types.TypesUtil
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.commercial.replication.updaters.AbstractAngelUpdater
 import ish.oncourse.server.cayenne.TagRelation
-import ish.oncourse.webservices.v24.stubs.replication.TagRelationStub
+import ish.oncourse.webservices.v25.stubs.replication.TagRelationStub
 
 import static ish.oncourse.cayenne.TaggableClasses.*
 

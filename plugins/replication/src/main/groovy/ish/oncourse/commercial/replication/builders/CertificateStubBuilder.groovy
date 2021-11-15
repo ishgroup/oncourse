@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.builders
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Certificate
-import ish.oncourse.webservices.v24.stubs.replication.CertificateStub
+import ish.oncourse.webservices.v25.stubs.replication.CertificateStub
 import ish.util.LocalDateUtils
 
 @CompileStatic

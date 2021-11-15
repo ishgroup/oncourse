@@ -7,7 +7,7 @@ package ish.oncourse.commercial.replication.updaters
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.Tutor
-import ish.oncourse.webservices.v24.stubs.replication.CourseClassTutorStub
+import ish.oncourse.webservices.v25.stubs.replication.CourseClassTutorStub
 
 /**
  */

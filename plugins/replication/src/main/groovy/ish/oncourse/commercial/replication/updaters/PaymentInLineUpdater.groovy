@@ -8,7 +8,7 @@ import ish.math.Money
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
-import ish.oncourse.webservices.v24.stubs.replication.PaymentInLineStub
+import ish.oncourse.webservices.v25.stubs.replication.PaymentInLineStub
 
 /**
  */

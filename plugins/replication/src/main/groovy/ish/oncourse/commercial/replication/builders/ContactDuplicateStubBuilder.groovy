@@ -6,7 +6,7 @@ package ish.oncourse.commercial.replication.builders
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.ContactDuplicate
-import ish.oncourse.webservices.v24.stubs.replication.ContactDuplicateStub
+import ish.oncourse.webservices.v25.stubs.replication.ContactDuplicateStub
 
 @CompileStatic
 class ContactDuplicateStubBuilder extends AbstractAngelStubBuilder<ContactDuplicate, ContactDuplicateStub> {

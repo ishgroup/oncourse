@@ -28,7 +28,7 @@ class AngelUpdaterImpl implements IAngelUpdater {
 		updaterMap.put(InvoiceLine.class.getSimpleName(), new InvoiceLineUpdater())
 		updaterMap.put(QuoteLine.class.getSimpleName(), new InvoiceLineUpdater())
 		updaterMap.put(InvoiceLineDiscount.class.getSimpleName(), new InvoiceLineDiscountUpdater())
-		updaterMap.put(MessagePerson.class.getSimpleName(), new MessageUpdater())
+		updaterMap.put(Message.class.getSimpleName(), new MessageUpdater())
 		updaterMap.put(PaymentIn.class.getSimpleName(), new PaymentInUpdater())
 		updaterMap.put(PaymentInLine.class.getSimpleName(), new PaymentInLineUpdater())
 		updaterMap.put(PaymentOut.class.getSimpleName(), new PaymentOutUpdater())

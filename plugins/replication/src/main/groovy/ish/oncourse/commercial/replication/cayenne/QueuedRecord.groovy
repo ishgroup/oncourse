@@ -12,7 +12,6 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.cayenne.Outcome
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.Room
@@ -53,7 +52,6 @@ class QueuedRecord extends _QueuedRecord implements Comparable<QueuedRecord> {
             Session.ENTITY_NAME,
             Student.ENTITY_NAME,
             Message.ENTITY_NAME,
-            MessagePerson.ENTITY_NAME,
             Enrolment.ENTITY_NAME,
             Outcome.ENTITY_NAME,
             Certificate.ENTITY_NAME,
