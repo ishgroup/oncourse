@@ -97,12 +97,13 @@ interface Props extends InjectedFormProps {
   modifiedOn?: (values: any) => string;
   onAddMenu?: () => void;
   customAddMenu?: any;
+  submitButtonText?: string;
 }
 
 const AppBarContainer: React.FC<Props> = props => {
   const {
     classes, title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
-    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu
+    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText
   } = props;
 
   const { scrollSpy } = useStickyScrollSpy();
@@ -177,6 +178,7 @@ const AppBarContainer: React.FC<Props> = props => {
               invalid={invalid}
               fab
               className={isDarkTheme && classes.submitButtonAlternate}
+              text={submitButtonText || "Save"}
             />
           )}
         </Toolbar>
