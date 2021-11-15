@@ -18,7 +18,7 @@ class ZKSessionManager extends AbstractZKSessionManager {
 
     String persistSession(User user, String sessionId, CreateMode mode) {
         String userId = getUserId(user)
-        persistSession(getUserId(user), sessionId, mode)
+        persistSession(userId, sessionId, mode)
         return getSessionToken(userId, sessionId)
         
     }
