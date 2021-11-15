@@ -307,52 +307,50 @@ const SwipeableSidebar: React.FC<Props> = props => {
   }, [isFormDirty, resetEditView]);
 
   return (
-    <>
-      <SwipeableDrawer
-        variant={variant}
-        open={opened}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-        classes={{
-          paper: classes.drawerPaper
-        }}
-      >
-        <div className={classes.drawerWidth}>
-          <div className={clsx("pl-2", classes.toolbar)}>
-            <HamburgerMenu variant={variant} form={form} />
+    <SwipeableDrawer
+      variant={variant}
+      open={opened}
+      onClose={toggleDrawer(false)}
+      onOpen={toggleDrawer(true)}
+      classes={{
+        paper: classes.drawerPaper
+      }}
+    >
+      <div className={classes.drawerWidth}>
+        <div className={clsx("pl-2", classes.toolbar)}>
+          <HamburgerMenu variant={variant} form={form} />
+        </div>
+        <UserSearch getSearchResults={getSearchResults} />
+        <div>
+          <div
+            id="search-results-wrapper"
+            className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
+          >
+            <SearchResults
+              classes={{ root: classes.searchResultsRoot }}
+              userSearch={userSearch}
+              checkSelectedResult={checkSelectedResult}
+              showConfirm={showConfirmHandler}
+              setExecMenuOpened={setExecMenuOpened}
+              setScriptIdSelected={setScriptIdSelected}
+            />
           </div>
-          <UserSearch getSearchResults={getSearchResults} />
-          <div>
-            <div
-              id="search-results-wrapper"
-              className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
-            >
-              <SearchResults
-                classes={{ root: classes.searchResultsRoot }}
-                userSearch={userSearch}
-                checkSelectedResult={checkSelectedResult}
-                showConfirm={showConfirmHandler}
-                setExecMenuOpened={setExecMenuOpened}
-                setScriptIdSelected={setScriptIdSelected}
-              />
-            </div>
-            <div className={showUserSearch ? "d-none" : ""}>
-              <Favorites
-                classes={{ topBar: classes.favoritesTopBar }}
-                showConfirm={showConfirmHandler}
-                isFormDirty={isFormDirty}
-                scriptIdSelected={scriptIdSelected}
-                setScriptIdSelected={setScriptIdSelected}
-                execMenuOpened={execMenuOpened}
-                setExecMenuOpened={setExecMenuOpened}
-              />
-              <Divider variant="middle" />
-              <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
-            </div>
+          <div className={showUserSearch ? "d-none" : ""}>
+            <Favorites
+              classes={{ topBar: classes.favoritesTopBar }}
+              showConfirm={showConfirmHandler}
+              isFormDirty={isFormDirty}
+              scriptIdSelected={scriptIdSelected}
+              setScriptIdSelected={setScriptIdSelected}
+              execMenuOpened={execMenuOpened}
+              setExecMenuOpened={setExecMenuOpened}
+            />
+            <Divider variant="middle" />
+            <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
           </div>
         </div>
-      </SwipeableDrawer>
-    </>
+      </div>
+    </SwipeableDrawer>
   );
 };
 

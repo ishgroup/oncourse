@@ -75,11 +75,12 @@ const styles = theme =>
     editable: {
       display: "inline-flex",
       color: theme.palette.text.primaryEditable,
-      height: "32px",
-      padding: "4px 0 5px",
+      minHeight: "32px",
+      padding: "4px 0 4px",
       marginTop: theme.spacing(2),
       fontWeight: 400,
       justifyContent: "space-between",
+      alignItems: "flex-end",
       "&:hover $hoverIcon": {
         visibility: "visible"
       },
@@ -193,7 +194,9 @@ const SimpleTagList: React.FC<Props> = props => {
     return arrayOfTags.map((tag: Tag, index) => (
       <span key={tag.id} className={clsx("centeredFlex", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
         <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
-        {`#${tag.name} `}
+        <span className="text-nowrap">
+          {`#${tag.name} `}
+        </span>
       </span>
     ));
   }, [tags, input.value, inputValue]);
@@ -488,7 +491,7 @@ const SimpleTagList: React.FC<Props> = props => {
               [fieldClasses.text]: inputValue,
             })}
           >
-            <span className="centeredFlex">
+            <span className="centeredFlex flex-wrap">
               {InputValueForRender || "No value"}
             </span>
             {!disabled

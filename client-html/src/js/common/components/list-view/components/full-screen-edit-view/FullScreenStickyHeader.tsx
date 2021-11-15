@@ -138,7 +138,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     <Grid
       container
       columnSpacing={3}
-      className="align-items-center"
+      className={clsx("align-items-center", Avatar && opened && "mb-2")}
       style={Avatar ? { minHeight: "60px" } : null}
     >
       <ClickAwayListener onClickAway={onClickAway}>
@@ -147,17 +147,16 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           xs={12}
           className={clsx(
             "centeredFlex",
-            twoColumn && !opened ? classes.fullScreenTitleItem : titleExpanded && 'mb-2',
+            twoColumn && !opened ? classes.fullScreenTitleItem : titleExpanded && 'mb-1',
             isStuck && !opened && classes.isStuck
           )}
           columnSpacing={3}
         >
-      
           {Avatar && (
-          <Avatar
-            avatarSize={showTitleOnly ? 40 : 90}
-            disabled={showTitleOnly}
-          />
+            <Avatar
+              avatarSize={showTitleOnly && !opened ? 40 : 90}
+              disabled={showTitleOnly}
+            />
           )}
           <Grid
             columnSpacing={3}

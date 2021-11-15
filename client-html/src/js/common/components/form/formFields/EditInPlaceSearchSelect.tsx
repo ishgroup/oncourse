@@ -441,7 +441,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       id={inline ? undefined : (input && input.name)}
     >
       <div
-        className={clsx("pr-2", {
+        className={clsx({
           "d-none": (inHeader && !(inline || isEditing || (meta && meta.invalid))),
           [classes.editingSelect]: !inline && formatting !== "inline"
         })}

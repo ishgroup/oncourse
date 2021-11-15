@@ -224,7 +224,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       <Grid
         item
         xs={layoutArray[0].xs}
-        className="overflow-y-auto h-100"
+        className="overflow-y-auto overflow-x-hidden h-100"
         onScroll={onScroll}
         id={TAB_LIST_SCROLL_TARGET_ID}
         ref={scrollContainer}
@@ -235,7 +235,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
             id={i.label}
             key={tabIndex}
             ref={el => scrollNodes.current[tabIndex] = el}
-            className={!itemProps.twoColumn && tabIndex === items.length - 1 && "saveButtonTableOffset"}
+            className={tabIndex === items.length - 1 && "saveButtonTableOffset"}
           >
             {i.component({
               ...itemProps, expanded, setExpanded, tabIndex

@@ -5,7 +5,6 @@
 
 import clsx from "clsx";
 import React, { useCallback } from "react";
-import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import {
  FormControl, FormHelperText, Input, InputLabel 
@@ -25,13 +24,14 @@ interface UneditableProps {
   money?: boolean;
   multiline?: boolean;
   className?: string;
+  placeholder?: string;
   error?: string;
   format?: (value) => any;
 }
 
 const Uneditable = React.memo<UneditableProps>(props => {
   const {
-   label, labelAdornment, value, url, money, currencySymbol, className, format, multiline, error
+   label, labelAdornment, placeholder = "No value", value, url, money, currencySymbol, className, format, multiline, error
   } = props;
 
   const openLink = useCallback(() => {
@@ -39,8 +39,8 @@ const Uneditable = React.memo<UneditableProps>(props => {
   }, [url]);
 
   return (
-    <FormControl error={Boolean(error)} variant="standard" className={clsx(className, money && "money")}>
-      <InputLabel>
+    <FormControl error={Boolean(error)} variant="standard" fullWidth className={clsx(className, money && "money")}>
+      <InputLabel shrink>
         {label}
         {url && <LinkAdornment link={url} className="pl-0-5" clickHandler={openLink} />}
         {labelAdornment && (
@@ -59,9 +59,10 @@ const Uneditable = React.memo<UneditableProps>(props => {
               ? (format
                   ? (format(value))
                   : (value)
-            ) : ("No Value")
+            ) : ("")
           }
         multiline={multiline}
+        placeholder={placeholder}
         disabled
       />
       <FormHelperText>{error}</FormHelperText>

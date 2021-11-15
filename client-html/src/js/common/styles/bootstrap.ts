@@ -242,6 +242,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".overflow-hidden": {
     overflow: "hidden"
   },
+  ".overflow-x-hidden": {
+    overflowX: "hidden"
+  },
   ".overflow-y-auto": {
     overflowY: "auto"
   },
@@ -297,6 +300,9 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".flex-nowrap": {
     flexWrap: "nowrap"
+  },
+  ".flex-wrap": {
+    flexWrap: "wrap"
   },
   ".align-items-baseline": {
     alignItems: "baseline"

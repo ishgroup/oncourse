@@ -530,7 +530,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </>
           )}
           <Grid item xs={12}>
-            <div className="mt-1 centeredFlex">
+            <div className="mt-1 mb-2 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
                 control={<FormField type="checkbox" name="student.feeHelpEligible" color="secondary" />}

@@ -6,7 +6,7 @@
 import React, { useCallback, useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { change, FieldArray } from "redux-form";
+import { FieldArray } from "redux-form";
 import Grid from "@mui/material/Grid";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -23,11 +23,12 @@ import {
 } from "@api/model";
 import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
+import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { formatFundingSourceId } from "../../common/utils";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import { defaultContactName, openContactLink } from "../../contacts/utils";
 import {
   validateAssociatedCourseIdentifier,
   validateCharacter,
@@ -37,13 +38,10 @@ import {
   validateVetPurchasingContractIdentifier,
   validateVetTrainingContractID
 } from "../../../../common/utils/validation";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { setSelectedContact } from "../../invoices/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
@@ -64,9 +62,7 @@ interface Props extends Partial<EditViewProps> {
   values?: Enrolment;
   contracts?: FundingSource[];
   tags?: Tag[];
-  setSelectedContact?: AnyArgFunction;
   gradingTypes?: GradingType[];
-  isScrolling?: boolean;
 }
 
 const EnrolmentGeneralTab: React.FC<Props> = props => {
@@ -78,21 +74,10 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
     twoColumn,
     values,
     dispatch,
-    setSelectedContact,
     contracts,
     dirty,
     gradingTypes,
-    syncErrors
   } = props;
-
-  const onContactChange = useCallback(
-    value => {
-      setSelectedContact(value);
-
-      dispatch(change(form, "studentName", contactLabelCondition(value)));
-    },
-    [form]
-  );
 
   const validateAssesments = useCallback((value: AssessmentClass[], allValues: Enrolment) => {
     let error;
@@ -144,8 +129,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
   const outcomesAddLink = useMemo(() => `/outcome/new?search=enrolment.id=${values.id}`, [values.id]);
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3">
-      <Grid item xs={12} className={!twoColumn && "pt-3"}>
+    <Grid container columnSpacing={3} rowSpacing={2} className={clsx("pl-3 pr-3", twoColumn ? "pt-2" : "pt-3")}>
+      <Grid item xs={12}>
         <FullScreenStickyHeader
           disableInteraction
           twoColumn={twoColumn}

@@ -119,7 +119,6 @@ class Modules extends React.Component<any, any> {
           editViewProps={{
             nameCondition,
             manualLink,
-            hideTitle: true
           }}
           EditViewContent={ModulesEditView}
           getEditRecord={getModuleRecord}

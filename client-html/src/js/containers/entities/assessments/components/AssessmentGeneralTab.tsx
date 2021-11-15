@@ -19,7 +19,6 @@ interface Props extends Partial<EditViewProps<Assessment>> {
   tags?: Tag[];
   classes?: any;
   gradingTypes?: GradingType[];
-  isScrolling?: boolean;
 }
 
 const AssessmentGeneralTab = React.memo<Props>(
@@ -38,7 +37,7 @@ const AssessmentGeneralTab = React.memo<Props>(
       [tags]
     );
     return (
-      <Grid container columnSpacing={3} className="p-3">
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={12}>
           <FullScreenStickyHeader
             opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
@@ -63,7 +62,7 @@ const AssessmentGeneralTab = React.memo<Props>(
               </div>
               )}
             fields={(
-              <Grid container columnSpacing={3}>
+              <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={twoColumn ? 2 : 12}>
                   <FormField
                     label="Code"
@@ -85,9 +84,7 @@ const AssessmentGeneralTab = React.memo<Props>(
               </Grid>
               )}
           />
-            
         </Grid>
-
         <Grid item xs={12}>
           <FormField
             type="tags"
@@ -108,7 +105,6 @@ const AssessmentGeneralTab = React.memo<Props>(
           />
         </Grid>
         <Grid item xs={12}>
-
           <FormControlLabel
             className="checkbox mb-2"
             control={<FormField type="checkbox" name="active" color="secondary" fullWidth />}

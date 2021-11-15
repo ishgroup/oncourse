@@ -237,11 +237,11 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
     : `${modalProps[2]} ${modalProps[0].toLowerCase()} date${titlePostfix}`);
 
   const modalGradeType = gradingTypes.find(g =>
-    g.id === values.assessments[gradeMenuAnchorEl?.attributes?.id?.value?.replace("grade", "")]?.gradingTypeId);
+    g.id === values?.assessments[gradeMenuAnchorEl?.attributes?.id?.value?.replace("grade", "")]?.gradingTypeId);
 
   const modalGradeItems = modalGradeType?.gradingItems;
 
-  const hasGrades = Boolean(values.assessments.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
+  const hasGrades = Boolean(values?.assessments.some(a => gradingTypes.some(g => g.id === a.gradingTypeId)));
 
   return values.assessments && values.assessments.length ? (
     <Grid item={true} xs={12} id={name} container>

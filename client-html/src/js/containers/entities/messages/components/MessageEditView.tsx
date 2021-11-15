@@ -27,7 +27,7 @@ interface MessageEditViewProps {
 }
 
 const MessageEditView = React.memo<MessageEditViewProps>(props => {
-  const { classes, twoColumn, values } = props;
+  const { twoColumn, values } = props;
 
   const htmlRef = useRef<HTMLDivElement>();
 
@@ -46,9 +46,9 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
   const createdOn = useMemo(() => format(new Date(values.createdOn), III_DD_MMM_YYYY), [values.createdOn]);
 
   return (
-    <div className="p-3">
-      {!twoColumn && (<Uneditable value={values.subject} label="Subject" />)}
-      <Grid container columnSpacing={3}>
+    <div className="p-3 saveButtonTableOffset">
+      <Grid container columnSpacing={3} rowSpacing={2}>
+        {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label="Subject" /></Grid>)}
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
             value={defaultContactName(values.sentToContactFullname)}
