@@ -91,9 +91,6 @@ const AppBarContainer: React.FC<Props> = props => {
 
   const [hasScrolling, setScrolling] = useState<boolean>(false);
 
-  console.log(typeof getAuditsUrl)
-  console.log(typeof getAuditsUrl === "string")
-
   const onScroll = useCallback(
     e => {
       scrollSpy(e);

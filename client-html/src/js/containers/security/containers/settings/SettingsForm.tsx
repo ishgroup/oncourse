@@ -126,7 +126,7 @@ class SettingsForm extends React.Component<any, any> {
           createdOn={v => v.created}
           modifiedOn={v => v.modified}
         >
-          <Grid container columnSpacing={3} spacing={2}>
+          <Grid container>
             <Grid item xs={12} sm={8} className="d-flex">
               <FormGroup>
                 <FormControlLabel
