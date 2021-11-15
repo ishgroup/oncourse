@@ -42,7 +42,9 @@ const styles = theme =>
       display: "flex",
       fontSize: "18px",
       color: theme.palette.primary.main,
-      opacity: 0.5,
+      alignItems: "flex-end",
+      alignSelf: "flex-end",
+      marginBottom: "4px"
     },
     tagBody: {
       color: theme.palette.text.primary,
@@ -111,7 +113,15 @@ const styles = theme =>
     },
     listbox: {
       whiteSpace: 'break-spaces'
-    }
+    },
+    hasPopup: {
+      "&$root $inputWrapper": {
+        padding: 0
+      },
+      "&$root$hasClear $inputWrapper": {
+        padding: 0
+      }
+    },
   });
 
 interface Props extends WrappedFieldProps {
@@ -419,7 +429,7 @@ const SimpleTagList: React.FC<Props> = props => {
               error={meta?.invalid}
               focused={menuIsOpen}
             >
-              {label 
+              {label
               && (
                 <InputLabel
                   shrink
@@ -448,10 +458,11 @@ const SimpleTagList: React.FC<Props> = props => {
                   value: inputValue
                 }}
                 endAdornment={!disabled && (
-                  <InputAdornment position="end">
+                  <InputAdornment className={classes.inputEndAdornment} position="end">
                     <Edit color="primary" />
                   </InputAdornment>
                 )}
+                multiline
               />
               <FormHelperText
                 classes={{
