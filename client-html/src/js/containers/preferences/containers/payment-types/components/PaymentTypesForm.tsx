@@ -1,8 +1,6 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
 import isEqual from "lodash.isequal";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -185,22 +183,9 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}
-          classes={{ fullScreenTitleItem: classes.fullScreenTitleItem }}
+          onAddMenu={() => this.onAddNew()}
         >
-          <div className={classes.scriptAddMenu}>
-            <Fab
-              type="button"
-              size="small"
-              color="primary"
-              classes={{
-                sizeSmall: "appBarFab"
-              }}
-              onClick={() => this.onAddNew()}
-            >
-              <AddIcon />
-            </Fab>
-          </div>
-          <Grid container className={classes.marginTop}>
+          <Grid container className="mt-2">
             <Grid item sm={12} lg={10}>
               <Grid container columnSpacing={3}>
                 {data && (

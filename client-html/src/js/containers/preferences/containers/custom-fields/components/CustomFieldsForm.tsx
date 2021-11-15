@@ -204,22 +204,9 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             disableInteraction
             createdOn={() => created}
             modifiedOn={() => modified}
-            classes={{ fullScreenTitleItem: classes.fullScreenTitleItem }}
+            onAddMenu={() => this.onAddNew()}
           >
-            <div className={classes.scriptAddMenu}>
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={() => this.onAddNew()}
-              >
-                <AddIcon />
-              </Fab>
-            </div>
-            <Grid container className={classes.marginTop}>
+            <Grid container className="mt-2">
               <Grid item lg={10}>
                 {data && data.types && (
                 <FieldArray
