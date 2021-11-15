@@ -105,3 +105,5 @@ stringProto.capitalize = function () {
 };
 
 export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";
+
+export const NESTED_TABLE_ROW_HEIGHT = 27;

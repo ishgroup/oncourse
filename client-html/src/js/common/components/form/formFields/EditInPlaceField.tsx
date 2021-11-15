@@ -23,8 +23,15 @@ const styles = theme => createStyles({
     fontSize: "18px",
     color: theme.palette.primary.main,
     opacity: 0.5,
+    alignItems: "flex-end",
+    alignSelf: "flex-end",
+    marginBottom: "5px"
   },
   inputWrapper: {
+    paddingBottom: 0,
+    "& textarea": {
+      paddingBottom: "5px"
+    },
     "&:hover $hiddenContainer": {
       display: "flex",
     },
@@ -45,9 +52,6 @@ const styles = theme => createStyles({
     "& > div": {
       marginTop: 0
     }
-  },
-  bottomMargin: {
-    marginBottom: `${theme.spacing(1) + 1}px`
   },
   topMargin: {
     marginTop: theme.spacing(1),
@@ -87,9 +91,6 @@ const styles = theme => createStyles({
   readonly: {
     fontWeight: 300,
     pointerEvents: "none"
-  },
-  rightPadding: {
-    paddingRight: theme.spacing(2)
   },
   viewMode: {
     padding: 0,
@@ -614,7 +615,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             selected: classes.emptySelect
           }}
         >
-          <span className={clsx(classes.placeholderContent,fieldClasses.placeholder)}>{placeholder || "No value"}</span>
+          <span className={clsx(classes.placeholderContent, fieldClasses.placeholder)}>{placeholder || "No value"}</span>
         </MenuItem>,
         ...selectItems || []
       ];
@@ -672,7 +673,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       >
         <div
           className={clsx({
-            [classes.rightPadding]: formatting !== "inline",
             [classes.inlineMargin]: isInline,
             [classes.hiddenContainer]: isInline && !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
@@ -686,7 +686,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             margin="none"
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
-              [classes.bottomMargin]: listSpacing && formatting !== "inline",
               [classes.inlineTextField]: isInline
             })}
             {...custom}

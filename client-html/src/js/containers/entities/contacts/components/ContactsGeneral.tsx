@@ -109,12 +109,12 @@ export const ProfileHeading: React.FC<any> = props => {
     isCompany,
     usiLocked,
     isNew,
-    invalid
+    syncErrors
   } = props;
 
   return (
     <FullScreenStickyHeader
-      opened={isNew || invalid}
+      opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
       twoColumn={twoColumn}
       Avatar={aProps => (
         <Field
@@ -138,7 +138,7 @@ export const ProfileHeading: React.FC<any> = props => {
         </>
       )}
       fields={(
-        <Grid container>
+        <Grid container item xs={12} rowSpacing={2} columnSpacing={3}>
           {!isCompany && (
             <>
               <Grid item xs={twoColumn ? 2 : 6}>
@@ -152,7 +152,7 @@ export const ProfileHeading: React.FC<any> = props => {
               </Grid>
             </>
           )}
-          <Grid item xs={twoColumn ? 4 : 6}>
+          <Grid item xs={isCompany ? 12 : twoColumn ? 2 : 6}>
             <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
           </Grid>
         </Grid>

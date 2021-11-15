@@ -5,7 +5,6 @@ import Divider from "@mui/material/Divider";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { THEME_SPACING } from "../utils";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { EditViewProps } from "../../../../model/common/ListView";
 
@@ -77,6 +76,7 @@ const ContactsMessages: React.FC<ContactsMessagesProps> = props => {
             onRowDoubleClick={openRow}
             rerenderOnEveryChange
             sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
+            calculateHeight
             hideHeader
           />
         </div>

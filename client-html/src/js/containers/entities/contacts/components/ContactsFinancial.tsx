@@ -196,6 +196,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               columns={financialColumns}
               onRowDoubleClick={openRow}
               rerenderOnEveryChange
+              calculateHeight
               hideHeader
             />
           </Grid>

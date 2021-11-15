@@ -99,7 +99,7 @@ const NestedEntity: React.FC<Props> = ({
               badgeContent={t.count}
               max={999}
             >
-              <ButtonGroup variant="contained" className="mr-2" disabled={t.disabled}>
+              <ButtonGroup variant="contained" color="inherit" className="mr-2" disabled={t.disabled}>
                 {t.timetableLink && (
                   <Button size="small" onClick={() => openTimetableLink(t.timetableLink)}>
                     <DateRange />

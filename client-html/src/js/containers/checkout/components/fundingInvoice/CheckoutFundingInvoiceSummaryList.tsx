@@ -147,6 +147,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
               className="saveButtonTableOffset"
               component={NestedTable}
               columns={trainingPlansColumns}
+              calculateHeight
               hideHeader
             />
           </Grid>

@@ -7,8 +7,7 @@
  */
 
 import React, { useCallback } from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import { IconButton, Theme } from "@mui/material";
+import { IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { change, Field } from "redux-form";
 import { SurveyItem } from "@api/model";
@@ -22,6 +21,7 @@ import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { openContactLink } from "../../contacts/utils";
+import clsx from "clsx";
 
 interface Props {
   classes?: any;
@@ -30,13 +30,6 @@ interface Props {
   dispatch?: any;
   form?: string;
 }
-
-const styles = createStyles(({ spacing }: Theme) => ({
-  root: {
-    padding: spacing(3, 3, 6, 3),
-    height: "100%"
-  }
-}));
 
 const visibilityItems = [
   { label: "Waiting review", value: "Waiting review" },
@@ -47,7 +40,7 @@ const visibilityItems = [
 
 const SurveyEditView = (props: Props) => {
   const {
-    classes, twoColumn, values, dispatch, form
+    twoColumn, values, dispatch, form
   } = props;
   const siteId = values && values.siteId;
   const roomId = values && values.roomId;
@@ -66,7 +59,7 @@ const SurveyEditView = (props: Props) => {
   }, [classId]);
 
   return values ? (
-    <Grid container columnSpacing={3} rowSpacing={2} className={classes.root} alignContent="flex-start" alignItems="center">
+    <Grid container columnSpacing={3} rowSpacing={2} className="saveButtonTableOffset p-3" alignContent="flex-start" alignItems="center">
       <Grid item xs={12}>
         <FullScreenStickyHeader
           disableInteraction
@@ -151,11 +144,10 @@ const SurveyEditView = (props: Props) => {
         form={form}
         gridItemProps={{
           xs: twoColumn ? 6 : 12,
-          className: twoColumn ? undefined : "saveButtonTableOffset"
         }}
       />
     </Grid>
   ) : null;
 };
 
-export default withStyles(styles)(SurveyEditView);
+export default SurveyEditView;

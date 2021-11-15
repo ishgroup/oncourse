@@ -235,20 +235,22 @@ const DocumentShare:React.FC<Props> = ({
             >
               {`${relationsCount} ${entity.capitalize()}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""} `}
               <IconButton
+                size="small"
                 color="secondary"
                 className={classes.linkButton}
                 onClick={() => onAttachmentCategoryClick(entity, relationsMap)}
               >
-                <OpenInNew fontSize="inherit" />
+                <OpenInNew fontSize="inherit" color="primary" />
               </IconButton>
               {portalEnabled
                 && !["Site", "Room"].includes(entity) && (
                 <IconButton
+                  size="small"
                   color="secondary"
                   className={classes.linkButton}
                   onClick={() => onAttachmentPeopleClick(entity, documentSource.access, relations)}
                 >
-                  <SupervisorAccount fontSize="inherit" className="highlight" />
+                  <SupervisorAccount fontSize="inherit" className="highlight" color="primary" />
                 </IconButton>
               )}
             </Typography>
@@ -326,7 +328,7 @@ const DocumentShare:React.FC<Props> = ({
         <AlertTitle>Who can view this document</AlertTitle>
         {SummaryLabel}
       </Alert>
-      <Card className="mb-2" elevation={cardsElevation}>F
+      <Card className="mb-2" elevation={cardsElevation}>
         <CardHeader
           classes={cardHeaderClasses}
           avatar={(

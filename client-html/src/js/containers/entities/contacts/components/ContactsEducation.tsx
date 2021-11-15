@@ -254,7 +254,6 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
           <Grid
             item
             xs={12}
-            className="flex-column"
           >
             <FieldArray
               name="student.education.enrolments"
@@ -266,6 +265,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
               onAdd={hasQePermissions ? onAddEnrolment : undefined}
               rerenderOnEveryChange
               sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+              calculateHeight
             />
           </Grid>
         )}
@@ -276,7 +276,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             <Grid
               item
               xs={12}
-              className="flex-column"
+              className="mt-2"
             >
               <FieldArray
                 name="student.education.priorLearnings"
@@ -287,6 +287,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
                 onRowDoubleClick={openPriorLearningsRow}
                 onAdd={onAddPriorLearning}
                 rerenderOnEveryChange
+                calculateHeight
               />
             </Grid>
           )}
@@ -297,7 +298,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
             <Grid
               item
               xs={12}
-              className="flex-column"
+              className="mt-2"
             >
               <FieldArray
                 name="student.education.outcomes"
@@ -308,17 +309,18 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
                 onRowDoubleClick={openOutcomesRow}
                 rerenderOnEveryChange
                 sortBy={(a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()}
+                calculateHeight
               />
             </Grid>
           )}
         </Grid>
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} className="saveButtonTableOffset">
           {certificatesPermissions
             && (
             <Grid
               item
               xs={12}
-              className="flex-column"
+              className="mt-2"
             >
               <FieldArray
                 name="student.education.certificates"
@@ -330,6 +332,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
                 onAdd={onAddCertificates}
                 rerenderOnEveryChange
                 sortBy={(a, b) => b.certificateNumber - a.certificateNumber}
+                calculateHeight
               />
             </Grid>
           )}

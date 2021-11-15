@@ -202,21 +202,21 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     [values.printedOn]
   );
 
-  const revokedValue = useMemo<any>(
+  const revokedValue = useMemo<string>(
     () => (values.revokedOn ? (
         format(new Date(values.revokedOn), III_DD_MMM_YYYY)
       ) : (
-        <span className="textSecondaryColor">None</span>
+        null
       )),
 
     [values.revokedOn]
   );
 
-  const printedValue = useMemo<any>(
+  const printedValue = useMemo<string>(
     () => (values.printedOn ? (
         format(new Date(values.printedOn), III_DD_MMM_YYYY)
       ) : (
-        <span className="textSecondaryColor">Not Printed</span>
+        null
       )),
     [values.printedOn]
   );
@@ -417,6 +417,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <Uneditable
             label="Printed"
             value={printedValue}
+            placeholder="Not Printed"
           />
         </Grid>
 
@@ -441,6 +442,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <Uneditable
             label="Revoked"
             value={revokedValue}
+            placeholder="None"
           />
         </Grid>
 

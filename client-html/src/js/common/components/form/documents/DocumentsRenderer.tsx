@@ -345,7 +345,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
             </Typography>
           </div>
         </Grid>
-        <Grid container columnSpacing={3} spacing={3} wrap="wrap">
+        <Grid item container xs={12} columnSpacing={3} spacing={3} wrap="wrap">
           {fields.map((f, index) => {
             const item = fields.get(index);
 

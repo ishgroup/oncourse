@@ -210,6 +210,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           onRowDoubleClick={openRow}
           rerenderOnEveryChange
           sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
+          calculateHeight
         />
       )}
     </div>
