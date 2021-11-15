@@ -21,6 +21,7 @@ public class MessageUpdater extends AbstractWillowUpdater<MessageStub, MessagePe
 		message.setEmailBody(stub.getEmailBody());
 		message.setEmailSubject(stub.getEmailSubject());
 		message.setSmsText(stub.getSmsText());
+		message.setCollege(entity.getCollege());
 
 		entity.setMessage(message);
 		entity.setContact(callback.updateRelationShip(stub.getContactId(), Contact.class));

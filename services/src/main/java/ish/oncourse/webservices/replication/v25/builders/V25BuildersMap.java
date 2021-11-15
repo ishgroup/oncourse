@@ -33,7 +33,7 @@ public class V25BuildersMap {
 		builderMap.put(Quote.class.getSimpleName(), new InvoiceStubBuilder());
 		builderMap.put(InvoiceLine.class.getSimpleName(), new InvoiceLineStubBuilder());
 		builderMap.put(InvoiceLineDiscount.class.getSimpleName(), new InvoiceLineDiscountStubBuilder());
-		builderMap.put(Message.class.getSimpleName(), new MessageStubBuilder());
+		builderMap.put(MessagePerson.class.getSimpleName(), new MessageStubBuilder());
 		builderMap.put(PaymentInLine.class.getSimpleName(), new PaymentInLineStubBuilder());
 		builderMap.put(PaymentIn.class.getSimpleName(), new PaymentInStubBuilder());
 		builderMap.put(PaymentOut.class.getSimpleName(), new PaymentOutStubBuilder());

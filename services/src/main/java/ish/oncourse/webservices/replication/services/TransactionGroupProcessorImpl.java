@@ -237,6 +237,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 				currentStub.getAngelId(), currentStub.getWillowId());
 
 		GenericReplicatedRecord replRecord = getReplicatedRecordForStub(currentStub);
+		SupportedVersions version = PortHelper.getVersionByReplicationStub(currentStub);
+		if(version == SupportedVersions.V25 && currentStub.getEntityIdentifier().equals(Message.class.getSimpleName()))
+			currentStub.setEntityIdentifier(MessagePerson.class.getSimpleName());
 
 		if (replRecord == null) {
 			throw new IllegalArgumentException(String.format("Replication result is not set for %s with angelId:%s and willowId:%s.", currentStub.getEntityIdentifier(),

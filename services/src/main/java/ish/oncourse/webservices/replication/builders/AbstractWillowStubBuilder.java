@@ -39,14 +39,20 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 				String customFieldIdentifier = getFieldConfigurationIdentifier(version);
 				soapStub.setEntityIdentifier(customFieldIdentifier);
 			} else {
-				soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
+				if(queuedRecord.getEntityIdentifier().equals(MessagePerson.class.getSimpleName()))
+					soapStub.setEntityIdentifier(Message.class.getSimpleName());
+				else
+					soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			}
 			break;
 		case DELETE:
 			soapStub = PortHelper.createDeleteStub(version);
 			soapStub.setWillowId(queuedRecord.getEntityWillowId());
 			soapStub.setAngelId(queuedRecord.getAngelId());
-			soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
+			if(queuedRecord.getEntityIdentifier().equals(MessagePerson.class.getSimpleName()))
+				soapStub.setEntityIdentifier(Message.class.getSimpleName());
+			else
+				soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
 			break;
 		default:
 			String errorMessage = "QueuedRecord with null action is not allowed.";

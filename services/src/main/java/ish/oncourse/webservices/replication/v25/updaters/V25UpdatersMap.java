@@ -36,7 +36,7 @@ public class V25UpdatersMap {
 		updaterMap.put(InvoiceLine.class.getSimpleName(), new InvoiceLineUpdater());
 		updaterMap.put(QuoteLine.class.getSimpleName(), new InvoiceLineUpdater());
 		updaterMap.put(InvoiceLineDiscount.class.getSimpleName(), new InvoiceLineDiscountUpdater());
-		updaterMap.put(Message.class.getSimpleName(), new MessageUpdater());
+		updaterMap.put(MessagePerson.class.getSimpleName(), new MessageUpdater());
 		updaterMap.put(MessageTemplate.class.getSimpleName(), new MessageTemplateUpdater());
 		updaterMap.put(PaymentIn.class.getSimpleName(), new PaymentInUpdater());
 		updaterMap.put(PaymentInLine.class.getSimpleName(), new PaymentInLineUpdater());
