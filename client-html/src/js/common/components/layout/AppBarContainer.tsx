@@ -70,7 +70,7 @@ interface Props extends InjectedFormProps {
   drawerHandler?: () => void;
   children?: any;
   values?: any;
-  getAuditsUrl?: (id: number) => string;
+  getAuditsUrl?: string | ((id: number) => string);
   manualUrl?: string;
   disabled?: boolean;
   fields?: any;
@@ -90,6 +90,9 @@ const AppBarContainer: React.FC<Props> = props => {
   const { scrollSpy } = useStickyScrollSpy();
 
   const [hasScrolling, setScrolling] = useState<boolean>(false);
+
+  console.log(typeof getAuditsUrl)
+  console.log(typeof getAuditsUrl === "string")
 
   const onScroll = useCallback(
     e => {
@@ -147,7 +150,7 @@ const AppBarContainer: React.FC<Props> = props => {
               created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
               modified={values && (modifiedOn ? modifiedOn(values) : (values.modifiedOn ? new Date(values.modifiedOn) : null))}
               manualUrl={manualUrl}
-              auditsUrl={values && getAuditsUrl && getAuditsUrl(values.id)}
+              auditsUrl={values && getAuditsUrl && (typeof getAuditsUrl === "string" ? getAuditsUrl : getAuditsUrl(values.id))}
               classes={{ buttonAlternate: hasScrolling && classes.headerAlternate }}
             />
           )}

@@ -58,7 +58,7 @@ class MaintenanceBaseForm extends React.Component<any, any> {
         <AppBarContainer
           values={data}
           manualUrl={manualUrl}
-          getAuditsUrl={() => PREFERENCES_AUDITS_LINK}
+          getAuditsUrl={PREFERENCES_AUDITS_LINK}
           disabled={!dirty}
           invalid={invalid}
           title="Maintenance"

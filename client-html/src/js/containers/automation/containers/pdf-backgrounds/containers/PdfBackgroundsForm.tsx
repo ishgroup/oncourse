@@ -125,7 +125,7 @@ const PdfBackgroundsForm = React.memo<Props>(
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
-            getAuditsUrl={() => 'audit?search=~"ReportOverlay"'}
+            getAuditsUrl='audit?search=~"ReportOverlay"'
             disabled={(isNew && !fileIsChosen)
             || (!isNew && !dirty && !fileIsChosen)
             || (!isNew && !values.preview && !fileIsChosen)}
