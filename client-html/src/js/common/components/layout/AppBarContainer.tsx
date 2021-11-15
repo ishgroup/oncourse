@@ -19,13 +19,15 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
+import { useStickyScrollSpy } from "../../utils/hooks";
 import { openDrawer } from "../../actions";
 import AppBarHelpMenu from "../form/AppBarHelpMenu";
 import FormSubmitButton from "../form/FormSubmitButton";
 import FullScreenStickyHeader from "../list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { useStickyScrollSpy } from "../../utils/hooks";
 
 const styles: any = theme => createStyles({
   header: {
@@ -59,6 +61,20 @@ const styles: any = theme => createStyles({
     zIndex: 1,
     marginTop: 8,
   },
+  fullScreenTitleItemHasMenu: {
+    paddingLeft: `${theme.spacing(12)} !important`,
+    marginTop: theme.spacing(1),
+  },
+  scriptAddMenu: {
+    position: "absolute",
+    zIndex: theme.zIndex.drawer + 2,
+    left: 26,
+    top: 43,
+    "& > .appBarFab": {
+      top: 0,
+      left: 0,
+    }
+  },
 });
 
 interface Props extends InjectedFormProps {
@@ -79,12 +95,14 @@ interface Props extends InjectedFormProps {
   disabledScrolling?: boolean;
   createdOn?: (values: any) => string;
   modifiedOn?: (values: any) => string;
+  onAddMenu?: () => void;
+  customAddMenu?: any;
 }
 
 const AppBarContainer: React.FC<Props> = props => {
   const {
     classes, title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
-    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn
+    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu
   } = props;
 
   const { scrollSpy } = useStickyScrollSpy();
@@ -105,6 +123,7 @@ const AppBarContainer: React.FC<Props> = props => {
   const isSmallScreen = useMediaQuery('(max-width:992px)');
   const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
   const isHighcontrastTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "highcontrast";
+  const hasMenu = onAddMenu || customAddMenu;
 
   return (
     <>
@@ -133,7 +152,7 @@ const AppBarContainer: React.FC<Props> = props => {
             title={title}
             fields={fields}
             otherClasses={{
-              fullScreenTitleItem: classes.fullScreenTitleItem,
+              fullScreenTitleItem: clsx(classes.fullScreenTitleItem, { [classes.fullScreenTitleItemHasMenu]: hasMenu }),
             }}
             disableInteraction={disableInteraction}
             twoColumn
@@ -163,6 +182,23 @@ const AppBarContainer: React.FC<Props> = props => {
         </Toolbar>
       </AppBar>
       <div className={clsx("w-100", { "appBarContainer p-3": !disabledScrolling }, classes.container)} onScroll={onScroll}>
+        {hasMenu && (
+          <div className={classes.scriptAddMenu}>
+            {onAddMenu ? (
+              <Fab
+                type="button"
+                size="small"
+                color="primary"
+                classes={{
+                  sizeSmall: "appBarFab"
+                }}
+                onClick={onAddMenu}
+              >
+                <AddIcon />
+              </Fab>
+            ) : customAddMenu}
+          </div>
+        )}
         {children}
       </div>
     </>
