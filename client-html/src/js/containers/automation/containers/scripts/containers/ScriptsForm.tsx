@@ -94,20 +94,6 @@ const styles = theme =>
       margin: theme.spacing(1, 0, 3, 0),
     },
     queryField: {},
-    fullScreenTitleItem: {
-      paddingLeft: `${theme.spacing(12)} !important`,
-      marginTop: theme.spacing(1),
-    },
-    scriptAddMenu: {
-      position: "absolute",
-      zIndex: theme.zIndex.drawer + 2,
-      left: 26,
-      top: 43,
-      "& > .appBarFab": {
-        top: 0,
-        left: 0,
-      }
-    },
   });
 
 const entityNameTypes = Object.keys(TriggerType).slice(0, 6).filter(t => t !== "Schedule");
@@ -351,7 +337,6 @@ const ScriptsForm = React.memo<Props>(props => {
           invalid={invalid}
           title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
           disableInteraction={isInternal}
-          classes={{ fullScreenTitleItem: !isInternal && viewMode !== "Code" ? classes.fullScreenTitleItem : null }}
           noDrawer
           fields={(
             <Grid item xs={12}>
@@ -396,20 +381,18 @@ const ScriptsForm = React.memo<Props>(props => {
               ]}
             />
           )}
-        >
-          {!isInternal && viewMode !== "Code" && (
-            <div className={classes.scriptAddMenu}>
-              <ScriptAddMenu
-                addComponent={addComponent}
-                form={form}
-                dispatch={dispatch}
-                values={values}
-                hasUpdateAccess={hasUpdateAccess}
-              />
-            </div>
+          customAddMenu={!isInternal && viewMode !== "Code" && (
+            <ScriptAddMenu
+              addComponent={addComponent}
+              form={form}
+              dispatch={dispatch}
+              values={values}
+              hasUpdateAccess={hasUpdateAccess}
+            />
           )}
+        >
           {values && (
-            <Grid container columnSpacing={3} className={classes.root}>
+            <Grid container className={classes.root}>
               <Grid item xs={9} className={classes.cardsBox}>
                 <div>
                   <ScriptCard className="mt-3" heading="Trigger" disableExpandedBottomMargin expanded>

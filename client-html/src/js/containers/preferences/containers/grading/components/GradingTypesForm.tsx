@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
- FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm
+  FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
 import { Dispatch } from "redux";
 import { GradingType } from "@api/model";
-import withStyles from "@mui/styles/withStyles";
-import AddIcon from "@mui/icons-material/Add";
-import { Fab, Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { showConfirm } from "../../../../../common/actions";
 import { deleteGradingType, updateGradingTypes } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -15,7 +13,6 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErro
 import { State } from "../../../../../reducers/state";
 import GradingsRenderer from "./GradingsRenderer";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { formCommonStyles } from "../../../styles/formCommonStyles";
 
 export interface GradingFormData {
   types: GradingType[];
@@ -25,7 +22,6 @@ export interface GradingProps {
   values: GradingFormData;
   onSave: (types: GradingType[]) => void;
   gradingTypes: GradingType[];
-  classes?: any;
 }
 
 export const FORM = "GradingForm";
@@ -40,7 +36,6 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
     invalid,
     array,
     gradingTypes,
-    classes,
   } = props;
 
   useEffect(() => {
@@ -95,23 +90,10 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
         invalid={invalid}
         title="Grading types"
         disableInteraction
-        classes={{ fullScreenTitleItem: classes.fullScreenTitleItem }}
         hideHelpMenu
+        onAddMenu={() => onAddNew()}
       >
-        <div className={classes.scriptAddMenu}>
-          <Fab
-            type="button"
-            size="small"
-            color="primary"
-            classes={{
-              sizeSmall: "appBarFab"
-            }}
-            onClick={() => onAddNew()}
-          >
-            <AddIcon />
-          </Fab>
-        </div>
-        <Grid container className="mt-1">
+        <Grid container className="mt-2">
           <FieldArray
             name="types"
             component={GradingsRenderer}
@@ -166,6 +148,6 @@ const GradingTypesForm = reduxForm({
   initialValues: {
     types: []
   }
-})(connect(mapStateToProps)(withStyles(formCommonStyles)(GradingTypes)));
+})(connect(mapStateToProps)(GradingTypes));
 
 export default GradingTypesForm;

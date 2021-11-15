@@ -9,8 +9,6 @@ import isEqual from "lodash.isequal";
 import { ConcessionType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
@@ -177,21 +175,8 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}
-          classes={{ fullScreenTitleItem: classes.fullScreenTitleItem }}
+          onAddMenu={() => this.onAddNew()}
         >
-          <div className={classes.scriptAddMenu}>
-            <Fab
-              type="button"
-              size="small"
-              color="primary"
-              classes={{
-                sizeSmall: "appBarFab"
-              }}
-              onClick={() => this.onAddNew()}
-            >
-              <AddIcon />
-            </Fab>
-          </div>
           <Grid container className={classes.marginTop}>
             <Grid item sm={12} lg={10}>
               <Grid container columnSpacing={3}>
