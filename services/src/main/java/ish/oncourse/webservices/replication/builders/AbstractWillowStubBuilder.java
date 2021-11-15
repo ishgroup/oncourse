@@ -39,7 +39,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 				String customFieldIdentifier = getFieldConfigurationIdentifier(version);
 				soapStub.setEntityIdentifier(customFieldIdentifier);
 			} else {
-				if(queuedRecord.getEntityIdentifier().equals(MessagePerson.class.getSimpleName()))
+				if(queuedRecord.getEntityIdentifier().equals(MessagePerson.class.getSimpleName()) && version.equals(SupportedVersions.V25))
 					soapStub.setEntityIdentifier(Message.class.getSimpleName());
 				else
 					soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
@@ -49,7 +49,7 @@ public abstract class AbstractWillowStubBuilder<T extends Queueable, V extends G
 			soapStub = PortHelper.createDeleteStub(version);
 			soapStub.setWillowId(queuedRecord.getEntityWillowId());
 			soapStub.setAngelId(queuedRecord.getAngelId());
-			if(queuedRecord.getEntityIdentifier().equals(MessagePerson.class.getSimpleName()))
+			if(queuedRecord.getEntityIdentifier().equals(MessagePerson.class.getSimpleName())  && version.equals(SupportedVersions.V25))
 				soapStub.setEntityIdentifier(Message.class.getSimpleName());
 			else
 				soapStub.setEntityIdentifier(queuedRecord.getEntityIdentifier());
