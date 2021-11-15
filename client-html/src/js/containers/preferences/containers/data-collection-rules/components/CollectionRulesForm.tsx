@@ -210,7 +210,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
         <AppBarContainer
           values={value}
           manualUrl={manualUrl}
-          getAuditsUrl={() => `audit?search=~"FieldConfigurationScheme" and entityId == ${value.id}`}
+          getAuditsUrl={id => `audit?search=~"FieldConfigurationScheme" and entityId == ${id}`}
           disabled={!dirty}
           invalid={invalid}
           title={(isNew && (!value || !value.name || value.name.trim().length === 0))
