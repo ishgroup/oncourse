@@ -5,7 +5,7 @@
 
 import React, { ComponentClass } from "react";
 import {
- FormControlLabel, FormGroup, Typography, Grid, Paper, Collapse
+  FormControlLabel, FormGroup, Typography, Grid, Paper, Collapse, Button
 } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import clsx from "clsx";
@@ -20,13 +20,10 @@ import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
 import debounce from "lodash.debounce";
 import { User, UserRole } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { State } from "../../../../../reducers/state";
 import {
- updateUser, validateNewUserPassword, resetUserPassword, disableUser2FA
+  updateUser, validateNewUserPassword, resetUserPassword, disableUser2FA
 } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import Message from "../../../../../common/components/dialog/message/Message";
@@ -36,7 +33,7 @@ import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import Button from "@mui/material/Button";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("users");
 
@@ -137,6 +134,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     }
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
     const {
      user, submitSucceeded, isNew, fetch
@@ -284,177 +282,165 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
         <Message opened={showMessage} isSuccess text={messageText} clearMessage={this.clearMessage} />
 
-        <CustomAppBar>
-          <Grid container columnSpacing={3}>
-            <Grid item xs={12} className="centeredFlex">
-              <Typography color="inherit" className="appHeaderFontSize pl-2" noWrap>
-                {values.email ? values.email : "No email"}
-              </Typography>
+        <AppBarContainer
+          values={values}
+          manualUrl={manualUrl}
+          getAuditsUrl='audit?search=~"SystemUser"'
+          disabled={!dirty && !isNew && !values.inviteAgain}
+          invalid={invalid}
+          title={values.email ? values.email : "No email"}
+          hideHelpMenu={isNew}
+          createdOn={() => (created ? new Date(created) : null)}
+          modifiedOn={() => (modified ? new Date(modified) : null)}
+          submitButtonText={isNew ? "Invite" : values.inviteAgain ? "Resend invite" : "Save"}
+        >
+          <FormControlLabel
+            control={<FormField type="switch" name="active" color="primary" />}
+            label="Active"
+            labelPlacement="start"
+            classes={{
+              root: "switchWrapper mb-2"
+            }}
+          />
 
-              <div className="flex-fill" />
-
-              <AppBarHelpMenu
-                created={created ? new Date(created) : null}
-                modified={modified ? new Date(modified) : null}
-                auditsUrl={'audit?search=~"SystemUser"'}
-                manualUrl={manualUrl}
+          <Grid container>
+            <Grid item xs={12} sm={5} lg={5} xl={3}>
+              <FormField
+                type="text"
+                name="firstName"
+                label="First name"
+                required
+              />
+              <FormField
+                type="text"
+                name="lastName"
+                label="Last name"
+                required
               />
 
-              <FormSubmitButton
-                disabled={!dirty && !isNew && !values.inviteAgain}
-                invalid={invalid}
-                text={isNew ? "Invite" : values.inviteAgain ? "Resend invite" : "Save"}
+              <FormField
+                type="text"
+                name="email"
+                label="Email"
+                validate={validateUniqueNames}
+                required
               />
-            </Grid>
-          </Grid>
-        </CustomAppBar>
 
-        <FormControlLabel
-          control={<FormField type="switch" name="active" color="primary" />}
-          label="Active"
-          labelPlacement="start"
-          classes={{
-            root: "switchWrapper mb-2"
-          }}
-        />
-
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} sm={5} lg={5} xl={3}>
-            <FormField
-              type="text"
-              name="firstName"
-              label="First name"
-              required
-            />
-            <FormField
-              type="text"
-              name="lastName"
-              label="Last name"
-              required
-            />
-
-            <FormField
-              type="text"
-              name="email"
-              label="Email"
-              validate={validateUniqueNames}
-              required
-            />
-
-            <FormField
-              type="select"
-              name="administrationCentre"
-              label="Bank cash/cheques to site"
-              autoWidth={false}
-              items={sites || []}
-              required
-            />
-
-            {!isNew && (
-              <Uneditable
-                value={lastLoggedIn}
-                format={v => formatDate(new Date(v), III_DD_MMM_YYYY_HH_MM_SPECIAL)}
-                label="Last logged in"
+              <FormField
+                type="select"
+                name="administrationCentre"
+                label="Bank cash/cheques to site"
+                autoWidth={false}
+                items={sites || []}
+                required
               />
-            )}
 
-            {!isNew && !values.inviteAgain && (
-              <FormControlLabel
-                control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
-                label="Require password update"
-                labelPlacement="start"
-                className={classes.passwordUpdateSection}
-                classes={{
-                  root: "switchWrapper mb-0"
-                }}
-              />
-            )}
+              {!isNew && (
+                <Uneditable
+                  value={lastLoggedIn}
+                  format={v => formatDate(new Date(v), III_DD_MMM_YYYY_HH_MM_SPECIAL)}
+                  label="Last logged in"
+                />
+              )}
 
-            {!isNew && (
-              <div className={classes.resetSection}>
-                {!values.inviteAgain && (
-                  <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
-                    Reset password
-                  </Button>
-                )}
-              </div>
-            )}
-
-            {!isNew && (
-              <div className={classes.resetSection}>
-                <Typography
-                  variant="caption"
-                  color={tfaEnabled ? "textPrimary" : "textSecondary"}
-                  className="mb-1 centeredFlex"
-                >
-                  <IconPhoneLocked className={classes.lockedIcon} />
-                  {' '}
-                  Two factor authentication is
-                  {" "}
-                  {tfaEnabled ? "enabled" : "disabled"}
-                </Typography>
-                {tfaEnabled && (
-                  <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onDisable2FA}>
-                    Disable 2FA
-                  </Button>
-                )}
-              </div>
-            )}
-          </Grid>
-          <Grid item sm={false} md={1} lg={1} xl={false} />
-          <Grid item xs={12} sm={5} lg={5} xl={3}>
-            <Paper className={clsx(classes.paperPadding, classes.paperBottomMargin)}>
-              <FormGroup>
+              {!isNew && !values.inviteAgain && (
                 <FormControlLabel
+                  control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
+                  label="Require password update"
+                  labelPlacement="start"
+                  className={classes.passwordUpdateSection}
                   classes={{
-                    root: classes.cardLabel
+                    root: "switchWrapper mb-0"
                   }}
-                  control={(
-                    <FormField
-                      type="switch"
-                      name="admin"
-                      color="primary"
-                      className={classes.cardSwitch}
-                      onChange={(e, v) => {
-                        if (v) {
-                          dispatch(change("UsersForm", "role", null));
-                        }
-                      }}
-                    />
+                />
+              )}
+
+              {!isNew && (
+                <div className={classes.resetSection}>
+                  {!values.inviteAgain && (
+                    <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
+                      Reset password
+                    </Button>
                   )}
-                  label="Admin"
-                  labelPlacement="start"
-                />
+                </div>
+              )}
 
-                <Collapse in={!values.admin}>
-                  <FormField
-                    type="select"
-                    name="role"
-                    label="Role"
-                    className={classes.inputField}
-                    selectValueMark="id"
-                    selectLabelMark="name"
-                    items={userRoles || []}
-                    required={!values.admin}
-                    sort
+              {!isNew && (
+                <div className={classes.resetSection}>
+                  <Typography
+                    variant="caption"
+                    color={tfaEnabled ? "textPrimary" : "textSecondary"}
+                    className="mb-1 centeredFlex"
+                  >
+                    <IconPhoneLocked className={classes.lockedIcon} />
+                    {' '}
+                    Two factor authentication is
+                    {" "}
+                    {tfaEnabled ? "enabled" : "disabled"}
+                  </Typography>
+                  {tfaEnabled && (
+                    <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onDisable2FA}>
+                      Disable 2FA
+                    </Button>
+                  )}
+                </div>
+              )}
+            </Grid>
+            <Grid item sm={false} md={1} lg={1} xl={false} />
+            <Grid item xs={12} sm={5} lg={5} xl={3}>
+              <Paper className={clsx(classes.paperPadding, classes.paperBottomMargin)}>
+                <FormGroup>
+                  <FormControlLabel
+                    classes={{
+                      root: classes.cardLabel
+                    }}
+                    control={(
+                      <FormField
+                        type="switch"
+                        name="admin"
+                        color="primary"
+                        className={classes.cardSwitch}
+                        onChange={(e, v) => {
+                          if (v) {
+                            dispatch(change("UsersForm", "role", null));
+                          }
+                        }}
+                      />
+                    )}
+                    label="Admin"
+                    labelPlacement="start"
                   />
-                </Collapse>
 
-                <FormControlLabel
-                  classes={{
-                    root: classes.cardLabel
-                  }}
-                  control={
-                    <FormField type="switch" name="accessEditor" color="primary" className={classes.cardSwitch} />
-                  }
-                  label="Can access #editor"
-                  labelPlacement="start"
-                />
-              </FormGroup>
-            </Paper>
+                  <Collapse in={!values.admin}>
+                    <FormField
+                      type="select"
+                      name="role"
+                      label="Role"
+                      className={classes.inputField}
+                      selectValueMark="id"
+                      selectLabelMark="name"
+                      items={userRoles || []}
+                      required={!values.admin}
+                      sort
+                    />
+                  </Collapse>
+
+                  <FormControlLabel
+                    classes={{
+                      root: classes.cardLabel
+                    }}
+                    control={
+                      <FormField type="switch" name="accessEditor" color="primary" className={classes.cardSwitch} />
+                    }
+                    label="Can access #editor"
+                    labelPlacement="start"
+                  />
+                </FormGroup>
+              </Paper>
+            </Grid>
+            <Grid item sm={false} md={false} lg={1} xl={6} />
           </Grid>
-          <Grid item sm={false} md={false} lg={1} xl={6} />
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
