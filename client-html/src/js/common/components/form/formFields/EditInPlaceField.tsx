@@ -53,9 +53,6 @@ const styles = theme => createStyles({
       marginTop: 0
     }
   },
-  bottomMargin: {
-    marginBottom: `${theme.spacing(1) + 1}px`
-  },
   topMargin: {
     marginTop: theme.spacing(1),
     paddingLeft: "0"

@@ -37,53 +37,6 @@ const AssessmentGeneralTab = React.memo<Props>(
       [tags]
     );
     return (
-      <Grid container columnSpacing={3} className="p-3">
-        <Grid item xs={12}>
-          <FullScreenStickyHeader
-            opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
-            twoColumn={twoColumn}
-            title={twoColumn ? (
-              <div className="d-inline-flex-center">
-                <span>
-                  {values && values.code}
-                </span>
-                <span className="ml-2">
-                  {values && values.name}
-                </span>
-              </div>
-            ) : (
-              <div>
-                <div>
-                  {values && values.code}
-                </div>
-                <div className="mt-2">
-                  {values && values.name}
-                </div>
-              </div>
-              )}
-            fields={(
-              <Grid container columnSpacing={3}>
-                <Grid item xs={twoColumn ? 2 : 12}>
-                  <FormField
-                    label="Code"
-                    name="code"
-                    placeholder={twoColumn ? "Code" : undefined}
-                    required
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={twoColumn ? 4 : 12}>
-                  <FormField
-                    label="Name"
-                    name="name"
-                    placeholder={twoColumn ? "Name" : undefined}
-                    required
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-              )}
-    return (
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={12}>
           <FullScreenStickyHeader
@@ -133,7 +86,6 @@ const AssessmentGeneralTab = React.memo<Props>(
           />
 
         </Grid>
-
         <Grid item xs={12}>
           <FormField
             type="tags"
@@ -154,7 +106,6 @@ const AssessmentGeneralTab = React.memo<Props>(
           />
         </Grid>
         <Grid item xs={12}>
-
           <FormControlLabel
             className="checkbox mb-2"
             control={<FormField type="checkbox" name="active" color="secondary" fullWidth />}
