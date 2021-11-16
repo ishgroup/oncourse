@@ -29,6 +29,8 @@ import { openDrawer } from "../../actions";
 import AppBarHelpMenu from "../form/AppBarHelpMenu";
 import FormSubmitButton from "../form/FormSubmitButton";
 import FullScreenStickyHeader from "../list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { VARIANTS } from "./swipeable-sidebar/utils";
+import HamburgerMenu from "./swipeable-sidebar/components/HamburgerMenu";
 
 const styles: any = theme => createStyles({
   header: {
@@ -102,12 +104,14 @@ interface Props extends InjectedFormProps {
   customAddMenu?: any;
   submitButtonText?: string;
   onCloseClick?: () => void;
+  hamburgerMenu?: boolean;
 }
 
 const AppBarContainer: React.FC<Props> = props => {
   const {
     classes, title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
-    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText, onCloseClick
+    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
+    onCloseClick, hamburgerMenu
   } = props;
 
   const { scrollSpy } = useStickyScrollSpy();
@@ -143,7 +147,7 @@ const AppBarContainer: React.FC<Props> = props => {
         )}
       >
         <Toolbar>
-          {!noDrawer && (
+          {!noDrawer && !hamburgerMenu && (
             <IconButton
               color="inherit"
               aria-label="Open drawer"
@@ -152,6 +156,9 @@ const AppBarContainer: React.FC<Props> = props => {
             >
               <MenuIcon />
             </IconButton>
+          )}
+          {hamburgerMenu && (
+            <HamburgerMenu variant={VARIANTS.temporary} />
           )}
           <FullScreenStickyHeader
             title={title}

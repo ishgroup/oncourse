@@ -31,7 +31,7 @@ export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 const styles = (theme: AppTheme) =>
   createStyles({
     drawerRoot: {
-      zIndex: theme.zIndex.drawer + 2,
+      zIndex: theme.zIndex.modal + 2,
     },
     drawerPaper: {
       overflowX: "hidden"
