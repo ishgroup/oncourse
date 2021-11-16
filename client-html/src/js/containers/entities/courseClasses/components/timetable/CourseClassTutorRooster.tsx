@@ -22,8 +22,8 @@ import {
 } from "@mui/material";
 import clsx from "clsx";
 import AddCircle from "@mui/icons-material/AddCircle";
-import { format, isPast } from "date-fns";
-import { Field, WrappedFieldProps } from "redux-form";
+import { differenceInMinutes, format, isPast } from "date-fns";
+import { change, Field, WrappedFieldProps } from "redux-form";
 import { ClashType, SessionWarning } from "@api/model";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -124,7 +124,9 @@ interface TutorRoosterProps extends WrappedFieldProps {
 
 const CourseClassTutorRooster = (
   {
-    meta: { invalid, error },
+    meta: {
+ invalid, error, dispatch, form 
+},
     input: { name },
     warningTypes,
     session,
@@ -202,6 +204,16 @@ const CourseClassTutorRooster = (
             ? `payable ${formatDurationMinutes(t.actualPayableDurationMinutes)}` 
             : ""}`;
 
+          const onStartChange = newValue => {
+            const minutesOffset = differenceInMinutes(new Date(t.end), new Date(newValue)) - differenceInMinutes(new Date(t.end), new Date(t.start));
+            dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, t.actualPayableDurationMinutes + minutesOffset));
+          };
+
+          const onEndChange = newValue => {
+            const minutesOffset = differenceInMinutes(new Date(newValue), new Date(t.start)) - differenceInMinutes(new Date(t.end), new Date(t.start));
+            dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, t.actualPayableDurationMinutes + minutesOffset));
+          };
+
           return (
             <div key={t.courseClassTutorId || t.temporaryTutorId} className={classes.tutorItem}>
               <Grid container>
@@ -269,6 +281,7 @@ const CourseClassTutorRooster = (
                       name={`${fieldsName}.start`}
                       type="time"
                       label="Roster start"
+                      onChange={onStartChange}
                       timezone={session.siteTimezone}
                     />
                   </Grid>
@@ -277,6 +290,7 @@ const CourseClassTutorRooster = (
                       name={`${fieldsName}.end`}
                       type="time"
                       label="Roster end"
+                      onChange={onEndChange}
                       timezone={session.siteTimezone}
                     />
                   </Grid>

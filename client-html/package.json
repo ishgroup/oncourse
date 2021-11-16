@@ -98,7 +98,7 @@
     "antlr4-c3": "1.1.16",
     "antlr4ts": "0.5.0-alpha.4",
     "autosuggest-highlight": "3.1.*",
-    "axios": "0.21.*",
+    "axios": "0.24.*",
     "axios-mock-adapter": "1.19.*",
     "clsx": "1.1.*",
     "date-fns": "2.*",

@@ -6,3 +6,11 @@ export interface FieldClasses {
   selectMenu?: string;
   loading?: string;
 }
+
+
+export interface SelectItemRendererProps<E = any> {
+  content: string;
+  data: E;
+  parentProps: any;
+  search?: string
+}

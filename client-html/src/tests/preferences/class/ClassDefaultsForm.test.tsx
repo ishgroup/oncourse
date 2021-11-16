@@ -6,7 +6,7 @@ import ClassDefaults from "../../../js/containers/preferences/containers/class/C
 
 // TODO Enable test on fix
 
-describe("Virtual rendered ClassDefaultsForm", () => {
+describe.skip("Virtual rendered ClassDefaultsForm", () => {
   defaultComponents({
     entity: "ClassDefaultsForm",
     View: props => <ClassDefaults {...props} />,
@@ -16,12 +16,12 @@ describe("Virtual rendered ClassDefaultsForm", () => {
       history: jest.fn()
     }),
     render: wrapper => {
-      // expect(wrapper.find("#courseclass_default_minimumPlaces input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.ClassMinPlaces.uniqueKey]
-      // );
-      // expect(wrapper.find("#courseclass_default_maximumPlaces input").val()).toContain(
-      //   mockedAPI.db.preference[PreferencesModel.ClassMaxPlaces.uniqueKey]
-      // );
+      expect(wrapper.find("#courseclass_default_minimumPlaces input").val()).toContain(
+        mockedAPI.db.preference[PreferencesModel.ClassMinPlaces.uniqueKey]
+      );
+      expect(wrapper.find("#courseclass_default_maximumPlaces input").val()).toContain(
+        mockedAPI.db.preference[PreferencesModel.ClassMaxPlaces.uniqueKey]
+      );
     }
   });
 });
