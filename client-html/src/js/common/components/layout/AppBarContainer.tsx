@@ -21,6 +21,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import Button from "@mui/material/Button";
 import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
 import { useStickyScrollSpy } from "../../utils/hooks";
@@ -46,7 +47,9 @@ const styles: any = theme => createStyles({
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(-1)
   },
-  container: {},
+  container: {
+    background: theme.appBar.header.background,
+  },
   headerAlternate: {
     background: `${theme.appBar.headerAlternate.background} !important`,
     color: `${theme.appBar.headerAlternate.color} !important`,
@@ -98,12 +101,13 @@ interface Props extends InjectedFormProps {
   onAddMenu?: () => void;
   customAddMenu?: any;
   submitButtonText?: string;
+  onCloseClick?: () => void;
 }
 
 const AppBarContainer: React.FC<Props> = props => {
   const {
     classes, title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
-    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText
+    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText, onCloseClick
   } = props;
 
   const { scrollSpy } = useStickyScrollSpy();
@@ -157,7 +161,6 @@ const AppBarContainer: React.FC<Props> = props => {
             }}
             disableInteraction={disableInteraction}
             twoColumn
-            truncateTitle
           />
           <div className="flex-fill" />
           {actions}
@@ -170,6 +173,15 @@ const AppBarContainer: React.FC<Props> = props => {
               auditsUrl={values && getAuditsUrl && (typeof getAuditsUrl === "string" ? getAuditsUrl : getAuditsUrl(values.id))}
               classes={{ buttonAlternate: hasScrolling && classes.headerAlternate }}
             />
+          )}
+
+          {onCloseClick && (
+            <Button
+              onClick={onCloseClick}
+              className={clsx("closeAppBarButton", hasScrolling && classes.headerAlternate)}
+            >
+              Close
+            </Button>
           )}
 
           {!hideSubmitButton && (
