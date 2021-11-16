@@ -238,8 +238,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
             </div>
           </AppBar>
           <div
-            className={clsx(classes.root, noTabList && "overflow-y-auto")}
-            onScroll={noTabList && scrollSpy}
+            className={clsx(classes.root, noTabList && "overflow-y-auto", !hideTitle && noTabList && "pt-1")}
+            onScroll={noTabList ? scrollSpy : undefined}
           >
             <EditViewContent
               twoColumn

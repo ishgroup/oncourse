@@ -147,7 +147,8 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
           secondaryColumn: "sku"
         }}
         editViewProps={{
-          manualLink
+          manualLink,
+          hideTitle: true
         }}
         EditViewContent={VoucherProductEditView}
         getEditRecord={getVoucherProductRecord}

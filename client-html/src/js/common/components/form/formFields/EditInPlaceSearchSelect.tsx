@@ -52,20 +52,12 @@ const searchStyles = theme => createStyles({
     textOverflow: "ellipsis",
     paddingBottom: "4px",
     right: "-46%",
-    maxWidth: "100%",
-    "& $labelAdornment": {
-      position: "absolute",
-      transform: "scale(1.3) translate(5px,0)"
-    },
-    "&$labelShrink": {
-      maxWidth: "calc(100% * 1.4)"
-    }
+    maxWidth: "100%"
   },
   inline: {
     fontSize: "inherit"
   },
   labelShrink: {},
-  labelAdornment: {},
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
@@ -429,7 +421,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     <span>
       {label}
       {' '}
-      <span className={classes.labelAdornment}>{labelAdornment}</span>
+      <span>{labelAdornment}</span>
     </span>
   ) : (
     label

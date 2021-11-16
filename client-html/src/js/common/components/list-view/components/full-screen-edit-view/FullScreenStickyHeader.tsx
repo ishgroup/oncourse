@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     }),
   },
   titleText: {
+    maxWidth: "100%",
     transition: theme.transitions.create("all", {
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut
@@ -179,7 +180,9 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
                   )}
                   onClick={showTitleOnly || disableInteraction || opened ? null : () => setIsEditing(true)}
                 >
-                  {title}
+                  <span className="text-truncate">
+                    {title}
+                  </span>
                   <Edit color="primary" className={classes.titleIcon} />
                 </Typography>
               </Collapse>

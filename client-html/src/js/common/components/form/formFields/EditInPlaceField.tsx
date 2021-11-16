@@ -108,18 +108,8 @@ const styles = theme => createStyles({
     textOverflow: "ellipsis",
     paddingBottom: "4px",
     right: "-46%",
-    maxWidth: "100%",
-    "&$labelShrink": {
-      maxWidth: "calc(100% * 1.4)"
-    }
+    maxWidth: "100%"
   },
-  labelShrink: {
-    "& $labelAdornment": {
-      position: "absolute",
-      transform: "scale(1.3) translate(5px,0)",
-    },
-  },
-  labelAdornment: {},
   placeholderContent: {
     color: theme.palette.divider,
     fontWeight: 400,
@@ -530,6 +520,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       categoryKey,
       autoWidth = true,
       zeroPadding,
+      allowNegative,
       ...custom
     } = this.props;
 
@@ -552,9 +543,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       <span>
         {label}
         {' '}
-        <span
-          className={classes.labelAdornment}
-        >
+        <span>
           {labelAdornment}
         </span>
       </span>
@@ -630,6 +619,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         min,
         max,
         onKeyDown,
+        allowNegative,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
         className: clsx({
           [classes.inlineInput]: isInline,
@@ -641,7 +631,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         placeholder: placeholder || (!isEditing && "No value"),
         style: {
           maxWidth: isInline ? this.getInputLength() : undefined
-        }
+        },
       },
       value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
       onFocus: this.onFocus,
@@ -695,7 +685,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               <InputLabel
                 classes={{
                   root: clsx(fieldClasses.label, classes.label, !label && classes.labelTopZeroOffset),
-                  shrink: classes.labelShrink
                 }}
                 {...InputLabelProps}
                 shrink={Boolean(label || input.value)}

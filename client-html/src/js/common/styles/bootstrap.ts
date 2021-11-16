@@ -38,6 +38,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".fs19": {
     fontSize: theme.spacing(19)
   },
+  ".fw300": {
+    fontWeight: 300
+  },
   ".fsInherit": {
     fontSize: "inherit"
   },

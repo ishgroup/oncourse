@@ -50,23 +50,26 @@ const SitesRoomFields = props => {
   const { item } = props;
 
   return (
-    <div className="centeredFlex container">
-      <FormField
-        type="text"
-        name={`${item}.name`}
-        label="Name"
-        className="mr-2"
-        required
-      />
-
-      <FormField
-        type="number"
-        name={`${item}.seatedCapacity`}
-        label="Seated Capacity"
-        normalize={normalizeNumber}
-        required
-      />
-    </div>
+    <Grid container columnSpacing={3} rowSpacing={2}>
+      <Grid item xs={12}>
+        <FormField
+          type="text"
+          name={`${item}.name`}
+          label="Name"
+          className="mr-2"
+          required
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="number"
+          name={`${item}.seatedCapacity`}
+          label="Seated Capacity"
+          normalize={normalizeNumber}
+          required
+        />
+      </Grid>
+    </Grid>
   );
 };
 

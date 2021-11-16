@@ -9,7 +9,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -21,6 +21,7 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import Launch from "@mui/icons-material/Launch";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
   validateTagList = (value, allValues, props) => {
@@ -41,7 +42,9 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
       tags,
       dispatch,
       form,
-      twoColumn
+      twoColumn,
+      isNew,
+      syncErrors
     } = this.props;
 
     const gridItemProps: any = {
@@ -49,53 +52,40 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
     };
 
     return (
-      <Grid container columnSpacing={3}>
-        {twoColumn && (
-          <Grid item xs={12}>
-            <FullScreenStickyHeader
-              twoColumn={twoColumn}
-              title={values && values.courseName}
-              fields={(
-                <Grid container>
-                  <Grid item xs={12}>
-                    <FormField
-                      type="remoteDataSearchSelect"
-                      entity="Course"
-                      aqlFilter="allowWaitingLists is true"
-                      name="courseId"
-                      label="Course"
-                      selectValueMark="id"
-                      selectLabelCondition={v => v.name}
-                      selectFilterCondition={courseFilterCondition}
-                      defaultDisplayValue={values && values.courseName}
-                      labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
-                      itemRenderer={CourseItemRenderer}
-                      rowHeight={55}
-                      required
-                      onChange={this.handlerCourseChange}
-                    />
-                  </Grid>
-                </Grid>
-              )}
-            />
-          </Grid>
-        )}
-        <Grid item {...gridItemProps} className="pt-2">
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Contact"
-            aqlFilter="isStudent is true"
-            name="contactId"
-            label="Student"
-            selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={values && defaultContactName(values.studentName)}
-            labelAdornment={
-              <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
-            }
-            itemRenderer={ContactSelectItemRenderer}
-            rowHeight={55}
-            required
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+        <Grid item xs={12}>
+          <FullScreenStickyHeader
+            opened={isNew || Object.keys(syncErrors).includes("contactId")}
+            disableInteraction={!isNew}
+            twoColumn={twoColumn}
+            title={(
+              <div className="d-inline-flex-center">
+                {values && defaultContactName(values.studentName)}
+                <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
+                  <Launch fontSize="inherit" />
+                </IconButton>
+              </div>
+            )}
+            fields={(
+              <Grid item {...gridItemProps}>
+                <FormField
+                  type="remoteDataSearchSelect"
+                  entity="Contact"
+                  aqlFilter="isStudent is true"
+                  name="contactId"
+                  label="Student"
+                  selectValueMark="id"
+                  selectLabelCondition={contactLabelCondition}
+                  defaultDisplayValue={values && defaultContactName(values.studentName)}
+                  labelAdornment={
+                    <LinkAdornment linkHandler={openContactLink} link={values.contactId} disabled={!values.contactId} />
+                  }
+                  itemRenderer={ContactSelectItemRenderer}
+                  rowHeight={55}
+                  required
+                />
+              </Grid>
+            )}
           />
         </Grid>
         <Grid item xs={12}>
@@ -109,7 +99,6 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
         <Grid item xs={12}>
           <FormField type="number" name="studentCount" label="Number of students" />
         </Grid>
-        {!twoColumn && (
           <Grid item xs={12}>
             <FormField
               type="remoteDataSearchSelect"
@@ -123,11 +112,11 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
               defaultDisplayValue={values && values.courseName}
               labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
               itemRenderer={CourseItemRenderer}
+              onChange={this.handlerCourseChange}
               rowHeight={55}
               required
             />
           </Grid>
-        )}
         <CustomFields
           entityName="WaitingList"
           fieldName="customFields"
