@@ -166,12 +166,11 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
               component="div"
               onClick={onEditButtonFocus}
               className={clsx( classes.editable, {
-                [classes.previewFrame]: contentMode === "md",
                 [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
                 [fieldClasses.text]: value,
               })}
             >
-              <span className="centeredFlex overflow-hidden">
+              <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
                 {
                   value
                     ? contentMode === "md"

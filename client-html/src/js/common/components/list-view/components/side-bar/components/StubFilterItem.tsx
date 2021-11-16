@@ -21,7 +21,7 @@ const styles = theme =>
     checkbox: {
       height: "1.3em",
       width: "1.3em",
-      marginLeft: "-7px"
+      marginTop: "6px"
     },
     root: {
       display: "flex",
@@ -125,6 +125,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           error={error}
           inputRef={this.setInputNode}
           value={filterName}
+          variant="standard"
         />
 
         <Tooltip title="Save Filter">

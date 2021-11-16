@@ -55,12 +55,12 @@ export const SettingsAdornment: React.FC<Props> = ({
         disabled={disabled}
         onClick={onClick}
         classes={{
-          root: "inputAdornmentButton"
+          root: "inputAdornmentButton ml-0-5"
         }}
         color="inherit"
         size="small"
       >
-        <SettingsOutlinedIcon fontSize="inherit" color="inherit" />
+        <SettingsOutlinedIcon color="inherit" />
       </IconButton>
     </span>
   );

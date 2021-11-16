@@ -18,13 +18,13 @@ import {
   arrayInsert, arrayRemove, change
 } from "redux-form";
 import { connect } from "react-redux";
-import { FormControlLabel, Grid } from "@mui/material";
+import {
+ Alert, FormControlLabel, Grid, IconButton 
+} from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import ExitToApp from "@mui/icons-material/ExitToApp";
-import clsx from "clsx";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import Divider from "@mui/material/Divider";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -39,14 +39,7 @@ import { MembershipContent, MembershipHeader } from "./MembershipLines";
 import { RelationsContent, RelationsHeader } from "./RelationsLines";
 import { ConcessionsContent, ConcessionsHeader } from "./ConcessionsLines";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
-
-const useStyles = makeAppStyles()({
-  exitToApp: {
-    fontSize: "1.2rem",
-    top: "5px"
-  }
-});
+import { openInternalLink } from "../../../../common/utils/links";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -93,8 +86,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     usiLocked,
     isCompany
   } = props;
-  
-  const { classes } = useStyles();
 
   const [showPostalSettingsMenu, setPostalSettingsMenu] = useState(null);
   const [showSmsSettingsMenu, setSmsSettingsMenu] = useState(null);
@@ -424,28 +415,27 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
 
             {values.student && (
               <>
-                <Grid item xs={twoColumn ? 6 : 12}>
-                  <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
+                <Grid item {...gridItemProps} className="mb-2">
+                  <Alert severity="info">
+                    {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
+                      <Typography className="centeredFlex" variant="body1">
+                        {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
+                        <IconButton
+                          size="small"
+                          onClick={() => openInternalLink(`/waitingList?search=student.contact.id = ${values.id}`)}
+                        >
+                          <OpenInNew color="primary" fontSize="inherit" />
+                        </IconButton>
+                      </Typography>
+                    ) : (
+                      <Typography display="inline" variant="body1" className="pt-2">
+                        Student is not on any waiting list
+                      </Typography>
+                    )}
+                  </Alert>
                 </Grid>
-                <Grid item xs={12}>
-                  {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
-                    <Typography display="inline" variant="body1">
-                      {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
-                      <Link
-                        href={`${window.location.origin}/waitingList?search=student.contact.id = ${values.id}`}
-                        target="_blank"
-                        color="textSecondary"
-                        underline="none"
-                        className="d-inline"
-                      >
-                        <ExitToApp className={clsx("ml-1 relative", classes.exitToApp)} />
-                      </Link>
-                    </Typography>
-                  ) : (
-                    <Typography display="inline" variant="body1" className="pt-2">
-                      Student is not on any waiting list
-                    </Typography>
-                  )}
+                <Grid item {...gridItemProps}>
+                  <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
                 </Grid>
               </>
             )}

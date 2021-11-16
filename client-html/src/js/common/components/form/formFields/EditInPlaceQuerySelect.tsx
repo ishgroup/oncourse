@@ -6,7 +6,7 @@
 import TextField from "@mui/material/TextField";
 import DateRange from "@mui/icons-material/DateRange";
 import QueryBuilder from "@mui/icons-material/QueryBuilder";
-import Autocomplete from "@mui/lab/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import { change, WrappedFieldMetaProps } from "redux-form";
@@ -69,13 +69,6 @@ const queryStyles = theme => createStyles({
   menuShadow: {
     boxShadow: "0 0 0 1px hsla(0,0%,0%,0.1), 0 4px 11px hsla(0,0%,0%,0.1)"
   },
-  hasPopupIcon: {
-    "&$hasClearIcon $inputRoot": {
-      paddingRight: 0
-    }
-  },
-  hasClearIcon: {},
-  inputRoot: {},
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
@@ -1252,7 +1245,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
           })}
         >
           <Autocomplete
-            // debug
             value={value}
             open={menuIsOpen && Boolean(filteredOptions.length)}
             options={filteredOptions}
@@ -1262,12 +1254,12 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             getOptionLabel={this.getOptionLabel}
             PopperComponent={inline ? this.popperAdapter as any : undefined}
             classes={inline ? {
+              root: classes.root,
               paper: classes.menuShadow,
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
-              // @ts-ignore
-              hasPopupIcon: classes.hasPopupIcon,
-              hasClearIcon: classes.hasClearIcon,
-              inputRoot: classes.inputRoot
+              hasPopupIcon: classes.hasPopup,
+              hasClearIcon: classes.hasClear,
+              inputRoot: classes.inputWrapper
             } : undefined}
             renderInput={params => (
               <TextField

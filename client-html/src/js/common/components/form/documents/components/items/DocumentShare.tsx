@@ -338,7 +338,7 @@ const DocumentShare:React.FC<Props> = ({
           )}
           title="Attached to"
         />
-        <CardContent classes={{ root: "pl-0 pr-0" }} ref={attachmentRef}>
+        <CardContent ref={attachmentRef}>
           {AttachmentRelations}
         </CardContent>
       </Card>
@@ -374,7 +374,7 @@ const DocumentShare:React.FC<Props> = ({
           {contactRelated
           ? (
             <Collapse in={tutorsAndStudents}>
-              <CardContent classes={{ root: "pl-0 pr-0" }}>
+              <CardContent>
                 <Typography>
                   Shared with
                   {" "}
@@ -389,7 +389,7 @@ const DocumentShare:React.FC<Props> = ({
               {availableOptions["Tutor&Student"]
               && (
               <Collapse in={tutorsAndStudents}>
-                <CardContent classes={{ root: "pl-0 pr-0" }}>
+                <CardContent>
                   <FormControlLabel
                     classes={{
                     root: "checkbox",
@@ -453,7 +453,7 @@ const DocumentShare:React.FC<Props> = ({
         />
         {validUrl
           && linkOrPublic && (
-            <CardContent classes={{ root: "pl-0 pr-0" }}>
+            <CardContent>
               <div className="centeredFlex">
                 <Typography color="textSecondary" className="flex-fill">
                   <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
@@ -466,7 +466,7 @@ const DocumentShare:React.FC<Props> = ({
           )}
         {!linkOrPublic
           && (
-            <CardContent classes={{ root: "pl-0 pr-0" }}>
+            <CardContent>
               <Alert severity="warning" icon={<LockOutlined />}>
                 Document can not be accessed by direct link
               </Alert>

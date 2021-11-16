@@ -250,8 +250,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     [form, defaultTerms, hasPaymentDues, invoiceLinesCount]
   );
 
-  const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
-
   const updateDateDue = useCallback(() => {
     if (hasPaymentDues) {
       const closest = getInvoiceClosestPaymentDueDate(values);

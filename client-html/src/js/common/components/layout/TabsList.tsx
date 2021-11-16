@@ -135,11 +135,13 @@ const TabsList = React.memo<Props & RouteComponentProps>((
     if (stored && stored[itemProps.rootEntity]) {
       setExpanded(stored[itemProps.rootEntity]);
     }
+  }, []);
 
-    if (items.length) {
+  useEffect(() => {
+    if (!selected && items.length) {
       setSelected(items[0].label);
     }
-  }, []);
+  }, [items.length, selected]);
 
   useEffect(() => {
     const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY));
