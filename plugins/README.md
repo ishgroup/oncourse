@@ -18,6 +18,13 @@ implemenntation files('path/to/local/replication-99SNNAPSHOT.jar')
 
 3.restart server
 
+## Add plugin as snapshot
+1. Add repo.ish.com.au credentials to /home/.gradle/gradle.properties like in gradle.properties of plugins file
+   (you can change them there too, but than every time you need you will set it again)
+2. Build server with task server:jar and add it to plugin dependencies (if you use local server-jar)
+3. Build plugin, run task plugins:replication:publish -PreleaseVersion=Your_snapshot_version_number-SNAPSHOT
+4. Add on server dependency to published snapshot
+
 #Supported features
 
 1. Define script closure that could be used in onCourse scripts.
