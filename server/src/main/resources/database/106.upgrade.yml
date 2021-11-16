@@ -91,7 +91,7 @@ databaseChangeLog:
                       tableName: Message_Person
                       columnName: createdByUserId
           changes:
-              - sql: 'UPDATE MESSAGE m, Message_Person mp
+              - sql: 'UPDATE Message m, Message_Person mp
                         SET mp.emailSubject = m.emailSubject,
                             mp.emailBody = m.emailBody,
                             mp.emailFrom = m.emailFrom,
