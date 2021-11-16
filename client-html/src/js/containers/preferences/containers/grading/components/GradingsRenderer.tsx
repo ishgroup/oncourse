@@ -122,7 +122,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
               </Grid>
               <Grid item xs={6} className="relative">
                 <FieldArray
-                  name={`${item}.gradingItems`}
+                  name={`${item}.gradingItems` as string}
                   component={GradingItemsRenderer}
                   classes={classes}
                   parent={field}
