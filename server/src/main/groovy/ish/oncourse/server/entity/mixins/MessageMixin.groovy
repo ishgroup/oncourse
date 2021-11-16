@@ -12,9 +12,18 @@
 package ish.oncourse.server.entity.mixins
 
 import ish.oncourse.server.cayenne.Message
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
 
 class MessageMixin {
+    static String getRecipientsString(Message self) {
+        StringBuilder sentToBuilder = new StringBuilder()
+        if(self.contact)
+            return self.contact.getFullName()
+
+        return sentToBuilder.toString()
+    }
+
 
     static boolean getIsEmail(Message self) {
         return StringUtils.trimToNull(self.getEmailSubject()) != null &&
