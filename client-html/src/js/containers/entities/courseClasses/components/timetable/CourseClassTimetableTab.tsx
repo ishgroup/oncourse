@@ -85,7 +85,7 @@ const styles = () => createStyles({
       }
     },
     sessionActionButtonWrapper: {
-      right: -48
+      right: -34
     },
     sessionActionButton: {
       visibility: "hidden"
@@ -759,7 +759,7 @@ const CourseClassTimetableTab = ({
   const disabledMenuItem = sessionSelection.length === 0;
 
   return (
-    <div className="pl-3 pr-3 pb-2">
+    <div className="pl-3 pr-3">
       {sessionSelection.length > 0 && (
         <CourseClassBulkChangeSession
           onSubmit={onBulkSessionUpdate}

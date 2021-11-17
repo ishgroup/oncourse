@@ -87,7 +87,12 @@ const styles = theme => createStyles({
       justifyContent: "flex-end"
     }
   },
-  rightAligned: {},
+  rightAligned: {
+    "& $label": {
+      right: "-18px",
+      left: "unset"
+    }
+  },
   readonly: {
     fontWeight: 300,
     pointerEvents: "none"
@@ -664,6 +669,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         <div
           className={clsx({
             [classes.inlineMargin]: isInline,
+            [classes.rightAligned]: rightAligned,
             [classes.hiddenContainer]: isInline && !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
             "d-inline": isInline && (isEditing || invalid)

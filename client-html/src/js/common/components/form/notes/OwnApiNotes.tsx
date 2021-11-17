@@ -19,7 +19,7 @@ import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import uniqid from "../../../utils/uniqid";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 import { APP_BAR_HEIGHT } from "../../../../constants/Config";
 
 interface Props {
@@ -115,7 +115,7 @@ const OwnApiNotes = React.memo<Props>(
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <AddIcon onClick={addNote} />
+            <AddButton onClick={addNote} />
           </div>
         </Grid>
 

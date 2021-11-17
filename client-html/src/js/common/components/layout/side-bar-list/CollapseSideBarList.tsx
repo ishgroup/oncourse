@@ -17,7 +17,7 @@ import createStyles from "@mui/styles/createStyles";
 import debounce from "lodash.debounce";
 import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
 import { latestActivityStorageHandler } from "../../../utils/storage";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 import CollapseSideBarListItem from "./CollapseSideBarListItem";
 
 const styles = theme => createStyles({
@@ -203,7 +203,7 @@ const CollapseMenuListBase = React.memo<Props>(
 
           {(plusIconPath || plusIconFullPath || customPlusHandler) && (
             <div className={classes.plusIconContainer}>
-              <AddIcon className="p-1" onClick={onClickPlus} />
+              <AddButton className="p-1" onClick={onClickPlus} />
             </div>
           )}
         </ListItem>

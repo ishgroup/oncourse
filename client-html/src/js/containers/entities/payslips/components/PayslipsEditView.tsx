@@ -25,7 +25,7 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 import { mapSelectItems } from "../../../../common/utils/common";
-import AddIcon from "../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../common/components/icons/AddButton";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { IconButton } from "@mui/material";
@@ -257,7 +257,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             <Typography component="span" variant="body1" color="textSecondary">
               Add New Custom pay item
             </Typography>
-            <AddIcon
+            <AddButton
               onClick={this.addCustomPayLine}
               disabled={values && values.status === PayslipStatus["Paid/Exported"]}
               className="addButtonColor"

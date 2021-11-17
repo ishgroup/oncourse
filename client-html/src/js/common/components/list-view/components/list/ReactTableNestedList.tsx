@@ -28,7 +28,7 @@ import { NestedTableColumn } from "../../../../../model/common/NestedTable";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { openInternalLink } from "../../../../utils/links";
-import AddIcon from "../../../icons/AddIcon";
+import AddButton from "../../../icons/AddButton";
 import StaticList from "./components/StaticList";
 import styles from "./styles";
 import { getNestedTableCell } from "./utils";
@@ -281,7 +281,7 @@ const ListRoot = React.memo<NestedListProps>(({
                 </IconButton>
               )}
               {onAdd && (
-                <AddIcon size="small" onClick={onAdd} />
+                <AddButton size="small" onClick={onAdd} />
               )}
               {Boolean(rows.length) && removeEnabled && (
                 <IconButton

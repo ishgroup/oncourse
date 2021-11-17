@@ -243,7 +243,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
   );
 
   return values ? (
-    <Grid container className="pt-3 pl-3 pr-3">
+    <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
         <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Contact">
           <Grid container columnSpacing={3} rowSpacing={2}>
@@ -444,8 +444,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
       </Grid>
       {values.student && (
         <>
-          <Grid item xs={12} className="pb-2">
-            <Divider className="mb-2" />
+          <Grid item xs={12} className="pb-1">
+            <Divider className="mb-1" />
             <MinifiedEntitiesList
               name="student.concessions"
               header="Concessions"
@@ -461,8 +461,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
           </Grid>
         </>
       )}
-      <Grid item xs={12} className="pb-2">
-        <Divider className="mb-2" />
+      <Grid item xs={12} className="pb-1">
+        <Divider className="mb-1" />
         <MinifiedEntitiesList
           name="memberships"
           header="Memberships"
@@ -475,8 +475,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
           accordion
         />
       </Grid>
-      <Grid item xs={12} className="pb-2">
-        <Divider className="mb-2" />
+      <Grid item xs={12} className="pb-1">
+        <Divider className="mb-1" />
         <MinifiedEntitiesList
           name="relations"
           header="Relations"
