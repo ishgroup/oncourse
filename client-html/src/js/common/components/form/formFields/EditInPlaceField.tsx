@@ -291,7 +291,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         isEditing: true
       });
     }
-    input.onFocus();
+
+    if (input && typeof input.onFocus === "function") input.onFocus();
 
     if (!select) {
       if (!multiline) {
