@@ -275,7 +275,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         </Typography>
       </Grid>
 
-      <Grid container columnSpacing={3} item={true} xs={twoColumn ? 8 : 12} className={classes.tableHeader}>
+      <Grid container item xs={12} className={classes.tableHeader}>
         <Grid item xs={3} />
         <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
           <span className="relative">
@@ -316,7 +316,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
       )}
 
       </Grid>
-      <Grid container columnSpacing={3} item={true} xs={twoColumn ? 8 : 12} className={classes.items}>
+      <Grid container item xs={12} className={classes.items}>
         {values.assessments.map((elem, index) => {
           const elemGradeType = gradingTypes?.find(g => g.id === elem.gradingTypeId);
           return (

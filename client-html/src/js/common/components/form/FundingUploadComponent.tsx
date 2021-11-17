@@ -56,7 +56,7 @@ const styles = (theme: AppTheme) => createStyles({
       display: "inline-block"
     },
     textInfo: {
-      fontSize: `${theme.typography.fontSize - 2}px`,
+      fontSize: `${theme.typography.fontSize - 2}`,
       margin: theme.spacing(0, -0.5),
       display: "flex",
       alignItems: "baseline",
@@ -74,7 +74,7 @@ const styles = (theme: AppTheme) => createStyles({
     linkButtonIcon: { fontSize: "1.2em" },
     rootSelect: {
       fontWeight: 700,
-      paddingRight: `${theme.spacing(2.5)}px`
+      paddingRight: `${theme.spacing(2.5)}`
     },
     disabled: {}
   });

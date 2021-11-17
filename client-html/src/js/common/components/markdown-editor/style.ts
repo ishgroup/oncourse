@@ -249,7 +249,7 @@ export const useStyles = makeStyles((theme: AppTheme) => ({
   textField: {
     paddingLeft: "0",
     // @ts-ignore
-    paddingBottom: `${theme.spacing(2) - 3}px`,
+    paddingBottom: `${theme.spacing(2) - 3}`,
     margin: 0
   },
   "@global": {

@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   textDelete: {
     // @ts-ignore
-    marginLeft: `-${theme.spacing(1) - 1}px`,
+    marginLeft: `-${theme.spacing(1) - 1}`,
   },
   dateDelete: {
     marginBottom: theme.spacing(1.25)

@@ -81,7 +81,7 @@ const SearchResults = props => {
       {!updating
         && searchResults
         && searchResults.map((r, index) => (
-          <div className="d-flex" key={index}>
+          <div className="d-flex relative" key={index}>
             <ListLinksGroup
               withOffset
               showFirst={3}

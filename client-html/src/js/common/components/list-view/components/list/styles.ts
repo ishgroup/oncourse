@@ -176,6 +176,7 @@ export default (theme: AppTheme) => createStyles({
     right: theme.spacing(2),
     top: "1px",
     zIndex: theme.zIndex.appBar,
+    color: theme.palette.text.secondary,
     backgroundColor: theme.palette.background.paper,
     borderRadius: "100%"
   },

@@ -42,10 +42,10 @@ deliveryScheduleTypes.sort(sortDefaultSelectItems);
 const styles = theme => createStyles({
   mainContainer: {
     margin: theme.spacing(-3),
-    height: `calc(100% + ${theme.spacing(6)}px)`
+    height: `calc(100% + ${theme.spacing(6)})`
   },
   headerControlsContainer: {
-    margin: `-12px 0 0 ${theme.spacing(1)}px`
+    margin: `-12px 0 0 ${theme.spacing(1)}`
   },
   heading: {
     marginTop: "50px",
