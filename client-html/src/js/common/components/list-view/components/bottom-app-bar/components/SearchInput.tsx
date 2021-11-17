@@ -24,7 +24,9 @@ import QuerySaveMenu from "./QuerySaveMenu";
 import { State } from "../../../../../../reducers/state";
 import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { setIndeterminate } from "../../../utils/listFiltersUtils";
-import { setFilterGroups, setListMenuTags, setListSavingFilter, setListUserAQLSearch } from "../../../actions";
+import {
+ setFilterGroups, setListMenuTags, setListSavingFilter, setListUserAQLSearch 
+} from "../../../actions";
 import { MenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
 import { FILTER_TAGS_REGEX, TAGS_REGEX } from "../../../../../../constants/Config";

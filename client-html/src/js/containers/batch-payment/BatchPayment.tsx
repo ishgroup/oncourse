@@ -156,8 +156,8 @@ const ContactItem = memo<ContactItemProps>(({
           content: "m-0",
         }}
         >
-          <Grid container columnSpacing={3} className="centeredFlex">
-            <div className="centeredFlex flex-fill pl-1">
+          <Grid container className="centeredFlex">
+            <div className="centeredFlex flex-fill pl-1 pr-2">
               <Tooltip
                 disableHoverListener={!checkDisabled}
                 disableFocusListener={!checkDisabled}
@@ -210,11 +210,10 @@ const ContactItem = memo<ContactItemProps>(({
 
               {!expanded && <span className="money">{total}</span>}
             </div>
-
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container columnSpacing={3}>
+          <Grid container >
             {item.items.map((i, index) => (
               <Grid key={i.id} item xs={12} className={clsx("d-flex", classes.tableTab)}>
                 <div className="centeredFlex flex-fill">
@@ -255,6 +254,7 @@ const ContactItem = memo<ContactItemProps>(({
                 item
                 xs={4}
                 container
+                justifyContent="flex-end"
                 className="money pt-1 summaryTopBorder"
               >
                 <Typography variant="body2" className={classes.amountMargin}>{total}</Typography>
@@ -490,7 +490,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       <LoadingIndicator appBarOffset transparentBackdrop customLoading={contactsLoading} />
 
       <CustomAppBar>
-        <Grid container columnSpacing={3}>
+        <Grid container>
           <Grid item xs={12} className="centeredFlex">
             <Typography color="inherit" noWrap className="appHeaderFontSize">
               Batch payment in (showing
@@ -568,13 +568,14 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           />
         </div>
 
-        <Grid container columnSpacing={3} className="pt-3 d-flex justify-content-end">
+        <Grid container className="pt-3 d-flex justify-content-end">
           <Grid item xs={12} sm={8} />
           <Grid
             item
             xs={12}
             sm={4}
             container
+            justifyContent="flex-end"
             className="money p-2 summaryTopBorder"
           >
             <Typography variant="body2" className={classes.amountMargin}>

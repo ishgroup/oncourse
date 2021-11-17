@@ -416,7 +416,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.startDateOverridden ? (
-                      <div className="d-flex align-items-start">
+                      <div className="centeredFlex">
                         <FormField
                           type="date"
                           name={getFieldName("startDate")}
@@ -445,7 +445,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.endDateOverridden ? (
-                      <div className="d-flex align-items-start">
+                      <div className="centeredFlex">
                         <FormField
                           type="date"
                           name={getFieldName("endDate")}

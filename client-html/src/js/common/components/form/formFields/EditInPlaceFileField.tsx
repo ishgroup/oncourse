@@ -24,7 +24,7 @@ const styles = theme => createStyles({
     verticalAlign: "baseline"
   },
   bottomMargin: {
-    marginBottom: `${theme.spacing(1) + 1}px`
+    marginBottom: `${theme.spacing(1) + 1}`
   },
   topMargin: {
     marginTop: theme.spacing(1),

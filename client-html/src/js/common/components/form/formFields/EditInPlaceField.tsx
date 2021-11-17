@@ -128,9 +128,7 @@ const styles = theme => createStyles({
     textOverflow: "ellipsis"
   },
   emptySelect: {
-    color: "#fff",
     "& $placeholderContent": {
-      color: "#fff",
       fontWeight: 400,
     }
   },

@@ -488,4 +488,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getScripts: (entity: string) => dispatch(getScripts(entity))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BottomAppBar));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(BottomAppBar));

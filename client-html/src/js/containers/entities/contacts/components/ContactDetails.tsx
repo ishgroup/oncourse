@@ -49,10 +49,7 @@ const contactGenderItems = Object.keys(ContactGender).map(mapSelectItems);
 
 const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? undefined : "Date of birth cannot be in future.");
 
-const validateABN = v => (!v || (!Number.isNaN(parseFloat(v)) && Number.isFinite(v))
-    ? undefined
-    : "Business Number (ABN) should be numeric."
-);
+const validateABN = v => (!v || (new RegExp(/^\d+$/)).test(v) ? undefined : "Business Number (ABN) should be numeric.");
 
 interface ContactDetailsProps extends EditViewProps<Contact> {
   relationTypes?: ContactRelationType[];
@@ -363,7 +360,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               </Menu>
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="message" label="Message (alert for operator)" />
+              <FormField type="multilineText" name="message" label="Message (alert for operator)" />
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />

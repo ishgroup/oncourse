@@ -51,7 +51,7 @@ const styles = (theme: AppTheme) =>
       padding: "0 16px"
     },
     searchResultsRoot: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(2)}px ${theme.spacing(2)}px 125px`,
+      padding: `${theme.spacing(2)} ${theme.spacing(2)} ${theme.spacing(2)} 125px`,
       transition: "all 0.5s ease-in"
     },
     favoritesTopBar: {

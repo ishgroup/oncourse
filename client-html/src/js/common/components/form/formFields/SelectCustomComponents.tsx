@@ -17,13 +17,13 @@ import { Typography } from "@mui/material";
 export const selectStyles = theme => createStyles({
     root: {},
     bottomMargin: {
-      marginBottom: `${theme.spacing(1) + 1}px`
+      marginBottom: `${theme.spacing(1) + 1}`
     },
     bottomPadding: {
-      paddingBottom: `${theme.spacing(1) + 1}px`
+      paddingBottom: `${theme.spacing(1) + 1}`
     },
     topMargin: {
-      marginTop: `${theme.spacing(1)}px`,
+      marginTop: `${theme.spacing(1)}`,
       paddingLeft: "0"
     },
     editIcon: {

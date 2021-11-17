@@ -49,6 +49,9 @@ const styles = theme => createStyles({
     "&:hover $inputEndAdornment": {
       visibility: "visible"
     },
+    "&:hover $hiddenContainer": {
+      display: "inline-flex"
+    },
   },
   topMargin: {
     marginTop: theme.spacing(1),
@@ -348,7 +351,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
               variant="standard"
               margin="none"
               fullWidth
-              className={clsx("pr-2", {
+              className={clsx({
+              "pr-2": formatting !== "inline",
               [classes.topMargin]: !listSpacing,
               [classes.bottomMargin]: listSpacing && formatting !== "inline",
               [classes.inlineTextField]: isInline
@@ -389,7 +393,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                   input: clsx(classes.input, fieldClasses.text)
                 }}
                 endAdornment={(
-                  <InputAdornment position="end" className={classes.inputEndAdornment}>
+                  <InputAdornment position="end" className={clsx(classes.inputEndAdornment, formatting === "inline" && classes.hiddenContainer)}>
                     <IconButton
                       tabIndex={-1}
                       onClick={openPicker}
