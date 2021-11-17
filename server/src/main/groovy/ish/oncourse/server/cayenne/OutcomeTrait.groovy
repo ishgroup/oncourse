@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.AttendanceProcessor
 import ish.common.DateCalculator
 import ish.common.DateUtils
 import ish.common.types.AttendanceType
@@ -208,7 +209,7 @@ trait OutcomeTrait {
         return outcomeAssessments;
     }
 
-    Date calculateDate(DateCalculator calculator, Boolean attendanceTakenIntoAccount) {
+    Date calculateDate(DateCalculator calculator, AttendanceProcessor attendanceProcessor) {
         def enrolment = getEnrolment()
         if (!enrolment) {
             return null
@@ -223,10 +224,10 @@ trait OutcomeTrait {
         def module = getModule()
 
         if (module) {
-            def modules = DateUtils.getModulesOf(courseClass, attendanceTakenIntoAccount, module)
+            def modules = attendanceProcessor.getModulesOf(courseClass, module)
             List<Date> sessionModuleDates = calculator.getSessionDates(modules)
 
-            List<Date> assessmentModuleDueDates = getAssessmentDueDates(courseClass, this as OutcomeInterface, attendanceTakenIntoAccount)
+            List<Date> assessmentModuleDueDates = attendanceProcessor.getAssessmentDueDates(courseClass, this as OutcomeInterface)
 
             if (!sessionModuleDates.isEmpty() || !assessmentModuleDueDates.isEmpty()) {
                 return (sessionModuleDates + assessmentModuleDueDates).sort().last()
