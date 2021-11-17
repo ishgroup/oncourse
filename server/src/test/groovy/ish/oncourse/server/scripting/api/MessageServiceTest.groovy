@@ -49,7 +49,7 @@ class MessageServiceTest extends TestWithDatabase {
 
         Assertions.assertEquals(3, messages.size())
 
-        Message messageToFirstStudent = messages.find { it.contact.id == 1l }
+        Message messageToFirstStudent = messages.find { it.contact?.id == 1l }
         Assertions.assertNotNull(messageToFirstStudent, "The email would be sent to the first student!")
         Assertions.assertEquals("Hello Student First", messageToFirstStudent.emailSubject)
         Assertions.assertEquals("Thank you for you enrolment to our course TestCourse! Common cost is 100", messageToFirstStudent.emailBody)
