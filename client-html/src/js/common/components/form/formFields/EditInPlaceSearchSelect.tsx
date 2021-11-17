@@ -510,7 +510,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                               <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
                             </IconButton>
                           ) }
-                          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+                          {!inline && <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />}
                         </InputAdornment>
                       )
                   )}
