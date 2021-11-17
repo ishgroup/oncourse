@@ -11,8 +11,17 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.DateCalculator
+import ish.common.DateUtils
 import ish.common.types.AttendanceType
+import ish.oncourse.cayenne.CourseClassInterface
+import ish.oncourse.cayenne.OutcomeInterface
+import ish.util.LocalDateUtils
 import org.apache.commons.lang3.StringUtils
+
+import java.time.LocalDate
+
+import static ish.common.DateUtils.getAssessmentDueDates
 
 trait OutcomeTrait {
 
@@ -21,6 +30,10 @@ trait OutcomeTrait {
     abstract PriorLearning getPriorLearning()
 
     abstract Module getModule()
+
+    abstract LocalDate getStartDate()
+
+    abstract LocalDate getEndDate()
 
     String getStudentName() {
         Contact contact = (enrolment) ? enrolment?.student?.contact : priorLearning?.student?.contact
@@ -193,5 +206,38 @@ trait OutcomeTrait {
             }
         }
         return outcomeAssessments;
+    }
+
+    Date calculateDate(DateCalculator calculator, Boolean attendanceTakenIntoAccount) {
+        def enrolment = getEnrolment()
+        if (!enrolment) {
+            return null
+        }
+        // this is a flexible delivery class so the start date varies for each enrolment
+        // 'No sessions' means CourseClass.endDateTime or CourseClass.startDateTime is null
+        CourseClassInterface courseClass = enrolment.courseClass;
+        if (hasNoSessions(courseClass)) {
+            return calculator.getDateIfNoSessions(enrolment)
+        }
+
+        def module = getModule()
+
+        if (module) {
+            def modules = DateUtils.getModulesOf(courseClass, attendanceTakenIntoAccount, module)
+            List<Date> sessionModuleDates = calculator.getSessionDates(modules)
+
+            List<Date> assessmentModuleDueDates = getAssessmentDueDates(courseClass, this as OutcomeInterface, attendanceTakenIntoAccount)
+
+            if (!sessionModuleDates.isEmpty() || !assessmentModuleDueDates.isEmpty()) {
+                return (sessionModuleDates + assessmentModuleDueDates).sort().last()
+            }
+        }
+        // if the module for the outcome isn't found in the sessions, return the class end or start date
+        return calculator.getDateOf(courseClass)
+    }
+
+
+    private boolean hasNoSessions(CourseClassInterface courseClass){
+        return courseClass.isDistantLearningCourse || (courseClass.sessions.empty && courseClass.assessmentClasses.empty)
     }
 }

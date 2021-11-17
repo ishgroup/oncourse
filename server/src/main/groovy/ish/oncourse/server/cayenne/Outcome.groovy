@@ -11,14 +11,14 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.CalculateEndDate
-import ish.common.CalculateStartDate
+import ish.common.EndDateCalculator
+import ish.common.StartDateCalculator
 import ish.common.types.ClassFundingSource
 import ish.common.types.DeliveryMode
 import ish.common.types.OutcomeStatus
 import ish.oncourse.API
+import ish.oncourse.cayenne.OutcomeInterface
 import ish.oncourse.cayenne.QueueableEntity
-import ish.oncourse.entity.delegator.OutcomeDelegator
 import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.cayenne.glue._Outcome
 import ish.util.LocalDateUtils
@@ -28,7 +28,6 @@ import org.apache.logging.log4j.Logger
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-
 /**
  * Outcomes are a relationship between a student and a Module/Unit of Competency and represents
  * a student's progress through training, and the result of their assessment.
@@ -38,7 +37,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Outcome extends _Outcome implements Queueable, OutcomeTrait {
+class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterface {
 
 	private static final Logger logger = LogManager.getLogger()
 	public static final String STUDENT_NAME = "studentName"
@@ -407,10 +406,10 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 	}
 
 	Date calculateStartDate(Boolean attendanceTakenIntoAccount) {
-		return new CalculateStartDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
+		return calculateDate(new StartDateCalculator(), attendanceTakenIntoAccount)
 	}
 
 	Date calculateEndDate(Boolean attendanceTakenIntoAccount) {
-		return new CalculateEndDate(OutcomeDelegator.valueOf(this), attendanceTakenIntoAccount).calculate()
+		return calculateDate(new EndDateCalculator(), attendanceTakenIntoAccount)
 	}
 }

@@ -11,9 +11,11 @@ package ish.common
 import ish.oncourse.cayenne.AssessmentClassModuleInterface
 import ish.oncourse.cayenne.AssessmentSubmissionInterface
 import ish.oncourse.cayenne.CourseClassInterface
+import ish.oncourse.cayenne.ModuleInterface
 import ish.oncourse.cayenne.OutcomeInterface
+import ish.oncourse.cayenne.SessionModuleInterface
 
-class GetAssessmentDueDate {
+class DateUtils {
 
     static List<Date> getAssessmentDueDates(CourseClassInterface courseClass, OutcomeInterface outcome, boolean attendanceTakenIntoAccount) {
         List<AssessmentClassModuleInterface> assessmentClassModules = (courseClass.assessmentClasses*.assessmentClassModules
@@ -29,5 +31,16 @@ class GetAssessmentDueDate {
         }
 
         return assessmentClassModules*.assessmentClass*.dueDate
+    }
+
+    static List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass, Boolean attendanceTakenIntoAccount,
+                                                     ModuleInterface controlModule){
+        def sessionModules =  (courseClass.sessions*.sessionModules
+                .flatten() as List<SessionModuleInterface>)
+                .findAll { sm -> sm.module == controlModule }
+        if (attendanceTakenIntoAccount) {
+            sessionModules = sessionModules.findAll { !it.getAttendanceForOutcome(this as OutcomeInterface)?.absent }
+        }
+        return sessionModules
     }
 }
