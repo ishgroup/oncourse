@@ -16,7 +16,6 @@ import {
   Contact,
   Country,
   Language,
-  StudentCitizenship,
   UsiStatus,
   UsiVerificationResult
 } from "@api/model";
@@ -52,7 +51,6 @@ const priorEducations = Object.keys(AvetmissStudentPriorEducation).map(mapSelect
 const disabilityTypes = Object.keys(AvetmissStudentDisabilityType).map(mapSelectItems);
 const industriesOfEmployment = Object.keys(ClientIndustryEmploymentType).map(mapSelectItems);
 const occupationIdentifiers = Object.keys(ClientOccupationIdentifierType).map(mapSelectItems);
-const studentCitizenships = Object.keys(StudentCitizenship).map(mapSelectItems);
 const avetmissStudentLabourStatuses = Object.keys(AvetmissStudentLabourStatus).map(mapSelectItems);
 
 const openUpgradeLink = () => {
@@ -539,30 +537,20 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </div>
           </Grid>
           {values.student && values.student.feeHelpEligible && (
-            <>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField
-                  type="select"
-                  name="student.citizenship"
-                  label="Citizenship status"
-                  items={studentCitizenships}
-                />
-              </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField
-                  type="text"
-                  name="tfn"
-                  label="Tax file number"
-                  max={9}
-                  InputProps={{
-                    inputComponent: TFNInputMask
-                  }}
-                  validate={validateTFN}
-                  parse={parseTFN}
-                  format={formatTFN}
-                />
-              </Grid>
-            </>
+            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <FormField
+                type="text"
+                name="tfn"
+                label="Tax file number"
+                max={9}
+                InputProps={{
+                  inputComponent: TFNInputMask
+                }}
+                validate={validateTFN}
+                parse={parseTFN}
+                format={formatTFN}
+              />
+            </Grid>
           )}
         </Grid>
       </ExpandableContainer>

@@ -12,7 +12,7 @@ import React, {
 } from "react";
 import {
   ConcessionType,
-  Contact, ContactGender, ContactRelationType, StudentConcession
+  Contact, ContactGender, ContactRelationType, StudentCitizenship, StudentConcession
 } from "@api/model";
 import {
   arrayInsert, arrayRemove, change
@@ -53,6 +53,7 @@ const UNDELIVERABLE_MSG = "(undeliverable)";
 const NO_MARKETING_AND_UNDELIVERABLE_MSG = "(no marketing and undeliverable)";
 
 const contactGenderItems = Object.keys(ContactGender).map(mapSelectItems);
+const studentCitizenships = Object.keys(StudentCitizenship).map(mapSelectItems);
 
 const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? undefined : "Date of birth cannot be in future.");
 
@@ -427,7 +428,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 <Grid item xs={twoColumn ? 6 : 12}>
                   <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className="mb-2">
                   {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
                     <Typography display="inline" variant="body1">
                       {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
@@ -446,6 +447,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                       Student is not on any waiting list
                     </Typography>
                   )}
+                </Grid>
+                <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+                  <FormField
+                    type="select"
+                    name="student.citizenship"
+                    label="Citizenship status"
+                    items={studentCitizenships}
+                  />
                 </Grid>
               </>
             )}
