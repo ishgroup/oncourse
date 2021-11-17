@@ -106,18 +106,18 @@ const styles = (theme: AppTheme) =>
       width: theme.spacing(4.75)
     },
     rowItemCol1: {
-      paddingRight: 20
+      paddingRight: 18
     },
     rowItemCol2: {
-      paddingRight: 20
+      paddingRight: 14
     },
     rowItemCol3: {
-      paddingRight: 21
+      paddingRight: 12
     },
     rowItemCol4: {
       display: "flex",
       justifyContent: "flex-end",
-      paddingRight: 26
+      paddingRight: 10
     },
     panelSumRoot: {
       "&$panelSumFocus": {
@@ -673,7 +673,7 @@ const CourseClassBudgetTab = React.memo<Props>(
           tutors={values.tutors}
         />
 
-        <div className="pl-3 pr-3 pb-2">
+        <div className="pl-3 pr-3">
           {isNew ? (
             <div className="pb-1 pt-2">
               <div
@@ -844,9 +844,9 @@ const BudgetNetRow: React.FC<CommonRowProps> = ({
   ]);
 
   return (
-    <div className="pl-2 pr-2 centeredFlex">
-      <Grid container columnSpacing={3}>
-        <Grid item xs={5} className="centeredFlex">
+    <div className="centeredFlex">
+      <Grid container>
+        <Grid item xs={5} className="centeredFlex pl-2">
           <div className="secondaryHeading">{header}</div>
           {headerAdornment && (
             <Typography variant="caption" color="textSecondary" className="pl-1">

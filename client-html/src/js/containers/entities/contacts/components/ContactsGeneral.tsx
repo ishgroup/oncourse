@@ -296,8 +296,8 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
       </Grid>
       {isStudent && (
         <>
-          <Divider className="mt-3 mb-3" />
-          <Grid container columnSpacing={3}>
+          <Divider className="mt-3 mb-2" />
+          <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
               <TimetableButton onClick={onCalendarClick} />
             </Grid>

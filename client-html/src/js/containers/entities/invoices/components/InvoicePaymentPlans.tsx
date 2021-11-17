@@ -21,7 +21,7 @@ import { paymentPlanStyles } from "../styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../utils";
 import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "./InvoicePaymentPlanComponents";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import AddIcon from "../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../common/components/icons/AddButton";
 
 interface PaymentPlansProps {
   classes?: any;
@@ -108,7 +108,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
           Payment plan / payments
         </Typography>
 
-        <AddIcon onClick={addPaymentDue} />
+        <AddButton onClick={addPaymentDue} />
       </div>
 
       {error}

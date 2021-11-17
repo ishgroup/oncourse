@@ -241,7 +241,6 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
                 <FormField
                   label="Code"
                   name="code"
-                  placeholder={twoColumn ? "Code" : undefined}
                   required
                   fullWidth
                 />
@@ -250,7 +249,6 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
                 <FormField
                   label="SKU"
                   name="name"
-                  placeholder={twoColumn ? "Name" : undefined}
                   required
                   fullWidth
                 />

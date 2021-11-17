@@ -35,7 +35,7 @@ import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
 import { COLORS, getAllTags } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import AddIcon from "../../../common/components/icons/AddIcon";
+import AddButton from "../../../common/components/icons/AddButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
 import FormSubmitButton from "src/js/common/components/form/FormSubmitButton";
 
@@ -530,7 +530,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
               <div className="centeredFlex">
                 <Typography className="heading">Tags</Typography>
-                <AddIcon onClick={this.addTag} />
+                <AddButton onClick={this.addTag} />
               </div>
 
               <DragDropContext onDragEnd={this.onDragEnd}>

@@ -71,7 +71,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   return (
 
-    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
       <Grid item container xs={12}>
         <FullScreenStickyHeader
           opened={isNew || Object.keys(syncErrors).includes("name")}

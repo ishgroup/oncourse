@@ -23,7 +23,7 @@ import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { renderAutomationItems } from "../utils";
 import { AppTheme } from "../../../model/common/Theme";
-import AddIcon from "../../../common/components/icons/AddIcon";
+import AddButton from "../../../common/components/icons/AddButton";
 
 export type BindingsItemType = "component" | "label";
 
@@ -236,7 +236,7 @@ const Bindings = React.memo<BindingsProps>( props => {
       <div className="centeredFlex pb-1">
         <div className="heading">{label}</div>
         {!disabled && (
-          <AddIcon className="p-0 ml-1" onClick={handleClick} />
+          <AddButton className="p-0 ml-1" onClick={handleClick} />
         )}
       </div>
 

@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { EntityType } from "../../../../model/common/NestedEntity";
 import { openInternalLink } from "../../../utils/links";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 
 interface Props {
   entityName?: string;
@@ -69,7 +69,7 @@ const NestedEntity: React.FC<Props> = ({
   const addAction = useMemo(
     () =>
       (addLink ? (
-        <AddIcon onClick={isNew ? saveAlert : openAddLink} />
+        <AddButton onClick={isNew ? saveAlert : openAddLink} />
       ) : null),
     [isNew, addLink]
   );
