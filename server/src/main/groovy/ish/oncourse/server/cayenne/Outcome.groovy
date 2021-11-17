@@ -11,6 +11,9 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.AttendanceNotTakenProcessor
+import ish.common.AttendanceProcessor
+import ish.common.AttendanceTakenProcessor
 import ish.common.EndDateCalculator
 import ish.common.StartDateCalculator
 import ish.common.types.ClassFundingSource
@@ -378,7 +381,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	 */
 	@API
 	LocalDate getTrainingPlanStartDate() {
-		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.FALSE))
+		return LocalDateUtils.dateToValue(calculateStartDate(new AttendanceNotTakenProcessor()))
 	}
 
 	/**
@@ -386,7 +389,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	 */
 	@API
 	LocalDate getTrainingPlanEndDate() {
-		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.FALSE))
+		return LocalDateUtils.dateToValue(calculateEndDate(new AttendanceNotTakenProcessor()))
 	}
 
 	/**
@@ -394,7 +397,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	 */
 	@API
 	LocalDate getActualStartDate() {
-		return LocalDateUtils.dateToValue(calculateStartDate(Boolean.TRUE))
+		return LocalDateUtils.dateToValue(calculateStartDate(new AttendanceTakenProcessor()))
 	}
 
 	/**
@@ -402,14 +405,14 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	 */
 	@API
 	LocalDate getActualEndDate() {
-		return LocalDateUtils.dateToValue(calculateEndDate(Boolean.TRUE))
+		return LocalDateUtils.dateToValue(calculateEndDate(new AttendanceTakenProcessor()))
 	}
 
-	Date calculateStartDate(Boolean attendanceTakenIntoAccount) {
-		return calculateDate(new StartDateCalculator(), attendanceTakenIntoAccount)
+	Date calculateStartDate(AttendanceProcessor attendanceProcessor) {
+		return calculateDate(new StartDateCalculator(), attendanceProcessor)
 	}
 
-	Date calculateEndDate(Boolean attendanceTakenIntoAccount) {
-		return calculateDate(new EndDateCalculator(), attendanceTakenIntoAccount)
+	Date calculateEndDate(AttendanceProcessor attendanceProcessor) {
+		return calculateDate(new EndDateCalculator(), attendanceProcessor)
 	}
 }
