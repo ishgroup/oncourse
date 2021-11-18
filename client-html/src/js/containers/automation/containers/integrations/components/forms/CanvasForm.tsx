@@ -89,15 +89,15 @@ class CanvasBaseForm extends React.Component<any, any> {
             )
           }
 
-          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" fullWidth />
-          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" fullWidth />
-          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" fullWidth />
+          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" className="mb-2" />
           <FormField
             disabled={configured}
             type="password"
             name="fields.clientSecret"
             label="Client secret"
-            fullWidth
+            className="mb-2"
           />
           {values && values.fields && values.fields.baseUrl && values.fields.clientToken && values.fields.clientSecret ? (
             configured

@@ -36,14 +36,14 @@ class SurveyGizmoBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.user" label="User" type="text" fullWidth />
-          <FormField name="fields.password" label="Password" type="password" fullWidth />
-          <FormField name="fields.surveyId" label="Survey ID" type="text" fullWidth />
+          <FormField name="fields.user" label="User" type="text" className="mb-2" />
+          <FormField name="fields.password" label="Password" type="password" className="mb-2" />
+          <FormField name="fields.surveyId" label="Survey ID" type="text" className="mb-2" />
           <FormField
             name="fields.courseTag"
             label="Only activate for enrolments in courses tagged with"
             type="text"
-            fullWidth
+            className="mb-2"
           />
 
           <div className="flex-column pt-2">

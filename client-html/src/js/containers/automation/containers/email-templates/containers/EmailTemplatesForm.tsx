@@ -47,6 +47,7 @@ interface Props extends InjectedFormProps {
   validateTemplateCopyName: StringArgFunction;
   validateNewTemplateName: StringArgFunction;
   history: any;
+  syncErrors: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
 }
@@ -75,6 +76,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     history,
     nextLocation,
     setNextLocation,
+    syncErrors,
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -169,14 +171,12 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           invalid={invalid}
           title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
           disableInteraction={isInternal}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
           fields={(
             <Grid item xs={12}>
               <FormField
                 name="name"
-                placeholder="Name"
-                margin="none"
-                className="pl-1"
-                listSpacing={false}
+                label="Name"
                 validate={validateNewTemplateName}
                 disabled={isInternal}
                 required
@@ -204,7 +204,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 <Grow in={isInternal}>
                   <Tooltip title="Save as new email template">
                     <IconButton onClick={onInternalSaveClick} color="inherit">
-                      <FileCopy color="inherit" />
+                      <FileCopy color="primary" />
                     </IconButton>
                   </Tooltip>
                 </Grow>
@@ -212,9 +212,9 @@ const EmailTemplatesForm: React.FC<Props> = props => {
             </>
           )}
         >
-          <Grid container columnSpacing={3}>
+          <Grid container>
             <Grid item xs={9} className="pr-3">
-              <Grid container columnSpacing={3}>
+              <Grid container columnSpacing={3} className="mb-3">
                 <Grid item xs={6}>
                   <div className="heading">Type</div>
                   <FormField
@@ -238,7 +238,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               </Grid>
 
               {values.type === 'Email' && (
-                <Grid container columnSpacing={3}>
+                <Grid container >
                   <Grid item xs={6}>
                     <div className="heading">Subject</div>
                     <FormField
@@ -291,6 +291,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 name="keyCode"
                 validate={isNew || !isInternal ? validateKeycode : undefined}
                 disabled={!isNew}
+                className="mt-2 mb-2"
                 required
               />
 

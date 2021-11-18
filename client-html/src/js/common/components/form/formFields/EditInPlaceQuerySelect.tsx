@@ -236,7 +236,6 @@ export interface Suggestion {
 interface State {
   value: object[];
   options: Suggestion[];
-  isEditing: boolean;
   menuIsOpen: boolean;
   error: boolean;
   pickerOpened: "DATE" | "TIME";
@@ -299,7 +298,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.state = {
       value: [],
       options: [],
-      isEditing: false,
       menuIsOpen: false,
       error: false,
       pickerOpened: null,
@@ -359,11 +357,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       });
     }
 
-    if (!inline && !this.state.isEditing && meta.invalid) {
-      this.setState({
-        isEditing: true
-      });
-    }
   }
 
   getAutocomplete = (input, position?) => {
@@ -577,17 +570,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     });
   };
 
-  edit = () => {
-    this.setState(
-      {
-        isEditing: true
-      },
-      () => {
-        this.inputNode.focus();
-      }
-    );
-  };
-
   onBlur = () => {
     if (this.state.pickerOpened) return;
 
@@ -599,7 +581,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
     this.setState({
       menuIsOpen: false,
-      isEditing: false
     });
 
     if (!inline) {
@@ -653,7 +634,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   getValue = classes => (
-    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || (!this.state.isEditing && "No value")}</span>
+    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || "No value"}</span>
   );
 
   getInlineMenuStyles = () => {
@@ -1138,7 +1119,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.setState({
       value: [],
       options: this.getAutocomplete("", 0),
-      isEditing: false,
       menuIsOpen: false,
       error: false,
       pickerOpened: null,
@@ -1212,7 +1192,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     } = this.props;
 
     const {
-     error, isEditing, menuIsOpen, options, value, inputValue, pickerOpened
+     error, menuIsOpen, options, value, inputValue, pickerOpened
     } = this.state;
 
     const filteredOptions = options.filter(this.filterOptions);
@@ -1239,7 +1219,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
         <div
           className={clsx("relative", {
-            "d-none": !(inline || isEditing || (!isValidQuery && (meta.invalid || error))),
             "pointer-events-none": disabled,
             [classes.bottomPadding]: !inline
           })}
@@ -1299,45 +1278,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             openOnFocus
             multiple
           />
-        </div>
-        <div
-          className={clsx({
-            "d-none": inline || isEditing || (!isValidQuery && (meta.invalid || error)),
-            "pointer-events-none": disabled
-          })}
-        >
-          <div className="mw-100 text-truncate">
-            {!hideLabel && label && (
-              <Typography variant="caption" className="centeredFlex" color="textSecondary">
-                {label}
-                {' '}
-                {labelAdornment}
-              </Typography>
-            )}
-
-            <ListItemText
-              classes={{
-                root: "pl-0 mb-0 mt-0",
-                primary: "d-flex"
-              }}
-              primary={(
-                <ButtonBase
-                  onClick={this.edit}
-                  className={clsx(classes.editable, "overflow-hidden hoverIconContainer")}
-                  component="div"
-                >
-                  <span
-                    className={clsx(classes.editable, "overflow-hidden", {
-                      "placeholderContent": !inline && !input.value.length
-                    })}
-                  >
-                    {editableComponent || this.getValue(classes)}
-                    {!disabled && <CreateIcon className="editInPlaceIcon hoverIcon" />}
-                  </span>
-                </ButtonBase>
-              )}
-            />
-          </div>
         </div>
       </div>
     );

@@ -34,13 +34,13 @@ class LearnDashFormBase extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField type="text" name="fields.baseUrl" label="Base url" fullWidth />
-          <FormField type="text" name="fields.userLogin" label="User login" fullWidth />
+          <FormField type="text" name="fields.baseUrl" label="Base url" className="mb-2" />
+          <FormField type="text" name="fields.userLogin" label="User login" className="mb-2" />
           <FormField
             type="password"
             name="fields.userPassword"
             label="User password"
-            fullWidth
+            className="mb-2"
           />
         </AppBarContent>
       </form>

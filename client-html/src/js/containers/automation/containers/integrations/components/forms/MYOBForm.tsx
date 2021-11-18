@@ -40,9 +40,9 @@ class MYOBBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
-          <FormField name="fields.user" label="User" type="text" fullWidth />
-          <FormField name="fields.password" type="password" label="Password" fullWidth />
+          <FormField name="fields.baseUrl" label="Base URL" type="text" className="mb-2" />
+          <FormField name="fields.user" label="User" type="text" className="mb-2" />
+          <FormField name="fields.password" type="password" label="Password" className="mb-2" />
 
           <Typography variant="caption" component="div">
             {configured ? configuredLabel : unconfiguredLabel}

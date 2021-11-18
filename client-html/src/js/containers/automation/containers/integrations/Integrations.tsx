@@ -44,8 +44,8 @@ const Integrations = React.memo<any>(({
       noDrawer
       title="Integrations"
     >
-      <Grid container columnSpacing={3} spacing={5}>
-        {types.map((int, index: number) => (
+      <Grid container spacing={5}>
+        {types.map((int) => (
           <Grid item xs={12} lg={6} key={int.type}>
             <Grid
               container

@@ -32,6 +32,7 @@ interface Props extends InjectedFormProps {
   onUpdate: (fileName: string, id: number, overlay: File) => void;
   onDelete: (id: number) => void;
   history: any;
+  syncErrors: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
 }
@@ -49,7 +50,8 @@ const PdfBackgroundsForm = React.memo<Props>(
      form,
      history,
      nextLocation,
-     setNextLocation
+     setNextLocation,
+     syncErrors
     }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [fileIsChosen, setFileIsChosen] = useState(false);
@@ -131,14 +133,12 @@ const PdfBackgroundsForm = React.memo<Props>(
             || (!isNew && !values.preview && !fileIsChosen)}
             invalid={invalid}
             title={(isNew && (!values.name || values.name.trim().length === 0)) ? "New" : values.name.trim()}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
               <Grid item xs={12}>
                 <FormField
                   name="name"
-                  placeholder="Name"
-                  margin="none"
-                  className="pl-1"
-                  listSpacing={false}
+                  label="Name"
                   required
                 />
               </Grid>

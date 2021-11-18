@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { InjectedFormProps } from "redux-form";
 import clsx from "clsx";
-import { createStyles, withStyles } from "@mui/styles";
+import { createStyles, makeStyles, withStyles } from "@mui/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -31,8 +31,9 @@ import FormSubmitButton from "../form/FormSubmitButton";
 import FullScreenStickyHeader from "../list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { VARIANTS } from "./swipeable-sidebar/utils";
 import HamburgerMenu from "./swipeable-sidebar/components/HamburgerMenu";
+import { AppTheme } from "../../../model/common/Theme";
 
-const styles: any = theme => createStyles({
+const useStyles = makeStyles((theme: AppTheme) => ({
   header: {
     width: "100%",
     background: theme.appBar.header.background,
@@ -50,25 +51,25 @@ const styles: any = theme => createStyles({
     marginLeft: theme.spacing(-1)
   },
   container: {
+    padding: theme.spacing(4, 3, 3, 3),
     background: theme.appBar.header.background,
   },
   headerAlternate: {
-    background: `${theme.appBar.headerAlternate.background} !important`,
-    color: `${theme.appBar.headerAlternate.color} !important`,
+    background: `${theme.appBar.headerAlternate.background}`,
+    color: `${theme.appBar.headerAlternate.color}`,
+    "& $actionsWrapper svg": {
+      color: `${theme.appBar.headerAlternate.color}`,
+    }
   },
   submitButtonAlternate: {
-    background: `${theme.appBar.headerAlternate.color} !important`,
-    color: `${theme.appBar.headerAlternate.background} !important`,
+    background: `${theme.appBar.headerAlternate.color}`,
+    color: `${theme.appBar.headerAlternate.background}`,
   },
   fullScreenTitleItem: {
     position: "relative",
     maxWidth: "100%",
     zIndex: 1,
     marginTop: 8,
-  },
-  fullScreenTitleItemHasMenu: {
-    paddingLeft: `${theme.spacing(12)} !important`,
-    marginTop: theme.spacing(1),
   },
   scriptAddMenu: {
     position: "absolute",
@@ -80,10 +81,15 @@ const styles: any = theme => createStyles({
       left: 0,
     }
   },
-});
+  headerFabOffset: {
+    paddingLeft: theme.spacing(8.75)
+  },
+  actionsWrapper: {
+    display: "flex"
+  }
+}));
 
 interface Props extends InjectedFormProps {
-  classes?: any,
   title?: any;
   actions?: any;
   hideHelpMenu?: boolean;
@@ -95,6 +101,7 @@ interface Props extends InjectedFormProps {
   manualUrl?: string;
   disabled?: boolean;
   fields?: any;
+  opened?: boolean;
   disableInteraction?: boolean;
   hideSubmitButton?: boolean;
   disabledScrolling?: boolean;
@@ -109,10 +116,12 @@ interface Props extends InjectedFormProps {
 
 const AppBarContainer: React.FC<Props> = props => {
   const {
-    classes, title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
+    title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
     disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
-    onCloseClick, hamburgerMenu
+    onCloseClick, hamburgerMenu, opened
   } = props;
+
+  const classes = useStyles();
 
   const { scrollSpy } = useStickyScrollSpy();
 
@@ -132,7 +141,8 @@ const AppBarContainer: React.FC<Props> = props => {
   const isSmallScreen = useMediaQuery('(max-width:992px)');
   const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
   const isHighcontrastTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "highcontrast";
-  const hasMenu = onAddMenu || customAddMenu;
+
+  const hasFab = onAddMenu || customAddMenu;
 
   return (
     <>
@@ -141,6 +151,8 @@ const AppBarContainer: React.FC<Props> = props => {
         position="absolute"
         className={clsx(
           classes.header,
+          hasFab && classes.headerFabOffset,
+          opened && "pt-2",
           LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader",
           { [classes.headerAlternate]: hasScrolling },
           { [classes.headerHighContrast]: isHighcontrastTheme }
@@ -160,52 +172,52 @@ const AppBarContainer: React.FC<Props> = props => {
           {hamburgerMenu && (
             <HamburgerMenu variant={VARIANTS.temporary} />
           )}
+ 
           <FullScreenStickyHeader
+            opened={opened}
             title={title}
             fields={fields}
-            otherClasses={{
-              fullScreenTitleItem: clsx(classes.fullScreenTitleItem, { [classes.fullScreenTitleItemHasMenu]: hasMenu }),
-            }}
             disableInteraction={disableInteraction}
             twoColumn
           />
+      
           <div className="flex-fill" />
-          {actions}
+          <div className={classes.actionsWrapper}>
+            {actions}
 
-          {!hideHelpMenu && values && (
-            <AppBarHelpMenu
-              created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
-              modified={values && (modifiedOn ? modifiedOn(values) : (values.modifiedOn ? new Date(values.modifiedOn) : null))}
-              manualUrl={manualUrl}
-              auditsUrl={values && getAuditsUrl && (typeof getAuditsUrl === "string" ? getAuditsUrl : getAuditsUrl(values.id))}
-              classes={{ buttonAlternate: hasScrolling && classes.headerAlternate }}
-            />
-          )}
+            {!hideHelpMenu && values && (
+              <AppBarHelpMenu
+                created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
+                modified={values && (modifiedOn ? modifiedOn(values) : (values.modifiedOn ? new Date(values.modifiedOn) : null))}
+                manualUrl={manualUrl}
+                auditsUrl={values && getAuditsUrl && (typeof getAuditsUrl === "string" ? getAuditsUrl : getAuditsUrl(values.id))}
+              />
+            )}
 
-          {onCloseClick && (
-            <Button
-              onClick={onCloseClick}
-              className={clsx("closeAppBarButton", hasScrolling && classes.headerAlternate)}
-            >
-              Close
-            </Button>
-          )}
-
+            {onCloseClick && (
+              <Button
+                onClick={onCloseClick}
+                className={clsx("closeAppBarButton", hasScrolling && classes.headerAlternate)}
+              >
+                Close
+              </Button>
+            )}
+          </div>
           {!hideSubmitButton && (
-            <FormSubmitButton
-              disabled={disabled}
-              invalid={invalid}
-              fab
-              className={isDarkTheme && classes.submitButtonAlternate}
-              text={submitButtonText || "Save"}
-            />
-          )}
+          <FormSubmitButton
+            disabled={disabled}
+            invalid={invalid}
+            fab
+            className={isDarkTheme && classes.submitButtonAlternate}
+            text={submitButtonText || "Save"}
+          />
+            )}
         </Toolbar>
       </AppBar>
-      <div className={clsx("w-100", { "appBarContainer p-3": !disabledScrolling }, classes.container)} onScroll={onScroll}>
-        {hasMenu && (
+      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container)} onScroll={onScroll}>
+        {hasFab && (
           <div className={classes.scriptAddMenu}>
-            {onAddMenu ? (
+            {customAddMenu || (
               <Fab
                 type="button"
                 size="small"
@@ -217,7 +229,7 @@ const AppBarContainer: React.FC<Props> = props => {
               >
                 <AddIcon />
               </Fab>
-            ) : customAddMenu}
+            )}
           </div>
         )}
         {children}
@@ -233,4 +245,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   null,
   mapDispatchToProps
-)(withStyles(styles)(AppBarContainer));
+)(AppBarContainer);

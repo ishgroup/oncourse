@@ -36,14 +36,14 @@ class SurveyMonkeyBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.apiKey" label="API key" type="text" fullWidth />
-          <FormField name="fields.authToken" label="OAuth token" type="text" fullWidth />
-          <FormField name="fields.surveyName" label="Survey name" type="text" fullWidth />
+          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2" />
+          <FormField name="fields.authToken" label="OAuth token" type="text" className="mb-2" />
+          <FormField name="fields.surveyName" label="Survey name" type="text" className="mb-2" />
           <FormField
             name="fields.courseTag"
             label="Only activate for enrolments in courses tagged with"
             type="text"
-            fullWidth
+            className="mb-2"
           />
           <div className="flex-column pt-2">
             <FormControlLabel

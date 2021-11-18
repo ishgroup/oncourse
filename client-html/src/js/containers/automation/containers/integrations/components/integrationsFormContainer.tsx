@@ -7,6 +7,7 @@ import * as React from "react";
 import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import {
+  getFormSyncErrors,
   initialize, isDirty, isInvalid, SubmissionError
 } from "redux-form";
 import { withStyles } from "@mui/styles";
@@ -30,10 +31,10 @@ import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import { getByType } from "../utils";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../../scripts/constants";
 
 const styles = theme => createStyles({
   root: {
-    padding: theme.spacing(3),
     height: `calc(100% - ${theme.spacing(8)})`,
     marginTop: theme.spacing(8)
   },
@@ -48,6 +49,7 @@ const styles = theme => createStyles({
 const getAuditsUrl = (id: string) => `audit?search=~"Integration" and entityId == ${id}`;
 
 interface Props {
+  syncErrors: any;
   integrations: IntegrationSchema[];
   onUpdate: (id: string, item: Integration) => void;
   onCreate: (item: Integration) => void;
@@ -235,7 +237,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
 
   renderAppBar = ({ disableName, children }) => {
     const {
-      match, dirty, invalid
+      match, dirty, invalid, syncErrors
     } = this.props;
     const item = this.state.integrationItem;
     const isNew = match.params.action === "new";
@@ -252,6 +254,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         title={isNew && (!item.name || item.name.trim().length === 0) ? "New" : item.name.trim()}
         disableInteraction={disableName}
         hideHelpMenu={!isNew && item}
+        opened={isNew || Object.keys(syncErrors).includes("name")}
         disabledScrolling
         fields={(
           <Grid item xs={12}>
@@ -293,8 +296,8 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     const descriptionItem = getByType(match.params.type, IntegrationTypes);
 
     return (
-      <Grid container columnSpacing={3} className={classes.root}>
-        <Grid item xs={12} sm={6} lg={5} className={classes.formPadding}>
+      <Grid container className={classes.root}>
+        <Grid item xs={12} sm={6} lg={5}>
           {item && TypeForm && (
             <TypeForm
               onSubmit={this.submitForm}
@@ -349,6 +352,7 @@ const mapStateToProps = (state: State) => {
     formName,
     dirty: isDirty(formName)(state),
     invalid: isInvalid(formName)(state),
+    syncErrors: getFormSyncErrors(formName)(state),
     fetch: state.fetch,
     nextLocation: state.nextLocation
   };

@@ -122,6 +122,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                       label="Label"
                       name="label"
                       ref={nameRef}
+                      className="mb-2"
                       required
                       fullWidth
                     />

@@ -136,6 +136,7 @@ interface Props {
   formsState?: any;
   emailTemplates?: CommonListItem[];
   timeZone?: string;
+  syncErrors?: any;
 }
 
 const getInitComponentBody = (componentName: ScriptComponentType) => {
@@ -181,7 +182,8 @@ const ScriptsForm = React.memo<Props>(props => {
     history,
     nextLocation,
     setNextLocation,
-    timeZone
+    timeZone,
+    syncErrors
   } = props;
 
   const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -337,15 +339,13 @@ const ScriptsForm = React.memo<Props>(props => {
           invalid={invalid}
           title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
           disableInteraction={isInternal}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
           noDrawer
           fields={(
             <Grid item xs={12}>
               <FormField
                 name="name"
-                placeholder="Name"
-                margin="none"
-                className="pl-1"
-                listSpacing={false}
+                label="Name"
                 disabled={isInternal}
                 required
               />
@@ -395,7 +395,7 @@ const ScriptsForm = React.memo<Props>(props => {
             <Grid container className={classes.root}>
               <Grid item xs={9} className={classes.cardsBox}>
                 <div>
-                  <ScriptCard className="mt-3" heading="Trigger" disableExpandedBottomMargin expanded>
+                  <ScriptCard heading="Trigger" disableExpandedBottomMargin expanded>
                     <TriggerCardContent
                       classes={classes}
                       dispatch={dispatch}
@@ -467,7 +467,7 @@ const ScriptsForm = React.memo<Props>(props => {
                 />
               </Grid>
 
-              <Grid item xs={3} className="pt-3">
+              <Grid item xs={3}>
                 <div>
                   <FormField
                     type="switch"
@@ -517,7 +517,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   fullWidth
                 />
 
-                <Grid container columnSpacing={3}>
+                <Grid container columnSpacing={3} >
                   <Grid item xs className="d-flex">
                     <div className="flex-fill">
                       <Typography variant="caption" color="textSecondary">

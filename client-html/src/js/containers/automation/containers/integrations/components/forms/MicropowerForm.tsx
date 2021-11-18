@@ -35,10 +35,10 @@ class MicropowerBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.identity" label="Identity" type="text" fullWidth />
-          <FormField name="fields.signature" label="Signature" type="text" fullWidth />
-          <FormField name="fields.clientId" label="Client Id" type="text" fullWidth />
-          <FormField name="fields.productSku" label="Product Sku" type="text" fullWidth />
+          <FormField name="fields.identity" label="Identity" type="text" className="mb-2" />
+          <FormField name="fields.signature" label="Signature" type="text" className="mb-2" />
+          <FormField name="fields.clientId" label="Client Id" type="text" className="mb-2" />
+          <FormField name="fields.productSku" label="Product Sku" type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

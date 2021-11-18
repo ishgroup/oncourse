@@ -75,10 +75,10 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
-          <FormField name="fields.clientId" label="Client id" type="text" required fullWidth />
-          <FormField name="fields.clientSecret" label="Client secret" type="text" required fullWidth />
-          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} disabled fullWidth />
-          <Uneditable value={values && values.fields.activationCode} label="Activation Code" />
+          <FormField name="fields.clientId" label="Client id" type="text" required className="mb-2" />
+          <FormField name="fields.clientSecret" label="Client secret" type="text" required className="mb-2" />
+          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} disabled className="mb-2" />
+          <Uneditable value={values && values.fields.activationCode} label="Activation Code" className="mb-2" />
 
           <div>
             <Button

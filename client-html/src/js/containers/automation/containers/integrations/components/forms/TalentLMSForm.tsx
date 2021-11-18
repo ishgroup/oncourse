@@ -34,8 +34,8 @@ class TalentLMSFormBase extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.baseUrl" label="Base url" type="text" fullWidth />
-          <FormField name="fields.apiKey" label="API key" type="text" fullWidth />
+          <FormField name="fields.baseUrl" label="Base url" type="text" className="mb-2" />
+          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

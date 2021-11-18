@@ -40,6 +40,13 @@ const styles = theme => createStyles({
     padding: theme.spacing(0, 3),
     background: theme.appBar.header.background,
     color: theme.appBar.header.color,
+    "& $submitButtonAlternate": {
+      background: `${theme.appBar.headerAlternate.color}`,
+      color: `${theme.appBar.headerAlternate.background}`,
+    },
+    "& $closeButtonAlternate": {
+      color: `${theme.appBar.headerAlternate.color}`,
+    }
   },
   root: {
     marginTop: theme.spacing(8),
@@ -50,14 +57,19 @@ const styles = theme => createStyles({
     background: theme.appBar.header.background,
   },
   headerAlternate: {
-    background: `${theme.appBar.headerAlternate.background} !important`,
-    color: `${theme.appBar.headerAlternate.color} !important`,
+    background: `${theme.appBar.headerAlternate.background}`,
+    color: `${theme.appBar.headerAlternate.color}`,
+    "& $actionsWrapper svg": {
+      color: `${theme.appBar.headerAlternate.color}`,
+    }
+  },
+  actionsWrapper: {
+    display: "inline-block"
   },
   submitButtonAlternate: {
-    background: `${theme.appBar.headerAlternate.color} !important`,
-    color: `${theme.appBar.headerAlternate.background} !important`,
   },
-  titleWrapper: {},
+  closeButtonAlternate: {},
+  titleWrapper: {}
 });
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
@@ -68,7 +80,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
   state = {
     hasScrolling: false
   }
-  
+
   componentDidUpdate(prevProps) {
     const {
       pending, dispatch, rootEntity, isNested
@@ -111,11 +123,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       this.setState({ hasScrolling: e.detail.stuck });
     }
   };
-  
+
   componentDidMount() {
     document.addEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
   }
-  
+
   componentWillUnmount() {
     document.removeEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
   }
@@ -179,7 +191,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
 
     const { hasScrolling } = this.state;
-    
+
     const title = values && (nameCondition ? nameCondition(values) : values.name);
 
     this.updateTitle(title);
@@ -214,18 +226,19 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               {!hideTitle && (<FullScreenStickyHeader title={title} twoColumn disableInteraction />)}
             </div>
             <div>
-              {manualLink && (
-                <AppBarHelpMenu
-                  created={values ? new Date(values.createdOn) : null}
-                  modified={values ? new Date(values.modifiedOn) : null}
-                  auditsUrl={rootEntity !== "Audit" && `audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                  manualUrl={manualLink}
-                  classes={{ buttonAlternate: hasScrolling && classes.headerAlternate }}
-                />
-              )}
+              <div className={classes.actionsWrapper}>
+                {manualLink && (
+                  <AppBarHelpMenu
+                    created={values ? new Date(values.createdOn) : null}
+                    modified={values ? new Date(values.modifiedOn) : null}
+                    auditsUrl={rootEntity !== "Audit" && `audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
+                    manualUrl={manualLink}
+                  />
+                )}
+              </div>
               <Button
                 onClick={this.onCloseClick}
-                className={clsx("closeAppBarButton", hasScrolling && classes.headerAlternate)}
+                className={clsx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
               >
                 Close
               </Button>

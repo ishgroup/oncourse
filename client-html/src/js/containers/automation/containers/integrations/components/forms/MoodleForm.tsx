@@ -35,16 +35,16 @@ class MoodleBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.baseUrl" label="Base URL" type="text" fullWidth />
-          <FormField name="fields.username" label="Username" type="text" fullWidth />
-          <FormField name="fields.password" label="Password" type="password" fullWidth />
-          <FormField name="fields.serviceName" label="Service name" type="text" fullWidth />
+          <FormField name="fields.baseUrl" label="Base URL" type="text" className="mb-2" />
+          <FormField name="fields.username" label="Username" type="text" className="mb-2" />
+          <FormField name="fields.password" label="Password" type="password" className="mb-2" />
+          <FormField name="fields.serviceName" label="Service name" type="text" className="mb-2" />
           <FormField
             name="fields.courseTag"
             label="Only activate for enrolments in courses tagged with"
             listSpacing
             type="text"
-            fullWidth
+            className="mb-2"
           />
         </AppBarContent>
       </form>

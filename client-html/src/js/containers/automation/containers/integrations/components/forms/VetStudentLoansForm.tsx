@@ -50,7 +50,7 @@ class VetStudentLoans extends React.Component<any, any> {
             type="text"
             required
             disabled={values.id}
-            fullWidth
+            className="mb-2"
           />
           <FormField
             name="fields.organisationId"
@@ -58,7 +58,7 @@ class VetStudentLoans extends React.Component<any, any> {
             type="text"
             required
             disabled={values.id}
-            fullWidth
+            className="mb-2"
           />
           {!values.id && (
             <>
@@ -67,7 +67,7 @@ class VetStudentLoans extends React.Component<any, any> {
                 label="Activation Code"
                 type="text"
                 required
-                fullWidth
+                className="mb-2"
               />
               <div className="mt-1">
                 <Button
