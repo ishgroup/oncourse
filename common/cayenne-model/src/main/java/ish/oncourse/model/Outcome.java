@@ -5,6 +5,8 @@ import ish.oncourse.model.auto._Outcome;
 import ish.oncourse.utils.QueueableObjectUtils;
 import org.apache.cayenne.validation.ValidationResult;
 
+import java.util.Date;
+
 public class Outcome extends _Outcome implements Queueable, OutcomeInterface {
 	private static final long serialVersionUID = 6238039938398442623L;
 
@@ -26,5 +28,15 @@ public class Outcome extends _Outcome implements Queueable, OutcomeInterface {
 			result.addFailure(ValidationFailure.validationFailure(this, _Outcome.ENROLMENT.getName(),
 					"Can not save Outcome angelId: " + getAngelId() + " without linked Enrolment or PriorLearning"));
 		}
+	}
+
+	public boolean isEditingAllowed() {
+		return getStartDate().before(new Date()) && !linkedToActiveCertificate();
+	}
+
+	private boolean linkedToActiveCertificate() {
+		return getCertificateOutcomes().stream()
+				.map(CertificateOutcome::getCertificate)
+				.anyMatch(c -> c.getRevokedWhen() == null);
 	}
 }

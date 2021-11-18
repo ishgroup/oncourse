@@ -4,7 +4,6 @@
 package ish.oncourse.portal.components.courseclass.outcome;
 
 import ish.oncourse.model.Outcome;
-import ish.oncourse.portal.services.attendance.OutcomeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -46,8 +45,8 @@ public class OutcomeItem {
 
 	@SetupRender
 	public void setupRender() {
-		outcomeEndDate = OutcomeUtils.getOutcomeEndDate(outcome);
-		outcomeStartDate = OutcomeUtils.getOutcomeStartDate(outcome);
+		outcomeEndDate = outcome.getEndDate();
+		outcomeStartDate = outcome.getStartDate();
 		
 		vet = outcome.getModule() != null;
 		
@@ -80,7 +79,7 @@ public class OutcomeItem {
 	}
 
 	public boolean isAllowToEdit() {
-		return OutcomeUtils.isEditingAllowed(outcome);
+		return outcome.isEditingAllowed();
 	}
 
 	public boolean isInvalidStartDate() {
