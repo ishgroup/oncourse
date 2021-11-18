@@ -143,12 +143,13 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           item
           xs={12}
           className={clsx(
-            "centeredFlex",
-            twoColumn && !opened ? classes.fullScreenTitleItem : titleExpanded && 'mb-1',
-            isStuck && !opened && classes.isStuck
-          )}
+          "centeredFlex",
+          twoColumn && !opened ? classes.fullScreenTitleItem : 'mb-2',
+          isStuck && !opened && classes.isStuck
+        )}
           columnSpacing={3}
         >
+
           {Avatar && (
             <Avatar
               avatarSize={showTitleOnly && !opened ? 40 : 90}
@@ -166,7 +167,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               item
               xs={12}
             >
-              <Collapse in={titleExpanded}>
+              <Collapse in={opened ? false : !isEditing}>
                 <Typography
                   variant="h5"
                   className={clsx(
