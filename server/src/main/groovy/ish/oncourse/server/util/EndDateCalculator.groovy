@@ -6,16 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.common
+package ish.oncourse.server.util
 
 import groovy.time.TimeCategory
-import ish.common.payable.EnrolmentInterface
-import ish.oncourse.cayenne.CourseClassInterface
-import ish.oncourse.cayenne.SessionModuleInterface
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.SessionModule
+
 
 class EndDateCalculator implements DateCalculator{
     @Override
-    Date getDateIfNoSessions(EnrolmentInterface enrolment) {
+    @CompileStatic(TypeCheckingMode.SKIP)
+    Date getDateIfNoSessions(Enrolment enrolment) {
         def courseClass = enrolment.courseClass
         Date endDate
         use(TimeCategory) {
@@ -25,12 +29,17 @@ class EndDateCalculator implements DateCalculator{
     }
 
     @Override
-    List<Date> getSessionDates(List<SessionModuleInterface> sessionModules) {
+    List<Date> getSessionDates(List<SessionModule> sessionModules) {
         return sessionModules*.session*.endDatetime
     }
 
     @Override
-    Date getDateOf(CourseClassInterface courseClass) {
+    Date getDateOf(CourseClass courseClass) {
         return courseClass.endDateTime
+    }
+
+    @Override
+    Date getRequiredOfSorted(List<Date> moduleDates) {
+        return moduleDates.last()
     }
 }

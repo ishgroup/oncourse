@@ -6,23 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.common
+package ish.oncourse.server.util
 
 
-import ish.oncourse.cayenne.CourseClassInterface
-import ish.oncourse.cayenne.ModuleInterface
-import ish.oncourse.cayenne.OutcomeInterface
-import ish.oncourse.cayenne.SessionModuleInterface
+import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Outcome
+import ish.oncourse.server.cayenne.SessionModule
 
 class AttendanceNotTakenProcessor extends AttendanceProcessor{
     @Override
-    List<Date> getAssessmentDueDates(CourseClassInterface courseClass, OutcomeInterface outcome) {
+    List<Date> getAssessmentDueDates(CourseClass courseClass, Outcome outcome) {
         def assessmentClassModules = getAssessmentClassModulesOf(courseClass, outcome)
         return getDefaultDatesOf(assessmentClassModules)
     }
 
     @Override
-    List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass, ModuleInterface controlModule, OutcomeInterface outcome) {
-        return getSessionModulesOf(courseClass, controlModule)
+    List<SessionModule> getModulesOf(CourseClass courseClass, Outcome outcome) {
+        return getSessionModulesOf(courseClass, outcome)
     }
 }

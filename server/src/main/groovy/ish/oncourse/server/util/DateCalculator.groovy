@@ -6,19 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.common;
+package ish.oncourse.server.util
 
-import ish.common.payable.EnrolmentInterface;
-import ish.oncourse.cayenne.CourseClassInterface;
-import ish.oncourse.cayenne.SessionModuleInterface;
+import ish.oncourse.server.cayenne.CourseClass
+import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.SessionModule
 
-import java.util.Date;
-import java.util.List;
+interface DateCalculator {
 
-public interface DateCalculator {
-    Date getDateIfNoSessions(EnrolmentInterface enrolment);
+    Date getDateIfNoSessions(Enrolment enrolment);
 
-    List<Date> getSessionDates(List<SessionModuleInterface> sessionModules);
+    List<Date> getSessionDates(List<SessionModule> sessionModules);
 
-    Date getDateOf(CourseClassInterface courseClass);
+    Date getDateOf(CourseClass courseClass);
+
+    Date getRequiredOfSorted(List<Date>moduleDates);
 }
