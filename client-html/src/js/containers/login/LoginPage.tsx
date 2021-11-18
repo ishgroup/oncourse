@@ -10,23 +10,24 @@
  */
 
 import * as React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch, Action } from "redux";
 import QRCode from "qrcode.react";
 import {
  Field, FieldArray, reduxForm, initialize, change, touch
 } from "redux-form";
-import Slide from "@material-ui/core/Slide";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Slide from "@mui/material/Slide";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { LoginRequest } from "@api/model";
-import { darken, fade } from "@material-ui/core/styles/colorManipulator";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import IconButton from "@material-ui/core/IconButton";
+import { darken } from "@mui/material";
+import { alpha } from '@mui/material/styles';
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
 import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
 import NewPasswordField from "./components/NewPasswordField";
 import { FormTextField } from "../../common/components/form/formFields/TextField";
@@ -85,7 +86,10 @@ const styles: any = theme => ({
     }
   },
   textFieldWrapper: {
-    minHeight: "61px"
+    minHeight: "61px",
+    "& input": {
+      borderBottom: `1px solid ${theme.palette.divider}`
+    }
   },
   extLink: {
     marginLeft: theme.spacing(2),
@@ -94,9 +98,6 @@ const styles: any = theme => ({
   portField: {
     width: theme.spacing(10),
     marginLeft: theme.spacing(3)
-  },
-  flexDivider: {
-    flex: 1
   },
   link: {
     textDecoration: "none"
@@ -110,7 +111,7 @@ const styles: any = theme => ({
     }
   },
   loginButtonDisabled: {
-    backgroundColor: fade(theme.palette.primary.main, 0.5)
+    backgroundColor: alpha(theme.palette.primary.main, 0.5)
   },
   sideImageWrapper: {
     position: "absolute",
@@ -430,7 +431,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
-        <Grid container alignItems="center" justify="center">
+        <Grid container columnSpacing={3} alignItems="center">
           <Grid item xs={1} md={6} />
           <Grid item xs={12} md={6} className={classes.loginFormRight}>
             <Slide direction="right" in timeout={300}>
@@ -448,11 +449,10 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                   container
                   className="mb-2"
                   alignItems="center"
-                  justify="space-between"
                   alignContent="space-between"
                 >
                   <Grid item xs={12} className="mb-2">
-                    <Grid container alignItems="center">
+                    <Grid container columnSpacing={3} alignItems="center">
                       <Grid item xs={12} sm={9}>
                         <div className={classes.logoWrapper}>
                           <img src={onCourseLogoDark} height={55} draggable={false} alt="Logo" />
@@ -472,7 +472,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <div className={classes.flexDivider} />
+                  <div className="flex-fill" />
                   <Grid item xs={12}>
                     <Collapse in={!openCredits} timeout="auto" unmountOnExit>
                       <div className={classes.loginModalWrapper}>
@@ -521,7 +521,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   name="host"
                                   placeholder="Host"
                                   autoComplete="host"
-                                  className={classes.flexDivider}
+                                  className="flex-fill"
                                   component={FormTextField}
                                   validate={validateSingleMandatoryField}
                                   onChange={(e, v, prev) => this.autocompleteHost(v, prev)}
@@ -638,7 +638,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                         )}
 
                         {(isEnableTOTP || isOptionalTOTP) && (
-                          <Grid container alignItems="flex-start" direction="row-reverse" spacing={3}>
+                          <Grid container columnSpacing={3} alignItems="flex-start" direction="row-reverse" spacing={3}>
                             <Grid item xs={12} sm={4}>
                               {totpUrl && <QRCode className={classes.code} size={106} value={totpUrl} />}
                             </Grid>
@@ -658,6 +658,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     className={classes.extLink}
                                     target="_blank"
                                     href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en"
+                                    rel="noreferrer"
                                   >
                                     Android
                                   </a>
@@ -665,6 +666,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     className={classes.extLink}
                                     target="_blank"
                                     href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"
+                                    rel="noreferrer"
                                   >
                                     iPhone
                                   </a>
@@ -684,7 +686,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           </>
                         )}
 
-                        <div className={classes.flexDivider} />
+                        <div className="flex-fill" />
 
                         <div className={classes.buttonsContainer}>
                           {!this.isInviteForm && (
@@ -761,12 +763,13 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                       </div>
                     </Collapse>
                     <Collapse in={openCredits} timeout="auto" unmountOnExit>
-                      <Grid container className={classes.creditsWrapper}>
+                      <Grid container columnSpacing={3} className={classes.creditsWrapper}>
                         <Grid item xs={12} sm={6}>
                           <div className="">
                             {this.getCreditsItem("Product design", ["Aristedes Maniatis", "Natalie Morton"])}
                             {this.getCreditsItem("System architecture", ["Aristedes Maniatis"])}
                             {this.getCreditsItem("Engineering leads", [
+                              "Yury Yasuchenya",
                               "Artyom Kravchenko",
                               "Andrey Koyro",
                               "Anton Sakalouski",
@@ -774,22 +777,26 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                               "Marek Wawrzyczny"
                             ])}
                             {this.getCreditsItem("Software engineering", [
-                              "Dzmitry Kazimirchyk",
-                              "Andrey Narut",
-                              "Viacheslav Davidovich",
-                              "Xenia Khailenka",
-                              "Olga Tkachova",
-                              "Marcin Skladaniec",
-                              "Nikita Timofeev",
-                              "Arseni Bulatski",
-                              "Rostislav Zenov",
-                              "Maxim Petrusevich",
-                              "Alexandr Petkov",
-                              "Artyom Kochetkov",
-                              "Pavel Nikanovich",
-                              "Andrey Davidovich",
+                              "Dmitry Tarasenko",
+                              "Kristina Trukhan",
+                              "Chintan Kotadia",
                               "Victor Yarmolovich",
-                              "Yury Yasuchenya"
+                              "Vadim Haponov",
+                              "Rostislav Zenov",
+                              "Andrey Davidovich",
+                              "Pavel Nikanovich",
+                              "Artyom Kochetkov",
+                              "Alexandr Petkov",
+                              "Maxim Petrusevich",
+                              "Rostislav Zenov",
+                              "Arseni Bulatski",
+                              "Nikita Timofeev",
+                              "Marcin Skladaniec",
+                              "Olga Tkachova",
+                              "Xenia Khailenka",
+                              "Viacheslav Davidovich",
+                              "Andrey Narut",
+                              "Dzmitry Kazimirchyk",
                             ])}
                           </div>
                         </Grid>
@@ -801,7 +808,6 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             "Rex Chan"
                           ])}
                           {this.getCreditsItem("Icon design", ["Bruce Martin"])}
-                          {this.getCreditsItem("UI development", ["Chintan Kotadia"])}
                           {this.getCreditsItem("Additional programming", [
                             "Matthias Moeser",
                             "Abdul Abdul-Latif",
@@ -812,16 +818,16 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             "Sasha Shestak"
                           ])}
                           {this.getCreditsItem("Documentation", [
-                            "Stephen McIlwaine",
+                            "James Swinbanks",
                             "Charlotte Tanner",
-                            "James Swinbanks"
+                            "Stephen McIlwaine",
                           ])}
                         </Grid>
                       </Grid>
                     </Collapse>
                   </Grid>
-                  <div className={classes.flexDivider} />
-                  <Grid container alignItems="center" className="mt-3">
+                  <div className="flex-fill" />
+                  <Grid container columnSpacing={3} alignItems="center" className="mt-3">
                     <div className="flex-fill">
                       <div>
                         <IconButton

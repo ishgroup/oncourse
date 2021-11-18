@@ -10,8 +10,8 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import { reduxForm, InjectedFormProps, isInvalid } from "redux-form";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 import {
   CheckoutPayment, CheckoutSummary
 } from "../../../../../../model/checkout";

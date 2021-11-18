@@ -8,7 +8,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { change } from "redux-form";
+import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
@@ -18,11 +19,20 @@ import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
   validateTagList = (value, allValues, props) => {
     const { tags } = this.props;
     return validateTagsList(tags, value, allValues, props);
+  };
+
+  handlerCourseChange = courseId => {
+    const { coursesItems, dispatch, form } = this.props;
+    const course = coursesItems.find(c => c.id === courseId);
+
+    if (course) dispatch(change(form, "courseName", `${course.name} ${course.code}`));
   };
 
   render() {
@@ -39,7 +49,38 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
     };
 
     return (
-      <Grid container className="generalRoot">
+      <Grid container columnSpacing={3} className="generalRoot">
+        {twoColumn && (
+          <Grid item xs={12}>
+            <FullScreenStickyHeader
+              twoColumn={twoColumn}
+              title={values && values.courseName}
+              fields={(
+                <Grid container>
+                  <Grid item xs={12}>
+                    <FormField
+                      type="remoteDataSearchSelect"
+                      entity="Course"
+                      aqlFilter="allowWaitingLists is true"
+                      name="courseId"
+                      label="Course"
+                      selectValueMark="id"
+                      selectLabelCondition={v => v.name}
+                      selectFilterCondition={courseFilterCondition}
+                      defaultDisplayValue={values && values.courseName}
+                      labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
+                      itemRenderer={CourseItemRenderer}
+                      rowHeight={55}
+                      required
+                      onChange={this.handlerCourseChange}
+                    />
+                  </Grid>
+                </Grid>
+              )}
+              truncateTitle
+            />
+          </Grid>
+        )}
         <Grid item {...gridItemProps} className="pt-2">
           <FormField
             type="remoteDataSearchSelect"
@@ -66,26 +107,28 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             validate={tags && tags.length ? this.validateTagList : undefined}
           />
         </Grid>
-        <Grid item {...gridItemProps}>
+        <Grid item xs={12}>
           <FormField type="number" name="studentCount" label="Number of students" />
         </Grid>
-        <Grid item {...gridItemProps}>
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Course"
-            aqlFilter="allowWaitingLists is true"
-            name="courseId"
-            label="Course"
-            selectValueMark="id"
-            selectLabelCondition={v => v.name}
-            selectFilterCondition={courseFilterCondition}
-            defaultDisplayValue={values && values.courseName}
-            labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
-            itemRenderer={CourseItemRenderer}
-            rowHeight={55}
-            required
-          />
-        </Grid>
+        {!twoColumn && (
+          <Grid item xs={12}>
+            <FormField
+              type="remoteDataSearchSelect"
+              entity="Course"
+              aqlFilter="allowWaitingLists is true"
+              name="courseId"
+              label="Course"
+              selectValueMark="id"
+              selectLabelCondition={v => v.name}
+              selectFilterCondition={courseFilterCondition}
+              defaultDisplayValue={values && values.courseName}
+              labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
+              itemRenderer={CourseItemRenderer}
+              rowHeight={55}
+              required
+            />
+          </Grid>
+        )}
         <CustomFields
           entityName="WaitingList"
           fieldName="customFields"
@@ -101,6 +144,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["WaitingList"],
+  coursesItems: state.plainSearchRecords["Course"]?.items,
 });
 
 export default connect<any, any, any>(mapStateToProps)(WaitingListGeneral);

@@ -20,16 +20,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
-class TutorAttendanceDao implements ClassRelatedDao<TutorAttendance> {
-
-
-    TutorAttendance newObject(ObjectContext context, Session session, CourseClassTutor classTutor) {
-        TutorAttendance tutorAttendance = newObject(context)
-        tutorAttendance.session = session
-        tutorAttendance.courseClassTutor = classTutor
-        tutorAttendance.attendanceType = AttendanceType.UNMARKED
-        return tutorAttendance
-    }
+class TutorAttendanceDao implements CayenneLayer<TutorAttendance> {
 
     @Override
     TutorAttendance newObject(ObjectContext context) {
@@ -41,9 +32,9 @@ class TutorAttendanceDao implements ClassRelatedDao<TutorAttendance> {
         return SelectById.query(TutorAttendance, id).selectOne(context)
     }
 
-    List<TutorAttendance> getByClassId(ObjectContext context, Long courseClassId) {
+    List<TutorAttendance> getBySessionId(ObjectContext context, Long session) {
         return ObjectSelect.query(TutorAttendance)
-                .where(TutorAttendance.SESSION.dot(Session.COURSE_CLASS).dot(CourseClass.ID).eq(courseClassId))
+                .where(TutorAttendance.SESSION.dot(Session.ID).eq(session))
                 .select(context)
     }
 }

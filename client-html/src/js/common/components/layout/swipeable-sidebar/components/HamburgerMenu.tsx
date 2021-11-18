@@ -6,9 +6,9 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import MenuIcon from "@material-ui/icons/Menu";
-import CloseIcon from "@material-ui/icons/Close";
-import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import { State } from "../../../../../reducers/state";
 import { toggleSwipeableDrawer } from "../actions";
 
@@ -22,11 +22,11 @@ const HamburgerMenu = React.memo<Props>(props => {
   const { opened, toggleSwipeableDrawer } = props;
   return (
     <IconButton
-      className="mr-2"
       color="inherit"
       aria-label="Open drawer"
       edge="start"
       onClick={toggleSwipeableDrawer}
+      size="large"
     >
       {opened ? <CloseIcon /> : <MenuIcon />}
     </IconButton>

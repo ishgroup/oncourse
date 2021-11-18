@@ -1,12 +1,12 @@
 import * as React from "react";
 import ClassNames from "clsx";
-import Grid from "@material-ui/core/Grid";
-import withStyles from "@material-ui/core/styles/withStyles";
-import AddIcon from "@material-ui/icons/Add";
+import Grid from "@mui/material/Grid";
+import withStyles from "@mui/styles/withStyles";
+import AddIcon from "@mui/icons-material/Add";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import Fab from "@material-ui/core/Fab";
+import Typography from "@mui/material/Typography";
+import Fab from "@mui/material/Fab";
 import { withRouter } from "react-router";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
@@ -171,7 +171,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
         <RouteChangeConfirm form={form} when={dirty} />
 
         <CustomAppBar>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
               <Fab
                 type="button"
@@ -207,9 +207,9 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
           </Grid>
         </CustomAppBar>
 
-        <Grid container className={classes.marginTop}>
+        <Grid container columnSpacing={3} className={classes.marginTop}>
           <Grid item sm={12} lg={10}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               {data && (
                 <FieldArray
                   name="types"

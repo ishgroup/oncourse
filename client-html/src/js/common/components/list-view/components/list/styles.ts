@@ -3,7 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles, fade } from "@material-ui/core/styles";
+import { createStyles } from "@mui/styles";
+import { alpha } from '@mui/material/styles';
 import { AppTheme } from "../../../../../model/common/Theme";
 
 export default (theme: AppTheme) => createStyles({
@@ -17,8 +18,8 @@ export default (theme: AppTheme) => createStyles({
     display: "flex",
     flexDirection: "column",
     overflow: "auto",
-    height: "100%",
-    position: "relative"
+    position: "relative",
+    height: "100%"
   },
   nestedTable: {
     background: theme.palette.background.paper,
@@ -27,6 +28,7 @@ export default (theme: AppTheme) => createStyles({
     overflow: "auto hidden",
     position: "relative",
     border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius
   },
   tableBody: {
     flex: "1 1 auto"
@@ -36,10 +38,11 @@ export default (theme: AppTheme) => createStyles({
     position: "sticky",
     zIndex: 1,
     top: 0,
+    background: theme.palette.background.paper,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    background: theme.palette.background.paper
   },
   headerCell: {
+    fontSize: '0.75rem',
     position: "relative",
     padding: theme.spacing(2, 1),
     top: "1px",
@@ -48,7 +51,7 @@ export default (theme: AppTheme) => createStyles({
     },
     "& $draggingCell,&:focus $draggingCell": {
       color: theme.palette.divider
-    }
+    },
   },
   draggingCell: {},
   listHeaderCell: {
@@ -110,6 +113,7 @@ export default (theme: AppTheme) => createStyles({
     overflow: "hidden",
     textOverflow: "ellipsis",
     fontSize: "13px",
+    fontWeight: 400,
     borderBottom: "none",
     "&:hover $selectionCheckbox": {
       display: "inline-flex",
@@ -132,7 +136,7 @@ export default (theme: AppTheme) => createStyles({
     cursor: "pointer"
   },
   oddRow: {
-    backgroundColor: fade(theme.palette.action.hover, 0.03)
+    backgroundColor: alpha(theme.palette.action.hover, 0.03)
   },
   threeColumnRow: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -168,7 +172,7 @@ export default (theme: AppTheme) => createStyles({
     borderLeft: `1px solid ${theme.palette.primary.main}`
   },
   columnChooserButton: {
-    position: "absolute",
+    position: "fixed",
     right: theme.spacing(2),
     top: "1px",
     zIndex: theme.zIndex.appBar,

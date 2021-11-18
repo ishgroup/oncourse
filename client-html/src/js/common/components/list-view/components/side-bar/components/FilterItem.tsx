@@ -1,11 +1,12 @@
 import * as React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Delete from "@material-ui/icons/Delete";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Tooltip from "@material-ui/core/Tooltip";
-import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@material-ui/icons";
+import { createStyles, withStyles } from "@mui/styles";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
+import clsx from "clsx";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Tooltip from "@mui/material/Tooltip";
+import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
 import { AppTheme } from "../../../../../../model/common/Theme";
 
 const styles = (theme: AppTheme) =>
@@ -13,18 +14,26 @@ const styles = (theme: AppTheme) =>
     checkbox: {
       height: "1em",
       width: "1em",
-      marginLeft: ".3em"
+      marginLeft: ".6em",
+      marginRight: theme.spacing(0.5),
     },
     checkboxFontSize: {
       fontSize: "18px"
     },
+    labelRoot: {
+      "& $checkboxLabel": {
+        fontSize: "12px",
+      }
+    },
+    checkboxLabel: {},
     root: {
       display: "flex",
       alignItems: "center",
       "&:hover $deleteButton": {
         visibility: "visible"
       },
-      maxHeight: theme.spacing(3)
+      height: theme.spacing(3),
+      maxHeight: theme.spacing(3),
     },
     deleteButton: {
       visibility: "hidden",
@@ -46,9 +55,9 @@ const FilterItem = props => {
     <div className={classes.root}>
       <FormControlLabel
         classes={{
-          label: "overflow-hidden text-nowrap"
+          root: clsx("flex-fill overflow-hidden", classes.labelRoot),
+          label: clsx("overflow-hidden text-nowrap", classes.checkboxLabel),
         }}
-        className="flex-fill overflow-hidden"
         control={(
           <Checkbox
             checked={checked}

@@ -5,18 +5,18 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, InjectedFormProps } from "redux-form";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import Grid from "@material-ui/core/Grid/Grid";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import Grid from "@mui/material/Grid";
 import { ReportOverlay } from "@api/model";
 import { Dispatch } from "redux";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import FilePreview from "../../../../../common/components/form/FilePreview";
@@ -163,7 +163,7 @@ const PdfBackgroundsForm = React.memo<Props>(
             />
           </CustomAppBar>
 
-          <Grid container className="p-3 appBarContainer">
+          <Grid container columnSpacing={3} className="p-3 appBarContainer">
             <Grid item xs={12}>
               <FilePreview data={values.preview} label="Preview" />
 

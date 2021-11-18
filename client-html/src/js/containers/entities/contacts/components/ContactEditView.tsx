@@ -12,6 +12,7 @@ import ContactsFinancial from "./ContactsFinancial";
 import ContactsMessages from "./ContactsMessages";
 import ContactsVET from "./ContactsVET";
 import ContactsEducation from "./ContactsEducation";
+import ContactsDetails from "./ContactDetails";
 import ContactsDocuments from "./ContactsDocuments";
 import ContactsResume from "./ContactsResume";
 import ContactsTutor from "./ContactsTutor";
@@ -49,6 +50,11 @@ const items: TabsListItem[] = [
   {
     label: "General",
     component: props => <ContactsGeneral {...props} />
+  },
+  {
+    label: "Contact",
+    component: props => <ContactsDetails {...props} />,
+    expandable: true
   },
   {
     label: "Financial",
@@ -90,7 +96,8 @@ const ContactEditView = props => {
     manualLink,
     invalid,
     currencySymbol,
-    syncErrors
+    syncErrors,
+    onEditViewScroll
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -108,14 +115,14 @@ const ContactEditView = props => {
       });
     }
 
-    activeItems[1].labelAdornment = React.useMemo(
+    activeItems[activeItems.findIndex(i => i.label === "Financial")].labelAdornment = React.useMemo(
       () =>
         (twoColumn ? (
           <span className="money centeredFlex">
-            {`Owing ${formatCurrency(totalOwing, currencySymbol)}`}
+            {`(Owing ${formatCurrency(totalOwing, currencySymbol)})`}
           </span>
         ) : null),
-       [twoColumn, values.financialData]
+       [twoColumn, values.financialData, currencySymbol]
     );
 
     if (isStudent) {
@@ -135,36 +142,35 @@ const ContactEditView = props => {
   );
 
   return (
-    <>
-      <TabsList
-        items={values ? getActiveItems() : []}
-        itemProps={{
-          isNew,
-          isNested,
-          values,
-          classes,
-          dispatch,
-          dirty,
-          invalid,
-          form,
-          nestedIndex,
-          rootEntity,
-          twoColumn,
-          showConfirm,
-          openNestedEditView,
-          manualLink,
-          isStudent,
-          isTutor,
-          isCompany,
-          setIsStudent,
-          setIsTutor,
-          setIsCompany,
-          usiLocked: getUsiLocked(),
-          setUsiUpdateLocked,
-          syncErrors
-        }}
-      />
-    </>
+    <TabsList
+      items={values ? getActiveItems() : []}
+      itemProps={{
+        isNew,
+        isNested,
+        values,
+        classes,
+        dispatch,
+        dirty,
+        invalid,
+        form,
+        nestedIndex,
+        rootEntity,
+        twoColumn,
+        showConfirm,
+        openNestedEditView,
+        manualLink,
+        isStudent,
+        isTutor,
+        isCompany,
+        setIsStudent,
+        setIsTutor,
+        setIsCompany,
+        usiLocked: getUsiLocked(),
+        setUsiUpdateLocked,
+        syncErrors,
+        onEditViewScroll,
+      }}
+    />
   );
 };
 

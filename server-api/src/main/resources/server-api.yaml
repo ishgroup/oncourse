@@ -127,8 +127,6 @@ paths:
     $ref: './path/list/entity/courseClass/trainingPlan/api.yaml'
   /list/entity/courseClass/attendance/student:
     $ref: './path/list/entity/courseClass/attendance/student/api.yaml'
-  /list/entity/courseClass/attendance/tutor:
-    $ref: './path/list/entity/courseClass/attendance/tutor/api.yaml'
   /list/entity/courseClass/assessment:
     $ref: './path/list/entity/courseClass/assessment/api.yaml'
   /list/entity/courseClass/timetable:

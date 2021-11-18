@@ -3,23 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Diff, FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
-import Drawer from "@material-ui/core/Drawer";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import { Help } from "@material-ui/icons";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+ Diff, FundingSource, SearchQuery, Sorting, Tag 
+} from "@api/model";
+import Drawer from "@mui/material/Drawer";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
+import { Help } from "@mui/icons-material";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, Field, reduxForm } from "redux-form";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
 import { getEntityTags } from "../../../../../containers/tags/actions";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../buttons/Button";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
 import FormField from "../../../form/formFields/FormField";
 import { validateTagsList } from "../../../form/simpleTagListComponent/validateTagsList";
@@ -54,7 +59,7 @@ interface BulkEditProps {
   hasAql?: boolean;
   contracts?: FundingSource[];
   dataCollectionRules: PreferencesState["dataCollectionRules"];
-  entityTags?: {[key: string]: Tag[]};
+  entityTags?: { [key: string]: Tag[] };
   getEntityTags?: (entity: string) => void;
   showConfirm?: any;
   getCustomBulkEditFields?: any;
@@ -323,14 +328,15 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                 <Button className={classes.closeButton} onClick={onClose} variant="text">
                   Cancel
                 </Button>
-                <Button
+                <LoadingButton
+                  variant="contained"
                   disabled={invalid || validating || !selectedKeyCode}
-                  rootClasses={classes.shareButton}
+                  className={classes.shareButton}
                   type="submit"
                   loading={submitting || validating}
                 >
                   Make changes
-                </Button>
+                </LoadingButton>
               </Grid>
             </form>
           </Grid>

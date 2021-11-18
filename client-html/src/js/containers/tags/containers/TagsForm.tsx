@@ -4,10 +4,11 @@
  */
 
 import React, { ComponentClass } from "react";
-import { withStyles, Typography, Grid } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import { Typography, Grid } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import Divider from "@mui/material/Divider";
 import { withRouter } from "react-router";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues
@@ -15,9 +16,6 @@ import {
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ForbiddenTagNames, Tag } from "@api/model";
-import { AddCircle } from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "../../../common/components/buttons/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
 import AppBarHelpMenu from "../../../common/components/form/AppBarHelpMenu";
@@ -37,6 +35,9 @@ import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
 import { COLORS, getAllTags } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import AddIcon from "../../../common/components/icons/AddIcon";
+import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import FormSubmitButton from "src/js/common/components/form/FormSubmitButton";
 
 const styles = () => ({
   noTransform: {
@@ -445,7 +446,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
           {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
           <CustomAppBar>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={12} className="centeredFlex">
                 <FormField
                   type="headerText"
@@ -481,23 +482,17 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
                   manualUrl={manualUrl}
                 />
 
-                <Button
-                  text="Save"
-                  type="submit"
-                  size="small"
-                  variant="text"
-                  className="appBarSaveButton"
-                  disabled={!dirty || invalid}
-                  rootClasses="whiteAppBarButton"
-                  disabledClasses="whiteAppBarButtonDisabled"
+                <FormSubmitButton
+                  disabled={!dirty}
+                  invalid={invalid}
                 />
               </Grid>
             </Grid>
           </CustomAppBar>
 
-          <Grid container spacing={5}>
+          <Grid container columnSpacing={3} spacing={5}>
             <Grid item sm={12} lg={11} xl={8}>
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 <Grid item xs={12} md={8}>
                   <div className="centeredFlex">
                     {values && (
@@ -535,9 +530,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
               <div className="centeredFlex">
                 <Typography className="heading">Tags</Typography>
-                <IconButton onClick={this.addTag}>
-                  <AddCircle className="addButtonColor" width={20} />
-                </IconButton>
+                <AddIcon onClick={this.addTag} />
               </div>
 
               <DragDropContext onDragEnd={this.onDragEnd}>
@@ -591,7 +584,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 const TagsForm = reduxForm({
-  form: "TagsForm"
+  form: "TagsForm",
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(withRouter(TagsFormBase))));
 
 export default TagsForm as ComponentClass<Props>;

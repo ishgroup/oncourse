@@ -8,7 +8,7 @@
 
 import { useDispatch } from "react-redux";
 import React from "react";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { reset } from "redux-form";
 import { checkoutClearState } from "../actions";
 import { checkoutGetActivePaymentMethods } from "../actions/checkoutPayment";

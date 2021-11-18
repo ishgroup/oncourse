@@ -7,13 +7,13 @@
  */
 
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import IconButton from "@mui/material/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from "@mui/styles/withStyles";
 import { StringValueType } from "../../../../../model/common/CommomObjects";
+import { makeAppStyles } from "../../../../../common/styles/makeStyles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   iconRemove: {
     color: "red"
   },
@@ -41,7 +41,7 @@ interface AssessmentSubmissionIconProps {
 }
 
 const AssessmentSubmissionIcon: React.FC<AssessmentSubmissionIconProps> = ({ type }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   switch (type) {
     case "Submitted":

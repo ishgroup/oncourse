@@ -7,14 +7,14 @@ import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { Typography } from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Delete } from "@material-ui/icons";
+import { Typography } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import { Delete } from "@mui/icons-material";
 import clsx from "clsx";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Button from "@material-ui/core/Button/Button";
-import Paper from "@material-ui/core/Paper/Paper";
-import Launch from "@material-ui/icons/Launch";
+import ButtonBase from "@mui/material/ButtonBase";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Launch from "@mui/icons-material/Launch";
 import { NestedListItem } from "../NestedList";
 import { openInternalLink } from "../../../../utils/links";
 import DynamicSizeList from "../../DynamicSizeList";

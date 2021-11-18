@@ -13,17 +13,19 @@ import {
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import IconButton from "@mui/material/IconButton";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import {
   Binding,
-  EmailTemplate, MessageType, Recipients, /* Recipients, */ SearchQuery
+  EmailTemplate, MessageType, Recipients, SearchQuery
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
@@ -49,6 +51,7 @@ import { StyledCheckbox } from "../../../../common/components/form/formFields/Ch
 import previewSmsImage from "../../../../../images/preview-sms.png";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { getMessageRequestModel } from "../utils";
+import { openInternalLink, saveCategoryAQLLink } from "../../../../common/utils/links";
 
 const styles = theme => createStyles({
   previewContent: {
@@ -342,8 +345,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
     getRecipientsMessageData(listEntity, values.messageType, listSearchQuery, v ? null : selection, values.templateId);
   }, [form, values]);
 
-  const totalCounter = useMemo(() => {
-    const counter = {
+  const totalCounter = useMemo<Recipients>(() => {
+    const counter: Recipients = {
       activeStudents: null,
       withdrawnStudents: null,
       students: null,
@@ -364,20 +367,37 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
     Object.keys(countersPath).forEach(recipientsName => {
       counter[recipientsName] = countersPath[recipientsName];
-      counter[recipientsName].total = Object.keys(countersPath[recipientsName]).reduce((p, c) => p + countersPath[recipientsName][c], 0);
     });
 
     return counter;
   }, [recipientsMessageData, values.messageType, values.selectAll]);
 
+  const openLink = ids => {
+    const aql = `id in (${ids.toString()})`;
+    let url = `/contact?search=${aql}`;
+    if (url.length >= 2048) {
+      const id = `f${(+new Date).toString(16)}`;
+      saveCategoryAQLLink({ AQL: aql, id, action: "add" });
+      url = `/contact?customSearch=${id}`;
+    }
+
+    setTimeout(() => {
+      openInternalLink(url);
+    }, 400);
+  };
+
   const counterItems = useMemo(() => Object.keys(totalCounter).map(recipientsName => {
-    if (!totalCounter[recipientsName] || !totalCounter[recipientsName].total) {
+    if (!Object.keys(totalCounter[recipientsName] || {}).some(k => totalCounter[recipientsName][k]?.length)) {
       return null;
     }
 
     const totalHeaderCount = suppressed
-      ? totalCounter[recipientsName].sendSize + totalCounter[recipientsName].suppressToSendSize
-      : totalCounter[recipientsName].sendSize;
+      ? (totalCounter[recipientsName].sendIds?.length || 0) + (totalCounter[recipientsName].suppressToSendIds?.length || 0)
+      : totalCounter[recipientsName].sendIds?.length || 0;
+
+    const headerIds = suppressed
+      ? Array.from(new Set([...totalCounter[recipientsName].sendIds, ...totalCounter[recipientsName].suppressToSendIds]))
+      : totalCounter[recipientsName].sendIds;
 
     return (
       <Fragment key={recipientsName}>
@@ -385,19 +405,28 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
           <Typography variant="body2" className="heading">
             {`${totalHeaderCount} ${labelsMap(recipientsName)}`}
           </Typography>
+          <IconButton size="small" color="secondary" onClick={() => openLink(headerIds)}>
+            <OpenInNew fontSize="inherit" />
+          </IconButton>
           <Switch onChange={(e, v) => setSelected(prev => ({ ...prev, [recipientsName]: v }))} checked={selected[recipientsName]} />
         </div>
         {selected[recipientsName] ? (
           <>
-            {totalCounter[recipientsName].withoutDestinationSize !== 0 && (
+            {totalCounter[recipientsName]?.withoutDestinationIds?.length > 0 && (
               <Typography variant="body2">
-                {`Skipping ${totalCounter[recipientsName].withoutDestinationSize} without ${
+                {`Skipping ${totalCounter[recipientsName].withoutDestinationIds?.length || 0} without ${
                   isEmailView ? "email or with undeliverable email" : "mobile phone or with undeliverable mobile phone"}`}
+                <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].withoutDestinationIds)}>
+                  <OpenInNew fontSize="inherit" />
+                </IconButton>
               </Typography>
             )}
-            {isMarketing && totalCounter[recipientsName].suppressToSendSize !== 0 && (
+            {isMarketing && totalCounter[recipientsName].suppressToSendIds?.length !== 0 && (
               <Typography variant="body2">
-                {`Skipping ${totalCounter[recipientsName].suppressToSendSize} not accepting marketing material`}
+                {`Skipping ${totalCounter[recipientsName].suppressToSendIds?.length || 0} not accepting marketing material`}
+                <IconButton size="small" color="secondary" onClick={() => openLink(totalCounter[recipientsName].suppressToSendIds)}>
+                  <OpenInNew fontSize="inherit" />
+                </IconButton>
               </Typography>
             )}
           </>
@@ -411,10 +440,10 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
 
     Object.keys(totalCounter).forEach(k => {
       if (totalCounter[k] && selected[k]) {
-        recipientsCount += totalCounter[k].sendSize;
+        recipientsCount += totalCounter[k]?.sendIds?.length || 0;
 
         if (suppressed) {
-          recipientsCount += totalCounter[k].suppressToSendSize;
+          recipientsCount += totalCounter[k]?.suppressToSendIds?.length || 0;
         }
       }
     });
@@ -460,7 +489,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps>(props => {
       </CustomAppBar>
 
       <div className="p-3">
-        <Grid container spacing={3}>
+        <Grid container columnSpacing={3} spacing={3}>
           <Grid item xs={12} md={6}>
             <Grid item xs className="centeredFlex mb-2">
               <RecipientsSelectionSwitcher

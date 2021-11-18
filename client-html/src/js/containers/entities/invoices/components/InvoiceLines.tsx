@@ -7,8 +7,8 @@ import { Course } from "@api/model";
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-import Typography from "@material-ui/core/Typography/Typography";
-import Grid from "@material-ui/core/Grid/Grid";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Dispatch } from "redux";
 import { Decimal } from "decimal.js-light";
@@ -334,7 +334,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
   };
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
           type="text"
@@ -385,7 +385,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} className="pt-1 pb-1">
             <div className="heading">Assign To Budget</div>
           </Grid>

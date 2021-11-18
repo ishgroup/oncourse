@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Collapse from "@material-ui/core/Collapse";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Collapse from "@mui/material/Collapse";
 import {
   CourseClassAttendanceType,
   ClassFundingSource,
@@ -47,7 +47,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
   return (
     <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
-        <Grid container>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>
             <FormControlLabel
               className="switchWrapper pb-2"
@@ -200,7 +200,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
 
           <Grid item className="pt-3" xs={12}>
             <Collapse in={values.feeHelpClass}>
-              <Grid container className="pb-3">
+              <Grid container columnSpacing={3} className="pb-3">
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="select"

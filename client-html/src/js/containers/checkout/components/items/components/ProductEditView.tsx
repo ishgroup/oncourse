@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 
 const ProductEditView: React.FC<any> = () => (
-  <Grid container className="p-3">
-    <Grid container>
+  <Grid container columnSpacing={3} className="p-3">
+    <Grid container columnSpacing={3}>
       <Grid item sm={2}>
         <FormField type="text" name="code" label="SKU" disabled />
       </Grid>
@@ -16,7 +16,7 @@ const ProductEditView: React.FC<any> = () => (
         <FormField type="money" name="totalFee" label="Sale price" disabled />
       </Grid>
     </Grid>
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item sm={6}>
         <FormField type="multilineText" name="description" label="Description" disabled />
       </Grid>

@@ -4,22 +4,23 @@
  */
 
 import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import Dialog from "@mui/material/Dialog";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import DialogActions from "@material-ui/core/DialogActions";
+import DialogActions from "@mui/material/DialogActions";
 import { Document, Tag } from "@api/model";
-import Tooltip from "@material-ui/core/Tooltip";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Grid from "@material-ui/core/Grid";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import Tooltip from "@mui/material/Tooltip";
+import ButtonBase from "@mui/material/ButtonBase";
+import Grid from "@mui/material/Grid";
+import LinearProgress from "@mui/material/LinearProgress";
 import FormField from "../../../formFields/FormField";
 import DocumentIconsChooser from "../items/DocumentIconsChooser";
 import { dialogStyles } from "./dialogStyles";
-import Button from "../../../../buttons/Button";
+
 import { getLatestDocumentItem } from "../utils";
 import DocumentShare from "../items/DocumentShare";
+import Button from "@mui/material/Button";
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -111,7 +112,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           />
         </div>
 
-        <Grid container className="mt-1 centeredFlex">
+        <Grid container columnSpacing={3} className="mt-1 centeredFlex">
           <Grid item xs={12}>
             <FormField
               type="text"
@@ -125,12 +126,12 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
         </Grid>
 
         <DialogActions classes={{ root: classes.actions }}>
-          <Button variant="text" color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             {type === "view" ? "Close" : "Cancel"}
           </Button>
           {type !== "view" && (
             <Button
-              variant="text"
+              variant="contained"
               disabled={!item.name}
               className="documentsSubmitButton"
               onClick={type === "create" ? this.onAdd : onSave}

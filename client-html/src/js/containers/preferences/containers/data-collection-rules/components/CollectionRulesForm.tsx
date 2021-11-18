@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import { withStyles } from "@mui/styles";
 import { withRouter } from "react-router-dom";
 import {
   reduxForm, initialize
@@ -15,9 +15,9 @@ import {
   DataCollectionRule,
   DataCollectionType
 } from "@api/model";
-import createStyles from "@material-ui/core/styles/createStyles";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import Button from "../../../../../common/components/buttons/Button";
+import createStyles from "@mui/styles/createStyles";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
@@ -26,6 +26,8 @@ import { validateSingleMandatoryField } from "../../../../../common/utils/valida
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualLink = getManualLink("dataCollection");
 
@@ -48,7 +50,7 @@ interface Props {
   match: any;
   history: any;
   dirty: boolean;
-  valid: boolean;
+  invalid: boolean;
   form: string;
   collectionForms: DataCollectionForm[];
   collectionRules: DataCollectionRule[];
@@ -194,7 +196,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-     classes, handleSubmit, match, value, dirty, valid, form, onSubmit
+     classes, handleSubmit, match, value, dirty, form, onSubmit, invalid
     } = this.props;
     const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
@@ -250,22 +252,17 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                 />
               )}
 
-              <Button
-                type="submit"
-                size="small"
-                variant="text"
-                text="Save"
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
-                disabled={!dirty || !valid}
+              <FormSubmitButton
+                disabled={!dirty}
+                invalid={invalid}
               />
             </Grid>
           </Grid>
         </CustomAppBar>
 
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} md={10}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={6}>
                 <FormField
                   type="select"
@@ -395,7 +392,8 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 }
 
 const CollectionRulesForm = reduxForm({
-  form: "CollectionRulesForm"
+  form: "CollectionRulesForm",
+  onSubmitFail
 })(withStyles(styles)(withRouter(CollectionRulesBaseForm)) as any);
 
 export default CollectionRulesForm;

@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import { FormControlLabel } from "@material-ui/core";
+import { FormControlLabel } from "@mui/material";
 import { QualificationType } from "@api/model";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
@@ -38,9 +38,9 @@ const QualificationsEditView: React.FC<any> = (props: any) => {
   const isDisabled = isNew ? false : !isCustom;
 
   return (
-    <Grid container className="pt-1 p-3">
+    <Grid container columnSpacing={3} className="pt-1 p-3">
       <Grid item lg={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12} xs={12}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={12} className="d-flex">
             <div className="heading mt-2 mb-1">AVETMISS DATA</div>
           </Grid>

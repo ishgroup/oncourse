@@ -8,16 +8,21 @@
 
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
+import {
+ getFormSyncErrors, initialize, isDirty, isInvalid, submit 
+} from "redux-form";
 import clsx from "clsx";
-import { createStyles, ThemeProvider, withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { ThemeProvider } from "@mui/material/styles";
+import { createStyles, withStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel } from "@api/model";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
-import Button from "@material-ui/core/Button";
+import {
+ Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
+} from "@api/model";
+import { createTheme } from '@mui/material';
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
 import SideBar from "./components/side-bar/SideBar";
@@ -50,7 +55,9 @@ import {
   updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
-import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
+import {
+ closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm 
+} from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
@@ -104,7 +111,7 @@ const styles = () => createStyles({
   }
 });
 
-const sideBarTheme = theme => createMuiTheme({
+const sideBarTheme = theme => createTheme({
   ...theme,
   overrides: {
     MuiFormControlLabel: {
@@ -170,10 +177,10 @@ interface Props extends Partial<ListState> {
     shouldAsyncValidate?: AnyArgFunction<boolean>;
     asyncBlurFields?: string[];
     asyncChangeFields?: string[];
-    hideFullScreenAppBar?: EditViewContainerProps["hideFullScreenAppBar"];
     disabledSubmitCondition?: boolean;
     enableReinitialize?: boolean;
     keepDirtyOnReinitialize?: boolean;
+    hideTitle?: EditViewContainerProps["hideTitle"];
   };
   CogwheelAdornment?: React.ReactNode;
   location?: any;
@@ -319,7 +326,6 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       filterGroupsLoaded,
       noListTags,
       preferences,
-      showColoredDots,
     } = this.props;
 
     const { threeColumn } = this.state;

@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import * as React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import { DiscountCorporatePass } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";

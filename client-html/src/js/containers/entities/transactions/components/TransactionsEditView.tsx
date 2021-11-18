@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { connect } from "react-redux";
 import { Account } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -55,9 +55,9 @@ const TransactionsEditView = props => {
   const formattedAccounts = accounts ? getFormattedAccounts(accounts) : [];
 
   return (
-    <Grid container className="p-3">
+    <Grid container columnSpacing={3} className="p-3">
       <Grid item lg={twoColumn ? 6 : 12} md={twoColumn ? 8 : 12} xs={12}>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
               type="select"

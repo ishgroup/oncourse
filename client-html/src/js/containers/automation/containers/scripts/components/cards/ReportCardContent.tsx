@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Dispatch } from "redux";
 import { useSelector } from "react-redux";
@@ -64,7 +64,7 @@ const ReportCardContent: React.FC<Props> = props => {
   };
 
   return (
-    <Grid container className="mt-2">
+    <Grid container columnSpacing={3} className="mt-2">
       <Grid item xs={12}>
         <FormField
           type="text"

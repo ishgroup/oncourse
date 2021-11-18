@@ -1,11 +1,11 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import { withStyles } from "@material-ui/core/styles";
-import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import AppBar from "@mui/material/AppBar";
+import { withStyles } from "@mui/styles";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
-import Toolbar from "@material-ui/core/Toolbar";
+import Toolbar from "@mui/material/Toolbar";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { openDrawer } from "../../actions";
@@ -28,10 +28,10 @@ const styles: any = theme => ({
 
 const CustomAppBar = props => {
   const {
-   classes, children, noDrawer, width, openDrawer
+    classes, children, noDrawer, openDrawer
   } = props;
 
-  const isSmallScreen = !isWidthUp("md", width);
+  const isSmallScreen = useMediaQuery('(max-width:992px)');
 
   return (
     <AppBar
@@ -62,4 +62,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   null,
   mapDispatchToProps
-)(withWidth()(withStyles(styles)(CustomAppBar)));
+)(withStyles(styles)(CustomAppBar));

@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import React, {
  useCallback, useState
 } from "react";
 import { Contact, PaymentMethod, Tax } from "@api/model";
 import { change, FieldArray } from "redux-form";
-import IconButton from "@material-ui/core/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -22,7 +22,6 @@ import { State } from "../../../../reducers/state";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { ContactsState } from "../reducers";
-import { getTableWrapperHeight } from "../utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 
@@ -128,9 +127,9 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
   const paymentInPermissions = access["/a/v1/list/plain?entity=PaymentIn"] && access["/a/v1/list/plain?entity=PaymentIn"]["GET"];
 
   return values ? (
-    <div className="p-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
-        <Grid container>
+        <Grid container columnSpacing={3} className="pb-3">
           <Grid item xs={twoColumn ? 3 : 12}>
             <FormField
               type="number"
@@ -189,9 +188,6 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
             item
             xs={12}
             className="flex-column"
-            style={{
-              height: values.financialData && getTableWrapperHeight(values.financialData.length)
-            }}
           >
             <FieldArray
               name="financialData"

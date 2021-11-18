@@ -4,8 +4,8 @@
  */
 
 import React, { ComponentClass } from "react";
-import { Grid } from "@material-ui/core/";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import { Grid } from "@mui/material/";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import { withRouter } from "react-router";
 import {
   Form, getFormValues, initialize, reduxForm
@@ -17,7 +17,6 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import Categories from "../../../../../model/user-roles/index";
 import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import Button from "../../../../../common/components/buttons/Button";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import UserRolePreference from "./UserRolePreference";
@@ -26,6 +25,8 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/
 import { updateUserRole, removeUserRole } from "../../../actions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { setNextLocation } from "../../../../../common/actions";
+import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 
 const manualUrl = getManualLink("users_roles");
 
@@ -134,16 +135,17 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       validateUniqueNames,
       submitSucceeded,
       hasLicense,
-      form
+      form,
+      invalid
     } = this.props;
 
     return (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
         {!this.disableConfirm && !submitSucceeded && dirty && <RouteChangeConfirm form={form} when={dirty && hasLicense} />}
 
-        <Grid container spacing={2}>
+        <Grid container columnSpacing={3} spacing={2}>
           <CustomAppBar>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={12} className="centeredFlex">
                 <FormField
                   type="headerText"
@@ -177,14 +179,9 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
                   manualUrl={manualUrl}
                 />
 
-                <Button
-                  text="Save"
-                  type="submit"
-                  size="small"
-                  variant="text"
-                  disabled={!hasLicense || !dirty}
-                  rootClasses="whiteAppBarButton"
-                  disabledClasses="whiteAppBarButtonDisabled"
+                <FormSubmitButton
+                  disabled={!dirty}
+                  invalid={invalid}
                 />
               </Grid>
             </Grid>
@@ -215,7 +212,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 const UserRolesForm = reduxForm({
-  form: "UserRolesForm"
+  form: "UserRolesForm",
+  onSubmitFail
 })(
   connect<any, any, any>(
     mapStateToProps,

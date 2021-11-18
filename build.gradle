@@ -7,10 +7,10 @@
  */
 buildscript {
 	ext {
-		log4j2Version = '2.14.0'
+		log4j2Version = '2.14.1'
 		cayenneVersion = '4.1'
-		jettyVersion = '10.0.6'
-        mariadbVersion = '2.7.2'
+		jettyVersion = '10.0.7'
+        mariadbVersion = '2.7.3'
 		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.13'
 		bouncycastleVersion = '1.67'
@@ -33,15 +33,13 @@ plugins {
 	id 'com.github.ben-manes.versions' version '0.39.0' // adds the task 'dependencyUpdates -Drevision=release'
 	id 'com.github.node-gradle.node' version '3.0.1' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.13' apply false
+	id 'idea'
+	id 'org.barfuin.gradle.taskinfo' version '1.2.0' // adds the task 'tiTree [some task]' and the task 'tiOrder [some task]'
 
-	// adds the task 'tiTree [some task]'
-	// adds the task 'tiOrder [some task]'
-	id 'org.barfuin.gradle.taskinfo' version '1.2.0'
-
-	id 'application'
+	id 'java'
+	id 'groovy'
+	id 'maven-publish'
 }
-
-apply plugin: 'idea'
 
 subprojects {
 	repositories {
@@ -52,15 +50,22 @@ subprojects {
 		}
 	}
 
-	apply plugin: 'java-library'
 	apply plugin: 'java'
+	apply plugin: 'groovy'
 	apply plugin: 'maven-publish'
+	// java-library required since we release separate server-jar artifact, needed as plugin dependency
+	// added it exactly here since api dep doesn't work without that plugin
+	apply plugin: 'java-library'
 
 	sourceCompatibility = 11
 	// get the version from the command line properties
 	version = project.hasProperty('releaseVersion') && project.releaseVersion ? project.releaseVersion : "99-SNAPSHOT"
+	version = version.replace('v','') // remove the leading v from the version
 
 	dependencies {
+		// we are using server-jar and all api dep (log4j+groovy) for plugins
+		//so it is important to use api config,
+		//implementation config do not export the libs to level down (plugins project)
 		api "org.apache.logging.log4j:log4j-api:$log4j2Version"
 		api "org.apache.logging.log4j:log4j-core:$log4j2Version"
 		api "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
@@ -86,7 +91,7 @@ subprojects {
 		testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
 		testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
 	}
-	// uncomment when dbunit is detached from junit
+// uncomment when dbunit is detached from junit
 //	configurations {
 //		testImplementation.exclude group: 'junit' // exclude junit4
 //	}

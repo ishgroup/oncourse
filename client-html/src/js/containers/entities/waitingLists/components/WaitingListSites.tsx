@@ -8,7 +8,7 @@ import { change } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Site } from "@api/model";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
 import {
@@ -67,7 +67,7 @@ class WaitingListSites extends React.PureComponent<any, any> {
     } = this.props;
 
     return (
-      <Grid container className="pl-3 pr-3 pb-2">
+      <Grid container columnSpacing={3} className="pl-3 pr-3 pb-2">
         <Grid item xs={twoColumn ? 6 : 12}>
           <NestedList
             formId={values && values.id}

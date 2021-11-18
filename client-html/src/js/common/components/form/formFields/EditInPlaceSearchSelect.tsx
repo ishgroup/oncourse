@@ -3,36 +3,43 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Popper from "@material-ui/core/Popper";
+import CircularProgress from "@mui/material/CircularProgress";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import Popper from "@mui/material/Popper";
+import { InputAdornment, Autocomplete, IconButton } from "@mui/material";
+import { withStyles, createStyles } from "@mui/styles";
 import React, {
  useContext, useEffect, useMemo, useRef, useState
 } from "react";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { InputAdornment, withStyles } from "@material-ui/core";
+import CloseIcon from '@mui/icons-material//Close';
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import ListItemText from "@material-ui/core/ListItemText";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import createStyles from "@material-ui/core/styles/createStyles";
+import Typography from "@mui/material/Typography";
+import ListItemText from "@mui/material/ListItemText";
+import ButtonBase from "@mui/material/ButtonBase";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import { WrappedFieldProps } from "redux-form";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
-import { stubComponent } from "../../../utils/common";
+import { SelectItemRendererProps } from "../../../../model/common/Fields";
 
 const searchStyles = theme => createStyles({
+  root: {},
   inputEndAdornment: {
     fontSize: "18px",
     color: theme.palette.primary.main,
     display: "flex",
     visibility: 'hidden'
+  },
+  clearIcon: {
+    fontSize: "1.2rem",
+    "&:hover": {
+      cursor: "pointer",
+    }
   },
   inputWrapper: {
     "&:hover $inputEndAdornment": {
@@ -41,6 +48,9 @@ const searchStyles = theme => createStyles({
     "&:focus $inputEndAdornment": {
       visibility: 'hidden',
     },
+    "& $readonly": {
+      "-webkit-text-fill-color": "inherit"
+    }
   },
   validUnderline: {
     "&:after": {
@@ -69,27 +79,24 @@ const searchStyles = theme => createStyles({
       maxWidth: "calc(100% * 1.4)"
     }
   },
-  option: {
-    whiteSpace: "nowrap",
-    "& > span:last-child": {
-      overflow: "hidden",
-      textOverflow: "ellipsis"
-    }
-  },
   inline: {
     fontSize: "inherit"
   },
   labelShrink: {},
   labelAdornment: {},
   hasPopup: {
-    "& $inputWrapper": {
+    "&$root $inputWrapper": {
       paddingRight: 0
     },
-    "&$hasClear $inputWrapper": {
+    "&$root$hasClear $inputWrapper": {
       paddingRight: 0
     }
   },
-  hasClear: {},
+  hasClear: {
+    "&$root $inputWrapper": {
+      paddingRight: 0
+    }
+  },
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
@@ -123,7 +130,7 @@ interface Props extends WrappedFieldProps {
   remoteRowCount?: number;
   loadMoreRows?: AnyArgFunction;
   onCreateOption?: AnyArgFunction;
-  itemRenderer?: AnyArgFunction;
+  itemRenderer?: AnyArgFunction<React.FC<SelectItemRendererProps>>;
   onInputChange?: AnyArgFunction;
   onClearRows?: AnyArgFunction;
   onInnerValueChange?: AnyArgFunction;
@@ -138,6 +145,7 @@ interface Props extends WrappedFieldProps {
   sort?: (a: any, b: any) => number | boolean;
   sortPropKey?: string;
   inHeader?: boolean;
+  hasError?: boolean;
 }
 
 const SelectContext = React.createContext<any>({});
@@ -222,7 +230,8 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     placeholder,
     sort,
     sortPropKey,
-    inHeader
+    inHeader,
+    hasError
   }) => {
   const sortedItems = useMemo(() => items && (sort
     ? [...items].sort(typeof sort === "function"
@@ -236,7 +245,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       : [...items]
   ), [items, selectLabelCondition, selectLabelMark, sortPropKey]);
 
-  const isAdornmentHovered = useRef<boolean>(false);
   const inputNode = useRef<any>(null);
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -258,10 +266,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   }, [selectLabelCondition, formattedDisplayValue, defaultDisplayValue, sortedItems, input.value]);
 
   const onBlur = () => {
-    if (isAdornmentHovered.current) {
-      return;
-    }
-
     setIsEditing(false);
 
     if (!inline) {
@@ -272,24 +276,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       onInputChange("");
       onClearRows();
     }
-  };
-
-  const onAdornmentOver = () => {
-    isAdornmentHovered.current = true;
-  };
-
-  const onAdornmentOut = () => {
-    isAdornmentHovered.current = false;
-  };
-
-  const onAdornmentClick = e => {
-    if (isAdornmentHovered.current) {
-      e.preventDefault();
-    }
-    setTimeout(() => {
-      isAdornmentHovered.current = false;
-      onBlur();
-    }, 1000);
   };
 
   const formatCreateLabel = inputValue => `${createLabel} "${inputValue}"`;
@@ -419,17 +405,15 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   };
 
   const handleInputChange = e => {
-    const searchValue = e.target.value;
-
     if (onInputChange) {
-      onInputChange(searchValue);
+      onInputChange(e.target.value);
     }
 
-    if (remoteData && !searchValue) {
+    if (remoteData && !e.target.value) {
       onClearRows();
     }
 
-    setSearchValue(searchValue);
+    setSearchValue(e.target.value);
   };
 
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option[selectLabelMark]) || "";
@@ -441,14 +425,12 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     return option[selectValueMark] === value;
   };
 
-  const renderOption = data => {
-    const option = getHighlightedPartLabel(getOptionLabel(data), searchValue);
-
+  const renderOption = (optionProps, data) => {
     if (typeof itemRenderer === "function") {
-      return itemRenderer(option, data, searchValue) as any;
+      return itemRenderer(getHighlightedPartLabel(getOptionLabel(data), searchValue), data, searchValue, optionProps) as any;
     }
 
-    return option as any;
+    return getHighlightedPartLabel(getOptionLabel(data), searchValue, optionProps);
   };
 
   const displayedValue = useMemo(() => {
@@ -475,7 +457,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
   }, [formattedDisplayValue, selectLabelCondition, alwaysDisplayDefault, returnType, defaultDisplayValue, selectLabelMark, input, classes]);
 
   const labelContent = useMemo(() => (labelAdornment ? (
-    <span onMouseEnter={onAdornmentOver} onMouseLeave={onAdornmentOut} onMouseDown={onAdornmentClick}>
+    <span>
       {label}
       {' '}
       <span className={classes.labelAdornment}>{labelAdornment}</span>
@@ -512,14 +494,13 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             loading={loading}
             freeSolo={creatable}
             disableClearable={!allowEmpty}
-            getOptionSelected={getOptionSelected}
+            isOptionEqualToValue={getOptionSelected}
             onChange={handleChange}
             classes={{
-              root: clsx("d-inline-flex"),
-              option: itemRenderer ? null : classes.option,
-              // @ts-ignore
+              root: clsx("d-inline-flex", classes.root),
               hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear
+              hasClearIcon: classes.hasClear,
+              inputRoot: clsx(classes.inputWrapper, isEditing && classes.isEditing)
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
@@ -531,9 +512,10 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
             }) => (
               <FormControl
                 {...params}
-                error={meta && meta.invalid}
+                variant="standard"
+                error={meta?.invalid}
               >
-                {labelContent && <InputLabel shrink={true}>{labelContent}</InputLabel>}
+                {labelContent && <InputLabel shrink={true} error={meta?.invalid || hasError}>{labelContent}</InputLabel>}
                 <Input
                   {...InputProps}
                   disabled={disabled}
@@ -546,7 +528,6 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                   inputRef={inputNode}
                   disableUnderline={inline}
                   classes={{
-                    root: clsx(classes.inputWrapper, isEditing && classes.isEditing),
                     underline: fieldClasses.underline,
                     input: clsx(inHeader && classes.editableInHeader, disabled && classes.readonly, fieldClasses.text),
                   }}
@@ -559,6 +540,15 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                       ? <CircularProgress size={24} thickness={4} className={fieldClasses.loading} />
                       : (
                         <InputAdornment position="end" className={classes.inputEndAdornment}>
+                          {allowEmpty && input.value && (
+                            <IconButton
+                              size="small"
+                              onClick={onClear}
+                              color="inherit"
+                            >
+                              <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
+                            </IconButton>
+                          ) }
                           <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
                         </InputAdornment>
                       )
@@ -627,7 +617,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
           />
         </div>
       </div>
-)}
+    )}
     </div>
   );
 };

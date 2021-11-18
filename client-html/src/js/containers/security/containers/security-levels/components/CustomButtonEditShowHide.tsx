@@ -1,7 +1,8 @@
 import React from "react";
-import { ButtonBase, withStyles } from "@material-ui/core";
+import { ButtonBase } from "@mui/material";
+import { withStyles } from "@mui/styles";
 
-import { green, amber, grey } from "@material-ui/core/colors";
+import { green, amber, grey } from "@mui/material/colors";
 import clsx from "clsx";
 
 const style = () => ({

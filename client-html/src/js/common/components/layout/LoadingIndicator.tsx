@@ -4,9 +4,9 @@
  */
 
 import * as React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { State } from "../../../reducers/state";
 

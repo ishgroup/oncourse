@@ -120,7 +120,8 @@ const Certificates: React.FC<CertificatesProps> = props => {
         }}
         editViewProps={{
           manualLink,
-          nameCondition
+          nameCondition,
+          hideTitle: true
         }}
         EditViewContent={CertificateEditView}
         CogwheelAdornment={RevokeCertificateCogwheel}

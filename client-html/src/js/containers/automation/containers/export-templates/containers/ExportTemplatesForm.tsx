@@ -5,14 +5,14 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Form, initialize, InjectedFormProps } from "redux-form";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import FileCopy from "@material-ui/icons/FileCopy";
-import Grid from "@material-ui/core/Grid/Grid";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import FileCopy from "@mui/icons-material/FileCopy";
+import Grid from "@mui/material/Grid";
 import { ExportTemplate, OutputType } from "@api/model";
 import { Dispatch } from "redux";
-import Grow from "@material-ui/core/Grow/Grow";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import IconButton from "@material-ui/core/IconButton/IconButton";
+import Grow from "@mui/material/Grow";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
@@ -183,9 +183,9 @@ const ExportTemplatesForm = React.memo<Props>(
             />
           </CustomAppBar>
 
-          <Grid container className="p-3 appBarContainer">
+          <Grid container columnSpacing={3} className="p-3 appBarContainer">
             <Grid item xs={9} className="pr-3">
-              <Grid container>
+              <Grid container columnSpacing={3}>
                 <Grid item xs={6}>
                   <div className="heading">Type</div>
                   <FormField

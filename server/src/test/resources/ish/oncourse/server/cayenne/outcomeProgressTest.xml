@@ -48,9 +48,9 @@
            studentNumber="5" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
   <CourseSession id="100" courseClass_Id="5" startDatetime="[start_date1]" endDatetime="[end_date1]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="200" courseClass_Id="5" startDatetime="[start_date2]" endDatetime="[end_date2]"
-                 payAdjustment="0.00"/>
+                 />
 
 
   <Enrolment id="1234" courseClass_id="5" studentId="5" eligibilityExemptionIndicator="0" source="O" studyReason="0"
@@ -58,7 +58,7 @@
              status="0" confirmationStatus="2"
              feeHelpAmount="0" attendanceType="9"/>
 
-  <CourseSession id="300" courseClass_Id="5" startDatetime="[tomorrow]" endDatetime="[end_session]" payAdjustment="0.00"/>
+  <CourseSession id="300" courseClass_Id="5" startDatetime="[tomorrow]" endDatetime="[end_session]" />
   <Assessment id="100" name="name" active="true" code="code" createdOn="2017-09-20 12:00:00.0" modifiedOn="[yesterday]"/>
   <AssessmentClass id="100" courseClassId="5" releaseDate="[yesterday]" assessmentId="100" dueDate="[tomorrow]"
                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
@@ -71,22 +71,22 @@
                    modifiedOn="2012-01-03 11:00:00" createdOn="2012-01-03 10:00:00"/>
 
   <CourseSession id="400" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-04 12:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <Attendance attendanceType="1" id="100" sessionID="400" studentID="5" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0"/>
 
   <CourseSession id="500" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-05 02:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <Attendance attendanceType="4" id="200" sessionID="500" studentID="5" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0" attendedFrom="2012-01-03 10:00:00" attendedUntil="2012-01-04 10:00:00"/>
 
   <CourseSession id="600" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-03 14:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <Attendance attendanceType="0" id="300" sessionID="600" studentID="5" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0"/>
 
   <CourseSession id="700" courseClass_Id="5" startDatetime="2012-01-03 10:00:00" endDatetime="2012-01-04 20:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <Attendance attendanceType="3" id="400" sessionID="700" studentID="5" createdOn="2014-10-17 22:47:54.0"
               modifiedOn="2014-10-17 22:47:54.0"/>
 </dataset>
