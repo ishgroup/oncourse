@@ -224,7 +224,7 @@ trait OutcomeTrait {
         def module = getModule()
 
         if (module) {
-            def modules = attendanceProcessor.getModulesOf(courseClass, module)
+            def modules = attendanceProcessor.getModulesOf(courseClass, module, this as OutcomeInterface)
             List<Date> sessionModuleDates = calculator.getSessionDates(modules)
 
             List<Date> assessmentModuleDueDates = attendanceProcessor.getAssessmentDueDates(courseClass, this as OutcomeInterface)

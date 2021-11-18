@@ -22,7 +22,7 @@ class AttendanceNotTakenProcessor extends AttendanceProcessor{
     }
 
     @Override
-    List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass, ModuleInterface controlModule) {
+    List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass, ModuleInterface controlModule, OutcomeInterface outcome) {
         return getSessionModulesOf(courseClass, controlModule)
     }
 }
