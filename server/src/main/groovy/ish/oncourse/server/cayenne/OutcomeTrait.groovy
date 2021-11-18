@@ -11,18 +11,14 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.AttendanceProcessor
-import ish.common.DateCalculator
-import ish.common.DateUtils
+import ish.oncourse.server.util.AttendanceProcessor
+import ish.oncourse.server.util.DateCalculator
 import ish.common.types.AttendanceType
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.OutcomeInterface
-import ish.util.LocalDateUtils
 import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate
-
-import static ish.common.DateUtils.getAssessmentDueDates
 
 trait OutcomeTrait {
 
@@ -224,13 +220,13 @@ trait OutcomeTrait {
         def module = getModule()
 
         if (module) {
-            def modules = attendanceProcessor.getModulesOf(courseClass, module, this as OutcomeInterface)
+            def modules = attendanceProcessor.getModulesOf(courseClass, this as Outcome)
             List<Date> sessionModuleDates = calculator.getSessionDates(modules)
 
-            List<Date> assessmentModuleDueDates = attendanceProcessor.getAssessmentDueDates(courseClass, this as OutcomeInterface)
+            List<Date> assessmentModuleDueDates = attendanceProcessor.getAssessmentDueDates(courseClass, this as Outcome)
 
             if (!sessionModuleDates.isEmpty() || !assessmentModuleDueDates.isEmpty()) {
-                return (sessionModuleDates + assessmentModuleDueDates).sort().last()
+                return calculator.getRequiredOfSorted((sessionModuleDates + assessmentModuleDueDates).sort())
             }
         }
         // if the module for the outcome isn't found in the sessions, return the class end or start date

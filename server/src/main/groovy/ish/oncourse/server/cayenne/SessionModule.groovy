@@ -10,7 +10,6 @@
  */
 package ish.oncourse.server.cayenne
 
-
 import ish.oncourse.API
 import ish.oncourse.cayenne.AttendanceInterface
 import ish.oncourse.cayenne.OutcomeInterface
@@ -20,7 +19,6 @@ import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.glue._SessionModule
 
 import javax.annotation.Nonnull
-
 /**
  * Object representing relation between session and module.
  */
