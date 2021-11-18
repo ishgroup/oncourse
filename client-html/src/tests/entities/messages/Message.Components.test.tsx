@@ -10,15 +10,14 @@ describe("Virtual rendered MessageEditView", () => {
     EditView: MessageEditView,
     record: mockecApi => mockecApi.db.getMessage(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find(".textField").text()).toContain(initialValues.subject);
-      expect(wrapper.find(".textField").text()).toContain(defaultContactName(initialValues.sentToContactFullname));
-      expect(wrapper.find(".textField").text()).toContain(
+      const inputs = wrapper.find("input");
+      expect(inputs[0].attribs.value).toContain(initialValues.subject);
+      expect(inputs[1].attribs.value).toContain(defaultContactName(initialValues.sentToContactFullname));
+      expect(inputs[2].attribs.value).toContain(
         format(new Date(initialValues.createdOn), III_DD_MMM_YYYY).toString()
       );
       expect(wrapper.find("code").text()).toContain(initialValues.message);
-      expect(wrapper.find(".textField").text()).toContain("No Value");
-      expect(wrapper.find(".textField").text()).toContain("No Value");
-      expect(wrapper.find(".textField").text()).toContain(initialValues.creatorKey);
+      expect(inputs[5].attribs.value).toContain(initialValues.creatorKey);
     }
   });
 });
