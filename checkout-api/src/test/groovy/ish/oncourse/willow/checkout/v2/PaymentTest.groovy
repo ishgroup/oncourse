@@ -43,19 +43,19 @@ class PaymentTest extends ApiTest {
         assertNotNull(responce.sessionId)
         assertNotNull(responce.paymentFormUrl)
         assertNotNull(responce.merchantReference)
-        request.sessionId = responce.sessionId
-        request.merchantReference = responce.merchantReference
+        request.sessionId = TestPaymentService.VALID_TEST_ID
+        request.merchantReference = TestPaymentService.VALID_TEST_ID
 
         ThreadLocalValidateOnly.set(false)
 
         responce =  api.makePayment(request, false, '1005', "https://localhost")
 
-        assertEquals(responce.status, PaymentStatus.SUCCESSFUL)
-        assertEquals(responce.reference, request.merchantReference)
+        assertEquals(PaymentStatus.SUCCESSFUL, responce.status)
+        assertEquals(TestPaymentService.VALID_TEST_ID, request.merchantReference)
 
         payment = ObjectSelect.query(PaymentIn).where(PaymentIn.SESSION_ID.eq(request.merchantReference)).selectOne(cayenneService.newContext())
 
-        assertEquals(payment.status, ish.common.types.PaymentStatus.SUCCESS)
+        assertEquals(ish.common.types.PaymentStatus.SUCCESS, payment.status)
         assertEquals(payment.statusNotes, "{\n" +
                 "    \"id\": \"0000002148c403m1\",\n" +
                 "    \"username\": \"IshGroupREST_Dev\",\n" +
@@ -128,12 +128,13 @@ class PaymentTest extends ApiTest {
     @Test
     void testCardDeclined() {
         ThreadLocalPayerId.set(1005l)
+        System.setProperty('payment.gateway.type.test', 'true')
         ThreadLocalValidateOnly.set(false)
 
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         PaymentRequest request = new PaymentRequest()
         request.setCcAmount(50.0)
-        request.sessionId = TestPaymentService.INVALID_TEST_ID
+        request.sessionId = TestPaymentService.NOT_AUTH_TEST_ID
         request.merchantReference = UUID.randomUUID().toString()
         try {
             api.makePayment(request, false, '1005', "https://localhost")

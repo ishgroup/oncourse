@@ -18,14 +18,14 @@ class PaymentServiceBuilder {
         
         boolean gatewayEnabled = new IsPaymentGatewayEnabled(college, context).get()
         IPaymentService service
-        
-        if (gatewayEnabled) {
+
+        if (System.getProperty('payment.gateway.type.test')) {
+            service = new TestPaymentService()
+        } else if (gatewayEnabled) {
             String gatewayPass = new GetPreference(college, PAYMENT_GATEWAY_PASS, context).getValue()
             Boolean skipAuth = new GetPreference(college, PAYMENT_GATEWAY_PURCHASE_WITHOUT_AUTH, context).getBooleanValue()
             Country country =  new GetPreference(college, ACCOUNT_CURRENCY, context).getCountry()
             service = new PaymentService(gatewayPass, skipAuth, country)
-        } else if (System.getProperty('payment.gateway.type.test')) {
-            service = new TestPaymentService()
         } else {
             throw new IllegalArgumentException()
         }

@@ -19,7 +19,7 @@ class GetContactNodeTest extends ApiTest {
     }
     
     @Test
-    void testGetContactNode() {
+    void testGetContactNodeV2() {
 
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CollegeService service = new CollegeService(cayenneService)
@@ -32,7 +32,7 @@ class GetContactNodeTest extends ApiTest {
             request
         }
         
-        ContactNode node = api.getContactNode(nodeRequest)
+        ContactNode node = api.getContactNodeV2(nodeRequest)
         assertEquals('1001', node.contactId)
         assertEquals(2, node.enrolments.size())
         assertEquals('1001', node.enrolments[0].classId)
@@ -68,5 +68,22 @@ class GetContactNodeTest extends ApiTest {
         assertEquals('Student1 Student1 is already has this membership 234567.', node.memberships[0].errors[0])
 
     }
-    
+
+    @Test ( expected = UnsupportedOperationException)
+    void testGetContactNode() {
+
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
+        CollegeService service = new CollegeService(cayenneService)
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
+
+        ContactNodeRequest nodeRequest = new ContactNodeRequest().with { request ->
+            request.contactId = '1001'
+            request.classIds = ['1001', '1002', '1005']
+            request.products = [[productId:'7', quantity:1], [productId:'8', quantity:1], [productId:'12', quantity:1]] as ProductContainer[]
+            request
+        }
+
+        ContactNode node = api.getContactNode(nodeRequest)
+
+    }
 }

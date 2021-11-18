@@ -4,15 +4,14 @@ import ish.common.types.EnrolmentStatus
 import ish.oncourse.model.Enrolment
 import ish.oncourse.model.EnrolmentCustomField
 import ish.oncourse.willow.checkout.CheckoutApiImpl
+import ish.oncourse.willow.checkout.windcave.TestPaymentService
 import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
-import ish.oncourse.willow.model.field.Field
 import ish.oncourse.willow.model.field.FieldHeading
-import ish.oncourse.willow.service.impl.CollegeService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -30,26 +29,29 @@ class EnrolmentFieldsTest extends ApiTest {
 
 
     @Test
-    void testGet() {
-
+    void testGetV2() {
+        System.setProperty('payment.gateway.type.test', 'true')
         ObjectContext context = cayenneService.newContext()
 
         SelectById.query(ish.oncourse.model.FieldHeading, 1l).selectOne(context).order = 1
         SelectById.query(ish.oncourse.model.FieldHeading, 2l).selectOne(context).order = 2
+        SelectById.query(ish.oncourse.model.FieldHeading, 6l).selectOne(context).order = 3
         context.commitChanges()
 
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
+        RequestFilter.ThreadLocalPayerId.set(1002)
+
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
 
-        ContactNode node = api.getContactNode(new ContactNodeRequest().with { cn ->
+        ContactNode node = api.getContactNodeV2(new ContactNodeRequest().with { cn ->
             cn.contactId = '1002'
             cn.classIds << '1001'
             cn
-            })
+        })
 
-        List<FieldHeading> headings = node.enrolments[0].fieldHeadings
+        List<FieldHeading> headings = node.enrolments[0].fieldHeadings.sort { it.ordering }
         assertNotNull(headings)
-        assertEquals(3, headings.size())
+        assertEquals(4, headings.size())
         assertNull(headings[0].name)
         assertNull(headings[0].description)
         assertEquals(1, headings[0].fields.size())
@@ -65,12 +67,17 @@ class EnrolmentFieldsTest extends ApiTest {
         assertEquals(1, headings[2].fields.size())
         assertEquals('customField.enrolment.enrolmentFee', headings[2].fields[0].key)
 
+        assertEquals('Own Enrolment fields Heading', headings[3].name)
+        assertEquals('description', headings[3].description)
+        assertEquals(1, headings[3].fields.size())
+        assertEquals('studyReason', headings[3].fields[0].key)
+
         CheckoutModelRequest modelRequest = new CheckoutModelRequest().with { mr ->
             mr.contactNodes << node
             mr.payerId = '1002'
             mr
         }
-        
+
         CheckoutModel model = api.getCheckoutModel(modelRequest)
 
 
@@ -79,7 +86,7 @@ class EnrolmentFieldsTest extends ApiTest {
         assertEquals(3, model.validationErrors.formErrors.size())
         assertEquals(3, model.validationErrors.fieldsErrors.size())
         assertEquals(3, model.validationErrors.fieldsErrors.size())
-        
+
         assertEquals('customField.enrolment.enrolmentNotes', model.validationErrors.fieldsErrors[0].name)
         assertEquals('Enrolment Notes for Managerial Accounting (AAV - 1) is required', model.validationErrors.fieldsErrors[0].error)
 
@@ -92,20 +99,24 @@ class EnrolmentFieldsTest extends ApiTest {
         headings[0].fields[0].value = 'notes value'
         headings[1].fields[0].value = 'key value'
         headings[2].fields[0].value = 'fee value'
-        
-        api.makePayment(new PaymentRequest().with { pr ->
+
+        new ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest().with { pr ->
             pr.checkoutModelRequest = modelRequest
-            pr.creditCardNumber = '5431111111111111'
-            pr.creditCardName = 'john smith'
-            pr.expiryMonth = '11'
-            pr.expiryYear = '2027'
-            pr.creditCardCvv = '321'
-            pr.agreementFlag = true
+            pr.merchantReference = 'paymentMerchantReference'
             pr.sessionId = 'paymentRandomSession'
             pr.ccAmount = model.amount.payNow
+            pr.storeCard = true
             pr
-        })
-        
+        }
+
+        api.makePayment(new ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest().with { pr ->
+            pr.checkoutModelRequest = modelRequest
+            pr.merchantReference = TestPaymentService.VALID_TEST_ID
+            pr.sessionId = TestPaymentService.VALID_TEST_ID
+            pr.ccAmount = model.amount.payNow
+            pr
+        }, false, modelRequest.payerId, "https://localhost")
+
         Enrolment e = ObjectSelect.query(Enrolment).selectFirst(cayenneService.newContext())
         assertEquals(EnrolmentStatus.SUCCESS, e.status)
         assertEquals(3, e.customFields.size())
@@ -115,8 +126,27 @@ class EnrolmentFieldsTest extends ApiTest {
 
         EnrolmentCustomField enrolmentKey = e.customFields.find { cf -> cf.customFieldType.key == 'enrolmentKey'}
         assertEquals('key value', enrolmentKey.value)
-        
+
         EnrolmentCustomField enrolmentFee = e.customFields.find { cf -> cf.customFieldType.key == 'enrolmentFee'}
         assertEquals('fee value', enrolmentFee.value)
+    }
+
+    @Test (expected = UnsupportedOperationException)
+    void testGet() {
+
+        ObjectContext context = cayenneService.newContext()
+
+        SelectById.query(ish.oncourse.model.FieldHeading, 1l).selectOne(context).order = 1
+        SelectById.query(ish.oncourse.model.FieldHeading, 2l).selectOne(context).order = 2
+        context.commitChanges()
+
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
+        CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
+
+        ContactNode node = api.getContactNode(new ContactNodeRequest().with { cn ->
+            cn.contactId = '1002'
+            cn.classIds << '1001'
+            cn
+        })
     }
 }

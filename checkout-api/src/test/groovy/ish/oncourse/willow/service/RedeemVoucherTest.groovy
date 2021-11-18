@@ -39,7 +39,7 @@ class RedeemVoucherTest extends ApiTest {
                         new Enrolment(contactId: '1001', classId: '1003', selected: true)
                 ]
                 if (addProduct) {
-                    n.articles = [new Article(contactId: '1001', productId: '1003', selected: true,quantity: 1, price: 100.00, total: 100.00, fieldHeadings: [])]
+                    n.articles = [new Article(contactId: '1001', productId: '1003', selected: true,quantity: 1, price: 100.00d, total: 100.00d, fieldHeadings: [])]
                 }
                 n
             }
@@ -52,7 +52,7 @@ class RedeemVoucherTest extends ApiTest {
 
     private PaymentRequest getPaymentRequest(boolean addProduct = true) {
         new PaymentRequest().with { r ->
-            r.ccAmount = addProduct ? 69.00 : 0.00
+            r.ccAmount = addProduct ? 69.0d : 0.0d
             r.checkoutModelRequest = getModelRequest(addProduct)
             r
         }
@@ -78,7 +78,7 @@ class RedeemVoucherTest extends ApiTest {
         assertEquals(amount.voucherPayments[1].redeemVoucherId, '1002')
         assertEquals(amount.voucherPayments[1].amount, 150.00d, 0)
     }
-    
+
     @Test
     void testOnlyVouchersAmount () {
         ObjectContext context = cayenneService.newContext()
@@ -108,7 +108,7 @@ class RedeemVoucherTest extends ApiTest {
         
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getModelRequest(),financialService).process()
         Contact payer = SelectById.query(Contact, 1001L).selectOne(context)
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, paymentRequest, processModel.model,financialService, payer).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, getPaymentRequest(), processModel.model,financialService, payer).create()
 
         assertNotNull(createPaymentModel.model)
 

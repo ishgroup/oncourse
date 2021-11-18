@@ -3,11 +3,12 @@ package ish.oncourse.willow.checkout
 import ish.common.types.PaymentType
 import ish.math.Money
 import ish.oncourse.model.PaymentIn
+import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
 import ish.oncourse.willow.model.checkout.Enrolment
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.web.CourseClassPrice
 import ish.oncourse.willow.model.web.Discount
 import ish.oncourse.willow.service.ApiTest
@@ -93,21 +94,18 @@ class CreditNoteTest extends ApiTest {
 
     @Test
     void testMakePayment() {
+        RequestFilter.ThreadLocalPayerId.set(1003)
+
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         api.makePayment(new PaymentRequest().with {
             it.checkoutModelRequest = createRequest('1003', null, ['1001', '1002'], ['1001','1002'])
-            it.creditCardNumber = '5431111111111111'
-            it.creditCardName = 'john smith'
-            it.expiryMonth = '11'
-            it.expiryYear = '2027'
-            it.creditCardCvv = '321'
-            it.agreementFlag = true
+            it.merchantReference = 'paymentRandomMerchantReference'
             it.sessionId = 'paymentRandomSession'
             it.ccAmount = 0
             it
-        })
+        }, false, '1003', "https://localhost")
 
-        PaymentIn payment = ObjectSelect.query(PaymentIn).where(PaymentIn.SESSION_ID.eq('paymentRandomSession')).selectOne(cayenneService.newContext())
+        PaymentIn payment = ObjectSelect.query(PaymentIn).where(PaymentIn.SESSION_ID.eq('paymentRandomMerchantReference')).selectOne(cayenneService.newContext())
         assertEquals(Money.ZERO, payment.amount)
         assertEquals(SUCCESS, payment.status)
         assertEquals(PaymentType.INTERNAL, payment.type)

@@ -3,18 +3,16 @@
     <Country id="1" ishVersion="1" name="Tuvalu" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
     <College id="1" name="Sydney Community College"
              webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
-             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
-             timezone="Australia/Sydney"
-             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
-             paymentGatewayPass="test1234"/>
+             communication_key_status="VALID" />/>
 
-    <Preference id="1" collegeId="1" name="payment.gateway.api.key" value_string="SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"/>
-    <Preference id="2" collegeId="1" name="payment.gateway.purchase-without-auth" value_string="false"/>
-    <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
     <Site id="1" collegeId="1" angelId="1000" isWebVisible="0"
           created="2011-09-12 00:17:18.0" modified="2011-09-12 00:47:30.0" name="TestSite" isVirtual="0"/>
 
     <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
+
+    <Preference id="1" collegeId="1" name="payment.gateway.api.key" value_string="SXNoR3JvdXBSRVNUX0RldjphOTljYWUxYmRlZGJjNGU5ODQ3OTNmZjNhNjkwMDM5ZTdlZWUyOTgyMmQ0ZDQzZDg2M2JkZDE4NGNlOTk4NmRj"/>
+    <Preference id="2" collegeId="1" name="payment.gateway.purchase-without-auth" value_string="false"/>
+    <Preference id="3" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
 
     <Room id="1" collegeId="1" siteId="1" angelId="1000"
           capacity="30" created="2011-09-12 00:47:01.0" modified="2011-09-12 01:02:00.0"

@@ -73,12 +73,12 @@ class MakePaymentTest extends AbstractPaymentTest {
         assertEquals(new Money('166.00'), paymentInModel.paymentIn.amount)
         assertEquals(PaymentStatus.IN_TRANSACTION, paymentInModel.paymentIn.status)
 
-        assertEquals(request.sessionId, paymentInModel.paymentIn.sessionId)
+        assertEquals(request.merchantReference, paymentInModel.paymentIn.sessionId)
         assertEquals(1, paymentInModel.paymentIn.paymentInLines.size())
         assertEquals(new Money('166.00'), paymentInModel.paymentIn.paymentInLines[0].amount)
         assertEquals(1, paymentInModel.invoices.size())
         assertEquals(new Money('166.00'), paymentInModel.invoices[0].amountOwing)
-        assertEquals(request.sessionId, paymentInModel.invoices[0].sessionId)
+        assertEquals(request.merchantReference, paymentInModel.invoices[0].sessionId)
         assertEquals(2, paymentInModel.invoices[0].invoiceLines.size())
 
         assertNotNull(paymentInModel.invoices[0].invoiceLines[0].enrolment)

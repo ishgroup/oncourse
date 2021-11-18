@@ -78,7 +78,9 @@ class PaymentPlanTest extends ApiTest {
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getPPlanModelRequest(), financialService).process()
         
         Contact payer = SelectById.query(Contact, 1001L).selectOne(context)
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite, new PaymentRequest(ccAmount: 397.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model,financialService, payer).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(context, college, webSite,
+                new PaymentRequest(ccAmount: 397.00d, checkoutModelRequest:getPPlanModelRequest()), processModel.model,financialService, payer)
+                .create()
         
         assertNotNull(createPaymentModel.model)
         assertNotNull(createPaymentModel.model.paymentIn)
@@ -108,7 +110,9 @@ class PaymentPlanTest extends ApiTest {
 
         ProcessCheckoutModel processModel = new ProcessCheckoutModel(context, college, getPPlanModelRequest(), financialService).process()
         Contact payer = SelectById.query(Contact, 1001L).selectOne(context)
-        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 300.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model, financialService, payer).create()
+        CreatePaymentModel createPaymentModel =  new CreatePaymentModel(cayenneService.newContext(), college, webSite,
+                new PaymentRequest(ccAmount: 300.00d, checkoutModelRequest:getPPlanModelRequest()), processModel.model, financialService, payer)
+                .create()
 
         assertNotNull(createPaymentModel.model)
         assertNotNull(createPaymentModel.model.paymentIn)
@@ -140,7 +144,9 @@ class PaymentPlanTest extends ApiTest {
         try {
             Contact payer = SelectById.query(Contact, 1001L).selectOne(context)
 
-            new CreatePaymentModel(cayenneService.newContext(), college, webSite, new PaymentRequest(ccAmount: 400.00, checkoutModelRequest:getPPlanModelRequest()), processModel.model,financialService, payer).create()
+            new CreatePaymentModel(cayenneService.newContext(), college, webSite,
+                    new PaymentRequest(ccAmount: 400.00d, checkoutModelRequest:getPPlanModelRequest()), processModel.model,financialService, payer)
+                    .create()
             assertTrue('Exception expected',false)
         } catch (IllegalStateException ignore) {}
      
@@ -155,7 +161,7 @@ class PaymentPlanTest extends ApiTest {
                         new Enrolment(contactId: '1001', classId: '1002', selected: true),
                         new Enrolment(contactId: '1001', classId: '1003', selected: true)
                 ]
-                n.articles << new Article(contactId: '1001', productId: '1003', selected: true, quantity: 1, price: 100.00, total: 100.00)
+                n.articles << new Article(contactId: '1001', productId: '1003', selected: true, quantity: 1, price: 100.00d, total: 100.00d)
                 n
             }
             r.redeemedVoucherIds.addAll(voucherIsd)
@@ -169,7 +175,7 @@ class PaymentPlanTest extends ApiTest {
             r.contactNodes << new ContactNode().with { n ->
                 n.contactId = '1001'
                 n.enrolments <<  new Enrolment(contactId: '1001', classId: '1003', selected: true)
-                n.articles << new Article(contactId: '1001', productId: '1003', selected: true, quantity: 1, price: 100.00, total: 100.00)
+                n.articles << new Article(contactId: '1001', productId: '1003', selected: true, quantity: 1, price: 100.00d, total: 100.00d)
                 n
             }
             r.redeemedVoucherIds.addAll(voucherIsd)

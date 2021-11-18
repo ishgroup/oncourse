@@ -5,15 +5,12 @@
     <Country id="1" ishVersion="1" name="Australia" isoCodeAlpha2="TV" isoCodeAlpha3="TUV" isoCodeNumeric="798" asccssCode="1609" saccCode="1511"/>
     <College id="1" name="Sydney Community College"
              webServicesSecurityCode="345ttn44$%9" communication_key="7059522699886202880"
-             communication_key_status="VALID" firstRemoteAuthentication="2010-02-03 09:18:09"
-             timezone="Australia/Sydney"
-             requiresAvetmiss="0" paymentGatewayAccount="ishGroup_Dev"
-             paymentGatewayPass="test1234"/>
+             communication_key_status="VALID"/>
 
     <WebSite id="1" collegeId="1" name="Sydney Community College" siteKey="mammoth" created="2010-02-03 09:18:09" modified="2010-02-03 09:18:09"/>
 
     <Preference id="1" collegeId="1" name="payment.gateway.type" value_string="PAYMENT_EXPRESS" />
-    <Preference id="2" collegeId="1" name="enrolment.creditCard..payment.enabled" value_string="true" />
+    <Preference id="2" collegeId="1" name="payment.gateway.api.key" value_string="true" />
 
 
     <Student id="1002" collegeId="1" angelId="1002"
@@ -63,6 +60,8 @@
     <FieldHeading id="2"  collegeId="1"  angelId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Second Heading"
                   description="description" fieldConfigurationId="1" />
 
+    <FieldHeading id="6"  collegeId="1"  angelId="6" created="2021-11-12 15:00:00"  modified="2021-11-12 15:00:00" name="Own Enrolment fields Heading"
+                  description="description" fieldConfigurationId="1" />
 
     <FieldConfiguration id="2" collegeId="1"  angelId="-1" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Enrolment Configuration1" type="1"/>
 
@@ -124,6 +123,18 @@
            defaultValue="BMW"
            fieldOrder="13"
            property="abn"/>
+    <Field id="114"  collegeId="1"  angelId="114"
+           created="2021-11-12 09:11:11"
+           modified="2021-11-12 09:11:11"
+           name= "Study reason"
+           description="enrolment property 'Study reason'"
+           fieldConfigurationId="1"
+           fieldHeadingId="6"
+           mandatory="0"
+           defaultValue="null"
+           fieldOrder="14"
+           property="studyReason"/>
+
 
     <FieldConfigurationScheme id="2"  collegeId="1"  angelId="2" created="2011-09-20 11:14:54"  modified="2011-09-20 11:14:54" name="Name1"
                               applicationFieldConfigurationId="2"

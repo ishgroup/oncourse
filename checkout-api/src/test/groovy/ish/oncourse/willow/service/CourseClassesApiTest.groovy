@@ -1,23 +1,27 @@
 package ish.oncourse.willow.service
 
+import ish.oncourse.util.FormatUtils
+import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.web.ContactParams
 import ish.oncourse.willow.model.web.CourseClass
 import ish.oncourse.willow.model.web.CourseClassesParams
 import ish.oncourse.willow.model.web.PromotionParams
-import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import ish.oncourse.willow.service.impl.CollegeService
-import ish.oncourse.willow.filters.RequestFilter
-
+import ish.oncourse.willow.service.impl.CourseClassesApiServiceImpl
 import org.junit.Test
 
-import static org.junit.Assert.assertEquals
+import java.text.SimpleDateFormat
+import java.time.ZoneOffset
 
+import static org.junit.Assert.assertEquals
 /**
  * API tests for CourseClassesApi
  */
 class CourseClassesApiTest extends ApiTest {
 
     private CourseClassesApi api
+
+    private SimpleDateFormat formater =  new SimpleDateFormat("yyy-MM-dd HH:mm:ss")
 
     /**
      * Get list of CourseClasses
@@ -36,6 +40,16 @@ class CourseClassesApiTest extends ApiTest {
 
         assertEquals(classes.size(), 3)
 
+        def startDateTime = formater.parse("2011-10-12 00:55:59").toInstant()
+                .atZone(ZoneOffset.UTC).toLocalDateTime()
+        def endDateTime = formater.parse("2111-10-16 01:55:59").toInstant().
+                atZone(ZoneOffset.UTC).toLocalDateTime()
+        def expireDiscountDate = formater.parse("2111-09-13 12:00:00").toInstant()
+                .atZone(ZoneOffset.UTC).toDate()
+
+        String appliedDiscountTitle = "name_2" +
+                " expires ${FormatUtils.getShortDateFormat(collegeService.getCollege().timeZone).format(expireDiscountDate)}"
+
         assertEquals(classes.get(0).hasAvailablePlaces, true)
         assertEquals(classes.get(0).isAllowByApplication, false)
         assertEquals(classes.get(0).isCancelled, false)
@@ -45,15 +59,15 @@ class CourseClassesApiTest extends ApiTest {
         assertEquals( classes.get(0).availableEnrolmentPlaces,4)
         assertEquals(classes.get(0).course.id, "1001")
         assertEquals(classes.get(0).course.name, "Managerial Accounting")
-        assertEquals(classes.get(0).start.toString(), "2011-10-11T13:55:59")
-        assertEquals(classes.get(0).end.toString(), "2111-10-15T14:55:59")
+        assertEquals(classes.get(0).start, startDateTime)
+        assertEquals(classes.get(0).end, endDateTime)
         assertEquals(classes.get(0).price.fee, 110.00, 0)
         assertEquals(classes.get(0).price.feeOverriden, null)
         assertEquals(classes.get(0).price.hasTax, true)
         assertEquals(classes.get(0).price.appliedDiscount.discountedFee, 88.00, 0)
         assertEquals(classes.get(0).price.appliedDiscount.discountValue, 22.00, 0)
         assertEquals(classes.get(0).price.appliedDiscount.id, null)
-        assertEquals(classes.get(0).price.appliedDiscount.title, "name_2 expires 12 Sep 2111")
+        assertEquals(classes.get(0).price.appliedDiscount.title, appliedDiscountTitle)
         assertEquals(classes.get(0).price.possibleDiscounts.size(), 1)
         assertEquals(classes.get(0).price.possibleDiscounts.get(0).discountedFee, 66.00, 0)
         assertEquals(classes.get(0).price.possibleDiscounts.get(0).title, "negative discount")

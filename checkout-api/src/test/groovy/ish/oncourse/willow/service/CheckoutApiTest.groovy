@@ -19,11 +19,12 @@ class CheckoutApiTest extends ApiTest {
     protected String getDataSetResource() {
         return 'ish/oncourse/willow/service/CheckoutTest.xml'
     }
-/**
+
+    /**
      * Get list of purchases
      * Get list of enrolments/applications/product items for certain contact based on selected classes/products
      */
-    @Test
+    @Test( expected = UnsupportedOperationException)
     void getPurchaseItemsTest() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
@@ -35,15 +36,9 @@ class CheckoutApiTest extends ApiTest {
         }
 
         ContactNode items = api.getContactNode(request)
-
-        assertEquals(1, items.enrolments.size())
-        assertEquals(1, items.applications.size())
-        assertEquals(1, items.articles.size())
-        assertEquals(1, items.memberships.size())
-        assertEquals(1, items.vouchers.size())
     }
 
-    @Test
+    @Test( expected = UnsupportedOperationException)
     void getPurchaseItemsWithQuantityTest() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
@@ -55,14 +50,5 @@ class CheckoutApiTest extends ApiTest {
         }
 
         ContactNode items = api.getContactNode(request)
-
-        assertEquals(1, items.enrolments.size())
-        assertEquals(1, items.applications.size())
-        assertEquals(1, items.articles.size())
-        assertEquals(4, items.articles[0].quantity)
-        assertEquals(1, items.memberships.size())
-        assertEquals(1, items.vouchers.size())
-        assertEquals(5, items.vouchers[0].quantity)
-
     }
 }

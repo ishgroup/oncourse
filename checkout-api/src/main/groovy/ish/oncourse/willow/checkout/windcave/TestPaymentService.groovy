@@ -15,6 +15,7 @@ class TestPaymentService implements IPaymentService {
 
     static final String VALID_TEST_ID = 'testSessionId'
     static final String INVALID_TEST_ID = 'invalidTestSessionId'
+    static final NOT_AUTH_TEST_ID = 'notAuthTestId'
 
     @CompileStatic(TypeCheckingMode.SKIP)
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard) {
@@ -28,7 +29,7 @@ class TestPaymentService implements IPaymentService {
 
     SessionAttributes completeTransaction(String transactionId, Money amount, String merchantReference) {
         SessionAttributes result = new SessionAttributes()
-        if (VALID_TEST_ID) {
+        if (merchantReference == VALID_TEST_ID) {
             result.authorised = true
             result.statusText = 'Transaction Approved'
             result.responceJson = "{\n" +
@@ -85,6 +86,10 @@ class TestPaymentService implements IPaymentService {
                     "        }\n" +
                     "    ]\n" +
                     "}"
+        } else if (merchantReference == INVALID_TEST_ID) {
+            result.authorised = false
+            result.statusText = 'Transaction Failed'
+            result.responceJson=''
         }
         return result
     }
@@ -162,6 +167,9 @@ class TestPaymentService implements IPaymentService {
             result.creditCardType = CreditCardType.MASTERCARD
             result.paymentDate = new Date()
         } else if (INVALID_TEST_ID == sessionId) {
+            result.authorised = true
+            result.statusText = 'Transaction Declined'
+        } else if (NOT_AUTH_TEST_ID == sessionId) {
             result.authorised = false
             result.statusText = 'Transaction Declined'
         }

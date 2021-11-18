@@ -1,43 +1,71 @@
-package ish.oncourse.willow.service;
+package ish.oncourse.willow.service
 
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest;
-import ish.oncourse.willow.model.common.CommonError;
-import ish.oncourse.willow.model.v2.checkout.payment.PaymentResponse;
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.*;
+import ish.oncourse.willow.checkout.CheckoutApiImpl
+import ish.oncourse.willow.filters.RequestFilter
+import ish.oncourse.willow.model.checkout.ContactNode
+import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
+import ish.oncourse.willow.model.checkout.request.ProductContainer
+import org.junit.Test
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static org.junit.Assert.assertEquals;
 
 /**
  * API tests for CheckoutV2Api
  */
-public class CheckoutV2ApiTest {
+class CheckoutV2ApiTest extends ApiTest {
 
     private CheckoutV2Api api;
-    
-    @Before
-    public void setup() {
+
+    @Override
+    protected String getDataSetResource() {
+        return 'ish/oncourse/willow/service/CheckoutTest.xml'
     }
 
-    
     /**
-     * Validate model and create windcave session OR save model and complete windcave session (depends on X-Validate header),
-     * Validate model, save purchase items into db and send payment to DPS
+     * Get list of purchases
+     * Get list of enrolments/applications/product items for certain contact based on selected classes/products
      */
     @Test
-    public void makePaymentTest() {
-        PaymentRequest paymentRequest = null;
-        Boolean xValidate = null;
-        String xCollegeKey = null;
-	//PaymentResponse response = api.makePayment(paymentRequest, xValidate, xCollegeKey);
-        //assertNotNull(response);
-        // TODO: test validations
-        
-        
+    void getPurchaseItemsTest() {
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
+        api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
+        ContactNodeRequest request = new ContactNodeRequest().with { request ->
+            request.contactId = '1001'
+            request.classIds = ['1001', '1002']
+            request.products = [[productId:'7', quantity:1], [productId:'8', quantity:1], [productId:'12', quantity:1]] as ProductContainer[]
+            request
+        }
+
+        ContactNode items = api.getContactNodeV2(request)
+
+        assertEquals(1, items.enrolments.size())
+        assertEquals(1, items.applications.size())
+        assertEquals(1, items.articles.size())
+        assertEquals(1, items.memberships.size())
+        assertEquals(1, items.vouchers.size())
+    }
+
+    @Test
+    void getPurchaseItemsWithQuantityTest() {
+        RequestFilter.ThreadLocalSiteKey.set('mammoth')
+        api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
+        ContactNodeRequest request = new ContactNodeRequest().with { request ->
+            request.contactId = '1001'
+            request.classIds = ['1001', '1002']
+            request.products = [[productId:'8', quantity:3], [productId:'12', quantity:4], [productId:'13', quantity:5]] as ProductContainer[]
+            request
+        }
+
+        ContactNode items = api.getContactNodeV2(request)
+
+        assertEquals(1, items.enrolments.size())
+        assertEquals(1, items.applications.size())
+        assertEquals(1, items.articles.size())
+        assertEquals(4, items.articles[0].quantity)
+        assertEquals(1, items.memberships.size())
+        assertEquals(1, items.vouchers.size())
+        assertEquals(5, items.vouchers[0].quantity)
+
     }
     
 }

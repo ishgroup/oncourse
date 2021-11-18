@@ -14,6 +14,7 @@ abstract class AbstractPaymentTest extends ApiTest {
     protected PaymentRequest buildPaymentRequest() {
         new PaymentRequest().with { paymentRequest ->
             paymentRequest.sessionId = 'paymentRandomSession'
+            paymentRequest.merchantReference = 'paymentRandomMerchantReference'
             paymentRequest.ccAmount = 200.00
             paymentRequest.checkoutModelRequest = new CheckoutModelRequest().with { modelRequest ->
                 modelRequest.contactNodes = [new ContactNode().with { cNode ->

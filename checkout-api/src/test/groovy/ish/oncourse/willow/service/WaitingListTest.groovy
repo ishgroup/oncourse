@@ -8,8 +8,8 @@ import ish.oncourse.willow.filters.RequestFilter
 import ish.oncourse.willow.model.checkout.CheckoutModel
 import ish.oncourse.willow.model.checkout.CheckoutModelRequest
 import ish.oncourse.willow.model.checkout.ContactNode
-import ish.oncourse.willow.model.checkout.payment.PaymentRequest
 import ish.oncourse.willow.model.checkout.request.ContactNodeRequest
+import ish.oncourse.willow.model.v2.checkout.payment.PaymentRequest
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -27,6 +27,7 @@ class WaitingListTest extends ApiTest {
     @Test
     void testGetNode() {
         RequestFilter.ThreadLocalSiteKey.set('mammoth')
+        RequestFilter.ThreadLocalPayerId.set(1001)
         CheckoutApiImpl api = new CheckoutApiImpl(cayenneService, collegeService, financialService, entityRelationService)
         ContactNodeRequest request = new ContactNodeRequest().with { r ->
             r.contactId = '1002'
@@ -34,7 +35,7 @@ class WaitingListTest extends ApiTest {
             r
         }
         
-        ContactNode contactNode =  api.getContactNode(request)
+        ContactNode contactNode =  api.getContactNodeV2(request)
         assertEquals(contactNode.waitingLists.size(), 1)
         assertEquals(contactNode.waitingLists[0].errors.size(), 1)
         assertEquals(contactNode.waitingLists[0].errors[0].toString(), 'Student Student1 Student1 has already been added to waiting list for Managerial Accounting course')
@@ -44,7 +45,7 @@ class WaitingListTest extends ApiTest {
             r.waitingCourseIds << '1001'
             r
         }
-        contactNode = api.getContactNode(request)
+        contactNode = api.getContactNodeV2(request)
         assertEquals(contactNode.waitingLists.size(), 1)
         assertTrue(contactNode.waitingLists[0].errors.empty)
         assertEquals(contactNode.waitingLists[0].selected, true)
@@ -94,16 +95,17 @@ class WaitingListTest extends ApiTest {
         assertEquals(model.contactNodes[0].waitingLists[0].studentsCount, 2, 0)
         assertEquals(model.contactNodes[0].waitingLists[0].detail, 'detail')
         assertTrue(model.contactNodes[0].waitingLists[0].selected)
-        
+        assertNotNull(model.payerId)
+        assertEquals(model.payerId,"1001")
+
         api.makePayment(new PaymentRequest().with { r ->
-            r.agreementFlag = true
             r.checkoutModelRequest = new CheckoutModelRequest().with { m -> 
                 m.contactNodes += model.contactNodes
                 m.payerId = model.payerId
                 m
             }
             r
-        })
+        }, false, model.payerId,"")
 
         ObjectContext context = cayenneService.newContext()
         Contact contact = SelectById.query(Contact, 1001L).selectOne(context)
