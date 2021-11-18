@@ -1847,7 +1847,7 @@ definitions:
         type: boolean
       payNow:
         type: number
-        description: aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
+        description: actual amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
       corporatePassId:
         type: string
   checkout.payment.PaymentRequest:
