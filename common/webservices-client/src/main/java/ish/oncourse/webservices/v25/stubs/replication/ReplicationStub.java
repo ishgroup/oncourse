@@ -48,7 +48,6 @@ import ish.oncourse.webservices.util.GenericReplicationStub;
     AclRoleStub.class,
     ApplicationStub.class,
     AttendanceStub.class,
-    BinaryDataStub.class,
     BinaryInfoStub.class,
     BinaryInfoRelationStub.class,
     CertificateStub.class,

@@ -250,19 +250,6 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
             return queuedStatisticProcessor.process((GenericQueuedStatisticStub)currentStub);
 		}
 
-        if (currentStub instanceof GenericBinaryDataStub)
-        {
-            return attachmentProcessor.processBinaryDataStub((GenericBinaryDataStub) currentStub, createRelationShipCallback());
-        }
-
-        /**
-         *  AttachmentData DeleteStub should be ignored because correspondent file will be deleted with deleting BinaryInfo
-         */
-        if (currentStub instanceof GenericDeletedStub && currentStub.getEntityIdentifier().equals("AttachmentData"))
-        {
-            return null;
-        }
-
         String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
 
         if (currentStub.getAngelId() == null) {

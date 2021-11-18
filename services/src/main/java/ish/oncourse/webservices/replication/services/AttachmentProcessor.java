@@ -6,8 +6,6 @@ import ish.oncourse.model.DocumentVersion;
 import ish.oncourse.model.Queueable;
 import ish.oncourse.services.filestorage.IFileStorageAssetService;
 import ish.oncourse.services.site.IWebSiteService;
-import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
-import ish.oncourse.webservices.util.GenericBinaryDataStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
@@ -23,26 +21,6 @@ public class AttachmentProcessor {
     public AttachmentProcessor(IFileStorageAssetService fileStorageAssetService, IWebSiteService webSiteService) {
         this.fileStorageAssetService = fileStorageAssetService;
 		this.webSiteService = webSiteService;
-    }
-
-    public Long getBinaryInfoId(GenericBinaryDataStub currentStub)
-    {
-        return currentStub.getBinaryInfoId();
-    }
-
-    public Queueable processBinaryDataStub(GenericBinaryDataStub currentStub, RelationShipCallback callback) {
-
-        logger.info("AttachmentProcessor.processBinaryDataStub with parameters: stub = {}", currentStub);
-		
-		// before trying to get uncommitted DocumentVersion record instance we need to force BinaryInfoUpdater execution
-		// so that correspondent DocumentVersion record will be created by the moment we will need to get hold of it
-		callback.updateRelationShip(getBinaryInfoId(currentStub), BinaryInfo.class);
-		
-		DocumentVersion documentVersion = callback.updateRelationShip(getBinaryInfoId(currentStub), DocumentVersion.class);
-		logger.info("AttachmentProcessor.processBinaryDataStub fileStorageAssetService.put for binaryDataStub {} and binaryInfo {}", currentStub, documentVersion);
-		
-        fileStorageAssetService.put(currentStub.getContent(), documentVersion);
-        return null;
     }
 
     public Queueable deletedBinaryDataBy(BinaryInfo binaryInfo)

@@ -119,16 +119,9 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		binaryInfoStub.setMimeType("application/pdf");
 		binaryInfoStub.setName("Presenter's Guide");
 
-		ish.oncourse.webservices.v24.stubs.replication.BinaryDataStub binaryDataStub = new ish.oncourse.webservices.v24.stubs.replication.BinaryDataStub();
-		binaryDataStub.setEntityIdentifier("AttachmentData");
-		binaryDataStub.setAngelId(422l);
-		binaryDataStub.setContent("AttachmentData".getBytes());
-		binaryDataStub.setBinaryInfoId(422l);
-
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentStub);
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentVersionStub);
 		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryInfoStub);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryDataStub);
 		java.util.List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
 
 		Long willowId = null;

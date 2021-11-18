@@ -30,7 +30,6 @@ public class ObjectFactory {
     private final static QName _AclRole_QNAME = new QName("http://repl.v25.soap.webservices.oncourse.ish/", "aclRole");
     private final static QName _Application_QNAME = new QName("http://repl.v25.soap.webservices.oncourse.ish/", "application");
     private final static QName _Attendance_QNAME = new QName("http://repl.v25.soap.webservices.oncourse.ish/", "attendance");
-    private final static QName _BinaryData_QNAME = new QName("http://repl.v25.soap.webservices.oncourse.ish/", "binaryData");
     private final static QName _BinaryInfo_QNAME = new QName("http://repl.v25.soap.webservices.oncourse.ish/", "binaryInfo");
     private final static QName _BinaryInfoRelation_QNAME = new QName("http://repl.v25.soap.webservices.oncourse.ish/", "binaryInfoRelation");
     private final static QName _Certificate_QNAME = new QName("http://repl.v25.soap.webservices.oncourse.ish/", "certificate");
@@ -177,14 +176,6 @@ public class ObjectFactory {
      */
     public AttendanceStub createAttendanceStub() {
         return new AttendanceStub();
-    }
-
-    /**
-     * Create an instance of {@link BinaryDataStub }
-     * 
-     */
-    public BinaryDataStub createBinaryDataStub() {
-        return new BinaryDataStub();
     }
 
     /**
@@ -1046,15 +1037,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://repl.v25.soap.webservices.oncourse.ish/", name = "attendance")
     public JAXBElement<AttendanceStub> createAttendance(AttendanceStub value) {
         return new JAXBElement<AttendanceStub>(_Attendance_QNAME, AttendanceStub.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link BinaryDataStub }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://repl.v25.soap.webservices.oncourse.ish/", name = "binaryData")
-    public JAXBElement<BinaryDataStub> createBinaryData(BinaryDataStub value) {
-        return new JAXBElement<BinaryDataStub>(_BinaryData_QNAME, BinaryDataStub.class, null, value);
     }
 
     /**

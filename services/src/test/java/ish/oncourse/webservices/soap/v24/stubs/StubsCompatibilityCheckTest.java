@@ -61,10 +61,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 		attendanceParameters.add(new ReplicationStubFieldParameter("attendedFrom", Date.class));
 		attendanceParameters.add(new ReplicationStubFieldParameter("attendedUntil", Date.class));
 		stubsPropertyMap.put(getStubName(AttendanceStub.class), attendanceParameters);
-		final List<ReplicationStubFieldParameter> binaryDataParameters = fillDefaultReplicationStubFields();
-		binaryDataParameters.add(new ReplicationStubFieldParameter("binaryInfoId", Long.class));
-		binaryDataParameters.add(new ReplicationStubFieldParameter("content", byte[].class));
-		stubsPropertyMap.put(getStubName(BinaryDataStub.class), binaryDataParameters);
 		final List<ReplicationStubFieldParameter> binaryInfoParameters = fillDefaultReplicationStubFields();
 		binaryInfoParameters.add(new ReplicationStubFieldParameter("byteSize", Long.class));
 		binaryInfoParameters.add(new ReplicationStubFieldParameter("webVisible", Integer.class));
@@ -878,12 +874,6 @@ public class StubsCompatibilityCheckTest extends ServiceTest {
 	@Test
 	public void testAttendanceStub() {
 		final GenericReplicationStub stub = new AttendanceStub();
-		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
-	}
-
-	@Test
-	public void testBinaryDataStub() {
-		final GenericReplicationStub stub = new BinaryDataStub();
 		testReplicationStubDefinition(stub, stubsPropertyMap.get(getStubName(stub.getClass())));
 	}
 

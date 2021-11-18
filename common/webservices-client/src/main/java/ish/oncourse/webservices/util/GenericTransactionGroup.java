@@ -17,7 +17,7 @@ public abstract class GenericTransactionGroup {
 	public abstract List<? extends GenericReplicationStub> getReplicationStub();
 	
 	@SuppressWarnings("unchecked")
-	public final List<GenericReplicationStub> getGenericAttendanceOrBinaryDataOrBinaryInfo() {
+	public final List<GenericReplicationStub> getGenericAttendanceOrBinaryInfo() {
 		return (List<GenericReplicationStub>) getReplicationStub();
 	}
 }
