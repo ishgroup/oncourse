@@ -19,7 +19,6 @@ const styles = theme =>
       },
       "&$panelExpandedWithoutMargin": {
         "&:last-child": {
-          marginTop: theme.spacing(3),
           marginBottom: 0
         }
       },

@@ -35,10 +35,10 @@ class AmazonS3FormBase extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
-          <FormField type="text" name="fields.account" label="Account" required fullWidth />
-          <FormField type="text" name="fields.key" label="Key" required fullWidth />
-          <FormField type="text" name="fields.bucket" label="Bucket" required fullWidth />
-          <FormField type="text" name="fields.region" label="Region" required fullWidth />
+          <FormField type="text" name="fields.account" label="Account" required className="mb-2" />
+          <FormField type="text" name="fields.key" label="Key" required className="mb-2" />
+          <FormField type="text" name="fields.bucket" label="Bucket" required className="mb-2" />
+          <FormField type="text" name="fields.region" label="Region" required className="mb-2" />
         </AppBarContent>
       </form>
     );

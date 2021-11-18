@@ -37,11 +37,11 @@ class NSWBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.voucher" label="Voucher type" type="select" items={ServiceNSWVoucherTypes} required fullWidth />
-          <FormField name="fields.chanelCode" label="Store channel code" type="text" required fullWidth />
-          <FormField name="fields.terminalId" label="POS terminal id" type="text" required fullWidth />
-          <FormField name="fields.programme" label="Programme" type="text" required fullWidth />
-          <FormField name="fields.apiKey" label="API key" type="password" required fullWidth />
+          <FormField name="fields.voucher" label="Voucher type" type="select" items={ServiceNSWVoucherTypes} required className="mb-2" />
+          <FormField name="fields.chanelCode" label="Store channel code" type="text" required className="mb-2" />
+          <FormField name="fields.terminalId" label="POS terminal id" type="text" required className="mb-2" />
+          <FormField name="fields.programme" label="Programme" type="text" required className="mb-2" />
+          <FormField name="fields.apiKey" label="API key" type="password" required className="mb-2" />
         </AppBarContent>
       </form>
     );

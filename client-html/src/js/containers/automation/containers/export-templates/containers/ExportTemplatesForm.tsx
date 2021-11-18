@@ -44,13 +44,14 @@ interface Props extends InjectedFormProps {
   onUpdate: (template: ExportTemplate) => void;
   onDelete: NumberArgFunction;
   history: any,
+  syncErrors: any,
   nextLocation: string,
   setNextLocation: (nextLocation: string) => void,
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values,
+    dirty, form, handleSubmit, isNew, invalid, values, syncErrors,
      dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -139,14 +140,13 @@ const ExportTemplatesForm = React.memo<Props>(
             invalid={invalid}
             title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
             disableInteraction={isInternal}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
               <Grid item xs={12}>
                 <FormField
                   name="name"
-                  placeholder="Name"
+                  label="Name"
                   margin="none"
-                  className="pl-1"
-                  listSpacing={false}
                   disabled={isInternal}
                   required
                 />
@@ -173,7 +173,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   <Grow in={isInternal}>
                     <Tooltip title="Save as new export template">
                       <IconButton onClick={onInternalSaveClick} color="inherit">
-                        <FileCopy color="inherit" />
+                        <FileCopy color="primary" />
                       </IconButton>
                     </Tooltip>
                   </Grow>
@@ -228,6 +228,7 @@ const ExportTemplatesForm = React.memo<Props>(
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
+                  className="mb-2"
                   required
                 />
 

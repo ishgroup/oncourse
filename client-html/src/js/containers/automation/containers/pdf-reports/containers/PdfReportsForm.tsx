@@ -51,6 +51,7 @@ interface Props extends InjectedFormProps<Report> {
   pdfBackgrounds: CommonListItem[];
   openConfirm: ShowConfirmCaller;
   history: any;
+  syncErrors: any;
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
 }
@@ -92,7 +93,8 @@ const PdfReportsForm = React.memo<Props>(
     initialValues,
     history,
     nextLocation,
-    setNextLocation
+    setNextLocation,
+     syncErrors
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -228,14 +230,12 @@ const PdfReportsForm = React.memo<Props>(
             invalid={invalid}
             title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
             disableInteraction={isInternal}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
               <Grid item xs={12}>
                 <FormField
                   name="name"
-                  placeholder="Name"
-                  margin="none"
-                  className="pl-1"
-                  listSpacing={false}
+                  label="Name"
                   disabled={isInternal}
                   required
                 />
@@ -262,7 +262,7 @@ const PdfReportsForm = React.memo<Props>(
                   <Grow in={isInternal}>
                     <Tooltip title="Save as new PDF report">
                       <IconButton onClick={onInternalSaveClick} color="inherit">
-                        <FileCopy color="inherit" />
+                        <FileCopy color="primary" />
                       </IconButton>
                     </Tooltip>
                   </Grow>
@@ -270,7 +270,7 @@ const PdfReportsForm = React.memo<Props>(
               </>
             )}
           >
-            <Grid container columnSpacing={3}>
+            <Grid container>
               <Grid item xs={7} className="pr-3">
                 <div className="heading">Type</div>
                 <FormField
@@ -278,17 +278,18 @@ const PdfReportsForm = React.memo<Props>(
                   type="select"
                   items={EntityItems}
                   disabled={isInternal}
+                  className="mb-2"
                   required
                 />
 
-                <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
+                <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} className="mb-2" />
 
                 <FormField
                   type="text"
                   label="Description"
                   name="description"
                   disabled={isInternal}
-                  fullWidth
+                  className="mb-2"
                   multiline
                 />
 
@@ -300,6 +301,7 @@ const PdfReportsForm = React.memo<Props>(
                   selectLabelMark="name"
                   items={pdfBackgrounds}
                   onChange={onBackgroundIdChange}
+                  className="mb-2"
                   allowEmpty
                 />
 
@@ -309,6 +311,7 @@ const PdfReportsForm = React.memo<Props>(
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
+                  className="mb-2"
                   required
                 />
 

@@ -7,7 +7,7 @@ import React, { useCallback, useState } from "react";
 import { withStyles } from "@mui/styles";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
-import SpeedDialIcon from "@mui/lab/SpeedDialIcon";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { connect } from "react-redux";
 import { showConfirm } from "../../actions";
@@ -17,6 +17,11 @@ const styles = theme =>
   ({
     mainButton: {
       boxShadow: "none",
+      color: theme.palette.primary.main,
+      backgroundColor: "transparent",
+      "&:hover": {
+        backgroundColor: "transparent",
+      }
     },
     actions: {},
     directionLeft: {
@@ -73,7 +78,7 @@ const AppBarActions = React.memo<Props>(({ actions, classes, showConfirm }) => {
         direction="left"
         ariaLabel="SpeedDial actions"
         open={opened}
-        icon={<SpeedDialIcon icon={<SettingsIcon />} />}
+        icon={<SpeedDialIcon icon={<SettingsIcon color="inherit" />} />}
         onClick={handleAddFieldClick}
         onClose={handleAddFieldClose}
         onMouseEnter={handleAddFieldClick}

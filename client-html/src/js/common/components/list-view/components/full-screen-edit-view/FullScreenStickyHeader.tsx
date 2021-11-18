@@ -14,10 +14,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   fullScreenTitleItem: {
     marginTop: theme.spacing(4),
     position: "fixed",
-    left: 0,
     top: 0,
     maxWidth: "calc(100% - 224px)",
-    width: "100%",
     zIndex: theme.zIndex.appBar + 1,
   },
   titleFields: {

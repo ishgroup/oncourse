@@ -35,8 +35,8 @@ class MailchimpBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.apiKey" label="API key" type="text" />
-          <FormField name="fields.listId" label="Audience ID" type="text" />
+          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2"/>
+          <FormField name="fields.listId" label="Audience ID" type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

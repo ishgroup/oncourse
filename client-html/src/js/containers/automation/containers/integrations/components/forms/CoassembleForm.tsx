@@ -35,9 +35,9 @@ class CoassembleBaseForm extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
-          <FormField name="fields.baseUrl" label="Base Url" type="text" fullWidth />
-          <FormField name="fields.apiKey" label="API key" type="text" fullWidth />
-          <FormField name="fields.userId" label="User Id" type="text" fullWidth />
+          <FormField name="fields.baseUrl" label="Base Url" type="text" className="mb-2" />
+          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2" />
+          <FormField name="fields.userId" label="User Id" type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

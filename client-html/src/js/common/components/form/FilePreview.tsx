@@ -38,9 +38,11 @@ const styles = (theme: AppTheme) => createStyles({
       duration: theme.transitions.duration.complex,
       easing: theme.transitions.easing.easeInOut
     }),
-    borderRadius: "100%",
     zIndex: 1,
   },
+  rounded: {
+    borderRadius: "100%",
+  }
   actionButton: {
     background: theme.palette.background.paper,
     "&:hover": {
@@ -91,7 +93,7 @@ const FilePreview: React.FC<Props> = ({
       {data ? (
         <div className={classes.root}>
           {!disabled && (
-            <div className={clsx(classes.backdrop, actions && classes.active)}>
+            <div className={clsx(classes.backdrop, avatarSize && classes.rounded, actions && classes.active)}>
               <div className={iconPlacementRow ? "centeredFlex" : "flex-column"}>
                 {actions
                     && actions.map((a, i) => (a.icon ? (

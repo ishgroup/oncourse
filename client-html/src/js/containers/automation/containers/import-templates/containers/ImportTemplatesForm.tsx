@@ -40,6 +40,7 @@ interface Props extends InjectedFormProps {
   isNew: boolean;
   values: any;
   history: any;
+  syncErrors: any;
   dispatch: Dispatch;
   onCreate: (template: ImportModel) => void;
   onUpdateInternal: (template: ImportModel) => void;
@@ -51,7 +52,7 @@ interface Props extends InjectedFormProps {
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, dispatch,
+    dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors,
      onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -148,14 +149,12 @@ const ImportTemplatesForm = React.memo<Props>(
             invalid={invalid}
             title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
             disableInteraction={isInternal}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
               <Grid item xs={12}>
                 <FormField
                   name="name"
-                  placeholder="Name"
-                  margin="none"
-                  className="pl-1"
-                  listSpacing={false}
+                  label="Name"
                   disabled={isInternal}
                   required
                 />
@@ -201,7 +200,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     <Grow in={isInternal}>
                       <Tooltip title="Save as new import template">
                         <IconButton onClick={onInternalSaveClick} color="inherit">
-                          <FileCopy color="inherit" />
+                          <FileCopy color="primary" />
                         </IconButton>
                       </Tooltip>
                     </Grow>
@@ -234,6 +233,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
+                  className="mb-2"
                   required
                 />
 
