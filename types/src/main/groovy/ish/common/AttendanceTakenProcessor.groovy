@@ -28,8 +28,8 @@ class AttendanceTakenProcessor extends AttendanceProcessor{
     }
 
     @Override
-    List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass, ModuleInterface controlModule) {
+    List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass, ModuleInterface controlModule, OutcomeInterface outcome) {
         def sessionModules =  getSessionModulesOf(courseClass, controlModule)
-        return sessionModules.findAll { !it.getAttendanceForOutcome(this as OutcomeInterface)?.absent }
+        return sessionModules.findAll { !it.getAttendanceForOutcome(outcome)?.absent }
     }
 }
