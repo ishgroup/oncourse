@@ -11,11 +11,11 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.common.AttendanceNotTakenProcessor
-import ish.common.AttendanceProcessor
-import ish.common.AttendanceTakenProcessor
-import ish.common.EndDateCalculator
-import ish.common.StartDateCalculator
+import ish.oncourse.server.util.AttendanceNotTakenProcessor
+import ish.oncourse.server.util.AttendanceProcessor
+import ish.oncourse.server.util.AttendanceTakenProcessor
+import ish.oncourse.server.util.EndDateCalculator
+import ish.oncourse.server.util.StartDateCalculator
 import ish.common.types.ClassFundingSource
 import ish.common.types.DeliveryMode
 import ish.common.types.OutcomeStatus
@@ -40,7 +40,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterface {
+class Outcome extends _Outcome implements Queueable, OutcomeTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 	public static final String STUDENT_NAME = "studentName"

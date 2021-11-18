@@ -72,9 +72,7 @@ class SessionModule extends _SessionModule implements SessionModuleInterface, Qu
 		return super.getSession()
 	}
 
-	@Override
-	AttendanceInterface getAttendanceForOutcome(OutcomeInterface outcomeInterface) {
-		Outcome outcome = (Outcome) outcomeInterface
+	AttendanceInterface getAttendanceForOutcome(Outcome outcome) {
 		Student student = (Student) outcome.getEnrolment().getStudent()
 		this.session.attendance.find{it.student.id == student.id}
 	}

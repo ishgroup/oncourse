@@ -15,6 +15,4 @@ public interface SessionModuleInterface {
 	ModuleInterface getModule();
 
 	SessionInterface getSession();
-
-	AttendanceInterface getAttendanceForOutcome(OutcomeInterface outcome);
 }
