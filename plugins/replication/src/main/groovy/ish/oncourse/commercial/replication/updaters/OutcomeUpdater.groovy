@@ -27,7 +27,7 @@ class OutcomeUpdater extends AbstractAngelUpdater<OutcomeStub, Outcome> {
 		entity.setCreatedOn(stub.getCreated())
 		entity.setModifiedOn(stub.getModified())
 
-		if (stub.getEndDate() != null) {
+		if (stub.getEndDate() != null && LocalDateUtils.dateToValue(stub.getEndDate()) != entity.getEndDate()) {
 			entity.setEndDate(LocalDateUtils.dateToValue(stub.getEndDate()))
 			entity.setEndDateOverridden(true)
 		}
