@@ -17,6 +17,10 @@ import ish.oncourse.cayenne.SessionModuleInterface
 abstract class AttendanceProcessor {
     abstract List<Date> getAssessmentDueDates(CourseClassInterface courseClass, OutcomeInterface outcome)
 
+    abstract List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass,
+                                                       ModuleInterface controlModule,
+                                                       OutcomeInterface outcome)
+
     protected static List<Date> getDefaultDatesOf(List<AssessmentClassModuleInterface> assessmentClassModules){
         return assessmentClassModules*.assessmentClass*.dueDate
     }
@@ -32,6 +36,4 @@ abstract class AttendanceProcessor {
                 .flatten() as List<SessionModuleInterface>)
                 .findAll { sm -> sm.module == controlModule }
     }
-
-    abstract List<SessionModuleInterface> getModulesOf(CourseClassInterface courseClass, ModuleInterface controlModule)
 }
