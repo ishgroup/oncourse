@@ -27,7 +27,6 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.AttachableTrait
-import ish.oncourse.server.cayenne.AttachmentData
 import ish.oncourse.server.cayenne.AttachmentRelation
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Course
@@ -203,9 +202,7 @@ class DocumentFunctions {
             AmazonS3Service s3Service = new AmazonS3Service(documentService)
             version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility)
         } else {
-            AttachmentData attachmentData = context.newObject(AttachmentData)
-            attachmentData.content = content
-            attachmentData.documentVersion = version
+            throw new ClientErrorException("Attempted to process document with name $document.name as data, stored in db, but this ability was removed in new versions. Add s3 accessKey.", Response.Status.BAD_REQUEST)
         }
 
         version

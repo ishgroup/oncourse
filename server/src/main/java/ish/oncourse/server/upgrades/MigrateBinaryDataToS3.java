@@ -44,7 +44,7 @@ public class MigrateBinaryDataToS3  {
         this.documentService = documentService;
     }
 
-    protected void runUpgrade() throws Exception {
+    /*protected void runUpgrade() throws Exception {
 
         // if S3 is not configured then skip upgrade for now, will try on the next server restart
         if (!documentService.isUsingExternalStorage()) {
@@ -113,6 +113,6 @@ public class MigrateBinaryDataToS3  {
             // all records are processed - no need to run this upgrade any more
             this.shouldRunNextTime = false;
         }
-    }
+    }*/
 
 }
