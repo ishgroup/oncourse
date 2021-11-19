@@ -529,11 +529,7 @@ public class PrintWorker implements Runnable {
 			if (biCandidates.size() > 0) {
 				var document = biCandidates.get(0);
 				if (document.getFileUUID() == null) {
-					if (document.getCurrentVersion().getAttachmentData() == null) {
-						logger.error("Can't find attachment with name '{}', it doesn't have neither S3 file UUID nor db BinaryData record.", document.getName());
-					} else {
-						imageData = document.getCurrentVersion().getAttachmentData().getContent();
-					}
+					//TODO: error that binary data is already not supported
 				} else if (documentService.isUsingExternalStorage()) {
 					var s3Service = new AmazonS3Service(documentService);
 					try {
