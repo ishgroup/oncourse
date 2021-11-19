@@ -293,6 +293,53 @@ class AntlrAqlServiceTest {
     }
 
     @Test
+    void testDateSumHourMinuteExp() {
+        CompilationResult result = service.compile("created in 19/11/2021 15:30 + 2 hours 30 minutes .. 19/11/2021 15:30 + 3 hours 30 minute",
+                null, getMockContext())
+
+        LocalDateTime now = LocalDateTime.of(2021,11,19,15,30);
+        LocalDateTime start = now.plusHours(2).plusMinutes(30)
+        LocalDateTime end = now.plusHours(3).plusMinutes(30)
+
+        def expression = exp('created between $start and $end', start,end)
+        assertValid(expression, result)
+    }
+
+    @Test
+    void testDateSumHourMinuteSecondExp() {
+        CompilationResult result = service.compile("created in 19/11/2021 15:30 + 2 hours 30 minute .. 19/11/2021 15:30 + 3 hours 30 minute 30 seconds",
+                null, getMockContext())
+
+        LocalDateTime now = LocalDateTime.of(2021,11,19,15,30);
+        LocalDateTime start = now.plusHours(2).plusMinutes(30)
+        LocalDateTime end = now.plusHours(3).plusMinutes(30).plusSeconds(30)
+
+        def expression = exp('created between $start and $end', start,end)
+        assertValid(expression, result)
+    }
+
+    @Test
+    void testDateSumYearWeekDayExp() {
+        CompilationResult result = service.compile("created in 19/11/2021 15:30 + 2 week 5 days .. 19/11/2021 15:30 + 1 year 2 week 5 days",
+                null, getMockContext())
+
+        LocalDateTime now = LocalDateTime.of(2021,11,19,15,30);
+        LocalDateTime start = now.plusWeeks(2).plusDays(5)
+        LocalDateTime end = now.plusYears(1).plusWeeks(2).plusDays(5)
+
+        def expression = exp('created between $start and $end', start,end)
+        assertValid(expression, result)
+    }
+
+    @Test
+    void testWrongSumDayHourExp() {
+        Assertions.assertThrows(IllegalArgumentException.class, {
+            service.compile("created in 19/11/2021 15:30 + 2 hours 30 minute .. 19/11/2021 15:30 + 2 days 3 hours",
+                    null, getMockContext())
+        })
+    }
+
+    @Test
     void testWrongUnit() {
         CompilationResult result = service.compile("created after today - 1 ear"
                 , null, getMockContext())
