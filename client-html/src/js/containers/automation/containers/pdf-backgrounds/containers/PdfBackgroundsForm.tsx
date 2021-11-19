@@ -133,7 +133,7 @@ const PdfBackgroundsForm = React.memo<Props>(
             || (!isNew && !values.preview && !fileIsChosen)}
             invalid={invalid}
             title={(isNew && (!values.name || values.name.trim().length === 0)) ? "New" : values.name.trim()}
-            opened={Object.keys(syncErrors).includes("name")}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
             fields={(
               <Grid item xs={12}>
                 <FormField

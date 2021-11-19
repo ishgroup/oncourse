@@ -8,7 +8,7 @@ import { Grid } from "@mui/material/";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { withRouter } from "react-router";
 import {
-  Form, getFormValues, initialize, reduxForm
+  Form, getFormSyncErrors, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -137,7 +137,8 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
       submitSucceeded,
       hasLicense,
       form,
-      invalid
+      invalid,
+      syncErrors
     } = this.props;
 
     return (
@@ -155,14 +156,15 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
             : values && values.name.trim()}
           createdOn={() => (created ? new Date(created) : null)}
           modifiedOn={() => (modified ? new Date(modified) : null)}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
+          containerClass="p-3"
           fields={(
             <Grid item xs={12}>
               <FormField
                 name="name"
-                placeholder="Name"
-                margin="none"
-                listSpacing={false}
-                validate={[validateSingleMandatoryField, validateUniqueNames]}
+                label="Name"
+                validate={validateUniqueNames}
+                required
               />
             </Grid>
           )}
@@ -196,6 +198,7 @@ class UserRolesFormBase extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("UserRolesForm")(state),
+  syncErrors: getFormSyncErrors("UserRolesForm")(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });

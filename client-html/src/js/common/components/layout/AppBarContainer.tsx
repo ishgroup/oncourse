@@ -101,6 +101,7 @@ interface Props extends InjectedFormProps {
   values?: any;
   getAuditsUrl?: string | ((id: number) => string);
   manualUrl?: string;
+  containerClass?: string;
   disabled?: boolean;
   fields?: any;
   opened?: boolean;
@@ -120,7 +121,7 @@ const AppBarContainer: React.FC<Props> = props => {
   const {
     title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
     disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
-    onCloseClick, hamburgerMenu, opened
+    onCloseClick, hamburgerMenu, opened, containerClass
   } = props;
 
   const classes = useStyles();
@@ -214,7 +215,7 @@ const AppBarContainer: React.FC<Props> = props => {
           )}
         </Toolbar>
       </AppBar>
-      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container)} onScroll={onScroll}>
+      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)} onScroll={onScroll}>
         {hasFab && (
           <div className={classes.scriptAddMenu}>
             {customAddMenu || (

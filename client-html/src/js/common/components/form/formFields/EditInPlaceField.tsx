@@ -403,7 +403,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       );
     }
 
-    let formattedValue = value;
+    const formattedValue = value;
 
     if (multiline && formattedValue) {
       return formattedValue.split(/\n/g).map((char, i) => (i > 0 ? (
@@ -579,7 +579,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         onKeyDown,
         allowNegative,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
-        className: clsx(fieldClasses.text,{
+        className: clsx(fieldClasses.text, {
           [classes.inlineInput]: isInline,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
@@ -596,19 +596,20 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v))
     };
 
+    const iconProps = {
+      className: clsx("hoverIcon editInPlaceIcon", classes.selectIcon, fieldClasses.placeholder, {
+        [classes.hiddenContainer]: (rightAligned || isInline) && disabled,
+        [classes.invisibleContainer]: !(rightAligned || isInline) && disabled
+      })
+    };
+
     const editIcon = select ? (
       <ExpandMore
-        className={clsx("hoverIcon", classes.selectIcon, fieldClasses.placeholder, {
-          [classes.hiddenContainer]: rightAligned && disabled,
-          [classes.invisibleContainer]: !rightAligned && disabled
-        })}
+        {...iconProps}
       />
     ) : (
       <Edit
-        className={clsx("hoverIcon editInPlaceIcon", fieldClasses.placeholder, {
-          [classes.hiddenContainer]: rightAligned && disabled,
-          [classes.invisibleContainer]: !rightAligned && disabled
-        })}
+        {...iconProps}
       />
     );
 

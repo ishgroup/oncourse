@@ -253,7 +253,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         title={isNew && (!item.name || item.name.trim().length === 0) ? "New" : item.name.trim()}
         disableInteraction={disableName}
         hideHelpMenu={!isNew && item}
-        opened={Object.keys(syncErrors).includes("name")}
+        opened={isNew || Object.keys(syncErrors).includes("name")}
         disabledScrolling
         fields={(
           <Grid item xs={12}>

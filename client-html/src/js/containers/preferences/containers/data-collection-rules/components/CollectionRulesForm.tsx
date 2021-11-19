@@ -219,7 +219,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
             ? "New"
             : value && value.name.trim()}
           hideHelpMenu={isNew}
-          opened={Object.keys(syncErrors).includes("name")}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
           createdOn={v => new Date(v.created)}
           modifiedOn={v => new Date(v.modified)}
           fields={(

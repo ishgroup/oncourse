@@ -65,7 +65,7 @@ const TutorRolesForm = React.memo<Props>(
           title={(isNew && (!value || !value.name || value.name.trim().length === 0))
           ? "New"
           : value && value.name && value.name.trim()}
-          opened={Object.keys(syncErrors).includes("name")}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
           fields={(
             <Grid item xs={12}>
               <FormField
