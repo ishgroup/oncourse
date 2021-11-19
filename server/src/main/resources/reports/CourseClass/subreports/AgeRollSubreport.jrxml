@@ -54,6 +54,7 @@
 			<style mode="Opaque" backcolor="#FFFFFF"/>
 		</conditionalStyle>
 	</style>
+	<field name="isSortable" class="java.lang.Boolean"/>
 	<field name="studentFirstName" class="java.lang.String"/>
 	<field name="studentLastName" class="java.lang.String"/>
 	<field name="isTutor" class="java.lang.Boolean"/>
@@ -63,12 +64,13 @@
 	<field name="studentNo" class="java.lang.Long"/>
 	<field name="mobile" class="java.lang.String"/>
 	<field name="age" class="java.lang.String"/>
-    <sortField name="sessionDate"/>
-    <sortField name="studentLastName"/>
-    <sortField name="studentFirstName"/>
-    <sortField name="studentNo"/>
+	<sortField name="isSortable" order="Descending"/>
+	<sortField name="studentLastName"/>
+	<sortField name="studentFirstName"/>
+	<sortField name="studentNo"/>
+	<sortField name="sessionDate"/>
 	<variable name="studentNameFirst" class="java.lang.String">
-		<variableExpression><![CDATA[$F{isTutor}.booleanValue() ? "Tutor signature: " : "" + $F{studentFirstName} + " " + $F{studentLastName}]]></variableExpression>
+		<variableExpression><![CDATA[$F{isTutor}.booleanValue() ? "Tutor signature: " : "" + $F{studentLastName} + ", " + $F{studentFirstName}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -115,8 +117,7 @@
 								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Bottom"/>
-							<text><![CDATA[Mobile
-phone]]></text>
+							<text><![CDATA[Mobile phone]]></text>
 						</staticText>
 						<staticText>
 							<reportElement key="staticText-1" style="header 3 (right)" x="246" y="0" width="32" height="78" uuid="24ba0409-7553-4433-825b-949ecbd99741"/>
