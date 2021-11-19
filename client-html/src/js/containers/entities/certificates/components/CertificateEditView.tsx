@@ -101,7 +101,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     studentOutcomesLoading,
     setCertificateOutcomesSearch,
     submitSucceeded,
-    invalid
+    syncErrors
   } = props;
 
   useEffect(() => {
@@ -258,7 +258,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
     >
       <Grid item xs={12}>
         <FullScreenStickyHeader
-          opened={isNew || invalid}
+          opened={isNew || Object.keys(syncErrors).includes("studentContactId")}
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(

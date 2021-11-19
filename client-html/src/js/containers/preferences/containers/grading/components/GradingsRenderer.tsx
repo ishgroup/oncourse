@@ -17,7 +17,6 @@ import { validateUniqueNamesInArray } from "../../../../../common/utils/validati
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import GradingItemsRenderer from "./GradingItemsRenderer";
-import { AppTheme } from "../../../../../model/common/Theme";
 import { makeAppStyles } from "../../../../../common/styles/makeStyles";
 
 interface Props {
@@ -30,7 +29,7 @@ const GradingEntryTypes = Object.keys(GradingEntryType)
   // @ts-ignore
   .map(value => ({ value, label: value === "name" ? "Choice list" : value.capitalize() }));
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   delete: {
     position: "absolute",
     color: theme.palette.error.main,
@@ -48,7 +47,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
     fields, meta: { form }, onDelete, dispatch
   } = props;
 
-  const { classes } = useStyles();
+  const classes = useStyles();
 
   const onTypeChange = (type, item) => {
     dispatch(change(form, `${item}.gradingItems`, []));
@@ -68,7 +67,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
           <Card className="card" key={`${field.id}${index}`} id={`grading-type-${index}`}>
             <Grid container columnSpacing={3}>
               <Grid item xs={6}>
-                <Grid container columnSpacing={3}>
+                <Grid container rowSpacing={2} columnSpacing={3}>
                   <Grid item xs={6}>
                     <FormField
                       type="text"

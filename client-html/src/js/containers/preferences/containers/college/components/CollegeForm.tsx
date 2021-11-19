@@ -62,20 +62,20 @@ class CollegeBaseForm extends React.Component<any, any> {
           createdOn={values => values.created}
           modifiedOn={values => values.modified}
         >
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} sm={6} lg={4}>
               <FormField
                 type="text"
                 name={this.formModel.CollegeName.uniqueKey}
                 label="College Name"
-                fullWidth
+                className="mb-2"
               />
 
               <FormField
                 type="text"
                 name={this.formModel.CollegeWebsite.uniqueKey}
                 label="College website URL"
-                fullWidth
+                className="mb-2"
               />
               {timezones && (
                 <>
@@ -84,6 +84,7 @@ class CollegeBaseForm extends React.Component<any, any> {
                     name={this.formModel.CollegeTimezone.uniqueKey}
                     label="Default server time zone"
                     items={timezones}
+                    className="mb-2"
                   />
                 </>
               )}
@@ -93,7 +94,7 @@ class CollegeBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.CollegeABN.uniqueKey}
                 label="College ABN"
-                fullWidth
+                className="mb-2"
               />
 
               <Typography variant="caption" color="textSecondary">

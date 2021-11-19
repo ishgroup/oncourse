@@ -190,7 +190,6 @@ class FundingContractsForm extends React.Component<Props, any> {
     return (
       <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
-
         <AppBarContainer
           values={values}
           manualUrl={manualUrl}

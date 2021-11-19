@@ -40,7 +40,7 @@ import Launch from "@mui/icons-material/Launch";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
-const useStyles = makeAppStyles()(() => ({
+const useStyles = makeAppStyles(() => ({
   chipButton: {
     fontSize: "12px",
     height: "20px",
@@ -108,7 +108,7 @@ const LeadGeneral = (props: Props) => {
     syncErrors
   } = props;
 
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
 

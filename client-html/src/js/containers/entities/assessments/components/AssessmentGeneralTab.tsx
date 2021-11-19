@@ -28,8 +28,7 @@ const AssessmentGeneralTab = React.memo<Props>(
     twoColumn,
     values,
     gradingTypes = [],
-    syncErrors,
-    isNew
+    syncErrors
   }
 ) => {
     const validateTagListCallback = useCallback(
@@ -40,7 +39,7 @@ const AssessmentGeneralTab = React.memo<Props>(
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={12}>
           <FullScreenStickyHeader
-            opened={isNew || Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
+            opened={Object.keys(syncErrors).some(k => ['code', 'name'].includes(k))}
             twoColumn={twoColumn}
             title={twoColumn ? (
               <div className="d-inline-flex-center">

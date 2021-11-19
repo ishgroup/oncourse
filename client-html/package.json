@@ -84,9 +84,9 @@
     "@ckeditor/ckeditor5-paragraph": "latest",
     "@ckeditor/ckeditor5-react": "latest",
     "@ckeditor/ckeditor5-theme-lark": "latest",
-    "@emotion/cache": "^11.5.0",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/cache": "11.*",
+    "@emotion/react": "11.*",
+    "@emotion/styled": "11.*",
     "@fortawesome/fontawesome-svg-core": "1.*",
     "@fortawesome/free-regular-svg-icons": "5.*",
     "@fortawesome/free-solid-svg-icons": "5.*",
@@ -135,7 +135,6 @@
     "redux-form": "8.*",
     "redux-observable": "1.*",
     "rxjs": "6.*",
-    "tss-react": "2.*",
     "uuid": "8.*"
   }
 }

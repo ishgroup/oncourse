@@ -34,7 +34,6 @@ import { showMessage } from "../../../../../actions";
 import { StyledCheckbox } from "../../../formFields/CheckboxField";
 import { Switch } from "../../../formFields/Switch";
 import { openInternalLink } from "../../../../../utils/links";
-import { AppTheme } from "../../../../../../model/common/Theme";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
 import {
   getAvailableOptions,
@@ -46,7 +45,7 @@ import { makeAppStyles } from "../../../../../styles/makeStyles";
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   linkButton: {
     fontSize: "1.2em",
     padding: theme.spacing(0.5)
@@ -168,7 +167,7 @@ const DocumentShare:React.FC<Props> = ({
 
   const linkInput = useRef<any>();
 
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   const onCopyLink = () => {
     linkInput.current.select();

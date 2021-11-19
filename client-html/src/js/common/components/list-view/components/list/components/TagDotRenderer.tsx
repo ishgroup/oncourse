@@ -20,9 +20,8 @@ import clsx from "clsx";
 import { State } from "../../../../../../reducers/state";
 import { MenuTag } from "../../../../../../model/tags";
 import { makeAppStyles } from "../../../../../styles/makeStyles";
-import { AppTheme } from "../../../../../../model/common/Theme";
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   tagColorDotExtraSmall: {
     width: theme.spacing(1),
     minWidth: theme.spacing(1),
@@ -53,7 +52,7 @@ const getSortedArrayOfColors = (menuTags, colors, colorsLength, result) => {
 };
 
 const TagDotRenderer = ({ colors = [], dotsWrapperStyle, menuTags, tagsOrder }) => {
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   const [sortedTags, setSortedTags] = useState([]);
 

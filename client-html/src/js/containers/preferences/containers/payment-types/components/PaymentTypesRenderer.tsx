@@ -31,9 +31,9 @@ const renderPaymentTypes = props => {
 
         return (
           <Card id={`payment-type-item-${index}`} className="card" key={index}>
-            <Grid container columnSpacing={3} spacing={2} className="relative">
+            <Grid container spacing={2} className="relative">
               <Grid item xs={12}>
-                <Grid container columnSpacing={3}>
+                <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={10} md={11}>
                     <FormField
                       type="text"

@@ -5,8 +5,9 @@
 
 import { createStyles } from "@mui/styles";
 import { darken } from "@mui/material";
+import { AppTheme } from "../../../model/common/Theme";
 
-export const formCommonStyles = theme => createStyles({
+export const formCommonStyles = (theme: AppTheme) => createStyles({
   marginTop: {
     marginTop: "20px"
   },
@@ -25,7 +26,7 @@ export const formCommonStyles = theme => createStyles({
   },
 });
 
-export const cardsFormStyles = theme => createStyles({
+export const cardsFormStyles = (theme: AppTheme) => createStyles({
   marginTop: {
     marginTop: "20px"
   },
@@ -46,7 +47,10 @@ export const cardsFormStyles = theme => createStyles({
     top: 4
   },
   shoppingCartActionBox: {
-    backgroundColor: darken(theme.palette.background.paper, 0.05)
+    backgroundColor: darken(theme.palette.background.paper, 0.05),
+    borderRadius: theme.shape.borderRadius,
+    marginLeft: 0,
+    paddingRight: theme.spacing(2)
   },
   fromNameLabel: {
     "& > span": {

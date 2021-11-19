@@ -14,7 +14,7 @@ import clsx from "clsx";
 import { createStyles, withStyles } from "@mui/styles";
 import { Edit, ExpandMore } from "@mui/icons-material";
 import {
- ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem, ListItemText
+ ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem
 } from "@mui/material";
 
 const styles = theme => createStyles({
@@ -324,40 +324,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     }
   };
 
-  getTruncatedValue = () => {
-    const {
-      truncateLines,
-      input: { value }
-    } = this.props;
-
-    let result;
-
-    this.containerNode.style.maxHeight = `calc(${getComputedStyle(this.containerNode).lineHeight} * ${truncateLines})`;
-
-    const clone = this.containerNode.cloneNode();
-
-    clone.innerText = value;
-    this.containerNode.parentElement.appendChild(clone);
-    this.containerNode.parentElement.removeChild(this.containerNode);
-
-    const wordArray = clone.innerText.split(" ");
-    while (clone.scrollHeight > clone.offsetHeight) {
-      wordArray.pop();
-      clone.innerText = wordArray.join(" ") + "..." + "##########";
-    }
-
-    if (value.length > clone.innerText.length) {
-      result = clone.innerText.replace(/##########/, "");
-    } else {
-      result = value;
-    }
-
-    clone.parentElement.appendChild(this.containerNode);
-    clone.parentElement.removeChild(clone);
-
-    return result;
-  };
-
   getInputLength = () => {
     const { input, type } = this.props;
     let commas = 0;
@@ -391,7 +357,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       returnType = "string",
       preformatDisplayValue,
       defaultValue,
-      truncateLines,
       fieldClasses = {}
     } = this.props;
 
@@ -440,10 +405,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
 
     let formattedValue = value;
 
-    if (truncateLines && this.containerNode) {
-      formattedValue = this.getTruncatedValue();
-    }
-
     if (multiline && formattedValue) {
       return formattedValue.split(/\n/g).map((char, i) => (i > 0 ? (
         <React.Fragment key={i}>
@@ -468,12 +429,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       </span>
     );
   };
-
-  componentDidMount() {
-    const { truncateLines } = this.props;
-
-    if (truncateLines) this.forceUpdate();
-  }
 
   render() {
     const {
@@ -624,7 +579,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         onKeyDown,
         allowNegative,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
-        className: clsx({
+        className: clsx(fieldClasses.text,{
           [classes.inlineInput]: isInline,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
@@ -738,6 +693,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 <Input
                   {...restInputProps}
                   {...textFieldProps}
+                  maxRows={truncateLines}
                   multiline={multiline}
                   inputRef={this.setInputNode}
                   classes={{
@@ -779,82 +735,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         >
           <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
             {isInline && !hideLabel && label && labelContent}
-
-            {formatting === "primary" && (
-            <ListItemText
-              classes={{
-                  root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                  primary: "d-flex"
-                }}
-              primary={(
-                <ButtonBase
-                  classes={{
-                      root: classes.valueContainer
-                    }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                  component="div"
-                >
-                  <span
-                    ref={this.setContainerNode}
-                    className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                  >
-                    {editableComponent || this.getValue()}
-                    {editIcon}
-                  </span>
-                </ButtonBase>
-                )}
-            />
-            )}
-
-            {formatting === "secondary" && (
-            <ListItemText
-              classes={{
-                  root: `${classes.viewMode}`,
-                  secondary: "d-flex"
-                }}
-              secondary={(
-                <ButtonBase
-                  disabled={disabled}
-                  classes={{
-                      root: classes.valueContainer
-                    }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  component="span"
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                >
-                  <span
-                    ref={this.setContainerNode}
-                    className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                  >
-                    {editableComponent || this.getValue()}
-                    {editIcon}
-                  </span>
-                </ButtonBase>
-                )}
-            />
-            )}
-
-            {formatting === "custom" && (
-            <ButtonBase
-              component="div"
-              onFocus={e => this.onEditButtonFocus(e, "focus")}
-              onClick={e => this.onEditButtonFocus(e, "click")}
-              className={clsx(classes.editable, "hoverIconContainer", classes.fitWidth, fieldClasses.text, {
-                  [classes.rightAligned]: rightAligned,
-                  [classes.readonly]: disabled
-                })}
-            >
-              {editableComponent || this.getValue()}
-              {editIcon}
-            </ButtonBase>
-            )}
 
             {isInline && (
             <ButtonBase

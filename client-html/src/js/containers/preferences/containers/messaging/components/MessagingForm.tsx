@@ -93,7 +93,7 @@ class MessagingBaseForm extends React.Component<any, any> {
             Outgoing Emails
           </Typography>
 
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12} sm={5} lg={4}>
               <FormField
                 type="text"
@@ -144,7 +144,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Grid container columnSpacing={3} spacing={5}>
+            <Grid item xs={12} container>
               <Grid item xs={12} lg={8}>
                 <Divider />
               </Grid>
@@ -193,7 +193,7 @@ class MessagingBaseForm extends React.Component<any, any> {
             </Grid>
           </Grid>
 
-          <Grid container columnSpacing={3} className="mb-1">
+          <Grid container columnSpacing={3} className="mb-1 mt-2">
             <Grid item xs={12} sm={5} lg={4}>
               <FormField
                 type="text"
@@ -218,7 +218,7 @@ class MessagingBaseForm extends React.Component<any, any> {
             </Grid>
           </Grid>
 
-          <Grid container columnSpacing={3} spacing={5} className="mb-1">
+          <Grid container className="mb-1">
             <Grid item xs={12} lg={8}>
               <Divider />
             </Grid>
@@ -230,7 +230,7 @@ class MessagingBaseForm extends React.Component<any, any> {
 
           <Grid container columnSpacing={3}>
             <Grid item xs={12} sm={5} lg={4}>
-              <Typography variant="subtitle1" className="centeredFlex">
+              <Typography variant="subtitle1" className="centeredFlex mt-1">
                 <DynamicText defaultValue="0" text=" SMS queued" value={smsCount} function={smsQueued} />
                 <Button
                   size="small"

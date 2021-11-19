@@ -58,7 +58,7 @@ class PayRates extends React.Component<Props, any> {
     const { classes } = this.props;
 
     return (
-      <Grid container columnSpacing={3} className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
+      <Grid container className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
         <Grid item xs={12}>
           <div className="centeredFlex">
             <div className="heading">Pay Rate</div>

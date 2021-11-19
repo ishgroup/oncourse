@@ -15,7 +15,6 @@ import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
-import ListItemText from "@mui/material/ListItemText";
 import InputLabel from "@mui/material/InputLabel";
 import { Attachment } from "@mui/icons-material";
 
@@ -520,84 +519,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
                   </span>
                 )}
               </Typography>
-            )}
-
-            {formatting === "primary" && (
-              <>
-                <ListItemText
-                  classes={{
-                    root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                    primary: "d-flex"
-                  }}
-                  primary={(
-                    <ButtonBase
-                      classes={{
-                        root: classes.valueContainer
-                      }}
-                      onFocus={e => this.onEditButtonFocus(e)}
-                      onClick={e => this.onEditButtonFocus(e)}
-                      className={clsx("hoverIconContainer", fieldClasses.text)}
-                      component="div"
-                    >
-                      <span
-                        ref={this.setContainerNode}
-                        className={clsx(classes.editable, {
-                          [classes.rightAligned]: rightAligned
-                        })}
-                      >
-                        {editableComponent || this.getValue()}
-                        {editIcon}
-                      </span>
-                    </ButtonBase>
-                  )}
-                />
-              </>
-            )}
-
-            {formatting === "secondary" && (
-              <ListItemText
-                classes={{
-                  root: `${classes.viewMode}`,
-                  secondary: "d-flex"
-                }}
-                secondary={(
-                  <ButtonBase
-                    disabled={disabled}
-                    classes={{
-                      root: classes.valueContainer
-                    }}
-                    onFocus={e => this.onEditButtonFocus(e)}
-                    onClick={e => this.onEditButtonFocus(e)}
-                    component="span"
-                    className={clsx("hoverIconContainer", fieldClasses.text)}
-                  >
-                    <span
-                      ref={this.setContainerNode}
-                      className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                    >
-                      {editableComponent || this.getValue()}
-                      {editIcon}
-                    </span>
-                  </ButtonBase>
-                )}
-              />
-            )}
-
-            {formatting === "custom" && (
-              <ButtonBase
-                component="div"
-                onFocus={e => this.onEditButtonFocus(e)}
-                onClick={e => this.onEditButtonFocus(e)}
-                className={clsx(classes.editable, "hoverIconContainer", classes.fitWidth, fieldClasses.text, {
-                  [classes.rightAligned]: rightAligned,
-                  [classes.readonly]: disabled
-                })}
-              >
-                {editableComponent || this.getValue()}
-                {editIcon}
-              </ButtonBase>
             )}
 
             {formatting === "inline" && (

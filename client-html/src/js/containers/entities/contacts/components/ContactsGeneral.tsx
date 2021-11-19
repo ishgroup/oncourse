@@ -108,13 +108,12 @@ export const ProfileHeading: React.FC<any> = props => {
     twoColumn,
     isCompany,
     usiLocked,
-    isNew,
     syncErrors
   } = props;
 
   return (
     <FullScreenStickyHeader
-      opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
+      opened={Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
       twoColumn={twoColumn}
       Avatar={aProps => (
         <Field
