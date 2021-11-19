@@ -186,7 +186,7 @@ const AppBarContainer: React.FC<Props> = props => {
           <div className="flex-fill" />
           <div className={classes.actionsWrapper}>
             {actions}
-            {!hideHelpMenu && values && (
+            {!hideHelpMenu && (
               <AppBarHelpMenu
                 created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
                 modified={values && (modifiedOn ? modifiedOn(values) : (values.modifiedOn ? new Date(values.modifiedOn) : null))}
