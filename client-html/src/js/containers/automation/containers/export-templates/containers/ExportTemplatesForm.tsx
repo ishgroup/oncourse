@@ -140,7 +140,7 @@ const ExportTemplatesForm = React.memo<Props>(
             invalid={invalid}
             title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
             disableInteraction={isInternal}
-            opened={isNew || Object.keys(syncErrors).includes("name")}
+            opened={Object.keys(syncErrors).includes("name")}
             fields={(
               <Grid item xs={12}>
                 <FormField

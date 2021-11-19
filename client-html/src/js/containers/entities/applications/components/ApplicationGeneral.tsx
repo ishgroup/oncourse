@@ -58,7 +58,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={1} className="p-3 mt-0">
       <Grid item xs={12}>
         <FullScreenStickyHeader
-          opened={isNew || Object.keys(syncErrors).includes("contactId")}
+          opened={Object.keys(syncErrors).includes("contactId")}
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(

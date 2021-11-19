@@ -31,7 +31,6 @@ import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import { getByType } from "../utils";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../../scripts/constants";
 
 const styles = theme => createStyles({
   root: {
@@ -254,7 +253,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
         title={isNew && (!item.name || item.name.trim().length === 0) ? "New" : item.name.trim()}
         disableInteraction={disableName}
         hideHelpMenu={!isNew && item}
-        opened={isNew || Object.keys(syncErrors).includes("name")}
+        opened={Object.keys(syncErrors).includes("name")}
         disabledScrolling
         fields={(
           <Grid item xs={12}>

@@ -72,7 +72,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
           createdOn={values => values.created}
           modifiedOn={values => values.modified}
         >
-          <Grid container>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12}>
               <FormControlLabel
                 classes={{

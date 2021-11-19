@@ -20,9 +20,8 @@ import FormField from "../../../common/components/form/formFields/FormField";
 import { BindingsItemType } from "./Bindings";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
-import { AppTheme } from "../../../model/common/Theme";
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   popper: {
     zIndex: theme.zIndex.modal + 1
   },
@@ -69,7 +68,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
     const nameRef = useRef<any>();
     const popperRef = useRef<any>();
 
-    const { classes } = useStyles();
+    const classes  = useStyles();
 
     const setPopperRef = useCallback(node => {
       if (node) {

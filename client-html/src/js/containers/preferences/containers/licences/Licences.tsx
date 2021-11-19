@@ -61,7 +61,7 @@ class Licences extends React.Component<any, any> {
         >
           <List
             subheader={(
-              <ListSubheader disableSticky className="heading mb-2">
+              <ListSubheader disableSticky className="heading mb-2 pl-0">
                 Enabled Features
               </ListSubheader>
             )}

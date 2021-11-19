@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError
+  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError, getFormSyncErrors
 } from "redux-form";
 import { DeliveryScheduleType } from "@api/model";
 import Divider from "@mui/material/Divider";
@@ -20,10 +20,9 @@ import FileCopy from "@mui/icons-material/FileCopy";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
@@ -419,7 +418,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   render() {
     const {
-      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form
+      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form, syncErrors
     } = this.props;
 
     const { disableConfirm } = this.state;
@@ -432,7 +431,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
       <div ref={this.getFormRef}>
         <Form className="container" onSubmit={handleSubmit(this.onSave)}>
           {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
@@ -445,14 +443,14 @@ class DataCollectionWrapper extends React.Component<any, any> {
             hideHelpMenu={isNew}
             createdOn={v => new Date(v.form.created)}
             modifiedOn={v => new Date(v.form.modified)}
+            opened={getDeepValue(syncErrors, "form.name")}
             fields={(
-              <Grid item xs={12}>
+              <Grid item xs={8}>
                 <FormField
                   name="form.name"
-                  placeholder="Name"
-                  margin="none"
-                  listSpacing={false}
-                  validate={[validateSingleMandatoryField, this.validateUniqueNames]}
+                  label="Name"
+                  validate={this.validateUniqueNames}
+                  required
                 />
               </Grid>
             )}
@@ -543,6 +541,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("DataCollectionForm")(state),
+  syncErrors: getFormSyncErrors("DataCollectionForm")(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });

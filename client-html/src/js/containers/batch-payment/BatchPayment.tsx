@@ -44,14 +44,13 @@ import { openInternalLink } from "../../common/utils/links";
 import { decimalPlus } from "../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../common/utils/numbers/numbersNormalizing";
 import { BatchPaymentContact } from "../../model/batch-payment";
-import { AppTheme } from "../../model/common/Theme";
 import { State } from "../../reducers/state";
 import CheckoutService from "../checkout/services/CheckoutService";
 import { getContactName } from "../entities/contacts/utils";
 import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   checkbox: {
     width: "auto",
     height: "auto",
@@ -404,19 +403,17 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
 const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   handleSubmit,
-  dirty,
   invalid,
   dispatch,
   currencySymbol,
   values,
-  form,
 }) => {
   const [contactsLoading, setContactsLoading] = useState(false);
   const [filterByStoreCard, setFilterByStoreCard] = useState(true);
   const [processing, setProcessing] = useState(false);
   const cancel = useRef(false);
 
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   useEffect(() => {
     setContactsLoading(true);

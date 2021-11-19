@@ -37,7 +37,7 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   form: string;
 }
 
-const useStyles = makeAppStyles()(() => ({
+const useStyles = makeAppStyles(() => ({
   chartWrapper: {
     height: "250px",
   },
@@ -56,7 +56,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
-    const { classes } = useStyles();
+    const classes  = useStyles();
 
     const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
 

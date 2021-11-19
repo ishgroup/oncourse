@@ -187,7 +187,7 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
         >
           <Grid container className="mt-2">
             <Grid item sm={12} lg={10}>
-              <Grid container columnSpacing={3}>
+              <Grid container>
                 {data && (
                   <FieldArray
                     name="types"

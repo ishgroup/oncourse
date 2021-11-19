@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
 import { withRouter } from "react-router-dom";
 import {
-  reduxForm, initialize
+  reduxForm, initialize, getFormSyncErrors
 } from "redux-form";
 import {
   DataCollectionForm,
@@ -17,14 +17,15 @@ import {
 } from "@api/model";
 import createStyles from "@mui/styles/createStyles";
 import DeleteForever from "@mui/icons-material/DeleteForever";
+import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { State } from "../../../../../reducers/state";
 
 const manualUrl = getManualLink("dataCollection");
 
@@ -46,6 +47,7 @@ interface Props {
   handleSubmit: any;
   match: any;
   history: any;
+  syncErrors: any;
   dirty: boolean;
   invalid: boolean;
   form: string;
@@ -198,7 +200,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
 
   render() {
     const {
-      classes, handleSubmit, match, value, dirty, form, onSubmit, invalid
+      classes, handleSubmit, match, value, dirty, form, onSubmit, invalid, syncErrors
     } = this.props;
     const { disableConfirm } = this.state;
     const isNew = match.params.action === "new";
@@ -217,17 +219,16 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
             ? "New"
             : value && value.name.trim()}
           hideHelpMenu={isNew}
+          opened={Object.keys(syncErrors).includes("name")}
           createdOn={v => new Date(v.created)}
           modifiedOn={v => new Date(v.modified)}
           fields={(
             <Grid item xs={12}>
               <FormField
                 name="name"
-                placeholder="Name"
-                margin="none"
-                className={classes.HeaderTextField}
-                listSpacing={false}
-                validate={[validateSingleMandatoryField, this.validateUniqueNames]}
+                label="Name"
+                validate={this.validateUniqueNames}
+                required
               />
             </Grid>
           )}
@@ -249,7 +250,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
         >
           <Grid container>
             <Grid item xs={12} md={10}>
-              <Grid container columnSpacing={3}>
+              <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={6}>
                   <FormField
                     type="select"
@@ -379,9 +380,13 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
   }
 }
 
+const mapStateToProps = (state: State) => ({
+  syncErrors: getFormSyncErrors("CollectionRulesForm")(state)
+});
+
 const CollectionRulesForm = reduxForm({
   form: "CollectionRulesForm",
   onSubmitFail
-})(withStyles(styles)(withRouter(CollectionRulesBaseForm)) as any);
+})(withStyles(styles)(withRouter(connect<any, any, any>(mapStateToProps)(CollectionRulesBaseForm))) as any);
 
 export default CollectionRulesForm;

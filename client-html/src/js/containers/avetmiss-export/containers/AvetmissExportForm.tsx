@@ -661,7 +661,6 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         type="select"
         name="flavour"
         label="Flavour"
-        formatting="primary"
         items={flavourModel}
         onChange={this.onFlavourChange}
         reqired
@@ -758,7 +757,6 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                   type="select"
                                   name="dateRange"
                                   label="Outcomes in progress during"
-                                  formatting="primary"
                                   items={
                                     values.flavour === "NCVER (Standard AVETMISS)"
                                       ? dateRangeModel.slice(1)

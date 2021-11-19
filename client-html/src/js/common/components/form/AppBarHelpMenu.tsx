@@ -15,7 +15,8 @@ const styles = theme =>
   createStyles({
     button: {
       color: theme.appBarButton.helpMenu.color,
-      marginRight: "10px"
+      marginRight: "10px",
+      marginTop: theme.spacing(0.5),
     },
     info: {
       display: "flex",
@@ -109,24 +110,29 @@ class AppBarHelpMenu extends React.Component<Props, any> {
           <MenuItem className={created || modified ? classes.divider : undefined} onClick={this.openManual}>
             Open manual
           </MenuItem>
-          {auditsUrl && <MenuItem onClick={this.openAudits}>
-            View audit trail
-          </MenuItem>}
+          {auditsUrl && (
+            <MenuItem onClick={this.openAudits}>
+              View audit trail
+            </MenuItem>
+          )}
         </Menu>
 
         <Tooltip title="Additional information">
-          <IconButton
-            type="button"
-            aria-owns={anchorEl ? "form-help-menu" : null}
-            aria-haspopup="true"
-            onClick={this.handleAddFieldClick}
-            className={clsx({
-              [classes.button]: !iconClasses,
-              [iconClasses]: !!iconClasses
-            })}
-          >
-            <HelpOutline />
-          </IconButton>
+          <div>
+            <IconButton
+              type="button"
+              aria-owns={anchorEl ? "form-help-menu" : null}
+              aria-haspopup="true"
+              onClick={this.handleAddFieldClick}
+              size="large"
+              className={clsx({
+                [classes.button]: !iconClasses,
+                [iconClasses]: !!iconClasses
+              })}
+            >
+              <HelpOutline />
+            </IconButton>
+          </div>
         </Tooltip>
       </>
     );

@@ -126,7 +126,6 @@ export const SummaryItemRow = React.memo<any>(props => {
                 validate={greaterThanNullValidation}
                 onChange={handlePriceChange}
                 listSpacing={false}
-                formatting="custom"
                 rightAligned
               />
             </div>

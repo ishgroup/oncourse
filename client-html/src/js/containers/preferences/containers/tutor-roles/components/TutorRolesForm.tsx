@@ -5,7 +5,7 @@
 
 import React from "react";
 import { Dispatch } from "redux";
-import { InjectedFormProps, reduxForm } from "redux-form";
+import { getFormSyncErrors, InjectedFormProps, reduxForm } from "redux-form";
 import Grid from "@mui/material/Grid";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { DefinedTutorRole } from "@api/model";
@@ -17,6 +17,7 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErro
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import PayRates from "./PayRates";
+import { useAppSelector } from "../../../../../common/utils/hooks";
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
@@ -42,39 +43,39 @@ const TutorRolesForm = React.memo<Props>(
     form,
     handleSubmit,
     isNew,
-    valid,
+    invalid,
     value,
     dispatch,
     handleDelete,
     onSubmit,
     showConfirm,
-    disableRouteConfirm,
-  }) => (
-    <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      {!disableRouteConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
-      <AppBarContainer
-        values={value}
-        manualUrl={manualUrl}
-        getAuditsUrl={id => `audit?search=~"DefinedTutorRole" and entityId == ${id}`}
-        disabled={!dirty}
-        invalid={valid}
-        title={(isNew && (!value || !value.name || value.name.trim().length === 0))
+    disableRouteConfirm
+  }) => {
+    const syncErrors = useAppSelector(state => getFormSyncErrors("TutorRolesForm")(state));
+    
+    return (
+      <form className="container" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        {!disableRouteConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+        <AppBarContainer
+          values={value}
+          manualUrl={manualUrl}
+          getAuditsUrl={id => `audit?search=~"DefinedTutorRole" and entityId == ${id}`}
+          disabled={!dirty}
+          invalid={invalid}
+          title={(isNew && (!value || !value.name || value.name.trim().length === 0))
           ? "New"
           : value && value.name && value.name.trim()}
-        fields={(
-          <Grid item xs={12}>
-            <FormField
-              name="name"
-              placeholder="Name"
-              margin="none"
-              className="pl-1"
-              listSpacing={false}
-              required
-            />
-          </Grid>
+          opened={Object.keys(syncErrors).includes("name")}
+          fields={(
+            <Grid item xs={12}>
+              <FormField
+                name="name"
+                label="Name"
+                required
+              />
+            </Grid>
         )}
-        actions={!isNew && (
+          actions={!isNew && (
           <AppBarActions
             actions={[
               {
@@ -88,32 +89,33 @@ const TutorRolesForm = React.memo<Props>(
             ]}
           />
         )}
-      >
-        <Grid container>
-          <Grid item xs={9}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={9}>
-                <FormField
-                  type="text"
-                  name="description"
-                  label="Public label"
-                  required
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+        >
+          <Grid container>
+            <Grid item xs={9}>
+              <Grid container columnSpacing={3}>
+                <Grid item xs={9}>
+                  <FormField
+                    type="text"
+                    name="description"
+                    label="Public label"
+                    required
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-        <PayRates value={value} form={form} dispatch={dispatch} showConfirm={showConfirm} />
-      </AppBarContainer>
-    </form>
-  )
+          <PayRates value={value} form={form} dispatch={dispatch} showConfirm={showConfirm} />
+        </AppBarContainer>
+      </form>
+);
+  }
 );
 
 export default reduxForm({
   form: "TutorRolesForm",
-  onSubmitFail
+  onSubmitFail,
 })(props => (props.value ? <TutorRolesForm {...props} /> : null));

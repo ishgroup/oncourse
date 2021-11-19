@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { InjectedFormProps } from "redux-form";
 import clsx from "clsx";
-import { createStyles, makeStyles, withStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,7 +22,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
 import { useStickyScrollSpy } from "../../utils/hooks";
 import { openDrawer } from "../../actions";
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     background: theme.appBar.header.background,
     color: theme.appBar.header.color,
     zIndex: theme.zIndex.drawer + 1,
+    height: `${APP_BAR_HEIGHT}px`
   },
   headerHighContrast: {
     background: theme.palette.background.default,
@@ -180,11 +181,9 @@ const AppBarContainer: React.FC<Props> = props => {
             disableInteraction={disableInteraction}
             twoColumn
           />
-      
           <div className="flex-fill" />
           <div className={classes.actionsWrapper}>
             {actions}
-
             {!hideHelpMenu && values && (
               <AppBarHelpMenu
                 created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
@@ -204,14 +203,14 @@ const AppBarContainer: React.FC<Props> = props => {
             )}
           </div>
           {!hideSubmitButton && (
-          <FormSubmitButton
-            disabled={disabled}
-            invalid={invalid}
-            fab
-            className={isDarkTheme && classes.submitButtonAlternate}
-            text={submitButtonText || "Save"}
-          />
-            )}
+            <FormSubmitButton
+              disabled={disabled}
+              invalid={invalid}
+              className={isDarkTheme && classes.submitButtonAlternate}
+              text={submitButtonText || "Save"}
+              fab
+            />
+          )}
         </Toolbar>
       </AppBar>
       <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container)} onScroll={onScroll}>

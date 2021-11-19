@@ -6,7 +6,6 @@
 import * as React from "react";
 import { withStyles, createStyles } from "@mui/styles";
 import clsx from "clsx";
-import Typography from "@mui/material/Typography";
 import Delete from "@mui/icons-material/Delete";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
@@ -53,7 +52,7 @@ const validateUniqueNames = (value, allValues) => {
 
 const CollectionFormHeading = props => {
   const {
-    classes, item, field, onDelete, className
+    classes, field, onDelete, className
   } = props;
 
   return (
@@ -77,11 +76,10 @@ const CollectionFormHeading = props => {
           label="Heading"
           hideLabel
           listSpacing={false}
-          formatting="custom"
-          editableComponent={(
-            <Typography className={clsx("text-uppercase text-bold mw-100 overflow-hidden", classes.title)}>{item.name}</Typography>
-          )}
           validate={[validateSingleMandatoryField, validateUniqueNames]}
+          fieldClasses={{
+            label: "heading"
+          }}
           fullWidth
         />
 
@@ -91,7 +89,6 @@ const CollectionFormHeading = props => {
           label="Description"
           hideLabel
           listSpacing={false}
-          formatting="secondary"
           truncateLines={4}
           fullWidth
         />

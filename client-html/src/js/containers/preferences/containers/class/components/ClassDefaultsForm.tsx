@@ -62,50 +62,48 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
           createdOn={values => values.created}
           modifiedOn={values => values.modified}
         >
-          <Grid container>
-            <Grid item xs={12} sm={3}>
-              <FormField
-                type="number"
-                name={this.formModel.ClassMinPlaces.uniqueKey}
-                label="Minimum places"
-                parse={val => val || "0"}
-                fullWidth
-              />
+          <Grid container columnSpacing={3} rowSpacing={2}>
+            <Grid container item columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={12} sm={3}>
+                <FormField
+                  type="number"
+                  name={this.formModel.ClassMinPlaces.uniqueKey}
+                  label="Minimum places"
+                  parse={val => val || "0"}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <FormField
+                  type="select"
+                  name={this.formModel.ClassDeliveryMode.uniqueKey}
+                  label="Delivery mode"
+                  items={enums.DeliveryMode}
+                />
+              </Grid>
             </Grid>
 
-            <Grid item xs={12} sm={4}>
-              <FormField
-                type="select"
-                name={this.formModel.ClassDeliveryMode.uniqueKey}
-                label="Delivery mode"
-                items={enums.DeliveryMode}
-                listSpacing
-              />
+            <Grid container item columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={12} sm={3}>
+                <FormField
+                  type="number"
+                  name={this.formModel.ClassMaxPlaces.uniqueKey}
+                  label="Maximum places"
+                  parse={val => val || "0"}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={4}>
+                <FormField
+                  type="select"
+                  name={this.formModel.ClassFundingSourcePreference.uniqueKey}
+                  label="Funding source"
+                  items={enums.ClassFundingSource}
+                />
+              </Grid>
             </Grid>
           </Grid>
 
-          <Grid container>
-            <Grid item xs={12} sm={3}>
-              <FormField
-                type="number"
-                name={this.formModel.ClassMaxPlaces.uniqueKey}
-                label="Maximum places"
-                parse={val => val || "0"}
-                fullWidth
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={4}>
-              <FormField
-                type="select"
-                name={this.formModel.ClassFundingSourcePreference.uniqueKey}
-                label="Funding source"
-                items={enums.ClassFundingSource}
-                fullWidth
-                listSpacing
-              />
-            </Grid>
-          </Grid>
         </AppBarContainer>
       </Form>
     );
