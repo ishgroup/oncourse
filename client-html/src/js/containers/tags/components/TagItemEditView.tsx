@@ -9,7 +9,7 @@ import React, {
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
 import {
-  change, Field, getFormValues, reduxForm, Validator
+  change, Field, getFormSyncErrors, getFormValues, reduxForm, Validator
 } from "redux-form";
 import { connect } from "react-redux";
 import Slide from "@mui/material/Slide";
@@ -43,6 +43,7 @@ interface Props {
   values?: Tag;
   dispatch?: any;
   handleSubmit?: any;
+  syncErrors?: any;
   invalid?: boolean;
   dirty?: boolean;
   parent?: string;
@@ -65,7 +66,8 @@ const TagItemEditView = React.memo<Props>(props => {
     validateName,
     validateRootName,
     validateShortName,
-    onClose
+    onClose,
+    syncErrors
   } = props;
 
   const [lockedUrl, setLockedUrl] = useState(true);
@@ -130,6 +132,7 @@ const TagItemEditView = React.memo<Props>(props => {
           disableInteraction={values.system}
           noDrawer
           hideHelpMenu
+          opened={!values.id || Object.keys(syncErrors).includes("name")}
           fields={(
             <Grid item xs={8}>
               <FormField
@@ -147,7 +150,7 @@ const TagItemEditView = React.memo<Props>(props => {
           )}
           onCloseClick={onCloseClick}
         >
-          <Grid container>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12} sm={4}>
               <FormField
                 type="select"
@@ -202,6 +205,7 @@ const TagItemEditView = React.memo<Props>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("TagItemForm")(state),
+  syncErrors: getFormSyncErrors("TagItemForm")(state),
   open: state.tags.editView.open,
   parent: state.tags.editView.parent
 });

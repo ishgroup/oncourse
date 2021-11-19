@@ -11,7 +11,7 @@ import { withRouter } from "react-router";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
-  Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues
+  Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues, getFormSyncErrors
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -80,6 +80,7 @@ interface FormProps extends Props {
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
   theme?: any;
+  syncErrors?: any;
 }
 
 const setWeight = items =>
@@ -435,6 +436,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       isNew,
       openConfirm,
       dispatch,
+      syncErrors,
       form
     } = this.props;
 
@@ -455,14 +457,15 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
             createdOn={() => (rootTag.created ? new Date(rootTag.created) : null)}
             modifiedOn={() => (rootTag.modified ? new Date(rootTag.modified) : null)}
             disableInteraction={rootTag.system}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
+            containerClass="p-3"
             fields={(
               <Grid item xs={8}>
                 <FormField
                   name="name"
-                  placeholder="Name"
+                  label="Name"
                   margin="none"
-                  listSpacing={false}
-                  validate={[validateSingleMandatoryField, this.validateRootTagName, validateTagName]}
+                  validate={[validateSingleMandatoryField,this.validateRootTagName, validateTagName]}
                   disabled={rootTag.system}
                 />
               </Grid>
@@ -561,6 +564,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("TagsForm")(state),
+  syncErrors: getFormSyncErrors("TagsForm")(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });
