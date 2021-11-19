@@ -15,8 +15,6 @@ const styles = theme =>
   createStyles({
     button: {
       color: theme.appBarButton.helpMenu.color,
-      marginRight: "10px",
-      marginTop: theme.spacing(0.5),
     },
     info: {
       display: "flex",

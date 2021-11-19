@@ -86,7 +86,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     paddingLeft: theme.spacing(8.75)
   },
   actionsWrapper: {
-    display: "flex"
+    display: "flex",
+    alignItems: "center"
   }
 }));
 
