@@ -278,6 +278,7 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".switchWrapper": {
         flexDirection: "row-reverse",
+        justifyContent: "space-between",
         marginLeft: 0
       },
       ".switchLabelMargin": {
@@ -414,9 +415,6 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".closeAndClearButton": {
         padding: theme.spacing(1)
-      },
-      ".listHeadingPadding": {
-        padding: theme.spacing(1.5, 3),
       },
       ".appHeaderFontSize": {
         fontSize: "1.125rem"

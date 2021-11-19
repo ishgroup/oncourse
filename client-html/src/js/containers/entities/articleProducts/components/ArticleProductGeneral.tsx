@@ -61,7 +61,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
+    twoColumn, accounts, isNew, taxes, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
 
   const gridItemProps = {
@@ -74,7 +74,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
       <Grid item container xs={12}>
         <FullScreenStickyHeader
-          opened={Object.keys(syncErrors).includes("name")}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
           twoColumn={twoColumn}
           title={<span>{values && values.name}</span>}
           fields={(

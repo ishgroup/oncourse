@@ -10,7 +10,7 @@ import {
 import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 import {
-  Form, getFormValues, startAsyncValidation, initialize, reduxForm, change
+  Form, getFormValues, startAsyncValidation, initialize, reduxForm, change, getFormSyncErrors
 } from "redux-form";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -110,6 +110,7 @@ interface FormProps extends Props {
   asyncErrors: any;
   history: any;
   nextLocation: string;
+  syncErrors: any;
   setNextLocation: (nextLocation: string) => void;
 }
 
@@ -176,46 +177,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
     });
   };
 
-  onPasswordChange = debounce(() => {
-    const {
-      dispatch,
-      values: { password },
-      passwordComplexityFlag
-    } = this.props;
-
-    if (password && passwordComplexityFlag === "true") {
-      dispatch(startAsyncValidation("UsersForm"));
-      dispatch(validateNewUserPassword(password));
-    }
-  }, 500);
-
-  validatePassword = value => {
-    const { passwordComplexityFlag, values } = this.props;
-
-    if (passwordComplexityFlag === "true") {
-      return undefined;
-    }
-
-    if (value && values.login && value.trim() === values.login.trim()) {
-      return "You must enter password which is different to login";
-    }
-
-    return value && value.trim().length < 5 ? "Password minimum length is 5 symbols" : undefined;
-  };
-
-  copyToClipBoard = value => {
-    const $tempInput: any = document.createElement("INPUT");
-    document.body.appendChild($tempInput);
-    $tempInput.setAttribute("value", value);
-    $tempInput.select();
-    document.execCommand("copy");
-    document.body.removeChild($tempInput);
-    this.setState({
-      showMessage: true,
-      messageText: "Password Copied"
-    });
-  };
-
   onResetPassword = () => {
     const {
       user: { id },
@@ -272,6 +233,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       isNew,
       invalid,
       form,
+      syncErrors
     } = this.props;
 
     const { showMessage, messageText } = this.state;
@@ -292,6 +254,19 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
           hideHelpMenu={isNew}
           createdOn={() => (created ? new Date(created) : null)}
           modifiedOn={() => (modified ? new Date(modified) : null)}
+          containerClass="p-3"
+          opened={isNew || Object.keys(syncErrors).includes("email")}
+          fields={(
+            <Grid item xs={8}>
+              <FormField
+                type="text"
+                name="email"
+                label="Email"
+                validate={validateUniqueNames}
+                required
+              />
+            </Grid>
+          )}
           submitButtonText={isNew ? "Invite" : values.inviteAgain ? "Resend invite" : "Save"}
         >
           <FormControlLabel
@@ -309,20 +284,14 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 type="text"
                 name="firstName"
                 label="First name"
+                className="mb-2"
                 required
               />
               <FormField
                 type="text"
                 name="lastName"
                 label="Last name"
-                required
-              />
-
-              <FormField
-                type="text"
-                name="email"
-                label="Email"
-                validate={validateUniqueNames}
+                className="mb-2"
                 required
               />
 
@@ -330,6 +299,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 type="select"
                 name="administrationCentre"
                 label="Bank cash/cheques to site"
+                className="mb-2"
                 autoWidth={false}
                 items={sites || []}
                 required
@@ -340,6 +310,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                   value={lastLoggedIn}
                   format={v => formatDate(new Date(v), III_DD_MMM_YYYY_HH_MM_SPECIAL)}
                   label="Last logged in"
+                  className="mb-2"
                 />
               )}
 
@@ -448,6 +419,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("UsersForm")(state),
+  syncErrors: getFormSyncErrors("UsersForm")(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });

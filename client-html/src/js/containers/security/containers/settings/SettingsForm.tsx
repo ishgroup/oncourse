@@ -125,6 +125,7 @@ class SettingsForm extends React.Component<any, any> {
           disableInteraction
           createdOn={v => v.created}
           modifiedOn={v => v.modified}
+          containerClass="p-3"
         >
           <Grid container>
             <Grid item xs={12} sm={8} className="d-flex">

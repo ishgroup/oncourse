@@ -339,7 +339,7 @@ const ScriptsForm = React.memo<Props>(props => {
           invalid={invalid}
           title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
           disableInteraction={isInternal}
-          opened={Object.keys(syncErrors).includes("name")}
+          opened={isNew || Object.keys(syncErrors).includes("name")}
           noDrawer
           fields={(
             <Grid item xs={12}>
