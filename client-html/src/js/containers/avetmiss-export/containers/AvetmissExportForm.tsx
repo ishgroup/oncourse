@@ -198,10 +198,6 @@ const formated = setMonth(new Date(), todayMonth);
 
 const manualUrl = getManualLink("AVETMISS");
 
-const openManual = () => {
-  window.open(manualUrl);
-};
-
 // Australian quarters
 const getCurrentQuarter = () => {
   const todayWithZeroTime = new Date();
@@ -663,6 +659,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         label="Flavour"
         items={flavourModel}
         onChange={this.onFlavourChange}
+        className="mb-2"
         reqired
       />
     );
@@ -674,15 +671,9 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         <AppBarContainer
           title="AVETMISS 8"
           disableInteraction
-          hamburgerMenu
-          actions={(
-            <Tooltip title="Additional information">
-              <IconButton onClick={openManual} color="inherit">
-                <HelpOutline color="inherit" />
-              </IconButton>
-            </Tooltip>
-          )}
+          manualUrl={manualUrl}
           onCloseClick={onClose}
+          hideSubmitButton
         >
           {values && (
             <Grid container columnSpacing={3} spacing={2}>
@@ -706,15 +697,16 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
               <Hidden xsUp={showUploads}>
                 <Grid item xs={12} lg={8}>
                   <Card onClick={hasOutcomesOrExport ? this.reset : undefined}>
+
                     <CardContent
-                      className={clsx("mb-0 pl-2", classes.settingsWrapper, {
+                      className={clsx("mb-0", classes.settingsWrapper, {
                         "cursor-pointer": hasOutcomesOrExport
                       })}
                     >
                       <Typography
                         color="inherit"
                         component="div"
-                        className={clsx("heading mt-1 centeredFlex pl-2", {
+                        className={clsx("heading mt-1 centeredFlex", {
                           "mb-2": hasOutcomesOrExport
                         })}
                       >
@@ -731,7 +723,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
 
                       <Collapse in={!hasOutcomesOrExport}>
                         <div
-                          className={clsx("d-flex pl-2 pb-2", {
+                          className={clsx("d-flex", {
                             "invisible": hasOutcomesOrExport
                           })}
                         >
@@ -763,6 +755,8 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       : dateRangeModel
                                   }
                                   onChange={this.onDateRangeChange}
+                                  className="mb-2"
+                                  displayEmpty
                                   required
                                 />
 
@@ -774,7 +768,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       label="Start"
                                       maxDate={values.outcomesEnd}
                                       validate={this.validateMaxDate}
-                                      className="pr-2"
+                                      className="mb-2"
                                     />
                                     <div>
                                       <FormField
@@ -783,6 +777,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                         label="End"
                                         minDate={values.outcomesStart}
                                         validate={this.validateMinDate}
+                                        className="mb-2"
                                       />
                                       {endDateWarning && <ErrorMessage message={endDateWarning} />}
                                     </div>
@@ -804,7 +799,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                   if they have the same Purchasing contract identifier.
                                 </Typography>
                               </div>
-                              <div className="flex-fill ml-2">
+                              <div className="flex-fill ml-2 pb-1">
                                 <FormGroup>
                                   {contracts
                                     && contracts.map(con => (
@@ -874,7 +869,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
 
                   <Card className="flex-column justify-content-center mt-3">
                     {!hasOutcomesOrExport && (
-                      <div className="centeredFlex justify-content-center pt-3 pb-3">
+                      <div className="centeredFlex justify-content-center pt-1 pb-1">
                         {!hasNoResults && (
                           <LoadingButton
                             color="primary"

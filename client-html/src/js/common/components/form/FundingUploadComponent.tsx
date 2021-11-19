@@ -130,7 +130,7 @@ class FundingUploadComponent extends Component<Props, any> {
                 }}
               >
                 <OpenInNew
-                  color="secondary"
+                  color="primary"
                   classes={{
                     root: classes.linkButtonIcon
                   }}
