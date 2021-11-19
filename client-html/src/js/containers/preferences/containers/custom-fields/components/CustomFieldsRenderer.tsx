@@ -206,7 +206,7 @@ const renderCustomFields = props => {
 
                         <Grid container columnSpacing={3} spacing={2} className="relative">
                           <Grid item xs={12}>
-                            <Grid container columnSpacing={3}>
+                            <Grid container columnSpacing={3} rowSpacing={2}>
                               <Grid item xs={3}>
                                 <FormField
                                   type="text"

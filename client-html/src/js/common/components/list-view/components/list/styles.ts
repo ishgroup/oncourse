@@ -39,7 +39,6 @@ export default (theme: AppTheme) => createStyles({
     zIndex: 1,
     top: 0,
     background: theme.palette.background.paper,
-    borderBottom: `1px solid ${theme.palette.divider}`,
   },
   headerCell: {
     fontSize: '0.75rem',
@@ -52,6 +51,7 @@ export default (theme: AppTheme) => createStyles({
     "& $draggingCell,&:focus $draggingCell": {
       color: theme.palette.divider
     },
+    borderBottom: `1px solid ${theme.palette.divider}`
   },
   draggingCell: {},
   listHeaderCell: {
@@ -176,6 +176,7 @@ export default (theme: AppTheme) => createStyles({
     right: theme.spacing(2),
     top: "1px",
     zIndex: theme.zIndex.appBar,
+    color: theme.palette.text.secondary,
     backgroundColor: theme.palette.background.paper,
     borderRadius: "100%"
   },

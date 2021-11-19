@@ -27,7 +27,7 @@ interface ContactsTutorProps {
   dispatch?: any;
 }
 
-const useStyles = makeAppStyles()(() => ({
+const useStyles = makeAppStyles(() => ({
   switchWrapper: {
     display: "flex",
     flexDirection: "column",
@@ -59,7 +59,7 @@ const ContactsTutor: React.FC<ContactsTutorProps> = props => {
   const [switchChanged, setSwitchChangedValue] = useState(false);
   const [switchValue, setSwitchValue] = useState(false)
 
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   useEffect(() => {
     if (isNew && !switchChanged) setSwitchValue(true)

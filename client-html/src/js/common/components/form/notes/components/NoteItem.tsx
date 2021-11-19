@@ -48,7 +48,7 @@ const NoteItem = (props: Props) => {
               multiline
             />
           </Grid>
-          <Grid container alignItems="flex-end">
+          <Grid container justifyContent="space-between">
             <Grid item>
               {item.created && (
                 <Typography className={classes.dateInfo}>
@@ -79,7 +79,7 @@ const NoteItem = (props: Props) => {
               </Typography>
               )}
             </Grid>
-            <Grid item>
+            <Grid item className="d-flex" alignItems="flex-end">
               {item.message && !item.id && (
                 <Tooltip title={checked ? "Note added" : "Add note"}>
                   <span>

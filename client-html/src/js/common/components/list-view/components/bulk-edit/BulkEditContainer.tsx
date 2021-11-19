@@ -227,7 +227,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     return field.type === "Tag"
       ? (
         <>
-          <Typography variant="body2" color="inherit" className="pb-1" classes={{ root: classes.listItemsText }}>
+          <Typography variant="body2" color="inherit" className="mb-3" classes={{ root: classes.listItemsText }}>
             {`The following tags will be ${field.keyCode === "bulkTag" ? "added to" : "removed from"} the records...`}
           </Typography>
           <FormField

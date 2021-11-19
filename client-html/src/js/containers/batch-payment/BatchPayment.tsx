@@ -44,14 +44,13 @@ import { openInternalLink } from "../../common/utils/links";
 import { decimalPlus } from "../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../common/utils/numbers/numbersNormalizing";
 import { BatchPaymentContact } from "../../model/batch-payment";
-import { AppTheme } from "../../model/common/Theme";
 import { State } from "../../reducers/state";
 import CheckoutService from "../checkout/services/CheckoutService";
 import { getContactName } from "../entities/contacts/utils";
 import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   checkbox: {
     width: "auto",
     height: "auto",
@@ -156,8 +155,8 @@ const ContactItem = memo<ContactItemProps>(({
           content: "m-0",
         }}
         >
-          <Grid container columnSpacing={3} className="centeredFlex">
-            <div className="centeredFlex flex-fill pl-1">
+          <Grid container className="centeredFlex">
+            <div className="centeredFlex flex-fill pl-1 pr-2">
               <Tooltip
                 disableHoverListener={!checkDisabled}
                 disableFocusListener={!checkDisabled}
@@ -210,11 +209,10 @@ const ContactItem = memo<ContactItemProps>(({
 
               {!expanded && <span className="money">{total}</span>}
             </div>
-
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container columnSpacing={3}>
+          <Grid container >
             {item.items.map((i, index) => (
               <Grid key={i.id} item xs={12} className={clsx("d-flex", classes.tableTab)}>
                 <div className="centeredFlex flex-fill">
@@ -255,6 +253,7 @@ const ContactItem = memo<ContactItemProps>(({
                 item
                 xs={4}
                 container
+                justifyContent="flex-end"
                 className="money pt-1 summaryTopBorder"
               >
                 <Typography variant="body2" className={classes.amountMargin}>{total}</Typography>
@@ -404,19 +403,17 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
 const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   handleSubmit,
-  dirty,
   invalid,
   dispatch,
   currencySymbol,
   values,
-  form,
 }) => {
   const [contactsLoading, setContactsLoading] = useState(false);
   const [filterByStoreCard, setFilterByStoreCard] = useState(true);
   const [processing, setProcessing] = useState(false);
   const cancel = useRef(false);
 
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   useEffect(() => {
     setContactsLoading(true);
@@ -490,7 +487,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       <LoadingIndicator appBarOffset transparentBackdrop customLoading={contactsLoading} />
 
       <CustomAppBar>
-        <Grid container columnSpacing={3}>
+        <Grid container>
           <Grid item xs={12} className="centeredFlex">
             <Typography color="inherit" noWrap className="appHeaderFontSize">
               Batch payment in (showing
@@ -568,13 +565,14 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           />
         </div>
 
-        <Grid container columnSpacing={3} className="pt-3 d-flex justify-content-end">
+        <Grid container className="pt-3 d-flex justify-content-end">
           <Grid item xs={12} sm={8} />
           <Grid
             item
             xs={12}
             sm={4}
             container
+            justifyContent="flex-end"
             className="money p-2 summaryTopBorder"
           >
             <Typography variant="body2" className={classes.amountMargin}>

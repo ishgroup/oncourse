@@ -143,7 +143,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
         </div>
       )}
       detailsContent={(
-        <Grid container columnSpacing={3} spacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={12}>
             <FormField
               type="remoteDataSearchSelect"

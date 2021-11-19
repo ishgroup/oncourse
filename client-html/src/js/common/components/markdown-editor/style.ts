@@ -1,7 +1,41 @@
+import { makeStyles } from "@mui/styles";
 import { AppTheme } from "../../../model/common/Theme";
-import { makeAppStyles } from "../../styles/makeStyles";
 
-export const useStyles = makeAppStyles()((theme: AppTheme) => ({
+export const useStyles = makeStyles((theme: AppTheme) => ({
+  hoverIcon: {
+    opacity: 0.5,
+    visibility: "hidden",
+    marginLeft: theme.spacing(1)
+  },
+  editable: {
+    display: "inline-flex",
+    color: theme.palette.text.primaryEditable,
+    minHeight: "32px",
+    padding: "4px 0 4px",
+    marginTop: theme.spacing(2),
+    fontWeight: 400,
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    "&:hover $hoverIcon": {
+      visibility: "visible"
+    },
+    "&:before": {
+      borderBottom: '1px solid transparent',
+      left: 0,
+      bottom: "4px",
+      content: "' '",
+      position: "absolute",
+      right: 0,
+      transition: theme.transitions.create("border-bottom-color", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      pointerEvents: "none"
+    },
+    "&:hover:before": {
+      borderBottom: `1px solid ${theme.palette.primary.main}`
+    },
+  },
   editorArea: {
     "&#editorRoot": {
       "& textarea.mde-text, .mde-tabs button": {
@@ -200,13 +234,6 @@ export const useStyles = makeAppStyles()((theme: AppTheme) => ({
       }
     }
   },
-  editable: {
-    fontWeight: 400,
-    "&:hover, &:hover .placeholderContent": {
-      color: theme.palette.primary.main,
-      fill: theme.palette.primary.main,
-    }
-  },
   previewFrame: {
     maxHeight: "300px",
     overflow: "auto",
@@ -222,7 +249,7 @@ export const useStyles = makeAppStyles()((theme: AppTheme) => ({
   textField: {
     paddingLeft: "0",
     // @ts-ignore
-    paddingBottom: `${theme.spacing(2) - 3}px`,
+    paddingBottom: `${theme.spacing(2) - 3}`,
     margin: 0
   },
   "@global": {

@@ -121,7 +121,6 @@ const ImportForm: React.FC<Props> = props => {
                     value: "onCourse AVETMISS outcome update import"
                   }
                 ]}
-                formatting="primary"
               />
               <Typography variant="caption" component="div" className="pb-3">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
@@ -134,7 +133,6 @@ const ImportForm: React.FC<Props> = props => {
                   type="text"
                   name="studentTag"
                   label="Tag students with"
-                  formatting="primary"
                   className="pb-2"
                 />
                 <FormField

@@ -32,7 +32,8 @@ const CorporatePassEditView = props => {
     form,
     twoColumn,
     submitSucceeded,
-    manualLink
+    manualLink,
+    syncErrors
   } = props;
 
   return (
@@ -41,6 +42,7 @@ const CorporatePassEditView = props => {
       itemProps={{
         isNew,
         isNested,
+        syncErrors,
         nestedIndex,
         values,
         classes,

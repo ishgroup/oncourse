@@ -93,7 +93,7 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
           }}
           expandIcon={<ExpandMoreIcon />}
         >
-          <Grid container columnSpacing={3} direction="row">
+          <Grid container direction="row">
             <Grid item xs={5}>
               {headerComponent || <div className="secondaryHeading">{header}</div>}
             </Grid>
@@ -120,7 +120,7 @@ const BudgetExpandableItemRenderer: React.FC<BudgetExpandableProps> = ({
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container columnSpacing={3}>
+          <Grid container>
             {customRowsRenderer
               ? customRowsRenderer({
                rowsValues, openEditModal, onDeleteClassCost, currencySymbol, classes

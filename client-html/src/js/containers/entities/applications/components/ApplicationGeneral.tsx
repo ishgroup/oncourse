@@ -21,7 +21,6 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { openInternalLink } from "../../../../common/utils/links";
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -47,7 +46,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     isNew,
     dispatch,
     form,
-    invalid
+    syncErrors
   } = props;
 
   const gridItemProps = {
@@ -56,14 +55,14 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   } as any;
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className="generalRoot pt-3">
+    <Grid container columnSpacing={3} rowSpacing={1} className="p-3 mt-0">
       <Grid item xs={12}>
         <FullScreenStickyHeader
-          opened={isNew || invalid}
+          opened={isNew || Object.keys(syncErrors).includes("contactId")}
           disableInteraction={!isNew}
           twoColumn={twoColumn}
           title={(
-            <div className="centeredFlex">
+            <div className="d-inline-flex-center">
               {values && defaultContactName(values.studentName)}
               <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
                 <Launch fontSize="inherit" />
@@ -122,13 +121,15 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           required
         />
       </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
-          validate={tags && tags.length ? validateTagList : undefined}
-        />
+      <Grid item container xs={12}>
+        <Grid {...gridItemProps}>
+          <FormField
+            type="tags"
+            name="tags"
+            tags={tags}
+            validate={tags && tags.length ? validateTagList : undefined}
+          />
+        </Grid>
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
@@ -139,7 +140,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         />
       </Grid>
       <Grid item {...gridItemProps}>
-        <FormField type="text" name="source" label="Source" disabled />
+        <Uneditable value={values.source} label="Source" />
       </Grid>
       <Grid item {...gridItemProps}>
         {values && values.status !== ApplicationStatus.Accepted ? (

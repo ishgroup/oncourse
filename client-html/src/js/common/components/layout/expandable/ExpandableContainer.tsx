@@ -11,20 +11,23 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import { AppTheme } from "../../../../model/common/Theme";
-import AddIcon from "../../icons/AddIcon";
 import Divider from "@mui/material/Divider";
+import { AppTheme } from "../../../../model/common/Theme";
+import AddButton from "../../icons/AddButton";
 
 const styles = (theme: AppTheme) =>
   createStyles({
     expandButton: {
+      position: "absolute",
+      right: 0,
       transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`
     },
     expandButtonExpanded: {
       transform: "rotate(180deg)"
     },
-    adornmentOffset: {
-      marginLeft: theme.spacing(-1.5)
+    controls: {
+      position: "relative",
+      paddingRight: theme.spacing(5)
     }
   });
 
@@ -39,7 +42,6 @@ interface Props {
   onAdd?: any;
   classes?: any;
   mountAll?: boolean;
-  inlineHeading?: boolean;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -53,7 +55,6 @@ const ExpandableContainer: React.FC<Props> = ({
   setExpanded,
   index,
   mountAll,
-  inlineHeading = false,
 }) => {
   const headerRef = useRef<any>();
 
@@ -84,21 +85,19 @@ const ExpandableContainer: React.FC<Props> = ({
 
   return (
     <>
-      <Divider className="mb-2"/>
+      <Divider className={onAdd ? "mb-2" : "mb-3"} />
       <div ref={headerRef}>
-        <div className="centeredFlex mb-2">
-          <div className={clsx("centeredFlex", { "flex-fill": !inlineHeading })}>
+        <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
+          <div className="centeredFlex">
             <div className="heading">{header}</div>
             {onAdd && (
-              <AddIcon onClick={onAdd} />
+              <AddButton onClick={onAdd} />
             )}
           </div>
-          <IconButton onClick={toggleExpand} className={onAdd && classes.adornmentOffset}>
-            <ExpandMore
-              className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
-            />
-          </IconButton>
           {headerAdornment}
+          <IconButton onClick={toggleExpand} className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}>
+            <ExpandMore />
+          </IconButton>
         </div>
       </div>
 

@@ -7,7 +7,7 @@ import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AddIcon from "../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 const styles = () => createStyles({
   payRateItem: {
@@ -58,11 +58,11 @@ class PayRates extends React.Component<Props, any> {
     const { classes } = this.props;
 
     return (
-      <Grid container columnSpacing={3} className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
+      <Grid container className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
         <Grid item xs={12}>
           <div className="centeredFlex">
             <div className="heading">Pay Rate</div>
-            <AddIcon onClick={this.addPayRate} />
+            <AddButton onClick={this.addPayRate} />
           </div>
         </Grid>
 

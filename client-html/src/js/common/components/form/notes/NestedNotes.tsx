@@ -17,7 +17,7 @@ import styles from "./styles";
 import { showConfirm } from "../../../actions";
 import NotesRenderer from "./components/NotesRenderer";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 
 interface Props {
   classes?: any;
@@ -86,7 +86,7 @@ const NestedNotes = React.memo<Props>(
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <AddIcon onClick={addNote} />
+            <AddButton onClick={addNote} />
           </div>
         </Grid>
 

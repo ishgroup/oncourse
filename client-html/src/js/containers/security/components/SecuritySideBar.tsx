@@ -57,18 +57,18 @@ const SecuritySideBar = React.memo<any>(
     const { location: { pathname } } = history;
 
     return (
-      <div className={className}>
+      <div className={`mt-2 ${className}`}>
         <NavLink to="/security/settings" className="link">
-          <MenuItem disableGutters className="listHeadingPadding heading" selected={pathname === "/security/settings"}>
-            <Typography className="heading pr-2" variant="h6" color="primary">
+          <MenuItem disableGutters className="heading" selected={pathname === "/security/settings"}>
+            <Typography className="heading pl-3 pr-2" variant="h6" color="primary">
               Settings
             </Typography>
           </MenuItem>
         </NavLink>
 
         <NavLink to="/security/api-tokens" className="link">
-          <MenuItem disableGutters className="listHeadingPadding heading mt-1" selected={pathname === "/security/api-tokens"}>
-            <Typography className="heading pr-2" variant="h6" color="primary">
+          <MenuItem disableGutters className="heading mt-1" selected={pathname === "/security/api-tokens"}>
+            <Typography className="heading pl-3 pr-2" variant="h6" color="primary">
               API Tokens
             </Typography>
           </MenuItem>

@@ -40,7 +40,7 @@ const styles = (theme: AppTheme) =>
       fontSize: "20px",
       height: "30px",
       width: "30px",
-      padding: `${theme.spacing(0.5)}px`
+      padding: `${theme.spacing(0.5)}`
     }
   });
 
