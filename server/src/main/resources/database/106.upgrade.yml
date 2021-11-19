@@ -59,3 +59,10 @@ databaseChangeLog:
               - column:
                   name: createdByUserId
                   type: BIGINT
+        - createIndex:
+            columns:
+              - column:
+                  name: messageId
+            indexName: fk_Message_Person_Message
+            tableName: Message_Person
+            unique: false
