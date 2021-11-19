@@ -42,7 +42,7 @@ const styles = (theme: AppTheme) => createStyles({
   },
   rounded: {
     borderRadius: "100%",
-  }
+  },
   actionButton: {
     background: theme.palette.background.paper,
     "&:hover": {
