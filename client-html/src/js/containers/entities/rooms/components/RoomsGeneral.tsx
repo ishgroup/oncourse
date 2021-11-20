@@ -68,113 +68,107 @@ class RoomsGeneral extends React.PureComponent<any, any> {
     const layoutArray = getLayoutArray(twoColumn);
 
     return (
-      <>
-        <Grid container columnSpacing={3} className="p-3">
-          <Grid item xs={layoutArray[2].xs}>
-            <FullScreenStickyHeader
-              twoColumn={twoColumn}
-              title={values && values.name}
-              fields={(
-                <FormField
-                  type="text"
-                  name="name"
-                  label="Name"
-                  required
-                  listSpacing={false}
-                />
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+        <Grid item xs={layoutArray[2].xs}>
+          <FullScreenStickyHeader
+            twoColumn={twoColumn}
+            title={values && values.name}
+            fields={(
+              <FormField
+                type="text"
+                name="name"
+                label="Name"
+                required
+              />
               )}
-              truncateTitle
+          />
+        </Grid>
+        <Grid item container xs={layoutArray[0].xs} columnSpacing={3} className="flex-nowrap align-items-center mb-1">
+          <Grid item xs={12}>
+            <FormField
+              type="tags"
+              name="tags"
+              tags={tags}
+              validate={tags && tags.length ? this.validateTagList : undefined}
             />
           </Grid>
-          <Grid item xs={layoutArray[0].xs}>
-            <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-              <Grid item xs={12} className="container">
-                <FormField
-                  type="tags"
-                  name="tags"
-                  tags={tags}
-                  validate={tags && tags.length ? this.validateTagList : undefined}
-                />
-              </Grid>
 
-              <Grid item className="centeredFlex">
-                <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
-                  <ScreenShare />
-                </IconButton>
+          <Grid item className="centeredFlex">
+            <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
+              <ScreenShare />
+            </IconButton>
 
-                <Typography variant="caption">Kiosk</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12} className="mb-2">
-            <TimetableButton onClick={this.onCalendarClick} />
-          </Grid>
-
-          <Grid item xs={layoutArray[1].xs}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={layoutArray[3].xs}>
-                <FormField
-                  type="text"
-                  name="seatedCapacity"
-                  label="Seated Capacity"
-                  required
-                  normalize={normalizeSeatedCapacity}
-                />
-              </Grid>
-
-              <Grid item xs={layoutArray[4].xs}>
-                {sites && (
-                  <FormField
-                    type="select"
-                    name="siteId"
-                    label="Site"
-                    selectLabelMark="name"
-                    selectValueMark="id"
-                    labelAdornment={
-                      isNew ? undefined : (
-                        <LinkAdornment
-                          link="true"
-                          disabled={!values.siteId}
-                          clickHandler={() => openSiteLink(values.siteId)}
-                        />
-                      )
-                    }
-                    items={sites}
-                    onInnerValueChange={this.onSiteChange}
-                    required
-                  />
-                )}
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={layoutArray[5].xs}>
-            <FormEditorField name="facilities" label="Facilities" />
-          </Grid>
-
-          <Grid item xs={layoutArray[6].xs}>
-            <FormEditorField name="directions" label="Directions" />
-          </Grid>
-
-          <Grid item xs={layoutArray[7].xs}>
-            <FieldArray
-              name="documents"
-              label="Documents"
-              entity="Room"
-              classes={classes}
-              component={DocumentsRenderer}
-              xsGrid={layoutArray[3].xs}
-              mdGrid={layoutArray[4].md}
-              lgGrid={layoutArray[5].lg}
-              dispatch={dispatch}
-              form={form}
-              showConfirm={showConfirm}
-              rerenderOnEveryChange
-            />
+            <Typography variant="caption">Kiosk</Typography>
           </Grid>
         </Grid>
-      </>
+
+        <Grid item xs={12} className="mb-2">
+          <TimetableButton onClick={this.onCalendarClick} />
+        </Grid>
+
+        <Grid item xs={layoutArray[1].xs}>
+          <Grid container columnSpacing={3}>
+            <Grid item xs={layoutArray[3].xs}>
+              <FormField
+                type="text"
+                name="seatedCapacity"
+                label="Seated Capacity"
+                required
+                normalize={normalizeSeatedCapacity}
+              />
+            </Grid>
+
+            <Grid item xs={layoutArray[4].xs}>
+              {sites && (
+              <FormField
+                type="select"
+                name="siteId"
+                label="Site"
+                selectLabelMark="name"
+                selectValueMark="id"
+                labelAdornment={
+                  isNew ? undefined : (
+                    <LinkAdornment
+                      link={values && values.siteId}
+                      disabled={!values.siteId}
+                      clickHandler={() => openSiteLink(values.siteId)}
+                    />
+                  )
+                }
+                items={sites}
+                onInnerValueChange={this.onSiteChange}
+                required
+              />
+                )}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={layoutArray[5].xs}>
+          <FormEditorField name="facilities" label="Facilities" />
+        </Grid>
+
+        <Grid item xs={layoutArray[6].xs}>
+          <FormEditorField name="directions" label="Directions" />
+        </Grid>
+
+        <Grid item xs={layoutArray[7].xs} className="mb-1">
+          <FieldArray
+            name="documents"
+            label="Documents"
+            entity="Room"
+            classes={classes}
+            component={DocumentsRenderer}
+            xsGrid={layoutArray[3].xs}
+            mdGrid={layoutArray[4].md}
+            lgGrid={layoutArray[5].lg}
+            dispatch={dispatch}
+            form={form}
+            showConfirm={showConfirm}
+            rerenderOnEveryChange
+          />
+        </Grid>
+      </Grid>
     );
   }
 }

@@ -7,8 +7,8 @@ import React, { useMemo } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
-const LeadSelectItemRenderer = React.memo<{ content: string; data: any }>(props => {
-  const { content, data } = props;
+const LeadSelectItemRenderer = React.memo<{ content: string; data: any, parentProps: any }>(props => {
+  const { content, data, parentProps } = props;
 
   const caption = useMemo(
     () => (
@@ -22,17 +22,19 @@ const LeadSelectItemRenderer = React.memo<{ content: string; data: any }>(props 
   );
 
   return (
-    <div className="overflow-hidden">
-      <div className="text-nowrap text-truncate">
-        {content}
+    <div {...parentProps}>
+      <div className="overflow-hidden">
+        <div className="text-nowrap text-truncate">
+          {content}
+        </div>
+        <Tooltip title={caption}>
+          <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">
+            {caption}
+          </Typography>
+        </Tooltip>
       </div>
-      <Tooltip title={caption}>
-        <Typography variant="caption" component="div" color="textSecondary" className="text-truncate">
-          {caption}
-        </Typography>
-      </Tooltip>
     </div>
   );
 });
 
-export default (content, data) => <LeadSelectItemRenderer data={data} content={content} />;
+export default (content, data, search, parentProps) => <LeadSelectItemRenderer data={data} content={content} parentProps={parentProps} />;

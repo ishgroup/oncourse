@@ -7,11 +7,10 @@ import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tooltip from "@mui/material/Tooltip";
 import { Module, Qualification } from "@api/model";
-import { Collapse } from "@mui/material";
+import {
+ Collapse, Tooltip, FormControlLabel, Grid
+} from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
@@ -139,9 +138,9 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
   }, [moduleItems]);
 
   return (
-    <Grid container columnSpacing={3} className="pl-3 pr-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3 mt-1">
       <Grid item xs={12}>
-        <div className="heading mt-2 mb-2">Vet</div>
+        <div className="heading">Vet</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -170,7 +169,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         <Uneditable value={values.qualLevel} label="Level" />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isSufficientForQualification" />}
@@ -179,7 +178,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isVET" />}
@@ -211,7 +210,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
       </Grid>
 
       <Grid item xs={12}>
-        <div className="heading mb-2 mt-2">Vet student loans</div>
+        <div className="heading">Vet student loans</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>

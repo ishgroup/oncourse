@@ -143,10 +143,11 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
               </Typography>
             </div>
             <FieldArray
-              name={`fundingInvoices[${selectedItemIndex}].trainingPlans`}
+              name={`fundingInvoices[${selectedItemIndex}].trainingPlans` as string}
               className="saveButtonTableOffset"
               component={NestedTable}
               columns={trainingPlansColumns}
+              calculateHeight
               hideHeader
             />
           </Grid>

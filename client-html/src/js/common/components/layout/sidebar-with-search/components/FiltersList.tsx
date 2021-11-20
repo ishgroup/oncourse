@@ -21,7 +21,8 @@ const styles = createStyles((theme: Theme) => ({
     margin: theme.spacing(0.5, 0.5, 0, 0),
     padding: theme.spacing(0.3125, 1),
     "&$chipOutlined $chipIcon": {
-      marginLeft: theme.spacing(-0.5)
+      marginLeft: theme.spacing(-0.5),
+      marginRight: 0
     }
   },
   chipIcon: {

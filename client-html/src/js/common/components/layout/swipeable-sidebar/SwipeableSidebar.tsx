@@ -30,6 +30,9 @@ export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
 const styles = (theme: AppTheme) =>
   createStyles({
+    drawerRoot: {
+      zIndex: theme.zIndex.modal + 2,
+    },
     drawerPaper: {
       overflowX: "hidden"
     },
@@ -51,7 +54,7 @@ const styles = (theme: AppTheme) =>
       padding: "0 16px"
     },
     searchResultsRoot: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(2)}px ${theme.spacing(2)}px 125px`,
+      padding: `${theme.spacing(2)} ${theme.spacing(2)} ${theme.spacing(2)} 125px`,
       transition: "all 0.5s ease-in"
     },
     favoritesTopBar: {
@@ -307,14 +310,14 @@ const SwipeableSidebar: React.FC<Props> = props => {
   }, [isFormDirty, resetEditView]);
 
   return (
-    <>
-      <SwipeableDrawer
-        variant={variant}
-        open={opened}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-        classes={{
-          paper: classes.drawerPaper
+    <SwipeableDrawer
+      variant={variant}
+      open={opened}
+      onClose={toggleDrawer(false)}
+      onOpen={toggleDrawer(true)}
+      classes={{
+        paper: classes.drawerPaper,
+          root: classes.drawerRoot,
         }}
       >
         <div className={classes.drawerWidth}>
@@ -352,7 +355,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
           </div>
         </div>
       </SwipeableDrawer>
-    </>
+
   );
 };
 

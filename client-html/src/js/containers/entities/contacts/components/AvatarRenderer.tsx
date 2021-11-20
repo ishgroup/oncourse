@@ -24,26 +24,7 @@ import { makeAppStyles } from "../../../../common/styles/makeStyles";
 const validateImageFormat = (imageFile: File) =>
   (["image/jpeg", "image/png"].includes(imageFile.type) ? undefined : "Avatar must be of image type");
 
-const useStyles = makeAppStyles()((theme, _props, createRef) => {
-  const avatarBackdrop = {
-    ref: createRef(),
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: theme.palette.action.active,
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    opacity: 0,
-    transition: theme.transitions.create("opacity", {
-      duration: theme.transitions.duration.standard,
-      easing: theme.transitions.easing.easeInOut
-    }),
-    borderRadius: "100%",
-    color: "#fff",
-  } as const;
-  
-  return {
+const useStyles = makeAppStyles(theme => ({
     avatarWrapper: {
       "&, & img": {
         transition: theme.transitions.create("all", {
@@ -53,19 +34,33 @@ const useStyles = makeAppStyles()((theme, _props, createRef) => {
       },
     },
     profileThumbnail: {
-      [`&:hover ${avatarBackdrop.ref}`]: {
+      "&:hover $avatarBackdrop": {
         opacity: 1,
       },
     },
-    avatarBackdrop,
+    avatarBackdrop: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: theme.palette.action.active,
+      position: "absolute",
+      height: "100%",
+      width: "100%",
+      opacity: 0,
+      transition: theme.transitions.create("opacity", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      borderRadius: "100%",
+      color: "#fff",
+    },
     avatarRoot: {
       transition: theme.transitions.create("all", {
         duration: theme.transitions.duration.standard,
         easing: theme.transitions.easing.easeInOut
       }),
     },
-  };
-});
+  }));
 
 const AvatarRenderer: React.FC<any> = props => {
   const {
@@ -79,7 +74,7 @@ const AvatarRenderer: React.FC<any> = props => {
     twoColumn,
   } = props;
   
-  const { classes } = useStyles();
+  const classes = useStyles();
 
   const fileRef = useRef<any>();
 

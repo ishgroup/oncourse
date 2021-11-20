@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
+import React from "react";
 import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
@@ -20,7 +20,7 @@ interface Props {
 
 export const LinkAdornment: React.FC<Props> = ({
   link,
-  linkColor = "secondary",
+  linkColor = "primary",
   linkHandler,
   clickHandler,
   className,
@@ -55,12 +55,12 @@ export const SettingsAdornment: React.FC<Props> = ({
         disabled={disabled}
         onClick={onClick}
         classes={{
-          root: "inputAdornmentButton"
+          root: "inputAdornmentButton ml-0-5"
         }}
         color="inherit"
         size="small"
       >
-        <SettingsOutlinedIcon fontSize="inherit" color="inherit" />
+        <SettingsOutlinedIcon color="inherit" />
       </IconButton>
     </span>
   );

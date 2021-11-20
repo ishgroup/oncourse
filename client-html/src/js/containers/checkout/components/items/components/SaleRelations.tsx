@@ -6,7 +6,6 @@ import React, { useMemo } from "react";
 import { Card } from "@mui/material";
 import { CheckoutItem, CheckoutSaleRelationExtended } from "../../../../../model/checkout";
 import { NestedListRow } from "../../../../../common/components/form/nestedList/components/ListRenderer";
-import { AppTheme } from "../../../../../model/common/Theme";
 import { makeAppStyles } from "../../../../../common/styles/makeStyles";
 
 interface Props {
@@ -15,7 +14,7 @@ interface Props {
   onSelect?: any;
 }
 
-const useStyles = makeAppStyles()((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   listRoot: {
     listStyle: "none",
     padding: theme.spacing(1, 0, 0, 0),
@@ -24,7 +23,7 @@ const useStyles = makeAppStyles()((theme: AppTheme) => ({
 }));
 
 const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
-  const { classes } = useStyles();
+  const classes  = useStyles();
 
   const groupedRelations = useMemo(() => {
     const result = {};

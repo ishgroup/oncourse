@@ -18,6 +18,7 @@ import {
 import AuditsEditView from "./components/AuditsEditView";
 import AuditFindRelatedMenu from "./components/AuditFindRelatedMenu";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../common/utils/dates/format";
+import { getManualLink } from "../../common/utils/getManualLink";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -82,6 +83,10 @@ const customColumnFormats = {
   created: v => (v ? format(new Date(v), III_DD_MMM_YYYY_HH_MM_SPECIAL) : null)
 };
 
+const manualLink = getManualLink("advancedSetup_Help");
+
+const nameCondition = audit => audit.action;
+
 class AuditsApp extends React.Component<any, any> {
   componentDidMount() {
     this.props.getFilters();
@@ -96,23 +101,25 @@ class AuditsApp extends React.Component<any, any> {
     const { getAuditRecord } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            customColumnFormats,
-            primaryColumn: "action",
-            secondaryColumn: "created"
-          }}
-          EditViewContent={AuditsEditView}
-          getEditRecord={getAuditRecord}
-          rootEntity="Audit"
-          filterGroupsInitial={filterGroups}
-          findRelated={findRelatedGroup}
-          CustomFindRelatedMenu={AuditFindRelatedMenu}
-          defaultDeleteDisabled
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          customColumnFormats,
+          primaryColumn: "action",
+          secondaryColumn: "created"
+        }}
+        editViewProps={{
+          manualLink,
+          nameCondition
+        }}
+        EditViewContent={AuditsEditView}
+        getEditRecord={getAuditRecord}
+        rootEntity="Audit"
+        filterGroupsInitial={filterGroups}
+        findRelated={findRelatedGroup}
+        CustomFindRelatedMenu={AuditFindRelatedMenu}
+        defaultDeleteDisabled
+        noListTags
+      />
     );
   }
 }

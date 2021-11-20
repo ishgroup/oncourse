@@ -245,7 +245,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   }, [prevId, usiVerificationResult]);
 
   return values ? (
-    <div className="pt-2 pl-3 pr-3">
+    <div className="pt-1 pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
@@ -530,7 +530,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </>
           )}
           <Grid item xs={12}>
-            <div className="mt-1 centeredFlex">
+            <div className="mt-1 mb-2 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
                 control={<FormField type="checkbox" name="student.feeHelpEligible" color="secondary" />}

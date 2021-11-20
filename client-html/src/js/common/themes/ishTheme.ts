@@ -10,6 +10,7 @@ import {
   ThemeValues
 } from "../../model/common/Theme";
 import { Components } from "@mui/material/styles/components";
+import { PaletteMode } from "@mui/material";
 
 const createOverrides = (palette):{ components: Components } => ({
   components: {
@@ -107,6 +108,10 @@ const createOverrides = (palette):{ components: Components } => ({
           },
         },
         input: {
+          '&.Mui-disabled': {
+            fontWeight: 300,
+            WebkitTextFillColor: 'inherit'
+          },
           "&::placeholder": {
             color: palette.text.disabled,
             fill: palette.text.disabled,
@@ -125,7 +130,7 @@ const createOverrides = (palette):{ components: Components } => ({
         },
         inputMultiline: {
           lineHeight: "1.5em"
-        },
+        }
       }
     },
     MuiCssBaseline: {
@@ -135,7 +140,8 @@ const createOverrides = (palette):{ components: Components } => ({
             '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
             + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
             + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
-            + '"cv10", "cv11", "calt", "liga", "kern"'
+            + '"cv10", "cv11", "calt", "liga", "kern"',
+          fontSize: "0.875rem"
         }
       }
     },
@@ -232,7 +238,7 @@ export const defaultTheme = createTheme({
 
 // Dark Theme
 const darkThemePalette = {
-  type: "dark",
+  mode: "dark" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
     main: "#f7941d",
@@ -271,7 +277,7 @@ export const darkTheme = createTheme({
 // Monochrome Theme
 
 const monochromeThemePalette = {
-  type: "light",
+  mode: "light" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
     main: "#eaeaea",
@@ -347,7 +353,7 @@ export const highcontrastTheme = createTheme({
 // High Contrast Theme
 
 const christmasThemePalette = {
-  type: "light",
+  mode: "light" as PaletteMode,
   common: { black: "#111111", white: "#fff" },
   primary: {
     main: "#B3000C",

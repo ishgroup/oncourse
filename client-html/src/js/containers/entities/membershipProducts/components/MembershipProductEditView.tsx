@@ -13,6 +13,7 @@ import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import MembershipProductGeneral from "./MembershipProductGeneral";
 import MembershipProductDiscounts from "./MembershipProductDiscounts";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const items: TabsListItem[] = [
   {
@@ -35,21 +36,7 @@ const items: TabsListItem[] = [
   }
 ];
 
-interface MembershipProductEditViewProps {
-  values?: MembershipProduct;
-  isNew?: boolean;
-  isNested?: boolean;
-  classes?: any;
-  dispatch?: any;
-  dirty?: boolean;
-  form?: string;
-  nestedIndex?: number;
-  rootEntity?: string;
-  twoColumn?: boolean;
-  submitSucceeded?: boolean;
-  showConfirm?: any;
-  openNestedEditView?: any;
-  manualLink?: string;
+interface MembershipProductEditViewProps extends EditViewProps<MembershipProduct> {
   accounts?: Account[];
   taxes?: Tax[];
   access?: AccessState;
@@ -72,7 +59,8 @@ const MembershipProductEditView: React.FC<MembershipProductEditViewProps> = prop
     accounts,
     taxes,
     access,
-    submitSucceeded
+    submitSucceeded,
+    syncErrors
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -97,7 +85,8 @@ const MembershipProductEditView: React.FC<MembershipProductEditViewProps> = prop
         manualLink,
         accounts,
         taxes,
-        submitSucceeded
+        submitSucceeded,
+        syncErrors
       }}
     />
   );

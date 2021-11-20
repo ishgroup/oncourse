@@ -54,6 +54,7 @@ const LeadInvoiceTab = props => {
         onRowDoubleClick={openRow}
         rerenderOnEveryChange
         sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+        calculateHeight
       />
     </div>
   );
