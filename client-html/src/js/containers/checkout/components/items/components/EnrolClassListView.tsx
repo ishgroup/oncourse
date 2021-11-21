@@ -139,6 +139,7 @@ const EnrolClassListView = React.memo<any>(props => {
                     return (
                       <Grid item xs={12} key={s.id}>
                         <Button
+                          color="inherit"
                           onClick={onSelect && (() => onSelect(s))}
                           classes={{
                             disabled: classes.disabledSessionButton

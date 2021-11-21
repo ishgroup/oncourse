@@ -171,7 +171,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               }}
             >
               {first ? (
-                <StepButton onClick={onPayNowFocus} className="text-left">
+                <StepButton disableRipple onClick={onPayNowFocus} className="text-left">
                   {stepContent}
                 </StepButton>
               ) : stepContent}

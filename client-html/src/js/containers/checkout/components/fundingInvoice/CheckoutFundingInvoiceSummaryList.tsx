@@ -78,7 +78,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   };
 
   return (
-    <Grid container columnSpacing={3} className="align-content-between">
+    <Grid container className="align-content-between">
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
@@ -122,7 +122,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           form={form}
         />
       </Grid>
-      <Grid container columnSpacing={3}>
+      <Grid container>
         {fundingInvoice && fundingInvoice.paymentPlans && (
           <Grid item sm={6} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
