@@ -90,7 +90,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
           <CheckoutSummaryCogwheel dispatch={dispatch} summary={summary} disableDiscounts={disableDiscounts} />
         </CustomAppBar>
 
-        <Grid container columnSpacing={3} className="p-3">
+        <Grid container className="p-3">
           <Grid item xs={12}>
             {summary.list.map((list, i) => (
               <CheckoutSummaryExpandableItemRenderer
@@ -124,7 +124,6 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
               item
               xs={12}
               sm={4}
-              container
               className={clsx("money pt-2 summaryTopBorder", classes.itemTotal)}
             >
               <Typography variant="body2">

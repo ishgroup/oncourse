@@ -7,11 +7,8 @@
  */
 
 import React, {
-  useState, useCallback
+  useState, useCallback, useEffect
 } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { InjectedFormProps } from "redux-form";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -22,9 +19,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
-import { useStickyScrollSpy } from "../../utils/hooks";
+import { useAppDispatch, useStickyScrollSpy } from "../../utils/hooks";
 import { openDrawer } from "../../actions";
 import AppBarHelpMenu from "../form/AppBarHelpMenu";
 import FormSubmitButton from "../form/FormSubmitButton";
@@ -38,8 +35,15 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     width: "100%",
     background: theme.appBar.header.background,
     color: theme.appBar.header.color,
-    zIndex: theme.zIndex.drawer + 1,
-    height: `${APP_BAR_HEIGHT}px`
+    zIndex: theme.zIndex.appBar,
+    height: `${APP_BAR_HEIGHT}px`,
+    "& $submitButtonAlternate": {
+      background: `${theme.appBar.headerAlternate.color}`,
+      color: `${theme.appBar.headerAlternate.background}`,
+    },
+    "& $closeButtonAlternate": {
+      color: `${theme.appBar.headerAlternate.color}`,
+    }
   },
   headerHighContrast: {
     background: theme.palette.background.default,
@@ -62,10 +66,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
       color: `${theme.appBar.headerAlternate.color}`,
     }
   },
-  submitButtonAlternate: {
-    background: `${theme.appBar.headerAlternate.color}`,
-    color: `${theme.appBar.headerAlternate.background}`,
-  },
+  submitButtonAlternate: {},
+  closeButtonAlternate: {},
   fullScreenTitleItem: {
     position: "relative",
     maxWidth: "100%",
@@ -91,25 +93,27 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   }
 }));
 
-interface Props extends InjectedFormProps {
+interface Props {
   title?: any;
   actions?: any;
   hideHelpMenu?: boolean;
   noDrawer?: boolean;
-  drawerHandler?: () => void;
+  noScrollSpy?: boolean;
+  noTitle?: boolean;
   children?: any;
   values?: any;
   getAuditsUrl?: string | ((id: number) => string);
   manualUrl?: string;
   containerClass?: string;
   disabled?: boolean;
+  invalid?: boolean;
   fields?: any;
   opened?: boolean;
   disableInteraction?: boolean;
   hideSubmitButton?: boolean;
   disabledScrolling?: boolean;
-  createdOn?: (values: any) => string;
-  modifiedOn?: (values: any) => string;
+  createdOn?: (values: any) => Date;
+  modifiedOn?: (values: any) => Date;
   onAddMenu?: () => void;
   customAddMenu?: any;
   submitButtonText?: string;
@@ -117,12 +121,14 @@ interface Props extends InjectedFormProps {
   hamburgerMenu?: boolean;
 }
 
-const AppBarContainer: React.FC<Props> = props => {
+const AppBarContainer = (props: Props) => {
   const {
-    title, actions, hideHelpMenu, children, noDrawer, drawerHandler, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
+    title, actions, hideHelpMenu, children, noDrawer, noTitle, noScrollSpy, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
     disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
     onCloseClick, hamburgerMenu, opened, containerClass
   } = props;
+  
+  const dispatch = useAppDispatch();
 
   const classes = useStyles();
 
@@ -130,16 +136,20 @@ const AppBarContainer: React.FC<Props> = props => {
 
   const [hasScrolling, setScrolling] = useState<boolean>(false);
 
-  const onScroll = useCallback(
-    e => {
-      scrollSpy(e);
-      if (e.target) {
-        const isScrolling = e.target.scrollTop > 20;
-        setScrolling(isScrolling);
-      }
-    },
-    []
-  );
+  const onStickyChange = useCallback(e => {
+    if (hasScrolling !== e.detail.stuck) {
+      setScrolling(e.detail.stuck);
+    }
+  }, [hasScrolling]);
+  
+  useEffect(() => {
+    document.addEventListener(STICKY_HEADER_EVENT, onStickyChange);
+    return () => {
+      document.removeEventListener(STICKY_HEADER_EVENT, onStickyChange);
+    };
+  }, [onStickyChange]);
+
+  const drawerHandler = () => dispatch(openDrawer());
 
   const isSmallScreen = useMediaQuery('(max-width:992px)');
   const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
@@ -175,14 +185,17 @@ const AppBarContainer: React.FC<Props> = props => {
           {hamburgerMenu && (
             <HamburgerMenu variant={VARIANTS.temporary} />
           )}
- 
-          <FullScreenStickyHeader
-            opened={opened}
-            title={title}
-            fields={fields}
-            disableInteraction={disableInteraction}
-            twoColumn
-          />
+          {
+            !noTitle && (
+              <FullScreenStickyHeader
+                opened={opened}
+                title={title}
+                fields={fields}
+                disableInteraction={disableInteraction}
+                twoColumn
+              />
+            )
+          }
           <div className="flex-fill" />
           <div className={classes.actionsWrapper}>
             {actions}
@@ -198,7 +211,7 @@ const AppBarContainer: React.FC<Props> = props => {
             {onCloseClick && (
               <Button
                 onClick={onCloseClick}
-                className={clsx("closeAppBarButton", hasScrolling && classes.headerAlternate)}
+                className={clsx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
               >
                 Close
               </Button>
@@ -215,7 +228,7 @@ const AppBarContainer: React.FC<Props> = props => {
           )}
         </Toolbar>
       </AppBar>
-      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)} onScroll={onScroll}>
+      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)} onScroll={noScrollSpy ? null : scrollSpy}>
         {hasFab && (
           <div className={classes.scriptAddMenu}>
             {customAddMenu || (
@@ -239,11 +252,4 @@ const AppBarContainer: React.FC<Props> = props => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  drawerHandler: () => dispatch(openDrawer())
-});
-
-export default connect<any, any, any>(
-  null,
-  mapDispatchToProps
-)(AppBarContainer);
+export default AppBarContainer;
