@@ -145,7 +145,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
         }}
         expandIcon={<ExpandMoreIcon />}
       >
-        <Grid container columnSpacing={3} className="centeredFlex">
+        <Grid container className="centeredFlex">
           <Grid item xs={6}>
             <div className={clsx("centeredFlex", classes.itemTitle)}>
               <StyledCheckbox
@@ -172,7 +172,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container columnSpacing={3}>
+        <Grid container>
           {item.class.isVet && (
             <Grid item xs={12}>
               <FormField
@@ -205,17 +205,17 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               }}
             />
           </Grid>
-          <Grid item container xs={12} lg={8}>
-            <Grid item container sm={3}>
+          <Grid item container columnSpacing={3} rowSpacing={2} xs={12} lg={8}>
+            <Grid item sm={3}>
               <Uneditable label="Price (ex tax)" className="text-end" value={item.priceExTax} money />
             </Grid>
-            <Grid item container sm={3}>
+            <Grid item sm={3}>
               <Uneditable label="Discount (ex tax)" className="text-end" value={item.discountExTax} money />
             </Grid>
-            <Grid item container sm={3}>
+            <Grid item sm={3}>
               <Uneditable label="Tax" className="text-end" value={item.taxAmount} money />
             </Grid>
-            <Grid item container sm={3}>
+            <Grid item sm={3}>
               {priceLocked ? <Uneditable label="Total" className="text-end" labelAdornment={priceAdormnet} value={item.price} money />
               : (
                 <FormField

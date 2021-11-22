@@ -569,7 +569,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         showArrowButton
       />
 
-      <div className="pl-2 pr-2">
+      <div className="pl-2 pr-2 pb-2">
         <CheckoutPaymentPlans
           name="paymentPlans"
           form={form}

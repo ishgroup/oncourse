@@ -58,7 +58,7 @@ class SecurityLevels extends React.Component<any, any> {
     return (
       <div className={className}>
         <CustomAppBar>
-          <Grid container columnSpacing={3}>
+          <Grid container>
             <Grid item md={12} lg={12} xl={9} className="centeredFlex">
               <FormField
                 type="headerText"
@@ -105,7 +105,7 @@ class SecurityLevels extends React.Component<any, any> {
           }}
           className={classes.topCustomSwitchMargin}
         />
-        <Grid container columnSpacing={3}>
+        <Grid container className="p-3">
           <Grid item xl={6} lg={6} md={6} xs={12}>
             <SecurityLevelsTagsGroup
               heading="User roles"

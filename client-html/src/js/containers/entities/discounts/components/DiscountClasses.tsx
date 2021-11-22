@@ -52,7 +52,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
     const {
       values, dispatch, form, foundDiscountClasses
     } = this.props;
-    const { classes } = values.discountCourseClasses.concat(
+    const classes = values.discountCourseClasses.concat(
       items.map(item => foundDiscountClasses.find(c => item.entityId === c.id))
     );
     dispatch(change(form, "discountCourseClasses", classes));
