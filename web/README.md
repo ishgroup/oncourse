@@ -145,3 +145,29 @@ The method body should complitelly be replaced with solr search queries:
 1. In #editor mode we need to show draft page layout so the html cache doesn't work here. 
 We need to render tml files from druft version, exactly how it works right now (16-11-2021)
 I have no Idea right now, we might put some fork some where to keep old rendering mechanism.
+
+### alternativ way 
+
+Instead of fetching classes from solr on back end we could complitelly do it on client side with direct JS queries to the solr 
+
+1. open /courses/arts url in browser
+2. server only fetch cources ids (even all at ones, we could geet rid on pagination)
+3. render only course items and leave classes content empty 
+4. leave some placeholders for classes
+5. after server complite the browser request and return html the JS start fetching classes directly from solr and populate placeholders
+6. just enough to populate viewport 
+7. on user scroll down - fetch more classes.
+8. build solr query bases on course id and user filters (do all this on client)  - like we do o server right now, see 
+```
+ish.oncourse.services.search.SearchService.searchClasses()
+```
+9. To simplify class query we might remove class indexes that do not satisfy webSite restriction ('show class 10 days after  start' or 'hide class 5 days before end' ).
+So the query do not include that filter.
+see:
+`   ish.oncourse.ui.utils.CourseItemModel.fillClasses()
+`
+
+
+### Production solr server:
+We could use real solr server to debug queries:
+[http://10.100.48.1:8983/solr/#/]()

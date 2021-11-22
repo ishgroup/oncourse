@@ -1,4 +1,4 @@
-## sold data chema
+**## sold data chema
 we have 4 solr collections:
  - Courses
  - Classes
@@ -194,3 +194,6 @@ if (isXHR() && this.itemIndex != 0) {
 ....
 ```
 
+## Production solr server:
+
+[http://10.100.48.1:8983/solr/#/]()
