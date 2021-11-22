@@ -9,7 +9,9 @@
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
-import { change, getFormValues, initialize, isDirty, isInvalid, reduxForm } from "redux-form";
+import {
+ change, getFormValues, initialize, isDirty, isInvalid, reduxForm 
+} from "redux-form";
 import { connect } from "react-redux";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
@@ -21,7 +23,6 @@ import { CheckoutCourse, CheckoutCourseClass, CheckoutSummary } from "../../../m
 import { State } from "../../../reducers/state";
 import ResizableWrapper from "../../../common/components/layout/resizable/ResizableWrapper";
 import Drawer from "../../../common/components/layout/Drawer";
-import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import { AppTheme } from "../../../model/common/Theme";
 import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
 import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
@@ -111,6 +112,7 @@ import {
 import uniqid from "../../../common/utils/uniqid";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import CheckoutAppBar from "./CheckoutAppBar";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
@@ -1103,51 +1105,56 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               && !openContactEditView
               && !selectedContact && (
                 <>
-                  <CustomAppBar>
-                    <CheckoutAppBar
-                      title={
-                        activeField === CheckoutPage.contacts && noContactMsg !== null
-                        ? noContactMsg
-                        : activeField === CheckoutPage.items && noItemMsg !== null
-                          ? noItemMsg
-                          : titles[activeField]
-                      }
-                    />
-                  </CustomAppBar>
-
-                  <div className="appBarContainer w-100">
-                    {!openContactEditView && activeField === CheckoutPage.contacts && (
-                      <div className="p-3">
-                        <EnrolContactListView
-                          title={`${listContacts.length > 1 ? "Contacts" : "Contact"}`}
-                          contacts={listContacts}
-                          relatedContacts={relatedContacts}
-                          onChangeHandler={onSelectHandler}
-                          disabledHandler={onSelectDisabledHandler}
-                          searchString={value && value.contacts}
-                          selectedContacts={selectedContacts}
-                          setCreateNewContact={setCreateNewContact}
-                          contactsLoading={contactsLoading}
-                        />
-                      </div>
+                  <AppBarContainer
+                    hideHelpMenu
+                    hideSubmitButton
+                    disableInteraction
+                    title={(
+                      <CheckoutAppBar
+                        title={
+                          activeField === CheckoutPage.contacts && noContactMsg !== null
+                            ? noContactMsg
+                            : activeField === CheckoutPage.items && noItemMsg !== null
+                              ? noItemMsg
+                              : titles[activeField]
+                        }
+                      />
                     )}
+                  >
+                    <div className="w-100">
+                      {!openContactEditView && activeField === CheckoutPage.contacts && (
+                        <div>
+                          <EnrolContactListView
+                            title={`${listContacts.length > 1 ? "Contacts" : "Contact"}`}
+                            contacts={listContacts}
+                            relatedContacts={relatedContacts}
+                            onChangeHandler={onSelectHandler}
+                            disabledHandler={onSelectDisabledHandler}
+                            searchString={value && value.contacts}
+                            selectedContacts={selectedContacts}
+                            setCreateNewContact={setCreateNewContact}
+                            contactsLoading={contactsLoading}
+                          />
+                        </div>
+                      )}
 
-                    {!openItemEditView && !openClassListView && activeField === CheckoutPage.items && (
-                      <div className="p-3">
-                        <EnrolItemListView
-                          courses={filteredItems.courses}
-                          products={filteredItems.products}
-                          vouchers={filteredItems.vouchers}
-                          membershipProducts={filteredItems.membershipProducts}
-                          onChangeHandler={onSelectHandler}
-                          disabledHandler={onSelectDisabledHandler}
-                          searchString={itemsSearch}
-                          selectedItems={selectedItems}
-                          salesRelations={salesRelations}
-                        />
-                      </div>
-                    )}
-                  </div>
+                      {!openItemEditView && !openClassListView && activeField === CheckoutPage.items && (
+                        <div>
+                          <EnrolItemListView
+                            courses={filteredItems.courses}
+                            products={filteredItems.products}
+                            vouchers={filteredItems.vouchers}
+                            membershipProducts={filteredItems.membershipProducts}
+                            onChangeHandler={onSelectHandler}
+                            disabledHandler={onSelectDisabledHandler}
+                            searchString={itemsSearch}
+                            selectedItems={selectedItems}
+                            salesRelations={salesRelations}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </AppBarContainer>
                 </>
               )}
 
@@ -1176,7 +1183,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             )}
           </div>
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.summary) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.summary) })}>
           <CheckoutSummaryComp
             checkoutStep={checkoutStep}
             onChangeStep={onChangeStep}
@@ -1187,13 +1194,13 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             summaryList={summary.list}
           />
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
           <CheckoutFundingInvoiceForm
             activeField={activeField}
             titles={titles}
           />
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.payment) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.payment) })}>
           <CheckoutPaymentPage
             activeField={activeField}
             titles={titles}

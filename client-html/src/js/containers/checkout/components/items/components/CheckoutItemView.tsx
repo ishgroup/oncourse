@@ -4,14 +4,13 @@
  */
 import React from "react";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { CheckoutItem, CheckoutSummary } from "../../../../../model/checkout";
 import QuickEnrolItemViewFormWraper from "./CkecoutItemViewForm";
 import MembershipEditView from "./MembershipEditView";
 import ProductEditView from "./ProductEditView";
 import VoucherEditView from "./VoucherEditView";
 import CheckoutAppBar from "../../CheckoutAppBar";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 interface Props {
   onClose?: any;
@@ -48,25 +47,17 @@ const CheckoutItemView: React.FC<Props> = ({ onClose, openedItem, summary }) => 
     [openedItem]);
 
   return (
-    <div className="root">
-      <CustomAppBar>
-        {headerField}
-        <div>
-          <Button
-            classes={{
-              root: "whiteAppBarButton",
-              disabled: "whiteAppBarButtonDisabled"
-            }}
-            onClick={onClose}
-          >
-            Close
-          </Button>
-        </div>
-      </CustomAppBar>
-      <Grid container columnSpacing={3} className="appBarContainer">
+    <AppBarContainer
+      hideHelpMenu
+      hideSubmitButton
+      disableInteraction
+      title={headerField}
+      onCloseClick={onClose}
+    >
+      <Grid container columnSpacing={3}>
         {formComponent && <QuickEnrolItemViewFormWraper EditViewComponent={formComponent} summaryVoucher={summaryVoucher} />}
       </Grid>
-    </div>
+    </AppBarContainer>
   );
 };
 

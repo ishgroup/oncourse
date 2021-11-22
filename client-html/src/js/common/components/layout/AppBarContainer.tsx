@@ -117,6 +117,7 @@ interface Props {
   onAddMenu?: () => void;
   customAddMenu?: any;
   submitButtonText?: string;
+  closeButtonText?: string;
   onCloseClick?: () => void;
   hamburgerMenu?: boolean;
 }
@@ -125,7 +126,7 @@ const AppBarContainer = (props: Props) => {
   const {
     title, actions, hideHelpMenu, children, noDrawer, noTitle, noScrollSpy, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
     disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
-    onCloseClick, hamburgerMenu, opened, containerClass
+    onCloseClick, hamburgerMenu, opened, containerClass, closeButtonText
   } = props;
   
   const dispatch = useAppDispatch();
@@ -213,19 +214,19 @@ const AppBarContainer = (props: Props) => {
                 onClick={onCloseClick}
                 className={clsx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
               >
-                Close
+                {closeButtonText || "Close"}
               </Button>
             )}
+            {!hideSubmitButton && (
+              <FormSubmitButton
+                disabled={disabled}
+                invalid={invalid}
+                className={isDarkTheme && classes.submitButtonAlternate}
+                text={submitButtonText || "Save"}
+                fab
+              />
+            )}
           </div>
-          {!hideSubmitButton && (
-            <FormSubmitButton
-              disabled={disabled}
-              invalid={invalid}
-              className={isDarkTheme && classes.submitButtonAlternate}
-              text={submitButtonText || "Save"}
-              fab
-            />
-          )}
         </Toolbar>
       </AppBar>
       <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)} onScroll={noScrollSpy ? null : scrollSpy}>

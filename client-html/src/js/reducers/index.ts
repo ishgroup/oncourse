@@ -16,7 +16,7 @@ import {
   usiSoftwareIdReducer
 } from "../containers/preferences/reducers";
 import { drawerReducer } from "../common/reducers/drawerReducer";
-import { loginReducer } from "../containers/login/reducers";
+import { loginReducer, systemUserReducer } from "../containers/login/reducers";
 import { securityReducer } from "../containers/security/reducers";
 import { tagsReducer } from "../containers/tags/reducers";
 import { AvetmissExportReducer } from "../containers/avetmiss-export/reducers";
@@ -105,5 +105,6 @@ export const combinedReducers = combineReducers<State>({
   timezones: timezonesReducer,
   userPreferences: userPreferencesReducer,
   usiSoftwareId: usiSoftwareIdReducer,
-  voucherProducts: voucherProductReducer
+  voucherProducts: voucherProductReducer,
+  systemUser: systemUserReducer
 });

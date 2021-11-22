@@ -3,9 +3,10 @@ import {
   CHECK_PASSWORD_FULFILLED,
   GET_EMAIL_BY_TOKEN_FULFILLED,
   POST_UPDATE_PASSWORD_FULFILLED,
-  SET_LOGIN_STATE,
+  SET_LOGIN_STATE, SET_SYSTEM_USER_DATA,
 } from "../../../common/actions";
 import { LoginState } from "./state";
+import { User } from "@api/model";
 
 const clearState: LoginState = {
   isTOTP: false,
@@ -58,3 +59,17 @@ export const loginReducer = (state: LoginState = {}, action: IAction<any>): Logi
       return state;
   }
 };
+
+export const systemUserReducer = (state: User = {}, action: IAction<any>): User => {
+  switch (action.type) {
+    case SET_SYSTEM_USER_DATA: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
+    default:
+      return state;
+  }
+}
