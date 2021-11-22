@@ -127,7 +127,7 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Grid container columnSpacing={3} className="centeredFlex">
+            <Grid container className="centeredFlex">
               <div className="centeredFlex flex-fill">
                 <div className="heading mr-2">{header}</div>
               </div>
@@ -135,7 +135,7 @@ const CheckoutPaymentExpandableItemRenderer = React.memo<Props>(props => {
           </AccordionSummary>
           <AccordionDetails>
             {children || (
-              <Grid container columnSpacing={3}>
+              <Grid container>
                 {items && items.filter(item => item.checked).map((item, i) => (
                   <ItemRow
                     key={i}

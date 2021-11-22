@@ -20,7 +20,7 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
       ? summaryVoucher.price : values.value;
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className="p-3 ml-0">
+    <Grid container columnSpacing={3} rowSpacing={2} className="ml-0">
       <Grid item sm={2}>
         <Uneditable value={values.code} label="SKU" />
       </Grid>
