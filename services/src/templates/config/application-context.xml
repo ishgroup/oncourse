@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+  <context:annotation-config />
+
+  <import resource="classpath:META-INF/cxf/cxf.xml" />
+  <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+  <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+  <bean id="gzipFeature" class="org.apache.cxf.transport.common.gzip.GZIPFeature" />
+  <bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" />
+
+  <bean id="v7_referencePortTypeBean" class="ish.oncourse.webservices.soap.v7.ReferencePortTypeImpl" />
+
+  <bean id="securityCodeInterceptor" class="ish.oncourse.webservices.soap.interceptors.SecurityCodeInterceptor" />
+
+  <bean id="communicationKeyInterceptor" class="ish.oncourse.webservices.soap.interceptors.CommunicationKeyInterceptor" />
+
+  <bean id="collegeRequestInterceptor" class="ish.oncourse.webservices.soap.interceptors.CollegeRequestInterceptor" />
+
+  <% replicationVersions.each { v -> %>
+  <bean id="v${v}_paymentPortType" class="ish.oncourse.webservices.soap.v${v}.PaymentPortTypeImpl" />
+
+  <bean id="v${v}_replicationPortType" class="ish.oncourse.webservices.soap.v${v}.ReplicationPortTypeImpl" />
+  <% } %>
+
+  <bean name="controlCharacterHandler" class="ish.oncourse.webservices.soap.CustomEscapeHandler"/>
+
+  <bean name="headerInterceptor" class="ish.oncourse.webservices.soap.interceptors.MessageHeaderInterceptor" />
+
+  <cxf:bus>
+    <cxf:features>
+      <ref bean="gzipFeature" />
+      <ref bean="loggingFeature" />
+    </cxf:features>
+  </cxf:bus>
+
+  <jaxws:endpoint id="v7_reference" implementor="#v7_referencePortTypeBean"
+                  address="/v7/reference">
+    <jaxws:inInterceptors>
+      <ref bean="collegeRequestInterceptor" />
+      <ref bean="headerInterceptor" />
+    </jaxws:inInterceptors>
+  </jaxws:endpoint>
+
+
+  <% replicationVersions.each { v -> %>
+  <jaxws:endpoint id="v${v}_replication" implementor="#v${v}_replicationPortType"
+                  address="/v${v}/replication">
+    <jaxws:inInterceptors>
+      <ref bean="communicationKeyInterceptor" />
+      <ref bean="collegeRequestInterceptor" />
+      <ref bean="headerInterceptor" />
+    </jaxws:inInterceptors>
+
+    <jaxws:dataBinding>
+      <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+        <property name="marshallerProperties">
+          <map>
+            <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+          </map>
+        </property>
+      </bean>
+    </jaxws:dataBinding>
+  </jaxws:endpoint>
+
+  <jaxws:endpoint id="v${v}_payment" implementor="#v${v}_paymentPortType"
+                  address="/v${v}/payment">
+    <jaxws:inInterceptors>
+      <ref bean="securityCodeInterceptor" />
+      <ref bean="collegeRequestInterceptor" />
+      <ref bean="headerInterceptor" />
+    </jaxws:inInterceptors>
+
+    <jaxws:dataBinding>
+      <bean class="org.apache.cxf.jaxb.JAXBDataBinding">
+        <property name="marshallerProperties">
+          <map>
+            <entry key="com.sun.xml.bind.marshaller.CharacterEscapeHandler" value-ref="controlCharacterHandler"/>
+          </map>
+        </property>
+      </bean>
+    </jaxws:dataBinding>
+  </jaxws:endpoint>
+  <% } %>
+</beans>

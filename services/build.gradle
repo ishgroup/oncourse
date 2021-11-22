@@ -18,6 +18,10 @@ configurations {
     all*.exclude group: 'org.apache.derby', module: 'derby'
 }
 
+ext {
+    previousVersion = replicationVersions.get(replicationVersions.size()-2)
+}
+
 
 dependencies {
     implementation project(':common:common-bootique')
@@ -28,13 +32,38 @@ dependencies {
     }
 }
 
+task generateNewVersionPortTypes(type: Copy){
+    onlyIf { !file("src/main/java/ish/oncourse/webservices/soap/v${replicationVersions.last()}").exists() }
+    from "src/main/java/ish/oncourse/webservices/soap/v${previousVersion}"
+    into "src/main/java/ish/oncourse/webservices/soap/v${replicationVersions.last()}"
+    filter { line -> line.replaceAll("${previousVersion}", "${replicationVersions.last()}") }
+}
+
+task generateNewVersionUpdatersAndBuilders(type: Copy) {
+    onlyIf { !file("src/main/java/ish/oncourse/webservices/replication/v${replicationVersions.last()}").exists() }
+    from "src/main/java/ish/oncourse/webservices/replication/v${previousVersion}"
+    into "src/main/java/ish/oncourse/webservices/replication/v${replicationVersions.last()}"
+    filter { line -> line.replaceAll("${previousVersion}", "${replicationVersions.last()}") }
+    rename { filename -> filename.replace "${previousVersion}", "${replicationVersions.last()}"}
+}
+
+task generateAppContext(type: Copy) {
+    onlyIf { !file("src/main/resources/application-context.xml").text.contains("${replicationVersions.last()}") }
+    from "src/templates/config"
+    into "src/main/resources/"
+    expand(replicationVersions: replicationVersions)
+}
+
 task generateSOAPstubs(type: Copy) {
-    from 'src/templates'
+    from 'src/templates/java'
     into "${buildDir}/generated-resources/main/java"
     expand(replicationVersions: replicationVersions, referenceVersions: referenceVersions)
 }
 
 compileJava {
+    dependsOn generateNewVersionUpdatersAndBuilders
+    dependsOn generateAppContext
+    dependsOn generateNewVersionPortTypes
     dependsOn generateSOAPstubs
 }
 
