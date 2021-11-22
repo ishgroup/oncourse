@@ -281,7 +281,6 @@ const CourseClassGeneralTab = React.memo<Props>(
         >
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
             <div className="heading pb-2 pt-3">Restrictions</div>
-
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be over
               <FormField
@@ -321,7 +320,6 @@ const CourseClassGeneralTab = React.memo<Props>(
                   labelPlacement="start"
                 />
               </div>
-
               <div>
                 <FormControlLabel
                   className="switchWrapper"
@@ -331,7 +329,6 @@ const CourseClassGeneralTab = React.memo<Props>(
                 />
               </div>
             </Collapse>
-
             <FormField
               type="multilineText"
               name="message"

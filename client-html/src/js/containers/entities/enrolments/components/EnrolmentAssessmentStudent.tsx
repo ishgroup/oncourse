@@ -88,26 +88,28 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
   const gradeErrors = useGradeErrors(submission?.grade, gradeType);
 
   return (
-    <Grid container columnSpacing={3} key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
+    <Grid container key={index} className={clsx(classes.rowWrapper, "align-items-center d-inline-flex-center")}>
       <Grid item xs={3} className="d-inline-flex-center pl-1">
         {elem.name}
       </Grid>
       <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
         {submitStatus === "Submitted"
           ? (
-            <EditInPlaceDateTimeField
-              meta={{}}
-              input={{
+            <div className="pl-3">
+              <EditInPlaceDateTimeField
+                meta={{}}
+                input={{
                 onChange: value => triggerAsyncChange(value, "submittedOn", submissionIndex),
                 onFocus: stubFunction,
                 onBlur: stubFunction,
                 value: submission.submittedOn
               }}
-              type="datetime"
-              formatting="inline"
-              formatDate={D_MMM_YYYY}
-              inlineMargin
-            />
+                type="datetime"
+                formatting="inline"
+                formatDate={D_MMM_YYYY}
+                inlineMargin
+              />
+            </div>
           )
           : submittedContent}
       </Grid>
@@ -117,7 +119,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
         <Grid item xs={3} className={classes.center}>
           {markedStatus === "Submitted" ? (
             <div>
-              <div>
+              <div className="pl-3">
                 <EditInPlaceDateTimeField
                   meta={{}}
                   input={{

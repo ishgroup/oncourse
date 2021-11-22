@@ -35,11 +35,6 @@ import {
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
 const styles = theme => createStyles({
-  textField: {
-    paddingLeft: "0",
-    paddingBottom: "9px",
-    height: "61px",
-  },
   spanLabel: {
     paddingLeft: "0.5px",
     marginTop: "-3px",
@@ -54,9 +49,9 @@ const styles = theme => createStyles({
     "&:hover $inputEndAdornment": {
       visibility: "visible"
     },
-  },
-  editing: {
-    paddingBottom: theme.spacing(1.25)
+    "&:hover $hiddenContainer": {
+      display: "inline-flex"
+    },
   },
   topMargin: {
     marginTop: theme.spacing(1),
@@ -84,13 +79,6 @@ const styles = theme => createStyles({
       color: theme.palette.primary.main,
       fill: theme.palette.primary.main,
     }
-  },
-  readonly: {
-    fontWeight: 300,
-    pointerEvents: "none"
-  },
-  textFieldLeftMargin: {
-    marginLeft: theme.spacing(1)
   },
   viewMode: {
     padding: 0,
@@ -340,15 +328,13 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     <div
       className={clsx(className, "outline-none", {
         [classes.inlineContainer]: isInline,
-        [classes.inlineMargin]: inlineMargin
+        [classes.inlineMargin]: inlineMargin,
+        "pointer-events-none": disabled
       })}
     >
       <div
         id={input.name}
-        className={clsx('w-100', {
-          [classes.readonly]: disabled,
-          [classes.editing]: formatting !== "inline",
-        })}
+        className="w-100"
       >
 
         <DateTimeField
@@ -365,7 +351,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
               variant="standard"
               margin="none"
               fullWidth
-              className={clsx("pr-2", {
+              className={clsx({
+              "pr-2": formatting !== "inline",
               [classes.topMargin]: !listSpacing,
               [classes.bottomMargin]: listSpacing && formatting !== "inline",
               [classes.inlineTextField]: isInline
@@ -389,12 +376,12 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onKeyDown={onEnterPress}
+                disabled={disabled}
                 inputRef={inputNode}
                 inputProps={{
                   size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
                   className: clsx({
-                    [classes.inlineInput]: isInline,
-                    [classes.readonly]: disabled,
+                    [classes.inlineInput]: isInline
                   }),
                   placeholder: placeholder || (!isEditing && "No value"),
                 }}
@@ -406,13 +393,13 @@ const EditInPlaceDateTimeField: React.FC<any> = (
                   input: clsx(classes.input, fieldClasses.text)
                 }}
                 endAdornment={(
-                  <InputAdornment position="end" className={classes.inputEndAdornment}>
+                  <InputAdornment position="end" className={clsx(classes.inputEndAdornment, formatting === "inline" && classes.hiddenContainer)}>
                     <IconButton
                       tabIndex={-1}
                       onClick={openPicker}
                       classes={{
-                      root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
-                    }}
+                        root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
+                      }}
                     >
                       {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
                     </IconButton>

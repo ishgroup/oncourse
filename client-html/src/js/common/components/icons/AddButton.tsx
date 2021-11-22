@@ -17,15 +17,15 @@ interface Props extends Partial<IconButtonProps>{
   size?: OverridableStringUnion<'small' | 'medium' | 'large', IconButtonPropsSizeOverrides>;
 }
 
-const AddIcon: React.FC<Props> = (props => {
+const AddButton = React.forwardRef<any, Props>((props, ref) => {
   const {
- onClick, className, disabled, iconClassName, iconFontSize, color, size
-} = props;
+   onClick, className, disabled, iconClassName, iconFontSize, color, size
+  } = props;
   return (
-    <IconButton color={color} size={size} onClick={onClick} className={className} disabled={disabled}>
+    <IconButton color={color} size={size} onClick={onClick} className={className} disabled={disabled} ref={ref}>
       <AddCircleOutlineOutlinedIcon className={iconClassName || "addButtonColor"} fontSize={iconFontSize || "small"} />
     </IconButton>
   );
 });
 
-export default AddIcon;
+export default AddButton;

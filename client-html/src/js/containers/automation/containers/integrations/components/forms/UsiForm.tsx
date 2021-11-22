@@ -9,7 +9,6 @@ import Link from "@mui/material/Link";
 import { change, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../../../reducers/state";
@@ -51,27 +50,27 @@ class XeroBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-        <Typography component="div" variant="body2">
-          <div>
-            Go to
-            {" "}
-            <Link href="https://authorisationmanager.gov.au/" target="_blank" color="secondary">
-              https://authorisationmanager.gov.au
-            </Link>
-            {" "}
-            and add a Cloud Software Notification for:
-          </div>
-          <ul>
-            <li>Digital Service Provider ABN: 74073212736</li>
-            <li>
-              Software ID:
-              {usiSoftwareId}
-            </li>
-          </ul>
-        </Typography>
+
+        <AppBarContent>
+          <Typography component="div" variant="body2">
+            <div>
+              Go to
+              {" "}
+              <Link href="https://authorisationmanager.gov.au/" target="_blank" color="secondary">
+                https://authorisationmanager.gov.au
+              </Link>
+              {" "}
+              and add a Cloud Software Notification for:
+            </div>
+            <ul>
+              <li>Digital Service Provider ABN: 74073212736</li>
+              <li>
+                Software ID:
+                {usiSoftwareId}
+              </li>
+            </ul>
+          </Typography>
+        </AppBarContent>
       </form>
     );
   }

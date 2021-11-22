@@ -9,7 +9,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../../../reducers/state";
@@ -43,48 +42,51 @@ class VetStudentLoans extends React.Component<any, any> {
     return values ? (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-        <FormField
-          name="fields.deviceName"
-          label="Device name"
-          type="text"
-          required
-          disabled={values.id}
-          fullWidth
-        />
-        <FormField
-          name="fields.organisationId"
-          label="Organisation ID"
-          type="text"
-          required
-          disabled={values.id}
-          fullWidth
-        />
-        {!values.id && (
-          <>
-            <FormField
-              name="fields.activationCode"
-              label="Activation Code"
-              type="text"
-              required
-              fullWidth
-            />
-            <div className="mt-1">
-              <Button
-                href={`https://proda.humanservices.gov.au/piaweb/app/orgdel/orgs/${values.fields.organisationId}/devices/${values.fields.deviceName}`}
-                target="_blank"
-                variant="contained"
-                disabled={!hasNameAndID}
-              >
-                Get activation code
-              </Button>
-            </div>
-          </>
+
+        <AppBarContent>
+          <FormField
+            name="fields.deviceName"
+            label="Device name"
+            type="text"
+            required
+            disabled={values.id}
+            className="mb-2"
+          />
+          <FormField
+            name="fields.organisationId"
+            label="Organisation ID"
+            type="text"
+            required
+            disabled={values.id}
+            className="mb-2"
+          />
+          {!values.id && (
+            <>
+              <FormField
+                name="fields.activationCode"
+                label="Activation Code"
+                type="text"
+                required
+                className="mb-2"
+              />
+              <div className="mt-1">
+                <Button
+                  href={`https://proda.humanservices.gov.au/piaweb/app/orgdel/orgs/${values.fields.organisationId}/devices/${values.fields.deviceName}`}
+                  target="_blank"
+                  variant="contained"
+                  disabled={!hasNameAndID}
+                >
+                  Get activation code
+                </Button>
+              </div>
+            </>
+            )}
+          {!hasNameAndID && (
+            <Typography variant="caption">
+              Please fill Device name and Organisation ID fields to be able to get activation code
+            </Typography>
           )}
-        {!hasNameAndID
-          && <Typography variant="caption">Please fill Device name and Organisation ID fields to be able to get activation code</Typography>}
+        </AppBarContent>
       </form>
     ) : null;
   }
