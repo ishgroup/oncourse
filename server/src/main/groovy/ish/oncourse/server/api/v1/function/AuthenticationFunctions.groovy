@@ -44,15 +44,13 @@ class AuthenticationFunctions {
     private static final String SEPARATOR_CHAR = ','
 
 
-    static LoginResponseDTO createAuthenticationContent(LoginStatusDTO status, String errorMessage = null, String totpUrl = null, LocalDateTime lastLoginOn = null, String firstName = null, String lastName = null) {
+    static LoginResponseDTO createAuthenticationContent(LoginStatusDTO status, String errorMessage = null, String totpUrl = null, LocalDateTime lastLoginOn = null) {
         new LoginResponseDTO().with { r ->
             r.loginStatus = status
             r.lastLoginOn = lastLoginOn
             r.errorMessage = errorMessage
             r.passwordComlexity = false
             r.totpUrl = totpUrl
-            r.firstName = firstName
-            r.lastName = lastName
             r
         }
     }

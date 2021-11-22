@@ -285,6 +285,7 @@ public class AngelServerFactory {
                 user.setInvitationToken(invitationToken);
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
             } catch (MessagingException ex) {
+                LOGGER.catching(ex);
                 LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
                 return;
             }
