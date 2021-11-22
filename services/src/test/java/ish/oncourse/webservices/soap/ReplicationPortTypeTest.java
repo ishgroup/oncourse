@@ -48,7 +48,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		assertNotNull("Expecting not null response.", response);
 		List<GenericTransactionGroup> groups = response.getGenericGroups();
 		assertTrue("Expecting not empty groups.", groups.size() > 0);
-		List<GenericReplicationStub> stubs = groups.get(0).getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> stubs = groups.get(0).getGenericAttendanceOrBinaryInfo();
 		assertTrue("Expecting only three stubs.", stubs.size() == 3);
 		boolean hasEnrolment = false, hasCourseClass = false, hasDeleteStub = false;
 		for (GenericReplicationStub st : stubs) {
@@ -88,7 +88,7 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		}
 		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
 			long angelId = 1;
-			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 				stub.setAngelId(angelId++);
 				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
 				confirmedRecord.setMessage("Record replicated.");
@@ -147,8 +147,8 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		studentDeleteStub.setAngelId(1200l);
 		studentDeleteStub.setEntityIdentifier("Student");
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V24);
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactDeleteStub);
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(studentDeleteStub);
+		group.getGenericAttendanceOrBinaryInfo().add(contactDeleteStub);
+		group.getGenericAttendanceOrBinaryInfo().add(studentDeleteStub);
 		GenericReplicationRecords records = PortHelper.createReplicationRecords(SupportedVersions.V24);
 		records.getGenericGroups().add(group);
 		GenericReplicationResult replResult = service.sendRecords(records);
@@ -211,9 +211,9 @@ public class ReplicationPortTypeTest extends ServiceTest {
 		studentDeleteStub.setEntityIdentifier("Student");
 
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(SupportedVersions.V24);
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(rootStub);
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactDeleteStub);
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(studentDeleteStub);
+		group.getGenericAttendanceOrBinaryInfo().add(rootStub);
+		group.getGenericAttendanceOrBinaryInfo().add(contactDeleteStub);
+		group.getGenericAttendanceOrBinaryInfo().add(studentDeleteStub);
 
 		records.getGenericGroups().add(group);
 

@@ -199,7 +199,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 							ctx.deleteObjects(record);
 							ctx.commitChanges();
 						} else {
-							group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stub);
+							group.getGenericAttendanceOrBinaryInfo().add(stub);
 						}
 
 					} catch (Exception se) {
@@ -213,7 +213,7 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 			// clean remove group if it's empty
 			for (GenericTransactionGroup g : new ArrayList<>(result.getGenericGroups())) {
-				if (g.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+				if (g.getGenericAttendanceOrBinaryInfo().isEmpty()) {
 					result.getGroups().remove(g);
 				}
 			}

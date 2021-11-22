@@ -86,7 +86,7 @@ public class GetEntityTransactionByInstruction {
 
             GenericTransactionGroup group = PortHelper.createTransactionGroup(version);
             if (stubs != null) {
-                group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
+                group.getGenericAttendanceOrBinaryInfo().addAll(stubs);
             }
             return group;
         } catch (Exception ex) {

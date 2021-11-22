@@ -38,7 +38,7 @@ public class ReplicationSendFailedResultTest extends ServiceTest {
 		GenericReplicationResult result = PortHelper.createReplicationResult(SupportedVersions.V24);
 		GenericReplicationRecords replicatedRecords = service.getRecords(SupportedVersions.V24);
 		for (GenericTransactionGroup group : replicatedRecords.getGenericGroups()) {
-			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 				GenericReplicatedRecord confirmedRecord = ReplicationUtils.toReplicatedRecord(stub, true);
 				confirmedRecord.setMessage("Record replicated.");
 				StubUtils.setFailedStatus(confirmedRecord);

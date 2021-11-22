@@ -110,7 +110,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 		// before it sends the stubs but it was not the case for angel versions up to 5.0
 		queuedStatisticProcessor.fillQueuedStatisticStubs(group);
 
-		List<GenericReplicationStub> stubs = new LinkedList<>(group.getGenericAttendanceOrBinaryDataOrBinaryInfo());
+		List<GenericReplicationStub> stubs = new LinkedList<>(group.getGenericAttendanceOrBinaryInfo());
 		
         try {
 			if (transactionGroup.getTransactionKeys().contains(MERGE_KEY)) {
@@ -127,7 +127,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 			int index = ExceptionUtils.indexOfType(e, SQLIntegrityConstraintViolationException.class);
 			if (index != -1 && attempt < 3) {
 				logger.error("Try to process transaction group one more time since concurrent processing detected");
-				group.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
+				group.getGenericAttendanceOrBinaryInfo().addAll(stubs);
 				return processGroup(group, ++attempt);
 			}
             updateReplicationStatusToFailed(result, message);
@@ -137,13 +137,13 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	void processRegularTransaction(GenericTransactionGroup group) {
 
-		for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub currentStub : group.getGenericAttendanceOrBinaryInfo()) {
 			GenericReplicatedRecord replRecord = toReplicatedRecord(currentStub, false);
 			result.add(replRecord);
 		}
 
-		while (!group.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-			GenericReplicationStub currentStub = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(0);
+		while (!group.getGenericAttendanceOrBinaryInfo().isEmpty()) {
+			GenericReplicationStub currentStub = group.getGenericAttendanceOrBinaryInfo().remove(0);
 			processStub(currentStub);
 		}
 		atomicContext.commitChanges();
@@ -472,9 +472,9 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 		String angelIdentifier = EntityMapping.getAngelEntityIdentifer(entityName);
 
-		for (GenericReplicationStub s : new ArrayList<>(transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo())) {
+		for (GenericReplicationStub s : new ArrayList<>(transactionGroup.getGenericAttendanceOrBinaryInfo())) {
 			if (angelId.equals(s.getAngelId()) && s.getEntityIdentifier().equals(angelIdentifier)) {
-				transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(s);
+				transactionGroup.getGenericAttendanceOrBinaryInfo().remove(s);
 				return s;
 			}
 		}

@@ -62,7 +62,7 @@ public class WaitingListDeletionTest extends ServiceTest {
         deletedWaitingList.setAngelId(1l);
         deletedWaitingList.setCreated(new Date());
         deletedWaitingList.setModified(new Date());
-        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedWaitingList);
+        transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedWaitingList);
 
         DeletedStub deletedTaggable = new DeletedStub();
         deletedTaggable.setEntityIdentifier("Taggable");
@@ -70,7 +70,7 @@ public class WaitingListDeletionTest extends ServiceTest {
         deletedTaggable.setAngelId(1l);
         deletedTaggable.setCreated(new Date());
         deletedTaggable.setModified(new Date());
-        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedTaggable);
+        transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedTaggable);
 
         List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals(SUCCESS,((ReplicatedRecord)records.get(0)).getStatus());

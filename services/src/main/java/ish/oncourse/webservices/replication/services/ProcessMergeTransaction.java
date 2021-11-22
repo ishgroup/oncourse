@@ -50,7 +50,7 @@ public class ProcessMergeTransaction {
 			cleanContactDuplicateStubs(group);
 
 			ContactDuplicate contactDuplicate = MergeProcessor
-					.valueOf(context, group.getGenericAttendanceOrBinaryDataOrBinaryInfo())
+					.valueOf(context, group.getGenericAttendanceOrBinaryInfo())
 					.processMerge(replicatedContactDuplicate);
 
 			removeStub(group, Contact.class.getSimpleName(), contactDuplicate.getContactToDeleteId(), contactDuplicate.getContactToDeleteAngelId());
@@ -71,7 +71,7 @@ public class ProcessMergeTransaction {
 	}
 
 	private void cleanContactDuplicateStubs(GenericTransactionGroup group) {
-		Iterator<GenericReplicationStub> groupIterator = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().iterator();
+		Iterator<GenericReplicationStub> groupIterator = group.getGenericAttendanceOrBinaryInfo().iterator();
 		while (groupIterator.hasNext()) {
 			String entityIdentifier = groupIterator.next().getEntityIdentifier();
 			if (ContactDuplicate.class.getSimpleName().equals(entityIdentifier)) {
@@ -82,13 +82,13 @@ public class ProcessMergeTransaction {
 
 	private boolean removeStub(GenericTransactionGroup group, String entityIdentifier, Long willowId, Long angelId) {
 		GenericReplicationStub forRemove = null;
-		for (GenericReplicationStub s : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub s : group.getGenericAttendanceOrBinaryInfo()) {
 			if ((s.getEntityIdentifier().equals(entityIdentifier) && (s.getAngelId() == angelId || s.getWillowId() == willowId))) {
 				forRemove = s;
 				break;
 			}
 		}
-		return group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(forRemove);
+		return group.getGenericAttendanceOrBinaryInfo().remove(forRemove);
 	}
 
 
@@ -100,7 +100,7 @@ public class ProcessMergeTransaction {
 	 */
 	private GenericReplicationStub getContactDuplicateStub(GenericTransactionGroup group) {
 		List<Long> contactDuplicateAngelIds = new ArrayList<>();
-		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
+		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()){
 			if (ContactDuplicate.class.getSimpleName().equals(stub.getEntityIdentifier())){
 				contactDuplicateAngelIds.add(stub.getAngelId());
 			}
@@ -118,7 +118,7 @@ public class ProcessMergeTransaction {
 					contactDuplicateAngelIds.remove(cd.getAngelId());
 				}
 				if (contactDuplicateAngelIds.size() == 1) {
-					for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+					for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 						if (stub.getAngelId() == contactDuplicateAngelIds.get(0)) {
 							res = stub;
 							break;
@@ -130,7 +130,7 @@ public class ProcessMergeTransaction {
 									getMergeTransactionGroupUniqueKey(group)));
 				}
 			} else {
-				for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()){
+				for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()){
 					if (stub.getAngelId() == contactDuplicateAngelIds.get(0) && ContactDuplicate.class.getSimpleName().equals(stub.getEntityIdentifier())) {
 						res = stub;
 						break;
@@ -159,7 +159,7 @@ public class ProcessMergeTransaction {
 	private GenericReplicatedRecord processSingleStub(GenericReplicationStub stub, GenericTransactionGroup group) {
 		GenericReplicatedRecord replicationRec = toReplicatedRecord(stub, false);
 		this.processor.addToResult(replicationRec);
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(stub);
+		group.getGenericAttendanceOrBinaryInfo().remove(stub);
 		this.processor.processStub(stub);
 		return replicationRec;
 	}

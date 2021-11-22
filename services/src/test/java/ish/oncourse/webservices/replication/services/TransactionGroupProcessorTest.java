@@ -65,7 +65,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		 * Transaction with Merge Student 1 to 2  delete.
 		 */
 		transactionGroup = getTransactionGroup(2, SupportedVersions.V24);
-		List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryInfo();
 		/**
 		 * Adjust relationships as the angel side does it.
 		 */
@@ -119,9 +119,9 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		binaryInfoStub.setMimeType("application/pdf");
 		binaryInfoStub.setName("Presenter's Guide");
 
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentStub);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentVersionStub);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryInfoStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(documentStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(documentVersionStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(binaryInfoStub);
 		java.util.List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
 
 		Long willowId = null;
@@ -152,8 +152,8 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 		transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V24);
 		transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBI);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStubBD);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedStubBI);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedStubBD);
 		records = transactionGroupProcessor.processGroup(transactionGroup);
 		assertEquals("records size 2", 2, records.size());
 		for (GenericReplicatedRecord record : records) {
@@ -186,7 +186,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
         for (QueuedRecord record: transactions.get(0).getQueuedRecords())
         {
             GenericReplicationStub replicationStub = willowStubBuilder.convert(record, PortHelper.getVersionByTransactionGroup(transactionGroup));
-            transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(replicationStub);
+            transactionGroup.getGenericAttendanceOrBinaryInfo().add(replicationStub);
         }
         return transactionGroup;
     }
@@ -202,7 +202,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		deleteContactSub.setAngelId(3l);
 		deleteContactSub.setEntityIdentifier("Contact");
 
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deleteContactSub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deleteContactSub);
 
 		ish.oncourse.webservices.v24.stubs.replication.ContactStub updateContactSub = new ish.oncourse.webservices.v24.stubs.replication.ContactStub();
 		updateContactSub.setWillowId(4l);
@@ -214,7 +214,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		updateContactSub.setGivenName("Contact32");
 		updateContactSub.setEmailAddress("1@kremlin.ru");
 
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(updateContactSub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(updateContactSub);
 
 		ish.oncourse.webservices.v24.stubs.replication.ContactRelationStub updateContactRelationSub = new ish.oncourse.webservices.v24.stubs.replication.ContactRelationStub();
 		updateContactRelationSub.setWillowId(1l);
@@ -226,7 +226,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		updateContactRelationSub.setToContactId(5l);
 		updateContactRelationSub.setTypeId(1l);
 
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(updateContactRelationSub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(updateContactRelationSub);
 
 		List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
 		assertEquals(3, replicatedRecords.size());
@@ -268,7 +268,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		courseStub.setAngelId(1L);
 		courseStub.setEnrolmentType(1);
 		courseStub.setEntityIdentifier("Course");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(courseStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(courseStub);
 
 		DocumentStub documentStub = new DocumentStub();
 		documentStub.setEntityIdentifier("Document");
@@ -277,7 +277,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		documentStub.setShared(true);
 		documentStub.setWebVisible(1);
 		documentStub.setRemoved(true);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(documentStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(documentStub);
 
 		BinaryInfoRelationStub binaryInfoRelationStub = new BinaryInfoRelationStub();
 		binaryInfoRelationStub.setEntityName("Course");
@@ -285,7 +285,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		binaryInfoRelationStub.setEntityAngelId(1l);
 		binaryInfoRelationStub.setDocumentId(1L);
 		binaryInfoRelationStub.setAngelId(1L);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(binaryInfoRelationStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(binaryInfoRelationStub);
 
 		transactionGroupProcessor.processGroup(transactionGroup);
 
@@ -317,18 +317,18 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 		GenericTransactionGroup group = PortHelper.createTransactionGroup(V24);
 
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+		group.getGenericAttendanceOrBinaryInfo().add(
 				generateContactV24Stub(updContact.getAngelId(),updContact.getId(), updContact.getGivenName(), updContact.getFamilyName()));
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+		group.getGenericAttendanceOrBinaryInfo().add(
 
 				generateDeleteV24Stub("Contact", delContact.getAngelId(), delContact.getId()));
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+		group.getGenericAttendanceOrBinaryInfo().add(
 
 				generateContactDuplicateV17Stub(10L,null, delContactId,14L,14L));
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+		group.getGenericAttendanceOrBinaryInfo().add(
 
 				generateContactDuplicateV17Stub(11L,null, delContactId,15L,15L));
-		group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(
+		group.getGenericAttendanceOrBinaryInfo().add(
 
 				generateContactDuplicateV17Stub(12L,null, updContactId, delContactId, delContactId));
 

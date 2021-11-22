@@ -74,7 +74,7 @@ public class MergeProcessorTest extends ServiceTest {
 		duplicateStub.setEntityIdentifier("ContactDuplicate");
 		duplicateStub.setCreated(new Date());
 		duplicateStub.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(duplicateStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(duplicateStub);
 
 		ContactStub contactStub = new ContactStub();
 		contactStub.setAngelId(1l);
@@ -90,7 +90,7 @@ public class MergeProcessorTest extends ServiceTest {
 		contactStub.setUniqueCode("code");
 		contactStub.setStudentId(1l);
 		contactStub.setTutorId(1l);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(contactStub);
 
 
 		StudentStub studentStub = new StudentStub();
@@ -102,7 +102,7 @@ public class MergeProcessorTest extends ServiceTest {
 		studentStub.setContactId(1l);
 		studentStub.setUsiStatus(UsiStatus.VERIFIED.getDatabaseValue());
 		studentStub.setUsi("2222222222");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(studentStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(studentStub);
 
 		TutorStub tutorStub = new TutorStub();
 		tutorStub.setAngelId(1l);
@@ -111,7 +111,7 @@ public class MergeProcessorTest extends ServiceTest {
 		tutorStub.setCreated(new Date());
 		tutorStub.setModified(new Date());
 		tutorStub.setContactId(1l);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(tutorStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(tutorStub);
 
 		DeletedStub deletedContact = new DeletedStub();
 		deletedContact.setEntityIdentifier("Contact");
@@ -119,7 +119,7 @@ public class MergeProcessorTest extends ServiceTest {
 		deletedContact.setAngelId(2l);
 		deletedContact.setCreated(new Date());
 		deletedContact.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedContact);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedContact);
 
 		DeletedStub deletedStudent = new DeletedStub();
 		deletedStudent.setEntityIdentifier("Student");
@@ -127,7 +127,7 @@ public class MergeProcessorTest extends ServiceTest {
 		deletedStudent.setAngelId(2l);
 		deletedStudent.setCreated(new Date());
 		deletedStudent.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedStudent);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedStudent);
 
 		DeletedStub deletedTutor = new DeletedStub();
 		deletedTutor.setEntityIdentifier("Tutor");
@@ -135,7 +135,7 @@ public class MergeProcessorTest extends ServiceTest {
 		deletedTutor.setAngelId(2l);
 		deletedTutor.setCreated(new Date());
 		deletedTutor.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedTutor);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedTutor);
 
 
 		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
@@ -228,7 +228,7 @@ public class MergeProcessorTest extends ServiceTest {
 		duplicateStub.setEntityIdentifier("ContactDuplicate");
 		duplicateStub.setCreated(new Date());
 		duplicateStub.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(duplicateStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(duplicateStub);
 
 		ContactStub contactStub = new ContactStub();
 		contactStub.setAngelId(1L);
@@ -244,7 +244,7 @@ public class MergeProcessorTest extends ServiceTest {
 		contactStub.setUniqueCode("code");
 		contactStub.setStudentId(1L);
 		contactStub.setTutorId(1L);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(contactStub);
 
 		DeletedStub deletedContact = new DeletedStub();
 		deletedContact.setEntityIdentifier("Contact");
@@ -252,7 +252,7 @@ public class MergeProcessorTest extends ServiceTest {
 		deletedContact.setAngelId(2L);
 		deletedContact.setCreated(new Date());
 		deletedContact.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedContact);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedContact);
 
 		CustomFieldTypeStub customFieldTypeStub1 = new CustomFieldTypeStub();
 		customFieldTypeStub1.setEntityIdentifier("CustomFieldType");
@@ -264,7 +264,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub1.setName("test");
 		customFieldTypeStub1.setMandatory(false);
 		customFieldTypeStub1.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldTypeStub1);
 
 		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
 		customFieldTypeStub2.setEntityIdentifier("CustomFieldType");
@@ -275,7 +275,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub2.setName("test");
 		customFieldTypeStub2.setMandatory(false);
 		customFieldTypeStub2.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldTypeStub2);
 
 		CustomFieldStub customFieldStub1 = new CustomFieldStub();
 		customFieldStub1.setEntityIdentifier("CustomField");
@@ -286,7 +286,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub1.setCreated(new Date());
 		customFieldStub1.setModified(new Date());
 		customFieldStub1.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub1);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldStub1);
 
 		DeletedStub customFieldStub2 = new DeletedStub();
 		customFieldStub2.setEntityIdentifier("CustomField");
@@ -294,7 +294,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub2.setWillowId(2L);
 		customFieldStub2.setCreated(new Date());
 		customFieldStub2.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub2);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldStub2);
 
 		CustomFieldStub customFieldStub3 = new CustomFieldStub();
 		customFieldStub3.setEntityIdentifier("CustomField");
@@ -305,7 +305,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub3.setCreated(new Date());
 		customFieldStub3.setModified(new Date());
 		customFieldStub3.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldStub3);
 
 		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
 
@@ -360,7 +360,7 @@ public class MergeProcessorTest extends ServiceTest {
 		duplicateStub.setEntityIdentifier("ContactDuplicate");
 		duplicateStub.setCreated(new Date());
 		duplicateStub.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(duplicateStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(duplicateStub);
 
 		ContactStub contactStub = new ContactStub();
 		contactStub.setAngelId(2L);
@@ -376,7 +376,7 @@ public class MergeProcessorTest extends ServiceTest {
 		contactStub.setUniqueCode("code");
 		contactStub.setStudentId(1L);
 		contactStub.setTutorId(1L);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(contactStub);
 
 		DeletedStub deletedContact = new DeletedStub();
 		deletedContact.setEntityIdentifier("Contact");
@@ -384,7 +384,7 @@ public class MergeProcessorTest extends ServiceTest {
 		deletedContact.setAngelId(3L);
 		deletedContact.setCreated(new Date());
 		deletedContact.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedContact);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedContact);
 
 		CustomFieldTypeStub customFieldTypeStub1 = new CustomFieldTypeStub();
 		customFieldTypeStub1.setEntityIdentifier("CustomFieldType");
@@ -396,7 +396,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub1.setName("test");
 		customFieldTypeStub1.setMandatory(false);
 		customFieldTypeStub1.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldTypeStub1);
 
 		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
 		customFieldTypeStub2.setEntityIdentifier("CustomFieldType");
@@ -407,7 +407,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub2.setName("test");
 		customFieldTypeStub2.setMandatory(false);
 		customFieldTypeStub2.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldTypeStub2);
 
 		DeletedStub customFieldStub3 = new DeletedStub();
 		customFieldStub3.setEntityIdentifier("CustomField");
@@ -415,7 +415,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub3.setWillowId(4L);
 		customFieldStub3.setCreated(new Date());
 		customFieldStub3.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldStub3);
 
 		DeletedStub customFieldStub4 = new DeletedStub();
 		customFieldStub4.setEntityIdentifier("CustomField");
@@ -423,7 +423,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub4.setWillowId(5L);
 		customFieldStub4.setCreated(new Date());
 		customFieldStub4.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub4);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldStub4);
 
 
 		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
@@ -481,7 +481,7 @@ public class MergeProcessorTest extends ServiceTest {
 		duplicateStub.setEntityIdentifier("ContactDuplicate");
 		duplicateStub.setCreated(new Date());
 		duplicateStub.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(duplicateStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(duplicateStub);
 
 		ContactStub contactStub = new ContactStub();
 		contactStub.setAngelId(1L);
@@ -497,7 +497,7 @@ public class MergeProcessorTest extends ServiceTest {
 		contactStub.setUniqueCode("code");
 		contactStub.setStudentId(1L);
 		contactStub.setTutorId(1L);
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(contactStub);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(contactStub);
 
 		DeletedStub deletedContact = new DeletedStub();
 		deletedContact.setEntityIdentifier("Contact");
@@ -505,7 +505,7 @@ public class MergeProcessorTest extends ServiceTest {
 		deletedContact.setAngelId(2L);
 		deletedContact.setCreated(new Date());
 		deletedContact.setModified(new Date());
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(deletedContact);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedContact);
 
 		CustomFieldTypeStub customFieldTypeStub1 = new CustomFieldTypeStub();
 		customFieldTypeStub1.setEntityIdentifier("CustomFieldType");
@@ -517,7 +517,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub1.setName("test");
 		customFieldTypeStub1.setMandatory(false);
 		customFieldTypeStub1.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub1);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldTypeStub1);
 
 		CustomFieldTypeStub customFieldTypeStub2 = new CustomFieldTypeStub();
 		customFieldTypeStub2.setEntityIdentifier("CustomFieldType");
@@ -528,7 +528,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldTypeStub2.setName("test");
 		customFieldTypeStub2.setMandatory(false);
 		customFieldTypeStub2.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldTypeStub2);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldTypeStub2);
 
 		CustomFieldStub customFieldStub1 = new CustomFieldStub();
 		customFieldStub1.setEntityIdentifier("CustomField");
@@ -539,7 +539,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub1.setCreated(new Date());
 		customFieldStub1.setModified(new Date());
 		customFieldStub1.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub1);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldStub1);
 
 		CustomFieldStub customFieldStub3 = new CustomFieldStub();
 		customFieldStub3.setEntityIdentifier("CustomField");
@@ -550,7 +550,7 @@ public class MergeProcessorTest extends ServiceTest {
 		customFieldStub3.setCreated(new Date());
 		customFieldStub3.setModified(new Date());
 		customFieldStub3.setEntityName("Contact");
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(customFieldStub3);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().add(customFieldStub3);
 
 		transactionGroup.getTransactionKeys().add(TransactionGroupProcessorImpl.MERGE_KEY);
 

@@ -134,12 +134,12 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
         List<String> stubClassNames = AbstractTransportTest.getReplicationStubBeanNames();
 
         ArrayList<ReplicationStub> stubs = new StubPopulator<ReplicationStub>(PACKAGE_NAME_REPLICATION_STUBS, stubClassNames, ReplicationStub.class).populate();
-        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
+        transactionGroup.getGenericAttendanceOrBinaryInfo().addAll(stubs);
         return transactionGroup;
     }
 
     public static void assertTransactionGroup(TransactionGroup transactionGroup) {
-        List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+        List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryInfo();
         assertListStubs(replicationStubs, PACKAGE_NAME_REPLICATION_STUBS, GenericReplicationStub.class);
     }
 

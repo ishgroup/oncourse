@@ -165,12 +165,12 @@ public class TransportConfigFunctions<TransactionGroup extends GenericTransactio
 		List<String> stubClassNames = getReplicationStubBeanNames();
 
 		ArrayList<ReplicationStub> stubs = new StubPopulator<>(packageNameReplicationStubs, stubClassNames, replicationStubClass).populate();
-		transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().addAll(stubs);
+		transactionGroup.getGenericAttendanceOrBinaryInfo().addAll(stubs);
 		return transactionGroup;
 	}
 
 	public void assertTransactionGroup(TransactionGroup transactionGroup) {
-		List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryInfo();
 		assertListStubs(replicationStubs, packageNameReplicationStubs, GenericReplicationStub.class);
 	}
 

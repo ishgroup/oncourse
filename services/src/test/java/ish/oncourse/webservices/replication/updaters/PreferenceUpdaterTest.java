@@ -62,7 +62,7 @@ public class PreferenceUpdaterTest extends ServiceTest {
         stub.setEntityIdentifier(Preference.class.getSimpleName());
 
         GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
-        transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stub);
+        transactionGroup.getGenericAttendanceOrBinaryInfo().add(stub);
 
         List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
         assertEquals(SUCCESS,((ReplicatedRecord)records.get(0)).getStatus());

@@ -406,7 +406,7 @@ public class TestEnv<T extends TransportConfig> {
 
     public final void checkNotProcessedResponse(GenericTransactionGroup transaction) {
         assertTrue("Get status call should return empty response for in transaction payment",
-                transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty());
+                transaction.getGenericAttendanceOrBinaryInfo().isEmpty());
     }
 
 

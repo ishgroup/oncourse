@@ -82,7 +82,7 @@ public class PaymentServiceImpl implements InternalPaymentService {
             for (ProductItem productItem : vouchers) {
                 Voucher voucher = (Voucher) productItem;
                 if (!voucher.isInUse()) {
-                    response.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(voucher, version));
+                    response.getGenericAttendanceOrBinaryInfo().add(stubBuilder.convert(voucher, version));
                 }
             }
 

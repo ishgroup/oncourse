@@ -51,7 +51,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 	}
 
 	private void fillv17PaymentStubs(GenericTransactionGroup transaction, GenericParametersMap parametersMap) {
-		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
 
@@ -273,7 +273,7 @@ public class ConcurentReplTest extends RealWSTransportTest {
 
 
 	protected void fillv17ReplStubs(GenericTransactionGroup transaction) {
-		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryDataOrBinaryInfo();
+		List<GenericReplicationStub> stubs = transaction.getGenericAttendanceOrBinaryInfo();
 		final Money hundredDollars = new Money("100.00");
 		final Date current = new Date();
 

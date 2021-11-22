@@ -101,7 +101,7 @@ public class QueuedStatisticProcessor {
 	 * This code should be removed once there will be no colleges using angel 5.0 or earlier.
 	 */
 	public void fillQueuedStatisticStubs(GenericTransactionGroup group) {
-		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+		for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 			if (stub instanceof GenericQueuedStatisticStub) {
 				if (stub.getEntityIdentifier() == null) {
 					stub.setEntityIdentifier(GenericQueuedStatisticStub.QUEUED_STATISTIC_ENTITY);
