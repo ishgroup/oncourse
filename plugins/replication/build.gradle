@@ -40,6 +40,7 @@ dependencies {
 
 }
 
+
 cgen {
     map = "${projectDir}/src/main/resources/cayenne/ReplicationMap.map.xml"
     makePairs = true
@@ -58,6 +59,12 @@ cgen {
 
 compileJava {
     dependsOn cgen
+}
+
+task switchReplicationVersion(type: Copy) {
+    ant.replaceregexp(match:"${oldVersion}", replace:"${versionToSet}", flags:'g') {
+        fileset(dir: 'src')
+    }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
