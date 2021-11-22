@@ -4471,12 +4471,6 @@
 	<db-relationship name="paylines" source="Payslip" target="PayLine" toMany="true">
 		<db-attribute-pair source="id" target="payslipId"/>
 	</db-relationship>
-	<db-relationship name="paymentInLines" source="Payslip" target="PaymentInLine" toMany="true">
-		<db-attribute-pair source="id" target="payslipId"/>
-	</db-relationship>
-	<db-relationship name="paymentOutLines" source="Payslip" target="PaymentOutLine" toMany="true">
-		<db-attribute-pair source="id" target="payslipId"/>
-	</db-relationship>
 	<db-relationship name="taggingRelations" source="Payslip" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
