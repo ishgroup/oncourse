@@ -282,7 +282,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
             addTotpCookie(response, value, periodOfHours)
         }
 
-        return createAuthenticationContent(LOGIN_SUCCESSFUL, null, null, lastLoginOn)
+        return createAuthenticationContent(LOGIN_SUCCESSFUL, null, null, lastLoginOn, user.firstName, user.lastName)
     }
 
     @Override
