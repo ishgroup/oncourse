@@ -40,6 +40,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -529,7 +532,7 @@ public class PrintWorker implements Runnable {
 			if (biCandidates.size() > 0) {
 				var document = biCandidates.get(0);
 				if (document.getFileUUID() == null) {
-					//TODO: error that binary data is already not supported
+					throw new ClientErrorException("Attempted to process document with name " + document.getName() +" as data, stored in db, but this ability was removed in new versions. Add s3 accessKey.", Response.Status.BAD_REQUEST);
 				} else if (documentService.isUsingExternalStorage()) {
 					var s3Service = new AmazonS3Service(documentService);
 					try {
