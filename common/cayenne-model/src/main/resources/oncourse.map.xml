@@ -787,18 +787,6 @@
 		<db-attribute name="modified" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 	</db-entity>
-	<db-entity name="LicenseFee">
-		<db-attribute name="billingMonth" type="INTEGER"/>
-		<db-attribute name="college_id" type="BIGINT" isMandatory="true" length="19"/>
-		<db-attribute name="fee" type="DECIMAL" isMandatory="true" length="10" scale="3"/>
-		<db-attribute name="free_transactions" type="INTEGER" isMandatory="true" length="10"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
-		<db-attribute name="key_code" type="CHAR" isMandatory="true" length="9"/>
-		<db-attribute name="paidUntil" type="DATE" length="10"/>
-		<db-attribute name="plan_name" type="CHAR" length="12"/>
-		<db-attribute name="valid_until" type="DATE" length="10"/>
-		<db-attribute name="webSiteId" type="BIGINT" length="19"/>
-	</db-entity>
 	<db-entity name="Log">
 		<db-attribute name="action" type="LONGVARCHAR" length="16777215"/>
 		<db-attribute name="collegeId" type="BIGINT" isMandatory="true" length="19"/>
@@ -2220,15 +2208,6 @@
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
-	<obj-entity name="LicenseFee" className="ish.oncourse.model.LicenseFee" dbEntityName="LicenseFee" superClassName="WillowCayenneObject">
-		<obj-attribute name="billingMonth" type="java.lang.Integer" db-attribute-path="billingMonth"/>
-		<obj-attribute name="fee" type="java.math.BigDecimal" db-attribute-path="fee"/>
-		<obj-attribute name="freeTransactions" type="java.lang.Integer" db-attribute-path="free_transactions"/>
-		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="key_code"/>
-		<obj-attribute name="paidUntil" type="java.util.Date" db-attribute-path="paidUntil"/>
-		<obj-attribute name="planName" type="java.lang.String" db-attribute-path="plan_name"/>
-		<obj-attribute name="validUntil" type="java.util.Date" db-attribute-path="valid_until"/>
-	</obj-entity>
 	<obj-entity name="Log" className="ish.oncourse.model.Log" dbEntityName="Log" superClassName="WillowCayenneObject">
 		<obj-attribute name="action" type="java.lang.String" db-attribute-path="action"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -3200,9 +3179,7 @@
 	<db-relationship name="invoices" source="College" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
-	<db-relationship name="licenseFees" source="College" target="LicenseFee" toMany="true">
-		<db-attribute-pair source="id" target="college_id"/>
-	</db-relationship>
+
 	<db-relationship name="logs" source="College" target="Log" toMany="true">
 		<db-attribute-pair source="id" target="collegeId"/>
 	</db-relationship>
@@ -3905,12 +3882,7 @@
 	<db-relationship name="untitledRel" source="Language" target="Student" toMany="true">
 		<db-attribute-pair source="id" target="languageId"/>
 	</db-relationship>
-	<db-relationship name="college" source="LicenseFee" target="College">
-		<db-attribute-pair source="college_id" target="id"/>
-	</db-relationship>
-	<db-relationship name="webSite" source="LicenseFee" target="WebSite">
-		<db-attribute-pair source="webSiteId" target="id"/>
-	</db-relationship>
+
 	<db-relationship name="college" source="Log" target="College">
 		<db-attribute-pair source="collegeId" target="id"/>
 	</db-relationship>
@@ -4460,9 +4432,7 @@
 	<db-relationship name="invoices" source="WebSite" target="Invoice" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
-	<db-relationship name="licenseFees" source="WebSite" target="LicenseFee" toMany="true">
-		<db-attribute-pair source="id" target="webSiteId"/>
-	</db-relationship>
+
 	<db-relationship name="preferences" source="WebSite" target="Preference" toMany="true">
 		<db-attribute-pair source="id" target="webSiteId"/>
 	</db-relationship>
@@ -4611,7 +4581,6 @@
 	<obj-relationship name="invoiceLineDiscounts" source="College" target="InvoiceLineDiscount" deleteRule="Deny" db-relationship-path="invoiceLineDiscounts"/>
 	<obj-relationship name="invoiceLines" source="College" target="InvoiceLine" deleteRule="Deny" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="invoices" source="College" target="Invoice" deleteRule="Deny" db-relationship-path="invoices"/>
-	<obj-relationship name="licenseFees" source="College" target="LicenseFee" deleteRule="Deny" db-relationship-path="licenseFees"/>
 	<obj-relationship name="logs" source="College" target="Log" deleteRule="Deny" db-relationship-path="logs"/>
 	<obj-relationship name="messagePeople" source="College" target="MessagePerson" deleteRule="Deny" db-relationship-path="messagePeople"/>
 	<obj-relationship name="messageTemplates" source="College" target="MessageTemplate" deleteRule="Deny" db-relationship-path="messageTemplates"/>
@@ -4830,8 +4799,6 @@
 	<obj-relationship name="discount" source="InvoiceLineDiscount" target="Discount" deleteRule="Nullify" db-relationship-path="discount"/>
 	<obj-relationship name="invoiceLine" source="InvoiceLineDiscount" target="InvoiceLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
 	<obj-relationship name="quoteLine" source="InvoiceLineDiscount" target="QuoteLine" deleteRule="Nullify" db-relationship-path="invoiceLine"/>
-	<obj-relationship name="college" source="LicenseFee" target="College" deleteRule="Nullify" db-relationship-path="college"/>
-	<obj-relationship name="webSite" source="LicenseFee" target="WebSite" deleteRule="Nullify" db-relationship-path="webSite"/>
 	<obj-relationship name="college" source="Log" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="user" source="Log" target="WillowUser" deleteRule="Nullify" db-relationship-path="user"/>
 	<obj-relationship name="customFields" source="Membership" target="MembershipCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
@@ -5016,7 +4983,6 @@
 	<obj-relationship name="college" source="WebSite" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="collegeDomains" source="WebSite" target="WebHostName" deleteRule="Deny" db-relationship-path="collegeDomains"/>
 	<obj-relationship name="invoices" source="WebSite" target="Invoice" deleteRule="Nullify" db-relationship-path="invoices"/>
-	<obj-relationship name="licenseFees" source="WebSite" target="LicenseFee" deleteRule="Deny" db-relationship-path="licenseFees"/>
 	<obj-relationship name="preferences" source="WebSite" target="Preference" deleteRule="Cascade" db-relationship-path="preferences"/>
 	<obj-relationship name="settings" source="WebSite" target="Settings" deleteRule="Cascade" db-relationship-path="settings"/>
 	<obj-relationship name="versions" source="WebSite" target="WebSiteVersion" deleteRule="Deny" db-relationship-path="versions"/>

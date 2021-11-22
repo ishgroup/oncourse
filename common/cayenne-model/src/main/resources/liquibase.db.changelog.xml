@@ -646,5 +646,5 @@
 														 referencedColumnNames="id"
 														 validate="true"/>
 	</changeSet>
-	
+
 </databaseChangeLog>
