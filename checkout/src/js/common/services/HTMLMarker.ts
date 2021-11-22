@@ -8,6 +8,7 @@ import PopupContainer from "../../web/containers/PopupContainer";
 import Promotions from "../../web/containers/Promotions";
 import {LegacyModal} from "../../web/components/modal/LegacyModal";
 import JoinButton from "../../web/containers/JoinButton";
+import Suggestions from "../../web/containers/Suggestions";
 
 export const ATTR_DATA_PROP_PREFIX: string = "data-prop-";
 export const ATTR_DATA_CID: string = "data-cid";
@@ -30,6 +31,18 @@ export class HTMLMarkers {
     props: {
       checkoutPath: "string",
     },
+  };
+
+  /**
+   * Renders checkout suggestions product.
+   *
+   * Corresponding React Component: {@link Suggestions}
+   * Example Usage: <div data-cid="checkout-suggestions"></div>
+   */
+  static SUGGESTIONS: HTMLMarker = {
+    id: "checkout-suggestions",
+    component: Suggestions,
+    props: {},
   };
 
   /**

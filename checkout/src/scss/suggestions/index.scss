@@ -1,0 +1,29 @@
+/*!
+ * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+ * No copying or use of this code is allowed without permission in writing from ish.
+ */
+
+.oncourse-checkout-suggestions {
+  .suggestion-list {
+    li {
+      display: flex;
+      align-items: flex-start;
+      .s-icon-plus {
+        cursor: pointer;
+        position: relative;
+        &::after {
+          content: "+";
+          font-size: 20px;
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          top: 0;
+          left: 0;
+          background-color: #000000;
+          color: #ffffff;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}
