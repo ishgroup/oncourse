@@ -194,6 +194,7 @@ const globalStyles = (theme: AppTheme) =>
         backgroundColor: `${theme.palette.grey[300]} !important`
       },
       ".saveButtonEditView": {
+        whiteSpace: "nowrap",
         boxShadow: theme.shadows[2],
         "&:hover": {
           backgroundColor: darken(theme.palette.primary.main, 0.1)

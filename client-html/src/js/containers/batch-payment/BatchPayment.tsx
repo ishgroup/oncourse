@@ -12,7 +12,6 @@ import { FormControlLabel } from "@mui/material";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { areEqual } from "react-window";
 import { format } from "date-fns";
-import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -30,12 +29,10 @@ import {
   change, FieldArray, getFormValues, InjectedFormProps, reduxForm,
 } from "redux-form";
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import AppBarHelpMenu from "../../common/components/form/AppBarHelpMenu";
 import FormField from "../../common/components/form/formFields/FormField";
 import { Switch } from "../../common/components/form/formFields/Switch";
 import DynamicSizeList from "../../common/components/form/DynamicSizeList";
 import { LinkAdornment } from "../../common/components/form/FieldAdornments";
-import CustomAppBar from "../../common/components/layout/CustomAppBar";
 import LoadingIndicator from "../../common/components/layout/LoadingIndicator";
 import EntityService from "../../common/services/EntityService";
 import { D_MMM_YYYY } from "../../common/utils/dates/format";
@@ -49,6 +46,7 @@ import CheckoutService from "../checkout/services/CheckoutService";
 import { getContactName } from "../entities/contacts/utils";
 import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
+import AppBarContainer from "../../common/components/layout/AppBarContainer";
 
 const useStyles = makeAppStyles(theme => ({
   checkbox: {
@@ -212,7 +210,7 @@ const ContactItem = memo<ContactItemProps>(({
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container >
+          <Grid container>
             {item.items.map((i, index) => (
               <Grid key={i.id} item xs={12} className={clsx("d-flex", classes.tableTab)}>
                 <div className="centeredFlex flex-fill">
@@ -403,7 +401,6 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
 const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   handleSubmit,
-  invalid,
   dispatch,
   currencySymbol,
   values,
@@ -413,7 +410,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   const [processing, setProcessing] = useState(false);
   const cancel = useRef(false);
 
-  const classes  = useStyles();
+  const classes = useStyles();
 
   useEffect(() => {
     setContactsLoading(true);
@@ -441,6 +438,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   }, [values]);
 
   const checkedContacts = values.contacts.filter(c => c.checked);
+
   const total = checkedContacts.reduce(
     (p, c) => decimalPlus(p, c.items.reduce((p, c) => decimalPlus(p, c.checked ? c.amountOwing : 0), 0) ),
     0,
@@ -485,103 +483,78 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   return (
     <form className="appBarContainer" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
       <LoadingIndicator appBarOffset transparentBackdrop customLoading={contactsLoading} />
-
-      <CustomAppBar>
-        <Grid container>
-          <Grid item xs={12} className="centeredFlex">
-            <Typography color="inherit" noWrap className="appHeaderFontSize">
-              Batch payment in (showing
-              {' '}
-              {values.contacts.length}
-              {' '}
-              contact
-              {values.contacts.length !== 1 ? "s" : ""}
-              {' '}
-              with amounts due or overdue)
-            </Typography>
-
-            <div className="flex-fill" />
-
-            <AppBarHelpMenu
-              manualUrl=""
-            />
-
-            <Button
-              className="closeAppBarButton"
-              onClick={() => {
-              cancel.current = true;
-              setProcessing(false);
-            }}
-            >
-              cancel
-            </Button>
-
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled",
-              }}
-              disabled={invalid || processing}
-            >
-              Process
-              {' '}
-              {checkedContacts.length}
-              {' '}
-              payment
-              {checkedContacts.length === 1 ? "" : "s"}
-            </Button>
-          </Grid>
-        </Grid>
-      </CustomAppBar>
-
-      {!contactsLoading && (
-      <div className="flex-column p-3 h-100">
-        <div className="mb-3 d-flex justify-content-end">
-          <FormControlLabel
-            control={(
-              <Switch
-                checked={filterByStoreCard}
-                onChange={() => setFilterByStoreCard(!filterByStoreCard)}
+      <AppBarContainer
+        disabledScrolling
+        disableInteraction
+        hideHelpMenu
+        title={(
+          <div>
+            Batch payment in (showing
+            {' '}
+            {values.contacts.length}
+            {' '}
+            contact
+            {values.contacts.length !== 1 ? "s" : ""}
+            {' '}
+            with amounts due or overdue)
+          </div>
+        )}
+        onCloseClick={() => {
+          cancel.current = true;
+          setProcessing(false);
+        }}
+        closeButtonText="Cancel"
+        submitButtonText={`Process ${checkedContacts.length} payment${checkedContacts.length === 1 ? "" : "s"}`}
+        containerClass="flex-column p-3 h-100"
+      >
+        {!contactsLoading && (
+          <div className="flex-column p-3 h-100">
+            <div className="mb-3 d-flex justify-content-end">
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={filterByStoreCard}
+                    onChange={() => setFilterByStoreCard(!filterByStoreCard)}
+                  />
+                )}
+                classes={{
+                  labelPlacementStart: "m-0",
+                }}
+                label="Only show contacts with a stored card"
+                labelPlacement="start"
+                disabled={processing}
               />
-            )}
-            classes={{
-              labelPlacementStart: "m-0",
-            }}
-            label="Only show contacts with a stored card"
-            labelPlacement="start"
-            disabled={processing}
-          />
-        </div>
+            </div>
 
-        <div className={clsx("overflow-auto flex-fill", classes.list)}>
-          <FieldArray
-            name="contacts"
-            component={ContactRenderer}
-            classes={classes}
-            currencySymbol={currencySymbol}
-            filterByStoreCard={filterByStoreCard}
-            onContactItemSelect={onContactItemSelect}
-          />
-        </div>
+            <div className={clsx("overflow-auto flex-fill", classes.list)}>
+              <FieldArray
+                name="contacts"
+                component={ContactRenderer}
+                classes={classes}
+                currencySymbol={currencySymbol}
+                filterByStoreCard={filterByStoreCard}
+                onContactItemSelect={onContactItemSelect}
+              />
+            </div>
 
-        <Grid container className="pt-3 d-flex justify-content-end">
-          <Grid item xs={12} sm={8} />
-          <Grid
-            item
-            xs={12}
-            sm={4}
-            container
-            justifyContent="flex-end"
-            className="money p-2 summaryTopBorder"
-          >
-            <Typography variant="body2" className={classes.amountMargin}>
-              <strong>{formatCurrency(total, currencySymbol)}</strong>
-            </Typography>
-          </Grid>
-        </Grid>
-      </div>
-      )}
+            <Grid container className="pt-3 d-flex justify-content-end">
+              <Grid item xs={12} sm={8} />
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                container
+                justifyContent="flex-end"
+                className="money p-2 summaryTopBorder"
+              >
+                <Typography variant="body2" className={classes.amountMargin}>
+                  <strong>{formatCurrency(total, currencySymbol)}</strong>
+                </Typography>
+              </Grid>
+            </Grid>
+          </div>
+        )}
+      </AppBarContainer>
     </form>
 );
 };

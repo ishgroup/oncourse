@@ -25,9 +25,6 @@ import CalendarSession from "../../../../timetable/components/calendar/component
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 
 const styles = (theme: AppTheme) => createStyles({
-    root: {
-      marginTop: 60
-    },
     list: {
       padding: 0
     },
@@ -107,7 +104,7 @@ const EnrolClassListView = React.memo<any>(props => {
   }, [visibleClasses]);
 
   return !isClassesEmpty ? (
-    <div className={clsx("p-2 overflow-auto", classes.root)}>
+    <div className="p-2">
       <List className={classes.list}>
         <Grid item sm={12} className={clsx("text-center", classes.showPastRoot)}>
           <Button
@@ -144,10 +141,10 @@ const EnrolClassListView = React.memo<any>(props => {
                           classes={{
                             disabled: classes.disabledSessionButton
                           }}
-                          className={clsx("text-left", classes.sessionButton)}
+                          className={clsx("text-left w-100", classes.sessionButton)}
                           disabled={isSelected || isTransfered}
                         >
-                          <Grid container columnSpacing={3}>
+                          <Grid container>
                             <Grid item xs={1}>
                               <Radio color="primary" checked={isSelected} />
                             </Grid>
@@ -162,20 +159,18 @@ const EnrolClassListView = React.memo<any>(props => {
                                 inView
                               />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
-                              <Grid container columnSpacing={3}>
-                                <Grid item xs={6}>
-                                  <Typography component="div">
-                                    {isTraineeship ? "1 place" : `${s.placesLeft} place${s.placesLeft > 1 ? "s" : ""}`}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={4}>
-                                  <Typography component="div" className="text-end money">
-                                    {formatCurrency(s.price, currencySymbol)}
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={2} />
+                            <Grid item container xs={12} sm={4}>
+                              <Grid item xs={6}>
+                                <Typography component="div">
+                                  {isTraineeship ? "1 place" : `${s.placesLeft} place${s.placesLeft > 1 ? "s" : ""}`}
+                                </Typography>
                               </Grid>
+                              <Grid item xs={4}>
+                                <Typography component="div" className="text-end money">
+                                  {formatCurrency(s.price, currencySymbol)}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={2} />
                             </Grid>
                           </Grid>
                         </Button>

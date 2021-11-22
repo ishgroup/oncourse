@@ -67,7 +67,7 @@ const CheckoutSummary = React.memo<Props>(props => {
   }, 500), []);
 
   return (
-    <div>
+    <div className="w-100">
       {!openDiscountView
       && !selectedDiscount
       && activeField === CheckoutPage.summary

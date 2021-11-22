@@ -58,7 +58,7 @@ export const CheckoutSummaryCogwheel: React.FC<Props> = ({
 
   return (
     <>
-      <IconButton color="inherit" ref={ancor} onClick={() => setOpened(true)}>
+      <IconButton color="primary" ref={ancor} onClick={() => setOpened(true)}>
         <Settings color="inherit" />
       </IconButton>
 

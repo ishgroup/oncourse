@@ -80,7 +80,7 @@ class Dashboard extends React.PureComponent<any, any> {
           LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBody"
         )}
       >
-        <Grid item xs={12}>
+        <Grid item xs={12} className="relative">
           <DashboardHeader
             dispatch={dispatch}
             upgradePlanLink={upgradePlanLink}

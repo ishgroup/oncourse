@@ -216,7 +216,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               <Uneditable label="Tax" className="text-end" value={item.taxAmount} money />
             </Grid>
             <Grid item sm={3}>
-              {priceLocked ? <Uneditable label="Total" className="text-end" labelAdornment={priceAdormnet} value={item.price} money />
+              {priceLocked ? <Uneditable label="Total" className="text-end" labelAdornment={priceAdormnet} value={item.price} money rightAligned />
               : (
                 <FormField
                   type="money"
