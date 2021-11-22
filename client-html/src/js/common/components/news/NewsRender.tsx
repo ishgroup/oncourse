@@ -172,7 +172,7 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal
+    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, newsOffset
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
@@ -193,7 +193,7 @@ const NewsRender = props => {
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <div className={classes.postsWrapper}>
+    <Box className={classes.postsWrapper} sx={{ marginTop: newsOffset }}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
@@ -205,7 +205,7 @@ const NewsRender = props => {
           setReadNewsLocal={setReadNewsLocal}
         />
       ))}
-    </div>
+    </Box>
   ) : null;
 };
 

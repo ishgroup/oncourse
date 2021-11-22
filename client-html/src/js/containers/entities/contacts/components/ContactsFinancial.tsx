@@ -14,7 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import { connect } from "react-redux";
-import { Grid } from "@mui/material";
+import { Alert, Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -129,7 +129,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
   return values ? (
     <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
-        <Grid container columnSpacing={3} className="pb-3">
+        <Grid container columnSpacing={3} rowSpacing={2} className="pb-3">
           <Grid item xs={twoColumn ? 3 : 12}>
             <FormField
               type="number"
@@ -160,28 +160,30 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
           {paymentInPermissions && storedCard && !values.removeCChistory
           && (
             <Grid item xs={12} className="centeredFlex mb-3 mt-2">
-              <Typography variant="body2">
-                <div>
-                  A credit card was collected on
-                  {' '}
-                  {storedCard.created}
-                  {' '}
-                  and is securely stored for this user.
-                </div>
-                <div className="centeredFlex">
-                  {storedCard.creditCardType}
-                  {" "}
-                  {storedCard.creditCardNumber}
-                  <Button
-                    onClick={removeStoredCreditCard}
-                    size="small"
-                    variant="text"
-                    className="errorColor ml-2"
-                  >
-                    delete
-                  </Button>
-                </div>
-              </Typography>
+              <Alert severity="info">
+                <Typography variant="body2">
+                  <div>
+                    A credit card was collected on
+                    {' '}
+                    {storedCard.created}
+                    {' '}
+                    and is securely stored for this user.
+                  </div>
+                  <div className="centeredFlex">
+                    {storedCard.creditCardType}
+                    {" "}
+                    {storedCard.creditCardNumber}
+                    <Button
+                      onClick={removeStoredCreditCard}
+                      size="small"
+                      variant="text"
+                      className="errorColor ml-2"
+                    >
+                      delete
+                    </Button>
+                  </div>
+                </Typography>
+              </Alert>
             </Grid>
           )}
           <Grid
@@ -196,6 +198,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               columns={financialColumns}
               onRowDoubleClick={openRow}
               rerenderOnEveryChange
+              calculateHeight
               hideHeader
             />
           </Grid>

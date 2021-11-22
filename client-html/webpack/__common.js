@@ -112,7 +112,6 @@ const _common = (dirname, options) => {
     ],
     devServer: {
       inline: true,
-      hot: true,
       port: 8100
     },
     devtool: false,

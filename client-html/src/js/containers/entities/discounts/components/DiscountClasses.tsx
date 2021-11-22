@@ -52,7 +52,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
     const {
       values, dispatch, form, foundDiscountClasses
     } = this.props;
-    const { classes } = values.discountCourseClasses.concat(
+    const classes = values.discountCourseClasses.concat(
       items.map(item => foundDiscountClasses.find(c => item.entityId === c.id))
     );
     dispatch(change(form, "discountCourseClasses", classes));
@@ -77,7 +77,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
       : [];
 
     return (
-      <div className="p-3 pb-0">
+      <div className="p-3">
         <div className={twoColumn ? "mb-2 mw-800" : "mb-2"}>
           <NestedList
             formId={values.id}

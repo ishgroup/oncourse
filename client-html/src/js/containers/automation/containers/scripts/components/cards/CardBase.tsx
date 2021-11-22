@@ -9,7 +9,7 @@ import { withStyles, createStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import clsx from "clsx";
-import AddIcon from "../../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../../common/components/icons/AddButton";
 
 const styles = theme =>
   createStyles({
@@ -19,7 +19,6 @@ const styles = theme =>
       },
       "&$panelExpandedWithoutMargin": {
         "&:last-child": {
-          marginTop: theme.spacing(3),
           marginBottom: 0
         }
       },
@@ -101,7 +100,7 @@ const CardBase = props => {
           </div>
           {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
           {Boolean(onAddItem) && (
-            <AddIcon className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
+            <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
           )}
         </div>
         <div>

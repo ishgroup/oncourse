@@ -8,7 +8,7 @@ import Alert from "@mui/lab/Alert";
 import Tooltip from "@mui/material/Tooltip";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
 
-const useStyles = makeAppStyles()(() => ({
+const useStyles = makeAppStyles(() => ({
   alertRoot: {
     padding: 3,
     fontSize: "0.75em",
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const CheckoutAlertTextMessage: React.FC<Props> = (props => {
-  const { classes } = useStyles();
+  const classes  = useStyles();
   const { message } = props;
 
   return message && (

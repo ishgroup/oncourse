@@ -155,7 +155,8 @@ const Outcomes: React.FC<OutcomesProps> = props => {
       }}
       editViewProps={{
         nameCondition,
-        manualLink
+        manualLink,
+        hideTitle: true
       }}
       EditViewContent={OutcomeEditView}
       getEditRecord={getOutcomeRecord}

@@ -62,7 +62,6 @@ const styles = ({ palette, spacing, shadows, shape }: Theme) =>
       backgroundColor: palette.background.default
     },
     field: {
-      padding: spacing(0, 1),
       height: 36,
       borderRadius: shape.borderRadius,
       display: "flex",
@@ -82,9 +81,6 @@ const styles = ({ palette, spacing, shadows, shape }: Theme) =>
       alignItems: "center",
       padding: spacing(2),
       position: "relative"
-    },
-    select: {
-      paddingRight: spacing(3)
     }
   });
 
@@ -100,7 +96,7 @@ const selectValues = [
 ];
 
 const SearchBarSelect = React.memo<any>(({ classes, searchType, selectHandle }) => (
-  <FormControl className={classes.formControl}>
+  <FormControl className={classes.formControl} variant="standard">
     <Select
       name="entities"
       IconComponent={KeyboardArrowDown}
@@ -108,9 +104,6 @@ const SearchBarSelect = React.memo<any>(({ classes, searchType, selectHandle }) 
       onChange={selectHandle}
       disableUnderline
       displayEmpty
-      classes={{
-        root: `${classes.field} ${classes.select}`
-      }}
     >
       {selectValues.map((el, id) => (
         <MenuItem key={id} value={el.key}>

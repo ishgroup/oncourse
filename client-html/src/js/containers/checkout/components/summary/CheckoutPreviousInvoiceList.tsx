@@ -132,7 +132,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
             </Typography>
           </div>
 
-          <Grid container columnSpacing={3}>
+          <Grid container>
             {previousInvoices.invoices.map((item, index) => (
               <InvoiceItemRow
                 key={index}
@@ -149,6 +149,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
                 item
                 xs={4}
                 container
+                direction="row-reverse"
                 className={clsx("pt-1", "summaryTopBorder", classes.summaryItemPrice)}
               >
                 <Typography variant="body2" className="money">

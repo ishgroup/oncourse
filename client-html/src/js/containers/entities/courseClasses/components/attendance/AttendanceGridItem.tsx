@@ -109,7 +109,6 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
   changeAllItems,
   validateAttendanceUpdate,
   onStudentIconClick,
-  onTutorIconClick,
   sessions,
   assessments,
   checkAnimationClass
@@ -357,7 +356,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
   }, [type, attendancePercent, attendancePeriod]);
 
   return (
-    <Grid container columnSpacing={3} className="align-items-center">
+    <Grid container className="align-items-center">
       <Grid item xs={3}>
         <div className={clsx("pt-0-5 pb-0-5 pl-1 pr-1 d-inline-flex-center", classes.name)}>
           {attendanceLeftLabel}
@@ -366,9 +365,9 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
         </div>
       </Grid>
       <Grid item xs={9}>
-        <Grid container columnSpacing={3}>
+        <Grid container>
           <Grid item xs={10} className="overflow-hidden">
-            <Grid container columnSpacing={3} className={clsx(checkAnimationClass())}>
+            <Grid container className={clsx(checkAnimationClass())}>
               {renderedItems}
             </Grid>
           </Grid>

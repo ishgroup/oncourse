@@ -50,23 +50,26 @@ const SitesRoomFields = props => {
   const { item } = props;
 
   return (
-    <div className="centeredFlex container">
-      <FormField
-        type="text"
-        name={`${item}.name`}
-        label="Name"
-        className="mr-2"
-        required
-      />
-
-      <FormField
-        type="number"
-        name={`${item}.seatedCapacity`}
-        label="Seated Capacity"
-        normalize={normalizeNumber}
-        required
-      />
-    </div>
+    <Grid container columnSpacing={3} rowSpacing={2}>
+      <Grid item xs={12}>
+        <FormField
+          type="text"
+          name={`${item}.name`}
+          label="Name"
+          className="mr-2"
+          required
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="number"
+          name={`${item}.seatedCapacity`}
+          label="Seated Capacity"
+          normalize={normalizeNumber}
+          required
+        />
+      </Grid>
+    </Grid>
   );
 };
 
@@ -144,7 +147,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
       tags,
       countries,
       timezones,
-      syncErrors
+      syncErrors,
     } = this.props;
 
     const { addressString } = this.state;
@@ -152,82 +155,82 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
     const layoutArray = getLayoutArray(twoColumn);
 
     return (
-      <>
-        <Grid container columnSpacing={3} className="p-3">
-          <CoordinatesValueUpdater
-            dispatch={dispatch}
-            latPath="latitude"
-            longPath="longitude"
-            addressString={addressString}
-            form={form}
-          />
+      <Grid container className="pt-3 pl-3 pr-3">
+        <CoordinatesValueUpdater
+          dispatch={dispatch}
+          latPath="latitude"
+          longPath="longitude"
+          addressString={addressString}
+          form={form}
+        />
 
-          <Grid item xs={layoutArray[2].xs}>
-            <FullScreenStickyHeader
-              twoColumn={twoColumn}
-              title={values && values.name}
-              fields={(
+        <Grid item xs={layoutArray[2].xs} className="mb-2">
+          <FullScreenStickyHeader
+            opened={!values.id || Object.keys(syncErrors).includes("name")}
+            twoColumn={twoColumn}
+            title={values && values.name}
+            fields={(
+              <Grid xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
                   name="name"
                   label="Name"
-                  listSpacing={false}
                   required
                 />
+              </Grid>
               )}
+          />
+        </Grid>
+
+        <Grid item container xs={layoutArray[0].xs} columnSpacing={3} className="flex-nowrap align-items-center mb-1">
+          <Grid item xs={12}>
+            <FormField
+              type="tags"
+              name="tags"
+              tags={tags}
+              validate={tags && tags.length ? this.validateTagList : undefined}
             />
           </Grid>
 
-          <Grid item xs={layoutArray[0].xs}>
-            <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
+          <Grid item className="centeredFlex">
+            <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
+              <ScreenShare />
+            </IconButton>
+
+            <Typography variant="caption">Kiosk</Typography>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12} className="mb-2">
+          <TimetableButton onClick={this.onCalendarClick} />
+        </Grid>
+
+        <Grid item xs={layoutArray[1].xs}>
+          <div className="container centeredFlex mb-2">
+            <FormControlLabel
+              className="checkbox pr-3"
+              control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" />}
+              label="Administration center"
+            />
+
+            <FormControlLabel
+              className="checkbox pr-3"
+              control={<FormField type="checkbox" name="isVirtual" color="secondary" />}
+              label="Virtual site"
+            />
+
+            <FormControlLabel
+              className="checkbox"
+              control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" />}
+              label="Show this site on the website"
+            />
+          </div>
+        </Grid>
+
+        <Collapse in={!values.isVirtual}>
+          <Grid container columnSpacing={3}>
+            <Grid container item xs={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
-                <FormField
-                  type="tags"
-                  name="tags"
-                  tags={tags}
-                  validate={tags && tags.length ? this.validateTagList : undefined}
-                />
-              </Grid>
-
-              <Grid item className="centeredFlex">
-                <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
-                  <ScreenShare />
-                </IconButton>
-
-                <Typography variant="caption">Kiosk</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12} className="mb-2">
-            <TimetableButton onClick={this.onCalendarClick} />
-          </Grid>
-
-          <Grid item xs={layoutArray[1].xs}>
-            <div className="container centeredFlex mb-2">
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" />}
-                label="Administration center"
-              />
-
-              <FormControlLabel
-                className="checkbox pr-3"
-                control={<FormField type="checkbox" name="isVirtual" color="secondary" />}
-                label="Virtual site"
-              />
-
-              <FormControlLabel
-                className="checkbox"
-                control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" />}
-                label="Show this site on the website"
-              />
-            </div>
-          </Grid>
-
-          <Collapse in={!values.isVirtual}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={layoutArray[2].xs}>
                 <FormField
                   type="text"
                   name="street"
@@ -235,82 +238,77 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                   validate={greaterThanNullValidation}
                   onBlur={this.updateLatLong}
                 />
-
+              </Grid>
+              <Grid item xs={12}>
                 <FormField type="text" name="suburb" label="Suburb" onBlur={this.updateLatLong} />
-
-                <Grid container>
-                  <Grid item xs={layoutArray[3].xs}>
-                    <FormField type="text" name="state" label="State" />
-                  </Grid>
-                  <Grid item xs={layoutArray[4].xs}>
-                    <FormField type="text" name="postcode" label="Postcode" />
-                  </Grid>
-                  <Grid item xs={layoutArray[5].xs}>
-                    {countries && (
-                      <FormField
-                        type="searchSelect"
-                        selectValueMark="id"
-                        selectLabelMark="name"
-                        name="country"
-                        label="Country"
-                        returnType="object"
-                        onBlur={this.updateLatLong}
-                        validate={values.isVirtual ? undefined : validateSingleMandatoryField}
-                        items={countries}
-                      />
+              </Grid>
+              <Grid item xs={12}>
+                <FormField type="text" name="state" label="State" />
+              </Grid>
+              <Grid item xs={12}>
+                <FormField type="text" name="postcode" label="Postcode" />
+              </Grid>
+              <Grid item xs={12}>
+                {countries && (
+                  <FormField
+                    type="searchSelect"
+                    selectValueMark="id"
+                    selectLabelMark="name"
+                    name="country"
+                    label="Country"
+                    returnType="object"
+                    onBlur={this.updateLatLong}
+                    required={!values.isVirtual}
+                    items={countries}
+                  />
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                {timezones && (
+                  <FormField
+                    type="searchSelect"
+                    name="timezone"
+                    label="Default timezone"
+                    items={timezones}
+                    labelAdornment={(
+                      <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                        <IconButton classes={{ root: "inputAdornmentButton" }}>
+                          <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
+                        </IconButton>
+                      </Tooltip>
                     )}
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={layoutArray[7].xs}>
-                <StaticGoogleMap
-                  markerLetter={values.name && values.name[0].toUpperCase()}
-                  latitude={values.latitude}
-                  longitude={values.longitude}
-                  size={twoColumn ? [600, 207] : [600, 300]}
-                />
+                    validate={validateSingleMandatoryField}
+                  />
+                )}
               </Grid>
             </Grid>
-          </Collapse>
-
-          <Grid container item xs={12}>
-            <Grid item xs={layoutArray[2].xs}>
-              {timezones && (
-                <FormField
-                  type="searchSelect"
-                  name="timezone"
-                  label="Default timezone"
-                  items={timezones}
-                  labelAdornment={(
-                    <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
-                      <IconButton classes={{ root: "inputAdornmentButton" }}>
-                        <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  validate={validateSingleMandatoryField}
-                />
-              )}
+            <Grid item xs={layoutArray[7].xs}>
+              <StaticGoogleMap
+                markerLetter={values.name && values.name[0].toUpperCase()}
+                latitude={values.latitude}
+                longitude={values.longitude}
+                size={twoColumn ? [600, 207] : [600, 300]}
+              />
             </Grid>
           </Grid>
+        </Collapse>
 
-          <Grid item xs={layoutArray[8].xs}>
-            <MinifiedEntitiesList
-              name="rooms"
-              header="Rooms"
-              oneItemHeader="Room"
-              entity="Room"
-              FieldsContent={SitesRoomFields}
-              onAdd={this.addRoom}
-              onDelete={this.deleteRoom}
-              onViewMore={openRoom}
-              count={values.rooms && values.rooms.length}
-              validate={validateRooms}
-              syncErrors={syncErrors}
-            />
-          </Grid>
+        <Grid item xs={layoutArray[8].xs}>
+          <MinifiedEntitiesList
+            name="rooms"
+            header="Rooms"
+            oneItemHeader="Room"
+            entity="Room"
+            FieldsContent={SitesRoomFields}
+            onAdd={this.addRoom}
+            onDelete={this.deleteRoom}
+            onViewMore={openRoom}
+            count={values.rooms && values.rooms.length}
+            validate={validateRooms}
+            syncErrors={syncErrors}
+          />
         </Grid>
-      </>
+      </Grid>
     );
   }
 }

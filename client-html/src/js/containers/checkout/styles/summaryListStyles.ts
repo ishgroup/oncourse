@@ -14,7 +14,9 @@ import { AppTheme } from "../../../model/common/Theme";
 
 export const summaryListStyles = (theme: AppTheme) => createStyles({
   itemTotal: {
-    paddingRight: "50px !important"
+    paddingRight: "50px",
+    display: "flex",
+    flexDirection: "row-reverse"
   },
   topRightlabel: {
     paddingRight: "38px"

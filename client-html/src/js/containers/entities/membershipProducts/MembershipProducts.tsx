@@ -165,7 +165,8 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
       <ListView
         listProps={{ primaryColumn: "name", secondaryColumn: "sku" }}
         editViewProps={{
-          manualLink
+          manualLink,
+          hideTitle: true
         }}
         EditViewContent={MembershipProductEditView}
         getEditRecord={getMembershipProductRecord}

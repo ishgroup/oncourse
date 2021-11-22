@@ -27,12 +27,10 @@ import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../co
 import { DD_MMM_YYYY_MINUSED, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { PaymentInType } from "../consts";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { openSiteLink } from "../../sites/utils";
-import Uneditable from "../../../../common/components/form/Uneditable";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -182,18 +180,6 @@ class BankingEditView extends React.PureComponent<any, any> {
     );
   };
 
-  getEditRecordProp = (name: string) => {
-    const { editRecord } = this.props;
-    if (!editRecord || editRecord[name] === null) {
-      return (
-        <Typography variant="body1" className="placeholderContent">
-          No value
-        </Typography>
-      );
-    }
-    return <Typography variant="body1">{editRecord[name]}</Typography>;
-  };
-
   onSettlementDateChanged = (v: any, newValue: string, prevValue: string) => {
     const { values, form } = this.props;
     if (newValue !== prevValue && values) {
@@ -228,32 +214,32 @@ class BankingEditView extends React.PureComponent<any, any> {
       openNestedView,
       values,
       isNew,
-      invalid
     } = this.props;
 
     return (
-      <div className="h-100 flex-column p-3">
-        <FullScreenStickyHeader
-          opened={isNew || invalid}
-          disableInteraction={!isNew}
-          twoColumn={twoColumn}
-          title={(
-            <div className="centeredFlex">
-              {values?.administrationCenterId
-                ? (
-                <>
-                  {values?.adminSite}
-                  <IconButton size="small" color="primary" onClick={() => openSiteLink(values?.administrationCenterId)}>
-                    <Launch fontSize="inherit" />
-                  </IconButton>
-                </>
-                )
-                : this.getHeader()}
-            </div>
-            )}
-        />
-        <Grid container columnSpacing={3}>
-          <Grid item xs={twoColumn ? 3 : 6}>
+      <div className={clsx("pl-3 pr-3 h-100 d-flex flex-column", twoColumn ? "pt-2" : "pt-3")}>
+        <Grid container columnSpacing={3} rowSpacing={2}>
+          <Grid item xs={12}>
+            <FullScreenStickyHeader
+              disableInteraction={!isNew}
+              twoColumn={twoColumn}
+              title={(
+                <div className="d-inline-flex-center">
+                  {values?.administrationCenterId
+                    ? (
+                      <>
+                        {values?.adminSite}
+                        <IconButton size="small" color="primary" onClick={() => openSiteLink(values?.administrationCenterId)}>
+                          <Launch fontSize="inherit" />
+                        </IconButton>
+                      </>
+                    )
+                    : this.getHeader()}
+                </div>
+              )}
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
             <FormField
               type="date"
               disabled={this.isDateLocked(lockedDate, editRecord)}
@@ -268,17 +254,14 @@ class BankingEditView extends React.PureComponent<any, any> {
                 }
             />
           </Grid>
-          <Grid item xs={twoColumn ? 3 : 6}>
-            <Typography variant="caption" color="textSecondary">
-              Created by
-            </Typography>
-            {this.getEditRecordProp("createdBy")}
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <Uneditable
+              label="Created by"
+              value={values?.createdBy}
+            />
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
-              className={clsx("pr-3", {
-                  "mt-2": !twoColumn
-                })}
               control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
               label="Reconcile this banking deposit"
               disabled={this.isReconcileAllDisabled()}
