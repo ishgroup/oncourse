@@ -203,6 +203,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
 
     if (
       isScrollingDown
+      && scrollNodes.current[selectedIndex]
       && e.target.scrollTop
         >= scrollNodes.current[selectedIndex].offsetHeight + scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT
     ) {
@@ -212,7 +213,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       return;
     }
 
-    if (!isScrollingDown && e.target.scrollTop < scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT) {
+    if (!isScrollingDown && scrollNodes.current[selectedIndex] && e.target.scrollTop < scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT) {
       if (selectedIndex - 1 >= 0) {
         setSelected(scrollNodes.current[selectedIndex - 1].id);
       }

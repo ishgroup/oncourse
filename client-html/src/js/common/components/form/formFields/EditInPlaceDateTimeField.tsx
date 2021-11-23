@@ -287,8 +287,20 @@ const EditInPlaceDateTimeField: React.FC<any> = (
 
     if (parsed) {
       const appended = timezone ? appendTimezoneToUTC(parsed, timezone) : parsed;
-      input.onBlur(appended.toISOString());
-      input.onChange(appended.toISOString());
+      let formatted = null;
+      if (formatValue) {
+        formatted = format(appended, formatValue);
+      } else if (type === "date" && isValid(appended)) {
+        formatted = format(appended, YYYY_MM_DD_MINUSED);
+      } else {
+        try {
+          formatted = appended.toISOString();
+        } catch {
+          formatted = null;
+        }
+      }
+      input.onBlur(formatted);
+      input.onChange(formatted);
     } else {
       input.onBlur(null);
       input.onChange(null);
@@ -296,6 +308,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const onClose = () => {
+    onBlur();
     setIsEditing(false);
     setPickerOpened(false);
   };

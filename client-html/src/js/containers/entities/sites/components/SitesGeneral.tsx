@@ -228,7 +228,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
         </Grid>
 
         <Collapse in={!values.isVirtual}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid container item xs={layoutArray[2].xs} columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
                 <FormField

@@ -45,7 +45,7 @@ const styles = theme => createStyles({
   }
 });
 
-const getAuditsUrl = (id: string) => `audit?search=~"Integration" and entityId == ${id}`;
+const getAuditsUrl = (id: number) => `audit?search=~"Integration" and entityId == ${id}`;
 
 interface Props {
   syncErrors: any;

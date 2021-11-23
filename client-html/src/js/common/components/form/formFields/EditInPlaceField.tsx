@@ -89,8 +89,9 @@ const styles = theme => createStyles({
   },
   rightAligned: {
     "& $label": {
-      right: "-18px",
-      left: "unset"
+      left: "unset",
+      right: 0,
+      transformOrigin: '100% 0'
     }
   },
   readonly: {
