@@ -9,7 +9,6 @@ import { Application, ApplicationStatus } from "@api/model";
 import { Grid, IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
@@ -30,11 +29,6 @@ interface ApplicationGeneralProps extends EditViewProps<Application> {
 const statusItems = Object.keys(ApplicationStatus)
   .map(value => ({ label: value, value }))
   .filter(item => item.value !== ApplicationStatus.Accepted);
-
-const validateTagList = (value, allValues, props) => {
-  const { tags } = props;
-  return validateTagsList(tags && tags.length > 0 ? tags : [], value, allValues, props);
-};
 
 const validateNonNegative = value => (value < 0 ? "Must be non negative" : undefined);
 
@@ -121,15 +115,12 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           required
         />
       </Grid>
-      <Grid item container xs={12}>
-        <Grid {...gridItemProps}>
-          <FormField
-            type="tags"
-            name="tags"
-            tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
-          />
-        </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField

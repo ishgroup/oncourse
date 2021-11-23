@@ -12,18 +12,19 @@ import { Dispatch } from "redux";
 import { change } from "redux-form";
 import Grid from "@mui/material/Grid";
 import {
- Lead, LeadStatus, Sale, Tag, User
+ Lead, LeadStatus, Sale, Tag, User 
 } from "@api/model";
 import Chip from "@mui/material/Chip";
 import clsx from "clsx";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import {
- contactLabelCondition, defaultContactName, getContactName, openContactLink
+ contactLabelCondition, defaultContactName, getContactName, openContactLink 
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -35,8 +36,6 @@ import { getProductAqlType } from "../../sales/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
@@ -108,9 +107,7 @@ const LeadGeneral = (props: Props) => {
     syncErrors
   } = props;
 
-  const classes  = useStyles();
-
-  const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
+  const classes = useStyles();
 
   const onContactChange = value => {
     dispatch(change(form, "contactName", getContactName(value)));
@@ -173,7 +170,6 @@ const LeadGeneral = (props: Props) => {
           type="tags"
           name="tags"
           tags={tags}
-          validate={tags && tags.length ? validateTagList : undefined}
         />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>

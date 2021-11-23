@@ -27,7 +27,6 @@ import { getEntityTags } from "../../../../../containers/tags/actions";
 import { State } from "../../../../../reducers/state";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
 import FormField from "../../../form/formFields/FormField";
-import { validateTagsList } from "../../../form/simpleTagListComponent/validateTagsList";
 import { bulkChangeRecords } from "../../actions";
 import bottomDrawerStyles from "../bottomDrawerStyles";
 import SelectionSwitcher from "../share/SelectionSwitcher";
@@ -155,8 +154,6 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     [entityTags, rootEntity]
   );
 
-  const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
-
   const BulkEditFieldRendered = useMemo(() => {
     if (!selectedKeyCode) {
       return null;
@@ -234,7 +231,6 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
             type="tags"
             name={field.keyCode}
             tags={tags}
-            validate={validateTagList}
             {...fieldProps}
           />
         </>
@@ -250,7 +246,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           {...fieldProps}
         />
       );
-  }, [entityTags, rootEntity, usedKeys, validateTagList, bulkEditFields, selectedKeyCode]);
+  }, [entityTags, rootEntity, usedKeys, bulkEditFields, selectedKeyCode]);
 
   return (
     <Drawer

@@ -6,7 +6,7 @@
 import React from "react";
 import { change } from "redux-form";
 import {
- Account, ArticleProduct, ProductStatus, Tax
+ Account, ArticleProduct, ProductStatus, Tag, Tax 
 } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
@@ -24,6 +24,7 @@ import FullScreenStickyHeader
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
   taxes?: Tax[];
+  tags?: Tag[];
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -61,7 +62,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, isNew, taxes, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
+    twoColumn, accounts, isNew, taxes, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
 
   const gridItemProps = {
@@ -89,6 +90,22 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           )}
         />
       </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <FormField
+          type="text"
+          name="code"
+          label="SKU"
+          required
+        />
+      </Grid>
+
       <Grid item {...gridItemProps}>
         <FormField
           type="text"
@@ -187,6 +204,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 const mapStateToProps = (state: State) => ({
   accounts: state.plainSearchRecords.Account.items,
   taxes: state.taxes.items,
+  tags: state.tags.entityTags["ArticleProduct"],
   dataCollectionRules: state.preferences.dataCollectionRules
 });
 
