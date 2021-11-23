@@ -6,7 +6,7 @@
 apply plugin: 'org.apache.cayenne'
 
 ext {
-    webservicesVersion = '123'
+    webservicesVersion = '124'
     cayenneVersion = '4.1'
     derbyVersion = '10.14.2.0'
     bootiqueVersion = '1.0'
