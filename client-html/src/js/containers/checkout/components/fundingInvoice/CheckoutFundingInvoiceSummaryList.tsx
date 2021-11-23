@@ -122,7 +122,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           form={form}
         />
       </Grid>
-      <Grid container columnSpacing={3}>
+      <Grid item xs={12} container>
         {fundingInvoice && fundingInvoice.paymentPlans && (
           <Grid item sm={6} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans

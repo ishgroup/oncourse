@@ -13,14 +13,14 @@ const MembershipEditView: React.FC<any> = props => {
   const { values } = props;
 
   return values ? (
-    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="ml-0">
       <Grid item xs={2}>
         <Uneditable label="SKU" value={values.code} />
       </Grid>
       <Grid item xs={8}>
         <Uneditable label="Sale price" value={values.totalFee} money />
       </Grid>
- 
+
       <Grid item xs={6}>
         <Uneditable label="Description" value={values.description} multiline />
       </Grid>
@@ -32,7 +32,7 @@ const MembershipEditView: React.FC<any> = props => {
         <Uneditable label="Expires on" value={values.expireNever} />
           )}
       </Grid>
-    
+
     </Grid>
   ) : null;
 };

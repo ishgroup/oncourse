@@ -133,6 +133,7 @@ const HeaderField: React.FC<Props> = props => {
               )
             }}
             validate={validate}
+            fullWidth
           />
         )}
         <div className="mt-2">

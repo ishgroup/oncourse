@@ -242,7 +242,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
   return values ? (
     <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
-        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Contact">
+        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header="Contact">
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item {...gridItemProps}>
               <FormField

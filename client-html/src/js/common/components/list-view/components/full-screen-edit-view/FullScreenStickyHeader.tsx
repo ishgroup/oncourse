@@ -131,6 +131,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   
   const showTitleOnly = twoColumn && isStuck;
 
+  const titleExpanded = opened ? false : !isEditing;
+
   return (
     <Grid
       container
@@ -143,10 +145,10 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           item
           xs={12}
           className={clsx(
-          "centeredFlex",
-          twoColumn && !opened ? classes.fullScreenTitleItem : 'mb-2',
-          isStuck && !opened && classes.isStuck
-        )}
+            "centeredFlex",
+            twoColumn && !opened && classes.fullScreenTitleItem,
+            isStuck && !opened && classes.isStuck
+          )}
           columnSpacing={3}
         >
 
@@ -167,11 +169,12 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
               item
               xs={12}
             >
-              <Collapse in={opened ? false : !isEditing}>
+              <Collapse in={titleExpanded}>
                 <Typography
                   variant="h5"
                   className={clsx(
                     classes.titleText,
+                    !twoColumn && !opened && 'mb-1',
                     showTitleOnly ? "appHeaderFontSize centeredFlex" : classes.title,
                     disableInteraction && classes.disableInteraction
                   )}
@@ -183,7 +186,6 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
                   <Edit color="primary" className={classes.titleIcon} />
                 </Typography>
               </Collapse>
-
             </Grid>
             <Grid
               item

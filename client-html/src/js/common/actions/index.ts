@@ -10,7 +10,7 @@
 import {
   LoginRequest,
   PermissionRequest,
-  PreferenceEnum,
+  PreferenceEnum, User,
   UserPreference
 } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
@@ -97,6 +97,10 @@ export const EXECUTE_ACTIONS_QUEUE = "execute/actionsQueue";
 export const CLEAR_ACTIONS_QUEUE = "clear/actionsQueue";
 
 export const NEXT_LOCATION = 'nextLocation';
+
+export const GET_SYSTEM_USER_DATA = "get/systemUser/data";
+
+export const SET_SYSTEM_USER_DATA = "set/systemUser/data";
 
 export const addActionToQueue = (
   actionBody: IAction,
@@ -261,4 +265,14 @@ export const clearMessage = () => ({
 export const setNextLocation = (nextLocation: string) => ({
   type: NEXT_LOCATION,
   payload: nextLocation
+});
+
+
+export const getSystemUserData = () => ({
+  type: GET_SYSTEM_USER_DATA,
+});
+
+export const setSystemUserData = (systemUserData: User) => ({
+  type: SET_SYSTEM_USER_DATA,
+  payload: systemUserData
 });
