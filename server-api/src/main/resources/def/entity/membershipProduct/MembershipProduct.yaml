@@ -47,3 +47,11 @@ properties:
   modifiedOn:
     type: string
     format: date-time
+  tags:
+    type: array
+    items:
+      $ref: '../Tag.yaml'
+  documents:
+    type: array
+    items:
+      $ref: '../Document.yaml'

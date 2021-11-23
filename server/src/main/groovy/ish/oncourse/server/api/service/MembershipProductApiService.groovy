@@ -28,9 +28,15 @@ import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.ProductAttachmentRelation
+import ish.oncourse.server.cayenne.ProductTagRelation
+import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import ish.oncourse.server.api.v1.function.MembershipProductFunctions
+
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
@@ -39,6 +45,9 @@ import ish.oncourse.server.api.v1.model.ExpiryTypeDTO
 import ish.oncourse.server.api.v1.model.MembershipCorporatePassDTO
 import ish.oncourse.server.api.v1.model.MembershipDiscountDTO
 import ish.oncourse.server.api.v1.model.MembershipProductDTO
+
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.DISABLED
@@ -62,6 +71,9 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
     @Inject
     private AccountDao accountDao
 
+    @Inject
+    private DocumentService documentService
+    
     @Inject
     private ContactRelationTypeDao contactRelationTypeDao
 
@@ -115,6 +127,8 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
             membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
+            membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            membershipProductDTO.tags = membershipProduct.tags.collect{ toRestTagMinimized(it) }
             membershipProductDTO
         }
     }
@@ -146,6 +160,8 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
                 fieldConfigurationSchemeDao.getById(membershipProduct.context, membershipProductDTO.dataCollectionRuleId) :
                 null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
+        updateDocuments(membershipProduct, membershipProduct.attachmentRelations, membershipProductDTO.documents, ProductAttachmentRelation, context)
+        updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags*.id, ProductTagRelation, context)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
         membershipProduct
     }
@@ -212,7 +228,7 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
             if (!account) {
                 validator.throwClientErrorException(id, 'incomeAccount', "Account with id=$membershipProductDTO.incomeAccountId doesn't exist.")
             } else if (account.type != AccountType.INCOME) {
-                validator.throwClientErrorException(id, 'incomeAccount', "Only accounts of income type can be assigned to voucher.")
+                validator.throwClientErrorException(id, 'incomeAccount', "Only accounts of income type can be assigned to membership.")
             }
         }
 
