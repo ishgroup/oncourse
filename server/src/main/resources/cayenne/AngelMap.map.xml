@@ -1716,6 +1716,15 @@
 		<qualifier><![CDATA[type = 1]]></qualifier>
 		<obj-attribute name="weight" type="java.lang.Double" db-attribute-path="weight"/>
 	</obj-entity>
+	<obj-entity name="ProductAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.ProductAttachmentRelation" clientClassName="ish.oncourse.cayenne.ProductAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "Product"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ProductNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.ProductNoteRelation" clientClassName="ish.oncourse.cayenne.ProductNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "Product"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ProductTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.ProductTagRelation" clientClassName="ish.oncourse.cayenne.ProductTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 20]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Assessment" className="ish.oncourse.server.cayenne.Assessment" clientClassName="ish.oncourse.cayenne.Assessment" dbEntityName="Assessment" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="active" type="java.lang.Boolean" db-attribute-path="active"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
@@ -2762,7 +2771,7 @@
 	<obj-entity name="PriorLearningAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.PriorLearningAttachmentRelation" clientClassName="ish.oncourse.cayenne.PriorLearningAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "PriorLearning"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="Product" abstract="true" className="ish.oncourse.server.cayenne.Product" clientClassName="ish.oncourse.cayenne.Product" dbEntityName="Product" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+	<obj-entity name="Product" abstract="true" className="ish.oncourse.server.cayenne.Product" clientClassName="ish.oncourse.cayenne.Product" dbEntityName="Product" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
@@ -3445,6 +3454,9 @@
 	<db-relationship name="attachedContact" source="BinaryRelation" target="Contact">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
+	<db-relationship name="attachedProduct" source="BinaryRelation" target="Product">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
 	<db-relationship name="attachedCourse" source="BinaryRelation" target="Course">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -3541,6 +3553,9 @@
 	<db-relationship name="attachmentRelations" source="Contact" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
+	<db-relationship name="attachmentRelations" source="Product" target="BinaryRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
 	<db-relationship name="classCosts" source="Contact" target="ClassCost" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
@@ -3574,6 +3589,9 @@
 	<db-relationship name="noteRelations" source="Contact" target="NoteRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
+	<db-relationship name="noteRelations" source="Product" target="NoteRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
 	<db-relationship name="paymentsIn" source="Contact" target="PaymentIn" toMany="true">
 		<db-attribute-pair source="id" target="payerId"/>
 	</db-relationship>
@@ -3590,6 +3608,9 @@
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="taggingRelations" source="Contact" target="NodeRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="taggingRelations" source="Product" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
 	<db-relationship name="taxOverride" source="Contact" target="Tax">
@@ -4309,6 +4330,9 @@
 	<db-relationship name="notedContact" source="NoteRelation" target="Contact">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
+	<db-relationship name="notedProduct" source="NoteRelation" target="Product">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
 	<db-relationship name="notedCourse" source="NoteRelation" target="Course">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -5001,6 +5025,7 @@
 	</obj-relationship>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
 	<obj-relationship name="attachmentRelations" source="Contact" target="ContactAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="attachmentRelations" source="Product" target="ProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="classCosts" source="Contact" target="ClassCost" deleteRule="Nullify" db-relationship-path="classCosts"/>
 	<obj-relationship name="concessionsAuthorised" source="Contact" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionsAuthorised"/>
 	<obj-relationship name="contactDuplicate" source="Contact" target="ContactDuplicate" deleteRule="Cascade" db-relationship-path="contactDuplicate"/>
@@ -5013,6 +5038,7 @@
 	<obj-relationship name="leads" source="Contact" target="Lead" deleteRule="Cascade" db-relationship-path="leads"/>
 	<obj-relationship name="messages" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messages"/>
 	<obj-relationship name="noteRelations" source="Contact" target="ContactNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="noteRelations" source="Product" target="ProductNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="payslips" source="Contact" target="Payslip" deleteRule="Deny" db-relationship-path="payslips"/>
@@ -5024,10 +5050,12 @@
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
 	<obj-relationship name="unavailableRuleRelations" source="Contact" target="ContactUnavailableRuleRelation" deleteRule="Cascade" db-relationship-path="unavailableRuleRelations"/>
 	<obj-relationship name="attachedContact" source="ContactAttachmentRelation" target="Contact" deleteRule="Nullify" db-relationship-path="attachedContact"/>
+	<obj-relationship name="attachedProduct" source="ProductAttachmentRelation" target="Product" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
 	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
 	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Deny" db-relationship-path="contactToUpdate"/>
 	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Deny" db-relationship-path="createdByUser"/>
 	<obj-relationship name="notedContact" source="ContactNoteRelation" target="Contact" deleteRule="Nullify" db-relationship-path="notedContact"/>
+	<obj-relationship name="notedProduct" source="ProductNoteRelation" target="Product" deleteRule="Nullify" db-relationship-path="notedProduct"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
 	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="toContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="toContact"/>
@@ -5311,6 +5339,7 @@
 	<obj-relationship name="fieldConfigurationScheme" source="Product" target="FieldConfigurationScheme" deleteRule="Nullify" db-relationship-path="fieldConfigurationScheme"/>
 	<obj-relationship name="leadItems" source="Product" target="LeadItem" deleteRule="Cascade" db-relationship-path="leadItems"/>
 	<obj-relationship name="leads" source="Product" target="Lead" deleteRule="Nullify" db-relationship-path="leadItems.lead"/>
+	<obj-relationship name="taggingRelations" source="Product" target="ProductTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="underpaymentAccount" source="VoucherProduct" target="Account" deleteRule="Deny" db-relationship-path="underpaymentAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
@@ -5353,7 +5382,7 @@
 	<obj-relationship name="abstractInvoiceLines" source="AbstractInvoice" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 
-
+	<obj-relationship name="taggedProduct" source="ProductTagRelation" target="Product" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="invoice"/>
