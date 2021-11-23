@@ -33,7 +33,6 @@ import { getContactFullName } from "../utils";
 import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
@@ -109,13 +108,13 @@ export const ProfileHeading: React.FC<any> = props => {
     twoColumn,
     isCompany,
     usiLocked,
-    isNew,
-    invalid
+    syncErrors,
+    isNew
   } = props;
 
   return (
     <FullScreenStickyHeader
-      opened={isNew || invalid}
+      opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
       twoColumn={twoColumn}
       Avatar={aProps => (
         <Field
@@ -139,7 +138,7 @@ export const ProfileHeading: React.FC<any> = props => {
         </>
       )}
       fields={(
-        <Grid container>
+        <Grid container item xs={12} rowSpacing={2} columnSpacing={3}>
           {!isCompany && (
             <>
               <Grid item xs={twoColumn ? 2 : 6}>
@@ -153,7 +152,7 @@ export const ProfileHeading: React.FC<any> = props => {
               </Grid>
             </>
           )}
-          <Grid item xs={twoColumn ? 4 : 6}>
+          <Grid item xs={isCompany ? 12 : twoColumn ? 2 : 6}>
             <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
           </Grid>
         </Grid>
@@ -297,8 +296,8 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
       </Grid>
       {isStudent && (
         <>
-          <Divider className="mt-3 mb-3" />
-          <Grid container columnSpacing={3}>
+          <Divider className="mt-3 mb-2" />
+          <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
               <TimetableButton onClick={onCalendarClick} />
             </Grid>

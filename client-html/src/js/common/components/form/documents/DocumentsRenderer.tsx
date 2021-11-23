@@ -31,7 +31,7 @@ import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/Doc
 import { getEntityTags } from "../../../../containers/tags/actions";
 import { EntityName } from "../../../../model/entities/common";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 
 const styles = (theme: AppTheme) => createStyles({
   dropInfo: {
@@ -339,13 +339,13 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
             >
               <Launch fontSize="inherit" />
             </IconButton>
-            <AddIcon size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
+            <AddButton size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
             <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
               Drag and drop file or click to browse.
             </Typography>
           </div>
         </Grid>
-        <Grid container columnSpacing={3} spacing={3} wrap="wrap">
+        <Grid item container xs={12} columnSpacing={3} spacing={3} wrap="wrap">
           {fields.map((f, index) => {
             const item = fields.get(index);
 

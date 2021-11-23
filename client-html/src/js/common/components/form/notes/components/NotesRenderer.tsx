@@ -46,7 +46,6 @@ const NotesRenderer = props => {
           <Grid
             container
             wrap="wrap"
-            spacing={3}
             className={clsx(classes.notesContainer, { [classes.leftOffset]: leftOffset })}
           >
             {renderedNotes.slice(6)}
@@ -54,7 +53,7 @@ const NotesRenderer = props => {
         </Collapse>
       </Grid>
 
-      <Grid item xs={12} container>
+      <Grid item xs={12} container justifyContent="center">
         {fields.length > 6 && (
           <>
             <span className={classes.showMore}>

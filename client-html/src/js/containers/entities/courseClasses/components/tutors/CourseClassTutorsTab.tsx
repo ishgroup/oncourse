@@ -28,7 +28,7 @@ import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import { setCourseClassBudgetModalOpened } from "../../actions";
 import history from "../../../../../constants/History";
 import uniqid from "../../../../../common/utils/uniqid";
-import AddIcon from "../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -201,10 +201,10 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
     );
 
     return (
-      <Grid container columnSpacing={3} className="pl-3 pr-3 pb-3">
+      <Grid container columnSpacing={3} className="pl-3 pr-3 pb-2">
         <Grid item xs={12} className="centeredFlex">
           <div className="heading">Tutors</div>
-          <AddIcon onClick={onAddTutor} />
+          <AddButton onClick={onAddTutor} />
         </Grid>
 
         <Grid item xs={twoColumn ? 6 : 12}>

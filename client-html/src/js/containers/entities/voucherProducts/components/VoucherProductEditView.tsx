@@ -12,21 +12,9 @@ import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import VoucherProductGeneral from "./VoucherProductGeneral";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface VoucherProductEditViewProps {
-  values?: VoucherProduct;
-  isNew?: boolean;
-  isNested?: boolean;
-  dispatch?: any;
-  dirty?: boolean;
-  form?: string;
-  nestedIndex?: number;
-  rootEntity?: string;
-  twoColumn?: boolean;
-  submitSucceeded?: boolean;
-  showConfirm?: any;
-  openNestedEditView?: any;
-  manualLink?: string;
+interface VoucherProductEditViewProps extends EditViewProps<VoucherProduct>{
   accounts?: Account[];
   access?: AccessState;
 }
@@ -62,7 +50,8 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
     manualLink,
     accounts,
     access,
-    submitSucceeded
+    submitSucceeded,
+    syncErrors
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -86,7 +75,8 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
         openNestedEditView,
         manualLink,
         accounts,
-        submitSucceeded
+        submitSucceeded,
+        syncErrors
       }}
     />
   );

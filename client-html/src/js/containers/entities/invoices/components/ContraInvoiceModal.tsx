@@ -175,7 +175,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
               />
             </Grid>
 
-            <Grid item xs={6} className="textField">
+            <Grid item xs={6}>
               <div>
                 <Typography variant="caption" color="textSecondary">
                   Amount left to allocate

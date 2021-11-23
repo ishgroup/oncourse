@@ -1,3 +1,18 @@
+get:
+  summary: get current logged user
+  operationId: getUser
+  tags:
+    - Authentication
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/User.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
+
 put:
   summary: Get Authentication
   operationId: login

@@ -166,7 +166,8 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
           secondaryColumn: "sku"
         }}
         editViewProps={{
-          manualLink
+          manualLink,
+          hideTitle: true
         }}
         EditViewContent={ArticleProductEditView}
         getEditRecord={getArticleProductRecord}

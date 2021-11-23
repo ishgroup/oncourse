@@ -4,11 +4,10 @@
  */
 import React from "react";
 import { connect } from "react-redux";
-import Button from "@mui/material/Button";
 import EnrolClassListView from "./EnrolClassListView";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { State } from "../../../../../reducers/state";
 import CheckoutAppBar from "../../CheckoutAppBar";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const EnrolCourseClassView = React.memo<any>(props => {
   const {
@@ -22,34 +21,30 @@ const EnrolCourseClassView = React.memo<any>(props => {
   } = props;
 
   return (
-    <div className="flex-column w-100">
-      <CustomAppBar>
-        <CheckoutAppBar
-          type="course"
-          title={course && course.name}
-          link={course && course.courseId}
+    <>
+      <AppBarContainer
+        hideHelpMenu
+        hideSubmitButton
+        disableInteraction
+        title={(
+          <CheckoutAppBar
+            type="course"
+            title={course && course.name}
+            link={course && course.courseId}
+          />
+        )}
+        onCloseClick={onClose}
+      >
+        <EnrolClassListView
+          course={course}
+          courseClasses={courseClasses}
+          onSelect={onClassSelect}
+          isClassesEmpty={isClassesEmpty}
+          currencySymbol={currencySymbol}
+          selectedItems={selectedItems}
         />
-        <div>
-          <Button
-            classes={{
-              root: "whiteAppBarButton",
-              disabled: "whiteAppBarButtonDisabled"
-            }}
-            onClick={onClose}
-          >
-            Close
-          </Button>
-        </div>
-      </CustomAppBar>
-      <EnrolClassListView
-        course={course}
-        courseClasses={courseClasses}
-        onSelect={onClassSelect}
-        isClassesEmpty={isClassesEmpty}
-        currencySymbol={currencySymbol}
-        selectedItems={selectedItems}
-      />
-    </div>
+      </AppBarContainer>
+    </>
   );
 });
 

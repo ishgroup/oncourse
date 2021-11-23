@@ -17,7 +17,7 @@ import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 import { GradingFormData } from "./GradingTypesForm";
-import AddIcon from "../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 interface Props {
   classes: any;
@@ -85,7 +85,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
         <Typography component="div" variant="caption" color="textSecondary" noWrap>
           {label}
         </Typography>
-        <AddIcon onClick={onAdd} className="p-0-5" />
+        <AddButton onClick={onAdd} className="p-0-5" />
       </div>
       {error && (
         <Typography className="shakingError" component="div" variant="caption" color="error" noWrap>

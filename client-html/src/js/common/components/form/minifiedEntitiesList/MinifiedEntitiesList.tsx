@@ -7,7 +7,7 @@ import React, { useMemo } from "react";
 import { FieldArray } from "redux-form";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import AddIcon from "../../icons/AddIcon";
+import AddButton from "../../icons/AddButton";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 
 const MinifiedEntitiesList = props => {
@@ -50,7 +50,7 @@ const MinifiedEntitiesList = props => {
           {count !== 1 ? header : oneItemHeader}
         </Typography>
         {onAdd && (
-          <AddIcon size="small" color="primary" onClick={onAdd} iconFontSize="inherit" />
+          <AddButton onClick={onAdd} />
         )}
       </div>
 

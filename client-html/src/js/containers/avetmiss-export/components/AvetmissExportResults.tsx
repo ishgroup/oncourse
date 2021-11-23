@@ -505,7 +505,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
                       {' '}
                       {k}
                       {' '}
-                      <Launch className={classes.recordIcon} />
+                      <Launch  className={classes.recordIcon} />
                     </Typography>
                   </ButtonBase>
                 );
