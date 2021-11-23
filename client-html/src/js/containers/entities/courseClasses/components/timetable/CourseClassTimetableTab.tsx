@@ -20,7 +20,7 @@ import {
   addWeeks,
   addYears,
   differenceInMinutes,
-  isWeekend,
+  isWeekend, setDate,
   subDays
 } from "date-fns";
 import { SessionWarning, TutorAttendance } from "@api/model";
@@ -523,6 +523,7 @@ const CourseClassTimetableTab = ({
     });
   }, [form, values.sessions, sessionSelection]);
 
+ // Bulk update
   const onBulkSessionUpdate = bulkValue => {
     const updated = [...values.sessions];
 
@@ -641,8 +642,20 @@ const CourseClassTimetableTab = ({
             payslipAttendances.splice(payslipAttendanceIndex, 1);
             return payslipAttendances[payslipAttendanceIndex];
           }
+
+          const taStart = new Date(ta.start);
+          const taEnd = new Date(ta.end);
+          
+          const start = new Date(session.start);
+          const end = new Date(session.end);
+
+          start.setHours(taStart.getHours(), taStart.getMinutes(), 0, 0);
+          end.setHours(taEnd.getHours(), taEnd.getMinutes(), 0, 0);
+
           return {
             ...ta,
+            start: start.toISOString(),
+            end: end.toISOString(),
           };
         }).concat(payslipAttendances);
       }
