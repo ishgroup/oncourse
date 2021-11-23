@@ -153,6 +153,11 @@ const styles = theme => createStyles({
       padding: 0
     }
   },
+  muiSelect: {
+    "&:focus": {
+      background: "none",
+    }
+  },
   smallOffsetInput: {
     padding: "2px"
   },
@@ -669,7 +674,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                     inputRef={this.setInputNode}
                     classes={{
                       root: classes.textFieldBorderModified,
-                      select: clsx(fieldClasses.text, isInline && classes.inlineSelect),
+                      select: clsx(classes.muiSelect ,fieldClasses.text, isInline && classes.inlineSelect),
                       // @ts-ignore
                       underline: fieldClasses.underline
                     }}
