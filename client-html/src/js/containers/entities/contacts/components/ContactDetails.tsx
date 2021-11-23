@@ -244,7 +244,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
         <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header="Contact">
-          <Grid container columnSpacing={3} rowSpacing={2}>
+          <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
             <Grid item {...gridItemProps}>
               <FormField
                 type="text"
@@ -435,7 +435,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 <Grid item {...gridItemProps}>
                   <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
                 </Grid>
-                <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
+                <Grid item {...gridItemProps}>
                   <FormField
                     type="select"
                     name="student.citizenship"
