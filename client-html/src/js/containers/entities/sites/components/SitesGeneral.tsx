@@ -6,9 +6,7 @@
 import { Room, Site } from "@api/model";
 import * as React from "react";
 import Grid, { GridSize } from "@mui/material/Grid";
-import {
-  arrayInsert, arrayRemove
-} from "redux-form";
+import { arrayInsert, arrayRemove } from "redux-form";
 import ScreenShare from "@mui/icons-material/ScreenShare";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -20,10 +18,9 @@ import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { validateSingleMandatoryField, greaterThanNullValidation } from "../../../../common/utils/validation";
+import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { State } from "../../../../reducers/state";
-import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoogleMap";
 import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
 import { validateDeleteRoom } from "../../rooms/actions";
@@ -122,12 +119,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
     });
   };
 
-  validateTagList = (value, allValues, props) => {
-    const { tags } = this.props;
-
-    return validateTagsList(tags, value, allValues, props);
-  };
-
   updateLatLong = () => {
     const { values } = this.props;
 
@@ -188,7 +179,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               type="tags"
               name="tags"
               tags={tags}
-              validate={tags && tags.length ? this.validateTagList : undefined}
             />
           </Grid>
 

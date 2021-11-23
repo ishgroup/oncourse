@@ -4,7 +4,7 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState 
 } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -19,7 +19,6 @@ import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import { validateTagsList } from "../../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
@@ -81,11 +80,6 @@ const CourseClassGeneralTab = React.memo<Props>(
         search: decodeURIComponent(search.toString())
       });
     }, [twoColumn]);
-
-    const validateTagListCallback = useCallback(
-      (value, allValues, props) => (tags && tags.length ? validateTagsList(tags, value, allValues, props) : undefined),
-      [tags]
-    );
 
     const onClassCodeChange = useCallback(
       e => {
@@ -269,7 +263,7 @@ const CourseClassGeneralTab = React.memo<Props>(
 
           <Grid item xs={12}>
             <FormField type="stub" name="code" required />
-            <FormField type="tags" name="tags" tags={tags} validate={validateTagListCallback} />
+            <FormField type="tags" name="tags" tags={tags} />
           </Grid>
         </Grid>
 
