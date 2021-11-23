@@ -52,7 +52,7 @@ Admin, as an almost all app, require zk srver, so
     main class: ish.oncourse.admin.AdminApp
 
     working dir: /admin
-6. http://127.0.0.1/8306/willowAdmin
+6. http://127.0.0.1:8306/willowAdmin
 
 #Zookepper usage on willow
 
