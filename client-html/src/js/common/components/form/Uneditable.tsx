@@ -19,7 +19,8 @@ import { LinkAdornment } from "./FieldAdornments";
 const useStyles = makeStyles(() => ({
   rightAlignedLabel: {
     left: "unset",
-    right: "-10px"
+    right: 0,
+    transformOrigin: '100% 0'
   }
 }));
 
@@ -51,7 +52,6 @@ const Uneditable = React.memo<UneditableProps>(props => {
 
   return (
     <FormControl
-      dir={rightAligned ? "rtl" : null}
       className={clsx(className, money && "money")}
       error={Boolean(error)}
       variant="standard"
@@ -85,6 +85,9 @@ const Uneditable = React.memo<UneditableProps>(props => {
           }
         multiline={multiline}
         placeholder={placeholder}
+        inputProps={{
+          className: rightAligned && "text-end"
+        }}
         disabled
       />
       <FormHelperText>{error}</FormHelperText>
