@@ -15,20 +15,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
 
 public class Overview {
 
 	private static final Logger logger = LogManager.getLogger();
-
-	private static final List<String> LICENSE_KEYS = Arrays.asList(
-			Preferences.LICENSE_ACCESS_CONTROL,
-			Preferences.LICENSE_SMS,
-			Preferences.LICENSE_CC_PROCESSING,
-			Preferences.LICENSE_PAYROLL,
-			Preferences.LICENSE_VOUCHER,
-			Preferences.LICENSE_FUNDING_CONTRACT);
 
 	@Inject
 	private ICollegeService collegeService;
@@ -84,14 +74,14 @@ public class Overview {
 	}
 
 	private void disableCollege(ObjectContext context, College college) {
-		List<Preference> licensePrefs = ObjectSelect.query(Preference.class).
+
+		Preference replicationPref = ObjectSelect.query(Preference.class).
 				where(Preference.COLLEGE.eq(college).
-						andExp(Preference.NAME.in(LICENSE_KEYS))).
-				select(context);
-		for (Preference pref : licensePrefs) {
-			pref.setValueString(Boolean.toString(false));
+						andExp(Preference.NAME.eq(Preferences.REPLICATION_ENABLED))).
+				selectFirst(context);
+		if (replicationPref != null) {
+			replicationPref.setValueString(Boolean.toString(false));
 		}
-		
 		college.setBillingCode(null);
 		context.commitChanges();
 	}
