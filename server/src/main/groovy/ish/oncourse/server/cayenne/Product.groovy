@@ -34,7 +34,7 @@ import javax.swing.text.DefaultFormatter
  */
 @API
 @QueueableEntity
-class Product extends _Product implements Queueable {
+class Product extends _Product implements Queueable, NotableTrait, AttachableTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -190,9 +190,6 @@ class Product extends _Product implements Queueable {
 		return super.getName()
 	}
 
-	/**
-	 * @return private notes associated with product types
-	 */
 	@API
 	@Override
 	String getNotes() {
@@ -281,5 +278,25 @@ class Product extends _Product implements Queueable {
 	@Override
 	Tax getTax() {
 		return super.getTax()
+	}
+//----------------------------------------------------
+	@Override
+	void addToAttachmentRelations(AttachmentRelation relation) {
+		addToAttachmentRelations((ProductAttachmentRelation) relation)
+	}
+
+	@Override
+	void removeFromAttachmentRelations(AttachmentRelation relation) {
+		removeFromAttachmentRelations((ProductAttachmentRelation) relation)
+	}
+
+	@Override
+	Class<? extends AttachmentRelation> getRelationClass() {
+		return ProductAttachmentRelation.class
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return ProductTagRelation.class
 	}
 }
