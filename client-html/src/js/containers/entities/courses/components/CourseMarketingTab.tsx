@@ -33,16 +33,16 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
   } = props;
 
   return (
-    <Grid container columnSpacing={3} className="pl-3 pr-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3">
       <Grid item xs={12}>
-        <div className="heading mt-2 mb-2">Marketing</div>
+        <div className="heading mt-3">Marketing</div>
       </Grid>
 
       <Grid item xs={12}>
         <FormEditorField name="webDescription" label="Web description" />
       </Grid>
 
-      <Grid item xs={12} className="pb-3">
+      <Grid item xs={12}>
         <FieldArray
           name="documents"
           label="Documents"
@@ -59,7 +59,7 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
         />
       </Grid>
 
-      <Grid item xs={twoColumn ? 10 : 12}>
+      <Grid item xs={12} className="mt-3">
         <RelationsCommon
           name="relatedSellables"
           values={values}

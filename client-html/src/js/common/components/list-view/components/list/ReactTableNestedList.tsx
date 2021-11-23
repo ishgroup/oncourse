@@ -28,10 +28,11 @@ import { NestedTableColumn } from "../../../../../model/common/NestedTable";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { openInternalLink } from "../../../../utils/links";
-import AddIcon from "../../../icons/AddIcon";
+import AddButton from "../../../icons/AddButton";
 import StaticList from "./components/StaticList";
 import styles from "./styles";
 import { getNestedTableCell } from "./utils";
+import { NESTED_TABLE_ROW_HEIGHT } from "../../../../../constants/Config";
 
 const DEFAULT_COLUMN_WIDTH = 100;
 
@@ -46,6 +47,7 @@ interface NestedListTableProps {
   onRowDoubleClick?: any;
   onCheckboxChange?: any;
   onSelectionChangeHangler?: any;
+  calculateHeight?: boolean;
 }
 
 const Table: React.FC<NestedListTableProps> = ({
@@ -55,6 +57,7 @@ const Table: React.FC<NestedListTableProps> = ({
   onSelectionChangeHangler,
   onRowDoubleClick,
   onCheckboxChange,
+  calculateHeight
   }) => {
   const classes = useStyles();
 
@@ -154,10 +157,10 @@ const Table: React.FC<NestedListTableProps> = ({
     </div>
   )), [rows, totalColumnsWidth, selection, onRowDoubleClick, onCheckboxChange, onRowSelect]);
 
-  const tableHeight = useMemo(() => 100 + rows.length * 27,
+  const tableHeight = useMemo(() => 100 + rows.length * NESTED_TABLE_ROW_HEIGHT,
     [rows.length]);
 
-  const bodyStyle = useMemo(() => (rows.length > 10 ? null : { height: rows.length * 27 }), [rows.length]);
+  const bodyStyle = useMemo(() => (rows.length > 10 ? calculateHeight && { height: NESTED_TABLE_ROW_HEIGHT * 10 } : { height: rows.length * NESTED_TABLE_ROW_HEIGHT }), [rows.length]);
 
   return (
     <>
@@ -187,6 +190,7 @@ export interface NestedListProps {
   name?: string;
   className?: string;
   hideHeader?: boolean;
+  calculateHeight?: boolean;
   onAdd?: any;
   currencySymbol?: string;
   onRowDoubleClick?: any;
@@ -210,7 +214,8 @@ const ListRoot = React.memo<NestedListProps>(({
     onCheckboxChange,
     meta: { invalid, error },
     total,
-    goToLink
+    goToLink,
+    calculateHeight
   }) => {
   const [selection, setSelection] = useState([]);
 
@@ -276,7 +281,7 @@ const ListRoot = React.memo<NestedListProps>(({
                 </IconButton>
               )}
               {onAdd && (
-                <AddIcon size="small" onClick={onAdd} />
+                <AddButton size="small" onClick={onAdd} />
               )}
               {Boolean(rows.length) && removeEnabled && (
                 <IconButton
@@ -299,6 +304,7 @@ const ListRoot = React.memo<NestedListProps>(({
           onRowDoubleClick={onRowDoubleClick}
           onCheckboxChange={onCheckboxChange}
           onSelectionChangeHangler={setSelection}
+          calculateHeight={calculateHeight}
         />
         )}
         {invalid && (
@@ -326,7 +332,6 @@ const ListRoot = React.memo<NestedListProps>(({
           </div>
         )}
       </div>
-
     )
     : null;
 });

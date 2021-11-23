@@ -3,7 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import { Form, initialize, InjectedFormProps } from "redux-form";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
@@ -13,11 +15,8 @@ import { Dispatch } from "redux";
 import Grow from "@mui/material/Grow";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings from "../../../components/Bindings";
@@ -29,6 +28,7 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateKeycode } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
@@ -44,13 +44,14 @@ interface Props extends InjectedFormProps {
   onUpdate: (template: ExportTemplate) => void;
   onDelete: NumberArgFunction;
   history: any,
+  syncErrors: any,
   nextLocation: string,
   setNextLocation: (nextLocation: string) => void,
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values,
+    dirty, form, handleSubmit, isNew, invalid, values, syncErrors,
      dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation, setNextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -131,154 +132,153 @@ const ExportTemplatesForm = React.memo<Props>(
         <Form onSubmit={handleSubmit(handleSave)}>
           {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
 
-          <CustomAppBar>
-            <FormField
-              type="headerText"
-              name="name"
-              placeholder="Name"
-              margin="none"
-              className="pl-1"
-              listSpacing={false}
-              disabled={isInternal}
-              required
-            />
-
-            <div className="flex-fill" />
-
-            {!isNew && !isInternal && (
-              <AppBarActions
-                actions={[
-                  {
-                    action: handleDelete,
-                    icon: <DeleteForever />,
-                    confirm: true,
-                    tooltip: "Delete export template",
-                    confirmText: "Export template will be deleted permanently",
-                    confirmButtonText: "DELETE"
-                  }
-                ]}
-              />
-            )}
-
-            {isInternal && (
-              <Grow in={isInternal}>
-                <Tooltip title="Save as new export template">
-                  <IconButton onClick={onInternalSaveClick} color="inherit">
-                    <FileCopy color="inherit" />
-                  </IconButton>
-                </Tooltip>
-              </Grow>
-            )}
-
-            <AppBarHelpMenu
-              created={values.createdOn ? new Date(values.createdOn) : null}
-              modified={values.modifiedOn ? new Date(values.modifiedOn) : null}
-              manualUrl={manualUrl}
-              auditsUrl={getAuditsUrl(values.id)}
-            />
-
-            <FormSubmitButton
-              disabled={!dirty}
-              invalid={invalid}
-            />
-          </CustomAppBar>
-
-          <Grid container columnSpacing={3} className="p-3 appBarContainer">
-            <Grid item xs={9} className="pr-3">
-              <Grid container columnSpacing={3}>
-                <Grid item xs={6}>
-                  <div className="heading">Type</div>
-                  <FormField
-                    type="select"
-                    name="entity"
-                    items={EntityItems}
-                    disabled={isInternal}
-                    required
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormField
-                    type="select"
-                    label="Output"
-                    name="outputType"
-                    items={outputTypes}
-                    disabled={isInternal}
-                    required
-                  />
-                </Grid>
-              </Grid>
-
-              <ScriptCard
-                heading="Script"
-                className="mb-3"
-                onDetailsClick={isInternal ? onInternalSaveClick : undefined}
-                expanded
-                noPadding
-              >
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl={getAuditsUrl}
+            disabled={!dirty}
+            invalid={invalid}
+            title={isNew && (!values.name || values.name.trim().length === 0) ? "New" : values.name.trim()}
+            disableInteraction={isInternal}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
+            fields={(
+              <Grid item xs={12}>
                 <FormField
-                  type="code"
-                  name="body"
-                  className="mt-3"
+                  name="name"
+                  label="Name"
+                  margin="none"
                   disabled={isInternal}
                   required
                 />
-              </ScriptCard>
+              </Grid>
+            )}
+            actions={(
+              <>
+                {!isNew && !isInternal && (
+                  <AppBarActions
+                    actions={[
+                      {
+                        action: handleDelete,
+                        icon: <DeleteForever />,
+                        confirm: true,
+                        tooltip: "Delete export template",
+                        confirmText: "Export template will be deleted permanently",
+                        confirmButtonText: "DELETE"
+                      }
+                    ]}
+                  />
+                )}
 
-              <FormField
-                type="text"
-                label="Key Code"
-                name="keyCode"
-                validate={isNew || !isInternal ? validateKeycode : undefined}
-                disabled={!isNew}
-                required
-              />
+                {isInternal && (
+                  <Grow in={isInternal}>
+                    <Tooltip title="Save as new export template">
+                      <IconButton onClick={onInternalSaveClick} color="inherit">
+                        <FileCopy color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                  </Grow>
+                )}
+              </>
+            )}
+          >
+            <Grid container columnSpacing={3}>
+              <Grid item xs={9} className="pr-3">
+                <Grid container columnSpacing={3}>
+                  <Grid item xs={6}>
+                    <div className="heading">Type</div>
+                    <FormField
+                      type="select"
+                      name="entity"
+                      items={EntityItems}
+                      disabled={isInternal}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormField
+                      type="select"
+                      label="Output"
+                      name="outputType"
+                      items={outputTypes}
+                      disabled={isInternal}
+                      required
+                    />
+                  </Grid>
+                </Grid>
 
-              <FormField
-                type="text"
-                label="Description"
-                name="description"
-                disabled={isInternal}
-                fullWidth
-                multiline
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <div>
+                <ScriptCard
+                  heading="Script"
+                  className="mb-3"
+                  onDetailsClick={isInternal ? onInternalSaveClick : undefined}
+                  expanded
+                  noPadding
+                >
+                  <FormField
+                    type="code"
+                    name="body"
+                    className="mt-3"
+                    disabled={isInternal}
+                    required
+                  />
+                </ScriptCard>
+
                 <FormField
-                  type="switch"
-                  name="enabled"
-                  label="Enabled"
-                  color="primary"
-                  fullWidth
+                  type="text"
+                  label="Key Code"
+                  name="keyCode"
+                  validate={isNew || !isInternal ? validateKeycode : undefined}
+                  disabled={!isNew}
+                  className="mb-2"
+                  required
                 />
-              </div>
-              <div className="mt-3 pt-1">
-                <Bindings
-                  defaultVariables={defaultVariables}
-                  dispatch={dispatch}
-                  form={form}
-                  name="variables"
-                  label="Variables"
-                  itemsType="label"
-                  disabled={isInternal}
-                />
-              </div>
-              <div className="mt-3">
-                <Bindings
-                  dispatch={dispatch}
-                  form={form}
-                  itemsType="component"
-                  name="options"
-                  label="Options"
-                  disabled={isInternal}
-                />
-              </div>
 
-              <div className="mt-3">
-                <AvailableFrom items={mapAvailableFrom(values.entity as EntityName)} />
-              </div>
+                <FormField
+                  type="text"
+                  label="Description"
+                  name="description"
+                  disabled={isInternal}
+                  fullWidth
+                  multiline
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <div>
+                  <FormField
+                    type="switch"
+                    name="enabled"
+                    label="Enabled"
+                    color="primary"
+                    fullWidth
+                  />
+                </div>
+                <div className="mt-3 pt-1">
+                  <Bindings
+                    defaultVariables={defaultVariables}
+                    dispatch={dispatch}
+                    form={form}
+                    name="variables"
+                    label="Variables"
+                    itemsType="label"
+                    disabled={isInternal}
+                  />
+                </div>
+                <div className="mt-3">
+                  <Bindings
+                    dispatch={dispatch}
+                    form={form}
+                    itemsType="component"
+                    name="options"
+                    label="Options"
+                    disabled={isInternal}
+                  />
+                </div>
+
+                <div className="mt-3">
+                  <AvailableFrom items={mapAvailableFrom(values.entity as EntityName)} />
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
+          </AppBarContainer>
         </Form>
       </>
     );

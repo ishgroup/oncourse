@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { withStyles } from "@mui/styles";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
-import Alert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 

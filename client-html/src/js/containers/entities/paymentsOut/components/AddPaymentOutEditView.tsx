@@ -463,6 +463,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         hideHeader
         validate={validateInvoices}
         sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+        calculateHeight
       />
     </div>
 

@@ -95,7 +95,7 @@ const SearchInput = React.memo<any>(props => {
       {aqlEntities && aqlEntities.length > 1
         && (
         <EditInPlaceField
-          className="mt-2"
+          className="mt-2 mb-2"
           label="Entity"
           meta={{}}
           input={{

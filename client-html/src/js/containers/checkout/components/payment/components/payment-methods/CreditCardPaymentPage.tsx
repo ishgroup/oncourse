@@ -115,7 +115,7 @@ const CreditCardPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   return (
     <div
       style={disablePayment ? { pointerEvents: "none" } : null}
-      className={clsx("p-3 d-flex flex-fill justify-content-center", classes.content)}
+      className={clsx("d-flex flex-fill justify-content-center", classes.content)}
     >
       {iframeUrl && !process.status && (
       <div className="flex-column justify-content-center w-100">

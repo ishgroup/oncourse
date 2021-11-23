@@ -126,7 +126,6 @@ export const SummaryItemRow = React.memo<any>(props => {
                 validate={greaterThanNullValidation}
                 onChange={handlePriceChange}
                 listSpacing={false}
-                formatting="custom"
                 rightAligned
               />
             </div>
@@ -276,7 +275,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
         className={classes.panel}
       >
         <AccordionSummary className={classes.summaryExpansionPanel} expandIcon={<ExpandMoreIcon />}>
-          <Grid container columnSpacing={3} className="centeredFlex">
+          <Grid container className="centeredFlex">
             <div className="centeredFlex flex-fill">
               <div className="heading mr-2">{header}</div>
               {isPayer ? (
@@ -364,7 +363,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container columnSpacing={3}>
+          <Grid container>
             {items.map((item, index) => {
                   const itemOriginalPrice = originalItems.find(i => i.id === item.id).price;
 
@@ -425,6 +424,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                 item
                 xs={4}
                 container
+                direction="row-reverse"
                 className={clsx("money pt-1 summaryTopBorder", classes.summaryItemPrice)}
               >
                 <Typography variant="body2">{formatCurrency(itemTotal, currencySymbol)}</Typography>

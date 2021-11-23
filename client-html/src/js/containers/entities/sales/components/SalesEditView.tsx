@@ -15,7 +15,9 @@ import {
 } from "@api/model";
 import { change, FieldArray } from "redux-form";
 import { compareAsc, format as formatDate, startOfDay } from "date-fns";
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
+import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -27,6 +29,8 @@ import { contactLabelCondition } from "../../contacts/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { buildUrl, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 interface SalesGeneralViewProps {
   classes?: any;
@@ -36,17 +40,6 @@ interface SalesGeneralViewProps {
   dispatch?: any;
   form?: string;
 }
-
-const nameLabel = (type: ProductType) => {
-  switch (type) {
-    case ProductType.Membership:
-      return "Membership name";
-    case ProductType.Voucher:
-      return "Voucher name";
-    default:
-      return "Product name";
-  }
-};
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -106,113 +99,125 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     [form]
   );
 
-  return values ? (
-    <div className="pl-3 pr-3 flex-column h-100">
-      <Uneditable
-        className="pt-2"
-        value={values.productName}
-        label={nameLabel(type)}
-        url={productUrl(values)}
-      />
+  const gridItemProps = {
+    xs: twoColumn ? 6 : 12,
+    lg: twoColumn ? 4 : 12
+  } as any;
 
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <Uneditable
-            value={values.purchasedByName}
-            label="Purchased by"
-            url={buildUrl(values.purchasedById, "Contacts")}
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
-        </Grid>
+  return values ? (
+    <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          disableInteraction
+          twoColumn={twoColumn}
+          title={(
+            <div className="d-inline-flex-center">
+              {values && values.productName}
+              <IconButton disabled={!values?.productId} size="small" color="primary" onClick={() => openInternalLink(productUrl(values))}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+            )}
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable
+          value={values.purchasedByName}
+          label="Purchased by"
+          url={buildUrl(values.purchasedById, "Contacts")}
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={formatSaleDate(values.purchasedOn)} label="Purchased on" />
+      </Grid>
+
+      <Grid item container columnSpacing={3} rowSpacing={2} xs={12}>
         <CustomFields
           entityName={customFieldType}
           fieldName="customFields"
           entityValues={values}
           dispatch={dispatch}
           form={form}
-          gridItemProps={{
-            xs: twoColumn ? 6 : 12
-          }}
+          gridItemProps={gridItemProps}
         />
       </Grid>
 
-      <Grid container columnSpacing={3}>
-        {type === ProductType.Voucher && (
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="remoteDataSearchSelect"
-              entity="Contact"
-              name="redeemableById"
-              label="Send invoice on redemption to"
-              selectValueMark="id"
-              selectLabelCondition={contactLabelCondition}
-              defaultDisplayValue={values.redeemableByName}
-              labelAdornment={(
-                <LinkAdornment
-                  link={values.redeemableById}
-                  clickHandler={openLink}
-                />
-              )}
-              disabled={values.status !== ProductItemStatus.Active}
-              itemRenderer={ContactSelectItemRenderer}
-              onInnerValueChange={onRedeemableByIdChange}
-              rowHeight={55}
-              allowEmpty
+      {type === ProductType.Voucher && (
+      <Grid item {...gridItemProps}>
+        <FormField
+          type="remoteDataSearchSelect"
+          entity="Contact"
+          name="redeemableById"
+          label="Send invoice on redemption to"
+          selectValueMark="id"
+          selectLabelCondition={contactLabelCondition}
+          defaultDisplayValue={values.redeemableByName}
+          labelAdornment={(
+            <LinkAdornment
+              link={values.redeemableById}
+              clickHandler={openLink}
             />
-          </Grid>
+              )}
+          disabled={values.status !== ProductItemStatus.Active}
+          itemRenderer={ContactSelectItemRenderer}
+          onInnerValueChange={onRedeemableByIdChange}
+          rowHeight={55}
+          allowEmpty
+        />
+      </Grid>
         )}
-        {type === ProductType.Membership && (
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <Uneditable value={formatSaleDate(values.validFrom)} label="Valid from" />
-          </Grid>
+      {type === ProductType.Membership && (
+      <Grid item {...gridItemProps}>
+        <Uneditable value={formatSaleDate(values.validFrom)} label="Valid from" />
+      </Grid>
         )}
-        {(type === ProductType.Membership || type === ProductType.Voucher) && (
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="date"
-              name="expiresOn"
-              label="Expires On"
-              disabled={
+      {(type === ProductType.Membership || type === ProductType.Voucher) && (
+      <Grid item {...gridItemProps}>
+        <FormField
+          type="date"
+          name="expiresOn"
+          label="Expires On"
+          disabled={
                 values.status !== ProductItemStatus.Active
                 || compareAsc(startOfDay(new Date()), new Date(values.expiresOn)) > 0
               }
-            />
-          </Grid>
-        )}
-      </Grid>
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.purchasePrice} label="Purchase price" money />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.status} label="Status" />
-        </Grid>
-      </Grid>
-      {type === ProductType.Voucher && (
-        <Grid container columnSpacing={3}>
-          <Grid item xs={twoColumn ? 2 : 6}>
-            <Uneditable value={values.valueRemaining} label="Value remaining" />
-          </Grid>
-          <Grid item xs={twoColumn ? 2 : 6}>
-            <Uneditable value={values.voucherCode} label="Voucher code" />
-          </Grid>
-        </Grid>
-      )}
-      {type !== ProductType.Product && (
-        <FieldArray
-          name="payments"
-          className="saveButtonTableOffset"
-          title={(values && values.payments && values.payments.length) === 1 ? "Payment record" : "Payment records"}
-          component={NestedTable}
-          columns={columnsByType(values.productType)}
-          onRowDoubleClick={openRow}
-          rerenderOnEveryChange
-          sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
         />
-      )}
-    </div>
+      </Grid>
+        )}
+
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.purchasePrice} label="Purchase price" money />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.status} label="Status" />
+      </Grid>
+   
+      {type === ProductType.Voucher && (
+      <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
+        <Grid item {...gridItemProps} className="money">
+          <Uneditable value={values.valueRemaining} label="Value remaining" />
+        </Grid>
+        <Grid item {...gridItemProps}>
+          <Uneditable value={values.voucherCode} label="Voucher code" />
+        </Grid>
+      </Grid>
+        )}
+      <Grid item xs={12}>
+        {type !== ProductType.Product && (
+          <FieldArray
+            name="payments"
+            className="saveButtonTableOffset"
+            title={(values && values.payments && values.payments.length) === 1 ? "Payment record" : "Payment records"}
+            component={NestedTable}
+            columns={columnsByType(values.productType)}
+            onRowDoubleClick={openRow}
+            rerenderOnEveryChange
+            sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
+            calculateHeight
+          />
+          )}
+      </Grid>
+    </Grid>
   ) : null;
 };
 

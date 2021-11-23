@@ -142,7 +142,8 @@ class Discounts extends React.PureComponent<any, any> {
             secondaryColumnCondition: this.secondaryColumnCondition
           }}
           editViewProps={{
-            manualLink
+            manualLink,
+            hideTitle: true
           }}
           EditViewContent={DiscountEditView}
           getEditRecord={getDiscountRecord}

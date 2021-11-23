@@ -133,6 +133,7 @@ const HeaderField: React.FC<Props> = props => {
               )
             }}
             validate={validate}
+            fullWidth
           />
         )}
         <div className="mt-2">
@@ -143,7 +144,7 @@ const HeaderField: React.FC<Props> = props => {
   );
 };
 
-const useHeaderTypoStyles = makeAppStyles()(() => ({
+const useHeaderTypoStyles = makeAppStyles(() => ({
   checkboxRoot: {
     width: 19,
     height: 19,
@@ -189,7 +190,7 @@ export const HeaderFieldTypo = React.memo<HeaderFieldTypoProps>(props => {
     onCheckboxClick
   } = props;
 
-  const { classes } = useHeaderTypoStyles();
+  const classes = useHeaderTypoStyles();
 
   return (
     <div

@@ -17,7 +17,7 @@ import EditInPlaceField from "../../../../../common/components/form/formFields/E
 import { useHoverShowStyles } from "../../../../../common/styles/hooks";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import AddIcon from "../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 interface Props {
   label: string;
@@ -77,13 +77,13 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
   }, [fields]);
 
   return (
-    <div id={name} className="textField">
+    <div id={name}>
       <div>
         <div className="centeredFlex">
           <Typography component="div" variant="caption" color="textSecondary" noWrap>
             {label}
           </Typography>
-          <AddIcon onClick={onAdd} className="p-0-5" />
+          <AddButton onClick={onAdd} className="p-0-5" />
         </div>
         {error && (
           <Typography className="shakingError" component="div" variant="caption" color="error" noWrap>

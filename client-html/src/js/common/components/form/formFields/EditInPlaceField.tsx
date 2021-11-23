@@ -14,7 +14,7 @@ import clsx from "clsx";
 import { createStyles, withStyles } from "@mui/styles";
 import { Edit, ExpandMore } from "@mui/icons-material";
 import {
- ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem, ListItemText
+ ButtonBase, InputAdornment, Typography, Select, InputLabel, Input, FormHelperText, FormControl, MenuItem, ListItem
 } from "@mui/material";
 
 const styles = theme => createStyles({
@@ -23,14 +23,21 @@ const styles = theme => createStyles({
     fontSize: "18px",
     color: theme.palette.primary.main,
     opacity: 0.5,
+    alignItems: "flex-end",
+    alignSelf: "flex-end",
+    marginBottom: "5px"
   },
   inputWrapper: {
+    paddingBottom: 0,
+    "& textarea": {
+      paddingBottom: "5px"
+    },
     "&:hover $hiddenContainer": {
       display: "flex",
     },
     "&:hover $invisibleContainer": {
       visibility: "visible",
-    },
+    }
   },
   isEditing: {
     borderBottom: "none",
@@ -40,21 +47,11 @@ const styles = theme => createStyles({
       opacity: 1,
     },
   },
-  textField: {
-    paddingBottom: "9px",
-    height: "60px",
-    paddingLeft: "0",
-    overflow: "hidden",
-    display: "flex"
-  },
   inlineTextField: {
     verticalAlign: "baseline",
     "& > div": {
       marginTop: 0
     }
-  },
-  bottomMargin: {
-    marginBottom: `${theme.spacing(1) + 1}px`
   },
   topMargin: {
     marginTop: theme.spacing(1),
@@ -90,16 +87,16 @@ const styles = theme => createStyles({
       justifyContent: "flex-end"
     }
   },
-  rightAligned: {},
+  rightAligned: {
+    "& $label": {
+      left: "unset",
+      right: 0,
+      transformOrigin: '100% 0'
+    }
+  },
   readonly: {
     fontWeight: 300,
     pointerEvents: "none"
-  },
-  textFieldLeftMargin: {
-    marginLeft: theme.spacing(1)
-  },
-  rightPadding: {
-    paddingRight: theme.spacing(2)
   },
   viewMode: {
     padding: 0,
@@ -117,23 +114,8 @@ const styles = theme => createStyles({
     textOverflow: "ellipsis",
     paddingBottom: "4px",
     right: "-46%",
-    maxWidth: "100%",
-    "&$labelShrink": {
-      maxWidth: "calc(100% * 1.4)"
-    }
+    maxWidth: "100%"
   },
-  labelTopZeroOffset: {
-    "& + $textFieldBorderModified": {
-      marginTop: 0
-    }
-  },
-  labelShrink: {
-    "& $labelAdornment": {
-      position: "absolute",
-      transform: "scale(1.3) translate(5px,0)",
-    },
-  },
-  labelAdornment: {},
   placeholderContent: {
     color: theme.palette.divider,
     fontWeight: 400,
@@ -147,9 +129,7 @@ const styles = theme => createStyles({
     textOverflow: "ellipsis"
   },
   emptySelect: {
-    color: "#fff",
     "& $placeholderContent": {
-      color: "#fff",
       fontWeight: 400,
     }
   },
@@ -189,11 +169,6 @@ const styles = theme => createStyles({
     position: "absolute",
     right: "-14px",
     bottom: "4px"
-  },
-  textFieldBorderModified: {
-    "&:after": {
-      borderBottomColor: theme.palette.primary.main
-    },
   },
   selectIcon: {
     fontSize: "24px",
@@ -351,40 +326,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
     }
   };
 
-  getTruncatedValue = () => {
-    const {
-      truncateLines,
-      input: { value }
-    } = this.props;
-
-    let result;
-
-    this.containerNode.style.maxHeight = `calc(${getComputedStyle(this.containerNode).lineHeight} * ${truncateLines})`;
-
-    const clone = this.containerNode.cloneNode();
-
-    clone.innerText = value;
-    this.containerNode.parentElement.appendChild(clone);
-    this.containerNode.parentElement.removeChild(this.containerNode);
-
-    const wordArray = clone.innerText.split(" ");
-    while (clone.scrollHeight > clone.offsetHeight) {
-      wordArray.pop();
-      clone.innerText = wordArray.join(" ") + "..." + "##########";
-    }
-
-    if (value.length > clone.innerText.length) {
-      result = clone.innerText.replace(/##########/, "");
-    } else {
-      result = value;
-    }
-
-    clone.parentElement.appendChild(this.containerNode);
-    clone.parentElement.removeChild(clone);
-
-    return result;
-  };
-
   getInputLength = () => {
     const { input, type } = this.props;
     let commas = 0;
@@ -418,7 +359,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       returnType = "string",
       preformatDisplayValue,
       defaultValue,
-      truncateLines,
       fieldClasses = {}
     } = this.props;
 
@@ -465,11 +405,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       );
     }
 
-    let formattedValue = value;
-
-    if (truncateLines && this.containerNode) {
-      formattedValue = this.getTruncatedValue();
-    }
+    const formattedValue = value;
 
     if (multiline && formattedValue) {
       return formattedValue.split(/\n/g).map((char, i) => (i > 0 ? (
@@ -495,12 +431,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       </span>
     );
   };
-
-  componentDidMount() {
-    const { truncateLines } = this.props;
-
-    if (truncateLines) this.forceUpdate();
-  }
 
   render() {
     const {
@@ -550,6 +480,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       categoryKey,
       autoWidth = true,
       zeroPadding,
+      allowNegative,
       ...custom
     } = this.props;
 
@@ -572,9 +503,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       <span>
         {label}
         {' '}
-        <span
-          className={classes.labelAdornment}
-        >
+        <span>
           {labelAdornment}
         </span>
       </span>
@@ -635,7 +564,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             selected: classes.emptySelect
           }}
         >
-          <span className={clsx(classes.placeholderContent,fieldClasses.placeholder)}>{placeholder || "No value"}</span>
+          <span className={clsx(classes.placeholderContent, fieldClasses.placeholder)}>{placeholder || "No value"}</span>
         </MenuItem>,
         ...selectItems || []
       ];
@@ -650,8 +579,9 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         min,
         max,
         onKeyDown,
+        allowNegative,
         type: type !== "password" ? (type === "percentage" ? "number" : type) : undefined,
-        className: clsx({
+        className: clsx(fieldClasses.text, {
           [classes.inlineInput]: isInline,
           [classes.readonly]: disabled,
           [classes.smallOffsetInput]: disableInputOffsets,
@@ -661,26 +591,27 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         placeholder: placeholder || (!isEditing && "No value"),
         style: {
           maxWidth: isInline ? this.getInputLength() : undefined
-        }
+        },
       },
       value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
       onFocus: this.onFocus,
       onChange: v => (type === "number" && max && Number(v) > Number(max) ? null : this.onFieldChange(v))
     };
 
+    const iconProps = {
+      className: clsx("hoverIcon editInPlaceIcon", classes.selectIcon, fieldClasses.placeholder, {
+        [classes.hiddenContainer]: (rightAligned || isInline) && disabled,
+        [classes.invisibleContainer]: !(rightAligned || isInline) && disabled
+      })
+    };
+
     const editIcon = select ? (
       <ExpandMore
-        className={clsx("hoverIcon", classes.selectIcon, fieldClasses.placeholder, {
-          [classes.hiddenContainer]: rightAligned && disabled,
-          [classes.invisibleContainer]: !rightAligned && disabled
-        })}
+        {...iconProps}
       />
     ) : (
       <Edit
-        className={clsx("hoverIcon editInPlaceIcon", fieldClasses.placeholder, {
-          [classes.hiddenContainer]: rightAligned && disabled,
-          [classes.invisibleContainer]: !rightAligned && disabled
-        })}
+        {...iconProps}
       />
     );
 
@@ -693,8 +624,8 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
       >
         <div
           className={clsx({
-            [classes.rightPadding]: formatting !== "inline",
             [classes.inlineMargin]: isInline,
+            [classes.rightAligned]: rightAligned,
             [classes.hiddenContainer]: isInline && !(isEditing || invalid),
             [classes.invisibleContainer]: isEditing && select && !invalid,
             "d-inline": isInline && (isEditing || invalid)
@@ -707,7 +638,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
             margin="none"
             className={clsx({
               [classes.topMargin]: !listSpacing && !disableInputOffsets,
-              [classes.bottomMargin]: listSpacing && formatting !== "inline",
               [classes.inlineTextField]: isInline
             })}
             {...custom}
@@ -717,7 +647,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
               <InputLabel
                 classes={{
                   root: clsx(fieldClasses.label, classes.label, !label && classes.labelTopZeroOffset),
-                  shrink: classes.labelShrink
                 }}
                 {...InputLabelProps}
                 shrink={Boolean(label || input.value)}
@@ -757,6 +686,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                       anchorOrigin: { vertical: 'top', horizontal: 'left' }
                     }}
                     displayEmpty
+                    fullWidth
                   >
                     {selectItems}
                   </Select>
@@ -766,6 +696,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                 <Input
                   {...restInputProps}
                   {...textFieldProps}
+                  maxRows={truncateLines}
                   multiline={multiline}
                   inputRef={this.setInputNode}
                   classes={{
@@ -801,89 +732,12 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         <div
           className={clsx({
             [classes.hiddenContainer]: isEditing || invalid || !isInline,
-            [classes.textField]: listSpacing && formatting !== "inline",
             [classes.rightAligned]: rightAligned,
             "d-inline": isInline && !(isEditing || invalid)
           })}
         >
           <div className={clsx(isInline ? "d-inline" : classes.fitWidth)}>
             {isInline && !hideLabel && label && labelContent}
-
-            {formatting === "primary" && (
-            <ListItemText
-              classes={{
-                  root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                  primary: "d-flex"
-                }}
-              primary={(
-                <ButtonBase
-                  classes={{
-                      root: classes.valueContainer
-                    }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                  component="div"
-                >
-                  <span
-                    ref={this.setContainerNode}
-                    className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                  >
-                    {editableComponent || this.getValue()}
-                    {editIcon}
-                  </span>
-                </ButtonBase>
-                )}
-            />
-            )}
-
-            {formatting === "secondary" && (
-            <ListItemText
-              classes={{
-                  root: `${classes.viewMode}`,
-                  secondary: "d-flex"
-                }}
-              secondary={(
-                <ButtonBase
-                  disabled={disabled}
-                  classes={{
-                      root: classes.valueContainer
-                    }}
-                  onFocus={e => this.onEditButtonFocus(e, "focus")}
-                  onClick={e => this.onEditButtonFocus(e, "click")}
-                  component="span"
-                  className={clsx("hoverIconContainer", fieldClasses.text)}
-                >
-                  <span
-                    ref={this.setContainerNode}
-                    className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                  >
-                    {editableComponent || this.getValue()}
-                    {editIcon}
-                  </span>
-                </ButtonBase>
-                )}
-            />
-            )}
-
-            {formatting === "custom" && (
-            <ButtonBase
-              component="div"
-              onFocus={e => this.onEditButtonFocus(e, "focus")}
-              onClick={e => this.onEditButtonFocus(e, "click")}
-              className={clsx(classes.editable, "hoverIconContainer", classes.fitWidth, fieldClasses.text, {
-                  [classes.rightAligned]: rightAligned,
-                  [classes.readonly]: disabled
-                })}
-            >
-              {editableComponent || this.getValue()}
-              {editIcon}
-            </ButtonBase>
-            )}
 
             {isInline && (
             <ButtonBase

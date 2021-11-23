@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { withRouter } from "react-router";
-import { getFormValues, initialize, reduxForm } from "redux-form";
+import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { EmailTemplate } from "@api/model";
 import { setNextLocation } from "../../../../common/actions";
 import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
@@ -80,6 +80,7 @@ const EmailTemplates = React.memo<any>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(EMAIL_TEMPLATES_FORM_NAME)(state),
+  syncErrors: getFormSyncErrors(EMAIL_TEMPLATES_FORM_NAME)(state),
   emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation,
 });

@@ -194,6 +194,7 @@ const globalStyles = (theme: AppTheme) =>
         backgroundColor: `${theme.palette.grey[300]} !important`
       },
       ".saveButtonEditView": {
+        whiteSpace: "nowrap",
         boxShadow: theme.shadows[2],
         "&:hover": {
           backgroundColor: darken(theme.palette.primary.main, 0.1)
@@ -278,6 +279,7 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".switchWrapper": {
         flexDirection: "row-reverse",
+        justifyContent: "space-between",
         marginLeft: 0
       },
       ".switchLabelMargin": {
@@ -318,16 +320,6 @@ const globalStyles = (theme: AppTheme) =>
         "&:hover": {
           backgroundColor: darken(theme.palette.primary.main, 0.1),
           color: theme.palette.primary.contrastText
-        }
-      },
-      ".textField": {
-        // @ts-ignore
-        paddingBottom: `${theme.spacing(2) - 3}px`,
-        paddingLeft: "0",
-        overflow: "hidden",
-        display: "flex",
-        "&.d-none": {
-          display: "none"
         }
       },
       ".errorColor": {
@@ -425,9 +417,6 @@ const globalStyles = (theme: AppTheme) =>
       ".closeAndClearButton": {
         padding: theme.spacing(1)
       },
-      ".listHeadingPadding": {
-        padding: theme.spacing(1.5,3),
-      },
       ".appHeaderFontSize": {
         fontSize: "1.125rem"
       },
@@ -512,9 +501,6 @@ const globalStyles = (theme: AppTheme) =>
           color: "inherit",
           visibility: "visible",
         }
-      },
-      ".generalRoot": {
-        padding: theme.spacing(1, 3, 0)
       },
       ".gridTemplateColumns-1fr": {
         gridTemplateColumns: "minmax(0, 1fr) auto"

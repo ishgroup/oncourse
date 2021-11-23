@@ -8,7 +8,7 @@ const styles = theme =>
   createStyles({
     calendar: {
       display: "grid",
-      gridTemplateColumns: `repeat(7, ${theme.spacing(4)}px)`,
+      gridTemplateColumns: `repeat(7, ${theme.spacing(4)})`,
       gridGap: 1,
       gridAutoRows: theme.spacing(4),
       padding: theme.spacing(0, 1),

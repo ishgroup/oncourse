@@ -22,7 +22,7 @@ const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
   return values ? (
     <Grid container columnSpacing={3} className="pl-3 pr-3">
       <Grid item xs={12}>
-        <Divider className="mb-3 mt-2" />
+        <Divider className="mb-2 mt-2" />
       </Grid>
       
       <FieldArray
@@ -41,7 +41,7 @@ const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
       />
 
       <Grid item xs={12}>
-        <Divider className="mb-2 mt-3" />
+        <Divider className="mb-1 mt-2" />
       </Grid>
     </Grid>
   ) : null;

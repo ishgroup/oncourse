@@ -6,10 +6,10 @@
 import * as React from "react";
 import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { EditViewContainerProps, EditViewProps } from "../../../../model/common/ListView";
+import {  EditViewProps } from "../../../../model/common/ListView";
 
 const WaitingListNotes: React.FunctionComponent<EditViewProps> = ({ twoColumn }) => (
-  <Grid container columnSpacing={3} className="pl-3 saveButtonTableOffset">
+  <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 saveButtonTableOffset">
     <Grid item xs={12}>
       <div className="centeredFlex">
         <div className="heading pb-1">Notes</div>
