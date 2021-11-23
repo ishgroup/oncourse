@@ -16,7 +16,7 @@ import {
   usiSoftwareIdReducer
 } from "../containers/preferences/reducers";
 import { drawerReducer } from "../common/reducers/drawerReducer";
-import { loginReducer } from "../containers/login/reducers";
+import { loginReducer, systemUserReducer } from "../containers/login/reducers";
 import { securityReducer } from "../containers/security/reducers";
 import { tagsReducer } from "../containers/tags/reducers";
 import { AvetmissExportReducer } from "../containers/avetmiss-export/reducers";
@@ -54,8 +54,9 @@ import { checkoutReducer } from "../containers/checkout/reducers";
 import { swipeableDrawerReducer } from "../common/components/layout/swipeable-sidebar/reducers";
 import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
 import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
+import { State } from "./state";
 
-export const combinedReducers = combineReducers({
+export const combinedReducers = combineReducers<State>({
   access: accessReducer,
   actionsQueue: actionsQueueReducer,
   automation: automationReducer,
@@ -105,4 +106,5 @@ export const combinedReducers = combineReducers({
   userPreferences: userPreferencesReducer,
   usiSoftwareId: usiSoftwareIdReducer,
   voucherProducts: voucherProductReducer,
+  systemUser: systemUserReducer
 });

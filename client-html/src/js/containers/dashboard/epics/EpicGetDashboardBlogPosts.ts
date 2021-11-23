@@ -12,15 +12,12 @@ import DashboardService from "../services/DashboardService";
 const request: EpicUtils.Request = {
   type: GET_BLOG_POSTS,
   getData: () => DashboardService.getBlogPosts(),
-  processData: blogPosts => {
-    const posts = blogPosts ? JSON.parse(blogPosts) : { entry: [] };
-    return [
-      {
-        type: GET_BLOG_POSTS_FULFILLED,
-        payload: { blogPosts: posts.entry }
-      }
-    ];
-  },
+  processData: blogPosts => [
+    {
+      type: GET_BLOG_POSTS_FULFILLED,
+      payload: { blogPosts: blogPosts?.entry || [] }
+    }
+  ],
   processError: error => {
     console.error(error);
 

@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { LoginRequest } from "@api/model";
+import { LoginRequest, LoginResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { bugsnagClient } from "../../../constants/Bugsnag";
@@ -12,12 +12,12 @@ import {
   CLEAR_LAST_LOCATION,
   FETCH_SUCCESS,
   POST_AUTHENTICATION_FULFILLED,
-  POST_AUTHENTICATION_REQUEST
+  POST_AUTHENTICATION_REQUEST,
 } from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 import history from "../../../constants/History";
 
-const request: EpicUtils.Request<any, {body: LoginRequest, host, port}> = {
+const request: EpicUtils.Request<LoginResponse, { body: LoginRequest, host, port }> = {
   type: POST_AUTHENTICATION_REQUEST,
   getData: payload => LoginService.postLoginRequest(payload.body, payload.host, payload.port),
   processData: (data, state, { body }) => {
@@ -31,6 +31,8 @@ const request: EpicUtils.Request<any, {body: LoginRequest, host, port}> = {
     } else {
       history.push("/");
     }
+
+    if (data.lastLoginOn) localStorage.setItem("lastLoginOn", data.lastLoginOn);
 
     return [
       ...(state.lastLocation
@@ -47,7 +49,7 @@ const request: EpicUtils.Request<any, {body: LoginRequest, host, port}> = {
       {
         type: FETCH_SUCCESS,
         payload: { message: "You have logged in" }
-      }
+      },
     ];
   },
   processError: response => LoginServiceErrorsHandler(response)

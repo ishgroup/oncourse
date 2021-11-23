@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 import React, { useCallback, useMemo } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { ClashType, Session } from "@api/model";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { createStyles, Theme } from "@material-ui/core";
+import withStyles from "@mui/styles/withStyles";
+import { createStyles, Theme } from "@mui/material";
 import { differenceInMinutes, format } from "date-fns";
 import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
 import CalendarSessionTag from "./CalendarSessionTag";

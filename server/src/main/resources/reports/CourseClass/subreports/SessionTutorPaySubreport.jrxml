@@ -56,7 +56,6 @@
 	<field name="id" class="java.lang.Long"/>
 	<field name="startDatetime" class="java.util.Date"/>
 	<field name="endDatetime" class="java.util.Date"/>
-	<field name="payAdjustment" class="java.lang.Integer"/>
 	<field name="datasource.sessionTutors" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<field name="subreport.ish.onCourse.tutorAttendanceTutorPaySubreport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="datasource.tutors" class="net.sf.jasperreports.engine.JRDataSource"/>
@@ -69,10 +68,6 @@
 	<variable name="SessionDuration" class="java.lang.Long">
 		<variableExpression><![CDATA[($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/1000/60]]></variableExpression>
 		<initialValueExpression><![CDATA[($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/1000/60]]></initialValueExpression>
-	</variable>
-	<variable name="PayableDuration" class="java.lang.Long">
-		<variableExpression><![CDATA[($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/1000/60-$F{payAdjustment}]]></variableExpression>
-		<initialValueExpression><![CDATA[($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/1000/60-$F{payAdjustment}]]></initialValueExpression>
 	</variable>
 	<variable name="sessionTotalPayable" class="java.math.BigDecimal" calculation="Sum"/>
 	<variable name="totalPayableBySession" class="java.math.BigDecimal" resetType="Group" resetGroup="SessionGroup" calculation="Sum"/>
@@ -89,7 +84,7 @@
 					<reportElement style="Label" x="190" y="0" width="130" height="17" uuid="6d094ecd-d6ea-4f90-a762-f6762f4c4407">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
-					<textFieldExpression><![CDATA[$V{SessionDuration}/60 + " hr "+(($V{SessionDuration}%60 > 0)?($V{SessionDuration}%60+" min "):(""))+" ("+$V{PayableDuration}/60+" hr "+(($V{PayableDuration}%60 > 0)?($V{PayableDuration}%60+" min "):(""))+"payable)"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{SessionDuration}/60 + " hr "+(($V{SessionDuration}%60 > 0)?($V{SessionDuration}%60+" min "):(""))]]></textFieldExpression>
 				</textField>
 				<subreport isUsingCache="true">
 					<reportElement key="subreport" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="420" y="0" width="366" height="22" uuid="176388f5-3175-4a09-a013-ea1111031f53">
@@ -133,9 +128,6 @@
 				</reportElement>
 				<subreportParameter name="sessionNumber">
 					<subreportParameterExpression><![CDATA[$V{SessionNumber}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="payableTime">
-					<subreportParameterExpression><![CDATA[$V{PayableDuration}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[$F{datasource.sessionTutors}]]></dataSourceExpression>
 				<returnValue subreportVariable="tutorAttendanceTotalPayable" toVariable="sessionTotalPayable" calculation="Sum"/>

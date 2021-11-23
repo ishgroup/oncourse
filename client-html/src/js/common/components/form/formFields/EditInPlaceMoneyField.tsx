@@ -5,7 +5,7 @@
 
 import React, { useCallback } from "react";
 import NumberFormat from "react-number-format";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import InputAdornment from "@mui/material/InputAdornment";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import EditInPlaceField from "./EditInPlaceField";
@@ -13,30 +13,35 @@ import { State } from "../../../../reducers/state";
 import { formatCurrency, normalizeNumber } from "../../../utils/numbers/numbersNormalizing";
 
 interface NumberFormatCustomProps {
-  inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { value: string } }) => void;
+  onChange?: (event: { target: { value: string } }) => void;
+  decimalScale: number;
+  allowNegative: boolean;
 }
 
-const NumberFormatCustom: React.FunctionComponent<NumberFormatCustomProps> = props => {
-  const { inputRef, onChange, ...other } = props;
+const NumberFormatCustom = React.forwardRef<any, NumberFormatCustomProps>((props, ref) => {
+  const { onChange, allowNegative = true, ...other } = props;
 
   const onValueChange = useCallback(values => {
     onChange(normalizeNumber(values.value));
   }, []);
 
-  return <NumberFormat {...other} getInputRef={inputRef} onValueChange={onValueChange} thousandSeparator />;
-};
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={onValueChange}
+      allowNegative={allowNegative}
+      decimalScale={2}
+      thousandSeparator
+    />
+);
+});
 
 const EditInPlaceMoneyField: React.FunctionComponent<any> = props => {
   // prevent dispatch and type from spreading
   const {
-    currencySymbol, allowNegative = true, InputProps, dispatch, type, className, ...restProps
+    currencySymbol, InputProps, dispatch, type, className, ...restProps
 } = props;
-
-  const inputComponent = useCallback(
-    inputProps => <NumberFormatCustom {...inputProps} decimalScale={2} allowNegative={allowNegative} />,
-    [allowNegative]
-  );
 
   return (
     <EditInPlaceField
@@ -45,7 +50,7 @@ const EditInPlaceMoneyField: React.FunctionComponent<any> = props => {
       InputProps={{
         ...InputProps,
         startAdornment: <InputAdornment position="start">{currencySymbol}</InputAdornment>,
-        inputComponent
+        inputComponent: NumberFormatCustom
       }}
       className={clsx("money", className)}
       type="money"

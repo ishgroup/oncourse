@@ -20,8 +20,8 @@ public class AttendanceLifecycleListener {
     @PreUpdate(value = TutorAttendance.class)
     public void preUpdate(TutorAttendance tutorAttendance) {
         if (AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON.equals(tutorAttendance.getAttendanceType())
-                && tutorAttendance.getDurationMinutes() != null) {
-            tutorAttendance.setDurationMinutes(null);
+                && tutorAttendance.getActualPayableDurationMinutes() != 0) {
+            tutorAttendance.setActualPayableDurationMinutes(0);
         }
     }
 }

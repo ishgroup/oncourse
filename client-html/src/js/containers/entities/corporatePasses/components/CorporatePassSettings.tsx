@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -12,6 +12,10 @@ import { contactLabelCondition, defaultContactName, openContactLink } from "../.
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 
 class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
   onContactChange = (value: Contact) => {
@@ -23,34 +27,52 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
   render() {
     const {
       twoColumn,
-      values
+      values,
+      isNew,
+      syncErrors
     } = this.props;
 
     return (
-      <Grid container className="pl-3 pr-3 pt-3">
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField
-            type="remoteDataSearchSelect"
-            entity="Contact"
-            name="contactId"
-            label="Contact (company or person to invoice)"
-            selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
-            defaultDisplayValue={values && defaultContactName(values.contactFullName)}
-            labelAdornment={(
-              <LinkAdornment
-                linkHandler={openContactLink}
-                link={values && values.contactId}
-                disabled={!values || !values.contactId}
-              />
+      <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3 pt-3">
+        <Grid item xs={12}>
+          <FullScreenStickyHeader
+            opened={isNew || Object.keys(syncErrors).includes("contactId")}
+            disableInteraction={!isNew}
+            twoColumn={twoColumn}
+            title={(
+              <div className="d-inline-flex-center">
+                {values && defaultContactName(values.contactFullName)}
+                <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
+                  <Launch fontSize="inherit" />
+                </IconButton>
+              </div>
             )}
-            onInnerValueChange={this.onContactChange}
-            itemRenderer={ContactSelectItemRenderer}
-            rowHeight={55}
-            required
+            fields={(
+              <Grid item xs={twoColumn ? 6 : 12}>
+                <FormField
+                  type="remoteDataSearchSelect"
+                  entity="Contact"
+                  name="contactId"
+                  label="Contact (company or person to invoice)"
+                  selectValueMark="id"
+                  selectLabelCondition={contactLabelCondition}
+                  defaultDisplayValue={values && defaultContactName(values.contactFullName)}
+                  labelAdornment={(
+                    <LinkAdornment
+                      linkHandler={openContactLink}
+                      link={values && values.contactId}
+                      disabled={!values || !values.contactId}
+                    />
+                  )}
+                  onInnerValueChange={this.onContactChange}
+                  itemRenderer={ContactSelectItemRenderer}
+                  rowHeight={55}
+                  required
+                />
+              </Grid>
+            )}
           />
         </Grid>
-
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
             type="text"

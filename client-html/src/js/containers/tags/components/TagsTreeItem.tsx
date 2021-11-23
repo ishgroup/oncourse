@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
-import TreeView from "@material-ui/lab/TreeView/TreeView";
-import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@material-ui/icons";
-import TreeItem from "@material-ui/lab/TreeItem/TreeItem";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import TreeView from "@mui/lab/TreeView";
+import IconButton from "@mui/material/IconButton";
+import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
+import TreeItem from "@mui/lab/TreeItem";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 
 const styles = theme => createStyles({
   checkbox: {

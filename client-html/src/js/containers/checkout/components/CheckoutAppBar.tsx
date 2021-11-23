@@ -7,9 +7,12 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import { LinkAdornment } from "../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../common/utils/links";
+import { defaultContactName, openContactLink } from "../../entities/contacts/utils";
 
 interface Props {
   title: string;
@@ -19,22 +22,20 @@ interface Props {
 
 const CheckoutAppBar: React.FC<Props> = ({ title, type, link }) => (
   <>
-    <div className="overflow-hidden">
-      <Typography className="appHeaderFontSize" variant="body2">
-        <span className="text-truncate text-nowrap d-block">
-          {title}
-        </span>
-      </Typography>
+    <div className="d-inline-flex-center">
+      {title}
+      {
+        link && (
+        <IconButton 
+          size="small" 
+          color="primary" 
+          onClick={() => openInternalLink(`/${type}/${link}`)}
+        >
+          <Launch fontSize="inherit" />
+        </IconButton>
+        )
+      }
     </div>
-    {link && (
-      <LinkAdornment
-        linkColor="inherit"
-        linkHandler={() => openInternalLink(`/${type}/${link}`)}
-        link={link}
-        className="appHeaderFontSize ml-1"
-      />
-    )}
-    <div className="flex-fill" />
   </>
 );
 

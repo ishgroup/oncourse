@@ -3,24 +3,24 @@ import {
   ExecuteImportRequest,
   ImportModel
 } from "@api/model";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import React, {
   useCallback, useEffect, useMemo
 } from "react";
-import MuiButton from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Typography from "@material-ui/core/Typography/Typography";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
   destroy, Field, FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { interruptProcess } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import Button from "../../../../../common/components/buttons/Button";
 import DataTypeRenderer from "../../../../../common/components/form/DataTypeRenderer";
 import { ProcessState } from "../../../../../common/reducers/processReducer";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
@@ -165,7 +165,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             {values.description && (
               <Grid item xs={12} className="mb-2">
                 <Typography variant="body2" color="textSecondary" className="pb-2">
@@ -178,17 +178,18 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogContent>
 
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onDialogClose}>
+          <Button color="primary" onClick={onDialogClose}>
             Cancel
-          </MuiButton>
-          <Button
+          </Button>
+          <LoadingButton
+            variant="contained"
             color="primary"
             type="submit"
             disabled={invalid || submitting || executing}
             loading={submitting || executing}
           >
             Run import
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </form>
     </Dialog>

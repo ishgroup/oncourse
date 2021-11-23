@@ -6,7 +6,7 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { change, FieldArray, initialize } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { compareAsc, format as formatDate } from "date-fns";
 import { Currency, PaymentMethod } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
@@ -359,7 +359,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   return values ? (
     <div className="p-3 h-100 flex-column">
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={12}>
           <Uneditable value={values.payeeName} label="Payment to" url={`/contact/${values.payeeId}`} />
         </Grid>
@@ -463,6 +463,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         hideHeader
         validate={validateInvoices}
         sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+        calculateHeight
       />
     </div>
 

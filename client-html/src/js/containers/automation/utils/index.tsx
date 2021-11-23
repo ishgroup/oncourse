@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LockOutlined from "@material-ui/icons/LockOutlined";
+import LockOutlined from "@mui/icons-material/LockOutlined";
 import React from "react";
 
 export const validateKeycode = value =>

@@ -1,0 +1,111 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 105-1
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - and:
+          - not:
+            - columnExists:
+                tableName: SessionCourseClassTutor
+                columnName: startDatetime
+            - columnExists:
+                tableName: SessionCourseClassTutor
+                columnName: endDatetime
+      changes:
+        - addColumn:
+            tableName: SessionCourseClassTutor
+            columns:
+              - column:
+                  name: startDatetime
+                  type: DATETIME
+              - column:
+                  name: endDatetime
+                  type: DATETIME
+                  
+  - changeSet:
+      id: 105-2
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - and:
+          - columnExists:
+              tableName: SessionCourseClassTutor
+              columnName: startDatetime
+          - columnExists:
+              tableName: SessionCourseClassTutor
+              columnName: endDatetime
+      changes:
+        - sql: 'update SessionCourseClassTutor st
+                join CourseSession s on st.sessionId = s.id
+                set st.startDatetime = s.startDatetime, st.endDatetime = s.endDatetime;'
+          
+  - changeSet:
+      id: 105-3
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - sqlCheck:
+            expectedResult: 0
+            sql: 'select count(*) from SessionCourseClassTutor where endDatetime is null or startDatetime is null'
+      changes:
+        - addNotNullConstraint:
+            columnDataType: DATETIME
+            columnName: startDatetime
+            tableName: SessionCourseClassTutor
+        - addNotNullConstraint:
+            columnDataType: DATETIME
+            columnName: endDatetime
+            tableName: SessionCourseClassTutor
+            
+  - changeSet:
+      id: 105-4
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: SessionCourseClassTutor
+            columnName: durationMinutes
+      changes:
+        - sql: 'UPDATE SessionCourseClassTutor a
+                JOIN CourseSession s ON a.sessionId = s.id
+                SET a.durationMinutes = TIMESTAMPDIFF(MINUTE, s.startDatetime, s.endDatetime) - s.payAdjustment
+                WHERE a.durationMinutes IS NULL;'
+
+  - changeSet:
+      id: 105-5
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: SessionCourseClassTutor
+            columnName: durationMinutes
+      changes:
+        - renameColumn:
+            columnDataType: INT
+            newColumnName: actualPayableDurationMinutes
+            oldColumnName: durationMinutes
+            tableName: SessionCourseClassTutor
+
+  - changeSet:
+      id: 105-6
+      author: artyom
+      preConditions:
+        - onFail: HALT
+        - sqlCheck:
+            expectedResult: 0
+            sql: 'SELECT count(*) FROM SessionCourseClassTutor WHERE actualPayableDurationMinutes IS NULL'
+      changes:
+        - addNotNullConstraint:
+            columnDataType: INT
+            columnName: actualPayableDurationMinutes
+            tableName: SessionCourseClassTutor
+            
+  - changeSet:
+      id: 105-7
+      author: artyom
+      changes:
+        - dropColumn:
+            tableName: CourseSession
+            columnName: payAdjustment

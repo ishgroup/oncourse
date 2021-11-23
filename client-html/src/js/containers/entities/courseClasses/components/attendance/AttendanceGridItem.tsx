@@ -6,11 +6,11 @@
 import React, { useCallback, useMemo } from "react";
 import { change, initialize } from "redux-form";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Message from "@material-ui/icons/Message";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { withStyles, createStyles } from "@mui/styles";
+import IconButton from "@mui/material/IconButton";
+import Message from "@mui/icons-material/Message";
 import { AttendanceType } from "@api/model";
 import { differenceInMinutes, format } from "date-fns";
 import Decimal from "decimal.js-light";
@@ -26,8 +26,7 @@ import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
 import {
   StudentAttendanceIconButton,
-  TrainingPlanIconButton,
-  TutorAttendanceIconButton
+  TrainingPlanIconButton
 } from "./AttendanceIconButtons";
 import { TimetableSession } from "../../../../../model/timetable";
 import { D_MMM } from "../../../../../common/utils/dates/format";
@@ -78,8 +77,6 @@ const getMenuLabelByType = (type: AttendanceGridType) => {
   switch (type) {
     case "Student":
       return "Mark ALL sessions for this student as...";
-    case "Tutor":
-      return "Mark ALL sessions for this tutor as...";
     case "Training plan":
       return "Mark ALL sessions and tasks for this module as...";
   }
@@ -112,7 +109,6 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
   changeAllItems,
   validateAttendanceUpdate,
   onStudentIconClick,
-  onTutorIconClick,
   sessions,
   assessments,
   checkAnimationClass
@@ -122,10 +118,6 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
       dispatch(initialize(ATTENDANCE_COURSE_CLASS_FORM, attendance));
       if (type === "Student") {
         setAttendanceChangeType("singleStudent");
-      }
-
-      if (type === "Tutor") {
-        setAttendanceChangeType("singleTutor");
       }
     },
     [type]
@@ -155,23 +147,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
             return;
           }
 
-          if (type === "Training plan") {
             changeAllItems(attendanceType, item.attendances[0].index);
-            return;
-          }
-
-          const updated = [];
-
-          item.attendances.forEach(t => {
-            if (t.hasPayslip) {
-              return;
-            }
-            const updatedItem = { ...t, attendanceType };
-            dispatch(change(form, `tutorAttendance[${t.index}]`, { ...t, attendanceType }));
-            updated.push(updatedItem);
-          });
-
-          validateAttendanceUpdate(updated, "Tutor");
         }
       }
     },
@@ -233,7 +209,7 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
             key={attendance.id}
             item
             xs={2}
-            className={clsx(classes.sessionItem, attendance.hasPayslip && "disabled")}
+            className={classes.sessionItem}
           >
             <span>
               {type === "Student" && (
@@ -241,9 +217,6 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
                   attendance={attendance}
                   onClick={e => onStudentIconClick(e, attendance.index)}
                 />
-              )}
-              {type === "Tutor" && (
-                <TutorAttendanceIconButton onClick={e => onTutorIconClick(e, attendance)} attendance={attendance} />
               )}
 
               <IconButton

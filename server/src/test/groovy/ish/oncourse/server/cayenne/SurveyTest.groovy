@@ -10,6 +10,7 @@ import ish.TestWithDatabase
 import ish.common.types.EnrolmentStatus
 import ish.common.types.PaymentSource
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.time.DateUtils
 import org.dbunit.dataset.ReplacementDataSet
@@ -42,11 +43,12 @@ class SurveyTest extends TestWithDatabase {
 
         Survey survey = context.newObject(Survey.class)
 
-        survey.setComment("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" +
+        String comment  = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" +
                 "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" +
                 "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" +
                 "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" +
-                "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")
+                "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+        survey.comment = comment
         survey.setCourseScore(1)
         survey.setTutorScore(1)
         survey.setVenueScore(1)
@@ -54,12 +56,12 @@ class SurveyTest extends TestWithDatabase {
 
         context.commitChanges()
 
-        Survey survey1 = SelectById.query(survey.getClass() as Class<Object>, survey.getObjectId()).selectOne(cayenneService.getNewContext()) as Survey
-        Assertions.assertEquals(survey.getComment(), survey1.getComment())
-        Assertions.assertEquals(survey.getCourseScore(), survey1.getCourseScore())
-        Assertions.assertEquals(survey.getTutorScore(), survey1.getTutorScore())
-        Assertions.assertEquals(survey.getVenueScore(), survey1.getVenueScore())
-        Assertions.assertEquals(survey.getEnrolment().getId(), survey1.getEnrolment().getId())
+        survey = ObjectSelect.query(Survey).selectFirst(cayenneService.getNewContext())
+        Assertions.assertEquals(comment, survey.getComment())
+        Assertions.assertEquals(1, survey.getCourseScore())
+        Assertions.assertEquals(1, survey.getTutorScore())
+        Assertions.assertEquals(1, survey.getVenueScore())
+        Assertions.assertNotNull(survey.getEnrolment())
     }
 
 }

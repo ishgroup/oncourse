@@ -5,6 +5,7 @@
 
 import React from "react";
 import { FieldArray } from "redux-form";
+import { Grid, Divider } from "@mui/material";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import DocumentsRenderer from "../../../../../common/components/form/documents/DocumentsRenderer";
@@ -15,7 +16,7 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
   form,
   showConfirm
 }) => (
-  <div className="pl-3 pr-3 pb-2 mb-3">
+  <Grid container className="pl-3 pr-3 pb-2">
     <FieldArray
       name="documents"
       label="Documents"
@@ -29,7 +30,10 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
       showConfirm={showConfirm}
       rerenderOnEveryChange
     />
-  </div>
+    <Grid item xs={12}>
+      <Divider className="mt-2" />
+    </Grid>
+  </Grid>
 );
 
 export default CourseClassDocumentsTab;

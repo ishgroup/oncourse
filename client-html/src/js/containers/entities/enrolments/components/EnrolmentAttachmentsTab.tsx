@@ -5,6 +5,7 @@
 
 import * as React from "react";
 import { FieldArray } from "redux-form";
+import { Grid } from "@mui/material";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
@@ -14,26 +15,26 @@ const EnrolmentAttachmentsTab: React.FC<any> = props => {
 } = props;
 
   return (
-    <div className="pr-3 saveButtonTableOffset">
-      <div className="pb-3 pl-3">
-        <FieldArray
-          name="documents"
-          label="Documents"
-          entity="Enrolment"
-          classes={classes}
-          component={DocumentsRenderer}
-          xsGrid={12}
-          mdGrid={twoColumn ? 6 : 12}
-          lgGrid={twoColumn ? 4 : 12}
-          dispatch={dispatch}
-          form={form}
-          showConfirm={showConfirm}
-          rerenderOnEveryChange
-        />
-      </div>
+    <Grid container rowSpacing={2} className="p-3">
+      <FieldArray
+        name="documents"
+        label="Documents"
+        entity="Enrolment"
+        classes={classes}
+        component={DocumentsRenderer}
+        xsGrid={12}
+        mdGrid={twoColumn ? 6 : 12}
+        lgGrid={twoColumn ? 4 : 12}
+        dispatch={dispatch}
+        form={form}
+        showConfirm={showConfirm}
+        rerenderOnEveryChange
+      />
 
-      <OwnApiNotes {...props} />
-    </div>
+      <Grid item xs={12}>
+        <OwnApiNotes {...props} leftOffset />
+      </Grid>
+    </Grid>
   );
 };
 

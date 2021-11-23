@@ -124,18 +124,18 @@
                roomId="1" budgetedPlaces="10" fundingSource="3" attendanceType="0"/>
 
   <CourseSession id="1" courseClass_Id="1" startDatetime="2042-05-15 18:30:00.00" endDatetime="2042-05-15 19:30:00.00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="2" courseClass_Id="1" startDatetime="2042-05-16 18:30:00.00" endDatetime="2042-05-16 19:30:00.00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="3" courseClass_Id="1" startDatetime="2042-05-17 18:30:00.00" endDatetime="2042-05-17 19:30:00.00"
-                 payAdjustment="0.00"/>
+                 />
 
   <CourseSession id="4" courseClass_Id="2" startDatetime="2042-04-15 18:30:00.00" endDatetime="2042-04-15 19:30:00.00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="5" courseClass_Id="2" startDatetime="2042-04-16 18:30:00.00" endDatetime="2042-04-16 19:30:00.00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="6" courseClass_Id="2" startDatetime="2042-04-17 18:30:00.00" endDatetime="2042-04-17 19:30:00.00"
-                 payAdjustment="0.00"/>
+                 />
 
   <Product SKU="ENROLMENT" createdOn="2012-05-10 17:59:42.384" DESCRIPTION="$11 product" EXPIRYTYPE="4" ID="1"
            ISONSALE="1" ISWEBVISIBLE="1" modifiedOn="2012-05-15 16:29:23.13" NAME="test membership product"

@@ -13,16 +13,16 @@ describe("Virtual rendered SecuritySettingsForm", () => {
     }),
     render: wrapper => {
 
-      expect(wrapper.find("#security-password-expiry-period").text()).toContain(
-        30
+      expect(wrapper.find("#security-password-expiry-period input").val()).toContain(
+        ""
       );
 
-      expect(wrapper.find("#security-tfa-expiry-period").text()).toContain(
-        16
+      expect(wrapper.find("#security-tfa-expiry-period input").val()).toContain(
+        ""
       );
 
-      expect(wrapper.find("#security-number-login-attempts").text()).toContain(
-        5
+      expect(wrapper.find("#security-number-login-attempts input").val()).toContain(
+        ""
       );
     }
   });

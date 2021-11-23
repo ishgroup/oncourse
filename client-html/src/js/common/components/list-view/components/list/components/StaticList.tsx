@@ -9,7 +9,7 @@ import React, {
 import { FixedSizeList, areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import clsx from "clsx";
-import TableCell from "@material-ui/core/TableCell";
+import TableCell from "@mui/material/TableCell";
 import { NestedTableColumnsTypes } from "../../../../../../model/common/NestedTable";
 import NestedTableCheckboxCell from "./NestedTableCheckboxCell";
 import NestedTableLinkCell from "./NestedTableLinkCell";

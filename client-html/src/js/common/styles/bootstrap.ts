@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from '@mui/material/styles';
 import { AppTheme } from "../../model/common/Theme";
 import { prefixer } from "./mixins/prefixer";
 
@@ -38,6 +38,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".fs19": {
     fontSize: theme.spacing(19)
   },
+  ".fw300": {
+    fontWeight: 300
+  },
   ".fsInherit": {
     fontSize: "inherit"
   },
@@ -64,6 +67,9 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".bottom-0": {
     bottom: 0
+  },
+  ".pt-10": {
+    paddingTop: theme.spacing(10)
   },
   ".pr-6": {
     paddingRight: theme.spacing(6)
@@ -239,6 +245,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".overflow-hidden": {
     overflow: "hidden"
   },
+  ".overflow-x-hidden": {
+    overflowX: "hidden"
+  },
   ".overflow-y-auto": {
     overflowY: "auto"
   },
@@ -295,6 +304,9 @@ export const bootstrap = (theme: AppTheme) => ({
   ".flex-nowrap": {
     flexWrap: "nowrap"
   },
+  ".flex-wrap": {
+    flexWrap: "wrap"
+  },
   ".align-items-baseline": {
     alignItems: "baseline"
   },
@@ -333,10 +345,10 @@ export const bootstrap = (theme: AppTheme) => ({
     pointerEvents: "none"
   },
   ".text-op065": {
-    color: fade(theme.palette.text.primary, 0.65),
+    color: alpha(theme.palette.text.primary, 0.65),
   },
   ".text-op05": {
-    color: fade(theme.palette.text.primary, 0.5),
+    color: alpha(theme.palette.text.primary, 0.5),
   },
   ".invisible": {
     visibility: "hidden"
@@ -442,5 +454,8 @@ export const bootstrap = (theme: AppTheme) => ({
   },
   ".grid-temp-col-2-fr": {
     gridTemplateColumns: "1fr 1fr"
-  }
+  },
+  ".lh-1": {
+    lineHeight: 1,
+  },
 });

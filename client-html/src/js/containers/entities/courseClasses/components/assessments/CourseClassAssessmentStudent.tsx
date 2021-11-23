@@ -9,7 +9,7 @@
 import React, {
   useEffect, useMemo, useState
 } from "react";
-import { Grid, } from "@material-ui/core";
+import { Grid, } from "@mui/material";
 import clsx from "clsx";
 import {
  CourseClassTutor, GradingItem, GradingType

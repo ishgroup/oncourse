@@ -33,11 +33,15 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SchemaUpdateService {
 
 	private static final Logger logger = LogManager.getLogger();
+
+
 
 	private static final String DATA_UPGRADE = "data/upgrades.yml";
 	private static final String RESOURCES_PATH = "database";
@@ -51,11 +55,34 @@ public class SchemaUpdateService {
 		this.cayenneService = cayenneService;
 	}
 
+	/**
+	 * Scan /database directory for *.yml liquibase files
+	 * Looking inside main jar + all classpath jars  (replication plugin has own liquibase to create specific queue tables)
+	 * 
+	 * orger all found files by version number in file name (if present)
+	 * all non numbered files put at the end 
+	 * The result list looks like:
+	 * 
+	 * database/01.initial.schema.yml
+	 * database/45.upgrade.yml
+	 * ....
+	 * database/105.upgrade.yml
+	 * database/quartz.yml
+	 * database/replication.yml
+	 * 
+	 * apply changes from each file in order, one by one. 
+	 * 
+	 * Please create separate file per version, use appropriate changeset ids 105-1 to prevent mess
+	 * 
+	 * @throws SQLException
+	 * @throws DatabaseException
+	 */
+	
 	public void updateSchema() throws SQLException, DatabaseException {
 
 		List<String> yamlFiles = PluginService.getPluggableResources(RESOURCES_PATH, ".*\\.yml")
 				.stream()
-				.sorted()
+				.sorted( new NumberedFilesComparator())
 				.collect(Collectors.toList());
 
 		logger.warn("Count of files from packages: " + yamlFiles.size());

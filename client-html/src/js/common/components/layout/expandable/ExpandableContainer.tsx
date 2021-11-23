@@ -4,26 +4,30 @@
  */
 
 import React, {
- useCallback, useRef, useEffect, useMemo 
+ useCallback, useRef, useMemo
 } from "react";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import IconButton from "@material-ui/core/IconButton";
-import Collapse from "@material-ui/core/Collapse";
-import AddCircle from "@material-ui/icons/AddCircle";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import Divider from "@mui/material/Divider";
 import { AppTheme } from "../../../../model/common/Theme";
+import AddButton from "../../icons/AddButton";
 
 const styles = (theme: AppTheme) =>
   createStyles({
     expandButton: {
+      position: "absolute",
+      right: 0,
       transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`
     },
     expandButtonExpanded: {
       transform: "rotate(180deg)"
     },
-    adornmentOffset: {
-      marginLeft: theme.spacing(-1.5)
+    controls: {
+      position: "relative",
+      paddingRight: theme.spacing(5)
     }
   });
 
@@ -50,7 +54,7 @@ const ExpandableContainer: React.FC<Props> = ({
   expanded,
   setExpanded,
   index,
-  mountAll
+  mountAll,
 }) => {
   const headerRef = useRef<any>();
 
@@ -79,32 +83,21 @@ const ExpandableContainer: React.FC<Props> = ({
     [isExpanded, expanded, index]
   );
 
-  useEffect(() => {
-    if (isExpanded) {
-      setTimeout(() => {
-        if (headerRef.current) {
-          headerRef.current.scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
-        }
-      }, 400);
-    }
-  }, [isExpanded]);
-
   return (
     <>
+      <Divider className={onAdd ? "mb-2" : "mb-3"} />
       <div ref={headerRef}>
-        <div className="centeredFlex">
-          <div className="heading">{header}</div>
-          {onAdd && (
-            <IconButton onClick={onAdd}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
-          )}
-          <IconButton onClick={toggleExpand} className={onAdd && classes.adornmentOffset}>
-            <ExpandMore
-              className={clsx("addButtonColor", classes.expandButton, isExpanded && classes.expandButtonExpanded)}
-            />
-          </IconButton>
+        <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
+          <div className="centeredFlex">
+            <div className="heading">{header}</div>
+            {onAdd && (
+              <AddButton onClick={onAdd} />
+            )}
+          </div>
           {headerAdornment}
+          <IconButton onClick={toggleExpand} className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}>
+            <ExpandMore />
+          </IconButton>
         </div>
       </div>
 

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import { openInternalLink } from "../../../../../utils/links";
 
 const NestedTableLinkCell = props => {

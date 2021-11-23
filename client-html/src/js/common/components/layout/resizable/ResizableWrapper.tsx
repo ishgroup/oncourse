@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Resizable } from "re-resizable";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
-import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
+import { withStyles, createStyles } from "@mui/styles";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
 import { ListSideBarDefaultWidth } from "../../list-view/ListView";
 
@@ -41,32 +40,30 @@ interface Props {
   sidebarWidth: number;
   minWidth?: number | string;
   maxWidth?: number | string;
-  width?: Breakpoint;
   onResizeStop?: any;
   onResize?: any;
   classes?: any;
   className?: any;
   ignoreScreenWidth?: boolean;
+  children?: any;
 }
 
-class ResizableWrapper extends React.PureComponent<Props, any> {
-  line = () => <div className={this.props.classes.line} />;
+const ResizableWrapper = (props: Props) => {
+  const line = () => <div className={props.classes.line} />;
 
-  render() {
-    const {
-      classes,
-      onResizeStop,
-      onResize,
-      sidebarWidth,
-      width,
-      minWidth,
-      maxWidth,
-      children,
-      className,
-      ignoreScreenWidth
-    } = this.props;
+  const {
+    classes,
+    onResizeStop,
+    onResize,
+    sidebarWidth,
+    minWidth,
+    maxWidth,
+    children,
+    className,
+    ignoreScreenWidth
+  } = props;
 
-    return isWidthUp("md", width) || ignoreScreenWidth ? (
+    return useMediaQuery('(min-width:992px)') || ignoreScreenWidth ? (
       <Resizable
         size={{ width: sidebarWidth, height: "100%" }}
         minWidth={minWidth || ListSideBarDefaultWidth}
@@ -76,16 +73,15 @@ class ResizableWrapper extends React.PureComponent<Props, any> {
         enable={{ right: true }}
         className={clsx(classes.sideBar, className)}
         handleClasses={{ right: classes.resizeLine }}
-        handleComponent={{ right: <this.line /> }}
+        handleComponent={{ right: <line /> }}
       >
         <div className={classes.sideBarWrapper}>{children}</div>
       </Resizable>
     ) : (
       children
     );
-  }
-}
+};
 
-const wrapped: any = withWidth()(withStyles(styles)(ResizableWrapper) as any);
+const wrapped: any = (withStyles(styles)(ResizableWrapper) as any);
 
-export default wrapped as React.ComponentClass<Props>;
+export default wrapped as React.FC<Props>;

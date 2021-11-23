@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import MenuItem from "@material-ui/core/MenuItem";
-import Typography from "@material-ui/core/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const CollapseSideBarListItem: React.FC<any> = ({
       open={openedTooltip === index}
       placement="bottom"
     >
-      <MenuItem button className={classes.listItemPadding} selected={activeLink === index.toString()}>
+      <MenuItem className={classes.listItemPadding} selected={activeLink === index.toString()}>
         <Typography
           variant="body2"
           onMouseOver={() => handleOpenTooltip(index)}

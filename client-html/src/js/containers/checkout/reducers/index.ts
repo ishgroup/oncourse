@@ -30,6 +30,7 @@ import {
   CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../actions";
 import {
+  getDefaultPayer,
   getUpdatedSummaryItem,
   getUpdatedSummaryVouchers,
   getUpdatedVoucherDiscounts,
@@ -185,7 +186,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
             sendInvoice: hasEmail && state.summary.list.length === 0,
             sendEmail: hasEmail,
             payer: false
-          }], isPayer ? state.summary.list.length : 0)
+          }], isPayer ? state.summary.list.length : getDefaultPayer(state.summary.list))
         };
 
       return {
@@ -707,7 +708,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const payer = state.summary.list.find(i => i.payer);
 
       invoices.forEach(item => {
-        item.checked = !payer.contact.defaultSelectedOwing;
+        item.checked = payer?.contact && !payer.contact.defaultSelectedOwing;
         if (item.checked) {
           invoiceTotal = decimalPlus(invoiceTotal, parseFloat(item.amountOwing));
         }
@@ -737,7 +738,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       const today = new Date();
 
       invoices.forEach(item => {
-        item.checked = payer.contact.defaultSelectedOwing
+        item.checked = payer?.contact?.defaultSelectedOwing
           ? payer.contact.defaultSelectedOwing === item.id
           : !(item.dateDue && (new Date(item.dateDue) > today));
 

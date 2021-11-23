@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { withStyles, createStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { AttandanceMonth } from "../../../../../model/entities/CourseClass";
 

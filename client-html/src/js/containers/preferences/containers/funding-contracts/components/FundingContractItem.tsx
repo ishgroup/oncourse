@@ -5,13 +5,13 @@
 
 import * as React from "react";
 import clsx from "clsx";
-import Paper from "@material-ui/core/Paper";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Button from "@material-ui/core/Button";
-import red from "@material-ui/core/colors/red";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
+import Paper from "@mui/material/Paper";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Button from "@mui/material/Button";
+import { red } from "@mui/material/colors";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
 import { AvetmissExportFlavour, FundingSource } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
@@ -44,8 +44,8 @@ const FundingContractItem = props => {
 
         return (
           <Paper id={`funding-contracts-item-${index}`} className="card" key={index}>
-            <Grid className="container">
-              <Grid item container xs={12}>
+            <Grid container columnSpacing={3} rowSpacing={2} className="container">
+              <Grid item container columnSpacing={3} rowSpacing={2} xs={12}>
                 <Grid item xs={5}>
                   <FormField
                     type="text"

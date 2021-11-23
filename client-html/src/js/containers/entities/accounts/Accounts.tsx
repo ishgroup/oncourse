@@ -88,7 +88,8 @@ class Accounts extends React.Component<any, any> {
           }}
           editViewProps={{
             nameCondition,
-            manualLink
+            manualLink,
+            hideTitle: true
           }}
           EditViewContent={AccountsEditView}
           getEditRecord={getAccountRecord}

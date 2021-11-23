@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@material-ui/core/Button";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import Button from "@mui/material/Button";
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import React from "react";
 
 interface Props {
@@ -13,13 +13,15 @@ interface Props {
   fab?: boolean;
   text?: string;
   errorText?: string;
+  className?: any;
 }
 
 const FormSubmitButton = React.memo<Props>(({
     disabled,
     invalid,
     fab = false,
-    text = "Save"
+    text = "Save",
+    className,
   }) => (
     <Button
       type="submit"
@@ -31,6 +33,7 @@ const FormSubmitButton = React.memo<Props>(({
       startIcon={invalid && <ErrorOutline color="error" />}
       variant="contained"
       color="primary"
+      className={className}
     >
       {text}
     </Button>

@@ -4,10 +4,9 @@
  */
 
 import React, { useCallback } from "react";
-import Dialog from "@material-ui/core/Dialog";
+import Dialog from "@mui/material/Dialog";
 import { AvetmissExportSettings } from "@api/model";
 import AvetmissExportForm from "../../containers/AvetmissExportForm";
-import Content from "../../../../common/components/layout/Content";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { openInternalLink } from "../../../../common/utils/links";
@@ -61,14 +60,12 @@ const AvetmissExportModalForm: React.FC<Props> = props => {
 
   return (
     <Dialog fullScreen open={opened} onClose={onclose}>
-      <div className="relative w-100 h-100 overflow-auto defaultBackgroundColor">
-        <Content>
-          <AvetmissExportForm
-            formatSettings={customAvetmissExportSettings}
-            onClose={onclose}
-            enrolmentsCount={enrolmentsCount}
-          />
-        </Content>
+      <div className="relative w-100">
+        <AvetmissExportForm
+          formatSettings={customAvetmissExportSettings}
+          onClose={onclose}
+          enrolmentsCount={enrolmentsCount}
+        />
       </div>
     </Dialog>
   );
