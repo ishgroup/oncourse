@@ -4,13 +4,13 @@
  */
 
 import * as React from "react";
-import Card from "@material-ui/core/Card";
+import Card from "@mui/material/Card";
 import clsx from "clsx";
-import Button from "@material-ui/core/Button";
-import { FormControlLabel } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import Button from "@mui/material/Button";
+import { FormControlLabel } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { ContactRelationType } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 
 const renderContactRelationTypes = props => {
   const { fields, classes, onDelete } = props;
@@ -22,9 +22,9 @@ const renderContactRelationTypes = props => {
 
         return (
           <Card id={`contact-relation-type-${index}`} className="card" key={index}>
-            <Grid container spacing={2} className="relative">
+            <Grid container columnSpacing={3} spacing={2} className="relative">
               <Grid item xs={12}>
-                <Grid container>
+                <Grid container columnSpacing={3}>
                   <Grid item xs={6}>
                     <FormField
                       type="text"

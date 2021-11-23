@@ -49,7 +49,7 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
                                                                      CategoryDTO.EXPORT_AVETMISS_8_, CategoryDTO.PAYMENTS_IN, CategoryDTO.FUNDING_CONTRACT,
                                                                      CategoryDTO.APPLICATIONS, CategoryDTO.BANKING_DEPOSITS, CategoryDTO.MESSAGES, CategoryDTO.FINALISE_PERIOD, CategoryDTO.OUTCOMES,
                                                                      CategoryDTO.TIMETABLE, CategoryDTO.PRIOR_LEARNINGS, CategoryDTO.BATCH_PAYMENT_IN, CategoryDTO.IMPORT_TEMPLATES, CategoryDTO.EXPORT_TEMPLATES, CategoryDTO.MESSAGE_TEMPLATES, CategoryDTO.SCRIPTS,
-                                                                     CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS ]
+                                                                     CategoryDTO.PDF_BACKGROUNDS, CategoryDTO.PDF_REPORTS, CategoryDTO.LEADS, CategoryDTO.QUOTES ]
 
 
     private static final List<CategoryDTO> ADMIN_ONLY = [CategoryDTO.PREFERENCES, CategoryDTO.SECURITY, CategoryDTO.INTEGRATIONS, CategoryDTO.HOLIDAYS,
@@ -77,6 +77,11 @@ class UserPreferenceApiImpl implements UserPreferenceApi {
         def throwException = { key ->
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, null, "key: $key is not in user preferences list")).build())
         }
+
+        Map<String, String> value =
+                keys.split(JOIN_DELIMETER)
+                        .collect { PreferenceEnumDTO.fromValue(it) ?: throwException.call(it) }
+                        .collectEntries { [ (it.toString()) : usePrefService.get(it as PreferenceEnumDTO) ] }
 
         keys.split(JOIN_DELIMETER)
                 .collect { PreferenceEnumDTO.fromValue(it) ?: throwException.call(it) }

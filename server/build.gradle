@@ -14,12 +14,12 @@ import com.github.psxpaul.task.JavaExecFork
 
 import java.security.MessageDigest
 
-apply plugin: 'groovy'
-apply plugin: 'apidoc'
-apply plugin: 'org.apache.cayenne'
-apply plugin: 'application'
-
-apply plugin: 'com.github.psxpaul.execfork'
+plugins {
+	id 'apidoc'
+	id 'org.apache.cayenne'
+	id 'application'
+	id 'com.github.psxpaul.execfork'
+}
 
 configurations {
 	// exclude these here since they are pulled in in various ways
@@ -27,24 +27,22 @@ configurations {
 	all*.exclude module: "hessian"
 }
 
-// compile everything with the groovy plugin which can handle mixed groovy and Java files
+
 sourceSets {
 	main {
 		groovy {
+			// compile everything with the groovy plugin which can handle mixed groovy and Java files
+			// We cannot remove next two lines because we compile everything as groovy. Without these
+			// lines we will compile this directories as java code, but in java section we clear java sources,
+			// so we will get error because of java classes not found in build directories.
 			srcDirs += 'src/main/java'
 			srcDirs += 'src/main/groovy'
-			srcDirs += "$buildDir/antlr/java"
-			srcDirs += "${buildDir}/generated-resources/main/java"
+			srcDirs += "${buildDir}/generated-resources/antlr/java"
+			srcDirs += "${buildDir}/generated-resources/cayenne/java"
 		}
 		java {
 			srcDirs = []
 		}
-	}
-	test {
-		groovy {
-			srcDirs += 'src/test/groovy'
-		}
-
 	}
 }
 
@@ -70,8 +68,6 @@ dependencies {
 
 	implementation "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 	implementation "org.eclipse.jetty.http2:http2-server:$jettyVersion"
-	implementation "org.eclipse.jetty.websocket:websocket-servlet:$jettyVersion"
-	implementation "org.eclipse.jetty.websocket:websocket-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-java-server:$jettyVersion"
 	implementation "org.eclipse.jetty:jetty-jmx:$jettyVersion"
 
@@ -103,9 +99,9 @@ dependencies {
 	implementation 'net.glxn.qrgen:javase:2.0'
 
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.11.939'
-	implementation 'com.azure:azure-storage-blob:12.0.0'
+	implementation 'com.azure:azure-storage-blob:12.9.0'
 
-	api 'org.quartz-scheduler:quartz:2.2.2'
+	api 'org.quartz-scheduler:quartz:2.3.2'
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
 	implementation 'org.scribe:scribe:1.3.7'
 	implementation 'commons-io:commons-io:2.6'
@@ -165,7 +161,8 @@ jar {
 	archiveFileName = 'onCourseServer.jar'
 }
 
-task expandConfig(type: Copy) {
+task expandTestConfig(type: Copy) {
+	group = 'verification'
 	def dbUrl = project.findProperty('dbUrl') ?: ''
 
 	from("$rootDir/server/src/test/resources/") {
@@ -192,7 +189,7 @@ test {
 		println 'user.language:' + System.getProperty('user.language')
 		println 'Locale.getDefault():' + Locale.getDefault()
 	}
-	dependsOn "expandConfig"
+	dependsOn "expandTestConfig"
 
 	maxParallelForks = 8
 }
@@ -207,7 +204,7 @@ task integration(type: Test) {
 	}
 
 	jvmArgs = ['-Xmx3000m','-Xms3000m']
-	dependsOn "expandConfig"
+	dependsOn "expandTestConfig"
 	// the database tests interfere with each other if run in parallel
 	maxParallelForks = 1
 }
@@ -329,7 +326,7 @@ publishing {
 }
 
 task queryGrammar(type: Aql) {
-	outputDir = file("${buildDir}/antlr/java/ish/oncourse/aql/impl")
+	outputDir = file("${buildDir}/generated-resources/antlr/java/ish/oncourse/aql/impl")
 	packageDir = 'ish.oncourse.aql.impl'
 	target = 'Java'
 }
@@ -342,10 +339,10 @@ cgen {
 	superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/superclass.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.server.cayenne.glue'
-	destDir = file("${buildDir}/generated-resources/main/java")
+	destDir = file("${buildDir}/generated-resources/cayenne/java")
 	doLast {
 		// remove subclass files which are already committed inside the app
-		delete fileTree("${buildDir}/generated-resources/main/java/ish/oncourse/server/cayenne") {
+		delete fileTree("${buildDir}/generated-resources/cayenne/java/ish/oncourse/server/cayenne") {
 			exclude '**/glue/*'
 		}
 	}

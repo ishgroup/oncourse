@@ -5,9 +5,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { reduxForm, initialize } from "redux-form";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
+import { initialize, reduxForm } from "redux-form";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
@@ -35,14 +34,12 @@ class MicropowerBaseForm extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        <FormField name="fields.identity" label="Identity" type="text" fullWidth />
-        <FormField name="fields.signature" label="Signature" type="text" fullWidth />
-        <FormField name="fields.clientId" label="Client Id" type="text" fullWidth />
-        <FormField name="fields.productSku" label="Product Sku" type="text" fullWidth />
+        <AppBarContent>
+          <FormField name="fields.identity" label="Identity" type="text" className="mb-2" />
+          <FormField name="fields.signature" label="Signature" type="text" className="mb-2" />
+          <FormField name="fields.clientId" label="Client Id" type="text" className="mb-2" />
+          <FormField name="fields.productSku" label="Product Sku" type="text" className="mb-2" />
+        </AppBarContent>
       </form>
     );
   }

@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import clsx from "clsx";
 import { GradingItem, GradingType } from "@api/model";
 import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
@@ -16,8 +16,8 @@ import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../mode
 import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
 import GradeContent from "../../courseClasses/components/assessments/GradeContent";
 import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
@@ -95,19 +95,21 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
       <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
         {submitStatus === "Submitted"
           ? (
-            <EditInPlaceDateTimeField
-              meta={{}}
-              input={{
+            <div className="pl-3">
+              <EditInPlaceDateTimeField
+                meta={{}}
+                input={{
                 onChange: value => triggerAsyncChange(value, "submittedOn", submissionIndex),
                 onFocus: stubFunction,
                 onBlur: stubFunction,
                 value: submission.submittedOn
               }}
-              type="datetime"
-              formatting="inline"
-              formatDate={D_MMM_YYYY}
-              inlineMargin
-            />
+                type="datetime"
+                formatting="inline"
+                formatDate={D_MMM_YYYY}
+                inlineMargin
+              />
+            </div>
           )
           : submittedContent}
       </Grid>
@@ -117,7 +119,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
         <Grid item xs={3} className={classes.center}>
           {markedStatus === "Submitted" ? (
             <div>
-              <div>
+              <div className="pl-3">
                 <EditInPlaceDateTimeField
                   meta={{}}
                   input={{

@@ -4,20 +4,26 @@
  */
 
 import React, {
- useCallback, useEffect, useRef, useState
+ useEffect, useRef, useState
 } from "react";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
+import Grid, { GridSize } from "@mui/material/Grid";
 import clsx from "clsx";
-import ListItem from "@material-ui/core/ListItem";
-import createStyles from "@material-ui/core/styles/createStyles";
+import ListItem from "@mui/material/ListItem";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { RouteComponentProps, withRouter } from "react-router";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
-import { LSGetItem } from "../../utils/storage";
+import NewsRender from "../news/NewsRender";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
+import { LSGetItem, LSSetItem } from "../../utils/storage";
+import { EditViewProps } from "../../../model/common/ListView";
+import { useStickyScrollSpy } from "../../utils/hooks";
+import { AppTheme } from "../../../model/common/Theme";
 
-const styles = theme => createStyles({
+const useStyles = makeStyles<AppTheme>(theme => ({
     listContainer: {
+      flex: 1,
+      overflowY: 'auto',
       flexDirection: "column",
       backgroundColor: theme.tabList.listContainer.backgroundColor,
       padding: theme.spacing(4)
@@ -28,62 +34,124 @@ const styles = theme => createStyles({
     listItemRoot: {
       alignItems: "flex-start",
       marginBottom: theme.spacing(3),
-      color: theme.palette.common.white,
+      color: theme.tabList.listItemRoot.color,
       fontWeight: 600,
       opacity: 0.6,
       padding: 0,
-      "&$selected": {
-        opacity: 1,
-        backgroundColor: "inherit"
+      overflow: "hidden",
+      position: "relative",
+      cursor: 'pointer',
+    "&$selected": {
+      opacity: 1,
+      backgroundColor: "inherit",
+      color: theme.tabList.listItemRoot.selectedColor,
+      "& $arrowIcon": {
+        transform: "translateX(0)",
+      },
+      "& $listItemLabel": {
+        paddingLeft: 30,
+      },
+    },
+    "&:hover": {
+      opacity: 0.8,
       }
     },
     listItemText: {
       fontWeight: "inherit",
-      width: "100%"
+      width: "100%",
     },
-    indicator: {
-      display: "none"
+  indicator: {
+    display: "none"
+  },
+  listItemLabel: {
+    textTransform: 'uppercase',
+    transition: "all 0.2s ease-in-out",
     },
-    selected: {}
-  });
+    selected: {},
+    arrowIcon: {
+      position: "absolute",
+      transform: "translateX(-30px)",
+      transition: "all 0.2s ease-in-out",
+    },
+  }));
 
 export interface TabsListItem {
-  label: string;
+  readonly type?: string;
   component: (props: any) => React.ReactNode;
   labelAdornment?: React.ReactNode;
   expandable?: boolean;
+  label: string;
 }
 
 interface Props {
   classes?: any;
-  itemProps?: any;
-  customLabels?: any;
-  customAppBar?: boolean;
+  itemProps?: EditViewProps & any;
   items: TabsListItem[];
+  newsOffset?: string;
 }
 
-interface ScrollNodes {
-  [key: string]: HTMLElement;
-}
+const TABLIST_LOCAL_STORAGE_KEY = "localstorage_key_tab_list";
 
-const SCROLL_TARGET_ID = "TabsListScrollTarget";
+const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 2 }] : [{ xs: 12 }, { xs: "auto" }]);
 
-const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] => (twoColumn ? [{ xs: 10 }, { xs: 12 }, { xs: 2 }] : [{ xs: 12 }, { xs: 12 }, { xs: 2 }]);
+const TabsList = React.memo<Props & RouteComponentProps>((
+  {
+    items, 
+    itemProps = {},
+    history, 
+    location,
+    newsOffset
+  }
+) => {
+  const { scrollSpy } = useStickyScrollSpy();
+  const classes = useStyles();
 
-const TabsList = React.memo<Props & RouteComponentProps>(({
-   classes, items, customLabels, customAppBar, itemProps = {}, history, location
-  }) => {
   const scrolledPX = useRef<number>(0);
-  const scrollNodes = useRef<ScrollNodes>({});
+  const scrollNodes = useRef<HTMLElement[]>([]);
+  const scrollContainer = useRef<HTMLDivElement>(null);
 
   const [selected, setSelected] = useState<string>(null);
   const [expanded, setExpanded] = useState<number[]>([]);
 
+  const scrollToSelected = (i: TabsListItem, index) => {
+    setSelected(i.label);
+    
+    const item = scrollNodes.current.find(sn => sn.id === i.label);
+
+    scrollContainer.current.scrollTo({
+      top: item.offsetTop - APP_BAR_HEIGHT,
+      behavior: 'smooth'
+    });
+
+    if (i.expandable && !expanded.includes(index)) {
+      setTimeout(() => {
+        setExpanded([...expanded, index]);
+      }, 300);
+    }
+  };
+
   useEffect(() => {
-    if (items.length) {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY));
+    if (stored && stored[itemProps.rootEntity]) {
+      setExpanded(stored[itemProps.rootEntity]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!selected && items.length) {
       setSelected(items[0].label);
     }
-  }, [items.length]);
+  }, [items.length, selected]);
+
+  useEffect(() => {
+    const stored = JSON.parse(LSGetItem(TABLIST_LOCAL_STORAGE_KEY));
+    let updated = {};
+    if (stored) {
+      updated = { ...stored };
+    }
+    updated[itemProps.rootEntity] = expanded;
+    LSSetItem(TABLIST_LOCAL_STORAGE_KEY, JSON.stringify(updated));
+  }, [expanded, itemProps.rootEntity]);
 
   useEffect(() => {
     if (location.search) {
@@ -92,11 +160,7 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
 
       if (search.has("expandTab") && !isNaN(expandTab)) {
         setTimeout(() => {
-          if (!expanded.includes(expandTab)) {
-            setExpanded([...expanded, expandTab]);
-          } else {
-            scrollToSelected(items[expandTab], expandTab);
-          }
+          scrollToSelected(items[expandTab], expandTab);
           search.delete("expandTab");
 
           const updatedSearch = decodeURIComponent(search.toString());
@@ -110,123 +174,111 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
     }
   }, [location.search]);
 
-  const onScroll = useCallback(
-    e => {
-      if (!itemProps.twoColumn) {
-        return;
-      }
+  useEffect(() => {
+    scrollNodes.current = scrollNodes.current.slice(0, items.length);
+  }, [items]);
 
-      if (e.target.id !== SCROLL_TARGET_ID) {
-        return;
-      }
-
-      const isScrollingDown = scrolledPX.current < e.target.scrollTop;
-
-      scrolledPX.current = e.target.scrollTop;
-
-      const keys = Object.keys(scrollNodes.current);
-
-      const selectedIndex = Object.keys(scrollNodes.current).indexOf(selected);
-
-      // scrolled to bottom
-      if (e.target.scrollTop + e.target.offsetHeight === e.target.scrollHeight) {
-        setSelected(scrollNodes.current[keys[keys.length - 1]].id);
-        return;
-      }
-
-      if (
-        isScrollingDown
-        && e.target.scrollTop
-          >= scrollNodes.current[selected].offsetHeight + scrollNodes.current[selected].offsetTop - APP_BAR_HEIGHT
-      ) {
-        if (selectedIndex + 1 <= keys.length - 1) {
-          setSelected(scrollNodes.current[keys[selectedIndex + 1]].id);
-        }
-        return;
-      }
-
-      if (!isScrollingDown && e.target.scrollTop < scrollNodes.current[selected].offsetTop - APP_BAR_HEIGHT) {
-        if (selectedIndex - 1 >= 0) {
-          setSelected(scrollNodes.current[keys[selectedIndex - 1]].id);
-        }
-      }
-    },
-    [selected, itemProps.twoColumn]
-  );
-
-  const scrollToSelected = useCallback(
-    (i: TabsListItem, index) => {
-      setSelected(i.label);
-      scrollNodes.current[i.label].scrollIntoView({ block: "start", inline: "nearest", behavior: "smooth" });
-      if (i.expandable && !expanded.includes(index)) {
-        setExpanded([...expanded, index]);
-      }
-    },
-    [expanded]
-  );
-
-  const setScrollNode = useCallback(node => {
-    if (!node) {
+  const onScroll = e => {
+    if (!itemProps.twoColumn) {
       return;
     }
 
-    if (!scrollNodes.current[node.id]) {
-      scrollNodes.current[node.id] = node;
+    scrollSpy(e);
+
+    if (e.target.id !== TAB_LIST_SCROLL_TARGET_ID) {
+      return;
     }
-  }, []);
+
+    const isScrollingDown = scrolledPX.current < e.target.scrollTop;
+
+    scrolledPX.current = e.target.scrollTop;
+
+    // scrolled to bottom
+    if (e.target.scrollTop + e.target.offsetHeight === e.target.scrollHeight) {
+      setSelected(scrollNodes.current[scrollNodes.current.length - 1].id);
+      return;
+    }
+
+    const selectedIndex = scrollNodes.current.findIndex(sn => sn.id === selected);
+
+    if (
+      isScrollingDown
+      && scrollNodes.current[selectedIndex]
+      && e.target.scrollTop
+        >= scrollNodes.current[selectedIndex].offsetHeight + scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT
+    ) {
+      if (selectedIndex + 1 <= scrollNodes.current.length - 1) {
+        setSelected(scrollNodes.current[selectedIndex + 1].id);
+      }
+      return;
+    }
+
+    if (!isScrollingDown && scrollNodes.current[selectedIndex] && e.target.scrollTop < scrollNodes.current[selectedIndex].offsetTop - APP_BAR_HEIGHT) {
+      if (selectedIndex - 1 >= 0) {
+        setSelected(scrollNodes.current[selectedIndex - 1].id);
+      }
+    }
+  };
 
   const layoutArray = getLayoutArray(itemProps.twoColumn);
 
   return (
-    <Grid container className={clsx("overflow-hidden", { "root": customAppBar && itemProps.twoColumn })}>
-      <Grid item xs={layoutArray[0].xs}>
-        <Grid container>
-          <Grid
-            item
-            xs={layoutArray[1].xs}
-            className={clsx("overflow-y-auto", customAppBar && itemProps.twoColumn ? "appBarContainer" : "fullHeightWithoutAppBar")}
-            onScroll={onScroll}
-            id={SCROLL_TARGET_ID}
+    <Grid container className={clsx("overflow-hidden", itemProps.twoColumn ? "h-100" : "fullHeightWithoutAppBar")}>
+      <Grid
+        item
+        xs={layoutArray[0].xs}
+        className="overflow-y-auto overflow-x-hidden h-100"
+        onScroll={onScroll}
+        id={TAB_LIST_SCROLL_TARGET_ID}
+        ref={scrollContainer}
+      >
+        <NewsRender newsOffset={newsOffset} page />
+        {items.map((i, tabIndex) => (
+          <div
+            id={i.label}
+            key={tabIndex}
+            ref={el => scrollNodes.current[tabIndex] = el}
+            className={tabIndex === items.length - 1 && "saveButtonTableOffset"}
           >
-            {items.map((i, tabIndex) => (
-              <div id={i.label} key={i.label} ref={setScrollNode}>
-                {i.component({
-                 ...itemProps, expanded, setExpanded, tabIndex
-                })}
-              </div>
-            ))}
-          </Grid>
-        </Grid>
+            {i.component({
+              ...itemProps, expanded, setExpanded, tabIndex
+            })}
+          </div>
+        ))}
       </Grid>
       {itemProps.twoColumn && (
-        <Grid item xs={layoutArray[2].xs} className={classes.scrollContainer}>
-          <div className={clsx("relative",
+        <Grid item xs={layoutArray[1].xs} className="root">
+          <div className={clsx(
             classes.listContainer,
-            customAppBar ? "appBarContainer" : "h-100",
-            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
+            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader"
+          )}
           >
             <div className={classes.listContainerInner}>
-              {items.map((i, index) => (
-                <ListItem
-                  button
-                  selected={i.label === selected}
-                  classes={{
-                    root: classes.listItemRoot,
-                    selected: classes.selected
-                  }}
-                  onClick={() => scrollToSelected(i, index)}
-                  key={index}
-                >
-                  <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
-                    <div className="text-uppercase">{customLabels && customLabels[index] ? customLabels[index] : i.label}</div>
-                    {i.labelAdornment && (
-                      <Typography variant="caption" component="div" className="text-pre-wrap">
-                        {i.labelAdornment}
-                      </Typography>
-                    )}
-                  </Typography>
-                </ListItem>
-              ))}
+              {items.map((i, index) => {
+                const itemSelected = i.label === selected;
+                return (
+                  <ListItem
+                    selected={itemSelected}
+                    classes={{
+                      root: classes.listItemRoot,
+                      selected: classes.selected
+                    }}
+                    onClick={() => scrollToSelected(i, index)}
+                    key={index}
+                  >
+
+                    <Typography variant="body2" component="div" classes={{ root: classes.listItemText }} color="inherit">
+                      <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
+                      <div className={classes.listItemLabel}>{i.label}</div>
+                      {i.labelAdornment && (
+                        <Typography variant="caption" component="div" className="text-pre-wrap">
+                          {i.labelAdornment}
+                        </Typography>
+                      )}
+                    </Typography>
+                  </ListItem>
+                );
+              })}
             </div>
           </div>
         </Grid>
@@ -235,4 +287,4 @@ const TabsList = React.memo<Props & RouteComponentProps>(({
   );
 });
 
-export default withStyles(styles)(withRouter(TabsList));
+export default withRouter(TabsList);

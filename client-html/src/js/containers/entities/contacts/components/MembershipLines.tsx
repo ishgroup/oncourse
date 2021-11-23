@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid/Grid";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { buildUrl, productUrl } from "../../sales/utils";
 
@@ -23,7 +23,7 @@ export const MembershipHeader: React.FunctionComponent<any> = ({ row }) => (
 export const MembershipContent: React.FunctionComponent<any> = ({ row, item, twoColumn }) => {
   const gridSpacing = twoColumn ? 4 : 6;
   return (
-    <Grid container>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={gridSpacing}>
         <Uneditable
           value={row.productName}

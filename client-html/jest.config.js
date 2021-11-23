@@ -10,6 +10,9 @@ module.exports = {
       tsconfig: "tsconfig.test.json",
     },
   },
+  setupFiles: [
+    "<rootDir>/src/tests/tests.setup.ts"
+  ],
   transform: {
     ".+\\.(css|styl|less|sass|scss|png|jpg|gif|svg|ttf|woff|woff2)$": "jest-transform-stub",
   },

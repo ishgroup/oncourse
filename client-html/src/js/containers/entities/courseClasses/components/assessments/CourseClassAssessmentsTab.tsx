@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Grid from "@material-ui/core/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import { arrayInsert, arrayRemove } from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { AssessmentClass, GradingType } from "@api/model";
 import { connect } from "react-redux";
 import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
@@ -19,6 +19,7 @@ import CourseClassAssessmentService from "./services/CourseClassAssessmentServic
 import { deleteCourseClassAssessment } from "./actions";
 import uniqid from "../../../../../common/utils/uniqid";
 import { State } from "../../../../../reducers/state";
+import Divider from "@mui/material/Divider";
 
 const assessmentInitial: AssessmentClass = {
   id: null,
@@ -148,7 +149,8 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
 
   return (
     <Grid container>
-      <Grid item xs={12} className="pl-3 pr-3 pb-2">
+      <Grid item xs={12} className="pl-3 pr-3 pb-1">
+        <Divider className="mb-1" />
         {isNew ? (
           <div>
             <div className="heading pb-1">Assessments</div>

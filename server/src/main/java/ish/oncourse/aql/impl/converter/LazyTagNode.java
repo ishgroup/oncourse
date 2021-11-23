@@ -13,23 +13,26 @@ package ish.oncourse.aql.impl.converter;
 
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
-import ish.oncourse.aql.impl.LazyExpressionNode;
 import ish.oncourse.aql.model.Entity;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.Outcome;
+import ish.util.EntityPathUtils;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.apache.cayenne.exp.parser.*;
 
 import java.util.Collections;
 import java.util.List;
 
+import static ish.util.TaggableUtil.resolveTaggableClass;
+
 /**
  * Lazy node that resolves '#tag' expressions.
  *
 
  */
-public class LazyTagNode extends LazyExpressionNode {
+public class LazyTagNode extends LazyExprNodeWithBasePathResolver {
+    protected static final String TAGGING_RELATIONS = "taggingRelations";
 
     private final String tag;
     private final ParserRuleContext ruleContext;
@@ -47,7 +50,9 @@ public class LazyTagNode extends LazyExpressionNode {
     @Override
     public SimpleNode resolveSelf(CompilationContext ctx) {
         var path = resolveBasePath();
-        var taggedEntity = resolvePath(path, ctx);
+        Entity taggedEntity = ctx.getQueryRootEntity();
+        if(!path.startsWith(TAGGING_RELATIONS))
+            taggedEntity = EntityPathUtils.resolvePathToTaggable(path, ctx);
         if(taggedEntity == null) {
             return null;
         }
@@ -95,74 +100,5 @@ public class LazyTagNode extends LazyExpressionNode {
         ExpressionUtil.addChild(taggedNode, tagName, 1);
 
         return taggedNode;
-    }
-
-    private TaggableClasses resolveTaggableClass(Entity entity) {
-        var name = capitalizedAsConstant(entity.getName());
-        return TaggableClasses.valueOf(name);
-    }
-
-    private static String capitalizedAsConstant(String name) {
-        if (name == null || name.length() == 0) {
-            return name;
-        }
-
-        var charArray = name.toCharArray();
-        var buffer = new StringBuilder();
-
-        for (var i = 0; i < charArray.length; i++) {
-            if ((Character.isUpperCase(charArray[i])) && (i != 0)) {
-                var prevChar = charArray[i - 1];
-                if ((Character.isLowerCase(prevChar))) {
-                    buffer.append("_");
-                }
-            }
-            buffer.append(Character.toUpperCase(charArray[i]));
-        }
-
-        return buffer.toString();
-    }
-
-    private Entity resolvePath(String path, CompilationContext ctx) {
-        var entity = ctx.getQueryRootEntity();
-
-        if (!path.isEmpty()) {
-            var pathComponents = path.split("\\.");
-            for (var next : pathComponents) {
-                var nextSegment = next.replaceAll("\\+", "");
-                entity = entity.getRelationship(nextSegment).orElse(null);
-                if (entity == null) {
-                    ctx.reportError(ruleContext.start.getLine(), ruleContext.start.getCharPositionInLine(),
-                        "Can't resolve component '" + nextSegment + "' of relationship '" + path + "'");
-                    return null;
-                }
-            }
-        }
-
-        // check that entity is taggable
-        if (!entity.getRelationship("taggingRelations").isPresent()) {
-            if (!Outcome.class.equals(entity.getJavaClass())) {
-                ctx.reportError(ruleContext.start.getLine(), ruleContext.start.getCharPositionInLine(),
-                        "Can't use tag here, entity '" + entity.getName() + "' is not taggable");
-                return null;
-            }
-        }
-
-        return entity;
-    }
-
-    /**
-     * @return not null path
-     */
-    private String resolveBasePath() {
-        if(jjtGetNumChildren() == 1) {
-            var node = jjtGetChild(0);
-            if(node instanceof ASTPath) {
-                var path = ((ASTPath) node).getPath();
-                return path == null ? "" : path;
-            }
-        }
-
-        return "";
     }
 }

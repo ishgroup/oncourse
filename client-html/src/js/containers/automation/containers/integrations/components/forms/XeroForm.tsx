@@ -8,10 +8,10 @@ import {
   change, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import Button from "../../../../../../common/components/buttons/Button";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
+import Typography from "@mui/material/Typography";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
@@ -96,7 +96,7 @@ class XeroBaseForm extends React.Component<any, any> {
       `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${window.location.href}${values.id ? "" : `/${values.name}`}`,
       "_self"
     );
-  }
+  };
 
   onDisconnect = () => {
     const { dispatch } = this.props;
@@ -104,7 +104,7 @@ class XeroBaseForm extends React.Component<any, any> {
       hideConfig: true
     });
     dispatch(change("XeroForm", "fields.active", "false"));
-  }
+  };
 
   render() {
     const {
@@ -116,52 +116,54 @@ class XeroBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent disableName={Boolean(values?.id)} />
-        </CustomAppBar>
 
-        {values?.fields?.active === "true" ? (
-          <>
-            <Typography variant="caption" component="div">
-              {`You are connected to Xero organisation: ${values?.fields?.companyName}`}
-            </Typography>
-            <Button
-              text="Disconnect from Xero"
-              variant="contained"
-              className="mt-1"
-              onClick={this.onDisconnect}
-            />
-          </>
-        ) : (
-          <>
-            {
-              !hideConfig && (
-                <FormField
-                  type="stub"
-                  name="verificationCode"
-                  validate={validateSingleMandatoryField}
-                />
-              )
-            }
-
-            <Typography variant="caption" component="div">
-              {hideConfig
-                ? 'Xero access has been set up. Press "Save" to complete configuration process.'
-                : 'Press to proceed with authorising onCourse to access your Xero account.'}
-            </Typography>
-
-            {!hideConfig && (
+        <AppBarContent disableName={Boolean(values?.id)}>
+          {values?.fields?.active === "true" ? (
+            <>
+              <Typography variant="caption" component="div">
+                {`You are connected to Xero organisation: ${values?.fields?.companyName}`}
+              </Typography>
               <Button
-                text="Connect to Xero"
                 variant="contained"
                 className="mt-1"
-                disabled={!values.name}
-                loading={loading}
-                onClick={this.showTokenField}
-              />
-            )}
-          </>
-      )}
+                onClick={this.onDisconnect}
+              >
+                Disconnect from Xero
+              </Button>
+            </>
+          ) : (
+            <>
+              {
+                !hideConfig && (
+                  <FormField
+                    type="stub"
+                    name="verificationCode"
+                    validate={validateSingleMandatoryField}
+                    className="mb-2"
+                  />
+                )
+              }
+
+              <Typography variant="caption" component="div">
+                {hideConfig
+                  ? 'Xero access has been set up. Press "Save" to complete configuration process.'
+                  : 'Press to proceed with authorising onCourse to access your Xero account.'}
+              </Typography>
+
+              {!hideConfig && (
+                <LoadingButton
+                  variant="contained"
+                  className="mt-1"
+                  disabled={!values.name}
+                  loading={loading}
+                  onClick={this.showTokenField}
+                >
+                  Connect to Xero
+                </LoadingButton>
+              )}
+            </>
+          )}
+        </AppBarContent>
       </form>
     );
   }

@@ -5,17 +5,17 @@
 
 import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
-import Button from "@material-ui/core/Button";
-import { FormControlLabel } from "@material-ui/core";
+import Button from "@mui/material/Button";
+import { FormControlLabel } from "@mui/material";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import Card from "@material-ui/core/Card";
+import Card from "@mui/material/Card";
 import { Dispatch } from "redux";
 import { format } from "date-fns";
 import { normalizeNumberToPositive } from "../../../utils/numbers/numbersNormalizing";
-import FormField from "../form-fields/FormField";
-import { StyledCheckbox } from "../form-fields/CheckboxField";
+import FormField from "../formFields/FormField";
+import { StyledCheckbox } from "../formFields/CheckboxField";
 import { repeatEndListItems, repeatListItems } from "../../../../containers/preferences/containers/holidays/ListItems";
 import AvailabilityNextHint from "./AvailabilityNextHint";
 import { validateMinMaxDate } from "../../../utils/validation";
@@ -99,9 +99,9 @@ const AvailabilityItem: React.FC<Props> = ({
 
   return (
     <Card id={`holidays-item-${index}`} className={threeColumn ? classes.threeColumnCard : "card"}>
-      <Grid container spacing={2}>
+      <Grid container>
         <Grid item xs={availabilityLayout[1].xs}>
-          <Grid container>
+          <Grid container rowSpacing={2} columnSpacing={3}>
             <Grid
               item
               xs={availabilityLayout[2].xs}
@@ -109,7 +109,7 @@ const AvailabilityItem: React.FC<Props> = ({
                 "d-flex-start justify-content-space-between": threeColumn
               })}
             >
-              <FormField type="text" name={`${item}.description`} label="Description" fullWidth />
+              <FormField type="text" name={`${item}.description`} label="Description" />
               {threeColumn && (
                 <div className="d-flex errorColor">
                   <div className="flex-fill" />
@@ -135,7 +135,6 @@ const AvailabilityItem: React.FC<Props> = ({
                 label="Start"
                 maxDate={field.endDate}
                 validate={validateMaxDate}
-                className="pr-2"
                 required
               />
             </Grid>
@@ -148,7 +147,6 @@ const AvailabilityItem: React.FC<Props> = ({
                 label="End"
                 minDate={field.startDate}
                 validate={validateMinDate}
-                className="pr-2"
                 required
               />
             </Grid>

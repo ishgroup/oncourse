@@ -4,17 +4,16 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Typography from "@material-ui/core/Typography";
-import Delete from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
+import Typography from "@mui/material/Typography";
+import Delete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import { Binding } from "@api/model";
 import {
  arrayPush, arrayRemove, Field, FieldArray
 } from "redux-form";
 import { Dispatch } from "redux";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
+import { makeStyles } from "@mui/styles";
 import { CommonListItem } from "../../../model/common/sidebar";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
@@ -23,6 +22,8 @@ import DataTypesMenu from "./DataTypesMenu";
 import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { renderAutomationItems } from "../utils";
+import { AppTheme } from "../../../model/common/Theme";
+import AddButton from "../../../common/components/icons/AddButton";
 
 export type BindingsItemType = "component" | "label";
 
@@ -35,7 +36,8 @@ interface BindingsItemProps {
   emailTemplateItems?: SelectItemDefault[];
 }
 
-const useStyles = makeStyles(theme => ({
+// @ts-ignore
+const useStyles = makeStyles((theme: AppTheme) => ({
   labelTypeWrapper: {
     maxHeight: "24px"
   },
@@ -47,7 +49,8 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(-2.25)
   },
   textDelete: {
-    marginLeft: `-${theme.spacing(1) - 1}px`
+    // @ts-ignore
+    marginLeft: `-${theme.spacing(1) - 1}`,
   },
   dateDelete: {
     marginBottom: theme.spacing(1.25)
@@ -57,7 +60,7 @@ const useStyles = makeStyles(theme => ({
 const BindingsItem = React.memo<BindingsItemProps>(({
     item, index, onDelete, type, field, emailTemplateItems
   }) => {
-  const classes = useStyles({});
+  const classes = useStyles();
 
   const buttonClass = useMemo(() => {
     switch (item.type) {
@@ -233,15 +236,13 @@ const Bindings = React.memo<BindingsProps>( props => {
       <div className="centeredFlex pb-1">
         <div className="heading">{label}</div>
         {!disabled && (
-          <IconButton className="p-0 ml-1" onClick={handleClick}>
-            <AddCircle className="addButtonColor" width={20} />
-          </IconButton>
+          <AddButton className="p-0 ml-1" onClick={handleClick} />
         )}
       </div>
 
       {defaultVariables && defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" />)}
 
-      <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange/>
+      <FieldArray name={name} component={itemsRenderer} rerenderOnEveryChange />
     </div>
   );
 });

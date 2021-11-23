@@ -1,0 +1,5 @@
+keyCode: ish.onCourse.quote.xml
+entityClass: Quote
+body: ish.onCourse.quote.xml.groovy
+name: Quote XML export
+outputType: xml

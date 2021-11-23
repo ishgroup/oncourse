@@ -4,20 +4,20 @@
  */
 
 import { CustomFieldType } from "@api/model";
-import MuiButton from "@material-ui/core/Button/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import MuiButton from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
   getFormValues, initialize, InjectedFormProps, reduxForm
 } from "redux-form";
-import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import Button from "@mui/material/Button";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { NoArgFunction } from "../../../../../model/common/CommonFunctions";
@@ -94,9 +94,9 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
           </Grid>
         </DialogContent>
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
           <Button color="primary" type="submit" disabled={invalid}>
             Delete
           </Button>

@@ -1,8 +1,8 @@
 import React from "react";
 import clsx from "clsx";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import Checkbox from "@material-ui/core/Checkbox";
-import MenuItem from "@material-ui/core/MenuItem";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import Checkbox from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
 import { MenuTag } from "../../../../model/tags";
 
 interface Props {
@@ -32,10 +32,10 @@ class AddTagMenuItem extends React.PureComponent<Props, any> {
 
     return (
       <MenuItem
-        button
         classes={{ root: classes.listItem }}
         onClick={hasChildren ? this.openSubmenu : this.toggleChecked}
       >
+        <div className={clsx(classes.tagColorDotSmall, "mr-1")} style={{ background: "#" + tag.tagBody.color }} />
         <span className="mr-2 flex-fill">{tag.tagBody.name}</span>
         {hasChildren ? (
           <KeyboardArrowRight className={clsx("d-flex textSecondaryColor", classes.proceedIcon)} />

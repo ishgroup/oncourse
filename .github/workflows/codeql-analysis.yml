@@ -23,7 +23,7 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
 
       - name: Cache
@@ -40,6 +40,9 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
+          paths-ignore:
+            - **/build/generated-resources/**
+            - **/build/generated-sources/**
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v1

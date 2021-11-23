@@ -1,7 +1,7 @@
 import * as React from "react";
-import { createStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { createStyles } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import withStyles from "@mui/styles/withStyles";
 import PayslipPaylineItem from "./PayslipPaylineItem";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
@@ -95,7 +95,7 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
     });
 
     return (
-      <Grid container>
+      <Grid container columnSpacing={3}>
         <Grid item xs={12} className="pt-3">
           {Object.keys(classGroups).map((g, i) => (
             <React.Fragment key={g + i}>

@@ -4,10 +4,9 @@
  */
 
 import * as React from "react";
-import { reduxForm, initialize } from "redux-form";
+import { initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
@@ -34,13 +33,11 @@ class CloudAssessBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        <FormField type="text" name="fields.username" label="Username" fullWidth />
-        <FormField type="text" name="fields.apiKey" label="API key" fullWidth />
-        <FormField type="text" name="fields.orgId" label="Organisation ID" fullWidth />
+        <AppBarContent>
+          <FormField type="text" name="fields.username" label="Username" className="mb-2" fullWidth />
+          <FormField type="text" name="fields.apiKey" label="API key" className="mb-2" fullWidth />
+          <FormField type="text" name="fields.orgId" label="Organisation ID" className="mb-2" fullWidth />
+        </AppBarContent>
       </form>
     );
   }

@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
- getFormInitialValues, getFormValues, initialize, reduxForm
+  getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { withRouter } from "react-router";
 import { ScheduleType, Script } from "@api/model";
@@ -21,7 +21,6 @@ import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { setNextLocation, showConfirm } from "../../../../common/actions";
 
-
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 
 const Initial: Script = { enabled: false, content: "", keyCode: null };
@@ -35,6 +34,8 @@ const ScriptsBase = React.memo<any>(props => {
     emailTemplates,
     pdfReports,
     pdfBackgrounds,
+    timeZone,
+    syncErrors,
     match: {
       params: { id }
     },
@@ -73,6 +74,8 @@ const ScriptsBase = React.memo<any>(props => {
       pdfReports={pdfReports}
       pdfBackgrounds={pdfBackgrounds}
       history={history}
+      timeZone={timeZone}
+      syncErrors={syncErrors}
       {...rest}
     />
   );
@@ -83,9 +86,11 @@ const mapStateToProps = (state: State) => ({
   formsState: state.form,
   values: getFormValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   initialValues: getFormInitialValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
+  syncErrors: getFormSyncErrors(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
-  nextLocation: state.nextLocation
+  nextLocation: state.nextLocation,
+  timeZone: state.automation.timeZone,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

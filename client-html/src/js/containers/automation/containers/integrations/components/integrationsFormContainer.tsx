@@ -5,19 +5,19 @@
 
 import * as React from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import {
+  getFormSyncErrors,
   initialize, isDirty, isInvalid, SubmissionError
 } from "redux-form";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import createStyles from "@material-ui/core/styles/createStyles";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import createStyles from "@mui/styles/createStyles";
 import { Integration, IntegrationProp } from "@api/model";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import IntegrationDescription from "./IntegrationDescription";
 import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
 import * as IntegrationTypes from "../../../../../model/automation/integrations/IntegrationTypes";
@@ -25,34 +25,30 @@ import * as IntegrationForms from "./forms/index";
 import IntegrationImages from "../IntegrationImages";
 import { State } from "../../../../../reducers/state";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import {
-  updateIntegration,
-  createIntegration,
-  deleteIntegrationItem
-} from "../../../actions";
+import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
 import { setNextLocation, showConfirm } from "../../../../../common/actions";
 import { getByType } from "../utils";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const styles = theme => createStyles({
-    root: {
-      padding: theme.spacing(3),
-      height: `calc(100% - ${theme.spacing(8)}px)`,
-      marginTop: theme.spacing(8)
-    },
-    image: {
-      "align-self": "flex-end"
-    },
-    label: {
-      margin: theme.spacing(2, 1, 0, 1)
-    }
-  });
+  root: {
+    height: `calc(100% - ${theme.spacing(8)})`,
+    marginTop: theme.spacing(8)
+  },
+  image: {
+    "align-self": "flex-end"
+  },
+  label: {
+    margin: theme.spacing(2, 1, 0, 1)
+  }
+});
 
-const getAuditsUrl = (id: string) => `audit?search=~"Integration" and entityId == ${id}`;
+const getAuditsUrl = (id: number) => `audit?search=~"Integration" and entityId == ${id}`;
 
 interface Props {
+  syncErrors: any;
   integrations: IntegrationSchema[];
   onUpdate: (id: string, item: Integration) => void;
   onCreate: (item: Integration) => void;
@@ -238,9 +234,9 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
       });
   };
 
-  renderAppBar = ({ disableName }) => {
+  renderAppBar = ({ disableName, children }) => {
     const {
-      classes, match, dirty, invalid
+      match, dirty, invalid, syncErrors
     } = this.props;
     const item = this.state.integrationItem;
     const isNew = match.params.action === "new";
@@ -248,54 +244,45 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     const { isPending } = this.state;
 
     return (
-      <Grid
-        container
-        classes={{
-          container: classes.fitSmallWidth
-        }}
+      <AppBarContainer
+        values={item}
+        manualUrl={getManualLink("externalintegrations", item.type)}
+        getAuditsUrl={getAuditsUrl}
+        disabled={!dirty || isPending}
+        invalid={invalid}
+        title={isNew && (!item.name || item.name.trim().length === 0) ? "New" : item.name.trim()}
+        disableInteraction={disableName}
+        hideHelpMenu={!isNew && item}
+        opened={isNew || Object.keys(syncErrors).includes("name")}
+        disabledScrolling
+        fields={(
+          <Grid item xs={12}>
+            <FormField
+              name="name"
+              label="Name"
+              validate={this.validateNameField}
+              disabled={disableName}
+              fullWidth
+            />
+          </Grid>
+        )}
+        actions={!isNew && (
+          <AppBarActions
+            actions={[
+              {
+                action: this.handleDelete,
+                icon: <DeleteForever />,
+                tooltip: "Delete Integration",
+                confirmButtonText: "DELETE"
+              }
+            ]}
+          />
+        )}
       >
-        <Grid item xs={6} className="centeredFlex">
-          <FormField
-            type="headerText"
-            name="name"
-            label="Name"
-            validate={this.validateNameField}
-            disabled={disableName}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6} className="centeredFlex">
-          <div className="flex-fill" />
-          {!isNew && (
-            <AppBarActions
-              actions={[
-                {
-                  action: this.handleDelete,
-                  icon: <DeleteForever />,
-                  tooltip: "Delete Integration",
-                  confirmButtonText: "DELETE"
-                }
-              ]}
-            />
-          )}
-
-          {!isNew && item && (
-            <AppBarHelpMenu
-              created={item.created ? new Date(item.created) : null}
-              modified={item.modified ? new Date(item.modified) : null}
-              auditsUrl={getAuditsUrl(item.id)}
-              manualUrl={getManualLink("externalintegrations", item.type)}
-            />
-          )}
-
-          <FormSubmitButton
-            disabled={!dirty || isPending}
-            invalid={invalid}
-          />
-        </Grid>
-      </Grid>
+        {children}
+      </AppBarContainer>
     );
-  }
+  };
 
   render() {
     const {
@@ -309,7 +296,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
 
     return (
       <Grid container className={classes.root}>
-        <Grid item xs={12} sm={6} lg={5} className={classes.formPadding}>
+        <Grid item xs={12} sm={6} lg={5}>
           {item && TypeForm && (
             <TypeForm
               onSubmit={this.submitForm}
@@ -364,6 +351,7 @@ const mapStateToProps = (state: State) => {
     formName,
     dirty: isDirty(formName)(state),
     invalid: isInvalid(formName)(state),
+    syncErrors: getFormSyncErrors(formName)(state),
     fetch: state.fetch,
     nextLocation: state.nextLocation
   };

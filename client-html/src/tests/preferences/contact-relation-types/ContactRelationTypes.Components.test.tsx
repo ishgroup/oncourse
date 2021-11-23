@@ -19,9 +19,8 @@ describe("Virtual rendered ContactRelationTypes", () => {
     render: (wrapper, initialValues) => {
       initialValues.forEach((type, key) => {
         const warpperId = `#contact-relation-type-${key}`;
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].relationName"]`).text()).toContain(type.relationName);
-        expect(wrapper.find(`${warpperId} div[id="types[${key}].reverseRelationName"]`).text()).toContain(type.reverseRelationName);
-        expect(wrapper.find(`${warpperId} input[type="checkbox"]`).at(0).props().checked).toEqual(type.portalAccess);
+        expect(wrapper.find(`${warpperId} div[id="types[${key}].relationName"] input`).val()).toContain(type.relationName);
+        expect(wrapper.find(`${warpperId} div[id="types[${key}].reverseRelationName"] input`).val()).toContain(type.reverseRelationName);
       });
     }
   });

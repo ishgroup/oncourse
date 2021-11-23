@@ -9,19 +9,18 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import {
-  getFormSyncErrors, initialize, isDirty, isInvalid, submit
+ getFormSyncErrors, initialize, isDirty, isInvalid, submit 
 } from "redux-form";
-import clsx from "clsx";
-import { createStyles, ThemeProvider, withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import { ThemeProvider } from "@mui/material/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel
+ Column, Currency, ExportTemplate, LayoutType, Report, SearchQuery, TableModel 
 } from "@api/model";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
-import Button from "@material-ui/core/Button";
+import { createTheme } from '@mui/material';
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import Button from "@mui/material/Button";
 import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
 import { onSubmitFail } from "../../utils/highlightFormClassErrors";
 import SideBar from "./components/side-bar/SideBar";
@@ -50,11 +49,12 @@ import {
   setListSelection,
   setListUserAQLSearch,
   setSearch,
-  updateTableModel
+  setShowColoredDots,
+  updateTableModel,
 } from "./actions";
 import NestedEditView from "./components/full-screen-edit-view/NestedEditView";
 import {
-  closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm
+ closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm 
 } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
 import { MenuTag } from "../../../model/tags";
@@ -79,7 +79,7 @@ import { ENTITY_AQL_STORAGE_NAME, LISTVIEW_MAIN_CONTENT_WIDTH } from "../../../c
 import { ConfirmProps, ShowConfirmCaller } from "../../../model/common/Confirm";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
-import ReactTableList, { ListProps } from "./components/list/ReactTableList";
+import ReactTableList, { TableListProps } from "./components/list/ReactTableList";
 import { getActiveTags, getFiltersNameString, getTagsUpdatedByIds } from "./utils/listFiltersUtils";
 import { setSwipeableDrawerDirtyForm } from "../layout/swipeable-sidebar/actions";
 import { LSGetItem } from "../../utils/storage";
@@ -88,28 +88,17 @@ export const ListSideBarDefaultWidth = 200;
 export const ListMainContentDefaultWidth = 774;
 
 const styles = () => createStyles({
-  gridWithEditColumn: {
-    minHeight: 0
+  root: {
+    position: "relative",
+    display: "flex",
+    flexDirection: 'row',
+    width: "100vw",
+    height: "100vh",
+    overflow: "hidden"
   },
-  editViewColumn: {
-    borderLeft: "1px solid rgba(0,0,0,0.1)",
-    maxHeight: "100%"
-  },
-  threeColumnList: {
-    width: "200px",
-    position: "unset"
-  },
-  resizableItemList: {
-    "& > div > div > div > div": {
-      width: "100% !important",
-      "& > div": {
-        width: "100% !important"
-      }
-    }
-  }
 });
 
-const sideBarTheme = theme => createMuiTheme({
+const sideBarTheme = theme => createTheme({
   ...theme,
   overrides: {
     MuiFormControlLabel: {
@@ -121,7 +110,7 @@ const sideBarTheme = theme => createMuiTheme({
 });
 
 interface Props extends Partial<ListState> {
-  listProps: ListProps;
+  listProps: TableListProps;
   getEditRecord: (id: string) => void;
   rootEntity: EntityName;
   EditViewContent: any;
@@ -145,6 +134,7 @@ interface Props extends Partial<ListState> {
   nestedEditFields?: { [key: string]: (props: any) => React.ReactNode };
   fetch?: Fetch;
   menuTags?: MenuTag[];
+  filterEntity?: EntityName;
   filterGroups?: FilterGroup[];
   filterGroupsInitial?: FilterGroup[];
   onSearch?: StringArgFunction;
@@ -174,10 +164,10 @@ interface Props extends Partial<ListState> {
     shouldAsyncValidate?: AnyArgFunction<boolean>;
     asyncBlurFields?: string[];
     asyncChangeFields?: string[];
-    hideFullScreenAppBar?: EditViewContainerProps["hideFullScreenAppBar"];
     disabledSubmitCondition?: boolean;
     enableReinitialize?: boolean;
     keepDirtyOnReinitialize?: boolean;
+    hideTitle?: EditViewContainerProps["hideTitle"];
   };
   CogwheelAdornment?: React.ReactNode;
   location?: any;
@@ -194,6 +184,7 @@ interface Props extends Partial<ListState> {
   userAQLSearch?: string;
   listSearch?: string;
   creatingNew?: boolean;
+  showColoredDots?: boolean;
   editRecordFetching?: boolean;
   recordsLeft?: number;
   searchQuery?: SearchQuery;
@@ -208,6 +199,7 @@ interface Props extends Partial<ListState> {
   setListviewMainContentWidth?: (value: string) => void;
   submitForm?: any;
   closeConfirm?: () => void;
+  setShowColoredDots?: (value: boolean) => void;
   deleteWithoutConfirmation?: boolean;
   getCustomBulkEditFields?: any;
 }
@@ -320,7 +312,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       menuTagsLoaded,
       filterGroupsLoaded,
       noListTags,
-      preferences
+      preferences,
     } = this.props;
 
     const { threeColumn } = this.state;
@@ -751,7 +743,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
   };
 
   onChangeModel = (model: TableModel, listUpdate?: boolean) => {
-    this.props.updateTableModel(model, listUpdate);
+    if (this.props.records?.columns.length || model?.columns?.length) this.props.updateTableModel(model, listUpdate);
   };
 
   checkDirty = (handler, args, reset?: boolean) => {
@@ -880,7 +872,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     resetEditView();
 
     setTimeout(() => {
-      updateTableModel({ layout });
+      if (this.props.records?.columns.length) updateTableModel({ layout });
     }, 500);
 
     this.setState({
@@ -918,7 +910,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     });
 
     setTimeout(() => {
-      this.props.updateTableModel({ filterColumnWidth: sidebarWidth });
+      if (this.props.records?.columns.length) this.props.updateTableModel({ filterColumnWidth: sidebarWidth });
     }, 500);
   };
 
@@ -958,9 +950,9 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       {
         onConfirm: () => this.checkDirty(this.onDeleteFilter, args, true),
         confirmMessage,
-        cancelButtonText: 'DELETE'
+        confirmButtonText: 'DELETE'
       }
-);
+    );
   };
 
   onChangeFiltersWithDirtyCheck = (...args) => this.checkDirty(this.onChangeFilters, args, true);
@@ -985,18 +977,22 @@ class ListView extends React.PureComponent<Props, ComponentState> {
 
   renderTableList = () => {
     const {
-      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns
+      listProps, onLoadMore, selection, records, recordsLeft, currency, updateColumns, setShowColoredDots, showColoredDots
     } = this.props;
-    const { threeColumn } = this.state;
+    const { threeColumn, sidebarWidth, mainContentWidth } = this.state;
     return (
       <ReactTableList
         {...listProps}
+        mainContentWidth={mainContentWidth}
+        sidebarWidth={sidebarWidth}
         onLoadMore={onLoadMore}
         selection={selection}
         records={records}
         recordsLeft={recordsLeft}
         threeColumn={threeColumn}
         updateColumns={updateColumns}
+        setShowColoredDots={setShowColoredDots}
+        showColoredDots={showColoredDots}
         shortCurrencySymbol={currency.shortCurrencySymbol}
         onRowDoubleClick={this.onRowDoubleClick}
         onSelectionChange={this.onSelection}
@@ -1037,6 +1033,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
       fullScreenEditView,
       searchQuery,
       getCustomBulkEditFields,
+      filterEntity
     } = this.props;
 
     const {
@@ -1046,116 +1043,7 @@ class ListView extends React.PureComponent<Props, ComponentState> {
     const hasFilters = Boolean(filterGroups.length || menuTags.length || savingFilter);
 
     return (
-      <Grid container className="root" direction="row" wrap="nowrap">
-        {hasFilters && (
-          <ResizableWrapper
-            ignoreScreenWidth
-            onResizeStop={this.handleResizeCallBack}
-            sidebarWidth={sidebarWidth}
-            minWidth="10%"
-            maxWidth="65%"
-          >
-            <ThemeProvider theme={sideBarTheme}>
-              <SideBar
-                fetching={fetching}
-                savingFilter={savingFilter}
-                onChangeFilters={this.onChangeFiltersWithDirtyCheck}
-                filterGroups={filterGroups}
-                rootEntity={rootEntity}
-                deleteFilter={this.onDeleteFilterWithDirtyCheck}
-              />
-            </ThemeProvider>
-          </ResizableWrapper>
-        )}
-
-        <Grid item className="flex-fill overflow-hidden flex-column user-select-none">
-          <ShareContainer
-            showExportDrawer={showExportDrawer}
-            toggleExportDrawer={this.toggleExportDrawer}
-            count={records.filteredCount}
-            selection={selection}
-            rootEntity={rootEntity}
-            sidebarWidth={hasFilters ? sidebarWidth : 0}
-            AlertComponent={ShareContainerAlertComponent}
-          />
-          <BulkEditContainer
-            showBulkEditDrawer={showBulkEditDrawer}
-            toggleBulkEditDrawer={this.toggleBulkEditDrawer}
-            count={records.filteredCount}
-            selection={selection}
-            rootEntity={rootEntity}
-            sidebarWidth={hasFilters ? sidebarWidth : 0}
-            manualLink={editViewProps.manualLink}
-            getCustomBulkEditFields={getCustomBulkEditFields}
-          />
-          <Grid container className={clsx("flex-fill relative overflow-hidden", classes.gridWithEditColumn)}>
-            <LoadingIndicator transparentBackdrop allowInteractions />
-
-            {threeColumn ? (
-              <ResizableWrapper
-                onResizeStop={this.handleResizeMainContentCallBack}
-                sidebarWidth={mainContentWidth}
-                ignoreScreenWidth
-                minWidth="30%"
-                maxWidth="65%"
-                classes={{ sideBarWrapper: classes.resizableItemList }}
-              >
-                {this.renderTableList()}
-              </ResizableWrapper>
-            ) : this.renderTableList() }
-
-            {threeColumn && !fullScreenEditView && (
-              <Grid item xs className={clsx("d-flex overflow-y-auto", classes.editViewColumn)}>
-                <EditView
-                  {...editViewProps}
-                  form={LIST_EDIT_VIEW_FORM_NAME}
-                  rootEntity={rootEntity}
-                  EditViewContent={EditViewContent}
-                  onSubmitFail={onSubmitFail}
-                  onSubmit={this.onSave}
-                  hasSelected={Boolean(selection.length)}
-                  creatingNew={creatingNew}
-                  updateDeleteCondition={this.updateDeleteCondition}
-                  showConfirm={this.showConfirm}
-                  openNestedEditView={this.openNestedEditViewWithDirtyCheck}
-                  toogleFullScreenEditView={this.toggleFullWidthView}
-                />
-              </Grid>
-            )}
-          </Grid>
-          <BottomAppBar
-            createButtonDisabled={createButtonDisabled}
-            searchMenuItemsRenderer={searchMenuItemsRenderer}
-            querySearch={querySearch}
-            threeColumn={threeColumn}
-            deleteEnabled={deleteEnabled}
-            showExportDrawer={showExportDrawer}
-            toggleExportDrawer={this.toggleExportDrawer}
-            showBulkEditDrawer={showBulkEditDrawer}
-            toggleBulkEditDrawer={this.toggleBulkEditDrawer}
-            filteredCount={records.filteredCount}
-            rootEntity={rootEntity}
-            aqlEntity={aqlEntity}
-            fetch={fetch}
-            selection={selection}
-            hasShareTypes={pdfReports.length || exportTemplates.length}
-            onDelete={this.onDelete}
-            onQuerySearch={this.querySearchChangeWithDirtyCheck}
-            changeQueryView={this.changeQueryView}
-            switchLayout={this.switchLayoutWithDirtyCheck}
-            onCreate={this.onCreateRecordWithDirtyCheck}
-            toggleFullWidthView={this.toggleFullWidthView}
-            findRelated={findRelated}
-            CogwheelAdornment={CogwheelAdornment}
-            showConfirm={this.showConfirm}
-            openNestedEditView={this.openNestedEditViewWithDirtyCheck}
-            CustomFindRelatedMenu={CustomFindRelatedMenu}
-            records={records}
-            searchComponentNode={this.searchComponentNode}
-            searchQuery={searchQuery}
-          />
-        </Grid>
-
+      <div className={classes.root}>
         <FullScreenEditView
           {...editViewProps}
           rootEntity={rootEntity}
@@ -1187,7 +1075,119 @@ class ListView extends React.PureComponent<Props, ComponentState> {
           updateSelection={updateSelection}
           openNestedEditView={this.openNestedEditViewWithDirtyCheck}
         />
-      </Grid>
+
+        <ShareContainer
+          showExportDrawer={showExportDrawer}
+          toggleExportDrawer={this.toggleExportDrawer}
+          count={records.filteredCount}
+          selection={selection}
+          rootEntity={rootEntity}
+          sidebarWidth={hasFilters ? sidebarWidth : 0}
+          AlertComponent={ShareContainerAlertComponent}
+        />
+
+        <BulkEditContainer
+          showBulkEditDrawer={showBulkEditDrawer}
+          toggleBulkEditDrawer={this.toggleBulkEditDrawer}
+          count={records.filteredCount}
+          selection={selection}
+          rootEntity={rootEntity}
+          sidebarWidth={hasFilters ? sidebarWidth : 0}
+          manualLink={editViewProps.manualLink}
+          getCustomBulkEditFields={getCustomBulkEditFields}
+        />
+
+
+        {hasFilters && (
+          <ResizableWrapper
+            ignoreScreenWidth
+            onResizeStop={this.handleResizeCallBack}
+            sidebarWidth={sidebarWidth}
+            minWidth="10%"
+            maxWidth="65%"
+          >
+            <ThemeProvider theme={sideBarTheme}>
+              <SideBar
+                fetching={fetching}
+                savingFilter={savingFilter}
+                onChangeFilters={this.onChangeFiltersWithDirtyCheck}
+                filterGroups={filterGroups}
+                rootEntity={rootEntity}
+                filterEntity={filterEntity}
+                deleteFilter={this.onDeleteFilterWithDirtyCheck}
+              />
+            </ThemeProvider>
+          </ResizableWrapper>
+        )}
+
+        <div className="flex-fill d-flex flex-column overflow-hidden user-select-none">
+          <div className="flex-fill d-flex relative">
+            <LoadingIndicator transparentBackdrop allowInteractions />
+            {threeColumn ? (
+              <ResizableWrapper
+                onResizeStop={this.handleResizeMainContentCallBack}
+                sidebarWidth={mainContentWidth}
+                ignoreScreenWidth
+                minWidth="30%"
+                maxWidth="65%"
+                classes={{ sideBarWrapper: classes.resizableItemList }}
+              >
+                {this.renderTableList()}
+              </ResizableWrapper>
+            ) : this.renderTableList() }
+
+            {threeColumn && !fullScreenEditView && (
+              <div className="d-flex flex-fill overflow-hidden">
+                <EditView
+                  {...editViewProps}
+                  form={LIST_EDIT_VIEW_FORM_NAME}
+                  rootEntity={rootEntity}
+                  EditViewContent={EditViewContent}
+                  onSubmitFail={onSubmitFail}
+                  onSubmit={this.onSave}
+                  hasSelected={Boolean(selection.length)}
+                  creatingNew={creatingNew}
+                  updateDeleteCondition={this.updateDeleteCondition}
+                  showConfirm={this.showConfirm}
+                  openNestedEditView={this.openNestedEditViewWithDirtyCheck}
+                  toogleFullScreenEditView={this.toggleFullWidthView}
+                />
+              </div>
+            )}
+          </div>
+          <BottomAppBar
+            createButtonDisabled={createButtonDisabled}
+            searchMenuItemsRenderer={searchMenuItemsRenderer}
+            querySearch={querySearch}
+            threeColumn={threeColumn}
+            deleteEnabled={deleteEnabled}
+            showExportDrawer={showExportDrawer}
+            toggleExportDrawer={this.toggleExportDrawer}
+            showBulkEditDrawer={showBulkEditDrawer}
+            toggleBulkEditDrawer={this.toggleBulkEditDrawer}
+            filteredCount={records.filteredCount}
+            rootEntity={rootEntity}
+            aqlEntity={aqlEntity}
+            fetch={fetch}
+            selection={selection}
+            hasShareTypes={pdfReports.length || exportTemplates.length}
+            onDelete={this.onDelete}
+            onQuerySearch={this.querySearchChangeWithDirtyCheck}
+            changeQueryView={this.changeQueryView}
+            switchLayout={this.switchLayoutWithDirtyCheck}
+            onCreate={this.onCreateRecordWithDirtyCheck}
+            toggleFullWidthView={this.toggleFullWidthView}
+            findRelated={findRelated}
+            CogwheelAdornment={CogwheelAdornment}
+            showConfirm={this.showConfirm}
+            openNestedEditView={this.openNestedEditViewWithDirtyCheck}
+            CustomFindRelatedMenu={CustomFindRelatedMenu}
+            records={records}
+            searchComponentNode={this.searchComponentNode}
+            searchQuery={searchQuery}
+          />
+        </div>
+      </div>
     );
   }
 }
@@ -1199,10 +1199,11 @@ const mapStateToProps = (state: State) => ({
   syncErrors: getFormSyncErrors(LIST_EDIT_VIEW_FORM_NAME)(state),
   ...state.list,
   ...state.share,
-  preferences: state.userPreferences
+  preferences: state.userPreferences,
+  showColoredDots: state.list.showColoredDots,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
   resetEditView: () => {
@@ -1230,7 +1231,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => ({
   getListViewPreferences: () => dispatch(getUserPreferences([LISTVIEW_MAIN_CONTENT_WIDTH])),
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
-  closeConfirm: () => dispatch(closeConfirm())
+  closeConfirm: () => dispatch(closeConfirm()),
+  setShowColoredDots: (value: boolean) => dispatch(setShowColoredDots(value)),
 });
 
-export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

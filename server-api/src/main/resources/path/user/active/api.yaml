@@ -1,0 +1,16 @@
+get:
+  operationId: getActive
+  description: Get list with active user (id, firstName, lastName)
+  tags:
+    - User
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/User.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

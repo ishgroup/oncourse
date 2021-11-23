@@ -7,18 +7,21 @@
  */
 
 import React, { useCallback } from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import { Theme } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { IconButton } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { change, Field } from "redux-form";
 import { SurveyItem } from "@api/model";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import Launch from "@mui/icons-material/Launch";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../common/utils/links";
 import Score from "./Score";
-import Uneditable from "../../../../common/components/form/Uneditable";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { openContactLink } from "../../contacts/utils";
+import clsx from "clsx";
 
 interface Props {
   classes?: any;
@@ -27,13 +30,6 @@ interface Props {
   dispatch?: any;
   form?: string;
 }
-
-const styles = createStyles(({ spacing }: Theme) => ({
-  root: {
-    padding: spacing(3, 3, 6, 3),
-    height: "100%"
-  }
-}));
 
 const visibilityItems = [
   { label: "Waiting review", value: "Waiting review" },
@@ -44,7 +40,7 @@ const visibilityItems = [
 
 const SurveyEditView = (props: Props) => {
   const {
-    classes, twoColumn, values, dispatch, form
+    twoColumn, values, dispatch, form
   } = props;
   const siteId = values && values.siteId;
   const roomId = values && values.roomId;
@@ -63,29 +59,36 @@ const SurveyEditView = (props: Props) => {
   }, [classId]);
 
   return values ? (
-    <Grid container className={classes.root} alignContent="flex-start">
+    <Grid container columnSpacing={3} rowSpacing={2} className="saveButtonTableOffset p-3" alignContent="flex-start" alignItems="center">
       <Grid item xs={12}>
-        <Uneditable
-          value={values.studentName}
-          label="Student"
-          url={`/contact/${values.studentContactId}`}
+        <FullScreenStickyHeader
+          disableInteraction
+          twoColumn={twoColumn}
+          title={(
+            <div className="d-inline-flex-center">
+              {values.studentName}
+              <IconButton size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+          )}
         />
       </Grid>
-      <Grid container justify="space-between" className="mw-800 pb-2" spacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
           <Grid item>
             <Field name="netPromoterScore" label="Net Promoter Score" max={10} component={Score} />
           </Grid>
         </Grid>
         <Grid item xs={twoColumn ? 8 : 12}>
-          <Grid container justify="flex-end" spacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
-            <Grid item xs={twoColumn ? "auto" : 12}>
+          <Grid container columnSpacing={3} rowSpacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
+            <Grid item xs={twoColumn ? 8 : 12}>
               <Field name="courseScore" label="Course" component={Score} />
               <Link href="#" onClick={openClass} color="textSecondary">
                 {values.className}
               </Link>
             </Grid>
-            <Grid item xs={twoColumn ? "auto" : 12}>
+            <Grid item xs={twoColumn ? 8 : 12}>
               <Field name="venueScore" label="Venue" component={Score} />
               <Typography variant="body2" component="div">
                 <Link href="#" className="pr-1" onClick={openSite} color="textSecondary">
@@ -96,7 +99,7 @@ const SurveyEditView = (props: Props) => {
                 </Link>
               </Typography>
             </Grid>
-            <Grid item xs={twoColumn ? "auto" : 12}>
+            <Grid item xs={twoColumn ? 8 : 12}>
               <Field name="tutorScore" label="Tutor" component={Score} />
               {Object.keys(values.tutors).map(id => (
                 <Link key={id} href={`/contact/${id}`} target="_blank" color="textSecondary" className="pr-1">
@@ -107,10 +110,10 @@ const SurveyEditView = (props: Props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <FormField type="text" label="Comment" name="comment" disabled />
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField type="multilineText" label="Comment" name="comment" disabled />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="visibility"
@@ -125,27 +128,26 @@ const SurveyEditView = (props: Props) => {
           }}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="multilineText"
           label="Testimonial"
           name="testimonial"
           disabled={values.visibility !== "Public testimonial"}
-          fullWidth
         />
       </Grid>
-      <Grid item xs={twoColumn ? 6 : 12} className={twoColumn ? undefined : "saveButtonTableOffset"}>
-        <CustomFields
-          entityName="Survey"
-          fieldName="customFields"
-          entityValues={values}
-          dispatch={dispatch}
-          form={form}
-          fullWidth
-        />
-      </Grid>
+      <CustomFields
+        entityName="Survey"
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12,
+        }}
+      />
     </Grid>
   ) : null;
 };
 
-export default withStyles(styles)(SurveyEditView);
+export default SurveyEditView;

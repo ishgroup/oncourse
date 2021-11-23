@@ -4,13 +4,13 @@
  */
 
 import * as React from "react";
-import { withStyles } from "@material-ui/core";
+import { withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { SystemPreference } from "@api/model";
 import { SubmissionError, initialize } from "redux-form";
 import { withRouter, RouteComponentProps } from "react-router";
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 import * as college from "../../../model/preferences/College";
 import * as ldap from "../../../model/preferences/Ldap";
 import * as licences from "../../../model/preferences/Licences";

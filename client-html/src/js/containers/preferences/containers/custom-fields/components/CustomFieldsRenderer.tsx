@@ -9,14 +9,14 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { change, Field } from "redux-form";
 import {
  FormControlLabel, Grid, Button, Collapse, Card
-} from "@material-ui/core";
-import DragIndicator from "@material-ui/icons/DragIndicator";
+} from "@mui/material";
+import DragIndicator from "@mui/icons-material/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
-import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/form-fields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
-import EditInPlaceMoneyField from "../../../../../common/components/form/form-fields/EditInPlaceMoneyField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceMoneyField from "../../../../../common/components/form/formFields/EditInPlaceMoneyField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import {
   validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validateRegex
 } from "../../../../../common/utils/validation";
@@ -204,9 +204,9 @@ const renderCustomFields = props => {
                           <DragIndicator className={clsx("dndActionIcon", classes.dragIcon)} />
                         </div>
 
-                        <Grid container spacing={2} className="relative">
+                        <Grid container columnSpacing={3} spacing={2} className="relative">
                           <Grid item xs={12}>
-                            <Grid container>
+                            <Grid container columnSpacing={3} rowSpacing={2}>
                               <Grid item xs={3}>
                                 <FormField
                                   type="text"

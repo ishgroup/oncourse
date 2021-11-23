@@ -84,10 +84,6 @@ public interface Preferences {
 
 	String SERVICES_LDAP_AUTHORISATION = "services.ldap.authorisation";
 
-	String SERVICES_CC_ENABLED = "services.cc";
-
-	String SERVICES_CC_AMEX_ENABLED = "services.cc.amex";
-
 	String SERVICES_INFO_REPLICATION_VERSION = "data.referencedataversion";
 
 	String DEDUPE_LASTRUN = "services.dedupelastrun";
@@ -95,33 +91,6 @@ public interface Preferences {
 	String SERVICES_INFO_REPLICATION_LASTRUN = "services.inforeplicationlastrun";
 
 	String SERVICES_ANGEL_REPLICATION_LASTRUN = "services.angeloreplicationlastrun";
-
-	// **************************************
-	// Licensing
-	// **************************************
-
-	String LICENSE_ACCESS_CONTROL = "license.accesscontrol";
-
-	String LICENSE_SMS = "license.sms";
-
-	String LICENSE_CC_PROCESSING = "license.ccprocessing";
-
-	String LICENSE_PAYROLL = "license.payroll";
-
-	String LICENSE_VOUCHER = "license.voucher";
-
-	String LICENSE_MEMBERSHIP = "license.membership";
-
-	String LICENSE_ATTENDANCE = "license.attendance";
-
-	String LICENSE_SCRIPTING = "license.scripting";
-
-	String LICENSE_FEE_HELP_EXPORT = "license.feeHelpExport";
-
-	String LICENSE_FUNDING_CONTRACT = "license.fundingContract";
-
-	String LICENSE_AUTO_PAY = "license.autopay";
-
 
 	// **************************************
 	// Messaging
@@ -417,7 +386,6 @@ public interface Preferences {
 	// **************************************
 	// Other
 	// **************************************
-	String GRAVATAR = "gravatar.enabled";
 	String USI_SOFTWARE_ID = "usi.softwareid";
 	String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
 	String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";

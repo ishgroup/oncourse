@@ -3,21 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Tag } from "@api/model";
-import { Typography } from "@material-ui/core";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import ListItemText from "@material-ui/core/ListItemText";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField";
-import Edit from "@material-ui/icons/Edit";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import clsx from "clsx";
 import React, {
- useCallback, useEffect, useMemo, useRef, useState
+ useCallback, useEffect, useMemo, useRef, useState 
 } from "react";
+import { Tag } from "@api/model";
+import {
+  FormControl, FormHelperText, Input, InputAdornment, InputLabel, Typography
+} from "@mui/material";
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Autocomplete from "@mui/material/Autocomplete";
+import clsx from "clsx";
 import { WrappedFieldProps } from "redux-form";
+import { Edit } from "@mui/icons-material";
 import { getAllMenuTags } from "../../../../containers/tags/utils";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { MenuTag } from "../../../../model/tags";
@@ -25,13 +24,27 @@ import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
 import { getMenuTags } from "../../list-view/utils/listFiltersUtils";
-import { selectStyles } from "../form-fields/SelectCustomComponents";
+import { selectStyles } from "../formFields/SelectCustomComponents";
 import AddTagMenu from "./AddTagMenu";
 
 const styles = theme =>
   createStyles({
     listContainer: {
       marginLeft: "-2px"
+    },
+    inputWrapper: {
+      "&:hover $inputEndAdornment": {
+        visibility: "visible",
+      }
+    },
+    inputEndAdornment: {
+      visibility: 'hidden',
+      display: "flex",
+      fontSize: "18px",
+      color: theme.palette.primary.main,
+      alignItems: "flex-end",
+      alignSelf: "flex-end",
+      marginBottom: "4px"
     },
     tagBody: {
       color: theme.palette.text.primary,
@@ -56,21 +69,59 @@ const styles = theme =>
       color: "inherit",
       marginRight: theme.spacing(1)
     },
-    noTagsLabel: {},
-    inputRoot: {
-      "& $tagInput": {
-        width: "auto",
-        color: "inherit",
-        maxWidth: theme.spacing(30)
+    hoverIcon: {
+      opacity: 0.5,
+      visibility: "hidden",
+      marginLeft: theme.spacing(1)
+    },
+    editable: {
+      display: "inline-flex",
+      color: theme.palette.text.primaryEditable,
+      minHeight: "32px",
+      padding: "4px 0 4px",
+      marginTop: theme.spacing(2),
+      fontWeight: 400,
+      justifyContent: "space-between",
+      alignItems: "flex-end",
+      "&:hover $hoverIcon": {
+        visibility: "visible"
+      },
+      "&:before": {
+        borderBottom: '1px solid transparent',
+        left: 0,
+        bottom: "4px",
+        content: "' '",
+        position: "absolute",
+        right: 0,
+        transition: theme.transitions.create("border-bottom-color", {
+          duration: theme.transitions.duration.standard,
+          easing: theme.transitions.easing.easeInOut
+        }),
+        pointerEvents: "none"
+      },
+      "&:hover:before": {
+        borderBottom: `1px solid ${theme.palette.primary.main}`
+      },
+    },
+    tagColorDotSmall: {
+      width: theme.spacing(2),
+      minWidth: theme.spacing(2),
+      height: theme.spacing(2),
+      minHeight: theme.spacing(2),
+      background: "red",
+      borderRadius: "100%"
+    },
+    listbox: {
+      whiteSpace: 'break-spaces'
+    },
+    hasPopup: {
+      "&$root $inputWrapper": {
+        padding: 0
+      },
+      "&$root$hasClear $inputWrapper": {
+        padding: 0
       }
     },
-    editInPlaceIcon: {
-      fontSize: "14px",
-      color: theme.palette.divider,
-      verticalAlign: "middle",
-      margin: 0
-    },
-    tagInput: {}
   });
 
 interface Props extends WrappedFieldProps {
@@ -81,16 +132,15 @@ interface Props extends WrappedFieldProps {
   disabled?: boolean;
   className?: string;
   label?: string;
+  placeholder?: string;
 }
 
 const endTagRegex = /#\s*[^\w\d]*$/;
 
-const getInputString = (tags: Tag[]) => (tags ? tags.reduce((acc, tag) => `${acc}#${tag.name} `, "") : "");
-
 const getCurrentInputString = (input, formTags: Tag[]) => {
   let substr = input;
 
-  formTags.forEach(t => {
+  formTags && formTags.forEach(t => {
     substr = substr.replace("#" + t.name, "").trim();
   });
 
@@ -101,15 +151,65 @@ const getCurrentInputString = (input, formTags: Tag[]) => {
   return substr;
 };
 
+const getFullTag = (tagId: number, tags: Tag[]) => {
+  let i = 0;
+  let result;
+
+  while (i < tags.length) {
+    if (tagId === tags[i].id) {
+      return tags[i];
+    }
+
+    if (result) break;
+
+    if (tags[i].childTags.length) {
+      result = getFullTag(tagId, tags[i].childTags);
+      if (result) return result;
+    }
+
+    ++i;
+  }
+};
+
+const getInputString = (tags: Tag[], allTags: Tag[]) => (tags?.length && allTags?.length
+  ? tags.reduce((acc, tag) => (getFullTag(tag.id, allTags) ? `${acc}#${tag.name} ` : acc), "")
+  : "");
+
 const SimpleTagList: React.FC<Props> = props => {
   const {
-   input, tags, classes, meta, label = "Tags", disabled, className, fieldClasses = {}
+    input,
+    tags,
+    classes,
+    placeholder,
+    meta,
+    label = "Tags",
+    disabled,
+    className,
+    fieldClasses = {}
   } = props;
 
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [currentInputString, setCurrentInputString] = useState("");
+
+  const InputValueForRender = useMemo(() => {
+    if (!inputValue || !tags || !tags.length) return "";
+
+    const arrayOfTags = input?.value?.length
+      && input.value.map((tag: Tag) => getFullTag(tag.id, tags)).filter(t => t);
+
+    if (!arrayOfTags?.length) return "";
+
+    return arrayOfTags.map((tag: Tag, index) => (
+      <span key={tag.id} className={clsx("centeredFlex", index !== arrayOfTags.length - 1 ? "pr-1" : "")}>
+        <div key={tag.id} className={clsx(classes.tagColorDotSmall, "mr-0-5")} style={{ background: "#" + tag.color }} />
+        <span className="text-nowrap">
+          {`#${tag.name} `}
+        </span>
+      </span>
+    ));
+  }, [tags, input.value, inputValue]);
 
   useEffect(() => {
     if (meta.invalid && !isEditing) {
@@ -131,7 +231,7 @@ const SimpleTagList: React.FC<Props> = props => {
   );
 
   const synchronizeTags = () => {
-    const inputString = getInputString(input.value);
+    const inputString = getInputString(input.value, tags);
 
     if (inputString.trim() === inputValue.replace(endTagRegex, "").trim()) {
       return;
@@ -156,7 +256,7 @@ const SimpleTagList: React.FC<Props> = props => {
 
     updated.sort((a, b) => current.indexOf(a.name) - current.indexOf(b.name));
     input.onChange(updated);
-    setInputValue(getInputString(updated));
+    setInputValue(getInputString(updated, tags));
   };
 
   const onTagAdd = (tag: MenuTag) => {
@@ -173,7 +273,7 @@ const SimpleTagList: React.FC<Props> = props => {
     input.onChange(updated);
 
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 100);
   };
 
@@ -186,20 +286,20 @@ const SimpleTagList: React.FC<Props> = props => {
 
   const filteredOptions = allMenuTags.filter(filterOptions);
 
-  const getOptionText = (option, label) => (
-    <span>
-      {`${option.path ? option.path + " / " : ""}`}
+  const getOptionText = (option, optionProps, label) => (
+    <div {...optionProps}>
+      {`${option.path ? option.path + " /" : ""}`}
       {' '}
       {label}
-    </span>
+    </div>
   );
 
   const getOptionLabel = op => op.path;
 
-  const renderOption = option => {
-    const label = option.tagBody.name;
+  const renderOption = (optionProps, option) => {
+    const label = option?.tagBody?.name;
     const highlightedLabel = getHighlightedPartLabel(label, currentInputString);
-    return getOptionText(option, highlightedLabel);
+    return getOptionText(option, optionProps, highlightedLabel);
   };
 
   const handleInputChange = e => {
@@ -209,7 +309,7 @@ const SimpleTagList: React.FC<Props> = props => {
   const edit = () => {
     setIsEditing(true);
     setTimeout(() => {
-      inputNode.current.focus();
+      inputNode?.current?.focus();
     }, 50);
   };
 
@@ -246,20 +346,20 @@ const SimpleTagList: React.FC<Props> = props => {
   };
 
   const handleChange = (e, value, action) => {
-    if (action === "select-option") {
+    if (action === "selectOption") {
       onTagAdd(value);
     }
   };
 
   useEffect(() => {
-    let inputString = getInputString(input.value);
+    let inputString = getInputString(input.value, tags);
 
     if (document.activeElement === inputNode.current && !endTagRegex.test(inputString)) {
       inputString += " #";
     }
 
     setInputValue(inputString);
-  }, [input.value]);
+  }, [input.value, tags]);
 
   useEffect(() => {
     setCurrentInputString(getCurrentInputString(inputValue, input.value));
@@ -282,7 +382,7 @@ const SimpleTagList: React.FC<Props> = props => {
           {params.children}
         </ClickAwayListener>
       </div>
-      );
+    );
   }, [allMenuTags, inputValue, currentInputString, inputNode.current, tagMenuNode.current, input.value]);
 
   const listboxAdapter = useCallback(params => (
@@ -298,11 +398,12 @@ const SimpleTagList: React.FC<Props> = props => {
     <div className={className} id={input.name}>
       <div
         className={clsx("relative", {
-        "d-none": !isEditing,
-        "pointer-events-none": disabled
-      })}
+          "d-none": !isEditing,
+          "pointer-events-none": disabled
+        })}
       >
         <Autocomplete
+          fullWidth
           value={null}
           open={menuIsOpen}
           options={filteredOptions}
@@ -310,95 +411,118 @@ const SimpleTagList: React.FC<Props> = props => {
           renderOption={renderOption}
           filterOptions={filterOptionsInner}
           getOptionLabel={getOptionLabel}
-          PopperComponent={popperAdapter}
+          PopperComponent={currentInputString ? undefined : popperAdapter}
           ListboxComponent={currentInputString ? undefined : listboxAdapter}
           classes={{
-            listbox: fieldClasses.listbox
+            root: clsx("d-inline-flex", classes.root),
+            hasPopupIcon: classes.hasPopup,
+            hasClearIcon: classes.hasClear,
+            listbox: clsx(classes.listbox, fieldClasses.listbox),
+            inputRoot: classes.inputWrapper
           }}
-          renderInput={params => (
-            <TextField
+          renderInput={({
+            InputLabelProps, InputProps, inputProps, ...params
+          }) => (
+            <FormControl
               {...params}
-              margin="none"
-              InputLabelProps={{
-                classes: {
-                  root: fieldClasses.label
-                }
-              }}
-              InputProps={{
-              ...params.InputProps,
-              classes: {
-                root: fieldClasses.text,
-                underline: fieldClasses.underline
-              },
-            }}
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              inputProps={{
-              ...params.inputProps,
-              value: inputValue
-            }}
-              error={meta && meta.invalid}
-              helperText={(
-                <span className="shakingError">
-                  {meta.error}
-                </span>
-            )}
-              onChange={handleInputChange}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              inputRef={inputNode}
-              label={label}
-              multiline
-            />
-        )}
+              variant="standard"
+              error={meta?.invalid}
+              focused={menuIsOpen}
+            >
+              {label
+              && (
+                <InputLabel
+                  shrink
+                  error={meta?.invalid}
+                  classes={{
+                    root: fieldClasses.label
+                  }}
+                >
+                  {label}
+                </InputLabel>
+              )}
+              <Input
+                {...InputProps}
+                disabled={disabled}
+                placeholder={placeholder}
+                onChange={handleInputChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                inputRef={inputNode}
+                classes={{
+                  underline: fieldClasses.underline,
+                  input: clsx(disabled && classes.readonly, fieldClasses.text),
+                }}
+                inputProps={{
+                  ...inputProps,
+                  value: inputValue
+                }}
+                endAdornment={!disabled && (
+                  <InputAdornment className={classes.inputEndAdornment} position="end">
+                    <Edit color="primary" />
+                  </InputAdornment>
+                )}
+                multiline
+              />
+              <FormHelperText
+                classes={{
+                  error: "shakingError"
+                }}
+              >
+                {meta?.error}
+              </FormHelperText>
+            </FormControl>
+          )}
           popupIcon={stubComponent()}
           disableListWrap
           openOnFocus
         />
       </div>
       <div
-        className={clsx(classes.textField, {
-        "d-none": isEditing,
-        "pointer-events-none": disabled || !tags || !tags.length
-      })}
+        className={clsx(classes.inputWrapper, {
+          "d-none": isEditing,
+          "pointer-events-none": disabled || !tags || !tags.length
+        })}
       >
-        <div className="mw-100 text-truncate">
-          <Typography variant="caption" className={fieldClasses.label} color="textSecondary">
-            {label}
-          </Typography>
-
-          <ListItemText
+        <FormControl error={meta && meta.invalid} variant="standard" fullWidth>
+          <InputLabel
+            shrink
             classes={{
-            root: "pl-0 mb-0 mt-0",
-            primary: "d-flex"
-          }}
-            primary={(
-              <ButtonBase
-                onClick={edit}
-                className={clsx(classes.editable, "overflow-hidden hoverIconContainer")}
-                component="div"
-              >
-                <span
-                  className={clsx("overflow-hidden", classes.editable, {
-                    [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
-                    [fieldClasses.text]: inputValue,
-                  })}
-                >
-                  {inputValue || (
-                     "No value"
-                  )}
-                  {!disabled
-                  && Boolean(!tags || tags.length)
-                  && <Edit className={clsx("hoverIcon", classes.editInPlaceIcon, fieldClasses.placeholder)} />}
-                </span>
-              </ButtonBase>
-          )}
-          />
-        </div>
+              root: fieldClasses.label
+            }}
+          >
+            {label}
+          </InputLabel>
+          <Typography
+            variant="body1"
+            component="div"
+            onClick={edit}
+            className={clsx( classes.editable, {
+              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !inputValue,
+              [fieldClasses.text]: inputValue,
+            })}
+          >
+            <span className="centeredFlex flex-wrap">
+              {InputValueForRender || "No value"}
+            </span>
+            {!disabled
+            && Boolean(!tags || tags.length)
+            && <Edit color="primary" className={classes.hoverIcon} />}
+          </Typography>
+          <FormHelperText>
+            <span className="shakingError">
+              {meta.error}
+            </span>
+          </FormHelperText>
+        </FormControl>
       </div>
     </div>
   );
 };
 
-export default withStyles(theme => ({ ...selectStyles(theme), ...styles(theme) }))(
+export default withStyles(theme => ({
+  ...selectStyles(theme),
+  ...styles(theme)
+}))(
   SimpleTagList
 ) as any;

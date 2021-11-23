@@ -1,8 +1,5 @@
-
 import { Binding } from "@api/model";
-import {
-  ScriptComponent
-} from "../../../../../model/scripts";
+import { ScriptComponent } from "../../../../../model/scripts";
 import uniqid from "../../../../../common/utils/uniqid";
 import EmailTemplateService from "../../email-templates/services/EmailTemplateService";
 import EntityService from "../../../../../common/services/EntityService";
@@ -17,7 +14,8 @@ export const getScriptComponent = (content): ScriptComponent => ({
 });
 
 export const queryClosureRegexp = new RegExp(
-  "\\n?(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?(query\\s+[\"'].*[\"'](\\s+))?(\\n+)?}(\\s+)?\\n{0,2}",
+  // "\\n?(def\\s+)?\\w+\\s+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?(query\\s+[\"'].*[\"'](\\s+))?(\\n+)?}(\\s+)?\\n{0,2}",
+  "\\n?(def\\s+)?(\\w+\\s+)+=\\s+query\\s+{(\\n+)?(\\s+)?entity\\s+[\"']?\\w+[\"']?(\\s+)?(query\\s+[\"'].*[\"'](\\s+))?(\\n+)?}(\\s+)?\\n{0,2}",
   "g",
 );
 
@@ -42,20 +40,22 @@ const getBodyEntries = body => {
 };
 
 export const getQueryTemplate = (entity: string, query: string, queryClosureReturnValue: string) =>
-  `\n${queryClosureReturnValue} = query {
+  `\n${queryClosureReturnValue || "records"} = query {
     entity "${entity || ""}"
     query "${query?.replace(new RegExp("\"", "g"), '\\"') || ""}"
   }\n\n`;
 
 export const getQueryComponent = (body: string): ScriptComponent => {
-  const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/);
+  // const queryClosureReturnValueMatch = body.match(/\s+(.+)\s+=\s+query/g);
+  const queryClosureReturnValueMatch = body.match(/(.+)\s+=\s+query/g);
   const entityMatch = body.match(/entity\s+['"](.+)['"]\s/);
   const queryMatch = body.match(/query\s+"(.+)"\s+(context)?/);
 
   return {
     type: "Query",
     id: uniqid(),
-    queryClosureReturnValue: (queryClosureReturnValueMatch && queryClosureReturnValueMatch[1]) || "records",
+    queryClosureReturnValue: (queryClosureReturnValueMatch && queryClosureReturnValueMatch[0]
+      && queryClosureReturnValueMatch[0].replace(/\s+=\s+query/g, "")) || "records",
     entity: entityMatch && entityMatch[1],
     query: queryMatch && queryMatch[1].replace(/\\"/g, '"'),
   };
@@ -68,7 +68,7 @@ export const getMessageTemplate = component => {
     ? result
     : `${result}${e[0]} ${variables.some(v => v.name === e[0] && v.type === "Object") 
       ? e[1] 
-      : `"${e[1]}"`}${index === (entries.length - 1) 
+      : ( e[0] === 'content' ? `"""${e[1]}"""` : `"${e[1]}"`)}${index === (entries.length - 1) 
         ? "" 
         : "\n\t\t"}`), "");
 

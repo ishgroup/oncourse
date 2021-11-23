@@ -6,14 +6,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import clsx from "clsx";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Note } from "@api/model";
-import Paper from "@material-ui/core/Paper";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormField from "../../form-fields/FormField";
+import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
+import FormField from "../../formFields/FormField";
 import { formatRelativeDate } from "../../../../utils/dates/formatRelative";
 import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../utils/dates/format";
 
@@ -48,7 +48,7 @@ const NoteItem = (props: Props) => {
               multiline
             />
           </Grid>
-          <Grid container justify="space-between" alignItems="flex-end">
+          <Grid container justifyContent="space-between">
             <Grid item>
               {item.created && (
                 <Typography className={classes.dateInfo}>
@@ -79,7 +79,7 @@ const NoteItem = (props: Props) => {
               </Typography>
               )}
             </Grid>
-            <Grid item>
+            <Grid item className="d-flex" alignItems="flex-end">
               {item.message && !item.id && (
                 <Tooltip title={checked ? "Note added" : "Add note"}>
                   <span>

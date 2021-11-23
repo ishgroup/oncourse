@@ -4,10 +4,10 @@
  */
 
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid/Grid";
-import { FormControlLabel } from "@material-ui/core";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { FormControlLabel } from "@mui/material";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 
 const CertificatesHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
@@ -30,7 +30,7 @@ export const CertificatesContentLine: React.FunctionComponent<any> = React.memo(
   const { row, item } = props;
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={6}>
         <FormControlLabel
           className="checkbox pr-3"
@@ -39,7 +39,6 @@ export const CertificatesContentLine: React.FunctionComponent<any> = React.memo(
               type="checkbox"
               name={`${item}.fullQualification`}
               color="primary"
-              fullWidth
               stringValue
               disabled
             />

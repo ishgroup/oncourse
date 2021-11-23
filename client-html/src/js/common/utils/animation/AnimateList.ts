@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { usePrevious } from "../hooks";
 
 const calculateBoundingBoxes = children => {
@@ -28,13 +28,11 @@ const AnimateList = ({ children }) => {
   const prevChildren = usePrevious(children);
 
   useLayoutEffect(() => {
-    const newBoundingBox = calculateBoundingBoxes(children);
-    setBoundingBox(newBoundingBox);
+    setBoundingBox(calculateBoundingBoxes(children));
   }, [children]);
 
   useLayoutEffect(() => {
-    const prevBoundingBox = calculateBoundingBoxes(prevChildren);
-    setPrevBoundingBox(prevBoundingBox);
+    setPrevBoundingBox(calculateBoundingBoxes(prevChildren));
   }, [prevChildren]);
 
   useEffect(() => {
@@ -45,7 +43,7 @@ const AnimateList = ({ children }) => {
         const domNode = child.ref.current;
         const firstBox = prevBoundingBox[child.key];
         const lastBox = boundingBox[child.key];
-        const changeInX = firstBox.top - lastBox.top;
+        const changeInX = firstBox && lastBox && firstBox.top - lastBox.top;
 
         if (changeInX) {
           requestAnimationFrame(() => {

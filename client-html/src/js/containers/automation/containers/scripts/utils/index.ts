@@ -5,15 +5,18 @@
 
 import { Script } from "@api/model";
 import {
+  closureSplitRegexp,
+  getMessageComponent,
+  getMessageTemplate,
   getQueryComponent,
   getQueryTemplate,
-  getScriptComponent,
-  getMessageTemplate,
-  getMessageComponent,
+  getReportComponent,
   getReportTemplate,
+  getScriptComponent,
   importsRegexp,
+  messageClosureRegexp,
   queryClosureRegexp,
-  messageClosureRegexp, getReportComponent, reportClosureRegexp, closureSplitRegexp,
+  reportClosureRegexp,
 } from "../constants";
 import { ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 
@@ -62,7 +65,7 @@ const reportFilter = body => {
 };
 
 export const ParseScriptBody = async (scriptItem: Script) => {
-  let { content } = scriptItem;
+  let content = scriptItem.content.replace(/["]{3}/g, '"');
   let imports = content.match(importsRegexp);
 
   if (imports) {
@@ -116,6 +119,19 @@ export const ParseScriptBody = async (scriptItem: Script) => {
   }
 
   return { ...scriptItem, components, imports };
+};
+
+export const getQueryReturnValueForRender = (closureReturnValue: string) => {
+  const closureReturnValueArray = closureReturnValue.split(" ");
+
+  if (closureReturnValueArray.length > 1) {
+    return {
+      prefix: closureReturnValueArray.slice(0, closureReturnValueArray.length - 1),
+      value: closureReturnValueArray[closureReturnValueArray.length - 1],
+    };
+  }
+
+  return closureReturnValue;
 };
 
 const getComponentBody = (component: any) => {

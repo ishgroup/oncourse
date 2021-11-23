@@ -6,7 +6,7 @@
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import {
- getFormInitialValues, getFormValues, initialize, reduxForm
+  getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { withRouter } from "react-router";
 import { Dispatch } from "redux";
@@ -56,6 +56,7 @@ const PdfReports = React.memo<any>(props => {
 const mapStateToProps = (state: State) => ({
   values: getFormValues(PDF_REPORT_FORM_NAME)(state),
   initialValues: getFormInitialValues(PDF_REPORT_FORM_NAME)(state),
+  syncErrors: getFormSyncErrors(PDF_REPORT_FORM_NAME)(state),
   pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds,
   nextLocation: state.nextLocation,
 });

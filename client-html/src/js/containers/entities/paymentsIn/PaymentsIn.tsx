@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import React, { useEffect, useState } from "react";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { PaymentIn } from "@api/model";
@@ -36,7 +36,6 @@ const reversable = "(paymentMethod.type !== INTERNAL and paymentMethod.type !== 
 // eslint-disable-next-line max-len
 const isSystem = "(paymentMethod.type == CONTRA or paymentMethod.type == INTERNAL or paymentMethod.type == REVERSE or paymentMethod.type == VOUCHER)";
 const isNotReversed = "reversedById == null";
-const isNotReversal = "reversalOfId == null";
 const isReversal = "reversalOfId !== null";
 
 const filterGroups: FilterGroup[] = [
@@ -46,7 +45,7 @@ const filterGroups: FilterGroup[] = [
       {
         name: "Unbanked",
         // tslint:disable-next-line:max-line-length
-        expression: `${bankingIsNull} and ${isNotFailed} and ${isNotSystem} and ${isNotReversed} and ${isNotReversal}`,
+        expression: `${bankingIsNull} and ${isNotFailed} and ${isNotSystem}`,
         active: true
       },
       {

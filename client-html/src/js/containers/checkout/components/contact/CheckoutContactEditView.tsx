@@ -9,17 +9,16 @@ import { connect } from "react-redux";
 import {
   reduxForm, getFormSyncErrors, getFormValues, InjectedFormProps
 } from "redux-form";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../../common/components/form/notes/utils";
 import { State } from "../../../../reducers/state";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import ContactEditView from "../../../entities/contacts/components/ContactEditView";
 import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
-import { getContactName } from "../../../entities/contacts/utils";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import CheckoutAppBar from "../CheckoutAppBar";
+import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
 
@@ -92,27 +91,14 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
   return (
     <>
       <form className="flex-column w-100" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <CustomAppBar>
-          <CheckoutAppBar title={values && getContactName(values)} />
-          <div>
-            {creatingNew && (
-              <Button onClick={onClose} className="closeAppBarButton">
-                Close
-              </Button>
-            )}
-            <Button
-              type="submit"
-              classes={{
-                root: "whiteAppBarButton",
-                disabled: "whiteAppBarButtonDisabled"
-              }}
-              disabled={invalid || (!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
-            >
-              Save
-            </Button>
-          </div>
-        </CustomAppBar>
-        <div className="appBarContainer overflow-hidden">
+        <AppBarContainer
+          noTitle
+          noScrollSpy
+          disabled={invalid || (!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
+          invalid={invalid}
+          onCloseClick={creatingNew ? onClose : null}
+          containerClass="p-0"
+        >
           <ContactEditView
             twoColumn
             asyncValidating={asyncValidating}
@@ -130,7 +116,7 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
             openNestedEditView={openNestedEditView}
             toogleFullScreenEditView={() => {}}
           />
-        </div>
+        </AppBarContainer>
       </form>
     </>
   );
@@ -152,7 +138,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const CheckoutContactEditView = reduxForm({
   form: CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME,
   asyncValidate: notesAsyncValidate,
-  asyncBlurFields: ["notes[].message"]
+  asyncBlurFields: ["notes[].message"],
+  onSubmitFail
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(QuickEnrolContactEditViewForm));
 
 export default CheckoutContactEditView as any;

@@ -48,10 +48,9 @@ Feature: Main feature for all POST requests with path 'list/entity/emailTemplate
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#(~~id)",
         "type":"Email",
         "keyCode":"post1",
         "name":"post 1",
@@ -61,12 +60,7 @@ Feature: Main feature for all POST requests with path 'list/entity/emailTemplate
         "body":"someBody",
         "enabled":true,
         "variables":[{"name":"varName1","label":"varLabel1","type":"Text","value":null,"system":null,"valueDefault":null}],
-        "options":
-            [
-            {"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}
-            ],
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
+        "options": [{"name":"optName1","label":null,"type":"Date","value":"2019-01-01","system":null,"valueDefault":null}],
         "description":"some description"
         }
         """
@@ -200,10 +194,9 @@ Feature: Main feature for all POST requests with path 'list/entity/emailTemplate
         Given path ishPath + '/' + id
         When method GET
         Then status 200
-        And match $ ==
+        And match $ contains
         """
         {
-        "id":"#(~~id)",
         "type":"Sms",
         "keyCode":"post3",
         "name":"post 3",
@@ -214,8 +207,6 @@ Feature: Main feature for all POST requests with path 'list/entity/emailTemplate
         "enabled":true,
         "variables":[{"name":"varName3","label":"varLabel3","type":"Date","value":null,"system":null,"valueDefault":null}],
         "options":[{"name":"optName3","label":null,"type":"Checkbox","value":"true","system":null,"valueDefault":null}],
-        "createdOn":"#ignore",
-        "modifiedOn":"#ignore",
         "description":"some description"
         }
         """

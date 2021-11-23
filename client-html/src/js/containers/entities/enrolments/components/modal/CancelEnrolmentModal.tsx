@@ -4,13 +4,13 @@
  */
 
 import { Account, CancelEnrolment, Tax } from "@api/model";
-import MuiButton from "@material-ui/core/Button/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import MuiButton from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
@@ -18,9 +18,9 @@ import { Dispatch } from "redux";
 import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { getUserPreferences } from "../../../../../common/actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
-import Button from "../../../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
@@ -28,6 +28,7 @@ import { cancelEnrolment } from "../../actions";
 import CancelEnrolmentInvoiceLines from "./CancelEnrolmentInvoiceLines";
 import { useOutcomeWarnings } from "./hooks";
 import { enrolmentModalStyles } from "./styles";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 interface CancelEnrolmentModalProps {
   opened: boolean;
@@ -249,12 +250,12 @@ const CancelEnrolmentModalForm = React.memo<CancelEnrolmentModalProps & Injected
           </div>
         </DialogContent>
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
-          <Button color="primary" type="submit" loading={loading}>
-            Proceed
           </Button>
+          <LoadingButton variant="contained" color="primary" type="submit" loading={loading}>
+            Proceed
+          </LoadingButton>
         </DialogActions>
       </form>
     </Dialog>

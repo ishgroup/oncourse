@@ -11,10 +11,8 @@
 
 package ish.oncourse.aql.impl;
 
-import ish.oncourse.aql.impl.converter.Converter;
 import ish.oncourse.aql.impl.converter.ConverterDirectory;
 import org.antlr.v4.runtime.tree.*;
-import org.apache.cayenne.exp.parser.SimpleNode;
 
 import java.util.Objects;
 

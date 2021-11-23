@@ -21,7 +21,11 @@ public class LicenseModule extends ConfigModule {
     @Singleton
     @Provides
     public LicenseService createLicenseService(ConfigurationFactory configFactory) {
-        return configFactory
-                .config(LicenseService.class, defaultConfigPrefix());
+
+        LicenseService service = configFactory.config(LicenseService.class, getConfigPrefix());
+        LicenseSmsService smsService = configFactory.config(LicenseSmsService.class, "sms");
+
+        service.setSmsService(smsService);
+        return service;
     }
 }

@@ -4,13 +4,13 @@
  */
 
 import React, { StatelessComponent } from "react";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import green from "@material-ui/core/colors/green";
+import InputAdornment from "@mui/material/InputAdornment";
+import CircularProgress from "@mui/material/CircularProgress";
+import { withStyles, createStyles } from "@mui/styles";
+import { green } from "@mui/material/colors";
 import ClassNames from "clsx";
 import debounce from "lodash.debounce";
-import { TextField } from "../../../common/components/form/form-fields/TextField";
+import { TextField } from "../../../common/components/form/formFields/TextField";
 
 const styles = theme => createStyles({
   disabled: {},

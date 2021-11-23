@@ -28,13 +28,13 @@ class MessageService {
   public getMessagePreview(recipientsCount: number, model: SendMessageRequest, messageType: string): Promise<string> {
     return this.service.POST(`/v1/list/option/message`, model,
       {
-        headers: { "X-validate-only": true },
+        headers: { "X-validate-only": "true" },
         params: { messageType, recipientsCount }
       });
   }
 
-  public getRecipients(entity: string, messageType: MessageType, search: SearchQuery): Promise<Recipients> {
-    return this.messageApi.getRecipients(entity, messageType, search);
+  public getRecipients(entity: string, messageType: MessageType, search: SearchQuery, templateId: number): Promise<Recipients> {
+    return this.messageApi.getRecipients(entity, messageType, search, templateId);
   }
 }
 

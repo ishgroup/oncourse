@@ -6,17 +6,17 @@
 import React from "react";
 import clsx from "clsx";
 import { change } from "redux-form";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Chip from "@material-ui/core/Chip";
-import Tooltip from "@material-ui/core/Tooltip";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Grid from "@material-ui/core/Grid";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import { StyledCheckbox } from "../../../../common/components/form/form-fields/CheckboxField";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Chip from "@mui/material/Chip";
+import Tooltip from "@mui/material/Tooltip";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Grid from "@mui/material/Grid";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { greaterThanNullValidation } from "../../../../common/utils/validation";
@@ -126,7 +126,6 @@ export const SummaryItemRow = React.memo<any>(props => {
                 validate={greaterThanNullValidation}
                 onChange={handlePriceChange}
                 listSpacing={false}
-                formatting="custom"
                 rightAligned
               />
             </div>
@@ -202,14 +201,14 @@ export const SummaryItemRow = React.memo<any>(props => {
         classes={{
           root: classes.expansionSummaryRoot,
           content: classes.expansionSummaryContent,
-          expandIcon: classes.expandIcon
+          expandIconWrapper: classes.expandIcon
         }}
         expandIcon={<ExpandMoreIcon />}
       >
         {headerContent}
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           {bodyContent}
         </Grid>
       </AccordionDetails>
@@ -425,7 +424,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                 item
                 xs={4}
                 container
-                justify="flex-end"
+                direction="row-reverse"
                 className={clsx("money pt-1 summaryTopBorder", classes.summaryItemPrice)}
               >
                 <Typography variant="body2">{formatCurrency(itemTotal, currencySymbol)}</Typography>

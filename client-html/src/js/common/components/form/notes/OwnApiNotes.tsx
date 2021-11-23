@@ -4,13 +4,10 @@
  */
 
 import React, { useCallback, useState } from "react";
-import { Grid, withStyles } from "@material-ui/core";
-import {
- arrayInsert, change, FieldArray
-} from "redux-form";
+import { Grid } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import { arrayInsert, change, FieldArray } from "redux-form";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
 import { Note } from "@api/model";
 import { connect } from "react-redux";
 import styles from "./styles";
@@ -22,6 +19,8 @@ import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import uniqid from "../../../utils/uniqid";
+import AddButton from "../../icons/AddButton";
+import { APP_BAR_HEIGHT } from "../../../../constants/Config";
 
 interface Props {
   classes?: any;
@@ -29,7 +28,7 @@ interface Props {
   showConfirm: ShowConfirmCaller;
   twoColumn?: any;
   className?: string;
-  form: string;
+  form?: string;
   dispatch: any;
   values: any;
   leftOffset?: boolean;
@@ -90,28 +89,33 @@ const OwnApiNotes = React.memo<Props>(
 
     const addNote = useCallback(() => {
       if (isNew) {
-        showConfirm({ confirmMessage: `Please save record before adding notes`, cancelButtonText: "OK" });
+        showConfirm({ title: null, confirmMessage: `Please save new record before adding notes`, cancelButtonText: "OK" });
       } else {
         const temporaryId = uniqid();
         const newNote: Note = { message: "", entityName: rootEntity, entityId: values.id };
         dispatch(arrayInsert(form, "notes", 0, { ...newNote, temporaryId }));
         dispatch(addActionToQueue(postNoteItem(newNote), "POST", "Note", temporaryId));
+        setTimeout(() => {
+          const domNode = document.getElementById("notes[0].message");
+          window.scrollTo({
+            top: domNode.offsetTop - APP_BAR_HEIGHT,
+            behavior: 'smooth'
+          });
+        }, 200);
       }
     }, [isNew, form, rootEntity, values.notes, values.id]);
 
     return (
-      <Grid container className={clsx("h-100 justify-content-center", className)} alignContent="flex-start">
+      <Grid container columnSpacing={3} className={clsx("h-100 justify-content-center", className)} alignContent="flex-start">
         <Grid item xs={12}>
           <div className={clsx("centeredFlex", { "pl-3": !leftOffset })}>
             <div className="heading">
-              {values.notes && values.notes.length}
+              {values.notes && values.notes.length > 0 && values.notes.length}
               {' '}
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <IconButton onClick={addNote}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
+            <AddButton onClick={addNote} />
           </div>
         </Grid>
 
@@ -134,4 +138,4 @@ const mapStateToProps = (state: State) => ({
   queuedActions: state.actionsQueue.queuedActions
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(OwnApiNotes));
+export default connect(mapStateToProps)(withStyles(styles)(OwnApiNotes));

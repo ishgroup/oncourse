@@ -125,6 +125,11 @@ class Assessment extends _Assessment  implements Queueable, NotableTrait, Attach
 	String getSummaryDescription() {
 		return getName() + ' ' + getCode()
 	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return AssessmentTagRelation.class
+	}
 }
 
 

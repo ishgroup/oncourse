@@ -4,12 +4,14 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { Tax } from "@api/model";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const formattedAccountTypes: any[] = [
   {
@@ -46,8 +48,8 @@ const getFormattedTaxes = (taxes: Tax[]) =>
 
 const AccountsEditView = props => {
   const {
- twoColumn, taxTypes, isNew, values
-} = props;
+   twoColumn, taxTypes, isNew, values, syncErrors
+  } = props;
   const isCustom = values && values.isCustom === true;
   const isDisabled = isNew ? false : !isCustom;
 
@@ -61,53 +63,62 @@ const AccountsEditView = props => {
   }
 
   return (
-    <Grid container className="p-3">
-      <Grid item lg={twoColumn ? 11 : 11} md={twoColumn ? 11 : 11} xs={11}>
-        <Grid container>
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField
-              type="text"
-              name="accountCode"
-              label="Code"
-              required
-              fullWidth
-            />
-            <FormField
-              type="select"
-              disabled={isDisabled}
-              name="type"
-              label="Type"
-              items={formattedAccountTypes}
-              required
-              fullWidth
-            />
-            <FormField
-              type="text"
-              name="description"
-              label="Description"
-              required={isNew || isCustom}
-              multiline
-              fullWidth
-            />
-            <FormControlLabel
-              className="checkbox pr-3"
-              control={
-                <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" fullWidth />
-              }
-              label="Enabled"
-            />
-            {isIncomeType ? (
+    <Grid container item columnSpacing={3} rowSpacing={2} xs={twoColumn ? 6 : 12} className="p-3">
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          twoColumn={twoColumn}
+          title={values && values.accountCode}
+          opened={isNew || Object.keys(syncErrors).includes("accountCode")}
+          fields={(
+            <Grid item xs={12}>
               <FormField
-                type="select"
-                name="tax.id"
-                label="Tax type"
-                required={isNew || isCustom}
-                items={getFormattedTaxes(taxTypes) || []}
-                fullWidth
+                type="text"
+                name="accountCode"
+                label="Code"
+                required
               />
-            ) : null}
-          </Grid>
-        </Grid>
+            </Grid>
+          )}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="select"
+          disabled={isDisabled}
+          name="type"
+          label="Type"
+          items={formattedAccountTypes}
+          required
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="text"
+          name="description"
+          label="Description"
+          required={isNew || isCustom}
+          multiline
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormControlLabel
+          className="checkbox pr-3"
+          control={
+            <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" />
+          }
+          label="Enabled"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        {isIncomeType ? (
+          <FormField
+            type="select"
+            name="tax.id"
+            label="Tax type"
+            required={isNew || isCustom}
+            items={getFormattedTaxes(taxTypes) || []}
+          />
+        ) : null}
       </Grid>
     </Grid>
   );

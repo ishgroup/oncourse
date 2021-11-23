@@ -4,17 +4,18 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import {
  arrayInsert, arrayRemove, change, initialize
 } from "redux-form";
+import { RouteComponentProps, withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { Account, Currency, Tax } from "@api/model";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { Account, Currency, Tag, Tax } from "@api/model";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { addDays } from "date-fns";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
@@ -34,6 +35,10 @@ import { setSelectedContact } from "../actions";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { usePrevious } from "../../../../common/utils/hooks";
+import { leadLabelCondition, openLeadLink } from "../../leads/utils";
+import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
+import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -44,11 +49,13 @@ interface Props extends EditViewProps {
   defaultTerms: number;
   setSelectedContact: AnyArgFunction;
   selectedContact: any;
+  tags?: Tag[];
+  history?: any;
 }
 
 const sortAccounts = (a: Account, b: Account) => (a.description[0].toLowerCase() > b.description[0].toLowerCase() ? 1 : -1);
 
-const InvoiceEditView: React.FunctionComponent<Props> = props => {
+const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = props => {
   const {
     isNew,
     values,
@@ -61,8 +68,18 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     taxes,
     defaultTerms,
     setSelectedContact,
-    selectedContact
+    tags,
+    selectedContact,
+    history,
   } = props;
+
+  useEffect(() => {
+    if (values.type === "Quote" && isNew) dispatch(change(form, "sendEmail", false));
+  }, []);
+
+  useEffect(() => {
+    if (values.type === "Quote" && history.location.state?.type === "Invoice") dispatch(change(form, "type", "Invoice"));
+  }, [values.type]);
 
   const prevId = usePrevious(values.id);
 
@@ -110,6 +127,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
   const InvoiceLineComponent = useCallback(
     props => (
       <InvoiceLines
+        {...props}
         currency={currency}
         isNew={isNew}
         twoColumn={twoColumn}
@@ -117,14 +135,14 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
         form={form}
         taxes={taxes}
         incomeAndCosAccounts={incomeAndCosAccounts}
-        {...props}
+        type={values.type}
       />
       ),
     [currency, isNew, twoColumn, form]
   );
 
   const addInvoiceLine = useCallback(
-    isNew
+    isNew || values.type === "Quote"
       ? () => {
           const newLine: InvoiceLineWithTotal = {
             quantity: 1,
@@ -146,7 +164,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
   );
 
   const deleteInvoiceLine = useCallback(
-    isNew
+    (isNew || values.type === "Quote")
       ? index => {
           dispatch(arrayRemove(form, "invoiceLines", index));
 
@@ -182,6 +200,20 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
   const invoiceLinesCount = useMemo(() => (values.invoiceLines && values.invoiceLines.length) || 0, [
     values.invoiceLines
   ]);
+
+  const onLeadChange = value => {
+    dispatch(change(form, "leadId", value.id));
+    dispatch(change(form, "contactId", value["customer.id"]));
+    dispatch(change(form, "contactName", value["customer.fullName"]));
+  };
+
+  const validateTagListCallback = useCallback(
+    (value, allValues) => {
+      const updProps = { ...props, rootEntity: "Invoice" };
+
+      return (tags && tags.length ? validateTagsList(tags, value, allValues, updProps) : undefined);
+    }, [tags]
+  );
 
   const onContactChange = useCallback(
     value => {
@@ -231,7 +263,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
     if (!isNew) {
       updateDateDue();
     }
-  }, [values.paymentPlans.length]);
+  }, [values.paymentPlans?.length]);
 
   useEffect(() => {
     if (!isNew && prevId !== values.id && hasPaymentDues) {
@@ -244,7 +276,44 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
   }, [values.id]);
 
   return (
-    <Grid container className="p-3 saveButtonTableOffset defaultBackgroundColor">
+    <Grid container columnSpacing={3} rowSpacing={2} className="p-3 saveButtonTableOffset defaultBackgroundColor">
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+          validate={validateTagListCallback}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 3 : 12}>
+        <FormField
+          type="text"
+          name="title"
+          label="Title"
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 3 : 12}>
+        <FormField
+          type="remoteDataSearchSelect"
+          entity="Lead"
+          name="leadId"
+          label="Lead"
+          selectValueMark="id"
+          selectLabelCondition={leadLabelCondition}
+          defaultDisplayValue={values && values.leadCustomerName}
+          labelAdornment={
+            <LinkAdornment linkHandler={openLeadLink} link={values.leadId} disabled={!values.leadId} />
+          }
+          onInnerValueChange={onLeadChange}
+          itemRenderer={LeadSelectItemRenderer}
+          disabled={values.type !== "Quote" && !isNew}
+          rowHeight={55}
+          required={values.type === "Quote"}
+        />
+      </Grid>
+
       <Grid item xs={twoColumn ? 3 : 12}>
         <FormField
           type="remoteDataSearchSelect"
@@ -259,9 +328,9 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
           }
           onInnerValueChange={onContactChange}
           itemRenderer={ContactSelectItemRenderer}
-          disabled={!isNew}
+          disabled={values.type !== "Quote" && !isNew}
           rowHeight={55}
-          required
+          required={values.type === "Invoice"}
         />
       </Grid>
 
@@ -269,16 +338,17 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
         <FormField type="text" name="customerReference" label="Customer reference" />
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12} className="textField">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Overdue
-          </Typography>
-          <Typography className="money">{overdue}</Typography>
-        </div>
-      </Grid>
+      {values.type !== "Quote" && (
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <Uneditable
+            label="Overdue"
+            value={overdue}
+            money
+          />
+        </Grid>
+      )}
 
-      {!isNew && (
+      {!isNew && values.type === "Invoice" && (
         <Grid item xs={twoColumn ? 3 : 12}>
           <FormField type="text" name="invoiceNumber" label="Invoice number" disabled />
         </Grid>
@@ -292,7 +362,7 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
           maxDate={values.dateDue}
           onChange={onInvoiceDateChange}
           validate={[validateSingleMandatoryField, validateMaxDate]}
-          disabled={!isNew}
+          disabled={values.type !== "Quote" && !isNew}
         />
       </Grid>
 
@@ -303,23 +373,32 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
           label="Due date"
           minDate={values.invoiceDate}
           validate={[validateSingleMandatoryField, validateMinDate]}
-          disabled={hasPaymentDues}
+          disabled={values.type !== "Quote" && hasPaymentDues}
         />
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="multilineText" name="billToAddress" label="Billing address" fullWidth />
+        <FormField type="multilineText" name="billToAddress" label="Billing address"/>
       </Grid>
 
-      <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="multilineText" name="shippingAddress" label="Shipping address" fullWidth />
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField type="multilineText" name="shippingAddress" label="Shipping address"/>
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12} className="pb-2">
+        <FormField
+          type="multilineText"
+          name="description"
+          label="Description"
+          disabled={values.type !== "Quote" && !isNew}
+        />
       </Grid>
 
       <Grid item xs={12}>
         <MinifiedEntitiesList
           name="invoiceLines"
-          header="Invoice Lines"
-          oneItemHeader="Invoice Line"
+          header={values.type === "Quote" ? "Quote Lines" : "Invoice Lines"}
+          oneItemHeader={values.type === "Quote" ? "Quote Line" : "Invoice Line"}
           count={invoiceLinesCount}
           FieldsContent={InvoiceLineComponent}
           HeaderContent={LineHeader}
@@ -339,27 +418,31 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
             {total}
           </Typography>
         </div>
-        <div className="centeredFlex pt-1 pr-4 justify-content-end">
-          <Typography variant="subtitle2" noWrap>
-            Owing
-          </Typography>
-          <Typography variant="body2" color="textSecondary" className="pl-1 money">
-            {totalOwing}
-          </Typography>
-        </div>
+        {values.type !== "Quote" && (
+          <div className="centeredFlex pt-1 pr-4 justify-content-end">
+            <Typography variant="subtitle2" noWrap>
+              Owing
+            </Typography>
+            <Typography variant="body2" color="textSecondary" className="pl-1 money">
+              {totalOwing}
+            </Typography>
+          </div>
+        )}
       </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12} className="pb-2">
-        <InvoicePaymentPlans
-          name="paymentPlans"
-          currency={currency}
-          syncErrors={syncErrors}
-          id={values.id}
-          form={form}
-          dispatch={dispatch}
-          total={values.total}
-        />
-      </Grid>
+      {values.type === "Invoice" && (
+        <Grid item xs={twoColumn ? 4 : 12} className="pb-2">
+          <InvoicePaymentPlans
+            name="paymentPlans"
+            currency={currency}
+            syncErrors={syncErrors}
+            id={values.id}
+            form={form}
+            dispatch={dispatch}
+            total={values.total}
+          />
+        </Grid>
+      )}
 
       <Grid item xs={12}>
         <FormField type="multilineText" name="publicNotes" label="Public notes" fullWidth />
@@ -373,38 +456,38 @@ const InvoiceEditView: React.FunctionComponent<Props> = props => {
         />
       </Grid>
 
-      <Grid item xs={12} className="pb-2">
-        <FormControlLabel
-          classes={{
-            root: "checkbox"
-          }}
-          control={<FormField type="checkbox" name="sendEmail" color="primary" />}
-          label="Send email"
+      {values.type === "Invoice" && (
+        <Grid item xs={12} className="pb-2">
+          <FormControlLabel
+            classes={{
+              root: "checkbox"
+            }}
+            control={<FormField type="checkbox" name="sendEmail" color="primary" />}
+            label="Send email"
+          />
+        </Grid>
+      )}
+
+      <Grid item xs={12}>
+        <Uneditable
+          label="Source"
+          value={values.source}
+          money
         />
       </Grid>
 
-      <Grid item xs={12} className="textField money">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Source
-          </Typography>
-          <Typography>{values.source}</Typography>
-        </div>
-      </Grid>
-
-      <Grid item xs={12} className="textField">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Created by
-          </Typography>
-          <Typography>{values.createdByUser}</Typography>
-        </div>
+      <Grid item xs={12}>
+        <Uneditable
+          label="Created by"
+          value={values.createdByUser}
+        />
       </Grid>
     </Grid>
   );
 };
 
 const mapStateToProps = (state: State) => ({
+  tags: state.tags.entityTags["AbstractInvoice"],
   accounts: state.plainSearchRecords.Account.items,
   currency: state.currency,
   taxes: state.taxes.items,
@@ -417,6 +500,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setSelectedContact: (selectedContact: any) => dispatch(setSelectedContact(selectedContact))
 });
 
-const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(InvoiceEditView);
+const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withRouter(InvoiceEditView));
 
 export default pops => (pops.values ? <Connected {...pops} /> : null);

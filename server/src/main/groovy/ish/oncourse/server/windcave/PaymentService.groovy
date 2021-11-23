@@ -179,6 +179,7 @@ class PaymentService {
             attributes.statusText = WindcaveResponseCode.getExplanationByCode(transactionMap['reCo'] as String)
             attributes.transactionId = transactionMap['id']
             attributes.type = transactionMap['type']
+            attributes.reCo  = transactionMap['reCo']
 
             if (attributes.authorised) {
                 Map<String, String> card = transactionMap['card'] as Map<String, String>

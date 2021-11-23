@@ -5,9 +5,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { reduxForm, initialize } from "redux-form";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
+import { initialize, reduxForm } from "redux-form";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 
@@ -35,12 +34,10 @@ class MailchimpBaseForm extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        <FormField name="fields.apiKey" label="API key" type="text" fullWidth />
-        <FormField name="fields.listId" label="Audience ID" type="text" fullWidth />
+        <AppBarContent>
+          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2"/>
+          <FormField name="fields.listId" label="Audience ID" type="text" className="mb-2" />
+        </AppBarContent>
       </form>
     );
   }

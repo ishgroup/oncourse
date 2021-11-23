@@ -4,16 +4,17 @@
  */
 
 import React, { useCallback, useMemo, useState } from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { addDays, format } from "date-fns";
-import IconButton from "@material-ui/core/IconButton";
-import LockOpen from "@material-ui/icons/LockOpen";
-import Lock from "@material-ui/icons/Lock";
+import IconButton from "@mui/material/IconButton";
+import LockOpen from "@mui/icons-material/LockOpen";
+import Lock from "@mui/icons-material/Lock";
 import { Discount, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
+import debounce from "lodash.debounce";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import Uneditable from "../../../../../../common/components/form/Uneditable";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
@@ -66,13 +67,11 @@ const onBeforeLockSet = (
 
   if (!pr) {
     dispatch(change(
-        COURSE_CLASS_COST_DIALOG_FORM,
-        "perUnitAmountExTax",
-        getDiscountAmountExTax(discount, currentTax, classFee)
-      ));
+      COURSE_CLASS_COST_DIALOG_FORM,
+      "perUnitAmountExTax",
+      getDiscountAmountExTax(discount, currentTax, classFee)
+    ));
   }
-
-  return !pr;
 };
 
 const DiscountContent: React.FC<Props> = ({
@@ -81,8 +80,8 @@ const DiscountContent: React.FC<Props> = ({
   const [forecastLocked, setForecastLocked] = useState(values.courseClassDiscount.forecast === null);
   const [valueLocked, setValueLocked] = useState(values.courseClassDiscount.discountOverride === null);
 
-  const onValueLockClick = useCallback(() => {
-    setValueLocked(pr =>
+  const onValueLockHandler = () => {
+    setValueLocked(pr => {
       onBeforeLockSet(
         pr,
         dispatch,
@@ -90,10 +89,17 @@ const DiscountContent: React.FC<Props> = ({
         currentTax,
         values.courseClassDiscount.discount,
         classFee
-      ));
-  }, [classFee, currentTax, values.courseClassDiscount.discount, values.perUnitAmountExTax]);
+      );
+      return !pr;
+    });
+  };
 
-  const onForecastLockClick = useCallback(() => {
+  const onValueLockClick = useMemo(
+    () => debounce(onValueLockHandler, 300),
+    []
+  );
+
+  const onForecastLockClickHandler = () => {
     setForecastLocked(pr => {
       dispatch(
         change(
@@ -105,7 +111,12 @@ const DiscountContent: React.FC<Props> = ({
 
       return !pr;
     });
-  }, [values.courseClassDiscount.discount.predictedStudentsPercentage]);
+  };
+
+  const onForecastLockClick = useMemo(
+    () => debounce(onForecastLockClickHandler, 300),
+    []
+  );
 
   const onValueChange = useCallback((e, val) => {
     dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "courseClassDiscount.discountOverride", val));
@@ -162,28 +173,6 @@ const DiscountContent: React.FC<Props> = ({
     currencySymbol
   ]);
 
-  const valueAdormnet = useMemo(
-    () => (
-      <span>
-        <IconButton className="inputAdornmentButton" onClick={onValueLockClick}>
-          {valueLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
-        </IconButton>
-      </span>
-    ),
-    [valueLocked]
-  );
-
-  const forecastAdormnet = useMemo(
-    () => (
-      <span>
-        <IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
-          {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
-        </IconButton>
-      </span>
-    ),
-    [forecastLocked]
-  );
-
   const taxOnDiscount = useMemo(() => decimalMul(values.courseClassDiscount.discountOverride || values.perUnitAmountExTax || 0, currentTax.rate), [classFee, currentTax, values.courseClassDiscount.discountOverride]);
 
   const discountTotalFee = useMemo(() => {
@@ -193,7 +182,7 @@ const DiscountContent: React.FC<Props> = ({
   }, [classFee, taxOnDiscount, values.courseClassDiscount.discount.rounding]);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={4} className="pr-1">
         <Uneditable
           value={
@@ -223,8 +212,9 @@ const DiscountContent: React.FC<Props> = ({
           onKeyPress={preventNegativeOrLogEnter}
           props={{
             label: "Default forecast take-up",
-            fullWidth: true,
-            labelAdornment: forecastAdormnet
+            labelAdornment: <IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
+              {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+            </IconButton>
           }}
           disabled={forecastLocked}
         />
@@ -245,7 +235,11 @@ const DiscountContent: React.FC<Props> = ({
               name="perUnitAmountExTax"
               normalize={normalizeNumberToZero}
               label={valueLabel}
-              labelAdornment={valueAdormnet}
+              labelAdornment={(
+                <IconButton className="inputAdornmentButton" onClick={onValueLockClick}>
+                  {valueLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+                </IconButton>
+              )}
               disabled={valueLocked}
               onChange={onValueChange}
             />

@@ -78,6 +78,8 @@ abstract class AttachmentRelation extends _AttachmentRelation implements Queueab
 				return (this as CertificateAttachmentRelation).attachedCertificate.student.contact
 			case EnrolmentAttachmentRelation:
 				return (this as EnrolmentAttachmentRelation).attachedEnrolment.student.contact
+			case LeadAttachmentRelation:
+				return (this as LeadAttachmentRelation).attachedLead.customer
 			default: 
 				return null
 		}

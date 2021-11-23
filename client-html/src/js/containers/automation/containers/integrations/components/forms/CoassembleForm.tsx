@@ -4,12 +4,9 @@
  */
 
 import * as React from "react";
-import {
-  reduxForm, initialize, getFormValues
-} from "redux-form";
+import { getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import FormField from "../../../../../../common/components/form/form-fields/FormField";
-import CustomAppBar from "../../../../../../common/components/layout/CustomAppBar";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
 import { State } from "../../../../../../reducers/state";
@@ -37,13 +34,11 @@ class CoassembleBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-
-        <FormField name="fields.baseUrl" label="Base Url" type="text" fullWidth />
-        <FormField name="fields.apiKey" label="API key" type="text" fullWidth />
-        <FormField name="fields.userId" label="User Id" type="text" fullWidth />
+        <AppBarContent>
+          <FormField name="fields.baseUrl" label="Base Url" type="text" className="mb-2" />
+          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2" />
+          <FormField name="fields.userId" label="User Id" type="text" className="mb-2" />
+        </AppBarContent>
       </form>
     );
   }

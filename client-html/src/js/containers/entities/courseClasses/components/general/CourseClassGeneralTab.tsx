@@ -3,31 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+ useCallback, useEffect, useMemo, useState
+} from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { Dispatch } from "redux";
 import { Tag } from "@api/model";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Collapse from "@material-ui/core/Collapse";
-import Button from "@material-ui/core/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Collapse from "@mui/material/Collapse";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import { validateTagsList } from "../../../../../common/components/form/simpleTagListComponent/validateTagsList";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
-import HeaderTextField from "../../../../../common/components/form/form-fields/HeaderTextField";
 import { stubFunction } from "../../../../../common/utils/common";
 import { showMessage } from "../../../../../common/actions";
 import { AppMessage } from "../../../../../model/common/Message";
@@ -35,6 +34,8 @@ import history from "../../../../../constants/History";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { getClassCostTypes } from "../../utils";
 import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
+import FullScreenStickyHeader
+  from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
@@ -51,11 +52,7 @@ const CourseClassGeneralTab = React.memo<Props>(
     twoColumn,
     values,
     isNew,
-    manualLink,
-    rootEntity,
-    onCloseClick,
-    invalid,
-    dirty,
+    syncErrors,
     dispatch,
     form,
     showMessage,
@@ -64,10 +61,6 @@ const CourseClassGeneralTab = React.memo<Props>(
   }) => {
     const [classCodeError, setClassCodeError] = useState(null);
     const [showAllWeeks, setShowAllWeeks] = useState(false);
-
-    const onClose = () => {
-      onCloseClick();
-    };
 
     useEffect(() => {
       if (isNew && !values.code) {
@@ -133,85 +126,6 @@ const CourseClassGeneralTab = React.memo<Props>(
       [form, values.code, values.sessions]
     );
 
-    const courseIdFieldTwoColumnProps = useMemo(
-      () => ({
-        placeholder: "Course",
-        endAdornment: (
-          <LinkAdornment
-            link={values.courseId}
-            linkHandler={openCourseLink}
-            linkColor="inherit"
-            className="appHeaderFontSize pl-0-5"
-          />
-        ),
-        formatting: "inline",
-        fieldClasses: {
-          text: "appHeaderFontSize primaryContarstText primaryContarstHover text-nowrap text-truncate",
-          input: "primaryContarstText",
-          underline: "primaryContarstUnderline",
-          selectMenu: "textPrimaryColor",
-          loading: "primaryContarstText",
-          editIcon: "primaryContarstText"
-        }
-      }),
-      [values.courseId]
-    );
-
-    const courseIdFieldThreecolumnProps = useMemo(
-      () => ({
-        labelAdornment: <LinkAdornment link={values.courseId} linkHandler={openCourseLink} />,
-        label: "Course"
-      }),
-      []
-    );
-
-    const courseIdField = (
-      <FormField
-        type="remoteDataSearchSelect"
-        entity="Course"
-        name="courseId"
-        selectValueMark="id"
-        selectLabelMark="name"
-        aqlColumns="code,name,currentlyOffered,isShownOnWeb,reportableHours,nextAvailableCode"
-        selectFilterCondition={courseFilterCondition}
-        defaultDisplayValue={values && values.courseName}
-        itemRenderer={CourseItemRenderer}
-        disabled={!isNew}
-        props={twoColumn ? courseIdFieldTwoColumnProps : courseIdFieldThreecolumnProps}
-        onInnerValueChange={onCourseIdChange}
-        rowHeight={55}
-        required
-      />
-    );
-
-    const classCodeProps = useMemo(
-      () => ({
-        label: "Class code",
-        input: {
-          onChange: onClassCodeChange,
-          onFocus: stubFunction,
-          onBlur: stubFunction,
-          value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
-        },
-        meta: {
-          error: classCodeError,
-          invalid: Boolean(classCodeError)
-        },
-        fullWidth: true,
-        disabled: !values.courseCode
-      }),
-      [values.code, values.courseCode, classCodeError]
-    );
-
-    const classCodeField = useMemo(
-      () => (twoColumn ? (
-        <HeaderTextField {...classCodeProps} placeholder="Class code" />
-        ) : (
-          <EditInPlaceField {...classCodeProps} />
-        )),
-      [twoColumn, classCodeProps, values.code, values.courseCode]
-    );
-
     const enrolmentsToProfitAllCount = useMemo(() => {
       if (values.feeExcludeGST <= 0) {
         return 0;
@@ -227,7 +141,6 @@ const CourseClassGeneralTab = React.memo<Props>(
         values.sessions,
         values.tutors,
         tutorRoles,
-        values.tutorAttendance
       );
 
       let projected = decimalMinus(
@@ -253,7 +166,6 @@ const CourseClassGeneralTab = React.memo<Props>(
             values.sessions,
             values.tutors,
             tutorRoles,
-            values.tutorAttendance
           );
 
           projected = decimalMinus(
@@ -280,50 +192,79 @@ const CourseClassGeneralTab = React.memo<Props>(
 
     return (
       <>
-        {twoColumn && (
-          <CustomAppBar>
-            <Grid container className="flex-fill">
-              <Grid item xs={6} className="pr-2">
-                {courseIdField}
+        <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3 relative">
+          <Grid item xs={12}>
+            <FullScreenStickyHeader
+              opened={isNew || Object.keys(syncErrors).some(k => ['courseId', 'courseCode', 'code'].includes(k))}
+              twoColumn={twoColumn}
+              title={twoColumn ? (
+                <div className="centeredFlex">
+                  {values.courseName}
+                  <IconButton disabled={!values.courseId} size="small" color="primary" onClick={() => openCourseLink(values.courseId)}>
+                    <Launch fontSize="inherit" />
+                  </IconButton>
+                  <span className="ml-2">
+                    {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
+                  </span>
+                </div>
+            ) : (
+              <Grid container columnSpacing={3} rowSpacing={2}>
+                <Grid item xs={12}>
+                  <div className="centeredFlex">
+                    {values.courseName}
+                    <IconButton disabled={!values.courseId} size="small" color="primary" onClick={() => openCourseLink(values.courseId)}>
+                      <Launch fontSize="inherit" />
+                    </IconButton>
+                  </div>
+                </Grid>
+                <Grid item xs={12}>
+                  {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-                {classCodeField}
-              </Grid>
-            </Grid>
-            <div>
-              {manualLink && (
-                <AppBarHelpMenu
-                  created={values ? new Date(values.createdOn) : null}
-                  modified={values ? new Date(values.modifiedOn) : null}
-                  auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <Button onClick={onClose} className="closeAppBarButton">
-                Close
-              </Button>
-              <FormSubmitButton
-                disabled={(!isNew && !dirty)}
-                invalid={invalid}
-              />
-            </div>
-          </CustomAppBar>
-        )}
-        <Grid container className="pl-3 pt-3 pr-3 relative">
+            )}
+              fields={(
+                <Grid container columnSpacing={3} rowSpacing={2}>
+                  <Grid item xs={twoColumn ? 6 : 12}>
+                    <FormField
+                      type="remoteDataSearchSelect"
+                      label="Course"
+                      entity="Course"
+                      name="courseId"
+                      selectValueMark="id"
+                      selectLabelMark="name"
+                      aqlColumns="code,name,currentlyOffered,isShownOnWeb,reportableHours,nextAvailableCode"
+                      selectFilterCondition={courseFilterCondition}
+                      defaultDisplayValue={values && values.courseName}
+                      itemRenderer={CourseItemRenderer}
+                      disabled={!isNew}
+                      onInnerValueChange={onCourseIdChange}
+                      rowHeight={55}
+                      labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={twoColumn ? 4 : 12}>
+                    <EditInPlaceField
+                      label="Class code"
+                      input={{
+                      onChange: onClassCodeChange,
+                      onFocus: stubFunction,
+                      onBlur: stubFunction,
+                      value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
+                    }}
+                      meta={{
+                      error: classCodeError,
+                      invalid: Boolean(classCodeError)
+                    }}
+                      disabled={!values.courseCode}
+                    />
+                  </Grid>
+                </Grid>
+            )}
+            />
+          </Grid>
           {Boolean(values.isCancelled) && (
             <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
-          )}
-          {!twoColumn && (
-            <>
-              <Grid item xs={12}>
-                {courseIdField}
-              </Grid>
-
-              <Grid item xs={12}>
-                {classCodeField}
-              </Grid>
-            </>
           )}
 
           <Grid item xs={12}>
@@ -334,12 +275,13 @@ const CourseClassGeneralTab = React.memo<Props>(
 
         <Grid
           container
-          className="pl-3 pr-3"
+          className="pt-2 pl-3 pr-3"
+          columnSpacing={3}
+          rowSpacing={2}
           direction={twoColumn && !showAllWeeks ? undefined : "column-reverse"}
         >
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
             <div className="heading pb-2 pt-3">Restrictions</div>
-
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be over
               <FormField
@@ -379,7 +321,6 @@ const CourseClassGeneralTab = React.memo<Props>(
                   labelPlacement="start"
                 />
               </div>
-
               <div>
                 <FormControlLabel
                   className="switchWrapper"
@@ -389,21 +330,11 @@ const CourseClassGeneralTab = React.memo<Props>(
                 />
               </div>
             </Collapse>
-
             <FormField
               type="multilineText"
               name="message"
               label="Message for operator"
               className="pt-2"
-              fullWidth
-            />
-
-            <CustomFields
-              entityName="CourseClass"
-              fieldName="customFields"
-              entityValues={values}
-              dispatch={dispatch}
-              form={form}
             />
           </Grid>
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
@@ -419,6 +350,16 @@ const CourseClassGeneralTab = React.memo<Props>(
               hasBudget={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>
+          <CustomFields
+            entityName="CourseClass"
+            fieldName="customFields"
+            entityValues={values}
+            dispatch={dispatch}
+            form={form}
+            gridItemProps={{
+              xs: twoColumn ? 6 : 12
+            }}
+          />
         </Grid>
       </>
     );

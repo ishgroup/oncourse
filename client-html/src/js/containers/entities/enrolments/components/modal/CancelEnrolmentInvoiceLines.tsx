@@ -3,16 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { Decimal } from "decimal.js-light";
 import React, { useCallback } from "react";
 import { change } from "redux-form";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
+import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { useAppSelector } from "../../../../../common/utils/hooks";
 
 const FORM: string = "CANCEL_ENROLMENT_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
@@ -65,6 +67,8 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
     return (field.finalPriceToPayIncTax < field.chargedFee ? CANCEL_FEE_AMOUNT_WARNING_MESSAGE : null);
   };
 
+  const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+
   return (
     <>
       <div>
@@ -95,7 +99,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                 />
                 <Grid className="centeredFlex">
                   <FormControlLabel
-                    className="checkbox pb-2 pt-2"
+                    className="checkbox pb-2 pt-2 mr-0-5"
                     control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
                     label={`Charge ${field && field.contactName} an administrative fee of `}
                     disabled={!field.isReverseCreditNotes}
@@ -120,13 +124,9 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     disabled={!field.isReverseCreditNotes}
                     formatting="inline"
                   />
-                  {"  "}
-                  <Uneditable
-                    value={field && field.chargedFee}
-                    label=""
-                    money
-                    className={`pb-0 ${classes.uneditableTextField}`}
-                  />
+                  <span className="money ml-0-5">
+                    {formatCurrency(field.chargedFee, currencySymbol)}
+                  </span>
                   <FormField
                     type="select"
                     name={`${item}.incomeAccountId`}

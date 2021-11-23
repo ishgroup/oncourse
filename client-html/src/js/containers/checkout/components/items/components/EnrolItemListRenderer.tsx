@@ -5,10 +5,10 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import clsx from "clsx";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Chip from "@material-ui/core/Chip";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import CircularProgress from "@mui/material/CircularProgress";
+import Chip from "@mui/material/Chip";
 import { AppTheme } from "../../../../../model/common/Theme";
 import CheckoutSearchList from "../../CheckoutSearchList";
 

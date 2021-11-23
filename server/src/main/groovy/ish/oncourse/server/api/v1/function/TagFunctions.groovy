@@ -24,6 +24,7 @@ import ish.oncourse.server.api.v1.model.TagRequirementTypeDTO
 import ish.oncourse.server.api.v1.model.TagStatusDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.TagValidation
+import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.Contact
@@ -31,7 +32,12 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.Invoice
+import ish.oncourse.server.cayenne.Lead
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Payslip
+import ish.oncourse.server.cayenne.Quote
+import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.cayenne.Student
@@ -44,6 +50,8 @@ import ish.oncourse.server.function.GetTagGroups
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
+
+import java.util.stream.Collectors
 
 import static org.apache.commons.lang3.StringUtils.EMPTY
 import static org.apache.commons.lang3.StringUtils.trimToNull
@@ -61,6 +69,8 @@ class TagFunctions {
         put(TaggableClasses.COURSE, TagRequirementTypeDTO.COURSE)
         put(TaggableClasses.DOCUMENT, TagRequirementTypeDTO.DOCUMENT)
         put(TaggableClasses.ENROLMENT, TagRequirementTypeDTO.ENROLMENT)
+        put(TaggableClasses.INVOICE, TagRequirementTypeDTO.INVOICE)
+        put(TaggableClasses.LEAD, TagRequirementTypeDTO.LEAD)
         put(TaggableClasses.PAYSLIP, TagRequirementTypeDTO.PAYSLIP)
         put(TaggableClasses.ROOM, TagRequirementTypeDTO.ROOM)
         put(TaggableClasses.SITE, TagRequirementTypeDTO.SITE)
@@ -77,6 +87,10 @@ class TagFunctions {
         put(Course.simpleName, TaggableClasses.COURSE)
         put(Document.simpleName, TaggableClasses.DOCUMENT)
         put(Enrolment.simpleName, TaggableClasses.ENROLMENT)
+        put(AbstractInvoice.simpleName, TaggableClasses.INVOICE)
+        put(Invoice.simpleName, TaggableClasses.INVOICE)
+        put(Quote.simpleName, TaggableClasses.INVOICE)
+        put(Lead.simpleName, TaggableClasses.LEAD)
         put(Payslip.simpleName, TaggableClasses.PAYSLIP)
         put(Room.simpleName, TaggableClasses.ROOM)
         put(Site.simpleName, TaggableClasses.SITE)
@@ -84,6 +98,7 @@ class TagFunctions {
         put(Tutor.simpleName, TaggableClasses.TUTOR)
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
+        put(Message.simpleName, TaggableClasses.MESSAGE)
     }}
 
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
@@ -251,6 +266,34 @@ class TagFunctions {
 
 
     static Tag toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
+
+        Map<Long, TagRequirement> requirementMap = dbTag.tagRequirements.collectEntries { [(it.id), it] }
+        tag.requirements.each { r ->
+            TagRequirement tagRequirement = r.id ? requirementMap.remove(r.id) : context.newObject(TagRequirement)
+            tagRequirement.entityIdentifier = tagRequirementBidiMap.getByValue(r.type)
+            tagRequirement.isRequired = r.mandatory
+            tagRequirement.manyTermsAllowed = !r.limitToOneTag
+            tagRequirement.tag = dbTag
+        }
+        List<TaggableClasses> deletedEntityList = requirementMap
+                .values()
+                .stream()
+                .map({ requirement -> requirement.entityIdentifier })
+                .collect(Collectors.toList())
+
+        _toDbTag(context, tag, dbTag, isParent, deletedEntityList, childTagsToRemove);
+
+        if (isParent) {
+            if (!dbTag.specialType) {
+                context.deleteObjects(requirementMap.values())
+            }
+        }
+        context.deleteObjects(childTagsToRemove.values())
+
+        dbTag
+    }
+
+    private static void _toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, List<TaggableClasses> deletedEntityList, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
         if (!dbTag.specialType) {
             dbTag.name = trimToNull(tag.name)
             dbTag.isWebVisible = tag.status == TagStatusDTO.SHOW_ON_WEBSITE
@@ -265,29 +308,38 @@ class TagFunctions {
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
             childTag.parentTag = dbTag
-            toDbTag(context, child, childTag, false, childTagsToRemove)
-        }
 
-        if (isParent) {
-            if (!dbTag.specialType) {
-                Map<Long, TagRequirement> requirementMap = dbTag.tagRequirements.collectEntries { [(it.id), it] }
+            _toDbTag(context, child, childTag, false, deletedEntityList, childTagsToRemove)
 
-                tag.requirements.each { r ->
-                    TagRequirement tagRequirement = r.id ? requirementMap.remove(r.id) : context.newObject(TagRequirement)
-                    tagRequirement.entityIdentifier = tagRequirementBidiMap.getByValue(r.type)
-                    tagRequirement.isRequired = r.mandatory
-                    tagRequirement.manyTermsAllowed = !r.limitToOneTag
-                    tagRequirement.tag = dbTag
+            if (!deletedEntityList.isEmpty()) {
+                List<TagRelation> relationsList = new ArrayList<>();
+                childTag.tagRelations.each {
+                    TaggableClasses classes = it.entity;
+                    if (deletedEntityList.contains(it.entity)) relationsList.add(it)
                 }
 
-                context.deleteObjects(requirementMap.values())
+                deleteTagRelations(context, relationsList)
             }
+        }
+    }
 
-            context.deleteObjects(childTagsToRemove.values())
+    private static void deleteTagRelations(ObjectContext context, List<TagRelation> relationsList) {
+
+        int n = 0
+        while (true) {
+            List<TagRelation> part = relationsList
+                    .stream()
+                    .skip(n++ * 100)
+                    .limit(100)
+                    .collect(Collectors.toList())
+
+            if (part.isEmpty()) break;
+
+            context.deleteObjects(part)
         }
 
-        dbTag
     }
+
 
     static Map<Long, Tag> getAllChildTags(Tag rootTag, Map<Long, Tag> map = new HashMap<>()) {
         rootTag.childTags.each { it ->

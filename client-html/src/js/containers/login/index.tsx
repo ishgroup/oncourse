@@ -1,5 +1,7 @@
 import * as React from "react";
 import Loadable from "@react-loadable/revised";
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from '@mui/material';
 import Loading from "../../common/components/layout/Loading";
 
 const LoadableComponent = Loadable({
@@ -7,8 +9,19 @@ const LoadableComponent = Loadable({
   loading: Loading
 });
 
+const loginPageTheme = theme => createTheme({
+  ...theme,
+  overrides: {
+    MuiInput: {},
+  }
+});
+
 export default class LoadableLogin extends React.Component {
   render() {
-    return <LoadableComponent {...this.props} />;
+    return (
+      <ThemeProvider theme={loginPageTheme}>
+        <LoadableComponent {...this.props} />
+      </ThemeProvider>
+    );
   }
 }

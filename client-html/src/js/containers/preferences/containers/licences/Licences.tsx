@@ -1,13 +1,13 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/styles";
 import {
- List, ListItem, ListSubheader, ListItemText
-} from "@material-ui/core";
-import Button from "../../../../common/components/buttons/Button";
+  List, ListItem, ListSubheader, ListItemText
+} from "@mui/material";
+import Button from "@mui/material/Button";
 import { State } from "../../../../reducers/state";
 import * as Model from "../../../../model/preferences/Licences";
-import AppBar from "../../../../common/components/layout/AppBar";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 const styles: any = () => ({
   disabledList: {
@@ -23,16 +23,8 @@ const styles: any = () => ({
 
 const LicenseNames = {
   [Model.LicenseSMS.uniqueKey]: "SMS",
-  [Model.LicenseCreditCard.uniqueKey]: "Credit card",
   [Model.LicenseAccessControl.uniqueKey]: "Access control",
-  [Model.LicensePayroll.uniqueKey]: "Payroll",
-  [Model.LicenseVoucher.uniqueKey]: "Vouchers",
-  [Model.LicenseAttendance.uniqueKey]: "Attendance",
-  [Model.LicenseMembership.uniqueKey]: "Membership",
   [Model.LicenseScripting.uniqueKey]: "Scripting",
-  [Model.LicenseFeeHelpExport.uniqueKey]: "VET Fee Help exports",
-  [Model.LicenseFundingContract.uniqueKey]: "Funding contract",
-  [Model.LicenseGravatar.uniqueKey]: "Gravatar",
 };
 
 class Licences extends React.Component<any, any> {
@@ -55,47 +47,54 @@ class Licences extends React.Component<any, any> {
 
     const inactive = licences
       && Object.keys(licences)
-        .filter(item => licences[item] === "false")
+        .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+          && (licences[item].toLowerCase() === "false" || licences[item] === "0"))
         .map(item => this.listItem(item, false));
 
     return (
       <div>
-        <AppBar title="Licences" />
-
-        <List
-          subheader={(
-            <ListSubheader disableSticky className="heading mb-2">
-              Enabled Features
-            </ListSubheader>
-          )}
+        <AppBarContainer
+          title="Licences"
+          hideHelpMenu
+          hideSubmitButton
+          disableInteraction
         >
-          {licences
-            && Object.keys(licences)
-              .filter(item => licences[item] === "true")
-              .map(item => this.listItem(item, true))}
-        </List>
-
-        {inactive && Boolean(inactive.length) && (
           <List
-            className="mt-1"
             subheader={(
-              <ListSubheader disableSticky className="heading">
-                Inactive Features
-                <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link">
-                  <Button
-                    color="primary"
-                    text="Upgrade now"
-                    size="small"
-                    className="m-1"
-                    rootClasses="licencesUpgradeButton"
-                  />
-                </a>
+              <ListSubheader disableSticky className="heading mb-2 pl-0">
+                Enabled Features
               </ListSubheader>
             )}
           >
-            {inactive}
+            {licences
+            && Object.keys(licences)
+              .filter(item => Object.keys(LicenseNames).includes(item) && licences[item] !== null
+                && (licences[item].toLowerCase() === "true" || Number(licences[item]) > 0))
+              .map(item => this.listItem(item, true))}
           </List>
-        )}
+
+          {inactive && Boolean(inactive.length) && (
+            <List
+              className="mt-1"
+              subheader={(
+                <ListSubheader disableSticky className="heading">
+                  Inactive Features
+                  <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
+                    <Button
+                      color="primary"
+                      size="small"
+                      className="m-1 licencesUpgradeButton"
+                    >
+                      Upgrade now
+                    </Button>
+                  </a>
+                </ListSubheader>
+              )}
+            >
+              {inactive}
+            </List>
+          )}
+        </AppBarContainer>
       </div>
     );
   }

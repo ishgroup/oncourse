@@ -10,24 +10,19 @@ import React, { useCallback, useMemo } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import {
-  change, getFormValues, initialize, isDirty, isInvalid, reduxForm
+ change, getFormValues, initialize, isDirty, isInvalid, reduxForm 
 } from "redux-form";
 import { connect } from "react-redux";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import {
-  Category, CheckoutSaleRelation, ColumnWidth
-} from "@api/model";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { Category, CheckoutSaleRelation, ColumnWidth } from "@api/model";
 import debounce from "lodash.debounce";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
 import history from "../../../constants/History";
-import {
-  CheckoutCourse, CheckoutCourseClass, CheckoutSummary
-} from "../../../model/checkout";
+import { CheckoutCourse, CheckoutCourseClass, CheckoutSummary } from "../../../model/checkout";
 import { State } from "../../../reducers/state";
 import ResizableWrapper from "../../../common/components/layout/resizable/ResizableWrapper";
 import Drawer from "../../../common/components/layout/Drawer";
-import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import { AppTheme } from "../../../model/common/Theme";
 import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
 import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
@@ -44,12 +39,15 @@ import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
 import {
-  CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_CONTACT_COLUMNS,
+  CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
-  CheckoutPage, titles, CheckoutCurrentStepType, CheckoutPageType
+  CheckoutCurrentStepType,
+  CheckoutPage,
+  CheckoutPageType,
+  titles
 } from "../constants";
 import {
   checkoutCourseMap,
@@ -60,6 +58,7 @@ import {
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
   processCheckoutInvoiceId,
+  processCheckoutLeadId,
   processCheckoutSale,
   processCheckoutWaitingListIds
 } from "../utils";
@@ -74,16 +73,14 @@ import SelectedItemRenderer from "./items/components/SelectedItemRenderer";
 import EnrolCourseClassView from "./items/components/EnrolCourseClassView";
 import {
   addContact,
-  removeContact,
-  updateContact,
   addItem,
+  checkoutUpdateRelatedItems,
+  removeContact,
   removeItem,
   updateClassItem,
-  checkoutUpdateRelatedItems
+  updateContact
 } from "../actions";
-import {
-  checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts
-} from "../actions/checkoutContact";
+import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from "../actions/checkoutContact";
 import { ContactInitial } from "../../entities/contacts/Contacts";
 import CheckoutPaymentPage from "./payment/CheckoutPaymentPage";
 import CheckoutItemView from "./items/components/CheckoutItemView";
@@ -115,6 +112,7 @@ import {
 import uniqid from "../../../common/utils/uniqid";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
 import CheckoutAppBar from "./CheckoutAppBar";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
@@ -549,11 +547,21 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const invoiceId = query.get("invoiceId");
     const enrolmentId = query.get("enrolmentId");
     const contactId = query.get("contactId");
+    const leadId = query.get("leadId");
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
 
     if (window.location.search) {
       history.replace("/checkout");
+    }
+    if (leadId) {
+      processCheckoutLeadId(
+        leadId,
+        onChangeStep,
+        setActiveField,
+        setCustomLoading,
+        dispatch
+      ).catch(e => console.error(e));
     }
     if (waitingListIds) {
       processCheckoutWaitingListIds(
@@ -562,7 +570,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      );
+      ).catch(e => console.error(e));
     }
     if (courseClassId) {
       processCheckoutCourseClassId(
@@ -574,7 +582,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         getClassPaymentPlans,
         openItem,
         dispatch
-      );
+      ).catch(e => console.error(e));
     }
     if (contactId) {
       processCheckoutContactId(contactId, onSelectHandler, dispatch);
@@ -1097,51 +1105,56 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
               && !openContactEditView
               && !selectedContact && (
                 <>
-                  <CustomAppBar>
-                    <CheckoutAppBar
-                      title={
-                        activeField === CheckoutPage.contacts && noContactMsg !== null
-                        ? noContactMsg
-                        : activeField === CheckoutPage.items && noItemMsg !== null
-                          ? noItemMsg
-                          : titles[activeField]
-                      }
-                    />
-                  </CustomAppBar>
-
-                  <div className="appBarContainer w-100">
-                    {!openContactEditView && activeField === CheckoutPage.contacts && (
-                      <div className="p-3">
-                        <EnrolContactListView
-                          title={`${listContacts.length > 1 ? "Contacts" : "Contact"}`}
-                          contacts={listContacts}
-                          relatedContacts={relatedContacts}
-                          onChangeHandler={onSelectHandler}
-                          disabledHandler={onSelectDisabledHandler}
-                          searchString={value && value.contacts}
-                          selectedContacts={selectedContacts}
-                          setCreateNewContact={setCreateNewContact}
-                          contactsLoading={contactsLoading}
-                        />
-                      </div>
+                  <AppBarContainer
+                    hideHelpMenu
+                    hideSubmitButton
+                    disableInteraction
+                    title={(
+                      <CheckoutAppBar
+                        title={
+                          activeField === CheckoutPage.contacts && noContactMsg !== null
+                            ? noContactMsg
+                            : activeField === CheckoutPage.items && noItemMsg !== null
+                              ? noItemMsg
+                              : titles[activeField]
+                        }
+                      />
                     )}
+                  >
+                    <div className="w-100">
+                      {!openContactEditView && activeField === CheckoutPage.contacts && (
+                        <div>
+                          <EnrolContactListView
+                            title={`${listContacts.length > 1 ? "Contacts" : "Contact"}`}
+                            contacts={listContacts}
+                            relatedContacts={relatedContacts}
+                            onChangeHandler={onSelectHandler}
+                            disabledHandler={onSelectDisabledHandler}
+                            searchString={value && value.contacts}
+                            selectedContacts={selectedContacts}
+                            setCreateNewContact={setCreateNewContact}
+                            contactsLoading={contactsLoading}
+                          />
+                        </div>
+                      )}
 
-                    {!openItemEditView && !openClassListView && activeField === CheckoutPage.items && (
-                      <div className="p-3">
-                        <EnrolItemListView
-                          courses={filteredItems.courses}
-                          products={filteredItems.products}
-                          vouchers={filteredItems.vouchers}
-                          membershipProducts={filteredItems.membershipProducts}
-                          onChangeHandler={onSelectHandler}
-                          disabledHandler={onSelectDisabledHandler}
-                          searchString={itemsSearch}
-                          selectedItems={selectedItems}
-                          salesRelations={salesRelations}
-                        />
-                      </div>
-                    )}
-                  </div>
+                      {!openItemEditView && !openClassListView && activeField === CheckoutPage.items && (
+                        <div>
+                          <EnrolItemListView
+                            courses={filteredItems.courses}
+                            products={filteredItems.products}
+                            vouchers={filteredItems.vouchers}
+                            membershipProducts={filteredItems.membershipProducts}
+                            onChangeHandler={onSelectHandler}
+                            disabledHandler={onSelectDisabledHandler}
+                            searchString={itemsSearch}
+                            selectedItems={selectedItems}
+                            salesRelations={salesRelations}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </AppBarContainer>
                 </>
               )}
 
@@ -1170,7 +1183,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             )}
           </div>
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.summary) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.summary) })}>
           <CheckoutSummaryComp
             checkoutStep={checkoutStep}
             onChangeStep={onChangeStep}
@@ -1181,13 +1194,13 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             summaryList={summary.list}
           />
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice) })}>
           <CheckoutFundingInvoiceForm
             activeField={activeField}
             titles={titles}
           />
         </div>
-        <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.payment) })}>
+        <div className={clsx("root", { "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.payment) })}>
           <CheckoutPaymentPage
             activeField={activeField}
             titles={titles}

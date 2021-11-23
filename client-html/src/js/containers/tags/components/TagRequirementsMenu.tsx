@@ -1,12 +1,14 @@
 import React, { ComponentClass } from "react";
+import { connect } from "react-redux";
 import {
-  withStyles, Typography, Menu, MenuItem
-} from "@material-ui/core";
+  Typography, Menu, MenuItem
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { TagRequirement, TagRequirementType } from "@api/model";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
 import clsx from "clsx";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
+import { State } from "../../../reducers/state";
+import AddButton from "../../../common/components/icons/AddButton";
 
 const requirements = Object.keys(TagRequirementType).map(
   (i: TagRequirementType) =>
@@ -108,9 +110,22 @@ class TagRequirementsMenu extends React.Component<any, any> {
 
   addRequirement = item => {
     const {
+      allTags,
       input: { onChange },
-      items
+      items,
+      rootID
     } = this.props;
+
+    const currentTagRequirements = allTags.find(t => t.id === rootID)?.requirements;
+    if (currentTagRequirements && currentTagRequirements.length) {
+      const foundedTagRequirement = currentTagRequirements.find(r => r.type === item.type);
+
+      if (foundedTagRequirement) {
+        item.id = foundedTagRequirement.id;
+      } else {
+        item.id = null;
+      }
+    }
 
     onChange([item, ...items]);
   };
@@ -153,7 +168,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
               {label}
             </Typography>
 
-            <IconButton
+            <AddButton
               aria-owns={anchorEl ? "field-types-menu" : null}
               aria-haspopup="true"
               onClick={this.handleAddFieldClick}
@@ -162,9 +177,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
                 disabled: "disabled",
                 root: system ? "invisible" : undefined
               }}
-            >
-              <AddCircle className="addButtonColor" width={20} />
-            </IconButton>
+            />
           </div>
 
           {error && (
@@ -178,4 +191,8 @@ class TagRequirementsMenu extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles)(TagRequirementsMenu) as ComponentClass<any>;
+const mapStateToProps = (state: State) => ({
+  allTags: state.tags.allTags,
+});
+
+export default connect(mapStateToProps, null)(withStyles(styles)(TagRequirementsMenu) as ComponentClass<any>);

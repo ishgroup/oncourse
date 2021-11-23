@@ -13,7 +13,8 @@ import {
   ContactNode,
   Invoice,
   InvoiceInvoiceLine,
-  InvoicePaymentPlan
+  InvoicePaymentPlan,
+  ProductType
 } from "@api/model";
 import { differenceInMinutes, format, isBefore } from "date-fns";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
@@ -24,11 +25,18 @@ import {
   CheckoutDiscount,
   CheckoutEntity,
   CheckoutItem,
-  CheckoutState, CheckoutSummary,
+  CheckoutState,
+  CheckoutSummary,
   CheckoutSummaryListItem
 } from "../../../model/checkout";
 import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
-import { CheckoutCurrentStep, CheckoutCurrentStepType } from "../constants";
+import {
+  CHECKOUT_MEMBERSHIP_COLUMNS,
+  CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_VOUCHER_COLUMNS,
+  CheckoutCurrentStep,
+  CheckoutCurrentStepType
+} from "../constants";
 import { getFundingInvoices } from "./fundingInvoice";
 
 export const filterPastClasses = courseClasses => {
@@ -106,6 +114,11 @@ export const setSummaryListWithDefaultPayer = (summaryList, payerIndex = 0) => s
   }
   return { ...l, payer: false, sendInvoice: false };
 });
+
+export const getDefaultPayer = summaryList => {
+  const payerIndex = summaryList.findIndex(list => list.payer);
+  return payerIndex === -1 ? 0 : payerIndex;
+};
 
 export const modifySummaryLisItem = (summaryList, itemData, toggleCheck = false) => summaryList.map((l, li) => {
     if (li === itemData.listIndex) {
@@ -593,6 +606,19 @@ export const getCheckoutCurrentStep = (step: CheckoutCurrentStepType): number =>
       return 3;
     default:
       return -1;
+  }
+};
+
+export const getProductColumnsByType = (type: ProductType | string) => {
+  switch (type) {
+    case ProductType.Membership:
+      return CHECKOUT_MEMBERSHIP_COLUMNS;
+    case ProductType.Voucher:
+      return CHECKOUT_VOUCHER_COLUMNS;
+    case ProductType.Product:
+      return CHECKOUT_PRODUCT_COLUMNS;
+    default:
+      throw Error("Unknown product type");
   }
 };
 

@@ -58,19 +58,15 @@ describe("Virtual rendered PaymentTypesForm", () => {
     },
     render: (wrapper, initialValues) => {
       initialValues.forEach((value, index) => {
-        expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].name'] input`).getDOMNode().value)
+        expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].name'] input`).val())
           .toEqual(value.name);
-
-        expect(wrapper.find(`#payment-type-item-${index} input[type='checkbox']`).at(0).props().checked).toEqual(value.active);
-        expect(wrapper.find(`#payment-type-item-${index} input[type='checkbox']`).at(1).props().checked).toEqual(value.bankedAuto);
-        expect(wrapper.find(`#payment-type-item-${index} input[type='checkbox']`).at(2).props().checked).toEqual(value.reconcilable);
-
+        
         if (!value.systemType) {
-          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].type'] input`).getDOMNode().value)
+          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].type'] input`).val())
             .toEqual(value.type);
-          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].undepositAccountId'] input`).getDOMNode().value)
+          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].undepositAccountId'] input`).val())
             .toEqual(value.undepositAccountId.toString());
-          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].accountId'] input`).getDOMNode().value)
+          expect(wrapper.find(`#payment-type-item-${index} div[id='types[${index}].accountId'] input`).val())
             .toEqual(value.accountId.toString());
         }
       });

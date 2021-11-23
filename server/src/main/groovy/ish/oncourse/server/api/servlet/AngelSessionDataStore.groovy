@@ -144,14 +144,15 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
      * Get all expired sessions from the session ids provided
      *
      * @param candidates collection of session ids to check
+     * @param time current time in ms
      * @return
      */
     @Override
-    Set<String> doGetExpired(Set<String> candidates) {
+    Set<String> doCheckExpired(Set<String> candidates, long time) {
         return ObjectSelect
                 .columnQuery(SystemUser, SystemUser.SESSION_ID)
                 .where(SystemUser.SESSION_ID.in(candidates))
-                .and(SystemUser.LAST_ACCESS.lt(preferenceController.timeoutThreshold))
+                .and(SystemUser.LAST_ACCESS.lt(preferenceController.getTimeoutThreshold(time)))
                 .select(context).toSet()
     }
 
@@ -167,7 +168,7 @@ class AngelSessionDataStore extends AbstractSessionDataStore {
      * @return the empty set if there are no sessions expired as at the time, or
      *         otherwise a set of session ids.
      */
-//    @Override
+    @Override
     Set<String> doGetExpired(long before) {
         return ObjectSelect
                 .columnQuery(SystemUser, SystemUser.SESSION_ID)

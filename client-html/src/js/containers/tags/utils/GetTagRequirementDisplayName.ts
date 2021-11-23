@@ -14,6 +14,8 @@ const GetTagRequirementDisplayName = (type: TagRequirementType) => {
       return "Documents";
     case TagRequirementType.Enrolment:
       return "Enrolments";
+    case TagRequirementType.Invoice:
+      return "Invoices";
     case TagRequirementType.Payslip:
       return "Payslips";
     case TagRequirementType.Room:
@@ -24,6 +26,8 @@ const GetTagRequirementDisplayName = (type: TagRequirementType) => {
       return "Students";
     case TagRequirementType.Tutor:
       return "Tutors";
+    case TagRequirementType.Lead:
+      return "Lead";
     case TagRequirementType.WaitingList:
       return "Waiting List";
     case TagRequirementType.CourseClass:

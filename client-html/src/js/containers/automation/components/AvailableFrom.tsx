@@ -1,5 +1,5 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { MessageTemplateEntityName } from "../constants";
 import { EntityName } from "../../../model/entities/common";
 
@@ -25,6 +25,9 @@ export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
 
     case "Invoice":
       return ["Invoices"];
+
+    case "Lead":
+      return ["Leads"];
 
     case "Membership":
       return ["Sales"];
@@ -112,6 +115,9 @@ export const mapAvailableFrom = (entity: EntityName): EntityName[] => {
 
     case "InvoiceLine":
       return ["Invoice"];
+
+    case "Lead":
+      return ["Lead"];
 
     case "Membership":
       return ["ProductItem"];

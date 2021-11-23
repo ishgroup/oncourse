@@ -1,12 +1,12 @@
 import * as React from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@mui/styles";
 import clsx from "clsx";
-import HelpOutline from "@material-ui/icons/HelpOutline";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from "@material-ui/core/Tooltip";
+import HelpOutline from "@mui/icons-material/HelpOutline";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
 import { format as formatDate } from "date-fns";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../utils/dates/format";
 import { openInternalLink } from "../../utils/links";
@@ -15,7 +15,6 @@ const styles = theme =>
   createStyles({
     button: {
       color: theme.appBarButton.helpMenu.color,
-      marginRight: "10px"
     },
     info: {
       display: "flex",
@@ -68,8 +67,8 @@ class AppBarHelpMenu extends React.Component<Props, any> {
   render() {
     const { anchorEl } = this.state;
     const {
- classes, created, modified, iconClasses
-} = this.props;
+      classes, created, modified, iconClasses, auditsUrl
+    } = this.props;
 
     return (
       <>
@@ -109,24 +108,29 @@ class AppBarHelpMenu extends React.Component<Props, any> {
           <MenuItem className={created || modified ? classes.divider : undefined} onClick={this.openManual}>
             Open manual
           </MenuItem>
-          <MenuItem onClick={this.openAudits}>
-            View audit trail
-          </MenuItem>
+          {auditsUrl && (
+            <MenuItem onClick={this.openAudits}>
+              View audit trail
+            </MenuItem>
+          )}
         </Menu>
 
         <Tooltip title="Additional information">
-          <IconButton
-            type="button"
-            aria-owns={anchorEl ? "form-help-menu" : null}
-            aria-haspopup="true"
-            onClick={this.handleAddFieldClick}
-            className={clsx({
-              [classes.button]: !iconClasses,
-              [iconClasses]: !!iconClasses
-            })}
-          >
-            <HelpOutline />
-          </IconButton>
+          <div>
+            <IconButton
+              type="button"
+              aria-owns={anchorEl ? "form-help-menu" : null}
+              aria-haspopup="true"
+              onClick={this.handleAddFieldClick}
+              size="large"
+              className={clsx({
+                [classes.button]: !iconClasses,
+                [iconClasses]: !!iconClasses
+              })}
+            >
+              <HelpOutline />
+            </IconButton>
+          </div>
         </Tooltip>
       </>
     );

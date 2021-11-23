@@ -4,8 +4,8 @@
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
 
@@ -29,6 +29,7 @@ import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
 import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
@@ -64,7 +65,6 @@ public class AngelServerFactory {
     public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
     public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
-               // specify if repliation in debug mode
 
 
     @Inject
@@ -79,8 +79,7 @@ public class AngelServerFactory {
 
         /**
          * We need to increase 'org.apache.cxf.stax.maxChildElements' property to 100000 because
-         * willow side can replication more then 50000 (default value for the property) records.
-         * See willow db, table module and ishVersion = 1166
+         * willow side can replicate more than 50000 (default value for the property) records.
          */
         System.setProperty(StaxUtils.MAX_CHILD_ELEMENTS, "100000");
 
@@ -126,16 +125,14 @@ public class AngelServerFactory {
         } catch (Throwable e) {
             LOGGER.catching(e);
             LOGGER.error("Server start failed on basic level, aborting startup of other services");
-            // total failure, some of the essential services cannot be
-            // started
-            throw new RuntimeException("Server start failed on basic level, aborting startup of other services", e);
-            
+            // total failure, some essential services cannot be started
+            throw new RuntimeException("Server start failed to create or update the database. Aborting startup of other services.", e);
         }
 
-        // only if no fail until now start the background cron-like tasks
         try {
             LOGGER.warn("Configuring cron tasks");
 
+            // randomise the cron jobs so hosted sites don't all run at once
             var random = new Random();
 
             // starting other services:
@@ -156,15 +153,23 @@ public class AngelServerFactory {
                     prefController.getOncourseServerDefaultTimezone(),
                     true, false);
 
-            //generate unique cron schedule between 1:00am and 1:59am  to ensure all our hosted colleges don't hit this code on the same millsecond
+            if ((Boolean) prefController.getValueForKey(Preferences.AUTO_DISABLE_INACTIVE_ACCOUNT)) {
+                // between 3:00 and 3:59 every Monday disable inactive 4 years or never loged in users
+                var randomSchedule = String.format(USER_DISAIBLE_JOB_TEMPLATE, random.nextInt(59));
+                schedulerService.scheduleCronJob(UserDisableJob.class,
+                        USER_DISAIBLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                        randomSchedule, prefController.getOncourseServerDefaultTimezone(),
+                        true, false);
+            }
+
+            // between 1:00am and 1:59am update overdue amount for unpaid invoices
             var randomSchedule = String.format(INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE, random.nextInt(59));
-            //update overdue amount for unpaid invoices
             schedulerService.scheduleCronJob(InvoiceOverdueUpdateJob.class,
                     INVOICE_OVERDUE_UPDATE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     randomSchedule, prefController.getOncourseServerDefaultTimezone(),
                     true, false);
 
-            //between 2:00am and 2:59am
+            // between 2:00am and 2:59am purge the audit table
             randomSchedule = String.format(AUDIT_PURGE_JOB_CRON_SCHEDULE_TEMPLATE, random.nextInt(59));
             schedulerService.scheduleCronJob(AuditPurgeJob.class, AUDIT_PURGE_JOB, BACKGROUND_JOBS_GROUP_ID,
                     randomSchedule, prefController.getOncourseServerDefaultTimezone(),
@@ -235,7 +240,7 @@ public class AngelServerFactory {
 
         pluginService.onStart();
 
-        LOGGER.warn("Server ready");
+        LOGGER.warn("Server ready.");
     }
 
     private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
@@ -280,6 +285,7 @@ public class AngelServerFactory {
                 user.setInvitationToken(invitationToken);
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
             } catch (MessagingException ex) {
+                LOGGER.catching(ex);
                 LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
                 return;
             }
@@ -311,9 +317,4 @@ public class AngelServerFactory {
         new JRRuntimeConfig().config();
     }
 
-
-    private static void crashServer() {
-        LOGGER.debug("crashServer!", new Exception());
-        System.exit(1);
-    }
 }

@@ -43,6 +43,9 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	public static final int COURSE_NAME_MAX_LENGTH = 200;
 
 	public static final String CURRENT_CLASS_COUNT_PROPERTY = "currentClassesCount";
+	public static final String TOTAL_CLASS_COUNT_PROPERTY = "totalClassesCount";
+	public static final String DATA_COLLECTION_RULE_KEY = "dataCollectionRuleName";
+	public static final String ENROLMENT_TYPE_KEY = "displayableEnrolmentType"
 
 
 	private static final Logger logger = LogManager.getLogger()
@@ -314,6 +317,20 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
+	 * @return the name of field configuration schema
+	 */
+	String getDataCollectionRuleName() {
+		return fieldConfigurationSchema.getName();
+	}
+
+	/**
+	 * @return a total classes count of this course
+	 */
+	Integer getTotalClassesCount() {
+		return getAllClassesCount()
+	}
+
+	/**
 	 * @return a list of all courses related to this one
 	 */
 	@Nonnull @API
@@ -520,6 +537,14 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 		return tagList
 	}
 
+	/**
+	 *
+	 * @return EnrolmentType property in displayable view
+	 */
+	String getDisplayableEnrolmentType(){
+		return enrolmentType.columnDisplayName
+	}
+
 	@Override
 	void addToModules(Module module) {
 		CourseUtil.addModule(this, module, CourseModule.class)
@@ -540,5 +565,10 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return CourseCustomField
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return CourseTagRelation.class
 	}
 }

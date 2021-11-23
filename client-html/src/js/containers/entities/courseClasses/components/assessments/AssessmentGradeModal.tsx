@@ -16,9 +16,9 @@ import {
   DialogActions,
   Button,
   Dialog
-} from "@material-ui/core";
+} from "@mui/material";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { useGradeErrors } from "./utils/hooks";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 
@@ -79,7 +79,7 @@ const AssessmentGradeModal = (
     >
       <DialogContent>
         <DialogTitle className="p-0 mb-2">Set all students grade as</DialogTitle>
-        <Grid container>
+        <Grid container columnSpacing={3}>
           <Grid item xs={6}>
             <EditInPlaceField
               type="number"

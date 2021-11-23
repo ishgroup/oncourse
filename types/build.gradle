@@ -9,7 +9,9 @@
  * See the GNU Affero General Public License for more details.
  */
 
-apply plugin: 'groovy'
+plugins {
+    id 'java-library'
+}
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'
@@ -19,14 +21,14 @@ configurations {
 }
 
 dependencies {
-    api "org.apache.cayenne:cayenne-server:$cayenneVersion"
-    api 'org.apache.commons:commons-lang3:3.7'
-    api 'commons-codec:commons-codec:1.14'
+    implementation "org.apache.cayenne:cayenne-server:$cayenneVersion"
+    api 'org.apache.commons:commons-lang3:3.12.0'
+    api 'commons-codec:commons-codec:1.15'
     api 'javax.mail:mail:1.4.7'
-	api 'org.springframework:spring-context:4.2.4.RELEASE'
-    api 'org.springframework.security:spring-security-crypto:5.4.2'
+	api 'org.springframework:spring-context:5.3.10'
+    api 'org.springframework.security:spring-security-crypto:5.5.1'
 
-    testImplementation 'org.mockito:mockito-core:2.18.3'
+    testImplementation 'org.mockito:mockito-core:3.12.4'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {

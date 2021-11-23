@@ -15,7 +15,7 @@ Feature: Main feature for all GET requests with path 'tag'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 14
+        And match karate.sizeOf(response) == 15
 
         And match response[*].name contains
         """
@@ -33,7 +33,8 @@ Feature: Main feature for all GET requests with path 'tag'
         "testTag for Courses",
         "testTag for Classes",
         "testTag for contacts",
-        "testTag for enrolments"
+        "testTag for enrolments",
+        "testTag for leads"
         ]
         """
 
@@ -50,7 +51,7 @@ Feature: Main feature for all GET requests with path 'tag'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 14
+        And match karate.sizeOf(response) == 15
 
         And match response[*].name contains
         """
@@ -68,7 +69,8 @@ Feature: Main feature for all GET requests with path 'tag'
         "testTag for Courses",
         "testTag for Classes",
         "testTag for contacts",
-        "testTag for enrolments"
+        "testTag for enrolments",
+        "testTag for leads"
         ]
         """
 
@@ -85,7 +87,7 @@ Feature: Main feature for all GET requests with path 'tag'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 14
+        And match karate.sizeOf(response) == 15
 
         And match response[*].name contains
         """
@@ -103,7 +105,8 @@ Feature: Main feature for all GET requests with path 'tag'
         "testTag for Courses",
         "testTag for Classes",
         "testTag for contacts",
-        "testTag for enrolments"
+        "testTag for enrolments",
+        "testTag for leads"
         ]
         """
 
@@ -120,7 +123,7 @@ Feature: Main feature for all GET requests with path 'tag'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 14
+        And match karate.sizeOf(response) == 15
 
         And match response[*].name contains
         """
@@ -138,7 +141,8 @@ Feature: Main feature for all GET requests with path 'tag'
         "testTag for Courses",
         "testTag for Classes",
         "testTag for contacts",
-        "testTag for enrolments"
+        "testTag for enrolments",
+        "testTag for leads"
         ]
         """
 
@@ -155,7 +159,7 @@ Feature: Main feature for all GET requests with path 'tag'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 14
+        And match karate.sizeOf(response) == 15
 
         And match response[*].name contains
         """
@@ -173,7 +177,8 @@ Feature: Main feature for all GET requests with path 'tag'
         "testTag for Courses",
         "testTag for Classes",
         "testTag for contacts",
-        "testTag for enrolments"
+        "testTag for enrolments",
+        "testTag for leads"
         ]
         """
 
@@ -190,7 +195,7 @@ Feature: Main feature for all GET requests with path 'tag'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 14
+        And match karate.sizeOf(response) == 15
 
         And match response[*].name contains
         """
@@ -208,7 +213,8 @@ Feature: Main feature for all GET requests with path 'tag'
         "testTag for Courses",
         "testTag for Classes",
         "testTag for contacts",
-        "testTag for enrolments"
+        "testTag for enrolments",
+        "testTag for leads"
         ]
         """
 
@@ -225,7 +231,7 @@ Feature: Main feature for all GET requests with path 'tag'
         Given path ishPath
         When method GET
         Then status 200
-        And match karate.sizeOf(response) == 14
+        And match karate.sizeOf(response) == 15
 
         And match response[*].name contains
         """
@@ -243,6 +249,7 @@ Feature: Main feature for all GET requests with path 'tag'
         "testTag for Courses",
         "testTag for Classes",
         "testTag for contacts",
-        "testTag for enrolments"
+        "testTag for enrolments",
+        "testTag for leads"
         ]
         """

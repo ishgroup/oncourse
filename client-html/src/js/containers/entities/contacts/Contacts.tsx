@@ -12,31 +12,27 @@ import React, {
 } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import {
+  createContact,
+  deleteContact,
   getContact,
-  getContactsRelationTypes,
   getContactsConcessionTypes,
+  getContactsRelationTypes,
   getContactsTaxTypes,
   getContactTags,
-  updateContact,
-  createContact,
-  deleteContact
+  updateContact
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import {
- getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
+  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
 } from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
@@ -70,9 +66,7 @@ interface ContactsProps {
   getContactsConcessionTypes?: () => void;
   getTaxTypes?: () => void;
   getDefaultTerms?: () => void;
-  getGenerateAccessForContact?: () => void;
-  getConfirmAccessForContact?: () => void;
-  getQePermissions?: () => void;
+  getPermissions?: () => void;
   getContactRelationTypes?: () => void;
   selection?: string[];
   relationTypes?: PreferencesState["contactRelationTypes"];
@@ -219,7 +213,7 @@ export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
 );
 
-const SearchMenuItem = React.memo<any>(({ content, data }) => (data.prefix ? (
+const SearchMenuItem = React.memo<any>(({ content, data }) => (
   <div className="d-flex align-items-baseline">
     {content}
     <Typography className="ml-0-5" variant="caption" color="textSecondary">
@@ -228,9 +222,7 @@ const SearchMenuItem = React.memo<any>(({ content, data }) => (data.prefix ? (
       )
     </Typography>
   </div>
-) : (
-  content
-)));
+));
 
 const searchMenuItemsRenderer = (content, data, search) => (
   data.prefix ? <SearchMenuItem content={content} data={data} search={search} /> : content
@@ -243,7 +235,7 @@ const setRowClasses = row => {
   const dateFinished = row["tutor.dateFinished"];
 
   if (dateFinished && isBefore(new Date(dateFinished), today)) {
-    return "op05";
+    return "text-op05";
   }
 
   return undefined;
@@ -264,16 +256,14 @@ const Contacts: React.FC<ContactsProps> = props => {
     getContactsConcessionTypes,
     getTaxTypes,
     getDefaultTerms,
-    getGenerateAccessForContact,
-    getConfirmAccessForContact,
-    getQePermissions,
+    getPermissions,
     getContactRelationTypes,
     relationTypes,
     selection,
     isVerifyingUSI,
     usiVerificationResult,
     onCreate,
-    getPaymentTypes
+    getPaymentTypes,
   } = props;
 
   const [findRelatedItems, setFindRelatedItems] = useState([]);
@@ -330,9 +320,7 @@ const Contacts: React.FC<ContactsProps> = props => {
     getContactsConcessionTypes();
     getTaxTypes();
     getDefaultTerms();
-    getGenerateAccessForContact();
-    getConfirmAccessForContact();
-    getQePermissions();
+    getPermissions();
     getContactRelationTypes();
 
     return () => {
@@ -366,6 +354,9 @@ const Contacts: React.FC<ContactsProps> = props => {
     onCreate(contactModel);
   }, []);
 
+  const getContactFullNameWithTitle = (values: Contact) =>
+    `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
+
   return (
     <ListView
       listProps={{
@@ -378,10 +369,11 @@ const Contacts: React.FC<ContactsProps> = props => {
       }}
       editViewProps={{
         manualLink,
-        nameCondition: getContactFullName,
+        nameCondition: getContactFullNameWithTitle,
         disabledSubmitCondition: getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult),
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"]
+        asyncBlurFields: ["notes[].message"],
+        hideTitle: true
       }}
       EditViewContent={ContactEditView}
       nestedEditFields={nestedEditFields}
@@ -422,19 +414,15 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: string, contact: Contact) => dispatch(updateContact(id, contact)),
   onCreate: (contact: Contact) => dispatch(createContact(contact)),
   clearListState: () => dispatch(clearListState()),
-  getGenerateAccessForContact: () => dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" })),
-  getConfirmAccessForContact: () => dispatch(
-    checkPermissions({
-      path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true",
-      method: "POST"
-    })
-  ),
-  getQePermissions: () => {
+  getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Enrolment", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PriorLearning", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" }));
   },
   getPaymentTypes: () => dispatch(getPaymentTypes())
 });

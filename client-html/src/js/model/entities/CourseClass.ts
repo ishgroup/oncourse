@@ -17,10 +17,9 @@ import {
   createStringEnum,
   Note,
   StudentAttendance,
-  TutorAttendance,
   Tax,
-  TutorAttendanceType,
-  TrainingPlan
+  TrainingPlan,
+  TutorAttendanceType
 } from "@api/model";
 import { AccountExtended } from "./Account";
 import { TimetableSession } from "../timetable";
@@ -45,10 +44,6 @@ export interface StudentAttendanceExtended extends StudentAttendance {
   index: number;
 }
 
-export interface TutorAttendanceExtended extends TutorAttendance {
-  index: number;
-}
-
 export interface TrainingPlanExtended extends TrainingPlan {
   index: number;
 }
@@ -67,7 +62,6 @@ export interface CourseClassExtended extends CourseClass {
   tutors?: CourseClassTutorExtended[];
   budget?: ClassCostExtended[];
   studentAttendance?: StudentAttendanceExtended[];
-  tutorAttendance?: TutorAttendanceExtended[];
   trainingPlan?: TrainingPlanExtended[];
   notes?: Note[];
   assessments?: AssessmentClassExtended[];
@@ -102,6 +96,7 @@ export interface ClassCostType {
   projected: number;
   actual: number;
   items: ClassCostItem[];
+  percentage?: number;
 }
 
 export interface ClassCostTypes {
@@ -126,7 +121,7 @@ export interface ContactAttendanceItem {
   name: string;
   title?: string;
   contactId: number;
-  attendances: (StudentAttendanceExtended & TutorAttendanceExtended & TrainingPlanExtended)[];
+  attendances: (StudentAttendanceExtended & TrainingPlanExtended)[];
 }
 
 export type AttandanceStepItem = Partial<TimetableSession> & Partial<AssessmentClassExtended>;
@@ -151,7 +146,7 @@ export type AttandanceChangeType =
   | "allTrainingPlans"
   | "bySession";
 
-export type AttendanceGridType = "Tutor" | "Student" | "Training plan";
+export type AttendanceGridType =  "Student" | "Training plan";
 
 export const tutorStatusRoles: TutorAttendanceType[] = [
   "Confirmed for payroll",

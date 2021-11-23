@@ -408,7 +408,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	BigDecimal getPayableClassroomHours() {
 		BigDecimal sum = BigDecimal.ZERO
 		if (getSessions() != null && getSessions().size() > 0) {
-			sum = getSessions()*.getPayableDurationInHours().sum() as BigDecimal
+			sum = getSessions()*.getDurationInHours().sum() as BigDecimal
 		} else if (getSessionsCount() != null && getMinutesPerSession() != null) {
 			return getSessionsCount() * getMinutesPerSession() / 60L
 		}
@@ -560,8 +560,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@API
 	@Override
 	TimeZone getTimeZone() {
-		if (getRoom() == null || getRoom().getSite() == null ||
-				getRoom().getSite().getIsVirtual() || getRoom().getSite().getLocalTimezone() == null) {
+		if (getRoom() == null || getRoom().getSite() == null || getRoom().getSite().getLocalTimezone() == null) {
 			return TimeZone.getDefault()
 		}
 		return TimeZone.getTimeZone(getRoom().getSite().getLocalTimezone())
@@ -571,8 +570,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * @return null if class has no location specified. Converted to browser time zone
 	 */
 	String getClientTimeZoneId() {
-		if (getRoom() == null || getRoom().getSite() == null ||
-				getRoom().getSite().getIsVirtual() || getRoom().getSite().getLocalTimezone() == null) {
+		if (getRoom() == null || getRoom().getSite() == null || getRoom().getSite().getLocalTimezone() == null) {
 			return null
 		}
 		return getRoom().getSite().getLocalTimezone()
@@ -1049,13 +1047,21 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return
+	 * @return invoice lines related to this class
 	 */
 	@Nonnull
 	@API
-	@Override
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getInvoiceLines()
+		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+	}
+
+	/**
+	 * @return quote lines related to this class
+	 */
+	@Nonnull
+	@API
+	List<QuoteLine> getQuoteLines() {
+		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
 	}
 
 	/**
@@ -1124,6 +1130,10 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return CourseClassTagRelation.class
+	}
 
 	@API
 	String getTutorsAbridged() {

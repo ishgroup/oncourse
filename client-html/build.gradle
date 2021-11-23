@@ -1,5 +1,7 @@
-apply plugin: 'com.github.node-gradle.node'
-apply plugin: 'queryLanguageModel'
+plugins {
+    id 'com.github.node-gradle.node'
+    id 'queryLanguageModel'
+}
 
 node {
     version = '12.19.0'

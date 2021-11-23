@@ -4,87 +4,63 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useRef
+  useCallback, useEffect, useMemo, useRef
 } from "react";
-import Grid from "@material-ui/core/Grid";
-import FormGroup from "@material-ui/core/FormGroup";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@mui/material/Grid";
 import {
- arrayPush, arrayRemove, change, Field, formValueSelector
+  arrayPush, arrayRemove, change, Field, formValueSelector
 } from "redux-form";
-import { addMinutes, differenceInMinutes, subMinutes } from "date-fns";
+import {
+  addMinutes, differenceInMinutes
+} from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { FormControl, FormHelperText } from "@material-ui/core";
-import clsx from "clsx";
-import { ClashType, Room, SessionWarning, Site } from "@api/model";
+import {
+  ClashType, SessionWarning, Site, TutorAttendance,
+} from "@api/model";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from "../../../../../common/components/form/form-fields/EditInPlaceDurationField";
+import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
 import { stubFunction } from "../../../../../common/utils/common";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
 import { State } from "../../../../../reducers/state";
 import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import { defaultContactName } from "../../../contacts/utils";
-import { openSiteLink } from "../../../sites/utils";
 import { openRoomLink } from "../../../rooms/utils";
-import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
 import { TimetableSession } from "../../../../../model/timetable";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
+import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { setShiftedTutorAttendances } from "../../utils";
 
 interface Props {
   form: string;
   index: number;
   dispatch: Dispatch;
   tutors: CourseClassTutorExtended[];
-  classes: any;
   session?: TimetableSession;
-  rooms?: Room[];
   sites?: Site[];
-  getRooms?: StringArgFunction;
   triggerDebounseUpdate?: any;
   warnings: SessionWarning[];
-  prevTutorsState?: any;
 }
-const siteRoomLabel = site => (typeof site === "object" ? site.name : "");
 
-const normalizeStartDate = (value, prevValue) => value || prevValue;
+const roomLabel = room => {
+  if (room["site.name"]) return `${room["site.name"]} - ${room.name}`;
+
+  return room.name;
+};
 
 const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
 
-const CourseClassSessionFields: React.FC<Props> = (
-  {
+const CourseClassSessionFields: React.FC<Props> = ({
   form,
   dispatch,
   session,
-  rooms,
-  getRooms,
   tutors,
   triggerDebounseUpdate,
-  classes,
-  warnings,
-  prevTutorsState,
-  sites
+  warnings
 }) => {
   const isMounted = useRef(false);
-
-  useEffect(() => {
-    if (isMounted.current && session.siteId && !session.roomId && rooms.length) {
-      dispatch(change(form, `sessions[${session.index}].roomId`, rooms[0].id));
-      dispatch(change(form, `sessions[${session.index}].room`, rooms[0].name));
-    }
-  }, [rooms]);
-
-  useEffect(() => {
-    if (!rooms.length && session.siteId) {
-      getRooms(`site.id is ${session.siteId}`);
-    }
-  }, []);
 
   useEffect(() => {
     if (isMounted.current && session.start) {
@@ -97,14 +73,12 @@ const CourseClassSessionFields: React.FC<Props> = (
     session.roomId,
     session.start,
     session.end,
-    session.payAdjustment,
-    session.temporaryTutorIds,
-    session.courseClassTutorIds,
+    session.tutorAttendances,
     session.privateNotes,
     session.publicNotes
   ]);
 
-  const warningTypes = useMemo<{[P in ClashType]: SessionWarning[]}>(() => {
+  const warningTypes = useMemo<{ [P in ClashType]: SessionWarning[] }>(() => {
     const types = {
       Tutor: [],
       Room: [],
@@ -118,65 +92,30 @@ const CourseClassSessionFields: React.FC<Props> = (
     return types;
   }, [warnings]);
 
-  const onTutorChange = useCallback(
-    (checked, tutor: CourseClassTutorExtended) => {
-      if (checked) {
-        dispatch(arrayPush(form, `sessions[${session.index}].tutors`, tutor.tutorName));
-        const courseClassTutorIds = session.courseClassTutorIds ? session.courseClassTutorIds : [];
-        tutor.id
-          ? dispatch(
-              change(form, `sessions[${session.index}].courseClassTutorIds`, [...courseClassTutorIds, tutor.id])
-            )
-          : dispatch(
-              change(form, `sessions[${session.index}].temporaryTutorIds`, [
-                ...session.temporaryTutorIds,
-                tutor.temporaryId
-              ])
-            );
-        dispatch(
-          arrayPush(form, `sessions[${session.index}].contactIds`, tutor.contactId)
-        );
-      } else {
-        prevTutorsState.current = {
-          tutors: session.tutors,
-          contactIds: session.contactIds,
-          courseClassTutorIds: session.courseClassTutorIds
-        };
+  const shiftSessionDates = (durationMinutes: number, sessionStart: string) => {
+    const startDate = new Date(sessionStart);
+    const endDate = addMinutes(startDate, durationMinutes);
 
-        const tutorNameIndex = session.tutors ? session.tutors.findIndex(name => name === tutor.tutorName) : -1;
-        dispatch(arrayRemove(form, `sessions[${session.index}].tutors`, tutorNameIndex));
+    dispatch(
+      change(
+        form,
+        `sessions[${session.index}].end`,
+        endDate.toISOString()
+      )
+    );
 
-        const contactIdIndex = session.contactIds ? session.contactIds.findIndex(id => id === tutor.contactId) : -1;
-        dispatch(arrayRemove(form, `sessions[${session.index}].contactIds`, contactIdIndex));
+    const updatedSession = {
+      ...session,
+      start: startDate.toISOString(),
+      end: endDate.toISOString()
+    };
 
-        if (tutor.id) {
-          const tutorIdIndex = session.courseClassTutorIds.findIndex(tId => tId === tutor.id);
-          const updatedTutorIds = [...session.courseClassTutorIds];
-          updatedTutorIds.splice(tutorIdIndex, 1);
-          dispatch(change(form, `sessions[${session.index}].courseClassTutorIds`, updatedTutorIds));
-        } else {
-          const tutorIdIndex = session.temporaryTutorIds.findIndex(tId => tId === tutor.temporaryId);
-          const updatedTutorIds = [...session.temporaryTutorIds];
-          updatedTutorIds.splice(tutorIdIndex, 1);
-          dispatch(change(form, `sessions[${session.index}].temporaryTutorIds`, updatedTutorIds));
-        }
-      }
-    },
-    [form, tutors, session.index, session.courseClassTutorIds]
-  );
+    setShiftedTutorAttendances(session, updatedSession);
 
-  const onDurationChange = useCallback(
-    (durationMinutes: number) => {
-      dispatch(
-        change(
-          form,
-          `sessions[${session.index}].end`,
-          addMinutes(new Date(session.start), durationMinutes).toISOString()
-        )
-      );
-    },
-    [session.start, form, session.index]
-  );
+    dispatch(
+      change(form, `sessions[${session.index}].tutorAttendances`, updatedSession.tutorAttendances)
+    );
+  };
 
   const durationValue = useMemo(() => {
     const startDate = new Date(session.start);
@@ -188,206 +127,149 @@ const CourseClassSessionFields: React.FC<Props> = (
     return differenceInMinutes(endDate, startDate);
   }, [session.start, session.end]);
 
-  const payableDurationValue = useMemo(() => {
-    const startDate = new Date(session.start);
-    const endDate = subMinutes(new Date(session.end), session.payAdjustment || 0);
-
-    startDate.setSeconds(0, 0);
-    endDate.setSeconds(0, 0);
-
-    return differenceInMinutes(endDate, startDate);
-  }, [session.start, session.end, session.payAdjustment]);
-
-  const onPayableDurationChange = useCallback(
-    (durationMinutes: number) => {
-      dispatch(change(form, `sessions[${session.index}].payAdjustment`, durationValue - durationMinutes));
-    },
-    [form, session.index, durationValue]
-  );
-
   const durationError = useMemo(() => greaterThanNullValidation(durationValue) || validateDuration(durationValue), [
     durationValue
   ]);
 
   const validateSessionEnd = useCallback(() => durationError, [durationError]);
 
-  const onStartDateChange = useCallback(
-    (e, newStart) => {
-      if (newStart) {
-        dispatch(
-          change(form, `sessions[${session.index}].end`, addMinutes(new Date(newStart), durationValue).toISOString())
-        );
-      }
-    },
-    [form, session.index, durationValue]
-  );
+  const onDurationChange = (durationMinutes: number) => {
+    shiftSessionDates(durationMinutes, session.start);
+  };
 
-  const onSiteIdChange = useCallback(
-    site => {
-      dispatch(change(form, `sessions[${session.index}].site`, site ? site.name : null));
-      dispatch(change(form, `sessions[${session.index}].siteTimezone`, site ? site.localTimezone : null));
-      dispatch(change(form, `sessions[${session.index}].room`, null));
-      dispatch(change(form, `sessions[${session.index}].roomId`, null));
-      if (site) {
-        getRooms(`site.id is ${site.id}`);
-      }
-    },
-    [form, session.index, session.start, session.end]
-  );
+  const onStartDateChange = (e, newStart) => {
+    if (newStart) {
+      shiftSessionDates(durationValue, newStart);
+    }
+  };
+
+  const onEndDateChange = (e, newEnd) => {
+    shiftSessionDates(differenceInMinutes(new Date(newEnd), new Date(session.start)), session.start);
+  };
 
   const onRoomIdChange = useCallback(
     room => {
-      dispatch(change(form, `sessions[${session.index}].room`, room ? room.label : null));
+      dispatch(change(form, `sessions[${session.index}].room`, room ? room.name : null));
+      dispatch(change(form, `sessions[${session.index}].site`, room ? room["site.name"] : null));
+      dispatch(change(form, `sessions[${session.index}].siteId`, room ? room["site.id"] : null));
+      dispatch(change(form, `sessions[${session.index}].siteTimezone`, room ? room["site.localTimezone"] : null));
     },
     [form, session.index]
   );
 
-  const courseClassTutorIdsField = useCallback(
-    ({ meta: { invalid, error }, input: { name } }) => (
-      <FormControl error={invalid} id={name}>
-        <Typography variant="body2" className={clsx("heading", (invalid || warningTypes.Tutor.length) && "errorColor")}>
-          Tutors
-        </Typography>
-        <FormGroup>
-          {tutors.filter(t => t.contactId).map(t => {
-            const tutorWarning = warningTypes.Tutor.find(w => w.referenceId === t.contactId);
+  const onDeleteTutor = (index: number) => {
+    dispatch(arrayRemove(form, `sessions[${session.index}].tutorAttendances`, index));
+  };
 
-            return (
-              <div key={t.id || t.temporaryId}>
-                <FormControlLabel
-                  className={clsx("checkbox", tutorWarning && "errorColor")}
-                  control={(
-                    <StyledCheckbox
-                      checked={
-                      (session.courseClassTutorIds && session.courseClassTutorIds.includes(t.id))
-                      || (session.temporaryTutorIds && session.temporaryTutorIds.includes(t.temporaryId))
-                    }
-                      onChange={(e, v) => onTutorChange(v, t)}
-                      color="secondary"
-                    />
-                )}
-                  label={`${defaultContactName(t.tutorName)} (${t.roleName})`}
-                />
-                {tutorWarning && <ErrorMessage message={tutorWarning.message} className="m-0 p-0" />}
-              </div>
-            );
-          })}
-        </FormGroup>
-        {invalid && <FormHelperText className="shakingError">{error}</FormHelperText>}
-      </FormControl>
-      ),
-    [tutors, session.courseClassTutorIds, session.temporaryTutorIds, warningTypes.Tutor]
-  );
+  const onAddTutor = (tutor: CourseClassTutorExtended) => {
+    dispatch(arrayPush(form, `sessions[${session.index}].tutorAttendances`, {
+      id: null,
+      courseClassTutorId: tutor.id,
+      temporaryTutorId: tutor.temporaryId,
+      contactName: tutor.tutorName,
+      attendanceType: 'Not confirmed for payroll',
+      note: null,
+      actualPayableDurationMinutes: durationValue,
+      hasPayslip: false,
+      start: session.start,
+      end: session.end,
+      contactId: tutor.contactId,
+      payslipIds: []
+    } as TutorAttendance));
+  };
 
   return (
-    <Grid container>
-      <Grid item container xs={6}>
-        <Grid item xs={12}>
-          <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />
-          <FormField type="stub" name={`sessions[${session.index}].payAdjustment`} />
-          <FormField type="stub" name={`sessions[${session.index}].temporaryTutorIds`} />
-          <FormField
-            type="dateTime"
-            name={`sessions[${session.index}].start`}
-            label={`${session.room
+    <Grid container columnSpacing={3} rowSpacing={2}>
+      <Grid item xs={4}>
+        <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />
+        <FormField
+          type="dateTime"
+          name={`sessions[${session.index}].start`}
+          label={`${session.roomId
               ? (session.siteTimezone 
-                ? `Start date (${session.siteTimezone})` 
-                : `Virtual start date (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
-              : "Start date"}`}
-            normalize={normalizeStartDate}
-            onChange={onStartDateChange}
-            timezone={session.siteTimezone}
-            className={warningTypes.Session.length || warningTypes.UnavailableRule.length ? "errorColor" : undefined}
-            required
-          />
+                ? `Start (${session.siteTimezone})` 
+                : `Virtual start (${Intl.DateTimeFormat().resolvedOptions().timeZone})`)
+              : "Start"}`}
+          onChange={onStartDateChange}
+          timezone={session.siteTimezone}
+          className={warningTypes.Session.length || warningTypes.UnavailableRule.length ? "errorColor" : undefined}
+          persistValue
+        />
+      </Grid>
+
+      <Grid item xs={2}>
+        <EditInPlaceDurationField
+          label="Duration"
+          meta={{
+            error: durationError,
+            invalid: Boolean(durationError)
+          }}
+          input={{
+            value: durationValue,
+            onChange: stubFunction,
+            onBlur: onDurationChange,
+            onFocus: stubFunction
+          }}
+        />
+      </Grid>
+
+      <Grid item xs={2}>
+        <FormField
+          name={`sessions[${session.index}].end`}
+          timezone={session.siteTimezone}
+          onChange={onEndDateChange}
+          type="time"
+          label="End"
+        />
+      </Grid>
+      {Boolean(warningTypes.Session.length || warningTypes.UnavailableRule.length) && (
+        <Grid item xs={12}>
           {warningTypes.Session
             .map(w => <ErrorMessage message={w.message} /> )}
           {warningTypes.UnavailableRule
             .map(w => <ErrorMessage message={w.message} /> )}
         </Grid>
+      ) }
 
-        <Grid item xs={6}>
-          <EditInPlaceDurationField
-            label="Duration"
-            meta={{
-              error: durationError,
-              invalid: Boolean(durationError)
-            }}
-            input={{
-              value: durationValue,
-              onChange: stubFunction,
-              onBlur: onDurationChange,
-              onFocus: stubFunction
-            }}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <EditInPlaceDurationField
-            label="Payable duration"
-            meta={{}}
-            input={{
-              value: payableDurationValue,
-              onChange: stubFunction,
-              onBlur: onPayableDurationChange,
-              onFocus: stubFunction
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography variant="body2" className="heading pt-2 pb-1">
-            Location
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid item xs={6}>
-        <div className={classes.sessionTutors}>
-          <Field
-            name={`sessions[${session.index}].courseClassTutorIds`}
-            component={courseClassTutorIdsField}
-          />
-        </div>
-      </Grid>
       <Grid item xs={6}>
         <FormField
-          type="searchSelect"
-          entity="Site"
-          name={`sessions[${session.index}].siteId`}
-          label="Site"
-          aqlColumns="name,localTimezone"
-          selectValueMark="id"
-          selectLabelMark="name"
-          selectLabelCondition={siteRoomLabel}
-          defaultDisplayValue={session.site}
-          labelAdornment={<LinkAdornment linkHandler={openSiteLink} link={session.siteId} disabled={!session.siteId} />}
-          onInnerValueChange={onSiteIdChange}
-          className={warningTypes.Site.length ? "errorColor" : undefined}
-          rowHeight={36}
-          items={sites}
-          allowEmpty
-        />
-        {warningTypes.Site
-          .map(w => <ErrorMessage message={w.message} /> )}
-      </Grid>
-      <Grid item xs={6}>
-        <FormField
-          type="select"
+          type="remoteDataSearchSelect"
+          entity="Room"
           name={`sessions[${session.index}].roomId`}
-          label="Room"
+          label="Site and room"
+          aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
-          selectLabelMark="name"
-          defaultValue={session.room}
+          selectLabelCondition={roomLabel}
+          defaultDisplayValue={`${session.site} - ${session.room}`}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
-          items={rooms || []}
-          disabled={!session.siteId}
           onInnerValueChange={onRoomIdChange}
-          className={warningTypes.Room.length ? "errorColor" : undefined}
+          rowHeight={36}
+          hasError={Boolean(warningTypes.Room.length)}
           allowEmpty
         />
-        {warningTypes.Room
-          .map(w => <ErrorMessage message={w.message} /> )}
       </Grid>
-
+      {Boolean(warningTypes.Room.length)
+        && (
+          <Grid item xs={12}>
+            {warningTypes.Room
+              .map(w => <ErrorMessage message={w.message} /> )}
+          </Grid>
+      )}
+      <Grid item xs={12}>
+        <Field
+          name={`sessions[${session.index}].tutorAttendances`}
+          component={CourseClassTutorRooster}
+          warningTypes={warningTypes}
+          session={session}
+          sessionDuration={durationValue}
+          tutors={tutors}
+          onDeleteTutor={onDeleteTutor}
+          onAddTutor={onAddTutor}
+        />
+      </Grid>
+      <Grid item xs={12} className="secondaryHeading">
+        Notes
+      </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
@@ -408,17 +290,10 @@ const CourseClassSessionFields: React.FC<Props> = (
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getRooms: (search: string) => {
-    dispatch(setCommonPlainSearch("Room", search));
-    dispatch(getCommonPlainRecords("Room", 0, "name", true, "name"));
-  }
-});
-
 const mapStateToProps = (state: State, ownProps: Props) => ({
-  rooms: state.plainSearchRecords["Room"].items,
   sites: state.plainSearchRecords["Site"].items,
-  session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {}
+  session: formValueSelector(ownProps.form)(state, `sessions[${ownProps.index}]`) || {},
+  timezones: state.timezones,
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(CourseClassSessionFields);
+export default connect(mapStateToProps)(CourseClassSessionFields);

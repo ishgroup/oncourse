@@ -170,6 +170,11 @@ class Document extends _Document implements DocumentTrait, Queueable {
 		return tagList
 	}
 
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return DocumentTagRelation.class
+	}
+
 	/**
 	 * @return A list of records attached to this document
 	 */

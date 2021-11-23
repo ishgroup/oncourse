@@ -61,7 +61,9 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(Document.class.getSimpleName().toLowerCase(), KeyCode.ATTACHMENT_INFO);
         KEY_CODE_MAP.put(EmailTemplate.class.getSimpleName().toLowerCase(), KeyCode.EMAIL_TEMPLATE);
         KEY_CODE_MAP.put(FundingSource.class.getSimpleName().toLowerCase(), KeyCode.SPECIAL_AVETMISS_EXPORT);
+        KEY_CODE_MAP.put(AbstractInvoice.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
         KEY_CODE_MAP.put(Invoice.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
+        KEY_CODE_MAP.put(Quote.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
         KEY_CODE_MAP.put(InvoiceLine.class.getSimpleName().toLowerCase(), KeyCode.INVOICE);
         KEY_CODE_MAP.put(MembershipProduct.class.getSimpleName().toLowerCase(), KeyCode.MEMBERSHIP);
         KEY_CODE_MAP.put(Module.class.getSimpleName().toLowerCase(), KeyCode.NTIS_DATA);
@@ -77,6 +79,7 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(VoucherProduct.class.getSimpleName().toLowerCase(), KeyCode.VOUCHER);
         KEY_CODE_MAP.put(VoucherProductCourse.class.getSimpleName().toLowerCase(), KeyCode.VOUCHER);
         KEY_CODE_MAP.put(WaitingList.class.getSimpleName().toLowerCase(), KeyCode.WAITING_LIST);
+        KEY_CODE_MAP.put(Lead.class.getSimpleName().toLowerCase(), KeyCode.WAITING_LIST);
         KEY_CODE_MAP.put(Application.class.getSimpleName().toLowerCase(), KeyCode.APPLICATION);
         KEY_CODE_MAP.put(ArticleProduct.class.getSimpleName().toLowerCase(), KeyCode.PRODUCT);
         KEY_CODE_MAP.put(Course.class.getSimpleName().toLowerCase(), KeyCode.COURSE);

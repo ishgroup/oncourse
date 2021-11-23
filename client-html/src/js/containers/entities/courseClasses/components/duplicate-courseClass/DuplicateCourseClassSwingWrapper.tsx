@@ -5,7 +5,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import DuplicateCourseClassModal from "./DuplicateCourseClassModal";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 export const DuplicateCourseClassSwingWrapper: React.FC<any> = () => {
   const [showCompleteMessage, setShowCompleteMessage] = useState(false);

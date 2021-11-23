@@ -3,8 +3,8 @@ const mockByKeys = (index, keys) => {
   keys.forEach(item => {
     let value: any = `${item.name} ${index + 1}`;
 
-    if (item.type === "Datetime") value = new Date().toISOString();
-    else if (item.type === "number") value = parseInt(`${index + 1}`, 10);
+    if (item.type === "Datetime" || item.type === "Date") value = new Date().toISOString();
+    else if (item.type === "number" || item.type === "Number") value = parseInt(`${index + 1}`, 10);
 
     obj[item.name] = value;
   });
@@ -48,6 +48,7 @@ export const getEntityResponse = ({
     entity,
     offset: 0,
     filterColumnWidth: 200,
+    tagsOrder: [],
     layout: "Three column",
     pageSize: 20,
     search: null,
@@ -58,7 +59,7 @@ export const getEntityResponse = ({
   };
 
   if (plain) {
-    response = { ...response, filterColumnWidth: null, layout: null };
+    response = { ...response, filterColumnWidth: null, layout: null, tagsOrder: [] };
   }
 
   return response;

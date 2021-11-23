@@ -11,24 +11,15 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
 import ish.common.payable.PayableLineInterface
 import ish.common.types.ConfirmationStatus
-import ish.common.types.EnrolmentStatus
-import ish.common.types.InvoiceType
 import ish.common.types.PaymentSource
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.cayenne.ContactInterface
-import ish.oncourse.cayenne.InvoiceInterface
 import ish.oncourse.cayenne.PayableInterface
 import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.server.cayenne.glue._AbstractInvoice
-import ish.oncourse.server.cayenne.glue._Enrolment
-import ish.oncourse.server.services.IAutoIncrementService
 import ish.util.InvoiceUtil
-import org.apache.cayenne.exp.Expression
-import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -37,7 +28,7 @@ import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
 
-class AbstractInvoice extends _AbstractInvoice implements PayableInterface, InvoiceInterface, Queueable, NotableTrait, AttachableTrait {
+abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Queueable, NotableTrait, AttachableTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -53,66 +44,22 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 
 	public static final String CREATED_BY_USER_NAME_PROPERTY = "createdByUserName"
 
-	@Inject
-	private transient IAutoIncrementService autoIncrementService
+	abstract Class<? extends AbstractInvoiceLine> getLinePersistentClass()
+
+	abstract List<? extends AbstractInvoiceLine> getLines()
+
+	abstract Contact getContact()
+
+	abstract void setContact(Contact contact)
 
 	/**
-	 * Builds a list of enrolments from the invoice lines mapped per student.
-	 *
-	 * @return a map of enrolments (values as Collection) per student (keys)
+	 * @return unique invoice number
 	 */
 	@Nonnull
 	@API
-	Map<Student, Set<Enrolment>> enrolmentsPerStudent() {
-		final Map<Student, Set<Enrolment>> results = new HashMap<>()
-
-		for (final InvoiceLine aLine : getInvoiceLines()) {
-			final Enrolment anEnrolment = aLine.getEnrolment()
-			final Student aStudent = anEnrolment.getStudent()
-			Set<Enrolment> studentEnrolments = results.get(aStudent)
-			if (studentEnrolments == null) {
-				studentEnrolments = new HashSet<>()
-				results.put(aStudent, studentEnrolments)
-			}
-			studentEnrolments.add(anEnrolment)
-		}
-		return results
-	}
-
-	static Money amountOwingForPayer(@Nullable Contact payer) {
-		Money result = Money.ZERO
-
-		// update invoice owing
-		if (payer != null) {
-			List<Invoice> invoices = payer.getInvoices()
-
-			for (Invoice invoice : invoices) {
-				result = result.add(invoice.getAmountOwing())
-			}
-		}
-		return result
-	}
-
 	@Override
-	void onEntityCreation() {
-		super.onEntityCreation()
-		// those fields are set to default on client to pass validation
-		if (getInvoiceDate() == null) {
-			setInvoiceDate(LocalDate.now())
-		}
-		if (getDateDue() == null) {
-			setDateDue(LocalDate.now())
-		}
-		if (getSource() == null) {
-			setSource(PaymentSource.SOURCE_ONCOURSE)
-		}
-		if (getOverdue() == null) {
-			setOverdue(Money.ZERO)
-		}
-		if (getType() == null) {
-			setType(InvoiceType.INVOICE)
-		}
-
+	Long getInvoiceNumber() {
+		return super.getInvoiceNumber()
 	}
 
 	/**
@@ -144,35 +91,11 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 	 */
 	@API
 	Money getTotalIncTax() {
-		List<InvoiceLine> theInvoiceLines = getInvoiceLines()
+		List<AbstractInvoiceLine> theInvoiceLines = getLines()
 		if (theInvoiceLines == null || theInvoiceLines.size() == 0) {
 			return Money.ZERO
 		}
 		return InvoiceUtil.sumInvoiceLines(theInvoiceLines)
-	}
-
-	@Override
-	void postAdd() {
-		super.postAdd()
-		// SPECIFIC DEFAULT VALUES
-		if (getInvoiceDate() == null) {
-			setInvoiceDate(LocalDate.now())
-		}
-		if (getDateDue() == null) {
-			setDateDue(LocalDate.now())
-		}
-		if (getInvoiceNumber() == null) {
-			setInvoiceNumber(autoIncrementService.getNextInvoiceNumber())
-		}
-		if (getConfirmationStatus() == null) {
-			setConfirmationStatus(ConfirmationStatus.NOT_SENT)
-		}
-		if (getOverdue() == null) {
-			setOverdue(Money.ZERO)
-		}
-		if (getType() == null) {
-			setType(InvoiceType.INVOICE)
-		}
 	}
 
 	void updateAllAmountsOwingForPayer() {
@@ -184,53 +107,11 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 	/**
 	 * @return
 	 */
-	@Nullable
-	List<Enrolment> getEnrolmentsWithStatus(final EnrolmentStatus enrolmentStatus) {
-		List<Enrolment> result = null
-		Expression expr = ExpressionFactory.noMatchExp(InvoiceLine.ENROLMENT_PROPERTY, null)
-		expr = expr.andExp(ExpressionFactory.matchExp(InvoiceLine.ENROLMENT_PROPERTY + "." + _Enrolment.STATUS_PROPERTY, enrolmentStatus))
-
-		final List<InvoiceLine> invoiceLines = expr.filterObjects(getInvoiceLines())
-		for (InvoiceLine invoiceLine : invoiceLines) {
-			if (result == null) {
-				result = new ArrayList<>()
-			}
-			if (invoiceLine != null && invoiceLine.getEnrolment() != null) {
-				result.add(invoiceLine.getEnrolment())
-			}
-		}
-		return result
-	}
-
-	/**
-	 * @return
-	 */
 	@Nonnull
 	List<PayableLineInterface> getPayableLines() {
 		ArrayList<PayableLineInterface> list = new ArrayList<>()
-		list.addAll(getInvoiceLines())
+		list.addAll(getLines())
 		return list
-	}
-
-	/**
-	 * Get a list of paymentInLines and paymentOutLines linked to this invoice
-	 * @return all paymentLines against this invoice
-	 */
-	@Nonnull
-	@API
-	List<PaymentLineInterface> getPaymentLines() {
-		ArrayList<PaymentLineInterface> list = new ArrayList<>()
-		list.addAll(getPaymentInLines())
-		list.addAll(getPaymentOutLines())
-		return list
-	}
-
-	void setContact(ContactInterface contact) {
-		if (contact instanceof Contact) {
-			super.setContact((Contact) contact)
-		} else {
-			throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
-		}
 	}
 
 	void updateAmountOwing() {
@@ -238,7 +119,6 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 	}
 
 	void updateDateDue() {
-
 		if (!getInvoiceDueDates().isEmpty()) {
 
 			Money amountPaid = getAmountPaid()
@@ -275,7 +155,6 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 		} else {
 			setOverdue(getDateDue().isAfter(currentDate) ? Money.ZERO : getAmountOwing())
 		}
-
 	}
 
 	/**
@@ -317,7 +196,7 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 	 */
 	@API
 	Money getTotal() {
-		List<InvoiceLine> theInvoiceLines = getInvoiceLines()
+		List<AbstractInvoiceLine> theInvoiceLines = getLines()
 		if (theInvoiceLines == null || theInvoiceLines.size() == 0) {
 			return Money.ZERO
 		}
@@ -341,30 +220,6 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 		}
 
 		return incTotal.subtract(exTotal)
-	}
-
-	@Override
-	void prePersist() {
-		super.prePersist()
-		updateAmountOwing()
-		updateDateDue()
-		updateOverdue()
-	}
-
-	@Override
-	void preUpdate() {
-		super.preUpdate()
-		updateAmountOwing()
-		updateDateDue()
-		updateOverdue()
-	}
-
-	void removeFromPaymentLines(PaymentLineInterface pLine) {
-		if (pLine instanceof PaymentInLine) {
-			removeFromPaymentInLines((PaymentInLine) pLine)
-		} else if (pLine instanceof PaymentOutLine) {
-			removeFromPaymentOutLines((PaymentOutLine) pLine)
-		}
 	}
 
 	/**
@@ -459,16 +314,6 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 	}
 
 	/**
-	 * @return unique invoice number
-	 */
-	@Nonnull
-	@API
-	@Override
-	Long getInvoiceNumber() {
-		return super.getInvoiceNumber()
-	}
-
-	/**
 	 * @return the date and time this record was modified
 	 */
 	@API
@@ -509,18 +354,9 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 		return super.getSource()
 	}
 
-	/**
-	 * This is the contact to whom the invoice was issued. They are liable for the debt this invoice represents.
-	 * Note that the invoice contact might not be the same contact as the person enrolled in classes linked to
-	 * invoice lines.
-	 *
-	 * @return to whom the invoice was issued
-	 */
-	@Nonnull
-	@API
 	@Override
-	Contact getContact() {
-		return super.getContact()
+	List<PaymentLineInterface> getPaymentLines() {
+		return new ArrayList<PaymentLineInterface>()
 	}
 
 	/**
@@ -543,52 +379,6 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 	@Override
 	SystemUser getCreatedByUser() {
 		return super.getCreatedByUser()
-	}
-
-	/**
-	 * @return
-	 */
-	@Nonnull
-	@API
-	@Override
-	Account getDebtorsAccount() {
-		return super.getDebtorsAccount()
-	}
-
-	/**
-	 * @return list of invoice line records linked to this invoice
-	 */
-	@Nonnull
-	@API
-	@Override
-	List<InvoiceLine> getInvoiceLines() {
-		return super.getInvoiceLines()
-	}
-
-	/**
-	 * Follow this join to find all payments made against this invoice. Remember that onCourse supports multiple payments
-	 * against one invoice and also partial payments against an invoice, so you can follow this join to many payments
-	 * and some of those payment may also link to other invoices.
-	 *
-	 * @return all payementInLines against this invoice
-	 */
-	@Nonnull
-	@API
-	@Override
-	List<PaymentInLine> getPaymentInLines() {
-		return super.getPaymentInLines()
-	}
-
-	/**
-	 * If this invoice was a credit note, then a PaymentOut (or several) might be linked against it.
-	 *
-	 * @return all payementOutLines against this invoice
-	 */
-	@Nonnull
-	@API
-	@Override
-	List<PaymentOutLine> getPaymentOutLines() {
-		return super.getPaymentOutLines()
 	}
 
 	/**
@@ -626,121 +416,14 @@ class AbstractInvoice extends _AbstractInvoice implements PayableInterface, Invo
 		return super.getInvoiceDueDates()
 	}
 
-	//fixme: temporary workaround OD-12674
-	@Override
-	void addToPaymentOutLines(PaymentOutLine obj) {
-		if (obj != null) {
-			obj.setInvoice((Invoice) this)
-		}
-	}
-
-	@Override
-	void removeFromPaymentOutLines(PaymentOutLine obj) {
-		if (obj != null) {
-			obj.setInvoice(null)
-		}
-	}
-	@Override
-	void addToPaymentInLines(PaymentInLine obj) {
-		if (obj != null) {
-			obj.setInvoice((Invoice) this)
-		}
-	}
-	@Override
-	void removeFromPaymentInLines(PaymentInLine obj) {
-		if (obj != null) {
-			obj.setInvoice(null)
-		}
-	}
-	@Override
-	void addToNoteRelations(InvoiceNoteRelation obj) {
-		if (obj != null) {
-			obj.setNotedInvoice((Invoice)this)
-		}
-	}
-
-	@Override
-	void removeFromNoteRelations(InvoiceNoteRelation obj) {
-		if (obj != null) {
-			obj.setNotedInvoice(null)
-		}
-	}
-	@Override
-	void addToInvoiceLines(InvoiceLine obj) {
-		if (obj != null) {
-			obj.setInvoice((Invoice) this)
-		}
-	}
-	@Override
-	void removeFromInvoiceLines(InvoiceLine obj) {
-		if (obj != null) {
-			obj.setInvoice(null)
-		}
-	}
-	@Override
-	void addToInvoiceDueDates(InvoiceDueDate obj) {
-		if (obj != null) {
-			obj.setInvoice((Invoice) this)
-		}
-	}
-	@Override
-	void removeFromInvoiceDueDates(InvoiceDueDate obj) {
-		if (obj != null) {
-			obj.setInvoice(null)
-		}
-	}
-
-	@Override
-	void setDebtorsAccount(Account obj) {
-		if (obj != null) {
-			obj.addToInvoices((Invoice) this)
-		}
-	}
-	@Override
-	void setCreatedByUser(SystemUser obj) {
-		if (obj != null) {
-			obj.addToInvoicesCreated((Invoice) this)
-		}
-	}
-
-	@Override
-	void setCorporatePassUsed(CorporatePass obj) {
-		if (obj != null) {
-			obj.addToInvoices((Invoice) this)
-		}
-	}
-	@Override
-	void setContact(Contact obj) {
-		if (obj != null) {
-			obj.addToInvoices((Invoice)this)
-		}
-	}
-	@Override
-	void setAuthorisedRebillingCard(PaymentIn obj) {
-		if (obj != null) {
-			obj.addToAuthorisedInvoices((Invoice)this)
-		}
-	}
-	@Override
-	void addToAttachmentRelations(InvoiceAttachmentRelation obj) {
-		if (obj != null) {
-			obj.setAttachedInvoice((Invoice) this)
-		}
-	}
-
-	@Override
-	void removeFromAttachmentRelations(InvoiceAttachmentRelation obj) {
-		if (obj != null) {
-			obj.setAttachedInvoice(null)
-		}
-	}
-
 	@Override
 	String getSummaryDescription() {
-		if (getDescription() == null) {
-			return "#" + getInvoiceNumber()
-		}
-		return "#" + getInvoiceNumber() + " " + getDescription()
+		return getDescription()
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return AbstractInvoiceTagRelation.class
 	}
 }
 

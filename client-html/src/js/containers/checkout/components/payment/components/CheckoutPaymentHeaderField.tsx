@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import clsx from "clsx";
 import { addDays, compareAsc, isSameDay } from "date-fns";
 import { format } from "date-fns-tz";
@@ -21,8 +21,8 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { checkPermissions } from "../../../../../common/actions";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -569,7 +569,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         showArrowButton
       />
 
-      <div className="pl-2 pr-2">
+      <div className="pl-2 pr-2 pb-2">
         <CheckoutPaymentPlans
           name="paymentPlans"
           form={form}
@@ -596,7 +596,6 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           placeholder="Payment method"
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          fullWidth
           disabledTab
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />

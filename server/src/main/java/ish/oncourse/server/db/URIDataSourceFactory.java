@@ -16,16 +16,18 @@ import com.google.inject.Injector;
 import io.bootique.annotation.BQConfig;
 import io.bootique.jdbc.managed.ManagedDataSourceStarter;
 import io.bootique.jdbc.tomcat.TomcatManagedDataSourceFactory;
-import ish.util.RuntimeUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @BQConfig("Pooling Tomcat JDBC DataSource configuration.")
 @JsonTypeName("uri")
 public class URIDataSourceFactory extends TomcatManagedDataSourceFactory {
+    private static final Logger logger = LogManager.getLogger();
 
     public ManagedDataSourceStarter create(String dataSourceName, Injector injector) {
         DbUriProvider provider = injector.getInstance(DbUriProvider.class);
         setUrl(provider.getUri());
-        RuntimeUtil.println("server will use database " + getUrl());
+        logger.warn("server will use database " + getUrl());
         return super.create(dataSourceName, injector);
     }
 

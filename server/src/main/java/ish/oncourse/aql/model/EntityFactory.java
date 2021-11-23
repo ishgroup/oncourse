@@ -15,7 +15,7 @@ import ish.oncourse.aql.model.attribute.*;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
-import org.apache.cayenne.exp.Expression;
+
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.cayenne.query.ObjectSelect;
 

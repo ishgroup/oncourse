@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -66,7 +66,7 @@ const EnrolmentCogWheel = React.memo<any>(props => {
   const selectedAndNotNew = useMemo(() => selection.length >= 1 && selection[0] !== "NEW", [selection]);
 
   const onClick = useCallback(e => {
-    const status = e.target.getAttribute("role");
+    const status = e && e.target.getAttribute("role");
 
     if (status === "Avetmiss-Export") {
       return manualAvetmisConfirm(() => {

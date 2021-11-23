@@ -4,14 +4,14 @@
  */
 
 import React, { Component } from "react";
-import { Card } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
+import { Card } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import CardContent from "@mui/material/CardContent";
+import Divider from "@mui/material/Divider";
 import clsx from "clsx";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Fade from "@material-ui/core/Fade";
-import Collapse from "@material-ui/core/Collapse";
+import ButtonBase from "@mui/material/ButtonBase";
+import Fade from "@mui/material/Fade";
+import Collapse from "@mui/material/Collapse";
 import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model";
 import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
 

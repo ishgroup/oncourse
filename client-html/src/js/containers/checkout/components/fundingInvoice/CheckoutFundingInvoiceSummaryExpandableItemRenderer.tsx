@@ -7,13 +7,13 @@ import React from "react";
 import { change } from "redux-form";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { formatCurrency, normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 
@@ -102,12 +102,11 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
           <Typography variant="body1">{item.class.name}</Typography>
         </div>
       </Grid>
-      <Grid item container xs={3} justify="flex-end">
+      <Grid item xs={3}>
         <FormField
           type="money"
           name={`fundingInvoices[${selectedItemIndex}].item.enrolment.items[${index}].totalFee`}
           label="Price"
-          className="pl-2 text-end"
           onChange={handlePriceChange}
           normalize={normalizeNumberToZero}
           rightAligned

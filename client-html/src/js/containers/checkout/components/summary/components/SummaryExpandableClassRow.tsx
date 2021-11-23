@@ -8,24 +8,24 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-import IconButton from "@material-ui/core/IconButton";
-import Lock from "@material-ui/icons/Lock";
-import LockOpen from "@material-ui/icons/LockOpen";
+import IconButton from "@mui/material/IconButton";
+import Lock from "@mui/icons-material/Lock";
+import LockOpen from "@mui/icons-material/LockOpen";
 import React from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Accordion from "@material-ui/core/Accordion";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Accordion from "@mui/material/Accordion";
 import { EnrolmentStudyReason } from "@api/model";
 import debounce from "lodash.debounce";
 import { showConfirm } from "../../../../../common/actions";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import {
@@ -141,7 +141,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
         classes={{
           root: classes.expansionSummaryRoot,
           content: classes.expansionSummaryContent,
-          expandIcon: classes.expandIcon
+          expandIconWrapper: classes.expandIcon
         }}
         expandIcon={<ExpandMoreIcon />}
       >
@@ -205,18 +205,18 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               }}
             />
           </Grid>
-          <Grid item container xs={12} lg={8} justify="flex-end">
-            <Grid item container sm={3} justify="flex-end">
+          <Grid item container columnSpacing={3} rowSpacing={2} xs={12} lg={8}>
+            <Grid item sm={3}>
               <Uneditable label="Price (ex tax)" className="text-end" value={item.priceExTax} money />
             </Grid>
-            <Grid item container sm={3} justify="flex-end">
+            <Grid item sm={3}>
               <Uneditable label="Discount (ex tax)" className="text-end" value={item.discountExTax} money />
             </Grid>
-            <Grid item container sm={3} justify="flex-end">
+            <Grid item sm={3}>
               <Uneditable label="Tax" className="text-end" value={item.taxAmount} money />
             </Grid>
-            <Grid item container sm={3} justify="flex-end">
-              {priceLocked ? <Uneditable label="Total" className="text-end" labelAdornment={priceAdormnet} value={item.price} money />
+            <Grid item sm={3}>
+              {priceLocked ? <Uneditable label="Total" className="text-end" labelAdornment={priceAdormnet} value={item.price} money rightAligned />
               : (
                 <FormField
                   type="money"

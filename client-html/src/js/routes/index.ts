@@ -33,6 +33,7 @@ import PayslipsApp from "../containers/entities/payslips/index";
 import AccountsApp from "../containers/entities/accounts/index";
 import BankingApp from "../containers/entities/bankings/index";
 import Dashboard from "../containers/dashboard/index";
+import LeadsApp from "../containers/entities/leads/index";
 import WaitingListsApp from "../containers/entities/waitingLists/index";
 import ApplicationApp from "../containers/entities/applications/index";
 import ArticleProductApp from "../containers/entities/articleProducts/index";
@@ -58,7 +59,6 @@ import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
 import Automation from "../containers/automation/Automation";
 import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
-import BulkTagView from "../containers/tags/containers/BulkTagView";
 import QuickEnrol from "../containers/checkout/Checkout";
 import NotFound from "../containers/notFound/NotFound";
 
@@ -333,6 +333,13 @@ export const routes: MainRoute[] = [
     group: "Training"
   },
   {
+    title: "Leads",
+    path: "/lead/:id?",
+    url: "/lead",
+    main: LeadsApp,
+    group: "Training"
+  },
+  {
     title: "Waiting lists",
     path: "/waitingList/:id?",
     url: "/waitingList",
@@ -559,14 +566,6 @@ export const routes: MainRoute[] = [
     url: "/contact",
     main: ContactsApp,
     group: "Activity"
-  },
-  {
-    title: "Tags",
-    path: "/tagTreeView",
-    url: "/tagTreeView",
-    noMenuLink: true,
-    main: BulkTagView,
-    group: "Preferences"
   },
   {
     title: "Checkout (Quick Enrol)",

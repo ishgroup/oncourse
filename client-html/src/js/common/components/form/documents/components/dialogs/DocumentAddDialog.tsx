@@ -3,29 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
 import React, { RefObject } from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 import debounce from "lodash.debounce";
 import { format } from "date-fns";
-import Collapse from "@material-ui/core/Collapse";
-import Dialog from "@material-ui/core/Dialog";
-import withStyles from "@material-ui/core/styles/withStyles";
+import Collapse from "@mui/material/Collapse";
+import Dialog from "@mui/material/Dialog";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import withTheme from "@material-ui/core/styles/withTheme";
+import LinearProgress from "@mui/material/LinearProgress";
+import withTheme from "@mui/styles/withTheme";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Tooltip from "@mui/material/Tooltip";
 import { Dispatch } from "redux";
 import { KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL } from "../../../../../utils/dates/format";
 import FileUploaderDialog from "../../../../file-uploader/FileUploaderDialog";
 import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { State } from "../../../../../../reducers/state";
 import { dialogStyles } from "./dialogStyles";
-import EditInPlaceSearchSelect from "../../../form-fields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../formFields/EditInPlaceSearchSelect";
 import { DocumentSearchItem as DocumentSearchItemType } from "../../epics/EpicSearchExistingDocumentByName";
 import { stubFunction } from "../../../../../utils/common";
 
@@ -38,16 +38,21 @@ const addDialogStyles = theme => createStyles({
     "&:first-child": {
       marginLeft: 0
     }
+  },
+  paperWithSearch: {
+    height: "46px"
   }
 });
 
-const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: string; classes: any }>(props => {
-  const { classes, data, content } = props;
+const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: string; classes: any, parentProps: any }>(props => {
+  const {
+   classes, data, content, parentProps
+  } = props;
 
   const formattedDate = format(new Date(data.added), KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL).replace(/\./g, "");
 
   return (
-    <>
+    <div {...parentProps}>
       <Grid item xs={4} className={clsx("text-truncate text-nowrap", classes.searchItemPartWrapper)}>
         <Tooltip title={content}>
           <Typography variant="body2" component="span" className="text-truncate">
@@ -72,7 +77,7 @@ const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: s
           </Typography>
         </Tooltip>
       </Grid>
-    </>
+    </div>
   );
 });
 
@@ -188,8 +193,8 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
     clearSearchDocuments();
   };
 
-  searchItemsRenderer = (content, data) => (
-    <DocumentSearchItem classes={this.props.classes} data={data} content={content} />
+  searchItemsRenderer = (content, data, search, props) => (
+    <DocumentSearchItem classes={this.props.classes} data={data} content={content} parentProps={props} />
   );
 
   componentWillUnmount() {
@@ -211,7 +216,8 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
           onClose={this.onClose}
           classes={{
             paper: clsx("overflow-visible", {
-              [classes.addDialogMargin]: Boolean(searchItems && searchItems.length)
+              [classes.addDialogMargin]: Boolean(searchItems?.length),
+              [classes.paperWithSearch]: Boolean(searchItems?.length) && !fetch.pending
             })
           }}
         >
@@ -220,7 +226,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
               <EditInPlaceSearchSelect
                 selectValueMark="id"
                 selectLabelMark="name"
-                input={{ onChange: this.onSelectChange, onBlur: stubFunction } as any}
+                input={{ value: searchValue, onChange: this.onSelectChange, onBlur: stubFunction } as any}
                 meta={{} as any}
                 onInputChange={this.onSelectInputChange}
                 placeholder="Find existing documents"

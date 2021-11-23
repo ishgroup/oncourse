@@ -4,29 +4,29 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
-import Hidden from "@material-ui/core/Hidden";
-import { FormControlLabel } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import Checkbox from "@material-ui/core/Checkbox";
+import Grid from "@mui/material/Grid";
+import Divider from "@mui/material/Divider";
+import Hidden from "@mui/material/Hidden";
+import { FormControlLabel } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Checkbox from "@mui/material/Checkbox";
 import {
   Form, reduxForm, getFormValues, initialize
 } from "redux-form";
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
+import Button from "@mui/material/Button";
 import ConfirmBase from "../../../../../common/components/dialog/confirm/ConfirmBase";
-import Button from "../../../../../common/components/buttons/Button";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../../model/preferences/Ldap";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_ldap");
 
@@ -50,7 +50,8 @@ class LDAPBaseForm extends React.Component<any, any> {
     this.closeLicenceWarning = this.closeLicenceWarning.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // Initializing form with values
     if (!isEmpty(nextProps.formData) && !this.props.initialized) {
       this.props.dispatch(initialize("LDAPForm", nextProps.formData));
@@ -72,7 +73,7 @@ class LDAPBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form
+      handleSubmit, onSave, values, licence, testLdapConnection, dirty, data, form, invalid
     } = this.props;
 
     const simpleAuthEnabled = values && values[this.formModel.LdapSimpleAuthentication.uniqueKey] === "true";
@@ -90,110 +91,217 @@ class LDAPBaseForm extends React.Component<any, any> {
           cancelButtonText="OK"
         />
 
-        <CustomAppBar>
+        <AppBarContainer
+          values={data}
+          manualUrl={manualUrl}
+          getAuditsUrl={PREFERENCES_AUDITS_LINK}
+          disabled={!dirty}
+          invalid={invalid}
+          title="LDAP"
+          disableInteraction
+          createdOn={v => v.created}
+          modifiedOn={v => v.modified}
+        >
           <Grid container>
-            <Grid item xs={12} className="centeredFlex">
-              <Typography className="appHeaderFontSize" color="inherit" noWrap>
-                LDAP
-              </Typography>
-
-              <div className="flex-fill" />
-
-              {data && (
-                <AppBarHelpMenu
-                  created={data.created}
-                  modified={data.modified}
-                  auditsUrl={PREFERENCES_AUDITS_LINK}
-                  manualUrl={manualUrl}
-                />
-              )}
-
-              <Button
-                text="Save"
-                type="submit"
-                size="small"
-                variant="text"
-                disabled={!dirty}
-                rootClasses="whiteAppBarButton"
-                disabledClasses="whiteAppBarButtonDisabled"
+            <Grid item xs={12}>
+              <FormControlLabel
+                className="mb-2"
+                classes={{
+                  root: "checkbox"
+                }}
+                control={
+                  licence ? (
+                    <FormField
+                      type="checkbox"
+                      name={this.formModel.LdapSimpleAuthentication.uniqueKey}
+                      color="primary"
+                      stringValue
+                    />
+                  ) : (
+                    <Checkbox onClick={this.showLicenceWarning} checked={false} />
+                  )
+                }
+                label="Enable LDAP/AD authentication (ignored for admin users)"
               />
             </Grid>
           </Grid>
-        </CustomAppBar>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <FormControlLabel
-              className="mb-2"
-              classes={{
-                root: "checkbox"
-              }}
-              control={
-                licence ? (
-                  <FormField
-                    type="checkbox"
-                    name={this.formModel.LdapSimpleAuthentication.uniqueKey}
-                    color="primary"
-                    stringValue
-                  />
-                ) : (
-                  <Checkbox onClick={this.showLicenceWarning} checked={false} />
-                )
-              }
-              label="Enable LDAP/AD authentication (ignored for admin users)"
-            />
+          <Typography variant="body1" className="heading mb-2">
+            LDAP server parameter
+          </Typography>
+
+          <Grid container columnSpacing={3}>
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapHost.uniqueKey}
+                label="Host"
+                disabled={!licence || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={1} />
+            </Hidden>
+
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapBindUserDN.uniqueKey}
+                label="Bind user DN"
+                disabled={!licence || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={3} />
+            </Hidden>
+
+            <Grid item xs={12} sm={4} className="mb-1">
+              <FormField
+                type="text"
+                name={this.formModel.LdapServerPort.uniqueKey}
+                label="Port, e.g. 389"
+                disabled={!licence || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={1} />
+            </Hidden>
+
+            <Grid item xs={12} sm={4}>
+              <div>
+                <FormControlLabel
+                  classes={{
+                    root: "checkbox"
+                  }}
+                  control={(
+                    <FormField
+                      type="checkbox"
+                      name={this.formModel.LdapSSL.uniqueKey}
+                      color="primary"
+                      disabled={!licence || !simpleAuthEnabled}
+                      stringValue
+                    />
+                  )}
+                  label="SSL"
+                />
+              </div>
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={3} />
+            </Hidden>
+
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="password"
+                name={this.formModel.LdapBindUserPass.uniqueKey}
+                label="Bind user password"
+                disabled={!licence || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={1} />
+            </Hidden>
+
+            <Grid item sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapBaseDN.uniqueKey}
+                label="Base DN"
+                disabled={!licence || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={3} />
+            </Hidden>
+
+            <Grid item xs={12} className="mb-2 mt-2">
+              <Button
+                className="m-0"
+                onClick={testLdapConnection}
+                disabled={!licence || !simpleAuthEnabled}
+              >
+                Test connection
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <Typography variant="body1" className="heading mb-2">
-          LDAP server parameter
-        </Typography>
-
-        <Grid container>
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapHost.uniqueKey}
-              label="Host"
-              disabled={!licence || !simpleAuthEnabled}
-              fullWidth
-            />
+          <Grid container columnSpacing={3} spacing={5}>
+            <Grid item xs={12} sm={8}>
+              <Divider className="mb-1 mt-1" />
+            </Grid>
           </Grid>
 
-          <Hidden xsDown>
-            <Grid item sm={1} />
-          </Hidden>
+          <Typography variant="body1" className="heading mt-2 mb-2">
+            Users
+          </Typography>
 
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapBindUserDN.uniqueKey}
-              label="Bind user DN"
-              disabled={!licence || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
+          <Grid container columnSpacing={3}>
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapUsernameAttribute.uniqueKey}
+                label="Username attribute"
+                disabled={!licence || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
 
-          <Hidden xsDown>
-            <Grid item sm={3} />
-          </Hidden>
+            <Hidden xsDown>
+              <Grid item sm={1} />
+            </Hidden>
 
-          <Grid item xs={12} sm={4} className="mb-1">
-            <FormField
-              type="text"
-              name={this.formModel.LdapServerPort.uniqueKey}
-              label="Port, e.g. 389"
-              disabled={!licence || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapUserSearchFilter.uniqueKey}
+                label="User search filter"
+                disabled={!licence || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
 
-          <Hidden xsDown>
-            <Grid item sm={1} />
-          </Hidden>
+            <Hidden xsDown>
+              <Grid item sm={3} />
+            </Hidden>
 
-          <Grid item xs={12} sm={4}>
-            <div>
+            <Grid item xs={12} className="mt-1">
+              {!licence || !simpleAuthEnabled ? (
+                <Button
+                  href="ldapUserAccess"
+                  className="m-0"
+                  disabled={!licence || !simpleAuthEnabled}
+                >
+                  Test user
+                </Button>
+              ) : (
+                <a href="ldapUserAccess" className="link">
+                  <Button
+                    href="ldapUserAccess"
+                    className="m-0"
+                    disabled={!licence || !simpleAuthEnabled}
+                  >
+                    Test user
+                  </Button>
+                </a>
+              )}
+            </Grid>
+
+            <Grid item xs={12} sm={8} className="mb-2 mt-2">
+              <Divider className="mt-1" />
+            </Grid>
+
+            <Grid item xs={12} className="mb-2">
               <FormControlLabel
                 classes={{
                   root: "checkbox"
@@ -201,211 +309,88 @@ class LDAPBaseForm extends React.Component<any, any> {
                 control={(
                   <FormField
                     type="checkbox"
-                    name={this.formModel.LdapSSL.uniqueKey}
+                    name={this.formModel.LdapSaslAuthentication.uniqueKey}
                     color="primary"
                     disabled={!licence || !simpleAuthEnabled}
+                    fullWidth
                     stringValue
                   />
                 )}
-                label="SSL"
+                label="Enable LDAP/AD authorisation"
               />
-            </div>
+            </Grid>
           </Grid>
 
-          <Hidden xsDown>
-            <Grid item sm={3} />
-          </Hidden>
+          <Typography variant="body1" className="heading mb-2">
+            Roles
+          </Typography>
 
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="password"
-              name={this.formModel.LdapBindUserPass.uniqueKey}
-              label="Bind user password"
-              disabled={!licence || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={1} />
-          </Hidden>
-
-          <Grid item sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapBaseDN.uniqueKey}
-              label="Base DN"
-              disabled={!licence || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={3} />
-          </Hidden>
-
-          <Grid item xs={12} className="mb-2 mt-2">
-            <Button
-              text="Test connection"
-              className="m-0"
-              onClick={testLdapConnection}
-              disabled={!licence || !simpleAuthEnabled}
-            />
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={5}>
-          <Grid item xs={12} sm={8}>
-            <Divider className="mb-1 mt-1" />
-          </Grid>
-        </Grid>
-
-        <Typography variant="body1" className="heading mt-2 mb-2">
-          Users
-        </Typography>
-
-        <Grid container>
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapUsernameAttribute.uniqueKey}
-              label="Username attribute"
-              disabled={!licence || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={1} />
-          </Hidden>
-
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapUserSearchFilter.uniqueKey}
-              label="User search filter"
-              disabled={!licence || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={3} />
-          </Hidden>
-
-          <Grid item xs={12} className="mt-1">
-            {!licence || !simpleAuthEnabled ? (
-              <Button
-                text="Test user"
-                href="ldapUserAccess"
-                className="m-0"
-                disabled={!licence || !simpleAuthEnabled}
+          <Grid container columnSpacing={3}>
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapGroupMemberAttribute.uniqueKey}
+                label="Group member attribute"
+                disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
+                fullWidth
               />
-            ) : (
-              <a href="ldapUserAccess" className="link">
-                <Button
-                  text="Test user"
-                  href="ldapUserAccess"
-                  className="m-0"
-                  disabled={!licence || !simpleAuthEnabled}
-                />
-              </a>
-            )}
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={1} />
+            </Hidden>
+
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapGroupAttribute.uniqueKey}
+                label="Group name attribute"
+                disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={3} />
+            </Hidden>
+
+            <Grid item xs={12} sm={4}>
+              <FormField
+                type="text"
+                name={this.formModel.LdapGroupSearchFilter.uniqueKey}
+                label="Group search filter"
+                disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
+                fullWidth
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={1} />
+            </Hidden>
+
+            <Grid item xs={12} sm={4}>
+              <FormControlLabel
+                classes={{
+                  root: "checkbox"
+                }}
+                control={(
+                  <FormField
+                    type="checkbox"
+                    name={this.formModel.LdapGroupPosixStyle.uniqueKey}
+                    color="primary"
+                    disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
+                    stringValue
+                  />
+                )}
+                label="Posix style groups"
+              />
+            </Grid>
+
+            <Hidden xsDown>
+              <Grid item sm={3} />
+            </Hidden>
           </Grid>
-
-          <Grid item xs={12} sm={8} className="mb-2 mt-2">
-            <Divider className="mt-1" />
-          </Grid>
-
-          <Grid item xs={12} className="mb-2">
-            <FormControlLabel
-              classes={{
-                root: "checkbox"
-              }}
-              control={(
-                <FormField
-                  type="checkbox"
-                  name={this.formModel.LdapSaslAuthentication.uniqueKey}
-                  color="primary"
-                  disabled={!licence || !simpleAuthEnabled}
-                  fullWidth
-                  stringValue
-                />
-              )}
-              label="Enable LDAP/AD authorisation"
-            />
-          </Grid>
-        </Grid>
-
-        <Typography variant="body1" className="heading mb-2">
-          Roles
-        </Typography>
-
-        <Grid container>
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapGroupMemberAttribute.uniqueKey}
-              label="Group member attribute"
-              disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={1} />
-          </Hidden>
-
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapGroupAttribute.uniqueKey}
-              label="Group name attribute"
-              disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={3} />
-          </Hidden>
-
-          <Grid item xs={12} sm={4}>
-            <FormField
-              type="text"
-              name={this.formModel.LdapGroupSearchFilter.uniqueKey}
-              label="Group search filter"
-              disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-              fullWidth
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={1} />
-          </Hidden>
-
-          <Grid item xs={12} sm={4}>
-            <FormControlLabel
-              classes={{
-                root: "checkbox"
-              }}
-              control={(
-                <FormField
-                  type="checkbox"
-                  name={this.formModel.LdapGroupPosixStyle.uniqueKey}
-                  color="primary"
-                  disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-                  stringValue
-                />
-              )}
-              label="Posix style groups"
-            />
-          </Grid>
-
-          <Hidden xsDown>
-            <Grid item sm={3} />
-          </Hidden>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
@@ -417,7 +402,8 @@ const mapStateToProps = (state: State) => ({
 
 const LDAPForm = reduxForm({
   form: "LDAPForm",
-  validate: validateMultipleMandatoryFields
+  validate: validateMultipleMandatoryFields,
+  onSubmitFail
 })(
   connect<any, any, any>(
     mapStateToProps,

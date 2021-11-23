@@ -26,7 +26,7 @@ public enum CourseEnrolmentType implements DisplayableExtendedEnumeration<Intege
 	 * Allow students to enrol directly in classes for this course.
 	 */
 	@API
-	OPEN_FOR_ENROLMENT(1, "Open enrolment"),
+	OPEN_FOR_ENROLMENT(1, "Open enrolment", "Enrolment"),
 
 	/**
 	 * Database value: 2
@@ -34,19 +34,26 @@ public enum CourseEnrolmentType implements DisplayableExtendedEnumeration<Intege
 	 * Allow students to only apply for the class. Enrolment will be opened once the application is reviewed and accepted by college.
 	 */
 	@API
-	ENROLMENT_BY_APPLICATION(2, "Enrolment by application");
+	ENROLMENT_BY_APPLICATION(2, "Enrolment by application","Application");
 
 	private String displayName;
+	private String columnDisplayName;
 	private int value;
 
-	private CourseEnrolmentType(int value, String displayName) {
+	private CourseEnrolmentType(int value, String displayName, String columnDisplayName) {
 		this.value = value;
 		this.displayName = displayName;
+		this.columnDisplayName = columnDisplayName;
 	}
 
 	@Override
 	public Integer getDatabaseValue() {
 		return this.value;
+	}
+
+
+	public String getColumnDisplayName(){
+		return columnDisplayName
 	}
 
 	@Override

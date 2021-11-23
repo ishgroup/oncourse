@@ -11,17 +11,7 @@
 
 package ish.oncourse.aql.model;
 
-import ish.oncourse.server.cayenne.AssessmentClass;
-import ish.oncourse.server.cayenne.ClassCost;
-import ish.oncourse.server.cayenne.Course;
-import ish.oncourse.server.cayenne.CourseClass;
-import ish.oncourse.server.cayenne.Discount;
-import ish.oncourse.server.cayenne.Enrolment;
-import ish.oncourse.server.cayenne.Invoice;
-import ish.oncourse.server.cayenne.PaymentIn;
-import ish.oncourse.server.cayenne.PaymentOut;
-import ish.oncourse.server.cayenne.Room;
-import ish.oncourse.server.cayenne.Session;
+import ish.oncourse.server.cayenne.*;
 import org.apache.cayenne.Persistent;
 
 class PathAliasFactory {
@@ -61,6 +51,24 @@ class PathAliasFactory {
         createAlias(Room.class, "courseClasses", "classes", CourseClass.class);
 
         createAlias(Session.class, "courseClass", "class", CourseClass.class);
+
+        createAlias(Application.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Assessment.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Contact.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Course.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Document.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Enrolment.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Invoice.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Lead.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Message.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Payslip.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Quote.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Report.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Room.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Site.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Student.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Tutor.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(WaitingList.class, "taggingRelations.tag", "tags", Tag.class);
     }
 
     private void createAlias(Class<? extends Persistent> entityType,
@@ -70,7 +78,7 @@ class PathAliasFactory {
 
     private void createAlias(Class<? extends Persistent> entityType,
                              String path, String alias, Class<? extends Persistent> nextEntity) {
-        PathAliasDescriptor aliasDescriptor = new PathAliasDescriptor(factory, Course.class, path, alias, nextEntity);
+        PathAliasDescriptor aliasDescriptor = new PathAliasDescriptor(factory, entityType, path, alias, nextEntity);
         factory.addSyntheticAttribute(entityType, aliasDescriptor);
     }
 }

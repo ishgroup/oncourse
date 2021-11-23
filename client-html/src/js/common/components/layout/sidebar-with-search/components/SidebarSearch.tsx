@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-import Search from "@material-ui/icons/Search";
-import Input from "@material-ui/core/Input";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
+import Search from "@mui/icons-material/Search";
+import Input from "@mui/material/Input";
 import debounce from "lodash.debounce";
 
 const SidebarSearch = React.memo<any>(({ placeholder = "Filter items", setParentSearch }) => {

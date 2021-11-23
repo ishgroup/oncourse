@@ -7,10 +7,9 @@ describe("Virtual rendered AccountsEditView", () => {
     EditView: AccountsEditView,
     record: mockecApi => mockecApi.db.getAccount(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find("#accountCode").text()).toContain(initialValues.accountCode);
-      expect(wrapper.find("#type").text()).toContain(initialValues.type.toString());
-      expect(wrapper.find("#description").text()).toContain(initialValues.description);
-      expect(wrapper.find('input[type="checkbox"]').props().checked).toEqual(initialValues.isEnabled);
+      expect(wrapper.find("#accountCode input").val()).toContain(initialValues.accountCode);
+      expect(wrapper.find("#type input").val()).toContain(initialValues.type.toString());
+      expect(wrapper.find("#description textarea").val()).toContain(initialValues.description);
     }
   });
 });

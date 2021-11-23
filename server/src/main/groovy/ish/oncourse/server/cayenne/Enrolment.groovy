@@ -632,12 +632,25 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	}
 
 	/**
-	 * @return
+	 * @return invoice lines related to this enrolment
+	 */
+	/**
+	 * @return invoice lines related to this class
 	 */
 	@Nonnull
+	@API
 	@Override
-    List<InvoiceLine> getInvoiceLines() {
-		return super.getInvoiceLines()
+	List<InvoiceLine> getInvoiceLines() {
+		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+	}
+
+	/**
+	 * @return quote lines related to this class
+	 */
+	@Nonnull
+	@API
+	List<QuoteLine> getQuoteLines() {
+		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
 	}
 
 	/**
@@ -750,5 +763,10 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return EnrolmentCustomField
+	}
+
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return EnrolmentTagRelation.class
 	}
 }

@@ -24,7 +24,14 @@ trait ContactTrait {
 
     abstract List<Membership> getMemberships()
     abstract LocalDate getBirthDate()
-
+    abstract String getHomePhone()
+    abstract String getMobilePhone()
+    abstract String getWorkPhone()
+    abstract String getStreet()
+    abstract String getPostcode()
+    abstract String getState()
+    abstract String getSuburb()
+    
     boolean hasMembership(MembershipProduct membership) {
         memberships.any { it.status == ProductStatus.ACTIVE && it.expiryDate > new Date() && it.product.id == membership.id  }
 
@@ -57,16 +64,16 @@ trait ContactTrait {
      * @param contact
      * @return phone numbers
      */
-    public String getPhones(Contact contact) {
+    String getPhones() {
         String result = "";
-        if (contact.getHomePhone() != null) {
-            result = result + "H:" + contact.getHomePhone();
+        if (getHomePhone() != null) {
+            result = result + "H:" + getHomePhone()
         }
-        if (contact.getMobilePhone() != null) {
-            result = result + (result.length() > 0 ? ", " : "") + "M:" + contact.getMobilePhone();
+        if (getMobilePhone() != null) {
+            result = result + (result.length() > 0 ? ", " : "") + "M:" + getMobilePhone()
         }
-        if (contact.getWorkPhone() != null) {
-            result = result + (result.length() > 0 ? ", " : "") + "W:" + contact.getWorkPhone();
+        if (getWorkPhone() != null) {
+            result = result + (result.length() > 0 ? ", " : "") + "W:" + getWorkPhone()
         }
         return result;
     }
@@ -77,31 +84,45 @@ trait ContactTrait {
      * @return String address
      */
     @API
-    String getAddress(Contact contact) {
+    String getAddress() {
 
-        StringBuilder address = new StringBuilder();
+        StringBuilder address = new StringBuilder()
 
-        if (StringUtils.trimToNull(contact.getStreet()) != null) {
-            address.append(contact.getStreet());
-            address.append(RuntimeUtil.LINE_SEPARATOR);
+        if (StringUtils.trimToNull(getStreet()) != null) {
+            address.append(getStreet())
+            address.append(RuntimeUtil.LINE_SEPARATOR)
         }
 
-        if (StringUtils.trimToNull(contact.getSuburb()) != null) {
-            address.append(contact.getSuburb());
+        if (StringUtils.trimToNull(getSuburb()) != null) {
+            address.append(getSuburb())
         }
-        if (StringUtils.trimToNull(contact.getState()) != null) {
+        if (StringUtils.trimToNull(getState()) != null) {
             if (address.length() > 0) {
-                address.append(ADDRESS_COMPONENT_SEPARATOR);
+                address.append(ADDRESS_COMPONENT_SEPARATOR)
             }
-            address.append(contact.getState());
+            address.append(getState())
         }
-        if (StringUtils.trimToNull(contact.getPostcode()) != null) {
+        if (StringUtils.trimToNull(getPostcode()) != null) {
             if (address.length() > 0) {
-                address.append(ADDRESS_COMPONENT_SEPARATOR);
+                address.append(ADDRESS_COMPONENT_SEPARATOR)
             }
-            address.append(contact.getPostcode().trim());
+            address.append(getPostcode().trim())
         }
 
-        return address.toString();
+        return address.toString()
+    }
+    
+    
+    static class ContactService {
+
+        static Integer getAge(Contact contact) {
+            contact.getAge()
+        }
+        static String getPhones(Contact contact) {
+            contact.getPhones()
+        }
+        static String getAddress(Contact contact) {
+            contact.getAddress()
+        }
     }
 }

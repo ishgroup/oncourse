@@ -4,15 +4,14 @@
  */
 
 import React, { useMemo } from "react";
-import clsx from "clsx";
 import { change } from "redux-form";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+import { withStyles, createStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import debounce from "lodash.debounce";
 import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { normalizeNumberToZero, preventDecimalEnter } from "../../../../../common/utils/numbers/numbersNormalizing";
@@ -26,17 +25,7 @@ const styles = (theme: AppTheme) => createStyles({
     background: theme.table.contrastRow.light,
     borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(1.5),
-    paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)
-  },
-  rowItemCol12: {
-    paddingRight: 20
-  },
-  rowItemCol3: {
-    paddingRight: 21
-  },
-  rowItemCol4: {
-    paddingRight: 26
   }
 });
 
@@ -89,10 +78,10 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
 
   return (
     <Grid container direction="row" className={classes.root}>
-      <Grid item xs={3} className="centeredFlex">
+      <Grid item xs={3} className="centeredFlex pl-2">
         <Typography variant="body1">Enrolments</Typography>
       </Grid>
-      <Grid item xs={2} className={clsx(classes.rowItemCol12, "text-end")}>
+      <Grid item xs={2} className="text-end">
         <FormField type="stub" name="minimumPlaces" validate={validateNonNegative} />
         <FormField type="stub" name="maximumPlaces" validate={validateNonNegative} />
         <FormField type="stub" name="budgetedPlaces" validate={validateNonNegative} />
@@ -110,13 +99,13 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />
         {seatedCapacityWarnings.min && <WarningMessage warning={seatedCapacityWarnings.min} />}
       </Grid>
-      <Grid item xs={2} className={clsx(classes.rowItemCol12, "text-end")}>
+      <Grid item xs={2} className="text-end">
         <EditInPlaceField
           type="number"
           label="Maximum"
@@ -130,13 +119,13 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />
         {seatedCapacityWarnings.max && <WarningMessage warning={seatedCapacityWarnings.max} />}
       </Grid>
-      <Grid item xs={2} className={clsx(classes.rowItemCol3, "text-end")}>
+      <Grid item xs={2} className="text-end">
         <EditInPlaceField
           name="budgetedPlaces"
           type="number"
@@ -151,13 +140,13 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
             onFocus: stubFunction,
             onBlur: stubFunction
           }}
-          classes={{ textField: "text-end", fitWidth: "flex-fill" }}
+          classes={{ fitWidth: "flex-fill" }}
           onKeyPress={preventDecimalEnter}
           rightAligned
         />
       </Grid>
-      <Grid item xs={2} className={clsx("d-flex justify-content-end", classes.rowItemCol4)}>
-        <Uneditable value={enrolmentsCount || "0"} label="Actual" className="text-end" />
+      <Grid item xs={2} className="d-flex justify-content-end">
+        <Uneditable value={enrolmentsCount || "0"} label="Actual" rightAligned />
       </Grid>
       <Grid item xs={1} />
     </Grid>

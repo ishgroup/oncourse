@@ -115,16 +115,8 @@ export function mockPreferences() {
 
     // Licences preferences
     [Model.LicenseAccessControl.uniqueKey]: true,
-    [Model.LicenseAttendance.uniqueKey]: true,
-    [Model.LicenseCreditCard.uniqueKey]: true,
-    [Model.LicenseFundingContract.uniqueKey]: true,
-    [Model.LicenseGravatar.uniqueKey]: true,
-    [Model.LicenseMembership.uniqueKey]: true,
-    [Model.LicensePayroll.uniqueKey]: true,
     [Model.LicenseScripting.uniqueKey]: false,
     [Model.LicenseSMS.uniqueKey]: false,
-    [Model.LicenseFeeHelpExport.uniqueKey]: false,
-    [Model.LicenseVoucher.uniqueKey]: false,
 
     // Messaging preferences
     [Model.EmailAdminAddress.uniqueKey]: "admin@admin.com",

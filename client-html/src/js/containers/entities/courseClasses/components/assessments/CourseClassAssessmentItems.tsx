@@ -13,15 +13,15 @@ import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
 import {
   Grid, FormControlLabel, IconButton, Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { differenceInDays } from "date-fns";
 import {
   AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
-import { withStyles } from "@material-ui/core/styles";
-import { DateRange, ExpandMore, Edit } from "@material-ui/icons";
-import FormField from "../../../../../common/components/form/form-fields/FormField";
-import { StyledCheckbox } from "../../../../../common/components/form/form-fields/CheckboxField";
+import { withStyles } from "@mui/styles";
+import { DateRange, ExpandMore, Edit } from "@mui/icons-material";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { stubComponent } from "../../../../../common/utils/common";
 import { defaultContactName } from "../../../contacts/utils";
@@ -82,7 +82,12 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
   const tutorsUpdater = useRef<any>();
   const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
 
-  const submissionTutors = useMemo(() => tutors.filter(t => row.contactIds.includes(t.contactId)), [tutors, row.contactIds]);
+  const uniqueIds = new Set([]);
+  const submissionTutors = useMemo(() => tutors.filter(t => {
+    if (uniqueIds.has(t.contactId) || !row.contactIds.includes(t.contactId)) return false;
+    uniqueIds.add(t.contactId);
+    return true;
+  }), [tutors, row.contactIds]);
 
   const gradeType: GradingType = useMemo(() =>
     gradingTypes?.find(g => g.id === row.gradingTypeId),
@@ -386,8 +391,8 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
   return (
     <Grid container>
-      <Grid item={true} xs={12} container className="pb-3">
-        <Grid item xs={twoColumn ? 8 : 12} container>
+      <Grid item={true} xs={12} columnSpacing={3} container className="pb-3">
+        <Grid item columnSpacing={3} rowSpacing={2} xs={twoColumn ? 8 : 12} container>
           <Grid item xs={twoColumn ? 6 : 12}>
             <GradeModal
               gradeMenuAnchorEl={gradeMenuAnchorEl}
@@ -540,7 +545,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                 classes={classes}
                 gradeType={gradeType}
                 gradeItems={gradeItems}
-                tutors={tutors.filter(t => row.contactIds.includes(t.contactId))}
+                tutors={submissionTutors}
               />
             ))}
           </Grid>

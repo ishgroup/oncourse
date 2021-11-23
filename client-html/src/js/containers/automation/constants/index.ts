@@ -17,6 +17,7 @@ export const MESSAGE_TEMPLATE_ENTITIES = stringLiterals(
   "CourseClassTutor",
   "Enrolment",
   "Invoice",
+  "Lead",
   "Membership",
   "PaymentIn",
   "PaymentOut",

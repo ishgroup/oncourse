@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 94-1
+      author: artyom
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              tableName: Invoice
+              columnName: quoteNumber
+      changes:
+        - addColumn:
+            tableName: Invoice
+            columns:
+              - column:
+                  name: quoteNumber
+                  type: BIGINT
+        - createIndex:
+            columns:
+              - column:
+                  name: quoteNumber
+            indexName: Invoice_quoteNumber_U
+            tableName: Invoice
+            unique: true

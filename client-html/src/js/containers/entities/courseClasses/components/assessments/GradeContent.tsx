@@ -7,10 +7,10 @@
  */
 
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import { ExpandMore } from "@material-ui/icons";
+import IconButton from "@mui/material/IconButton";
+import { ExpandMore } from "@mui/icons-material";
 import GradeButton from "./GradeButton";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 import { stubFunction } from "../../../../../common/utils/common";
 
 const GradeContent = (

@@ -4,22 +4,22 @@
  */
 
 import { Currency } from "@api/model";
-import MuiButton from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Grid from "@material-ui/core/Grid/Grid";
-import Typography from "@material-ui/core/Typography/Typography";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
   change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm
 } from "redux-form";
-import Button from "../../../../common/components/buttons/Button";
+
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import FormField from "../../../../common/components/form/form-fields/FormField";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
@@ -162,7 +162,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
         <DialogTitle>Contra Invoice</DialogTitle>
 
         <DialogContent className="overflow-hidden">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={6}>
               <FormField
                 type="text"
@@ -175,7 +175,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
               />
             </Grid>
 
-            <Grid item xs={6} className="textField">
+            <Grid item xs={6}>
               <div>
                 <Typography variant="caption" color="textSecondary">
                   Amount left to allocate
@@ -216,11 +216,11 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
         </DialogContent>
 
         <DialogActions className="p-3">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
+          </Button>
 
-          <Button color="primary" type="submit" disabled={!dirty}>
+          <Button variant="contained" color="primary" type="submit" disabled={!dirty}>
             Save
           </Button>
         </DialogActions>

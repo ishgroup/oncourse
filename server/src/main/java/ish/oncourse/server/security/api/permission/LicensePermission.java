@@ -13,6 +13,7 @@ package ish.oncourse.server.security.api.permission;
 
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Preference;
+import ish.oncourse.server.license.LicenseService;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -41,15 +42,25 @@ public class LicensePermission extends ResourcePermission {
 
     @Override
     public PermissionCheckingResult check() {
-        var cayenneService = injector.getInstance(ICayenneService.class);
-        var context = cayenneService.getNewContext();
-        var preference = ObjectSelect.query(Preference.class)
-                .where(Preference.UNIQUE_KEY.eq(code))
-                .and(Preference.VALUE_STRING.eq("true"))
-                .selectOne(context);
-        if (preference == null) {
-            return new PermissionCheckingResult(false, errorMessage);
+        LicenseService licenseService = injector.getInstance(LicenseService.class);
+        boolean result = false;
+
+        if (code.startsWith("license.")) {
+            var value = licenseService.getLisense(code);
+            result = value != null && Boolean.parseBoolean(value.toString());
+        } else {
+            var cayenneService = injector.getInstance(ICayenneService.class);
+            var context = cayenneService.getNewContext();
+            var preference = ObjectSelect.query(Preference.class)
+                    .where(Preference.UNIQUE_KEY.eq(code))
+                    .and(Preference.VALUE_STRING.eq("true"))
+                    .selectOne(context);
+            if (preference != null) {
+                result = true;
+            }
         }
-        return new PermissionCheckingResult(true);
+
+        return result ?  new PermissionCheckingResult(true) :
+                new PermissionCheckingResult(false, errorMessage);
     }
 }
