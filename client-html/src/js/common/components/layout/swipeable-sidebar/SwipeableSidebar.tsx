@@ -25,6 +25,11 @@ import Favorites from "./components/favorites/Favorites";
 import { getResultId } from "./utils";
 import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import onCourseLogoDark from "../../../../../images/onCourseLogoDark.png";
+import onCourseLogoLight from "../../../../../images/onCourseLogoLight.png";
+import onCourseLogoChristmas from "../../../../../images/onCourseLogoChristmas.png";
+import { LSGetItem } from "../../../utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../../../constants/Config";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -61,13 +66,16 @@ const styles = (theme: AppTheme) =>
       background: "none"
     },
     toolbar: {
-      ...theme.mixins.toolbar
+      ...theme.mixins.toolbar,
+      display: "flex",
+      alignItems: "center"
     },
     searchResultsWrapper: {
       overflowY: "auto",
       maxHeight: "calc(100vh - 64px - 60px)",
       transition: "all 0.5s ease-in"
-    }
+    },
+    logo: { height: "36px", width: "auto" }
   });
 
 interface Props {
@@ -89,6 +97,7 @@ interface Props {
   getScriptsPermissions: any;
   scripts: any;
   hasScriptsPermissions: any;
+  theme?: AppTheme;
 }
 
 const SwipeableSidebar: React.FC<Props> = props => {
@@ -110,7 +119,8 @@ const SwipeableSidebar: React.FC<Props> = props => {
     categories,
     getScriptsPermissions,
     scripts,
-    hasScriptsPermissions
+    hasScriptsPermissions,
+    theme
   } = props;
 
   const [controlResults, setControlResults] = React.useState([]);
@@ -309,6 +319,8 @@ const SwipeableSidebar: React.FC<Props> = props => {
     }
   }, [isFormDirty, resetEditView]);
 
+  const isChristmas = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas";
+
   return (
     <SwipeableDrawer
       variant={variant}
@@ -323,6 +335,17 @@ const SwipeableSidebar: React.FC<Props> = props => {
         <div className={classes.drawerWidth}>
           <div className={clsx("pl-2", classes.toolbar)}>
             <HamburgerMenu variant={variant} form={form} />
+
+              {isChristmas ? (
+                <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
+              ) : (
+                <img
+                  src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
+                  className={classes.logo}
+                  alt="Logo"
+                />
+              )}
+
           </div>
           <UserSearch getSearchResults={getSearchResults} />
           <div>
@@ -381,4 +404,4 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles)(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));
