@@ -38,7 +38,9 @@ const EnrolmentEditView = props => {
     onCloseClick,
     toogleFullScreenEditView,
     rootEntity,
-    invalid
+    invalid,
+    onEditViewScroll,
+    isScrollingRoot,
   } = props;
 
   return (
@@ -63,7 +65,9 @@ const EnrolmentEditView = props => {
           syncErrors,
           openNestedEditView,
           onCloseClick,
-          toogleFullScreenEditView
+          toogleFullScreenEditView,
+          onEditViewScroll,
+          isScrollingRoot,
         }}
       />
     </>

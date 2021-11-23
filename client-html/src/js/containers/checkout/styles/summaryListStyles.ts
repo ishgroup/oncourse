@@ -9,12 +9,14 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 import { AppTheme } from "../../../model/common/Theme";
 
 export const summaryListStyles = (theme: AppTheme) => createStyles({
   itemTotal: {
-    paddingRight: "50px !important"
+    paddingRight: "50px",
+    display: "flex",
+    flexDirection: "row-reverse"
   },
   topRightlabel: {
     paddingRight: "38px"

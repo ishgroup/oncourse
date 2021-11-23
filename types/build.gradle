@@ -9,7 +9,9 @@
  * See the GNU Affero General Public License for more details.
  */
 
-apply plugin: 'groovy'
+plugins {
+    id 'java-library'
+}
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDir 'src/main/java'

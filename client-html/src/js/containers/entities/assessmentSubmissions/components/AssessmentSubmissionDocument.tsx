@@ -8,7 +8,7 @@
 
 import React from "react";
 import { FieldArray } from "redux-form";
-import Grid from "@material-ui/core/Grid/Grid";
+import Grid from "@mui/material/Grid";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface AssessmentDocumentsProps {

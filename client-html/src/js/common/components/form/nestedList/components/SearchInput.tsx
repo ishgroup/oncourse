@@ -4,10 +4,10 @@
  */
 
 import React, { useMemo } from "react";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-import Input from "@material-ui/core/Input";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
+import Input from "@mui/material/Input";
 import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
 import { mapSelectItems, stubFunction } from "../../../../utils/common";
 import EditInPlaceField from "../../formFields/EditInPlaceField";
@@ -95,7 +95,7 @@ const SearchInput = React.memo<any>(props => {
       {aqlEntities && aqlEntities.length > 1
         && (
         <EditInPlaceField
-          className="mt-2"
+          className="mt-2 mb-2"
           label="Entity"
           meta={{}}
           input={{

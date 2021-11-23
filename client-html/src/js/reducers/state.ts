@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Country, Currency, Language } from "@api/model";
+import { Country, Currency, Language, User } from "@api/model";
 import { PreferencesState } from "../containers/preferences/reducers/state";
 import { Fetch } from "../model/common/Fetch";
 import { Drawer } from "../model/common/drawer/DrawerModel";
@@ -57,7 +57,6 @@ export interface State {
   countries: Country[];
   languages: Language[];
   fetch: Fetch;
-  lead: {},
   enums: any;
   form: any;
   drawer: Drawer;
@@ -96,4 +95,5 @@ export interface State {
   enrolments: EnrolmentsState;
   plainSearchRecords: CommonPlainRecordSearchState;
   nextLocation: string;
+  systemUser: User;
 }

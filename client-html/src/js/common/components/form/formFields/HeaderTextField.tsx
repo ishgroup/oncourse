@@ -4,14 +4,13 @@
  */
 
 import {
- FormControl, FormHelperText, IconButton, Input, Typography, withStyles
-} from "@material-ui/core";
+ FormControl, FormHelperText, IconButton, Input, Typography } from "@mui/material";
+import { withStyles
+} from "@mui/styles";
 import clsx from "clsx";
-import Edit from "@material-ui/icons/Edit";
-import React, {
- useCallback, useMemo, useRef, useState
-} from "react";
-import ButtonBase from "@material-ui/core/ButtonBase/ButtonBase";
+import Edit from "@mui/icons-material/Edit";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { ButtonBase }  from "@mui/material";
 
 const styles = theme => ({
   titleControls: {

@@ -408,7 +408,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	BigDecimal getPayableClassroomHours() {
 		BigDecimal sum = BigDecimal.ZERO
 		if (getSessions() != null && getSessions().size() > 0) {
-			sum = getSessions()*.getPayableDurationInHours().sum() as BigDecimal
+			sum = getSessions()*.getDurationInHours().sum() as BigDecimal
 		} else if (getSessionsCount() != null && getMinutesPerSession() != null) {
 			return getSessionsCount() * getMinutesPerSession() / 60L
 		}

@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FormControlLabel } from "@material-ui/core";
+import { FormControlLabel } from "@mui/material";
 import React, {
  Dispatch, useCallback, useEffect, useMemo, useState
 } from "react";
@@ -12,15 +12,15 @@ import { connect } from "react-redux";
 import {
  Field, getFormValues, initialize, reduxForm
 } from "redux-form";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import Button from "@material-ui/core/Button";
+import { createStyles, withStyles } from "@mui/styles";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import Button from "@mui/material/Button";
 import { MergeData, MergeLine, MergeRequest } from "@api/model";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { State } from "../../../../../reducers/state";
@@ -255,7 +255,7 @@ const MergeContacts = React.memo<Props>(
 
           <LoadingIndicator appBarOffset />
 
-          <Grid container className="p-3 h-100 appBarContainer defaultBackgroundColor" wrap="nowrap">
+          <Grid container columnSpacing={3} className="p-3 h-100 appBarContainer defaultBackgroundColor" wrap="nowrap">
             <Grid item xs={12} md={6} className={clsx("d-grid align-content-start", classes.contactsFields)}>
               <Typography variant="body2" className={clsx("d-grid align-items-center justify-content-start", classes.switcherGroup)}>
                 Only show differences

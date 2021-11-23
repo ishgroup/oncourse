@@ -130,18 +130,18 @@
                     TUTORID="2" DEFINEDTUTORROLEID="1" INPUBLICITY="1"/>
 
   <CourseSession id="1" courseClass_Id="1" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="2" courseClass_Id="1" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="3" courseClass_Id="1" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <CourseSession id="4" courseClass_Id="2" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="5" courseClass_Id="2" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="6" courseClass_Id="2" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <Enrolment id="1" courseClass_id="1" studentId="1" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" fundingSource="1" createdOn="2013-01-01 00:00:00"

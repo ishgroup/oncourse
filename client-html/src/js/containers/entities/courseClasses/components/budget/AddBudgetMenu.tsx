@@ -4,8 +4,8 @@
  */
 
 import React, { useRef } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { CourseClassTutor } from "@api/model";
 

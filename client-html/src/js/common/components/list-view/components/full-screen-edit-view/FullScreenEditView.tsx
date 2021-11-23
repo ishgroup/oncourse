@@ -6,16 +6,14 @@
 import React from "react";
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
-import Dialog from "@material-ui/core/Dialog";
-import AppBar from "@material-ui/core/AppBar";
-import { createStyles, withStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import Dialog from "@mui/material/Dialog";
+import AppBar from "@mui/material/AppBar";
+import { createStyles, withStyles } from "@mui/styles";
+import Button from "@mui/material/Button";
 import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import Slide from "@material-ui/core/Slide";
-import Typography from "@material-ui/core/Typography";
-import { TransitionProps } from "@material-ui/core/transitions";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
 import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";
 import LoadingIndicator from "../../../layout/LoadingIndicator";
@@ -24,31 +22,65 @@ import { EditViewContainerProps } from "../../../../../model/common/ListView";
 import AppBarHelpMenu from "../../../form/AppBarHelpMenu";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import { LSGetItem } from "../../../../utils/storage";
-import { APPLICATION_THEME_STORAGE_NAME } from "../../../../../constants/Config";
+import {
+  APPLICATION_THEME_STORAGE_NAME,
+  STICKY_HEADER_EVENT,
+  TAB_LIST_SCROLL_TARGET_ID
+} from "../../../../../constants/Config";
+import FullScreenStickyHeader from "./FullScreenStickyHeader";
+import { useStickyScrollSpy } from "../../../../utils/hooks";
 
 const styles = theme => createStyles({
-    header: {
-      height: "64px",
-      display: "flex",
-      justifyContent: "space-between",
-      flexDirection: "row",
-      alignItems: "center",
-      padding: theme.spacing(0, 3)
+  header: {
+    height: "64px",
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: theme.spacing(0, 3),
+    background: theme.appBar.header.background,
+    color: theme.appBar.header.color,
+    "& $submitButtonAlternate": {
+      background: `${theme.appBar.headerAlternate.color}`,
+      color: `${theme.appBar.headerAlternate.background}`,
     },
-    root: {
-      marginTop: theme.spacing(8),
-      height: `calc(100vh - ${theme.spacing(8)}px)`
-    },
-    fullEditViewBackground: {
-      background: theme.palette.background.default
+    "& $closeButtonAlternate": {
+      color: `${theme.appBar.headerAlternate.color}`,
     }
-  });
+  },
+  root: {
+    marginTop: theme.spacing(8),
+    height: `calc(100vh - ${theme.spacing(8)})`,
+    overflow: 'hidden'
+  },
+  fullEditViewBackground: {
+    background: theme.appBar.header.background,
+  },
+  headerAlternate: {
+    background: `${theme.appBar.headerAlternate.background}`,
+    color: `${theme.appBar.headerAlternate.color}`,
+    "& $actionsWrapper svg": {
+      color: `${theme.appBar.headerAlternate.color}`,
+    }
+  },
+  actionsWrapper: {
+    display: "inline-block"
+  },
+  submitButtonAlternate: {
+  },
+  closeButtonAlternate: {},
+  titleWrapper: {}
+});
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} />
 ));
 
 class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps, any> {
+  state = {
+    hasScrolling: false
+  }
+
   componentDidUpdate(prevProps) {
     const {
       pending, dispatch, rootEntity, isNested
@@ -84,6 +116,20 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       window.performance.clearMarks("NestedEditViewEnd");
       window.performance.clearMeasures("NestedEditViewView");
     }
+  }
+
+  onStickyChange = e => {
+    if (this.state.hasScrolling !== e.detail.stuck) {
+      this.setState({ hasScrolling: e.detail.stuck });
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
   }
 
   updateTitle = (title: string) => {
@@ -130,7 +176,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       nameCondition,
       showConfirm,
       openNestedEditView,
-      hideFullScreenAppBar,
       manualLink,
       submitSucceeded,
       syncErrors,
@@ -139,12 +184,21 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       toogleFullScreenEditView,
       form,
       asyncValidating,
-      disabledSubmitCondition
+      disabledSubmitCondition,
+      hideTitle,
     } = this.props;
+
+    const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
+
+    const { hasScrolling } = this.state;
 
     const title = values && (nameCondition ? nameCondition(values) : values.name);
 
     this.updateTitle(title);
+
+    const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
+
+    const { scrollSpy } = useStickyScrollSpy();
 
     return (
       <Dialog
@@ -158,63 +212,70 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
         }}
         disableEnforceFocus
       >
+        <LoadingIndicator position="fixed" />
         <form onSubmit={handleSubmit} autoComplete="off" noValidate>
-          {!hideFullScreenAppBar && (
-            <AppBar
-              elevation={0}
-              className={clsx(classes.header, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
-            >
-              <div className="flex-fill">
-                <Typography className="appHeaderFontSize" color="inherit">
-                  {title}
-                </Typography>
-              </div>
-              <div>
+          <AppBar
+            elevation={0}
+            className={clsx(
+              classes.header,
+              LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader",
+              { [classes.headerAlternate]: hasScrolling }
+            )}
+          >
+            <div className={clsx("flex-fill", classes.titleWrapper)}>
+              {!hideTitle && (<FullScreenStickyHeader title={title} twoColumn disableInteraction />)}
+            </div>
+            <div>
+              <div className={classes.actionsWrapper}>
                 {manualLink && (
                   <AppBarHelpMenu
                     created={values ? new Date(values.createdOn) : null}
                     modified={values ? new Date(values.modifiedOn) : null}
-                    auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
+                    auditsUrl={rootEntity !== "Audit" && `audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
                     manualUrl={manualLink}
                   />
                 )}
-                <Button onClick={this.onCloseClick} className="closeAppBarButton">
-                  Close
-                </Button>
-                <FormSubmitButton
-                  disabled={(!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
-                  invalid={invalid}
-                />
               </div>
-            </AppBar>
-          )}
-          <Grid container className={hideFullScreenAppBar ? undefined : classes.root}>
-            <Grid item xs={12}>
-              <LoadingIndicator appBarOffset position="fixed" />
-
-              <EditViewContent
-                twoColumn
-                asyncValidating={asyncValidating}
-                syncErrors={syncErrors}
-                submitSucceeded={submitSucceeded}
+              <Button
+                onClick={this.onCloseClick}
+                className={clsx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
+              >
+                Close
+              </Button>
+              <FormSubmitButton
+                disabled={(!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
                 invalid={invalid}
-                onCloseClick={this.onCloseClick}
-                manualLink={manualLink}
-                rootEntity={rootEntity}
-                isNested={isNested}
-                nestedIndex={nestedIndex}
-                form={form}
-                isNew={creatingNew}
-                values={values}
-                updateDeleteCondition={updateDeleteCondition}
-                dispatch={dispatch}
-                dirty={dirty}
-                showConfirm={showConfirm}
-                openNestedEditView={openNestedEditView}
-                toogleFullScreenEditView={toogleFullScreenEditView}
+                fab
+                className={isDarkTheme && classes.submitButtonAlternate}
               />
-            </Grid>
-          </Grid>
+            </div>
+          </AppBar>
+          <div
+            className={clsx(classes.root, noTabList && "overflow-y-auto", !hideTitle && noTabList && "pt-1")}
+            onScroll={noTabList ? scrollSpy : undefined}
+          >
+            <EditViewContent
+              twoColumn
+              asyncValidating={asyncValidating}
+              syncErrors={syncErrors}
+              submitSucceeded={submitSucceeded}
+              invalid={invalid}
+              onCloseClick={this.onCloseClick}
+              manualLink={manualLink}
+              rootEntity={rootEntity}
+              isNested={isNested}
+              nestedIndex={nestedIndex}
+              form={form}
+              isNew={creatingNew}
+              values={values}
+              updateDeleteCondition={updateDeleteCondition}
+              dispatch={dispatch}
+              dirty={dirty}
+              showConfirm={showConfirm}
+              openNestedEditView={openNestedEditView}
+              toogleFullScreenEditView={toogleFullScreenEditView}
+            />
+          </div>
         </form>
       </Dialog>
     );

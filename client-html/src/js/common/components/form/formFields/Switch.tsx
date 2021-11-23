@@ -8,9 +8,9 @@
  * */
 
 import React, { useCallback } from "react";
-import MuiSwitch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import MuiSwitch from "@mui/material/Switch";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 
 const getValue = value => {
@@ -59,7 +59,7 @@ const styles = theme => createStyles({
         color: theme.palette.common.white
       },
       "&$checked": {
-        transform: `translateX(${theme.spacing(2)}px)`
+        transform: `translateX(${theme.spacing(2)})`
       },
       "&$checked + $bar": {
         opacity: 1

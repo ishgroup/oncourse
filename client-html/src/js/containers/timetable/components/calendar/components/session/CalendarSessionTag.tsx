@@ -1,6 +1,6 @@
 import React from "react";
-import { Theme } from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Theme } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
 
 const styles = (theme: Theme) => ({
   "@global": {

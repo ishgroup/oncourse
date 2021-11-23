@@ -1,6 +1,7 @@
 import React from "react";
-import { createStyles, IconButton, Typography, withStyles } from "@material-ui/core";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
+import { IconButton, Typography } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 
 interface Props {
   month: string;

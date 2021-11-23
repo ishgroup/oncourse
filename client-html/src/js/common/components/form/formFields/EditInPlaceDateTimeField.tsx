@@ -13,29 +13,28 @@
  * Wrapper component for DateTimeField with edit in place functional
  * */
 
-import React, { ComponentClass, useEffect, useMemo, useRef, useState } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import React, {
+ ComponentClass, useEffect, useMemo, useRef, useState
+} from "react";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import DateRange from "@material-ui/icons/DateRange";
-import QueryBuilder from "@material-ui/icons/QueryBuilder";
+import DateRange from "@mui/icons-material/DateRange";
+import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import { format, isValid } from "date-fns";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 import { DateTimeField } from "./DateTimeField";
 import { formatStringDate } from "../../../utils/dates/formatString";
-import { HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
+import {
+ HH_MM_COLONED, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED 
+} from "../../../utils/dates/format";
 import { appendTimezone, appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
 
 const styles = theme => createStyles({
-  textField: {
-    paddingLeft: "0",
-    paddingBottom: "9px",
-    height: "61px",
-  },
   spanLabel: {
     paddingLeft: "0.5px",
     marginTop: "-3px",
@@ -44,22 +43,15 @@ const styles = theme => createStyles({
   },
   inputEndAdornment: {
     color: theme.palette.primary.main,
-    display: "none",
+    visibility: "hidden",
   },
   inputWrapper: {
     "&:hover $inputEndAdornment": {
-      display: "flex",
+      visibility: "visible"
     },
-  },
-  isEditing: {
-    borderBottom: "none!important",
-    "& $inputEndAdornment": {
-      display: "flex!important",
-      borderBottom: "none!important",
+    "&:hover $hiddenContainer": {
+      display: "inline-flex"
     },
-  },
-  editing: {
-    paddingBottom: theme.spacing(1.25)
   },
   topMargin: {
     marginTop: theme.spacing(1),
@@ -87,13 +79,6 @@ const styles = theme => createStyles({
       color: theme.palette.primary.main,
       fill: theme.palette.primary.main,
     }
-  },
-  readonly: {
-    fontWeight: 300,
-    pointerEvents: "none"
-  },
-  textFieldLeftMargin: {
-    marginLeft: theme.spacing(1)
   },
   viewMode: {
     padding: 0,
@@ -184,29 +169,23 @@ const EditInPlaceDateTimeField: React.FC<any> = (
    fieldClasses = {},
    formatting = "primary",
    meta: { error, invalid },
-   InputProps = {},
    labelAdornment,
    helperText,
    label,
    listSpacing = true,
-   hideLabel,
-   editableComponent,
    disabled,
    formatValue,
-   fullWidth,
    className,
    onKeyPress,
    placeholder,
    inlineMargin,
-   ...custom
+    persistValue,
   }
 ) => {
   const [isEditing, setIsEditing] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [pickerOpened, setPickerOpened] = useState(false);
 
-  const isAdornmentHovered = useRef<any>(false);
-  const isIconOvered = useRef<any>(false);
   const inputNode = useRef<any>(null);
 
   const isInline = formatting === "inline";
@@ -238,21 +217,8 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     return dateObj;
   }, [input.value, timezone]);
 
-  const onAdornmentOver = () => {
-    isAdornmentHovered.current = true;
-  };
-
-  const onAdornmentOut = () => {
-    isAdornmentHovered.current = false;
-  };
-
-  const onAdornmentClick = e => {
-    if (isAdornmentHovered.current) {
-      e.preventDefault();
-    }
+  const onAdornmentClick = () => {
     setTimeout(() => {
-      isAdornmentHovered.current = false;
-      // onBlur();
       setIsEditing(false);
     }, 600);
   };
@@ -299,52 +265,56 @@ const EditInPlaceDateTimeField: React.FC<any> = (
       }
       setTextValue(formatDateInner(v));
       input.onChange(formatted);
-      input.onBlur(formatted);
       return;
     }
     setTextValue("");
     input.onChange(null);
-    input.onBlur(null);
   };
 
   const onBlur = () => {
-    if (isAdornmentHovered.current || isIconOvered.current) {
+    setIsEditing(false);
+
+    if (persistValue && !textValue) {
+      input.onBlur(input.value);
+      input.onChange(input.value);
+      setTextValue(formatDateInner(dateValue));
       return;
     }
 
-    setIsEditing(false);
-
     const parsed = textValue
-      ? formatStringDate(textValue, type, formatDate || formatDateTime || formatTime)
-      : "";
+      ? formatStringDate(textValue, type, dateValue || new Date(), formatDate || formatDateTime || formatTime)
+      : null;
 
     if (parsed) {
-      setTextValue(formatDateInner(new Date(parsed)));
-      onChange(timezone ? appendTimezoneToUTC(parsed, timezone) : parsed);
+      const appended = timezone ? appendTimezoneToUTC(parsed, timezone) : parsed;
+      let formatted = null;
+      if (formatValue) {
+        formatted = format(appended, formatValue);
+      } else if (type === "date" && isValid(appended)) {
+        formatted = format(appended, YYYY_MM_DD_MINUSED);
+      } else {
+        try {
+          formatted = appended.toISOString();
+        } catch {
+          formatted = null;
+        }
+      }
+      input.onBlur(formatted);
+      input.onChange(formatted);
     } else {
-      onChange(null);
+      input.onBlur(null);
+      input.onChange(null);
     }
   };
 
   const onClose = () => {
+    onBlur();
     setIsEditing(false);
     setPickerOpened(false);
   };
 
   const onFocus = () => {
-    setTextValue(formatDateInner(dateValue));
-    if (!isEditing) {
-      setIsEditing(true);
-    }
     input.onFocus();
-  };
-
-  const onButtonOver = () => {
-    isIconOvered.current = true;
-  };
-
-  const onButtonLeave = () => {
-    isIconOvered.current = false;
   };
 
   const onEnterPress = e => {
@@ -358,7 +328,7 @@ const EditInPlaceDateTimeField: React.FC<any> = (
   };
 
   const labelContent = labelAdornment ? (
-    <span onMouseEnter={onAdornmentOver} onMouseLeave={onAdornmentOut} onMouseDown={onAdornmentClick}>
+    <span onMouseDown={onAdornmentClick}>
       {label}
       {" "}
       <span className={classes.labelAdornment}>{labelAdornment}</span>
@@ -371,96 +341,95 @@ const EditInPlaceDateTimeField: React.FC<any> = (
     <div
       className={clsx(className, "outline-none", {
         [classes.inlineContainer]: isInline,
-        [classes.inlineMargin]: inlineMargin
+        [classes.inlineMargin]: inlineMargin,
+        "pointer-events-none": disabled
       })}
     >
-      <div className={classes.hiddenContainer}>
+      <div
+        id={input.name}
+        className="w-100"
+      >
+
         <DateTimeField
           type={type}
+          toolbarTitle={label}
           open={pickerOpened}
           value={dateValue}
           onChange={onPickerChange}
           onClose={onClose}
-          {...custom}
-        />
-      </div>
-
-      <div
-        id={input.name}
-        className={clsx({
-          [classes.readonly]: disabled,
-          [classes.editing]: formatting !== "inline",
-          fullWidth
-        })}
-      >
-        <FormControl
-          error={invalid}
-          margin="none"
-          fullWidth
-          className={clsx("pr-2", {
-            [classes.topMargin]: !listSpacing,
-            [classes.bottomMargin]: listSpacing && formatting !== "inline",
-            [classes.inlineTextField]: isInline
-          })}
-        >
-          {Boolean(label) && (
-            <InputLabel
-              classes={{
-                root: classes.inputLabel,
-                shrink: classes.labelShrink
-              }}
-              shrink={true}
+          renderInput={pickerProps => (
+            <FormControl
+              {...pickerProps}
+              error={invalid}
+              variant="standard"
+              margin="none"
+              fullWidth
+              className={clsx({
+              "pr-2": formatting !== "inline",
+              [classes.topMargin]: !listSpacing,
+              [classes.bottomMargin]: listSpacing && formatting !== "inline",
+              [classes.inlineTextField]: isInline
+            })}
             >
-              {labelContent}
-            </InputLabel>
-          )}
-          <Input
-            type="text"
-            onKeyPress={onKeyPress}
-            onChange={onInputChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onKeyDown={onEnterPress}
-            inputRef={inputNode}
-            inputProps={{
-              size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
-              className: clsx({
-                [classes.inlineInput]: isInline,
-                [classes.readonly]: disabled,
-              }),
-              placeholder: placeholder || (!isEditing && "No value"),
-            }}
-            value={textValue}
-            classes={{
-              root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
-                classes.inputWrapper, isEditing && classes.isEditing),
-              underline: fieldClasses.underline,
-              input: clsx(classes.input, fieldClasses.text)
-            }}
-            endAdornment={(
-              <InputAdornment position="end" className={classes.inputEndAdornment}>
-                <IconButton
-                  tabIndex={-1}
-                  onClick={openPicker}
-                  onMouseOver={onButtonOver}
-                  onMouseLeave={onButtonLeave}
-                  classes={{
-                    root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
-                  }}
-                >
-                  {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
-                </IconButton>
-              </InputAdornment>
+              {Boolean(label) && (
+              <InputLabel
+                classes={{
+                  root: clsx(classes.inputLabel, fieldClasses.label),
+                  shrink: classes.labelShrink
+                }}
+                shrink={true}
+              >
+                {labelContent}
+              </InputLabel>
             )}
-          />
-          <FormHelperText
-            classes={{
-              error: "shakingError"
-            }}
-          >
-            {error || helperText}
-          </FormHelperText>
-        </FormControl>
+              <Input
+                type="text"
+                onKeyPress={onKeyPress}
+                onChange={onInputChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onKeyDown={onEnterPress}
+                disabled={disabled}
+                inputRef={inputNode}
+                inputProps={{
+                  size: isInline && renderedValue ? renderedValue.length + 1 : undefined,
+                  className: clsx({
+                    [classes.inlineInput]: isInline
+                  }),
+                  placeholder: placeholder || (!isEditing && "No value"),
+                }}
+                value={textValue}
+                classes={{
+                  root: clsx(classes.input, fieldClasses.text, isInline && classes.inlineInput,
+                    classes.inputWrapper),
+                  underline: fieldClasses.underline,
+                  input: clsx(classes.input, fieldClasses.text)
+                }}
+                endAdornment={(
+                  <InputAdornment position="end" className={clsx(classes.inputEndAdornment, formatting === "inline" && classes.hiddenContainer)}>
+                    <IconButton
+                      tabIndex={-1}
+                      onClick={openPicker}
+                      classes={{
+                        root: clsx(fieldClasses.text, isInline ? classes.inlinePickerButton : classes.pickerButton)
+                      }}
+                    >
+                      {type === "time" ? <QueryBuilder fontSize="inherit" color="inherit" /> : <DateRange color="inherit" fontSize="inherit" />}
+                    </IconButton>
+                  </InputAdornment>
+              )}
+              />
+              <FormHelperText
+                classes={{
+                error: "shakingError"
+              }}
+              >
+                {error || helperText}
+              </FormHelperText>
+            </FormControl>
+)}
+        />
+
       </div>
     </div>
   );

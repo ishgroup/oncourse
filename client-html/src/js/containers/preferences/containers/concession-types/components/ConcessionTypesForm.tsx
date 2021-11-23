@@ -1,22 +1,15 @@
 import * as React from "react";
-import ClassNames from "clsx";
-import Grid from "@material-ui/core/Grid";
-import withStyles from "@material-ui/core/styles/withStyles";
-import AddIcon from "@material-ui/icons/Add";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Typography from "@material-ui/core/Typography";
-import Fab from "@material-ui/core/Fab";
-import { withRouter } from "react-router";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
-import { ConcessionType } from "@api/model";
+import { withRouter } from "react-router";
 import isEqual from "lodash.isequal";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
+import { ConcessionType } from "@api/model";
+import Grid from "@mui/material/Grid";
+import withStyles from "@mui/styles/withStyles";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -25,8 +18,9 @@ import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("generalPrefs_concessionTypes");
+const manualUrl = getManualLink("generalPrefs_concessionTypes");
 
 interface Props {
   data: any;
@@ -60,7 +54,8 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
     props.dispatch(initialize("ConcessionTypesForm", { types: props.concessionTypes }));
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.isPending) {
       return;
     }
@@ -170,57 +165,33 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
       <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
-        <CustomAppBar>
-          <Grid container>
-            <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={() => this.onAddNew()}
-              >
-                <AddIcon />
-              </Fab>
-              <Typography className="appHeaderFontSize pl-2" color="inherit" noWrap>
-                Concession Types
-              </Typography>
-
-              <div className="flex-fill" />
-
-              {data && (
-                <AppBarHelpMenu
-                  created={created}
-                  modified={modified}
-                  auditsUrl={`audit?search=~"ConcessionType" and entityId in (${idsToString(data.types)}})`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
+        <AppBarContainer
+          values={data}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"ConcessionType" and entityId in (${idsToString(data.types)}})`}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Concession Types"
+          disableInteraction
+          createdOn={() => created}
+          modifiedOn={() => modified}
+          onAddMenu={() => this.onAddNew()}
+        >
+          <Grid container className={classes.marginTop}>
+            <Grid item sm={12} lg={10}>
+              <Grid container columnSpacing={3}>
+                {data && (
+                  <FieldArray
+                    name="types"
+                    component={ConcessionTypesRenderer}
+                    onDelete={this.onClickDelete}
+                    classes={classes}
+                  />
+                )}
+              </Grid>
             </Grid>
           </Grid>
-        </CustomAppBar>
-
-        <Grid container className={classes.marginTop}>
-          <Grid item sm={12} lg={10}>
-            <Grid container>
-              {data && (
-                <FieldArray
-                  name="types"
-                  component={ConcessionTypesRenderer}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }

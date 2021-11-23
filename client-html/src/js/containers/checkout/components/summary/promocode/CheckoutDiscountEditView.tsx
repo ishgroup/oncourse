@@ -2,20 +2,19 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { FormControlLabel } from "@material-ui/core";
+import { FormControlLabel } from "@mui/material";
 import { format } from "date-fns-tz";
 import React from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { DiscountType } from "@api/model";
 import { Dispatch } from "redux";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { CheckoutDiscount, CheckoutSummary } from "../../../../../model/checkout";
@@ -24,6 +23,8 @@ import { formatCurrency } from "../../../../../common/utils/numbers/numbersNorma
 import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
 import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
 import CheckoutAppBar from "../../CheckoutAppBar";
+import { CheckoutSummaryCogwheel } from "../CheckoutSummaryCogwheel";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const styles = () => createStyles({
     history: {
@@ -148,7 +149,7 @@ const VoucherView: React.FC<Props> = props => {
           </Grid>
         )
         : (
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item sm={2}>
               <Uneditable value={selectedDiscount.appliedValue} label="Apply now" money />
             </Grid>
@@ -158,7 +159,7 @@ const VoucherView: React.FC<Props> = props => {
           </Grid>
       )}
 
-      <Grid container className="pt-2">
+      <Grid container columnSpacing={3} className="pt-2">
         <Grid item sm={4}>
           <Uneditable
             value={format(new Date(selectedDiscount.expiryDate), III_DD_MMM_YYYY)}
@@ -169,7 +170,7 @@ const VoucherView: React.FC<Props> = props => {
 
       <Grid container className="pt-2">
         <div className="heading">History</div>
-        <Grid container className="pt-2">
+        <Grid item xs={12} container columnSpacing={3} className="pt-2">
           <Grid item sm={12} className={classes.history}>
             <div className={clsx("centeredFlex", classes.historyItem)}>
               <Grid item xs={4}>
@@ -225,7 +226,7 @@ const DiscountPromoView: React.FC<Props> = props => {
   });
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item sm={12} className="mb-2">
         <div className="heading mb-2">Promotion</div>
         <Typography variant="body1" className={clsx(selectedDiscount.discountType !== "Percent" && "money")}>
@@ -234,12 +235,12 @@ const DiscountPromoView: React.FC<Props> = props => {
       </Grid>
 
       {Boolean(appliesToClasses.length) && (
-        <Grid container item sm={12}>
+        <Grid container columnSpacing={3} item sm={12}>
           <Grid item xs={12}>
             <div className="heading mb-2 mt-2">Applies to</div>
           </Grid>
           {appliesToClasses.map(c => (
-            <Grid container item sm={12} lg={7}>
+            <Grid container columnSpacing={3} item sm={12} lg={7}>
               <Grid item xs={4}>
                 {c.contact}
               </Grid>
@@ -252,7 +253,7 @@ const DiscountPromoView: React.FC<Props> = props => {
             </Grid>
           ))}
 
-          <Grid container item sm={12} lg={7} className="mt-2">
+          <Grid container columnSpacing={3} item sm={12} lg={7} className="mt-2">
             <Grid item xs={10} />
             <Grid item xs={2} className="money text-end summaryTopBorder pt-1">
               {formatCurrency(appliesToClasses.reduce((p, c) => decimalPlus(p, c.discountExTax), 0), currencySymbol)}
@@ -268,14 +269,20 @@ const CheckoutDiscountEditView = React.memo<any>(props => {
   const { selectedDiscount, type } = props;
 
   return (
-    <div className="appFrame flex-fill root">
-      <CustomAppBar>
-        <CheckoutAppBar title={`${selectedDiscount.name} (${selectedDiscount.code})`} />
-      </CustomAppBar>
-      <div className="appBarContainer w-100 p-3">
-        {type === "discount" && <DiscountPromoView {...props} />}
-        {type === "voucher" && <VoucherView {...props} />}
-      </div>
+    <div className="root">
+      <AppBarContainer
+        hideHelpMenu
+        hideSubmitButton
+        disableInteraction
+        title={(
+          <CheckoutAppBar title={`${selectedDiscount.name} (${selectedDiscount.code})`} />
+        )}
+      >
+        <div className="w-100">
+          {type === "discount" && <DiscountPromoView {...props} />}
+          {type === "voucher" && <VoucherView {...props} />}
+        </div>
+      </AppBarContainer>
     </div>
   );
 });

@@ -9,7 +9,7 @@ import {
  Account, ArticleProduct, ProductStatus, Tax
 } from "@api/model";
 import { connect } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
@@ -18,6 +18,8 @@ import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { normalizeString } from "../../../../common/utils/strings";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -59,7 +61,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, taxes, values, dispatch, form, submitSucceeded, rootEntity, dataCollectionRules
+    twoColumn, accounts, isNew, taxes, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
 
   const gridItemProps = {
@@ -69,13 +71,22 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   return (
 
-    <Grid container className="pt-1 generalRoot">
-      <Grid item {...gridItemProps}>
-        <FormField
-          type="text"
-          name="name"
-          label="Name"
-          required
+    <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
+      <Grid item container xs={12}>
+        <FullScreenStickyHeader
+          opened={isNew || Object.keys(syncErrors).includes("name")}
+          twoColumn={twoColumn}
+          title={<span>{values && values.name}</span>}
+          fields={(
+            <Grid item {...gridItemProps}>
+              <FormField
+                name="name"
+                label="Name"
+                required
+                fullWidth
+              />
+            </Grid>
+          )}
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -86,8 +97,6 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           required
         />
       </Grid>
-
-      <Grid item xs={false} lg={twoColumn ? 4 : 12} />
 
       <Grid item {...gridItemProps}>
         <FormField

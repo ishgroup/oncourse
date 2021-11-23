@@ -20,6 +20,7 @@ import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.api.v1.model.LoginRequestDTO
 import ish.oncourse.server.api.v1.model.LoginResponseDTO
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
+import ish.oncourse.server.api.v1.model.UserDTO
 import ish.oncourse.server.api.v1.service.AuthenticationApi
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
@@ -74,6 +75,17 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
     @Context
     private HttpServletResponse response
+
+    @Override
+    UserDTO getUser() {
+        
+        new UserDTO().with {
+            it.firstName = systemUserService.currentUser?.firstName
+            it.lastName = systemUserService.currentUser?.lastName
+            it
+        }
+        
+    }
 
     @Override
     LoginResponseDTO login(LoginRequestDTO details) {
@@ -263,6 +275,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
+        LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)
 
         user.lastLoginOn = new Date()
         user.passwordUpdateRequired = false
@@ -281,7 +294,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
             addTotpCookie(response, value, periodOfHours)
         }
 
-        return createAuthenticationContent(LOGIN_SUCCESSFUL)
+        return createAuthenticationContent(LOGIN_SUCCESSFUL, null, null, lastLoginOn)
     }
 
     @Override

@@ -7,12 +7,12 @@
  */
 
 import React, { useEffect, useState } from "react";
-import withTheme from "@material-ui/core/styles/withTheme";
-import green from "@material-ui/core/colors/green";
+import withTheme from "@mui/styles/withTheme";
+import { green } from "@mui/material/colors";
 import { differenceInDays, format, parseISO } from "date-fns";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography } from "@mui/material";
 import clsx from "clsx";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from '@mui/styles';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
 } from 'recharts';
@@ -95,7 +95,7 @@ const CustomizedAxisTick: React.FC<any> = (props: any) => {
   );
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   hasOverlay: {
     opacity: 0.2,
     pointerEvents: "none"
@@ -110,7 +110,7 @@ const useStyles = makeStyles({
     width: "100%",
     justifyContent: "center"
   }
-});
+}));
 
 const CourseAvailableClassChart = (props: any) => {
   const { courseId, isNew, theme } = props;

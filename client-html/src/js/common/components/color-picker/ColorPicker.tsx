@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Popper from "@material-ui/core/Popper";
+import ButtonBase from "@mui/material/ButtonBase";
+import Popper from "@mui/material/Popper";
 import { HuePicker, AlphaPicker } from "react-color";
-import { ClickAwayListener, Theme } from "@material-ui/core";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grow from "@material-ui/core/Grow";
+import { ClickAwayListener, Theme } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import Paper from "@mui/material/Paper";
+import Grow from "@mui/material/Grow";
 import { WrappedFieldProps } from "redux-form";
 import { usePrevious } from "../../utils/hooks";
 

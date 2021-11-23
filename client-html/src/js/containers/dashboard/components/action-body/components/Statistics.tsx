@@ -10,16 +10,16 @@ import {
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
  Grid, List, ListItem, Typography
-} from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import { Person } from "@material-ui/icons";
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import { Person } from "@mui/icons-material";
 import clsx from "clsx";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from '@mui/material/styles';
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { Currency, StatisticData } from "@api/model";
-import Paper from "@material-ui/core/Paper";
+import Paper from "@mui/material/Paper";
 import { State } from "../../../../../reducers/state";
 import { getDashboardStatistic } from "../../../actions";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
@@ -34,7 +34,7 @@ const styles = theme => createStyles({
       alignContent: "flex-start"
     },
     totalText: {
-      color: fade(theme.palette.text.primary, 0.5),
+      color: alpha(theme.palette.text.primary, 0.5),
       display: "flex",
       alignItems: "baseline",
       "& span": {
@@ -71,7 +71,7 @@ const styles = theme => createStyles({
       fontSize: "12px"
     },
     grayText: {
-      color: fade(theme.palette.text.primary, 0.4)
+      color: alpha(theme.palette.text.primary, 0.4)
     },
     coloredHeaderText: {
       color: theme.statistics.coloredHeaderText.color
@@ -259,15 +259,9 @@ class Statistics extends React.Component<Props, any> {
 
     return statisticData ? (
       <Grid container className={classes.root}>
-        <Grid item className="w-100">
-          <Grid container justify="space-between">
-            <Grid item>
-              <Typography className="heading">Enrolments & Revenue</Typography>
-            </Grid>
-            <Grid item className={classes.pastWeeksCaption}>
-              <Typography variant="caption">Past 4 weeks</Typography>
-            </Grid>
-          </Grid>
+        <Grid item className="w-100 d-flex">
+          <Typography className="heading flex-fill">Enrolments & Revenue</Typography>
+          <Typography variant="caption">Past 4 weeks</Typography>
         </Grid>
         <Grid item xs={12}>
           <Chart data={chartData} />

@@ -7,7 +7,7 @@ import React, { useMemo, useCallback } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import MergeContactsModal from "./MergeContactsModal";

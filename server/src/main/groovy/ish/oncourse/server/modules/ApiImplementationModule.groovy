@@ -86,7 +86,6 @@ import ish.oncourse.server.api.v1.service.TaxApi
 import ish.oncourse.server.api.v1.service.TimetableApi
 import ish.oncourse.server.api.v1.service.TokenApi
 import ish.oncourse.server.api.v1.service.TransactionApi
-import ish.oncourse.server.api.v1.service.TutorAttendanceApi
 import ish.oncourse.server.api.v1.service.TutorRoleApi
 import ish.oncourse.server.api.v1.service.UserApi
 import ish.oncourse.server.api.v1.service.UserPreferenceApi
@@ -166,7 +165,6 @@ import ish.oncourse.server.api.v1.service.impl.TagApiImpl
 import ish.oncourse.server.api.v1.service.impl.TaxApiImpl
 import ish.oncourse.server.api.v1.service.impl.TimetableApiImpl
 import ish.oncourse.server.api.v1.service.impl.TransactionApiImpl
-import ish.oncourse.server.api.v1.service.impl.TutorAttendanceApiImpl
 import ish.oncourse.server.api.v1.service.impl.TutorRoleApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserPreferenceApiImpl
@@ -271,7 +269,6 @@ class ApiImplementationModule implements Module {
         binder.bind(CourseClassTutorApi).to(CourseClassTutorApiImpl)
         binder.bind(ClassCostApi).to(ClassCostApiImpl)
         binder.bind(AttendanceApi).to(AttendanceApiImpl)
-        binder.bind(TutorAttendanceApi).to(TutorAttendanceApiImpl)
         binder.bind(AssessmentClassApi).to(AssessmentClassApiImpl)
         binder.bind(SessionApi).to(SessionApiImpl)
         binder.bind(CheckoutApi).to(CheckoutApiImpl)

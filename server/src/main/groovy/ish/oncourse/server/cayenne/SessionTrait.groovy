@@ -48,7 +48,7 @@ trait SessionTrait {
      * @return session duration in minutes
      */
     Integer getDurationInMinutes() {
-        return DurationFormatter.parseDurationInMinutes(getStartDatetime(), getEndDatetime())
+        return DurationFormatter.durationInMinutesBetween(getStartDatetime(), getEndDatetime())
     }
 
 }

@@ -76,6 +76,8 @@ class MessageFunctions {
                 return { e -> (e as Tutor).contact }
             case CourseClassTutor:
                 return { e -> (e as CourseClassTutor).tutor.contact }
+            case TutorAttendance:
+                return { e -> (e as TutorAttendance).courseClassTutor.tutor.contact }
             case Enrolment:
                 return { e -> (e as Enrolment).student.contact }
             case PaymentIn:

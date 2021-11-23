@@ -5,23 +5,25 @@
 
 import React, { useEffect, useMemo } from "react";
 import { Dispatch } from "redux";
-import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
+import {
+ FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm 
+} from "redux-form";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid/Grid";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import DialogActions from "@material-ui/core/DialogActions";
-import MuiButton from "@material-ui/core/Button";
+import withStyles from "@mui/styles/withStyles";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
 import { Account, CancelEnrolment, Tax } from "@api/model";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { getUserPreferences } from "../../../../../common/actions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
-import Button from "../../../../../common/components/buttons/Button";
 import { cancelEnrolment, setEnrolmentTransfered } from "../../actions";
 import { openInternalLink } from "../../../../../common/utils/links";
 import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
@@ -210,7 +212,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
     <Dialog fullWidth maxWidth="md" open={opened} onClose={onClose}>
       <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12}>
               <div className="centeredFlex">
                 <div className="heading mt-2 mb-2">Transfer Enrolment</div>
@@ -260,13 +262,13 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
         </DialogContent>
 
         <DialogActions className="p-1">
-          <MuiButton color="primary" onClick={onClose}>
+          <Button color="primary" onClick={onClose}>
             Cancel
-          </MuiButton>
-
-          <Button color="primary" type="submit" loading={loading}>
-            Proceed
           </Button>
+
+          <LoadingButton variant="contained" color="primary" type="submit" loading={loading}>
+            Proceed
+          </LoadingButton>
         </DialogActions>
       </form>
     </Dialog>

@@ -18,7 +18,12 @@ trait TutorAttendanceTrait {
     abstract CourseClassTutor getCourseClassTutor()
 
     boolean hasPayslips() {
-        List<PayLine> payLines = getCourseClassTutor().classCosts*.paylines.flatten() as List<PayLine>
-        return !payLines.empty && payLines.any {it.session == getSession()}
+        return !getPayslips().empty
     }
+    
+    List<Payslip> getPayslips() {
+        List<PayLine> payLines = getCourseClassTutor().classCosts*.paylines.flatten().grep() as List<PayLine>
+        return payLines.findAll {it.session && it.session.equalsIgnoreContext(session)}*.payslip.unique() 
+    }
+    
 }

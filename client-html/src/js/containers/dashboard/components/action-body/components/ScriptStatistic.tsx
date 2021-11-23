@@ -10,16 +10,16 @@ import React, { createRef, useEffect, useState } from "react";
 import { DataResponse } from "@api/model";
 import {
  Grid, Link, List, ListItem, Typography, Tooltip
-} from "@material-ui/core";
+} from "@mui/material";
 import clsx from "clsx";
 import {
   differenceInHours,
   differenceInMinutes,
   format
 } from "date-fns";
-import { Check, Clear } from "@material-ui/icons";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Check, Clear } from "@mui/icons-material";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import EntityService from "../../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../../common/utils/links";
@@ -124,7 +124,7 @@ const ScriptStatistic = ({ dispatch, classes }) => {
       <AnimateList>
         {scripts.map(script => (
           <ListItem ref={createRef() as any} key={script.name} className={classes.smallScriptGroup} dense disableGutters>
-            <Grid container wrap="nowrap">
+            <Grid container columnSpacing={3} wrap="nowrap">
               <Grid item xs className="overflow-hidden">
                 <Typography
                   onClick={() => openInternalLink(`/automation/script/${script.result[0].id}`)}

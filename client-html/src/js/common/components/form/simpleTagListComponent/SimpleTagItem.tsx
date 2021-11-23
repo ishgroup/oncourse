@@ -1,10 +1,10 @@
 import React from "react";
 import { Tag } from "@api/model";
-import Typography from "@material-ui/core/Typography";
-import Delete from "@material-ui/icons/Delete";
-import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@mui/material/Typography";
+import Delete from "@mui/icons-material/Delete";
+import Tooltip from "@mui/material/Tooltip";
 import clsx from "clsx";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import ButtonBase from "@mui/material/ButtonBase";
 import { NumberArgFunction } from "../../../../model/common/CommonFunctions";
 
 interface Props {

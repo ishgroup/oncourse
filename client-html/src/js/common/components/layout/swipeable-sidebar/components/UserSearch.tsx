@@ -5,10 +5,10 @@
 
 import React from "react";
 import debounce from "lodash.debounce";
-import Input from "@material-ui/core/Input";
-import Search from "@material-ui/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
+import Input from "@mui/material/Input";
+import Search from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
 
 const UserSearch: React.FC<any> = ({ getSearchResults, placeholder = "Find anything..." }) => {
   const [userSearch, setUserSearch] = React.useState("");

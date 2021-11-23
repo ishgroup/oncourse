@@ -10,8 +10,8 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import { reduxForm, InjectedFormProps, isInvalid } from "redux-form";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 import {
   CheckoutPayment, CheckoutSummary
 } from "../../../../../../model/checkout";
@@ -88,7 +88,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
   }, [summary.payNowTotal, summary.paymentDate, summary.invoiceDueDate, paymentType]);
 
   return (
-    <div className={clsx("p-3 d-flex flex-fill justify-content-center", classes.content)}>
+    <div className={clsx("d-flex flex-fill justify-content-center", classes.content)}>
       {!paymentStatus ? (
         <form autoComplete="off" className="w-100">
           <div className="p-3 mt-3 h-100 w-100">

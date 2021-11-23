@@ -115,6 +115,11 @@ export const setSummaryListWithDefaultPayer = (summaryList, payerIndex = 0) => s
   return { ...l, payer: false, sendInvoice: false };
 });
 
+export const getDefaultPayer = summaryList => {
+  const payerIndex = summaryList.findIndex(list => list.payer);
+  return payerIndex === -1 ? 0 : payerIndex;
+};
+
 export const modifySummaryLisItem = (summaryList, itemData, toggleCheck = false) => summaryList.map((l, li) => {
     if (li === itemData.listIndex) {
       return {

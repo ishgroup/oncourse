@@ -90,9 +90,10 @@
 	<field name="courseClass.enrolmentsCount" class="java.lang.Integer"/>
 	<field name="startDatetime" class="java.util.Date"/>
 	<field name="endDatetime" class="java.util.Date"/>
-	<field name="payAdjustment" class="java.lang.Integer"/>
 	<field name="courseClass.sessionRepeatInterval" class="java.lang.Integer"/>
 	<field name="courseClass.code" class="java.lang.String"/>
+	<field name="durationHoursPart" class="java.lang.Integer"/>
+	<field name="durationMinutesPart" class="java.lang.Integer"/>
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<sortField name="startDatetime"/>
 	<variable name="tutorNumber" class="java.math.BigDecimal"/>
@@ -209,7 +210,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement style="data field (numeric)" x="125" y="1" width="14" height="18" isRemoveLineWhenBlank="true" uuid="9b1dfa66-ec8f-4141-a8b8-254674339bf2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new java.math.BigDecimal((($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/60000)>=60?(($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/60000)/(60):00)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{durationHoursPart}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="data field" x="379" y="1" width="67" height="18" uuid="8ff99879-8950-418f-86cc-4577d42a1801"/>
@@ -234,7 +235,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement style="data field (numeric)" x="153" y="1" width="10" height="18" isRemoveLineWhenBlank="true" uuid="20376038-ce2b-4d37-9a68-e8ccecec2107"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new java.math.BigDecimal(((($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/60000)>=60?(((($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/60000).longValue()%60)==0?00:(($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/60000).longValue()%60):((($F{endDatetime}.getTime()-$F{startDatetime}.getTime())/60000))))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{durationMinutesPart}]]></textFieldExpression>
 			</textField>
 			<elementGroup/>
 			<textField isBlankWhenNull="true">

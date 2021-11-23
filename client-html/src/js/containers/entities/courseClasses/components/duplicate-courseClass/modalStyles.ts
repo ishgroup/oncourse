@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 import { AppTheme } from "../../../../../model/common/Theme";
 
 const styles = (theme: AppTheme) => createStyles({

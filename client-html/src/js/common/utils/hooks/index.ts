@@ -4,6 +4,11 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { STICKY_HEADER_EVENT } from "../../../constants/Config";
+import { Dispatch } from "redux";
+import { IAction } from "../../actions/IshAction";
+import { State } from "../../../reducers/state";
 
 export const usePrevious = <T = any>(value: any) => {
   const ref = useRef<T>();
@@ -34,3 +39,23 @@ export const useComponentVisible = initialIsVisible => {
 
   return { ref, isComponentVisible, setIsComponentVisible };
 };
+
+// Sticky scroll spy
+function fire(stuck) {
+  const evt = new CustomEvent(STICKY_HEADER_EVENT, { detail: { stuck } });
+  document.dispatchEvent(evt);
+}
+
+export const useStickyScrollSpy = () => {
+  const scrollSpy = e => {
+    if (e.target) {
+      fire(e.target.scrollTop > 20);
+    }
+  };
+
+  return { scrollSpy };
+};
+
+// Redux
+export const useAppDispatch = () => useDispatch<Dispatch<IAction>>();
+export const useAppSelector: TypedUseSelectorHook<State> = useSelector;

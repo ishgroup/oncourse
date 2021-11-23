@@ -7,9 +7,9 @@
  */
 
 import React, { useRef } from "react";
-import Grid from "@material-ui/core/Grid";
-import { Card, Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import Grid from "@mui/material/Grid";
+import { Card, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 import { ApiToken, User } from "@api/model";
 import { WrappedFieldArrayProps } from "redux-form";
 import { Dispatch } from "redux";
@@ -61,7 +61,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 
   return (
     <Card className="mb-2">
-      <Grid container className="p-3">
+      <Grid container columnSpacing={3} className="p-3">
         <Grid xs={6}>
           <FormField
             label="Act as user"
@@ -139,7 +139,7 @@ const ApiTokensRenderer: React.FC<RendererProps & WrappedFieldArrayProps> = (
     dispatch
   }
 ) => (
-  <Grid container>
+  <Grid container columnSpacing={3}>
     <Grid item xs={12}>
       {fields.map((item, index) => (
         <ApiTokenItem

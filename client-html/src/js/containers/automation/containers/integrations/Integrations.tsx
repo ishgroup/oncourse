@@ -1,15 +1,14 @@
-import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
-import Grid from "@material-ui/core/Grid";
-import { Card, CardActions, CardContent } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
-import withWidth from "@material-ui/core/withWidth";
-import IntegrationDescription from "./components/IntegrationDescription";
-import Button from "../../../../common/components/buttons/Button";
+import clsx from "clsx";
+import Grid from "@mui/material/Grid";
+import { Card, CardActions, CardContent } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import Button from "@mui/material/Button";
 import * as IntegrationTypes from "../../../../model/automation/integrations/IntegrationTypes";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import IntegrationDescription from "./components/IntegrationDescription";
 import IntegrationImages from "./IntegrationImages";
-import AppBar from "../../../../common/components/layout/AppBar";
 import { getByType } from "./utils";
 
 const styles = theme => ({
@@ -26,7 +25,7 @@ const styles = theme => ({
 });
 
 const Integrations = React.memo<any>(({
- classes, history, width, sidebarWidth
+ classes, history
 }) => {
   const handleClick = useCallback(
     int => {
@@ -38,14 +37,18 @@ const Integrations = React.memo<any>(({
   const types = useMemo(() => Object.keys(IntegrationTypes).map(item => IntegrationTypes[item]), []);
 
   return (
-    <div className="appBarContainer p-3">
-      <AppBar title="Integrations" withDrawer sidebarWidth={sidebarWidth} />
+    <AppBarContainer
+      disableInteraction
+      hideSubmitButton
+      hideHelpMenu
+      noDrawer
+      title="Integrations"
+    >
       <Grid container spacing={5}>
-        {types.map((int, index: number) => (
+        {types.map((int) => (
           <Grid item xs={12} lg={6} key={int.type}>
             <Grid
               container
-              justify={width === "sm" || width === "md" ? "center" : index % 2 === 0 ? "flex-end" : "flex-start"}
               className="h-100"
             >
               <Card className="flex-row">
@@ -59,12 +62,13 @@ const Integrations = React.memo<any>(({
                   <CardActions className="justify-content-end">
                     <Button
                       onClick={() => handleClick(int)}
-                      text="Add"
                       variant="contained"
                       size="small"
                       color="primary"
-                      rootClasses="integrationsButton"
-                    />
+                      className="integrationsButton"
+                    >
+                      Add
+                    </Button>
                   </CardActions>
                 </div>
               </Card>
@@ -72,8 +76,8 @@ const Integrations = React.memo<any>(({
           </Grid>
         ))}
       </Grid>
-    </div>
+    </AppBarContainer>
   );
 });
 
-export default withWidth()(withStyles(styles)(withRouter(Integrations)));
+export default (withStyles(styles)(withRouter(Integrations)));

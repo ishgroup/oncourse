@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from "react";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import Check from "@material-ui/icons/Check";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import { Theme } from "@material-ui/core";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Check from "@mui/icons-material/Check";
+import { createStyles, withStyles } from "@mui/styles";
+import { Theme } from "@mui/material";
 import { change } from "redux-form";
 import { MergeLine } from "@api/model";
 import { MergeContactsFormValues } from "../MergeContacts";

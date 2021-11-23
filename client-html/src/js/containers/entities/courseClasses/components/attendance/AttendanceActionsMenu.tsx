@@ -4,10 +4,10 @@
  */
 
 import React, { useCallback } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { AttendanceType, TutorAttendanceType } from "@api/model";
 import AttendanceIcon from "./AttendanceIcon";
 import { AttendanceGridType } from "../../../../../model/entities/CourseClass";
@@ -25,8 +25,6 @@ const getMenuItemsBaseByType = (type: AttendanceGridType) => {
     default:
     case "Student":
       return AttendanceType;
-    case "Tutor":
-      return TutorAttendanceType;
   }
 };
 

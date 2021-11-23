@@ -5,13 +5,12 @@
 
 import * as React from "react";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
-import { Collapse, FormControlLabel, Typography } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import Grid from "@mui/material/Grid";
+import { Collapse, FormControlLabel, Typography } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
 import { connect } from "react-redux";
 import Decimal from "decimal.js-light";
-import { TransitionProps } from "@material-ui/core/transitions/transition";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
@@ -21,14 +20,12 @@ import { Switch } from "../../../../common/components/form/formFields/Switch";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
 import { mapSelectItems } from "../../../../common/utils/common";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface DiscountGeneralProps {
-  values?: Discount;
-  twoColumn?: boolean;
-  form: string;
-  dispatch: any;
+interface DiscountGeneralProps extends EditViewProps<Discount> {
   cosAccounts?: { id: number; description: string }[];
-  manualLink?: string;
 }
 
 interface DiscountGeneralState {
@@ -234,8 +231,6 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
   currencySymbol = "$";
 
-  parseFloatValue = value => (value ? parseFloat(value) : value);
-
   onCodeSwitchToggle = (e, checked) => {
     const { dispatch, form } = this.props;
     if (checked === false) {
@@ -299,20 +294,29 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   };
 
   render() {
-    const { twoColumn, cosAccounts } = this.props;
+    const { twoColumn, cosAccounts, isNew, syncErrors, values } = this.props;
     const { validFromIndex, validToIndex } = this.state;
 
     const gridXS = twoColumn ? 6 : 12;
 
     return (
-      <div className="d-grid pt-2 pl-3 pr-3 pb-0">
-        <Grid container spacing={0}>
-          <Grid item xs={gridXS}>
-            <FormField
-              type="text"
-              name="name"
-              label="Name"
-              required
+      <div className="d-grid p-3">
+        <Grid container columnSpacing={3} rowSpacing={2}>
+          <Grid item container xs={12}>
+            <FullScreenStickyHeader
+              opened={isNew || Object.keys(syncErrors).includes("name")}
+              twoColumn={twoColumn}
+              title={<span>{values && values.name}</span>}
+              fields={(
+                <Grid item xs={twoColumn ? 6 : 12}>
+                  <FormField
+                    name="name"
+                    label="Name"
+                    required
+                    fullWidth
+                  />
+                </Grid>
+              )}
             />
           </Grid>
           <Grid item xs={gridXS}>
@@ -351,7 +355,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
           <Grid item xs={12}>
             <Collapse in={this.state.discountType === DiscountType.Percent} mountOnEnter unmountOnExit>
-              <Grid container>
+              <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={gridXS}>
                   <FormField
                     type="money"
