@@ -28,11 +28,17 @@ import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.ProductAttachmentRelation
+import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.DISABLED
@@ -56,6 +62,9 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
 
     @Inject
     private CorporatePassDao corporatePassDao
+
+    @Inject
+    private DocumentService documentService
 
     @Inject
     private CorporatePassProductDao corporatePassProductDao
@@ -109,6 +118,8 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                     vcp
                 }
             }
+            voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            voucherProductDTO.tags = voucherProduct.tags.collect{ toRestTagMinimized(it) }
             voucherProductDTO.soldVouchersCount = voucherProduct.getProductItems().size()
             voucherProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
@@ -121,6 +132,8 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
 
     @Override
     VoucherProduct toCayenneModel(VoucherProductDTO voucherProductDTO, VoucherProduct voucherProduct) {
+        ObjectContext context = voucherProduct.context
+
         voucherProduct.name = trimToNull(voucherProductDTO.name)
         voucherProduct.sku = trimToNull(voucherProductDTO.code)
         voucherProduct.priceExTax = toMoneyValue(voucherProductDTO.feeExTax)
@@ -136,6 +149,8 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 fieldConfigurationSchemeDao.getById(voucherProduct.context, voucherProductDTO.dataCollectionRuleId) :
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
+        updateDocuments(voucherProduct, voucherProduct.attachmentRelations, voucherProductDTO.documents, ProductAttachmentRelation, context)
+        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags*.id, ProductTagRelation, context)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
             voucherProduct.tax = taxDao.getNonSupplyTax(voucherProduct.context)
