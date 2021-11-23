@@ -28,18 +28,19 @@ const items: TabsListItem[] = [
     component: props => <ArticleProductGeneral {...props} />
   },
   {
+    label: "Notes",
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+  },
+  {
     label: "Corporate Passes",
     component: props => (
       <CorporatePassCommon
+        className="mt-1"
         path="corporatePasses"
         titleCaption="Corporate Pass which can be used to purchase this article"
         {...props}
       />
     )
-  },
-  {
-    label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
   },
 ];
 

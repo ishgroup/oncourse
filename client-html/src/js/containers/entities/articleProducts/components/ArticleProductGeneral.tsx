@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { change } from "redux-form";
+import { change, FieldArray } from "redux-form";
 import {
  Account, ArticleProduct, ProductStatus, Tag, Tax 
 } from "@api/model";
@@ -20,6 +20,7 @@ import { PreferencesState } from "../../../preferences/reducers/state";
 import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -62,7 +63,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
-    twoColumn, accounts, isNew, taxes, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
+    twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
 
   const gridItemProps = {
@@ -188,6 +189,22 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormEditorField name="description" label="Description" />
       </Grid>
 
+      <Grid item xs={12} className="mb-3">
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="ArticleProduct"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
+        />
+      </Grid>
+
       <Grid item xs={12}>
         <RelationsCommon
           values={values}
@@ -208,4 +225,4 @@ const mapStateToProps = (state: State) => ({
   dataCollectionRules: state.preferences.dataCollectionRules
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(ArticleProductGeneral);
+export default connect<any, any, any>(mapStateToProps)(ArticleProductGeneral);
