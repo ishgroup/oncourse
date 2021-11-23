@@ -6,10 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { createMakeStyles } from 'tss-react';
+import { makeStyles } from "@mui/styles";
+import { Styles, WithStylesOptions } from "@mui/styles/withStyles";
 import { AppTheme } from '../../model/common/Theme';
-import { useTheme } from '../themes/ishTheme';
 
-const { makeStyles } = createMakeStyles<AppTheme>({ useTheme });
-
-export const makeAppStyles = makeStyles;
+export const makeAppStyles = (  
+  styles: Styles<AppTheme, {}, string>,
+  options?: Omit<WithStylesOptions<AppTheme>, 'withTheme'>
+) => makeStyles<AppTheme>(styles, options);

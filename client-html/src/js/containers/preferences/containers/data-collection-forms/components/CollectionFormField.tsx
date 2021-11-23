@@ -71,7 +71,6 @@ const CollectionFormField = props => {
           label="Label"
           hideLabel
           listSpacing={false}
-          formatting="primary"
           required
           fullWidth
         />
@@ -82,7 +81,6 @@ const CollectionFormField = props => {
           label="Help Text"
           hideLabel
           listSpacing={false}
-          formatting="secondary"
           truncateLines={4}
           fullWidth
         />

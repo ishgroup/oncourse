@@ -1,0 +1,68 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 106-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - not:
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: emailSubject
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: emailBody
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: emailFrom
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: emailHtmlBody
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: creatorKey
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: postDescription
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: smsText
+                - columnExists:
+                    tableName: Message_Person
+                    columnName: createdByUserId
+      changes:
+        - addColumn:
+            tableName: Message_Person
+            columns:
+              - column:
+                  name: emailSubject
+                  type: VARCHAR(500)
+              - column:
+                  name: emailBody
+                  type: TEXT
+              - column:
+                  name: emailFrom
+                  type: VARCHAR(200)
+              - column:
+                  name: emailHtmlBody
+                  type: mediumtext
+              - column:
+                  name: creatorKey
+                  type: VARCHAR(256)
+              - column:
+                  name: postDescription
+                  type: VARCHAR(1000)
+              - column:
+                  name: smsText
+                  type: longtext
+              - column:
+                  name: createdByUserId
+                  type: BIGINT
+        - createIndex:
+            columns:
+              - column:
+                  name: messageId
+            indexName: fk_Message_Person_Message
+            tableName: Message_Person
+            unique: false

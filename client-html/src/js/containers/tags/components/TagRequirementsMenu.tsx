@@ -8,7 +8,7 @@ import { TagRequirement, TagRequirementType } from "@api/model";
 import clsx from "clsx";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 import { State } from "../../../reducers/state";
-import AddIcon from "../../../common/components/icons/AddIcon";
+import AddButton from "../../../common/components/icons/AddButton";
 
 const requirements = Object.keys(TagRequirementType).map(
   (i: TagRequirementType) =>
@@ -168,7 +168,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
               {label}
             </Typography>
 
-            <AddIcon
+            <AddButton
               aria-owns={anchorEl ? "field-types-menu" : null}
               aria-haspopup="true"
               onClick={this.handleAddFieldClick}

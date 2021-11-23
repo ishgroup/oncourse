@@ -9,18 +9,19 @@ describe("Virtual rendered PaymentInsEditView", () => {
     EditView: PaymentInsEditView,
     record: mockecApi => mockecApi.db.getPaymentIn(1),
     render: (wrapper, initialValues) => {
-      expect(wrapper.find(".textField").text()).toContain(initialValues.payerName);
-      expect(wrapper.find("#administrationCenterId input").val()).toContain(initialValues.administrationCenterId);
-      expect(wrapper.find(".textField").text()).toContain(initialValues.paymentInType);
-      expect(wrapper.find(".textField").text()).toContain(initialValues.status);
-      expect(wrapper.find(".textField").text()).toContain(initialValues.amount);
-      expect(wrapper.find(".textField").text()).toContain(initialValues.source);
-      expect(wrapper.find(".textField").text()).toContain(initialValues.ccTransaction);
-      expect(wrapper.find(".textField").text()).toContain(
+      const inputs = wrapper.find("input");
+      expect(inputs[0].attribs.value).toContain(initialValues.payerName);
+      expect(inputs[1].attribs.value).toContain(initialValues.administrationCenterId);
+      expect(inputs[2].attribs.value).toContain(initialValues.paymentInType);
+      expect(inputs[3].attribs.value).toContain(initialValues.status);
+      expect(inputs[4].attribs.value).toContain(initialValues.amount);
+      expect(inputs[5].attribs.value).toContain(initialValues.accountInName);
+      expect(inputs[6].attribs.value).toContain(initialValues.source);
+      expect(inputs[7].attribs.value).toContain(initialValues.ccTransaction);
+      expect(inputs[9].attribs.value).toContain(
         format(new Date(initialValues.datePayed), III_DD_MMM_YYYY).toString()
       );
-
-      expect(wrapper.find(".textField").text()).toContain(initialValues.createdBy);
+      expect(inputs[11].attribs.value).toContain(initialValues.createdBy);
     }
   });
 });

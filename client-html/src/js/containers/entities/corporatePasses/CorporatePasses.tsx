@@ -115,7 +115,8 @@ class CorporatePasses extends React.Component<any, any> {
           filterGroupsInitial={filterGroups}
           editViewProps={{
             nameCondition: corporatePassNameCondition,
-            manualLink
+            manualLink,
+            hideTitle: true
           }}
           noListTags
         />

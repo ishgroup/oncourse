@@ -32,8 +32,8 @@ const styles = (theme: AppTheme) => createStyles({
     },
     actionGroup: {
       display: "flex",
-      alignItems: "baseline",
-      width: "168px",
+      alignItems: "center",
+      width: "180px",
       justifyContent: "space-between"
     },
     button: {
@@ -56,7 +56,7 @@ const styles = (theme: AppTheme) => createStyles({
       display: "inline-block"
     },
     textInfo: {
-      fontSize: `${theme.typography.fontSize - 2}px`,
+      fontSize: `${theme.typography.fontSize - 2}`,
       margin: theme.spacing(0, -0.5),
       display: "flex",
       alignItems: "baseline",
@@ -73,13 +73,10 @@ const styles = (theme: AppTheme) => createStyles({
     },
     linkButtonIcon: { fontSize: "1.2em" },
     rootSelect: {
-      textTransform: "uppercase",
-      fontSize: `${theme.typography.fontSize - 2}px`,
-      fontWeight: 700
+      fontWeight: 700,
+      paddingRight: `${theme.spacing(2.5)}`
     },
-    select: {
-      paddingRight: `${theme.spacing(2.5)}px`
-    }
+    disabled: {}
   });
 
 const fundingStatuses: any[] = [
@@ -111,79 +108,84 @@ class FundingUploadComponent extends Component<Props, any> {
 
   render() {
     const {
- fundingUpload, classes, className, setFirstUploadNode, onRunAgainClicked, readOnly
-} = this.props;
+     fundingUpload, classes, className, setFirstUploadNode, onRunAgainClicked, readOnly
+    } = this.props;
 
     return (
-      <div ref={setFirstUploadNode} className={clsx(className, classes.root)}>
-        <div className={classes.rootPanel}>
-          <div>
-            <Typography variant="body2">
-              {format(new Date(fundingUpload.created), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")}
-            </Typography>
-            <Typography variant="body2" className={classes.textInfo}>
-              <span>{fundingUpload.systemUser}</span>
-              <span>
-                {fundingUpload.outcomesCount}
-                {' '}
-                outcomes
-                <ButtonBase
-                  onClick={() => this.handleOutcomeLink(fundingUpload.id)}
+      <div ref={setFirstUploadNode} className={clsx(className, classes.rootPanel)}>
+        <div>
+          <Typography variant="body2">
+            {format(new Date(fundingUpload.created), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")}
+          </Typography>
+          <Typography variant="body2" className={classes.textInfo} noWrap>
+            <span>{fundingUpload.systemUser}</span>
+            <span>
+              {fundingUpload.outcomesCount}
+              {' '}
+              outcomes
+              <ButtonBase
+                onClick={() => this.handleOutcomeLink(fundingUpload.id)}
+                classes={{
+                  root: classes.linkButton
+                }}
+              >
+                <OpenInNew
+                  color="primary"
                   classes={{
-                    root: classes.linkButton
+                    root: classes.linkButtonIcon
                   }}
-                >
-                  <OpenInNew
-                    color="secondary"
+                />
+              </ButtonBase>
+            </span>
+          </Typography>
+        </div>
+        <div className={classes.actionGroup}>
+          <FormControl>
+            <Select
+              variant="standard"
+              IconComponent={readOnly ? stubComponent : KeyboardArrowDown}
+              value={fundingUpload.status}
+              disableUnderline
+              classes={{
+                select: classes.rootSelect,
+                disabled: classes.disabled
+              }}
+              onChange={this.handleChange}
+              disabled={readOnly}
+            >
+              {fundingStatuses.map(value => (
+                <MenuItem key={value.value} value={value.value}>
+                  <Typography
+                    variant="button"
                     classes={{
-                      root: classes.linkButtonIcon
-                    }}
-                  />
-                </ButtonBase>
-              </span>
-            </Typography>
-          </div>
-          <div className={classes.actionGroup}>
-            <FormControl>
-              <Select
-                variant="standard"
-                IconComponent={readOnly ? stubComponent : KeyboardArrowDown}
-                value={fundingUpload.status}
-                disableUnderline
-                classes={{
-                  root: clsx(classes.rootSelect, {
-                    "textSecondaryColor": fundingUpload.status === FundingStatus.unknown,
-                    "errorColor": fundingUpload.status === FundingStatus.fail,
-                    "successColor": fundingUpload.status === FundingStatus.success
-                  }),
-                  select: classes.select
-                }}
-                onChange={this.handleChange}
-                disabled={readOnly}
-              >
-                {fundingStatuses.map((value, index) => (
-                  <MenuItem key={index} value={value.value}>
+                    root: clsx({
+                      "textSecondaryColor": value.value === FundingStatus.unknown,
+                      "errorColor": value.value === FundingStatus.fail,
+                      "successColor": value.value === FundingStatus.success
+                    })
+                  }}
+                  >
                     {value.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-            {!readOnly && fundingUpload.settings && (
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={() => onRunAgainClicked(fundingUpload.settings)}
-                classes={{
-                  root: classes.button,
-                  contained: classes.buttonContained
-                }}
-              >
-                Run again
-              </Button>
-            )}
-          </div>
+          {!readOnly && fundingUpload.settings && (
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={() => onRunAgainClicked(fundingUpload.settings)}
+              classes={{
+                root: classes.button,
+                contained: classes.buttonContained
+              }}
+            >
+              Run again
+            </Button>
+          )}
         </div>
       </div>
     );

@@ -18,13 +18,13 @@ import {
   arrayInsert, arrayRemove, change
 } from "redux-form";
 import { connect } from "react-redux";
-import { FormControlLabel, Grid } from "@mui/material";
+import {
+ Alert, FormControlLabel, Grid, IconButton 
+} from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import ExitToApp from "@mui/icons-material/ExitToApp";
-import clsx from "clsx";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import Divider from "@mui/material/Divider";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -39,14 +39,7 @@ import { MembershipContent, MembershipHeader } from "./MembershipLines";
 import { RelationsContent, RelationsHeader } from "./RelationsLines";
 import { ConcessionsContent, ConcessionsHeader } from "./ConcessionsLines";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
-
-const useStyles = makeAppStyles()({
-  exitToApp: {
-    fontSize: "1.2rem",
-    top: "5px"
-  }
-});
+import { openInternalLink } from "../../../../common/utils/links";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -57,10 +50,7 @@ const studentCitizenships = Object.keys(StudentCitizenship).map(mapSelectItems);
 
 const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? undefined : "Date of birth cannot be in future.");
 
-const validateABN = v => (!v || (!Number.isNaN(parseFloat(v)) && Number.isFinite(v))
-    ? undefined
-    : "Business Number (ABN) should be numeric."
-);
+const validateABN = v => (!v || (new RegExp(/^\d+$/)).test(v) ? undefined : "Business Number (ABN) should be numeric.");
 
 interface ContactDetailsProps extends EditViewProps<Contact> {
   relationTypes?: ContactRelationType[];
@@ -94,8 +84,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     usiLocked,
     isCompany
   } = props;
-  
-  const { classes } = useStyles();
 
   const [showPostalSettingsMenu, setPostalSettingsMenu] = useState(null);
   const [showSmsSettingsMenu, setSmsSettingsMenu] = useState(null);
@@ -253,9 +241,9 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
   );
 
   return values ? (
-    <Grid container className="pt-3 pl-3 pr-3">
+    <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
-        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Contact">
+        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header="Contact">
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item {...gridItemProps}>
               <FormField
@@ -373,7 +361,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               </Menu>
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="message" label="Message (alert for operator)" />
+              <FormField type="multilineText" name="message" label="Message (alert for operator)" />
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
@@ -425,28 +413,27 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
 
             {values.student && (
               <>
-                <Grid item xs={twoColumn ? 6 : 12}>
-                  <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
+                <Grid item {...gridItemProps} className="mb-2">
+                  <Alert severity="info">
+                    {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
+                      <Typography className="centeredFlex" variant="body1">
+                        {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
+                        <IconButton
+                          size="small"
+                          onClick={() => openInternalLink(`/waitingList?search=student.contact.id = ${values.id}`)}
+                        >
+                          <OpenInNew color="primary" fontSize="inherit" />
+                        </IconButton>
+                      </Typography>
+                    ) : (
+                      <Typography display="inline" variant="body1" className="pt-2">
+                        Student is not on any waiting list
+                      </Typography>
+                    )}
+                  </Alert>
                 </Grid>
-                <Grid item xs={12} className="mb-2">
-                  {values.student.waitingLists && values.student.waitingLists.length !== 0 ? (
-                    <Typography display="inline" variant="body1">
-                      {`Student is on waiting list for: ${values.student.waitingLists.map(v => `"${v}"`).join(", ")}`}
-                      <Link
-                        href={`${window.location.origin}/waitingList?search=student.contact.id = ${values.id}`}
-                        target="_blank"
-                        color="textSecondary"
-                        underline="none"
-                        className="d-inline"
-                      >
-                        <ExitToApp className={clsx("ml-1 relative", classes.exitToApp)} />
-                      </Link>
-                    </Typography>
-                  ) : (
-                    <Typography display="inline" variant="body1" className="pt-2">
-                      Student is not on any waiting list
-                    </Typography>
-                  )}
+                <Grid item {...gridItemProps}>
+                  <FormField type="multilineText" name="student.specialNeeds" label="Special needs" />
                 </Grid>
                 <Grid item xs={twoColumn ? 6 : 12} className="mb-2">
                   <FormField
@@ -463,8 +450,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
       </Grid>
       {values.student && (
         <>
-          <Grid item xs={12} className="pb-2">
-            <Divider className="mb-2" />
+          <Grid item xs={12} className="pb-1">
+            <Divider className="mb-1" />
             <MinifiedEntitiesList
               name="student.concessions"
               header="Concessions"
@@ -480,8 +467,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
           </Grid>
         </>
       )}
-      <Grid item xs={12} className="pb-2">
-        <Divider className="mb-2" />
+      <Grid item xs={12} className="pb-1">
+        <Divider className="mb-1" />
         <MinifiedEntitiesList
           name="memberships"
           header="Memberships"
@@ -494,8 +481,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
           accordion
         />
       </Grid>
-      <Grid item xs={12} className="pb-2">
-        <Divider className="mb-2" />
+      <Grid item xs={12} className="pb-1">
+        <Divider className="mb-1" />
         <MinifiedEntitiesList
           name="relations"
           header="Relations"

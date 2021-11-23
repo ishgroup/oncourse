@@ -19,9 +19,6 @@ import {
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 
 const styles = createStyles(({ spacing }: AppTheme) => ({
-  root: {
-    padding: spacing(3)
-  },
   marginBottomTriple: {
     marginBottom: spacing(3)
   },
@@ -83,7 +80,7 @@ class VoucherProductCorporatePasses extends React.PureComponent<any, any> {
     const corporatePassItems = values && values[path] ? corporatePassToNestedListItem(values[path]) : [];
 
     return (
-      <div className={classes.root}>
+      <div className="pl-3 pr-3">
         <div className={twoColumn ? classes.compact : classes.marginBottomTriple}>
           <NestedList
             formId={values.id}

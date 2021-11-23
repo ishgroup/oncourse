@@ -151,6 +151,8 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     hovered = true,
     form,
     dispatch,
+    isNew,
+    syncErrors
   } = props;
 
   const fileRef = useRef<any>();
@@ -195,15 +197,6 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     fileRef.current.click();
   }, []);
 
-  const headerField = (
-    <FormField
-      name="name"
-      label="Name"
-      required
-      fullWidth
-    />
-  );
-
   return (
     loadingDocVersion
       ? (
@@ -213,22 +206,24 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
       )
       : (
         <div className={twoColumn ? "" : "h-100"}>
-          {twoColumn && (
-            <FullScreenStickyHeader
-              twoColumn={twoColumn}
-              title={values && values.name}
-              fields={(
-                <Grid container>
-                  <Grid item xs={8}>
-                    {headerField}
+          <Grid container columnSpacing={3} rowSpacing={2} className="p-3 ">
+            <Grid item container xs={12}>
+              <FullScreenStickyHeader
+                opened={isNew || Object.keys(syncErrors).includes("name")}
+                twoColumn={twoColumn}
+                title={<span>{values && values.name}</span>}
+                fields={(
+                  <Grid item xs={twoColumn ? 6 : 12}>
+                    <FormField
+                      name="name"
+                      label="Name"
+                      required
+                      fullWidth
+                    />
                   </Grid>
-                </Grid>
-              )}
-              truncateTitle
-            />
-          )}
-
-          <Grid container columnSpacing={3} className="p-3 relative">
+                )}
+              />
+            </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
               {Boolean(values.removed) && (
               <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
@@ -297,10 +292,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
               </Collapse>
               <br />
             </Grid>
-            <Grid item container xs={twoColumn ? 4 : 12} alignContent="flex-start">
-              <Grid item xs={12}>
-                {!twoColumn && headerField}
-              </Grid>
+            <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 4 : 12} alignContent="flex-start">
               <Grid item xs={12}>
                 <Field
                   name="tags"

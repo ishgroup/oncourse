@@ -117,7 +117,6 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               <FormField
                 type="money"
                 name={`${f}.amount`}
-                formatting="custom"
                 normalize={normalizeNumberToPositive}
                 listSpacing={false}
                 onBlur={onPayNowBlur}
@@ -172,7 +171,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               }}
             >
               {first ? (
-                <StepButton onClick={onPayNowFocus} className="text-left">
+                <StepButton disableRipple onClick={onPayNowFocus} className="text-left">
                   {stepContent}
                 </StepButton>
               ) : stepContent}
