@@ -23,6 +23,7 @@ import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
@@ -171,6 +172,8 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
           hideTitle: true
         }}
         EditViewContent={ArticleProductEditView}

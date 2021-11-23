@@ -14,10 +14,16 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import ArticleProductService from "../service/ArticleProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processCustomFields } from "../../customFieldTypes/utils";
+import ApplicationService from "../../applications/service/ApplicationService";
 
-const request: EpicUtils.Request<any, { id: number; articleProduct: ArticleProduct }> = {
+const request: EpicUtils.Request<any, { id: number; articleProduct: ArticleProduct & { notes: any } }> = {
   type: UPDATE_ARTICLE_PRODUCT_ITEM,
-  getData: ({ id, articleProduct }) => ArticleProductService.updateArticleProduct(id, articleProduct),
+  getData: ({ id, articleProduct }) => {
+    delete articleProduct.notes;
+    processCustomFields(articleProduct);
+    return ArticleProductService.updateArticleProduct(id, articleProduct);
+  },
   processData: (v, s, { id }) => [
       {
         type: FETCH_SUCCESS,
