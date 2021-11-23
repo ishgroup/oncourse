@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Dialog } from "@material-ui/core";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Typography from "@material-ui/core/Typography";
+import { Dialog } from "@mui/material";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
 import React, {
    useCallback, useEffect, useState
 } from "react";
@@ -20,11 +20,11 @@ import { Dispatch } from "redux";
 import {
  getFormInitialValues, getFormValues, initialize
 } from "redux-form";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import { Enrolment, CustomFieldType } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import Button from "../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import {
@@ -312,7 +312,8 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           manualLink,
           nameCondition,
           asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"]
+          asyncBlurFields: ["notes[].message"],
+          hideTitle: true
         }}
         EditViewContent={EnrolmentEditView}
         getEditRecord={getEnrolmentRecord}
@@ -356,7 +357,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         </MenuItem>
       </Menu>
 
-      <Dialog open={Boolean(changedFields.length)} disableBackdropClick disableEscapeKeyDown>
+      <Dialog open={Boolean(changedFields.length)} disableEscapeKeyDown>
         <DialogTitle classes={{
           root: "pb-0"
         }}

@@ -59,7 +59,6 @@ import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
 import Automation from "../containers/automation/Automation";
 import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
-import BulkTagView from "../containers/tags/containers/BulkTagView";
 import QuickEnrol from "../containers/checkout/Checkout";
 import NotFound from "../containers/notFound/NotFound";
 
@@ -567,14 +566,6 @@ export const routes: MainRoute[] = [
     url: "/contact",
     main: ContactsApp,
     group: "Activity"
-  },
-  {
-    title: "Tags",
-    path: "/tagTreeView",
-    url: "/tagTreeView",
-    noMenuLink: true,
-    main: BulkTagView,
-    group: "Preferences"
   },
   {
     title: "Checkout (Quick Enrol)",

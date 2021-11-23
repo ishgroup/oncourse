@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { PayslipStatus } from "@api/model";

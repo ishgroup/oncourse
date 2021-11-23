@@ -8,32 +8,29 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError
+  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError, getFormSyncErrors
 } from "redux-form";
 import { DeliveryScheduleType } from "@api/model";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import FileCopy from "@material-ui/icons/FileCopy";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import { createStyles, withStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import FileCopy from "@mui/icons-material/FileCopy";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
 import { setNextLocation } from "../../../../../common/actions";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("dataCollection");
+const manualUrl = getManualLink("dataCollection");
 
 const deliveryScheduleTypes = Object.keys(DeliveryScheduleType).map(mapSelectItems);
 
@@ -42,10 +39,10 @@ deliveryScheduleTypes.sort(sortDefaultSelectItems);
 const styles = theme => createStyles({
   mainContainer: {
     margin: theme.spacing(-3),
-    height: `calc(100% + ${theme.spacing(6)}px)`
+    height: `calc(100% + ${theme.spacing(6)})`
   },
   headerControlsContainer: {
-    margin: `-12px 0 0 ${theme.spacing(1)}px`
+    margin: `-12px 0 0 ${theme.spacing(1)}`
   },
   heading: {
     marginTop: "50px",
@@ -65,9 +62,6 @@ const styles = theme => createStyles({
     boxShadow: theme.shadows[2],
     background: theme.palette.background.default
   },
-  HeaderTextField: {
-    marginLeft: "20px"
-  }
 });
 
 const setParents = targets => {
@@ -424,7 +418,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   render() {
     const {
-      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form
+      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form, syncErrors
     } = this.props;
 
     const { disableConfirm } = this.state;
@@ -432,90 +426,71 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     const type = this.props.match.params.type;
     const id = !isNew && values && values.form.id;
-    const created = values && values.form.created;
-    const modified = values && values.form.modified;
 
     return (
-      <div className={clsx(classes.mainContainer, "overflow-hidden")}>
-        <div className="h-100 overflow-y-auto" ref={this.getFormRef}>
-          <Form className="container p-3" onSubmit={handleSubmit(this.onSave)}>
-            {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
-            <CustomAppBar>
-              <Grid
-                container
-                className="ml-1"
-                classes={{
-                  container: classes.fitSmallWidth
-                }}
-              >
-                <Grid item xs={12} className="centeredFlex">
-                  {values && (
-                    <CollectionFormFieldTypesMenu
-                      items={values.items}
-                      formType={type}
-                      addField={this.addField}
-                      addHeading={this.addHeading}
-                      className="ml-0"
-                    />
-                  )}
-
-                  <FormField
-                    type="headerText"
-                    name="form.name"
-                    placeholder="Name"
-                    margin="none"
-                    className={classes.HeaderTextField}
-                    listSpacing={false}
-                    validate={[validateSingleMandatoryField, this.validateUniqueNames]}
-                  />
-
-                  <div className="flex-fill" />
-
-                  {values && !isNew && (
-                    <AppBarActions
-                      actions={[
-                        {
-                          action: () => {
-                            this.onDelete(id);
-                          },
-                          icon: <DeleteForever />,
-
-                          confirmText: "Form will be deleted permanently",
-                          tooltip: "Delete form",
-                          confirmButtonText: "DELETE"
-                        },
-                        {
-                          action: () => {
-                            this.duplicateForm(history, values.form, values.items);
-                          },
-                          icon: <FileCopy />,
-                          confirm: false,
-                          tooltip: "Copy form"
-                        }
-                      ]}
-                    />
-                  )}
-
-                  {!isNew && values && (
-                    <AppBarHelpMenu
-                      created={created ? new Date(created) : null}
-                      modified={modified ? new Date(modified) : null}
-                      auditsUrl={`audit?search=~"${type}FieldConfiguration" and entityId == ${values.form.id}`}
-                      manualUrl={manualLink}
-                    />
-                  )}
-
-                  <FormSubmitButton
-                    disabled={!dirty}
-                    invalid={!valid}
-                  />
-                </Grid>
+      <div ref={this.getFormRef}>
+        <Form className="container" onSubmit={handleSubmit(this.onSave)}>
+          {!disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl={() => `audit?search=~"${type}FieldConfiguration" and entityId == ${values.form.id}`}
+            disabled={!dirty}
+            invalid={valid}
+            title={(isNew && (!values || !values.form.name || values.form.name.trim().length === 0))
+              ? "New"
+              : values && values.form.name.trim()}
+            hideHelpMenu={isNew}
+            createdOn={v => new Date(v.form.created)}
+            modifiedOn={v => new Date(v.form.modified)}
+            opened={getDeepValue(syncErrors, "form.name")}
+            fields={(
+              <Grid item xs={8}>
+                <FormField
+                  name="form.name"
+                  label="Name"
+                  validate={this.validateUniqueNames}
+                  required
+                />
               </Grid>
-            </CustomAppBar>
+            )}
+            actions={values && !isNew && (
+              <AppBarActions
+                actions={[
+                  {
+                    action: () => {
+                      this.onDelete(id);
+                    },
+                    icon: <DeleteForever />,
 
+                    confirmText: "Form will be deleted permanently",
+                    tooltip: "Delete form",
+                    confirmButtonText: "DELETE"
+                  },
+                  {
+                    action: () => {
+                      this.duplicateForm(history, values.form, values.items);
+                    },
+                    icon: <FileCopy />,
+                    confirm: false,
+                    tooltip: "Copy form"
+                  }
+                ]}
+              />
+            )}
+            customAddMenu={values && (
+              <CollectionFormFieldTypesMenu
+                items={values.items}
+                formType={type}
+                addField={this.addField}
+                addHeading={this.addHeading}
+                className="ml-0"
+              />
+            )}
+          >
             <Grid container>
               <Grid item sm={12} lg={10} xl={6}>
-                <Grid container>
+                <Grid container columnSpacing={3}>
                   <Grid item xs={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
                     <div className="pt-2 pb-2">
                       <Typography variant="caption">Type</Typography>
@@ -557,8 +532,8 @@ class DataCollectionWrapper extends React.Component<any, any> {
                 </Grid>
               </Grid>
             </Grid>
-          </Form>
-        </div>
+          </AppBarContainer>
+        </Form>
       </div>
     );
   }
@@ -566,6 +541,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("DataCollectionForm")(state),
+  syncErrors: getFormSyncErrors("DataCollectionForm")(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });

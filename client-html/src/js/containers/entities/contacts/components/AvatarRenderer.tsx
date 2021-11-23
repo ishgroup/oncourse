@@ -4,29 +4,77 @@
  */
 
 import React, { useCallback, useRef } from "react";
-import { FormHelperText } from "@material-ui/core";
-import Edit from "@material-ui/icons/Edit";
-import Gravatar from "react-awesome-gravatar";
 import { change } from "redux-form";
+import FormHelperText from "@mui/material/FormHelperText";
+import Avatar from "@mui/material/Avatar";
+import DeleteIcon from '@mui/icons-material/Delete';
+import UploadIcon from '@mui/icons-material/Upload';
+import Gravatar from "react-awesome-gravatar";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Grid from "@mui/material/Grid";
 import noAvatarImg from "../../../../../images/no_pic.png";
 import FilePreview from "../../../../common/components/form/FilePreview";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
 import { getInitialDocument } from "../../../../common/components/form/documents/components/utils";
 import { createAvatarDocument } from "../../../../common/components/form/documents/actions";
 import { showMessage } from "../../../../common/actions";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
 
 const validateImageFormat = (imageFile: File) =>
   (["image/jpeg", "image/png"].includes(imageFile.type) ? undefined : "Avatar must be of image type");
 
+const useStyles = makeAppStyles(theme => ({
+    avatarWrapper: {
+      "&, & img": {
+        transition: theme.transitions.create("all", {
+          duration: theme.transitions.duration.standard,
+          easing: theme.transitions.easing.easeInOut
+        }),
+      },
+    },
+    profileThumbnail: {
+      "&:hover $avatarBackdrop": {
+        opacity: 1,
+      },
+    },
+    avatarBackdrop: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: theme.palette.action.active,
+      position: "absolute",
+      height: "100%",
+      width: "100%",
+      opacity: 0,
+      transition: theme.transitions.create("opacity", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      borderRadius: "100%",
+      color: "#fff",
+    },
+    avatarRoot: {
+      transition: theme.transitions.create("all", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+    },
+  }));
+
 const AvatarRenderer: React.FC<any> = props => {
   const {
-    classes,
     meta: { invalid, error },
     email,
     input,
     form,
-    dispatch
+    dispatch,
+    disabled,
+    avatarSize,
+    twoColumn,
   } = props;
+  
+  const classes = useStyles();
 
   const fileRef = useRef<any>();
 
@@ -68,35 +116,56 @@ const AvatarRenderer: React.FC<any> = props => {
     }
   }, [form, input.name]);
 
-  return (
-    <div>
-      <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
+  const size = avatarSize || 90;
 
-      <div className={`h-100 centeredFlex justify-content-start pr-2 pb-2 ${classes.avatarWrapper}`}>
+  return (
+    <Grid item className="mr-3">
+      {!disabled && (<input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />)}
+      <div className={`centeredFlex justify-content-start ${!twoColumn && "mb-2"} ${classes.avatarWrapper}`}>
         {input.value && input.value.thumbnail ? (
           <FilePreview
             actions={[
-              { actionLabel: "unlink", onAction: unlink },
-              { actionLabel: "upload", onAction: upload }
-            ]}
+                  { actionLabel: "Unlink", onAction: unlink, icon: <DeleteIcon fontSize="small" /> }
+                ]}
             data={input.value.thumbnail}
+            iconPlacementRow
+            avatarSize={size}
+            disabled={disabled}
           />
-        ) : (
-          <div onClick={upload} className={`relative cursor-pointer ${classes.profileThumbnail}`}>
-            <Gravatar email={email || ""} options={{ size: 55, defaultUrl: `${window.location.origin + noAvatarImg}` }}>
-              {url => <img src={url} alt="Profile picture" onError={handleGravatarError} />}
-            </Gravatar>
-            <Edit className={classes.profileEditIcon} />
-          </div>
-        )}
+            ) : (
+              <div onClick={upload} className={`relative cursor-pointer ${classes.profileThumbnail}`}>
+                {!disabled && (
+                  <div className={classes.avatarBackdrop}>
+                    <div className="centeredFlex">
+                      <Tooltip title="Upload" placement="top">
+                        <IconButton color="inherit" size="medium">
+                          <UploadIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
+                  </div>
+                )}
+                <Gravatar email={email || ""} options={{ size, default: 'mp' }}>
+                  {url => (
+                    <Avatar
+                      alt="Profile picture"
+                      src={url}
+                      sx={{ width: size, height: size }}
+                      onError={handleGravatarError}
+                      classes={{ root: classes.avatarRoot }}
+                    />
+                  )}
+                </Gravatar>
+              </div>
+            )}
       </div>
 
-      {error && (
-        <FormHelperText error={invalid} className={classes.error}>
+      {!disabled && error && (
+        <FormHelperText error={invalid}>
           <div style={{ maxWidth: "120px", padding: "0 10px 10px 0" }}>{typeof error === "string" ? error : ""}</div>
         </FormHelperText>
-      )}
-    </div>
+          )}
+    </Grid>
   );
 };
 

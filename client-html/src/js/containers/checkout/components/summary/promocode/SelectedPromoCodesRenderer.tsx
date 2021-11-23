@@ -6,12 +6,12 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Delete from "@material-ui/icons/Delete";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { alpha } from '@mui/material/styles';
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { State } from "../../../../../reducers/state";
 
@@ -31,7 +31,7 @@ const styles = (theme: AppTheme) => createStyles({
     marginBottom: 5
   },
   deleteIcon: {
-    color: fade(theme.palette.text.primary, 0.2),
+    color: alpha(theme.palette.text.primary, 0.2),
     padding: 5,
     fontSize: 16,
     visibility: "hidden",

@@ -1,6 +1,6 @@
 import * as React from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
 import { iconSwitcher } from "../utils";
 
@@ -13,7 +13,8 @@ const styles = theme =>
       borderRadius: "4px",
       marginRight: "16px",
       color: "rgba(0,0,0,.2)",
-      transition: "color 200ms ease-in-out"
+      transition: "color 200ms ease-in-out",
+      backgroundPosition: "center"
     },
     previewNormal: {
       width: "60px",

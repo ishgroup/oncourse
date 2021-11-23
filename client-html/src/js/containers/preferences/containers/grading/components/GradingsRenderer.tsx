@@ -9,16 +9,15 @@
 import React from "react";
 import { GradingEntryType, GradingType } from "@api/model";
 import { change, FieldArray, WrappedFieldArrayProps } from "redux-form";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {
  Collapse, Card, Grid, Button
-} from "@material-ui/core";
+} from "@mui/material";
 import { Dispatch } from "redux";
 import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import GradingItemsRenderer from "./GradingItemsRenderer";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { makeAppStyles } from "../../../../../common/styles/makeStyles";
 
 interface Props {
   classes?: any;
@@ -30,7 +29,7 @@ const GradingEntryTypes = Object.keys(GradingEntryType)
   // @ts-ignore
   .map(value => ({ value, label: value === "name" ? "Choice list" : value.capitalize() }));
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   delete: {
     position: "absolute",
     color: theme.palette.error.main,
@@ -66,9 +65,9 @@ export default (props: WrappedFieldArrayProps & Props) => {
         const field: GradingType = fields.get(index);
         return (
           <Card className="card" key={`${field.id}${index}`} id={`grading-type-${index}`}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={6}>
-                <Grid container>
+                <Grid container rowSpacing={2} columnSpacing={3}>
                   <Grid item xs={6}>
                     <FormField
                       type="text"
@@ -92,7 +91,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
 
                   <Grid item xs={12}>
                     <Collapse in={field.entryType === "number"}>
-                      <Grid container>
+                      <Grid container columnSpacing={3}>
                         <Grid item xs={6}>
                           <FormField
                             type="number"
@@ -122,7 +121,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
               </Grid>
               <Grid item xs={6} className="relative">
                 <FieldArray
-                  name={`${item}.gradingItems`}
+                  name={`${item}.gradingItems` as string}
                   component={GradingItemsRenderer}
                   classes={classes}
                   parent={field}

@@ -1,18 +1,19 @@
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Paper from "@material-ui/core/Paper";
-import { ExpandMore } from "@material-ui/icons";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import { ExpandMore } from "@mui/icons-material";
 import clsx from "clsx";
 import React, { useMemo, useState } from "react";
 import {
- Typography, Grid, List, ListItem, createStyles, withStyles
-} from "@material-ui/core";
+ Typography, Grid, List, ListItem,
+} from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import ExecuteScriptModal from "../../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { getHighlightedPartLabel } from "../../../../../utils/formatting";
-import Button from "../../../../buttons/Button";
 import UserSearch from "../UserSearch";
+import Button from "@mui/material/Button";
 
 const styles = theme => createStyles({
   scriptHeading: {
@@ -56,7 +57,7 @@ const SidebarScriptsList: React.FC<any> = props => {
           >
             <ListItem
               disableGutters
-              button
+              // button
               onClick={() => setScriptIdSelected(itemSelected ? null : s.id)}
               key={s.id}
               className={clsx("pl-2 pr-2", classes.scriptHeading)}
@@ -71,7 +72,7 @@ const SidebarScriptsList: React.FC<any> = props => {
 
             <Collapse in={scriptIdSelected === s.id} mountOnEnter unmountOnExit className="pl-2 pr-2">
               <div className="d-flex justify-content-end pt-2 pb-2">
-                <Button color="primary" onClick={() => setExecMenuOpened(true)}>
+                <Button variant="contained" color="primary" onClick={() => setExecMenuOpened(true)}>
                   Run now
                 </Button>
               </div>
@@ -89,7 +90,7 @@ const SidebarScriptsList: React.FC<any> = props => {
         onClose={() => setExecMenuOpened(false)}
         scriptId={scriptIdSelected}
       />
-      <Grid container justify="space-between">
+      <Grid container columnSpacing={3}>
         <Grid item xs={12}>
           <Typography className="heading pl-2 pr-2 pt-2">ON DEMAND SCRIPTS</Typography>
         </Grid>

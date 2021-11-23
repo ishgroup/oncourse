@@ -14,6 +14,7 @@ import ish.math.Money;
 import ish.oncourse.entity.services.SessionService;
 import ish.oncourse.server.cayenne.ClassCost;
 import ish.oncourse.server.cayenne.PayLine;
+import ish.oncourse.server.cayenne.Session;
 import ish.oncourse.server.cayenne.TutorAttendance;
 import ish.util.LocalDateUtils;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,14 +68,14 @@ public class CreatePaylinesPerTimetabledHour extends AbstractAttendanceBasedPayl
 		for (var attendanceItem : attendanceFromDateRange) {
 
 			logger.debug("looping through attendance: {} of type {} for session ending {}", attendanceItem.getCourseClassTutor().getTutor().getContact().getName(),
-					attendanceItem.getAttendanceType(), attendanceItem.getSession().getEndDatetime());
+					attendanceItem.getAttendanceType(), attendanceItem.getEndDatetime());
 
 			var alreadyGenerated = findPaylinesForAttendance(attendanceItem).size() > 0;
 			var eligibleToGenerate = shouldGeneratePaylineForAttendance(attendanceItem);
-			var eligibleRate = getPerUnitAmountExTax(attendanceItem.getSession().getStartDatetime());
+			var eligibleRate = getPerUnitAmountExTax(attendanceItem.getStartDatetime());
 
 			if (alreadyGenerated || !eligibleToGenerate) {
-				logger.debug("paylines exlude perTimeTabledHour attendance (end date)... {}", attendanceItem.getSession().getEndDatetime());
+				logger.debug("paylines exlude perTimeTabledHour attendance (end date)... {}", attendanceItem.getEndDatetime());
 			} else if (eligibleRate != null && eligibleRate.isGreaterThan(Money.ZERO)) {
 
 				if (UNMARKED == attendanceItem.getAttendanceType()) {
@@ -88,28 +90,20 @@ public class CreatePaylinesPerTimetabledHour extends AbstractAttendanceBasedPayl
 				pl.setClassCost(classCost);
 				pl.setDescription(classCost.getDescription());
 
-				var quantity = attendanceItem.getDurationMinutes() == null ?
-						BigDecimal.valueOf(sessionService.getPayableDurationInMinutes(attendanceItem.getSession())) :
-						BigDecimal.valueOf(attendanceItem.getDurationMinutes());
-
-				quantity = quantity.setScale(4);
-				quantity = quantity.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP);
-				pl.setQuantity(quantity);
-
-				var budgetedQuantity = new BigDecimal(sessionService.getPayableDurationInMinutes(attendanceItem.getSession()));
-				budgetedQuantity = budgetedQuantity.setScale(4);
-				budgetedQuantity = budgetedQuantity.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP);
-				pl.setBudgetedQuantity(budgetedQuantity);
+				pl.setQuantity(attendanceItem.getActualPayableDurationHours());
+				
+				pl.setBudgetedQuantity(attendanceItem.getBudgetedPayableDurationHours());
 
 				pl.setValue(eligibleRate);
 				pl.setBudgetedValue(pl.getValue());
-				pl.setDateFor(LocalDateUtils.dateToValue(attendanceItem.getSession().getStartDatetime()));
+				pl.setDateFor(LocalDateUtils.dateToValue(attendanceItem.getStartDatetime()));
 
-				logger.debug("timetable payline created (end date)... {}", pl.getSession().getEndDatetime());
+				logger.debug("timetable payline created (end date)... {}", attendanceItem.getEndDatetime());
 
 				payLines.add(pl);
 			}
 		}
 		return payLines;
 	}
+	
 }

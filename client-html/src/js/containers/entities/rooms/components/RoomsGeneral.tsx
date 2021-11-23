@@ -4,11 +4,11 @@
  */
 
 import * as React from "react";
-import Grid, { GridSize } from "@material-ui/core/Grid";
+import Grid, { GridSize } from "@mui/material/Grid";
 import { FieldArray, change } from "redux-form";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import ScreenShare from "@mui/icons-material/ScreenShare";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
@@ -19,6 +19,8 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { openSiteLink } from "../../sites/utils";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
 
@@ -60,112 +62,113 @@ class RoomsGeneral extends React.PureComponent<any, any> {
       form,
       tags,
       sites,
-      twoColumn
+      twoColumn,
     } = this.props;
 
     const layoutArray = getLayoutArray(twoColumn);
 
     return (
-      <>
-        <Grid container className="p-3">
-          <Grid item xs={layoutArray[2].xs}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+        <Grid item xs={layoutArray[2].xs}>
+          <FullScreenStickyHeader
+            twoColumn={twoColumn}
+            title={values && values.name}
+            fields={(
+              <FormField
+                type="text"
+                name="name"
+                label="Name"
+                required
+              />
+              )}
+          />
+        </Grid>
+        <Grid item container xs={layoutArray[0].xs} columnSpacing={3} className="flex-nowrap align-items-center mb-1">
+          <Grid item xs={12}>
             <FormField
-              type="text"
-              name="name"
-              label="Name"
-              required
-              listSpacing={false}
+              type="tags"
+              name="tags"
+              tags={tags}
+              validate={tags && tags.length ? this.validateTagList : undefined}
             />
           </Grid>
-          <Grid item xs={layoutArray[0].xs}>
-            <Grid container className="flex-nowrap align-items-center mb-1">
-              <Grid item xs={12} className="container">
-                <FormField
-                  type="tags"
-                  name="tags"
-                  tags={tags}
-                  validate={tags && tags.length ? this.validateTagList : undefined}
-                />
-              </Grid>
 
-              <Grid item className="centeredFlex">
-                <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
-                  <ScreenShare />
-                </IconButton>
+          <Grid item className="centeredFlex">
+            <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
+              <ScreenShare />
+            </IconButton>
 
-                <Typography variant="caption">Kiosk</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12} className="mb-2">
-            <TimetableButton onClick={this.onCalendarClick} />
-          </Grid>
-
-          <Grid item xs={layoutArray[1].xs}>
-            <Grid container>
-              <Grid item xs={layoutArray[3].xs}>
-                <FormField
-                  type="text"
-                  name="seatedCapacity"
-                  label="Seated Capacity"
-                  required
-                  normalize={normalizeSeatedCapacity}
-                />
-              </Grid>
-
-              <Grid item xs={layoutArray[4].xs}>
-                {sites && (
-                  <FormField
-                    type="select"
-                    name="siteId"
-                    label="Site"
-                    selectLabelMark="name"
-                    selectValueMark="id"
-                    labelAdornment={
-                      isNew ? undefined : (
-                        <LinkAdornment
-                          link="true"
-                          disabled={!values.siteId}
-                          clickHandler={() => openSiteLink(values.siteId)}
-                        />
-                      )
-                    }
-                    items={sites}
-                    onInnerValueChange={this.onSiteChange}
-                    required
-                  />
-                )}
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={layoutArray[5].xs}>
-            <FormEditorField name="facilities" label="Facilities" />
-          </Grid>
-
-          <Grid item xs={layoutArray[6].xs}>
-            <FormEditorField name="directions" label="Directions" />
-          </Grid>
-
-          <Grid item xs={layoutArray[7].xs}>
-            <FieldArray
-              name="documents"
-              label="Documents"
-              entity="Room"
-              classes={classes}
-              component={DocumentsRenderer}
-              xsGrid={layoutArray[3].xs}
-              mdGrid={layoutArray[4].md}
-              lgGrid={layoutArray[5].lg}
-              dispatch={dispatch}
-              form={form}
-              showConfirm={showConfirm}
-              rerenderOnEveryChange
-            />
+            <Typography variant="caption">Kiosk</Typography>
           </Grid>
         </Grid>
-      </>
+
+        <Grid item xs={12} className="mb-2">
+          <TimetableButton onClick={this.onCalendarClick} />
+        </Grid>
+
+        <Grid item xs={layoutArray[1].xs}>
+          <Grid container columnSpacing={3}>
+            <Grid item xs={layoutArray[3].xs}>
+              <FormField
+                type="text"
+                name="seatedCapacity"
+                label="Seated Capacity"
+                required
+                normalize={normalizeSeatedCapacity}
+              />
+            </Grid>
+
+            <Grid item xs={layoutArray[4].xs}>
+              {sites && (
+              <FormField
+                type="select"
+                name="siteId"
+                label="Site"
+                selectLabelMark="name"
+                selectValueMark="id"
+                labelAdornment={
+                  isNew ? undefined : (
+                    <LinkAdornment
+                      link={values && values.siteId}
+                      disabled={!values.siteId}
+                      clickHandler={() => openSiteLink(values.siteId)}
+                    />
+                  )
+                }
+                items={sites}
+                onInnerValueChange={this.onSiteChange}
+                required
+              />
+                )}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={layoutArray[5].xs}>
+          <FormEditorField name="facilities" label="Facilities" />
+        </Grid>
+
+        <Grid item xs={layoutArray[6].xs}>
+          <FormEditorField name="directions" label="Directions" />
+        </Grid>
+
+        <Grid item xs={layoutArray[7].xs} className="mb-1">
+          <FieldArray
+            name="documents"
+            label="Documents"
+            entity="Room"
+            classes={classes}
+            component={DocumentsRenderer}
+            xsGrid={layoutArray[3].xs}
+            mdGrid={layoutArray[4].md}
+            lgGrid={layoutArray[5].lg}
+            dispatch={dispatch}
+            form={form}
+            showConfirm={showConfirm}
+            rerenderOnEveryChange
+          />
+        </Grid>
+      </Grid>
     );
   }
 }

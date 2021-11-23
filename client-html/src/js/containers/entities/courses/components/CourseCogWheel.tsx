@@ -1,4 +1,4 @@
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";

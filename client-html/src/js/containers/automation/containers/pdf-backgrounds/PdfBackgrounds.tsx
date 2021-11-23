@@ -5,7 +5,7 @@
 
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { getFormValues, initialize, reduxForm } from "redux-form";
+import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
@@ -20,6 +20,7 @@ import {
   removeAutomationPdfBackground,
   updateAutomationPdfBackground
 } from "./actions";
+import { PDF_REPORT_FORM_NAME } from "../pdf-reports/PdfReports";
 
 export const PDF_BACKGROUND_FORM_NAME = "PdfBackgroundsForm";
 
@@ -52,6 +53,7 @@ const PdfBackgrounds = React.memo<any>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(PDF_BACKGROUND_FORM_NAME)(state),
+  syncErrors: getFormSyncErrors(PDF_BACKGROUND_FORM_NAME)(state),
   nextLocation: state.nextLocation,
 });
 

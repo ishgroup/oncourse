@@ -3,10 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Launch from "@material-ui/icons/Launch";
-import RemoveCircle from "@material-ui/icons/RemoveCircle";
 import React, {
   useMemo, useState
 } from "react";
@@ -17,21 +13,26 @@ import {
   useRowSelect,
   useSortBy
 } from "react-table";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import MaUTable from "@material-ui/core/Table";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import MaUTable from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Launch from "@mui/icons-material/Launch";
+import RemoveCircle from "@mui/icons-material/RemoveCircle";
 import clsx from "clsx";
 import { NestedTableColumn } from "../../../../../model/common/NestedTable";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { openInternalLink } from "../../../../utils/links";
+import AddButton from "../../../icons/AddButton";
 import StaticList from "./components/StaticList";
 import styles from "./styles";
 import { getNestedTableCell } from "./utils";
+import { NESTED_TABLE_ROW_HEIGHT } from "../../../../../constants/Config";
 
 const DEFAULT_COLUMN_WIDTH = 100;
 
@@ -46,6 +47,7 @@ interface NestedListTableProps {
   onRowDoubleClick?: any;
   onCheckboxChange?: any;
   onSelectionChangeHangler?: any;
+  calculateHeight?: boolean;
 }
 
 const Table: React.FC<NestedListTableProps> = ({
@@ -55,6 +57,7 @@ const Table: React.FC<NestedListTableProps> = ({
   onSelectionChangeHangler,
   onRowDoubleClick,
   onCheckboxChange,
+  calculateHeight
   }) => {
   const classes = useStyles();
 
@@ -154,10 +157,10 @@ const Table: React.FC<NestedListTableProps> = ({
     </div>
   )), [rows, totalColumnsWidth, selection, onRowDoubleClick, onCheckboxChange, onRowSelect]);
 
-  const tableHeight = useMemo(() => 100 + rows.length * 27,
+  const tableHeight = useMemo(() => 100 + rows.length * NESTED_TABLE_ROW_HEIGHT,
     [rows.length]);
 
-  const bodyStyle = useMemo(() => (rows.length > 10 ? null : { height: rows.length * 27 }), [rows.length]);
+  const bodyStyle = useMemo(() => (rows.length > 10 ? calculateHeight && { height: NESTED_TABLE_ROW_HEIGHT * 10 } : { height: rows.length * NESTED_TABLE_ROW_HEIGHT }), [rows.length]);
 
   return (
     <>
@@ -187,6 +190,7 @@ export interface NestedListProps {
   name?: string;
   className?: string;
   hideHeader?: boolean;
+  calculateHeight?: boolean;
   onAdd?: any;
   currencySymbol?: string;
   onRowDoubleClick?: any;
@@ -210,7 +214,8 @@ const ListRoot = React.memo<NestedListProps>(({
     onCheckboxChange,
     meta: { invalid, error },
     total,
-    goToLink
+    goToLink,
+    calculateHeight
   }) => {
   const [selection, setSelection] = useState([]);
 
@@ -268,26 +273,24 @@ const ListRoot = React.memo<NestedListProps>(({
               </Typography>
               {goToLink && (
                 <IconButton
-                  className="p-1"
-                  style={{ marginRight: "-8px" }}
-                  color="secondary"
+                  color="primary"
+                  size="small"
                   onClick={() => openInternalLink(goToLink)}
                 >
-                  <Launch />
+                  <Launch fontSize="inherit" />
                 </IconButton>
               )}
               {onAdd && (
-                <IconButton className="addButtonColor p-1" onClick={onAdd}>
-                  <AddCircle className="inherit" />
-                </IconButton>
+                <AddButton size="small" onClick={onAdd} />
               )}
               {Boolean(rows.length) && removeEnabled && (
                 <IconButton
-                  className="errorColor p-1"
+                  size="small"
+                  className="errorColor"
                   disabled={selection.length !== 1}
                   onClick={removeRow}
                 >
-                  <RemoveCircle color="inherit" />
+                  <RemoveCircle color="inherit" fontSize="inherit" />
                 </IconButton>
               )}
             </div>
@@ -301,6 +304,7 @@ const ListRoot = React.memo<NestedListProps>(({
           onRowDoubleClick={onRowDoubleClick}
           onCheckboxChange={onCheckboxChange}
           onSelectionChangeHangler={setSelection}
+          calculateHeight={calculateHeight}
         />
         )}
         {invalid && (
@@ -328,7 +332,6 @@ const ListRoot = React.memo<NestedListProps>(({
           </div>
         )}
       </div>
-
     )
     : null;
 });

@@ -1,17 +1,17 @@
 import * as React from "react";
-import DateFnsUtils from "@date-io/date-fns";
-import history from "./constants/History";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Router } from "react-router-dom";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StylesProviderCustom from "./common/styles/StylesProviderCustom";
+import history from "./constants/History";
 
 const RootComponent = ({ children }) => (
   <StylesProviderCustom>
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Router history={history}>
         <div>{children}</div>
       </Router>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   </StylesProviderCustom>
 );
 

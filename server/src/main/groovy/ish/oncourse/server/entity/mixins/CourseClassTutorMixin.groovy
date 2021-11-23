@@ -28,12 +28,13 @@ class CourseClassTutorMixin {
 	 */
 	@API
 	static getSessionSummary(CourseClassTutor self) {
-		def sessions = self.courseClass.sessions.findAll {
-			s -> s.tutors.find { true }?.equals(self.tutor)
-		}.inject([number: 0, hours: 0.0]) {
-			acc, s -> [number: acc.number + 1, hours: acc.hours + s.payableDurationInHours.doubleValue()]
-		}
 
-		return sessions.number > 0 ? "${sessions.number} (${sessions.hours})" : "0 (0)"
+		if (self.sessionsTutors.empty) {
+			return "0 (0)"
+		} else {
+			double  hours = self.sessionsTutors.collect {it.budgetedPayableDurationHours}.inject{a,b -> a.add(b)}.doubleValue()
+			return "${self.sessionsTutors.size()} (${hours})"
+		}
+	
 	}
 }

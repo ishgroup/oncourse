@@ -60,8 +60,8 @@
            studentNumber="3" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
   <CourseSession id="100" courseClass_Id="1" startDatetime="[start_date1]" endDatetime="[end_date1]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="200" courseClass_Id="1" startDatetime="[start_date2]" endDatetime="[end_date2]"
-                 payAdjustment="0.00"/>
+                 />
 
 </dataset>

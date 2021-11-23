@@ -8,7 +8,8 @@
 
 import React, { useMemo, useState } from "react";
 import { Cell, Legend, Pie, PieChart } from "recharts";
-import { fade, Tooltip, useTheme } from '@material-ui/core';
+import { Tooltip, useTheme } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { OutcomeProgression } from "@api/model";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 
@@ -49,8 +50,8 @@ export function AttendanceChart({ data }: Props) {
   const { palette: { text: { primary }, background: { paper }, getContrastText } } = useTheme();
 
   const COLORS = [
-    ...includeFuture ? [fade(getContrastText(paper), 0.4)] : [],
-    fade(getContrastText(paper), 0.6),
+    ...includeFuture ? [alpha(getContrastText(paper), 0.4)] : [],
+    alpha(getContrastText(paper), 0.6),
     "red",
     "green"
   ];
@@ -131,8 +132,8 @@ export function AssessmentChart({ data }: Props) {
   const { palette: { text: { primary }, background: { paper }, getContrastText } } = useTheme();
 
   const COLORS = [
-    ...includeUnreleased ? [fade(getContrastText(paper), 0.4)] : [],
-    fade(getContrastText(paper), 0.6),
+    ...includeUnreleased ? [alpha(getContrastText(paper), 0.4)] : [],
+    alpha(getContrastText(paper), 0.6),
     "#0088FE",
     "#FF8042"
   ];

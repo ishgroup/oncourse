@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import Collapse from "@material-ui/core/Collapse";
-import { CircularProgress, Typography } from "@material-ui/core";
+import Grid from "@mui/material/Grid";
+import Collapse from "@mui/material/Collapse";
+import { CircularProgress, Typography } from "@mui/material";
 import * as Entities from "@aql/queryLanguageModel";
 import debounce from "lodash.debounce";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
@@ -78,7 +78,7 @@ const QueryCardContent = props => {
   const validateExpression = useCallback(() => (isValidQuery ? undefined : "Expression is invalid"), [isValidQuery]);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12}>
         <FormField
           type="select"
@@ -89,54 +89,54 @@ const QueryCardContent = props => {
           disabled={disabled}
           required
         />
+      </Grid>  
 
-        <Grid item xs={12}>
-          <Collapse
-            in={queryAvailable}
-            classes={{
-              container: field.entity ? "overflow-visible" : undefined
+      <Grid item xs={12}>
+        <Collapse
+          in={queryAvailable}
+          classes={{
+              wrapper: field.entity ? "overflow-visible" : undefined
             }}
-          >
-            <div className={classes.queryField}>
-              <FormField
-                type="aql"
-                name={`${name}.query`}
-                label="Query"
-                placeholder="All records"
-                rootEntity={field.entity}
-                disabled={!field.entity || disabled}
-                onValidateQuery={onValidateQuery}
-                validate={validateExpression}
-                isValidQuery={isValidQuery}
-              />
-            </div>
-          </Collapse>
+        >
+          <div className={classes.queryField}>
+            <FormField
+              type="aql"
+              name={`${name}.query`}
+              label="Query"
+              placeholder="All records"
+              rootEntity={field.entity}
+              disabled={!field.entity || disabled}
+              onValidateQuery={onValidateQuery}
+              validate={validateExpression}
+              isValidQuery={isValidQuery}
+            />
+          </div>
+        </Collapse>
+      </Grid>
+
+      <Grid item={true} container xs={12} className="mb-2">
+        <Grid xs={6}>
+          <FormField
+            name={`${name}.queryClosureReturnValue`}
+            type="text"
+            value={field.queryClosureReturnValue}
+            label="Returned results name"
+            validate={validateQueryClosureReturnValue}
+          />
         </Grid>
 
-        <Grid item={true} container xs={12}>
-          <Grid xs={6}>
-            <FormField
-              name={`${name}.queryClosureReturnValue`}
-              type="text"
-              value={field.queryClosureReturnValue}
-              label="Returned results name"
-              validate={validateQueryClosureReturnValue}
-            />
-          </Grid>
-
-          <Grid xs={6} className="d-flex p-2" alignItems="flex-end" justify="flex-end">
-            {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
-            {!queryResultsPending && !hideQueryResults && (
-              <Typography variant="caption" color="textSecondary">
-                {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
-                {' '}
-                record
-                {queryResults === 1 ? "" : "s"}
-                {' '}
-                found
-              </Typography>
+        <Grid xs={6} className="d-flex p-2" alignItems="flex-end">
+          {queryResultsPending && !hideQueryResults && <CircularProgress size={24} thickness={4} />}
+          {!queryResultsPending && !hideQueryResults && (
+          <Typography variant="caption" color="textSecondary">
+            {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
+            {' '}
+            record
+            {queryResults === 1 ? "" : "s"}
+            {' '}
+            found
+          </Typography>
             )}
-          </Grid>
         </Grid>
       </Grid>
     </Grid>

@@ -6,17 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import {
  Lead, LeadStatus, Sale, Tag, User
 } from "@api/model";
-import Button from "@material-ui/core/Button";
-import Chip from "@material-ui/core/Chip";
-import { makeStyles } from "@material-ui/core";
+import Chip from "@mui/material/Chip";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -29,18 +27,20 @@ import {
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
-import AppBarHelpMenu from "../../../../common/components/form/AppBarHelpMenu";
-import FormSubmitButton from "../../../../common/components/form/FormSubmitButton";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getProductAqlType } from "../../sales/utils";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeAppStyles(() => ({
   chipButton: {
     fontSize: "12px",
     height: "20px",
@@ -50,6 +50,7 @@ const useStyles = makeStyles(() => ({
 interface Props extends EditViewProps<Lead> {
   tags?: Tag[];
   users?: User[];
+  isScrolling?: boolean;
 }
 
 const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relatedSellables: Sale[], places: number) => {
@@ -103,14 +104,11 @@ const LeadGeneral = (props: Props) => {
     submitSucceeded,
     twoColumn,
     isNew,
-    manualLink,
-    onCloseClick,
-    dirty,
-    invalid,
-    users
+    users,
+    syncErrors
   } = props;
 
-  const classes = useStyles();
+  const classes  = useStyles();
 
   const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
 
@@ -118,171 +116,122 @@ const LeadGeneral = (props: Props) => {
     dispatch(change(form, "contactName", getContactName(value)));
   };
 
-  const contactIdTwoColumnProps = useMemo(
-    () => ({
-      placeholder: "Contact",
-      endAdornment: (
-        <LinkAdornment
-          link={values.contactId}
-          linkHandler={openContactLink}
-          linkColor="inherit"
-          className="appHeaderFontSize pl-0-5"
-        />
-      ),
-      formatting: "inline",
-      fieldClasses: {
-        text: "appHeaderFontSize primaryContarstText primaryContarstHover text-nowrap text-truncate",
-        input: "primaryContarstText",
-        underline: "primaryContarstUnderline",
-        selectMenu: "textPrimaryColor",
-        loading: "primaryContarstText",
-        editIcon: "primaryContarstText"
-      }
-    }),
-    [values.contactId]
-  );
-
-  const contactIdThreecolumnProps = useMemo(
-    () => ({
-      labelAdornment: <LinkAdornment link={values.contactId} linkHandler={openContactLink} />,
-      label: "Contact"
-    }),
-    [values.contactId]
-  );
-
-  const contactIdField = (inHeader: boolean = false) => (
-    <FormField
-      type="remoteDataSearchSelect"
-      entity="Contact"
-      name="contactId"
-      selectValueMark="id"
-      selectLabelCondition={contactLabelCondition}
-      defaultDisplayValue={defaultContactName(values.contactName)}
-      onInnerValueChange={onContactChange}
-      itemRenderer={ContactSelectItemRenderer}
-      props={twoColumn ? contactIdTwoColumnProps : contactIdThreecolumnProps}
-      disabled={!isNew}
-      rowHeight={55}
-      required
-      inHeader
-    />
-  );
-
   return (
-    <>
-      {twoColumn && (
-        <CustomAppBar>
-          <Grid container className="flex-fill">
-            <Grid item xs={6}>
-              {contactIdField(true)}
-            </Grid>
-          </Grid>
-          <div>
-            {manualLink && (
-              <AppBarHelpMenu
-                created={values?.createdOn ? new Date(values.createdOn) : null}
-                modified={values?.modifiedOn ? new Date(values.modifiedOn) : null}
-                auditsUrl={`audit?search=~"${rootEntity}" and entityId in (${values ? values.id : 0})`}
-                manualUrl={manualLink}
-              />
-            )}
-            <Button onClick={onCloseClick} className="closeAppBarButton">
-              Close
-            </Button>
-            <FormSubmitButton
-              disabled={(!isNew && !dirty)}
-              invalid={invalid}
-            />
-          </div>
-        </CustomAppBar>
-      )}
-      <Grid container className="generalRoot mt-2">
-        {!twoColumn && (
-          <Grid item xs={12} className="pt-2">
-            {contactIdField(false)}
-          </Grid>
-        )}
-        <Grid item xs={twoColumn ? 6 : 12}>
-          {!isNew
-            && (
-            <FormField
-              type="searchSelect"
-              name="assignToId"
-              label="Assigned to"
-              selectValueMark="id"
-              selectLabelCondition={contactLabelCondition}
-              defaultDisplayValue={defaultContactName(values.assignTo)}
-              disabled={!users}
-              items={users}
-              required
-            />
+    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          opened={isNew || Object.keys(syncErrors).includes("contactId")}
+          disableInteraction={!isNew}
+          twoColumn={twoColumn}
+          title={(
+            <div className="d-inline-flex-center">
+              {values && defaultContactName(values.contactName)}
+              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
           )}
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
+          fields={(
+            <Grid item xs={twoColumn ? 6 : 12}>
+              <FormField
+                type="remoteDataSearchSelect"
+                label="Contact"
+                entity="Contact"
+                name="contactId"
+                selectValueMark="id"
+                selectLabelCondition={contactLabelCondition}
+                defaultDisplayValue={defaultContactName(values.contactName)}
+                onInnerValueChange={onContactChange}
+                itemRenderer={ContactSelectItemRenderer}
+                disabled={!isNew}
+                labelAdornment={<LinkAdornment link={values.contactId} linkHandler={openContactLink} />}
+                rowHeight={55}
+                required
+              />
+            </Grid>
+          )}
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 6 : 12}>
+        {!isNew
+          && (
           <FormField
-            type="tags"
-            name="tags"
-            tags={tags}
-            validate={tags && tags.length ? validateTagList : undefined}
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField type="number" name="studentCount" label="Number of students" />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField type="dateTime" name="nextActionOn" label="Next action on" />
-        </Grid>
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <div className="centeredFlex">
-            <FormField
-              type="money"
-              name="estimatedValue"
-              label="Estimated value"
-              normalize={normalizeNumberToZero}
-            />
-            <Chip
-              size="small"
-              label="Calculate"
-              className={clsx(classes.chipButton, "ml-2, mt-1")}
-              onClick={() => (
-                asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e))
-              )}
-            />
-          </div>
-        </Grid>
-
-        <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField
-            type="select"
-            name="status"
-            label="Status"
-            items={statusItems}
+            type="searchSelect"
+            name="assignToId"
+            label="Assigned to"
+            selectValueMark="id"
+            selectLabelCondition={contactLabelCondition}
+            defaultDisplayValue={defaultContactName(values.assignTo)}
+            disabled={!users}
+            items={users}
             required
           />
-        </Grid>
-        <CustomFields
-          entityName="Lead"
-          fieldName="customFields"
-          entityValues={values}
+        )}
+      </Grid>
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+          validate={tags && tags.length ? validateTagList : undefined}
+        />
+      </Grid>
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField type="number" name="studentCount" label="Number of students" />
+      </Grid>
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField type="dateTime" name="nextActionOn" label="Next action on" />
+      </Grid>
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <div className="centeredFlex">
+          <FormField
+            type="money"
+            name="estimatedValue"
+            label="Estimated value"
+            normalize={normalizeNumberToZero}
+          />
+          <Chip
+            size="small"
+            label="Calculate"
+            className={clsx(classes.chipButton, "ml-2, mt-1")}
+            onClick={() => (
+              asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e))
+            )}
+          />
+        </div>
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="select"
+          name="status"
+          label="Status"
+          items={statusItems}
+          required
+        />
+      </Grid>
+      <CustomFields
+        entityName="Lead"
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12,
+        }}
+      />
+      <Grid item xs={12}>
+        <RelationsCommon
+          values={values}
           dispatch={dispatch}
           form={form}
-          gridItemProps={{
-            xs: twoColumn ? 6 : 12,
-          }}
+          submitSucceeded={submitSucceeded}
+          rootEntity={rootEntity}
+          customAqlEntities={["Course", "Product"]}
+          dataRowClass="grid-temp-col-2-fr"
         />
-        <Grid item xs={12}>
-          <RelationsCommon
-            values={values}
-            dispatch={dispatch}
-            form={form}
-            submitSucceeded={submitSucceeded}
-            rootEntity={rootEntity}
-            customAqlEntities={["Course", "Product"]}
-            dataRowClass="grid-temp-col-2-fr"
-          />
-        </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

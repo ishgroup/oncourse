@@ -2,8 +2,8 @@ type: string
 description: List of user preferences
 enum:
 - html.dashboard.category.width
-- dashboard.news.last_read
 - dashboard.scripts.favorite.id
+- news.read
 - html.global.theme
 - google.analytics.cid
 - google.analytics.ci
@@ -13,6 +13,7 @@ enum:
 - systemUser.defaultAdministrationCentre.name
 - license.scripting
 - license.access_control
+- eula.last_access_date
 - account.default.studentEnrolments.id
 - account.default.voucherLiability.id
 - account.default.voucherUnderpayment.id

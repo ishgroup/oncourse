@@ -4,14 +4,14 @@
  */
 
 import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { createStyles } from "@material-ui/core";
-import { CheckBoxOutlineBlank, CheckBox, IndeterminateCheckBox } from "@material-ui/icons";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
-import TreeItem, { TreeItemProps } from "@material-ui/lab/TreeItem";
+import withStyles from "@mui/styles/withStyles";
+import { createStyles } from "@mui/material";
+import { CheckBoxOutlineBlank, CheckBox, IndeterminateCheckBox } from "@mui/icons-material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import IconButton from "@mui/material/IconButton";
+import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
+import TreeItem, { TreeItemProps } from "@mui/lab/TreeItem";
 import clsx from "clsx";
 import { BooleanArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { MenuTag } from "../../../../../../model/tags";
@@ -20,31 +20,39 @@ const styles = theme => createStyles({
     checkbox: {
       height: "1em",
       width: "1em",
-      marginLeft: ".3em"
+      marginLeft: ".3em",
+      marginRight: theme.spacing(0.5),
     },
     checkboxFontSize: {
       fontSize: "18px"
+    },
+    checkboxLabelRoot: {
+      marginRight: theme.spacing(0.5),
+      "& $checkboxLabel": {
+        fontSize: "12px",
+      }
+    },
+    checkboxLabel: {
+      fontSize: "12px",
     },
     collapseButton: {
       height: theme.spacing(3),
       width: theme.spacing(3),
       transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
-      padding: 0
+      padding: 0,
+      marginRight: theme.spacing(0.5),
     },
     collapseWrapper: {
       marginLeft: "12px"
     },
     root: {
-      ["&:hover > $content $label, "
-      + "&:focus > $content $label, &:focus > $content $label:hover, "
-      + "&$selected > $content $label, &$selected > $content $label:hover,"
-      + "&$selected:focus > $content $label"]: {
+      "& $content:hover, & $content$selected, & $content$focused": {
         backgroundColor: "inherit"
       }
     },
     label: {},
     rootExpanded: {
-      "& > $content $collapseButton": {
+      "& > $label $collapseButton": {
         transform: "rotate(180deg)"
       }
     },
@@ -55,10 +63,16 @@ const styles = theme => createStyles({
       marginLeft: theme.spacing(-1.5)
     },
     iconContainer: {
-      width: 0
+      width: 0,
     },
     selected: {},
-    content: {},
+    focused: {},
+    content: {
+      padding: `0 ${theme.spacing(1)} 0 0`,
+      "& $iconContainer": {
+        width: 0,
+      }
+    },
     tagColorDotExtraSmall: {
       width: theme.spacing(1),
       minWidth: theme.spacing(1),
@@ -85,14 +99,15 @@ const ListTagItem: React.FC<Props> = ({
   <TreeItem
     nodeId={nodeId}
     classes={{
-        root: classes.root,
-        expanded: classes.rootExpanded,
-        selected: classes.selected,
-        content: classes.content,
-        label: classes.label,
-        iconContainer: classes.iconContainer,
-        group: "ml-2"
-      }}
+      root: classes.root,
+      expanded: classes.rootExpanded,
+      selected: classes.selected,
+      content: classes.content,
+      label: classes.label,
+      focused: classes.focused,
+      iconContainer: classes.iconContainer,
+      group: "ml-2"
+    }}
     label={(
       <div className={clsx("centeredFlex", hasOffset ? classes.parentOffset : classes.parentWithChildrenOffset)}>
         <IconButton
@@ -107,8 +122,9 @@ const ListTagItem: React.FC<Props> = ({
         <FormControlLabel
           className="overflow-hidden"
           classes={{
-              label: "text-nowrap text-truncate"
-            }}
+            root: classes.checkboxLabelRoot,
+            label: clsx("text-nowrap text-truncate", classes.checkboxLabel),
+          }}
           control={(
             <Checkbox
               value={nodeId}

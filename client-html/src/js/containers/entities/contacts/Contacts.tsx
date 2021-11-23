@@ -7,10 +7,12 @@
  */
 
 import { isBefore } from "date-fns";
-import React, { Dispatch, useCallback, useEffect, useState } from "react";
+import React, {
+  Dispatch, useCallback, useEffect, useState
+} from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
@@ -29,7 +31,9 @@ import {
 } from "./actions";
 import ContactEditView from "./components/ContactEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
+import {
+  getContactRelationTypes, getCountries, getLanguages, getPaymentTypes
+} from "../../preferences/actions";
 import { getDefaultInvoiceTerms } from "../invoices/actions";
 import ContactCogWheel from "./components/ContactCogWheel";
 import { checkPermissions } from "../../../common/actions";
@@ -209,7 +213,7 @@ export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
 );
 
-const SearchMenuItem = React.memo<any>(({ content, data }) => (data.prefix ? (
+const SearchMenuItem = React.memo<any>(({ content, data }) => (
   <div className="d-flex align-items-baseline">
     {content}
     <Typography className="ml-0-5" variant="caption" color="textSecondary">
@@ -218,9 +222,7 @@ const SearchMenuItem = React.memo<any>(({ content, data }) => (data.prefix ? (
       )
     </Typography>
   </div>
-) : (
-  content
-)));
+));
 
 const searchMenuItemsRenderer = (content, data, search) => (
   data.prefix ? <SearchMenuItem content={content} data={data} search={search} /> : content
@@ -261,7 +263,7 @@ const Contacts: React.FC<ContactsProps> = props => {
     isVerifyingUSI,
     usiVerificationResult,
     onCreate,
-    getPaymentTypes
+    getPaymentTypes,
   } = props;
 
   const [findRelatedItems, setFindRelatedItems] = useState([]);
@@ -352,6 +354,9 @@ const Contacts: React.FC<ContactsProps> = props => {
     onCreate(contactModel);
   }, []);
 
+  const getContactFullNameWithTitle = (values: Contact) =>
+    `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
+
   return (
     <ListView
       listProps={{
@@ -364,10 +369,11 @@ const Contacts: React.FC<ContactsProps> = props => {
       }}
       editViewProps={{
         manualLink,
-        nameCondition: getContactFullName,
+        nameCondition: getContactFullNameWithTitle,
         disabledSubmitCondition: getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult),
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"]
+        asyncBlurFields: ["notes[].message"],
+        hideTitle: true
       }}
       EditViewContent={ContactEditView}
       nestedEditFields={nestedEditFields}
@@ -415,7 +421,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Outcome", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Certificate", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
-    dispatch(checkPermissions({path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST"}));
+    dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" }));
   },
   getPaymentTypes: () => dispatch(getPaymentTypes())

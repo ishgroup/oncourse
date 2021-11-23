@@ -121,28 +121,28 @@
 
 
   <CourseSession id="1" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="2" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="3" courseClass_Id="1" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <CourseSession id="4" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="5" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="6" courseClass_Id="2" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <CourseSession id="7" courseClass_Id="3" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="8" courseClass_Id="3" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <CourseSession id="9" courseClass_Id="4" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="10" courseClass_Id="4" startDatetime="2015-01-24 18:00:00" endDatetime="2015-01-24 18:10:00"
-                 payAdjustment="0.00"/>
+                 />
 
 
   <Enrolment id="1" courseClass_id="1" studentId="3" eligibilityExemptionIndicator="0" source="O" studyReason="0"

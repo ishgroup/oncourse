@@ -9,14 +9,16 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { ListItemText } from "@material-ui/core";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import Edit from "@material-ui/icons/Edit";
+import {
+ FormControl, FormHelperText, InputLabel
+} from "@mui/material";
+import ButtonBase from "@mui/material/ButtonBase";
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -62,8 +64,8 @@ interface Props {
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
   {
     input: { value, name, onChange },
+    meta,
     disabled,
-    hideLabel,
     label,
     fieldClasses = {}
   }
@@ -101,95 +103,92 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
       onClickAway={onClickAway}
       mouseEvent="onMouseDown"
     >
-      <div
-        id={name}
-      >
-        {!hideLabel && label && (
-          <Typography variant="caption" color="textSecondary" className={fieldClasses.label} noWrap>
-            {label}
-          </Typography>
-        )}
-        {isEditing
-          ? (
-            <div
-              id="editorRoot"
-              className={
-                clsx(
-                  classes.editorArea,
-                  { "ace-wrapper": contentMode === "html" || contentMode === "textile" }
-                )
-              }
-            >
-              <div className="content-mode-wrapper">
-                <Tooltip title="Change content mode" disableFocusListener>
-                  <ButtonBase
-                    onClick={modeMenuOpen}
-                    aria-owns={modeMenu ? "mode-menu" : null}
-                    className="content-mode"
-                  >
-                    {getEditorModeLabel(contentMode)}
-                  </ButtonBase>
-                </Tooltip>
-                <Menu
-                  id="theme-menu"
-                  anchorEl={modeMenu}
-                  open={Boolean(modeMenu)}
-                  onClose={modeMenuClose}
+      <FormControl id={name} error={meta && meta.invalid} variant="standard" fullWidth>
+        <InputLabel
+          shrink
+          classes={{
+            root: fieldClasses.label
+          }}
+        >
+          {label}
+        </InputLabel>
+        {isEditing ? (
+          <div
+            id="editorRoot"
+            className={
+              clsx(
+                classes.editorArea,
+                { "ace-wrapper": contentMode === "html" || contentMode === "textile" },
+                label && "mt-2"
+              )
+            }
+          >
+            <div className="content-mode-wrapper">
+              <Tooltip title="Change content mode" disableFocusListener>
+                <ButtonBase
+                  onClick={modeMenuOpen}
+                  aria-owns={modeMenu ? "mode-menu" : null}
+                  className="content-mode"
                 >
-                  {CONTENT_MODES.map(mode => (
-                    <MenuItem
-                      id={mode.id}
-                      key={mode.id}
-                      onClick={() => {
+                  {getEditorModeLabel(contentMode)}
+                </ButtonBase>
+              </Tooltip>
+              <Menu
+                id="theme-menu"
+                anchorEl={modeMenu}
+                open={Boolean(modeMenu)}
+                onClose={modeMenuClose}
+              >
+                {CONTENT_MODES.map(mode => (
+                  <MenuItem
+                    id={mode.id}
+                    key={mode.id}
+                    onClick={() => {
                         setContentMode(mode.id);
                         modeMenuClose();
                       }}
-                      selected={contentMode === mode.id}
-                    >
-                      {mode.title}
-                    </MenuItem>
+                    selected={contentMode === mode.id}
+                  >
+                    {mode.title}
+                  </MenuItem>
                   ))}
-                </Menu>
-              </div>
-              <EditorResolver
-                contentMode={contentMode}
-                draftContent={value}
-                onChange={onChange}
-              />
+              </Menu>
             </div>
-          )
-          : (
-            <ListItemText
-              classes={{
-                root: classes.textField
-              }}
-              primary={(
-                <ButtonBase
-                  disabled={disabled}
-                  classes={{
-                    root: "d-block",
-                    disabled: classes.readonly
-                  }}
-                  onFocus={onEditButtonFocus}
-                  onClick={onEditButtonFocus}
-                  className={clsx(classes.editable, "hoverIconContainer", {
-                    [classes.previewFrame]: contentMode === "md"
-                  })}
-                  component="div"
-                >
-                  {
-                    value
-                      ? contentMode === "md"
-                        ? <ReactMarkdown source={removeContentMarker(value)} />
-                        : removeContentMarker(value)
-                      : <span className={clsx("placeholderContent", fieldClasses.placeholder)}>No value</span>
-                  }
-                  <Edit className={clsx("editInPlaceIcon hoverIcon", fieldClasses.placeholder)} />
-                </ButtonBase>
-              )}
+            <EditorResolver
+              contentMode={contentMode}
+              draftContent={value}
+              onChange={onChange}
             />
+          </div>
+          ) : (
+            <Typography
+              variant="body1"
+              component="div"
+              onClick={onEditButtonFocus}
+              className={clsx( classes.editable, {
+                [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
+                [fieldClasses.text]: value,
+              })}
+            >
+              <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
+                {
+                  value
+                    ? contentMode === "md"
+                      ? <ReactMarkdown source={removeContentMarker(value)} />
+                      : removeContentMarker(value)
+                    : "No value"
+                }
+              </span>
+              {!disabled
+              && <Edit color="primary" className={classes.hoverIcon} />}
+            </Typography>
           )}
-      </div>
+        <FormHelperText>
+          <span className="shakingError">
+            {meta.error}
+          </span>
+        </FormHelperText>
+      </FormControl>
     </ClickAwayListener>
   );
 };

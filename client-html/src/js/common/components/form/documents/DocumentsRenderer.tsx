@@ -5,13 +5,12 @@
 
 import * as React from "react";
 import { Document, Tag } from "@api/model";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Launch from "@material-ui/icons/Launch";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import AddCircle from "@material-ui/icons/AddCircle";
-import IconButton from "@material-ui/core/IconButton";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Launch from "@mui/icons-material/Launch";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { WrappedFieldArrayProps } from "redux-form";
@@ -32,6 +31,7 @@ import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/Doc
 import { getEntityTags } from "../../../../containers/tags/actions";
 import { EntityName } from "../../../../model/entities/common";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import AddButton from "../../icons/AddButton";
 
 const styles = (theme: AppTheme) => createStyles({
   dropInfo: {
@@ -277,7 +277,6 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
       form,
       entity,
       setDocumentFile,
-      showConfirm,
       clearSearchDocuments,
       meta: { dirty }
     } = this.props;
@@ -293,8 +292,6 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
     } = this.state;
 
     const editItem = fields.get(editingDocumentIndex);
-
-    const renderedItems = fields.getAll();
 
     return (
       <>
@@ -336,33 +333,35 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
               {fields.length === 1 ? label.replace(/s$/, "") : label}
             </div>
             <IconButton
-              style={{ marginRight: "-8px" }}
-              color="secondary"
+              size="small"
+              color="primary"
               onClick={() => openInternalLink("/document")}
             >
-              <Launch />
+              <Launch fontSize="inherit" />
             </IconButton>
-            <IconButton onClick={e => this.toggleAdd(e, true)} className={classes.addButton}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
+            <AddButton size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
             <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
               Drag and drop file or click to browse.
             </Typography>
           </div>
         </Grid>
-        <Grid container spacing={3} wrap="wrap">
-          {renderedItems && renderedItems.map((item, index) => (
-            <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
-              <DocumentItem
-                entity={entity}
-                index={index}
-                item={item}
-                editItem={this.setEditingItem}
-                viewItem={this.setViewItem}
-                unlink={this.unlinkDocument}
-              />
-            </Grid>
-          ))}
+        <Grid item container xs={12} columnSpacing={3} spacing={3} wrap="wrap">
+          {fields.map((f, index) => {
+            const item = fields.get(index);
+
+            return (
+              <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
+                <DocumentItem
+                  entity={entity}
+                  index={index}
+                  item={item}
+                  editItem={this.setEditingItem}
+                  viewItem={this.setViewItem}
+                  unlink={this.unlinkDocument}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </>
     );

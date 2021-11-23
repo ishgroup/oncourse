@@ -122,7 +122,20 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
         })
     }
 
-
+    /**
+     * Using a non-replication context, we reduce chance of a replication queue hanging.
+     * During the export process, huge amount of data can be handle.
+     * <p>
+     * Willow's side doesn't store information about the FundingUpload&Outcome relationship
+     * cause it don't provide useful information. However, getting into the replication queue clogs it up.
+     * <p>
+     * Data in the queue is processed sequentially (queue without priority).
+     * Thus, data falling into a clogged queue will not be processed until the queue processes all the data before them.
+     *
+     * @param systemUserId
+     * @param outcomeIds
+     * @param settings
+     */
     void createFundingUploadRecords(Long systemUserId, List<Long> outcomeIds, String settings) {
         ObjectContext context = cayenneService.newContext
         SystemUser systemUser = SelectById.query(SystemUser, systemUserId).selectOne(context)
@@ -135,7 +148,7 @@ class AvetmissExportApiImpl implements AvetmissExportApi {
         context.commitChanges()
 
         executorService.submit {
-            context = cayenneService.newContext
+            context = cayenneService.newNonReplicatingContext
             fundingUpload = context.localObject(fundingUpload)
             outcomeIds.each { id ->
                 Outcome outcome = SelectById.query(Outcome, id).selectOne(context)

@@ -6,13 +6,13 @@
 import { PaymentMethod } from "@api/model";
 import React from "react";
 import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepButton from "@material-ui/core/StepButton";
-import Stepper from "@material-ui/core/Stepper";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import StepButton from "@mui/material/StepButton";
+import Stepper from "@mui/material/Stepper";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { normalizeNumberToPositive } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../../../model/common/Theme";
@@ -117,7 +117,6 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               <FormField
                 type="money"
                 name={`${f}.amount`}
-                formatting="custom"
                 normalize={normalizeNumberToPositive}
                 listSpacing={false}
                 onBlur={onPayNowBlur}
@@ -172,7 +171,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               }}
             >
               {first ? (
-                <StepButton onClick={onPayNowFocus} className="text-left">
+                <StepButton disableRipple onClick={onPayNowFocus} className="text-left">
                   {stepContent}
                 </StepButton>
               ) : stepContent}

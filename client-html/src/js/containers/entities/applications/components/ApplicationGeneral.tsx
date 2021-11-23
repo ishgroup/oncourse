@@ -6,7 +6,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Application, ApplicationStatus } from "@api/model";
-import { Grid } from "@material-ui/core";
+import { Grid, IconButton } from "@mui/material";
+import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { State } from "../../../../reducers/state";
@@ -18,6 +19,8 @@ import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -42,7 +45,8 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     values,
     isNew,
     dispatch,
-    form
+    form,
+    syncErrors
   } = props;
 
   const gridItemProps = {
@@ -51,8 +55,48 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
   } as any;
 
   return (
-    <Grid container className="generalRoot mt-2">
+    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item xs={12}>
+        <FullScreenStickyHeader
+          opened={isNew || Object.keys(syncErrors).includes("contactId")}
+          disableInteraction={!isNew}
+          twoColumn={twoColumn}
+          title={(
+            <div className="d-inline-flex-center">
+              {values && defaultContactName(values.studentName)}
+              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+          )}
+          fields={(
+            <Grid item {...gridItemProps}>
+              <FormField
+                type="remoteDataSearchSelect"
+                entity="Contact"
+                aqlFilter="isStudent is true"
+                name="contactId"
+                label="Student"
+                selectValueMark="id"
+                selectLabelCondition={contactLabelCondition}
+                disabled={!isNew}
+                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                labelAdornment={(
+                  <LinkAdornment
+                    linkHandler={openContactLink}
+                    link={values && values.contactId}
+                    disabled={!values || !values.contactId}
+                  />
+                )}
+                itemRenderer={ContactSelectItemRenderer}
+                rowHeight={55}
+                required
+              />
+            </Grid>
+          )}
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
         <FormField
           type="remoteDataSearchSelect"
           entity="Course"
@@ -77,36 +121,15 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           required
         />
       </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Contact"
-          aqlFilter="isStudent is true"
-          name="contactId"
-          label="Student"
-          selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          disabled={!isNew}
-          defaultDisplayValue={values && defaultContactName(values.studentName)}
-          labelAdornment={(
-            <LinkAdornment
-              linkHandler={openContactLink}
-              link={values && values.contactId}
-              disabled={!values || !values.contactId}
-            />
-            )}
-          itemRenderer={ContactSelectItemRenderer}
-          rowHeight={55}
-          required
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="tags"
-          name="tags"
-          tags={tags}
-          validate={tags && tags.length ? validateTagList : undefined}
-        />
+      <Grid item container xs={12}>
+        <Grid {...gridItemProps}>
+          <FormField
+            type="tags"
+            name="tags"
+            tags={tags}
+            validate={tags && tags.length ? validateTagList : undefined}
+          />
+        </Grid>
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
@@ -117,7 +140,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         />
       </Grid>
       <Grid item {...gridItemProps}>
-        <FormField type="text" name="source" label="Source" disabled />
+        <Uneditable value={values.source} label="Source" />
       </Grid>
       <Grid item {...gridItemProps}>
         {values && values.status !== ApplicationStatus.Accepted ? (

@@ -1,11 +1,11 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import OpenInNew from "@material-ui/icons/OpenInNew";
+import { Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import clsx from "clsx";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import ButtonBase from "@mui/material/ButtonBase";
 import { FundingUpload, FundingStatus } from "@api/model";
 import { format } from "date-fns";
 import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";

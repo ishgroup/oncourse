@@ -1,22 +1,15 @@
 import * as React from "react";
-import ClassNames from "clsx";
 import { withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Grid from "@material-ui/core/Grid";
-import withStyles from "@material-ui/core/styles/withStyles";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
-import Fab from "@material-ui/core/Fab";
+import Grid from "@mui/material/Grid";
+import withStyles from "@mui/styles/withStyles";
 import {
   Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { ContactRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -25,8 +18,9 @@ import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("generalPrefs_contactRelationTypes");
+const manualUrl = getManualLink("generalPrefs_contactRelationTypes");
 
 interface Props {
   data: any;
@@ -60,7 +54,8 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
     props.dispatch(initialize("ContactRelationTypesForm", { types: props.contactRelationTypes }));
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.isPending) {
       return;
     }
@@ -170,57 +165,33 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
       <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(this.onSave)}>
         <RouteChangeConfirm form={form} when={dirty} />
 
-        <CustomAppBar>
-          <Grid container>
-            <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={() => this.onAddNew()}
-              >
-                <AddIcon />
-              </Fab>
-              <Typography className="appHeaderFontSize pl-2" variant="body1" color="inherit" noWrap>
-                Contact Relation Types
-              </Typography>
-
-              <div className="flex-fill" />
-
-              {data && (
-                <AppBarHelpMenu
-                  created={created}
-                  modified={modified}
-                  auditsUrl={`audit?search=~"ContactRelationType" and entityId in (${idsToString(data.types)})`}
-                  manualUrl={manualLink}
-                />
-              )}
-
-              <FormSubmitButton
-                disabled={!dirty}
-                invalid={invalid}
-              />
+        <AppBarContainer
+          values={data}
+          manualUrl={manualUrl}
+          getAuditsUrl={() => `audit?search=~"ContactRelationType" and entityId in (${idsToString(data.types)})`}
+          disabled={!dirty}
+          invalid={invalid}
+          title="Contact Relation Types"
+          disableInteraction
+          createdOn={() => created}
+          modifiedOn={() => modified}
+          onAddMenu={() => this.onAddNew()}
+        >
+          <Grid container className="mt-2">
+            <Grid item sm={12} lg={10}>
+              <Grid container columnSpacing={3}>
+                {data && (
+                  <FieldArray
+                    name="types"
+                    component={ContactRelationTypesRenderer}
+                    onDelete={this.onClickDelete}
+                    classes={classes}
+                  />
+                )}
+              </Grid>
             </Grid>
           </Grid>
-        </CustomAppBar>
-
-        <Grid container className={classes.marginTop}>
-          <Grid item sm={12} lg={10}>
-            <Grid container>
-              {data && (
-                <FieldArray
-                  name="types"
-                  component={ContactRelationTypesRenderer}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Grid>
+        </AppBarContainer>
       </Form>
     );
   }
@@ -237,6 +208,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
   form: "ContactRelationTypesForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
+  withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any
+));
 
 export default ContactRelationTypesForm;

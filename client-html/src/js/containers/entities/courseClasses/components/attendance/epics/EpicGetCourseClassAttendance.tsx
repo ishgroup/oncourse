@@ -11,7 +11,6 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/li
 import {
   StudentAttendanceExtended,
   TrainingPlanExtended,
-  TutorAttendanceExtended
 } from "../../../../../../model/entities/CourseClass";
 import { GET_COURSE_CLASS_ATTENDANCE } from "../actions";
 import CourseClassAttendanceService from "../services/CourseClassAttendanceService";
@@ -19,25 +18,24 @@ import CourseClassAttendanceService from "../services/CourseClassAttendanceServi
 const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS_ATTENDANCE,
   hideLoadIndicator: true,
-  getData: id => CourseClassAttendanceService.getStudentAttendance(id).then((studentAttendance: StudentAttendanceExtended[]) => CourseClassAttendanceService.getTutorAttendance(id).then((tutorAttendance: TutorAttendanceExtended[]) => CourseClassAttendanceService.getTrainingPlans(id).then((trainingPlan: TrainingPlanExtended[]) => {
-          studentAttendance.forEach((s, index) => {
-            s.index = index;
-          });
+  getData: async id => {
+    const studentAttendance = await CourseClassAttendanceService.getStudentAttendance(id);
 
-          tutorAttendance.forEach((t, index) => {
-            t.index = index;
-          });
+    studentAttendance.forEach((s: StudentAttendanceExtended, index) => {
+      s.index = index;
+    });
 
-          trainingPlan.forEach((t, index) => {
-            t.index = index;
-          });
+    const trainingPlan = await CourseClassAttendanceService.getTrainingPlans(id);
 
-          return {
-            studentAttendance,
-            tutorAttendance,
-            trainingPlan
-          };
-        }))),
+    trainingPlan.forEach((t: TrainingPlanExtended, index) => {
+      t.index = index;
+    });
+
+    return {
+      studentAttendance,
+      trainingPlan
+    };
+  },
   processData: (attendance, s, id) => {
     if (!s.form[LIST_EDIT_VIEW_FORM_NAME] || !s.form[LIST_EDIT_VIEW_FORM_NAME].initial || s.form[LIST_EDIT_VIEW_FORM_NAME].initial.id !== Number(id)) {
       return [];

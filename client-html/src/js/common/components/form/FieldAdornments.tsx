@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Launch from "@material-ui/icons/Launch";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { IconButtonTypeMap } from "@material-ui/core";
+import React from "react";
+import IconButton from "@mui/material/IconButton";
+import Launch from "@mui/icons-material/Launch";
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import { IconButtonTypeMap } from "@mui/material";
 
 interface Props {
   link?: string | number;
@@ -20,17 +20,13 @@ interface Props {
 
 export const LinkAdornment: React.FC<Props> = ({
   link,
-  linkColor = "secondary",
+  linkColor = "primary",
   linkHandler,
   clickHandler,
   className,
   disabled
 }) => {
-  const onClick = useCallback(() => (clickHandler ? clickHandler() : linkHandler(link)), [
-    link,
-    linkHandler,
-    clickHandler
-  ]);
+  const onClick = () => (clickHandler ? clickHandler() : linkHandler(link));
 
   return (
     <span className={className}>
@@ -51,11 +47,7 @@ export const LinkAdornment: React.FC<Props> = ({
 export const SettingsAdornment: React.FC<Props> = ({
  link, linkHandler, clickHandler, className, disabled 
 }) => {
-  const onClick = useCallback(e => (clickHandler ? clickHandler(e) : linkHandler(link)), [
-    link,
-    linkHandler,
-    clickHandler
-  ]);
+  const onClick = e => (clickHandler ? clickHandler(e) : linkHandler(link));
 
   return (
     <span className={className}>
@@ -63,10 +55,12 @@ export const SettingsAdornment: React.FC<Props> = ({
         disabled={disabled}
         onClick={onClick}
         classes={{
-          root: "inputAdornmentButton"
+          root: "inputAdornmentButton ml-0-5"
         }}
+        color="inherit"
+        size="small"
       >
-        <SettingsIcon className="inputAdornmentIcon" />
+        <SettingsOutlinedIcon color="inherit" />
       </IconButton>
     </span>
   );
