@@ -83,11 +83,14 @@ public class Preferences {
 			for (Settings pref : getSettings()) {
 				Settings p = context.localObject(pref);
 				if (p != null) {
-					p.setValue(settings.get(p.getName()));
+					if (settings.get(p.getName()) != null) {
+						p.setValue(settings.get(p.getName()));
+					} else {
+						PreferenceUtil.deleteSettings(context,pref);
+					}
 				}
 			}
 		}
-		
 		context.commitChanges();
 	}
 	

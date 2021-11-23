@@ -39,4 +39,15 @@ public class PreferenceUtil {
 
 		return setting;
 	}
+
+	public static void deleteSettings(ObjectContext context, Settings settings) {
+		// we seleect the settings again to get the value in the correct context
+		Settings deletedSettings = ObjectSelect.query(Settings.class).
+				where(Settings.ID.eq(settings.getId())).
+				selectFirst(context);
+
+		context.deleteObjects(deletedSettings);
+
+
+	}
 }
