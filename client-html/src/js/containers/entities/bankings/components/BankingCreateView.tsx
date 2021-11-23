@@ -28,6 +28,7 @@ import { LinkAdornment } from "../../../../common/components/form/FieldAdornment
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { stubFunction } from "../../../../common/utils/common";
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -227,7 +228,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
             <EditInPlaceField
               items={accounts || []}
               label="Account"
-              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount }}
+              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount, onFocus: stubFunction }}
               meta={{ error: null, invalid: false, touched: false }}
               selectValueMark="id"
               selectLabelMark="description"
