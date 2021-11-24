@@ -4255,6 +4255,9 @@
 	<db-relationship name="taggedApplication" source="NodeRelation" target="Application">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
+	<db-relationship name="taggedProduct" source="NodeRelation" target="Product">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
 	<db-relationship name="taggedAssessment" source="NodeRelation" target="Assessment">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
