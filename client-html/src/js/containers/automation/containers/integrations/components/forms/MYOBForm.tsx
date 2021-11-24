@@ -6,9 +6,8 @@
 import * as React from "react";
 import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import { initialize, reduxForm } from "redux-form";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
@@ -153,59 +152,61 @@ class MYOBBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-        <CustomAppBar>
-          <AppBarContent />
-        </CustomAppBar>
-        <FormField name="fields.myobBaseUrl" label="Base URL" type="text" fullWidth required />
-        <FormField name="fields.myobFileName" label="File name" type="text" fullWidth required />
-        <FormField name="fields.myobUser" label="File owner" type="text" fullWidth required />
-        <FormField name="fields.myobPassword" type="password" label="File owner password" fullWidth />
 
-        <Typography variant="caption" component="div">
-          {configured ? configuredLabel : unconfiguredLabel}
-        </Typography>
-        {values?.fields?.active === "true" ? (
-          <>
-            <Typography variant="caption" component="div">
-              { `You are connected to Myob` }
-            </Typography>
-            <Button
-              text="Disconnect from Myob"
-              variant="contained"
-              className="mt-1"
-              onClick={this.onDisconnect}
-            />
-          </>
-        ) : (
-          <>
-            {
-              !hideConfig && (
-                <FormField
-                  type="stub"
-                  name="verificationCode"
-                  validate={validateSingleMandatoryField}
-                />
-              )
-            }
+        <AppBarContent>
+          <FormField name="fields.myobBaseUrl" label="Base URL" type="text" fullWidth required />
+          <FormField name="fields.myobFileName" label="File name" type="text" fullWidth required />
+          <FormField name="fields.myobUser" label="File owner" type="text" fullWidth required />
+          <FormField name="fields.myobPassword" type="password" label="File owner password" fullWidth />
 
-            <Typography variant="caption" component="div">
-              {hideConfig
-                ? 'Myob access has been set up. Press "Save" to complete configuration process.'
-                : 'Press to proceed with authorising onCourse to access your Myob account.'}
-            </Typography>
-
-            {!hideConfig && (
-              <Button
-                text="Connect to Myob"
+          <Typography variant="caption" component="div">
+            {configured ? configuredLabel : unconfiguredLabel}
+          </Typography>
+          {values?.fields?.active === "true" ? (
+            <>
+              <Typography variant="caption" component="div">
+                { `You are connected to Myob` }
+              </Typography>
+              <LoadingButton
                 variant="contained"
                 className="mt-1"
-                disabled={!values.name}
-                loading={loading}
-                onClick={this.showTokenField}
-              />
-            )}
-          </>
-        )}
+                onClick={this.onDisconnect}
+              >
+                Disconnect from Myob
+              </LoadingButton>
+            </>
+          ) : (
+            <>
+              {
+                !hideConfig && (
+                  <FormField
+                    type="stub"
+                    name="verificationCode"
+                    validate={validateSingleMandatoryField}
+                  />
+                )
+              }
+
+              <Typography variant="caption" component="div">
+                {hideConfig
+                  ? 'Myob access has been set up. Press "Save" to complete configuration process.'
+                  : 'Press to proceed with authorising onCourse to access your Myob account.'}
+              </Typography>
+
+              {!hideConfig && (
+                <LoadingButton
+                  variant="contained"
+                  className="mt-1"
+                  disabled={!values.name}
+                  loading={loading}
+                  onClick={this.showTokenField}
+                >
+                  Connect to Myob
+                </LoadingButton>
+              )}
+            </>
+          )}
+        </AppBarContent>
       </form>
     );
   }
