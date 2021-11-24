@@ -218,7 +218,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
             elevation={0}
             className={clsx(
               classes.header,
-              LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader",
               { [classes.headerAlternate]: hasScrolling }
             )}
           >
