@@ -23,7 +23,7 @@ const request: EpicUtils.Request<any, boolean> = {
 
     let totalEnrolmentsCount = 0;
     let totalAmountExDiscount = 0;
-    const payerId = state.checkout.summary.list.find(l => l.payer).contact.id;
+    const payerId = state.checkout.summary.list.find(l => l.payer)?.contact.id;
     const enrolments = [];
 
     state.checkout.summary.list.forEach((l, listIndex) => {
