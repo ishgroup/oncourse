@@ -5,7 +5,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import { change } from "redux-form";
+import { change, FieldArray } from "redux-form";
 import {
  Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse 
 } from "@api/model";
@@ -33,6 +33,8 @@ import { PreferencesState } from "../../../preferences/reducers/state";
 import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -173,7 +175,8 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     form,
     rootEntity,
     dataCollectionRules,
-    syncErrors
+    syncErrors,
+    showConfirm
   } = props;
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
@@ -209,6 +212,8 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   const liabilityAccounts = useMemo(() => accounts.filter(a => a.type === "liability"), [accounts]);
 
   const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
+
+  const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
@@ -255,6 +260,14 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
               </Grid>
             </Grid>
             )}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
         />
       </Grid>
         
@@ -393,6 +406,22 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           form={form}
           submitSucceeded={submitSucceeded}
           rootEntity={rootEntity}
+        />
+      </Grid>
+
+      <Grid item xs={12} className="pb-3 mb-3">
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="ArticleProduct"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
         />
       </Grid>
     </Grid>

@@ -9,8 +9,6 @@ import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
 import { withStyles, createStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
@@ -185,8 +183,6 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     } = this.props;
 
     const { fieldToDelete } = this.state;
-
-    console.log(classes);
 
     return (
       <>

@@ -6,7 +6,7 @@
 import { Epic } from "redux-observable";
 
 import { initialize } from "redux-form";
-import { MembershipProduct } from "@api/model";
+import { MembershipProduct, Note } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   GET_MEMBERSHIP_PRODUCT_ITEM,
@@ -18,10 +18,18 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import membershipProductService from "../services/MembershipProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { processCustomFields } from "../../customFieldTypes/utils";
+import ApplicationService from "../../applications/service/ApplicationService";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
-const request: EpicUtils.Request<any, { id: number; membershipProduct: MembershipProduct }> = {
+const request: EpicUtils.Request<any, { id: number; membershipProduct: MembershipProduct & { notes: Note[] } }> = {
   type: UPDATE_MEMBERSHIP_PRODUCT_ITEM,
-  getData: ({ id, membershipProduct }) => membershipProductService.updateMembershipProduct(id, membershipProduct),
+  getData: ({ id, membershipProduct }) => {
+    delete membershipProduct.notes;
+    processCustomFields(membershipProduct);
+    return membershipProductService.updateMembershipProduct(id, membershipProduct);
+  },
+  retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
       {
         type: UPDATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED

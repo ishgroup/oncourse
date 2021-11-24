@@ -11,7 +11,7 @@ import {
   Contact,
   ProductItem, ProductItemPayment,
   ProductItemStatus,
-  ProductType
+  ProductType, Tag
 } from "@api/model";
 import { change, FieldArray } from "redux-form";
 import { compareAsc, format as formatDate, startOfDay } from "date-fns";
@@ -31,14 +31,12 @@ import { buildUrl, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface SalesGeneralViewProps {
-  classes?: any;
-  twoColumn?: boolean;
-  manualLink?: string;
-  values?: ProductItem;
-  dispatch?: any;
-  form?: string;
+interface SalesGeneralViewProps extends EditViewProps<ProductItem> {
 }
 
 const paymentColumns: NestedTableColumn[] = [
@@ -75,7 +73,8 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     twoColumn,
     values,
     dispatch,
-    form
+    form,
+    showConfirm
   } = props;
 
   const type = values ? values.productType : undefined;
@@ -104,6 +103,8 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     lg: twoColumn ? 4 : 12
   } as any;
 
+  const tags = useAppSelector(state => state.tags.entityTags["ProductItem"]);
+
   return values ? (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
       <Grid item xs={12}>
@@ -118,6 +119,13 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
               </IconButton>
             </div>
             )}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
         />
       </Grid>
       <Grid item {...gridItemProps}>
@@ -178,9 +186,9 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
           name="expiresOn"
           label="Expires On"
           disabled={
-                values.status !== ProductItemStatus.Active
-                || compareAsc(startOfDay(new Date()), new Date(values.expiresOn)) > 0
-              }
+            values.status !== ProductItemStatus.Active
+            || compareAsc(startOfDay(new Date()), new Date(values.expiresOn)) > 0
+          }
         />
       </Grid>
         )}
@@ -202,6 +210,27 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
         </Grid>
       </Grid>
         )}
+
+      <Grid item xs={12} className="mb-3">
+        <FieldArray
+          name="documents"
+          label="Documents"
+          entity="ProductItem"
+          component={DocumentsRenderer}
+          xsGrid={12}
+          mdGrid={twoColumn ? 6 : 12}
+          lgGrid={twoColumn ? 4 : 12}
+          dispatch={dispatch}
+          form={form}
+          showConfirm={showConfirm}
+          rerenderOnEveryChange
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <OwnApiNotes {...props} leftOffset />
+      </Grid>
+
       <Grid item xs={12}>
         {type !== ProductType.Product && (
           <FieldArray

@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React, { useCallback } from "react";
 import { change } from "redux-form";
 import {
  Account, ExpiryType, MembershipProduct, ProductStatus, Tax 
@@ -23,6 +23,7 @@ import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { useAppSelector } from "../../../../common/utils/hooks";
 
 interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
   accounts?: Account[];
@@ -126,6 +127,11 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
     twoColumn, accounts, taxes, values, dispatch, form, dataCollectionRules, isNew, syncErrors
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
+
+  const tags = useAppSelector(state => state.tags.entityTags["MembershipProduct"]);
+
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
+
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item container xs={12}>
@@ -174,12 +180,20 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         />
       </Grid>
 
+      <Grid item xs={12}>
+        <FormField
+          type="tags"
+          name="tags"
+          tags={tags}
+        />
+      </Grid>
+
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="select"
           name="incomeAccountId"
           label="Income account"
-          validate={value => (accounts.find((item: Account) => item.id === value) ? undefined : `Mandatory field`)}
+          validate={validateIncomeAccount}
           onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
           items={accounts}
           selectValueMark="id"
@@ -246,6 +260,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           selectLabelMark="name"
           items={dataCollectionRules || []}
           format={normalizeString}
+          className={twoColumn && "mt-1"}
           required
           sort
         />
