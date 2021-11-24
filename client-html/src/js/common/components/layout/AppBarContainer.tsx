@@ -167,7 +167,6 @@ const AppBarContainer = (props: Props) => {
           classes.header,
           hasFab && classes.headerFabOffset,
           opened && "pt-2",
-          LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader",
           { [classes.headerAlternate]: hasScrolling },
           { [classes.headerHighContrast]: isHighcontrastTheme }
         )}
