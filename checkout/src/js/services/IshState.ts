@@ -24,6 +24,7 @@ export interface CartState {
   readonly products: ProductCartState;
   readonly promotions: PromotionCartState;
   readonly waitingCourses: WaitingCourseClassState;
+  readonly suggestions: SuggestionsState;
 }
 
 export interface PopupState {

@@ -1,5 +1,6 @@
 import {ContactParams} from "./ContactParams";
 import {PromotionParams} from "./PromotionParams";
+import {CourseClassCartState, ProductCartState, WaitingCourseClassState} from "../../services/IshState";
 
 export class Suggestion {
 
@@ -48,4 +49,8 @@ export class SuggestionsParams {
    */
   promotions?: PromotionParams[];
   contact?: ContactParams;
+
+  courses?: CourseClassCartState;
+  products?: ProductCartState;
+  waitingCourses?: WaitingCourseClassState;
 }

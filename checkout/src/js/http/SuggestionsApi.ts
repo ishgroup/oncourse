@@ -11,6 +11,7 @@ export class SuggestionsApi {
   }
 
   getSuggestions(suggestionsParams: SuggestionsParams): Promise<Suggestion[]> {
+    // @todo: Replace this one with suggestion api call.
     return this.http.POST(`/v1/products`, suggestionsParams);
   }
 }

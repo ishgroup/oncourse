@@ -1,7 +1,5 @@
 import {FULFILLED} from "../../common/actions/ActionUtils";
 import {ContactState} from "../../services/IshState";
-import {CourseClass} from "../../model";
-import {IAction} from "../../actions/IshAction";
 
 export const Actions = {
   ADD_CLASS_TO_CART: "ADD_CLASS_TO_CART",

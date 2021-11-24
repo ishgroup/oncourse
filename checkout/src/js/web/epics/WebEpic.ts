@@ -9,10 +9,14 @@ import {normalize} from "normalizr";
 import uniq from "lodash/uniq";
 import {
   ClassesListSchema,
-  ClassesSchema, InactiveCoursesListSchema,
+  ClassesSchema,
+  InactiveCoursesListSchema,
   ProductsListSchema,
   ProductsSchema,
-  PromotionsSchema, SuggestionsListSchema, WaitingCoursesListSchema, WaitingCoursesSchema,
+  PromotionsSchema,
+  SuggestionsListSchema,
+  WaitingCoursesListSchema,
+  WaitingCoursesSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
 import { PromotionParams, ContactParams, Application, Enrolment } from "../../model";
@@ -149,9 +153,13 @@ function createSuggestionsEpic() {
     .filter(actions => actions.length)
     .mergeMap(() => Observable
       .fromPromise(suggestionsApi.getSuggestions({
+        // @todo: Added static products ids just for populating products for time being. Replace with acutal logic when suggestion api is done.
         productsIds: ["3072", "36", "3039", "826"],
         contact: createContactParams(store.getState()),
         promotions: createPromotionParams(store.getState()),
+        courses: store.getState().cart.courses,
+        products: store.getState().cart.products,
+        waitingCourses: store.getState().cart.waitingCourses,
       }))
       .map(payload => normalize(payload, SuggestionsListSchema))
       .map(mapPayload(Actions.REQUEST_SUGGESTION))
