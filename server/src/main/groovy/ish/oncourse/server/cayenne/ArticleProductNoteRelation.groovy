@@ -6,11 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.cayenne;
+package ish.oncourse.server.cayenne
+
+import ish.oncourse.server.cayenne.glue._ArticleProductNoteRelation;
 
 import javax.annotation.Nonnull;
 
-class ArticleProductNoteRelation extends ProductNoteRelation {
+class ArticleProductNoteRelation extends _ArticleProductNoteRelation {
     @Nonnull
     @Override
     String getEntityIdentifier() {
@@ -19,6 +21,11 @@ class ArticleProductNoteRelation extends ProductNoteRelation {
 
     @Override
     void setNotableEntity(NotableTrait entity) {
-        super.setNotedProduct((ArticleProduct) entity);
+        super.setNotedArticleProduct((ArticleProduct) entity);
+    }
+
+    @Override
+    NotableTrait getNotableEntity() {
+        return super.getNotedArticleProduct()
     }
 }

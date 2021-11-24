@@ -28,7 +28,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class ArticleProduct extends _ArticleProduct implements AttachableTrait{
+class ArticleProduct extends _ArticleProduct implements AttachableTrait, NotableTrait{
 
 
 	public static final String NUMBER_SOLD_PROPERTY = "number_sold"

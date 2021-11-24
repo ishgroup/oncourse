@@ -35,7 +35,7 @@ import javax.swing.text.DefaultFormatter
  */
 @API
 @QueueableEntity
-class Product extends _Product implements Queueable, NotableTrait, Taggable{
+class Product extends _Product implements Queueable, Taggable{
 
 	private static final Logger logger = LogManager.getLogger()
 
