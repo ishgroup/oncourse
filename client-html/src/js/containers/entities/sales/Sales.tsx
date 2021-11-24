@@ -17,12 +17,15 @@ import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { Dispatch } from "redux";
+import { getListTags } from "../../tags/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 
 interface SalesProps {
   getSaleRecord?: () => void;
   onInit?: () => void;
   getFilters?: () => void;
   getTaxes?: () => void;
+  getTags?: () => void;
   getAccounts?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
@@ -111,11 +114,13 @@ const Sales: React.FC<SalesProps> = props => {
     getFilters,
     getAccounts,
     getTaxes,
-    onSave
+    onSave,
+    getTags
   } = props;
 
   useEffect(() => {
     getFilters();
+    getTags();
     getAccounts();
     getTaxes();
     return () => {
@@ -132,6 +137,8 @@ const Sales: React.FC<SalesProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
           nameCondition: values => (values ? values.productName : "")
         }}
         nestedEditFields={nestedEditFields}
@@ -155,6 +162,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {},
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
+  getTags: () => dispatch(getListTags("ProductItem")),
   getFilters: () => dispatch(getFilters("ProductItem")),
   onSave: (id: string, productItem: ProductItem) => dispatch(updateSale(id, productItem)),
   clearListState: () => dispatch(clearListState()),

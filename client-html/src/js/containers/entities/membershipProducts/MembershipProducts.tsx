@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
 import { Account, MembershipProduct, Tax } from "@api/model";
+import { Dispatch } from "redux";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
 import { createMembershipProduct, getMembershipProduct, updateMembershipProduct } from "./actions";
@@ -22,7 +23,8 @@ import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from 
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
-import { Dispatch } from "redux";
+import { getListTags } from "../../tags/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 
 interface MembershipProductsProps {
   getMembershipProductRecord?: () => void;
@@ -31,6 +33,7 @@ interface MembershipProductsProps {
   onSave?: (id: string, membershipProduct: MembershipProduct) => void;
   getRecords?: () => void;
   getFilters?: () => void;
+  getTags?: () => void;
   getRelationTypes?: () => void;
   getAccounts?: () => void;
   getTaxes?: () => void;
@@ -130,6 +133,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     getMembershipProductContactRelationTypes,
     checkPermissions,
     getRelationTypes,
+    getTags,
     getDataCollectionRules
   } = props;
 
@@ -151,6 +155,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
     getMembershipProductContactRelationTypes();
     getAccounts();
     getTaxes();
+    getTags();
     getFilters();
     checkPermissions();
     getRelationTypes();
@@ -166,6 +171,8 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
         listProps={{ primaryColumn: "name", secondaryColumn: "sku" }}
         editViewProps={{
           manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncBlurFields: ["notes[].message"],
           hideTitle: true
         }}
         EditViewContent={MembershipProductEditView}
@@ -198,7 +205,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getDefaultIncomeAccount: () => dispatch(getUserPreferences([ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID])),
   getTaxes: () => dispatch(getPlainTaxes()),
-  getAccounts: () => getPlainAccounts(dispatch,"income"),
+  getAccounts: () => getPlainAccounts(dispatch, "income"),
+  getTags: () => dispatch(getListTags("MembershipProduct")),
   getFilters: () => dispatch(getFilters("MembershipProduct")),
   clearListState: () => dispatch(clearListState()),
   getMembershipProductRecord: (id: string) => dispatch(getMembershipProduct(id)),

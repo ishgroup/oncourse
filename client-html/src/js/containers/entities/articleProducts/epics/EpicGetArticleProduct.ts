@@ -13,12 +13,14 @@ import { initialize } from "redux-form";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ArticleProductService from "../service/ArticleProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
 
 const request: EpicUtils.Request = {
   type: GET_ARTICLE_PRODUCT_ITEM,
   getData: (id: number) => ArticleProductService.getArticleProduct(id),
   processData: (articleProduct: ArticleProduct) => {
     return [
+      getNoteItems("ArticleProduct", articleProduct.id, LIST_EDIT_VIEW_FORM_NAME),
       {
         type: SET_LIST_EDIT_RECORD,
         payload: { editRecord: articleProduct, name: articleProduct.name }

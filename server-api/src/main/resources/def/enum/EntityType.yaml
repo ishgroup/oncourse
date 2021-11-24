@@ -8,6 +8,9 @@ enum:
   - CourseClass
   - WaitingList
   - Survey
-  - Product
+  - Sale
   - Membership
   - Voucher
+  - Product type
+  - Voucher type
+  - Membership type

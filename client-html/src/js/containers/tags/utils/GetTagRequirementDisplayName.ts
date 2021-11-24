@@ -32,6 +32,8 @@ const GetTagRequirementDisplayName = (type: TagRequirementType) => {
       return "Waiting List";
     case TagRequirementType.CourseClass:
       return "Classes";
+    default:
+      return type + "s"
   }
 };
 
