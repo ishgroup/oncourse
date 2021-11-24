@@ -27,8 +27,8 @@ import ish.oncourse.server.api.dao.MembershipProductDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
+import ish.oncourse.server.cayenne.MembershipProductAttachmentRelation
 import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.ProductAttachmentRelation
 import ish.oncourse.server.cayenne.ProductTagRelation
 import ish.oncourse.server.document.DocumentService
 
@@ -160,7 +160,7 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
                 fieldConfigurationSchemeDao.getById(membershipProduct.context, membershipProductDTO.dataCollectionRuleId) :
                 null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
-        updateDocuments(membershipProduct, membershipProduct.attachmentRelations, membershipProductDTO.documents, ProductAttachmentRelation, context)
+        updateDocuments(membershipProduct, membershipProduct.attachmentRelations, membershipProductDTO.documents, MembershipProductAttachmentRelation, context)
         updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags*.id, ProductTagRelation, context)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
         membershipProduct

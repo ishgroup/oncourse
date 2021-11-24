@@ -8,14 +8,25 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.server.cayenne.glue._ProductAttachmentRelation
 
 import javax.annotation.Nonnull
 
-abstract class ProductAttachmentRelation extends _ProductAttachmentRelation {
+class MembershipProductAttachmentRelation extends ProductAttachmentRelation{
+
+    /**
+     * @see AttachmentRelation#setAttachedRelation(AttachableTrait)
+     */
     @Override
+    void setAttachedRelation(AttachableTrait attachable) {
+        super.setAttachedProduct((MembershipProduct) attachable)
+    }
+
+    /**
+     * @see AttachmentRelation#getEntityIdentifier()
+     */
     @Nonnull
-    AttachableTrait getAttachedRelation() {
-        return super.getAttachedProduct()
+    @Override
+    String getEntityIdentifier() {
+        return MembershipProduct.class.getSimpleName()
     }
 }

@@ -279,7 +279,7 @@ class Product extends _Product implements Queueable, NotableTrait, AttachableTra
 	Tax getTax() {
 		return super.getTax()
 	}
-//----------------------------------------------------
+
 	@Override
 	void addToAttachmentRelations(AttachmentRelation relation) {
 		addToAttachmentRelations((ProductAttachmentRelation) relation)
