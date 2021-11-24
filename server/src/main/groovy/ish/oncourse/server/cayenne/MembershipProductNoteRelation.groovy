@@ -6,16 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.cayenne
+package ish.oncourse.server.cayenne;
 
-import ish.oncourse.server.cayenne.glue._ProductAttachmentRelation
+import javax.annotation.Nonnull;
 
-import javax.annotation.Nonnull
-
-abstract class ProductAttachmentRelation extends _ProductAttachmentRelation {
-    @Override
+class MembershipProductNoteRelation extends ProductNoteRelation {
     @Nonnull
-    AttachableTrait getAttachedRelation() {
-        return super.getAttachedProduct()
+    @Override
+    String getEntityIdentifier() {
+        return MembershipProduct.class.getSimpleName();
+    }
+
+    @Override
+    void setNotableEntity(NotableTrait entity) {
+        super.setNotedProduct((MembershipProduct) entity);
     }
 }
