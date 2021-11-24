@@ -29,7 +29,7 @@ import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.MembershipProductAttachmentRelation
 import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.ProductTagRelation
+import ish.oncourse.server.cayenne.VoucherProductTagRelation
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
@@ -161,7 +161,7 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
                 null as FieldConfigurationScheme
         updateCorporatePasses(membershipProduct, membershipProductDTO.corporatePasses, corporatePassProductDao, corporatePassDao)
         updateDocuments(membershipProduct, membershipProduct.attachmentRelations, membershipProductDTO.documents, MembershipProductAttachmentRelation, context)
-        updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags*.id, ProductTagRelation, context)
+        updateTags(membershipProduct, membershipProduct.taggingRelations, membershipProductDTO.tags*.id, VoucherProductTagRelation, context)
         updateDiscountMemberships(membershipProduct, membershipProductDTO.membershipDiscounts)
         membershipProduct
     }

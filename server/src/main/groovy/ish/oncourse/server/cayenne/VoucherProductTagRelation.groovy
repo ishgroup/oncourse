@@ -10,18 +10,18 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.cayenne.glue._ProductTagRelation
+import ish.oncourse.server.cayenne.glue._VoucherProductTagRelation
 
 import javax.annotation.Nonnull
 
-class ProductTagRelation extends _ProductTagRelation{
+class VoucherProductTagRelation extends _VoucherProductTagRelation{
     /**
      * @see TagRelation#getTaggableClassesIdentifier()
      */
     @Nonnull
     @Override
     TaggableClasses getTaggableClassesIdentifier() {
-        return TaggableClasses.PRODUCT
+        return TaggableClasses.VOUCHER_PRODUCT
     }
 
     /**
@@ -30,7 +30,7 @@ class ProductTagRelation extends _ProductTagRelation{
     @Nonnull
     @Override
     Taggable getTaggedRelation() {
-        return super.getTaggedProduct()
+        return super.getTaggedVoucherProduct()
     }
 
     /**
@@ -38,6 +38,6 @@ class ProductTagRelation extends _ProductTagRelation{
      */
     @Override
     void setTaggedRelation(Taggable object) {
-        super.setTaggedProduct((Product) object)
+        super.setTaggedVoucherProduct((VoucherProduct) object)
     }
 }
