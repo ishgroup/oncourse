@@ -11,6 +11,7 @@ import {LegacySyncStorage} from "./services/LegacySyncStorage";
 import {CheckoutApi} from "./http/CheckoutApi";
 import {SearchApi} from "./http/SearchApi";
 import {PreferenceApi} from "./http/PreferenceApi";
+import {SuggestionsApi} from "./http/SuggestionsApi";
 
 export class Injector {
   readonly http: HttpService = new DefaultHttpService();
@@ -25,6 +26,7 @@ export class Injector {
   readonly corporatePassApi = new CorporatePassApi(this.http);
   readonly mergeService = new MergeService();
   readonly legacySyncStorage = new LegacySyncStorage();
+  readonly suggestionsApi = new SuggestionsApi(this.http);
 
   setService<T extends Injector[K], K extends keyof Injector>(name: K, service: T) {
     assignIn(this[name], service);

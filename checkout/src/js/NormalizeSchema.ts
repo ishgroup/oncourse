@@ -13,6 +13,9 @@ export const InactiveCoursesListSchema = new schema.Array(InactiveCoursesSchema)
 export const ProductsSchema = new schema.Entity('products');
 export const ProductsListSchema = new schema.Array(ProductsSchema);
 
+export const SuggestionsSchema = new schema.Entity('suggestions');
+export const SuggestionsListSchema = new schema.Array(SuggestionsSchema);
+
 export const PromotionsSchema = new schema.Entity('promotions');
 
 export interface ContactsState {

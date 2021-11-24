@@ -12,7 +12,7 @@ import {
   ClassesSchema, InactiveCoursesListSchema,
   ProductsListSchema,
   ProductsSchema,
-  PromotionsSchema, WaitingCoursesListSchema, WaitingCoursesSchema,
+  PromotionsSchema, SuggestionsListSchema, WaitingCoursesListSchema, WaitingCoursesSchema,
 } from "../../NormalizeSchema";
 import {Injector} from "../../injector";
 import { PromotionParams, ContactParams, Application, Enrolment } from "../../model";
@@ -27,6 +27,7 @@ const {
   contactApi,
   mergeService,
   legacySyncStorage,
+  suggestionsApi,
 } = Injector.of();
 
 export const WebEpic = combineEpics(
@@ -49,7 +50,8 @@ export const WebEpic = combineEpics(
   createAddPromotionToCartEpic(),
   createRemovePromotionFromCartEpic(),
   createAddWaitingCourseToCartEpic(),
-  createRemoveWaitingCourseFromCartEpic()
+  createRemoveWaitingCourseFromCartEpic(),
+  createSuggestionsEpic(),
 );
 
 function createCoursesEpic() {
@@ -138,6 +140,23 @@ function createProductsEpic() {
         .map(mapPayload(Actions.REQUEST_PRODUCT))
         .catch(mapError(Actions.REQUEST_PRODUCT));
     });
+}
+
+function createSuggestionsEpic() {
+  return (action$, store: Store<IshState>) => action$
+    .ofType(Actions.REQUEST_SUGGESTION)
+    .bufferTime(100) // batch actions
+    .filter(actions => actions.length)
+    .mergeMap(() => Observable
+      .fromPromise(suggestionsApi.getSuggestions({
+        productsIds: ["3072", "36", "3039", "826"],
+        contact: createContactParams(store.getState()),
+        promotions: createPromotionParams(store.getState()),
+      }))
+      .map(payload => normalize(payload, SuggestionsListSchema))
+      .map(mapPayload(Actions.REQUEST_SUGGESTION))
+      .catch(mapError(Actions.REQUEST_SUGGESTION))
+    );
 }
 
 function createPromotionsEpic() {

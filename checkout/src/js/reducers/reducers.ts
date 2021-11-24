@@ -8,6 +8,7 @@ import {productsReducer} from "../web/reducers/products";
 import {Reducer as CheckoutReducer} from "../enrol/reducers/Reducer";
 import {configReducer} from "../common/reducers/Reducer";
 import {preferencesReducer} from "../common/reducers/Preferences";
+import {suggestionsReducer} from "../web/reducers/suggestions";
 
 
 export const combinedReducers = combineReducers<IshState>({
@@ -21,4 +22,5 @@ export const combinedReducers = combineReducers<IshState>({
   checkout: CheckoutReducer,
   config: configReducer,
   preferences: preferencesReducer,
+  suggestions: suggestionsReducer,
 });

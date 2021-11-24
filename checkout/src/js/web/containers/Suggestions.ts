@@ -3,29 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-//Suggestions
 import {IshState} from "../../services/IshState";
 import {connect} from "react-redux";
 import Suggestions from "../components/suggestions/Suggestions";
+import {Dispatch} from "redux";
+import {Actions} from "../actions/Actions";
+import CheckoutService from "../../enrol/services/CheckoutService";
 
 const mapStateToProps = (state: IshState) => ({
   phase: state.checkout.phase,
-  suggestions: [
-    {
-      id: 1,
-      title: "Creative Kids voucher",
-      description: "Claim your $100 voucher from the NSW government.",
-      price: 0,
-      link: "#"
-    },
-    {
-      id: 2,
-      title: "NIDA Foundation donation",
-      description: "Support NIDA's program for disadvantaged kids.",
-      price: 30,
-      link: "#"
-    }
-  ]
+  suggestions: state.suggestions,
+  isCartEmpty: CheckoutService.cartIsEmpty(state.cart)
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(Suggestions);
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  getSuggestions: () => {
+    dispatch({
+      type: Actions.REQUEST_SUGGESTION
+    });
+  },
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Suggestions);

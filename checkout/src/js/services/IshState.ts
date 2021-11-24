@@ -1,6 +1,7 @@
 import {CourseClassPrice, Course, Preferences, Promotion, CourseClass, Product, Contact, Discount} from "../model";
 import {CheckoutState} from "../enrol/reducers/State";
 import {WillowConfig} from "../configLoader";
+import {Suggestion} from "../model/web/Suggestion";
 
 export interface IshState {
   readonly form: any;
@@ -13,6 +14,7 @@ export interface IshState {
   readonly checkout: CheckoutState;
   readonly config: WillowConfig;
   readonly preferences: Preferences;
+  readonly suggestions: SuggestionsState;
 
 }
 
@@ -32,6 +34,7 @@ export type CoursesState = Normalized<CourseClass>;
 export type WaitingCoursesState = Normalized<Course>;
 export type InactiveCoursesState = Normalized<Course>;
 export type ProductsState = Normalized<Product>;
+export type SuggestionsState = Normalized<Suggestion>;
 
 /**
  * @deprecated we will use separate classes
