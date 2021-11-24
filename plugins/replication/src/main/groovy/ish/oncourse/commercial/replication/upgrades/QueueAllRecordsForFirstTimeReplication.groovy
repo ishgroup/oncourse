@@ -86,6 +86,10 @@ import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import java.text.SimpleDateFormat
+import static org.apache.commons.lang3.time.DateUtils.*;
+import org.apache.cayenne.query.SQLExec;
+
 @CompileStatic
 class QueueAllRecordsForFirstTimeReplication {
 
@@ -223,6 +227,12 @@ class QueueAllRecordsForFirstTimeReplication {
     }
 
     void runUpgrade() {
+
+        Date sysDate = addYears(new Date(), -1)
+        String sysDateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sysDate)
+        String sql = String.format("DELETE FROM QueuedRecord WHERE numberOfAttempts > 2 and createdOn < '%s'", sysDateString)
+        SQLExec.query(sql).execute(context)
+
         try {
             ORDERED_QUEUEABLE_CLASSES.each { descriptor ->
                 def qual = ExpressionFactory.matchExp(WILLOW_ID_COLUMN, null)
