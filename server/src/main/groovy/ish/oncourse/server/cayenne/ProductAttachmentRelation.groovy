@@ -12,27 +12,10 @@ import ish.oncourse.server.cayenne.glue._ProductAttachmentRelation
 
 import javax.annotation.Nonnull
 
-class ProductAttachmentRelation extends _ProductAttachmentRelation{
-    @Nonnull
+abstract class ProductAttachmentRelation extends _ProductAttachmentRelation {
     @Override
+    @Nonnull
     AttachableTrait getAttachedRelation() {
         return super.getAttachedProduct()
-    }
-
-    /**
-     * @see AttachmentRelation#setAttachedRelation(AttachableTrait)
-     */
-    @Override
-    void setAttachedRelation(AttachableTrait attachable) {
-        super.setAttachedProduct((Product) attachable)
-    }
-
-    /**
-     * @see AttachmentRelation#getEntityIdentifier()
-     */
-    @Nonnull
-    @Override
-    String getEntityIdentifier() {
-        return Product.class.getSimpleName()
     }
 }
