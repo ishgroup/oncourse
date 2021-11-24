@@ -97,6 +97,10 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   showTokenField = () => {
     const { values } = this.props;
+    const url = values.fields.myobBaseUrl;
+    const filename = values.fields.myobFileName;
+    const owner = values.fields.myobUser;
+    const password = values.fields.myobPassword;
 
     this.setState({
       loading: true
