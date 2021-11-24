@@ -24,7 +24,7 @@ export interface CartState {
   readonly products: ProductCartState;
   readonly promotions: PromotionCartState;
   readonly waitingCourses: WaitingCourseClassState;
-  readonly suggestions: SuggestionsState;
+  // readonly suggestions: SuggestionCartState;
 }
 
 export interface PopupState {
@@ -44,6 +44,7 @@ export type CommonCartItem = CourseClassCart | ProductCart | PromotionCart | Wai
 
 export type CourseClassCartState = Normalized<CourseClassCart>;
 export type ProductCartState = Normalized<ProductCart>;
+export type SuggestionCartState = Normalized<SuggestionCart>;
 export type PromotionCartState = Normalized<PromotionCart>;
 export type WaitingCourseClassState = Normalized<WaitingCourseCart>;
 export type ReplaceCourseClassState = { replace: CourseClassCartState, replacement: CourseClassCartState };
@@ -65,6 +66,9 @@ export interface ContactState extends Contact {
 }
 
 export interface ProductCart extends Product {
+}
+
+export interface SuggestionCart extends Suggestion {
 }
 
 export interface WaitingCourseCart extends Course {
