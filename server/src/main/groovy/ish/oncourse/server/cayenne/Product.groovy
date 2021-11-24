@@ -15,6 +15,7 @@ import ish.common.types.ExpiryType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Product
 import ish.util.MoneyFormatter
@@ -34,7 +35,7 @@ import javax.swing.text.DefaultFormatter
  */
 @API
 @QueueableEntity
-class Product extends _Product implements Queueable, NotableTrait, AttachableTrait {
+class Product extends _Product implements Queueable, NotableTrait, Taggable{
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -280,23 +281,16 @@ class Product extends _Product implements Queueable, NotableTrait, AttachableTra
 		return super.getTax()
 	}
 
-	@Override
-	void addToAttachmentRelations(AttachmentRelation relation) {
-		addToAttachmentRelations((ProductAttachmentRelation) relation)
-	}
-
-	@Override
-	void removeFromAttachmentRelations(AttachmentRelation relation) {
-		removeFromAttachmentRelations((ProductAttachmentRelation) relation)
-	}
-
-	@Override
-	Class<? extends AttachmentRelation> getRelationClass() {
-		return ProductAttachmentRelation.class
-	}
-
+	/**
+		This methods must be overrided into inheritors classes
+	 */
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
-		return ProductTagRelation.class
+		return null
+	}
+
+	@Override
+	List<? extends TagRelation> getTaggingRelations() {
+		return null
 	}
 }

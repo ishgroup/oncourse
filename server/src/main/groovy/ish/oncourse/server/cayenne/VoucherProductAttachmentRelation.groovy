@@ -8,17 +8,26 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.oncourse.server.cayenne.glue._VoucherProductAttachmentRelation
 
 import javax.annotation.Nonnull
 
-class VoucherProductAttachmentRelation extends ProductAttachmentRelation{
+class VoucherProductAttachmentRelation extends _VoucherProductAttachmentRelation{
 
     /**
      * @see AttachmentRelation#setAttachedRelation(AttachableTrait)
      */
     @Override
     void setAttachedRelation(AttachableTrait attachable) {
-        super.setAttachedProduct((VoucherProduct) attachable)
+        super.setAttachedVoucherProduct((VoucherProduct) attachable)
+    }
+
+    /**
+     * @see AttachmentRelation#getAttachedRelation()
+     */
+    @Override
+    AttachableTrait getAttachedRelation() {
+        return super.getAttachedVoucherProduct()
     }
 
     /**

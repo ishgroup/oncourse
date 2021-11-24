@@ -28,7 +28,7 @@ import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.ProductTagRelation
+import ish.oncourse.server.cayenne.VoucherProductTagRelation
 import ish.oncourse.server.cayenne.VoucherProductAttachmentRelation
 import ish.oncourse.server.document.DocumentService
 
@@ -151,7 +151,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateDocuments(voucherProduct, voucherProduct.attachmentRelations, voucherProductDTO.documents, VoucherProductAttachmentRelation, context)
-        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags*.id, ProductTagRelation, context)
+        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags*.id, VoucherProductTagRelation, context)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
             voucherProduct.tax = taxDao.getNonSupplyTax(voucherProduct.context)
