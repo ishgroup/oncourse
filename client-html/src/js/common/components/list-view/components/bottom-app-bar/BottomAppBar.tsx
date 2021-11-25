@@ -330,7 +330,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           filteredCount={filteredCount}
         />
 
-        <div className={clsx(classes.root, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}>
+        <div className={classes.root}>
           <SearchInput
             innerRef={searchComponentNode}
             onQuerySearch={onQuerySearch}

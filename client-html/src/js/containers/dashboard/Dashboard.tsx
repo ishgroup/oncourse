@@ -76,8 +76,7 @@ class Dashboard extends React.PureComponent<any, any> {
           classes.container,
           {
             [classes.drawerOpenedContainer]: drawerOpened
-          },
-          LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBody"
+          }
         )}
       >
         <Grid item xs={12} className="relative">
