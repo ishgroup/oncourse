@@ -11,6 +11,6 @@ enum:
   - Sale
   - Membership
   - Voucher
-  - Product type
-  - Voucher type
-  - Membership type
+  - Article product
+  - Voucher product
+  - Membership product

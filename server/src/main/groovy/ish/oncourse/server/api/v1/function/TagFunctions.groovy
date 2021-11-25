@@ -26,6 +26,8 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.TagValidation
 import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.Application
+import ish.oncourse.server.cayenne.Article
+import ish.oncourse.server.cayenne.ArticleProduct
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Course
@@ -34,6 +36,8 @@ import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.Lead
+import ish.oncourse.server.cayenne.Membership
+import ish.oncourse.server.cayenne.MembershipProduct
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Payslip
 import ish.oncourse.server.cayenne.Quote
@@ -45,6 +49,8 @@ import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import ish.oncourse.server.cayenne.TagRequirement
 import ish.oncourse.server.cayenne.Tutor
+import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.VoucherProduct
 import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.function.GetTagGroups
 import org.apache.cayenne.ObjectContext
@@ -78,6 +84,12 @@ class TagFunctions {
         put(TaggableClasses.TUTOR, TagRequirementTypeDTO.TUTOR)
         put(TaggableClasses.WAITING_LIST, TagRequirementTypeDTO.WAITINGLIST)
         put(TaggableClasses.COURSE_CLASS, TagRequirementTypeDTO.COURSECLASS)
+        put(TaggableClasses.ARTICLE, TagRequirementTypeDTO.SALE)
+        put(TaggableClasses.VOUCHER, TagRequirementTypeDTO.VOUCHER)
+        put(TaggableClasses.MEMBERSHIP, TagRequirementTypeDTO.MEMBERSHIP)
+        put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.SALE_PRODUCT)
+        put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHER_PRODUCT)
+        put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIP_PRODUCT)
     }}
 
     public static final BidiMap<String, TaggableClasses> taggableClassesBidiMap = new BidiMap<String, TaggableClasses>() {{
@@ -99,6 +111,12 @@ class TagFunctions {
         put(WaitingList.simpleName, TaggableClasses.WAITING_LIST)
         put(CourseClass.simpleName, TaggableClasses.COURSE_CLASS)
         put(Message.simpleName, TaggableClasses.MESSAGE)
+        put(Article.simpleName, TaggableClasses.ARTICLE)
+        put(Voucher.simpleName, TaggableClasses.VOUCHER)
+        put(Membership.simpleName, TaggableClasses.MEMBERSHIP)
+        put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
+        put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
+        put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
     }}
 
     private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
