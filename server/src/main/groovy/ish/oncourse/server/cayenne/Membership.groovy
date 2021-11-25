@@ -27,7 +27,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Membership extends _Membership implements ExpandableTrait, AttachableTrait {
+class Membership extends _Membership implements ExpandableTrait, AttachableTrait, NotableTrait {
 
     @Override
     void validateForSave(@Nonnull ValidationResult result) {
