@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.cayenne.glue._Article
 
 /**
@@ -20,7 +21,7 @@ import ish.oncourse.server.cayenne.glue._Article
  */
 @API
 @QueueableEntity
-class Article extends _Article implements ExpandableTrait, AttachableTrait, NotableTrait {
+class Article extends _Article implements ExpandableTrait, AttachableTrait, NotableTrait, Taggable {
 
 
     @Override
@@ -41,5 +42,10 @@ class Article extends _Article implements ExpandableTrait, AttachableTrait, Nota
     @Override
     Class<? extends AttachmentRelation> getRelationClass() {
         return ArticleAttachmentRelation
+    }
+
+    @Override
+    Class<? extends TagRelation> getTagRelationClass() {
+        return ArticleTagRelation
     }
 }

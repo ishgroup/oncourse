@@ -174,4 +174,18 @@ class ProductItem extends _ProductItem implements Queueable {
 		}
 
 	}
+
+	/**
+	 * This methods must be overridden in inheritors classes
+	 * @return
+	 */
+	@Override
+	Class<? extends TagRelation> getTagRelationClass() {
+		return null
+	}
+
+	@Override
+	List<? extends TagRelation> getTaggingRelations() {
+		return null
+	}
 }
