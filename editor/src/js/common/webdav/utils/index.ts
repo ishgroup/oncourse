@@ -43,8 +43,7 @@ export const formatSectionField = fileText => {
       type: [],
     };
 
-    const variables = code.split(";").map(c => (c.includes('$') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
-    // const variables = code.split("\n").map(c => (c.includes('$') && !c.includes('//') ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
+    const variables = code.split(";").map(c => ((c.includes('$') && !c.includes("// $")) ? c.replace(";", "") : null)).filter(c => !!c).map(c => {
       docVars.forEach(docValue => {
         const regex = new RegExp(`@${docValue}\\s[\\S]*[\\t]*[^*]+$`, 'gm');
         const matched = c.match(regex);
