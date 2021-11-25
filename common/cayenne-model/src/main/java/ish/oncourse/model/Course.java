@@ -120,14 +120,14 @@ public class Course extends _Course implements Queueable {
 				.select(objectContext);
 	}
 
-	public Set<Tutor> getTutors() {
+	public List<Tutor> getTutors() {
 			return getAvailableClasses().stream()
 				.map(CourseClass::getTutorRoles)
 				.flatMap(Collection::stream)
 				.filter(_TutorRole::getInPublicity)	
 				.map(TutorRole::getTutor)
 				.filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date()))
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 	
 	public List<Course> getRelatedCourses() {

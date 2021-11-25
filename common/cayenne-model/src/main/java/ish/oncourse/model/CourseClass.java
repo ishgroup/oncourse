@@ -496,12 +496,12 @@ public class CourseClass extends _CourseClass implements Queueable, CourseClassI
 		setCustomFieldValue(key, value, CourseCustomField.class);
 	}
 
-	public Set<Tutor> getTutors() {
+	public List<Tutor> getTutors() {
 		return getTutorRoles().stream()
 				.filter(_TutorRole::getInPublicity)
 				.map(TutorRole::getTutor)
 				.filter(tutor -> tutor.getFinishDate() == null || tutor.getFinishDate().after(new Date()))
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 	
 }

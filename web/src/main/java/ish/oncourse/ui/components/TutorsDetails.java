@@ -60,58 +60,69 @@ public class TutorsDetails extends ISHCommon {
 
     @SetupRender
     void beginRender() {
+        //Count can be no higher than 12 and defaults to 3 if no count is provided.
+        if (count == null || count < 1) {
+            count = 3;
+        }
+        List<Tutor> tutorList;
         if (tutorId != null) {
-            tutors = new HashSet<>(ObjectSelect.query(Tutor.class)
+            tutorList = ObjectSelect.query(Tutor.class)
                     .where(Tutor.ANGEL_ID.eq(tutorId))
                     .and(Tutor.COLLEGE.eq(webSiteService.getCurrentCollege()))
-                    .select(cayenneService.newContext()));
+                    .select(cayenneService.newContext());
         } else if (course != null) {
-            
-            tutors = course.getTutors();
+            tutorList = course.getTutors();
         } else if (courseClass != null) {
-            tutors = courseClass.getTutors();
+            tutorList = courseClass.getTutors();
         } else if (tagName != null) {
-            //Count can be no higher than 12 and defaults to 3 if no count is provided.
-            if (count == null || count < 1 ) {
-                count = 3;
-            } else if (count  > 12) {
-                count = 12;
-            }
-
-            List<Long> ids = ObjectSelect.query(Taggable.class)
-                    .where(Taggable.ENTITY_IDENTIFIER.eq("Contact"))
-                    .and(Taggable.COLLEGE.eq(webSiteService.getCurrentCollege()))
-                    .and(Taggable.TAGGABLE_TAGS.dot(TaggableTag.TAG).dot(Tag.NAME).eq(tagName))
-                    .column(Taggable.ENTITY_WILLOW_ID).select(cayenneService.newContext());
-
-            if (ids.isEmpty()) {
-                return;
-            }
-            
-            List<Long> randomIds = new ArrayList<>();
-            Integer size = ids.size();
-            
-            if (count >= size) {
-                randomIds = ids;
-            } else {
-                Random ran = new Random();
-                while (count > 0) {
-                    int index = ran.nextInt(size);
-                    randomIds.add(ids.get(index));
-                    count--;
-                }
-
-            }
-
-            tutors = ObjectSelect.query(Contact.class)
-                    .where(ExpressionFactory.inDbExp(Contact.ID_PK_COLUMN, randomIds))
-                    .and(Contact.TUTOR.isNotNull())
-                    .select(cayenneService.newContext())
-                    .stream().map(Contact::getTutor)
-                    .collect(Collectors.toSet());
-                    
+            tutorList = getTutorsByTag(tagName, count);
+        } else {
+            tutorList = ObjectSelect.query(Tutor.class)
+                    .where(Tutor.COLLEGE.eq(webSiteService.getCurrentCollege()))
+                    .and(Tutor.FINISH_DATE.isNotNull().orExp(Tutor.FINISH_DATE.gt(new Date())))
+                    .limit(count)
+                    .select(cayenneService.newContext());
+        }
+        
+        if (!tutorList.isEmpty()) {
+            tutors = tutorList.stream().sorted(Comparator.comparing(a -> a.getContact().getFamilyName())).collect(Collectors.toCollection(LinkedHashSet::new));
+        } else {
+            tutors = new HashSet<>();
         }
 
+    }
+    
+    private List<Tutor> getTutorsByTag(String tagName, Integer count) {
+        List<Long> ids = ObjectSelect.query(Taggable.class)
+                .where(Taggable.ENTITY_IDENTIFIER.eq("Contact"))
+                .and(Taggable.COLLEGE.eq(webSiteService.getCurrentCollege()))
+                .and(Taggable.TAGGABLE_TAGS.dot(TaggableTag.TAG).dot(Tag.NAME).eq(tagName))
+                .column(Taggable.ENTITY_WILLOW_ID).select(cayenneService.newContext());
+
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<Long> randomIds = new ArrayList<>();
+        Integer size = ids.size();
+
+        if (count >= size) {
+            randomIds = ids;
+        } else {
+            Random ran = new Random();
+            while (count > 0) {
+                int index = ran.nextInt(size);
+                randomIds.add(ids.get(index));
+                count--;
+            }
+
+        }
+        return ObjectSelect.query(Contact.class)
+                .where(ExpressionFactory.inDbExp(Contact.ID_PK_COLUMN, randomIds))
+                .and(Contact.TUTOR.isNotNull())
+                .select(cayenneService.newContext())
+                .stream().map(Contact::getTutor)
+                .collect(Collectors.toList());
     }
     
     public String getProfilePictureUrl() {
