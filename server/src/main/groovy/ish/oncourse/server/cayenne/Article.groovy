@@ -20,7 +20,7 @@ import ish.oncourse.server.cayenne.glue._Article
  */
 @API
 @QueueableEntity
-class Article extends _Article implements ExpandableTrait, AttachableTrait {
+class Article extends _Article implements ExpandableTrait, AttachableTrait, NotableTrait {
 
 
     @Override

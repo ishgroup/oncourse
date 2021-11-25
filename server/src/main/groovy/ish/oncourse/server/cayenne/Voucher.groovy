@@ -31,7 +31,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait {
+class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait, NotableTrait {
 
 
 
