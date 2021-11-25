@@ -1761,6 +1761,15 @@
 	<obj-entity name="MembershipProductTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.MembershipProductTagRelation" clientClassName="ish.oncourse.cayenne.MembershipProductTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 22]]></qualifier>
 	</obj-entity>
+	<obj-entity name="VoucherTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.VoucherTagRelation" clientClassName="ish.oncourse.cayenne.VoucherTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 23]]></qualifier>
+	</obj-entity>
+	<obj-entity name="ArticleTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.ArticleTagRelation" clientClassName="ish.oncourse.cayenne.ArticleTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 24]]></qualifier>
+	</obj-entity>
+	<obj-entity name="MembershipTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.MembershipTagRelation" clientClassName="ish.oncourse.cayenne.MembershipTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 25]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Assessment" className="ish.oncourse.server.cayenne.Assessment" clientClassName="ish.oncourse.cayenne.Assessment" dbEntityName="Assessment" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="active" type="java.lang.Boolean" db-attribute-path="active"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
@@ -2824,7 +2833,7 @@
 		<obj-attribute name="type" type="java.lang.Integer" db-attribute-path="type"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
-	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+	<obj-entity name="ProductItem" abstract="true" className="ish.oncourse.server.cayenne.ProductItem" dbEntityName="ProductItem" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="confirmationStatus" type="ish.common.types.ConfirmationStatus" db-attribute-path="confirmationStatus"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="expiryDate" type="java.util.Date" db-attribute-path="expiryDate"/>
@@ -3670,6 +3679,9 @@
 	<db-relationship name="taggingRelations" source="Product" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
+	<db-relationship name="taggingRelations" source="ProductItem" target="NodeRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
 	<db-relationship name="taxOverride" source="Contact" target="Tax">
 		<db-attribute-pair source="taxId" target="id"/>
 	</db-relationship>
@@ -4319,6 +4331,15 @@
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggedMembershipProduct" source="NodeRelation" target="MembershipProduct">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggedVoucher" source="NodeRelation" target="Voucher">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggedArticle" source="NodeRelation" target="Article">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggedMembership" source="NodeRelation" target="Membership">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggedAssessment" source="NodeRelation" target="Assessment">
@@ -5443,6 +5464,9 @@
 	<obj-relationship name="taggingRelations" source="VoucherProduct" target="VoucherProductTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="taggingRelations" source="ArticleProduct" target="ArticleProductTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="taggingRelations" source="MembershipProduct" target="MembershipProductTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="taggingRelations" source="Voucher" target="VoucherTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="taggingRelations" source="Article" target="ArticleTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
+	<obj-relationship name="taggingRelations" source="Membership" target="MembershipTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="underpaymentAccount" source="VoucherProduct" target="Account" deleteRule="Deny" db-relationship-path="underpaymentAccount"/>
 	<obj-relationship name="productItems" source="Product" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="tax" source="Product" target="Tax" deleteRule="Nullify" db-relationship-path="tax"/>
@@ -5488,6 +5512,9 @@
 	<obj-relationship name="taggedVoucherProduct" source="VoucherProductTagRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="taggedVoucherProduct"/>
 	<obj-relationship name="taggedArticleProduct" source="ArticleProductTagRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="taggedArticleProduct"/>
 	<obj-relationship name="taggedMembershipProduct" source="MembershipProductTagRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="taggedMembershipProduct"/>
+	<obj-relationship name="taggedVoucher" source="VoucherTagRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="taggedVoucher"/>
+	<obj-relationship name="taggedArticle" source="ArticleTagRelation" target="Article" deleteRule="Nullify" db-relationship-path="taggedArticle"/>
+	<obj-relationship name="taggedMembership" source="MembershipTagRelation" target="Membership" deleteRule="Nullify" db-relationship-path="taggedMembership"/>
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="invoice"/>

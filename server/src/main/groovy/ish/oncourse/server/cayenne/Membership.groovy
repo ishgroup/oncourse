@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.cayenne.glue._Membership
 import ish.validation.ValidationFailure
 import org.apache.cayenne.validation.ValidationResult
@@ -27,7 +28,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Membership extends _Membership implements ExpandableTrait, AttachableTrait, NotableTrait {
+class Membership extends _Membership implements ExpandableTrait, AttachableTrait, NotableTrait, Taggable {
 
     @Override
     void validateForSave(@Nonnull ValidationResult result) {
@@ -64,5 +65,10 @@ class Membership extends _Membership implements ExpandableTrait, AttachableTrait
     @Override
     Class<? extends AttachmentRelation> getRelationClass() {
         return MembershipAttachmentRelation
+    }
+
+    @Override
+    Class<? extends TagRelation> getTagRelationClass() {
+        return MembershipTagRelation
     }
 }
