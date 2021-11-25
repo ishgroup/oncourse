@@ -17,7 +17,7 @@ import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { Dispatch } from "redux";
-import { getListTags } from "../../tags/actions";
+import { getEntityTags, getListTags } from "../../tags/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 
 interface SalesProps {
@@ -162,7 +162,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {},
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
-  getTags: () => dispatch(getListTags("ProductItem")),
+  getTags: () => {
+    dispatch(getListTags("ProductItem"));
+    dispatch(getEntityTags("Article"));
+    dispatch(getEntityTags("Voucher"));
+    dispatch(getEntityTags("Membership"));
+  },
   getFilters: () => dispatch(getFilters("ProductItem")),
   onSave: (id: string, productItem: ProductItem) => dispatch(updateSale(id, productItem)),
   clearListState: () => dispatch(clearListState()),

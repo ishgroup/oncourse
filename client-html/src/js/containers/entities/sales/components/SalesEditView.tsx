@@ -7,12 +7,7 @@
  */
 
 import React, { useCallback } from "react";
-import {
-  Contact,
-  ProductItem, ProductItemPayment,
-  ProductItemStatus,
-  ProductType, Tag
-} from "@api/model";
+import { Contact, ProductItem, ProductItemPayment, ProductItemStatus, ProductType } from "@api/model";
 import { change, FieldArray } from "redux-form";
 import { compareAsc, format as formatDate, startOfDay } from "date-fns";
 import { Grid, IconButton } from "@mui/material";
@@ -56,6 +51,15 @@ const paymentColumns: NestedTableColumn[] = [
     width: 120
   }
 ];
+
+const getProductTypeLabel = (type: ProductType) => {
+  switch (type) {
+    case "Product":
+      return "Article";
+    default:
+      return type;
+  }
+};
 
 const columnsByType = (type: ProductType) => {
   if (type === ProductType.Voucher) {
@@ -103,7 +107,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     lg: twoColumn ? 4 : 12
   } as any;
 
-  const tags = useAppSelector(state => state.tags.entityTags["ProductItem"]);
+  const tags = useAppSelector(state => state.tags.entityTags[getProductTypeLabel(values.productType)]);
 
   return values ? (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
