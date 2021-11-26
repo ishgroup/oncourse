@@ -29,7 +29,7 @@ import {
   setListSelection
 } from "../../../common/components/list-view/actions";
 import { State } from "../../../reducers/state";
-import { getEntityTags } from "../../tags/actions";
+import { getEntityTags, getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { createDocument, getDocument, updateDocument } from "./actions";
@@ -371,7 +371,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("Document")),
-  getTags: () => dispatch(getEntityTags("Document")),
+  getTags: () => {
+    dispatch(getEntityTags("Document"));
+    dispatch(getListTags("Document"));
+  },
   clearListState: () => dispatch(clearListState()),
   getDocumentRecord: (id: number) => dispatch(getDocument(id)),
   onSave: (id: string, document) => dispatch(updateDocument(id, document)),
