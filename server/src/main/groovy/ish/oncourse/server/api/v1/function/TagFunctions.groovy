@@ -84,7 +84,7 @@ class TagFunctions {
         put(TaggableClasses.TUTOR, TagRequirementTypeDTO.TUTOR)
         put(TaggableClasses.WAITING_LIST, TagRequirementTypeDTO.WAITINGLIST)
         put(TaggableClasses.COURSE_CLASS, TagRequirementTypeDTO.COURSECLASS)
-        put(TaggableClasses.ARTICLE, TagRequirementTypeDTO.SALE)
+        put(TaggableClasses.ARTICLE, TagRequirementTypeDTO.ARTICLE)
         put(TaggableClasses.VOUCHER, TagRequirementTypeDTO.VOUCHER)
         put(TaggableClasses.MEMBERSHIP, TagRequirementTypeDTO.MEMBERSHIP)
         put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.SALE_PRODUCT)
