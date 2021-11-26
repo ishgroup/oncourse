@@ -6,19 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useMemo, useRef, useState
-} from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Collapse,
-  FormControl, 
-  FormHelperText, 
-  Typography, 
-  Select,
+  FormControl,
+  FormHelperText,
   Grid,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  Select,
+  Typography
 } from "@mui/material";
 import clsx from "clsx";
 import { differenceInMinutes, format, isPast } from "date-fns";
@@ -150,7 +148,7 @@ const CourseClassTutorRooster = (
   const filteredTutors = useMemo<CourseClassTutorExtended[]>(() => tutors
     .filter(t => t.contactId
       && t.roleName
-      && !session.tutorAttendances.some(ta => (ta.courseClassTutorId && t.id === ta.courseClassTutorId)
+      && !session.tutorAttendances?.some(ta => (ta.courseClassTutorId && t.id === ta.courseClassTutorId)
           || (ta.temporaryTutorId && t.temporaryId === ta.temporaryTutorId))),
     [tutors, session.tutorAttendances]);
 

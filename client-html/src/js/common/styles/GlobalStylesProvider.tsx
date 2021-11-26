@@ -10,9 +10,6 @@ import withStyles from "@mui/styles/withStyles";
 import { grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
-import christmasHeaderBackground from "../../../images/beach-header.jpg";
-import christmasBodyBackground from "../../../images/sparkel.png";
-import christmasBodyBackgroundStars from "../../../images/christmas_header_background.gif";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
 import InterItalicVar from "../../../fonts/inter/Inter-Italic.var.woff2";
 import { animateStyles } from "./animateStyles";
@@ -326,10 +323,10 @@ const globalStyles = (theme: AppTheme) =>
         color: theme.palette.error.light
       },
       ".errorBackgroundColor": {
-        backgroundColor: theme.palette.error.main
+        backgroundColor: theme.palette.error.light
       },
       ".errorColorFade-0-2": {
-        color: alpha(theme.palette.error.main, 0.2)
+        color: alpha(theme.palette.error.light, 0.2)
       },
       ".errorContrastColor": {
         color: theme.palette.error.contrastText
@@ -439,31 +436,6 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".summaryTopBorder": {
         borderTop: `1px solid ${theme.palette.text.primary}`
-      },
-      ".christmasBody": {
-        backgroundImage: `url(${christmasBodyBackground})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "bottom left",
-        backgroundSize: "60%"
-      },
-      ".christmasBackground": {
-        background: "transparent"
-      },
-      ".christmasHeader": {
-        "&:before": {
-          content: "''",
-          backgroundImage: `url(${christmasBodyBackgroundStars})`,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          height: "100%",
-          width: "100%"
-        }
-      },
-      ".christmasHeaderDashboard": {
-        backgroundImage: `url(${christmasHeaderBackground})`,
-        backgroundSize: "cover",
-        backgroundPosition: "top"
       },
       ".selectedItemArrow": {
         [theme.breakpoints.up("md")]: {
