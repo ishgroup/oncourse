@@ -146,8 +146,6 @@ class MYOBBaseForm extends React.Component<any, any> {
     } = this.props;
     const configured = item && item.id;
     const { hideConfig, loading } = this.state;
-    const configuredLabel = "MYOB access has been set up. Press ‘Configure’ to restart the configuration process.";
-    const unconfiguredLabel = ' Press "Configure" to proceed with authorising onCourse to access your MYOB account.';
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -159,9 +157,6 @@ class MYOBBaseForm extends React.Component<any, any> {
           <FormField name="fields.myobUser" label="File owner" type="text" fullWidth required />
           <FormField name="fields.myobPassword" type="password" label="File owner password" fullWidth />
 
-          <Typography variant="caption" component="div">
-            {configured ? configuredLabel : unconfiguredLabel}
-          </Typography>
           {values?.fields?.active === "true" ? (
             <>
               <Typography variant="caption" component="div">
