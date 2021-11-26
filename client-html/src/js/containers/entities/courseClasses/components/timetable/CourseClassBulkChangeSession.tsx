@@ -63,7 +63,7 @@ const validateDuration = value => (value !== "" && (value < 5 || value > 1440)
   ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
   : undefined);
 
-const initialValues = {
+export const initialValues = {
   tutorAttendances: [],
   tutorsChecked: false,
   locationChecked: false,
@@ -82,6 +82,45 @@ const initialValues = {
   moveForward: "",
   moveBackwardChecked: false,
   moveBackward: ""
+};
+
+const BulkItemWrapper: React.FC<any> = props => {
+  const {
+    classes, title, name, children, noCollapse
+  } = props;
+  const [opened, setOpened] = React.useState(false);
+
+  const onChange = React.useCallback(checked => {
+    setOpened(checked);
+  }, [name]);
+
+  const renderedTitle = (
+    <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
+      {title}
+    </Typography>
+  );
+
+  return (
+    <div className="mb-2 w-100">
+      <FormControlLabel
+        control={(
+          <FormField
+            type="checkbox"
+            name={`${name}Checked`}
+            color="secondary"
+            checked={opened}
+            onChange={onChange}
+          />
+        )}
+        label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
+        classes={{
+          root: 'd-flex',
+          label: 'w-100'
+        }}
+      />
+      {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
+    </div>
+  );
 };
 
 const CourseClassBulkChangeSessionForm = props => {
@@ -303,6 +342,7 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid item xs={6}>
                     <EditInPlaceDurationField
                       label="Actual payable duration"
+                      id="actualPayableDuration"
                       meta={{}}
                       input={{
                         value: payableDurationValue,
@@ -342,6 +382,7 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid item xs={6}>
                     <EditInPlaceDurationField
                       label="Duration"
+                      id="duration"
                       meta={{
                         error: durationError,
                         invalid: Boolean(durationError)
@@ -374,7 +415,7 @@ const CourseClassBulkChangeSessionForm = props => {
                     {" "}
                     days
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} id="moveForwardInfo">
                     {laterDate && `Earliest selected session will starts ${laterDate}`}
                   </Grid>
                 </Grid>
@@ -396,7 +437,7 @@ const CourseClassBulkChangeSessionForm = props => {
                     {" "}
                     days
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} id="moveBackwardInfo">
                     {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
                   </Grid>
                 </Grid>
@@ -422,48 +463,9 @@ const CourseClassBulkChangeSessionForm = props => {
   );
 };
 
-const BulkItemWrapper: React.FC<any> = props => {
-  const {
-    classes, title, name, children, noCollapse
-  } = props;
-  const [opened, setOpened] = React.useState(false);
-
-  const onChange = React.useCallback(checked => {
-    setOpened(checked);
-  }, [name]);
-
-  const renderedTitle = (
-    <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
-      {title}
-    </Typography>
-  );
-
-  return (
-    <div className="mb-2 w-100">
-      <FormControlLabel
-        control={(
-          <FormField
-            type="checkbox"
-            name={`${name}Checked`}
-            color="secondary"
-            checked={opened}
-            onChange={onChange}
-          />
-        )}
-        label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
-        classes={{
-          root: 'd-flex',
-          label: 'w-100'
-        }}
-      />
-      {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
-    </div>
-  );
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>, props) => ({
   init: () => {
-    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, initialValues));
+    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, props.initialValues || initialValues));
   },
   getRooms: (search: string) => {
     dispatch(setCommonPlainSearch("Room", search));

@@ -1,6 +1,6 @@
 import * as React from "react";
 // import { createMount } from "@mui/material/test-utils";
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { mockedAPI, TestEntry } from "../TestEntry";
 
 interface Props {
@@ -41,7 +41,7 @@ export const defaultComponents: ({
   }
 
   it(`${entity} components should render with given values`, async () => {
-    const wrapper = await shallow(
+    const wrapper = await mount(
       <TestEntry>
         <MockedEditView />
       </TestEntry>,
