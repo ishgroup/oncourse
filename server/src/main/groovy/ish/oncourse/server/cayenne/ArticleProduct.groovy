@@ -28,7 +28,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class ArticleProduct extends _ArticleProduct implements AttachableTrait, NotableTrait{
+class ArticleProduct extends _ArticleProduct implements AttachableTrait, NotableTrait, ExpandableTrait{
 
 
 	public static final String NUMBER_SOLD_PROPERTY = "number_sold"
@@ -146,5 +146,10 @@ class ArticleProduct extends _ArticleProduct implements AttachableTrait, Notable
 	@Override
 	Class<? extends AttachmentRelation> getRelationClass() {
 		return ArticleProductAttachmentRelation
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return ArticleProductCustomField
 	}
 }
