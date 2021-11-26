@@ -19,6 +19,6 @@ enum:
   - Article
   - Voucher
   - Membership
-  - Sale product
-  - Voucher product
-  - Membership product
+  - ArticleProduct
+  - VoucherProduct
+  - MembershipProduct
