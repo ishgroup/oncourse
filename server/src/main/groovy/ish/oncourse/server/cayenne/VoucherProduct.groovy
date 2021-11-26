@@ -40,7 +40,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class VoucherProduct extends _VoucherProduct implements AttachableTrait, NotableTrait{
+class VoucherProduct extends _VoucherProduct implements AttachableTrait, NotableTrait, ExpandableTrait{
 
 
 
@@ -146,5 +146,10 @@ class VoucherProduct extends _VoucherProduct implements AttachableTrait, Notable
 	@Override
 	Class<? extends AttachmentRelation> getRelationClass() {
 		return VoucherProductAttachmentRelation
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return VoucherProductCustomField
 	}
 }

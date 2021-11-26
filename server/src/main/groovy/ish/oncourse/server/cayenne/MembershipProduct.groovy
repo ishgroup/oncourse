@@ -28,7 +28,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class MembershipProduct extends _MembershipProduct implements MembershipProductTrait, AttachableTrait, NotableTrait {
+class MembershipProduct extends _MembershipProduct implements MembershipProductTrait, AttachableTrait, NotableTrait, ExpandableTrait {
 
 	public static final String SOLD_COUNT_KEY = "soldProductsCount";
 	public static final String ACTIVE_MEMBERSHIPS_COUNT_KEY = "totalActiveMembershipsCount";
@@ -93,5 +93,10 @@ class MembershipProduct extends _MembershipProduct implements MembershipProductT
 	@Override
 	Class<? extends AttachmentRelation> getRelationClass() {
 		return MembershipProductAttachmentRelation
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return MembershipProductCustomField
 	}
 }
