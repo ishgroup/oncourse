@@ -28,32 +28,13 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   componentDidMount() {
     const {
-      match: { params: { name } }, item, dispatch
+      match: { params: { name } }, location: { search }, history, item, dispatch
     } = this.props;
+
+    const { hideConfig } = this.state;
 
     if (name && !item.name) {
       dispatch(change("MYOBForm", "name", name));
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const {
-      item, dispatch, location: { search }, history, dirty
-    } = this.props;
-    const { hideConfig } = this.state;
-
-    if (prevProps.item.id !== item.id) {
-      // Reinitializing form with values
-      dispatch(initialize("MYOBForm", item));
-      this.setState({
-        hideConfig: false
-      });
-    }
-
-    if (prevProps.dirty === true && dirty === false) {
-      this.setState({
-        hideConfig: false
-      });
     }
 
     if (search && !hideConfig) {
@@ -84,6 +65,27 @@ class MYOBBaseForm extends React.Component<any, any> {
           search: decodeURIComponent(params.toString())
         });
       }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      item, dispatch, dirty
+    } = this.props;
+
+
+    if (prevProps.item.id !== item.id) {
+      // Reinitializing form with values
+      dispatch(initialize("MYOBForm", item));
+      this.setState({
+        hideConfig: false
+      });
+    }
+
+    if (prevProps.dirty === true && dirty === false) {
+      this.setState({
+        hideConfig: false
+      });
     }
   }
 
@@ -142,9 +144,8 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, AppBarContent, values = {}, dirty, item, form
+      handleSubmit, onSubmit, AppBarContent, values = {}, dirty, form
     } = this.props;
-    const configured = item && item.id;
     const { hideConfig, loading } = this.state;
 
     return (
@@ -152,10 +153,10 @@ class MYOBBaseForm extends React.Component<any, any> {
         {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.myobBaseUrl" label="Base URL" type="text" fullWidth required />
-          <FormField name="fields.myobFileName" label="File name" type="text" fullWidth required />
-          <FormField name="fields.myobUser" label="File owner" type="text" fullWidth required />
-          <FormField name="fields.myobPassword" type="password" label="File owner password" fullWidth />
+          <FormField name="fields.myobBaseUrl" label="Base URL" type="text" className="mb-2" required />
+          <FormField name="fields.myobFileName" label="File name" type="text" className="mb-2" required />
+          <FormField name="fields.myobUser" label="File owner" type="text" className="mb-2" required />
+          <FormField name="fields.myobPassword" type="password" label="File owner password" className="mb-2" />
 
           {values?.fields?.active === "true" ? (
             <>
