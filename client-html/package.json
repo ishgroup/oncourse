@@ -136,5 +136,8 @@
     "redux-observable": "1.*",
     "rxjs": "6.*",
     "uuid": "8.*"
+  },
+  "resolutions": {
+    "webpack-dev-server/chokidar/glob-parent": "^5.1.2"
   }
 }
