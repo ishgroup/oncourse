@@ -3,12 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import {
-  change, initialize, arrayRemove, startAsyncValidation, stopAsyncValidation
-} from "redux-form";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
 import {
@@ -20,7 +16,7 @@ import {
   addWeeks,
   addYears,
   differenceInMinutes,
-  isWeekend, setDate,
+  isWeekend,
   subDays
 } from "date-fns";
 import { SessionWarning, TutorAttendance } from "@api/model";
@@ -639,8 +635,9 @@ const CourseClassTimetableTab = ({
           // Check for payslip
           const payslipAttendanceIndex = payslipAttendances.findIndex(pa => pa.courseClassTutorId === ta.courseClassTutorId);
           if (payslipAttendanceIndex !== -1) {
+            const result = payslipAttendances[payslipAttendanceIndex];
             payslipAttendances.splice(payslipAttendanceIndex, 1);
-            return payslipAttendances[payslipAttendanceIndex];
+            return result;
           }
 
           const taStart = new Date(ta.start);

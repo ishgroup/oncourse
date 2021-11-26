@@ -323,10 +323,10 @@ const globalStyles = (theme: AppTheme) =>
         color: theme.palette.error.light
       },
       ".errorBackgroundColor": {
-        backgroundColor: theme.palette.error.main
+        backgroundColor: theme.palette.error.light
       },
       ".errorColorFade-0-2": {
-        color: alpha(theme.palette.error.main, 0.2)
+        color: alpha(theme.palette.error.light, 0.2)
       },
       ".errorContrastColor": {
         color: theme.palette.error.contrastText
