@@ -63,7 +63,7 @@ const validateDuration = value => (value !== "" && (value < 5 || value > 1440)
   ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
   : undefined);
 
-const initialValues = {
+export const initialValues = {
   tutorAttendances: [],
   tutorsChecked: false,
   locationChecked: false,
@@ -340,7 +340,7 @@ const CourseClassBulkChangeSessionForm = props => {
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
                         label="Actual payable duration"
-                        meta={{}}
+                        id="actualPayableDuration"meta={{}}
                         input={{
                           value: payableDurationValue,
                           onChange: stubFunction,
@@ -378,7 +378,7 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Duration"
+                        label="Duration"id="duration"
                         meta={{
                           error: durationError,
                           invalid: Boolean(durationError)
@@ -411,34 +411,33 @@ const CourseClassBulkChangeSessionForm = props => {
                       {" "}
                       days
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} id="moveForwardInfo">
                     {laterDate && `Earliest selected session will starts ${laterDate}`}
-                    </Grid>
                   </Grid>
-                </BulkItemWrapper>
-              </Grid>
-              <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <FormField
-                        name="moveBackward"
-                        type="number"
-                        formatting="inline"
-                        step="1"
-                        className={classes.bulkChangeDaysInput}
-                        hideArrows
-                      onChange={onMoveEarlier}
-                      />
-                      {" "}
-                      days
-                  </Grid>
+                </Grid>
+              </BulkItemWrapper>
+            </Grid>
+            <Grid item xs={12}>
+              <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
+                <Grid container>
                   <Grid item xs={6}>
-                    {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
-                    </Grid>
+                    <FormField
+                      name="moveBackward"
+                      type="number"
+                      formatting="inline"
+                      step="1"
+                      className={classes.bulkChangeDaysInput}
+                      hideArrows
+                      onChange={onMoveEarlier}
+                    />
+                    {" "}
+                    days
                   </Grid>
-                </BulkItemWrapper>
-              </Grid>
+                  <Grid item xs={6} id="moveBackwardInfo">
+                    {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
+                  </Grid>
+                </Grid>
+              </BulkItemWrapper>
             </Grid>
           </Grid>
         </DialogContent>
@@ -458,11 +457,11 @@ const CourseClassBulkChangeSessionForm = props => {
       </form>
     </Dialog>
   );
-}
+};
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>, props) => ({
   init: () => {
-    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, initialValues));
+    dispatch(initialize(COURSE_CLASS_BULK_UPDATE_FORM, props.initialValues || initialValues));
   },
   getRooms: (search: string) => {
     dispatch(setCommonPlainSearch("Room", search));
