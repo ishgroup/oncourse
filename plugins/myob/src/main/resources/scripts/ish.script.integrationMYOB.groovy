@@ -1,7 +1,7 @@
 
 def records = query {
     entity "AccountTransaction"
-    query "transactionDate after ${fromDate} and transactionDate before ${toDate}"
+    query "transactionDate >= ${fromDate} and transactionDate <= ${toDate}"
 }
 
 myob {
