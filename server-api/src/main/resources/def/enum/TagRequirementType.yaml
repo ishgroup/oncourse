@@ -16,7 +16,7 @@ enum:
   - Tutor
   - WaitingList
   - CourseClass
-  - Sale
+  - Article
   - Voucher
   - Membership
   - Sale product
