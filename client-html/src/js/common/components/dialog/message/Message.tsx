@@ -114,7 +114,9 @@ class Message extends React.Component<Props, any> {
           variant="filled"
           severity={success ? "success" : "error"}
           classes={{
-            message: "text-pre-wrap"
+            message: "text-pre-wrap",
+            standardError: "errorBackgroundColor",
+            standardSuccess: "successBackgroundColor"
           }}
           action={(
             <IconButton

@@ -143,8 +143,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
         </div>
       )}
       detailsContent={(
-        <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item xs={12}>
+          <div>
             <FormField
               type="remoteDataSearchSelect"
               name={`tutors[${index}].contactId`}
@@ -164,6 +163,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
                 rowHeight: 48
               }}
               onInnerValueChange={onTutorIdChange}
+              className="mb-2"
               required
             />
 
@@ -188,6 +188,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
                 />
               )}
               alwaysDisplayDefault
+              className="mb-2"
               required
             />
             {!tutor.id && hasWage
@@ -200,6 +201,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
               type="date"
               name={`tutors[${index}].confirmedOn`}
               label="Confirmed On"
+              className="mb-2"
             />
 
             <FormControlLabel
@@ -207,8 +209,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
               control={<FormField type="checkbox" name={`tutors[${index}].isInPublicity`} />}
               label="Make tutor visible on web site"
             />
-          </Grid>
-        </Grid>
+          </div>
       )}
     />
   );

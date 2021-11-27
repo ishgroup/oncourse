@@ -319,8 +319,6 @@ const SwipeableSidebar: React.FC<Props> = props => {
     }
   }, [isFormDirty, resetEditView]);
 
-  const isChristmas = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas";
-
   return (
     <SwipeableDrawer
       variant={variant}
@@ -335,17 +333,11 @@ const SwipeableSidebar: React.FC<Props> = props => {
         <div className={classes.drawerWidth}>
           <div className={clsx("pl-2", classes.toolbar)}>
             <HamburgerMenu variant={variant} form={form} />
-
-              {isChristmas ? (
-                <img src={onCourseLogoChristmas} className={classes.logo} alt="Logo" />
-              ) : (
-                <img
-                  src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
-                  className={classes.logo}
-                  alt="Logo"
-                />
-              )}
-
+            <img
+              src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
+              className={classes.logo}
+              alt="Logo"
+            />
           </div>
           <UserSearch getSearchResults={getSearchResults} />
           <div>
