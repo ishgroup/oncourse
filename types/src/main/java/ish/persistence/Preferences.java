@@ -410,7 +410,6 @@ public interface Preferences {
 
 
 	String SERVICES_COMMUNICATION_KEY = "services.soap.communication.key";
-	String REPLICATION_ENABLED = "replication.enabled";
 
 
 	// **************************************
