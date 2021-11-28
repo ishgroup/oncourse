@@ -17,6 +17,7 @@ import ish.common.types.PaymentType;
 import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.PaymentIn;
+import ish.oncourse.server.license.LicenseService;
 import ish.util.AccountUtil;
 import org.apache.cayenne.annotation.*;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +32,10 @@ public class PaymentInLifecycleListener {
 	private static final Logger logger = LogManager.getLogger();
 
 	private final PreferenceController prefController;
-
+	
+	@Inject
+	private LicenseService licenseService;
+			
 	@Inject
 	public PaymentInLifecycleListener(PreferenceController prefController) {
 		this.prefController = prefController;
@@ -76,7 +80,7 @@ public class PaymentInLifecycleListener {
     public void postPersist(PaymentIn entity) {
         try {
             if (PaymentStatus.NEW.equals(entity.getStatus())) {
-                if (!prefController.getReplicationEnabled()) {
+                if (licenseService.isReplicationDisabled()) {
                     entity.succeed();
                 }
             }
