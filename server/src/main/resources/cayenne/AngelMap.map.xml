@@ -3486,22 +3486,10 @@
 	<db-relationship name="attachedContact" source="BinaryRelation" target="Contact">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="attachedVoucherProduct" source="BinaryRelation" target="VoucherProduct">
+	<db-relationship name="attachedProduct" source="BinaryRelation" target="Product">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="attachedArticleProduct" source="BinaryRelation" target="ArticleProduct">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="attachedMembershipProduct" source="BinaryRelation" target="MembershipProduct">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="attachedVoucher" source="BinaryRelation" target="Voucher">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="attachedArticle" source="BinaryRelation" target="Article">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="attachedMembership" source="BinaryRelation" target="Membership">
+	<db-relationship name="attachedProductItem" source="BinaryRelation" target="ProductItem">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="attachedCourse" source="BinaryRelation" target="Course">
@@ -4311,22 +4299,10 @@
 	<db-relationship name="taggedApplication" source="NodeRelation" target="Application">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="taggedVoucherProduct" source="NodeRelation" target="VoucherProduct">
+	<db-relationship name="taggedProduct" source="NodeRelation" target="Product">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="taggedArticleProduct" source="NodeRelation" target="ArticleProduct">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="taggedMembershipProduct" source="NodeRelation" target="MembershipProduct">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="taggedVoucher" source="NodeRelation" target="Voucher">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="taggedArticle" source="NodeRelation" target="Article">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="taggedMembership" source="NodeRelation" target="Membership">
+	<db-relationship name="taggedProductItem" source="NodeRelation" target="ProductItem">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="taggedAssessment" source="NodeRelation" target="Assessment">
@@ -4404,22 +4380,10 @@
 	<db-relationship name="notedContact" source="NoteRelation" target="Contact">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="notedVoucherProduct" source="NoteRelation" target="VoucherProduct">
+	<db-relationship name="notedProduct" source="NoteRelation" target="Product">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
-	<db-relationship name="notedArticleProduct" source="NoteRelation" target="ArticleProduct">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="notedMembershipProduct" source="NoteRelation" target="MembershipProduct">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="notedVoucher" source="NoteRelation" target="Voucher">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="notedArticle" source="NoteRelation" target="Article">
-		<db-attribute-pair source="entityRecordId" target="id"/>
-	</db-relationship>
-	<db-relationship name="notedMembership" source="NoteRelation" target="Membership">
+	<db-relationship name="notedProductItem" source="NoteRelation" target="ProductItem">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
 	<db-relationship name="notedCourse" source="NoteRelation" target="Course">
@@ -5151,22 +5115,22 @@
 	<obj-relationship name="tutor" source="Contact" target="Tutor" deleteRule="Cascade" db-relationship-path="tutor"/>
 	<obj-relationship name="unavailableRuleRelations" source="Contact" target="ContactUnavailableRuleRelation" deleteRule="Cascade" db-relationship-path="unavailableRuleRelations"/>
 	<obj-relationship name="attachedContact" source="ContactAttachmentRelation" target="Contact" deleteRule="Nullify" db-relationship-path="attachedContact"/>
-	<obj-relationship name="attachedVoucherProduct" source="VoucherProductAttachmentRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="attachedVoucherProduct"/>
-	<obj-relationship name="attachedArticleProduct" source="ArticleProductAttachmentRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="attachedArticleProduct"/>
-	<obj-relationship name="attachedMembershipProduct" source="MembershipProductAttachmentRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="attachedMembershipProduct"/>
-	<obj-relationship name="attachedVoucher" source="VoucherAttachmentRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="attachedVoucher"/>
-	<obj-relationship name="attachedArticle" source="ArticleAttachmentRelation" target="Article" deleteRule="Nullify" db-relationship-path="attachedArticle"/>
-	<obj-relationship name="attachedMembership" source="MembershipAttachmentRelation" target="Membership" deleteRule="Nullify" db-relationship-path="attachedMembership"/>
+	<obj-relationship name="attachedVoucherProduct" source="VoucherProductAttachmentRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
+	<obj-relationship name="attachedArticleProduct" source="ArticleProductAttachmentRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
+	<obj-relationship name="attachedMembershipProduct" source="MembershipProductAttachmentRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="attachedProduct"/>
+	<obj-relationship name="attachedVoucher" source="VoucherAttachmentRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
+	<obj-relationship name="attachedArticle" source="ArticleAttachmentRelation" target="Article" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
+	<obj-relationship name="attachedMembership" source="MembershipAttachmentRelation" target="Membership" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
 	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Deny" db-relationship-path="contactToUpdate"/>
 	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Deny" db-relationship-path="createdByUser"/>
 	<obj-relationship name="notedContact" source="ContactNoteRelation" target="Contact" deleteRule="Nullify" db-relationship-path="notedContact"/>
-	<obj-relationship name="notedVoucherProduct" source="VoucherProductNoteRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="notedVoucherProduct"/>
-	<obj-relationship name="notedArticleProduct" source="ArticleProductNoteRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="notedArticleProduct"/>
-	<obj-relationship name="notedMembershipProduct" source="MembershipProductNoteRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="notedMembershipProduct"/>
-	<obj-relationship name="notedVoucher" source="VoucherNoteRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="notedVoucher"/>
-	<obj-relationship name="notedArticle" source="ArticleNoteRelation" target="Article" deleteRule="Nullify" db-relationship-path="notedArticle"/>
-	<obj-relationship name="notedMembership" source="MembershipNoteRelation" target="Membership" deleteRule="Nullify" db-relationship-path="notedMembership"/>
+	<obj-relationship name="notedVoucherProduct" source="VoucherProductNoteRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
+	<obj-relationship name="notedArticleProduct" source="ArticleProductNoteRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
+	<obj-relationship name="notedMembershipProduct" source="MembershipProductNoteRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
+	<obj-relationship name="notedVoucher" source="VoucherNoteRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
+	<obj-relationship name="notedArticle" source="ArticleNoteRelation" target="Article" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
+	<obj-relationship name="notedMembership" source="MembershipNoteRelation" target="Membership" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
 	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="toContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="toContact"/>
@@ -5500,12 +5464,12 @@
 	<obj-relationship name="abstractInvoiceLines" source="AbstractInvoice" target="AbstractInvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="contact" source="AbstractInvoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 
-	<obj-relationship name="taggedVoucherProduct" source="VoucherProductTagRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="taggedVoucherProduct"/>
-	<obj-relationship name="taggedArticleProduct" source="ArticleProductTagRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="taggedArticleProduct"/>
-	<obj-relationship name="taggedMembershipProduct" source="MembershipProductTagRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="taggedMembershipProduct"/>
-	<obj-relationship name="taggedVoucher" source="VoucherTagRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="taggedVoucher"/>
-	<obj-relationship name="taggedArticle" source="ArticleTagRelation" target="Article" deleteRule="Nullify" db-relationship-path="taggedArticle"/>
-	<obj-relationship name="taggedMembership" source="MembershipTagRelation" target="Membership" deleteRule="Nullify" db-relationship-path="taggedMembership"/>
+	<obj-relationship name="taggedVoucherProduct" source="VoucherProductTagRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
+	<obj-relationship name="taggedArticleProduct" source="ArticleProductTagRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
+	<obj-relationship name="taggedMembershipProduct" source="MembershipProductTagRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="taggedProduct"/>
+	<obj-relationship name="taggedVoucher" source="VoucherTagRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="taggedProductItem"/>
+	<obj-relationship name="taggedArticle" source="ArticleTagRelation" target="Article" deleteRule="Nullify" db-relationship-path="taggedProductItem"/>
+	<obj-relationship name="taggedMembership" source="MembershipTagRelation" target="Membership" deleteRule="Nullify" db-relationship-path="taggedProductItem"/>
 	<obj-relationship name="courseClass" source="QuoteLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="QuoteLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="quote" source="QuoteLine" target="Quote" deleteRule="Nullify" db-relationship-path="invoice"/>
