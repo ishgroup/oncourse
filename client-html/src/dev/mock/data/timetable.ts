@@ -1,5 +1,6 @@
 import { getDaysInMonth } from "date-fns";
 import { generateArraysOfRecords } from "../mockUtils";
+import { Session } from "../../../../build/generated-sources/swagger-js/api";
 
 export function mockTimetable() {
   this.getDates = (year, month) => generateArraysOfRecords(getDaysInMonth(new Date(year, month)), [{ name: "day", type: "number" }]).map(
@@ -50,7 +51,7 @@ export function mockTimetable() {
       tutors: ["Kim", "James Nash", "Gonzalez"]
     }));
   
-  this.getTimetableSessionList = () => [
+  this.getTimetableSessionList = (): Session[] => [
     {
       "id": 9500,
       "temporaryId": null,
