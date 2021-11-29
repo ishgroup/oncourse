@@ -87,9 +87,9 @@ class TagFunctions {
         put(TaggableClasses.ARTICLE, TagRequirementTypeDTO.ARTICLE)
         put(TaggableClasses.VOUCHER, TagRequirementTypeDTO.VOUCHER)
         put(TaggableClasses.MEMBERSHIP, TagRequirementTypeDTO.MEMBERSHIP)
-        put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.SALE_PRODUCT)
-        put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHER_PRODUCT)
-        put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIP_PRODUCT)
+        put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.ARTICLEPRODUCT)
+        put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHERPRODUCT)
+        put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIPPRODUCT)
     }}
 
     public static final BidiMap<String, TaggableClasses> taggableClassesBidiMap = new BidiMap<String, TaggableClasses>() {{
