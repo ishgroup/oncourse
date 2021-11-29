@@ -10,6 +10,7 @@ import ish.oncourse.utils.MembershipDiscountHelper;
 import ish.util.DiscountUtils;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -168,7 +169,7 @@ public class GetDiscountForEnrolment {
 				return false; // does not have any of the concession types that
 			// give this discount
 		}
-		if (discount.getStudentPostcodes() != null) {
+		if (StringUtils.trimToNull(discount.getStudentPostcodes()) != null) {
 			List<String> postcodes = Arrays.asList(discount.getStudentPostcodes().split("\\s*,\\s"));
 			if (!postcodes.isEmpty()) {
 				if (student.getContact().getPostcode() == null) {
