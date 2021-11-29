@@ -250,7 +250,6 @@ const TabsList = React.memo<Props & RouteComponentProps>((
         <Grid item xs={layoutArray[1].xs} className="root">
           <div className={clsx(
             classes.listContainer,
-            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader"
           )}
           >
             <div className={classes.listContainerInner}>
