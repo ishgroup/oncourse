@@ -44,7 +44,7 @@ class ProductsApiServiceImpl implements ProductsApi {
                     pr.canBuy = p.isOnSale & p.isWebVisible
                     pr.description = p.description
                     pr.isPaymentGatewayEnabled = new IsPaymentGatewayEnabled(p.college, p.objectContext).get()
-
+                    pr.price = p.getPriceIncTax().doubleValue()
                     switch (p.type) {
                         case 1i:
                             pr.type = Type.ARTICLE

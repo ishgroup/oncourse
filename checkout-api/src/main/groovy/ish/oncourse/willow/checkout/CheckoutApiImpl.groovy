@@ -72,7 +72,7 @@ class CheckoutApiImpl implements CheckoutApi, CheckoutV2Api {
     
     @Override
     @CompileDynamic
-    V2PaymentResponse makePayment(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId, String origin) {
+    V2PaymentResponse makePaymentV2(V2PaymentRequest paymentRequest, Boolean xValidate, String payerId, String origin) {
         try {
             ObjectContext context = cayenneService.newContext()
             College college = collegeService.college

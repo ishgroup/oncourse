@@ -1,5 +1,11 @@
 package ish.oncourse.willow.model.checkout;
 
+import ish.oncourse.willow.model.checkout.Application;
+import ish.oncourse.willow.model.checkout.Article;
+import ish.oncourse.willow.model.checkout.Enrolment;
+import ish.oncourse.willow.model.checkout.Membership;
+import ish.oncourse.willow.model.checkout.Voucher;
+import ish.oncourse.willow.model.checkout.WaitingList;
 import java.util.ArrayList;
 import java.util.List;
 

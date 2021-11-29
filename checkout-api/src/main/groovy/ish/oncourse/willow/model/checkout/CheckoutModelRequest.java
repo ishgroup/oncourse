@@ -1,5 +1,6 @@
 package ish.oncourse.willow.model.checkout;
 
+import ish.oncourse.willow.model.checkout.ContactNode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,7 +138,7 @@ public class CheckoutModelRequest  {
     }
 
     /**
-     * aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
+     * actual amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
      * @return payNow
      */
     public Double getPayNow() {

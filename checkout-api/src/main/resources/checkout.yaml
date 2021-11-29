@@ -62,6 +62,33 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/common.CommonError'
+  /v1/suggestion:
+    get:
+      operationId: getSuggestion
+      summary: Get suggested CourseClasses and Products
+      description: Get suggested CourseClasses and Products
+      tags:
+        - Suggestion
+      parameters:
+        - name: courseIds
+          in: query
+          description: Selected Courses identifiers
+          required: true
+          type: string
+        - name: productIds
+          in: query
+          description: Selected Product identifiers
+          required: true
+          type: string
+      responses:
+        200:
+          description: СoursesClasses and Products without duplicates.
+          schema:
+            $ref: '#/definitions/v2.suggestion.SuggestionResonse'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/common.CommonError'
   /v1/getCheckoutModel:
     post:
       x-filter:
@@ -94,7 +121,7 @@ paths:
       x-filter:
       - CollegeInfo
       - XValidate
-      operationId: makePayment
+      operationId: makePaymentV2
       summary: Validate model and create windcave session OR save model and complete windcave session (depends on xValidate header)
       description: Validate model and create windcave session OR save model and complete windcave session (depends on xValidate header)
       tags:
@@ -986,6 +1013,9 @@ definitions:
         type: boolean
       relatedClassId:
         type: string
+      price:
+        type: number
+        description: Product price
   web.Course:
     type: object
     properties:
@@ -1285,7 +1315,7 @@ definitions:
         description: Array of fields errors, or empty array
   field.ContactFieldsRequest:
     type: object
-    requred:
+    required:
     - contactId
     - classIds
     - products
@@ -1347,7 +1377,7 @@ definitions:
       - URL
   field.Field:
     type: object
-    requred:
+    required:
     - id
     - key
     - name
@@ -1404,7 +1434,7 @@ definitions:
         description: order position
   field.FieldHeading:
     type: object
-    requred:
+    required:
     - name
     - description
     - fields
@@ -1427,7 +1457,7 @@ definitions:
         description: order position
   field.ContactFields:
     type: object
-    requred:
+    required:
     - contactId
     - headings
     properties:
@@ -1441,7 +1471,7 @@ definitions:
         description: Related field headings
   checkout.Enrolment:
     type: object
-    requred:
+    required:
     - contactId
     - classId
     - price
@@ -1480,7 +1510,7 @@ definitions:
         type: string
   checkout.Application:
     type: object
-    requred:
+    required:
     - contactId
     - classId
     - warnings
@@ -1508,7 +1538,7 @@ definitions:
           $ref: '#/definitions/field.FieldHeading'
   checkout.Article:
     type: object
-    requred:
+    required:
     - contactId
     - productId
     - warnings
@@ -1550,7 +1580,7 @@ definitions:
           $ref: '#/definitions/field.FieldHeading'
   checkout.Membership:
     type: object
-    requred:
+    required:
     - contactId
     - productId
     - warnings
@@ -1586,7 +1616,7 @@ definitions:
           $ref: '#/definitions/field.FieldHeading'
   checkout.Voucher:
     type: object
-    requred:
+    required:
     - contactId
     - productId
     - warnings
@@ -1637,7 +1667,7 @@ definitions:
           $ref: '#/definitions/field.FieldHeading'
   checkout.WaitingList:
     type: object
-    requred:
+    required:
     - contactId
     - courseId
     - warnings
@@ -1681,7 +1711,7 @@ definitions:
           type: integer
   checkout.request.ContactNodeRequest:
       type: object
-      requred:
+      required:
       - contactId
       - classIds
       - products
@@ -1708,7 +1738,7 @@ definitions:
             type: string
   checkout.ContactNode:
     type: object
-    requred:
+    required:
     - contactId
     - contactFirstName
     - contactLastName
@@ -1922,6 +1952,17 @@ definitions:
         type: string
       paymentFormUrl:
         type: string
+  v2.suggestion.SuggestionResonse:
+    type: object
+    properties:
+      courseClasses:
+        type: array
+        items:
+          type: string
+      products:
+        type: array
+        items:
+          type: string
   checkout.concession.ConcessionType:
     type: object
     properties:

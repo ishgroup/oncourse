@@ -51,6 +51,7 @@ class WillowApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).addBinding().to(SearchService).in(Singleton)
         CXFModule.contributeResources(binder).addBinding().to(SearchApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(SearchFilter)
+        CXFModule.contributeResources(binder).addBinding().to(SuggestionApiService)
         CXFModule.contributeResources(binder).addBinding().to(CheckoutApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(CorporatePassApiImpl)
         CXFModule.contributeResources(binder).addBinding().to(PreferenceApiImpl)
