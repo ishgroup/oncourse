@@ -1,5 +1,4 @@
 import * as React from "react";
-// import { createMount } from "@mui/material/test-utils";
 import { mount } from 'enzyme';
 import { mockedAPI, TestEntry } from "../TestEntry";
 
@@ -18,15 +17,6 @@ export const defaultComponents: ({
   entity, View, record, render, defaultProps, beforeFn,
 }) => {
   const initialValues = record(mockedAPI);
-  // let mount;
-
-  // beforeAll(() => {
-  //   mount = createMount();
-  // });
-  //
-  // afterAll(() => {
-  //   mount.cleanUp();
-  // });
 
   let viewProps = { initialValues, values: initialValues };
 
