@@ -91,14 +91,7 @@ public class Overview {
 		for (Preference pref : licensePrefs) {
 			pref.setValueString(Boolean.toString(false));
 		}
-
-		Preference replicationPref = ObjectSelect.query(Preference.class).
-				where(Preference.COLLEGE.eq(college).
-						andExp(Preference.NAME.eq(Preferences.REPLICATION_ENABLED))).
-				selectFirst(context);
-		if (replicationPref != null) {
-			replicationPref.setValueString(Boolean.toString(false));
-		}
+		
 		college.setBillingCode(null);
 		context.commitChanges();
 	}
