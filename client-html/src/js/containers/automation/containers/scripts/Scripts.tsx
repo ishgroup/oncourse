@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
- getFormInitialValues, getFormValues, initialize, reduxForm
+  getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm
 } from "redux-form";
 import { withRouter } from "react-router";
 import { ScheduleType, Script } from "@api/model";
@@ -35,6 +35,7 @@ const ScriptsBase = React.memo<any>(props => {
     pdfReports,
     pdfBackgrounds,
     timeZone,
+    syncErrors,
     match: {
       params: { id }
     },
@@ -74,6 +75,7 @@ const ScriptsBase = React.memo<any>(props => {
       pdfBackgrounds={pdfBackgrounds}
       history={history}
       timeZone={timeZone}
+      syncErrors={syncErrors}
       {...rest}
     />
   );
@@ -84,6 +86,7 @@ const mapStateToProps = (state: State) => ({
   formsState: state.form,
   values: getFormValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   initialValues: getFormInitialValues(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
+  syncErrors: getFormSyncErrors(SCRIPT_EDIT_VIEW_FORM_NAME)(state),
   scripts: state.automation.script.scripts,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation,

@@ -55,7 +55,8 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
     accounts,
     taxes,
     access,
-    submitSucceeded
+    submitSucceeded,
+    syncErrors
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -80,7 +81,8 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
         manualLink,
         accounts,
         taxes,
-        submitSucceeded
+        submitSucceeded,
+        syncErrors
       }}
     />
   );

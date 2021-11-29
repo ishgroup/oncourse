@@ -20,7 +20,7 @@ export const epicMiddleware = createEpicMiddleware();
 // @ts-ignore
 const composeEnhancers = inDevelopment && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
   // @ts-ignore
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 50 })
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 10 })
   : compose;
 /* tslint:enable */
 

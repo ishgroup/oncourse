@@ -27,6 +27,7 @@ const HamburgerMenu = React.memo<Props>(props => {
       edge="start"
       onClick={toggleSwipeableDrawer}
       size="large"
+      className="relative zIndex2"
     >
       {opened ? <CloseIcon /> : <MenuIcon />}
     </IconButton>

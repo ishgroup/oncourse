@@ -9,14 +9,11 @@ describe("Virtual rendered SalesEditView", () => {
     EditView: SalesEditView,
     record: mockecApi => mockecApi.db.getProductItem(1),
     render: (wrapper, initialValues) => {
-      const text = wrapper.find(".textField").text();
-      expect(text).toContain(initialValues.productName);
-      expect(text).toContain(initialValues.purchasedByName);
-      expect(text).toContain(
-        "Purchased on" + format(new Date(initialValues.purchasedOn), EEE_D_MMM_YYYY).toString()
-      );
-      expect(text).toContain(initialValues.purchasePrice);
-      expect(text).toContain(initialValues.status);
+      const inputs = wrapper.find("input");
+      expect(inputs[0].attribs.value).toContain(initialValues.purchasedByName);
+      expect(inputs[1].attribs.value).toContain(format(new Date(initialValues.purchasedOn), EEE_D_MMM_YYYY).toString());
+      expect(inputs[2].attribs.value).toContain(initialValues.purchasePrice);
+      expect(inputs[3].attribs.value).toContain(initialValues.status);
     }
   });
 });

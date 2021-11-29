@@ -94,6 +94,7 @@ class NestedEditView extends React.Component<any, any> {
 
     return nestedEditRecords.map((r, index) => (
       <FullScreenEditView
+        hideTitle={r.hideFullScreenAppBar}
         validate={validate}
         manualLink={manualLink}
         nameCondition={nameCondition}

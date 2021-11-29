@@ -48,7 +48,7 @@ const getFormattedTaxes = (taxes: Tax[]) =>
 
 const AccountsEditView = props => {
   const {
-   twoColumn, taxTypes, isNew, values
+   twoColumn, taxTypes, isNew, values, syncErrors
   } = props;
   const isCustom = values && values.isCustom === true;
   const isDisabled = isNew ? false : !isCustom;
@@ -63,57 +63,62 @@ const AccountsEditView = props => {
   }
 
   return (
-    <Grid container columnSpacing={3} className="p-3">
-      <Grid item lg={twoColumn ? 11 : 11} md={twoColumn ? 11 : 11} xs={11}>
-        <Grid container columnSpacing={3}>
-          <Grid item xs={twoColumn ? 6 : 12}>
-            <FullScreenStickyHeader
-              twoColumn={twoColumn}
-              title={values && values.accountCode}
-              fields={(
-                <FormField
-                  type="text"
-                  name="accountCode"
-                  label="Code"
-                  required
-                />
-              )}
-            />
-            <FormField
-              type="select"
-              disabled={isDisabled}
-              name="type"
-              label="Type"
-              items={formattedAccountTypes}
-              className="mb-2"
-              required
-            />
-            <FormField
-              type="text"
-              name="description"
-              label="Description"
-              required={isNew || isCustom}
-              className="mb-2"
-              multiline
-            />
-            <FormControlLabel
-              className="checkbox pr-3 mb-2"
-              control={
-                <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" />
-              }
-              label="Enabled"
-            />
-            {isIncomeType ? (
+    <Grid container item columnSpacing={3} rowSpacing={2} xs={twoColumn ? 6 : 12} className="p-3">
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          twoColumn={twoColumn}
+          title={values && values.accountCode}
+          opened={isNew || Object.keys(syncErrors).includes("accountCode")}
+          fields={(
+            <Grid item xs={12}>
               <FormField
-                type="select"
-                name="tax.id"
-                label="Tax type"
-                required={isNew || isCustom}
-                items={getFormattedTaxes(taxTypes) || []}
+                type="text"
+                name="accountCode"
+                label="Code"
+                required
               />
-            ) : null}
-          </Grid>
-        </Grid>
+            </Grid>
+          )}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="select"
+          disabled={isDisabled}
+          name="type"
+          label="Type"
+          items={formattedAccountTypes}
+          required
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormField
+          type="text"
+          name="description"
+          label="Description"
+          required={isNew || isCustom}
+          multiline
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <FormControlLabel
+          className="checkbox pr-3"
+          control={
+            <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" />
+          }
+          label="Enabled"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        {isIncomeType ? (
+          <FormField
+            type="select"
+            name="tax.id"
+            label="Tax type"
+            required={isNew || isCustom}
+            items={getFormattedTaxes(taxTypes) || []}
+          />
+        ) : null}
       </Grid>
     </Grid>
   );

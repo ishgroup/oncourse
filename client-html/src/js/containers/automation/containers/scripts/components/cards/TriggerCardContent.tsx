@@ -33,7 +33,7 @@ const TriggerCardContent = props => {
   }, [values.trigger?.type, values.trigger?.entityName]);
 
   return (
-    <div className="pt-2 centeredFlex">
+    <div className="pt-2 centeredFlex mb-2">
       <FormField
         type="select"
         name="trigger.type"

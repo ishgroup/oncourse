@@ -5,7 +5,6 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
 import {
  CheckoutDiscount, CheckoutItem, CheckoutPayment, CheckoutSummary
@@ -19,6 +18,7 @@ import PaymentPage from "./components/payment-methods/PaymentPage";
 import CheckoutAppBar from "../CheckoutAppBar";
 import RestartButton from "../RestartButton";
 import { CheckoutPage } from "../../constants";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;
@@ -61,26 +61,34 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         ? <CheckoutDiscountEditView type="voucher" selectedDiscount={voucherItem} />
         : (
           <div className="root">
-            <CustomAppBar>
-              <CheckoutAppBar title={title} />
-              {payment.process.status === "success" && <RestartButton />}
-            </CustomAppBar>
             <LoadingIndicator customLoading={isPaymentProcessing} />
 
-            {selectedPaymentType && selectedPaymentType.type === "Credit card"
+
+            <AppBarContainer
+              hideHelpMenu
+              hideSubmitButton
+              disableInteraction
+              title={(
+                <CheckoutAppBar title={title} />
+              )}
+              actions={
+                payment.process.status === "success" && <RestartButton />
+              }
+            >
+              {selectedPaymentType && selectedPaymentType.type === "Credit card"
               && (
-              <CreditCardPaymentPage
-                isPaymentProcessing={isPaymentProcessing}
-                payerName={payerName}
-                summary={summary}
-                disablePayment={disablePayment}
-              />
-            )}
+                <CreditCardPaymentPage
+                  isPaymentProcessing={isPaymentProcessing}
+                  payerName={payerName}
+                  summary={summary}
+                  disablePayment={disablePayment}
+                />
+              )}
 
-            {((selectedPaymentType && selectedPaymentType.type !== "Credit card")
-            || (!selectedPaymentType && ["No payment", "Saved credit card"].includes(payment.selectedPaymentType)))
-            && <PaymentPage paymentType={payment.selectedPaymentType} payerName={payerName} summary={summary} />}
-
+              {((selectedPaymentType && selectedPaymentType.type !== "Credit card")
+                || (!selectedPaymentType && ["No payment", "Saved credit card"].includes(payment.selectedPaymentType)))
+              && <PaymentPage paymentType={payment.selectedPaymentType} payerName={payerName} summary={summary} />}
+            </AppBarContainer>
           </div>
       )}
     </>

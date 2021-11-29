@@ -128,8 +128,7 @@ class ActionBody extends React.PureComponent<Props, any> {
           item
           xs
           className={clsx(
-            classes.rightSideBar,
-            LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBackground")
+            classes.rightSideBar
           }
         >
           <NewsRender />

@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import { Qualification } from "@api/model";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
 
-const QualificationListItemRenderer = React.memo<{ content: string; search: string; data: Qualification }>(
-  ({ search, data }) => {
+const QualificationListItemRenderer = React.memo<{ content: string; search: string; data: Qualification, parentProps: any }>(
+  ({ search, data, parentProps }) => {
     const highlightedCode = useMemo(
       () => (data.nationalCode ? (search ? getHighlightedPartLabel(data.nationalCode, search) : data.nationalCode) : "no course code"),
       [data.nationalCode, search]
@@ -21,16 +21,18 @@ const QualificationListItemRenderer = React.memo<{ content: string; search: stri
     );
 
     return (
-      <div className="overflow-hidden">
-        <div className="text-nowrap text-truncate">
-          {highlightedTitle}
+      <div {...parentProps}>
+        <div className="overflow-hidden">
+          <div className="text-nowrap text-truncate">
+            {highlightedTitle}
+          </div>
+          <Typography noWrap variant="caption" component="div" color="textSecondary" className="text-truncate">
+            {highlightedCode}
+          </Typography>
         </div>
-        <Typography noWrap variant="caption" component="div" color="textSecondary" className="text-truncate">
-          {highlightedCode}
-        </Typography>
       </div>
     );
   }
 );
 
-export default (content, data, search) => <QualificationListItemRenderer data={data} content={content} search={search} />;
+export default (content, data, search, parentProps) => <QualificationListItemRenderer data={data} search={search} content={content} parentProps={parentProps} />;
