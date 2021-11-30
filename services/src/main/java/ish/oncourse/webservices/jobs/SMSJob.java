@@ -101,33 +101,30 @@ public class SMSJob implements Job {
 
 				CommonPreferenceController pref = prefFactory.getPreferenceController(aCollege);
 
-				if (aCollege == null || !pref.getLicenseSms()) {
-					smsMessage.setStatus(MessageStatus.FAILED);
-					smsMessage.setResponse("sms license is not enabled");
+				
+				String fromAddress = pref.getSMSFromAddress();
+
+				if (fromAddress == null || fromAddress.isEmpty()) {
+					smsMessage.setStatus(MessageStatus.QUEUED);
+					smsMessage.setResponse("From address not configured");
 				} else {
-					String fromAddress = pref.getSMSFromAddress();
+					String toAddress = smsMessage.getDestinationAddress();
 
-					if (fromAddress == null || fromAddress.isEmpty()) {
-						smsMessage.setStatus(MessageStatus.QUEUED);
-						smsMessage.setResponse("From address not configured");
+					if (toAddress == null || toAddress.isEmpty()) {
+						smsMessage.setStatus(MessageStatus.FAILED);
+						smsMessage.setResponse("no mobileNumber found for recipient");
 					} else {
-						String toAddress = smsMessage.getDestinationAddress();
+						String smsTemplateText = smsMessage.getMessage().getSmsText();
 
-						if (toAddress == null || toAddress.isEmpty()) {
+						if (smsTemplateText == null || smsTemplateText.isEmpty()) {
 							smsMessage.setStatus(MessageStatus.FAILED);
-							smsMessage.setResponse("no mobileNumber found for recipient");
+							smsMessage.setResponse("no sms text provided");
 						} else {
-							String smsTemplateText = smsMessage.getMessage().getSmsText();
-
-							if (smsTemplateText == null || smsTemplateText.isEmpty()) {
-								smsMessage.setStatus(MessageStatus.FAILED);
-								smsMessage.setResponse("no sms text provided");
-							} else {
-								sendSMS(sessionId, fromAddress, smsMessage);
-							}
+							sendSMS(sessionId, fromAddress, smsMessage);
 						}
 					}
 				}
+				
 
 				objectContext.commitChanges();
 			}
