@@ -2226,6 +2226,15 @@
 	<obj-entity name="MembershipProduct" superEntityName="Product" className="ish.oncourse.model.MembershipProduct">
 		<qualifier><![CDATA[type = 2]]></qualifier>
 	</obj-entity>
+	<obj-entity name="ArticleProductCustomField" superEntityName="CustomField" className="ish.oncourse.model.ArticleProductCustomField">
+		<qualifier><![CDATA[entityName = "ArticleProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="VoucherProductCustomField" superEntityName="CustomField" className="ish.oncourse.model.VoucherProductCustomField">
+		<qualifier><![CDATA[entityName = "VoucherProduct"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="MembershipProductCustomField" superEntityName="CustomField" className="ish.oncourse.model.MembershipProductCustomField">
+		<qualifier><![CDATA[entityName = "MembershipProduct"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="Message" className="ish.oncourse.model.Message" dbEntityName="Message" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
@@ -2428,7 +2437,7 @@
 		<obj-attribute name="outcomeIdTrainingOrg" type="java.lang.String" db-attribute-path="outcomeIdTrainingOrg"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 	</obj-entity>
-	<obj-entity name="Product" className="ish.oncourse.model.Product" dbEntityName="Product" superClassName="WillowCayenneObject">
+	<obj-entity name="Product" className="ish.oncourse.model.Product" dbEntityName="Product" superClassName="ish.oncourse.model.ExpandableCayenneDataObject">
 		<qualifier><![CDATA[type = 1]]></qualifier>
 		<obj-attribute name="angelId" type="java.lang.Long" db-attribute-path="angelId"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3552,6 +3561,15 @@
 	<db-relationship name="relatedContact" source="CustomField" target="Contact">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedArticleProduct" source="CustomField" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedVoucherProduct" source="CustomField" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedMembershipProduct" source="CustomField" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedCourse" source="CustomField" target="Course">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -4339,6 +4357,9 @@
 	<db-relationship name="customFields" source="WaitingList" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="Product" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="student" source="WaitingList" target="Student">
 		<db-attribute-pair source="studentId" target="id"/>
 	</db-relationship>
@@ -4505,6 +4526,12 @@
 	<db-relationship name="account" source="UserAccountProperty" target="UserAccount" toMany="false">
 		<db-attribute-pair source="userAccountId" target="id"/>
 	</db-relationship>
+	<obj-relationship name="relatedObject" source="ArticleProductCustomField" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="relatedArticleProduct"/>
+	<obj-relationship name="relatedObject" source="VoucherProductCustomField" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="relatedVoucherProduct"/>
+	<obj-relationship name="relatedObject" source="MembershipProductCustomField" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="relatedMembershipProduct"/>\
+	<obj-relationship name="customFields" source="ArticleProduct" target="ArticleProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="customFields" source="VoucherProduct" target="VoucherProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
+	<obj-relationship name="customFields" source="MembershipProduct" target="MembershipProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
 	<obj-relationship name="college" source="Application" target="College" deleteRule="Nullify" db-relationship-path="college"/>
 	<obj-relationship name="course" source="Application" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="customFields" source="Application" target="ApplicationCustomField" deleteRule="Deny" db-relationship-path="customFields"/>

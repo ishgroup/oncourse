@@ -61,6 +61,18 @@ public class BinaryInfoRelationUpdater extends AbstractWillowUpdater<BinaryInfoR
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Assessment.class);
 		} else if (ASSESSMENT_SUBMISSION__ENTITY_NAME.equals(stub.getEntityName())) {
 			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), AssessmentSubmission.class);
+		} else if (ARTICLE_PRODUCT_ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), ArticleProduct.class);
+		} else if (MEMBERSHIP_PRODUCT_ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), MembershipProduct.class);
+		} else if (VOUCHER_PRODUCT_ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), VoucherProduct.class);
+		} else if (ARTICLE_ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Article.class);
+		} else if (MEMBERSHIP_ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Membership.class);
+		} else if (VOUCHER_ENTITY_NAME.equals(stub.getEntityName())) {
+			entityObject = callback.updateRelationShip(stub.getEntityAngelId(), Voucher.class);
 		} else {
 			String message = String.format("Unexpected related entity with type %s and angelid %s",
 				stub.getEntityName(), stub.getEntityAngelId());

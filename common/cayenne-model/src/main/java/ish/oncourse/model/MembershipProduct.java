@@ -9,4 +9,9 @@ public class MembershipProduct extends _MembershipProduct implements Queueable {
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
 	}
+
+	@Override
+	public void setCustomFieldValue(String key, String value) {
+		setCustomFieldValue(key, value, MembershipProductCustomField.class);
+	}
 }

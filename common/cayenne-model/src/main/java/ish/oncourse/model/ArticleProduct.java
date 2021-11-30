@@ -14,4 +14,9 @@ public class ArticleProduct extends _ArticleProduct implements Queueable {
 	public boolean isAsyncReplicationAllowed() {
 		return true;
 	}
+
+	@Override
+	public void setCustomFieldValue(String key, String value) {
+		setCustomFieldValue(key, value, ArticleProductCustomField.class);
+	}
 }

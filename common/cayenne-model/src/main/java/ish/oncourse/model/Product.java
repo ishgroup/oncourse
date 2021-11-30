@@ -1,11 +1,13 @@
 package ish.oncourse.model;
 
 import ish.math.Money;
+import ish.oncourse.cayenne.ICustomField;
 import ish.oncourse.model.auto._Product;
 import ish.oncourse.utils.QueueableObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Product extends _Product implements Queueable {
 	private static final long serialVersionUID = 8422903473669633877L;
@@ -14,6 +16,11 @@ public class Product extends _Product implements Queueable {
 	 * ordered classes cookie name
 	 */
 	public static final String SHORTLIST_COOKIE_KEY = "productShortList";
+
+	@Override
+	public List<? extends ICustomField> getCustomFields() {
+		return null;
+	}
 
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
@@ -48,4 +55,9 @@ public class Product extends _Product implements Queueable {
 			setModified(getCreated());
 		}
     }
+
+	@Override
+	public void setCustomFieldValue(String key, String value) {
+
+	}
 }

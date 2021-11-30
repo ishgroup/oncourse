@@ -10,6 +10,9 @@ public abstract class AbstractWillowUpdater<V extends GenericReplicationStub, T 
 	public static final String ARTICLE_ENTITY_NAME = Article.class.getSimpleName();
 	public static final String MEMBERSHIP_ENTITY_NAME = Membership.class.getSimpleName();
 	public static final String VOUCHER_ENTITY_NAME = Voucher.class.getSimpleName();
+	public static final String ARTICLE_PRODUCT_ENTITY_NAME = ArticleProduct.class.getSimpleName();
+	public static final String MEMBERSHIP_PRODUCT_ENTITY_NAME = MembershipProduct.class.getSimpleName();
+	public static final String VOUCHER_PRODUCT_ENTITY_NAME = VoucherProduct.class.getSimpleName();
 	public static final String CONTACT_ENTITY_NAME = Contact.class.getSimpleName();
 	public static final String COURSE_ENTITY_NAME = Course.class.getSimpleName();
 	public static final String COURSE_CLASS_ENTITY_NAME = CourseClass.class.getSimpleName();

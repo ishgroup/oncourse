@@ -46,6 +46,12 @@ public class CustomFieldUpdater extends AbstractWillowUpdater<CustomFieldStub, C
 			relatedObject = callback.updateRelationShip(stub.getForeignId(), Membership.class);
 		} else if (VOUCHER_ENTITY_NAME.equals(stub.getEntityName())) {
 			relatedObject = callback.updateRelationShip(stub.getForeignId(), Voucher.class);
+		} else if (ARTICLE_PRODUCT_ENTITY_NAME.equals(stub.getEntityName())) {
+			relatedObject = callback.updateRelationShip(stub.getForeignId(), ArticleProduct.class);
+		} else if (MEMBERSHIP_PRODUCT_ENTITY_NAME.equals(stub.getEntityName())) {
+			relatedObject = callback.updateRelationShip(stub.getForeignId(), MembershipProduct.class);
+		} else if (VOUCHER_PRODUCT_ENTITY_NAME.equals(stub.getEntityName())) {
+			relatedObject = callback.updateRelationShip(stub.getForeignId(), VoucherProduct.class);
 		} else {
 			String message = String.format("Unexpected related entity with type %s and angelId %s",
 					stub.getEntityName(), stub.getForeignId());

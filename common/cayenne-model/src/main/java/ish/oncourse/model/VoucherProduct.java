@@ -10,8 +10,13 @@ public class VoucherProduct extends _VoucherProduct implements Queueable {
 	 * parameter for add/remove cookies actions
 	 */
 	public static final String VOUCHER_PRODUCT_ID_PARAMETER = "voucherProductId";
-	
+
 	public Long getId() {
 		return QueueableObjectUtils.getId(this);
+	}
+
+	@Override
+	public void setCustomFieldValue(String key, String value) {
+		setCustomFieldValue(key, value, VoucherProductCustomField.class);
 	}
 }
