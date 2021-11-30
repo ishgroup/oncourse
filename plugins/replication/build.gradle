@@ -11,6 +11,8 @@ ext {
     derbyVersion = '10.14.2.0'
     bootiqueVersion = '1.0'
     groovyVersion ='2.5.13'
+    oldVersion = 25
+    versionToSet = 25
 }
 
 
@@ -62,6 +64,7 @@ compileJava {
 }
 
 task switchReplicationVersion(type: Copy) {
+    onlyIf {oldVersion != versionToSet}
     ant.replaceregexp(match:"${oldVersion}", replace:"${versionToSet}", flags:'g') {
         fileset(dir: 'src')
     }
