@@ -84,7 +84,7 @@ paths:
         200:
           description: СoursesClasses and Products without duplicates.
           schema:
-            $ref: '#/definitions/v2.suggestion.SuggestionResonse'
+            $ref: '#/definitions/v2.suggestion.SuggestionResponse'
         default:
           description: Unexpected error
           schema:
@@ -1952,7 +1952,7 @@ definitions:
         type: string
       paymentFormUrl:
         type: string
-  v2.suggestion.SuggestionResonse:
+  v2.suggestion.SuggestionResponse:
     type: object
     properties:
       courseClasses:
