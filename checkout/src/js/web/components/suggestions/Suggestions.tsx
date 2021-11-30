@@ -6,17 +6,17 @@
 import React, {useCallback, useEffect} from "react";
 import {Phase} from "../../../enrol/reducers/State";
 import {formatMoney} from "../../../common/utils/FormatUtils";
-import {SuggestionsState} from "../../../services/IshState";
 
 interface Props {
-  suggestions?: SuggestionsState;
   phase: Phase;
   getSuggestions?: () => void;
   isCartEmpty?: boolean;
 }
 
 const Suggestions: React.FC<Props> = props => {
-  const { suggestions, phase, getSuggestions, isCartEmpty } = props;
+  const { getSuggestions, isCartEmpty } = props;
+
+  const suggestions: any = [];
 
   useEffect(() => {
     getSuggestions();
@@ -27,7 +27,6 @@ const Suggestions: React.FC<Props> = props => {
     //
   }, []);
 
-  console.log(suggestions);
   const getDescriptionText = description => {
     if (description) {
       const tempDiv = document.createElement('div');

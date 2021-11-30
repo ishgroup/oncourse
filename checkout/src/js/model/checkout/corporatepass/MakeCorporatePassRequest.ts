@@ -1,10 +1,11 @@
-import {CheckoutModelRequest} from "./../../checkout/CheckoutModelRequest";
+import { CheckoutModelRequest } from '../CheckoutModelRequest';
 
 export class MakeCorporatePassRequest {
   checkoutModelRequest?: CheckoutModelRequest;
-  agreementFlag?: boolean;
-  corporatePassId?: string;
-  reference?: string;
-  purchaseOrder?: string;
-}
 
+  agreementFlag?: boolean;
+
+  corporatePassId?: string;
+
+  reference?: string;
+}

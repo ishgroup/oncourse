@@ -1,14 +1,15 @@
-import {MockDB} from "../../../../../dev/mocks/mocks/MockDB";
+import { inspect } from 'util';
+import { MockDB } from '../../../../../dev/mocks/mocks/MockDB';
 
-import {Contact, CourseClass, Enrolment, ContactNode} from "../../../../../js/model";
+import {
+  Contact, CourseClass, Enrolment, ContactNode
+} from '../../../../../js/model';
 
-import {IshState} from "../../../../../js/services/IshState";
+import { IshState } from '../../../../../js/services/IshState';
 
-import {ContactPropsBy} from "../../../../../js/enrol/containers/summary/Summary";
+import { ContactPropsBy } from '../../../../../js/enrol/containers/summary/Summary';
 
-import * as MockFunctions from "../../../../../dev/mocks/mocks/MockFunctions";
-
-import {inspect} from "util";
+import * as MockFunctions from '../../../../../dev/mocks/mocks/MockFunctions';
 
 const db: MockDB = new MockDB();
 const contact: Contact = db.getContactByIndex(0);
@@ -16,8 +17,16 @@ const courseClass: CourseClass = db.getCourseClassByIndex(0);
 const enrolment: Enrolment = db.createEnrolment(contact.id, courseClass.id);
 
 const items: ContactNode = {
+  contactLastName: 'Test',
+  contactFirstName: 'Test',
+  contactEmail: 'test@test.test',
   contactId: contact.id,
   enrolments: [enrolment],
+  applications: [],
+  articles: [],
+  memberships: [],
+  vouchers: [],
+  waitingLists: []
 };
 
 const state: IshState = MockFunctions.mockState(contact, [courseClass], [items]);

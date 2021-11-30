@@ -1,50 +1,51 @@
-import {Item} from "./../common/Item";
-import {DataType} from "./../field/DataType";
+import { Item } from '../common/Item';
+import { DataType } from './DataType';
 
 export class Field {
-
   /**
    * Field id
    */
-  id?: string;
+  id: string;
 
   /**
    * Property key
    */
-  key?: string;
+  key: string;
 
   /**
    * Field name
    */
-  name?: string;
+  name: string;
 
-
+  /**
+   * Field pattern ( PATTERN_TEXT only )
+   */
   pattern?: string;
 
   /**
    * Field description
    */
-  description?: string;
+  description: string;
 
   /**
    * Mandatory flag
    */
-  mandatory?: boolean;
+  mandatory: boolean;
 
   /**
    * Data type of provaded value
    */
-  dataType?: DataType;
+  dataType: DataType;
 
   /**
    * Enumeration name which is type for field value
    */
-  enumType?: string;
+  enumType: string;
 
   /**
    * Value for corresponded property
    */
-  value?: string | number;
+  value: string;
 
   /**
    * Item value for corresponded property
@@ -54,16 +55,15 @@ export class Field {
   /**
    * Default value for corresponded property
    */
-  defaultValue?: string;
+  defaultValue: string;
 
   /**
    * Combobox choices for enumeration types
    */
-  enumItems?: Item[];
+  enumItems: Item[];
 
   /**
    * order position
    */
-  ordering?: number;
+  ordering: number;
 }
-

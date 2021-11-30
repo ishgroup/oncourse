@@ -1,7 +1,9 @@
-import {CourseClassPrice, Course, Preferences, Promotion, CourseClass, Product, Contact, Discount} from "../model";
-import {CheckoutState} from "../enrol/reducers/State";
-import {WillowConfig} from "../configLoader";
-import {Suggestion} from "../model/web/Suggestion";
+import {
+  CourseClassPrice, Course, Preferences, Promotion, CourseClass, Product, Contact
+} from '../model';
+import { CheckoutState } from '../enrol/reducers/State';
+import { WillowConfig } from '../configLoader';
+import { SuggestionResponse } from '../model/v2/suggestion/SuggestionResponse';
 
 export interface IshState {
   readonly form: any;
@@ -15,7 +17,6 @@ export interface IshState {
   readonly config: WillowConfig;
   readonly preferences: Preferences;
   readonly suggestions: SuggestionsState;
-
 }
 
 export interface CartState {
@@ -24,7 +25,6 @@ export interface CartState {
   readonly products: ProductCartState;
   readonly promotions: PromotionCartState;
   readonly waitingCourses: WaitingCourseClassState;
-  // readonly suggestions: SuggestionCartState;
 }
 
 export interface PopupState {
@@ -35,7 +35,7 @@ export type CoursesState = Normalized<CourseClass>;
 export type WaitingCoursesState = Normalized<Course>;
 export type InactiveCoursesState = Normalized<Course>;
 export type ProductsState = Normalized<Product>;
-export type SuggestionsState = Normalized<Suggestion>;
+export type SuggestionsState = SuggestionResponse;
 
 /**
  * @deprecated we will use separate classes
@@ -44,38 +44,26 @@ export type CommonCartItem = CourseClassCart | ProductCart | PromotionCart | Wai
 
 export type CourseClassCartState = Normalized<CourseClassCart>;
 export type ProductCartState = Normalized<ProductCart>;
-export type SuggestionCartState = Normalized<SuggestionCart>;
 export type PromotionCartState = Normalized<PromotionCart>;
 export type WaitingCourseClassState = Normalized<WaitingCourseCart>;
 export type ReplaceCourseClassState = { replace: CourseClassCartState, replacement: CourseClassCartState };
 
 // --- Extend backend model
-export interface DiscountState extends Discount {
-}
 
-export interface CourseClassPriceState extends CourseClassPrice {
-}
+export type CourseClassPriceState = CourseClassPrice;
 
-export interface CourseClassCart extends CourseClass {
-}
-
+export type CourseClassCart = CourseClass;
 
 export interface ContactState extends Contact {
   parent?: Contact;
   warning?: string;
 }
 
-export interface ProductCart extends Product {
-}
+export type ProductCart = Product;
 
-export interface SuggestionCart extends Suggestion {
-}
+export type WaitingCourseCart = Course;
 
-export interface WaitingCourseCart extends Course {
-}
-
-export interface PromotionCart extends Promotion {
-}
+export type PromotionCart = Promotion;
 
 export interface Normalized<V> {
   readonly entities: { [key: string]: V };

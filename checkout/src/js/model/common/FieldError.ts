@@ -1,12 +1,11 @@
-
 export class FieldError {
   /**
-   * index of field with error
+   * order position
    */
-  index?: number;
+  index: number;
 
   /**
-   * Name of field with error
+   * Name of fiels with error
    */
   name: string;
 
@@ -15,4 +14,3 @@ export class FieldError {
    */
   error: string;
 }
-

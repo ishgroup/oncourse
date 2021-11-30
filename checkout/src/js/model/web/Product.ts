@@ -1,7 +1,6 @@
-import {Type} from "./../web/product/Type";
+import { Type } from './product/Type';
 
 export class Product {
-
   /**
    * Internal Unique identifier of product
    */
@@ -31,8 +30,15 @@ export class Product {
    * Is on sale and is Web visible
    */
   canBuy?: boolean;
-  type?: Type;
-  allowRemove?: boolean;
-  relatedClassId?: string;
-}
 
+  type?: Type;
+
+  allowRemove?: boolean;
+
+  relatedClassId?: string;
+
+  /**
+   * Product price
+   */
+  price?: number;
+}

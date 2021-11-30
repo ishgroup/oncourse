@@ -1,25 +1,23 @@
-import {Field} from "./../field/Field";
+import { Field } from './Field';
 
 export class FieldHeading {
-
   /**
    * Heading name
    */
-  name?: string;
+  name: string;
 
   /**
    * Heading description
    */
-  description?: string;
+  description: string;
 
   /**
    * Fields set related to field heading
    */
-  fields?: Field[];
+  fields: Field[];
 
   /**
    * order position
    */
-  ordering?: number;
+  ordering: number;
 }
-

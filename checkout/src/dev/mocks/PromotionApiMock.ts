@@ -1,6 +1,6 @@
-import {PromotionApi} from "../../js/http/PromotionApi";
-import {MockConfig} from "./mocks/MockConfig";
-import {CodeResponse, RedeemVoucher} from "../../js/model";
+import { PromotionApi } from '../../js/http/PromotionApi';
+import { MockConfig } from './mocks/MockConfig';
+import { CodeResponse, RedeemVoucher } from '../../js/model';
 
 export class PromotionApiMock extends PromotionApi {
   public config: MockConfig;
@@ -15,7 +15,6 @@ export class PromotionApiMock extends PromotionApi {
       name: `${code} voucher`,
       id: `${code}-100`,
       code,
-      enabled: false,
       payer: this.config.db.contacts.entities.contact[this.config.db.contacts.result[code]],
     };
     const promotionMock = {

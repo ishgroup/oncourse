@@ -5,6 +5,10 @@
       "src/dev",
       "src/test"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "@EnumUtils": ["src/js/common/utils/EnumUtils.ts"]
+    },
     "outDir": "build/ts",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

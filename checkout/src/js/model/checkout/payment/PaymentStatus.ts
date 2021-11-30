@@ -1,5 +1,4 @@
-import { createStringEnum } from '../../../common/utils/EnumUtils';
-
+import { createStringEnum } from '@EnumUtils';
 
 export const PaymentStatus = createStringEnum([
   'IN_PROGRESS',

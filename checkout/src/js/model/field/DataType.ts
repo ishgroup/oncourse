@@ -1,4 +1,4 @@
-import {createStringEnum} from "../../common/utils/EnumUtils";
+import { createStringEnum } from '@EnumUtils';
 
 export const DataType = createStringEnum([
   'STRING',
