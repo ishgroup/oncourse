@@ -13,7 +13,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.EntityRelationService
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.checkout.functions.GetProduct
-import ish.oncourse.willow.model.v2.suggestion.SuggestionResonse
+import ish.oncourse.willow.model.v2.suggestion.SuggestionResponse
 import ish.oncourse.willow.service.SuggestionApi
 import org.apache.cayenne.ObjectContext
 
@@ -32,7 +32,7 @@ class SuggestionApiService implements SuggestionApi {
 
 
     @Override
-    SuggestionResonse getSuggestion(String courseIds, String productIds) {
+    SuggestionResponse getSuggestion(String courseIds, String productIds) {
 
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
@@ -64,7 +64,7 @@ class SuggestionApiService implements SuggestionApi {
             )
         }
 
-        return new SuggestionResonse().courseClasses(courseClasses.asList()).products(products.asList())
+        return new SuggestionResponse().courseClasses(courseClasses.asList()).products(products.asList())
     }
 
     private CourseClass getNearestCourseClass(Course course) {
