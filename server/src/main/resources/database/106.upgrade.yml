@@ -107,10 +107,6 @@ databaseChangeLog:
                             mp.smsText = m.smsText,
                             mp.createdByUserId = m.createdByUserId
                         WHERE mp.emailFrom IS NULL'
-              - dropIndex:
-                    tableName: Message_Person
-                    indexName: fk_Message_Person_Message
-
     - changeSet:
           id: 106-3
           author: dmitriy
@@ -176,6 +172,9 @@ databaseChangeLog:
           - dropForeignKeyConstraint:
               baseTableName: Message_Person
               constraintName: fk_MessPers_Message
+          - dropIndex:
+              tableName: Message_Person
+              indexName: fk_Message_Person_Message
           - dropTable:
               tableName: Message
           - dropColumn:
