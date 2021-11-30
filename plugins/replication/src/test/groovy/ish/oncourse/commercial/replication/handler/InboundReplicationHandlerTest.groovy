@@ -144,12 +144,12 @@ class InboundReplicationHandlerTest extends TestWithDatabase {
 						con.setAngelId(null)
 						con.setUniqueCode(SecurityUtil.generateRandomPassword(16))
 
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(course)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(st)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(con)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(wList)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(schemeStub)
-						group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(configurationStubW)
+						group.getGenericAttendanceOrBinaryInfo().add(course)
+						group.getGenericAttendanceOrBinaryInfo().add(st)
+						group.getGenericAttendanceOrBinaryInfo().add(con)
+						group.getGenericAttendanceOrBinaryInfo().add(wList)
+						group.getGenericAttendanceOrBinaryInfo().add(schemeStub)
+						group.getGenericAttendanceOrBinaryInfo().add(configurationStubW)
 
 						records.getGenericGroups().add(group)
 

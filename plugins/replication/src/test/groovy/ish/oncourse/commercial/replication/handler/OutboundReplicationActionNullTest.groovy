@@ -48,12 +48,12 @@ class OutboundReplicationActionNullTest extends TestWithDatabase {
 					@Override
 					ReplicationResult sendRecords(ReplicationRecords records) {
 						assertNotNull(records)
-						assertEquals(records.getGroups().get(0).getGenericAttendanceOrBinaryDataOrBinaryInfo().size(), 1,"Expecting only one record.")
+						assertEquals(records.getGroups().get(0).getGenericAttendanceOrBinaryInfo().size(), 1,"Expecting only one record.")
 
 						List<GenericReplicationStub> stubs = new ArrayList<>()
 
 						for (TransactionGroup group : records.getGroups()) {
-							for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+							for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 								if (stub instanceof ContactStub) {
 									stubs.add(stub)
 								}
@@ -94,7 +94,7 @@ class OutboundReplicationActionNullTest extends TestWithDatabase {
 		ReplicationResult result = new ReplicationResult()
 
 		for (TransactionGroup group : records.getGroups()) {
-			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+			for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 				ReplicatedRecord r = new ReplicatedRecord()
 				r.setStatus(Status.SUCCESS)
 

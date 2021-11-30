@@ -147,7 +147,7 @@ public class OutboundReplicationHandler implements ReplicationHandler {
                     qr = ctx.localObject(qr);
                     qr.setNumberOfAttempts(qr.getNumberOfAttempts() + 1);
 
-                    group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(qr));
+                    group.getGenericAttendanceOrBinaryInfo().add(stubBuilder.convert(qr));
                 });
                 ctx.commitChanges();
                 currentBatchMap.put(new QueueKey(cd.getForeignRecordId(), cd.getTableName()), cd);
@@ -186,7 +186,7 @@ public class OutboundReplicationHandler implements ReplicationHandler {
                 }
                 var stub = this.stubBuilder.convert(record);
                 if (stub != null) {
-                    group.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stub);
+                    group.getGenericAttendanceOrBinaryInfo().add(stub);
                     currentBatchMap.put(new QueueKey(record.getForeignRecordId(), record.getTableName()), record);
                 } else {
                     // cleanup QueuedRecord if linked object is null.
@@ -196,7 +196,7 @@ public class OutboundReplicationHandler implements ReplicationHandler {
             }
             // clean remove group if it's empty
             for (var g : new ArrayList<>(replicationRequest.getGenericGroups())) {
-                if (g.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
+                if (g.getGenericAttendanceOrBinaryInfo().isEmpty()) {
                     replicationRequest.getGroups().remove(g);
                 }
             }

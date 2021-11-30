@@ -78,7 +78,7 @@ class OutboundReplicationHandlerTest extends TestWithDatabase {
 						boolean isTutorAttendanceStub = false
 
 						for (TransactionGroup group : records.getGroups()) {
-							for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+							for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 								ReplicatedRecord r = new ReplicatedRecord()
 								r.setStatus(Status.SUCCESS)
 								r.setStub(toHollow(stub))
@@ -167,7 +167,7 @@ class OutboundReplicationHandlerTest extends TestWithDatabase {
 						int tutorStubCount = 0
 
 						for (TransactionGroup group : records.getGroups()) {
-							for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+							for (GenericReplicationStub stub : group.getGenericAttendanceOrBinaryInfo()) {
 								ReplicatedRecord r = new ReplicatedRecord()
 								r.setStatus(Status.SUCCESS)
 								r.setStub(toHollow(stub))

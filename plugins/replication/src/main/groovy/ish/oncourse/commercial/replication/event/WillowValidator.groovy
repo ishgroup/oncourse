@@ -106,7 +106,7 @@ class WillowValidator {
 
         TransactionGroup vouchersGroup = new TransactionGroup()
         vouchers.each { voucher ->
-            vouchersGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().add(stubBuilder.convert(voucher))
+            vouchersGroup.getGenericAttendanceOrBinaryInfo().add(stubBuilder.convert(voucher))
         }
 
         TransactionGroup response
@@ -121,7 +121,7 @@ class WillowValidator {
         }
 
         List<VoucherData> voucherDataList = new ArrayList<>()
-        response.getGenericAttendanceOrBinaryDataOrBinaryInfo().each { stub ->
+        response.getGenericAttendanceOrBinaryInfo().each { stub ->
             if (stub instanceof VoucherStub) {
                 VoucherStub voucherStub = stub as VoucherStub
                 VoucherData voucherData = new VoucherData()

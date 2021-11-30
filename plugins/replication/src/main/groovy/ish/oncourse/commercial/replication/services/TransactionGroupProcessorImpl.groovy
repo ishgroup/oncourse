@@ -76,15 +76,15 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
         this.transactionGroup = group
         this.result = new ArrayList<>()
 
-        for (def currentStub : group.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+        for (def currentStub : group.getGenericAttendanceOrBinaryInfo()) {
             def replRecord = toReplicatedRecord(currentStub)
             result.add(replRecord)
         }
 
         try {
 
-            while (!group.getGenericAttendanceOrBinaryDataOrBinaryInfo().isEmpty()) {
-                def currentStub = group.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(0)
+            while (!group.getGenericAttendanceOrBinaryInfo().isEmpty()) {
+                def currentStub = group.getGenericAttendanceOrBinaryInfo().remove(0)
                 processStub(currentStub)
             }
 
@@ -303,9 +303,9 @@ class TransactionGroupProcessorImpl implements ITransactionGroupProcessor {
         }
          
 
-        for (def s : transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo()) {
+        for (def s : transactionGroup.getGenericAttendanceOrBinaryInfo()) {
             if (willowId.equals(s.getWillowId()) && s.getEntityIdentifier().equals(willowIdentifier)) {
-                transactionGroup.getGenericAttendanceOrBinaryDataOrBinaryInfo().remove(s)
+                transactionGroup.getGenericAttendanceOrBinaryInfo().remove(s)
                 return s
             }
         }
