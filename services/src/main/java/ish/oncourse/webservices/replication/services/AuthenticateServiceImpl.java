@@ -1,13 +1,10 @@
 package ish.oncourse.webservices.replication.services;
 
 import ish.oncourse.model.College;
-import ish.oncourse.model.KeyStatus;
-import ish.oncourse.services.access.SessionToken;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
 import ish.oncourse.webservices.exception.StackTraceUtils;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.PersistenceState;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,46 +52,17 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 	}
 	
 	@Override
-	public long authenticate(String webServicesSecurityCode, long lastCommKey) throws InternalAuthenticationException {
+	public void authenticate(String webServicesSecurityCode) throws InternalAuthenticationException {
 		try {
-			@SuppressWarnings("unused")
-			HttpServletRequest request = (HttpServletRequest) takeWebServiceContext().getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-			logger.info("Got college request with securityCode: {}, lastCommKey: {}.", webServicesSecurityCode, lastCommKey);
+			logger.info("Got college request with securityCode: {}", webServicesSecurityCode);
 			College college = takeCollegeService().findBySecurityCode(webServicesSecurityCode);
 			if (college == null) {
-				String message = String.format("No college found for 'security code':%s.", webServicesSecurityCode);
+				String message = String.format("No VALID college found for 'security code':%s.", webServicesSecurityCode);
 				InternalAuthenticationException ex = new InternalAuthenticationException(message, InternalErrorCode.INVALID_SECURITY_CODE);
 				logger.error(message, ex);
 				throw ex;
 			}
-			//we need the code to reset cached college's properties
-			college.setPersistenceState(PersistenceState.HOLLOW);
-			Long currentKey = college.getCommunicationKey();
-			boolean recoverFromHALT = (currentKey == null) && (college.getCommunicationKeyStatus() == KeyStatus.HALT);
-			if (currentKey == null) {
-				// we didn't find key
-				if (recoverFromHALT) {
-					// recovering from HALT state
-					Long newKey = generateNewKey(college);
-					return newKey;
-				} else {
-					InternalAuthenticationException ex = new InternalAuthenticationException(String.format("Invalid communication key:%s", lastCommKey), 
-							InternalErrorCode.INVALID_COMMUNICATION_KEY);
-					logger.error("Communication key is null for college: {}, when received key is {}.", college.getId(), lastCommKey, ex);
-					putCollegeInHaltState(college);
-					throw ex;
-				}
-			} else {
-				if (college.getCommunicationKeyStatus() != KeyStatus.VALID) {
-					// Communication key in a HALT state. Refuse authentication
-					// attempt.
-					InternalAuthenticationException ex = new InternalAuthenticationException(String.format("Communication key:%s in a HALT state.", 
-						lastCommKey), InternalErrorCode.HALT_COMMUNICATION_KEY);
-					logger.debug("Communication key: {} for college: {} in a HALT state.", lastCommKey, college.getId(), ex);
-					throw ex;
-				}
-				return generateNewKey(college);
-			}
+			recordCollegeAttribute(college);
 		} catch (Exception e) {
 			if (e instanceof InternalAuthenticationException) {
 				throw (InternalAuthenticationException) e;
@@ -107,12 +75,9 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 	}
 
 	@Override
-	public Long generateNewKey(College college) {
+	public void recordCollegeAttribute(College college) {
 		ObjectContext objectContext = takeCayenneService().newNonReplicatingContext();
 		College local = objectContext.localObject(college);
-		long newCommunicationKey = System.currentTimeMillis();
-		local.setCommunicationKey(newCommunicationKey);
-		local.setCommunicationKeyStatus(KeyStatus.VALID);
 
 		Date date = new Date();
 
@@ -121,17 +86,7 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 		objectContext.commitChanges();
 
 		HttpServletRequest request = (HttpServletRequest) takeWebServiceContext().getMessageContext().get(AbstractHTTPDestination.HTTP_REQUEST);
-		request.setAttribute(SessionToken.SESSION_TOKEN_KEY, new SessionToken(college.getId(), newCommunicationKey));
-		return newCommunicationKey;
-	}
-
-	@Override
-	public void putCollegeInHaltState(College college) {
-		logger.warn("Putting college: {} into HALT state.", college.getId());
-		/*
-		 * college.setCommunicationKeyStatus(KeyStatus.HALT);
-		 * college.getObjectContext().commitChanges();
-		 */
+		request.setAttribute(College.REQUESTING_COLLEGE_ATTRIBUTE, college.getId());
 	}
 
 }

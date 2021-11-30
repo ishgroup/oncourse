@@ -5,6 +5,7 @@ package ish.oncourse.webservices.quartz.job.solr;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.Course;
+import ish.oncourse.model.KeyStatus;
 import ish.oncourse.solr.SolrCollection;
 import ish.oncourse.solr.reindex.ReindexCourses;
 import org.apache.cayenne.ObjectContext;
@@ -31,7 +32,7 @@ public class ReindexCoursesJob extends AReindexCollectionJob {
         new ReindexCourses(serverRuntime.newContext(), solrClient, true).run();
 
         List<Long> collegeIds = ObjectSelect.dataRowQuery(College.class)
-                .where(College.BILLING_CODE.isNotNull())
+                .where(College.COMMUNICATION_KEY_STATUS.in(KeyStatus.RESTRICTED, KeyStatus.VALID))
                 .select(context).stream().map(r ->  (Long) r.get(College.ID_PK_COLUMN)).collect(Collectors.toList());
 
         collegeIds.forEach(collegeId -> {

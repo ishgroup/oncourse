@@ -71,7 +71,10 @@ public class CollegeService implements ICollegeService {
 		College college;
 		try {
 			ObjectContext objectContext = cayenneService.sharedContext();
-			college = ObjectSelect.query(College.class).where(College.WEB_SERVICES_SECURITY_CODE.eq(securityCode)).selectOne(objectContext);
+			college = ObjectSelect.query(College.class)
+					.where(College.WEB_SERVICES_SECURITY_CODE.eq(securityCode))
+					.and(College.COMMUNICATION_KEY_STATUS.in(KeyStatus.VALID, KeyStatus.RESTRICTED))
+					.selectOne(objectContext);
 			if (college == null) {
 				logger.debug("No College found for security code: {}", securityCode);
 			} else {
@@ -84,46 +87,6 @@ public class CollegeService implements ICollegeService {
 		return college;
 	}
 	
-	/**
-	 * @see ICollegeService#findBySecurityCodeLastChars(String)
-	 */
-	@Override
-	public College findBySecurityCodeLastChars(String securityCodeEnding) {
-		ObjectContext objectContext = cayenneService.sharedContext();
-		return ObjectSelect.query(College.class).where(College.WEB_SERVICES_SECURITY_CODE.like("%" + securityCodeEnding)).selectOne(objectContext);
-	}
-
-	/**
-	 * @see ICollegeService#recordNewCollege(String, String, String, Date)
-	 */
-	@Override
-	public College recordNewCollege(String securityCode, String ipAddress, String angelVersion, Date accessTime) {
-
-		ObjectContext objectContext = cayenneService.newNonReplicatingContext();
-
-		College college = objectContext.newObject(College.class);
-
-		// TODO: An entity factory would be handy here... perhaps another time
-		college.setWebServicesSecurityCode(securityCode);
-		college.setName(ipAddress);
-		college.setIpAddress(ipAddress);
-		college.setAngelVersion(angelVersion);
-		college.setCreated(accessTime);
-		college.setModified(accessTime);
-		college.setLastRemoteAuthentication(accessTime);
-		college.setCommunicationKey(-1l);
-		college.setCommunicationKeyStatus(KeyStatus.HALT);
-
-		college.setBillingCode(null);
-
-		objectContext.commitChanges();
-
-		return college;
-	}
-
-	/**
-	 * @see ICollegeService#recordNewCollege(String, String, String, Date)
-	 */
 	@Override
 	public void recordWSAccess(College college, String ipAddress, String angelVersion, Date accessTime) {
 
@@ -167,7 +130,7 @@ public class CollegeService implements ICollegeService {
 	@Override
 	public List<College> allColleges() {
 		return ObjectSelect.query(College.class)
-				.where(College.BILLING_CODE.isNotNull())
+				.where(College.COMMUNICATION_KEY_STATUS.in(KeyStatus.VALID, KeyStatus.RESTRICTED))
 				.orderBy(College.NAME.descInsensitive())
 				.cacheStrategy(NO_CACHE)
 				.select(cayenneService.sharedContext());

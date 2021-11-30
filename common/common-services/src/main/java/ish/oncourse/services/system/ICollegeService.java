@@ -23,13 +23,6 @@ public interface ICollegeService {
 	College findBySecurityCode(String securityCode);
 	
 	/**
-	 * Find college by security code last characters. Used in admin app to add new college. 
-	 * @param securityCodeEnding
-	 * @return college
-	 */
-	College findBySecurityCodeLastChars(String securityCodeEnding);
-	
-	/**
 	 * Finds college by site key. Primary used in Tara application.
 	 * @param siteKey college site key
 	 * @return college object
@@ -42,17 +35,6 @@ public interface ICollegeService {
 	 * @return college object
 	 */
 	College findById(Long collegeId);
-
-	/**
-	 * Creates and saves a new College record for this security code.
-	 * 
-	 * @param securityCode
-	 * @param ipAddress
-	 * @param angelVersion
-	 * @param accessTime
-	 * @return the new College object
-	 */
-	College recordNewCollege(String securityCode, String ipAddress, String angelVersion, Date accessTime);
 
 	/**
 	 * Function that persists details of Web Service access within the College's

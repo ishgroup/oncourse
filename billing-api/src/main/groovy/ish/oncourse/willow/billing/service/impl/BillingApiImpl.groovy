@@ -185,9 +185,7 @@ class BillingApiImpl implements BillingApi {
         college.setName(name)
         college.setCreated(createdOn)
         college.setModified(createdOn)
-        college.setCommunicationKey(-1l)
         college.setCommunicationKeyStatus(KeyStatus.VALID)
-        college.setBillingCode(collegeKey)
         college.setCollegeKey(collegeKey)
         college.lastRemoteAuthentication = new Date(0)
         return college

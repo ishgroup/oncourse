@@ -162,9 +162,7 @@
 	</db-entity>
 	<db-entity name="College">
 		<db-attribute name="angelVersion" type="VARCHAR" length="40"/>
-		<db-attribute name="billingCode" type="VARCHAR" length="16"/>
 		<db-attribute name="collegeKey" type="VARCHAR" length="32"/>
-		<db-attribute name="communication_key" type="BIGINT"/>
 		<db-attribute name="communication_key_status" type="VARCHAR" length="20"/>
 		<db-attribute name="created" type="TIMESTAMP"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
@@ -1748,9 +1746,7 @@
 	</obj-entity>
 	<obj-entity name="College" className="ish.oncourse.model.College" dbEntityName="College" superClassName="WillowCayenneObject">
 		<obj-attribute name="angelVersion" type="java.lang.String" db-attribute-path="angelVersion"/>
-		<obj-attribute name="billingCode" type="java.lang.String" db-attribute-path="billingCode"/>
 		<obj-attribute name="collegeKey" type="java.lang.String" db-attribute-path="collegeKey"/>
-		<obj-attribute name="communicationKey" type="java.lang.Long" db-attribute-path="communication_key"/>
 		<obj-attribute name="communicationKeyStatus" type="ish.oncourse.model.KeyStatus" db-attribute-path="communication_key_status"/>
 		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
 		<obj-attribute name="lastRemoteAuthentication" type="java.util.Date" db-attribute-path="lastRemoteAuthentication"/>

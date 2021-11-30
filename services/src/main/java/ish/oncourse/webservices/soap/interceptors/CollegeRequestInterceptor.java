@@ -44,8 +44,8 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 	}
 
 	public void handleMessage(SoapMessage message) throws Fault {
+		Fault fault = null;
 		try {
-			
 			HttpServletRequest req = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
 
 			String ip = (req != null) ? req.getRemoteAddr() : "unknown";
@@ -63,28 +63,22 @@ public class CollegeRequestInterceptor extends AbstractSoapInterceptor {
 
 				if (college == null) {
 					// This must be a never seen before installation - record
-					college = collegeService.recordNewCollege(securityCode, ip, version, time);
+					fault = new InterceptorErrorHandle(message, logger).handle("College could not be found");
 				} else {
 					collegeService.recordWSAccess(college, ip, version, time);
-				}
-
-				if (college != null) {
 					collegeName = college.getName();
-				} else {
-					new InterceptorErrorHandle(message, logger).handle("College could not be found or created");
-					// TODO: Should the request be interrupted at this point?
 				}
 			} else {
-				new InterceptorErrorHandle(message, logger).handle("No security code sent by remote!");
-				// TODO: This is probably an error condition that should result in an
-				// exception being thrown to the client.
+				fault = new InterceptorErrorHandle(message, logger).handle("No security code sent by remote!");
 			}
 
 			logger.info("Invoked {} by {} from {} with version {} at {}.", boi.getName(), collegeName, ip, version, time);
-			
+		} catch (Exception e) {
+			fault = new InterceptorErrorHandle(message, logger).handle(e);
 		}
-		catch (Exception e) {
-			new InterceptorErrorHandle(message, logger).handle(e);
+		
+		if (fault != null) {
+			throw fault;
 		}
 	}
 }

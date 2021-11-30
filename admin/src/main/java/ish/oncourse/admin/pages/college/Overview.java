@@ -1,6 +1,7 @@
 package ish.oncourse.admin.pages.college;
 
 import ish.oncourse.model.College;
+import ish.oncourse.model.KeyStatus;
 import ish.oncourse.model.Preference;
 import ish.oncourse.services.persistence.ICayenneService;
 import ish.oncourse.services.system.ICollegeService;
@@ -51,7 +52,7 @@ public class Overview {
 		lastIP = college.getIpAddress();
 		onCourseVersion = college.getAngelVersion();
 		replicationState = college.getCommunicationKeyStatus().toString();
-		lastReplication = college.getLastRemoteAuthentication() != null ? dateFormat.format(college.getLastRemoteAuthentication()): "never";
+		lastReplication = college.getLastRemoteAuthentication() != null ? dateFormat.format(college.getLastRemoteAuthentication()) : "never";
 		collegeKey = college.getCollegeKey();
 	}
 
@@ -68,21 +69,9 @@ public class Overview {
 		ObjectContext context = cayenneService.newContext();
 		College college = context.localObject(this.college);
 
-		disableCollege(context, college);
+		college.setCommunicationKeyStatus(KeyStatus.HALT);
+		context.commitChanges();
 
 		return "Index";
-	}
-
-	private void disableCollege(ObjectContext context, College college) {
-
-		Preference replicationPref = ObjectSelect.query(Preference.class).
-				where(Preference.COLLEGE.eq(college).
-						andExp(Preference.NAME.eq(Preferences.REPLICATION_ENABLED))).
-				selectFirst(context);
-		if (replicationPref != null) {
-			replicationPref.setValueString(Boolean.toString(false));
-		}
-		college.setBillingCode(null);
-		context.commitChanges();
 	}
 }

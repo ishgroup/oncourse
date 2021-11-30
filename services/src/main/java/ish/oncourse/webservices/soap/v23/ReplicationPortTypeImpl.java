@@ -111,7 +111,8 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 	@Override
 	public long authenticate(String webServicesSecurityCode, long lastCommKey) throws AuthFailure {
 		try {
-			return authenticateService.authenticate(webServicesSecurityCode, lastCommKey);
+			authenticateService.authenticate(webServicesSecurityCode);
+			return -1;
 		} catch (InternalAuthenticationException e) {
 			throw createAuthFailureForException(e);
 		}
@@ -189,23 +190,8 @@ public class ReplicationPortTypeImpl implements ReplicationPortType {
 		if (exception.getErrorCode() != null) {
 			ErrorCode errorCode = null;
 			switch (exception.getErrorCode()) {
-				case INVALID_SESSION:
-					errorCode = ErrorCode.INVALID_SESSION;
-					break;
 				case INVALID_SECURITY_CODE:
 					errorCode = ErrorCode.INVALID_SECURITY_CODE;
-					break;
-				case EMPTY_COMMUNICATION_KEY:
-					errorCode = ErrorCode.EMPTY_COMMUNICATION_KEY;
-					break;
-				case HALT_COMMUNICATION_KEY:
-					errorCode = ErrorCode.HALT_COMMUNICATION_KEY;
-					break;
-				case INVALID_COMMUNICATION_KEY:
-					errorCode = ErrorCode.INVALID_COMMUNICATION_KEY;
-					break;
-				case NO_KEYS:
-					errorCode = ErrorCode.NO_KEYS;
 					break;
 			}
 			return new AuthFailure(exception.getMessage(), errorCode);

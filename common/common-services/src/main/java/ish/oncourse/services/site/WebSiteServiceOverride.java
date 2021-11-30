@@ -2,7 +2,6 @@ package ish.oncourse.services.site;
 
 import ish.oncourse.model.College;
 import ish.oncourse.model.WebSite;
-import ish.oncourse.services.access.SessionToken;
 import ish.oncourse.services.system.ICollegeService;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
@@ -32,16 +31,12 @@ public class WebSiteServiceOverride implements IWebSiteService {
 	@Override
 	public College getCurrentCollege() {
 		Session session = request.getSession(false);
-		Long collegeId = null;
-		GetAttribute<SessionToken> tokenA = new GetAttribute<>(session, request);
 		GetAttribute<Long> collegeA = new GetAttribute<>(session, request);
-		if (tokenA.get(SessionToken.SESSION_TOKEN_KEY) != null)
-			collegeId = tokenA.get(SessionToken.SESSION_TOKEN_KEY).getCollegeId();
-		else if (collegeA.get(College.REQUESTING_COLLEGE_ATTRIBUTE) != null)
-			collegeId = collegeA.get(College.REQUESTING_COLLEGE_ATTRIBUTE);
-		else
-			return null;
-		return collegeService.findById(collegeId);
+		if (collegeA.get(College.REQUESTING_COLLEGE_ATTRIBUTE) != null) {
+			Long collegeId = collegeA.get(College.REQUESTING_COLLEGE_ATTRIBUTE);
+			return collegeService.findById(collegeId);
+		} 
+		return null;
 	}
 
 	@Override

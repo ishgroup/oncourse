@@ -4,27 +4,13 @@ import ish.oncourse.model.College;
 
 public interface IAuthenticateService {
 
-	long authenticate(String webServicesSecurityCode, long lastCommKey) throws InternalAuthenticationException;
+	void authenticate(String webServicesSecurityCode) throws InternalAuthenticationException;
 
 	/**
-	 * Generates new communication key for college, for details refer
-	 * http://intranet.ish.com.au/drupal/ReplicationWorkflow#Use of the
-	 * communication key
-	 * 
+	 * Update last LastRemoteAuthentication tomestap and put collge ID ito request trhead local* 
 	 * @param college
-	 *            willow college
-	 * @return communication key
 	 */
-	Long generateNewKey(College college);
-	
-	/**
-	 * Puts college into HALT state, which prevents all further replication,
-	 * until recovery from HALT is done by admins.
-	 * 
-	 * @param college
-	 *            willow college
-	 */
-	void putCollegeInHaltState(College college);
+	void recordCollegeAttribute(College college);
 	
 	public class InternalAuthenticationException extends Exception {
 		private static final long serialVersionUID = 4896841823965817593L;
@@ -55,11 +41,6 @@ public interface IAuthenticateService {
 	}
 
 	public enum InternalErrorCode {
-		INVALID_SESSION,
 		INVALID_SECURITY_CODE,
-		EMPTY_COMMUNICATION_KEY,
-		HALT_COMMUNICATION_KEY,
-		INVALID_COMMUNICATION_KEY,
-		NO_KEYS
 	}
 }
