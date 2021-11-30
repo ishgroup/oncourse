@@ -26,7 +26,7 @@ import { BudgetCostModalContentProps } from "../../../../../../model/entities/Co
 import { stubFunction } from "../../../../../../common/utils/common";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
-import AddIcon from "../../../../../../common/components/icons/AddIcon";
+import AddButton from "../../../../../../common/components/icons/AddButton";
 
 const StudentFeePaymentPlan: React.FC<any> = ({
  index, item, onDelete, onBlur, classStart
@@ -243,7 +243,7 @@ const StudentFeeContent: React.FC<Props> = ({
 
       <Grid item xs={12} className="centeredFlex">
         <div className="heading">Payment plans</div>
-        <AddIcon onClick={addPaymentPlan} />
+        <AddButton onClick={addPaymentPlan} />
       </Grid>
       <Grid container columnSpacing={3} item xs={6}>
         {values.paymentPlan.map((item, index) => {

@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { utcToZonedTime } from "date-fns-tz";
@@ -22,9 +22,7 @@ import ListItem from "@mui/material/ListItem";
 import { State } from "../../../reducers/state";
 import { AppTheme } from "../../../model/common/Theme";
 import { D_MMM_YYYY } from "../../utils/dates/format";
-import {
-  READ_NEWS
-} from "../../../constants/Config";
+import { READ_NEWS } from "../../../constants/Config";
 import { setUserPreference } from "../../actions";
 import { setReadNewsLocal } from "../list-view/actions";
 
@@ -172,28 +170,25 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal
+    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, newsOffset
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
   const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-  const [postsForRender, setPostsForRender] = useState([]);
-
-  useEffect(() => {
+  
+  const postsForRender = useMemo(() => {
     const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
 
-    const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : true)
-      && (!readNews || !readNews.includes(post.id))).reverse();
+    const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : !post.page)
+    && (!readNews || !readNews.includes(post.id))).reverse();
 
     const newsWithoutDate = filteredPosts.filter(post => !post.published);
     const newsWithDate = filteredPosts.filter(post => post.published);
-    const newsForRender = newsWithoutDate.concat(newsWithDate);
-    setPostsForRender(newsForRender);
+    return newsWithoutDate.concat(newsWithDate);
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <div className={classes.postsWrapper}>
+    <Box className={classes.postsWrapper} sx={{ marginTop: newsOffset }}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
@@ -205,7 +200,7 @@ const NewsRender = props => {
           setReadNewsLocal={setReadNewsLocal}
         />
       ))}
-    </div>
+    </Box>
   ) : null;
 };
 

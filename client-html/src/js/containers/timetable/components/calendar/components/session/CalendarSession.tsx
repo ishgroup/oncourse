@@ -28,6 +28,7 @@ const styles = (theme: Theme) => createStyles({
       }
     },
     sessionRoot: {
+      width: "100%",
       display: "grid",
       gridTemplateColumns: "80px minmax(0, 1fr)",
       minHeight: "67.5px"

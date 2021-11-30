@@ -1,11 +1,10 @@
 import * as React from "react";
-import TagsForm from "./containers/TagsForm";
-import { Tag } from "@api/model";
-import history from "../../constants/History";
-import { State } from "../../reducers/state";
 import { connect } from "react-redux";
 import withTheme from "@mui/styles/withTheme";
-import Content from "../../common/components/layout/Content";
+import { Tag } from "@api/model";
+import TagsForm from "./containers/TagsForm";
+import history from "../../constants/History";
+import { State } from "../../reducers/state";
 
 const emptyTag: Tag = {
   id: null,
@@ -72,9 +71,7 @@ class Tags extends React.Component<any, any> {
     const currentTag = isNew ? emptyTag : tags && tags.find(i => i.id.toString() === id);
 
     return currentTag ? (
-      <Content>
-        <TagsForm rootTag={currentTag} isNew={isNew} redirectOnDelete={this.redirectOnDelete} tags={tags} />
-      </Content>
+      <TagsForm rootTag={currentTag} isNew={isNew} redirectOnDelete={this.redirectOnDelete} tags={tags} />
     ) : null;
   }
 }

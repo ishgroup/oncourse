@@ -21,7 +21,7 @@ class CourseClassTimetableService {
 
   public validateUpdate(classId: number, sessions: Session[]): Promise<SessionWarning[]> {
     return this.service.POST(`/v1/list/entity/courseClass/timetable/${classId || -1}`, sessions, {
-      headers: { "X-validate-only": true }
+      headers: { "X-validate-only":  "true" }
     });
   }
 }

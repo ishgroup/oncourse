@@ -5,6 +5,7 @@
 
 import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
+import { useTheme } from "@mui/styles";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import ContactsGeneral from "./ContactsGeneral";
@@ -19,6 +20,7 @@ import ContactsTutor from "./ContactsTutor";
 import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 import { State } from "../../../../reducers/state";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { AppTheme } from "../../../../model/common/Theme";
 
 const studentItems: TabsListItem[] = [
   {
@@ -105,6 +107,8 @@ const ContactEditView = props => {
   const [isCompany, setIsCompany] = useState(false);
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
 
+  const theme = useTheme<AppTheme>();
+
   const getActiveItems = () => {
     let activeItems = [...items];
 
@@ -144,6 +148,7 @@ const ContactEditView = props => {
   return (
     <TabsList
       items={values ? getActiveItems() : []}
+      newsOffset={twoColumn ? theme.spacing(6) : null}
       itemProps={{
         isNew,
         isNested,

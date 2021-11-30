@@ -4,16 +4,12 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useMemo, useState
 } from "react";
-import clsx from "clsx";
 import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import { createStyles, withStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import {
- change, Field, getFormValues, reduxForm, Validator
+  change, Field, getFormSyncErrors, getFormValues, reduxForm, Validator
 } from "redux-form";
 import { connect } from "react-redux";
 import Slide from "@mui/material/Slide";
@@ -31,23 +27,10 @@ import { State } from "../../../reducers/state";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../common/utils/hooks";
 import { mapSelectItems } from "../../../common/utils/common";
-import { LSGetItem } from "../../../common/utils/storage";
-import { APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
-import FormSubmitButton from "../../../common/components/form/FormSubmitButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 
 const tagStatusValues = Object.keys(TagStatus).map(mapSelectItems);
-
-const styles = theme => createStyles({
-  header: {
-    height: "64px",
-    padding: theme.spacing(0, 3)
-  },
-  root: {
-    marginTop: theme.spacing(8),
-    height: `calc(100vh - ${theme.spacing(8)})`
-  }
-});
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} />
@@ -59,8 +42,8 @@ interface Props {
   open?: boolean;
   values?: Tag;
   dispatch?: any;
-  classes?: any;
   handleSubmit?: any;
+  syncErrors?: any;
   invalid?: boolean;
   dirty?: boolean;
   parent?: string;
@@ -76,7 +59,6 @@ const TagItemEditView = React.memo<Props>(props => {
     open,
     values,
     dispatch,
-    classes,
     handleSubmit,
     invalid,
     dirty,
@@ -84,7 +66,8 @@ const TagItemEditView = React.memo<Props>(props => {
     validateName,
     validateRootName,
     validateShortName,
-    onClose
+    onClose,
+    syncErrors
   } = props;
 
   const [lockedUrl, setLockedUrl] = useState(true);
@@ -105,11 +88,12 @@ const TagItemEditView = React.memo<Props>(props => {
 
   const onSave = useCallback(
     val => {
-      parent
-        ? dispatch(change("TagsForm", parent, val))
-        : editableFields.forEach(f => {
-            dispatch(change("TagsForm", f, val[f]));
-          });
+      if (parent) dispatch(change("TagsForm", parent, val));
+      else {
+        editableFields.forEach(f => {
+          dispatch(change("TagsForm", f, val[f]));
+        });
+      }
 
       onClose();
     },
@@ -141,30 +125,16 @@ const TagItemEditView = React.memo<Props>(props => {
   return (
     <Dialog fullScreen open={open} TransitionComponent={Transition}>
       <form onSubmit={onSubmit} autoComplete="off">
-        <AppBar
-          elevation={0}
-          className={clsx("flex-row align-items-center justify-content-space-between",
-            classes.header, LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasHeader")}
-        >
-          <div className="flex-fill">
-            <Typography className="appHeaderFontSize" color="inherit">
-              {values.name}
-            </Typography>
-          </div>
-          <div>
-            <Button onClick={onCloseClick} className="closeAppBarButton">
-              Close
-            </Button>
-            <FormSubmitButton
-              disabled={!dirty}
-              invalid={invalid}
-            />
-          </div>
-        </AppBar>
-
-        <div className={clsx("p-3 defaultBackgroundColor", classes.root)}>
-          <Grid container columnSpacing={3} className="defaultBackgroundColor">
-            <Grid item xs={4}>
+        <AppBarContainer
+          disabled={!dirty}
+          invalid={invalid}
+          title={(!values.name || values.name.trim().length === 0) ? "New" : values && values.name.trim()}
+          disableInteraction={values.system}
+          noDrawer
+          hideHelpMenu
+          opened={!values.id || Object.keys(syncErrors).includes("name")}
+          fields={(
+            <Grid item xs={8}>
               <FormField
                 type="text"
                 name="name"
@@ -177,8 +147,11 @@ const TagItemEditView = React.memo<Props>(props => {
                 disabled={values.system}
               />
             </Grid>
-
-            <Grid item xs={4}>
+          )}
+          onCloseClick={onCloseClick}
+        >
+          <Grid container columnSpacing={3} rowSpacing={2}>
+            <Grid item xs={12} sm={4}>
               <FormField
                 type="select"
                 name="status"
@@ -189,9 +162,7 @@ const TagItemEditView = React.memo<Props>(props => {
               />
             </Grid>
 
-            <Grid item xs={4} />
-
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={4}>
               <FormField
                 type="text"
                 name="urlPath"
@@ -215,20 +186,18 @@ const TagItemEditView = React.memo<Props>(props => {
               />
             </Grid>
 
-            <Grid item xs={4} className="centeredFlex">
+            <Grid item xs={12} sm={4} className="centeredFlex">
               <Typography className="pr-1" variant="caption" color="textSecondary" component="span">
                 Color
               </Typography>
               <Field name="color" component={ColorPicker} />
             </Grid>
 
-            <Grid item xs={4} />
-
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={8}>
               <FormEditorField name="content" label="Details" />
             </Grid>
           </Grid>
-        </div>
+        </AppBarContainer>
       </form>
     </Dialog>
   );
@@ -236,6 +205,7 @@ const TagItemEditView = React.memo<Props>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("TagItemForm")(state),
+  syncErrors: getFormSyncErrors("TagItemForm")(state),
   open: state.tags.editView.open,
   parent: state.tags.editView.parent
 });
@@ -244,4 +214,4 @@ export default (reduxForm({
   form: "TagItemForm",
   initialValues: {},
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(TagItemEditView))) as unknown) as React.FC<Props>;
+})(connect<any, any, any>(mapStateToProps, null)(TagItemEditView)) as unknown) as React.FC<Props>;

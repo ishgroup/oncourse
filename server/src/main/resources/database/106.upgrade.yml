@@ -1,5 +1,4 @@
 databaseChangeLog:
-
     - changeSet:
         id: 106-1
         author: dmitriy

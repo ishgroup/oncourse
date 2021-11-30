@@ -9,14 +9,9 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { SelectItemRendererProps } from "../../../../model/common/Fields";
 
-interface Props {
-  content: string;
-  data: Contact ;
-  parentProps: any
-}
-
-const ContactSelectItemRenderer = React.memo<Props>(({ content, data, parentProps }) => {
+const ContactSelectItemRenderer = React.memo<SelectItemRendererProps<Contact>>(({ content, data, parentProps }) => {
   const caption = useMemo(
     () => (
       <span>

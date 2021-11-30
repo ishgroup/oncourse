@@ -14,6 +14,7 @@ import {
   FundingSource
 } from "@api/model";
 import { connect } from "react-redux";
+import Divider from "@mui/material/Divider";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
 import {
@@ -47,7 +48,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
   return (
     <div className="pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
-        <Grid container columnSpacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>
             <FormControlLabel
               className="switchWrapper pb-2"
@@ -216,9 +217,12 @@ const CourseClassVetTab = React.memo<Props>(props => {
             </Collapse>
           </Grid>
 
-          <CourseClassAttendanceTab {...props} showTrainingPlans />
+          <Grid item xs={12}>
+            <CourseClassAttendanceTab {...props} showTrainingPlans />
+          </Grid>
         </Grid>
       </ExpandableContainer>
+      <Divider className="mb-2" />
     </div>
   );
 });

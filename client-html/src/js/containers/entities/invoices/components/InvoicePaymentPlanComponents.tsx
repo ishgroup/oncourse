@@ -236,6 +236,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
           label="Date"
           onChange={onDateChange}
           disabled={!isPaymentDue}
+          className="mb-2 mt-2"
         />
       </div>
 

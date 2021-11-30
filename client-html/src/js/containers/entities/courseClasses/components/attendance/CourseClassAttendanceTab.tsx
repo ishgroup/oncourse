@@ -19,7 +19,7 @@ import ChevronRight from "@mui/icons-material/ChevronRight";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-
+import Divider from "@mui/material/Divider";
 import { AppTheme } from "../../../../../model/common/Theme";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
@@ -57,7 +57,7 @@ const styles = (theme: AppTheme) => createStyles({
       height: "156px"
     },
     timelineShadow: {
-      width: `calc(100% + ${theme.spacing(6)}px)`,
+      width: `calc(100% + ${theme.spacing(6)})`,
       height: "1px",
       top: "156px",
       marginLeft: theme.spacing(-3),
@@ -68,7 +68,7 @@ const styles = (theme: AppTheme) => createStyles({
       paddingBottom: theme.spacing(3),
       "&:before": {
         content: "''",
-        width: `calc(100% + ${theme.spacing(6)}px)`,
+        width: `calc(100% + ${theme.spacing(6)})`,
         margin: theme.spacing(0, -3),
         height: "16px",
         position: "relative",
@@ -100,8 +100,6 @@ const styles = (theme: AppTheme) => createStyles({
     },
     items: {
       marginTop: 20,
-      marginLeft: -8,
-      marginRight: -8,
       "& > div:nth-child(even)": {
         backgroundColor: theme.table.contrastRow.light
       },
@@ -217,7 +215,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
   }) => {
     const [selectedItems, setSelectedItems] = useState<AttandanceStepItem[]>([]);
     const [studentsToAttend, setStudentsToAttend] = useState<ContactAttendanceItem[]>([]);
-    // const [tutorsToAttend, setTutorsToAttend] = useState<ContactAttendanceItem[]>([]);
     const [modulesToAttend, setModulesToAttend] = useState<ContactAttendanceItem[]>([]);
     const [changeType, setAttendanceChangeType] = useState<AttandanceChangeType>(null);
     const [sliderValue, setSliderValue] = useState<number[]>([0, 7]);
@@ -243,8 +240,13 @@ const CourseClassAttendanceTab = React.memo<Props>(
     ]);
 
     useEffect(() => {
+      if (!twoColumn && expanded.includes(tabIndex)) {
+        setExpanded(prev => prev.filter(p => p !== tabIndex));
+      }
+    }, [twoColumn, expanded, tabIndex]);
+
+    useEffect(() => {
       setStudentsToAttend([]);
-      // setTutorsToAttend([]);
       setModulesToAttend([]);
       lastUpdated = null;
     }, [values.id]);
@@ -337,7 +339,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
         setAttendanceItems("Student", values);
       }
     }, [values.studentAttendance]);
-
 
     useEffect(() => {
       if (showTrainingPlans && values.trainingPlan && values.trainingPlan.length) {
@@ -486,12 +487,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
       values.studentAttendance,
       values.studentAttendance && values.studentAttendance.length
     ]);
-
-    // const onChangeAllTutorsAttendance = useCallback(type => changeAttendancesByType(type, "allTutors"), [
-    //   changeAttendancesByType,
-    //   values.tutorAttendance,
-    //   values.tutorAttendance && values.tutorAttendance.length
-    // ]);
 
     const onChangeAllTrainingPlansAttendance = useCallback(
       (type, index?: number) => {
@@ -764,49 +759,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
       ]
     );
 
-    // const renderedTutorAttendances = useMemo(
-    //   () => (tutorsToAttend.length ? (
-    //     <>
-    //       <div className={clsx("d-inline-flex-center pt-0 pr-0 pb-2 pl-1", classes.attendanceGroupHeading)}>
-    //         <div className="heading">Tutors</div>
-    //         <AttendanceActionsMenu
-    //           className="invisible"
-    //           type="Tutor"
-    //           onChange={onChangeAllTutorsAttendance}
-    //           label="Mark ALL sessions for ALL tutors as..."
-    //         />
-    //       </div>
-    //       {tutorsToAttend.map(sa => (
-    //         <AttendanceGridItem
-    //           type="Tutor"
-    //           key={sa.contactId}
-    //           item={sa}
-    //           selectedItems={selectedItems}
-    //           setAttendanceChangeType={setAttendanceChangeType}
-    //           validateAttendanceUpdate={validateAttendanceUpdate}
-    //           onTutorIconClick={onTutorIconClick}
-    //           dispatch={dispatch}
-    //           form={form}
-    //           checkAnimationClass={checkAnimationClass}
-    //         />
-    //         ))}
-    //     </>
-    //     ) : null),
-    //   [
-    //     form,
-    //     onChangeAllTutorsAttendance,
-    //     setAttendanceChangeType,
-    //     validateAttendanceUpdate,
-    //     checkAnimationClass,
-    //     onTutorIconClick,
-    //     tutorsToAttend,
-    //     selectedItems,
-    //     animateDays,
-    //     values.tutorAttendance,
-    //     values.tutorAttendance && values.tutorAttendance.length
-    //   ]
-    // );
-
     const renderedTrainingPlans = useMemo(
       () => (modulesToAttend.length ? (
         <>
@@ -928,7 +880,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
           <div className="w-100">
             <div className="heading">Training plan</div>
             {daysScroller("Training plan")}
-            <Grid container columnSpacing={3} className={classes.sessionsLine}>
+            <Grid container className={classes.sessionsLine}>
               <Grid item xs={12} className={classes.items}>
                 {renderedTrainingPlans}
               </Grid>
@@ -944,7 +896,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
         ) : changedWarningForTrainingPlans}
       </>
     ) : (
-      <div className="pl-3 pr-3 pb-2">
+      <div className="pl-3 pr-3">
         <ExpandableContainer
           onChange={onExpand}
           index={tabIndex}
@@ -956,7 +908,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
             {stepItems.length > 0 && !sessionsChanged && !assessmentsChanged && !isNew ? (
               <>
                 {daysScroller("")}
-                <Grid container columnSpacing={3} className={classes.sessionsLine}>
+                <Grid container className={classes.sessionsLine}>
                   <Grid item xs={12} className={classes.items}>
                     {renderedStudentAttendances}
                   </Grid>
@@ -972,6 +924,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
             ) : changedWarning}
           </>
         </ExpandableContainer>
+        <Divider className="mb-2" />
       </div>
     );
   }

@@ -7,22 +7,17 @@ import React, {
   useCallback, useEffect, useMemo, useRef
 } from "react";
 import Grid from "@mui/material/Grid";
-import FormGroup from "@mui/material/FormGroup";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   arrayPush, arrayRemove, change, Field, formValueSelector
 } from "redux-form";
 import {
-  addMinutes, differenceInMinutes, set, setDate
+  addMinutes, differenceInMinutes
 } from "date-fns";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import {
   ClashType, SessionWarning, Site, TutorAttendance,
 } from "@api/model";
-import { FormControl, FormHelperText } from "@mui/material";
-import clsx from "clsx";
 import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
@@ -184,7 +179,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
   };
 
   return (
-    <Grid container columnSpacing={3}>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={4}>
         <FormField type="stub" name={`sessions[${session.index}].end`} validate={validateSessionEnd} />
         <FormField
@@ -227,12 +222,15 @@ const CourseClassSessionFields: React.FC<Props> = ({
           label="End"
         />
       </Grid>
-      <Grid item xs={12}>
-        {warningTypes.Session
-          .map(w => <ErrorMessage message={w.message} /> )}
-        {warningTypes.UnavailableRule
-          .map(w => <ErrorMessage message={w.message} /> )}
-      </Grid>
+      {Boolean(warningTypes.Session.length || warningTypes.UnavailableRule.length) && (
+        <Grid item xs={12}>
+          {warningTypes.Session
+            .map(w => <ErrorMessage message={w.message} /> )}
+          {warningTypes.UnavailableRule
+            .map(w => <ErrorMessage message={w.message} /> )}
+        </Grid>
+      ) }
+
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
@@ -250,9 +248,14 @@ const CourseClassSessionFields: React.FC<Props> = ({
           allowEmpty
         />
       </Grid>
-      {warningTypes.Room
-        .map(w => <ErrorMessage message={w.message} /> )}
-      <Grid item xs={12} className="mb-2">
+      {Boolean(warningTypes.Room.length)
+        && (
+          <Grid item xs={12}>
+            {warningTypes.Room
+              .map(w => <ErrorMessage message={w.message} /> )}
+          </Grid>
+      )}
+      <Grid item xs={12}>
         <Field
           name={`sessions[${session.index}].tutorAttendances`}
           component={CourseClassTutorRooster}
@@ -264,7 +267,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           onAddTutor={onAddTutor}
         />
       </Grid>
-      <Grid xs={12} className="secondaryHeading mb-1">
+      <Grid item xs={12} className="secondaryHeading">
         Notes
       </Grid>
       <Grid item xs={6}>

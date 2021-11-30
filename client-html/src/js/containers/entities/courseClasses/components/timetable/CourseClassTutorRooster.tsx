@@ -6,24 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useMemo, useRef, useState
-} from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Collapse,
-  FormControl, 
-  FormHelperText, 
-  Typography, 
-  Select,
+  FormControl,
+  FormHelperText,
   Grid,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  Select,
+  Typography
 } from "@mui/material";
 import clsx from "clsx";
-import AddCircle from "@mui/icons-material/AddCircle";
-import { format, isPast } from "date-fns";
-import { Field, WrappedFieldProps } from "redux-form";
+import { differenceInMinutes, format, isPast } from "date-fns";
+import { change, Field, WrappedFieldProps } from "redux-form";
 import { ClashType, SessionWarning } from "@api/model";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -41,6 +38,7 @@ import { H_MMAAA } from "../../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import { AppTheme } from "../../../../../model/common/Theme";
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   tutorItem: {
@@ -124,7 +122,9 @@ interface TutorRoosterProps extends WrappedFieldProps {
 
 const CourseClassTutorRooster = (
   {
-    meta: { invalid, error },
+    meta: {
+ invalid, error, dispatch, form 
+},
     input: { name },
     warningTypes,
     session,
@@ -148,7 +148,7 @@ const CourseClassTutorRooster = (
   const filteredTutors = useMemo<CourseClassTutorExtended[]>(() => tutors
     .filter(t => t.contactId
       && t.roleName
-      && !session.tutorAttendances.some(ta => (ta.courseClassTutorId && t.id === ta.courseClassTutorId)
+      && !session.tutorAttendances?.some(ta => (ta.courseClassTutorId && t.id === ta.courseClassTutorId)
           || (ta.temporaryTutorId && t.temporaryId === ta.temporaryTutorId))),
     [tutors, session.tutorAttendances]);
 
@@ -160,9 +160,7 @@ const CourseClassTutorRooster = (
         </div>
         <div>
           {Boolean(filteredTutors.length) && (
-          <IconButton className="p-1" ref={tutorsRef} onClick={() => setTutorsMenuOpened(true)}>
-            <AddCircle className="addButtonColor" />
-          </IconButton>
+          <AddButton className="p-1" ref={tutorsRef} onClick={() => setTutorsMenuOpened(true)} />
         )}
           <Menu
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -201,6 +199,16 @@ const CourseClassTutorRooster = (
           ${sessionDuration && t.actualPayableDurationMinutes && t.actualPayableDurationMinutes !== sessionDuration 
             ? `payable ${formatDurationMinutes(t.actualPayableDurationMinutes)}` 
             : ""}`;
+
+          const onStartChange = newValue => {
+            const minutesOffset = differenceInMinutes(new Date(t.end), new Date(newValue)) - differenceInMinutes(new Date(t.end), new Date(t.start));
+            dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, t.actualPayableDurationMinutes + minutesOffset));
+          };
+
+          const onEndChange = newValue => {
+            const minutesOffset = differenceInMinutes(new Date(newValue), new Date(t.start)) - differenceInMinutes(new Date(t.end), new Date(t.start));
+            dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, t.actualPayableDurationMinutes + minutesOffset));
+          };
 
           return (
             <div key={t.courseClassTutorId || t.temporaryTutorId} className={classes.tutorItem}>
@@ -269,6 +277,7 @@ const CourseClassTutorRooster = (
                       name={`${fieldsName}.start`}
                       type="time"
                       label="Roster start"
+                      onChange={onStartChange}
                       timezone={session.siteTimezone}
                     />
                   </Grid>
@@ -277,6 +286,7 @@ const CourseClassTutorRooster = (
                       name={`${fieldsName}.end`}
                       type="time"
                       label="Roster end"
+                      onChange={onEndChange}
                       timezone={session.siteTimezone}
                     />
                   </Grid>

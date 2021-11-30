@@ -42,14 +42,14 @@ const CalendarDayBase: React.FC<DayBaseProps> = props => {
   const notNullDate = day.getFullYear() !== 1970;
 
   return (
-    <Grid container columnSpacing={3} className={classes.commonDayOffsetTop}>
+    <Grid container className={classes.commonDayOffsetTop}>
       <Grid item xs={2}>
         <div className={classes.day} id={id} ref={dayNodeRef}>
           {notNullDate && <Typography align="right">{format(timezone ? appendTimezone(day, timezone) : day, D_III)}</Typography>}
         </div>
       </Grid>
 
-      <Grid item xs={10} className={wrapperClass}>
+      <Grid container item xs={10} className={wrapperClass}>
         {children}
       </Grid>
     </Grid>

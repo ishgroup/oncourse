@@ -20,7 +20,6 @@ import { Typography } from "@mui/material";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../../model/common/Theme";
 import { getRoundingByType } from "../../discounts/utils";
 import { getCurrentTax } from "../../taxes/utils";
 import CourseClassGeneralTab from "./general/CourseClassGeneralTab";
@@ -177,7 +176,7 @@ const FeeEditButton = ({ onClick, className }) => (
   </IconButton>
 );
 
-const useBudgetAdornmentStyles = makeAppStyles()((theme: AppTheme) => ({
+const useBudgetAdornmentStyles = makeAppStyles(theme => ({
   root: {
     display: "grid",
     gridTemplateColumns: "1fr auto",
@@ -223,7 +222,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax
 }) => {
-  const { classes } = useBudgetAdornmentStyles();
+  const classes  = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"
@@ -489,7 +488,6 @@ const CourseClassEditView: React.FC<Props> = ({
         expandBudgetItem,
         currentTax
       }}
-      customAppBar
     />
   );
 };

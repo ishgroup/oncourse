@@ -28,7 +28,7 @@ const styles: any = theme => ({
   active: {
     willChange: "opacity",
     opacity: 1,
-    zIndex: theme.zIndex.drawer,
+    zIndex: theme.zIndex.drawer + 2,
     transition: `opacity ${theme.transitions.duration.enteringScreen}ms ${theme.transitions.easing.easeInOut}`
   },
   withOffset: {
