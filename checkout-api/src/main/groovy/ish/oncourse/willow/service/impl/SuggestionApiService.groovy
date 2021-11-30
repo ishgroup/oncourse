@@ -40,28 +40,32 @@ class SuggestionApiService implements SuggestionApi {
         List<String> courseClasses = new ArrayList<>()
         List<String> products = new ArrayList<>()
 
-        Arrays.stream(courseIds.split(',')).each { id ->
-            def cayenneCourse = new GetCourse(context, college, (id as String).trim()).get()
+        if (courseIds != null) {
+            Arrays.stream(courseIds.split(',')).each { id ->
+                def cayenneCourse = new GetCourse(context, college, (id as String).trim()).get()
 
-            products.addAll(relationService.getSuggestedProducts(cayenneCourse).collect {
-                it.id.toString()
-            })
-            courseClasses.addAll(relationService.getSuggestedCourses(cayenneCourse).
-                    collect { getNearestCourseClass(it) }.
-                    findAll { it != null }.
-                    collect { it.id.toString() }
-            )
+                products.addAll(relationService.getSuggestedProducts(cayenneCourse).collect {
+                    it.id.toString()
+                })
+                courseClasses.addAll(relationService.getSuggestedCourses(cayenneCourse).
+                        collect { getNearestCourseClass(it) }.
+                        findAll { it != null }.
+                        collect { it.id.toString() }
+                )
+            }
         }
 
-        Arrays.stream(productIds.split(',')).each { id ->
-            def cayenneProduct = new GetProduct(context, college, (id as String).trim()).get()
+        if (productIds != null) {
+            Arrays.stream(productIds.split(',')).each { id ->
+                def cayenneProduct = new GetProduct(context, college, (id as String).trim()).get()
 
-            products.addAll(relationService.getSuggestedProducts(cayenneProduct).collect { it.id.toString() })
-            courseClasses.addAll(relationService.getSuggestedCourses(cayenneProduct).
-                    collect { getNearestCourseClass(it) }.
-                    findAll { it != null }.
-                    collect { it.id.toString() }
-            )
+                products.addAll(relationService.getSuggestedProducts(cayenneProduct).collect { it.id.toString() })
+                courseClasses.addAll(relationService.getSuggestedCourses(cayenneProduct).
+                        collect { getNearestCourseClass(it) }.
+                        findAll { it != null }.
+                        collect { it.id.toString() }
+                )
+            }
         }
 
         return new SuggestionResponse().courseClasses(courseClasses.asList()).products(products.asList())

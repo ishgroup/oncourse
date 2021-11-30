@@ -73,12 +73,12 @@ paths:
         - name: courseIds
           in: query
           description: Selected Courses identifiers
-          required: true
+          required: false
           type: string
         - name: productIds
           in: query
           description: Selected Product identifiers
-          required: true
+          required: false
           type: string
       responses:
         200:
