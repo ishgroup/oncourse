@@ -171,3 +171,47 @@ see:
 ### Production solr server:
 We could use real solr server to debug queries:
 [http://10.100.48.1:8983/solr/#/]()
+
+
+### Run web + checkout-api + checkout
+
+1. run web app (see 'run willow app' from ./README.md)
+
+`./gradlew web:start`
+
+
+2. add header (use ModeHeader chrome extantion)
+   `X-Site-Key:palaven`
+
+3. add resources redirects (use Resource Owerride chrome extantion)
+
+- js bundle
+
+   `http://127.0.0.1:8305/s/js/all.js* -> http://127.0.0.1:8080/js/all.js`
+
+- css bundle
+
+   `http://127.0.0.1:8305/s/stylesheets/css/site.css* -> http://127.0.0.1:8080/stylesheets/css/site.css`
+
+- checkout bundle
+
+    `http://127.0.0.1:8305/s/oncourse-releases/checkout/stable/dynamic.js* -> http://localhost:8100/assets/dynamic.js`
+
+- checkout-api requests 
+
+    `http://127.0.0.1:8305/a/* -> http://127.0.0.1:8283/a/*`
+
+4. Unzip ./web/template-palaven.zip
+
+5. Run live server from resurces root (template-palaven directory)
+
+    `#live-serve`
+
+6. Run checkout in webpack watch mode
+
+    `cd ./checkout`
+    `yarn start`
+
+7. Run checkout api (see 'run willow app' from ./README.md)
+
+    `./gradlew checkout-api:start`
