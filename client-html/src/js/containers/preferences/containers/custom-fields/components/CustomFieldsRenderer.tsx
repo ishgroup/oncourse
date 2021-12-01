@@ -5,11 +5,9 @@
 
 import * as React from "react";
 import clsx from "clsx";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { change, Field } from "redux-form";
-import {
- FormControlLabel, Grid, Button, Collapse, Card
-} from "@mui/material";
+import { Button, Card, Collapse, FormControlLabel, Grid } from "@mui/material";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
 import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
@@ -18,7 +16,11 @@ import EditInPlaceField from "../../../../../common/components/form/formFields/E
 import EditInPlaceMoneyField from "../../../../../common/components/form/formFields/EditInPlaceMoneyField";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import {
-  validateEmail, validateSingleMandatoryField, validateURL, validateUniqueNamesInArray, validateRegex
+  validateEmail,
+  validateRegex,
+  validateSingleMandatoryField,
+  validateUniqueNamesInArray,
+  validateURL
 } from "../../../../../common/utils/validation";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import ListMapRenderer from "./ListMapRenderer";
@@ -160,6 +162,23 @@ const validateResolver = (value, allValues, props, name) => {
   return undefined;
 };
 
+const mapRecordTypeLabel = (label: EntityType) => {
+  switch (label) {
+    case "VoucherProduct":
+      return "Voucher type";
+    case "MembershipProduct":
+      return "Membership type";
+    case "ArticleProduct":
+      return "Product type";
+    case "Article":
+      return "Product";
+    default:
+      return label;
+  }
+};
+
+const getRecordTypelabel = (item: { label:EntityType, value: EntityType }) => mapRecordTypeLabel(item.label);
+
 const renderCustomFields = props => {
   const {
     fields, classes, onDelete, dispatch, meta: { form }
@@ -236,6 +255,7 @@ const renderCustomFields = props => {
                                   name={`${item}.dataType`}
                                   label="Data Type"
                                   items={DataTypes}
+                                  selectLbaelMar
                                   disabled={field.id}
                                   onChange={onDataTypeChange}
                                   className={classes.field}
@@ -264,6 +284,7 @@ const renderCustomFields = props => {
                                   items={EntityTypes}
                                   disabled={field.id}
                                   className={classes.field}
+                                  selectLabelCondition={getRecordTypelabel}
                                   fullWidth
                                   required
                                 />

@@ -22,7 +22,7 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { contactLabelCondition } from "../../contacts/utils";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { buildUrl, productUrl } from "../utils";
+import { buildUrl, getSaleEntityName, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
@@ -51,15 +51,6 @@ const paymentColumns: NestedTableColumn[] = [
     width: 120
   }
 ];
-
-const getProductTypeLabel = (type: ProductType) => {
-  switch (type) {
-    case "Product":
-      return "Article";
-    default:
-      return type;
-  }
-};
 
 const columnsByType = (type: ProductType) => {
   if (type === ProductType.Voucher) {
@@ -107,7 +98,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
     lg: twoColumn ? 4 : 12
   } as any;
 
-  const tags = useAppSelector(state => state.tags.entityTags[getProductTypeLabel(values?.productType)] || []);
+  const tags = useAppSelector(state => state.tags.entityTags[getSaleEntityName(values?.productType)] || []);
 
   return values ? (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("p-3", twoColumn && "pt-1")}>
@@ -155,47 +146,47 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
       </Grid>
 
       {type === ProductType.Voucher && (
-      <Grid item {...gridItemProps}>
-        <FormField
-          type="remoteDataSearchSelect"
-          entity="Contact"
-          name="redeemableById"
-          label="Send invoice on redemption to"
-          selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values.redeemableByName}
-          labelAdornment={(
-            <LinkAdornment
-              link={values.redeemableById}
-              clickHandler={openLink}
-            />
-              )}
-          disabled={values.status !== ProductItemStatus.Active}
-          itemRenderer={ContactSelectItemRenderer}
-          onInnerValueChange={onRedeemableByIdChange}
-          rowHeight={55}
-          allowEmpty
-        />
-      </Grid>
+        <Grid item {...gridItemProps}>
+          <FormField
+            type="remoteDataSearchSelect"
+            entity="Contact"
+            name="redeemableById"
+            label="Send invoice on redemption to"
+            selectValueMark="id"
+            selectLabelCondition={contactLabelCondition}
+            defaultDisplayValue={values.redeemableByName}
+            labelAdornment={(
+              <LinkAdornment
+                link={values.redeemableById}
+                clickHandler={openLink}
+              />
+                )}
+            disabled={values.status !== ProductItemStatus.Active}
+            itemRenderer={ContactSelectItemRenderer}
+            onInnerValueChange={onRedeemableByIdChange}
+            rowHeight={55}
+            allowEmpty
+          />
+        </Grid>
         )}
       {type === ProductType.Membership && (
-      <Grid item {...gridItemProps}>
-        <Uneditable value={formatSaleDate(values.validFrom)} label="Valid from" />
-      </Grid>
-        )}
+        <Grid item {...gridItemProps}>
+          <Uneditable value={formatSaleDate(values.validFrom)} label="Valid from" />
+        </Grid>
+      )}
       {(type === ProductType.Membership || type === ProductType.Voucher) && (
-      <Grid item {...gridItemProps}>
-        <FormField
-          type="date"
-          name="expiresOn"
-          label="Expires On"
-          disabled={
-            values.status !== ProductItemStatus.Active
-            || compareAsc(startOfDay(new Date()), new Date(values.expiresOn)) > 0
-          }
-        />
-      </Grid>
-        )}
+        <Grid item {...gridItemProps}>
+          <FormField
+            type="date"
+            name="expiresOn"
+            label="Expires On"
+            disabled={
+              values.status !== ProductItemStatus.Active
+              || compareAsc(startOfDay(new Date()), new Date(values.expiresOn)) > 0
+            }
+          />
+        </Grid>
+      )}
 
       <Grid item {...gridItemProps}>
         <Uneditable value={values.purchasePrice} label="Purchase price" money />
@@ -205,15 +196,15 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
       </Grid>
    
       {type === ProductType.Voucher && (
-      <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
-        <Grid item {...gridItemProps} className="money">
-          <Uneditable value={values.valueRemaining} label="Value remaining" />
+        <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
+          <Grid item {...gridItemProps} className="money">
+            <Uneditable value={values.valueRemaining} label="Value remaining" />
+          </Grid>
+          <Grid item {...gridItemProps}>
+            <Uneditable value={values.voucherCode} label="Voucher code" />
+          </Grid>
         </Grid>
-        <Grid item {...gridItemProps}>
-          <Uneditable value={values.voucherCode} label="Voucher code" />
-        </Grid>
-      </Grid>
-        )}
+      )}
 
       <Grid item xs={12} className="mb-3">
         <FieldArray

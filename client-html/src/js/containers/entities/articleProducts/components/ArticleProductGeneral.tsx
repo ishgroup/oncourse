@@ -5,9 +5,7 @@
 
 import React from "react";
 import { change, FieldArray } from "redux-form";
-import {
- Account, ArticleProduct, ProductStatus, Tag, Tax 
-} from "@api/model";
+import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
@@ -21,6 +19,7 @@ import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -214,6 +213,17 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           rootEntity={rootEntity}
         />
       </Grid>
+      <CustomFields
+        entityName="ArticleProduct"
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12,
+          lg: twoColumn ? 4 : 12
+        }}
+      />
     </Grid>
   );
 };
