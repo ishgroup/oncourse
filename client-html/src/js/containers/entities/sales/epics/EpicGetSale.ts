@@ -8,7 +8,6 @@ import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/ac
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
-import { getSaleEntityName } from "../utils";
 
 const request: EpicUtils.Request<any, { id: string }> = {
   type: GET_SALE,
@@ -18,7 +17,7 @@ const request: EpicUtils.Request<any, { id: string }> = {
         type: GET_SALE_FULFILLED,
         payload: { productItem }
       },
-      getNoteItems(getSaleEntityName(productItem.productType), productItem.id, LIST_EDIT_VIEW_FORM_NAME),
+      getNoteItems("ProductItem", productItem.id, LIST_EDIT_VIEW_FORM_NAME),
       {
         type: SET_LIST_EDIT_RECORD,
         payload: { editRecord: productItem, name: productItem.productName }
