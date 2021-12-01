@@ -216,6 +216,17 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           rootEntity={rootEntity}
         />
       </Grid>
+      <CustomFields
+        entityName="ArticleProduct"
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12,
+          lg: twoColumn ? 4 : 12
+        }}
+      />
     </Grid>
   );
 };
