@@ -5,9 +5,7 @@
 
 import React, { useCallback } from "react";
 import { change } from "redux-form";
-import {
- Account, ExpiryType, MembershipProduct, ProductStatus, Tax 
-} from "@api/model";
+import { Account, ExpiryType, MembershipProduct, ProductStatus, Tax } from "@api/model";
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
@@ -24,6 +22,7 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { useAppSelector } from "../../../../common/utils/hooks";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
   accounts?: Account[];
@@ -204,6 +203,17 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormEditorField name="description" label="Description" />
       </Grid>
+
+      <CustomFields
+        entityName="MembershipProduct"
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12
+        }}
+      />
       
       <Grid item xs={twoColumn ? 2 : 4}>
         <FormField
@@ -265,6 +275,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           sort
         />
       </Grid>
+
       <Grid item xs={twoColumn ? 4 : 12}>
         <CustomSelector
           caption="Expires"
