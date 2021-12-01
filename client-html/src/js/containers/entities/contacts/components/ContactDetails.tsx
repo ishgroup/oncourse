@@ -12,14 +12,23 @@ import React, {
 } from "react";
 import {
   ConcessionType,
-  Contact, ContactGender, ContactRelationType, StudentCitizenship, StudentConcession
+  Contact,
+  ContactGender,
+  ContactRelationType,
+  StudentCitizenship,
+  StudentConcession
 } from "@api/model";
 import {
-  arrayInsert, arrayRemove, change
+  arrayInsert,
+  arrayRemove,
+  change
 } from "redux-form";
 import { connect } from "react-redux";
 import {
- Alert, FormControlLabel, Grid, IconButton
+  Alert,
+  FormControlLabel,
+  Grid,
+  IconButton
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -33,7 +42,6 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
 import { SettingsAdornment } from "../../../../common/components/form/FieldAdornments";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { MembershipContent, MembershipHeader } from "./MembershipLines";
 import { RelationsContent, RelationsHeader } from "./RelationsLines";
@@ -401,15 +409,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
                 </Grid>
               </>
             ) : null}
-
-            <CustomFields
-              entityName="Contact"
-              fieldName="customFields"
-              entityValues={values}
-              dispatch={dispatch}
-              form={form}
-              gridItemProps={gridItemProps}
-            />
 
             {values.student && (
               <>
