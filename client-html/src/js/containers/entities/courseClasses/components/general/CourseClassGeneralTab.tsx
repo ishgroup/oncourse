@@ -4,7 +4,7 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useState
+  useCallback, useEffect, useMemo, useState
 } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -33,7 +33,6 @@ import { AppMessage } from "../../../../../model/common/Message";
 import history from "../../../../../constants/History";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { getClassCostTypes } from "../../utils";
-import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
@@ -350,16 +349,6 @@ const CourseClassGeneralTab = React.memo<Props>(
               hasBudget={values.budget.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>
-          <CustomFields
-            entityName="CourseClass"
-            fieldName="customFields"
-            entityValues={values}
-            dispatch={dispatch}
-            form={form}
-            gridItemProps={{
-              xs: twoColumn ? 6 : 12
-            }}
-          />
         </Grid>
       </>
     );

@@ -6,7 +6,7 @@
 import clsx from "clsx";
 import Decimal from "decimal.js-light";
 import React, {
- useEffect, useMemo, useState, Fragment
+  useEffect, useMemo, useState, Fragment
 } from "react";
 import { format } from "date-fns";
 import { connect, useSelector } from "react-redux";
@@ -49,12 +49,18 @@ import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import { discountsSort } from "./budget/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import ExpandableCustomFields from "../../customFieldTypes/components/ExpandableCustomFields";
 
 const itemsBase: TabsListItem[] = [
   {
     label: "GENERAL",
     type: "GENERAL",
     component: props => <CourseClassGeneralTab {...props} />
+  },
+  {
+    label: "Custom Fields",
+    component: props => <ExpandableCustomFields {...props} entityName="CourseClass" />,
+    expandable: true
   },
   {
     label: "WEB",
@@ -222,7 +228,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax
 }) => {
-  const classes  = useBudgetAdornmentStyles();
+  const classes = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"
@@ -336,6 +342,7 @@ const CourseClassEditView: React.FC<Props> = ({
   currencySymbol,
   taxes
 }) => {
+
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
   const [expandedBudget, setExpandedBudget] = useState([]);

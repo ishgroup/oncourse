@@ -15,7 +15,7 @@ import ExpandableContainer from "../../../../common/components/layout/expandable
 import { State } from "../../../../reducers/state";
 import { getCustomFieldTypes } from "../actions";
 
-const ExpandableCustomFields: React.FC<any> = props => {
+const ExpandableCustomFields = React.memo<any>(props => {
   const {
     values,
     dispatch,
@@ -56,7 +56,7 @@ const ExpandableCustomFields: React.FC<any> = props => {
     lg: twoColumn ? 4 : 12
   };
 
-  return values && values[fieldName] && customFieldTypes && customFieldTypes[entityName] ? (
+  return values && values[fieldName] && customFieldTypes && customFieldTypes[entityName] && customFieldTypes[entityName].length ? (
     <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
         <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header={header}>
@@ -74,7 +74,7 @@ const ExpandableCustomFields: React.FC<any> = props => {
       </Grid>
     </Grid>
   ) : null;
-};
+});
 
 const mapStateToProps = (state: State) => ({
   customFieldTypes: state.customFieldTypes.types
