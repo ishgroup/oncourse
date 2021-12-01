@@ -6,9 +6,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import { change, FieldArray } from "redux-form";
-import {
- Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse 
-} from "@api/model";
+import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
@@ -35,6 +33,7 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { useAppSelector } from "../../../../common/utils/hooks";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -391,6 +390,17 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           sort
         />
       </Grid>
+
+      <CustomFields
+        entityName="VoucherProduct"
+        fieldName="customFields"
+        entityValues={values}
+        dispatch={dispatch}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12
+        }}
+      />
 
       <Grid item xs={12}>
         <FormEditorField
