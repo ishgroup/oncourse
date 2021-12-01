@@ -14,7 +14,6 @@
 	</p>
 </div>
 
-<t:if test="isAmexEnabled">
 	<div class="container">
 		<p>
 			<img src="/s/img/amex-cvv.png" width="197" height="126"
@@ -23,7 +22,6 @@
 			front of your card.
 		</p>
 	</div>
-</t:if>
 
 <p>As the CVV is not embossed (like the card number), the CVV is not
 	printed on any receipts, hence it is not likely to be known by anyone
