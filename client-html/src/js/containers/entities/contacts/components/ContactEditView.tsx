@@ -21,7 +21,7 @@ import AvailabilityFormComponent from "../../../../common/components/form/availa
 import { State } from "../../../../reducers/state";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../model/common/Theme";
-import ContactCustomFields from "./ContactCustomFields";
+import ExpandableCustomFields from "../../customFieldTypes/components/ExpandableCustomFields";
 
 const studentItems: TabsListItem[] = [
   {
@@ -61,7 +61,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Custom Fields",
-    component: props => <ContactCustomFields {...props} />,
+    component: props => <ExpandableCustomFields {...props} entityName="Contact" />,
     expandable: true
   },
   {

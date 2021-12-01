@@ -11,7 +11,6 @@ import Launch from "@mui/icons-material/Launch";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
 import { State } from "../../../../reducers/state";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
@@ -44,8 +43,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
     tags,
     values,
     isNew,
-    dispatch,
-    form,
     syncErrors
   } = props;
 
@@ -171,17 +168,6 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           multiline
         />
       </Grid>
-      <CustomFields
-        entityName="Application"
-        fieldName="customFields"
-        entityValues={values}
-        dispatch={dispatch}
-        form={form}
-        gridItemProps={{
-          xs: twoColumn ? 6 : 12,
-          lg: twoColumn ? 4 : 12
-        }}
-      />
     </Grid>
   );
 };

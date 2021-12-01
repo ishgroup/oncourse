@@ -12,6 +12,7 @@ import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import ApplicationGeneral from "./ApplicationGeneral";
 import ApplicationDocuments from "./ApplicationDocuments";
 import { EditViewProps } from "../../../../model/common/ListView";
+import ExpandableCustomFields from "../../customFieldTypes/components/ExpandableCustomFields";
 
 const styles = theme => createStyles({
   documentsRoot: {
@@ -23,6 +24,11 @@ const items: TabsListItem[] = [
   {
     label: "General",
     component: props => <ApplicationGeneral {...props} />
+  },
+  {
+    label: "Custom Fields",
+    component: props => <ExpandableCustomFields {...props} entityName="Application" />,
+    expandable: true
   },
   {
     label: "Notes",

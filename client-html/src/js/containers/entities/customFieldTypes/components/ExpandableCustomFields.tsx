@@ -7,11 +7,15 @@
  */
 
 import React, { useEffect } from "react";
-import { Grid } from "@mui/material";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import Grid from "@mui/material/Grid";
+import CustomFields from "./CustomFieldsTypes";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import { State } from "../../../../reducers/state";
+import { getCustomFieldTypes } from "../actions";
 
-const ContactCustomFields: React.FC<any> = props => {
+const ExpandableCustomFields: React.FC<any> = props => {
   const {
     values,
     dispatch,
@@ -21,7 +25,12 @@ const ContactCustomFields: React.FC<any> = props => {
     expanded,
     setExpanded,
     invalid,
-    syncErrors
+    syncErrors,
+    header = "Custom Fields",
+    entityName,
+    fieldName = "customFields",
+    customFieldTypes,
+    getFieldTypes,
   } = props;
 
   useEffect(() => {
@@ -29,26 +38,32 @@ const ContactCustomFields: React.FC<any> = props => {
       const updated = [...expanded];
 
       if (!updated.includes(tabIndex)) {
-          updated.push(tabIndex);
+        updated.push(tabIndex);
       }
 
       setExpanded(updated);
     }
   }, [invalid, syncErrors]);
 
+  useEffect(() => {
+    if (!customFieldTypes || !customFieldTypes[entityName]) {
+      getFieldTypes(entityName);
+    }
+  }, [entityName, customFieldTypes]);
+
   const gridItemProps: any = {
     xs: twoColumn ? 6 : 12,
     lg: twoColumn ? 4 : 12
   };
 
-  return (
+  return values && values[fieldName] && customFieldTypes && customFieldTypes[entityName] ? (
     <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
-        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header="Custom Fields">
+        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header={header}>
           <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
             <CustomFields
-              entityName="Contact"
-              fieldName="customFields"
+              entityName={entityName}
+              fieldName={fieldName}
               entityValues={values}
               dispatch={dispatch}
               form={form}
@@ -58,7 +73,15 @@ const ContactCustomFields: React.FC<any> = props => {
         </ExpandableContainer>
       </Grid>
     </Grid>
-  )
+  ) : null;
 };
 
-export default ContactCustomFields;
+const mapStateToProps = (state: State) => ({
+  customFieldTypes: state.customFieldTypes.types
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getFieldTypes: entity => dispatch(getCustomFieldTypes(entity))
+});
+
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(ExpandableCustomFields);
