@@ -8,24 +8,24 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.server.cayenne.glue._VoucherNoteRelation
+import ish.oncourse.server.cayenne.glue._ProductItemNoteRelation
 
 import javax.annotation.Nonnull
 
-class VoucherNoteRelation extends _VoucherNoteRelation {
+class ProductItemNoteRelation extends _ProductItemNoteRelation {
     @Nonnull
     @Override
     String getEntityIdentifier() {
-        return Voucher.class.getSimpleName();
+        return ProductItem.class.getSimpleName();
     }
 
     @Override
     void setNotableEntity(NotableTrait entity) {
-        super.setNotedVoucher((Voucher) entity);
+        super.setNotedProductItem((ProductItem) entity);
     }
 
     @Override
     NotableTrait getNotableEntity() {
-        return super.getNotedVoucher()
+        return super.getNotedProductItem()
     }
 }

@@ -26,13 +26,19 @@ import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
+import ish.oncourse.server.api.v1.model.ProductTypeDTO
+import ish.oncourse.server.cayenne.Article
+import ish.oncourse.server.cayenne.ExpandableTrait
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
+import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.Product
+import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherProductTagRelation
 import ish.oncourse.server.cayenne.VoucherProductAttachmentRelation
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
@@ -127,6 +133,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
             voucherProductDTO.createdOn = voucherProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.modifiedOn = voucherProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             voucherProductDTO.dataCollectionRuleId = voucherProduct.fieldConfigurationScheme?.id
+            voucherProductDTO.customFields = voucherProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             voucherProductDTO
         }
     }
@@ -152,6 +159,7 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateDocuments(voucherProduct, voucherProduct.attachmentRelations, voucherProductDTO.documents, VoucherProductAttachmentRelation, context)
         updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags*.id, VoucherProductTagRelation, context)
+        updateCustomFields(voucherProduct.context, voucherProduct, voucherProductDTO.customFields, voucherProduct.customFieldClass)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
             voucherProduct.tax = taxDao.getNonSupplyTax(voucherProduct.context)

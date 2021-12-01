@@ -55,3 +55,7 @@ properties:
     type: array
     items:
       $ref: '../Document.yaml'
+  customFields:
+    type: object
+    additionalProperties:
+      type: string

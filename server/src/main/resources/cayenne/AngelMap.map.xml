@@ -1746,14 +1746,8 @@
 	<obj-entity name="MembershipProductNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.MembershipProductNoteRelation" clientClassName="ish.oncourse.cayenne.MembershipProductNoteRelation">
 		<qualifier><![CDATA[entityIdentifier = "MembershipProduct"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="VoucherNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.VoucherNoteRelation" clientClassName="ish.oncourse.cayenne.VoucherNoteRelation">
-		<qualifier><![CDATA[entityIdentifier = "Voucher"]]></qualifier>
-	</obj-entity>
-	<obj-entity name="ArticleNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.ArticleNoteRelation" clientClassName="ish.oncourse.cayenne.ArticleNoteRelation">
-		<qualifier><![CDATA[entityIdentifier = "Article"]]></qualifier>
-	</obj-entity>
-	<obj-entity name="MembershipNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.MembershipNoteRelation" clientClassName="ish.oncourse.cayenne.MembershipNoteRelation">
-		<qualifier><![CDATA[entityIdentifier = "Membership"]]></qualifier>
+	<obj-entity name="ProductItemNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.ProductItemNoteRelation" clientClassName="ish.oncourse.cayenne.ProductItemNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "ProductItem"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="VoucherProductTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.VoucherProductTagRelation" clientClassName="ish.oncourse.cayenne.VoucherProductTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 20]]></qualifier>
@@ -5133,9 +5127,7 @@
 	<obj-relationship name="noteRelations" source="VoucherProduct" target="VoucherProductNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="noteRelations" source="ArticleProduct" target="ArticleProductNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="noteRelations" source="MembershipProduct" target="MembershipProductNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
-	<obj-relationship name="noteRelations" source="Voucher" target="VoucherNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
-	<obj-relationship name="noteRelations" source="Article" target="ArticleNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
-	<obj-relationship name="noteRelations" source="Membership" target="MembershipNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="noteRelations" source="ProductItem" target="ProductItemNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
 	<obj-relationship name="payslips" source="Contact" target="Payslip" deleteRule="Deny" db-relationship-path="payslips"/>
@@ -5160,9 +5152,7 @@
 	<obj-relationship name="notedVoucherProduct" source="VoucherProductNoteRelation" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
 	<obj-relationship name="notedArticleProduct" source="ArticleProductNoteRelation" target="ArticleProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
 	<obj-relationship name="notedMembershipProduct" source="MembershipProductNoteRelation" target="MembershipProduct" deleteRule="Nullify" db-relationship-path="notedProduct"/>
-	<obj-relationship name="notedVoucher" source="VoucherNoteRelation" target="Voucher" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
-	<obj-relationship name="notedArticle" source="ArticleNoteRelation" target="Article" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
-	<obj-relationship name="notedMembership" source="MembershipNoteRelation" target="Membership" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
+	<obj-relationship name="notedProductItem" source="ProductItemNoteRelation" target="ProductItem" deleteRule="Nullify" db-relationship-path="notedProductItem"/>
 	<obj-relationship name="fromContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="fromContact"/>
 	<obj-relationship name="relationType" source="ContactRelation" target="ContactRelationType" deleteRule="Nullify" db-relationship-path="relationType"/>
 	<obj-relationship name="toContact" source="ContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="toContact"/>

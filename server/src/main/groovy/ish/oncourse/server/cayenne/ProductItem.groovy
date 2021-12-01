@@ -35,7 +35,7 @@ import java.util.Date
  */
 @API
 @QueueableEntity
-class ProductItem extends _ProductItem implements Queueable {
+class ProductItem extends _ProductItem implements Queueable, NotableTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
