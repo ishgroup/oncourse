@@ -22,13 +22,14 @@ import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
 import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
+import ish.oncourse.server.cayenne.ArticleProductTagRelation
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
 import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.ArticleProductAttachmentRelation
-import ish.oncourse.server.cayenne.VoucherProductTagRelation
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
@@ -108,6 +109,7 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
             articleProductDTO.dataCollectionRuleId = articleProduct.fieldConfigurationScheme?.id
             articleProductDTO.documents = articleProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
             articleProductDTO.tags = articleProduct.tags.collect{ toRestTagMinimized(it) }
+            articleProductDTO.customFields = articleProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             articleProductDTO
         }
     }
@@ -130,7 +132,8 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(articleProduct, articleProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateDocuments(articleProduct, articleProduct.attachmentRelations, articleProductDTO.documents, ArticleProductAttachmentRelation, context)
-        updateTags(articleProduct, articleProduct.taggingRelations, articleProductDTO.tags*.id, VoucherProductTagRelation, context)
+        updateTags(articleProduct, articleProduct.taggingRelations, articleProductDTO.tags*.id, ArticleProductTagRelation, context)
+        updateCustomFields(articleProduct.context, articleProduct, articleProductDTO.customFields, articleProduct.customFieldClass)
         articleProduct
     }
 
