@@ -4,8 +4,11 @@ body: ish.script.nswVoucherRedemption.groovy
 enabled: false
 triggerType: CRON
 schedule: "@daily-morning"
-description: For classes which have already commenced, redeem the Service NSW Voucher code against the Service NSW api. If there is an error send email to the errorsTo address or, if there is no set address in errorsTo, send to the onCourse administrator.
+description: Redeem the Service NSW Voucher code against the Service NSW API. If there is an error send email to the errorsTo address. Usually only classes which have already commenced will be redeemed, but a few days before the end of the year all vouchers will be processed since Service NSW rules are that you cannot redeem the following year. For this script to work, you'll need to have the Service NSW integration configured.
 options:
   - name: emailAddress
     dataType: TEXT
     value: ""
+  - name: daysBeforeYearEnd
+    dataType: TEXT
+    value: "14"
