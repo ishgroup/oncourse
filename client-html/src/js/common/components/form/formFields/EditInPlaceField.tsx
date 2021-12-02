@@ -594,7 +594,7 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
         }),
         placeholder: placeholder || (!isEditing && "No value"),
         style: {
-          maxWidth: isInline ? this.getInputLength() : undefined
+          maxWidth: isInline && !invalid ? this.getInputLength() : undefined
         },
       },
       value: input.value ? input.value : !isEditing && defaultValue ? defaultValue : input.value,
