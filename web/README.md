@@ -185,33 +185,49 @@ We could use real solr server to debug queries:
 
 3. add resources redirects (use Resource Owerride chrome extantion)
 
-- js bundle
+   - js bundle
 
-   `http://127.0.0.1:8305/s/js/all.js* -> http://127.0.0.1:8080/js/all.js`
+      `http://127.0.0.1:8305/s/js/all.js* -> http://127.0.0.1:8080/js/all.js`
 
-- css bundle
+   - css bundle
 
-   `http://127.0.0.1:8305/s/stylesheets/css/site.css* -> http://127.0.0.1:8080/stylesheets/css/site.css`
+      `http://127.0.0.1:8305/s/stylesheets/css/site.css* -> http://127.0.0.1:8080/stylesheets/css/site.css`
 
-- checkout bundle
+   - checkout bundle
 
-    `http://127.0.0.1:8305/s/oncourse-releases/checkout/stable/dynamic.js* -> http://localhost:8100/assets/dynamic.js`
+       `http://127.0.0.1:8305/s/oncourse-releases/checkout/stable/dynamic.js* -> http://localhost:8100/assets/dynamic.js`
 
-- checkout-api requests 
+   - checkout-api requests 
 
-    `http://127.0.0.1:8305/a/* -> http://127.0.0.1:8283/a/*`
+       `http://127.0.0.1:8305/a/* -> http://127.0.0.1:8283/a/*`
 
-4. Unzip ./web/template-palaven.zip
+4. Add CORS and ModHeader chrome extensions
 
-5. Run live server from resurces root (template-palaven directory)
+      - CORS settings:
+
+        `Access Control Allow Methods: GET, PUT, POST, DELETE, HEAD, OPTIONS`
+
+        `Access Control Allow Headers: on`
+
+        `Access Control Allow Credentials: on`
+
+        `Access Control Allow Origin: *`
+
+        `Add (*) as the origin for all redirected URLs: on`
+      - ModHeader settings:
+        `Request headers: x-site-key = ${college site key}`
+
+5. Unzip ./web/template-palaven.zip
+
+6. Install live-server package from npm. Run live server from resurces root (template-palaven directory)
 
     `#live-serve`
 
-6. Run checkout in webpack watch mode
+7. Run checkout in webpack watch mode
 
     `cd ./checkout`
     `yarn start`
 
-7. Run checkout api (see 'run willow app' from ./README.md)
+8. Run checkout api (see 'run willow app' from ./README.md)
 
     `./gradlew checkout-api:start`
