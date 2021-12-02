@@ -20,7 +20,6 @@ import { PreferencesState } from "../../../preferences/reducers/state";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { CourseExtended } from "../../../../model/entities/Course";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import CourseAvailableClassChart from "./CourseAvailableClassChart";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
@@ -52,11 +51,11 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     values,
     isNew,
     dirty,
-     syncErrors,
+    syncErrors,
     dispatch,
     form
   }) => {
-    const classes  = useStyles();
+    const classes = useStyles();
 
     const validateTagList = useCallback((value, allValues, props) => validateTagsList(tags, value, allValues, props), [tags]);
 
@@ -237,18 +236,6 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             label="Print brochure description"
           />
         </Grid>
-
-        <CustomFields
-          entityName="Course"
-          fieldName="customFields"
-          entityValues={values}
-          dispatch={dispatch}
-          form={form}
-          gridItemProps={{
-              xs: twoColumn ? 6 : 12,
-              lg: twoColumn ? 4 : 12
-            }}
-        />
       </Grid>
     );
   }

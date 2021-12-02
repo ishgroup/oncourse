@@ -59,7 +59,7 @@ const itemsBase: TabsListItem[] = [
   },
   {
     label: "Custom Fields",
-    component: props => <ExpandableCustomFields {...props} entityName="CourseClass" />,
+    component: props => <ExpandableCustomFields {...props} />,
     expandable: true
   },
   {

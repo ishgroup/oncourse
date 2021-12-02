@@ -15,11 +15,17 @@ import CourseVetTab from "./CourseVetTab";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 import { State } from "../../../../reducers/state";
+import ExpandableCustomFields from "../../customFieldTypes/components/ExpandableCustomFields";
 
 const items: TabsListItem[] = [
   {
     label: "General",
     component: props => <CourseGeneralTab {...props} />
+  },
+  {
+    label: "Custom Fields",
+    component: props => <ExpandableCustomFields {...props} />,
+    expandable: true
   },
   {
     label: "Classes",
@@ -43,15 +49,14 @@ const items: TabsListItem[] = [
   }
 ];
 
-const styles = theme =>
-  createStyles({
-    icon: {
-      alignItems: "right"
-    },
-    moduleRowClass: {
-      gridTemplateColumns: "1fr 0.5fr"
-    }
-  });
+const styles = () => createStyles({
+  icon: {
+    alignItems: "right"
+  },
+  moduleRowClass: {
+    gridTemplateColumns: "1fr 0.5fr"
+  }
+});
 
 const CourseEditView = props => {
   const hasVetPermissions = useSelector<State, any>(state => state.access["VET_COURSE"]);

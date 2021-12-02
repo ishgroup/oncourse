@@ -61,7 +61,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Custom Fields",
-    component: props => <ExpandableCustomFields {...props} entityName="Contact" />,
+    component: props => <ExpandableCustomFields {...props} />,
     expandable: true
   },
   {
