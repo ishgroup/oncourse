@@ -10,6 +10,7 @@ import ish.oncourse.api.cayenne.CayenneService
 import ish.oncourse.model.College
 import ish.oncourse.model.Course
 import ish.oncourse.model.CourseClass
+import ish.oncourse.model.Product
 import ish.oncourse.willow.EntityRelationService
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.checkout.functions.GetProduct
@@ -42,14 +43,18 @@ class SuggestionApiService implements SuggestionApi {
         List<String> courseClasses = new ArrayList<>()
         List<String> products = new ArrayList<>()
 
-        if (suggestionRequest.courseIds != null) {
-            suggestionRequest.courseIds.each { id ->
-                def cayenneCourse = new GetCourse(context, college, (id as String).trim()).get()
+        List<Course> cayenneCourses = new ArrayList<>()
+        List<Product> cayenneProducts = new ArrayList<>()
 
-                products.addAll(relationService.getSuggestedProducts(cayenneCourse).collect {
-                    it.id.toString()
-                })
-                courseClasses.addAll(relationService.getSuggestedCourses(cayenneCourse).
+        if (suggestionRequest.courseIds != null) {
+
+            cayenneCourses = suggestionRequest.courseIds.collect { id ->
+                new GetCourse(context, college, (id as String).trim()).get()
+            }.asList()
+
+            cayenneCourses.each { course ->
+                products.addAll(relationService.getSuggestedProducts(course).collect { it.id.toString() })
+                courseClasses.addAll(relationService.getSuggestedCourses(course).
                         collect { getNearestCourseClass(it) }.
                         findAll { it != null }.
                         collect { it.id.toString() }
@@ -58,11 +63,14 @@ class SuggestionApiService implements SuggestionApi {
         }
 
         if (suggestionRequest.productIds != null) {
-            suggestionRequest.productIds.each { id ->
-                def cayenneProduct = new GetProduct(context, college, (id as String).trim()).get()
 
-                products.addAll(relationService.getSuggestedProducts(cayenneProduct).collect { it.id.toString() })
-                courseClasses.addAll(relationService.getSuggestedCourses(cayenneProduct).
+            cayenneProducts = suggestionRequest.productIds.collect { id ->
+                new GetProduct(context, college, (id as String).trim()).get()
+            }.asList()
+
+            cayenneProducts.each { product ->
+                products.addAll(relationService.getSuggestedProducts(product).collect { it.id.toString() })
+                courseClasses.addAll(relationService.getSuggestedCourses(product).
                         collect { getNearestCourseClass(it) }.
                         findAll { it != null }.
                         collect { it.id.toString() }
@@ -70,7 +78,17 @@ class SuggestionApiService implements SuggestionApi {
             }
         }
 
-        return new SuggestionResponse().courseClasses(courseClasses.asList()).products(products.asList())
+        // filtering entities already in the cart
+        products = products.findAll {product ->
+            !cayenneProducts.collect {it.id.toString()}.contains(product)
+        }
+        courseClasses = courseClasses.findAll { suggestion ->
+            cayenneCourses.findAll { course ->
+                course.courseClasses.collect {it.id.toString()}.contains(suggestion)
+            }.isEmpty()
+        }
+
+        new SuggestionResponse().courseClasses(courseClasses.asList()).products(products.asList())
     }
 
     private CourseClass getNearestCourseClass(Course course) {
