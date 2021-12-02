@@ -150,7 +150,11 @@ function createProductsEpic() {
 
 function createSuggestionsEpic() {
   return (action$, store: Store<IshState>) => action$
-    .ofType(Actions.REQUEST_SUGGESTION)
+    .ofType(
+      Actions.REQUEST_SUGGESTION,
+      Actions.ADD_PRODUCT_TO_CART,
+      Actions.ADD_CLASS_TO_CART
+    )
     .bufferTime(100) // batch actions
     .filter((actions) => actions.length)
     .mergeMap(() => {
@@ -162,7 +166,9 @@ function createSuggestionsEpic() {
         .map((payload: SuggestionResponse) => [
           ...payload.products.map((pId) => requestProduct(pId)),
           ...payload.courseClasses.map((cId) => requestCourseClass(cId))
-        ]);
+        ])
+        .map(mapPayload(Actions.REQUEST_SUGGESTION))
+        .catch(mapError(Actions.REQUEST_SUGGESTION));
     });
 }
 
