@@ -25,6 +25,7 @@ import { IshState } from '../../services/IshState';
 import { mapError, mapPayload } from '../../common/epics/EpicUtils';
 import { rewriteContactNodeToState } from '../../enrol/containers/summary/actions/Actions';
 import { SuggestionResponse } from '../../model/v2/suggestion/SuggestionResponse';
+import { SuggestionRequest } from '../../model/v2/suggestion/SuggestionRequest';
 
 const {
   courseClassesApi,
@@ -159,10 +160,11 @@ function createSuggestionsEpic() {
     .filter((actions) => actions.length)
     .mergeMap(() => {
       const state = store.getState();
-      const courseIds = state.cart.courses.result;
-      const productsIds = state.cart.products.result;
+      const request = new SuggestionRequest()
+      request.courseIds = state.cart.courses.result;
+      request.productIds = state.cart.products.result;
 
-      return Observable.fromPromise(suggestionsApi.getSuggestion(courseIds, productsIds))
+      return Observable.fromPromise(suggestionsApi.getSuggestion(request))
         .map((payload: SuggestionResponse) => [
           ...payload.products.map((pId) => requestProduct(pId)),
           ...payload.courseClasses.map((cId) => requestCourseClass(cId))

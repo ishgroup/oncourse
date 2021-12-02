@@ -63,23 +63,21 @@ paths:
           schema:
             $ref: '#/definitions/common.CommonError'
   /v1/suggestion:
-    get:
-      operationId: getSuggestion
+    post:
+      x-filter:
+        - CollegeInfo
       summary: Get suggested CourseClasses and Products
       description: Get suggested CourseClasses and Products
+      operationId: getSuggestion
       tags:
         - Suggestion
       parameters:
-        - name: courseIds
-          in: query
-          description: Selected Courses identifiers
+        - name: suggestionRequest
+          in: body
+          description:  Selected Courses and Products identifiers
           required: false
-          type: string
-        - name: productIds
-          in: query
-          description: Selected Product identifiers
-          required: false
-          type: string
+          schema:
+            $ref: "v2.suggestion.SuggestionRequest"
       responses:
         200:
           description: СoursesClasses and Products without duplicates.
@@ -1960,6 +1958,18 @@ definitions:
         items:
           type: string
       products:
+        type: array
+        items:
+          type: string
+
+  v2.suggestion.SuggestionRequest:
+    type: object
+    properties:
+      courseIds:
+        type: array
+        items:
+          type: string
+      productIds:
         type: array
         items:
           type: string

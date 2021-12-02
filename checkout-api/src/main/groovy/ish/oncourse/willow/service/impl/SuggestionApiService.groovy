@@ -13,6 +13,7 @@ import ish.oncourse.model.CourseClass
 import ish.oncourse.willow.EntityRelationService
 import ish.oncourse.willow.checkout.functions.GetCourse
 import ish.oncourse.willow.checkout.functions.GetProduct
+import ish.oncourse.willow.model.v2.suggestion.SuggestionRequest
 import ish.oncourse.willow.model.v2.suggestion.SuggestionResponse
 import ish.oncourse.willow.service.SuggestionApi
 import org.apache.cayenne.ObjectContext
@@ -21,18 +22,19 @@ import java.time.LocalDateTime
 
 class SuggestionApiService implements SuggestionApi {
 
-    @Inject
     private CayenneService cayenneService
-
-    @Inject
     private CollegeService collegeService
-
-    @Inject
     private EntityRelationService relationService
 
+    @Inject
+    SuggestionApiService(CayenneService cayenneService, CollegeService collegeService, EntityRelationService relationService) {
+        this.cayenneService = cayenneService
+        this.collegeService = collegeService
+        this.relationService = relationService
+    }
 
     @Override
-    SuggestionResponse getSuggestion(String courseIds, String productIds) {
+    SuggestionResponse getSuggestion(SuggestionRequest suggestionRequest) {
 
         ObjectContext context = cayenneService.newContext()
         College college = collegeService.college
@@ -40,8 +42,8 @@ class SuggestionApiService implements SuggestionApi {
         List<String> courseClasses = new ArrayList<>()
         List<String> products = new ArrayList<>()
 
-        if (courseIds != null) {
-            Arrays.stream(courseIds.split(',')).each { id ->
+        if (suggestionRequest.courseIds != null) {
+            suggestionRequest.courseIds.each { id ->
                 def cayenneCourse = new GetCourse(context, college, (id as String).trim()).get()
 
                 products.addAll(relationService.getSuggestedProducts(cayenneCourse).collect {
@@ -55,8 +57,8 @@ class SuggestionApiService implements SuggestionApi {
             }
         }
 
-        if (productIds != null) {
-            Arrays.stream(productIds.split(',')).each { id ->
+        if (suggestionRequest.productIds != null) {
+            suggestionRequest.productIds.each { id ->
                 def cayenneProduct = new GetProduct(context, college, (id as String).trim()).get()
 
                 products.addAll(relationService.getSuggestedProducts(cayenneProduct).collect { it.id.toString() })
