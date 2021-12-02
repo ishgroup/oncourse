@@ -29,8 +29,8 @@ class GetUnsubscribeLink {
     }
 
     String get() {
-        if (!message.message.taggingRelations.empty) {
-            Tag mailingList = message.message.taggingRelations[0].tag
+        if (!message.taggingRelations.empty) {
+            Tag mailingList = message.taggingRelations[0].tag
 
             if (mailingList && mailingList.willowId) {
                 return "${MAILING_LIST_UNSUBSCRIBE_URL}${mailingList.willowId}-${message.contact.uniqueCode}".toString()
