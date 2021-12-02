@@ -1,13 +1,13 @@
 import { getDaysInMonth } from "date-fns";
+import { Session } from "@api/model";
 import { generateArraysOfRecords } from "../mockUtils";
-import { Session } from "../../../../build/generated-sources/swagger-js/api";
 
 export function mockTimetable() {
-  this.getDates = (year, month) => generateArraysOfRecords(getDaysInMonth(new Date(year, month)), [{ name: "day", type: "number" }]).map(
-      l => l.day
-    );
+  this.getDates = (year, month): number[] => generateArraysOfRecords(
+    getDaysInMonth(new Date(year, month)), [{ name: "day", type: "number" }]
+  ).map(l => l.day);
 
-  this.findTimetableSession = () => generateArraysOfRecords(20, [
+  this.findTimetableSession = (): Session[] => generateArraysOfRecords(20, [
       { name: "classId", type: "number" },
       { name: "code", type: "number" },
       { name: "end", type: "Datetime" },
@@ -29,7 +29,7 @@ export function mockTimetable() {
       tutors: []
     }));
 
-  this.getTimetableSessions = (ids: string) => generateArraysOfRecords(20, [
+  this.getTimetableSessions = (ids: string): Session[] => generateArraysOfRecords(20, [
       { name: "classId", type: "number" },
       { name: "code", type: "string" },
       { name: "end", type: "Datetime" },
