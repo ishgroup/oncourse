@@ -175,6 +175,10 @@ databaseChangeLog:
           - dropIndex:
               tableName: Message_Person
               indexName: fk_Message_Person_Message
+          - dropNotNullConstraint:
+              columnName: contactId
+              tableName: Message_Person
+              columnDataType: BIGINT
           - dropTable:
               tableName: Message
           - dropColumn:
