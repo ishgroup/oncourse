@@ -17,7 +17,8 @@ import { IconButton } from "@mui/material";
 
 const styles = (theme: AppTheme) =>
   createStyles({
-    expansionPanelRoot: {
+    expansionPanelRoot: {},
+    expansionPanelExpanded: {
       "&:before": {
         content: "none"
       }
@@ -61,22 +62,24 @@ interface Props {
   collapsedContent?: React.ReactNode;
   buttonsContent?: React.ReactNode;
   detailsContent?: React.ReactNode;
+  elevation?: number;
 }
 
 const ExpandableItem: React.FunctionComponent<Props> = props => {
   const {
- expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent
-} = props;
+    expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent, elevation = 2
+  } = props;
 
   return (
     <Accordion
       expanded={expanded}
       TransitionProps={{ unmountOnExit: true, mountOnEnter: true }}
       classes={{
-        root:
+        root: clsx(classes.expansionPanelRoot,
           !expanded
-          && clsx(classes.expansionPanelRoot, keepPaper ? classes.expansionPanelPaper : classes.expansionPanelNoPaper)
+          && clsx(classes.expansionPanelExpanded, keepPaper ? classes.expansionPanelPaper : classes.expansionPanelNoPaper))
       }}
+      elevation={elevation}
     >
       <AccordionSummary
         classes={{

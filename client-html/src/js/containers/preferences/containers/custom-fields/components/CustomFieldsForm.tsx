@@ -9,8 +9,6 @@ import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
 import { withStyles, createStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
@@ -27,13 +25,22 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_customFields");
 
-const styles = () => createStyles({
+const styles = theme => createStyles({
   dragIcon: {
     fill: "#e0e0e0"
   },
   container: {
     width: "100%"
-  }
+  },
+  expansionPanelRoot: {
+    margin: "0px !important",
+  },
+  expansionPanelDetails: {
+    padding: 0,
+  },
+  deleteButtonCustom: {
+    top: theme.spacing(3),
+  },
 });
 
 const setOrder = items =>
@@ -186,8 +193,6 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
 
     const { fieldToDelete } = this.state;
 
-    console.log(classes);
-
     return (
       <>
         <CustomFieldsDeleteDialog setFieldToDelete={this.setFieldToDelete} item={fieldToDelete} onConfirm={this.onDeleteConfirm} />
@@ -238,7 +243,7 @@ const CustomFieldsForm = reduxForm({
   onSubmitFail,
   form: "CustomFieldsForm"
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(theme => ({ ...formCommonStyles(theme), ...styles() }))(withRouter(CustomFieldsBaseForm) as any)
+  withStyles(theme => ({ ...formCommonStyles(theme), ...styles(theme) }))(withRouter(CustomFieldsBaseForm) as any)
 ));
 
 export default CustomFieldsForm;
