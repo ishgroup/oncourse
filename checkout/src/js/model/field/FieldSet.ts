@@ -1,4 +1,5 @@
-import { createStringEnum } from '@EnumUtils';
+
+import {createStringEnum} from "@EnumUtils";
 
 export const FieldSet = createStringEnum([
   'ENROLMENT',

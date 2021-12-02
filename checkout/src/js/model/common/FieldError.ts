@@ -1,4 +1,6 @@
+
 export class FieldError {
+
   /**
    * order position
    */
@@ -14,3 +16,4 @@ export class FieldError {
    */
   error: string;
 }
+

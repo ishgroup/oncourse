@@ -1,6 +1,7 @@
-import { VoucherPayment } from './VoucherPayment';
+import {VoucherPayment} from "./../checkout/VoucherPayment";
 
 export class Amount {
+
   /**
    * total price excluding discounts
    */
@@ -51,3 +52,4 @@ export class Amount {
    */
   owing?: number;
 }
+

@@ -1,7 +1,8 @@
-import { Item } from '../common/Item';
-import { DataType } from './DataType';
+import {Item} from "./../common/Item";
+import {DataType} from "./../field/DataType";
 
 export class Field {
+
   /**
    * Field id
    */
@@ -67,3 +68,4 @@ export class Field {
    */
   ordering: number;
 }
+

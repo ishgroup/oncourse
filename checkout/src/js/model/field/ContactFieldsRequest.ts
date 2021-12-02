@@ -1,7 +1,8 @@
-import { ProductContainer } from '../checkout/request/ProductContainer';
-import { FieldSet } from './FieldSet';
+import {ProductContainer} from "./../checkout/request/ProductContainer";
+import {FieldSet} from "./../field/FieldSet";
 
 export class ContactFieldsRequest {
+
   /**
    * Requested contact id
    */
@@ -26,10 +27,8 @@ export class ContactFieldsRequest {
    * Flag to show only mandatory fields
    */
   mandatoryOnly: boolean;
-
   fieldSet: FieldSet;
-
   isPayer: boolean;
-
   isParent: boolean;
 }
+

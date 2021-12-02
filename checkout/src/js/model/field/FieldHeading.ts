@@ -1,6 +1,7 @@
-import { Field } from './Field';
+import {Field} from "./../field/Field";
 
 export class FieldHeading {
+
   /**
    * Heading name
    */
@@ -21,3 +22,4 @@ export class FieldHeading {
    */
   ordering: number;
 }
+

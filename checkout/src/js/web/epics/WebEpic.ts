@@ -154,22 +154,29 @@ function createSuggestionsEpic() {
     .ofType(
       Actions.REQUEST_SUGGESTION,
       Actions.ADD_PRODUCT_TO_CART,
-      Actions.ADD_CLASS_TO_CART
+      Actions.ADD_CLASS_TO_CART,
+      Actions.REMOVE_CLASS_FROM_CART,
+      Actions.REMOVE_PRODUCT_FROM_CART
     )
     .bufferTime(100) // batch actions
     .filter((actions) => actions.length)
     .mergeMap(() => {
       const state = store.getState();
-      const request = new SuggestionRequest()
-      request.courseIds = state.cart.courses.result;
-      request.productIds = state.cart.products.result;
+      const request = new SuggestionRequest();
+
+      request.courseIds = state.cart.courses.result
+        .map((id) => state.cart.courses.entities[id]?.course.id)
+        .filter((id) => !state.suggestions.courseClasses.includes(id));
+
+      request.productIds = state.cart.products.result
+        .filter((id) => !state.suggestions.products.includes(id));
 
       return Observable.fromPromise(suggestionsApi.getSuggestion(request))
-        .map((payload: SuggestionResponse) => [
+        .flatMap((payload: SuggestionResponse) => [
           ...payload.products.map((pId) => requestProduct(pId)),
-          ...payload.courseClasses.map((cId) => requestCourseClass(cId))
+          ...payload.courseClasses.map((cId) => requestCourseClass(cId)),
+          mapPayload(Actions.REQUEST_SUGGESTION)(payload)
         ])
-        .map(mapPayload(Actions.REQUEST_SUGGESTION))
         .catch(mapError(Actions.REQUEST_SUGGESTION));
     });
 }

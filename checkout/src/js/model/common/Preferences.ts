@@ -1,4 +1,6 @@
+
 export class Preferences {
+
   /**
    * is corporate pass enabled preference
    */
@@ -24,3 +26,4 @@ export class Preferences {
    */
   termsUrl?: string;
 }
+

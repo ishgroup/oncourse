@@ -1,6 +1,7 @@
-import { FieldHeading } from './FieldHeading';
+import {FieldHeading} from "./../field/FieldHeading";
 
 export class ContactFields {
+
   /**
    * Contact Id
    */
@@ -11,3 +12,4 @@ export class ContactFields {
    */
   headings: FieldHeading[];
 }
+
