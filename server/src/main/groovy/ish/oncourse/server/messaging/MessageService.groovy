@@ -229,6 +229,8 @@ class MessageService {
 					if (collision.apply(recipient)) {
 						Message message = MessageBuilder.valueOf(templateService, messageSpec, template, bindings, context).build()
 						buildMessage(message, context.localObject(recipient), template.type)
+						if(message.contact == null)
+							context.deleteObject(message)
 					}
 				} else if (recipient.email) {
 					SmtpParameters parameters = new SmtpParameters(messageSpec)
