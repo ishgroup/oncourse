@@ -106,7 +106,7 @@ databaseChangeLog:
                             mp.postDescription = m.postDescription,
                             mp.smsText = m.smsText,
                             mp.createdByUserId = m.createdByUserId
-                        WHERE mp.emailFrom IS NULL'
+                        WHERE mp.emailSubject IS NULL and mp.smsText IS NULL'
     - changeSet:
           id: 106-3
           author: dmitriy
