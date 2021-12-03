@@ -186,9 +186,10 @@ const ExpandableCustomFields = React.memo<any>(props => {
       expanded={isExpanded}
       onChange={onChange}
       classes={{
-        expandIcon: "zIndex2",
+        expandIcon: clsx("zIndex2", classes.expandIcon),
         expansionPanelRoot: classes.expansionPanelRoot,
-        expansionPanelDetails: classes.expansionPanelDetails
+        expansionPanelDetails: classes.expansionPanelDetails,
+        collapseRoot: "w-100",
       }}
       elevation={0}
       collapsedContent={(
@@ -215,8 +216,8 @@ const ExpandableCustomFields = React.memo<any>(props => {
       )}
       buttonsContent={(
         <div className="d-flex align-items-baseline zIndex2 relative">
-          <div className="centeredFlex mt-1">
-            <IconButton onClick={() => onDelete(field, index)} size="small">
+          <div className="centeredFlex">
+            <IconButton onClick={() => onDelete(field, index)} size="small" className="p-0-5">
               <DeleteIcon fontSize="inherit" />
             </IconButton>
           </div>

@@ -34,10 +34,17 @@ const styles = theme => createStyles({
   },
   expansionPanelRoot: {
     margin: "0px !important",
+    width: "100%",
   },
   expansionPanelDetails: {
     padding: 0,
     marginTop: `-${theme.spacing(9.75)}`,
+  },
+  expandIcon: {
+    marginTop: 0,
+    "& > button": {
+      padding: 0,
+    }
   },
 });
 
