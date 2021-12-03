@@ -9,6 +9,7 @@ import ish.oncourse.services.site.IWebSiteService;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.updaters.IWillowUpdater;
 import ish.oncourse.webservices.replication.updaters.RelationShipCallback;
+import ish.oncourse.webservices.replication.util.EntityMappingExtended;
 import ish.oncourse.webservices.util.*;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.CayenneRuntimeException;
@@ -154,7 +155,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
 
 	void fillWillowIds() {
 		for (GenericReplicatedRecord r : result) {
-            String willowIdentifier = EntityMapping.getWillowEntityIdentifer(r.getStub().getEntityIdentifier());
+            String willowIdentifier = EntityMappingExtended.extendedWillowIdentifier(r.getStub());
 
             if (QueuedStatistic.class.getSimpleName().equals(willowIdentifier))
                 continue;
@@ -250,8 +251,7 @@ public class TransactionGroupProcessorImpl implements ITransactionGroupProcessor
             return queuedStatisticProcessor.process((GenericQueuedStatisticStub)currentStub);
 		}
 
-        String willowIdentifier = EntityMapping.getWillowEntityIdentifer(currentStub.getEntityIdentifier());
-
+        String willowIdentifier = EntityMappingExtended.extendedWillowIdentifier(currentStub);
         if (currentStub.getAngelId() == null) {
             String message = String.format("Empty angelId for object object: %s willowId: %s", willowIdentifier, currentStub.getWillowId());
 			StubUtils.setFailedStatus(replRecord);
