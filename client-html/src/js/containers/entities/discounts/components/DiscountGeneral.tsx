@@ -57,6 +57,8 @@ const validateZero = value => (!value ? "Must be more or less then 0" : undefine
 const validateRangeDiscountPercent = value => validateRangeInclusive(value, -1, 1);
 const validateRangePredictedStudentsPercentage = value => validateRangeInclusive(value, 0, 1);
 
+const trimValue = value => value.trim() ? value : null;
+
 class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGeneralState> {
   constructor(props: DiscountGeneralProps) {
     super(props);
@@ -405,10 +407,21 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
 
           <Grid item xs={12}>
             <Divider className="mt-2 mb-2" />
-            <div className="d-grid justify-content-start align-items-center gridAutoFlow-column mb-2">
-              <Typography className="heading">Require promotional code</Typography>
-              <Switch onChange={this.onCodeSwitchToggle} checked={this.state.codeOn} />
-              {this.state.codeOn && <FormField type="text" name="code" formatting="inline" />}
+            <div className="mb-2">
+              <div className="centeredFlex">
+                <Typography className="heading">Require promotional code</Typography>
+                <Switch onChange={this.onCodeSwitchToggle} checked={this.state.codeOn} />
+              </div>
+              <Collapse in={this.state.codeOn} mountOnEnter unmountOnExit>
+                <FormField
+                  type="text"
+                  name="code"
+                  placeholder="Code"
+                  formatting="inline"
+                  normalize={trimValue}
+                  required
+                />
+              </Collapse>
             </div>
           </Grid>
 
