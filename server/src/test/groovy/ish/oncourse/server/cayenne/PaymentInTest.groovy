@@ -29,8 +29,7 @@ import java.time.LocalDate
 @CompileStatic
 class PaymentInTest extends TestWithDatabase {
 
-    @Test
-    @Ignore
+    /*@Test
     void testDataModifiedOnForPaymentInLines() throws InterruptedException {
         DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
 
@@ -79,7 +78,7 @@ class PaymentInTest extends TestWithDatabase {
         pIn.setBanking(banking)
         newContext.commitChanges()
         Assertions.assertNotSame(pIn.getModifiedOn(), pInModifiedOn)
-    }
+    }*/
 
     
     @Test
