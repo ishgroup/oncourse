@@ -7,9 +7,12 @@ import React, { useMemo, useState } from "react";
 import clsx from "clsx";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { change, Field } from "redux-form";
-import {
-  FormControlLabel, Grid, Button, Collapse, Card
-} from "@mui/material";
+import Card from "@mui/material/Card";
+import Collapse from "@mui/material/Collapse";
+import Grid from "@mui/material/Grid";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
 import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
@@ -183,26 +186,26 @@ const ExpandableCustomFields = React.memo<any>(props => {
       expanded={isExpanded}
       onChange={onChange}
       classes={{
-        expandIcon: "invisible",
+        expandIcon: "zIndex2",
         expansionPanelRoot: classes.expansionPanelRoot,
         expansionPanelDetails: classes.expansionPanelDetails
       }}
       elevation={0}
       collapsedContent={(
         <Grid container columnSpacing={3} className="relative align-items-center">
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Uneditable
               value={field.name}
               label="Name"
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Uneditable
               value={field.entityType}
               label="Record Type"
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Uneditable
               value={field.dataType}
               label="Data Type"
@@ -210,9 +213,18 @@ const ExpandableCustomFields = React.memo<any>(props => {
           </Grid>
         </Grid>
       )}
+      buttonsContent={(
+        <div className="d-flex align-items-baseline zIndex2 relative">
+          <div className="centeredFlex mt-1">
+            <IconButton onClick={() => onDelete(field, index)} size="small">
+              <DeleteIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+        </div>
+      )}
       detailsContent={(
         <Grid container columnSpacing={3} rowSpacing={3} className="relative">
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <FormField
               type="text"
               name={`${item}.name`}
@@ -249,17 +261,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
             />
           </Grid>
 
-          <Grid item xs={1}>
-            <Button
-              size="small"
-              classes={{ root: clsx(classes.deleteButton, classes.deleteButtonCustom) }}
-              onClick={() => onDelete(field, index)}
-            >
-              Delete
-            </Button>
-          </Grid>
-
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <FormField
               type="select"
               name={`${item}.entityType`}
@@ -302,7 +304,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
             )}
           </Grid>
 
-          <Grid item xs={5}>
+          <Grid item xs={4}>
             <Collapse in={isListOrMap} mountOnEnter unmountOnExit>
               <Field
                 name={`${item}.defaultValue`}

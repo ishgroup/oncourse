@@ -37,9 +37,7 @@ const styles = theme => createStyles({
   },
   expansionPanelDetails: {
     padding: 0,
-  },
-  deleteButtonCustom: {
-    top: theme.spacing(3),
+    marginTop: `-${theme.spacing(9.75)}`,
   },
 });
 
