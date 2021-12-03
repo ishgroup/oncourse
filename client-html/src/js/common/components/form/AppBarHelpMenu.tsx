@@ -15,10 +15,6 @@ const styles = theme =>
   createStyles({
     button: {
       color: theme.appBarButton.helpMenu.color,
-      marginRight: "10px"
-    },
-    buttonAlternate: {
-      color: theme.appBarButton.helpMenu.color,
     },
     info: {
       display: "flex",
@@ -71,7 +67,7 @@ class AppBarHelpMenu extends React.Component<Props, any> {
   render() {
     const { anchorEl } = this.state;
     const {
-      classes, created, modified, iconClasses
+      classes, created, modified, iconClasses, auditsUrl
     } = this.props;
 
     return (
@@ -112,25 +108,29 @@ class AppBarHelpMenu extends React.Component<Props, any> {
           <MenuItem className={created || modified ? classes.divider : undefined} onClick={this.openManual}>
             Open manual
           </MenuItem>
-          <MenuItem onClick={this.openAudits}>
-            View audit trail
-          </MenuItem>
+          {auditsUrl && (
+            <MenuItem onClick={this.openAudits}>
+              View audit trail
+            </MenuItem>
+          )}
         </Menu>
 
         <Tooltip title="Additional information">
-          <IconButton
-            type="button"
-            aria-owns={anchorEl ? "form-help-menu" : null}
-            aria-haspopup="true"
-            onClick={this.handleAddFieldClick}
-            className={clsx({
-              [classes.button]: !iconClasses,
-              [classes.buttonAlternate]: !iconClasses,
-              [iconClasses]: !!iconClasses
-            })}
-          >
-            <HelpOutline />
-          </IconButton>
+          <div>
+            <IconButton
+              type="button"
+              aria-owns={anchorEl ? "form-help-menu" : null}
+              aria-haspopup="true"
+              onClick={this.handleAddFieldClick}
+              size="large"
+              className={clsx({
+                [classes.button]: !iconClasses,
+                [iconClasses]: !!iconClasses
+              })}
+            >
+              <HelpOutline />
+            </IconButton>
+          </div>
         </Tooltip>
       </>
     );

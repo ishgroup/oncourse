@@ -13,7 +13,8 @@ const styles = theme =>
       borderRadius: "4px",
       marginRight: "16px",
       color: "rgba(0,0,0,.2)",
-      transition: "color 200ms ease-in-out"
+      transition: "color 200ms ease-in-out",
+      backgroundPosition: "center"
     },
     previewNormal: {
       width: "60px",

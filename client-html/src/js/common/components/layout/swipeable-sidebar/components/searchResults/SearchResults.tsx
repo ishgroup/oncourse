@@ -8,7 +8,6 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
-import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import CircularProgress from "@mui/material/CircularProgress";
 import { getHighlightedPartLabel } from "../../../../../utils/formatting";
@@ -23,7 +22,7 @@ import { getResultId } from "../../utils";
 const styles = theme =>
   createStyles({
     root: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(2)}px ${theme.spacing(2)}px 228px`
+      padding: `${theme.spacing(2)} ${theme.spacing(2)} 228px ${theme.spacing(2)}`
     }
   });
 
@@ -43,65 +42,63 @@ const SearchResults = props => {
   } = props;
 
   return (
-    <Grid item xs className={classes.root}>
-      <List disablePadding>
-        {userSearch
-          && categories
-            .filter(c => c.category.toLowerCase().includes(userSearch.toLowerCase()))
-            .map((c, i) => (
-              <ListLinkItem
-                key={i}
-                url={c.url}
-                selected={checkSelectedResult("category", "url", c.url)}
-                item={{
-                  name: getHighlightedPartLabel(c.category, userSearch)
-                }}
-                id={getResultId(i, c.category)}
-                showConfirm={showConfirm}
-              />
-            ))}
-        {userSearch
-          && hasScriptsPermissions
-          && scripts
-            .filter(s => s.name.toLowerCase().includes(userSearch.toLowerCase()))
-            .map((s, i) => (
-              <ListLinkItem
-                key={i}
-                openLink={id => {
-                  setScriptIdSelected(id);
-                  setExecMenuOpened(true);
-                }}
-                item={{
-                  name: getHighlightedPartLabel(s.name, userSearch),
-                  id: s.id,
-                  type: "script"
-                }}
-                id={getResultId(i, s.name)}
-              />
+    <List disablePadding className={classes.root}>
+      {userSearch
+        && categories
+          .filter(c => c.category.toLowerCase().includes(userSearch.toLowerCase()))
+          .map((c, i) => (
+            <ListLinkItem
+              key={i}
+              url={c.url}
+              selected={checkSelectedResult("category", "url", c.url)}
+              item={{
+                name: getHighlightedPartLabel(c.category, userSearch)
+              }}
+              id={getResultId(i, c.category)}
+              showConfirm={showConfirm}
+            />
           ))}
-        {updating && <CircularProgress size={32} thickness={5} />}
-        {!updating
-          && searchResults
-          && searchResults.map((r, index) => (
-            <div className="d-flex" key={index}>
-              <ListLinksGroup
-                withOffset
-                showFirst={3}
-                entity={r.entity}
-                entityDisplayName={getEntityDisplayName(r.entity)}
-                checkSelectedResult={checkSelectedResult}
-                items={r.items.map(item => {
-                  const name = getHighlightedPartLabel(item.name, userSearch);
+      {userSearch
+        && hasScriptsPermissions
+        && scripts
+          .filter(s => s.name.toLowerCase().includes(userSearch.toLowerCase()))
+          .map((s, i) => (
+            <ListLinkItem
+              key={i}
+              openLink={id => {
+                setScriptIdSelected(id);
+                setExecMenuOpened(true);
+              }}
+              item={{
+                name: getHighlightedPartLabel(s.name, userSearch),
+                id: s.id,
+                type: "script"
+              }}
+              id={getResultId(i, s.name)}
+            />
+        ))}
+      {updating && <CircularProgress size={32} thickness={5} />}
+      {!updating
+        && searchResults
+        && searchResults.map((r, index) => (
+          <div className="d-flex relative" key={index}>
+            <ListLinksGroup
+              withOffset
+              showFirst={3}
+              entity={r.entity}
+              entityDisplayName={getEntityDisplayName(r.entity)}
+              checkSelectedResult={checkSelectedResult}
+              items={r.items.map(item => {
+                const name = getHighlightedPartLabel(item.name, userSearch);
 
-                  return { ...item, name };
-                })}
-                userSearch={userSearch}
-                showConfirm={showConfirm}
-              />
-            </div>
-          ))}
-      </List>
-    </Grid>
+                return { ...item, name };
+              })}
+              userSearch={userSearch}
+              showConfirm={showConfirm}
+            />
+          </div>
+        ))}
+    </List>
   );
 };
 

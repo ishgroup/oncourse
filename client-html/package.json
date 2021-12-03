@@ -32,6 +32,7 @@
     "@typescript-eslint/parser": "4.*",
     "@wojtekmaj/enzyme-adapter-react-17": "0.6.*",
     "antlr4ts-cli": "0.5.0-alpha.4",
+    "assert": "^2.0.0",
     "clean-webpack-plugin": "3.*",
     "compression-webpack-plugin": "7.*",
     "css-loader": "5.*",
@@ -83,17 +84,17 @@
     "@ckeditor/ckeditor5-paragraph": "latest",
     "@ckeditor/ckeditor5-react": "latest",
     "@ckeditor/ckeditor5-theme-lark": "latest",
-    "@emotion/cache": "^11.5.0",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/cache": "11.*",
+    "@emotion/react": "11.*",
+    "@emotion/styled": "11.*",
     "@fortawesome/fontawesome-svg-core": "1.*",
     "@fortawesome/free-regular-svg-icons": "5.*",
     "@fortawesome/free-solid-svg-icons": "5.*",
     "@fortawesome/react-fontawesome": "0.*",
     "@mui/icons-material": "5.*",
-    "@mui/lab": "5.0.0-alpha.53",
+    "@mui/lab": "5.0.0-alpha.54",
     "@mui/material": "5.*",
-    "@mui/styles": "^5.0.2",
+    "@mui/styles": "5.*",
     "@react-loadable/revised": "1.*",
     "antlr4-c3": "1.1.16",
     "antlr4ts": "0.5.0-alpha.4",
@@ -134,7 +135,9 @@
     "redux-form": "8.*",
     "redux-observable": "1.*",
     "rxjs": "6.*",
-    "tss-react": "2.*",
     "uuid": "8.*"
+  },
+  "resolutions": {
+    "webpack-dev-server/chokidar/glob-parent": "^5.1.2"
   }
 }

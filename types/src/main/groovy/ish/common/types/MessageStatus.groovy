@@ -14,7 +14,7 @@ import ish.common.util.DisplayableExtendedEnumeration;
 import ish.oncourse.API;
 
 /**
- * Each MessagePerson object (the delivery record) starts as queued and then
+ * Each Message object (the delivery record) starts as queued and then
  * is processed by a special process which wakes up every few seconds.
  *
  */

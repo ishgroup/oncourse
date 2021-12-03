@@ -44,8 +44,8 @@ const FundingContractItem = props => {
 
         return (
           <Paper id={`funding-contracts-item-${index}`} className="card" key={index}>
-            <Grid className="container">
-              <Grid item container xs={12}>
+            <Grid container columnSpacing={3} rowSpacing={2} className="container">
+              <Grid item container columnSpacing={3} rowSpacing={2} xs={12}>
                 <Grid item xs={5}>
                   <FormField
                     type="text"

@@ -12,7 +12,7 @@ const AccessStatusKeys = Object.keys(AccessStatus);
 const styles = theme =>
   createStyles({
     root: {
-      padding: `${theme.spacing(2) - 1}px ${theme.spacing(0)}px`
+      padding: `${theme.spacing(2) - 1} ${theme.spacing(0)}`
     },
     stepperMarks: {
       position: "absolute",

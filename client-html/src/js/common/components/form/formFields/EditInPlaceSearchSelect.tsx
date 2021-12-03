@@ -28,29 +28,11 @@ import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import { SelectItemRendererProps } from "../../../../model/common/Fields";
 
 const searchStyles = theme => createStyles({
-  root: {},
   inputEndAdornment: {
     fontSize: "18px",
     color: theme.palette.primary.main,
     display: "flex",
     visibility: 'hidden'
-  },
-  clearIcon: {
-    fontSize: "1.2rem",
-    "&:hover": {
-      cursor: "pointer",
-    }
-  },
-  inputWrapper: {
-    "&:hover $inputEndAdornment": {
-      visibility: 'visible'
-    },
-    "&:focus $inputEndAdornment": {
-      visibility: 'hidden',
-    },
-    "& $readonly": {
-      "-webkit-text-fill-color": "inherit"
-    }
   },
   validUnderline: {
     "&:after": {
@@ -70,33 +52,12 @@ const searchStyles = theme => createStyles({
     textOverflow: "ellipsis",
     paddingBottom: "4px",
     right: "-46%",
-    maxWidth: "100%",
-    "& $labelAdornment": {
-      position: "absolute",
-      transform: "scale(1.3) translate(5px,0)"
-    },
-    "&$labelShrink": {
-      maxWidth: "calc(100% * 1.4)"
-    }
+    maxWidth: "100%"
   },
   inline: {
     fontSize: "inherit"
   },
   labelShrink: {},
-  labelAdornment: {},
-  hasPopup: {
-    "&$root $inputWrapper": {
-      paddingRight: 0
-    },
-    "&$root$hasClear $inputWrapper": {
-      paddingRight: 0
-    }
-  },
-  hasClear: {
-    "&$root $inputWrapper": {
-      paddingRight: 0
-    }
-  },
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
@@ -460,7 +421,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
     <span>
       {label}
       {' '}
-      <span className={classes.labelAdornment}>{labelAdornment}</span>
+      <span>{labelAdornment}</span>
     </span>
   ) : (
     label
@@ -472,7 +433,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       id={inline ? undefined : (input && input.name)}
     >
       <div
-        className={clsx("pr-2", {
+        className={clsx({
           "d-none": (inHeader && !(inline || isEditing || (meta && meta.invalid))),
           [classes.editingSelect]: !inline && formatting !== "inline"
         })}
@@ -500,7 +461,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
               root: clsx("d-inline-flex", classes.root),
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
-              inputRoot: clsx(classes.inputWrapper, isEditing && classes.isEditing)
+              inputRoot: classes.inputWrapper
             }}
             renderOption={renderOption}
             getOptionLabel={getOptionLabel}
@@ -549,7 +510,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
                               <CloseIcon className={clsx(fieldClasses.editIcon, classes.clearIcon)} />
                             </IconButton>
                           ) }
-                          <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />
+                          {!inline && <ExpandMore className={clsx("hoverIcon", fieldClasses.editIcon)} />}
                         </InputAdornment>
                       )
                   )}
@@ -572,7 +533,7 @@ const EditInPlaceSearchSelect: React.FC<Props & WrappedFieldProps> = ({
       </div>
       {formatting === "inline" && (
       <div
-        className={clsx(formatting !== "inline" && "textField", {
+        className={clsx({
           "d-none": !inHeader || (inHeader && (inline || isEditing || (meta && meta.invalid)))
         })}
       >

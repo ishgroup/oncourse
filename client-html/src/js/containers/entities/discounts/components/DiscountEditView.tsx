@@ -53,7 +53,8 @@ const DiscountEditView = React.memo<any>(props => {
     showConfirm,
     openNestedEditView,
     manualLink,
-    access
+    access,
+    syncErrors
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -76,7 +77,8 @@ const DiscountEditView = React.memo<any>(props => {
           twoColumn,
           showConfirm,
           openNestedEditView,
-          manualLink
+          manualLink,
+          syncErrors
         }}
       />
     </>

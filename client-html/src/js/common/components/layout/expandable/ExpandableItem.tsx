@@ -13,6 +13,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AppTheme } from "../../../../model/common/Theme";
 import { stopEventPropagation } from "../../../utils/events";
+import { IconButton } from "@mui/material";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -47,10 +48,8 @@ const styles = (theme: AppTheme) =>
       marginTop: -54
     },
     expandIcon: {
+      marginTop: "2px",
       marginRight: "unset",
-      "&:hover": {
-        backgroundColor: theme.palette.action.hover
-      }
     }
   });
 
@@ -87,7 +86,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<IconButton><ExpandMoreIcon /></IconButton>}
       >
         <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit>
           {collapsedContent}

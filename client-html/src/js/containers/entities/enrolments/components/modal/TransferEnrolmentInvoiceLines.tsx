@@ -13,6 +13,8 @@ import WarningMessage from "../../../../../common/components/form/fieldMessage/W
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { accountLabelCondition } from "../../../accounts/utils";
+import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { useAppSelector } from "../../../../../common/utils/hooks";
 
 const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
@@ -62,6 +64,8 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
     return (field.finalPriceToPayIncTax < field.chargedFee ? CANCEL_FEE_AMOUNT_WARNING_MESSAGE : null);
   };
 
+  const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+
   return (
     <div>
       {
@@ -90,9 +94,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
             />
             <Grid className="centeredFlex">
               <FormControlLabel
-                className="checkbox pb-2 pt-2"
+                className="checkbox pb-2 pt-2 mr-0-5"
                 control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" fullWidth />}
-                label={`Charge ${field && field.contactName} an administrative fee of `}
+                label={`Charge ${field && field.contactName} an administrative fee of`}
                 disabled={!field.isReverseCreditNotes}
               />
               <FormField
@@ -115,13 +119,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
                 disabled={!field.isReverseCreditNotes}
                 formatting="inline"
               />
-              {"  "}
-              <Uneditable
-                value={field && field.chargedFee}
-                label=""
-                money
-                className={`pb-0 ${classes.uneditableTextField}`}
-              />
+              <span className="money ml-0-5">
+                {formatCurrency(field.chargedFee, currencySymbol)}
+              </span>
               <FormField
                 type="select"
                 name={`${item}.incomeAccountId`}

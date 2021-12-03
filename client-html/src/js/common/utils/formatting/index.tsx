@@ -6,11 +6,13 @@ export const getHighlightedPartLabel = (label: string, highlighted: string, opti
   const matches = match(label, highlighted);
   const parts = parse(label, matches);
 
-  return (
+  const result = parts.map((part, index) => (
+    <span key={index}>{part.highlight ? <strong>{part.text}</strong> : part.text}</span>
+  ));
+
+  return options ? (
     <div {...options || {}}>
-      {parts.map((part, index) => (
-        <span key={index}>{part.highlight ? <strong>{part.text}</strong> : part.text}</span>
-      ))}
+      {result}
     </div>
-  );
+  ) : result;
 };

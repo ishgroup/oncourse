@@ -5,7 +5,7 @@
 
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { getFormValues, initialize, reduxForm } from "redux-form";
+import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
 import { withRouter } from "react-router";
 import { ExportTemplate } from "@api/model";
@@ -64,6 +64,7 @@ const ExportTemplates = React.memo<any>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(EXPORT_TEMPLATES_FORM_NAME)(state),
+  syncErrors: getFormSyncErrors(EXPORT_TEMPLATES_FORM_NAME)(state),
   nextLocation: state.nextLocation
 });
 

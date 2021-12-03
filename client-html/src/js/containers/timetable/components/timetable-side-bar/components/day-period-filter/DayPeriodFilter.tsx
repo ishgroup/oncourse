@@ -54,6 +54,7 @@ const DayPeriodFilter: React.FunctionComponent<Props> = props => {
   return (
     <div className={classes.root}>
       <Button
+        color="inherit"
         variant="outlined"
         className={clsx(classes.dayPeriodButton, {
           [classes.selectedButton]: selectedDayPeriods[0]
@@ -63,6 +64,7 @@ const DayPeriodFilter: React.FunctionComponent<Props> = props => {
         <MorningIcon /> before 12pm
       </Button>
       <Button
+        color="inherit"
         variant="outlined"
         className={clsx(classes.dayPeriodButton, {
           [classes.selectedButton]: selectedDayPeriods[1]
@@ -72,6 +74,7 @@ const DayPeriodFilter: React.FunctionComponent<Props> = props => {
         <AfternoonIcon /> 12pm - 6pm
       </Button>
       <Button
+        color="inherit"
         variant="outlined"
         className={clsx(classes.dayPeriodButton, {
           [classes.selectedButton]: selectedDayPeriods[2]

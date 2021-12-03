@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import Close from "@mui/icons-material/Close";
-import AddIcon from "../../../icons/AddIcon";
+import AddButton from "../../../icons/AddButton";
 import { Switch } from "../../formFields/Switch";
 import SearchInput from "./SearchInput";
 
@@ -71,7 +71,7 @@ export const InputSection = React.memo<any>(props => {
               </IconButton>
             )
             : (
-              <AddIcon
+              <AddButton
                 className={clsx(
                   "addButtonColor",
                   secondaryHeading && "p-0 ml-1",

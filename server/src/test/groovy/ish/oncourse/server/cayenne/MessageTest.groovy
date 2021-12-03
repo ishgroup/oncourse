@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @CompileStatic
-class MessagePersonTest extends TestWithDatabase {
+class MessageTest extends TestWithDatabase {
 
     @Test
     void testStatusConstraints() {
@@ -44,10 +44,10 @@ class MessagePersonTest extends TestWithDatabase {
     
     private boolean checkStatusChangeAvailability(ObjectContext context, MessageStatus from, MessageStatus to) {
         try {
-            MessagePerson mp = context.newObject(MessagePerson.class)
+            Message message = context.newObject(Message.class)
 
-            mp.setStatus(from)
-            mp.setStatus(to)
+            message.setStatus(from)
+            message.setStatus(to)
 
             return true
         } catch (IllegalArgumentException e) {

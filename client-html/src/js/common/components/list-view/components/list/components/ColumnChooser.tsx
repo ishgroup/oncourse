@@ -15,7 +15,9 @@ import Checkbox from "@mui/material/Checkbox";
 import Popover from "@mui/material/Popover";
 import { COLUMN_WITH_COLORS } from "../utils";
 
-const ColumnChooserItem = ({ classes, column, columnId, setShowColoredDots }) => {
+const ColumnChooserItem = ({
+ classes, column, columnId, setShowColoredDots 
+}) => {
   const customToggleHiddenProps = { ...column.getToggleHiddenProps() };
 
   if (columnId === COLUMN_WITH_COLORS) {
@@ -102,8 +104,8 @@ const ColumnChooserButton = React.forwardRef<any, any>((props, ref) => {
 
   return (
     <div className={className}>
-      <IconButton onClick={onToggle} ref={ref} size="large">
-        <Visibility />
+      <IconButton onClick={onToggle} ref={ref} size="large" color="inherit">
+        <Visibility color="inherit" />
       </IconButton>
     </div>
   );
