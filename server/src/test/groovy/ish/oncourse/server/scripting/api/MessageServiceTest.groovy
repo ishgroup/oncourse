@@ -79,7 +79,7 @@ class MessageServiceTest extends TestWithDatabase {
         List<Message> messages = ObjectSelect.query(Message).select(cayenneContext)
 
 
-        Assertions.assertEquals(3, messages.size())
+        Assertions.assertEquals(1, messages.size())
 
         Message messageToSecondStudent = messages.find { it.contact?.id == 2l  }
         Assertions.assertNotNull(messageToSecondStudent, "The SMS would be sent to the second student!")
