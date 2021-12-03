@@ -179,7 +179,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
     onChange,
   } = props;
 
-  const isExpanded = useMemo(() => expanded !== null && [index].includes(expanded), [expanded]);
+  const isExpanded = useMemo(() => ((expanded !== null && [index].includes(expanded)) || !field.id || !field.name), [expanded, field]);
 
   return (
     <ExpandableItem
@@ -217,7 +217,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
       buttonsContent={(
         <div className="d-flex align-items-baseline zIndex2 relative">
           <div className="centeredFlex">
-            <IconButton onClick={() => onDelete(field, index)} size="small" className="p-0-5">
+            <IconButton onClick={() => onDelete(field, index)} size="small" className={classes.deleteButtonCustom}>
               <DeleteIcon fontSize="inherit" />
             </IconButton>
           </div>
