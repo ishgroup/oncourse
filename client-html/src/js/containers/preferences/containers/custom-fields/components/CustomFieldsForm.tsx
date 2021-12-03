@@ -41,11 +41,15 @@ const styles = theme => createStyles({
     marginTop: `-${theme.spacing(9.75)}`,
   },
   expandIcon: {
-    marginTop: 0,
+    marginTop: -5,
     "& > button": {
-      padding: 0,
+      padding: 5,
     }
   },
+  deleteButtonCustom: {
+    padding: theme.spacing(1),
+    marginTop: -5,
+  }
 });
 
 const setOrder = items =>
@@ -169,8 +173,10 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     updated.forEach((field, index) => (field.sortOrder = index));
 
     dispatch(change("CustomFieldsForm", "types", updated));
-    const domNode = document.getElementById("types[0].name");
-    if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      const domNode = document.getElementById("types[0].name");
+      if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   onClickDelete = (item, index) => {
