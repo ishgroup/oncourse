@@ -51,7 +51,8 @@ const styles = (theme: AppTheme) =>
     expandIcon: {
       marginTop: "2px",
       marginRight: "unset",
-    }
+    },
+    collapseRoot: {},
   });
 
 interface Props {
@@ -91,7 +92,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
         onClick={onChange}
         expandIcon={<IconButton><ExpandMoreIcon /></IconButton>}
       >
-        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit>
+        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{ root: classes.collapseRoot }}>
           {collapsedContent}
         </Collapse>
 
