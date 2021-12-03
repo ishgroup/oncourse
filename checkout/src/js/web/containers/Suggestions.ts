@@ -17,6 +17,7 @@ const mapStateToProps = (state: IshState) => ({
   suggestions: state.suggestions,
   products: state.products?.entities,
   courses: state.courses?.entities,
+  cart: state.cart,
   isCartEmpty: CheckoutService.cartIsEmpty(state.cart)
 });
 

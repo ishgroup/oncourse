@@ -3,25 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { formatMoney } from '../../../common/utils/FormatUtils';
 import { IshState, SuggestionsState } from '../../../services/IshState';
 import { CourseClass, Product } from '../../../model';
 
 interface Props {
-  courses?: IshState['courses'];
-  products?: IshState['products'];
+  courses: IshState['courses'];
+  products: IshState['products'];
   getSuggestions?: () => void;
-  isCartEmpty?: boolean;
-  suggestions?: SuggestionsState;
+  isCartEmpty: boolean;
+  suggestions: SuggestionsState;
   addProduct: (product: Product) => void;
   addCourse: (courseClass: CourseClass) => void;
+  cart: IshState['cart'];
 }
 
 const Suggestions: React.FC<Props> = (props) => {
   const {
-    getSuggestions, isCartEmpty, suggestions, products, courses, addProduct, addCourse
+    getSuggestions, isCartEmpty, suggestions, products, courses, addProduct, addCourse, cart
   } = props;
+
+  const filteredSuggestions = useMemo<SuggestionsState>(() => ({
+    products: suggestions.products.filter((pId) => !cart.products.result.includes(pId)),
+    courseClasses: suggestions.courseClasses.filter((cId) => !cart.courses.result.includes(cId))
+  }), [cart, suggestions]);
 
   useEffect(() => {
     getSuggestions();
@@ -79,8 +85,8 @@ const Suggestions: React.FC<Props> = (props) => {
 
   return !isCartEmpty && (
     <ul className="suggestion-list">
-      {suggestions?.products?.map((id) => renderSuggestion(products[id]))}
-      {suggestions?.courseClasses?.map((id) => renderSuggestion(courses[id]))}
+      {filteredSuggestions?.products?.map((id) => renderSuggestion(products[id]))}
+      {filteredSuggestions?.courseClasses?.map((id) => renderSuggestion(courses[id]))}
     </ul>
   );
 };

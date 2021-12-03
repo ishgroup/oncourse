@@ -165,11 +165,9 @@ function createSuggestionsEpic() {
       const request = new SuggestionRequest();
 
       request.courseIds = state.cart.courses.result
-        .map((id) => state.cart.courses.entities[id]?.course.id)
-        .filter((id) => !state.suggestions.courseClasses.includes(id));
+        .map((id) => state.cart.courses.entities[id]?.course.id);
 
-      request.productIds = state.cart.products.result
-        .filter((id) => !state.suggestions.products.includes(id));
+      request.productIds = state.cart.products.result;
 
       return Observable.fromPromise(suggestionsApi.getSuggestion(request))
         .flatMap((payload: SuggestionResponse) => [
