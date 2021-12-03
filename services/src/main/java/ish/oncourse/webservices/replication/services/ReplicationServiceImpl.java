@@ -242,6 +242,10 @@ public class ReplicationServiceImpl implements IReplicationService {
 
 			for (GenericReplicatedRecord record : request.getReplicatedRecord()) {
 				String entityIdentifier = record.getStub().getEntityIdentifier();
+				SupportedVersions version = PortHelper.getVersionByReplicationStub(record.getStub());
+				if(entityIdentifier.equals(Message.class.getSimpleName()) && version.equals(SupportedVersions.V25))
+					entityIdentifier = MessagePerson.class.getSimpleName();
+
 				if (EntityMapping.BINARY_RELATION_MAPPING.values().contains(entityIdentifier)) {
 					entityIdentifier = BinaryInfoRelation.class.getSimpleName();
 				} else if (CustomField.class.getSimpleName().equals(entityIdentifier)) {
