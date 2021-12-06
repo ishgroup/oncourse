@@ -76,6 +76,9 @@ public class V25BuildersMap {
 		builderMap.put(ArticleCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(MembershipCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
 		builderMap.put(VoucherCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
+		builderMap.put(ArticleProductCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
+		builderMap.put(MembershipProductCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
+		builderMap.put(VoucherProductCustomField.class.getSimpleName(), new CustomFieldStubBuilder());
         builderMap.put(ContactRelation.class.getSimpleName(), new ContactRelationStubBuilder());
 		builderMap.put(Application.class.getSimpleName(), new ApplicationStubBuilder());
 		builderMap.put(EmailTemplate.class.getSimpleName(), new EmailTemplateStubBuilred());
