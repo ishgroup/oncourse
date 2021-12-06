@@ -192,6 +192,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
         collapseRoot: "w-100",
       }}
       elevation={0}
+      expandButtonId={`custom-field-${index}`}
       collapsedContent={(
         <Grid container columnSpacing={3} className="relative align-items-center">
           <Grid item xs={4}>

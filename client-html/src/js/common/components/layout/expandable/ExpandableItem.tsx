@@ -64,11 +64,12 @@ interface Props {
   buttonsContent?: React.ReactNode;
   detailsContent?: React.ReactNode;
   elevation?: number;
+  expandButtonId?: string;
 }
 
 const ExpandableItem: React.FunctionComponent<Props> = props => {
   const {
-    expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent, elevation = 2
+    expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent, elevation = 2, expandButtonId
   } = props;
 
   return (
@@ -90,7 +91,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
-        expandIcon={<IconButton><ExpandMoreIcon /></IconButton>}
+        expandIcon={<IconButton id={expandButtonId ? `expand-button-${expandButtonId}` : null}><ExpandMoreIcon /></IconButton>}
       >
         <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{ root: classes.collapseRoot }}>
           {collapsedContent}
