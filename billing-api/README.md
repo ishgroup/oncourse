@@ -27,7 +27,7 @@ billing/src/js/api/constants.ts
 </Configuration>`
 
 5. build api
-`./gardlew -x test clean billing-api:build`
+`./gradlew -x test clean billing-api:build`
 6. run server
 `./gardlew billing-api:start
 `

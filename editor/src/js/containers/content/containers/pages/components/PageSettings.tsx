@@ -1,81 +1,82 @@
 import React from 'react';
-import {Checkbox, FormControlLabel, IconButton} from '@material-ui/core';
-import clsx from "clsx";
-import {withStyles} from "@material-ui/core/styles";
+import { Checkbox, FormControlLabel, IconButton } from '@material-ui/core';
+import clsx from 'clsx';
+import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
-import PageService from "../../../../../services/PageService";
-import {addContentMarker} from "../../../utils";
-import {PageState} from "../reducers/State";
-import CustomButton from "../../../../../common/components/CustomButton";
-import EditInPlaceField from "../../../../../common/components/form/form-fields/EditInPlaceField";
-import {stubFunction} from "../../../../../common/utils/Components";
-import {AppTheme} from "../../../../../styles/themeInterface";
+import PageService from '../../../../../services/PageService';
+import { addContentMarker } from '../../../utils';
+import { PageState } from '../reducers/State';
+import CustomButton from '../../../../../common/components/CustomButton';
+import EditInPlaceField from '../../../../../common/components/form/form-fields/EditInPlaceField';
+import { stubFunction } from '../../../../../common/utils/Components';
+import { AppTheme } from '../../../../../styles/themeInterface';
+import { validateLink } from '../../../../../common/utils/validation';
 
 const styles: any = (theme: AppTheme) => ({
   navWrapper: {
-    display: "flex",
-    paddingLeft: "8px",
+    display: 'flex',
+    paddingLeft: '8px',
   },
   links: {
-    marginBottom: "10px",
+    marginBottom: '10px',
   },
   linkBack: {
-    textTransform: "capitalize",
-    color: "rgba(0, 0, 0, 0.87)",
-    fontSize: "15px",
-    display: "block",
-    padding: "15px 20px",
-    "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.1)",
+    textTransform: 'capitalize',
+    color: 'rgba(0, 0, 0, 0.87)',
+    fontSize: '15px',
+    display: 'block',
+    padding: '15px 20px',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
       color: theme.palette.text.primary,
     },
   },
   linkTitle: {
-    paddingRight: "15px",
-    transition: "color .15s",
-    textOverflow: "ellipsis",
-    overflow: "hidden",
+    paddingRight: '15px',
+    transition: 'color .15s',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
     fontFamily: theme.typography.fontFamily,
-    fontSize: "14px",
+    fontSize: '14px',
     lineHeight: 1.2,
-    minHeight: "22px",
+    minHeight: '22px',
     color: theme.palette.text.secondary,
     fontWeight: 300,
-    "&::after": {
-      display: "block",
-      visibility: "hidden",
+    '&::after': {
+      display: 'block',
+      visibility: 'hidden',
       opacity: 0,
-      pointerEvents: "none",
-      padding: "3px",
-      fontSize: "12px",
-      borderRadius: "2px",
-      position: "absolute",
+      pointerEvents: 'none',
+      padding: '3px',
+      fontSize: '12px',
+      borderRadius: '2px',
+      position: 'absolute',
       content: "'Make Default'",
       fontFamily: theme.typography.fontFamily,
-      left: "100%",
-      color: "#fff",
+      left: '100%',
+      color: '#fff',
       background: theme.palette.primary.main,
-      marginLeft: "10px",
-      whiteSpace: "nowrap",
-      transition: "opacity .25s",
-      top: "1px",
+      marginLeft: '10px',
+      whiteSpace: 'nowrap',
+      transition: 'opacity .25s',
+      top: '1px',
     },
-    "&:hover": {
-      cursor: "pointer",
-      "&::after": {
-        visibility: "visible",
-        opacity: .85,
+    '&:hover': {
+      cursor: 'pointer',
+      '&::after': {
+        visibility: 'visible',
+        opacity: 0.85,
       },
     },
   },
   linkDefault: {
     color: theme.palette.primary.main,
-    cursor: "default",
-    "&:hover": {
-      "&::after": {
-        display: "none",
+    cursor: 'default',
+    '&:hover': {
+      '&::after': {
+        display: 'none',
       },
     },
   },
@@ -83,39 +84,38 @@ const styles: any = (theme: AppTheme) => ({
     marginRight: theme.spacing(2),
   },
   removeIcon: {
-    color: "rgba(0, 0, 0, 0.2)",
-    fontSize: "1rem",
+    color: 'rgba(0, 0, 0, 0.2)',
+    fontSize: '1rem',
   },
   addIconButton: {
-    position: "relative",
-    bottom: "-5px",
+    position: 'relative',
+    bottom: '-5px',
   },
   addIcon: {
-    color: theme.statistics.enrolmentText.color,
-    fontSize: "1.2rem",
+    fontSize: '1.2rem',
   },
   sideBarSetting: {
-    padding: "10px 20px",
+    padding: '10px 20px',
   },
   actionsGroup: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "30px",
-    paddingTop: "20px",
-    borderTop: "1px solid #bbbbbb",
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '30px',
+    paddingTop: '20px',
+    borderTop: '1px solid #bbbbbb',
   },
   inputWrapper: {
     marginBottom: theme.spacing(2),
   },
   linkWrapper: {
-    "&:hover": {
-      "& $iconButton": {
-        display: "flex",
+    '&:hover': {
+      '& $iconButton': {
+        display: 'flex',
       }
     }
   },
   iconButton: {
-    display: "none",
+    display: 'none',
   }
 });
 
@@ -144,6 +144,7 @@ class PageSettings extends React.PureComponent<Props, any> {
       themeId: props.page.themeId,
       newLink: '',
       suppressOnSitemap: props.page.suppressOnSitemap,
+      urlError: null
     };
   }
 
@@ -156,18 +157,19 @@ class PageSettings extends React.PureComponent<Props, any> {
         themeId: props.page.themeId,
         newLink: '',
         suppressOnSitemap: props.page.suppressOnSitemap,
+        urlError: null
       });
     }
   }
 
-  clickBack = (e) => {
-    const {onBack} = this.props;
-    e.preventDefault();
-    onBack();
-  }
+  validateUrlHandler = (value) => {
+    this.setState({
+      urlError: validateLink(value)
+    });
+  };
 
   onSave = () => {
-    const {onEdit, page} = this.props;
+    const { onEdit, page } = this.props;
 
     onEdit({
       title: this.state.title,
@@ -177,41 +179,41 @@ class PageSettings extends React.PureComponent<Props, any> {
       suppressOnSitemap: this.state.suppressOnSitemap,
       content: addContentMarker(page.content, page.contentMode),
     });
-  }
+  };
 
   onChange = (event, key) => {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({
       [key]: value,
-    }, () => (key === "suppressOnSitemap" || key === "visible") && this.onSave());
-  }
+    }, () => (key === 'suppressOnSitemap' || key === 'visible') && this.onSave());
+  };
 
   onSetDefaultUrl = (url) => {
     const urls = this.state.urls
-      .map(item => item.link === url.link ? {...item, isDefault: true} : {...item, isDefault: false});
+      .map((item) => (item.link === url.link ? { ...item, isDefault: true } : { ...item, isDefault: false }));
 
-    this.setState({urls}, () => this.onSave());
-  }
+    this.setState({ urls }, () => this.onSave());
+  };
 
   onDeleteUrl = (url) => {
-    const urls = this.state.urls.filter(item => item.link !== url.link);
-    this.setState({urls}, () => this.onSave());
-  }
+    const urls = this.state.urls.filter((item) => item.link !== url.link);
+    this.setState({ urls }, () => this.onSave());
+  };
 
-  onClickDelete = e => {
+  onClickDelete = (e) => {
     e.preventDefault();
-    const {onDelete, page, showModal} = this.props;
+    const { onDelete, page, showModal } = this.props;
 
     showModal({
       text: `You are want to delete page '${page.title}'.`,
       onConfirm: () => onDelete(page.id),
     });
-  }
+  };
 
   onAddNewUrl = () => {
     const newLink = this.formatLink(this.state.newLink);
-    const {pages, page, showError} = this.props;
-    const actualPages = pages.map(p => p.id === page.id ? {...p, urls: this.state.urls} : p);
+    const { pages, page, showError } = this.props;
+    const actualPages = pages.map((p) => (p.id === page.id ? { ...p, urls: this.state.urls } : p));
 
     if (!this.state.newLink) return;
     if (!PageService.isValidPageUrl(newLink, actualPages)) {
@@ -229,15 +231,17 @@ class PageSettings extends React.PureComponent<Props, any> {
       urls,
       newLink: '',
     }, () => this.onSave());
-  }
+  };
 
-  formatLink = (link) => {
-    return (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
-  }
+  formatLink = (link) => (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
 
-  render () {
-    const {classes, page, showNavigation} = this.props;
-    const {title, visible, urls, newLink, suppressOnSitemap} = this.state;
+  render() {
+    const { classes, page, showNavigation } = this.props;
+
+    const {
+      title, visible, urls, newLink, suppressOnSitemap, urlError
+    } = this.state;
+
     const defaultPageUrl = PageService.generateBasetUrl(page);
 
     return (
@@ -245,7 +249,7 @@ class PageSettings extends React.PureComponent<Props, any> {
         <ul>
           <li className={classes.navWrapper}>
             <IconButton onClick={showNavigation}>
-              <MenuIcon/>
+              <MenuIcon />
             </IconButton>
           </li>
         </ul>
@@ -261,90 +265,97 @@ class PageSettings extends React.PureComponent<Props, any> {
               className={classes.inputWrapper}
               meta={{}}
               input={{
-                onChange: e => this.onChange(e, 'title'),
+                onChange: (e) => this.onChange(e, 'title'),
                 onFocus: stubFunction,
                 onBlur: this.onSave,
                 value: title,
               }}
             />
 
-              <label htmlFor="pageUrl" className="pb-1 secondaryHeading">Page Links (URLs)</label>
+            <label htmlFor="pageUrl" className="pb-1 secondaryHeading">Page Links (URLs)</label>
 
-              <div className={classes.links}>
+            <div className={classes.links}>
 
-                <div className="centeredFlex justify-content-space-between relative">
-                  <div
-                    onClick={() => urls.find(url => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
-                    className={clsx(classes.linkTitle, !urls.find(url => url.isDefault) && classes.linkDefault)}
-                    title={defaultPageUrl.link}
-                  >
-                    {defaultPageUrl.link}
-                  </div>
+              <div className="centeredFlex justify-content-space-between relative">
+                <div
+                  onClick={() => urls.find((url) => url.isDefault) && this.onSetDefaultUrl(defaultPageUrl)}
+                  className={clsx(classes.linkTitle, !urls.find((url) => url.isDefault) && classes.linkDefault)}
+                  title={defaultPageUrl.link}
+                >
+                  {defaultPageUrl.link}
                 </div>
+              </div>
 
-                {urls.map((url, index) => (
-                  <div className={clsx(classes.linkWrapper, "centeredFlex justify-content-space-between relative")} key={index}>
-                    <div
-                      onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
-                      className={clsx(classes.linkTitle, url.isDefault && classes.linkDefault)}
-                    >
-                      {url.link}
-                    </div>
+              {urls.map((url, index) => (
+                <div className={clsx(classes.linkWrapper, 'centeredFlex justify-content-space-between relative')} key={index}>
+                  <div
+                    onClick={() => !url.isDefault && this.onSetDefaultUrl(url)}
+                    className={clsx(classes.linkTitle, url.isDefault && classes.linkDefault)}
+                  >
+                    {url.link}
+                  </div>
 
-                    {!url.isDefault &&
+                  {!url.isDefault
+                      && (
                       <IconButton size="small" className={classes.iconButton} onClick={() => !url.isDefault && this.onDeleteUrl(url)}>
                         <DeleteIcon
                           className={classes.removeIcon}
                         />
                       </IconButton>
-                    }
-                  </div>
-                ))}
-              </div>
+                      )}
+                </div>
+              ))}
+            </div>
 
-              <div className="centeredFlex w-100">
-                <EditInPlaceField
-                  label="New Page Url"
-                  type="text"
-                  name="newLink"
-                  id="newLink"
-                  value={newLink}
-                  meta={{}}
-                  onKeyDown={e => e.key === 'Enter' && this.onAddNewUrl()}
-                  input={{
-                    onChange: e => this.onChange(e, 'newLink'),
-                    onFocus: stubFunction,
-                    onBlur: stubFunction,
-                    value: newLink,
-                  }}
-                  className="w-100"
-                />
-                <IconButton size="small" onClick={this.onAddNewUrl} className={classes.addIconButton}>
-                  <AddIcon className={classes.addIcon} />
-                </IconButton>
-              </div>
+            <div className="centeredFlex w-100">
+              <EditInPlaceField
+                label="New Page Url"
+                type="text"
+                name="newLink"
+                id="newLink"
+                value={newLink}
+                meta={{
+                  error: urlError,
+                  invalid: Boolean(urlError)
+                }}
+                onKeyDown={(e) => e.key === 'Enter' && newLink && !urlError && this.onAddNewUrl()}
+                input={{
+                  onChange: (e) => {
+                    this.validateUrlHandler(e.target.value);
+                    this.onChange(e, 'newLink');
+                  },
+                  onFocus: stubFunction,
+                  onBlur: stubFunction,
+                  value: newLink,
+                }}
+                className="w-100"
+              />
+              <IconButton size="small" disabled={!newLink || urlError} onClick={this.onAddNewUrl} className={classes.addIconButton} color="primary">
+                <AddIcon className={classes.addIcon} />
+              </IconButton>
+            </div>
 
             <FormControlLabel
-              control={
+              control={(
                 <Checkbox
                   checked={visible}
-                  onChange={e => {this.onChange(e, 'visible'); }}
+                  onChange={(e) => { this.onChange(e, 'visible'); }}
                   name="visible"
                   color="primary"
                 />
-              }
+              )}
               label="Visible"
             />
 
             <FormControlLabel
-              control={
+              control={(
                 <Checkbox
                   checked={suppressOnSitemap}
-                  onChange={e => {this.onChange(e, 'suppressOnSitemap'); }}
+                  onChange={(e) => { this.onChange(e, 'suppressOnSitemap'); }}
                   name="suppressOnSitemap"
                   color="primary"
                 />
-              }
+              )}
               label="Hide from sitemap"
             />
 
@@ -357,12 +368,12 @@ class PageSettings extends React.PureComponent<Props, any> {
                 Remove
               </CustomButton>
 
-              {/*<CustomButton*/}
-              {/*  styleType="submit"*/}
-              {/*  onClick={this.onSave}*/}
-              {/*>*/}
-              {/*  Save*/}
-              {/*</CustomButton>*/}
+              {/* <CustomButton */}
+              {/*  styleType="submit" */}
+              {/*  onClick={this.onSave} */}
+              {/* > */}
+              {/*  Save */}
+              {/* </CustomButton> */}
             </div>
           </form>
         </div>

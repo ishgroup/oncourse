@@ -13,6 +13,7 @@ import {RedirectSettingsState} from "./reducers/State";
 import {State} from "../../../../reducers/state";
 import CustomButton from "../../../../common/components/CustomButton";
 import {RedirectItem as RedirectItemModel} from "../../../../../../build/generated-sources";
+import { validateLink } from '../../../../common/utils/validation';
 
 const styles: any = theme => ({
   redirectWrapper: {
@@ -70,7 +71,7 @@ const Redirect: React.FC<Props> = (
           ...r,
           [key]: e.target.value,
           submitted: false,
-          error: checkUniqueRule(r, e.target.value),
+          error: checkUniqueRule(r, e.target.value) || validateLink(e.target.value),
         })
       } else {
         return ({ ...r, submitted: false, })
@@ -157,7 +158,7 @@ const Redirect: React.FC<Props> = (
                 height={height}
                 itemCount={filteredRules.length}
                 itemData={{onChange, onRemove, items: filteredRules}}
-                itemSize={65}
+                itemSize={80}
                 width={width}
               >
                 {RedirectComp}
