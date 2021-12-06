@@ -1763,12 +1763,6 @@
 	<obj-entity name="AssessmentTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.AssessmentTagRelation" clientClassName="ish.oncourse.cayenne.AssessmentTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 17]]></qualifier>
 	</obj-entity>
-	<obj-entity name="AttachmentData" className="ish.oncourse.server.cayenne.AttachmentData" clientClassName="ish.oncourse.cayenne.AttachmentData" dbEntityName="BinaryData" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="content" type="byte[]" db-attribute-path="content"/>
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-	</obj-entity>
 	<obj-entity name="AttachmentRelation" abstract="true" className="ish.oncourse.server.cayenne.AttachmentRelation" clientClassName="ish.oncourse.cayenne.AttachmentRelation" dbEntityName="BinaryRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
@@ -3414,9 +3408,6 @@
 	<db-relationship name="paymentsOut" source="Banking" target="PaymentOut" toMany="true">
 		<db-attribute-pair source="id" target="bankingId"/>
 	</db-relationship>
-	<db-relationship name="documentVersion" source="BinaryData" target="DocumentVersion">
-		<db-attribute-pair source="documentVersionId" target="id"/>
-	</db-relationship>
 	<db-relationship name="attachedApplication" source="BinaryRelation" target="Application">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -3895,9 +3886,6 @@
 		<db-attribute-pair source="id" target="documentId"/>
 	</db-relationship>
 	<db-relationship name="attachingRelations" source="DocumentVersion" target="BinaryRelation" toMany="true">
-		<db-attribute-pair source="id" target="documentVersionId"/>
-	</db-relationship>
-	<db-relationship name="attachmentData" source="DocumentVersion" target="BinaryData">
 		<db-attribute-pair source="id" target="documentVersionId"/>
 	</db-relationship>
 	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser">
@@ -4949,7 +4937,6 @@
 	<obj-relationship name="attachedAssessmentSubmission" source="AssessmentSubmissionAttachmentRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="attachedAssessmentSubmission"/>
 	<obj-relationship name="notedAssessmentSubmission" source="AssessmentSubmissionNoteRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="notedAssessmentSubmission"/>
 	<obj-relationship name="taggedAssessment" source="AssessmentTagRelation" target="Assessment" deleteRule="Nullify" db-relationship-path="taggedAssessment"/>
-	<obj-relationship name="documentVersion" source="AttachmentData" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="document" source="AttachmentRelation" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="documentVersion" source="AttachmentRelation" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="markedByTutor" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="markedByTutor"/>
@@ -5112,7 +5099,6 @@
 	<obj-relationship name="taggingRelations" source="Document" target="DocumentTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
 	<obj-relationship name="taggedDocument" source="DocumentTagRelation" target="Document" deleteRule="Nullify" db-relationship-path="taggedDocument"/>
-	<obj-relationship name="attachmentData" source="DocumentVersion" target="AttachmentData" deleteRule="Cascade" db-relationship-path="attachmentData"/>
 	<obj-relationship name="attachmentRelations" source="DocumentVersion" target="AttachmentRelation" deleteRule="Deny" db-relationship-path="attachingRelations"/>
 	<obj-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
