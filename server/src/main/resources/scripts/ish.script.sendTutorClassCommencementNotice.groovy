@@ -2,7 +2,7 @@ if (send_before_each_session) {
 
     records = query {
         entity "TutorAttendance"
-        query "session.courseClass.startDateTime not is null and session.courseClass.isCancelled is false and session.startDatetime after today + 1 days and session.startDatetime before today + ${number_of_days} days"
+        query "session.courseClass.startDateTime not is null and session.courseClass.isCancelled is false and session.startDatetime is tomorrow + ${number_of_days} days"
     }
 
     records.each { attendance ->
