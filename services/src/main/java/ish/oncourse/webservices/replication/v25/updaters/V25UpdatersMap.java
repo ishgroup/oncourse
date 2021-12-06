@@ -90,6 +90,9 @@ public class V25UpdatersMap {
 		updaterMap.put(ArticleCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(MembershipCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(VoucherCustomField.class.getSimpleName(), new CustomFieldUpdater());
+		updaterMap.put(ArticleProductCustomField.class.getSimpleName(), new CustomFieldUpdater());
+		updaterMap.put(MembershipProductCustomField.class.getSimpleName(), new CustomFieldUpdater());
+		updaterMap.put(VoucherProductCustomField.class.getSimpleName(), new CustomFieldUpdater());
 		updaterMap.put(Application.class.getSimpleName(), new ApplicationUpdater());
 		updaterMap.put(EmailTemplate.class.getSimpleName(), new EmailTemplateUpdater());
 		updaterMap.put(Script.class.getSimpleName(), new ScriptUpdater());
