@@ -8,11 +8,11 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import clsx from "clsx";
 import {
-  Chip, Paper, Typography, Grid, withStyles, FormControlLabel
-} from "@material-ui/core";
+  Chip, Paper, Typography, Grid, FormControlLabel
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import CustomAppBar from "../../../../common/components/layout/CustomAppBar";
 import { openInternalLink } from "../../../../common/utils/links";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
@@ -26,6 +26,8 @@ import { summaryListStyles } from "../../styles/summaryListStyles";
 import CheckoutAppBar from "../CheckoutAppBar";
 import { CheckoutPreviousInvoice, PreviousInvoiceState } from "../../../../model/checkout";
 import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
+import RestartButton from "../RestartButton";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 interface InvoiceItemRowProps {
   classes: any;
@@ -100,68 +102,75 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
 
   return (
     <div className="appFrame flex-fill root">
-      <CustomAppBar>
-        <CheckoutAppBar title={activeField && titles[activeField]} />
-      </CustomAppBar>
-      <div className="appBarContainer w-100 p-3">
-        <FormControlLabel
-          classes={{
-            root: "checkbox"
-          }}
-          control={(
-            <StyledCheckbox
-              checked={previousInvoices.payDueAmounts}
-              onChange={e => setPayDue(e.target.checked)}
-            />
-          )}
-          label="Pay due amounts"
-          className="mb-1 pl-1"
-        />
-        <Paper elevation={0} className="p-3">
-          <div className="d-flex">
-            <Chip
-              size="small"
-              className="mb-1"
-              onClick={() => uncheckAllPreviousInvoice(activeField, !previousInvoices.unCheckAll)}
-              label={previousInvoices.unCheckAll ? "Check All" : "Uncheck All"}
-            />
-            <div className="flex-fill" />
-            <Typography variant="body2" className={classes.topRightlabel}>
-              {previousInvoices.payDueAmounts ? "Next due" : "Total owing"}
-            </Typography>
-          </div>
-
-          <Grid container>
-            {previousInvoices.invoices.map((item, index) => (
-              <InvoiceItemRow
-                key={index}
-                classes={classes}
-                item={item}
-                toggleInvoiceItem={() => toggleInvoiceItem(index, activeField)}
-                currencySymbol={currencySymbol}
-                payDueAmounts={previousInvoices.payDueAmounts}
+      <AppBarContainer
+        hideHelpMenu
+        hideSubmitButton
+        disableInteraction
+        title={(
+          <CheckoutAppBar title={activeField && titles[activeField]} />
+        )}
+        containerClass="p-3"
+      >
+        <div className="w-100">
+          <FormControlLabel
+            classes={{
+              root: "checkbox"
+            }}
+            control={(
+              <StyledCheckbox
+                checked={previousInvoices.payDueAmounts}
+                onChange={e => setPayDue(e.target.checked)}
               />
-            ))}
-            <Grid item xs={12} container direction="row" className={classes.tableTab}>
-              <Grid item xs={8} />
-              <Grid
-                item
-                xs={4}
-                container
-                justify="flex-end"
-                className={clsx("pt-1", "summaryTopBorder", classes.summaryItemPrice)}
-              >
-                <Typography variant="body2" className="money">
-                  {formatCurrency(
-                    previousInvoices.invoiceTotal < 0 ? -previousInvoices.invoiceTotal : previousInvoices.invoiceTotal,
-                    currencySymbol
-                  )}
-                </Typography>
+            )}
+            label="Pay due amounts"
+            className="mb-1 pl-1"
+          />
+          <Paper elevation={0} className="p-3">
+            <div className="d-flex">
+              <Chip
+                size="small"
+                className="mb-1"
+                onClick={() => uncheckAllPreviousInvoice(activeField, !previousInvoices.unCheckAll)}
+                label={previousInvoices.unCheckAll ? "Check All" : "Uncheck All"}
+              />
+              <div className="flex-fill" />
+              <Typography variant="body2" className={classes.topRightlabel}>
+                {previousInvoices.payDueAmounts ? "Next due" : "Total owing"}
+              </Typography>
+            </div>
+
+            <Grid container>
+              {previousInvoices.invoices.map((item, index) => (
+                <InvoiceItemRow
+                  key={index}
+                  classes={classes}
+                  item={item}
+                  toggleInvoiceItem={() => toggleInvoiceItem(index, activeField)}
+                  currencySymbol={currencySymbol}
+                  payDueAmounts={previousInvoices.payDueAmounts}
+                />
+              ))}
+              <Grid item xs={12} container direction="row" className={classes.tableTab}>
+                <Grid item xs={8} />
+                <Grid
+                  item
+                  xs={4}
+                  container
+                  direction="row-reverse"
+                  className={clsx("pt-1", "summaryTopBorder", classes.summaryItemPrice)}
+                >
+                  <Typography variant="body2" className="money">
+                    {formatCurrency(
+                      previousInvoices.invoiceTotal < 0 ? -previousInvoices.invoiceTotal : previousInvoices.invoiceTotal,
+                      currencySymbol
+                    )}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Paper>
-      </div>
+          </Paper>
+        </div>
+      </AppBarContainer>
     </div>
   );
 };

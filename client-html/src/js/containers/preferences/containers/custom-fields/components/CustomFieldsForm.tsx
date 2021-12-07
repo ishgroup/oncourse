@@ -1,23 +1,15 @@
 import * as React from "react";
-import ClassNames from "clsx";
 import { withRouter } from "react-router";
-import Grid from "@material-ui/core/Grid";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
 import {
   Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change, initialize
 } from "redux-form";
 import { CustomFieldType } from "@api/model";
 import isEqual from "lodash.isequal";
-import Fab from "@material-ui/core/Fab";
-
-import FormSubmitButton from "../../../../../common/components/form/FormSubmitButton";
-import CustomAppBar from "../../../../../common/components/layout/CustomAppBar";
+import { withStyles, createStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarHelpMenu from "../../../../../common/components/form/AppBarHelpMenu";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
@@ -29,15 +21,34 @@ import { Fetch } from "../../../../../model/common/Fetch";
 import uniqid from "../../../../../common/utils/uniqid";
 import { State } from "../../../../../reducers/state";
 import { setNextLocation } from "../../../../../common/actions";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualLink = getManualLink("generalPrefs_customFields");
+const manualUrl = getManualLink("generalPrefs_customFields");
 
-const styles = () => createStyles({
+const styles = theme => createStyles({
   dragIcon: {
     fill: "#e0e0e0"
   },
   container: {
     width: "100%"
+  },
+  expansionPanelRoot: {
+    margin: "0px !important",
+    width: "100%",
+  },
+  expansionPanelDetails: {
+    padding: 0,
+    marginTop: `-${theme.spacing(9.75)}`,
+  },
+  expandIcon: {
+    marginTop: -5,
+    "& > button": {
+      padding: 5,
+    }
+  },
+  deleteButtonCustom: {
+    padding: theme.spacing(1),
+    marginTop: -5,
   }
 });
 
@@ -162,8 +173,10 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     updated.forEach((field, index) => (field.sortOrder = index));
 
     dispatch(change("CustomFieldsForm", "types", updated));
-    const domNode = document.getElementById("types[0].name");
-    if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      const domNode = document.getElementById("types[0].name");
+      if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   onClickDelete = (item, index) => {
@@ -196,59 +209,36 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
         <CustomFieldsDeleteDialog setFieldToDelete={this.setFieldToDelete} item={fieldToDelete} onConfirm={this.onDeleteConfirm} />
         <Form className={classes.container} onSubmit={handleSubmit(this.onSave)} noValidate autoComplete="off">
           <RouteChangeConfirm form={form} when={dirty} />
-          <CustomAppBar>
-            <Grid container>
-              <Grid item xs={12} className={ClassNames("centeredFlex", "relative")}>
-                <Fab
-                  type="button"
-                  size="small"
-                  color="primary"
-                  classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                  onClick={() => this.onAddNew()}
-                >
-                  <AddIcon />
-                </Fab>
-                <Typography variant="body1" color="inherit" noWrap className="appHeaderFontSize pl-2">
-                  Custom Fields
-                </Typography>
 
-                <div className="flex-fill" />
-
-                {data && (
-                <AppBarHelpMenu
-                  created={created}
-                  modified={modified}
-                  auditsUrl={`audit?search=~"CustomFieldType" and entityId in (${idsToString(data.types)})`}
-                  manualUrl={manualLink}
+          <AppBarContainer
+            values={data}
+            manualUrl={manualUrl}
+            getAuditsUrl={() => `audit?search=~"CustomFieldType" and entityId in (${idsToString(data.types)})`}
+            disabled={!dirty}
+            invalid={invalid}
+            title="Custom Fields"
+            disableInteraction
+            createdOn={() => created}
+            modifiedOn={() => modified}
+            onAddMenu={() => this.onAddNew()}
+          >
+            <Grid container className="mt-2">
+              <Grid item lg={10}>
+                {data && data.types && (
+                <FieldArray
+                  name="types"
+                  component={CustomFieldsRenderer}
+                  dispatch={dispatch}
+                  onDelete={this.onClickDelete}
+                  classes={classes}
                 />
               )}
-
-                <FormSubmitButton
-                  disabled={!dirty}
-                  invalid={invalid}
-                />
               </Grid>
             </Grid>
-          </CustomAppBar>
-
-          <Grid container className={classes.marginTop}>
-            <Grid item lg={10}>
-              {data && data.types && (
-              <FieldArray
-                name="types"
-                component={CustomFieldsRenderer}
-                dispatch={dispatch}
-                onDelete={this.onClickDelete}
-                classes={classes}
-              />
-            )}
-            </Grid>
-          </Grid>
+          </AppBarContainer>
         </Form>
       </>
-);
+    );
   }
 }
 
@@ -263,6 +253,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const CustomFieldsForm = reduxForm({
   onSubmitFail,
   form: "CustomFieldsForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(theme => ({ ...formCommonStyles(theme), ...styles() }))(withRouter(CustomFieldsBaseForm) as any)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
+  withStyles(theme => ({ ...formCommonStyles(theme), ...styles(theme) }))(withRouter(CustomFieldsBaseForm) as any)
+));
 
 export default CustomFieldsForm;

@@ -1,26 +1,26 @@
 import React from "react";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
+import { withStyles, createStyles } from "@mui/styles";
+import Card from "@mui/material/Card";
 import clsx from "clsx";
 
 const styles = theme =>
   createStyles({
     wrapper: {
       position: "relative",
-      paddingRight: `${theme.spacing(5)}px`,
-      marginRight: `${theme.spacing(2)}px`,
-      marginTop: `${theme.spacing(3)}px`,
+      paddingRight: `${theme.spacing(5)}`,
+      marginRight: `${theme.spacing(2)}`,
+      marginTop: `${theme.spacing(3)}`,
       zIndex: 2
     },
     wrapperLeft: {
       position: "relative",
-      paddingLeft: `${theme.spacing(5)}px`,
-      marginLeft: `${theme.spacing(2)}px`,
-      marginTop: `${theme.spacing(3)}px`,
+      paddingLeft: `${theme.spacing(5)}`,
+      marginLeft: `${theme.spacing(2)}`,
+      marginTop: `${theme.spacing(3)}`,
       zIndex: 2
     },
     contentWrapper: {
-      padding: `${theme.spacing(2)}px`,
+      padding: `${theme.spacing(2)}`,
       background: theme.palette.background.default,
       position: "relative",
       overflow: "visible",

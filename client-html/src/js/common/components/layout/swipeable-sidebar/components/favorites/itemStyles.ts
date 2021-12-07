@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@material-ui/core/styles/createStyles";
+import createStyles from "@mui/styles/createStyles";
 
 const itemStyles = createStyles(theme => ({
   quickEnrollItem: {
@@ -14,6 +14,7 @@ const itemStyles = createStyles(theme => ({
     verticalAlign: "text-bottom"
   },
   listItem: {
+    lineHeight: "1.2em",
     padding: "4px 0",
     display: "block",
     "-moz-column-break-inside": "avoid",

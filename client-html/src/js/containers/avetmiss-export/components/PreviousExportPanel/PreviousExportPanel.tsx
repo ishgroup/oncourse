@@ -1,9 +1,9 @@
 import React from "react";
-import CardContent from "@material-ui/core/CardContent";
+import CardContent from "@mui/material/CardContent";
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import { Card } from "@material-ui/core";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import { Card } from "@mui/material";
 import { FundingStatus, FundingUpload } from "@api/model";
 import InfoBox from "./InfoBox";
 

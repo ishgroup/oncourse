@@ -6,22 +6,22 @@
 import React from "react";
 import clsx from "clsx";
 import { change, Field, Validator } from "redux-form";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Search from "@material-ui/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
-import CardContent from "@material-ui/core/CardContent";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import ArrowForward from "@material-ui/icons/ArrowForward";
+import Search from "@mui/icons-material/Search";
+import IconButton from "@mui/material/IconButton";
+import Close from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import CardContent from "@mui/material/CardContent";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import ArrowForward from "@mui/icons-material/ArrowForward";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { FormTextField } from "../../../common/components/form/formFields/TextField";
 import { formatCurrency } from "../../../common/utils/numbers/numbersNormalizing";
 import { NoArgFunction } from "../../../model/common/CommonFunctions";
 import { AppTheme } from "../../../model/common/Theme";
+import { makeAppStyles } from "../../../common/styles/makeStyles";
 
 const styles = (theme: AppTheme) => createStyles({
   headerRoot: {
@@ -133,6 +133,7 @@ const HeaderField: React.FC<Props> = props => {
               )
             }}
             validate={validate}
+            fullWidth
           />
         )}
         <div className="mt-2">
@@ -143,7 +144,7 @@ const HeaderField: React.FC<Props> = props => {
   );
 };
 
-const useHeaderTypoStyles = makeStyles(() => ({
+const useHeaderTypoStyles = makeAppStyles(() => ({
   checkboxRoot: {
     width: 19,
     height: 19,

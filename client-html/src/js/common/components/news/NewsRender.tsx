@@ -6,26 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { utcToZonedTime } from "date-fns-tz";
-import CloseIcon from "@material-ui/icons/Close";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Typography from "@material-ui/core/Typography";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from '@mui/styles';
+import { alpha } from '@mui/material/styles';
 import clsx from "clsx";
-import ListItemText from "@material-ui/core/ListItemText";
-import Box from "@material-ui/core/Box";
+import ListItemText from "@mui/material/ListItemText";
+import Box from "@mui/material/Box";
 import { format as formatDate } from "date-fns";
-import ListItem from "@material-ui/core/ListItem";
+import ListItem from "@mui/material/ListItem";
 import { State } from "../../../reducers/state";
 import { AppTheme } from "../../../model/common/Theme";
 import { D_MMM_YYYY } from "../../utils/dates/format";
-import {
-  READ_NEWS
-} from "../../../constants/Config";
+import { READ_NEWS } from "../../../constants/Config";
 import { setUserPreference } from "../../actions";
 import { setReadNewsLocal } from "../list-view/actions";
 
@@ -39,7 +36,7 @@ const styles = (theme: AppTheme) => createStyles({
     padding: theme.spacing(3),
     borderRadius: theme.spacing(1),
     border: "2px solid",
-    borderColor: fade(theme.palette.text.disabled, 0.1),
+    borderColor: alpha(theme.palette.text.disabled, 0.1),
     "&:not(:last-child)": {
       marginBottom: theme.spacing(2),
     },
@@ -52,8 +49,8 @@ const styles = (theme: AppTheme) => createStyles({
     padding: theme.spacing(0.5),
     background: theme.palette.background.paper,
     border: "2px solid",
-    color: fade(theme.palette.text.disabled, 0.3),
-    borderColor: fade(theme.palette.text.disabled, 0.1),
+    color: alpha(theme.palette.text.disabled, 0.3),
+    borderColor: alpha(theme.palette.text.disabled, 0.1),
     width: "30px",
     height: "30px",
     "&:hover": {
@@ -173,28 +170,25 @@ const NewsItemRender = props => {
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal
+    blogPosts, classes, page, preferences, setReadNews, fullScreenEditView, setReadNewsLocal, newsOffset
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
   const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-  const [postsForRender, setPostsForRender] = useState([]);
-
-  useEffect(() => {
+  
+  const postsForRender = useMemo(() => {
     const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
 
-    const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : true)
-      && (!readNews || !readNews.includes(post.id))).reverse();
+    const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : !post.page)
+    && (!readNews || !readNews.includes(post.id))).reverse();
 
     const newsWithoutDate = filteredPosts.filter(post => !post.published);
     const newsWithDate = filteredPosts.filter(post => post.published);
-    const newsForRender = newsWithoutDate.concat(newsWithDate);
-    setPostsForRender(newsForRender);
+    return newsWithoutDate.concat(newsWithDate);
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <div className={classes.postsWrapper}>
+    <Box className={classes.postsWrapper} sx={{ marginTop: newsOffset }}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
@@ -206,7 +200,7 @@ const NewsRender = props => {
           setReadNewsLocal={setReadNewsLocal}
         />
       ))}
-    </div>
+    </Box>
   ) : null;
 };
 

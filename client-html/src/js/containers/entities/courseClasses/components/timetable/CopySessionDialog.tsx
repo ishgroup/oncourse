@@ -4,16 +4,16 @@
  */
 
 import React, { useCallback } from "react";
-import Popper from "@material-ui/core/Popper";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import DialogContent from "@material-ui/core/DialogContent";
+import Popper from "@mui/material/Popper";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import DialogContent from "@mui/material/DialogContent";
 import { getFormValues, reduxForm } from "redux-form";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Typography from "@material-ui/core/Typography";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import { createStyles, withStyles } from "@mui/styles";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";

@@ -1,27 +1,22 @@
 import axios from "axios";
-import { CONTEXT } from "../../../common/api/Constants";
-import { DefaultHttpService } from "../../../common/services/HttpService";
 import {
   AuthenticationApi,
   UserApi,
   LoginRequest,
   LoginResponse,
-  PasswordComplexity
+  PasswordComplexity, User
 } from "@api/model";
+import { CONTEXT } from "../../../common/api/Constants";
+import { DefaultHttpService } from "../../../common/services/HttpService";
 
 const instance = axios.create();
 instance.defaults.baseURL = CONTEXT;
-instance.defaults.headers = { "Ish-JXBrowser-Header": "" };
 
 class LoginService {
   // workaround for LoginApp bundle
-  private createCustomAPI(type: string, host?: string, port?: number, login?: string): any {
+  private createCustomAPI(type: string, host?: string, port?: number): any {
     if (host && port) {
       instance.defaults.baseURL = `https://${host}:${port}${CONTEXT}`;
-    }
-
-    if (login) {
-      instance.defaults.headers["Ish-JXBrowser-Header"] = encodeURIComponent(login);
     }
 
     if (type === "user") {
@@ -33,10 +28,10 @@ class LoginService {
 
   public postLoginRequest(body: LoginRequest, host?: string, port?: number): Promise<LoginResponse> {
     if (host && port) {
-      return this.createCustomAPI("login", host, port, body.login).login(body);
+      return this.createCustomAPI("login", host, port).login(body);
     }
 
-    return this.createCustomAPI("login", null, null, body.login).login(body);
+    return this.createCustomAPI("login", null, null).login(body);
   }
 
   public checkPassword(value: string, host?: string, port?: number): Promise<PasswordComplexity> {
@@ -57,6 +52,10 @@ class LoginService {
 
   public createPasswordByToken(token: string, password: string): Promise<LoginResponse> {
     return this.createCustomAPI("user").createPassword(token, password);
+  }
+
+  public getUser(): Promise<User> {
+    return this.createCustomAPI("login").getUser();
   }
 }
 

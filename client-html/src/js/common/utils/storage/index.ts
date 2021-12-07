@@ -6,6 +6,7 @@ export const LSGetItem = (key: string) => {
   try {
     return localStorage.getItem(key);
   } catch (e) {
+    console.error(e);
     return null;
   }
 };
@@ -14,7 +15,7 @@ export const LSSetItem = (key: string, value: string) => {
   try {
     localStorage.setItem(key, value);
   } catch (e) {
-    //
+    console.error(e);
   }
 };
 
@@ -22,7 +23,7 @@ export const LSRemoveItem = (key: string) => {
   try {
     localStorage.removeItem(key);
   } catch (e) {
-    //
+    console.error(e);
   }
 };
 

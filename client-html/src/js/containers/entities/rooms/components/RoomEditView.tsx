@@ -38,7 +38,8 @@ const RoomEditView = props => {
     openNestedEditView,
     showConfirm,
     manualLink,
-    rootEntity
+    rootEntity,
+    onEditViewScroll,
   } = props;
 
   return (
@@ -57,7 +58,8 @@ const RoomEditView = props => {
       openNestedEditView,
       showConfirm,
       manualLink,
-      rootEntity
+      rootEntity,
+      onEditViewScroll
     }}
     />
 );

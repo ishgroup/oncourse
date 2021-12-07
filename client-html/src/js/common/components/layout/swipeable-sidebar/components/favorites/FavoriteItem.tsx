@@ -5,11 +5,11 @@
 
 import React from "react";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import ListItem from "@material-ui/core/ListItem";
-import Favorite from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
+import ListItem from "@mui/material/ListItem";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import { CategoryItem } from "@api/model";
 import { AnyArgFunction } from "../../../../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../../../../utils/links";

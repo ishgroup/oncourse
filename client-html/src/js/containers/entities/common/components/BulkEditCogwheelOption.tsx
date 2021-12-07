@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import React, { memo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../../reducers/state";

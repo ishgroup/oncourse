@@ -54,13 +54,6 @@ export const openContactLink = (contactId: number) => {
   openInternalLink("/contact/" + contactId);
 };
 
-export const getTableWrapperHeight = (rowsCount: number) => Math.min(
-    rowsCount === 0
-      ? DEFAULT_TITLE_HEIGHT + WRAPPER_SPACING
-      : rowsCount * DEFAULT_TABLE_CELL_HEIGHT + DEFAULT_TABLE_HEAD_HEIGHT + DEFAULT_TITLE_HEIGHT + WRAPPER_SPACING,
-    DEFAULT_TABLE_HEIGHT
-  );
-
 export const convertSelectBooleanToString = v => (typeof v === "boolean" ? String(v) : "");
 export const convertSelectStringToBoolean = v => (v === "true" ? true : v === "false" ? false : "");
 

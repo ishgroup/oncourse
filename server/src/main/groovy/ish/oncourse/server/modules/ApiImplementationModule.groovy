@@ -41,7 +41,6 @@ import ish.oncourse.server.api.v1.service.DashboardApi
 import ish.oncourse.server.api.v1.service.DataCollectionApi
 import ish.oncourse.server.api.v1.service.DiscountApi
 import ish.oncourse.server.api.v1.service.DocumentApi
-import ish.oncourse.server.api.v1.service.DocumentExportApi
 import ish.oncourse.server.api.v1.service.EmailTemplateApi
 import ish.oncourse.server.api.v1.service.EnrolmentApi
 import ish.oncourse.server.api.v1.service.EntityApi
@@ -86,7 +85,6 @@ import ish.oncourse.server.api.v1.service.TaxApi
 import ish.oncourse.server.api.v1.service.TimetableApi
 import ish.oncourse.server.api.v1.service.TokenApi
 import ish.oncourse.server.api.v1.service.TransactionApi
-import ish.oncourse.server.api.v1.service.TutorAttendanceApi
 import ish.oncourse.server.api.v1.service.TutorRoleApi
 import ish.oncourse.server.api.v1.service.UserApi
 import ish.oncourse.server.api.v1.service.UserPreferenceApi
@@ -122,7 +120,6 @@ import ish.oncourse.server.api.v1.service.impl.DashboardApiImpl
 import ish.oncourse.server.api.v1.service.impl.DataCollectionApiImpl
 import ish.oncourse.server.api.v1.service.impl.DiscountApiImpl
 import ish.oncourse.server.api.v1.service.impl.DocumentApiImpl
-import ish.oncourse.server.api.v1.service.impl.DocumentExportApiImpl
 import ish.oncourse.server.api.v1.service.impl.EmailTemplateApiImpl
 import ish.oncourse.server.api.v1.service.impl.EnrolmentApiImpl
 import ish.oncourse.server.api.v1.service.impl.EntityApiImpl
@@ -166,7 +163,6 @@ import ish.oncourse.server.api.v1.service.impl.TagApiImpl
 import ish.oncourse.server.api.v1.service.impl.TaxApiImpl
 import ish.oncourse.server.api.v1.service.impl.TimetableApiImpl
 import ish.oncourse.server.api.v1.service.impl.TransactionApiImpl
-import ish.oncourse.server.api.v1.service.impl.TutorAttendanceApiImpl
 import ish.oncourse.server.api.v1.service.impl.TutorRoleApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserApiImpl
 import ish.oncourse.server.api.v1.service.impl.UserPreferenceApiImpl
@@ -206,7 +202,6 @@ class ApiImplementationModule implements Module {
         binder.bind(DataCollectionApi).to(DataCollectionApiImpl)
         binder.bind(DiscountApi).to(DiscountApiImpl)
         binder.bind(DocumentApi).to(DocumentApiImpl)
-        binder.bind(DocumentExportApi).to(DocumentExportApiImpl)
 
         binder.bind(EmailTemplateApi).to(EmailTemplateApiImpl)
         binder.bind(EnrolmentApi).to(EnrolmentApiImpl)
@@ -271,7 +266,6 @@ class ApiImplementationModule implements Module {
         binder.bind(CourseClassTutorApi).to(CourseClassTutorApiImpl)
         binder.bind(ClassCostApi).to(ClassCostApiImpl)
         binder.bind(AttendanceApi).to(AttendanceApiImpl)
-        binder.bind(TutorAttendanceApi).to(TutorAttendanceApiImpl)
         binder.bind(AssessmentClassApi).to(AssessmentClassApiImpl)
         binder.bind(SessionApi).to(SessionApiImpl)
         binder.bind(CheckoutApi).to(CheckoutApiImpl)

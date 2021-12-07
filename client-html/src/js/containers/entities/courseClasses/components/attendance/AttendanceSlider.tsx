@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Slider from "@material-ui/core/Slider";
-import DragHandleRounded from "@material-ui/icons/DragIndicatorRounded";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import Slider from "@mui/material/Slider";
+import DragHandleRounded from "@mui/icons-material/DragIndicatorRounded";
+import { createStyles, withStyles } from "@mui/styles";
 import debounce from "lodash.debounce";
 import { AttandanceStepItem } from "../../../../../model/entities/CourseClass";
 
@@ -140,7 +140,7 @@ const AttendanceSlider: React.FC<Props> = ({
         thumb: classes.sliderThumb,
         markActive: classes.sliderMarkActive
       }}
-      ThumbComponent={isStatic ? undefined : SliderThumbComponent}
+      valueLabelFormat={isStatic ? undefined : SliderThumbComponent}
       disabled={isStatic}
       marks
     />

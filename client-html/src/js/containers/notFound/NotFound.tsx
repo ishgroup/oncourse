@@ -10,16 +10,16 @@
  */
 
 import React from "react";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import NotFoundBgImage from "../../../images/bg-404.png";
 import { AppTheme } from "../../model/common/Theme";
 
 const styles = (theme: AppTheme) => createStyles({
   container: {
-    height: `calc(100vh - ${theme.spacing(14)}px)`
+    height: `calc(100vh - ${theme.spacing(14)})`
   },
   bgImage: {
     position: "fixed",

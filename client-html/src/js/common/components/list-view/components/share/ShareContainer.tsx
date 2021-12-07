@@ -4,18 +4,22 @@
  */
 
 import * as React from "react";
-import Drawer from "@material-ui/core/Drawer";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import { Help, PlayArrow, Publish } from "@material-ui/icons";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
+import withStyles from "@mui/styles/withStyles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import { Help, PlayArrow, Publish } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from "redux-form";
-import IconButton from "@material-ui/core/IconButton";
+import {
+ change, Field, FieldArray, getFormValues, initialize, reduxForm, 
+} from "redux-form";
+import IconButton from "@mui/material/IconButton";
 import {
   Binding,
   ExportRequest,
@@ -26,14 +30,15 @@ import {
   SearchQuery,
   Sorting,
 } from "@api/model";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import clsx from "clsx";
 import FormField from "../../../form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import bottomDrawerStyles from "../bottomDrawerStyles";
-import { addPrintOverlay, doPrintRequest, getExportTemplates, getShareList, runExport, } from "./actions";
-import Button from "../../../buttons/Button";
+import {
+ addPrintOverlay, doPrintRequest, getExportTemplates, getShareList, runExport, 
+} from "./actions";
 import SelectionSwitcher from "./SelectionSwitcher";
 import { ProcessState } from "../../../../reducers/processReducer";
 import { interruptProcess } from "../../../../actions";
@@ -679,7 +684,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     key={0}
                     selected={selectedPrimary === 0}
                     onClick={() => this.selectPrimary(0)}
-                    disableRipple
+                    // disableRipple
                   >
                     <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       PDF
@@ -690,7 +695,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 )}
                 {exportTemplateTypesArr.map((t, i) => (
                   <ListItem
-                    button
+                    // button
                     classes={{
                       root: classes.listItems,
                       selected: classes.listItemsSelected,
@@ -698,7 +703,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     key={i + 1}
                     selected={selectedPrimary === i + 1}
                     onClick={() => this.selectPrimary(i + 1)}
-                    disableRipple
+                    // disableRipple
                   >
                     <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       {t}
@@ -714,7 +719,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 {pdfSelected
                   && pdfReports.map((i, index) => (
                     <ListItem
-                      button
+                      // button
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -723,7 +728,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      disableRipple
+                      // disableRipple
                       style={{ position: "relative" }}
                     >
                       <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
@@ -738,7 +743,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   && Boolean(exportTemplateTypesArr.length)
                   && exportTemplateTypes[exportTemplateTypesArr[selectedPrimary - 1]].map((t, index) => (
                     <ListItem
-                      button
+                      // button
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -747,7 +752,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      disableRipple
+                      // disableRipple
                       style={{ position: "relative" }}
                     >
                       <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
@@ -785,7 +790,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {templateSelected
                   && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
                   && (
-                    <Button
+                    <LoadingButton
                       disabled={invalid || validating}
                       className={classes.closeButton}
                       type="submit"
@@ -795,18 +800,19 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                     >
                       Copy to clipboard
-                    </Button>
+                    </LoadingButton>
                   )}
-                  <Button
+                  <LoadingButton
                     disabled={invalid || validating}
-                    rootClasses={classes.shareButton}
+                    className={classes.shareButton}
                     type="submit"
                     datatype="share"
+                    variant="contained"
                     onClick={this.onSubmitClick}
                     loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                   >
                     Share
-                  </Button>
+                  </LoadingButton>
                 </Grid>
               </form>
             </Grid>

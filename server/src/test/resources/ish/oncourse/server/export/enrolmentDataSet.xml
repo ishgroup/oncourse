@@ -112,18 +112,18 @@
            citizenship="9" feeHelpEligible="0"/>
 
   <CourseSession id="100" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="200" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="300" courseClass_id="100" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <CourseSession id="400" courseClass_id="200" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="500" courseClass_id="200" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="600" courseClass_id="200" startDatetime="2013-01-01 00:00:00" endDatetime="2013-01-02 00:00:00"
-                 payAdjustment="0.00"/>
+                 />
 
   <Enrolment id="100" courseClass_id="100" studentid="100" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" fundingSource="1" createdOn="2013-01-01 00:00:00"

@@ -1,6 +1,6 @@
 import * as React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { createStyles } from "@material-ui/core";
+import withStyles from "@mui/styles/withStyles";
+import { createStyles } from "@mui/material";
 import clsx from "clsx";
 import FilterGroupComp from "./components/FilterGroup";
 import StubFilterItem from "./components/StubFilterItem";

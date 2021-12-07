@@ -6,7 +6,7 @@
 import React, {
  useCallback, useContext, useEffect, useMemo, useRef, useState
 } from "react";
-import { createStyles, withStyles } from "@material-ui/core";
+import { createStyles, withStyles } from "@mui/styles";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { SearchRequest } from "@api/model";
 import { Dispatch } from "redux";
@@ -15,8 +15,8 @@ import {
  addMonths, endOfMonth, format, isSameMonth, startOfMonth
 } from "date-fns";
 import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { State } from "../../../../reducers/state";
 import { clearTimetableMonths, findTimetableSessions } from "../../actions";
 import { TimetableContext } from "../../Timetable";

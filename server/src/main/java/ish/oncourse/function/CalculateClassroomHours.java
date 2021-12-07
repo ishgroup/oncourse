@@ -33,18 +33,11 @@ public class CalculateClassroomHours {
         BigDecimal sum = BigDecimal.ZERO;
         if (courseClass.getSessions() != null && courseClass.getSessions().size() > 0) {
             for (Session s : courseClass.getSessions()) {
-                sum = sum.add(getDurationInHours(s));
+                sum = sum.add(s.getDurationInHours());
             }
         } else if (courseClass.getSessionsCount() != null && courseClass.getMinutesPerSession() != null) {
             return BigDecimal.valueOf(courseClass.getSessionsCount() * courseClass.getMinutesPerSession() / 60L);
         }
         return sum;
-    }
-
-    private BigDecimal getDurationInHours(Session session) {
-        if (session.getEndDatetime() == null || session.getStartDatetime() == null) {
-            return new BigDecimal("0");
-        }
-        return DurationFormatter.parseDurationInHours(session.getEndDatetime().getTime() - session.getStartDatetime().getTime());
     }
 }

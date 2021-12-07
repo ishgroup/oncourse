@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { FormEditorField } from "../../../../../common/components/markdown-editor/FormEditor";
 
 class CourseClassWebTab extends React.Component<any, any> {
@@ -15,7 +15,7 @@ class CourseClassWebTab extends React.Component<any, any> {
           <div className="heading mt-2 mb-2">Web</div>
         </div>
 
-        <Grid container className="pl-3 pr-3">
+        <Grid container columnSpacing={3} className="pl-3 pr-3 pb-3">
           <Grid item xs={12}>
             <FormEditorField name="webDescription" label="Class specific web description" />
           </Grid>

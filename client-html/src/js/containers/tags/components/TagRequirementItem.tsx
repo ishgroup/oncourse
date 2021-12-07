@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import clsx from "clsx";
 import { change, Field } from "redux-form";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Delete from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
+import { withStyles, createStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import Delete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { PillCheckboxField } from "../../../common/components/form/PillCheckbox";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";

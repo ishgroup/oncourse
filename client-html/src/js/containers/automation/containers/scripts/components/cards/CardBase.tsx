@@ -1,15 +1,15 @@
 import * as React from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import DragIndicator from "@material-ui/icons/DragIndicator";
-import Typography from "@material-ui/core/Typography";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Delete from "@material-ui/icons/Delete";
-import AddCircle from "@material-ui/icons/AddCircle";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DragIndicator from "@mui/icons-material/DragIndicator";
+import Typography from "@mui/material/Typography";
+import { withStyles, createStyles } from "@mui/styles";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
 import clsx from "clsx";
+import AddButton from "../../../../../../common/components/icons/AddButton";
 
 const styles = theme =>
   createStyles({
@@ -19,7 +19,6 @@ const styles = theme =>
       },
       "&$panelExpandedWithoutMargin": {
         "&:last-child": {
-          marginTop: theme.spacing(3),
           marginBottom: 0
         }
       },
@@ -87,7 +86,7 @@ const CardBase = props => {
         classes={{
           root: classes.summaryRoot,
           expanded: classes.summaryExpanded,
-          expandIcon: clsx("p-0-5 mr-2", classes.summaryExpandIcon)
+          expandIconWrapper: clsx("p-0-5 mr-2", classes.summaryExpandIcon)
         }}
       >
         <div className="flex-fill centeredFlex" {...dragHandlerProps}>
@@ -101,9 +100,7 @@ const CardBase = props => {
           </div>
           {Boolean(dragHandlerProps) && <DragIndicator color="disabled" />}
           {Boolean(onAddItem) && (
-            <IconButton className="addButtonColor fs2 p-1" onClick={onAddItem}>
-              <AddCircle color="inherit" fontSize="inherit" />
-            </IconButton>
+            <AddButton className="addButtonColor fs2 p-1" onClick={onAddItem} iconFontSize="inherit" />
           )}
         </div>
         <div>

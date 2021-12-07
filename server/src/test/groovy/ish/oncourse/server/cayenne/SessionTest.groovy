@@ -106,7 +106,6 @@ class SessionTest extends TestWithDatabase {
         // add second session
         Session session3 = cayenneContext.newObject(Session.class)
         session3.setCourseClass(cc)
-        session3.setPayAdjustment(4)
         cc.addToSessions(session3)
 
         Assertions.assertEquals(0, session3.getAttendance().size(), "Check attendances ")

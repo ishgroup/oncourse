@@ -4,7 +4,9 @@ import { mockedAPI } from "../../TestEntry";
 import * as PreferencesModel from "../../../js/model/preferences";
 import ClassDefaults from "../../../js/containers/preferences/containers/class/ClassDefaults";
 
-describe("Virtual rendered ClassDefaultsForm", () => {
+// TODO Enable test on fix
+
+describe.skip("Virtual rendered ClassDefaultsForm", () => {
   defaultComponents({
     entity: "ClassDefaultsForm",
     View: props => <ClassDefaults {...props} />,

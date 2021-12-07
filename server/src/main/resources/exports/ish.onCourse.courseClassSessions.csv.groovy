@@ -8,7 +8,6 @@ records.collectMany { CourseClass cc -> cc.sessions }.each { s ->
 			"session starts"	: s.displayStartDateTime.format("d/M/Y hh:mm a"),
 			"session ends"		: s.displayEndDateTime.format("d/M/Y hh:mm a"),
 			"session duration"	: s.durationInHours,
-			"payable time"		: s.payableDurationInHours,
 			"tutors"			: s.tutors?.contact?.fullName ?: "",
 			"modules"			: s.modules?.nationalCode ?: "",
 			"public notes"		: s.publicNotes,

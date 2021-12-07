@@ -1,6 +1,6 @@
 import React, { createContext, useMemo, useReducer } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import createStyles from "@material-ui/core/styles/createStyles";
+import { withStyles } from "@mui/styles";
+import createStyles from "@mui/styles/createStyles";
 import { isSameMonth, setDate, startOfMonth } from "date-fns";
 import TimetableSideBar from "./components/timetable-side-bar/TimetableSideBar";
 import Calendar from "./components/calendar/Calendar";

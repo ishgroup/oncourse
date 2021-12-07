@@ -13,13 +13,13 @@ import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
 import {
   Grid, FormControlLabel, IconButton, Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { differenceInDays } from "date-fns";
 import {
   AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
 } from "@api/model";
-import { withStyles } from "@material-ui/core/styles";
-import { DateRange, ExpandMore, Edit } from "@material-ui/icons";
+import { withStyles } from "@mui/styles";
+import { DateRange, ExpandMore, Edit } from "@mui/icons-material";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
@@ -391,8 +391,8 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
   return (
     <Grid container>
-      <Grid item={true} xs={12} container className="pb-3">
-        <Grid item xs={twoColumn ? 8 : 12} container>
+      <Grid item={true} xs={12} columnSpacing={3} container className="pb-3">
+        <Grid item columnSpacing={3} rowSpacing={2} xs={twoColumn ? 8 : 12} container>
           <Grid item xs={twoColumn ? 6 : 12}>
             <GradeModal
               gradeMenuAnchorEl={gradeMenuAnchorEl}

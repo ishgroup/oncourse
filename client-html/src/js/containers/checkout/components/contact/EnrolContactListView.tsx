@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
@@ -30,7 +30,7 @@ const EnrolContactListView = React.memo<any>(props => {
               ? item.name
               : searchString && getHighlightedPartLabel(getContactName(item), searchString))}
           secondaryText={item => (
-            <Typography component="span" variant="caption" color="textSecondary" className="text-truncate">
+            <Typography component="div" variant="caption" color="textSecondary" noWrap>
               {` ${item.birthDate ? format(new Date(item.birthDate), D_MMM_YYYY) : ""}  ${item.email || ""}`}
             </Typography>
           )}
@@ -48,11 +48,11 @@ const EnrolContactListView = React.memo<any>(props => {
           disabledHandler={disabledHandler}
           primaryText={item => (searchString ? getHighlightedPartLabel(getContactName(item), searchString) : getContactName(item))}
           secondaryText={item => (
-            <Typography component="span">
-              <Typography component="span" variant="caption" color="textSecondary" className="text-truncate">
+            <Typography component="div">
+              <Typography component="span" variant="caption" color="textSecondary" noWrap>
                 {` ${item.birthDate ? format(new Date(item.birthDate), D_MMM_YYYY) : ""}  ${item.email || ""}`}
               </Typography>
-              <Typography component="p" variant="caption" color="textSecondary" className="text-truncate">
+              <Typography component="p" variant="caption" color="textSecondary" noWrap>
                 {` ${item.relationString}`}
               </Typography>
             </Typography>

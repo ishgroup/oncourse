@@ -95,7 +95,7 @@ class Attendance extends _Attendance implements AttendanceInterface, Queueable {
 		if (getAttendedFrom() == null || getAttendedUntil()  == null) {
 			return BigDecimal.ZERO
 		}
-		return DurationFormatter.parseDurationInHours(getAttendedUntil().getTime() - getAttendedFrom().getTime())
+		return DurationFormatter.durationInHoursBetween(attendedFrom, attendedUntil)
 	}
 
 

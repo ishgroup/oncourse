@@ -61,7 +61,7 @@
 	<field name="contact.tutor.id" class="java.lang.Long"/>
 	<field name="contact.firstName" class="java.lang.String"/>
 	<field name="contact.lastName" class="java.lang.String"/>
-	<field name="definedTutorRole.name" class="java.lang.String"/>
+	<field name="tutorRole.definedTutorRole.name" class="java.lang.String"/>
 	<field name="repetitionType" class="java.lang.Object"/>
 	<field name="flowType" class="java.lang.Object"/>
 	<field name="courseClass.enrolments" class="java.util.List"/>
@@ -73,7 +73,7 @@
 		<variableExpression><![CDATA[($P{sessionNumber} == 1 && $P{attendanceNumber} == 1 && (ish.common.types.ClassCostRepetitionType.FIXED.equals($F{repetitionType}) || ish.common.types.ClassCostRepetitionType.PER_ENROLMENT.equals($F{repetitionType})))]]></variableExpression>
 	</variable>
 	<variable name="isTutorSession" class="java.lang.Boolean">
-		<variableExpression><![CDATA[($P{tutorId} == $F{contact.tutor.id} && ($P{tutorRole}.equals($F{definedTutorRole.name})) && (!ish.common.types.ClassCostRepetitionType.FIXED.equals($F{repetitionType}) && !ish.common.types.ClassCostRepetitionType.PER_ENROLMENT.equals($F{repetitionType})))]]></variableExpression>
+		<variableExpression><![CDATA[($P{tutorId} == $F{contact.tutor.id} && ($P{tutorRole}.equals($F{tutorRole.definedTutorRole.name})) && (!ish.common.types.ClassCostRepetitionType.FIXED.equals($F{repetitionType}) && !ish.common.types.ClassCostRepetitionType.PER_ENROLMENT.equals($F{repetitionType})))]]></variableExpression>
 	</variable>
 	<variable name="printPayLine" class="java.lang.Boolean">
 		<variableExpression><![CDATA[($V{isWageType} && ($V{isTutorSession} || $V{isFixedTypeOfPayOrPerEnrolment}))]]></variableExpression>
@@ -112,7 +112,7 @@
 			<textField>
 				<reportElement style="data field" x="140" y="0" width="110" height="20" uuid="2adb72bd-fd6f-4e42-9f65-1800b6a51653"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{definedTutorRole.name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tutorRole.definedTutorRole.name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="data field" x="256" y="0" width="54" height="20" uuid="893209ef-2338-4ba7-817e-97985edfe258"/>

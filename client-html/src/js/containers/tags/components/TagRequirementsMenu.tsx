@@ -1,14 +1,14 @@
 import React, { ComponentClass } from "react";
 import { connect } from "react-redux";
 import {
-  withStyles, Typography, Menu, MenuItem
-} from "@material-ui/core";
+  Typography, Menu, MenuItem
+} from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { TagRequirement, TagRequirementType } from "@api/model";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
 import clsx from "clsx";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 import { State } from "../../../reducers/state";
+import AddButton from "../../../common/components/icons/AddButton";
 
 const requirements = Object.keys(TagRequirementType).map(
   (i: TagRequirementType) =>
@@ -168,7 +168,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
               {label}
             </Typography>
 
-            <IconButton
+            <AddButton
               aria-owns={anchorEl ? "field-types-menu" : null}
               aria-haspopup="true"
               onClick={this.handleAddFieldClick}
@@ -177,9 +177,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
                 disabled: "disabled",
                 root: system ? "invisible" : undefined
               }}
-            >
-              <AddCircle className="addButtonColor" width={20} />
-            </IconButton>
+            />
           </div>
 
           {error && (

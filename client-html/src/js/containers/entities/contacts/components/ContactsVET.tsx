@@ -16,21 +16,20 @@ import {
   Contact,
   Country,
   Language,
-  StudentCitizenship,
   UsiStatus,
   UsiVerificationResult
 } from "@api/model";
 import { change } from "redux-form";
 import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Link from "@material-ui/core/Link";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import Chip from "@material-ui/core/Chip";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Link from "@mui/material/Link";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Chip from "@mui/material/Chip";
 import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
@@ -52,7 +51,6 @@ const priorEducations = Object.keys(AvetmissStudentPriorEducation).map(mapSelect
 const disabilityTypes = Object.keys(AvetmissStudentDisabilityType).map(mapSelectItems);
 const industriesOfEmployment = Object.keys(ClientIndustryEmploymentType).map(mapSelectItems);
 const occupationIdentifiers = Object.keys(ClientOccupationIdentifierType).map(mapSelectItems);
-const studentCitizenships = Object.keys(StudentCitizenship).map(mapSelectItems);
 const avetmissStudentLabourStatuses = Object.keys(AvetmissStudentLabourStatus).map(mapSelectItems);
 
 const openUpgradeLink = () => {
@@ -245,9 +243,9 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   }, [prevId, usiVerificationResult]);
 
   return values ? (
-    <div className="p-3">
+    <div className="pt-1 pl-3 pr-3">
       <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
-        <Grid container>
+        <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
@@ -387,7 +385,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Grid container>
+            <Grid container columnSpacing={3}>
               <Grid item xs={twoColumn ? 6 : 12} md={twoColumn ? 4 : 12} xl={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
@@ -530,7 +528,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </>
           )}
           <Grid item xs={12}>
-            <div className="mt-1 centeredFlex">
+            <div className="mt-1 mb-2 centeredFlex">
               <FormControlLabel
                 className="checkbox pr-3"
                 control={<FormField type="checkbox" name="student.feeHelpEligible" color="secondary" />}
@@ -539,30 +537,20 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </div>
           </Grid>
           {values.student && values.student.feeHelpEligible && (
-            <>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField
-                  type="select"
-                  name="student.citizenship"
-                  label="Citizenship status"
-                  items={studentCitizenships}
-                />
-              </Grid>
-              <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField
-                  type="text"
-                  name="tfn"
-                  label="Tax file number"
-                  max={9}
-                  InputProps={{
-                    inputComponent: TFNInputMask
-                  }}
-                  validate={validateTFN}
-                  parse={parseTFN}
-                  format={formatTFN}
-                />
-              </Grid>
-            </>
+            <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
+              <FormField
+                type="text"
+                name="tfn"
+                label="Tax file number"
+                max={9}
+                InputProps={{
+                  inputComponent: TFNInputMask
+                }}
+                validate={validateTFN}
+                parse={parseTFN}
+                format={formatTFN}
+              />
+            </Grid>
           )}
         </Grid>
       </ExpandableContainer>

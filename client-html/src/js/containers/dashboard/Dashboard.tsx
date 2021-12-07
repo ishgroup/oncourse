@@ -5,9 +5,9 @@
 
 import React from "react";
 import clsx from "clsx";
-import { Grid } from "@material-ui/core";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { Grid } from "@mui/material";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { PreferenceEnum } from "@api/model";
@@ -76,11 +76,10 @@ class Dashboard extends React.PureComponent<any, any> {
           classes.container,
           {
             [classes.drawerOpenedContainer]: drawerOpened
-          },
-          LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas" && "christmasBody"
+          }
         )}
       >
-        <Grid item xs={12}>
+        <Grid item xs={12} className="relative">
           <DashboardHeader
             dispatch={dispatch}
             upgradePlanLink={upgradePlanLink}

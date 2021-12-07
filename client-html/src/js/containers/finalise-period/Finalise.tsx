@@ -6,26 +6,26 @@
 import React, {
  useCallback, useEffect, useMemo, useState
 } from "react";
-import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent/DialogContent";
 import {
   DecoratedComponentClass, getFormValues, reduxForm
 } from "redux-form";
-import DialogActions from "@material-ui/core/DialogActions/DialogActions";
-import Launch from "@material-ui/icons/Launch";
-import Dialog from "@material-ui/core/Dialog/Dialog";
+import DialogActions from "@mui/material/DialogActions/DialogActions";
+import Launch from "@mui/icons-material/Launch";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { FinalisePeriodInfo } from "@api/model";
 import { format, addDays } from "date-fns";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import { FormControlLabel } from "@material-ui/core";
-import Slide from "@material-ui/core/Slide";
-import { TransitionProps } from "@material-ui/core/transitions";
-import Collapse from "@material-ui/core/Collapse/Collapse";
-import HelpOutline from "@material-ui/icons/HelpOutline";
-import IconButton from "@material-ui/core/IconButton/IconButton";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { FormControlLabel } from "@mui/material";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
+import Collapse from "@mui/material/Collapse";
+import HelpOutline from "@mui/icons-material/HelpOutline";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import FormField from "../../common/components/form/formFields/FormField";
 import { getFinaliseInfo, updateFinaliseDate } from "./actions";
 import { StringArgFunction } from "../../model/common/CommonFunctions";
@@ -35,7 +35,6 @@ import { EEE_D_MMM_YYYY } from "../../common/utils/dates/format";
 import { validateSingleMandatoryField, validateMinMaxDate } from "../../common/utils/validation";
 import { State } from "../../reducers/state";
 import { openInternalLink } from "../../common/utils/links";
-import Button from "../../common/components/buttons/Button";
 
 interface Props {
   handleSubmit: any;
@@ -162,7 +161,7 @@ const Finalise = React.memo<Props>(({
         </DialogTitle>
 
         <DialogContent className="overflow-hidden">
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={8}>
               <FormField
                 type="date"

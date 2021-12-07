@@ -5,10 +5,9 @@
 
 import React, { useMemo } from "react";
 import { FieldArray } from "redux-form";
-import Typography from "@material-ui/core/Typography";
-import AddCircle from "@material-ui/icons/AddCircle";
-import IconButton from "@material-ui/core/IconButton";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
+import AddButton from "../../icons/AddButton";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 
 const MinifiedEntitiesList = props => {
@@ -45,16 +44,13 @@ const MinifiedEntitiesList = props => {
   return (
     <div id={name}>
       <div className="centeredFlex">
-        <Typography className={clsx("heading pt-2 pb-2", { "errorColor": error })}>
+        <Typography className={clsx("heading mb-2 mt-2", { "errorColor": error })}>
           {count > 0 ? count : ""}
           {' '}
           {count !== 1 ? header : oneItemHeader}
         </Typography>
-
         {onAdd && (
-          <IconButton onClick={onAdd}>
-            <AddCircle className="addButtonColor" />
-          </IconButton>
+          <AddButton onClick={onAdd} />
         )}
       </div>
 

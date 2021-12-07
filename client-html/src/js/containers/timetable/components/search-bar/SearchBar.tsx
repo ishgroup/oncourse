@@ -4,17 +4,18 @@
  */
 
 import React, { useState, useCallback, useRef, useMemo, useContext } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { withStyles, darken, createStyles } from "@material-ui/core/styles";
-import { Theme } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
-import { SearchInputBase } from "../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import { withStyles, createStyles } from "@mui/styles";
+import { darken } from "@mui/material/styles";
+import { Theme } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
+import MenuItem from "@mui/material/MenuItem";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import { SearchInputBase } from "../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput";
 import { Fetch } from "../../../../model/common/Fetch";
 import { State } from "../../../../reducers/state";
 import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from "../../../../constants/Config";
@@ -61,7 +62,6 @@ const styles = ({ palette, spacing, shadows, shape }: Theme) =>
       backgroundColor: palette.background.default
     },
     field: {
-      padding: spacing(0, 1),
       height: 36,
       borderRadius: shape.borderRadius,
       display: "flex",
@@ -71,7 +71,7 @@ const styles = ({ palette, spacing, shadows, shape }: Theme) =>
       }
     },
     toolbar: {
-      backgroundColor: palette.type === "light" ? palette.primary.main : darken(palette.background.default, 0.4),
+      backgroundColor: palette.mode === "light" ? palette.primary.main : darken(palette.background.default, 0.4),
       color: palette.text.primary,
       height: `${APP_BAR_HEIGHT}px`,
       bottom: 0,
@@ -81,9 +81,6 @@ const styles = ({ palette, spacing, shadows, shape }: Theme) =>
       alignItems: "center",
       padding: spacing(2),
       position: "relative"
-    },
-    select: {
-      paddingRight: spacing(3)
     }
   });
 
@@ -99,7 +96,7 @@ const selectValues = [
 ];
 
 const SearchBarSelect = React.memo<any>(({ classes, searchType, selectHandle }) => (
-  <FormControl className={classes.formControl}>
+  <FormControl className={classes.formControl} variant="standard">
     <Select
       name="entities"
       IconComponent={KeyboardArrowDown}
@@ -107,9 +104,6 @@ const SearchBarSelect = React.memo<any>(({ classes, searchType, selectHandle }) 
       onChange={selectHandle}
       disableUnderline
       displayEmpty
-      classes={{
-        root: `${classes.field} ${classes.select}`
-      }}
     >
       {selectValues.map((el, id) => (
         <MenuItem key={id} value={el.key}>
