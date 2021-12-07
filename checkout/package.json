@@ -128,7 +128,8 @@
     },
     "testRegex": "(/test/jest/.*\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy",
+      "@EnumUtils":  "<rootDir>/src/js/common/utils/EnumUtils.ts"
     },
     "moduleDirectories": [
       "<rootDir>",
