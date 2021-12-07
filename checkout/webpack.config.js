@@ -8,6 +8,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
 const { BugsnagBuildReporterPlugin, BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
 const TerserPlugin = require("terser-webpack-plugin");
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || 'development';
@@ -45,7 +46,8 @@ const _main = (NODE_ENV, SOURCE_MAP, API_ROOT, BUILD_NUMBER) => {
         path.resolve(__dirname, 'src/scss'),
         "node_modules"
       ],
-      extensions: [".ts", ".tsx", ".js", ".css", ".scss"]
+      extensions: [".ts", ".tsx", ".js", ".css", ".scss"],
+      plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, './tsconfig.json') })],
     },
     optimization: {
       minimizer: [
