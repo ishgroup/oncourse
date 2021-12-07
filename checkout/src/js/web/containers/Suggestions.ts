@@ -11,6 +11,7 @@ import {Actions} from "../actions/Actions";
 import CheckoutService from "../../enrol/services/CheckoutService";
 import { CourseClass, Product } from '../../model';
 import { GABuilder } from '../../services/GoogleAnalyticsService';
+import { getCheckoutModelFromBackend } from '../../enrol/actions/Actions';
 
 const mapStateToProps = (state: IshState) => ({
   phase: state.checkout.phase,
@@ -35,6 +36,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         analytics: GABuilder.addProductToCart(product),
       },
     });
+    dispatch(getCheckoutModelFromBackend());
   },
   addCourse: (courseClass: CourseClass) => {
     dispatch({
@@ -44,6 +46,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         analytics: GABuilder.addCourseClassToCart('class', courseClass),
       },
     });
+    dispatch(getCheckoutModelFromBackend());
   },
 });
 
