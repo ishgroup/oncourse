@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test
 
 @CompileStatic
 class IntegrationApiTest extends TestWithDatabase {
-    public static final String MYOB_BASE_URL = "myobBaseUrl"
-    public static final String MYOB_USER = "myobUser"
-    public static final String MYOB_PASSWORD = "myobPassword"
-    public static final String MYOB_FILE_NAME = "myobFileName"
-    public static final String MYOB_REFRESH_TOKEN = "myobRefreshToken"
+    public static final String SURVEYGIZMO_USER = "user"
+    public static final String SURVEYGIZMO_PASSWORD = "password"
+    public static final String SURVEYGIZMO_SURVEY_ID = "surveyId"
 
     @Test
     void test() {
@@ -24,14 +22,11 @@ class IntegrationApiTest extends TestWithDatabase {
         integrationApi.cayenneService = cayenneService
 
         Assertions.assertEquals(0, integrationApi.get().size())
-        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: MYOB_BASE_URL, value: 'http://myob.com'),
-                                           new IntegrationPropDTO(key: MYOB_USER, value: 'user'),
-                                           new IntegrationPropDTO(key: MYOB_PASSWORD, value: 'pass'),
-                                           new IntegrationPropDTO(key: MYOB_REFRESH_TOKEN, value: 'token'),
-                                           new IntegrationPropDTO(key: MYOB_FILE_NAME, value: 'fileName'),
-
+        List<IntegrationPropDTO> fields = [new IntegrationPropDTO(key: SURVEYGIZMO_USER, value: 'user'),
+                                           new IntegrationPropDTO(key: SURVEYGIZMO_PASSWORD, value: 'pass'),
+                                           new IntegrationPropDTO(key: SURVEYGIZMO_SURVEY_ID, value: 'surveyId'),
         ]
-        IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(6), props: fields)
+        IntegrationDTO data = new IntegrationDTO(name: 'integration', type: new BigDecimal(4), props: fields)
 
         integrationApi.create(data)
 
