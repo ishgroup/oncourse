@@ -25,12 +25,30 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 
 const manualUrl = getManualLink("generalPrefs_customFields");
 
-const styles = () => createStyles({
+const styles = theme => createStyles({
   dragIcon: {
     fill: "#e0e0e0"
   },
   container: {
     width: "100%"
+  },
+  expansionPanelRoot: {
+    margin: "0px !important",
+    width: "100%",
+  },
+  expansionPanelDetails: {
+    padding: 0,
+    marginTop: `-${theme.spacing(9.75)}`,
+  },
+  expandIcon: {
+    marginTop: -5,
+    "& > button": {
+      padding: 5,
+    }
+  },
+  deleteButtonCustom: {
+    padding: theme.spacing(1),
+    marginTop: -5,
   }
 });
 
@@ -155,8 +173,10 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
     updated.forEach((field, index) => (field.sortOrder = index));
 
     dispatch(change("CustomFieldsForm", "types", updated));
-    const domNode = document.getElementById("types[0].name");
-    if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      const domNode = document.getElementById("types[0].name");
+      if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   onClickDelete = (item, index) => {
@@ -234,7 +254,7 @@ const CustomFieldsForm = reduxForm({
   onSubmitFail,
   form: "CustomFieldsForm"
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(theme => ({ ...formCommonStyles(theme), ...styles() }))(withRouter(CustomFieldsBaseForm) as any)
+  withStyles(theme => ({ ...formCommonStyles(theme), ...styles(theme) }))(withRouter(CustomFieldsBaseForm) as any)
 ));
 
 export default CustomFieldsForm;
