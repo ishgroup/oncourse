@@ -17,7 +17,8 @@ import { IconButton } from "@mui/material";
 
 const styles = (theme: AppTheme) =>
   createStyles({
-    expansionPanelRoot: {
+    expansionPanelRoot: {},
+    expansionPanelExpanded: {
       "&:before": {
         content: "none"
       }
@@ -50,7 +51,8 @@ const styles = (theme: AppTheme) =>
     expandIcon: {
       marginTop: "2px",
       marginRight: "unset",
-    }
+    },
+    collapseRoot: {},
   });
 
 interface Props {
@@ -61,22 +63,25 @@ interface Props {
   collapsedContent?: React.ReactNode;
   buttonsContent?: React.ReactNode;
   detailsContent?: React.ReactNode;
+  elevation?: number;
+  expandButtonId?: string;
 }
 
 const ExpandableItem: React.FunctionComponent<Props> = props => {
   const {
- expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent
-} = props;
+    expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent, elevation = 2, expandButtonId
+  } = props;
 
   return (
     <Accordion
       expanded={expanded}
       TransitionProps={{ unmountOnExit: true, mountOnEnter: true }}
       classes={{
-        root:
+        root: clsx(classes.expansionPanelRoot,
           !expanded
-          && clsx(classes.expansionPanelRoot, keepPaper ? classes.expansionPanelPaper : classes.expansionPanelNoPaper)
+          && clsx(classes.expansionPanelExpanded, keepPaper ? classes.expansionPanelPaper : classes.expansionPanelNoPaper))
       }}
+      elevation={elevation}
     >
       <AccordionSummary
         classes={{
@@ -86,9 +91,9 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
-        expandIcon={<IconButton><ExpandMoreIcon /></IconButton>}
+        expandIcon={<IconButton id={expandButtonId ? `expand-button-${expandButtonId}` : null}><ExpandMoreIcon /></IconButton>}
       >
-        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit>
+        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{ root: classes.collapseRoot }}>
           {collapsedContent}
         </Collapse>
 
