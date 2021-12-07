@@ -13,7 +13,6 @@ package ish.oncourse.server.scripting.api;
 import ish.common.types.MessageStatus;
 import ish.common.types.MessageType;
 import ish.oncourse.server.cayenne.*;
-import org.apache.cayenne.ObjectContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -119,9 +118,9 @@ public class EmailMessage {
 	public boolean send() {
 		var context = template.getObjectContext();
 
-		var messagePersons = createMessagePersons(template, bindings, recipients);
+		var messages = createMessages(template, bindings, recipients);
 
-		if (!messagePersons.isEmpty()) {
+		if (!messages.isEmpty()) {
 			context.commitChanges();
 
 			return true;
@@ -149,10 +148,10 @@ public class EmailMessage {
 		return message;
 	}
 
-	private List<MessagePerson> createMessagePersons(EmailTemplate template, Map<String, Object> bindings, Map<Contact, String> recipients) {
+	private List<Message> createMessages(EmailTemplate template, Map<String, Object> bindings, Map<Contact, String> recipients) {
 		var context = template.getObjectContext();;
 
-		List<MessagePerson> messagePersons = new ArrayList<>();
+		List<Message> messages = new ArrayList<>();
 
 		for (var entry : recipients.entrySet()) {
 			if (StringUtils.trimToNull(entry.getValue()) != null) {
@@ -161,18 +160,16 @@ public class EmailMessage {
 				bindings.put(TO, localContact);
 				var message = createMessage(template, bindings);
 
-				var messagePerson = context.newObject(MessagePerson.class);
-				messagePerson.setMessage(message);
-				messagePerson.setAttemptCount(0);
-				messagePerson.setStatus(MessageStatus.QUEUED);
-				messagePerson.setType(MessageType.EMAIL);
-				messagePerson.setContact(localContact);
-				messagePerson.setDestinationAddress(entry.getValue());
+				message.setNumberOfAttempts(0);
+				message.setStatus(MessageStatus.QUEUED);
+				message.setType(MessageType.EMAIL);
+				message.setContact(localContact);
+				message.setDestinationAddress(entry.getValue());
 
-				messagePersons.add(messagePerson);
+				messages.add(message);
 			}
 		}
 
-		return messagePersons;
+		return messages;
 	}
 }

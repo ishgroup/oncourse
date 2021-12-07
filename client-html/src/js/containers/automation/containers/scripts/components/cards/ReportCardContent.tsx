@@ -64,7 +64,7 @@ const ReportCardContent: React.FC<Props> = props => {
   };
 
   return (
-    <Grid container columnSpacing={3} className="mt-2">
+    <Grid container columnSpacing={3} rowSpacing={2} className="mt-2">
       <Grid item xs={12}>
         <FormField
           type="text"

@@ -37,6 +37,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
@@ -190,19 +191,11 @@ public class AngelServerFactory {
                     false,
                     false);
 
-            schedulerService.scheduleCronJob(ChristmasThemeEnableJob.class,
-                    CHRISTMAS_THEME_ENABLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
-                    CHRISTMAS_THEME_ENABLE_JOB_INTERVAL,
-                    prefController.getOncourseServerDefaultTimezone(),
-                    false,
-                    false);
-
-            schedulerService.scheduleCronJob(ChristmasThemeDisableJob.class,
-                    CHRISTMAS_THEME_DISABLE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
-                    CHRISTMAS_THEME_DISABLE_JOB_INTERVAL,
-                    prefController.getOncourseServerDefaultTimezone(),
-                    false,
-                    false);
+            
+            // disable cristmas theme automatical update since we did not prepare anything this year (2021-2022)
+            schedulerService.removeJob(JobKey.jobKey(CHRISTMAS_THEME_DISABLE_JOB_ID,BACKGROUND_JOBS_GROUP_ID ));
+            schedulerService.removeJob(JobKey.jobKey(CHRISTMAS_THEME_ENABLE_JOB_ID,BACKGROUND_JOBS_GROUP_ID ));
+            
 
             schedulerService.scheduleCronJob(PermanentlyDeleteDocumentsJob.class,
                     PERMANENTLY_DELETE_DOCUMENTS_ID, BACKGROUND_JOBS_GROUP_ID,
@@ -285,6 +278,7 @@ public class AngelServerFactory {
                 user.setInvitationToken(invitationToken);
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 1));
             } catch (MessagingException ex) {
+                LOGGER.catching(ex);
                 LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
                 return;
             }

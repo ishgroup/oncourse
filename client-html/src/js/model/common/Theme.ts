@@ -6,8 +6,7 @@ enum ThemeValuesEnum {
   "default",
   "dark",
   "monochrome",
-  "highcontrast",
-  "christmas"
+  "highcontrast"
 }
 
 export type ThemeValues = keyof typeof ThemeValuesEnum;
@@ -17,7 +16,6 @@ export const DefaultThemeKey: ThemeValues = "default";
 export const DarkThemeKey: ThemeValues = "dark";
 export const MonochromeThemeKey: ThemeValues = "monochrome";
 export const HighcontrastThemeKey: ThemeValues = "highcontrast";
-export const ChristmasThemeKey: ThemeValues = "christmas";
 
 type ColorGetter = string | ((props: {}) => string);
 

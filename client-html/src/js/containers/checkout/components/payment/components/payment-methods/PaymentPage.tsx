@@ -88,7 +88,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
   }, [summary.payNowTotal, summary.paymentDate, summary.invoiceDueDate, paymentType]);
 
   return (
-    <div className={clsx("p-3 d-flex flex-fill justify-content-center", classes.content)}>
+    <div className={clsx("d-flex flex-fill justify-content-center", classes.content)}>
       {!paymentStatus ? (
         <form autoComplete="off" className="w-100">
           <div className="p-3 mt-3 h-100 w-100">

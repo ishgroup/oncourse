@@ -59,7 +59,7 @@ const styles = theme => createStyles({
         color: theme.palette.common.white
       },
       "&$checked": {
-        transform: `translateX(${theme.spacing(2)}px)`
+        transform: `translateX(${theme.spacing(2)})`
       },
       "&$checked + $bar": {
         opacity: 1

@@ -52,7 +52,7 @@ const CourseClassGeneralTab = React.memo<Props>(
     twoColumn,
     values,
     isNew,
-    invalid,
+    syncErrors,
     dispatch,
     form,
     showMessage,
@@ -192,20 +192,21 @@ const CourseClassGeneralTab = React.memo<Props>(
 
     return (
       <>
-        <Grid container className="pl-3 pt-3 pr-3 relative">
-          <FullScreenStickyHeader
-            opened={isNew || invalid}
-            twoColumn={twoColumn}
-            title={twoColumn ? (
-              <div className="centeredFlex">
-                {values.courseName}
-                <IconButton disabled={!values.courseId} size="small" color="primary" onClick={() => openCourseLink(values.courseId)}>
-                  <Launch fontSize="inherit" />
-                </IconButton>
-                <span className="ml-2">
-                  {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
-                </span>
-              </div>
+        <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3 relative">
+          <Grid item xs={12}>
+            <FullScreenStickyHeader
+              opened={isNew || Object.keys(syncErrors).some(k => ['courseId', 'courseCode', 'code'].includes(k))}
+              twoColumn={twoColumn}
+              title={twoColumn ? (
+                <div className="centeredFlex">
+                  {values.courseName}
+                  <IconButton disabled={!values.courseId} size="small" color="primary" onClick={() => openCourseLink(values.courseId)}>
+                    <Launch fontSize="inherit" />
+                  </IconButton>
+                  <span className="ml-2">
+                    {values.courseCode ? `${values.courseCode}-${values.code || ""}` : null}
+                  </span>
+                </div>
             ) : (
               <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={12}>
@@ -221,47 +222,47 @@ const CourseClassGeneralTab = React.memo<Props>(
                 </Grid>
               </Grid>
             )}
-            fields={(
-              <Grid container columnSpacing={3} rowSpacing={2}>
-                <Grid item xs={twoColumn ? 6 : 12}>
-                  <FormField
-                    type="remoteDataSearchSelect"
-                    label="Course"
-                    entity="Course"
-                    name="courseId"
-                    selectValueMark="id"
-                    selectLabelMark="name"
-                    aqlColumns="code,name,currentlyOffered,isShownOnWeb,reportableHours,nextAvailableCode"
-                    selectFilterCondition={courseFilterCondition}
-                    defaultDisplayValue={values && values.courseName}
-                    itemRenderer={CourseItemRenderer}
-                    disabled={!isNew}
-                    onInnerValueChange={onCourseIdChange}
-                    rowHeight={55}
-                    labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
-                    required
-                  />
-                </Grid>
-                <Grid item xs={twoColumn ? 4 : 12}>
-                  <EditInPlaceField
-                    label="Class code"
-                    input={{
+              fields={(
+                <Grid container columnSpacing={3} rowSpacing={2}>
+                  <Grid item xs={twoColumn ? 6 : 12}>
+                    <FormField
+                      type="remoteDataSearchSelect"
+                      label="Course"
+                      entity="Course"
+                      name="courseId"
+                      selectValueMark="id"
+                      selectLabelMark="name"
+                      aqlColumns="code,name,currentlyOffered,isShownOnWeb,reportableHours,nextAvailableCode"
+                      selectFilterCondition={courseFilterCondition}
+                      defaultDisplayValue={values && values.courseName}
+                      itemRenderer={CourseItemRenderer}
+                      disabled={!isNew}
+                      onInnerValueChange={onCourseIdChange}
+                      rowHeight={55}
+                      labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={twoColumn ? 4 : 12}>
+                    <EditInPlaceField
+                      label="Class code"
+                      input={{
                       onChange: onClassCodeChange,
                       onFocus: stubFunction,
                       onBlur: stubFunction,
                       value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
                     }}
-                    meta={{
+                      meta={{
                       error: classCodeError,
                       invalid: Boolean(classCodeError)
                     }}
-                    disabled={!values.courseCode}
-                  />
+                      disabled={!values.courseCode}
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
             )}
-          />
-
+            />
+          </Grid>
           {Boolean(values.isCancelled) && (
             <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>Cancelled</div>
           )}
@@ -274,14 +275,13 @@ const CourseClassGeneralTab = React.memo<Props>(
 
         <Grid
           container
-          className="pt-3 pl-3 pr-3"
+          className="pt-2 pl-3 pr-3"
           columnSpacing={3}
           rowSpacing={2}
           direction={twoColumn && !showAllWeeks ? undefined : "column-reverse"}
         >
           <Grid item xs={twoColumn && !showAllWeeks ? 6 : 12}>
             <div className="heading pb-2 pt-3">Restrictions</div>
-
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be over
               <FormField
@@ -321,7 +321,6 @@ const CourseClassGeneralTab = React.memo<Props>(
                   labelPlacement="start"
                 />
               </div>
-
               <div>
                 <FormControlLabel
                   className="switchWrapper"
@@ -331,7 +330,6 @@ const CourseClassGeneralTab = React.memo<Props>(
                 />
               </div>
             </Collapse>
-
             <FormField
               type="multilineText"
               name="message"

@@ -25,6 +25,8 @@ import { OutcomesContentLine, OutcomesHeaderLine } from "./OutcomesLines";
 import EntityService from "../../../../common/services/EntityService";
 import { openQualificationLink } from "../../qualifications/utils";
 import { OutcomeInitial } from "../../outcomes/Outcomes";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 
 interface PriorLearningEditViewProps extends EditViewProps<PriorLearning> {
   classes?: any;
@@ -115,9 +117,22 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
 
   return values ? (
     <div className="p-3">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={12}>
-          <FormField type="text" name="title" label="Title" required />
+          <FullScreenStickyHeader
+            opened={isNew || Object.keys(syncErrors).includes("title")}
+            twoColumn={twoColumn}
+            title={(
+              <div className="d-inline-flex-center">
+                {values.title}
+              </div>
+            )}
+            fields={(
+              <Grid item xs={twoColumn ? 6 : 12}>
+                <FormField type="text" name="title" label="Title" required />
+              </Grid>
+            )}
+          />
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
@@ -195,37 +210,38 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
         <Grid item xs={12}>
           <FormField type="multilineText" name="notes" label="Private notes" fullWidth />
         </Grid>
-      </Grid>
-      <Grid item xs={12} className="pb-2 pt-2">
-        <MinifiedEntitiesList
-          name="outcomes"
-          header="Outcomes"
-          oneItemHeader="Outcome"
-          count={outcomesCount}
-          FieldsContent={OutcomesContent}
-          HeaderContent={OutcomesHeaderLine}
-          onAdd={addNewOutcome}
-          onDelete={deleteOutcome}
-          syncErrors={syncErrors}
-          validate={validateOutcomes}
-          accordion
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FieldArray
-          name="documents"
-          label="Documents"
-          entity="PriorLearning"
-          classes={classes}
-          component={DocumentsRenderer}
-          xsGrid={12}
-          mdGrid={twoColumn ? 6 : 12}
-          lgGrid={twoColumn ? 4 : 12}
-          dispatch={dispatch}
-          form={form}
-          showConfirm={showConfirm}
-          rerenderOnEveryChange
-        />
+
+        <Grid item xs={12} className="pb-2 pt-2">
+          <MinifiedEntitiesList
+            name="outcomes"
+            header="Outcomes"
+            oneItemHeader="Outcome"
+            count={outcomesCount}
+            FieldsContent={OutcomesContent}
+            HeaderContent={OutcomesHeaderLine}
+            onAdd={addNewOutcome}
+            onDelete={deleteOutcome}
+            syncErrors={syncErrors}
+            validate={validateOutcomes}
+            accordion
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FieldArray
+            name="documents"
+            label="Documents"
+            entity="PriorLearning"
+            classes={classes}
+            component={DocumentsRenderer}
+            xsGrid={12}
+            mdGrid={twoColumn ? 6 : 12}
+            lgGrid={twoColumn ? 4 : 12}
+            dispatch={dispatch}
+            form={form}
+            showConfirm={showConfirm}
+            rerenderOnEveryChange
+          />
+        </Grid>
       </Grid>
     </div>
   ) : null;

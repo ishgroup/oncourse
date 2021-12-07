@@ -45,7 +45,7 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.WaitingList
-import static ish.oncourse.server.messaging.MessageService.createMessagePerson
+import static ish.oncourse.server.messaging.MessageService.buildMessage
 import org.apache.commons.lang3.StringUtils
 
 
@@ -112,7 +112,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             messageDTO.createdOn = message.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.modifiedOn = message.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.creatorKey = message.creatorKey
-            messageDTO.sentToContactFullname = MessageMixin.getRecipientsString(message)
+            messageDTO.sentToContactFullname = message.getContact().getFullName()
             messageDTO.subject = message.emailSubject
             messageDTO.message = message.emailBody
             messageDTO.sms = message.smsText
@@ -469,7 +469,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                         message.createdBy = batchContext.localObject(user)
                         fillMessage(message)
 
-                        createMessagePerson(message, batchContext.localObject(recipient), template.type)
+                        buildMessage(message, batchContext.localObject(recipient), template.type)
                     }
                 }
             }
