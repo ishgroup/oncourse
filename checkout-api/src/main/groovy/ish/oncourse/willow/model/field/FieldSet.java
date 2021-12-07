@@ -12,7 +12,7 @@ public enum FieldSet {
   ENROLMENT("ENROLMENT"),
   
   WAITINGLIST("WAITINGLIST");
-  
+
   private String value;
 
   FieldSet(String value) {

@@ -6,29 +6,29 @@ export class ContactFieldsRequest {
   /**
    * Requested contact id
    */
-  contactId?: string;
+  contactId: string;
 
   /**
    * Requested classe's ids
    */
-  classIds?: string[];
+  classIds: string[];
 
   /**
    * Requested product's ids
    */
-  products?: ProductContainer[];
+  products: ProductContainer[];
 
   /**
    * Requested waiting list courses ids
    */
-  waitingCourseIds?: string[];
+  waitingCourseIds: string[];
 
   /**
    * Flag to show only mandatory fields
    */
-  mandatoryOnly?: boolean;
-  fieldSet?: FieldSet;
-  isPayer?: boolean;
-  isParent?: boolean;
+  mandatoryOnly: boolean;
+  fieldSet: FieldSet;
+  isPayer: boolean;
+  isParent: boolean;
 }
 

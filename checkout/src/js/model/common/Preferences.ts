@@ -1,4 +1,6 @@
+
 export class Preferences {
+
   /**
    * is corporate pass enabled preference
    */
@@ -15,12 +17,13 @@ export class Preferences {
   minAge?: number;
 
   /**
-   * Terms and conditions checkbox label
+   * Terms and conditions display label
    */
   termsLabel?: string;
 
   /**
-   * Terms and conditions link url
+   * Terms and conditions page url
    */
   termsUrl?: string;
 }
+

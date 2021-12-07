@@ -1,7 +1,7 @@
 
 export class VoucherPayment {
-  redeemVoucherId?: string;
   redeemVoucherProductId?: string;
+  redeemVoucherId?: string;
   name?: string;
   amount?: number;
 }

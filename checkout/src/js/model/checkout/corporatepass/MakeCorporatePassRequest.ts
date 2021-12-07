@@ -5,6 +5,5 @@ export class MakeCorporatePassRequest {
   agreementFlag?: boolean;
   corporatePassId?: string;
   reference?: string;
-  purchaseOrder?: string;
 }
 

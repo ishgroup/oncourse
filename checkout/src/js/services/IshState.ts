@@ -1,6 +1,9 @@
-import {CourseClassPrice, Course, Preferences, Promotion, CourseClass, Product, Contact, Discount} from "../model";
-import {CheckoutState} from "../enrol/reducers/State";
-import {WillowConfig} from "../configLoader";
+import {
+  CourseClassPrice, Course, Preferences, Promotion, CourseClass, Product, Contact
+} from '../model';
+import { CheckoutState } from '../enrol/reducers/State';
+import { WillowConfig } from '../configLoader';
+import { SuggestionResponse } from '../model/v2/suggestion/SuggestionResponse';
 
 export interface IshState {
   readonly form: any;
@@ -13,7 +16,7 @@ export interface IshState {
   readonly checkout: CheckoutState;
   readonly config: WillowConfig;
   readonly preferences: Preferences;
-
+  readonly suggestions: SuggestionsState;
 }
 
 export interface CartState {
@@ -32,6 +35,7 @@ export type CoursesState = Normalized<CourseClass>;
 export type WaitingCoursesState = Normalized<Course>;
 export type InactiveCoursesState = Normalized<Course>;
 export type ProductsState = Normalized<Product>;
+export type SuggestionsState = SuggestionResponse;
 
 /**
  * @deprecated we will use separate classes
@@ -45,29 +49,21 @@ export type WaitingCourseClassState = Normalized<WaitingCourseCart>;
 export type ReplaceCourseClassState = { replace: CourseClassCartState, replacement: CourseClassCartState };
 
 // --- Extend backend model
-export interface DiscountState extends Discount {
-}
 
-export interface CourseClassPriceState extends CourseClassPrice {
-}
+export type CourseClassPriceState = CourseClassPrice;
 
-export interface CourseClassCart extends CourseClass {
-}
-
+export type CourseClassCart = CourseClass;
 
 export interface ContactState extends Contact {
   parent?: Contact;
   warning?: string;
 }
 
-export interface ProductCart extends Product {
-}
+export type ProductCart = Product;
 
-export interface WaitingCourseCart extends Course {
-}
+export type WaitingCourseCart = Course;
 
-export interface PromotionCart extends Promotion {
-}
+export type PromotionCart = Promotion;
 
 export interface Normalized<V> {
   readonly entities: { [key: string]: V };

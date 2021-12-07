@@ -1,10 +1,12 @@
-import {CheckoutModel, ContactNode, Contact, CourseClass, Enrolment} from "../../../../js/model";
-import {CHANGE_PHASE} from "../../../../js/enrol/actions/Actions";
-import {Phase} from "../../../../js/enrol/reducers/State";
-import {ADD_CONTACT_NODE_TO_STATE} from "../../../../js/enrol/containers/summary/actions/Actions";
-import {ProcessCheckoutModel} from "../../../../js/enrol/epics/EpicProceedToPayment";
-import {MockDB} from "../../../../dev/mocks/mocks/MockDB";
-import {mockAmount} from "../../../../dev/mocks/mocks/MockFunctions";
+import {
+  CheckoutModel, ContactNode, Contact, CourseClass, Enrolment
+} from '../../../../js/model';
+import { CHANGE_PHASE } from '../../../../js/enrol/actions/Actions';
+import { Phase } from '../../../../js/enrol/reducers/State';
+import { ADD_CONTACT_NODE_TO_STATE } from '../../../../js/enrol/containers/summary/actions/Actions';
+import { ProcessCheckoutModel } from '../../../../js/enrol/epics/EpicProceedToPayment';
+import { MockDB } from '../../../../dev/mocks/mocks/MockDB';
+import { mockAmount } from '../../../../dev/mocks/mocks/MockFunctions';
 
 const db: MockDB = new MockDB();
 const contact1: Contact = db.getContactByIndex(0);
@@ -17,6 +19,9 @@ const enrolment12: Enrolment = db.createEnrolment(contact1.id, courseClass2.id);
 
 const node1: ContactNode = {
   contactId: contact1.id,
+  contactLastName: 'Test',
+  contactFirstName: 'Test',
+  contactEmail: 'test@test.test',
   enrolments: [enrolment11, enrolment12],
   applications: [],
   articles: [],
@@ -30,7 +35,7 @@ it('test CheckoutModel processing', () => {
   model.contactNodes = [];
   model.error = {
     code: 0,
-    message: "Common Error Message",
+    message: 'Common Error Message',
   };
   model.amount = mockAmount();
 

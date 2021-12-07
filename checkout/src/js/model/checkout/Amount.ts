@@ -23,7 +23,7 @@ export class Amount {
   minPayNow?: number;
 
   /**
-   * aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
+   * actual amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
    */
   payNow?: number;
 
@@ -38,17 +38,12 @@ export class Amount {
   voucherPayments?: VoucherPayment[];
 
   /**
-   * voucher product payments list - appears if redeem any kind of vouchers on purchase
-   */
-  voucherProductPayments?: VoucherPayment[];
-
-  /**
    * credit amount that will be used to pay for current invoice/invoices (students credit notes)
    */
   credit?: number;
 
   /**
-   * amount of CC payment
+   * amount paid by card
    */
   ccPayment?: number;
 

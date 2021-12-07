@@ -13,6 +13,7 @@ public class Product  {
     private Type type = null;
     private Boolean allowRemove = null;
     private String relatedClassId = null;
+    private Double price = null;
 
     /**
      * Internal Unique identifier of product
@@ -167,6 +168,23 @@ public class Product  {
       return this;
     }
 
+    /**
+     * Product price
+     * @return price
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+       this.price = price;
+    }
+
+    public Product price(Double price) {
+      this.price = price;
+      return this;
+    }
+
 
     @Override
     public String toString() {
@@ -182,6 +200,7 @@ public class Product  {
       sb.append("    type: ").append(toIndentedString(type)).append("\n");
       sb.append("    allowRemove: ").append(toIndentedString(allowRemove)).append("\n");
       sb.append("    relatedClassId: ").append(toIndentedString(relatedClassId)).append("\n");
+      sb.append("    price: ").append(toIndentedString(price)).append("\n");
       sb.append("}");
       return sb.toString();
     }

@@ -109,6 +109,7 @@ const start = store => {
 
   const react = new Bootstrap(store)
     .register(HTMLMarkers.CHECKOUT)
+    .register(HTMLMarkers.SUGGESTIONS)
     .register(HTMLMarkers.FEES)
     .register(HTMLMarkers.ENROL_BUTTON)
     .register(HTMLMarkers.BUY_BUTTON)

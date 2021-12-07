@@ -34,5 +34,10 @@ export class Product {
   type?: Type;
   allowRemove?: boolean;
   relatedClassId?: string;
+
+  /**
+   * Product price
+   */
+  price?: number;
 }
 

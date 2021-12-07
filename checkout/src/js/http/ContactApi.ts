@@ -3,6 +3,8 @@ import {ConcessionsAndMemberships} from "../model/checkout/ConcessionsAndMembers
 import {CreateParentChildrenRequest} from "../model/checkout/CreateParentChildrenRequest";
 import {Concession} from "../model/checkout/concession/Concession";
 import {ConcessionType} from "../model/checkout/concession/ConcessionType";
+import {CommonError} from "../model/common/CommonError";
+import {ValidationError} from "../model/common/ValidationError";
 import {ContactFields} from "../model/field/ContactFields";
 import {ContactFieldsRequest} from "../model/field/ContactFieldsRequest";
 import {Contact} from "../model/web/Contact";

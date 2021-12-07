@@ -5,11 +5,11 @@ export class ContactFields {
   /**
    * Contact Id
    */
-  contactId?: string;
+  contactId: string;
 
   /**
    * Related field headings
    */
-  headings?: FieldHeading[];
+  headings: FieldHeading[];
 }
 

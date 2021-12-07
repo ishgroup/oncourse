@@ -86,7 +86,7 @@ public class Amount  {
     }
 
     /**
-     * aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
+     * actual amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
      * @return payNow
      */
     public Double getPayNow() {
@@ -159,7 +159,7 @@ public class Amount  {
     }
 
     /**
-     * amount of CC payment
+     * amount paid by card
      * @return ccPayment
      */
     public Double getCcPayment() {

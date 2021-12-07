@@ -10,10 +10,4 @@ public class Cvv extends ISHCommon {
     @Inject
     private PreferenceController preferenceController;
 
-    @Property
-    private boolean isAmexEnabled;
-
-    void beginRender() {
-        isAmexEnabled = preferenceController.getServicesAmexEnabled();
-    }
 }

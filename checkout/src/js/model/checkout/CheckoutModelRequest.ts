@@ -9,7 +9,7 @@ export class CheckoutModelRequest {
   applyCredit?: boolean;
 
   /**
-   * aclyal amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
+   * actual amount allocated for invoice/invoices (equalse subTotal if payment plan invoices not presented)
    */
   payNow?: number;
   corporatePassId?: string;

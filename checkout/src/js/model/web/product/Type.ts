@@ -1,5 +1,5 @@
 
-import {createStringEnum} from "../../../common/utils/EnumUtils";
+import {createStringEnum} from "@EnumUtils";
 
 export const Type = createStringEnum([
   'ARTICLE',
