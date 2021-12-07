@@ -108,15 +108,6 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
       <Grid item {...gridItemProps}>
         <FormField
-          type="text"
-          name="code"
-          label="SKU"
-          required
-        />
-      </Grid>
-
-      <Grid item {...gridItemProps}>
-        <FormField
           type="select"
           name="incomeAccountId"
           label="Income account"

@@ -56,6 +56,10 @@ const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
       return LeadService.bulkChange(diff);
     case "AbstractInvoice":
       return InvoiceService.bulkChange(diff);
+    case "ArticleProduct":
+    case "MembershipProduct":
+    case "ProductItem":
+    case "VoucherProduct":
     default: {
       // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject(`No bulk edit endpoint was found for ${entity}`);

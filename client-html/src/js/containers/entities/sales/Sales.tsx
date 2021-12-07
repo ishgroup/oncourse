@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { ProductItem, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import SendMessageEditView from "../messages/components/SendMessageEditView";
-import { getSale, updateSale } from "./actions";
+import { getSale, getSalesManuTags, updateSale } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup } from "../../../model/common/ListView";
 import SalesEditView from "./components/SalesEditView";
@@ -19,6 +19,7 @@ import { getPlainTaxes } from "../taxes/actions";
 import { Dispatch } from "redux";
 import { getEntityTags, getListTags } from "../../tags/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface SalesProps {
   getSaleRecord?: () => void;
@@ -163,7 +164,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getAccounts: () => getPlainAccounts(dispatch),
   getTaxes: () => dispatch(getPlainTaxes()),
   getTags: () => {
-    dispatch(getListTags("ProductItem"));
+    dispatch(getSalesManuTags());
     dispatch(getEntityTags("Article"));
     dispatch(getEntityTags("Voucher"));
     dispatch(getEntityTags("Membership"));

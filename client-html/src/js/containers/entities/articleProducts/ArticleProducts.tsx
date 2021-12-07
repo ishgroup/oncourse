@@ -24,6 +24,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface ArticleProductsProps {
   getArticleProductRecord?: () => void;
@@ -177,6 +178,7 @@ const ArticleProducts: React.FC<ArticleProductsProps> = props => {
           hideTitle: true
         }}
         EditViewContent={ArticleProductEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getArticleProductRecord}
         rootEntity="ArticleProduct"
         aqlEntity="Product"

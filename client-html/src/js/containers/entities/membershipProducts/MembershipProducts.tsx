@@ -25,6 +25,7 @@ import { getDataCollectionRules, getEntityRelationTypes } from "../../preference
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 import { getListTags } from "../../tags/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface MembershipProductsProps {
   getMembershipProductRecord?: () => void;
@@ -176,6 +177,7 @@ const MembershipProducts: React.FC<MembershipProductsProps> = props => {
           hideTitle: true
         }}
         EditViewContent={MembershipProductEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getMembershipProductRecord}
         rootEntity="MembershipProduct"
         aqlEntity="Product"

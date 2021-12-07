@@ -26,6 +26,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import { getEntityTags, getListTags } from "../../tags/actions";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 
 interface VoucherProductsProps {
   getVoucherProductRecord?: () => void;
@@ -157,6 +158,7 @@ const VoucherProducts: React.FC<VoucherProductsProps> = props => {
           hideTitle: true
         }}
         EditViewContent={VoucherProductEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
         getEditRecord={getVoucherProductRecord}
         rootEntity="VoucherProduct"
         aqlEntity="Product"
