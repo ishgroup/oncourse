@@ -8,10 +8,10 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
         * def ishPathPlain = 'list/plain'
-        
 
 
 
+    @ignore
     Scenario: (+) Upload document by admin
 
 #       <-----> Upload private document:
@@ -69,7 +69,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         And match $.shared == true
 
 
-
+    @ignore
     Scenario: (+) Upload private document by notadmin with rights
 
 #       <--->  Login as notadmin
@@ -104,7 +104,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         And match $.shared == true
 
 
-
+    @ignore
     Scenario: (+) Upload public document by notadmin with rights
 
 #       <--->  Login as notadmin
@@ -139,7 +139,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
         And match $.shared == true
 
 
-
+    @ignore
     Scenario: (-) Upload public document by notadmin without rights
 
 #       <--->  Login as notadmin

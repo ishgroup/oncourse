@@ -226,6 +226,25 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             />
           </div>
         </Grid>
+   
+        {timezones && (
+          <Grid item xs={layoutArray[2].xs} className="mb-2">
+            <FormField
+              type="searchSelect"
+              name="timezone"
+              label="Default timezone"
+              items={timezones}
+              labelAdornment={(
+                <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                  <IconButton classes={{ root: "inputAdornmentButton" }}>
+                    <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
+                  </IconButton>
+                </Tooltip>
+                )}
+              validate={validateSingleMandatoryField}
+            />
+          </Grid>
+        )}
 
         <Collapse in={!values.isVirtual}>
           <Grid container columnSpacing={3}>
@@ -260,24 +279,6 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                     onBlur={this.updateLatLong}
                     required={!values.isVirtual}
                     items={countries}
-                  />
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                {timezones && (
-                  <FormField
-                    type="searchSelect"
-                    name="timezone"
-                    label="Default timezone"
-                    items={timezones}
-                    labelAdornment={(
-                      <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
-                        <IconButton classes={{ root: "inputAdornmentButton" }}>
-                          <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                    validate={validateSingleMandatoryField}
                   />
                 )}
               </Grid>

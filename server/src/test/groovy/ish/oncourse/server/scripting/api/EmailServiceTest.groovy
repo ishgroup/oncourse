@@ -10,7 +10,7 @@ import ish.common.types.MessageType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.Message
-import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.scripting.ScriptParameters
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -48,9 +48,8 @@ class EmailServiceTest extends TestWithDatabase {
         Assertions.assertEquals("Hello John Test!", m.getEmailBody())
         Assertions.assertEquals("Hello <h3>John Test!</h3>", m.getEmailHtmlBody())
 
-        Assertions.assertEquals(1, m.getMessagePersons().size())
-        Assertions.assertEquals(contact.getObjectId(), m.getMessagePersons().get(0).getContact().getObjectId())
-        Assertions.assertEquals(MessageType.EMAIL, m.getMessagePersons().get(0).getType())
+        Assertions.assertEquals(contact.getObjectId(), m.getContact().getObjectId())
+        Assertions.assertEquals(MessageType.EMAIL, m.getType())
     }
 
     /**
@@ -78,14 +77,14 @@ class EmailServiceTest extends TestWithDatabase {
         // 1) without creatorKey and collision rules
         //expected: all contacts will get a message. Count of message_Person records will become 2.
         emailService.createEmail(spec)
-        Assertions.assertEquals(2, ObjectSelect.query(MessagePerson.class).selectCount(context))
+        Assertions.assertEquals(2, ObjectSelect.query(Message.class).selectCount(context))
 
 
         // 2) without creationKey and with collision drop/error
         spec.keyCollision("drop")
 
         emailService.createEmail(spec)
-        Assertions.assertEquals(4, ObjectSelect.query(MessagePerson.class).selectCount(context))
+        Assertions.assertEquals(4, ObjectSelect.query(Message.class).selectCount(context))
 
 
         // 3) trying to enter NULL creatorKey
@@ -99,13 +98,13 @@ class EmailServiceTest extends TestWithDatabase {
         //expected: all contacts will get a message, cause nobody have the message with creatorKey. Count of message_Person records will become 6.
         spec.key("testKey")
         emailService.createEmail(spec)
-        Assertions.assertEquals(6, ObjectSelect.query(MessagePerson.class).selectCount(context))
+        Assertions.assertEquals(6, ObjectSelect.query(Message.class).selectCount(context))
 
 
         // 5) the same creatorKey and collision
         //expected: all contacts already have such message (same creatorKey), nobody will get this message. Count of message_Person records will stay 6.
         emailService.createEmail(spec)
-        Assertions.assertEquals(6, ObjectSelect.query(MessagePerson.class).selectCount(context))
+        Assertions.assertEquals(6, ObjectSelect.query(Message.class).selectCount(context))
 
 
         // 6) with the same creatorKey and collision, written in wrong case ('Drop')
@@ -126,7 +125,7 @@ class EmailServiceTest extends TestWithDatabase {
         //expected: all contacts already have such message (same creatorKey), nobody will get this message. Audit records will be created (reason - 'error' rule) for every contact. Count of message_Person records will stay 6.
         spec.keyCollision("error")
         emailService.createEmail(spec)
-        Assertions.assertEquals(6, ObjectSelect.query(MessagePerson.class).selectCount(context))
+        Assertions.assertEquals(6, ObjectSelect.query(Message.class).selectCount(context))
 
 
         // 9) with unique creationKey and error collision
@@ -134,6 +133,6 @@ class EmailServiceTest extends TestWithDatabase {
         spec.key("newTestKey")
         spec.keyCollision("error")
         emailService.createEmail(spec)
-        Assertions.assertEquals(8, ObjectSelect.query(MessagePerson.class).selectCount(context))
+        Assertions.assertEquals(8, ObjectSelect.query(Message.class).selectCount(context))
     }
 }

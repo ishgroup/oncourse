@@ -7,7 +7,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         * def ishPath = 'list/entity/contact/merge'
         * def ishPathContact = 'list/entity/contact'
         * def ishPathLogin = 'login'
-        
+
 
 
 
@@ -36,7 +36,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             {"id":15,"countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Unemployed seeking full time","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[{"id":1001,"number":"2","type":{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2024-10-01","created":"#ignore","modified":"#ignore"},{"id":1002,"number":"5","type":{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2019-09-12","created":"#ignore","modified":"#ignore"}]},
         "tutor":
             {
-            "defaultPayType":"Employee",    
+            "defaultPayType":"Employee",
             "id":7,
             "dateFinished":"2026-10-07",
             "dateStarted":"2019-08-08",
@@ -100,9 +100,9 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1006,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1007,"createdOn":"#ignore","sentOn":"#ignore","subject":"b","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1013,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"}
+            {"messageId":1018,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"},
+            {"messageId":1019,"createdOn":"#ignore","sentOn":"#ignore","subject":"b","creatorKey":null,"status":"#ignore","type":"Email"},
+            {"messageId":1025,"createdOn":"#ignore","sentOn":"#ignore","subject":"a","creatorKey":null,"status":"#ignore","type":"Email"}
             ],
         "rules":[{"id":"1001","description":"bbbbb-bb","startDate":"2019-09-20","endDate":"2019-10-01","startDateTime":null,"endDateTime":null,"repeat":"year","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]
         }
@@ -172,7 +172,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             [
                 {"redeemableByName":null,"productId":1008,"payments":[],"redeemableById":null,"purchasePrice":150.0,"validFrom":"2019-09-21","productName":"Membership for mergeB","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1013,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired","customFields":{}},
                 {"redeemableByName":null,"productId":1007,"payments":[],"redeemableById":null,"purchasePrice":60.0,"validFrom":"2019-09-21","productName":"Membership for mergeA","purchasedByName":"studentC mergeC","purchasedById":23,"valueRemaining":null,"expiresOn":"2020-01-01","id":1014,"purchasedOn":"2019-09-21","productType":"Membership","voucherCode":null,"status":"Expired","customFields":{}}
-            ], 
+            ],
         "profilePicture":null,
         "relations":
             [
@@ -188,7 +188,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "rules":[]
         }
         """
-        
+
         And match $.financialData contains only
         """
         [
@@ -198,8 +198,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         {"date":"2019-09-20","amount":231.0,"balance":0.0,"referenceNumber":null,"relatedEntityId":21,"description":"Cash payment payment in (office)","owing":null,"type":"PaymentIn","createdOn":"#ignore","status":"Success"}
         ]
         """
-        
-        
+
+
         Given path ishPathContact + '/26'
         When method GET
         Then status 400
@@ -272,8 +272,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1011,"createdOn":"#ignore","sentOn":"#ignore","subject":"co1","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1012,"createdOn":"#ignore","sentOn":"#ignore","subject":"co2","creatorKey":null,"status":"#ignore","type":"Email"}
+            {"messageId":1023,"createdOn":"#ignore","sentOn":"#ignore","subject":"co1","creatorKey":null,"status":"#ignore","type":"Email"},
+            {"messageId":1024,"createdOn":"#ignore","sentOn":"#ignore","subject":"co2","creatorKey":null,"status":"#ignore","type":"Email"}
             ],
         "rules":[{"id":"1003","description":"Co2","startDate":"2019-09-20","endDate":"2019-09-20","startDateTime":null,"endDateTime":null,"repeat":"month","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2019-08-01","created":"#ignore","modified":"#ignore"}]
         }
@@ -291,7 +291,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
 
-        
+
 #       <--->
         * def mergeRequest = {}
 
@@ -308,7 +308,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsDelete'}
 
-        
+
 #       <--->
 
         * def mergeRequest = {"contactA":"24","contactB":"25","data":{"Contact.abn":"B","Contact.birthDate":"B","Contact.email":"B","Contact.fax":"B","Contact.firstName":"B","Contact.homePhone":"B","Contact.honorific":"B","Contact.invoiceTerms":"B","Contact.isMale":"B","Contact.lastName":"B","Contact.message":"B","Contact.mobilePhone":"B","Contact.postcode":"B","Contact.state":"B","Contact.street":"B","Contact.suburb":"B","Contact.tfn":"B","Contact.title":"B","Contact.workPhone":"B","Contact.taxOverride":"B","Contact.country":"B","tags":"B","customField.cf2":"B","customField.cf1":"B","Tutor.dateFinished":"B","Tutor.dateStarted":"B","Tutor.payrollRef":"B","Tutor.resume":"B","Tutor.wwChildrenCheckedOn":"B","Tutor.wwChildrenExpiry":"B","Tutor.wwChildrenRef":"B","Tutor.wwChildrenStatus":"B"}}
@@ -390,9 +390,9 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "modifiedOn":"#ignore",
         "messages":
             [
-            {"messageId":1008,"createdOn":"#ignore","sentOn":"#ignore","subject":"ta","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1009,"createdOn":"#ignore","sentOn":"#ignore","subject":"tB","creatorKey":null,"status":"#ignore","type":"Email"},
-            {"messageId":1010,"createdOn":"#ignore","sentOn":"#ignore","subject":"tb2","creatorKey":null,"status":"#ignore","type":"Email"}
+            {"messageId":1020,"createdOn":"#ignore","sentOn":"#ignore","subject":"ta","creatorKey":null,"status":"#ignore","type":"Email"},
+            {"messageId":1021,"createdOn":"#ignore","sentOn":"#ignore","subject":"tB","creatorKey":null,"status":"#ignore","type":"Email"},
+            {"messageId":1022,"createdOn":"#ignore","sentOn":"#ignore","subject":"tb2","creatorKey":null,"status":"#ignore","type":"Email"}
             ],
         "rules":[{"id":"1002","description":"tA","startDate":null,"endDate":null,"startDateTime":"#ignore","endDateTime":"#ignore","repeat":"week","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}]}
         }

@@ -1,0 +1,13 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 107-1
+      author: dmitrij
+      preConditions:
+        - onFail: HALT
+        - and:
+            - tableExists:
+                tableName: BinaryData
+      changes:
+        - dropTable:
+            tableName: BinaryData

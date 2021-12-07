@@ -61,7 +61,6 @@ Feature: Main feature for all POST requests with path 'access'
             | 'Print'               | '/a/v1/list/export?entityName=Site'        | 'POST'   | {"hasAccess":true} |
             | 'Document'            | '/a/v1/list/entity/document/1'             | 'GET'    | {"hasAccess":true} |
             | 'Document'            | '/a/v1/list/entity/document'               | 'POST'   | {"hasAccess":true} |
-            | 'Document'            | '/a/v1/list/entity/document/export/1'      | 'GET'    | {"hasAccess":true} |
             | 'Document'            | '/a/v1/list/entity/document/search'        | 'POST'   | {"hasAccess":true} |
             | 'Payslip'             | '/a/v1/list/entity/payslip/1'              | 'GET'    | {"hasAccess":true} |
             | 'Payslip'             | '/a/v1/list/entity/payslip'                | 'POST'   | {"hasAccess":true} |
@@ -225,7 +224,6 @@ Feature: Main feature for all POST requests with path 'access'
             | 'Print'               | '/a/v1/list/export?entityName=Site'        | 'POST'   | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/1'             | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document'               | 'POST'   | {"hasAccess":true}  |
-            | 'Document'            | '/a/v1/list/entity/document/export/1'      | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/search'        | 'POST'   | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip/1'              | 'GET'    | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip'                | 'POST'   | {"hasAccess":true}  |
@@ -375,7 +373,6 @@ Feature: Main feature for all POST requests with path 'access'
             | 'Print'               | '/a/v1/list/export?entityName=Site'       | 'POST'   | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/1'            | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document'              | 'POST'   | {"hasAccess":false} |
-            | 'Document'            | '/a/v1/list/entity/document/export/1'     | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/search'       | 'POST'   | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip/1'             | 'GET'    | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip'               | 'POST'   | {"hasAccess":false} |
@@ -525,7 +522,6 @@ Feature: Main feature for all POST requests with path 'access'
             | 'Print'               | '/a/v1/list/export?entityName=Site'       | 'POST'   | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/1'            | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document'              | 'POST'   | {"hasAccess":false} |
-            | 'Document'            | '/a/v1/list/entity/document/export/1'     | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/search'       | 'POST'   | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip/1'             | 'GET'    | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip'               | 'POST'   | {"hasAccess":false} |
@@ -675,7 +671,6 @@ Feature: Main feature for all POST requests with path 'access'
             | 'Print'               | '/a/v1/list/export?entityName=Site'       | 'POST'   | {"hasAccess":false} |
             | 'Document'            | '/a/v1/list/entity/document/1'            | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document'              | 'POST'   | {"hasAccess":false} |
-            | 'Document'            | '/a/v1/list/entity/document/export/1'     | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/search'       | 'POST'   | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip/1'             | 'GET'    | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip'               | 'POST'   | {"hasAccess":false} |
@@ -827,7 +822,6 @@ Feature: Main feature for all POST requests with path 'access'
             | 'Print'               | '/a/v1/list/export?entityName=Site'       | 'POST'   | {"hasAccess":false} |
             | 'Document'            | '/a/v1/list/entity/document/1'            | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document'              | 'POST'   | {"hasAccess":false} |
-            | 'Document'            | '/a/v1/list/entity/document/export/1'     | 'GET'    | {"hasAccess":true}  |
             | 'Document'            | '/a/v1/list/entity/document/search'       | 'POST'   | {"hasAccess":true}  |
             | 'Payslip'             | '/a/v1/list/entity/payslip/1'             | 'GET'    | {"hasAccess":false} |
             | 'Payslip'             | '/a/v1/list/entity/payslip'               | 'POST'   | {"hasAccess":false} |
