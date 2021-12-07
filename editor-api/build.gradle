@@ -60,3 +60,9 @@ publishing {
         }
     }
 }
+
+task start(type: JavaExec) {
+    main = 'ish.oncourse.willow.editor.EditorApp'
+    classpath = sourceSets.main.runtimeClasspath
+    args  = []
+}
