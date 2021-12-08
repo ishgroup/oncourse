@@ -6,31 +6,24 @@
 import React from "react";
 import { change } from "redux-form";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
-import ListItemText from "@material-ui/core/ListItemText";
-import InputLabel from "@material-ui/core/InputLabel";
-import { Attachment } from "@material-ui/icons";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
+import ButtonBase from "@mui/material/ButtonBase";
+import Typography from "@mui/material/Typography";
+import InputLabel from "@mui/material/InputLabel";
+import { Attachment } from "@mui/icons-material";
 
 const styles = theme => createStyles({
-  textField: {
-    paddingBottom: "13px",
-    paddingLeft: "0",
-    overflow: "hidden",
-    display: "flex"
-  },
   inlineTextField: {
     verticalAlign: "baseline"
   },
   bottomMargin: {
-    marginBottom: `${theme.spacing(1) + 1}px`
+    marginBottom: `${theme.spacing(1) + 1}`
   },
   topMargin: {
     marginTop: theme.spacing(1),
@@ -73,9 +66,6 @@ const styles = theme => createStyles({
   readonly: {
     pointerEvents: "none"
   },
-  textFieldLeftMargin: {
-    marginLeft: theme.spacing(1)
-  },
   rightPadding: {
     paddingRight: theme.spacing(2)
   },
@@ -92,11 +82,6 @@ const styles = theme => createStyles({
     maxWidth: "100%",
     "&$labelShrink": {
       maxWidth: "calc(100% * 1.4)"
-    }
-  },
-  labelTopZeroOffset: {
-    "& + $textFieldBorderModified": {
-      marginTop: 0
     }
   },
   labelShrink: {},
@@ -134,11 +119,6 @@ const styles = theme => createStyles({
     position: "absolute",
     right: "-14px",
     bottom: "4px"
-  },
-  textFieldBorderModified: {
-    "&:after": {
-      borderBottomColor: theme.palette.primary.main
-    }
   },
   hideArrows: {
     "&::-webkit-outer-spin-button": {
@@ -521,7 +501,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
         <div
           className={clsx({
             [classes.hiddenContainer]: isEditing || invalid,
-            [classes.textField]: listSpacing && formatting !== "inline",
             [classes.rightAligned]: rightAligned
           })}
         >
@@ -540,84 +519,6 @@ export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
                   </span>
                 )}
               </Typography>
-            )}
-
-            {formatting === "primary" && (
-              <>
-                <ListItemText
-                  classes={{
-                    root: `${classes.viewMode} ${disabled ? classes.readonly : ""}`,
-                    primary: "d-flex"
-                  }}
-                  primary={(
-                    <ButtonBase
-                      classes={{
-                        root: classes.valueContainer
-                      }}
-                      onFocus={e => this.onEditButtonFocus(e)}
-                      onClick={e => this.onEditButtonFocus(e)}
-                      className={clsx("hoverIconContainer", fieldClasses.text)}
-                      component="div"
-                    >
-                      <span
-                        ref={this.setContainerNode}
-                        className={clsx(classes.editable, {
-                          [classes.rightAligned]: rightAligned
-                        })}
-                      >
-                        {editableComponent || this.getValue()}
-                        {editIcon}
-                      </span>
-                    </ButtonBase>
-                  )}
-                />
-              </>
-            )}
-
-            {formatting === "secondary" && (
-              <ListItemText
-                classes={{
-                  root: `${classes.viewMode}`,
-                  secondary: "d-flex"
-                }}
-                secondary={(
-                  <ButtonBase
-                    disabled={disabled}
-                    classes={{
-                      root: classes.valueContainer
-                    }}
-                    onFocus={e => this.onEditButtonFocus(e)}
-                    onClick={e => this.onEditButtonFocus(e)}
-                    component="span"
-                    className={clsx("hoverIconContainer", fieldClasses.text)}
-                  >
-                    <span
-                      ref={this.setContainerNode}
-                      className={clsx(classes.editable, {
-                        [classes.rightAligned]: rightAligned
-                      })}
-                    >
-                      {editableComponent || this.getValue()}
-                      {editIcon}
-                    </span>
-                  </ButtonBase>
-                )}
-              />
-            )}
-
-            {formatting === "custom" && (
-              <ButtonBase
-                component="div"
-                onFocus={e => this.onEditButtonFocus(e)}
-                onClick={e => this.onEditButtonFocus(e)}
-                className={clsx(classes.editable, "hoverIconContainer", classes.fitWidth, fieldClasses.text, {
-                  [classes.rightAligned]: rightAligned,
-                  [classes.readonly]: disabled
-                })}
-              >
-                {editableComponent || this.getValue()}
-                {editIcon}
-              </ButtonBase>
             )}
 
             {formatting === "inline" && (

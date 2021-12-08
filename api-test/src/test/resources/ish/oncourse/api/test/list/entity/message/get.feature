@@ -54,7 +54,7 @@ Feature: Main feature for all GET requests with path 'list/entity/message'
         "creatorKey":null,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "sentToContactFullname":"stud5 ContraInvoice5 and 2 others"
+        "sentToContactFullname":"stud5 ContraInvoice5"
         }
         """
 
@@ -83,7 +83,7 @@ Feature: Main feature for all GET requests with path 'list/entity/message'
         "creatorKey":null,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "sentToContactFullname":"stud6 ContraInvoice6 and 2 others"
+        "sentToContactFullname":"stud6 ContraInvoice6"
         }
         """
 

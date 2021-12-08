@@ -7,9 +7,10 @@ import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { darken, createStyles, withStyles } from "@material-ui/core/styles";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import Divider from "@material-ui/core/Divider";
+import { createStyles, withStyles } from "@mui/styles";
+import { darken } from "@mui/material/styles";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Divider from "@mui/material/Divider";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import { getDashboardCategories, getDashboardSearch, getFavoriteScripts } from "../../../../containers/dashboard/actions";
@@ -24,11 +25,19 @@ import Favorites from "./components/favorites/Favorites";
 import { getResultId } from "./utils";
 import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import onCourseLogoDark from "../../../../../images/onCourseLogoDark.png";
+import onCourseLogoLight from "../../../../../images/onCourseLogoLight.png";
+import onCourseLogoChristmas from "../../../../../images/onCourseLogoChristmas.png";
+import { LSGetItem } from "../../../utils/storage";
+import { APPLICATION_THEME_STORAGE_NAME } from "../../../../constants/Config";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
 const styles = (theme: AppTheme) =>
   createStyles({
+    drawerRoot: {
+      zIndex: theme.zIndex.modal + 2,
+    },
     drawerPaper: {
       overflowX: "hidden"
     },
@@ -39,7 +48,7 @@ const styles = (theme: AppTheme) =>
     },
     appBar: {
       backgroundColor:
-        theme.palette.type === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4)
+        theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4)
     },
     searchInput: {
       backgroundColor: theme.palette.background.default,
@@ -50,20 +59,23 @@ const styles = (theme: AppTheme) =>
       padding: "0 16px"
     },
     searchResultsRoot: {
-      padding: `${theme.spacing(2)}px ${theme.spacing(2)}px ${theme.spacing(2)}px 125px`,
+      padding: `${theme.spacing(2)} ${theme.spacing(2)} ${theme.spacing(2)} 125px`,
       transition: "all 0.5s ease-in"
     },
     favoritesTopBar: {
       background: "none"
     },
     toolbar: {
-      ...theme.mixins.toolbar
+      ...theme.mixins.toolbar,
+      display: "flex",
+      alignItems: "center"
     },
     searchResultsWrapper: {
       overflowY: "auto",
       maxHeight: "calc(100vh - 64px - 60px)",
       transition: "all 0.5s ease-in"
-    }
+    },
+    logo: { height: "36px", width: "auto" }
   });
 
 interface Props {
@@ -85,6 +97,7 @@ interface Props {
   getScriptsPermissions: any;
   scripts: any;
   hasScriptsPermissions: any;
+  theme?: AppTheme;
 }
 
 const SwipeableSidebar: React.FC<Props> = props => {
@@ -106,7 +119,8 @@ const SwipeableSidebar: React.FC<Props> = props => {
     categories,
     getScriptsPermissions,
     scripts,
-    hasScriptsPermissions
+    hasScriptsPermissions,
+    theme
   } = props;
 
   const [controlResults, setControlResults] = React.useState([]);
@@ -306,19 +320,24 @@ const SwipeableSidebar: React.FC<Props> = props => {
   }, [isFormDirty, resetEditView]);
 
   return (
-    <>
-      <SwipeableDrawer
-        variant={variant}
-        open={opened}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-        classes={{
-          paper: classes.drawerPaper
+    <SwipeableDrawer
+      variant={variant}
+      open={opened}
+      onClose={toggleDrawer(false)}
+      onOpen={toggleDrawer(true)}
+      classes={{
+        paper: classes.drawerPaper,
+          root: classes.drawerRoot,
         }}
       >
         <div className={classes.drawerWidth}>
           <div className={clsx("pl-2", classes.toolbar)}>
             <HamburgerMenu variant={variant} form={form} />
+            <img
+              src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
+              className={classes.logo}
+              alt="Logo"
+            />
           </div>
           <UserSearch getSearchResults={getSearchResults} />
           <div>
@@ -351,7 +370,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
           </div>
         </div>
       </SwipeableDrawer>
-    </>
+
   );
 };
 
@@ -377,4 +396,4 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles)(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));

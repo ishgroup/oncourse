@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import { DataResponse, TableModel } from "@api/model";
 import { Dispatch } from "redux";
-import { createStyles, withStyles } from "@material-ui/core";
+import { createStyles, withStyles } from "@mui/styles";
 import { MenuTag } from "../../../../../../model/tags";
 import ListTagGroup from "./ListTagGroup";
 import { State } from "../../../../../../reducers/state";

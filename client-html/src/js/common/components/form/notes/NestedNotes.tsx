@@ -4,20 +4,20 @@
  */
 
 import React, { useCallback, useState } from "react";
-import { Grid, withStyles } from "@material-ui/core";
+import { Grid } from "@mui/material";
+import { withStyles } from "@mui/styles";
 import { Dispatch } from "redux";
 import {
   arrayInsert, change, FieldArray
 } from "redux-form";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
 import { Note } from "@api/model";
 import { connect } from "react-redux";
 import styles from "./styles";
 import { showConfirm } from "../../../actions";
 import NotesRenderer from "./components/NotesRenderer";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import AddButton from "../../icons/AddButton";
 
 interface Props {
   classes?: any;
@@ -77,7 +77,7 @@ const NestedNotes = React.memo<Props>(
       }, [isNew, form, rootEntity, values.notes, values.id]);
 
     return (
-      <Grid container className={clsx(classes.notesSection, className)} alignContent="flex-start">
+      <Grid container columnSpacing={3} className={clsx(classes.notesSection, className)} alignContent="flex-start">
         <Grid item xs={12}>
           <div className={clsx("centeredFlex", { "pl-3": !leftOffset })}>
             <div className="heading">
@@ -86,9 +86,7 @@ const NestedNotes = React.memo<Props>(
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <IconButton onClick={addNote}>
-              <AddCircle className="addButtonColor" />
-            </IconButton>
+            <AddButton onClick={addNote} />
           </div>
         </Grid>
 

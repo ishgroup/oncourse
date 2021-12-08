@@ -3,17 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Dialog } from "@material-ui/core";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Typography from "@material-ui/core/Typography";
+import {
+ Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography 
+} from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { getFormInitialValues, getFormValues, initialize } from "redux-form";
-
 import { format } from "date-fns";
 import {
   Account,
@@ -27,7 +23,7 @@ import {
   TableModel
 } from "@api/model";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import Button from "../../../common/components/buttons/Button";
+import Button from "@mui/material/Button";
 import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -50,7 +46,9 @@ import SendMessageEditView from "../messages/components/SendMessageEditView";
 import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
-import { createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass } from "./actions";
+import {
+ createCourseClass, deleteCourseClass, getCourseClass, getCourseClassTags, updateCourseClass 
+} from "./actions";
 import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
@@ -187,7 +185,6 @@ const Initial: CourseClassExtended = {
   tutors: [],
   budget: [],
   studentAttendance: [],
-  tutorAttendance: [],
   notes: [],
   assessments: [],
   isTraineeship: false,
@@ -283,7 +280,6 @@ const preformatBeforeSubmit = (value: CourseClassExtended): Course => {
   delete submitted.sessions;
   delete submitted.budget;
   delete submitted.studentAttendance;
-  delete submitted.tutorAttendance;
   delete submitted.notes;
   delete submitted.assessments;
   delete submitted.trainingPlan;
@@ -657,7 +653,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             "assessments[].contactIds",
             "assessments[].submissions"
           ],
-          hideFullScreenAppBar: true,
+          hideTitle: true,
           enableReinitialize: true,
           keepDirtyOnReinitialize: true
         }}
@@ -677,7 +673,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         alwaysFullScreenCreateView
       />
 
-      <Dialog maxWidth="md" open={Boolean(changedFields.length)} disableBackdropClick disableEscapeKeyDown>
+      <Dialog maxWidth="md" open={Boolean(changedFields.length)} disableEscapeKeyDown>
         <DialogTitle classes={{
           root: "pb-0"
         }}

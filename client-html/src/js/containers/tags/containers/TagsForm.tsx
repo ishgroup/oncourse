@@ -4,24 +4,20 @@
  */
 
 import React, { ComponentClass } from "react";
-import { withStyles, Typography, Grid } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import { Typography, Grid } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import Divider from "@mui/material/Divider";
 import { withRouter } from "react-router";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
-  Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues
+  Form, Field, initialize, change, arrayRemove, reduxForm, getFormValues, getFormSyncErrors
 } from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ForbiddenTagNames, Tag } from "@api/model";
-import { AddCircle } from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "../../../common/components/buttons/Button";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateTagName } from "../../../common/utils/validation";
-import AppBarHelpMenu from "../../../common/components/form/AppBarHelpMenu";
-import CustomAppBar from "../../../common/components/layout/CustomAppBar";
 import { State } from "../../../reducers/state";
 import RouteChangeConfirm from "../../../common/components/dialog/confirm/RouteChangeConfirm";
 import TagRequirementsMenu from "../components/TagRequirementsMenu";
@@ -37,8 +33,9 @@ import TagItemEditView from "../components/TagItemEditView";
 import { setNextLocation, showConfirm } from "../../../common/actions";
 import { COLORS, getAllTags } from "../utils";
 import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import FormSubmitButton from "../../../common/components/form/FormSubmitButton";
+import AddButton from "../../../common/components/icons/AddButton";
 import { onSubmitFail } from "../../../common/utils/highlightFormClassErrors";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 
 const styles = () => ({
   noTransform: {
@@ -83,6 +80,7 @@ interface FormProps extends Props {
   nextLocation: string;
   setNextLocation: (nextLocation: string) => void;
   theme?: any;
+  syncErrors?: any;
 }
 
 const setWeight = items =>
@@ -169,8 +167,8 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
   componentDidUpdate(prevProps) {
     const {
- rootTag, submitSucceeded, fetch, nextLocation, setNextLocation, dirty, history
-} = this.props;
+      rootTag, submitSucceeded, fetch, nextLocation, setNextLocation, dirty, history
+    } = this.props;
 
     if (rootTag && (!prevProps.rootTag || prevProps.rootTag.id !== rootTag.id || submitSucceeded)) {
       setDragIndex(getAllTags([rootTag]));
@@ -438,6 +436,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
       isNew,
       openConfirm,
       dispatch,
+      syncErrors,
       form
     } = this.props;
 
@@ -446,117 +445,110 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
         <Form onSubmit={handleSubmit(this.onSave)} className={className}>
           {!this.disableConfirm && dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
-          <CustomAppBar>
-            <Grid container>
-              <Grid item xs={12} className="centeredFlex">
+          <AppBarContainer
+            values={values}
+            manualUrl={manualUrl}
+            getAuditsUrl='audit?search=~"Tag"'
+            disabled={!dirty}
+            invalid={invalid}
+            title={(isNew && (!values || !values.name || values.name.trim().length === 0))
+              ? "New"
+              : values && values.name.trim()}
+            createdOn={() => (rootTag.created ? new Date(rootTag.created) : null)}
+            modifiedOn={() => (rootTag.modified ? new Date(rootTag.modified) : null)}
+            disableInteraction={rootTag.system}
+            opened={isNew || Object.keys(syncErrors).includes("name")}
+            containerClass="p-3"
+            fields={(
+              <Grid item xs={8}>
                 <FormField
-                  type="headerText"
                   name="name"
-                  placeholder="Name"
+                  label="Name"
                   margin="none"
-                  className={classes.HeaderTextField}
-                  listSpacing={false}
-                  validate={[validateSingleMandatoryField, this.validateRootTagName, validateTagName]}
+                  validate={[validateSingleMandatoryField,this.validateRootTagName, validateTagName]}
                   disabled={rootTag.system}
                 />
-
-                <div className="flex-fill" />
-
-                {!isNew && !rootTag.system && (
-                  <AppBarActions
-                    actions={[
-                      {
-                        action: () => this.onDelete(rootTag.id),
-                        icon: <DeleteForever />,
-                        confirmText: "Tag will be deleted permanently",
-                        tooltip: "Delete Tag",
-                        confirmButtonText: "DELETE"
-                      }
-                    ]}
-                  />
-                )}
-
-                <AppBarHelpMenu
-                  created={rootTag.created ? new Date(rootTag.created) : null}
-                  modified={rootTag.modified ? new Date(rootTag.modified) : null}
-                  auditsUrl={'audit?search=~"Tag"'}
-                  manualUrl={manualUrl}
-                />
-
-                <FormSubmitButton
-                  disabled={!dirty}
-                  invalid={invalid}
-                />
               </Grid>
-            </Grid>
-          </CustomAppBar>
-
-          <Grid container spacing={5}>
-            <Grid item sm={12} lg={11} xl={8}>
-              <Grid container>
-                <Grid item xs={12} md={8}>
-                  <div className="centeredFlex">
-                    {values && (
-                      <Field
-                        name="requirements"
-                        label="Available for"
-                        component={TagRequirementsMenu}
-                        items={values.requirements}
-                        rootID={values.id}
-                        validate={this.validateRequirements}
-                        system={rootTag.system}
-                      />
-                    )}
-                  </div>
-
-                  {values
-                    && values.requirements.map((i, index) => (
-                      <TagRequirementItem
-                        parent={`requirements[${index}]`}
-                        key={index}
-                        item={i}
-                        index={index}
-                        onDelete={this.removeRequirement}
-                        disabled={values.system}
-                        openConfirm={openConfirm}
-                        dispatch={dispatch}
-                      />
-                    ))}
-                </Grid>
-
-                <Grid item xs={false} md={4} />
-              </Grid>
-
-              <Divider className="mt-2 mb-2" />
-
-              <div className="centeredFlex">
-                <Typography className="heading">Tags</Typography>
-                <IconButton onClick={this.addTag}>
-                  <AddCircle className="addButtonColor" width={20} />
-                </IconButton>
-              </div>
-
-              <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="ROOT" isCombineEnabled>
-                  {provided => (
-                    <div ref={provided.innerRef}>
+            )}
+            actions={!isNew && !rootTag.system && (
+              <AppBarActions
+                actions={[
+                  {
+                    action: () => this.onDelete(rootTag.id),
+                    icon: <DeleteForever />,
+                    confirmText: "Tag will be deleted permanently",
+                    tooltip: "Delete Tag",
+                    confirmButtonText: "DELETE"
+                  }
+                ]}
+              />
+            )}
+          >
+            <Grid container>
+              <Grid item sm={12} lg={11} xl={8}>
+                <Grid container columnSpacing={3}>
+                  <Grid item xs={12} md={8}>
+                    <div className="centeredFlex">
                       {values && (
-                        <TagItem
-                          noTransformClass={classes.noTransform}
-                          item={values}
-                          onDelete={this.removeChildTag}
-                          openTagEditView={openTagEditView}
-                          validatTagsNames={validatTagsNames}
+                        <Field
+                          name="requirements"
+                          label="Available for"
+                          component={TagRequirementsMenu}
+                          items={values.requirements}
+                          rootID={values.id}
+                          validate={this.validateRequirements}
+                          system={rootTag.system}
                         />
                       )}
-
-                      {provided.placeholder}
                     </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
+
+                    {values
+                      && values.requirements.map((i, index) => (
+                        <TagRequirementItem
+                          parent={`requirements[${index}]`}
+                          key={index}
+                          item={i}
+                          index={index}
+                          onDelete={this.removeRequirement}
+                          disabled={values.system}
+                          openConfirm={openConfirm}
+                          dispatch={dispatch}
+                        />
+                      ))}
+                  </Grid>
+
+                  <Grid item xs={false} md={4} />
+                </Grid>
+
+                <Divider className="mt-2 mb-2" />
+
+                <div className="centeredFlex">
+                  <Typography className="heading">Tags</Typography>
+                  <AddButton onClick={this.addTag} />
+                </div>
+
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                  <Droppable droppableId="ROOT" isCombineEnabled>
+                    {provided => (
+                      <div ref={provided.innerRef}>
+                        {values && (
+                          <TagItem
+                            noTransformClass={classes.noTransform}
+                            item={values}
+                            onDelete={this.removeChildTag}
+                            openTagEditView={openTagEditView}
+                            validatTagsNames={validatTagsNames}
+                          />
+                        )}
+
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              </Grid>
             </Grid>
-          </Grid>
+          </AppBarContainer>
         </Form>
 
         <TagItemEditView
@@ -572,6 +564,7 @@ class TagsFormBase extends React.PureComponent<FormProps, any> {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("TagsForm")(state),
+  syncErrors: getFormSyncErrors("TagsForm")(state),
   fetch: state.fetch,
   nextLocation: state.nextLocation,
 });

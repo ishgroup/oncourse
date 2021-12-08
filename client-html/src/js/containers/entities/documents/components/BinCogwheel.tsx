@@ -9,9 +9,9 @@
 import React, { memo, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import MenuItem from "@material-ui/core/MenuItem";
-import Delete from "@material-ui/icons/Delete";
-import RestoreFromTrash from "@material-ui/icons/RestoreFromTrash";
+import MenuItem from "@mui/material/MenuItem";
+import Delete from "@mui/icons-material/Delete";
+import RestoreFromTrash from "@mui/icons-material/RestoreFromTrash";
 import { removeDocument, restoreDocument } from "../actions";
 import { ListState } from "../../../../model/common/ListView";
 import { NoArgFunction } from "../../../../model/common/CommonFunctions";

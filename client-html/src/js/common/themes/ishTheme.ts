@@ -1,154 +1,186 @@
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import { createTheme } from '@mui/material/styles';
+import { Components } from "@mui/material/styles/components";
+import { PaletteMode } from "@mui/material";
 import { theme } from "./appTheme";
 import {
-  ChristmasThemeKey,
+  AppTheme,
   DarkThemeKey,
   DefaultThemeKey,
   HighcontrastThemeKey,
-  MonochromeThemeKey
+  MonochromeThemeKey,
+  ThemeValues
 } from "../../model/common/Theme";
-import { LSGetItem } from "../utils/storage";
-import { APPLICATION_THEME_STORAGE_NAME } from "../../constants/Config";
 
-const createOverrides = palette => ({
-  overrides: {
+const createOverrides = (palette):{ components: Components } => ({
+  components: {
     MuiButtonBase: {
-      root: {
-        userSelect: "auto",
+      styleOverrides: {
+        root: {
+          userSelect: "auto",
+        }
       }
     },
     MuiCollapse: {
-      entered: {
-        height: "auto",
-        overflow: "visible"
+      styleOverrides: {
+        entered: {
+          height: "auto",
+          overflow: "visible"
+        }
       }
     },
     MuiFormControl: {
-      root: {
-        maxWidth: "100%",
-      },
+      styleOverrides: {
+        root: {
+          maxWidth: "100%",
+        }
+      }
     },
     MuiFormControlLabel: {
-      label: {
-        fontSize: "14px",
-        "&$disabled": {
-          color: "unset"
-        }
-      },
-      disabled: {}
+      styleOverrides: {
+        label: {
+          fontSize: "14px",
+          "&$disabled": {
+            color: "unset"
+          }
+        },
+        disabled: {}
+      }
     },
     MuiInput: {
-      underline: {
-        "&:before": {
-          borderBottom: `1px solid transparent`
-        },
-        "&:hover:not($disabled):not(.primaryContarstUnderline):before": {
-          borderBottom: `1px solid ${palette.primary.main}`
-        },
-        "&.primaryContarstUnderline:hover:not($disabled):before": {
-          borderBottom: `1px solid ${palette.primary.contrastText}`
+      styleOverrides: {
+        underline: {
+          "&:before": {
+            borderBottom: `1px solid transparent`,
+          },
+          "&:hover:not(.Mui-disabled):not(.primaryContarstUnderline):before": {
+            borderBottom: `1px solid ${palette.primary.main}`
+          },
+          "&.primaryContarstUnderline:hover:not(.Mui-disabled):before": {
+            borderBottom: `1px solid ${palette.primary.contrastText}`
+          }
+        }
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        shrink: {
+          "& .inputAdornmentIcon": {
+            transform: 'scale(1.25)'
+          }
         }
       }
     },
     MuiSelect: {
-      select: {
-        "&:focus": {
-          backgroundColor: "none",
+      styleOverrides: {
+        select: {
+          "&:focus": {
+            backgroundColor: "none",
+          },
         },
-      },
+      }
     },
     MuiFormLabel: {
-      root: {
-        lineHeight: 1.2,
-        whiteSpace: 'nowrap'
-      },
+      styleOverrides: {
+        root: {
+          lineHeight: 1.2,
+          whiteSpace: 'nowrap'
+        },
+      }
     },
     MuiInputBase: {
-      root: {
-        maxWidth: "100%",
-        width: "100%",
-      },
-      input: {
-        "&::placeholder": {
-          color: palette.text.disabled,
-          fill: palette.text.disabled,
-        },
-        textOverflow: "ellipsis",
-        color: palette.text.primaryEditable,
-        fontWeight: 400,
-        "&:hover:not($disabled):not(&:focus):not(.primaryContarstHover)": {
-          color: palette.primary.main,
-          MuiSelect: {
-            icon: {
-              color: palette.primary.main,
+      styleOverrides: {
+        root: {
+          maxWidth: "100%",
+          width: "100%",
+          MuiInput: {
+            root: {
+              "&:before": {
+                borderBottom: `1px solid transparent`,
+              },
+              "&:hover:not(.Mui-disabled):not(.primaryContarstUnderline):before": {
+                borderBottom: `1px solid ${palette.primary.main}`
+              },
+              "&.primaryContarstUnderline:hover:not(.Mui-disabled):before": {
+                borderBottom: `1px solid ${palette.primary.contrastText}`
+              }
             },
           },
         },
-      },
-      inputMultiline: {
-        lineHeight: "1.5em"
-      },
+        input: {
+          '&.Mui-disabled': {
+            fontWeight: 300,
+            WebkitTextFillColor: 'inherit'
+          },
+          "&::placeholder": {
+            color: palette.text.disabled,
+            fill: palette.text.disabled,
+          },
+          textOverflow: "ellipsis",
+          color: palette.text.primaryEditable,
+          fontWeight: 400,
+          "&:hover:not(.Mui-disabled):not(&:focus):not(.primaryContarstHover)": {
+            color: palette.primary.main,
+            MuiSelect: {
+              icon: {
+                color: palette.primary.main,
+              },
+            },
+          },
+        },
+        inputMultiline: {
+          lineHeight: "1.5em"
+        }
+      }
     },
     MuiCssBaseline: {
-      "@global": {
+      styleOverrides: {
         body: {
           fontFeatureSettings:
             '"dlig" 0, "numr" 0, "dnom" 0, "tnum" 0, "case" 0, "zero" 0, "frac" 0, '
             + '"sups" 0, "subs" 0, "cpsp" 0, "salt" 0, "ss01" 0, "ss02" 0, "ss03" 0, '
             + '"cv01", "cv02", "cv03", "cv04", "cv05", "cv06", "cv07", "cv08", "cv09", '
-            + '"cv10", "cv11", "calt", "liga", "kern"'
+            + '"cv10", "cv11", "calt", "liga", "kern"',
+          fontSize: "0.875rem"
         }
-      }
-    },
-    MuiPickerDTTabs: {
-      tabs: {
-        color: palette.primary.contrastText
-      }
-    },
-    PrivateTabIndicator: {
-      colorSecondary: {
-        backgroundColor: palette.primary.contrastText
       }
     },
     MuiMenuItem: {
-      root: {
-        fontWeight: 400,
-        "@media (min-width: 600px)": {
-          minHeight: "36px"
+      styleOverrides: {
+        root: {
+          fontWeight: 400,
+          "@media (min-width: 600px)": {
+            minHeight: "36px"
+          }
         }
-      }
-    },
-    MuiTableCell: {
-      root: {
-        fontWeight: 400
-      },
-      head: {
-        fontWeight: 600,
-        color: palette.text.secondary,
-        lineHeight: "1.3rem",
-        fontSize: "0.75rem",
-        padding: "14px 40px 14px 16px"
       }
     },
     MuiTableSortLabel: {
-      root: {
-        "&:hover": {
-          color: palette.text.primary
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            color: palette.text.primary
+          },
+          "&$active": {
+            color: palette.text.primary
+          }
         },
-        "&$active": {
-          color: palette.text.primary
+        active: {},
+        icon: {
+          fontSize: "18px"
         }
-      },
-      active: {},
-      icon: {
-        fontSize: "18px"
       }
     },
     MuiAutocomplete: {
-      inputRoot: {
-        flexWrap: 'inherit',
-        "& $input": {
-          width: "100%"
+      styleOverrides: {
+        inputRoot: {
+          flexWrap: 'inherit',
+        }
+      }
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0
         }
       }
     }
@@ -192,20 +224,20 @@ const defaultThemePalette = {
     primary: "rgba(0, 0, 0, 0.87)",
     primaryEditable: "rgba(0, 0, 0, 0.95)",
     disabled: "rgba(34, 34, 34, 0.38)",
+    hint: "rgba(34, 34, 34, 0.38)"
   }
 };
 
-export const defaultTheme = createMuiTheme({
+export const defaultTheme = createTheme({
   palette: defaultThemePalette,
   ...commonTypography,
   ...theme.default,
   ...createOverrides(defaultThemePalette)
-} as any);
+}) as AppTheme;
 
 // Dark Theme
-
 const darkThemePalette = {
-  type: "dark",
+  mode: "dark" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
     main: "#f7941d",
@@ -234,17 +266,17 @@ const darkThemePalette = {
   }
 };
 
-export const darkTheme = createMuiTheme({
+export const darkTheme = createTheme({
   palette: darkThemePalette,
   ...commonTypography,
   ...theme.dark,
   ...createOverrides(darkThemePalette)
-} as any);
+}) as AppTheme;
 
 // Monochrome Theme
 
 const monochromeThemePalette = {
-  type: "light",
+  mode: "light" as PaletteMode,
   common: { black: "#000", white: "#fff" },
   primary: {
     main: "#eaeaea",
@@ -269,12 +301,12 @@ const monochromeThemePalette = {
   }
 };
 
-export const monochromeTheme = createMuiTheme({
+export const monochromeTheme = createTheme({
   palette: monochromeThemePalette,
   ...commonTypography,
   ...theme.monochrome,
   ...createOverrides(monochromeThemePalette)
-} as any);
+}) as AppTheme;
 
 // High Contrast Theme
 
@@ -310,55 +342,14 @@ const highcontrastThemePalette = {
   divider: "rgba(0, 0, 0, 0.40)"
 };
 
-export const highcontrastTheme = createMuiTheme({
+export const highcontrastTheme = createTheme({
   palette: highcontrastThemePalette,
   ...commonTypography,
   ...theme.highcontrast,
   ...createOverrides(highcontrastThemePalette)
-} as any);
+}) as AppTheme;
 
-// High Contrast Theme
-
-const christmasThemePalette = {
-  type: "light",
-  common: { black: "#111111", white: "#fff" },
-  primary: {
-    main: "#B3000C",
-    dark: "#76838f",
-    contrastText: "#fff"
-  },
-  secondary: {
-    light: "#9bbeff",
-    main: "#165B33",
-    dark: "#111111",
-    contrastText: "#fff"
-  },
-  background: {
-    default: "#fff"
-  },
-  error: {
-    light: "#e57373", main: "#f44336", dark: "#d32f2f", contrastText: "#fff"
-  },
-  text: {
-    primary: "#111111",
-    primaryEditable: "#070707",
-    secondary: "#111111",
-    disabled: "rgba(34, 34, 34, 0.38)",
-    hint: "rgba(34, 34, 34, 0.38)"
-  },
-  action: {
-    disabled: "rgba(255, 255, 255, 0.26)"
-  }
-};
-
-export const christmasTheme = createMuiTheme({
-  palette: christmasThemePalette,
-  ...commonTypography,
-  ...theme.christmas,
-  ...createOverrides(christmasThemePalette)
-} as any);
-
-export const currentTheme = themeName => {
+export const currentTheme = (themeName: ThemeValues): AppTheme => {
   switch (themeName) {
     case DarkThemeKey: {
       return darkTheme;
@@ -372,22 +363,28 @@ export const currentTheme = themeName => {
     case HighcontrastThemeKey: {
       return highcontrastTheme;
     }
-    case ChristmasThemeKey: {
-      return christmasTheme;
-    }
     default: {
       return defaultTheme;
     }
   }
 };
 
-export const getTheme = theme => {
-  let actualTheme = theme;
+export const getTheme = (): AppTheme => {
+  let actualTheme = defaultTheme;
 
-  const storageThemeName = LSGetItem(APPLICATION_THEME_STORAGE_NAME);
-  if (storageThemeName) {
-    actualTheme = currentTheme(storageThemeName);
+  try {
+    const storageThemeName = localStorage.getItem('theme') as ThemeValues;
+    if (storageThemeName) {
+      actualTheme = currentTheme(storageThemeName);
+    }
+  } catch (e) {
+    console.error(e);
+    return actualTheme;
   }
 
   return actualTheme;
 };
+
+export const useTheme = () => ({
+  ...getTheme()
+});

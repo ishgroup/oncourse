@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import Decimal from "decimal.js-light";
 import React, {
@@ -13,15 +12,14 @@ import { format } from "date-fns";
 import { connect, useSelector } from "react-redux";
 import { Tax } from "@api/model";
 import debounce from "lodash.debounce";
-import Edit from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
+import Edit from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../../model/common/Theme";
 import { getRoundingByType } from "../../discounts/utils";
 import { getCurrentTax } from "../../taxes/utils";
 import CourseClassGeneralTab from "./general/CourseClassGeneralTab";
@@ -50,6 +48,7 @@ import history from "../../../../constants/History";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import { discountsSort } from "./budget/utils";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
 
 const itemsBase: TabsListItem[] = [
   {
@@ -177,13 +176,13 @@ const FeeEditButton = ({ onClick, className }) => (
   </IconButton>
 );
 
-const useBudgetAdornmentStyles = makeStyles((theme: AppTheme) => ({
+const useBudgetAdornmentStyles = makeAppStyles(theme => ({
   root: {
     display: "grid",
     gridTemplateColumns: "1fr auto",
     alignItems: "end",
     position: "relative",
-    rowGap: `${theme.spacing(0.5)}px`,
+    rowGap: `${theme.spacing(0.5)}`,
     columnGap: theme.spacing(1),
     paddingTop: theme.spacing(0.5)
   },
@@ -223,7 +222,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax
 }) => {
-  const classes = useBudgetAdornmentStyles();
+  const classes  = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"
@@ -489,7 +488,6 @@ const CourseClassEditView: React.FC<Props> = ({
         expandBudgetItem,
         currentTax
       }}
-      customAppBar
     />
   );
 };

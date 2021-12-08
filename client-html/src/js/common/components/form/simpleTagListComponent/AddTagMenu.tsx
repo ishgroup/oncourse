@@ -1,9 +1,9 @@
 import React from "react";
 import clsx from "clsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import MenuItem from "@material-ui/core/MenuItem";
-import List from "@material-ui/core/List";
+import withStyles from "@mui/styles/withStyles";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import MenuItem from "@mui/material/MenuItem";
+import List from "@mui/material/List";
 import AddTagMenuItem from "./AddTagMenuItem";
 import { MenuTag } from "../../../../model/tags";
 
@@ -64,7 +64,7 @@ class AddTagMenu extends React.Component<Props, State> {
         className={classes.rootMenu}
       >
         {activeTag && (
-          <MenuItem button onClick={this.handleBack} className={classes.listItem}>
+          <MenuItem onClick={this.handleBack} className={classes.listItem}>
             <span className={clsx("d-flex textSecondaryColor", classes.backContainer)}>
               <KeyboardArrowLeft color="inherit" />
               Back

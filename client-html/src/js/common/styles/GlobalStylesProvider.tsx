@@ -4,15 +4,12 @@
  */
 
 import * as React from "react";
-import { darken, fade } from "@material-ui/core/styles/colorManipulator";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { green, grey } from "@material-ui/core/colors";
+import { alpha, darken } from '@mui/material/styles';
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { grey } from "@mui/material/colors";
 import getOS from "../utils/getOS";
 import { AppTheme } from "../../model/common/Theme";
-import christmasHeaderBackground from "../../../images/beach-header.jpg";
-import christmasBodyBackground from "../../../images/sparkel.png";
-import christmasBodyBackgroundStars from "../../../images/christmas_header_background.gif";
 import InterRomanVar from "../../../fonts/inter/Inter-Roman.var.woff2";
 import InterItalicVar from "../../../fonts/inter/Inter-Italic.var.woff2";
 import { animateStyles } from "./animateStyles";
@@ -54,7 +51,7 @@ const customOSScrollbars = getOS() === "Windows"
 const globalStyles = (theme: AppTheme) =>
   createStyles({
     "@global": {
-      ...theme.palette.type === "dark" ? { "a": { color: "#90caf9" } } : {},
+      ...theme.palette.mode === "dark" ? { "a": { color: "#90caf9" } } : {},
         "@font-face": [
         {
           fontFamily: "Inter",
@@ -113,7 +110,7 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".appBarContainer": {
         marginTop: theme.spacing(8),
-        height: `calc(100vh - ${theme.spacing(8)}px)`,
+        height: `calc(100vh - ${theme.spacing(8)})`,
         overflowY: "auto"
       },
       ".card": {
@@ -125,7 +122,7 @@ const globalStyles = (theme: AppTheme) =>
         marginBottom: theme.spacing(8)
       },
       ".editViewHeadingOffset": {
-        marginTop: `-${theme.spacing(2)}px`
+        marginTop: `-${theme.spacing(2)}`
       },
       ".heading": {
         textTransform: "uppercase",
@@ -185,7 +182,7 @@ const globalStyles = (theme: AppTheme) =>
         backgroundColor: theme.palette.primary.main,
         "&:hover": {
           color: theme.palette.primary.contrastText,
-          backgroundColor: fade(theme.palette.primary.main, 0.9)
+          backgroundColor: alpha(theme.palette.primary.main, 0.9)
         },
         margin: theme.spacing(0, 1)
       },
@@ -194,6 +191,7 @@ const globalStyles = (theme: AppTheme) =>
         backgroundColor: `${theme.palette.grey[300]} !important`
       },
       ".saveButtonEditView": {
+        whiteSpace: "nowrap",
         boxShadow: theme.shadows[2],
         "&:hover": {
           backgroundColor: darken(theme.palette.primary.main, 0.1)
@@ -223,12 +221,12 @@ const globalStyles = (theme: AppTheme) =>
         marginLeft: theme.spacing(1),
         "&:hover": {
           color: theme.palette.primary.main,
-          backgroundColor: fade(theme.palette.primary.contrastText, 0.9)
+          backgroundColor: alpha(theme.palette.primary.contrastText, 0.9)
         }
       },
       ".whiteAppBarButtonDisabled": {
         color: `${theme.palette.primary.main} !important`,
-        backgroundColor: `${fade(theme.palette.primary.contrastText, 0.3)} !important`
+        backgroundColor: `${alpha(theme.palette.primary.contrastText, 0.3)} !important`
       },
       ".avetmissButton": {
         "&:hover": {
@@ -278,13 +276,14 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".switchWrapper": {
         flexDirection: "row-reverse",
+        justifyContent: "space-between",
         marginLeft: 0
       },
       ".switchLabelMargin": {
         marginRight: "100px"
       },
       ".addButtonColor": {
-        color: theme.palette.type === "light" ? darken(green[900], 0.1) : darken(grey[400], 0.1)
+        color: theme.palette.mode === "light" ? "#f7941d" : darken(grey[400], 0.1)
       },
       ".labelOffset": {
         marginLeft: "-14px"
@@ -320,29 +319,14 @@ const globalStyles = (theme: AppTheme) =>
           color: theme.palette.primary.contrastText
         }
       },
-      ".textField": {
-        paddingBottom: `${theme.spacing(2) - 3}px`,
-        paddingLeft: "0",
-        overflow: "hidden",
-        display: "flex",
-        "&.d-none": {
-          display: "none"
-        }
-      },
       ".errorColor": {
-        color: theme.palette.error.main
+        color: theme.palette.error.light
       },
       ".errorBackgroundColor": {
-        backgroundColor: theme.palette.error.main
+        backgroundColor: theme.palette.error.light
       },
       ".errorColorFade-0-2": {
-        color: fade(theme.palette.error.main, 0.2)
-      },
-      ".errorDarkColor": {
-        color: theme.palette.error.dark
-      },
-      ".errorDarkBackgroundColor": {
-        backgroundColor: theme.palette.error.dark
+        color: alpha(theme.palette.error.light, 0.2)
       },
       ".errorContrastColor": {
         color: theme.palette.error.contrastText
@@ -351,13 +335,13 @@ const globalStyles = (theme: AppTheme) =>
         color: theme.palette.primary.main
       },
       ".warningColor": {
-        color: theme.palette.warning.main
+        color: theme.palette.warning.light
       },
       ".successColor": {
-        color: theme.palette.success.main
+        color: theme.palette.success.light
       },
       ".successBackgroundColor": {
-        backgroundColor: theme.palette.success.main
+        backgroundColor: theme.palette.success.light
       },
       ".primaryContarstText": {
         color: theme.palette.primary.contrastText
@@ -401,7 +385,7 @@ const globalStyles = (theme: AppTheme) =>
         padding: theme.spacing(0.5)
       },
       ".lightGrayIconButton": {
-        color: fade(theme.palette.text.primary, 0.2),
+        color: alpha(theme.palette.text.primary, 0.2),
         fontSize: "18px",
         width: theme.spacing(4),
         height: theme.spacing(4),
@@ -430,12 +414,6 @@ const globalStyles = (theme: AppTheme) =>
       ".closeAndClearButton": {
         padding: theme.spacing(1)
       },
-      ".listHeadingPadding": {
-        padding: `${theme.spacing(1) + 4}px ${theme.spacing(3)}px`,
-        display: "flex",
-        justifyContent: "space-between",
-        height: "auto"
-      },
       ".appHeaderFontSize": {
         fontSize: "1.125rem"
       },
@@ -458,31 +436,6 @@ const globalStyles = (theme: AppTheme) =>
       },
       ".summaryTopBorder": {
         borderTop: `1px solid ${theme.palette.text.primary}`
-      },
-      ".christmasBody": {
-        backgroundImage: `url(${christmasBodyBackground})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "bottom left",
-        backgroundSize: "60%"
-      },
-      ".christmasBackground": {
-        background: "transparent"
-      },
-      ".christmasHeader": {
-        "&:before": {
-          content: "''",
-          backgroundImage: `url(${christmasBodyBackgroundStars})`,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          height: "100%",
-          width: "100%"
-        }
-      },
-      ".christmasHeaderDashboard": {
-        backgroundImage: `url(${christmasHeaderBackground})`,
-        backgroundSize: "cover",
-        backgroundPosition: "top"
       },
       ".selectedItemArrow": {
         [theme.breakpoints.up("md")]: {
@@ -520,9 +473,6 @@ const globalStyles = (theme: AppTheme) =>
           color: "inherit",
           visibility: "visible",
         }
-      },
-      ".generalRoot": {
-        padding: theme.spacing(1, 3, 0)
       },
       ".gridTemplateColumns-1fr": {
         gridTemplateColumns: "minmax(0, 1fr) auto"

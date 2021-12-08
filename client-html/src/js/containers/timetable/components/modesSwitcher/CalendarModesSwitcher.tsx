@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import { TimetableContext } from "../../Timetable";
 
 const CalendarModesSwitcher = ({ className }) => {
@@ -10,7 +10,7 @@ const CalendarModesSwitcher = ({ className }) => {
   const onChange = useCallback(e => setCalendarMode(e.target.value), [setCalendarMode]);
 
   return (
-    <FormControl className={className}>
+    <FormControl className={className} variant="standard">
       <Select value={calendarMode} onChange={onChange}>
         <MenuItem value="Compact">Compact</MenuItem>
         <MenuItem value="Gap(Days)">Gap (Days)</MenuItem>

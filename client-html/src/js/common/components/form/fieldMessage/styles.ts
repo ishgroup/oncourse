@@ -3,13 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles } from "@material-ui/core/styles";
+import { createStyles } from "@mui/styles";
 import { AppTheme } from "../../../../model/common/Theme";
 
 export default (theme: AppTheme) => createStyles({
   root: {
-    marginTop: `-${theme.spacing(1)}px`,
-    paddingBottom: `${theme.spacing(2) - 3}px`
+    marginTop: `-${theme.spacing(1)}`,
+    // @ts-ignore
+    paddingBottom: `${theme.spacing(2) - 3}`,
   },
   icon: {
     fontSize: theme.spacing(2),

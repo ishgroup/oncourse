@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from '@mui/styles';
 
 export const useHoverShowStyles = makeStyles({
   container: {

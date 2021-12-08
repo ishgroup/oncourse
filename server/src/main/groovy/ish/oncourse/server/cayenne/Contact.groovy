@@ -766,12 +766,12 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	}
 
 	/**
-	 * @return list of all MessagePerson records which were sent to this contact
+	 * @return list of all Message records which were sent to this contact
 	 */
 	@Nonnull
 	@API
 	@Override
-	List<MessagePerson> getMessages() {
+	List<Message> getMessages() {
 		return super.getMessages()
 	}
 

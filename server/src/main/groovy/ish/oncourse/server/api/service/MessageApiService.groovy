@@ -45,7 +45,7 @@ import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.Tutor
 import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.WaitingList
-import static ish.oncourse.server.messaging.MessageService.createMessagePerson
+import static ish.oncourse.server.messaging.MessageService.buildMessage
 import org.apache.commons.lang3.StringUtils
 
 
@@ -112,7 +112,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
             messageDTO.createdOn = message.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.modifiedOn = message.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             messageDTO.creatorKey = message.creatorKey
-            messageDTO.sentToContactFullname = MessageMixin.getRecipientsString(message)
+            messageDTO.sentToContactFullname = message.getContact().getFullName()
             messageDTO.subject = message.emailSubject
             messageDTO.message = message.emailBody
             messageDTO.sms = message.smsText
@@ -178,33 +178,33 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
 
         new RecipientsDTO().with { dto ->
             dto.students = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.students.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.students.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.students.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.students.suitableForSend
+                typeDto.suppressToSendIds = model.students.suppressToSend
+                typeDto.withoutDestinationIds = model.students.withoutDestination
                 typeDto
             }
             dto.activeStudents = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.activeStudents.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.activeStudents.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.activeStudents.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.activeStudents.suitableForSend
+                typeDto.suppressToSendIds = model.activeStudents.suppressToSend
+                typeDto.withoutDestinationIds = model.activeStudents.withoutDestination
                 typeDto
             }
             dto.withdrawnStudents = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.withdrawStudents.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.withdrawStudents.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.withdrawStudents.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.withdrawStudents.suitableForSend
+                typeDto.suppressToSendIds = model.withdrawStudents.suppressToSend
+                typeDto.withoutDestinationIds = model.withdrawStudents.withoutDestination
                 typeDto
             }
             dto.tutors = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.tutors.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.tutors.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.tutors.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.tutors.suitableForSend
+                typeDto.suppressToSendIds = model.tutors.suppressToSend
+                typeDto.withoutDestinationIds = model.tutors.withoutDestination
                 typeDto
             }
             dto.other = new RecipientTypeDTO().with { typeDto ->
-                typeDto.sendSize = model.other.suitableForSend.size().toBigDecimal()
-                typeDto.suppressToSendSize = model.other.suppressToSend.size().toBigDecimal()
-                typeDto.withoutDestinationSize = model.other.withoutDestination.size().toBigDecimal()
+                typeDto.sendIds = model.other.suitableForSend
+                typeDto.suppressToSendIds = model.other.suppressToSend
+                typeDto.withoutDestinationIds = model.other.withoutDestination
                 typeDto
             }
             dto
@@ -469,7 +469,7 @@ class MessageApiService extends TaggableApiService<MessageDTO, Message, MessageD
                         message.createdBy = batchContext.localObject(user)
                         fillMessage(message)
 
-                        createMessagePerson(message, batchContext.localObject(recipient), template.type)
+                        buildMessage(message, batchContext.localObject(recipient), template.type)
                     }
                 }
             }

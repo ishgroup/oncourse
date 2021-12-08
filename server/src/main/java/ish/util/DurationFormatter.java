@@ -18,7 +18,9 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.text.DefaultFormatter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
+import java.time.Duration;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -267,4 +269,27 @@ public class DurationFormatter extends DefaultFormatter {
 		return result;
 	}
 
+	public static BigDecimal durationInHoursBetween(Date startDatetime, Date endDatetime) {
+		int minutes = durationInMinutesBetween(startDatetime, endDatetime);
+		return durationInHoursFromMinutes(minutes);
+	}
+	
+	/**
+	 * converts two dates to number of minutes between them
+	 *
+	 * @param startDatetime
+	 * @param endDatetime
+	 * @return minutes
+	 */
+	public static Integer durationInMinutesBetween(Date startDatetime, Date endDatetime) {
+		if (startDatetime == null || endDatetime == null) {
+			return 0;
+		}
+		return Long.valueOf(Duration.between(startDatetime.toInstant(), endDatetime.toInstant()).toMinutes()).intValue();
+	}
+
+	public static BigDecimal durationInHoursFromMinutes(Integer minutes) {
+		BigDecimal decimalValue = new BigDecimal(minutes).setScale(4, RoundingMode.HALF_UP);
+		return decimalValue.divide(_60, RoundingMode.HALF_UP);
+	}
 }

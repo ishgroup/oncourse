@@ -155,15 +155,13 @@ export const courseClassReducer = (state: CourseClassState = initial, action: IA
 
 const courseClassBulkSessionInitial: CourseClassBulkSession = {
   selection: [],
-  modalOpened: false,
-  onUpdate: () => {},
-  tutors: []
+  modalOpened: false
 };
 
 export const courseClassesBulkSessionReducer = (
   state: CourseClassBulkSession = courseClassBulkSessionInitial,
   action: IAction<any>
-): any => {
+): CourseClassBulkSession => {
   switch (action.type) {
     case COURSE_CLASS_SELECT_BULK_SESSION: {
       return {
@@ -190,20 +188,16 @@ export const courseClassesBulkSessionReducer = (
     }
 
     case COURSE_CLASS_OPEN_BULK_UPDATE_MODAL: {
-      const { onUpdate, tutors } = action.payload;
       return {
         ...state,
-        modalOpened: true,
-        onUpdate,
-        tutors
+        modalOpened: true
       };
     }
 
     case COURSE_CLASS_CLOSE_BULK_UPDATE_MODAL: {
       return {
         ...state,
-        modalOpened: false,
-        onUpdate: () => {}
+        modalOpened: false
       };
     }
 

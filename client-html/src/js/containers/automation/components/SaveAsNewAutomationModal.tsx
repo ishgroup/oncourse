@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MuiButton from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Typography from "@material-ui/core/Typography/Typography";
 import React from "react";
 import { InjectedFormProps, reduxForm } from "redux-form";
-import Button from "../../../common/components/buttons/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateKeycode } from "../utils";
 
@@ -63,11 +62,11 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
           </DialogContent>
 
           <DialogActions className="p-3">
-            <MuiButton color="primary" onClick={onClose}>
+            <Button color="primary" onClick={onClose}>
               Cancel
-            </MuiButton>
+            </Button>
 
-            <Button color="primary" type="submit" disabled={invalid}>
+            <Button variant="contained" color="primary" type="submit" disabled={invalid}>
               Save
             </Button>
           </DialogActions>

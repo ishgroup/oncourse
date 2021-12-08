@@ -3,27 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import useTheme from "@material-ui/core/styles/useTheme";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import useTheme from "@mui/styles/useTheme";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import React from "react";
-import ListSubheader from '@material-ui/core/ListSubheader';
+import ListSubheader from '@mui/material/ListSubheader';
 import { areEqual, FixedSizeList as List } from 'react-window';
-import { createStyles } from "@material-ui/core";
-import green from "@material-ui/core/colors/green";
+import { createStyles } from "@mui/styles";
+import { green } from "@mui/material/colors";
 import clsx from "clsx";
+import { AppTheme } from "../../../../model/common/Theme";
+import { Typography } from "@mui/material";
 
 export const selectStyles = theme => createStyles({
-    textField: {
-      paddingBottom: `${theme.spacing(2) + 1}px`
-    },
+    root: {},
     bottomMargin: {
-      marginBottom: `${theme.spacing(1) + 1}px`
+      marginBottom: `${theme.spacing(1) + 1}`
     },
     bottomPadding: {
-      paddingBottom: `${theme.spacing(1) + 1}px`
+      paddingBottom: `${theme.spacing(1) + 1}`
     },
     topMargin: {
-      marginTop: `${theme.spacing(1)}px`,
+      marginTop: `${theme.spacing(1)}`,
       paddingLeft: "0"
     },
     editIcon: {
@@ -73,22 +73,55 @@ export const selectStyles = theme => createStyles({
     },
     menuList: {
       background: theme.palette.background.paper,
-      borderRadius: theme.shape.borderRadius
+      borderRadius: theme.shape.borderRadius,
     },
     readonly: {
       fontWeight: 300,
       pointerEvents: "none"
-    }
+    },
+    clearIcon: {
+      fontSize: "1.2rem",
+      "&:hover": {
+        cursor: "pointer",
+      }
+    },
+    inputWrapper: {
+      "&:hover $inputEndAdornment": {
+        visibility: 'visible'
+      },
+      "&:focus $inputEndAdornment": {
+        visibility: 'hidden',
+      }
+    },
+    hasPopup: {
+      "&$root $inputWrapper": {
+        paddingRight: 0
+      },
+      "&$root$hasClear $inputWrapper": {
+        paddingRight: 0
+      }
+    },
+    hasClear: {
+      "&$root $inputWrapper": {
+        paddingRight: 0
+      }
+    },
   });
 
 const listRef = React.createRef<any>();
 
-export const ListRow = React.memo<any>(({ data, index, style }) => React.cloneElement(data[index], {
-  style: {
+export const ListRow = React.memo<any>(({ data, index, style }) => {
+  const inlineStyle = {
     ...style,
-    top: style.top + 8,
-  },
-}), areEqual);
+    top: (style.top as number) + 8,
+  };
+
+  return (
+    <Typography component="li" noWrap style={inlineStyle}>
+      {data[index]}
+    </Typography>
+  );
+}, areEqual);
 
 const OuterElementContext = React.createContext({});
 
@@ -103,7 +136,7 @@ export const ListboxComponent = React.forwardRef<any, any>((props, ref) => {
   } = props;
 
   const itemData = React.Children.toArray(children);
-  const theme = useTheme();
+  const theme = useTheme() as AppTheme;
   const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
   const itemCount = itemData.length;
   const itemSize = rowHeight || (smUp ? 36 : 48);

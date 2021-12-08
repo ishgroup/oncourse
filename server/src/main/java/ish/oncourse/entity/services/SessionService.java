@@ -29,16 +29,6 @@ public class SessionService {
 	}
 
 	/**
-	 * @return session duration in hours
-	 */
-	public BigDecimal getDurationInHours(Session session) {
-		if (session.getEndDatetime() == null || session.getStartDatetime() == null) {
-			return new BigDecimal("0");
-		}
-		return DurationFormatter.parseDurationInHours(session.getEndDatetime().getTime() - session.getStartDatetime().getTime());
-	}
-
-	/**
 	 * @param tutorRole
 	 * @return the TutorAttendance (used to be called SessionCourseClassTutor) for this tutor role (CourseClassTutor) for this session
 	 */
@@ -52,16 +42,5 @@ public class SessionService {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * @return session payable duration in minutes
-	 */
-	public Integer getPayableDurationInMinutes(Session session) {
-		Integer adjustment = session.getPayAdjustment();
-		if (adjustment == null) {
-			return session.getDurationInMinutes();
-		}
-		return session.getDurationInMinutes() - adjustment;
 	}
 }

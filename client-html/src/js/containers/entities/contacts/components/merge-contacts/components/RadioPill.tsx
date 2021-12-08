@@ -1,9 +1,9 @@
 import React from "react";
-import { Theme } from "@material-ui/core";
-import { createStyles, withStyles } from "@material-ui/core/styles";
-import Check from "@material-ui/icons/Check";
-import { green } from "@material-ui/core/colors";
-import Typography from "@material-ui/core/Typography";
+import { Theme } from "@mui/material";
+import { createStyles, withStyles } from "@mui/styles";
+import Check from "@mui/icons-material/Check";
+import { green } from "@mui/material/colors";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import Marker from "./Marker";
 

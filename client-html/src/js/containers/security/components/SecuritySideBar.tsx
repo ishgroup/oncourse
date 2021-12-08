@@ -2,10 +2,10 @@ import React, { useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
-import { MenuItem } from "@material-ui/core";
-import ScreenLockPortrait from "@material-ui/icons/ScreenLockPortrait";
+import { MenuItem } from "@mui/material";
+import ScreenLockPortrait from "@mui/icons-material/ScreenLockPortrait";
 import { connect } from "react-redux";
 import { User } from "@api/model";
 import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
@@ -57,18 +57,18 @@ const SecuritySideBar = React.memo<any>(
     const { location: { pathname } } = history;
 
     return (
-      <div className={className}>
+      <div className={`mt-2 ${className}`}>
         <NavLink to="/security/settings" className="link">
-          <MenuItem button disableGutters className="listHeadingPadding heading" selected={pathname === "/security/settings"}>
-            <Typography className="heading pr-2" variant="h6" color="primary">
+          <MenuItem disableGutters className="heading" selected={pathname === "/security/settings"}>
+            <Typography className="heading pl-3 pr-2" variant="h6" color="primary">
               Settings
             </Typography>
           </MenuItem>
         </NavLink>
 
         <NavLink to="/security/api-tokens" className="link">
-          <MenuItem button disableGutters className="listHeadingPadding heading mt-1" selected={pathname === "/security/api-tokens"}>
-            <Typography className="heading pr-2" variant="h6" color="primary">
+          <MenuItem disableGutters className="heading mt-1" selected={pathname === "/security/api-tokens"}>
+            <Typography className="heading pl-3 pr-2" variant="h6" color="primary">
               API Tokens
             </Typography>
           </MenuItem>

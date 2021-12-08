@@ -4,15 +4,15 @@
  */
 
 import React, { useCallback, useEffect } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import createStyles from "@material-ui/core/styles/createStyles";
-import Delete from "@material-ui/icons/Delete";
+import withStyles from "@mui/styles/withStyles";
+import createStyles from "@mui/styles/createStyles";
+import Delete from "@mui/icons-material/Delete";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Document } from "@api/model";
-import { OpenWith } from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+import { OpenWith } from "@mui/icons-material";
+import Button from "@mui/material/Button";
 import FileUploaderDialog from "../../../common/components/file-uploader/FileUploaderDialog";
 import { getInitialDocument } from "../../../common/components/form/documents/components/utils";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
@@ -29,7 +29,7 @@ import {
   setListSelection
 } from "../../../common/components/list-view/actions";
 import { State } from "../../../reducers/state";
-import { getEntityTags } from "../../tags/actions";
+import { getEntityTags, getListTags } from "../../tags/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { createDocument, getDocument, updateDocument } from "./actions";
@@ -333,7 +333,7 @@ const Documents: React.FC<DocumentProps> = props => {
         }}
         editViewProps={{
           manualLink,
-          hideFullScreenAppBar: true
+          hideTitle: true
         }}
         CogwheelAdornment={BinCogwheel}
         EditViewContent={DocumentEditView}
@@ -371,7 +371,10 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
   },
   getFilters: () => dispatch(getFilters("Document")),
-  getTags: () => dispatch(getEntityTags("Document")),
+  getTags: () => {
+    dispatch(getEntityTags("Document"));
+    dispatch(getListTags("Document"));
+  },
   clearListState: () => dispatch(clearListState()),
   getDocumentRecord: (id: number) => dispatch(getDocument(id)),
   onSave: (id: string, document) => dispatch(updateDocument(id, document)),

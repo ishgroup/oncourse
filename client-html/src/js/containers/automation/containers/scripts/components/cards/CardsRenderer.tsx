@@ -5,8 +5,8 @@
 
 import * as React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import Grid from "@material-ui/core/Grid";
-import { FormControlLabel } from "@material-ui/core";
+import Grid from "@mui/material/Grid";
+import { FormControlLabel } from "@mui/material";
 import { WrappedFieldArrayProps } from "redux-form";
 import { Dispatch } from "redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";

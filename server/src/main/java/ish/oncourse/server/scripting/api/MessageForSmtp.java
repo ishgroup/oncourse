@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.scripting.api;
 
+import ish.common.types.MessageStatus;
 import ish.oncourse.server.cayenne.Message;
 import ish.oncourse.server.messaging.MailDeliveryParam;
 import org.apache.cayenne.ObjectContext;
@@ -42,6 +43,7 @@ public class MessageForSmtp {
             message.setEmailSubject(param.getGetSubject().get());
             message.setEmailBody(param.getGetContent().getGetEmailPlainBody().get());
             message.setEmailHtmlBody(param.getGetContent().getGetEmailHtmlBody().get());
+            message.setStatus(MessageStatus.SENT);
 
             context.commitChanges();
         }

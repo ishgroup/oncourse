@@ -11,8 +11,8 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Dispatch } from "redux";
 import { isInvalid, submit } from "redux-form";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import Button from "@mui/material/Button";
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import { closeConfirm, showConfirm, setNextLocation } from "../../../actions";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 

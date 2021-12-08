@@ -10,28 +10,30 @@
  */
 
 import { Document, DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
-import { FormControlLabel } from "@material-ui/core";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
+import { FormControlLabel } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
-import { Attachment, Directions, Language, Link, LockOutlined, OpenInNew, SupervisorAccount } from "@material-ui/icons";
-import { AlertTitle } from "@material-ui/lab";
-import Alert from "@material-ui/lab/Alert";
+import React, {
+ useEffect, useMemo, useRef, useState 
+} from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Typography from "@mui/material/Typography";
+import {
+ Attachment, Directions, Language, Link, LockOutlined, OpenInNew, SupervisorAccount 
+} from "@mui/icons-material";
+import { AlertTitle } from "@mui/lab";
+import Alert from "@mui/lab/Alert";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { showMessage } from "../../../../../actions";
 import { StyledCheckbox } from "../../../formFields/CheckboxField";
 import { Switch } from "../../../formFields/Switch";
 import { openInternalLink } from "../../../../../utils/links";
-import { AppTheme } from "../../../../../../model/common/Theme";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
 import {
   getAvailableOptions,
@@ -39,10 +41,11 @@ import {
   groupAttachmentsByEntity,
   isSingleContactAttachment
 } from "../utils";
+import { makeAppStyles } from "../../../../../styles/makeStyles";
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeAppStyles(theme => ({
   linkButton: {
     fontSize: "1.2em",
     padding: theme.spacing(0.5)
@@ -133,7 +136,7 @@ const DocumentShare:React.FC<Props> = ({
 
   const groupedAttachmentRelations = groupAttachmentsByEntity(documentSource.attachmentRelations);
 
-  const [availableOptions, setAvailableOptions] = useState<{[O in DocumentShareOption]?: boolean}>(getAvailableOptions(groupedAttachmentRelations));
+  const [availableOptions, setAvailableOptions] = useState<{ [O in DocumentShareOption]?: boolean }>(getAvailableOptions(groupedAttachmentRelations));
 
   const onAttachmentsOver = () => {
     const nodes = attachmentRef.current.querySelectorAll(".highlight");
@@ -164,7 +167,7 @@ const DocumentShare:React.FC<Props> = ({
 
   const linkInput = useRef<any>();
 
-  const classes = useStyles();
+  const classes  = useStyles();
 
   const onCopyLink = () => {
     linkInput.current.select();
@@ -231,20 +234,22 @@ const DocumentShare:React.FC<Props> = ({
             >
               {`${relationsCount} ${entity.capitalize()}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""} `}
               <IconButton
+                size="small"
                 color="secondary"
                 className={classes.linkButton}
                 onClick={() => onAttachmentCategoryClick(entity, relationsMap)}
               >
-                <OpenInNew fontSize="inherit" />
+                <OpenInNew fontSize="inherit" color="primary" />
               </IconButton>
               {portalEnabled
                 && !["Site", "Room"].includes(entity) && (
                 <IconButton
+                  size="small"
                   color="secondary"
                   className={classes.linkButton}
                   onClick={() => onAttachmentPeopleClick(entity, documentSource.access, relations)}
                 >
-                  <SupervisorAccount fontSize="inherit" className="highlight" />
+                  <SupervisorAccount fontSize="inherit" className="highlight" color="primary" />
                 </IconButton>
               )}
             </Typography>

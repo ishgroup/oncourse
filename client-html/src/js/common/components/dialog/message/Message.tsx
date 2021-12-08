@@ -5,11 +5,11 @@
 
 import React from "react";
 import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import Alert from "@material-ui/lab/Alert";
-import CloseIcon from "@material-ui/icons/Close";
+import { withStyles } from "@mui/styles";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import Alert from "@mui/material/Alert";
+import CloseIcon from "@mui/icons-material/Close";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
 const styles = theme => ({
@@ -114,7 +114,9 @@ class Message extends React.Component<Props, any> {
           variant="filled"
           severity={success ? "success" : "error"}
           classes={{
-            message: "text-pre-wrap"
+            message: "text-pre-wrap",
+            standardError: "errorBackgroundColor",
+            standardSuccess: "successBackgroundColor"
           }}
           action={(
             <IconButton

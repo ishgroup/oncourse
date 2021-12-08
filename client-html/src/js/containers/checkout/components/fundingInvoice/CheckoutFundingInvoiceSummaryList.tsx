@@ -9,10 +9,10 @@ import {
   change,
   FieldArray
 } from "redux-form";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
@@ -78,7 +78,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
   };
 
   return (
-    <Grid container className="align-content-between">
+    <Grid container columnSpacing={3} className="align-content-between">
       <Grid item xs={6}>
         <FormField
           type="remoteDataSearchSelect"
@@ -122,7 +122,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           form={form}
         />
       </Grid>
-      <Grid container>
+      <Grid item xs={12} container>
         {fundingInvoice && fundingInvoice.paymentPlans && (
           <Grid item sm={6} className="pr-2">
             <CheckoutFundingInvoicePaymentPlans
@@ -143,10 +143,11 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
               </Typography>
             </div>
             <FieldArray
-              name={`fundingInvoices[${selectedItemIndex}].trainingPlans`}
+              name={`fundingInvoices[${selectedItemIndex}].trainingPlans` as string}
               className="saveButtonTableOffset"
               component={NestedTable}
               columns={trainingPlansColumns}
+              calculateHeight
               hideHeader
             />
           </Grid>

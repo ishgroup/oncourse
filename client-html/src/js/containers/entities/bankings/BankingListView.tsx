@@ -91,7 +91,7 @@ class BankingListView extends React.Component<any, null> {
           onCreate={this.onCreateNewBanking}
           editViewProps={{
             manualLink,
-            hideFullScreenAppBar: true
+            hideTitle: true
           }}
           onDelete={onDelete}
           onSave={onSave}

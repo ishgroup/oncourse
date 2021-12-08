@@ -37,6 +37,10 @@ properties:
     description: Tutor's names
     required: false
     example: John Smith, Devid Smith
+  tutorAttendances:
+    type: array
+    items:
+      $ref: '../courseClass/TutorAttendance.yaml'
   classId:
     type: integer
     format: int64
@@ -47,12 +51,6 @@ properties:
     format: int64
     required: true
     description: need for clash validation only (validate new class sessions by course unavailable rule criteria)
-  contactIds:
-    type: array
-    items:
-      type: integer
-      format: int64
-    description: Tutor's contact id, need for clash validation only (validate new class sessions tutor criteria)
   roomId:
     type: integer
     format: int64
@@ -70,21 +68,6 @@ properties:
     required: false
     description: Site timezone
     example: Australia/Brisbane
-  courseClassTutorIds:
-    type: array
-    required: false
-    items:
-      type: integer
-      format: int64
-    description: Course c lass tutor's ids
-    example: 200,302
-  temporaryTutorIds:
-    type: array
-    required: false
-    items:
-      type: string
-    description: Not saved course class tutor's ids
-    example: k6g5o090,n6r5u246
   start:
     type: string
     format: date-time
@@ -107,11 +90,6 @@ properties:
     required: false
     description: session private notes
     example: private notes
-  payAdjustment:
-    type: integer
-    required: false
-    description: payable duration in minytes
-    example: 300
   hasPaylines:
     type: boolean
     required: false

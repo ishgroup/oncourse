@@ -27,11 +27,11 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
         And match $ contains
             """
             {
-            "other":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "tutors":{"sendSize":1,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "withdrawnStudents":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "students":{"sendSize":0,"withoutDestinationSize":0,"suppressToSendSize":0},
-            "activeStudents":{"sendSize":3,"withoutDestinationSize":0,"suppressToSendSize":0}
+            "other":{"sendIds":[],"withoutDestinationIds":[],"suppressToSendIds":[]},
+            "tutors":{"sendIds":[1],"withoutDestinationIds":[],"suppressToSendIds":[]},
+            "withdrawnStudents":{"sendIds":[],"withoutDestinationIds":[],"suppressToSendIds":[]},
+            "students":{"sendIds":[],"withoutDestinationIds":[],"suppressToSendIds":[]},
+            "activeStudents":{"sendIds":[2,3,4],"withoutDestinationIds":[],"suppressToSendIds":[]}
             }
             """
 

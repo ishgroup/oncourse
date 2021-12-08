@@ -9,9 +9,9 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import {
  Typography, Grid, List, createStyles
-} from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles";
-import ButtonBase from "@material-ui/core/ButtonBase";
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import ButtonBase from "@mui/material/ButtonBase";
 import { Category, CategoryItem, Script } from "@api/model";
 import ExecuteScriptModal from "../../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { State } from "../../../../../../reducers/state";
@@ -252,7 +252,7 @@ const Favorites: React.FC<Props> = props => {
         }}
         scriptId={scriptIdSelected}
       />
-      <Grid container justify="space-between" alignItems="center">
+      <Grid container alignItems="center">
         <Grid item xs={12} className={classes.topBar}>
           <Typography className="heading">{isEditing ? "" : "Navigation"}</Typography>
           <div className="flex-fill" />

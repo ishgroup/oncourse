@@ -129,25 +129,25 @@
            studentNumber="10" usiStatus="0" citizenship="9" feeHelpEligible="0"/>
 
   <CourseSession id="100" courseClass_Id="100" startDatetime="[start_date1]" endDatetime="[end_date1]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="200" courseClass_Id="100" startDatetime="[start_date2]" endDatetime="[end_date2]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="300" courseClass_Id="100" startDatetime="[start_date3]" endDatetime="[end_date3]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="400" courseClass_Id="200" startDatetime="[start_date2]" endDatetime="[end_date2]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="500" courseClass_Id="200" startDatetime="[start_date3]" endDatetime="[end_date3]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="600" courseClass_Id="200" startDatetime="[start_date4]" endDatetime="[end_date4]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="700" courseClass_Id="300" startDatetime="[start_date1]" endDatetime="[end_date1]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="800" courseClass_Id="300" startDatetime="[start_date2]" endDatetime="[end_date2]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="900" courseClass_Id="400" startDatetime="[start_date3]" endDatetime="[end_date3]"
-                 payAdjustment="0.00"/>
+                 />
   <CourseSession id="1000" courseClass_Id="400" startDatetime="[start_date4]" endDatetime="[end_date4]"
-                 payAdjustment="0.00"/>
+                 />
 
   <Enrolment id="100" courseClass_id="100" studentId="300" eligibilityExemptionIndicator="0" source="O" studyReason="0"
              vetFeeIndicator="0" vetIsFullTime="0" status="3" confirmationStatus="2" feeHelpAmount="0"

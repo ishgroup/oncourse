@@ -1,12 +1,12 @@
 import * as React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { createStyles } from "@material-ui/core";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Delete from "@material-ui/icons/Delete";
-import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
-import Tooltip from "@material-ui/core/Tooltip";
-import TextField from "@material-ui/core/TextField";
+import withStyles from "@mui/styles/withStyles";
+import { createStyles } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
+import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
+import Tooltip from "@mui/material/Tooltip";
+import TextField from "@mui/material/TextField";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -21,7 +21,7 @@ const styles = theme =>
     checkbox: {
       height: "1.3em",
       width: "1.3em",
-      marginLeft: "-7px"
+      marginTop: "6px"
     },
     root: {
       display: "flex",
@@ -125,6 +125,7 @@ export class StubFilterItem extends React.PureComponent<any, any> {
           error={error}
           inputRef={this.setInputNode}
           value={filterName}
+          variant="standard"
         />
 
         <Tooltip title="Save Filter">

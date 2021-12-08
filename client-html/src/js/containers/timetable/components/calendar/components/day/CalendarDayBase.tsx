@@ -4,11 +4,11 @@
  */
 
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import { Theme } from "@material-ui/core";
+import { withStyles, createStyles } from "@mui/styles";
+import { Theme } from "@mui/material";
 import { D_III } from "../../../../../../common/utils/dates/format";
 import { appendTimezone } from "../../../../../../common/utils/dates/formatTimezone";
 
@@ -49,7 +49,7 @@ const CalendarDayBase: React.FC<DayBaseProps> = props => {
         </div>
       </Grid>
 
-      <Grid item xs={10} className={wrapperClass}>
+      <Grid container item xs={10} className={wrapperClass}>
         {children}
       </Grid>
     </Grid>

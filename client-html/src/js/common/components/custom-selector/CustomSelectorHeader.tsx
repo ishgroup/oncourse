@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import ArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import { CustomSelectorOption } from "./CustomSelector";
 
 interface Props {

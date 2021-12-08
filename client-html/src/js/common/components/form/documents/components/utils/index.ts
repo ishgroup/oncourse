@@ -113,7 +113,7 @@ export const getInitialDocument = (file: File): Promise<DocumentExtended> => {
     tags: [],
     thumbnail,
     description: "",
-    access: "Public",
+    access: "Private",
     url: "",
     shared: true,
     content: file,

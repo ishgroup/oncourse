@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import TextField from "@material-ui/core/TextField";
-import DateRange from "@material-ui/icons/DateRange";
-import QueryBuilder from "@material-ui/icons/QueryBuilder";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@mui/material/TextField";
+import DateRange from "@mui/icons-material/DateRange";
+import QueryBuilder from "@mui/icons-material/QueryBuilder";
+import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import { change, WrappedFieldMetaProps } from "redux-form";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
-import { DatePicker, TimePicker as Time } from "@material-ui/pickers";
-import CreateIcon from '@material-ui/icons/Create';
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
-import { InputProps } from "@material-ui/core/Input";
+import { DatePicker, TimePicker as Time } from "@mui/lab";
+import CreateIcon from '@mui/icons-material/Create';
+import ButtonBase from "@mui/material/ButtonBase";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import { InputProps } from "@mui/material/Input";
 import { CodeCompletionCore } from "antlr4-c3";
 import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { AqlLexer } from "@aql/AqlLexer";
@@ -69,13 +69,6 @@ const queryStyles = theme => createStyles({
   menuShadow: {
     boxShadow: "0 0 0 1px hsla(0,0%,0%,0.1), 0 4px 11px hsla(0,0%,0%,0.1)"
   },
-  hasPopupIcon: {
-    "&$hasClearIcon $inputRoot": {
-      paddingRight: 0
-    }
-  },
-  hasClearIcon: {},
-  inputRoot: {},
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
@@ -243,7 +236,6 @@ export interface Suggestion {
 interface State {
   value: object[];
   options: Suggestion[];
-  isEditing: boolean;
   menuIsOpen: boolean;
   error: boolean;
   pickerOpened: "DATE" | "TIME";
@@ -306,7 +298,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.state = {
       value: [],
       options: [],
-      isEditing: false,
       menuIsOpen: false,
       error: false,
       pickerOpened: null,
@@ -366,11 +357,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
       });
     }
 
-    if (!inline && !this.state.isEditing && meta.invalid) {
-      this.setState({
-        isEditing: true
-      });
-    }
   }
 
   getAutocomplete = (input, position?) => {
@@ -584,17 +570,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     });
   };
 
-  edit = () => {
-    this.setState(
-      {
-        isEditing: true
-      },
-      () => {
-        this.inputNode.focus();
-      }
-    );
-  };
-
   onBlur = () => {
     if (this.state.pickerOpened) return;
 
@@ -606,7 +581,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
     this.setState({
       menuIsOpen: false,
-      isEditing: false
     });
 
     if (!inline) {
@@ -660,7 +634,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
   };
 
   getValue = classes => (
-    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || (!this.state.isEditing && "No value")}</span>
+    this.state.inputValue || <span className={clsx(classes.editable, "overflow-hidden")}>{this.props.placeholder || "No value"}</span>
   );
 
   getInlineMenuStyles = () => {
@@ -1145,7 +1119,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     this.setState({
       value: [],
       options: this.getAutocomplete("", 0),
-      isEditing: false,
       menuIsOpen: false,
       error: false,
       pickerOpened: null,
@@ -1165,13 +1138,13 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
 
   getOptionLabel = option => option.label;
 
-  renderOption = data => {
+  renderOption = (optionProps, data) => {
     const { itemRenderer } = this.props;
     const { searchValue } = this.state;
 
     const label = this.getOptionLabel(data);
 
-    const content = getHighlightedPartLabel(label, searchValue);
+    const content = getHighlightedPartLabel(label, searchValue, optionProps);
 
     let option = content;
 
@@ -1219,7 +1192,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
     } = this.props;
 
     const {
-     error, isEditing, menuIsOpen, options, value, inputValue, pickerOpened
+     error, menuIsOpen, options, value, inputValue, pickerOpened
     } = this.state;
 
     const filteredOptions = options.filter(this.filterOptions);
@@ -1232,6 +1205,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             onChange={date => this.handlePickerChange("DATE", date)}
             onClose={this.closePicker}
             open={pickerOpened === "DATE"}
+            renderInput={props => <TextField {...props} />}
           />
 
           <TimePicker
@@ -1239,18 +1213,17 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             onChange={date => this.handlePickerChange("TIME", date)}
             onClose={this.closePicker}
             open={pickerOpened === "TIME"}
+            renderInput={props => <TextField {...props} />}
           />
         </div>
 
         <div
           className={clsx("relative", {
-            "d-none": !(inline || isEditing || (!isValidQuery && (meta.invalid || error))),
             "pointer-events-none": disabled,
             [classes.bottomPadding]: !inline
           })}
         >
           <Autocomplete
-            debug
             value={value}
             open={menuIsOpen && Boolean(filteredOptions.length)}
             options={filteredOptions}
@@ -1260,16 +1233,17 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             getOptionLabel={this.getOptionLabel}
             PopperComponent={inline ? this.popperAdapter as any : undefined}
             classes={inline ? {
+              root: classes.root,
               paper: classes.menuShadow,
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
-              // @ts-ignore
-              hasPopupIcon: classes.hasPopupIcon,
-              hasClearIcon: classes.hasClearIcon,
-              inputRoot: classes.inputRoot
+              hasPopupIcon: classes.hasPopup,
+              hasClearIcon: classes.hasClear,
+              inputRoot: classes.inputWrapper
             } : undefined}
             renderInput={params => (
               <TextField
                 {...params}
+                variant="standard"
                 onKeyDown={this.onKeyDown}
                 InputProps={{
                   ...params.InputProps,
@@ -1304,45 +1278,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<Props, State> {
             openOnFocus
             multiple
           />
-        </div>
-        <div
-          className={clsx(classes.textField, {
-            "d-none": inline || isEditing || (!isValidQuery && (meta.invalid || error)),
-            "pointer-events-none": disabled
-          })}
-        >
-          <div className="mw-100 text-truncate">
-            {!hideLabel && label && (
-              <Typography variant="caption" className="centeredFlex" color="textSecondary">
-                {label}
-                {' '}
-                {labelAdornment}
-              </Typography>
-            )}
-
-            <ListItemText
-              classes={{
-                root: "pl-0 mb-0 mt-0",
-                primary: "d-flex"
-              }}
-              primary={(
-                <ButtonBase
-                  onClick={this.edit}
-                  className={clsx(classes.editable, "overflow-hidden hoverIconContainer")}
-                  component="div"
-                >
-                  <span
-                    className={clsx(classes.editable, "overflow-hidden", {
-                      "placeholderContent": !inline && !input.value.length
-                    })}
-                  >
-                    {editableComponent || this.getValue(classes)}
-                    {!disabled && <CreateIcon className="editInPlaceIcon hoverIcon" />}
-                  </span>
-                </ButtonBase>
-              )}
-            />
-          </div>
         </div>
       </div>
     );

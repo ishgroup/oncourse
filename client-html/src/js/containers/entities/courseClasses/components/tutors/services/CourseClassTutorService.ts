@@ -28,19 +28,19 @@ class CourseClassTutorService {
 
   public validateDelete(id: number): Promise<any> {
     return this.service.DELETE(`/v1/list/entity/courseClass/tutor/${id}`, {
-      headers: { "X-validate-only": true }
+      headers: { "X-validate-only":  "true" }
     });
   }
 
   public validatePost(tutor: CourseClassTutor): Promise<any> {
     return this.service.POST(`/v1/list/entity/courseClass/tutor`, tutor, {
-      headers: { "X-validate-only": true }
+      headers: { "X-validate-only":  "true" }
     });
   }
 
   public validatePut(tutor: CourseClassTutor): Promise<any> {
     return this.service.PUT(`/v1/list/entity/courseClass/tutor/${tutor.id}`, tutor, {
-      headers: { "X-validate-only": true }
+      headers: { "X-validate-only":  "true" }
     });
   }
 }

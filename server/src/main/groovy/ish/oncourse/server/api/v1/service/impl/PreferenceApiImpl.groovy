@@ -21,6 +21,8 @@ import ish.oncourse.common.AvetmissConstants
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.cayenne.Message
+
 import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
 import static ish.oncourse.server.api.v1.function.LanguageFunctions.toRestLanguage
 import ish.oncourse.server.api.v1.function.PreferenceFunctions
@@ -44,7 +46,6 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.PreferenceApi
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
-import ish.oncourse.server.cayenne.MessagePerson
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.security.LdapAuthConnectionService
 import ish.oncourse.server.services.ISystemUserService
@@ -253,9 +254,9 @@ class PreferenceApiImpl implements PreferenceApi {
                 throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'MessageType', "Incorrect message type: ${type}")).build())
         }
 
-        ObjectSelect.query(MessagePerson)
-                .where(MessagePerson.STATUS.eq(MessageStatus.QUEUED))
-                .and(MessagePerson.TYPE.eq(messageType))
+        ObjectSelect.query(Message)
+                .where(Message.STATUS.eq(MessageStatus.QUEUED))
+                .and(Message.TYPE.eq(messageType))
                 .count()
                 .selectOne(cayenneService.newContext)
     }

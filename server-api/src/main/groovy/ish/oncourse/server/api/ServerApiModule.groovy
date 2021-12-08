@@ -45,7 +45,6 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).add(DataCollectionApi)
         CXFModule.contributeResources(binder).add(DiscountApi)
         CXFModule.contributeResources(binder).add(DocumentApi)
-        CXFModule.contributeResources(binder).add(DocumentExportApi)
 
         CXFModule.contributeResources(binder).add(EmailTemplateApi)
         CXFModule.contributeResources(binder).add(EnrolmentApi)
@@ -111,7 +110,6 @@ class ServerApiModule extends ConfigModule {
         CXFModule.contributeResources(binder).add(CourseClassTutorApi)
         CXFModule.contributeResources(binder).add(ClassCostApi)
         CXFModule.contributeResources(binder).add(AttendanceApi)
-        CXFModule.contributeResources(binder).add(TutorAttendanceApi)
         CXFModule.contributeResources(binder).add(AssessmentClassApi)
         CXFModule.contributeResources(binder).add(SessionApi)
         CXFModule.contributeResources(binder).add(CheckoutApi)

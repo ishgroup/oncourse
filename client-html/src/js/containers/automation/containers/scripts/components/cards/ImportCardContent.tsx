@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { FieldArray } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 
@@ -28,7 +28,7 @@ const ImportCardContent = props => {
   const { classes, hasUpdateAccess, isInternal } = props;
 
   return (
-    <Grid container className="pt-3">
+    <Grid container columnSpacing={3} rowSpacing={2} className="pt-3">
       <FieldArray name="imports" component={ImportsRenderer} hasUpdateAccess={hasUpdateAccess} classes={classes} isInternal={isInternal} />
     </Grid>
   );

@@ -4,12 +4,12 @@
  */
 
 import React, { useCallback, useMemo } from "react";
-import Grid from "@material-ui/core/Grid";
-import Collapse from "@material-ui/core/Collapse";
+import Grid from "@mui/material/Grid";
+import Collapse from "@mui/material/Collapse";
 import { change } from "redux-form";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { ClassCostRepetitionType } from "@api/model";
-import { Divider } from "@material-ui/core";
+import { Divider } from "@mui/material";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { contactLabelCondition, openContactLink } from "../../../../contacts/utils";
@@ -85,7 +85,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
   }, []);
 
   return (
-    <Grid container>
+    <Grid container columnSpacing={3}>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
@@ -111,7 +111,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
           allowEmpty
         />
       </Grid>
-      <Grid container item xs={12}>
+      <Grid container columnSpacing={3} item xs={12}>
         <Grid item xs={hasCountField ? 2 : 3}>
           <FormField
             type="select"
@@ -173,7 +173,7 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
 
       <Grid item xs={12}>
         <Collapse in={hasMinMaxFields}>
-          <Grid container>
+          <Grid container columnSpacing={3}>
             <Grid item xs={12} className="pt-2">
               <Divider />
             </Grid>

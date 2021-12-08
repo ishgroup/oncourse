@@ -4,10 +4,10 @@
  */
 
 import React, { useMemo, useState } from "react";
-import Collapse from "@material-ui/core/Collapse";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import ExpandIcon from "@material-ui/icons/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import ExpandIcon from "@mui/icons-material/ExpandMore";
 import clsx from "clsx";
 import { Session } from "@api/model";
 import CalendarSession from "./CalendarSession";

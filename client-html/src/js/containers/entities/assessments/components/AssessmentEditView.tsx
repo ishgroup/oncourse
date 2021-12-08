@@ -4,29 +4,13 @@
  */
 
 import React from "react";
-import { Dispatch } from "redux";
 import { Assessment } from "@api/model";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
 import AssessmentGeneralTab from "./AssessmentGeneralTab";
 import AssessmentDocuments from "./AssessmentDocuments";
+import { EditViewProps } from "../../../../model/common/ListView";
 
-interface AssessmentEditViewProps {
-  values?: Assessment;
-  isNew?: boolean;
-  isNested?: boolean;
-  classes?: any;
-  dispatch?: Dispatch<any>;
-  dirty?: boolean;
-  form?: string;
-  rootEntity?: string;
-  twoColumn?: boolean;
-  showConfirm?: any;
-  openNestedEditView?: any;
-  manualLink?: string;
-  onCloseClick?: any;
-  toogleFullScreenEditView?: any;
-}
 
 const items: TabsListItem[] = [
   {
@@ -43,12 +27,11 @@ const items: TabsListItem[] = [
   }
 ];
 
-const AssessmentEditView: React.FC<AssessmentEditViewProps> = props => {
+const AssessmentEditView: React.FC<EditViewProps<Assessment>> = props => {
   const {
     isNew,
     isNested,
     values,
-    classes,
     dispatch,
     dirty,
     form,
@@ -57,7 +40,8 @@ const AssessmentEditView: React.FC<AssessmentEditViewProps> = props => {
     showConfirm,
     rootEntity,
     onCloseClick,
-    toogleFullScreenEditView
+    toogleFullScreenEditView,
+    syncErrors
   } = props;
 
   return (
@@ -65,9 +49,9 @@ const AssessmentEditView: React.FC<AssessmentEditViewProps> = props => {
       items={items}
       itemProps={{
         isNew,
+        syncErrors,
         isNested,
         values,
-        classes,
         dispatch,
         dirty,
         form,
