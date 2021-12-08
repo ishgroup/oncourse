@@ -48,25 +48,20 @@ class EntityRelationService {
     }
     
     List<Product> getSuggestedProducts(Product product)  {
-        (getToRelations(Product, product.id, Product, [SUGGESTION]).values().toList() + 
-                getFromRelations(Product, product.id, Product, [SUGGESTION]).values().toList()).unique()
+        (getToRelations(Product, product.id, Product, [SUGGESTION]).values().toList()).unique()
     }
 
     List<Course> getSuggestedCourses(Product product)  {
-        (getToRelations(Product, product.id, Course, [SUGGESTION]).values().toList() +
-                getFromRelations(Product, product.id, Course, [SUGGESTION]).values().toList()).unique()
+        (getToRelations(Product, product.id, Course, [SUGGESTION]).values().toList()).unique()
     }
     
     List<Product> getSuggestedProducts(Course course)  {
-        (getToRelations(Course, course.id, Product, [SUGGESTION]).values().toList() +
-                getFromRelations(Course, course.id, Product, [SUGGESTION]).values().toList()).unique()
+        (getToRelations(Course, course.id, Product, [SUGGESTION]).values().toList()).unique()
     }
 
     List<Course> getSuggestedCourses(Course course)  {
-        (getToRelations(Course, course.id, Course, [SUGGESTION]).values().toList() +
-                getFromRelations(Course, course.id, Course, [SUGGESTION]).values().toList()).unique()
+        (getToRelations(Course, course.id, Course, [SUGGESTION]).values().toList()).unique()
     }
-
 
     private Map<Course,Boolean> getCourses (Class from, Long id, Contact contact) {
 
