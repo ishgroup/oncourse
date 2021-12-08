@@ -79,7 +79,6 @@ class EmailQueuingListenerTest extends TestWithDatabase {
         // give the script running in separate thread some time to queue emails
         Thread.sleep(3000)
 
-        Assertions.assertTrue(context.select(SelectQuery.query(MessagePerson.class)).isEmpty())
         Assertions.assertTrue(context.select(SelectQuery.query(Message.class)).isEmpty())
 
         voucher.setStatus(ProductStatus.ACTIVE)
@@ -88,7 +87,6 @@ class EmailQueuingListenerTest extends TestWithDatabase {
         // give the script running in separate thread some time to queue emails
         Thread.sleep(3000)
 
-        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
         Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
         voucher.setRedeemedCourseCount(1)
@@ -98,7 +96,6 @@ class EmailQueuingListenerTest extends TestWithDatabase {
         // give the script running in separate thread some time to queue emails
         Thread.sleep(3000)
 
-        Assertions.assertEquals(1, context.select(SelectQuery.query(MessagePerson.class)).size())
         Assertions.assertEquals(1, context.select(SelectQuery.query(Message.class)).size())
 
     }
@@ -125,7 +122,6 @@ class EmailQueuingListenerTest extends TestWithDatabase {
         // give the script running in separate thread some time to queue emails
         Thread.sleep(3000)
 
-        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(MessagePerson.class)).size())
         Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(Message.class)).size())
 
         voucher.setRedeemedCourseCount(1)
@@ -135,7 +131,6 @@ class EmailQueuingListenerTest extends TestWithDatabase {
         // give the script running in separate thread some time to queue emails
         Thread.sleep(3000)
 
-        Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(MessagePerson.class)).size())
         Assertions.assertEquals(1, cayenneContext.select(SelectQuery.query(Message.class)).size())
 
     }

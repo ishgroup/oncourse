@@ -180,27 +180,25 @@ class SampleEntityBuilder {
     }
 
     
-    MessagePerson createMessagePerson(Contact contact, Message message, MessageType type) {
-        MessagePerson person = this.ctx.newObject(MessagePerson.class)
-        person.setContact(contact)
-        person.setMessage(message)
-        person.setType(type)
+    Message buildMessage(Contact contact, Message message, MessageType type) {
+        message.setContact(contact)
+        message.setType(type)
 
         switch (type) {
             case MessageType.SMS:
-                person.setDestinationAddress(contact.getMobilePhone())
+                message.setDestinationAddress(contact.getMobilePhone())
                 break
             case MessageType.EMAIL:
-                person.setDestinationAddress(contact.getEmail())
+                message.setDestinationAddress(contact.getEmail())
                 break
             case MessageType.POST:
-                person.setDestinationAddress(contact.getAddress())
+                message.setDestinationAddress(contact.getAddress())
                 break
         }
 
-        person.setAttemptCount(3)
-        person.setStatus(MessageStatus.QUEUED)
-        return person
+        message.setNumberOfAttempts(3)
+        message.setStatus(MessageStatus.QUEUED)
+        return message
     }
 
     

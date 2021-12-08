@@ -2,7 +2,7 @@ package ish.oncourse.server.messaging
 
 import groovy.transform.CompileStatic
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.MessagePerson
+import ish.oncourse.server.cayenne.Message
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -55,17 +55,17 @@ class MailDeliveryServiceTest {
     }
 
     private void fillTestParameters() {
-        MessagePerson messagePerson = Mockito.mock(MessagePerson)
-        Mockito.when(messagePerson.destinationAddress).thenReturn(TO_EMAIL)
+        Message message = Mockito.mock(Message)
+        Mockito.when(message.destinationAddress).thenReturn(TO_EMAIL)
         Contact contact = Mockito.mock(Contact)
-        Mockito.when(messagePerson.contact).thenReturn(contact)
+        Mockito.when(message.contact).thenReturn(contact)
         Mockito.when(contact.isCompany).thenReturn(IS_COMPANY)
         Mockito.when(contact.lastName).thenReturn(TO_PERSONAL_LASTNAME)
         Mockito.when(contact.firstName).thenReturn(TO_PERSONAL_FIRSTNAME)
 
         GetFrom getFrom = GetFrom.valueOf(FROM_EMAIL, FROM_PERSONAL)
         GetEnvelopeFrom getEnvelopeFrom = GetEnvelopeFrom.valueOf(ENVELOP_FROM)
-        GetAddresses getAddressesTO = GetAddresses.valueOf(messagePerson)
+        GetAddresses getAddressesTO = GetAddresses.valueOf(message)
         GetAddresses getAddressesCC = GetAddresses.empty()
         GetAddresses getAddressesBCC = GetAddresses.empty()
         GetSubject getSubject = GetSubject.valueOf(SUBJECT)
