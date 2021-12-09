@@ -92,11 +92,7 @@ class SuggestionApiService implements SuggestionApi {
     }
 
     private CourseClass getNearestCourseClass(Course course) {
-        def courseClass = course.availableClasses
-                .findAll { it.startDateTime != null && it.startDateTime.toLocalDateTime().isAfter(LocalDateTime.now()) }
-                .findAll { it != null }
-                .sort { it.startDateTime }
-        return courseClass.empty ? null : courseClass.get(0)
+        return course.availableClasses.first()
     }
 
 }
