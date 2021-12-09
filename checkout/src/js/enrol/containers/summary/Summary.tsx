@@ -33,7 +33,7 @@ import CheckoutService from '../../services/CheckoutService';
 import { WaitingList } from '../../../model/checkout/WaitingList';
 import { ClassesListSchema } from '../../../NormalizeSchema';
 import { mapPayload } from '../../../common/epics/EpicUtils';
-import { Actions } from '../../../web/actions/Actions';
+import { Actions, requestSuggestion } from '../../../web/actions/Actions';
 
 export const EnrolmentPropsBy = (e: Enrolment, state: IshState): EnrolmentProps => ({
   contact: state.checkout.contacts.entities.contact[e.contactId],
@@ -141,6 +141,7 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => ({
   },
   onAddContact: (): void => {
     dispatch(changePhase(Phase.AddContact));
+    dispatch(requestSuggestion());
   },
   onAddParent: (): void => {
     dispatch(changePhase(Phase.AddParent));

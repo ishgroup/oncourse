@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IshState } from '../../services/IshState';
 import Suggestions from '../components/suggestions/Suggestions';
-import { Actions } from '../actions/Actions';
+import { Actions, requestSuggestion } from '../actions/Actions';
 import CheckoutService from '../../enrol/services/CheckoutService';
 import { CourseClass, Product } from '../../model';
 import { GABuilder } from '../../services/GoogleAnalyticsService';
@@ -24,9 +24,7 @@ const mapStateToProps = (state: IshState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getSuggestions: () => {
-    dispatch({
-      type: Actions.REQUEST_SUGGESTION
-    });
+    dispatch(requestSuggestion());
   },
   addProduct: (product: Product) => {
     dispatch({

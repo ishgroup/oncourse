@@ -41,6 +41,12 @@ export function requestCourseClass(id: string) {
   };
 }
 
+
+
+export const requestSuggestion = () => ({
+  type: Actions.REQUEST_SUGGESTION
+})
+
 /**
  * Request product by id
  */
