@@ -44,8 +44,10 @@ const Suggestions: React.FC<Props> = (props) => {
     return null;
   };
 
-  const renderSuggestion = (suggestion: CourseClass | Product) => {
-    const suggestionProps = suggestion instanceof CourseClass
+  const renderSuggestion = (suggestion: CourseClass & Product) => {
+    if (!suggestion) return null;
+
+    const suggestionProps = suggestion.course
       ? {
         name: suggestion.course.name,
         description: suggestion.course.description,

@@ -12,7 +12,7 @@ class CheckoutServiceV2 {
   readonly checkoutApi: CheckoutV2Api = new CheckoutV2Api(new DefaultHttpService());
 
   public makePayment(paymentRequest: PaymentRequest, xValidateOnly: boolean, payerId: string): Promise<PaymentResponse> {
-    return this.checkoutApi.makePaymentV2(paymentRequest, xValidateOnly, payerId, null);
+    return this.checkoutApi.makePaymentV2(paymentRequest, xValidateOnly, payerId);
   }
 
   public getStatus(sessionId: string, payerId: string): Promise<PaymentResponse> {
