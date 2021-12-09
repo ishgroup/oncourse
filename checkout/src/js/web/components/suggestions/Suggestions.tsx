@@ -77,7 +77,7 @@ const Suggestions: React.FC<Props> = (props) => {
         </div>
         <div className="suggestion-action">
           <span className="suggestion-price">{formatMoney(suggestionProps.price)}</span>
-          <a href="#" onClick={suggestionProps.onAdd} className="suggestion-add-button">
+          <a href="javascript:void(0);" onClick={suggestionProps.onAdd} className="suggestion-add-button">
             Add
           </a>
         </div>
