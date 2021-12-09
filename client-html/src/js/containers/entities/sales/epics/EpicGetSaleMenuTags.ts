@@ -7,11 +7,10 @@
  */
 
 import { Epic } from "redux-observable";
-import { Tag } from "@api/model";
 import { SET_LIST_MENU_TAGS } from "src/js/common/components/list-view/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_SALE_MENU_TAGS } from "../actions";
-import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_FULFILLED } from "../../../tags/actions";
+import { GET_LIST_TAGS_FULFILLED } from "../../../tags/actions";
 import TagsService from "../../../tags/services/TagsService";
 import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
 import { MenuTag } from "../../../../model/tags";
