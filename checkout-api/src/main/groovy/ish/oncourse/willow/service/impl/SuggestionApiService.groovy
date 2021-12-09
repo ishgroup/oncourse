@@ -92,7 +92,7 @@ class SuggestionApiService implements SuggestionApi {
     }
 
     private CourseClass getNearestCourseClass(Course course) {
-        return course.availableClasses.first()
+        return course.isWebVisible ? course.availableClasses.first() : null
     }
 
 }
