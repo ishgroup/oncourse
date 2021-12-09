@@ -14,6 +14,7 @@ import { GET_SALE_MENU_TAGS } from "../actions";
 import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_FULFILLED } from "../../../tags/actions";
 import TagsService from "../../../tags/services/TagsService";
 import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
+import { MenuTag } from "../../../../model/tags";
 
 const getTags = async () => {
   const articleTags = await TagsService.getTags("Article");
@@ -23,9 +24,13 @@ const getTags = async () => {
   const unique = {};
   const result = [];
   
-  [...articleTags, ...voucherTags, ...membershipTags].forEach(tag => {
-    if (!unique[tag.id]) {
-      unique[tag.id] = true;
+  [
+    ...getMenuTags(articleTags, [], null, null, "Article"), 
+    ...getMenuTags(voucherTags, [], null, null, "Voucher"), 
+    ...getMenuTags(membershipTags, [], null, null, "Membership"),
+  ].forEach(tag => {
+    if (!unique[tag.tagBody.id]) {
+      unique[tag.tagBody.id] = true;
       result.push(tag);
     }
   });
@@ -36,23 +41,15 @@ const getTags = async () => {
 const request: EpicUtils.Request = {
   type: GET_SALE_MENU_TAGS,
   getData: () => getTags(),
-  processData: (tags: Tag[]) => {
-    const menuTags = getMenuTags(tags, []);
-
-    return [
+  processData: (menuTags: MenuTag[]) => [
       {
         type: GET_LIST_TAGS_FULFILLED
       },
       {
         type: SET_LIST_MENU_TAGS,
         payload: { menuTags }
-      },
-      {
-        type: GET_ENTITY_TAGS_REQUEST_FULFILLED,
-        payload: { tags, entityName: "ProductItem" }
       }
-    ];
-  }
+    ]
 };
 
 export const EpicGetSaleMenuTags: Epic<any, any> = EpicUtils.Create(request);
