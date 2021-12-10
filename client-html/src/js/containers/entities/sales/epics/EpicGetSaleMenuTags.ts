@@ -31,6 +31,9 @@ const getTags = async () => {
     if (!unique[tag.tagBody.id]) {
       unique[tag.tagBody.id] = true;
       result.push(tag);
+    } else {
+      const resultTag = result.find(t => t.tagBody.id === tag.tagBody.id);
+      resultTag.entity = resultTag.entity + "|" + tag.entity;
     }
   });
   
