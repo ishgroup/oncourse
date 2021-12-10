@@ -148,8 +148,24 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
   const tags = useMemo(
     () => {
-      const tags = entityTags && rootEntity && entityTags[rootEntity];
-      return tags || [];
+      if (rootEntity === "ProductItem" && entityTags) {
+        const unique = {};
+        const productItemTags = [];
+        
+        [
+          ...entityTags["Article"] || [],
+          ...entityTags["Voucher"] || [],
+          ...entityTags["Membership"] || [],
+        ].forEach(t => {
+          if (!unique[t.id]) {
+            unique[t.id] = true;
+            productItemTags.push(t);
+          }
+        });
+        
+        return productItemTags;
+      }
+      return (entityTags && rootEntity && entityTags[rootEntity]) || [];
     },
     [entityTags, rootEntity]
   );
