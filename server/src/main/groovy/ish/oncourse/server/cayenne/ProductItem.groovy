@@ -13,22 +13,18 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.ConfirmationStatus
 import ish.common.types.ProductStatus
-import ish.math.Money
-
-import static ish.common.types.ProductStatus.ACTIVE
-import static ish.common.types.ProductStatus.EXPIRED
-import static ish.common.types.ProductStatus.NEW
 import ish.common.types.ProductType
+import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._ProductItem
-import static ish.persistence.CommonExpressionFactory.previousMidnight
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
 
+import static ish.common.types.ProductStatus.*
+import static ish.persistence.CommonExpressionFactory.previousMidnight
 /**
  * ProductItem is an abstract entity describing product item which has been sold through onCourse.
  * Currently this includes articles, memberships and vouchers.
@@ -181,11 +177,6 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait {
 	 */
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
-		return null
-	}
-
-	@Override
-	List<? extends TagRelation> getTaggingRelations() {
 		return null
 	}
 }

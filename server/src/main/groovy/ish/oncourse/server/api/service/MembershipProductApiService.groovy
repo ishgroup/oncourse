@@ -41,7 +41,7 @@ import static ish.util.MoneyUtil.calculateTaxAdjustment
 import static ish.util.MoneyUtil.getPriceIncTax
 import static org.apache.commons.lang3.StringUtils.*
 
-class MembershipProductApiService extends EntityApiService<MembershipProductDTO, MembershipProduct, MembershipProductDao> {
+class MembershipProductApiService extends TaggableApiService<MembershipProductDTO, MembershipProduct, MembershipProductDao> {
 
     @Inject
     private AccountDao accountDao
@@ -276,5 +276,14 @@ class MembershipProductApiService extends EntityApiService<MembershipProductDTO,
             dmrt
 
         }
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }

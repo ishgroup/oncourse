@@ -75,11 +75,6 @@ class EntityFunctions {
     }
 
     static Expression createTagGroupExpression(String alias, String realPath, List<Long> tagIds, String entity) {
-        TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(entity)
-        //special case: taggable class for tutor/student records is actually Contact.class
-        if(taggable in [TaggableClasses.TUTOR,TaggableClasses.STUDENT]) {
-            taggable = TaggableClasses.CONTACT
-        }
 
         SimpleNode taggedNode = new ASTAnd()
         Map aliases = Collections.singletonMap(alias, realPath)
@@ -91,10 +86,21 @@ class EntityFunctions {
         ASTObjPath idPath = new ASTObjPath(alias+ "+." + TagRelation.TAG.name + "." + Tag.ID.name)
         idPath.setPathAliases(aliases)
 
-        ASTEqual entityIdentifier = new ASTEqual(entityPath, taggable.getDatabaseValue())
+        SimpleNode taggableNode = new ASTOr()
+
+        for(curEntity in entity.split("\\|")) {
+            TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(curEntity)
+            //special case: taggable class for tutor/student records is actually Contact.class
+            if (taggable in [TaggableClasses.TUTOR, TaggableClasses.STUDENT]) {
+                taggable = TaggableClasses.CONTACT
+            }
+            ASTEqual entityIdentifier = new ASTEqual(entityPath, taggable.getDatabaseValue())
+            ExpressionUtil.addChild(taggableNode, entityIdentifier, taggableNode.jjtGetNumChildren())
+        }
+
         ASTIn tagId = new ASTIn(idPath, new ASTList(tagIds))
 
-        ExpressionUtil.addChild(taggedNode, entityIdentifier, 0)
+        ExpressionUtil.addChild(taggedNode, taggableNode, 0)
         ExpressionUtil.addChild(taggedNode, tagId, 1)
 
         return taggedNode

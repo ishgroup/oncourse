@@ -48,7 +48,7 @@ import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.LocalDateUtils.dateToValue
 import static ish.util.LocalDateUtils.valueToDate
 
-class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem, ProductItemDAO> {
+class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductItem, ProductItemDAO> {
 
     @Inject
     private ProductItemDAO productItemDAO
@@ -353,5 +353,14 @@ class ProductItemApiService extends EntityApiService<ProductItemDTO, ProductItem
         } else {
             return v.redeemedCourseCount > 0
         }
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }

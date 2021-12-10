@@ -62,7 +62,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 import java.time.ZoneId
 
 @CompileStatic
-class VoucherProductApiService extends EntityApiService<VoucherProductDTO, VoucherProduct, VoucherProductDao> {
+class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, VoucherProduct, VoucherProductDao> {
 
     @Inject
     private AccountDao accountDao
@@ -320,5 +320,14 @@ class VoucherProductApiService extends EntityApiService<VoucherProductDTO, Vouch
         return voucherProduct.voucherProductCourses.collect { it.course.id }.sort() == voucherProductDTO.courses.collect {
             it.id
         }.sort()
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }

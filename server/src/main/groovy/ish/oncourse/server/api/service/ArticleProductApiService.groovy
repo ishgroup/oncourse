@@ -55,7 +55,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.ZoneId
 
-class ArticleProductApiService extends EntityApiService<ArticleProductDTO, ArticleProduct, ArticleProductDao> {
+class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, ArticleProduct, ArticleProductDao> {
 
     @Inject
     private AccountDao accountDao
@@ -209,5 +209,14 @@ class ArticleProductApiService extends EntityApiService<ArticleProductDTO, Artic
     @Override
     void validateModelBeforeRemove(ArticleProduct articleProduct) {
         validator.throwClientErrorException(articleProduct.id, 'id', 'Product cannot be deleted. Instead of it you can disable it.')
+    }
+
+    @Override
+    Closure getAction (String key, String value) {
+        Closure action = super.getAction(key, value)
+        if (!action) {
+            validator.throwClientErrorException(key, "Unsupported attribute")
+        }
+        action
     }
 }
