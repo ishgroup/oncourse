@@ -4,7 +4,7 @@ Feature: Main feature for all PUT requests with path 'integration'
 
     Background: Authorize first
         * configure headers = { Authorization: 'admin' }
-        * url 'https://127.0.0.1:3132/a/v1'
+        * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'integration'
         
         
