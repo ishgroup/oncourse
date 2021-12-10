@@ -7,7 +7,7 @@
  */
 
 import { Epic } from "redux-observable";
-import { SET_LIST_MENU_TAGS } from "src/js/common/components/list-view/actions";
+import { SET_LIST_MENU_TAGS } from "../../../../common/components/list-view/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_SALE_MENU_TAGS } from "../actions";
 import { GET_LIST_TAGS_FULFILLED } from "../../../tags/actions";
