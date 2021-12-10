@@ -42,8 +42,12 @@ class RedirectApiServiceImpl implements RedirectApi {
     @Override
     Redirects updateRedirects(Redirects redirects) {
         ObjectContext context = cayenneService.newContext()
-        UpdateRedirects updater = UpdateRedirects.valueOf(redirects, context, requestService.request).update()
+        UpdateRedirects updater = UpdateRedirects.valueOf(redirects, context, requestService.request)
 
+        if (updater.validate().error) {
+            throw new ClientErrorException(updater.error, Response.status(Response.Status.BAD_REQUEST).entity(updater.error).build())
+        }
+        updater.update()
         if (updater.errors.empty) {
             context.commitChanges()
             return redirects

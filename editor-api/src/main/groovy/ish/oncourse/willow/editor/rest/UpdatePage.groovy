@@ -5,13 +5,14 @@ import ish.oncourse.model.WebContent
 import ish.oncourse.model.WebNode
 import ish.oncourse.model.WebUrlAlias
 import ish.oncourse.services.converter.CoreConverter
+import ish.oncourse.util.ISHUrlValidator
 import ish.oncourse.utils.ResourceNameValidator
 import ish.oncourse.willow.editor.v1.model.Page
 import ish.oncourse.willow.editor.v1.model.PageLink
 import ish.oncourse.willow.editor.website.WebNodeFunctions
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
-import org.eclipse.jetty.server.Request 
+import org.eclipse.jetty.server.Request
 
 class UpdatePage extends AbstractUpdate<Page> {
 
@@ -23,6 +24,18 @@ class UpdatePage extends AbstractUpdate<Page> {
         return updater
     }
 
+    UpdatePage validate() {
+
+        ISHUrlValidator validator = new ISHUrlValidator()
+        List<String> incorrectUrls = this.resourceToSave.urls.collect { url -> url.link }.findAll {
+            link -> !validator.isValidPagePath(link)
+        }
+        if (!incorrectUrls.empty) {
+            error = incorrectUrls.size() == 1 ? "URL ${incorrectUrls.get(0)} have invalid format" :
+                    "URL's ${incorrectUrls.collect {it }} have invalid format"
+        }
+        return this
+    }
 
     UpdatePage update() {
         WebNode node = WebNodeFunctions.getNodeForNumber(resourceToSave.id, request, context)

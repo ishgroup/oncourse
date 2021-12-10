@@ -74,8 +74,22 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
         return this
     }
 
+    UpdateRedirects validate() {
+
+        ISHUrlValidator validator = new ISHUrlValidator()
+        List<RedirectItem> inccorectRedirect = (resourceToSave as Redirects).rules.findAll {
+            !validator.isValidPagePath(it.from) || !validator.isValidPagePath(it.to)
+        }
+
+        if (!inccorectRedirect.empty) {
+            error = inccorectRedirect.size() == 1 ? "Redirect ${inccorectRedirect.get(0).from} to ${inccorectRedirect.get(0).to} have invalid format" :
+                    "Redirect's ${inccorectRedirect.collect { redirect -> redirect.from + " to " + redirect.to}} have invalid format"
+            return this
+        }
+    }
+
     private void createAlias(RedirectItem redirect) {
-        if (validate(redirect)) {
+        if (validateAlias(redirect)) {
             WebUrlAlias alias = context.newObject(WebUrlAlias)
             alias.webSiteVersion = version
             alias.urlPath = redirect.from
@@ -89,7 +103,7 @@ class UpdateRedirects extends AbstractUpdate<Redirects> {
         context.deleteObject(alias)
     }
 
-    private boolean validate(RedirectItem redirectItem) {
+    private boolean validateAlias(RedirectItem redirectItem) {
         ISHUrlValidator validator = new ISHUrlValidator('http', 'https')
         if (!validator.isValidOnlyPath(redirectItem.from)) {
             redirectItem.error = "Invalid redirect, from: ${redirectItem.from}, to: ${redirectItem.to}.  The from address must be a valid path within the site starting with /"

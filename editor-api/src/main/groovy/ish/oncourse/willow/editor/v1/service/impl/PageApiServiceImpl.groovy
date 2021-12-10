@@ -87,10 +87,14 @@ class PageApiServiceImpl implements PageApi {
         return WebNodeFunctions.getNodes(requestService.request, cayenneService.newContext())
                 .collect { node -> WebNodeToPage.valueOf(node).page }
     }
-    
+
     Page updatePage(Page pageParams) {
         ObjectContext context = cayenneService.newContext()
-        UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request).update()
+        UpdatePage updater = UpdatePage.valueOf(pageParams, context, requestService.request)
+        if (updater.validate().error) {
+            throw createClientException(updater.error)
+        }
+        updater.update()
         if (updater.error) {
             context.rollbackChanges()
             throw createClientException(updater.error)
