@@ -184,4 +184,9 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait, Abstr
 	List<? extends TagRelation> getTaggingRelations() {
 		return null
 	}
+
+	@Override
+	List<? extends TagRelation> getTaggingRelations() {
+		return null
+	}
 }
