@@ -440,6 +440,7 @@ const CourseClassBulkChangeSessionForm = props => {
               </BulkItemWrapper>
             </Grid>
           </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
