@@ -925,6 +925,13 @@
 		<db-attribute name="postDescription" type="VARCHAR" length="1000"/>
 		<db-attribute name="smsText" type="CLOB"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="numberOfAttempts" type="INTEGER" isMandatory="false"/>
+		<db-attribute name="contactId" type="BIGINT" isMandatory="false"/>
+		<db-attribute name="destinationAddress" type="VARCHAR" isMandatory="false" length="500"/>
+		<db-attribute name="response" type="VARCHAR" length="500"/>
+		<db-attribute name="timeOfDelivery" type="TIMESTAMP"/>
+		<db-attribute name="status" type="INTEGER" isMandatory="false"/>
+		<db-attribute name="type" type="INTEGER" isMandatory="false"/>
 	</db-entity>
 	<db-entity name="MessageTemplate">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
@@ -933,20 +940,6 @@
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="subject" type="VARCHAR" length="512"/>
-		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="willowId" type="BIGINT"/>
-	</db-entity>
-	<db-entity name="Message_Person">
-		<db-attribute name="attemptCount" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="createdOn" type="TIMESTAMP"/>
-		<db-attribute name="destinationAddress" type="VARCHAR" isMandatory="true" length="500"/>
-		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="messageId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
-		<db-attribute name="response" type="VARCHAR" length="500"/>
-		<db-attribute name="sentOn" type="TIMESTAMP"/>
-		<db-attribute name="status" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="type" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
@@ -1770,12 +1763,6 @@
 	<obj-entity name="AssessmentTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.AssessmentTagRelation" clientClassName="ish.oncourse.cayenne.AssessmentTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 17]]></qualifier>
 	</obj-entity>
-	<obj-entity name="AttachmentData" className="ish.oncourse.server.cayenne.AttachmentData" clientClassName="ish.oncourse.cayenne.AttachmentData" dbEntityName="BinaryData" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="content" type="byte[]" db-attribute-path="content"/>
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
-	</obj-entity>
 	<obj-entity name="AttachmentRelation" abstract="true" className="ish.oncourse.server.cayenne.AttachmentRelation" clientClassName="ish.oncourse.cayenne.AttachmentRelation" dbEntityName="BinaryRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="entityIdentifier" type="java.lang.String" db-attribute-path="entityIdentifier"/>
@@ -2544,18 +2531,12 @@
 		<obj-attribute name="postDescription" type="java.lang.String" db-attribute-path="postDescription"/>
 		<obj-attribute name="smsText" type="java.lang.String" db-attribute-path="smsText"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
-	</obj-entity>
-	<obj-entity name="MessagePerson" className="ish.oncourse.server.cayenne.MessagePerson" clientClassName="ish.oncourse.cayenne.MessagePerson" dbEntityName="Message_Person" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
-		<obj-attribute name="attemptCount" type="java.lang.Integer" db-attribute-path="attemptCount"/>
-		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
-		<obj-attribute name="destinationAddress" type="java.lang.String" db-attribute-path="destinationAddress"/>
-		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="response" type="java.lang.String" db-attribute-path="response"/>
-		<obj-attribute name="sentOn" type="java.util.Date" db-attribute-path="sentOn"/>
+		<obj-attribute name="timeOfDelivery" type="java.util.Date" db-attribute-path="timeOfDelivery"/>
 		<obj-attribute name="status" type="ish.common.types.MessageStatus" db-attribute-path="status"/>
 		<obj-attribute name="type" type="ish.common.types.MessageType" db-attribute-path="type"/>
-		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="numberOfAttempts" type="java.lang.Integer" db-attribute-path="numberOfAttempts"/>
+		<obj-attribute name="destinationAddress" type="java.lang.String" db-attribute-path="destinationAddress"/>
 	</obj-entity>
 	<obj-entity name="MessageTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.MessageTagRelation" clientClassName="ish.oncourse.cayenne.MessageTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 11]]></qualifier>
@@ -3427,9 +3408,6 @@
 	<db-relationship name="paymentsOut" source="Banking" target="PaymentOut" toMany="true">
 		<db-attribute-pair source="id" target="bankingId"/>
 	</db-relationship>
-	<db-relationship name="documentVersion" source="BinaryData" target="DocumentVersion">
-		<db-attribute-pair source="documentVersionId" target="id"/>
-	</db-relationship>
 	<db-relationship name="attachedApplication" source="BinaryRelation" target="Application">
 		<db-attribute-pair source="entityRecordId" target="id"/>
 	</db-relationship>
@@ -3568,7 +3546,7 @@
 	<db-relationship name="leads" source="Contact" target="Lead" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
-	<db-relationship name="messages" source="Contact" target="Message_Person" toMany="true">
+	<db-relationship name="messages" source="Contact" target="Message" toMany="true">
 		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="noteRelations" source="Contact" target="NoteRelation" toMany="true">
@@ -3910,9 +3888,6 @@
 	<db-relationship name="attachingRelations" source="DocumentVersion" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="documentVersionId"/>
 	</db-relationship>
-	<db-relationship name="attachmentData" source="DocumentVersion" target="BinaryData">
-		<db-attribute-pair source="id" target="documentVersionId"/>
-	</db-relationship>
 	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser">
 		<db-attribute-pair source="createdByUserId" target="id"/>
 	</db-relationship>
@@ -4177,17 +4152,11 @@
 	<db-relationship name="createdBy" source="Message" target="SystemUser">
 		<db-attribute-pair source="createdByUserId" target="id"/>
 	</db-relationship>
-	<db-relationship name="messagePerson" source="Message" target="Message_Person" toMany="true">
-		<db-attribute-pair source="id" target="messageId"/>
-	</db-relationship>
 	<db-relationship name="taggingRelations" source="Message" target="NodeRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
-	<db-relationship name="contact" source="Message_Person" target="Contact">
+	<db-relationship name="contact" source="Message" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
-	</db-relationship>
-	<db-relationship name="message" source="Message_Person" target="Message">
-		<db-attribute-pair source="messageId" target="id"/>
 	</db-relationship>
 	<db-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" toMany="true">
 		<db-attribute-pair source="id" target="moduleId"/>
@@ -4968,7 +4937,6 @@
 	<obj-relationship name="attachedAssessmentSubmission" source="AssessmentSubmissionAttachmentRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="attachedAssessmentSubmission"/>
 	<obj-relationship name="notedAssessmentSubmission" source="AssessmentSubmissionNoteRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="notedAssessmentSubmission"/>
 	<obj-relationship name="taggedAssessment" source="AssessmentTagRelation" target="Assessment" deleteRule="Nullify" db-relationship-path="taggedAssessment"/>
-	<obj-relationship name="documentVersion" source="AttachmentData" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="document" source="AttachmentRelation" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="documentVersion" source="AttachmentRelation" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="markedByTutor" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="markedByTutor"/>
@@ -5011,7 +4979,7 @@
 	<obj-relationship name="invoices" source="Contact" target="Invoice" deleteRule="Cascade" db-relationship-path="invoices"/>
 	<obj-relationship name="quotes" source="Contact" target="Quote" deleteRule="Cascade" db-relationship-path="invoices"/>
 	<obj-relationship name="leads" source="Contact" target="Lead" deleteRule="Cascade" db-relationship-path="leads"/>
-	<obj-relationship name="messages" source="Contact" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messages"/>
+	<obj-relationship name="messages" source="Contact" target="Message" deleteRule="Cascade" db-relationship-path="messages"/>
 	<obj-relationship name="noteRelations" source="Contact" target="ContactNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="paymentsIn" source="Contact" target="PaymentIn" deleteRule="Deny" db-relationship-path="paymentsIn"/>
 	<obj-relationship name="paymentsOut" source="Contact" target="PaymentOut" deleteRule="Deny" db-relationship-path="paymentsOut"/>
@@ -5131,7 +5099,6 @@
 	<obj-relationship name="taggingRelations" source="Document" target="DocumentTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
 	<obj-relationship name="taggedDocument" source="DocumentTagRelation" target="Document" deleteRule="Nullify" db-relationship-path="taggedDocument"/>
-	<obj-relationship name="attachmentData" source="DocumentVersion" target="AttachmentData" deleteRule="Cascade" db-relationship-path="attachmentData"/>
 	<obj-relationship name="attachmentRelations" source="DocumentVersion" target="AttachmentRelation" deleteRule="Deny" db-relationship-path="attachingRelations"/>
 	<obj-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
@@ -5230,12 +5197,9 @@
 	<obj-relationship name="taggedLead" source="LeadTagRelation" target="Lead" deleteRule="Nullify" db-relationship-path="taggedLead"/>
 	<obj-relationship name="discountMemberships" source="MembershipProduct" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discountMembershipProducts"/>
 	<obj-relationship name="discountsAvailable" source="MembershipProduct" target="Discount" deleteRule="Deny" db-relationship-path="discountMembershipProducts.discount"/>
-	<obj-relationship name="contacts" source="Message" target="Contact" deleteRule="Nullify" db-relationship-path="messagePerson.contact"/>
+	<obj-relationship name="contact" source="Message" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="createdBy" source="Message" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
-	<obj-relationship name="messagePersons" source="Message" target="MessagePerson" deleteRule="Cascade" db-relationship-path="messagePerson"/>
 	<obj-relationship name="taggingRelations" source="Message" target="MessageTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
-	<obj-relationship name="contact" source="MessagePerson" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
-	<obj-relationship name="message" source="MessagePerson" target="Message" deleteRule="Nullify" db-relationship-path="message"/>
 	<obj-relationship name="taggedMessage" source="MessageTagRelation" target="Message" deleteRule="Nullify" db-relationship-path="taggedMessage"/>
 	<obj-relationship name="assessmentClassModules" source="Module" target="AssessmentClassModule" deleteRule="Deny" db-relationship-path="assessmentClassModules"/>
 	<obj-relationship name="courses" source="Module" target="Course" deleteRule="Deny" db-relationship-path="courses.course"/>

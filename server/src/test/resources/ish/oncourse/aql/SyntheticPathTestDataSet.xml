@@ -227,16 +227,12 @@
                title="test invoiceline contact 2"/>
 
   <!-- messages -->
-  <Message id="1" createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826"
-           smsText="message for contact 1"/>
-  <Message_Person id="1" attemptCount="0" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" messageId="1"
-                  status="2" type="3" createdOn="2011-02-08 13:41:47.872" modifiedOn="2011-02-08 13:41:47.872"
-                  contactId="1"/>
-  <Message id="2" createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826"
-           smsText="message for contact 2"/>
-  <Message_Person id="2" attemptCount="0" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" messageId="2"
-                  status="2" type="3" createdOn="2011-02-08 13:41:47.872" modifiedOn="2011-02-08 13:41:47.872"
-                  contactId="2"/>
+  <Message id="1" numberOfAttempts="0" status="2" type="3" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" 
+           createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826"
+           smsText="message for contact 1" contactId="1"/>
+  <Message id="2" numberOfAttempts="0" destinationAddress="65/34 Iris Ave&#xA;Westfield VIC 3455" 
+           createdOn="2007-11-20 18:15:37.36" modifiedOn="2007-11-20 19:00:46.826" status="2" type="3"
+           smsText="message for contact 2" contactId="2"/>
 
   <!-- notes -->
   <Note id="1" note="contact 1 note" createdOn="2015-03-09 17:00:51.0" modifiedOn="2015-03-09 17:20:32.0"/>

@@ -67,8 +67,6 @@ paths:
     $ref: './path/holiday/api.yaml'
   /integration:
     $ref: './path/integration/api.yaml'
-  /integration/auth/myob:
-    $ref: './path/integration/auth/myob/api.yaml'
   /invite:
     $ref: './path/invite/api.yaml'
   /list:
@@ -139,8 +137,6 @@ paths:
     $ref: './path/list/entity/document/api.yaml'
   /list/entity/document/search:
     $ref: './path/list/entity/document/search/api.yaml'
-  /list/entity/document/export:
-    $ref: './path/list/entity/document/export/api.yaml'
   /list/entity/document/version:
     $ref: './path/list/entity/document/version/api.yaml'
   /list/entity/emailTemplate:

@@ -98,9 +98,7 @@ const DashboardHeader = (
   const toggleConfirm = () => {
     openConfirm({ onConfirm: logout, confirmMessage: "Do you want to logout?", confirmButtonText: "Yes" });
   };
-  
-  const isChristmas = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "christmas";
-  
+
   const systemUser = useAppSelector(state => state.systemUser);
 
   useEffect(() => {
@@ -110,7 +108,7 @@ const DashboardHeader = (
   }, [systemUser]);
     
   return (
-    <header className={clsx(classes.appBar, isChristmas && "christmasHeaderDashboard")}>
+    <header className={classes.appBar}>
       <div className={classes.toolBar}>
         {!drawerOpened && (
           <HamburgerMenu variant={VARIANTS.persistent} />
@@ -199,17 +197,6 @@ const DashboardHeader = (
                   >
                     High Contrast Theme
                   </MenuItem>
-                  {/* <MenuItem */}
-                  {/*  id="christmas" */}
-                  {/*  onClick={() => { */}
-                  {/*    themeMenuClose(); */}
-                  {/*    themeHandler("christmas"); */}
-                  {/*    setPreferencesTheme("christmas"); */}
-                  {/*  }} */}
-                  {/*  selected={themeName === "christmas"} */}
-                  {/* > */}
-                  {/*  Christmas Theme */}
-                  {/* </MenuItem> */}
                 </Menu>
                   )}
             </ThemeContext.Consumer>
