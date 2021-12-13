@@ -11,9 +11,6 @@ export const UPDATE_INTEGRATION_ITEM_FULFILLED = FULFILLED(UPDATE_INTEGRATION_IT
 
 export const DELETE_INTEGRATION_ITEM_REQUEST = _toRequestType("delete/integrations");
 
-export const GET_MYOB_AUTH_URL_REQUEST = _toRequestType("get/integration/auth/myob");
-export const GET_MYOB_AUTH_URL_FULFILLED = FULFILLED(GET_MYOB_AUTH_URL_REQUEST);
-
 export const getIntegrations = () => ({
   type: GET_INTEGRATIONS_REQUEST
 });
@@ -31,8 +28,4 @@ export const createIntegration = (item: Integration) => ({
 export const deleteIntegrationItem = (id: string) => ({
   type: DELETE_INTEGRATION_ITEM_REQUEST,
   payload: { id }
-});
-
-export const getMyobIntegrationAuthUrl = () => ({
-  type: GET_MYOB_AUTH_URL_REQUEST
 });
