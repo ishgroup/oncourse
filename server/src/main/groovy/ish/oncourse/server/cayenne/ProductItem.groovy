@@ -31,7 +31,7 @@ import static ish.persistence.CommonExpressionFactory.previousMidnight
  */
 @API
 @QueueableEntity
-class ProductItem extends _ProductItem implements Queueable, NotableTrait {
+class ProductItem extends _ProductItem implements Queueable, NotableTrait, AbstractTaggable {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -177,6 +177,11 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait {
 	 */
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
+		return null
+	}
+
+	@Override
+	List<? extends TagRelation> getTaggingRelations() {
 		return null
 	}
 }
