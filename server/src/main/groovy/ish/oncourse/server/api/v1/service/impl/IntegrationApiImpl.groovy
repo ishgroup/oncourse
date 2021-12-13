@@ -25,7 +25,6 @@ import ish.oncourse.server.api.v1.service.IntegrationApi
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
 import ish.oncourse.server.integration.PluginService
-import ish.oncourse.server.integration.myob.MyobIntegration
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
@@ -76,11 +75,6 @@ class IntegrationApiImpl implements IntegrationApi {
                 i
             }
         }
-    }
-
-    @Override
-    String getMyobAuthUrl() {
-        return MyobIntegration.MYOB_ACCESS_CODE_URL
     }
 
     @Override
