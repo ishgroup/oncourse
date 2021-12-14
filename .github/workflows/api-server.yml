@@ -8,11 +8,11 @@ on:
 jobs:
 
   api-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     timeout-minutes: 60
     strategy:
       matrix:
-        mariadb-version: [10.6, 10.5, 10.4, 10.3, 10.2]
+        mariadb-version: [10.6, 10.5, 10.4, 10.3]
         java: [11]
 
     steps:
