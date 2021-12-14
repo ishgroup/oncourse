@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		cayenneVersion = '4.1.B2'
+		cayenneVersion = '4.1'
 		ehcacheVersion = '3.4.0'
 		log4j2Version = '2.16.0'
         typesVersion = '107.1'
