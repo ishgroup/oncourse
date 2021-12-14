@@ -1,7 +1,7 @@
 package ish.oncourse.webservices.soap.v7;
 
 import ish.oncourse.webservices.soap.ATransportTest;
-import ish.oncourse.webservices.soap.v24.AbstractTransportTest;
+import ish.oncourse.webservices.soap.v25.AbstractTransportTest;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceStub;
 import org.apache.cxf.annotations.EndpointProperty;

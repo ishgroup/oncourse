@@ -1,8 +1,8 @@
-package ish.oncourse.webservices.soap.v24.stubs;
+package ish.oncourse.webservices.soap.v25.stubs;
 
 import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v24.stubs.replication.*;
+import ish.oncourse.webservices.v25.stubs.replication.*;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;

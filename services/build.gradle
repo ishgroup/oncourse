@@ -47,6 +47,32 @@ task generateNewVersionUpdatersAndBuilders(type: Copy) {
     rename { filename -> filename.replace "${previousVersion}", "${replicationVersions.last()}"}
 }
 
+task generateNewVersionTests(type: Copy) {
+    onlyIf { !file("src/test/java/ish/oncourse/webservices/soap/v${replicationVersions.last()}").exists() }
+    from "src/test/java/ish/oncourse/webservices/soap/v${previousVersion}"
+    into "src/test/java/ish/oncourse/webservices/soap/v${replicationVersions.last()}"
+    filter { line -> line.replaceAll("v${previousVersion}", "v${replicationVersions.last()}")
+            .replaceAll("V${previousVersion}", "V${replicationVersions.last()}")}
+}
+
+task deleteOldReplicationTests(type: Delete){
+    dependsOn generateNewVersionTests
+    onlyIf { file("src/test/java/ish/oncourse/webservices/soap/v${replicationVersions.last()}").exists() }
+    delete "src/test/java/ish/oncourse/webservices/soap/v${previousVersion}"
+}
+
+task replaceOldVersionInTests(type: Copy){
+    onlyIf { !file("src/test/java/ish/oncourse/webservices/soap/v${replicationVersions.last()}").exists() }
+    dependsOn deleteOldReplicationTests
+    ant.replaceregexp(match:"v${previousVersion}", replace:"v${replicationVersions.last()}", flags:'g') {
+        fileset(dir: 'src/test/java/ish/oncourse/webservices')
+    }
+    ant.replaceregexp(match:"V${previousVersion}", replace:"V${replicationVersions.last()}", flags:'g') {
+        fileset(dir: 'src/test/java/ish/oncourse/webservices')
+    }
+    rename { filename -> filename.replace "${previousVersion}", "${replicationVersions.last()}"}
+}
+
 task generateAppContext(type: Copy) {
     onlyIf { !file("src/main/resources/application-context.xml").text.contains("${replicationVersions.last()}") }
     from "src/templates/config"
@@ -68,6 +94,7 @@ compileJava {
 }
 
 test {
+    dependsOn replaceOldVersionInTests
     forkEvery = 1 //run every test in separate jvm
     initTestDBConfig(project, test)
 }

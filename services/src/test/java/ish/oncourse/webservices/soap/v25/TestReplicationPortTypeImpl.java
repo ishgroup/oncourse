@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.webservices.soap.v24;
+package ish.oncourse.webservices.soap.v25;
 
 import ish.oncourse.webservices.replication.services.ReplicationUtils;
-import ish.oncourse.webservices.v24.stubs.replication.*;
+import ish.oncourse.webservices.v25.stubs.replication.*;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v24.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v24.soap.webservices.oncourse.ish/")
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v25.ReplicationPortType", serviceName = "ReplicationService", portName = "ReplicationPort", targetNamespace = "http://repl.v25.soap.webservices.oncourse.ish/")
 public class TestReplicationPortTypeImpl implements ReplicationPortType {
 
 	@Override

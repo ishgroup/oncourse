@@ -23,7 +23,7 @@ public class EnrolmentWillowStubBuilderTest {
 
         IWillowStubBuilder builder = createStubBuilder(entity, queuedRecord);
 
-        GenericReplicationStub stub = builder.convert(queuedRecord, SupportedVersions.V24);
+        GenericReplicationStub stub = builder.convert(queuedRecord, SupportedVersions.V25);
 
         Mockito.verify(stub, times(1)).setEntityIdentifier("EnrolmentFieldConfiguration");
         Mockito.verify(stub).setEntityIdentifier("EnrolmentFieldConfiguration");

@@ -1,11 +1,11 @@
-package ish.oncourse.webservices.soap.v24;
+package ish.oncourse.webservices.soap.v25;
 
 import ish.oncourse.webservices.soap.AbstractServerTest;
 import ish.oncourse.webservices.soap.StubPopulator;
 import ish.oncourse.webservices.soap.v7.ReferencePortType;
 import ish.oncourse.webservices.util.GenericReplicationStub;
-import ish.oncourse.webservices.v24.stubs.replication.ReplicationStub;
-import ish.oncourse.webservices.v24.stubs.replication.TransactionGroup;
+import ish.oncourse.webservices.v25.stubs.replication.ReplicationStub;
+import ish.oncourse.webservices.v25.stubs.replication.TransactionGroup;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceStub;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
@@ -47,7 +47,7 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
     public static final long PAYMENT_SERVICE_TIMEOUT = 1000l * 60 * 25;
     //protected static TestServer server;
 
-    public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v24.stubs.replication";
+    public static final String PACKAGE_NAME_REPLICATION_STUBS = "ish.oncourse.webservices.v25.stubs.replication";
     public static final String PACKAGE_NAME_REFERENCE_STUBS = "ish.oncourse.webservices.v7.stubs.reference";
 
 
@@ -154,14 +154,14 @@ public abstract class AbstractTransportTest extends AbstractServerTest {
         return getPortType("/services/v7/reference", new QName("http://ref.v7.soap.webservices.oncourse.ish/", "ReferenceService"), ReferencePortType.class);
     }
 
-    protected ish.oncourse.webservices.soap.v24.PaymentPortType getPaymentPortType() {
-        return getPortType("/services/v24/payment",  new QName("http://repl.v24.soap.webservices.oncourse.ish/", "ReplicationService"), PaymentPortType.class);
+    protected ish.oncourse.webservices.soap.v25.PaymentPortType getPaymentPortType() {
+        return getPortType("/services/v25/payment",  new QName("http://repl.v25.soap.webservices.oncourse.ish/", "ReplicationService"), PaymentPortType.class);
     }
 
 
 
-    protected ish.oncourse.webservices.soap.v24.ReplicationPortType getReplicationPortType() {
-        return getPortType("/services/v24/replication", new QName("http://repl.v24.soap.webservices.oncourse.ish/", "ReplicationService") , ReplicationPortType.class);
+    protected ish.oncourse.webservices.soap.v25.ReplicationPortType getReplicationPortType() {
+        return getPortType("/services/v25/replication", new QName("http://repl.v25.soap.webservices.oncourse.ish/", "ReplicationService") , ReplicationPortType.class);
     }
 
     private <P> P getPortType(String endpointPath, QName serviceName, Class<P> portClass) {

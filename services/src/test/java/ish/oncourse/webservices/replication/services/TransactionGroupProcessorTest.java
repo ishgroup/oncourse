@@ -8,9 +8,9 @@ import ish.oncourse.test.tapestry.ServiceTest;
 import ish.oncourse.webservices.ITransactionGroupProcessor;
 import ish.oncourse.webservices.replication.builders.IWillowStubBuilder;
 import ish.oncourse.webservices.util.*;
-import ish.oncourse.webservices.v24.stubs.replication.BinaryInfoRelationStub;
-import ish.oncourse.webservices.v24.stubs.replication.CourseStub;
-import ish.oncourse.webservices.v24.stubs.replication.DocumentStub;
+import ish.oncourse.webservices.v25.stubs.replication.BinaryInfoRelationStub;
+import ish.oncourse.webservices.v25.stubs.replication.CourseStub;
+import ish.oncourse.webservices.v25.stubs.replication.DocumentStub;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import static ish.oncourse.webservices.replication.services.TransactionGroupProcessorTestUtils.*;
-import static ish.oncourse.webservices.util.SupportedVersions.V24;
+import static ish.oncourse.webservices.util.SupportedVersions.V25;
 import static org.junit.Assert.*;
 
 public class TransactionGroupProcessorTest extends ServiceTest {
@@ -48,7 +48,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		/**
 		 * Transaction with one Contact delete.
 		 */
-		GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V24);
+		GenericTransactionGroup transactionGroup = getTransactionGroup(0, SupportedVersions.V25);
 		List<GenericReplicatedRecord> replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
 		assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
 		assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
@@ -56,7 +56,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		/**
 		 * Transaction with one Student delete.
 		 */
-		transactionGroup = getTransactionGroup(1, SupportedVersions.V24);
+		transactionGroup = getTransactionGroup(1, SupportedVersions.V25);
 		replicatedRecords = transactionGroupProcessor.processGroup(transactionGroup);
 		assertEquals("Expecting one failed replicatedRecord, size test", 1, replicatedRecords.size());
 		assertEquals("Expecting one failed replicatedRecord, status test", true, StubUtils.hasFailedStatus(replicatedRecords.get(0)));
@@ -64,7 +64,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		/**
 		 * Transaction with Merge Student 1 to 2  delete.
 		 */
-		transactionGroup = getTransactionGroup(2, SupportedVersions.V24);
+		transactionGroup = getTransactionGroup(2, SupportedVersions.V25);
 		List<GenericReplicationStub> replicationStubs = transactionGroup.getGenericAttendanceOrBinaryInfo();
 		/**
 		 * Adjust relationships as the angel side does it.
@@ -72,7 +72,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		for (GenericReplicationStub replicationStub : replicationStubs) {
 			if (replicationStub instanceof GenericEnrolmentStub) {
 				((GenericEnrolmentStub)replicationStub).setStudentId(2L);
-				((ish.oncourse.webservices.v24.stubs.replication.EnrolmentStub)replicationStub).setInvoiceLineId(1L);
+				((ish.oncourse.webservices.v25.stubs.replication.EnrolmentStub)replicationStub).setInvoiceLineId(1L);
 			}
 			else if (replicationStub instanceof GenericPaymentInStub) {
 				((GenericPaymentInStub) replicationStub).setContactId(2L);
@@ -91,10 +91,10 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 	@Test
 	public void testBinaryDataProcessingV17() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V24);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V25);
 		transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
 
-		ish.oncourse.webservices.v24.stubs.replication.DocumentStub documentStub = new ish.oncourse.webservices.v24.stubs.replication.DocumentStub();
+		ish.oncourse.webservices.v25.stubs.replication.DocumentStub documentStub = new ish.oncourse.webservices.v25.stubs.replication.DocumentStub();
 		documentStub.setDescription("Presenter's Guide");
 		documentStub.setName("Presenter's Guide");
 		documentStub.setFileUUID("1234567890");
@@ -104,14 +104,14 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		documentStub.setShared(true);
 		documentStub.setAngelId(422l);
 
-		ish.oncourse.webservices.v24.stubs.replication.DocumentVersionStub documentVersionStub = new ish.oncourse.webservices.v24.stubs.replication.DocumentVersionStub();
+		ish.oncourse.webservices.v25.stubs.replication.DocumentVersionStub documentVersionStub = new ish.oncourse.webservices.v25.stubs.replication.DocumentVersionStub();
 		documentVersionStub.setEntityIdentifier("DocumentVersion");
 		documentVersionStub.setAngelId(422l);
 		documentVersionStub.setByteSize(464609L);
 		documentVersionStub.setMimeType("application/pdf");
 		documentVersionStub.setDocumentId(422l);
 
-		ish.oncourse.webservices.v24.stubs.replication.BinaryInfoStub binaryInfoStub = new ish.oncourse.webservices.v24.stubs.replication.BinaryInfoStub();
+		ish.oncourse.webservices.v25.stubs.replication.BinaryInfoStub binaryInfoStub = new ish.oncourse.webservices.v25.stubs.replication.BinaryInfoStub();
 		binaryInfoStub.setEntityIdentifier("AttachmentInfo");
 		binaryInfoStub.setAngelId(422l);
 		binaryInfoStub.setWebVisible(0);
@@ -141,16 +141,16 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 		transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
 
-		ish.oncourse.webservices.v24.stubs.replication.DeletedStub deletedStubBI = new ish.oncourse.webservices.v24.stubs.replication.DeletedStub();
+		ish.oncourse.webservices.v25.stubs.replication.DeletedStub deletedStubBI = new ish.oncourse.webservices.v25.stubs.replication.DeletedStub();
 		deletedStubBI.setAngelId(422l);
 		deletedStubBI.setEntityIdentifier("AttachmentInfo");
 
-		ish.oncourse.webservices.v24.stubs.replication.DeletedStub deletedStubBD = new ish.oncourse.webservices.v24.stubs.replication.DeletedStub();
+		ish.oncourse.webservices.v25.stubs.replication.DeletedStub deletedStubBD = new ish.oncourse.webservices.v25.stubs.replication.DeletedStub();
 		deletedStubBD.setAngelId(422l);
 		deletedStubBD.setEntityIdentifier("AttachmentData");
 
 
-		transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V24);
+		transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V25);
 		transactionGroup.getTransactionKeys().add("2e6ebaa0c38247ea4da3ae403315c970");
 		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedStubBI);
 		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deletedStubBD);
@@ -194,9 +194,9 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 	@Test
 	public void testMergeContactsDenyRuleV17() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V24);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(SupportedVersions.V25);
 
-		GenericReplicationStub deleteContactSub = PortHelper.createDeleteStub(SupportedVersions.V24);
+		GenericReplicationStub deleteContactSub = PortHelper.createDeleteStub(SupportedVersions.V25);
 
 		deleteContactSub.setWillowId(3l);
 		deleteContactSub.setAngelId(3l);
@@ -204,7 +204,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 		transactionGroup.getGenericAttendanceOrBinaryInfo().add(deleteContactSub);
 
-		ish.oncourse.webservices.v24.stubs.replication.ContactStub updateContactSub = new ish.oncourse.webservices.v24.stubs.replication.ContactStub();
+		ish.oncourse.webservices.v25.stubs.replication.ContactStub updateContactSub = new ish.oncourse.webservices.v25.stubs.replication.ContactStub();
 		updateContactSub.setWillowId(4l);
 		updateContactSub.setAngelId(4l);
 		updateContactSub.setEntityIdentifier("Contact");
@@ -216,7 +216,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 		transactionGroup.getGenericAttendanceOrBinaryInfo().add(updateContactSub);
 
-		ish.oncourse.webservices.v24.stubs.replication.ContactRelationStub updateContactRelationSub = new ish.oncourse.webservices.v24.stubs.replication.ContactRelationStub();
+		ish.oncourse.webservices.v25.stubs.replication.ContactRelationStub updateContactRelationSub = new ish.oncourse.webservices.v25.stubs.replication.ContactRelationStub();
 		updateContactRelationSub.setWillowId(1l);
 		updateContactRelationSub.setAngelId(1l);
 		updateContactRelationSub.setEntityIdentifier("ContactRelation");
@@ -262,7 +262,7 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 
 	@Test
 	public void testCourseWithAttachmentsCreation() throws Exception {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V25);
 		CourseStub courseStub = new CourseStub();
 		courseStub.setName("CourseName");
 		courseStub.setAngelId(1L);
@@ -315,13 +315,13 @@ public class TransactionGroupProcessorTest extends ServiceTest {
 		Contact updContact = ObjectSelect.query(Contact.class)
 				.where(ExpressionFactory.matchDbExp(Contact.ID_PK_COLUMN, updContactId)).selectOne(context);
 
-		GenericTransactionGroup group = PortHelper.createTransactionGroup(V24);
+		GenericTransactionGroup group = PortHelper.createTransactionGroup(V25);
 
 		group.getGenericAttendanceOrBinaryInfo().add(
-				generateContactV24Stub(updContact.getAngelId(),updContact.getId(), updContact.getGivenName(), updContact.getFamilyName()));
+				generateContactV25Stub(updContact.getAngelId(),updContact.getId(), updContact.getGivenName(), updContact.getFamilyName()));
 		group.getGenericAttendanceOrBinaryInfo().add(
 
-				generateDeleteV24Stub("Contact", delContact.getAngelId(), delContact.getId()));
+				generateDeleteV25Stub("Contact", delContact.getAngelId(), delContact.getId()));
 		group.getGenericAttendanceOrBinaryInfo().add(
 
 				generateContactDuplicateV17Stub(10L,null, delContactId,14L,14L));

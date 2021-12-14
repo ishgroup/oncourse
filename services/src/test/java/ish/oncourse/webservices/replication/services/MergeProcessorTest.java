@@ -13,7 +13,7 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v24.stubs.replication.*;
+import ish.oncourse.webservices.v25.stubs.replication.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
@@ -30,8 +30,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.webservices.util.SupportedVersions.V24;
-import static ish.oncourse.webservices.v24.stubs.replication.Status.SUCCESS;
+import static ish.oncourse.webservices.util.SupportedVersions.V25;
+import static ish.oncourse.webservices.v25.stubs.replication.Status.SUCCESS;
 import static org.junit.Assert.*;
 
 public class MergeProcessorTest extends ServiceTest {
@@ -62,7 +62,7 @@ public class MergeProcessorTest extends ServiceTest {
 	@Test
 	public void processMergeTransaction() {
 
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V25);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1l);
@@ -216,7 +216,7 @@ public class MergeProcessorTest extends ServiceTest {
 	 */
 	@Test
 	public void customFieldMerge1() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V25);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1L);
@@ -348,7 +348,7 @@ public class MergeProcessorTest extends ServiceTest {
 	 */
 	@Test
 	public void customFieldMerge2() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V25);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1L);
@@ -469,7 +469,7 @@ public class MergeProcessorTest extends ServiceTest {
 	 */
 	@Test
 	public void customFieldMerge3() {
-		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
+		GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V25);
 
 		ContactDuplicateStub duplicateStub = new ContactDuplicateStub();
 		duplicateStub.setAngelId(1L);

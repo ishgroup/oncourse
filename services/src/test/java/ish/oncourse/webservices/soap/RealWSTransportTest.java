@@ -13,11 +13,11 @@ import static org.junit.Assert.*;
 
 public abstract class RealWSTransportTest implements TestConstants {
     private static final String DEFAULT_DATASET_XML = "ish/oncourse/webservices/soap/QEProcessDataset.xml";
-    protected V24TestEnv testEnv;
+    protected V25TestEnv testEnv;
 
     @Before
     public void before() throws Exception {
-        testEnv = new V24TestEnv(DEFAULT_DATASET_XML, null).start();
+        testEnv = new V25TestEnv(DEFAULT_DATASET_XML, null).start();
     }
 
     @After

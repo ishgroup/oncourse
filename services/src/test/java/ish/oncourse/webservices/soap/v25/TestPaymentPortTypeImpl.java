@@ -1,12 +1,12 @@
-package ish.oncourse.webservices.soap.v24;
+package ish.oncourse.webservices.soap.v25;
 
-import ish.oncourse.webservices.v24.stubs.replication.ParametersMap;
-import ish.oncourse.webservices.v24.stubs.replication.TransactionGroup;
+import ish.oncourse.webservices.v25.stubs.replication.ParametersMap;
+import ish.oncourse.webservices.v25.stubs.replication.TransactionGroup;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "ish.oncourse.webservices.soap.v24.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType", targetNamespace = "http://repl.v24.soap.webservices.oncourse.ish/")
+@WebService(endpointInterface = "ish.oncourse.webservices.soap.v25.PaymentPortType", serviceName = "ReplicationService", portName = "PaymentPortType", targetNamespace = "http://repl.v25.soap.webservices.oncourse.ish/")
 public class TestPaymentPortTypeImpl implements PaymentPortType {
 
 

@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-package ish.oncourse.webservices.soap.v24;
+package ish.oncourse.webservices.soap.v25;
 
 
 import ish.oncourse.webservices.util.Sent2WillowInterceptor;
-import ish.oncourse.webservices.v24.stubs.replication.*;
+import ish.oncourse.webservices.v25.stubs.replication.*;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceResult;
 import ish.oncourse.webservices.v7.stubs.reference.ReferenceStub;
 import org.apache.cxf.endpoint.Client;
@@ -37,20 +37,20 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 	@Test
 	public void testReplicationPortType_authenticate() throws Exception {
 
-		ish.oncourse.webservices.soap.v24.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v25.ReplicationPortType replicationPortType = getReplicationPortType();
 		replicationPortType.authenticate(getSecurityCode(), getCommunicationKey());
 	}
 
 	@Test
 	public void testReplicationPortType_confirmExecution() throws Exception {
 
-		ish.oncourse.webservices.soap.v24.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v25.ReplicationPortType replicationPortType = getReplicationPortType();
 		replicationPortType.confirmExecution(getCommunicationKey(), "confirmExecution");
 	}
 
 	@Test
 	public void testReplicationPortType_getRecords() throws Exception {
-		ish.oncourse.webservices.soap.v24.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v25.ReplicationPortType replicationPortType = getReplicationPortType();
 		ReplicationRecords replicationRecords = replicationPortType.getRecords();
 		assertNotNull(replicationRecords);
 		TransactionGroup transactionGroup = replicationRecords.getGroups().get(0);
@@ -59,7 +59,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 
 	@Test
 	public void testReplicationPortType_sendRecords() throws Exception {
-		ish.oncourse.webservices.soap.v24.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v25.ReplicationPortType replicationPortType = getReplicationPortType();
 		ReplicationRecords replicationRecords = new ReplicationRecords();
 		ReplicationResult replicationResult = replicationPortType.sendRecords(replicationRecords);
 		assertNotNull(replicationResult);
@@ -68,7 +68,7 @@ public class WebServicesTransportTest extends AbstractTransportTest {
 
 	@Test
 	public void testReplicationPortType_sendResults() throws Exception {
-		ish.oncourse.webservices.soap.v24.ReplicationPortType replicationPortType = getReplicationPortType();
+		ish.oncourse.webservices.soap.v25.ReplicationPortType replicationPortType = getReplicationPortType();
 		ReplicationResult replicationRecords = new ReplicationResult();
 		int result = replicationPortType.sendResults(replicationRecords);
 		assertEquals(Integer.MAX_VALUE,result);

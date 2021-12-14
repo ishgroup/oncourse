@@ -5,20 +5,20 @@ import ish.oncourse.webservices.function.TestEnv;
 import java.util.Collections;
 import java.util.Map;
 
-public class V24TestEnv {
+public class V25TestEnv {
     private String dataSetFile;
     private Map<Object, Object> replacements = Collections.singletonMap("[null]", null);
-    private TestEnv<V24TransportConfig> testEnv;
+    private TestEnv<V25TransportConfig> testEnv;
 
 
-    public V24TestEnv(String dataSetFile, Map<Object, Object> replacements) {
+    public V25TestEnv(String dataSetFile, Map<Object, Object> replacements) {
         this.dataSetFile = dataSetFile;
         this.replacements = replacements == null ? this.replacements : replacements;
     }
 
-    public V24TestEnv start() {
-        testEnv = new TestEnv<>((TestEnv<V24TransportConfig> testEnv) -> {
-            V24TransportConfig transportConfig = new V24TransportConfig(testEnv);
+    public V25TestEnv start() {
+        testEnv = new TestEnv<>((TestEnv<V25TransportConfig> testEnv) -> {
+            V25TransportConfig transportConfig = new V25TransportConfig(testEnv);
             transportConfig.init();
             transportConfig.pingReplicationPort();
             transportConfig.pingPaymentPort();

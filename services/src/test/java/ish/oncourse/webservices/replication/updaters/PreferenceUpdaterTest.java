@@ -8,8 +8,8 @@ import ish.oncourse.webservices.replication.builders.WillowStubBuilderTest;
 import ish.oncourse.webservices.util.GenericReplicatedRecord;
 import ish.oncourse.webservices.util.GenericTransactionGroup;
 import ish.oncourse.webservices.util.PortHelper;
-import ish.oncourse.webservices.v24.stubs.replication.ReplicatedRecord;
-import ish.oncourse.webservices.v24.stubs.replication.PreferenceStub;
+import ish.oncourse.webservices.v25.stubs.replication.ReplicatedRecord;
+import ish.oncourse.webservices.v25.stubs.replication.PreferenceStub;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.dbunit.database.DatabaseConfig;
@@ -24,8 +24,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import static ish.oncourse.webservices.util.SupportedVersions.V24;
-import static ish.oncourse.webservices.v24.stubs.replication.Status.SUCCESS;
+import static ish.oncourse.webservices.util.SupportedVersions.V25;
+import static ish.oncourse.webservices.v25.stubs.replication.Status.SUCCESS;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
@@ -61,7 +61,7 @@ public class PreferenceUpdaterTest extends ServiceTest {
         stub.setCreated(new Date());
         stub.setEntityIdentifier(Preference.class.getSimpleName());
 
-        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V24);
+        GenericTransactionGroup transactionGroup = PortHelper.createTransactionGroup(V25);
         transactionGroup.getGenericAttendanceOrBinaryInfo().add(stub);
 
         List<GenericReplicatedRecord> records = transactionGroupProcessor.processGroup(transactionGroup);
