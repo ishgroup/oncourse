@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		cayenneVersion = '4.1.B2'
 		ehcacheVersion = '3.4.0'
-		log4j2Version = '2.15.0'
+		log4j2Version = '2.16.0'
         typesVersion = '107.1'
 		solrVersion = '7.1.0'
 		groovyVersion = '2.5.14'
