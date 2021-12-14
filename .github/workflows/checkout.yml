@@ -44,9 +44,9 @@ jobs:
 
       - name: jest
         run: ./gradlew checkout:test
-        continue-on-error: true
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
         with:
           files: '**/test-results/**/*.xml'
