@@ -49,8 +49,6 @@ interface Props {
 }
 
 const ResizableWrapper = (props: Props) => {
-  const line = () => <div className={props.classes.line} />;
-
   const {
     classes,
     onResizeStop,
@@ -73,7 +71,7 @@ const ResizableWrapper = (props: Props) => {
         enable={{ right: true }}
         className={clsx(classes.sideBar, className)}
         handleClasses={{ right: classes.resizeLine }}
-        handleComponent={{ right: <line /> }}
+        handleComponent={{ right: <div className={props.classes.line} /> }}
       >
         <div className={classes.sideBarWrapper}>{children}</div>
       </Resizable>
