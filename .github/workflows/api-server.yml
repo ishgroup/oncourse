@@ -12,12 +12,13 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
+        mariadb-version: [10.6, 10.5, 10.4, 10.3, 10.2]
         java: [11]
 
     steps:
       - uses: ankane/setup-mariadb@v1
         with:
-          mariadb-version: 10.5
+          mariadb-version: ${{ matrix.mariadb-version }}
           database: angel_api_test
 
       - uses: actions/checkout@v2
