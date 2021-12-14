@@ -99,6 +99,16 @@ class CanvasBaseForm extends React.Component<any, any> {
             label="Client secret"
             className="mb-2"
           />
+          <FormField
+            disabled={configured}
+            type="switch"
+            name="fields.authRequired"
+            label="Users should be authenticated by Canvas"
+            color="primary"
+            fullWidth
+          />
+          <br />
+          <br />
           {values && values.fields && values.fields.baseUrl && values.fields.clientToken && values.fields.clientSecret ? (
             configured
               ? (

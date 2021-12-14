@@ -37,6 +37,7 @@ class CanvasIntegration implements PluginTrait {
     public static final String CANVAS_ACCOUNT_ID_KEY = "accountId"
     public static final String CANVAS_REFRESH_TOKEN = "refreshToken"
     public static final String CANVAS_REDIRECT_URL = "redirectUrl"
+    public static final String CANVAS_AUTH_REQUIRED = "authRequired"
 
 
     String baseUrl
@@ -45,6 +46,7 @@ class CanvasIntegration implements PluginTrait {
     String accountId
     String authHeader
     String refreshToken
+    boolean authRequired
 
     private static Logger logger = LogManager.logger
 
@@ -56,6 +58,7 @@ class CanvasIntegration implements PluginTrait {
         this.clientSecret = configuration.getIntegrationProperty(CANVAS_CLIENT_SECRET_KEY).value
         this.accountId =configuration.getIntegrationProperty(CANVAS_ACCOUNT_ID_KEY).value
         this.refreshToken = configuration.getIntegrationProperty(CANVAS_REFRESH_TOKEN).value
+        this.authRequired = configuration.getIntegrationProperty(CANVAS_AUTH_REQUIRED).value.toBoolean()
     }
 
     /**
@@ -69,10 +72,10 @@ class CanvasIntegration implements PluginTrait {
         client.request(Method.POST, ContentType.URLENC) {
             uri.path = "/login/oauth2/token"
             body = [
-                grant_type: "refresh_token",
-                client_id: clientToken,
-                client_secret: clientSecret,
-                refresh_token: refreshToken,
+                    grant_type: "refresh_token",
+                    client_id: clientToken,
+                    client_secret: clientSecret,
+                    refresh_token: refreshToken,
             ]
             response.success = { resp, result ->
                 authHeader =  responseToJson(result)["access_token"]
@@ -102,7 +105,7 @@ class CanvasIntegration implements PluginTrait {
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.GET, ContentType.URLENC) {
-                uri.path = "/api/v1/accounts/${accountId}/users"
+            uri.path = "/api/v1/accounts/${accountId}/users"
             uri.query = [
                     search_term: email,
             ]
@@ -125,19 +128,24 @@ class CanvasIntegration implements PluginTrait {
      */
     def createNewUser(String fullName, String email) {
         def client = new RESTClient(baseUrl)
+        def pseudonymProperties = [
+                unique_id: email,
+                send_confirmation: false,
+                force_self_registration: true,
+                sis_user_id: email
+        ]
+
+        if(authRequired)
+            pseudonymProperties.put("authentication_provider_id", "1")
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.POST, ContentType.JSON) {
             uri.path = "/api/v1/accounts/${accountId}/users"
             body = [
                     user: [
-                            name: fullName,
+                            name: fullName
                     ],
-                    pseudonym: [
-                            unique_id: email,
-                            send_confirmation: false,
-                            force_self_registration: true
-                    ]
+                    pseudonym: pseudonymProperties
             ]
 
             response.success = { resp, result ->
@@ -303,12 +311,12 @@ class CanvasIntegration implements PluginTrait {
 
     @OnSave
     static void onSave(IntegrationConfiguration configuration, Map<String, String> props) {
-        
+
         String baseUrl = props[CANVAS_BASE_URL_KEY].trim()
         if (!baseUrl.startsWith("https://")) {
             baseUrl = "https://" + baseUrl
         }
-            
+
         configuration.setProperty(CANVAS_BASE_URL_KEY,baseUrl)
         configuration.setProperty(CANVAS_CLIENT_TOKEN_KEY,props[CANVAS_CLIENT_TOKEN_KEY])
         configuration.setProperty(CANVAS_CLIENT_SECRET_KEY,props[CANVAS_CLIENT_SECRET_KEY])
@@ -324,7 +332,7 @@ class CanvasIntegration implements PluginTrait {
                     client_secret: props[CANVAS_CLIENT_SECRET_KEY],
                     redirect_uri: props[CANVAS_REDIRECT_URL],
                     code: props[(IntegrationApiImpl.VERIFICATION_CODE)]
-                    ]
+            ]
             response.success = { resp, Map data ->
                 try {
                     String token = new JsonSlurper().parseText(data.keySet()[0])['refresh_token']
@@ -333,7 +341,7 @@ class CanvasIntegration implements PluginTrait {
                     logger.error(data.toString())
                     throw new RuntimeException(data.toString())
                 }
-                
+
             }
             response.failure = { HttpResponseDecorator resp  ->
                 String error = resp.responseBase.entity.content.getText("UTF-8")
