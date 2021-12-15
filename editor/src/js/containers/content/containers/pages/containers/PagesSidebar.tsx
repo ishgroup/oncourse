@@ -10,8 +10,10 @@ import SidebarList from "../../../../../components/Sidebar/SidebarList";
 import {showModal} from "../../../../../common/containers/modal/actions";
 import {State} from "../../../../../reducers/state";
 import PageService from "../../../../../services/PageService";
-import {hideNavigation, showNavigation} from "../../../../../common/containers/Navigation/actions";
+import { hideNavigation, setActiveUrl, showNavigation } from "../../../../../common/containers/Navigation/actions";
 import {SHOW_MESSAGE} from "../../../../../common/components/message/actions";
+import { getLayouts, getThemes } from '../../../../design/containers/themes/actions';
+import { getBlocks } from '../../blocks/actions';
 
 interface Props {
   pages: Page[];
@@ -25,9 +27,16 @@ interface Props {
   history: any;
   fetching: boolean;
   showModal: (props) => any;
+  getThemes: () => any;
 }
 
 export class PagesSidebar extends React.Component<Props, any> {
+  componentDidMount() {
+    const { themes, getThemes } = this.props;
+    if (!themes.length) {
+      getThemes();
+    }
+  }
 
   goBack() {
     this.props.history.push(URL.CONTENT, {updateActiveUrl: true});
@@ -48,7 +57,7 @@ export class PagesSidebar extends React.Component<Props, any> {
   }
 
   render() {
-    const {pages, match, onEditSettings, onDeletePage, showModal, showNavigation, fetching, showError, themes} = this.props;
+    const {pages, match, onEditSettings, onDeletePage, showModal, history, showNavigation, fetching, showError, themes} = this.props;
     const activePage = match.params.id && pages.find(page => page.id == match.params.id);
 
     return (
@@ -76,6 +85,7 @@ export class PagesSidebar extends React.Component<Props, any> {
             onDelete={pageId => onDeletePage(pageId)}
             showModal={showModal}
             showError={showError}
+            history={history}
             showNavigation={showNavigation}
           />
         }
@@ -92,6 +102,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
+    getThemes: () => dispatch(getThemes()),
     onEditSettings: (id, settings) => dispatch(savePage(id, settings)),
     onDeletePage: pageId => dispatch(deletePage(pageId)),
     showError: title => dispatch(

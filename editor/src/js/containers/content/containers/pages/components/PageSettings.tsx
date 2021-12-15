@@ -13,6 +13,7 @@ import EditInPlaceField from '../../../../../common/components/form/form-fields/
 import { stubFunction } from '../../../../../common/utils/Components';
 import { AppTheme } from '../../../../../styles/themeInterface';
 import { validateLink } from '../../../../../common/utils/validation';
+import { PageLink, Theme } from '../../../../../../../build/generated-sources/api';
 
 const styles: any = (theme: AppTheme) => ({
   navWrapper: {
@@ -130,10 +131,21 @@ interface Props {
   showError?: (title) => any;
   hideNavigation?: () => void;
   showNavigation?: () => void;
-  themes?: any;
+  themes?: Theme[];
+  history?: any;
 }
 
-class PageSettings extends React.PureComponent<Props, any> {
+interface State {
+  title: string,
+  urls: PageLink[],
+  visible: boolean,
+  themeId: number,
+  newLink: string,
+  suppressOnSitemap: boolean,
+  urlError: string
+}
+
+class PageSettings extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
@@ -141,7 +153,7 @@ class PageSettings extends React.PureComponent<Props, any> {
       title: props.page.title,
       urls: props.page.urls,
       visible: props.page.visible,
-      themeId: props.page.themeId,
+      themeId: null,
       newLink: '',
       suppressOnSitemap: props.page.suppressOnSitemap,
       urlError: null
@@ -154,12 +166,15 @@ class PageSettings extends React.PureComponent<Props, any> {
         title: props.page.title,
         urls: props.page.urls,
         visible: props.page.visible,
-        themeId: props.page.themeId,
         newLink: '',
         suppressOnSitemap: props.page.suppressOnSitemap,
         urlError: null
       });
     }
+  }
+
+  componentDidUpdate() {
+    this.getThemeValue();
   }
 
   validateUrlHandler = (value) => {
@@ -175,7 +190,6 @@ class PageSettings extends React.PureComponent<Props, any> {
       title: this.state.title,
       urls: this.state.urls,
       visible: this.state.visible,
-      themeId: this.state.themeId,
       suppressOnSitemap: this.state.suppressOnSitemap,
       content: addContentMarker(page.content, page.contentMode),
     });
@@ -185,7 +199,7 @@ class PageSettings extends React.PureComponent<Props, any> {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState({
       [key]: value,
-    }, () => (key === 'suppressOnSitemap' || key === 'visible') && this.onSave());
+    } as any, () => (key === 'suppressOnSitemap' || key === 'visible') && this.onSave());
   };
 
   onSetDefaultUrl = (url) => {
@@ -235,14 +249,34 @@ class PageSettings extends React.PureComponent<Props, any> {
 
   formatLink = (link) => (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
 
+  getThemeValue = () => {
+    const { themes, page } = this.props;
+    const { themeId } = this.state;
+
+    themes.forEach((theme) => {
+      theme.paths.forEach((path) => {
+        const matchUrl = page.urls.find((url) => (path.exactMatch ? url.link === path.path : url.link.startsWith(path.path)));
+        if (matchUrl && !themeId) {
+          this.setState({
+            themeId: theme.id
+          });
+        }
+      });
+    });
+  };
+
   render() {
-    const { classes, page, showNavigation } = this.props;
+    const {
+      classes, page, showNavigation, history, themes
+    } = this.props;
 
     const {
-      title, visible, urls, newLink, suppressOnSitemap, urlError
+      title, visible, urls, newLink, suppressOnSitemap, urlError, themeId
     } = this.state;
 
     const defaultPageUrl = PageService.generateBasetUrl(page);
+
+    const themeName = themes?.find((t) => t.id === themeId)?.title || '';
 
     return (
       <div>
@@ -255,7 +289,7 @@ class PageSettings extends React.PureComponent<Props, any> {
         </ul>
 
         <div className={classes.sideBarSetting}>
-          <div className="heading mb-2">Pages</div>
+          <div className="heading mb-2">Page</div>
 
           <form>
             <EditInPlaceField
@@ -330,7 +364,7 @@ class PageSettings extends React.PureComponent<Props, any> {
                 }}
                 className="w-100"
               />
-              <IconButton size="small" disabled={!newLink || urlError} onClick={this.onAddNewUrl} className={classes.addIconButton} color="primary">
+              <IconButton size="small" disabled={!newLink || Boolean(urlError)} onClick={this.onAddNewUrl} className={classes.addIconButton} color="primary">
                 <AddIcon className={classes.addIcon} />
               </IconButton>
             </div>
@@ -358,6 +392,26 @@ class PageSettings extends React.PureComponent<Props, any> {
               )}
               label="Hide from sitemap"
             />
+
+            <div className="centeredFlex w-100 mt-3">
+              <EditInPlaceField
+                label="Using theme"
+                type="text"
+                name="usedTheme"
+                input={{
+                  value: themeName
+                }}
+                meta={{}}
+                className="w-100"
+                disabled
+              />
+              <CustomButton
+                styleType="outline"
+                onClick={() => history.push(`/themes/${themeId}`)}
+              >
+                Change
+              </CustomButton>
+            </div>
 
             <div className={classes.actionsGroup}>
               <CustomButton
