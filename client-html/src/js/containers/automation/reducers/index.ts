@@ -4,12 +4,7 @@
  */
 
 import { IAction } from "../../../common/actions/IshAction";
-import {
-  GET_INTEGRATIONS_FULFILLED,
-  UPDATE_INTEGRATION_ITEM_FULFILLED,
-  GET_MYOB_AUTH_URL_REQUEST,
-  GET_MYOB_AUTH_URL_FULFILLED
-} from "../actions";
+import { GET_INTEGRATIONS_FULFILLED, UPDATE_INTEGRATION_ITEM_FULFILLED, } from "../actions";
 import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
 import { CommonListItem } from "../../../model/common/sidebar";
 import { GET_SCRIPTS_LIST_FULFILLED, GET_TIMEZONE_FULFILLED } from "../containers/scripts/actions";
@@ -22,7 +17,6 @@ import { GET_EMAIL_TEMPLATES_LIST_FULFILLED } from "../containers/email-template
 export interface AutomationState {
   integration: {
     integrations: IntegrationSchema[];
-    myobAuthUrl: string;
   };
   script: {
     scripts: CommonListItem[];
@@ -48,7 +42,6 @@ export interface AutomationState {
 const Initial: AutomationState = {
   integration: {
     integrations: [],
-    myobAuthUrl: null
   },
   script: {
     scripts: []
@@ -82,28 +75,6 @@ export const automationReducer = (state: AutomationState = Initial, action: IAct
         integration: {
           ...state.integration,
           integrations
-        }
-      };
-    }
-
-    case GET_MYOB_AUTH_URL_REQUEST: {
-      return {
-        ...state,
-        integration: {
-          ...state.integration,
-          myobAuthUrl: null
-        }
-      };
-    }
-
-    case GET_MYOB_AUTH_URL_FULFILLED: {
-      const { url, type } = action.payload;
-
-      return {
-        ...state,
-        integration: {
-          ...state.integration,
-          [type]: url
         }
       };
     }
