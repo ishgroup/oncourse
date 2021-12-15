@@ -7,7 +7,7 @@ import { Epic } from "redux-observable";
 import { Note, ProductItem } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_SALE, UPDATE_SALE, UPDATE_SALE_FULFILLED } from "../actions";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { updateEntityItemById } from "../../common/entityItemsService";
@@ -23,6 +23,7 @@ const request: EpicUtils.Request<any, { id: string; productItem: ProductItem & {
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: UPDATE_SALE_FULFILLED
       },

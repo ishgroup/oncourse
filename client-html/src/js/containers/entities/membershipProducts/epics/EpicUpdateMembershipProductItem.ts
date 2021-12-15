@@ -13,13 +13,12 @@ import {
   UPDATE_MEMBERSHIP_PRODUCT_ITEM,
   UPDATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED
 } from "../actions";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import membershipProductService from "../services/MembershipProductService";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { processCustomFields } from "../../customFieldTypes/utils";
-import ApplicationService from "../../applications/service/ApplicationService";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
 const request: EpicUtils.Request<any, { id: number; membershipProduct: MembershipProduct & { notes: Note[] } }> = {
@@ -31,6 +30,7 @@ const request: EpicUtils.Request<any, { id: number; membershipProduct: Membershi
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: UPDATE_MEMBERSHIP_PRODUCT_ITEM_FULFILLED
       },

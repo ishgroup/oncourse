@@ -9,7 +9,7 @@ import { initialize } from "redux-form";
 import { ArticleProduct } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_ARTICLE_PRODUCT_ITEM, UPDATE_ARTICLE_PRODUCT_ITEM } from "../actions";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import ArticleProductService from "../service/ArticleProductService";
@@ -26,6 +26,7 @@ const request: EpicUtils.Request<any, { id: number; articleProduct: ArticleProdu
   },
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
   processData: (v, s, { id }) => [
+    ...(s.actionsQueue.queuedActions.length ? [clearActionsQueue()] : []),
       {
         type: FETCH_SUCCESS,
         payload: { message: "Product Record updated" }
