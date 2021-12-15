@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- Diff, FundingSource, SearchQuery, Sorting, Tag 
-} from "@api/model";
+import { Diff, FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
 import Drawer from "@mui/material/Drawer";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -14,12 +12,10 @@ import ListItem from "@mui/material/ListItem";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import { Help } from "@mui/icons-material";
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { change, Field, reduxForm } from "redux-form";
+import { change, Field, reduxForm, reset } from "redux-form";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
@@ -33,6 +29,7 @@ import bottomDrawerStyles from "../bottomDrawerStyles";
 import SelectionSwitcher from "../share/SelectionSwitcher";
 import { BulkEditField, getBulkEditFields } from "./utils";
 import { EntityName } from "../../../../../model/entities/common";
+import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 interface BulkEditProps {
   rootEntity: EntityName;
@@ -61,7 +58,8 @@ interface BulkEditProps {
   dataCollectionRules: PreferencesState["dataCollectionRules"];
   entityTags?: { [key: string]: Tag[] };
   getEntityTags?: (entity: string) => void;
-  showConfirm?: any;
+  showConfirm?: ShowConfirmCaller;
+  reset?: any;
   getCustomBulkEditFields?: any;
 }
 
@@ -84,6 +82,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     searchQuery,
     doBulkEdit,
     manualLink,
+    reset,
     dispatch
   } = props;
 
@@ -118,6 +117,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   }, [selection, showBulkEditDrawer]);
 
   const onClose = useCallback(() => {
+    reset();
     setSelectAll(false);
     toggleBulkEditDrawer();
   }, []);
@@ -355,8 +355,10 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  dispatch,
   doBulkEdit: (entity, diff: Diff) => dispatch(bulkChangeRecords(entity, diff)),
-  getEntityTags: (entity: string) => dispatch(getEntityTags(entity))
+  getEntityTags: (entity: string) => dispatch(getEntityTags(entity)),
+  reset: () => dispatch(reset("BulkEditForm"))
 });
 
 export default reduxForm({
