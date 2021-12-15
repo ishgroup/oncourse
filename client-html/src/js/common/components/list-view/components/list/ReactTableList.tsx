@@ -4,16 +4,17 @@
  */
 
 import React, {
- useCallback, useEffect, useMemo, useRef, useState
+  useCallback, useEffect, useMemo, useRef, useState
 } from "react";
 import {
-  useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, UseSortByOptions, useTable
+  useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable
 } from "react-table";
 import makeStyles from "@mui/styles/makeStyles";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import debounce from "lodash.debounce";
 import Typography from "@mui/material/Typography";
 import DragIndicator from "@mui/icons-material/DragIndicator";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Column, DataResponse, TableModel } from "@api/model";
@@ -447,6 +448,11 @@ const Table: React.FC<ListTableProps> = ({
     </div>
   )), [rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
 
+  let tableMinWidth = `calc(100vw - ${sidebarWidth}px)`;
+
+  if (useMediaQuery('(min-width: 1920px)')) tableMinWidth = `calc(100vw - 11.5%)`;
+  if (useMediaQuery('(min-width: 2220px)')) tableMinWidth = `calc(100vw - 11%)`;
+
   return (
     <div
       {...getTableProps()}
@@ -457,7 +463,7 @@ const Table: React.FC<ListTableProps> = ({
         }
       )}
       style={{
-        minWidth: !threeColumn && `calc(100vw - ${sidebarWidth}px)`,
+        minWidth: !threeColumn && tableMinWidth,
         width: threeColumn && `${mainContentWidth}.px`
       }}
       onScroll={onScroll}
