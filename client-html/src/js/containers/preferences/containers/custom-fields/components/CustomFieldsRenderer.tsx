@@ -31,6 +31,28 @@ import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/ut
 import ListMapRenderer from "./ListMapRenderer";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
 import Uneditable from "../../../../../common/components/form/Uneditable";
+import { SelectItemDefault } from "../../../../../model/entities/common";
+
+const mapEntityType = (entityType: EntityType) => {
+  switch (entityType) {
+    case "Article":
+      return "Sale (Product)";
+    case "Voucher":
+      return "Sale (Voucher)";
+    case "Membership":
+      return "Sale (Membership)";
+    case "ArticleProduct":
+      return "Product";
+    case "VoucherProduct":
+      return "Voucher type";
+    case "MembershipProduct":
+      return "Membership type";
+    default:
+      return entityType;
+  }
+};
+
+const entityTypeCondition = (item: SelectItemDefault) => mapEntityType(item.label as any);
 
 const EntityTypes = Object.keys(EntityType)
   .filter(val => Number.isNaN(Number(val)))
@@ -207,7 +229,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
           </Grid>
           <Grid item xs={4}>
             <Uneditable
-              value={field.entityType}
+              value={mapEntityType(field.entityType)}
               label="Record Type"
             />
           </Grid>
@@ -271,10 +293,12 @@ const ExpandableCustomFields = React.memo<any>(props => {
             <FormField
               type="select"
               name={`${item}.entityType`}
+              selectLabelCondition={entityTypeCondition}
               label="Record Type"
               items={EntityTypes}
               disabled={field.id}
               className={classes.field}
+              sort
               fullWidth
               required
             />

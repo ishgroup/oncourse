@@ -33,15 +33,19 @@ const GetTagRequirementDisplayName = (type: TagRequirementType) => {
     case TagRequirementType.CourseClass:
       return "Classes";
     case TagRequirementType.Article:
-      return "Products";
+      return "Sales (Product)";
+    case TagRequirementType.Voucher:
+      return "Sales (Voucher)";
+    case TagRequirementType.Membership:
+      return "Sales (Membership)";
     case TagRequirementType.VoucherProduct:
       return "Voucher types";
     case TagRequirementType.MembershipProduct:
       return "Membership types";
     case TagRequirementType.ArticleProduct:
-      return "Product types";
+      return "Products";
     default:
-      return type + "s"
+      return type + "s";
   }
 };
 
