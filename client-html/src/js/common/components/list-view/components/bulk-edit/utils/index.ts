@@ -16,7 +16,7 @@ export interface BulkEditField {
   keyCode: string;
   label: string;
   name: string;
-  type: string;
+  type: "Select" | "Text" | "Date" | "Number" | "Switch" | "Checkbox" | "Tag" | "Money";
   items?: SelectItemDefault[];
   propsItemKey?: string;
   selectValueMark?: string;
@@ -135,6 +135,13 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
     }
     case "Course": {
       return [
+        {
+          keyCode: "allowWaitingLists",
+          label: "Allow waiting lists",
+          name: "Allow waiting lists",
+          type: "Checkbox",
+          defaultValue: true
+        },
         {
           keyCode: "enrolmentType",
           label: "Enrolment type",
