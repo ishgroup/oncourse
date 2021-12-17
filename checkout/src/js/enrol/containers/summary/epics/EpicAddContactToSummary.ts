@@ -19,7 +19,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
 
   const { type, parent, forChild } = state.checkout.contactAddProcess;
   const { contact } = action.payload;
-  const payerId = parent.id || contact.id;
+  const payerId = parent?.id || contact.id;
   const ifParentRequired = contact.parentRequired && !parent;
   const nextPage = state.checkout.phase === Phase.ComplementEditContact ? Phase.Payment : state.checkout.page;
   const isAddParentPhase = (type === Phase.AddParent || type === Phase.ChangeParent);
