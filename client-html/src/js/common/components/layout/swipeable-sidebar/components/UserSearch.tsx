@@ -9,10 +9,24 @@ import Input from "@mui/material/Input";
 import Search from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles(() => ({
+  inputRoot: {
+    "&::before": {
+      borderBottom: "2px solid #bfbfbf !important",
+    }
+  },
+  input: {
+    padding: "13px 0",
+  }
+}));
 
 const UserSearch: React.FC<any> = ({ getSearchResults, placeholder = "Find anything..." }) => {
   const [userSearch, setUserSearch] = React.useState("");
   const searchRef = React.useRef("");
+
+  const classes = useStyles();
 
   const debounseSearch = React.useCallback(
     debounce(() => {
@@ -39,7 +53,7 @@ const UserSearch: React.FC<any> = ({ getSearchResults, placeholder = "Find anyth
         value={userSearch}
         onChange={onUserSearchChange}
         placeholder={placeholder}
-        startAdornment={<Search className="inputAdornmentIcon textSecondaryColor mr-1" />}
+        startAdornment={<Search className="inputAdornmentIcon textGreyColor700 mr-1 fs3" />}
         endAdornment={
           userSearch && (
             <IconButton className="closeAndClearButton" onClick={clear}>
@@ -48,6 +62,7 @@ const UserSearch: React.FC<any> = ({ getSearchResults, placeholder = "Find anyth
           )
         }
         className="w-100"
+        classes={{ root: classes.inputRoot, input: classes.input }}
       />
     </div>
   );

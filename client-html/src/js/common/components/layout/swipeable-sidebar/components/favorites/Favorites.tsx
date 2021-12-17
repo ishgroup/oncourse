@@ -8,7 +8,7 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import {
- Typography, Grid, List, createStyles
+  Typography, Grid, List, createStyles
 } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
 import ButtonBase from "@mui/material/ButtonBase";
@@ -23,7 +23,7 @@ import FavoriteScriptItem from "./FavoriteScriptItem";
 
 const styles = theme => createStyles({
   root: {
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(2),
     columnCount: 2
   },
   tabsRoot: {
@@ -43,22 +43,35 @@ const styles = theme => createStyles({
     lineHeight: "1.46429em"
   },
   favouriteSelect: {
-    border: `1px solid ${theme.palette.text.disabled}`,
-    padding: theme.spacing(0.25, 1),
+    padding: theme.spacing(0.5, 0),
+    margin: theme.spacing(0, 1),
     cursor: "pointer",
-    "&:first-child": {
-      borderRadius: theme.spacing(0.5, 0, 0, 0.5)
-    },
     "&:last-child": {
-      borderRadius: theme.spacing(0, 0.5, 0.5, 0)
+      marginRight: 0,
+    },
+    "&::after": {
+      content: `" "`,
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      borderBottom: `2px solid transparent`,
+      transform: "scaleX(0)",
+      transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shorter,
+        easing: theme.transitions.easing.easeInOut
+      })
     }
   },
   favouriteHighlightSelect: {
-    border: `1px solid ${theme.palette.text.primary}`
+    "&::after": {
+      transform: "scaleX(1)",
+      borderBottomColor: theme.palette.text.primary,
+    }
   },
   favouriteSelectTypography: {
     color: theme.palette.text.secondary,
-    fontSize: theme.spacing(1.5),
+    fontSize: theme.spacing(1.625),
     fontWeight: 600
   },
   favouriteHighlightedSelectTypography: {
@@ -254,7 +267,6 @@ const Favorites: React.FC<Props> = props => {
       />
       <Grid container alignItems="center">
         <Grid item xs={12} className={classes.topBar}>
-          <Typography className="heading">{isEditing ? "" : "Navigation"}</Typography>
           <div className="flex-fill" />
           <div className="d-flex">
             <ButtonBase
@@ -274,7 +286,7 @@ const Favorites: React.FC<Props> = props => {
               <Typography
                 className={clsx(classes.favouriteSelectTypography, { [classes.favouriteHighlightedSelectTypography]: isEditing })}
               >
-                All
+                Features
               </Typography>
             </ButtonBase>
           </div>

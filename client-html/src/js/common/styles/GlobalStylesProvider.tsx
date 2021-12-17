@@ -404,6 +404,9 @@ const globalStyles = (theme: AppTheme) =>
       ".textSecondaryColor": {
         color: theme.palette.text.secondary
       },
+      ".textGreyColor700": {
+        color: theme.palette.text.grey
+      },
       ".iconColor": {
         color: theme.palette.text.secondary,
         marginLeft: theme.spacing(1)

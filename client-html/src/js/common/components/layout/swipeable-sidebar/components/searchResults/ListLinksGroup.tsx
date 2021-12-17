@@ -20,12 +20,14 @@ const styles = theme =>
   createStyles({
     chip: {
       color: theme.palette.text.primary,
-      height: "18px",
+      height: 30,
       width: "min-content",
-      marginTop: "4px",
-      justifySelf: "end",
+      marginTop: 12,
+      marginBottom: 12,
       whiteSpace: "nowrap",
-      maxWidth: 140
+      maxWidth: 140,
+      fontSize: theme.spacing(2),
+      fontWeight: 600,
     },
     chipWrapper: {
       position: "absolute",
@@ -108,7 +110,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     }
     return (
       <>
-        <div className={clsx("d-grid", { [classes.chipWrapper]: withOffset })}>
+        <div className={clsx({ [classes.chipWrapper]: withOffset })}>
           <Chip
             onClick={() => this.openEntity()}
             label={entityDisplayName}

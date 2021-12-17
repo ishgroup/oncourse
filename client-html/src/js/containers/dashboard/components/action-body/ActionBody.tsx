@@ -4,7 +4,6 @@
  */
 
 import React from "react";
-import clsx from "clsx";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
@@ -12,9 +11,8 @@ import { PreferenceEnum } from "@api/model";
 import { AppTheme } from "../../../../model/common/Theme";
 import ResizableWrapper from "../../../../common/components/layout/resizable/ResizableWrapper";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { APPLICATION_THEME_STORAGE_NAME, DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
+import { DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
 import Statistics from "./components/Statistics";
-import { LSGetItem } from "../../../../common/utils/storage";
 import NewsRender from "../../../../common/components/news/NewsRender";
 
 const styles = (theme: AppTheme) =>
@@ -127,9 +125,7 @@ class ActionBody extends React.PureComponent<Props, any> {
         <Grid
           item
           xs
-          className={clsx(
-            classes.rightSideBar
-          }
+          className={classes.rightSideBar}
         >
           <NewsRender />
         </Grid>

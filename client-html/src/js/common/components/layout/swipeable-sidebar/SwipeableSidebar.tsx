@@ -27,9 +27,6 @@ import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import onCourseLogoDark from "../../../../../images/onCourseLogoDark.png";
 import onCourseLogoLight from "../../../../../images/onCourseLogoLight.png";
-import onCourseLogoChristmas from "../../../../../images/onCourseLogoChristmas.png";
-import { LSGetItem } from "../../../utils/storage";
-import { APPLICATION_THEME_STORAGE_NAME } from "../../../../constants/Config";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
