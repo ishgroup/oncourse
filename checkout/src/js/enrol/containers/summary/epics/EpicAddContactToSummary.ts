@@ -51,7 +51,7 @@ export const AddContactToSummary: Epic<any, IshState> = (action$: ActionsObserva
   }
 
   // Force set payer from payment screen if payer age is valid or have parent
-  if ((type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany) && payerId) {
+  if ((type === Phase.AddContactAsPayer || type === Phase.AddContactAsCompany || type === Phase.AddParent) && payerId) {
     result.push(setPayer(payerId));
   }
 

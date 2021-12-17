@@ -14,7 +14,7 @@ const request: Request<ContactNode, IshState> = {
   processData: (value: ContactNode, state: IshState, payload) => {
     if (payload.uncheckItems) {
       // set selected to false for all items
-      const itemTypes = ['enrolments', 'waitingLists', 'articles', 'vouchers', 'applications', 'memberships'];
+      const itemTypes = ['enrolments', 'waitingLists', 'articles', 'applications', 'memberships'];
       itemTypes.forEach(type => {
         if (value[type] && value[type].length) {
           value[type] = value[type].map(item => ({...item, selected: false}));
