@@ -201,8 +201,9 @@ const mergePurchases = (ns: State, payload: State, leaveExisting: boolean): Stat
     ? { ...payload.entities.articles, ...ns.entities.articles }
     : { ...ns.entities.articles, ...payload.entities.articles };
 
-  // voucher could be applied only for one contact (payer). No need to merge
-  ns.entities.vouchers = { ...payload.entities.vouchers };
+  ns.entities.vouchers = leaveExisting
+    ? {...payload.entities.vouchers, ...ns.entities.vouchers}
+    : {...ns.entities.vouchers, ...payload.entities.vouchers};
 
   ns.entities.waitingLists = leaveExisting
     ? { ...payload.entities.waitingLists, ...ns.entities.waitingLists }

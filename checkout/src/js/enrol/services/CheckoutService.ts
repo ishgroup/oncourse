@@ -355,7 +355,7 @@ export class BuildContactNodes {
 
     // Make sure that only payer has vouchers
     result.vouchers = state.entities.vouchers && stateRoot.checkout.payerId === storage.contactId
-      ? Object.keys(state.entities.vouchers).map((vKey) => ({ ...state.entities.vouchers[vKey], contactId: storage.contactId }))
+      ? storage.vouchers ? storage.vouchers.map((id) => L.cloneDeep(state.entities.vouchers[id])) : []
       : [];
 
     result.waitingLists = storage.waitingLists ? storage.waitingLists.map((id) => L.cloneDeep(state.entities.waitingLists[id])) : [];

@@ -181,14 +181,17 @@ export const SummaryActionsBy = (dispatch: Dispatch<any>): any => ({
   },
   onUpdateWaitingCourse: (waitingCourse, prop) => {
     dispatch(updateItem(Object.assign(waitingCourse, prop)));
+    dispatch(getCheckoutModelFromBackend());
   },
   onPriceValueChange: (productItem: Voucher, val: number): void => {
     const item = Object.assign(productItem, { value: val, price: val, total: (val * productItem.quantity).toFixed(2) });
     dispatch(updateItem(item));
+    dispatch(getCheckoutModelFromBackend());
   },
   onQuantityValueChange: (productItem: Voucher | Article, val: number): void => {
     const item = Object.assign(productItem, { quantity: val, total: (val * productItem.price).toFixed(2) });
     dispatch(updateItem(item));
+    dispatch(getCheckoutModelFromBackend());
   },
   onAddConcession: (contactId): void => {
     dispatch(updateConcessionContact(contactId));
