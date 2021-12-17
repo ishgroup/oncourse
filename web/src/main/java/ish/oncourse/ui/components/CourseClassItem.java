@@ -26,6 +26,8 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -231,7 +233,8 @@ public class CourseClassItem extends ISHCommon {
 
 	public String getExpectedHours() {
 		return (courseClass.getIsDistantLearningCourse() && courseClass.getExpectedHours() != null && courseClass.getExpectedHours().compareTo(BigDecimal.ZERO) > 0) ?
-				String.format("Approximately %.0f hours", courseClass.getExpectedHours().doubleValue()) : StringUtils.EMPTY;
+				new DecimalFormat("Approximately #.########### hours", new DecimalFormatSymbols(Locale.ENGLISH)).format(courseClass.getExpectedHours().doubleValue())
+				: StringUtils.EMPTY;
 	}
 
 	public String getMaximumDaysToComplete() {
