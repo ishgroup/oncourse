@@ -53,7 +53,9 @@ class SuggestionApiService implements SuggestionApi {
             }.asList()
 
             cayenneCourses.each { course ->
-                products.addAll(relationService.getSuggestedProducts(course).collect { it.id.toString() })
+                products.addAll(relationService.getSuggestedProducts(course).
+                        findAll { it.isOnSale && it.isWebVisible }.
+                        collect { it.id.toString() })
                 courseClasses.addAll(relationService.getSuggestedCourses(course).
                         collect { getNearestCourseClass(it) }.
                         findAll { it != null }.
@@ -69,7 +71,9 @@ class SuggestionApiService implements SuggestionApi {
             }.asList()
 
             cayenneProducts.each { product ->
-                products.addAll(relationService.getSuggestedProducts(product).collect { it.id.toString() })
+                products.addAll(relationService.getSuggestedProducts(product).
+                        findAll { it.isOnSale && it.isWebVisible }.
+                        collect { it.id.toString() })
                 courseClasses.addAll(relationService.getSuggestedCourses(product).
                         collect { getNearestCourseClass(it) }.
                         findAll { it != null }.
