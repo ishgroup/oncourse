@@ -35,8 +35,42 @@ const styles = theme => createStyles({
 
 const ListLinkItem = props => {
   const {
-    showConfirm, classes, item, url, openLink, selected, id
+    showConfirm, classes, item, url, openLink, selected, id, shortenTime
   } = props;
+
+  const getDistance = () => {
+    if (item.date) {
+      let distance = formatDistanceStrict(new Date(item.date), new Date(), { addSuffix: true });
+
+      if (shortenTime) {
+        const units = [
+          { 'second': 'sec' },
+          { 'minute': 'min' },
+          { 'hour': 'hour' },
+          { 'day': 'day' },
+          { 'month': 'mon' },
+          { 'year': 'year' }
+        ];
+
+        units.forEach(unit => {
+          const unitKeys = Object.keys(unit);
+          const unitKey = unitKeys[0];
+          if (distance.includes(unitKey)) {
+            const regExp = new RegExp(`${unitKey}(s)*`, 'g');
+            distance = distance.replace(regExp, unit[unitKey]);
+          }
+        });
+      }
+
+      return (
+        <Typography className="graySmallFont12" align="right">
+          {distance}
+        </Typography>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <ListItem
@@ -52,11 +86,7 @@ const ListLinkItem = props => {
         {' '}
         {item.type === "script" ? <DescriptionOutlinedIcon className={classes.favoriteScriptIcon} /> : ""}
       </Typography>
-      {item.date && (
-        <Typography className="graySmallFont12" align="right">
-          {formatDistanceStrict(new Date(item.date), new Date(), { addSuffix: true })}
-        </Typography>
-      )}
+      {getDistance()}
     </ListItem>
   );
 };

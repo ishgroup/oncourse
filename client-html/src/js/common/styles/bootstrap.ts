@@ -461,4 +461,7 @@ export const bootstrap = (theme: AppTheme) => ({
   ".lh-1": {
     lineHeight: 1,
   },
+  ".text-decoration-underline": {
+    textDecoration: "underline",
+  },
 });

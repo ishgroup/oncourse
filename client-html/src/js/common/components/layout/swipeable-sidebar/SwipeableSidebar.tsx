@@ -27,6 +27,7 @@ import HamburgerMenu from "./components/HamburgerMenu";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import onCourseLogoDark from "../../../../../images/onCourseLogoDark.png";
 import onCourseLogoLight from "../../../../../images/onCourseLogoLight.png";
+import OfferMessage from "./components/OfferMessage";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
@@ -56,8 +57,11 @@ const styles = (theme: AppTheme) =>
       padding: "0 16px"
     },
     searchResultsRoot: {
-      padding: `${theme.spacing(2)} ${theme.spacing(2)} ${theme.spacing(2)} 125px`,
-      transition: "all 0.5s ease-in"
+      padding: theme.spacing(2),
+      transition: theme.transitions.create("all", {
+        duration: theme.transitions.duration.shorter,
+        easing: theme.transitions.easing.easeInOut
+      })
     },
     favoritesTopBar: {
       background: "none"
@@ -361,6 +365,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                 execMenuOpened={execMenuOpened}
                 setExecMenuOpened={setExecMenuOpened}
               />
+              <OfferMessage />
               <Divider variant="middle" />
               <SidebarLatestActivity showConfirm={showConfirmHandler} checkSelectedResult={checkSelectedResult} />
             </div>

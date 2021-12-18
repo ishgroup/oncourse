@@ -194,6 +194,7 @@ const styles = theme => createStyles({
     },
     "-moz-appearance": "textfield"
   },
+  textFieldBorderModified: {},
 });
 
 export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
@@ -673,7 +674,6 @@ export class EditInPlaceFieldBase extends React.PureComponent<any, any> {
                         : input.value || ""}
                     inputRef={this.setInputNode}
                     classes={{
-                      root: classes.textFieldBorderModified,
                       select: clsx(classes.muiSelect ,fieldClasses.text, isInline && classes.inlineSelect),
                       // @ts-ignore
                       underline: fieldClasses.underline

@@ -29,14 +29,6 @@ const styles = theme =>
       fontSize: theme.spacing(2),
       fontWeight: 600,
     },
-    chipWrapper: {
-      position: "absolute",
-      left: 0
-    },
-    chipOffset: {
-      position: "relative",
-      left: "-100%"
-    },
     collapseChip: {
       backgroundColor: "inherit",
       "&:hover": {
@@ -95,9 +87,26 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     }
   };
 
+  getListItems = items => {
+    const {
+      entity, entityDisplayName, checkSelectedResult, shortenTime
+    } = this.props;
+    return items.map((v, i) => (
+      <ListLinkItem
+        key={i}
+        item={v}
+        openLink={this.openLink}
+        entity={entityDisplayName}
+        selected={checkSelectedResult(entity, "id", v.id)}
+        id={getResultId(i, `${entity}-${v.id}`)}
+        shortenTime={shortenTime}
+      />
+    ));
+  };
+
   render() {
     const {
-      entity, classes, entityDisplayName, items, showFirst, withOffset, checkSelectedResult
+      classes, entityDisplayName, items, showFirst
     } = this.props;
     const { collapsed } = this.state;
 
@@ -110,19 +119,22 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     }
     return (
       <>
-        <div className={clsx({ [classes.chipWrapper]: withOffset })}>
+        <div className="d-flex align-items-center">
           <Chip
             onClick={() => this.openEntity()}
             label={entityDisplayName}
-            className={clsx("mr-1", classes.chip, { [classes.chipOffset]: withOffset })}
+            className={clsx("mr-1", classes.chip)}
           />
           {showFirst && Boolean(lastItems.length) && (
-            <Chip
-              onClick={this.toggleCollapsed}
-              className={clsx("mr-1", classes.chip, classes.chipOffset)}
-              label={`${lastItems.length} ${collapsed ? "less" : "more"}`}
-              classes={{ clickable: classes.collapseChip, label: classes.collapseChipLabel }}
-            />
+            <>
+              <div className="flex-fill" />
+              <Chip
+                onClick={this.toggleCollapsed}
+                className={classes.chip}
+                label={`${lastItems.length} ${collapsed ? "less" : "more"}`}
+                classes={{ clickable: classes.collapseChip, label: classes.collapseChipLabel }}
+              />
+            </>
           )}
         </div>
 
@@ -130,42 +142,13 @@ class ListLinksGroup extends React.PureComponent<any, any> {
           {showFirst ? (
             <>
               <Collapse in={collapsed}>
-                {items.map((v, i) => (
-                  <ListLinkItem
-                    key={i}
-                    item={v}
-                    openLink={this.openLink}
-                    entity={entityDisplayName}
-                    selected={checkSelectedResult(entity, "id", v.id)}
-                    id={getResultId(i, `${entity}-${v.id}`)}
-                  />
-                ))}
+                {this.getListItems(items)}
               </Collapse>
               <Collapse in={!collapsed}>
-                {firstItems.map((v, i) => (
-                  <ListLinkItem
-                    key={i}
-                    item={v}
-                    openLink={this.openLink}
-                    entity={entityDisplayName}
-                    selected={checkSelectedResult(entity, "id", v.id)}
-                    id={getResultId(i, `${entity}-${v.id}`)}
-                  />
-                ))}
+                {this.getListItems(firstItems)}
               </Collapse>
             </>
-          ) : (
-            items.map((v, i) => (
-              <ListLinkItem
-                key={i}
-                item={v}
-                openLink={this.openLink}
-                entity={entityDisplayName}
-                selected={checkSelectedResult(entity, "id", v.id)}
-                id={getResultId(i, `${entity}-${v.id}`)}
-              />
-            ))
-          )}
+          ) : this.getListItems(items)}
         </List>
       </>
     );

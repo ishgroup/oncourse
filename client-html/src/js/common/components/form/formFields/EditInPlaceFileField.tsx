@@ -130,7 +130,8 @@ const styles = theme => createStyles({
       margin: 0
     },
     "-moz-appearance": "textfield"
-  }
+  },
+  textFieldBorderModified: {},
 });
 
 export class EditInPlaceFileFieldBase extends React.PureComponent<any, any> {
