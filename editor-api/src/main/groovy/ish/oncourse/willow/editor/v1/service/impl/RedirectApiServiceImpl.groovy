@@ -6,6 +6,7 @@ import ish.oncourse.willow.editor.rest.UpdateRedirects
 import ish.oncourse.api.request.RequestService
 import ish.oncourse.willow.editor.v1.model.RedirectItem
 import ish.oncourse.willow.editor.v1.model.Redirects
+import ish.oncourse.willow.editor.v1.model.UnexpectedError
 import ish.oncourse.willow.editor.v1.service.RedirectApi
 import ish.oncourse.willow.editor.website.WebUrlAliasFunctions
 import org.apache.cayenne.ObjectContext
@@ -45,7 +46,7 @@ class RedirectApiServiceImpl implements RedirectApi {
         UpdateRedirects updater = UpdateRedirects.valueOf(redirects, context, requestService.request)
 
         if (updater.validate().error) {
-            throw new ClientErrorException(updater.error, Response.status(Response.Status.BAD_REQUEST).entity(updater.error).build())
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new UnexpectedError(updater.error)).build())
         }
         updater.update()
         if (updater.errors.empty) {
