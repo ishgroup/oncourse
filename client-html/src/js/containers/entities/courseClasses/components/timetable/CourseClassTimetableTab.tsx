@@ -3,8 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
+import React, {
+ useCallback, useEffect, useMemo, useState 
+} from "react";
+import {
+ arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation 
+} from "redux-form";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
 import {
@@ -770,7 +774,7 @@ const CourseClassTimetableTab = ({
 
   return (
     <div className="pl-3 pr-3">
-      {sessionSelection.length > 0 && (
+      {sessionSelection.length > 0 && bulkSessionModalOpened && (
         <CourseClassBulkChangeSession
           onSubmit={onBulkSessionUpdate}
           opened={bulkSessionModalOpened}

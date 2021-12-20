@@ -4,12 +4,14 @@
  */
 
 import React, {
-  useCallback, useEffect, useMemo, useState
+ useCallback, useEffect, useMemo, useState 
 } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit } from "redux-form";
+import {
+ arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit 
+} from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
 import DialogContent from "@mui/material/DialogContent";
@@ -21,7 +23,7 @@ import withStyles from "@mui/styles/withStyles";
 import Collapse from "@mui/material/Collapse";
 import { TutorAttendance } from "@api/model";
 import {
-  addDays, differenceInMinutes, format as formatDate, subDays
+ addDays, differenceInMinutes, format as formatDate, subDays 
 } from "date-fns";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
@@ -83,7 +85,6 @@ export const initialValues = {
   moveBackwardChecked: false,
   moveBackward: ""
 };
-
 
 const BulkItemWrapper: React.FC<any> = props => {
   const {
@@ -227,6 +228,8 @@ const CourseClassBulkChangeSessionForm = props => {
   const onDeleteTutor = (index: number) => {
     dispatch(arrayRemove(form, `tutorAttendances`, index));
   };
+  
+  const firstSelectedSession = useMemo(() => sessions?.find(s => s.id === selection[0]) || sessions[0], [sessions, selection]);
 
   const onAddTutor = (tutor: CourseClassTutorExtended) => {
     dispatch(arrayPush(form, `tutorAttendances`, {
@@ -236,36 +239,36 @@ const CourseClassBulkChangeSessionForm = props => {
       contactName: tutor.tutorName,
       attendanceType: 'Not confirmed for payroll',
       note: null,
-      actualPayableDurationMinutes: durationValue || differenceInMinutes(new Date(sessions[0]?.end), new Date(sessions[0]?.start)),
+      actualPayableDurationMinutes: durationValue || differenceInMinutes(new Date(firstSelectedSession?.end), new Date(firstSelectedSession?.start)),
       hasPayslip: false,
-      start: bulkValues.start || sessions[0]?.start,
-      end: bulkValues.end || sessions[0]?.end,
+      start: bulkValues.start || firstSelectedSession?.start,
+      end: bulkValues.end || firstSelectedSession?.end,
       contactId: tutor.contactId,
       payslipIds: []
     } as TutorAttendance));
   };
 
-  const onMoveLater = useCallback(e => {
+  const onMoveLater = e => {
     const days = e.target.value !== "" ? Number(e.target.value) : 0;
 
     if (days > 0) {
-      setLaterDate(formatDate(addDays(new Date(sessions[0].start), days), DD_MMM_YYYY).toString());
+      setLaterDate(formatDate(addDays(new Date(firstSelectedSession?.start), days), DD_MMM_YYYY).toString());
     } else {
       setLaterDate(null);
     }
-  }, [sessions]);
+  };
 
-  const onMoveEarlier = useCallback(e => {
+  const onMoveEarlier = e => {
     const days = e.target.value !== "" ? Number(e.target.value) : 0;
 
     if (days > 0) {
-      const firstSessionDate = new Date(sessions[0].start);
+      const firstSessionDate = new Date(firstSelectedSession?.start);
       const toDate = formatDate(subDays(firstSessionDate, days), DD_MMM_YYYY).toString();
       setEarlierDate(`${formatDate(firstSessionDate, DD_MMM_YYYY).toString()} to ${toDate}`);
     } else {
       setEarlierDate(null);
     }
-  }, [sessions]);
+  };
 
   return (
     <Dialog
@@ -305,7 +308,7 @@ const CourseClassBulkChangeSessionForm = props => {
                       <Field
                         name="tutorAttendances"
                         component={CourseClassTutorRooster}
-                        session={bulkValues}
+                        session={{ ...bulkValues, siteTimezone: classTimezone }}
                         tutors={tutors}
                         onDeleteTutor={onDeleteTutor}
                         onAddTutor={onAddTutor}
@@ -340,7 +343,8 @@ const CourseClassBulkChangeSessionForm = props => {
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
                         label="Actual payable duration"
-                        id="actualPayableDuration"meta={{}}
+                        id="actualPayableDuration"
+                        meta={{}}
                         input={{
                           value: payableDurationValue,
                           onChange: stubFunction,
@@ -378,7 +382,8 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Duration"id="duration"
+                        label="Duration"
+                        id="duration"
                         meta={{
                           error: durationError,
                           invalid: Boolean(durationError)
@@ -406,40 +411,40 @@ const CourseClassBulkChangeSessionForm = props => {
                         step="1"
                         className={classes.bulkChangeDaysInput}
                         hideArrows
-                      onChange={onMoveLater}
+                        onChange={onMoveLater}
                       />
                       {" "}
                       days
+                    </Grid>
+                    <Grid item xs={6} id="moveForwardInfo">
+                      {laterDate && `Earliest selected session will starts ${laterDate}`}
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6} id="moveForwardInfo">
-                    {laterDate && `Earliest selected session will starts ${laterDate}`}
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <FormField
+                        name="moveBackward"
+                        type="number"
+                        formatting="inline"
+                        step="1"
+                        className={classes.bulkChangeDaysInput}
+                        hideArrows
+                        onChange={onMoveEarlier}
+                      />
+                      {" "}
+                      days
+                    </Grid>
+                    <Grid item xs={6} id="moveBackwardInfo">
+                      {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
+                </BulkItemWrapper>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormField
-                      name="moveBackward"
-                      type="number"
-                      formatting="inline"
-                      step="1"
-                      className={classes.bulkChangeDaysInput}
-                      hideArrows
-                      onChange={onMoveEarlier}
-                    />
-                    {" "}
-                    days
-                  </Grid>
-                  <Grid item xs={6} id="moveBackwardInfo">
-                    {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
-                  </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-          </Grid>
           </Grid>
         </DialogContent>
         <DialogActions className="p-3">
