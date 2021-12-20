@@ -9,10 +9,11 @@ import Loading from '../common/Loading';
 
 interface Props {
   gtmContainer: GTMContainer;
+  gtmContainerId: string;
   loading: boolean;
 }
 
-const TagManager = ({ gtmContainer, loading }: Props) => (
+const TagManager = ({ gtmContainer, gtmContainerId, loading }: Props) => (
   <Grid container>
     {loading && <Loading />}
     {!loading && (
@@ -21,7 +22,9 @@ const TagManager = ({ gtmContainer, loading }: Props) => (
         Used container
       </Typography>
       <Typography variant="body1">
-        {gtmContainer?.name ? `${gtmContainer.name} (${gtmContainer.publicId})` : <span className="text-placeholder">Not specified</span>}
+        {gtmContainer?.name
+          ? `${gtmContainer.name} (${gtmContainer.publicId})`
+          : (gtmContainerId || <span className="text-placeholder">Not specified</span>)}
       </Typography>
     </Grid>
     )}

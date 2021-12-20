@@ -481,12 +481,13 @@ export const SitesPage = () => {
         );
 
       case 'tagManager':
-        return loggedWithGoogle ? (
+        return (
           <TagManager
+            gtmContainerId={values.gtmContainerId}
             gtmContainer={gtmContainer}
             loading={googleLoading || customLoading}
           />
-        ) : notLoggedWarning;
+        );
       case 'analytics':
         return loggedWithGoogle ? (
           <Analytics
@@ -559,13 +560,12 @@ export const SitesPage = () => {
                 {!isConfig && page === 'tagManager'
                 && (
                   <Button
-                    onClick={() => window.open(gtmContainer.tagManagerUrl, 'blank')}
+                    onClick={() => window.open(gtmContainer?.tagManagerUrl || 'https://tagmanager.google.com/#/home', 'blank')}
                     disableElevation
                     color="primary"
                     variant="contained"
                     className="mr-2"
                     endIcon={<OpenInNewIcon />}
-                    disabled={!gtmContainer?.path}
                   >
                     Open tag manager
                   </Button>
