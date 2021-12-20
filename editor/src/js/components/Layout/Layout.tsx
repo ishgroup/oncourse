@@ -3,10 +3,15 @@ import {withStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {Grid} from "@material-ui/core";
 
-const styles = theme => ({
+const styles = () => ({
   contentWrapper: {
     padding: "15px 25px",
-    maxHeight: "100vh",
+    "& .block-wrapper": {
+      "& .editor-wrapper.ace-wrapper .ace_editor, .mde-textarea-wrapper .mde-text, .mde-preview .mde-text": {
+        height: "calc(100vh - 160px) !important",
+        minHeight: 250,
+      }
+    },
   },
   fullHeight: {
     minHeight: "100vh",

@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import clsx from "clsx";
-import {createStyles, makeStyles, Paper} from "@material-ui/core";
+import React, {useCallback, useEffect, useState} from 'react';
 import marked from "marked";
+import { ResizableBox } from "react-resizable";
 import {PageState} from "../reducers/State";
+import "../../../../../../../node_modules/react-resizable/css/styles.css";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 import PageService from "../../../../../services/PageService";
 import {addContentMarker, getEditorSize} from "../../../utils";
-import MarkdownEditor from "../../../../../common/components/editor/MarkdownEditor";
-import Editor from "../../../../../common/components/editor/HtmlEditor";
 import {ContentMode} from "../../../../../model";
-import ContentModeSwitch from "../../../../../common/components/ContentModeSwitch";
-import CustomButton from "../../../../../common/components/CustomButton";
+import BlockEditor from "../../blocks/components/BlockEditor";
 
 const blocksType = ["block", "flex", "grid", "table"];
 
@@ -28,14 +25,6 @@ interface PageProps {
   setBlockContentMode?: (id: number, contentMode: ContentMode) => any;
   editMode?: any;
 }
-
-const useStyles = makeStyles(theme =>
-  createStyles({
-    paperWrapper: {
-      maxHeight: "100%",
-    }
-  }),
-);
 
 const pluginInitEvent = new Event("plugins:init");
 
@@ -62,14 +51,12 @@ export const Page: React.FC<PageProps> = ({
     top: 0,
     left: 0,
     bottom: 0,
-  })
-
-  const classes = useStyles();
+  });
 
   useEffect(() => {
     toggleEditMode(false);
     return () => toggleEditMode(false);
-  }, [])
+  }, []);
 
   useEffect(() => {
     document.addEventListener('scroll', onScroll);
@@ -93,7 +80,7 @@ export const Page: React.FC<PageProps> = ({
     e.preventDefault();
     const block = blocks.filter(elem => elem.id === id)[0];
 
-    if (!block) return null
+    if (!block) return null;
     setDOMNode(DOMBlock);
 
     setScrollValue(0);
@@ -103,13 +90,13 @@ export const Page: React.FC<PageProps> = ({
     setDraftContent(block.contentMode === "html" ? marked(block.content || "") : block.content);
 
     toggleEditMode(true);
-  }
+  };
 
   const getReverseValue = (height, top) => {
     const windowHeight = window.innerHeight;
 
     return window.innerHeight - height - top < 0 && height < windowHeight;
-  }
+  };
 
   const onScroll = () => {
     const DOMNodeElementData = DOMNode && DOMNode.getBoundingClientRect();
@@ -119,7 +106,7 @@ export const Page: React.FC<PageProps> = ({
     const reverse = getReverseValue(position.height, DOMNodeElementData.top);
 
     DOMNodeElementData && reverse ? setScrollValue(DOMNodeElementData.bottom) : setScrollValue(DOMNodeElementData.top);
-  }
+  };
 
   useEffect(() => {
     document.dispatchEvent(pluginInitEvent);
@@ -195,15 +182,15 @@ export const Page: React.FC<PageProps> = ({
 
     blocks.forEach((block) => {
       if (block.renderHTML) {
-        const nodes = document.querySelectorAll(`[data-block-id='${block.id}']`)
+        const nodes = document.querySelectorAll(`[data-block-id='${block.id}']`);
 
         nodes.length && nodes.forEach((node) => {
           node.innerHTML = block.renderHTML;
-        })
+        });
 
         needClining = true
       }
-    })
+    });
 
     needClining && clearBlockRenderHtml();
 
@@ -234,15 +221,11 @@ export const Page: React.FC<PageProps> = ({
     }
   }, [editMode, page && page.content]);
 
-  const onChangeArea = val => {
-    setDraftContent(val);
-  };
-
   const handleSave = () => {
     toggleEditMode(false);
 
     if (blockId) {
-      const block = blocks.filter(elem => elem.id === blockId)[0]
+      const block = blocks.filter(elem => elem.id === blockId)[0];
       onSaveBlock(blockId, addContentMarker(draftContent, block.contentMode));
     } else {
       onSave(page.id, addContentMarker(draftContent, page.contentMode));
@@ -254,62 +237,53 @@ export const Page: React.FC<PageProps> = ({
     toggleEditMode(false);
   };
 
-  const renderEditor = (height) => {
-    const contentMode = blockId ? blocks.filter(elem => elem.id === blockId)[0].contentMode : page.contentMode;
-
-    switch (contentMode) {
-      case "md": {
-        return (
-          <MarkdownEditor
-            height={height - 67 - 45}
-            value={draftContent}
-            onChange={setDraftContent}
-          />
-        );
-      }
-      case "textile":
-      case "html":
-      default: {
-        return (
-          <Editor
-            height={`${height - 67 - 44}px`}
-            value={draftContent}
-            onChange={onChangeArea}
-            mode={contentMode}
-          />
-        );
-      }
-    }
-  };
+  const onResize = useCallback((event, {element, size}) => {
+    setPosition(prev => ({
+      ...prev,
+      width: size.width,
+      height: size.height,
+    }));
+  }, []);
 
   const reverse = getReverseValue(position.height, position.top);
 
   const block = blockId ? blocks.filter(elem => elem.id === blockId)[0] : null;
+  const contentMode = block ? block.contentMode : page.contentMode;
+
+  const wrapperStyles = {
+    width: `${position.width}px`,
+    height: `${position.height}px`,
+    position: "absolute",
+    top: reverse ? "auto" : `${scrollValue || position.top}px`,
+    left: `${position.left}px`,
+    bottom: reverse ? `${(scrollValue && window.innerHeight - scrollValue) || window.innerHeight - position.bottom}px` : "auto"
+  };
+
+  console.log(position);
 
   return (
-    <div style={{width: `${position.width}px`, height: `${position.height}px`, position: "absolute",
-      top: reverse ? "auto" : `${scrollValue || position.top}px`, left: `${position.left}px`,
-      bottom: reverse ? `${(scrollValue && window.innerHeight - scrollValue) || window.innerHeight - position.bottom}px` : "auto"}}
-    >
-      {editMode && (
-        <Paper className={clsx("p-1 h-100", classes.paperWrapper)}>
-          <div className={
-            clsx("editor-wrapper", ((blockId && (block.contentMode === "html" || block.contentMode === "textile"))
-              || (!blockId && (page.contentMode === "html" || page.contentMode === "textile"))) && "ace-wrapper")
-          }>
-            <ContentModeSwitch
-                contentModeId={blockId && block ? block.contentMode : page.contentMode}
-                moduleId={blockId && block ? blockId : page.id}
-                setContentMode={blockId && block ? setBlockContentMode : setPageContentMode}
-            />
-            {renderEditor(position.height)}
-          </div>
-          <div className="mt-3">
-            <CustomButton onClick={handleCancel} styleType="cancel" styles={"mr-2"}>Cancel</CustomButton>
-            <CustomButton onClick={handleSave} styleType="submit">Save</CustomButton>
-          </div>
-        </Paper>
-      )}
+    <div className="h-100 w-100" /*style={{ width: position.width, height: position.height}}*/ style={wrapperStyles as any}>
+      <ResizableBox
+        width={position.width}
+        height={position.height}
+        // minConstraints={[100, 100]}
+        // maxConstraints={[300, 300]}
+        onResize={onResize}
+        // style={wrapperStyles as any}
+      >
+        {editMode && (
+          <BlockEditor
+            mode={contentMode}
+            content={draftContent}
+            setContent={setDraftContent}
+            moduleId={blockId && block ? blockId : page.id}
+            setContentMode={blockId && block ? setBlockContentMode : setPageContentMode}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+            position={position}
+          />
+        )}
+      </ResizableBox>
     </div>
   );
-}
+};
