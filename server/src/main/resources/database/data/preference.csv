@@ -27,7 +27,7 @@
 "2012-06-20T10:27:53","220","2012-06-20T10:27:53","data.wed.version","NULL","NULL","NULL","8.11","data.wed.version"
 "2012-06-20T10:28:05","222","2012-06-20T10:28:05","services.soap.communication.key","NULL","NULL","NULL","-1152920164454761137","services.soap.communication.key"
 "2012-06-20T10:28:05","223","2012-06-20T10:28:05","logout.timeout","NULL","NULL","NULL","60","logout.timeout"
-"NULL","224","NULL","finance.transaction_locked","NULL","NULL","NULL","31-Dec-2015","finance.transaction_locked"
+"2012-06-20T10:28:05","224","2012-06-20T10:28:05","finance.transaction_locked","NULL","NULL","NULL","31-Dec-2015","finance.transaction_locked"
 "2018-09-01T00:00:00","225","2018-09-01T00:00:00","security.auto.disable.inactive.account","NULL","NULL","NULL","true","security.auto.disable.inactive.account"
 "2018-09-01T00:00:00","226","2018-09-01T00:00:00","security.password.complexity","NULL","NULL","NULL","false","security.password.complexity"
 "2018-09-01T00:00:00","227","2018-09-01T00:00:00","security.tfa.status","NULL","NULL","NULL","disabled","security.tfa.status"
