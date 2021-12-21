@@ -12,6 +12,19 @@ const styles = () => ({
         minHeight: 250,
       }
     },
+    "& .fullscreen-page-block": {
+      "& .react-resizable": {
+        width: "100% !important",
+        height: "100% !important",
+        "& .react-resizable-handle": {
+          display: "none",
+        },
+      },
+      "& .editor-wrapper.ace-wrapper .ace_editor, .mde-textarea-wrapper .mde-text, .mde-preview .mde-text": {
+        height: "calc(100vh - 145px) !important",
+        minHeight: 250,
+      }
+    }
   },
   fullHeight: {
     minHeight: "100vh",

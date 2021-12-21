@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import clsx from "clsx";
 import marked from "marked";
 import { ResizableBox } from "react-resizable";
+import "react-resizable/css/styles.css";
 import {PageState} from "../reducers/State";
-import "../../../../../../../node_modules/react-resizable/css/styles.css";
 import {DOM} from "../../../../../utils";
 import {getHistoryInstance} from "../../../../../history";
 import PageService from "../../../../../services/PageService";
@@ -52,6 +53,7 @@ export const Page: React.FC<PageProps> = ({
     left: 0,
     bottom: 0,
   });
+  const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   useEffect(() => {
     toggleEditMode(false);
@@ -92,20 +94,12 @@ export const Page: React.FC<PageProps> = ({
     toggleEditMode(true);
   };
 
-  const getReverseValue = (height, top) => {
-    const windowHeight = window.innerHeight;
-
-    return window.innerHeight - height - top < 0 && height < windowHeight;
-  };
-
   const onScroll = () => {
     const DOMNodeElementData = DOMNode && DOMNode.getBoundingClientRect();
 
     if (!DOMNodeElementData) return null;
 
-    const reverse = getReverseValue(position.height, DOMNodeElementData.top);
-
-    DOMNodeElementData && reverse ? setScrollValue(DOMNodeElementData.bottom) : setScrollValue(DOMNodeElementData.top);
+    setScrollValue(DOMNodeElementData.top);
   };
 
   useEffect(() => {
@@ -221,6 +215,14 @@ export const Page: React.FC<PageProps> = ({
     }
   }, [editMode, page && page.content]);
 
+  const handleContainerClass = useCallback(value => {
+    const body = document.getElementsByTagName('body');
+    if (value) body[0].classList.add('overflow-hidden');
+    else body[0].classList.remove('overflow-hidden');
+
+    setFullscreen(value);
+  }, []);
+
   const handleSave = () => {
     toggleEditMode(false);
 
@@ -230,11 +232,14 @@ export const Page: React.FC<PageProps> = ({
     } else {
       onSave(page.id, addContentMarker(draftContent, page.contentMode));
     }
+
+    handleContainerClass(false);
   };
 
   const handleCancel = () => {
     setDraftContent(page.content);
     toggleEditMode(false);
+    handleContainerClass(false);
   };
 
   const onResize = useCallback((event, {element, size}) => {
@@ -245,31 +250,31 @@ export const Page: React.FC<PageProps> = ({
     }));
   }, []);
 
-  const reverse = getReverseValue(position.height, position.top);
+  const onFullscreen = useCallback(value => {
+    handleContainerClass(value);
+  }, []);
 
   const block = blockId ? blocks.filter(elem => elem.id === blockId)[0] : null;
   const contentMode = block ? block.contentMode : page.contentMode;
 
-  const wrapperStyles = {
+  const wrapperStyles = fullscreen ? {} : {
     width: `${position.width}px`,
     height: `${position.height}px`,
     position: "absolute",
-    top: reverse ? "auto" : `${scrollValue || position.top}px`,
+    top: `${scrollValue || position.top}px`,
     left: `${position.left}px`,
-    bottom: reverse ? `${(scrollValue && window.innerHeight - scrollValue) || window.innerHeight - position.bottom}px` : "auto"
+    bottom: "auto"
   };
 
-  console.log(position);
-
   return (
-    <div className="h-100 w-100" /*style={{ width: position.width, height: position.height}}*/ style={wrapperStyles as any}>
+    <div
+      className={clsx("h-100 w-100", { "fullscreen-page-block": fullscreen })}
+      style={wrapperStyles as any}
+    >
       <ResizableBox
         width={position.width}
         height={position.height}
-        // minConstraints={[100, 100]}
-        // maxConstraints={[300, 300]}
         onResize={onResize}
-        // style={wrapperStyles as any}
       >
         {editMode && (
           <BlockEditor
@@ -281,6 +286,8 @@ export const Page: React.FC<PageProps> = ({
             handleSave={handleSave}
             handleCancel={handleCancel}
             position={position}
+            enabledFullscreen
+            onFullscreen={onFullscreen}
           />
         )}
       </ResizableBox>
