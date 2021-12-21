@@ -25,7 +25,7 @@
 		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Account">
-		<db-attribute name="accountCodeЫфЫ" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="accountCode" type="VARCHAR" isMandatory="true" length="40"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="description" type="VARCHAR" isMandatory="true" length="500"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
