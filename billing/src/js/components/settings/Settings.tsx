@@ -164,16 +164,6 @@ const Settings = () => {
                           Tag manager
                         </Typography>
                       </NavLink>
-                      <NavLink
-                        exact
-                        strict
-                        to={`/websites/${s.id}/googleSearch`}
-                        activeClassName={classes.activeNav}
-                      >
-                        <Typography variant="body2" className={classes.navItem}>
-                          Google search
-                        </Typography>
-                      </NavLink>
                     </ul>
                   </li>
                 ))}
