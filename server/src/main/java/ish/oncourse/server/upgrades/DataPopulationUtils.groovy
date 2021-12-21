@@ -13,6 +13,7 @@ package ish.oncourse.server.upgrades
 
 import ish.common.types.EntityEvent
 import ish.common.types.MessageType
+import ish.oncourse.server.cayenne.Report
 import static ish.oncourse.common.ResourceType.EXPORT
 import static ish.oncourse.common.ResourceType.IMPORT
 import static ish.oncourse.common.ResourceType.MESSAGING
@@ -184,6 +185,14 @@ class DataPopulationUtils {
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbMessage, EmailTemplateAutomationBinding.class);
         BindingUtils.updateVariables(context, get(props, VARIABLES, List), dbMessage, EmailTemplateAutomationBinding.class);
+    }
+
+    static void removeDeletedReports(ObjectContext context, Set<Long> importedReportIds) {
+        List<? extends AutomationTrait> resourcesToRemove = ObjectSelect.query(Report.class).
+                where(Report.ID.nin(importedReportIds).andExp(Report.KEY_CODE.startsWith("ish."))).
+                select(context)
+
+        context.deleteObjects(resourcesToRemove)
     }
 
 
