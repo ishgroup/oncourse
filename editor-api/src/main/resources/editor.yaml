@@ -912,6 +912,9 @@ definitions:
       id:
         type: integer
         description: unique id of the page
+      themeId:
+        type: integer
+        description: theme id applied to the page
       title:
         type: string
         description: title of the page

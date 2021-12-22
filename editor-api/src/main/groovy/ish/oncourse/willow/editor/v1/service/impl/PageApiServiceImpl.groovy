@@ -43,7 +43,7 @@ class PageApiServiceImpl implements PageApi {
         WebNode node = WebNodeFunctions.createNewNode(requestService.request, context)
         context.commitChanges()
 
-        return WebNodeToPage.valueOf(node).page
+        return WebNodeToPage.valueOf(node,context).getPage()
     }
     
     void deletePage(String pageNumber) {
@@ -66,10 +66,10 @@ class PageApiServiceImpl implements PageApi {
         if (!StringUtils.trimToNull(pageUrl)) {
             return getPages()
         }
-        
-        WebNode node = WebNodeFunctions.getNodeByPath(pageUrl, requestService.request, cayenneService.newContext())
+        ObjectContext context = cayenneService.newContext()
+        WebNode node = WebNodeFunctions.getNodeByPath(pageUrl, requestService.request, context)
         if (node) {
-            return [WebNodeToPage.valueOf(node).page]
+            return [WebNodeToPage.valueOf(node,context).getPage()]
         } else {
             String lowerCaseUrl = pageUrl.toLowerCase()
             PageIdentifier identifier = getPageIdentifierByPath(lowerCaseUrl)
@@ -84,8 +84,9 @@ class PageApiServiceImpl implements PageApi {
     }
     
     List<Page> getPages() {
-        return WebNodeFunctions.getNodes(requestService.request, cayenneService.newContext())
-                .collect { node -> WebNodeToPage.valueOf(node).page }
+        ObjectContext context = cayenneService.newContext()
+        return WebNodeFunctions.getNodes(requestService.request, context)
+                .collect { node -> WebNodeToPage.valueOf(node,context).getPage() }
     }
 
     Page updatePage(Page pageParams) {
