@@ -43,7 +43,7 @@ interface Props {
   setContentMode?: (moduleId, modeId) => void;
   enabledFullscreen?: boolean;
   fullscreen?: boolean;
-  onFullscreen?: (fullscreen: boolean) => void;
+  onFullscreen?: () => void;
 }
 
 const ContentModeSwitch = (props: Props) => {
@@ -76,7 +76,7 @@ const ContentModeSwitch = (props: Props) => {
       </Tooltip>
       {enabledFullscreen && (
         <ButtonBase
-          onClick={onFullscreen}
+          onClick={e => onFullscreen()}
           className={clsx("ml-1", classes.fullscreenButton)}
         >
           {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}

@@ -24,6 +24,14 @@ const styles = () => ({
         height: "calc(100vh - 145px) !important",
         minHeight: 250,
       }
+    },
+    "& .react-resizable": {
+      "& .react-resizable-handle": {
+        display: "none",
+      },
+      "&:hover .react-resizable-handle": {
+        display: "block",
+      }
     }
   },
   fullHeight: {

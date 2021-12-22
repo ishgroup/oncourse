@@ -23,7 +23,7 @@ interface Props {
   position?: any;
   enabledFullscreen?: boolean;
   fullscreen?: boolean;
-  onFullscreen?: (fullscreen: boolean) => void;
+  onFullscreen?: () => void;
 }
 
 const BlockEditor: React.FC<Props> = props => {

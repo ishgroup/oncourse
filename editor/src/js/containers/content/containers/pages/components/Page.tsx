@@ -245,7 +245,7 @@ export const Page: React.FC<PageProps> = ({
     handleContainerClass(false);
   };
 
-  const onResize = useCallback((event, {element, size}) => {
+  const onResize = useCallback((event, {node, handle, size}) => {
     setPosition(prev => ({
       ...prev,
       width: size.width,
