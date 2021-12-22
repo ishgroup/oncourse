@@ -1,4 +1,5 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
+import clsx from "clsx";
 import {ButtonBase, Menu, MenuItem, Tooltip} from "@material-ui/core";
 import {withStyles, createStyles} from "@material-ui/core/styles";
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
@@ -6,12 +7,13 @@ import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import {CONTENT_MODES} from "../../containers/content/constants";
 import {ContentMode} from "../../model";
 import {getEditorModeLabel} from "../../containers/content/utils";
+import {AppTheme} from "../../styles/themeInterface";
 
-const styles = () => createStyles({
+const styles = (theme: AppTheme) => createStyles({
   contentModeWrapper: {
     position: "absolute",
-    right: "16px",
-    top: "16px",
+    right: 10,
+    top: 11,
     zIndex: 1000,
   },
   contentMode: {
@@ -21,8 +23,17 @@ const styles = () => createStyles({
     backgroundColor: "black",
     color: "white",
     padding: "2px",
-    fontSize: "9px"
-  }
+    fontSize: "9px",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+    },
+  },
+  fullscreenButton: {
+    "&:hover": {
+      color: theme.palette.primary.main,
+    },
+  },
 });
 
 interface Props {
@@ -31,13 +42,13 @@ interface Props {
   moduleId?: number;
   setContentMode?: (moduleId, modeId) => void;
   enabledFullscreen?: boolean;
+  fullscreen?: boolean;
   onFullscreen?: (fullscreen: boolean) => void;
 }
 
 const ContentModeSwitch = (props: Props) => {
-  const {classes, contentModeId, moduleId, setContentMode, enabledFullscreen, onFullscreen} = props;
+  const {classes, contentModeId, moduleId, setContentMode, enabledFullscreen, fullscreen, onFullscreen} = props;
   const [modeMenu, setModeMenu] = useState(null);
-  const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   const modeMenuOpen = e => {
     setModeMenu(e.currentTarget);
@@ -52,23 +63,8 @@ const ContentModeSwitch = (props: Props) => {
     modeMenuClose();
   };
 
-  const handleFullscreen = useCallback(() => {
-    setFullscreen(!fullscreen);
-    if (onFullscreen) onFullscreen(!fullscreen);
-  }, [fullscreen]);
-
   return (
-    <div className={classes.contentModeWrapper}>
-
-      {enabledFullscreen && (
-        <ButtonBase
-          onClick={handleFullscreen}
-          className="mr-1"
-        >
-          {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-        </ButtonBase>
-      )}
-
+    <div className={clsx("d-flex align-items-center", classes.contentModeWrapper)}>
       <Tooltip title="Change content mode" disableFocusListener>
         <ButtonBase
           onClick={modeMenuOpen}
@@ -78,6 +74,14 @@ const ContentModeSwitch = (props: Props) => {
           {getEditorModeLabel(contentModeId)}
         </ButtonBase>
       </Tooltip>
+      {enabledFullscreen && (
+        <ButtonBase
+          onClick={onFullscreen}
+          className={clsx("ml-1", classes.fullscreenButton)}
+        >
+          {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+        </ButtonBase>
+      )}
       <Menu
         id="theme-menu"
         anchorEl={modeMenu}

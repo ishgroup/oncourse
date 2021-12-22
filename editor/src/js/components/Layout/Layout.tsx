@@ -20,7 +20,7 @@ const styles = () => ({
           display: "none",
         },
       },
-      "& .editor-wrapper.ace-wrapper .ace_editor, .mde-textarea-wrapper .mde-text, .mde-preview .mde-text": {
+      "& .editor-wrapper.ace-wrapper .ace_editor, .mde-textarea-wrapper .mde-text, .mde-preview .mde-text, & .editor-wrapper .mde-preview .ck.ck-editor__main": {
         height: "calc(100vh - 145px) !important",
         minHeight: 250,
       }

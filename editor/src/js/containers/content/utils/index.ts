@@ -41,7 +41,7 @@ export const getEditorModeLabel = (mode: ContentMode) => {
   }
 };
 
-export const getEditorSize = (data) => {
+export const getEditorSize = data => {
   const minHeight = 230;
   const minWidth = 570;
 
@@ -55,10 +55,10 @@ export const getEditorSize = (data) => {
 
   if (!data) return result;
 
-  if (data.height > minHeight) result.height = data.height
-  if (data.width > minWidth) result.width = data.width
+  if (data.height > minHeight) result.height = data.height;
+  if (data.width > minWidth) result.width = data.width - 50;
   result.top = data.top;
-  result.left = data.left;
+  result.left = data.left + 15;
   result.bottom = data.bottom;
 
   return result;

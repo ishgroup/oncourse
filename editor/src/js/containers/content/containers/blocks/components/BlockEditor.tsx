@@ -22,12 +22,13 @@ interface Props {
   handleCancel: () => void;
   position?: any;
   enabledFullscreen?: boolean;
+  fullscreen?: boolean;
   onFullscreen?: (fullscreen: boolean) => void;
 }
 
 const BlockEditor: React.FC<Props> = props => {
   const {
-    mode, content, setContent, moduleId, setContentMode, handleSave, handleCancel, position, enabledFullscreen, onFullscreen
+    mode, content, setContent, moduleId, setContentMode, handleSave, handleCancel, position, enabledFullscreen, fullscreen, onFullscreen
   } = props;
 
   const editor = () => {
@@ -67,6 +68,7 @@ const BlockEditor: React.FC<Props> = props => {
           setContentMode={setContentMode}
           enabledFullscreen={enabledFullscreen}
           onFullscreen={onFullscreen}
+          fullscreen={fullscreen}
         />
         {editor()}
       </div>

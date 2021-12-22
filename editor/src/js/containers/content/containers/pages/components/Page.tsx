@@ -53,7 +53,7 @@ export const Page: React.FC<PageProps> = ({
     left: 0,
     bottom: 0,
   });
-  const [fullscreen, setFullscreen] = useState<boolean>(false);
+  const [fullscreen, setFullscreen] = useState<boolean>(true);
 
   useEffect(() => {
     toggleEditMode(false);
@@ -65,17 +65,27 @@ export const Page: React.FC<PageProps> = ({
     return () => document.removeEventListener('scroll', onScroll);
   }, [blockId]);
 
+  const handleContainerClass = useCallback(value => {
+    const body = document.getElementsByTagName('body');
+    if (value) body[0].classList.add('overflow-hidden');
+    else body[0].classList.remove('overflow-hidden');
+
+    setFullscreen(value);
+  }, []);
+
   const onClickArea = (e, pageNode) => {
     e.preventDefault();
 
     setDOMNode(pageNode);
     setScrollValue(0);
     setBlockId(0);
+
     setPosition(getEditorSize(pageNode.getBoundingClientRect()));
 
     setDraftContent(page.contentMode === "html" ? marked(page.content || "") : page.content);
     toggleEditMode(true);
     getHistoryInstance().push(`/page/${page.id}`);
+    handleContainerClass(true);
   };
 
   const onClickBlock = (e, DOMBlock, id) => {
@@ -92,6 +102,7 @@ export const Page: React.FC<PageProps> = ({
     setDraftContent(block.contentMode === "html" ? marked(block.content || "") : block.content);
 
     toggleEditMode(true);
+    handleContainerClass(true);
   };
 
   const onScroll = () => {
@@ -215,14 +226,6 @@ export const Page: React.FC<PageProps> = ({
     }
   }, [editMode, page && page.content]);
 
-  const handleContainerClass = useCallback(value => {
-    const body = document.getElementsByTagName('body');
-    if (value) body[0].classList.add('overflow-hidden');
-    else body[0].classList.remove('overflow-hidden');
-
-    setFullscreen(value);
-  }, []);
-
   const handleSave = () => {
     toggleEditMode(false);
 
@@ -250,9 +253,9 @@ export const Page: React.FC<PageProps> = ({
     }));
   }, []);
 
-  const onFullscreen = useCallback(value => {
-    handleContainerClass(value);
-  }, []);
+  const onFullscreen = useCallback(() => {
+    handleContainerClass(!fullscreen);
+  }, [fullscreen]);
 
   const block = blockId ? blocks.filter(elem => elem.id === blockId)[0] : null;
   const contentMode = block ? block.contentMode : page.contentMode;
@@ -288,6 +291,7 @@ export const Page: React.FC<PageProps> = ({
             position={position}
             enabledFullscreen
             onFullscreen={onFullscreen}
+            fullscreen={fullscreen}
           />
         )}
       </ResizableBox>
