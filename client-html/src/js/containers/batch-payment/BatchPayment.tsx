@@ -5,9 +5,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import clsx from "clsx";
-import React, {
-  memo, useCallback, useEffect, useRef, useState,
-} from "react";
+import React, { memo, useCallback, useEffect, useRef, useState, } from "react";
 import { FormControlLabel } from "@mui/material";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { areEqual } from "react-window";
@@ -25,9 +23,7 @@ import Close from '@mui/icons-material/Close';
 import Zoom from '@mui/material/Zoom';
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  change, FieldArray, getFormValues, InjectedFormProps, reduxForm,
-} from "redux-form";
+import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from "redux-form";
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../common/components/form/formFields/FormField";
 import { Switch } from "../../common/components/form/formFields/Switch";
@@ -47,6 +43,7 @@ import { getContactName } from "../entities/contacts/utils";
 import { getBachCheckoutModel } from "./utils";
 import { makeAppStyles } from "../../common/styles/makeStyles";
 import AppBarContainer from "../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../common/utils/getManualLink";
 
 const useStyles = makeAppStyles(theme => ({
   checkbox: {
@@ -312,6 +309,8 @@ interface Props {
   };
 }
 
+const manualUrl = getManualLink("batchpayments_batchpayments");
+
 const getContacts = (dispatch, setContactsLoading, onComplete?) => {
   EntityService.getPlainRecords(
     "Invoice",
@@ -486,7 +485,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
       <AppBarContainer
         disabledScrolling
         disableInteraction
-        hideHelpMenu
+        disabled={processing || contactsLoading}
         title={(
           <div>
             Batch payment in (showing
@@ -499,12 +498,13 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
             with amounts due or overdue)
           </div>
         )}
-        onCloseClick={() => {
+        manualUrl={manualUrl}
+        onCloseClick={processing ? () => {
           cancel.current = true;
           setProcessing(false);
-        }}
+        } : null}
         closeButtonText="Cancel"
-        submitButtonText={`Process ${checkedContacts.length} payment${checkedContacts.length === 1 ? "" : "s"}`}
+        submitButtonText={processing ? "Processing..." : `Process ${checkedContacts.length} payment${checkedContacts.length === 1 ? "" : "s"}`}
         containerClass="flex-column p-3 h-100"
       >
         {!contactsLoading && (
