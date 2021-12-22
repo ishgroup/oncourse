@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 
 public class ISHUrlValidator extends UrlValidator {
 
-    private static final String PAGE_PATH_REGEX = "/[a-zA-Z0-9_/\\-]*";
-    private static final String PAGE_REDIRECT_REGEX = "/[a-zA-Z0-9_/\\-.?=+%]*";
+    private static final String PAGE_PATH_REGEX = "/[a-zA-Z0-9_/&\\-]*";
+    private static final String PAGE_REDIRECT_REGEX = "/[a-zA-Z0-9_/\\-.?=&+%]*";
 
     public ISHUrlValidator() {
         super();
