@@ -153,7 +153,7 @@ class PageSettings extends React.PureComponent<Props, State> {
       title: props.page.title,
       urls: props.page.urls,
       visible: props.page.visible,
-      themeId: null,
+      themeId: props.page.themeId,
       newLink: '',
       suppressOnSitemap: props.page.suppressOnSitemap,
       urlError: null
@@ -166,15 +166,12 @@ class PageSettings extends React.PureComponent<Props, State> {
         title: props.page.title,
         urls: props.page.urls,
         visible: props.page.visible,
+        themeId: props.page.themeId,
         newLink: '',
         suppressOnSitemap: props.page.suppressOnSitemap,
         urlError: null
       });
     }
-  }
-
-  componentDidUpdate() {
-    this.getThemeValue();
   }
 
   validateUrlHandler = (value) => {
@@ -248,22 +245,6 @@ class PageSettings extends React.PureComponent<Props, State> {
   };
 
   formatLink = (link) => (link.indexOf('/') !== 0 ? `/${link}` : link).replace(/ /g, '');
-
-  getThemeValue = () => {
-    const { themes, page } = this.props;
-    const { themeId } = this.state;
-
-    themes.forEach((theme) => {
-      theme.paths.forEach((path) => {
-        const matchUrl = page.urls.find((url) => (path.exactMatch ? url.link === path.path : url.link.startsWith(path.path)));
-        if (matchUrl && !themeId) {
-          this.setState({
-            themeId: theme.id
-          });
-        }
-      });
-    });
-  };
 
   render() {
     const {
