@@ -2,6 +2,9 @@ package ish.oncourse.services.markdown
 
 import ish.oncourse.services.converter.CoreConverter
 import org.apache.commons.lang3.StringUtils
+import org.commonmark.Extension
+import org.commonmark.ext.gfm.tables.TablesExtension
+import org.commonmark.ext.heading.anchor.HeadingAnchorExtension
 import org.commonmark.node.Node
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
@@ -17,9 +20,11 @@ class ConvertCoreMarkdown extends CoreConverter {
     }
 
     String convert() {
-        Parser parser = Parser.builder().build()
+        List<Extension> extensions = Arrays.asList(HeadingAnchorExtension.builder().idPrefix("header-").build(),
+                TablesExtension.create())
+        Parser parser = Parser.builder().extensions(extensions).build()
         Node document = parser.parse(content)
-        HtmlRenderer renderer = HtmlRenderer.builder().build()
+        HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build()
         clearGenerated(renderer.render(document))
     }
 

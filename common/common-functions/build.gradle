@@ -26,7 +26,9 @@ dependencies {
     api "org.apache.solr:solr-solrj:$solrVersion"
     api 'commons-httpclient:commons-httpclient:3.1'
     api 'net.java.dev.textile-j:textile-j:2.2.864'
-    api 'com.atlassian.commonmark:commonmark:0.15.2'
+    api 'org.commonmark:commonmark:0.18.1'
+    api 'org.commonmark:commonmark-ext-gfm-tables:0.18.1'
+    api 'org.commonmark:commonmark-ext-heading-anchor:0.18.1'
 
     api "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
     api "com.github.ben-manes.caffeine:jcache:$caffeineVersion"
