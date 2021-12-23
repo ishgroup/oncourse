@@ -96,7 +96,8 @@ class Payslips extends React.Component<any, any> {
           }}
           editViewProps={{
             nameCondition,
-            manualLink
+            manualLink,
+            hideTitle: true
           }}
           EditViewContent={PayslipsEditView}
           getEditRecord={getPayslipRecord}

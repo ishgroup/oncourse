@@ -12,6 +12,8 @@ import { State } from "../../../../../reducers/state";
 import FormSubmitButton from "../../../form/FormSubmitButton";
 import { pushGTMEvent } from "../../../google-tag-manager/actions";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
+import { TAB_LIST_SCROLL_TARGET_ID } from "../../../../../constants/Config";
+import clsx from "clsx";
 
 const styles = theme =>
   createStyles({
@@ -20,6 +22,8 @@ const styles = theme =>
       flexDirection: "column",
       width: "100%",
       userSelect: "text",
+      position: "relative",
+      overflow: "hidden"
     },
     actionButtonsGroup: {
       position: "absolute",
@@ -71,8 +75,10 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       disabledSubmitCondition
     } = this.props;
 
+    const noTabList = document.getElementById(TAB_LIST_SCROLL_TARGET_ID) === null;
+
     return (
-      <form className={classes.root} onSubmit={handleSubmit} autoComplete="off" noValidate>
+      <form className={clsx(classes.root, noTabList && "fullHeightWithoutAppBar")} onSubmit={handleSubmit} autoComplete="off" noValidate>
         {!hasSelected && (
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
@@ -83,7 +89,7 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
 
         {hasSelected && (
           <>
-            <div className="flex-fill">
+            <div className={clsx("flex-fill", noTabList && "overflow-y-auto")}>
               <EditViewContent
                 asyncValidating={asyncValidating}
                 syncErrors={syncErrors}

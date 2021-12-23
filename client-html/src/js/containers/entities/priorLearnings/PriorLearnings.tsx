@@ -92,7 +92,8 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
       }}
       editViewProps={{
         nameCondition,
-        manualLink
+        manualLink,
+        hideTitle: true
       }}
       EditViewContent={PriorLearningEditView}
       getEditRecord={getPriorLearningRecord}

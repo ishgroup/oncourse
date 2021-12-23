@@ -21,6 +21,7 @@ import { makeStyles } from "@mui/styles";
 import {
  ClassFundingSource, DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
 } from "@api/model";
+import Launch from "@mui/icons-material/Launch";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
@@ -38,13 +39,16 @@ import Uneditable from "../../../../common/components/form/Uneditable";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { fundingUploadsPath } from "../../../../constants/Api";
 import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
-import { defaultContactName } from "../../contacts/utils";
+import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
 import { openModuleLink } from "../../modules/utils";
 import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../model/common/Theme";
 import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -217,16 +221,22 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className={className}>
-      {!twoColumn && (
-        <Grid item xs={12}>
-          <Uneditable
-            label="Student name"
-            value={values && defaultContactName(values.studentName)}
-            url={`/contact/${values.contactId}`}
-          />
-        </Grid>
-      )}
-      <Grid container item xs={twoColumn ? 4 : 12}>
+      <Grid item xs={12}>
+        <FullScreenStickyHeader
+          disableInteraction
+          twoColumn={twoColumn}
+          title={(
+            <div className="d-inline-flex-center">
+              {values && defaultContactName(values.studentName)}
+              <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
+                <Launch fontSize="inherit" />
+              </IconButton>
+            </div>
+          )}
+        />
+      </Grid>
+      
+      <Grid container rowSpacing={2} item xs={twoColumn ? 4 : 12}>
         <Grid item xs={12}>
           <FormField
             type="remoteDataSearchSelect"
@@ -318,8 +328,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
       {priorLearningEditView ? (
         <Grid item xs={12}>
           <Grid container columnSpacing={3} rowSpacing={2} item xs={12}>
-            <Grid item xs={twoColumn ? 4 : 12} className="textField">
-              <div>
+            <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="date"
                   name={getFieldName("startDate")}
@@ -328,19 +337,16 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                   listSpacing={false}
                   placeHolder="Leave empty to calculate date from class"
                 />
-              </div>
             </Grid>
-            <Grid item xs={twoColumn ? 4 : 12} className="textField">
-              <div>
-                <FormField
-                  type="date"
-                  name={getFieldName("endDate")}
-                  label="End date"
-                  validate={validateEndtDate}
-                  listSpacing={false}
-                  placeholder="Leave empty to calculate date from class"
-                />
-              </div>
+            <Grid item xs={twoColumn ? 4 : 12}>
+              <FormField
+                type="date"
+                name={getFieldName("endDate")}
+                label="End date"
+                validate={validateEndtDate}
+                listSpacing={false}
+                placeholder="Leave empty to calculate date from class"
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -410,7 +416,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.startDateOverridden ? (
-                      <div className="d-flex align-items-start">
+                      <div className="centeredFlex">
                         <FormField
                           type="date"
                           name={getFieldName("startDate")}
@@ -439,7 +445,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.endDateOverridden ? (
-                      <div className="d-flex align-items-start">
+                      <div className="centeredFlex">
                         <FormField
                           type="date"
                           name={getFieldName("endDate")}

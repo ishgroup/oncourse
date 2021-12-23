@@ -6,22 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useMemo, useRef, useState
-} from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Collapse,
-  FormControl, 
-  FormHelperText, 
-  Typography, 
-  Select,
+  FormControl,
+  FormHelperText,
   Grid,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  Select,
+  Typography
 } from "@mui/material";
 import clsx from "clsx";
-import AddCircle from "@mui/icons-material/AddCircle";
 import { differenceInMinutes, format, isPast } from "date-fns";
 import { change, Field, WrappedFieldProps } from "redux-form";
 import { ClashType, SessionWarning } from "@api/model";
@@ -41,6 +38,7 @@ import { H_MMAAA } from "../../../../../common/utils/dates/format";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import { AppTheme } from "../../../../../model/common/Theme";
+import AddButton from "../../../../../common/components/icons/AddButton";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   tutorItem: {
@@ -150,7 +148,7 @@ const CourseClassTutorRooster = (
   const filteredTutors = useMemo<CourseClassTutorExtended[]>(() => tutors
     .filter(t => t.contactId
       && t.roleName
-      && !session.tutorAttendances.some(ta => (ta.courseClassTutorId && t.id === ta.courseClassTutorId)
+      && !session.tutorAttendances?.some(ta => (ta.courseClassTutorId && t.id === ta.courseClassTutorId)
           || (ta.temporaryTutorId && t.temporaryId === ta.temporaryTutorId))),
     [tutors, session.tutorAttendances]);
 
@@ -162,9 +160,7 @@ const CourseClassTutorRooster = (
         </div>
         <div>
           {Boolean(filteredTutors.length) && (
-          <IconButton className="p-1" ref={tutorsRef} onClick={() => setTutorsMenuOpened(true)}>
-            <AddCircle className="addButtonColor" />
-          </IconButton>
+          <AddButton className="p-1" ref={tutorsRef} onClick={() => setTutorsMenuOpened(true)} />
         )}
           <Menu
             anchorOrigin={{ vertical: "top", horizontal: "right" }}

@@ -14,6 +14,7 @@ const itemStyles = createStyles(theme => ({
     verticalAlign: "text-bottom"
   },
   listItem: {
+    lineHeight: "1.2em",
     padding: "4px 0",
     display: "block",
     "-moz-column-break-inside": "avoid",

@@ -3,17 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable } from "react-table";
+import React, {
+  useCallback, useEffect, useMemo, useRef, useState
+} from "react";
+import {
+  useBlockLayout, useColumnOrder, useResizeColumns, useRowSelect, useSortBy, useTable
+} from "react-table";
 import makeStyles from "@mui/styles/makeStyles";
-import MaUTable from "@mui/material/Table";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import debounce from "lodash.debounce";
 import Typography from "@mui/material/Typography";
 import DragIndicator from "@mui/icons-material/DragIndicator";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Column, DataResponse, TableModel } from "@api/model";
@@ -35,7 +36,7 @@ const listRef = React.createRef<any>();
 
 const getRowId = row => row.id;
 
-interface ListTableProps extends Partial<ListProps>{
+interface ListTableProps extends Partial<TableListProps>{
   columns: any;
   data: any;
   sorting: any;
@@ -61,6 +62,8 @@ const Table: React.FC<ListTableProps> = ({
   onChangeColumnsOrder,
   setShowColoredDots,
   showColoredDots,
+  sidebarWidth,
+  mainContentWidth
 }) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
 
@@ -326,7 +329,7 @@ const Table: React.FC<ListTableProps> = ({
   };
 
   const Header = useMemo(() => (
-    <div className={classes.header} style={{ width: totalColumnsWidth }}>
+    <div className={classes.header}>
       {headerGroups.map((headerGroup, groupIndex) => (
         <DragDropContext
           key={groupIndex}
@@ -434,6 +437,7 @@ const Table: React.FC<ListTableProps> = ({
       recordsLeft={recordsLeft}
       threeColumn={threeColumn}
       onRowDoubleClick={onRowDoubleClick}
+      mainContentWidth={mainContentWidth}
       onMouseOver={() => {}}
     />
   ) : (
@@ -442,13 +446,26 @@ const Table: React.FC<ListTableProps> = ({
         No data
       </Typography>
     </div>
-  )), [rows, totalColumnsWidth, selectedRowIdsObj, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
+  )), [rows, totalColumnsWidth, selectedRowIdsObj, mainContentWidth, recordsLeft, threeColumn, onRowDoubleClick, state.columnOrder]);
+
+  let tableMinWidth = `calc(100vw - ${sidebarWidth}px)`;
+
+  if (useMediaQuery('(min-width: 1920px)')) tableMinWidth = `calc(100vw - 11.5%)`;
+  if (useMediaQuery('(min-width: 2220px)')) tableMinWidth = `calc(100vw - 11%)`;
 
   return (
     <div
       {...getTableProps()}
       ref={tableRef}
-      className={clsx(classes.table, { [classes.hideOverflowY]: isDraggingColumn })}
+      className={clsx(
+        classes.table, {
+          [classes.hideOverflowY]: isDraggingColumn,
+        }
+      )}
+      style={{
+        minWidth: !threeColumn && tableMinWidth,
+        width: threeColumn && `${mainContentWidth}.px`
+      }}
       onScroll={onScroll}
     >
       {!threeColumn && <ColumnChooser columns={allColumns} classes={classes} setShowColoredDots={setShowColoredDots} />}
@@ -460,11 +477,13 @@ const Table: React.FC<ListTableProps> = ({
   );
 };
 
-export interface ListProps {
+export interface TableListProps {
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   shortCurrencySymbol?: string;
   records?: DataResponse;
   recordsLeft?: number;
+  sidebarWidth?: number;
+  mainContentWidth?: number;
   onChangeModel?: (model: TableModel, listUpdate?: boolean) => void;
   customColumnFormats?: CustomColumnFormats;
   setRowClasses?: AnyArgFunction<string>;
@@ -483,7 +502,7 @@ export interface ListProps {
   updateColumns?: (columns: Column[]) => void;
 }
 
-const ListRoot = React.memo<ListProps>(({
+const ListRoot = React.memo<TableListProps>(({
   records,
   recordsLeft,
   shortCurrencySymbol,
@@ -504,6 +523,8 @@ const ListRoot = React.memo<ListProps>(({
   getContainerNode,
   updateColumns,
   showColoredDots,
+  sidebarWidth,
+  mainContentWidth
 }) => {
   const columns = useMemo(
     () => {
@@ -592,6 +613,8 @@ const ListRoot = React.memo<ListProps>(({
         getContainerNode={getContainerNode}
         setShowColoredDots={setShowColoredDots}
         showColoredDots={showColoredDots}
+        sidebarWidth={sidebarWidth}
+        mainContentWidth={mainContentWidth}
       />
     )
     : null;

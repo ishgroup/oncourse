@@ -102,102 +102,90 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
     || ["Contra", "Internal", "Reverse", "Voucher"].find(item => item === values.paymentInType)
     || !["Success", "Reversed"].find(item => item === values.status) : true;
 
+  const gridItemProps = { xs: twoColumn ? 6 : 12, lg: twoColumn ? 4 : 12 };
+
   return values ? (
-    <div className="p-3 h-100 flex-column">
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <Uneditable
-            value={defaultContactName(values.payerName)}
-            label="Payment from"
-            labelAdornment={<LinkAdornment link={values && values.payerId} linkHandler={openContactLink} />}
-          />
-
-        </Grid>
-        <Grid item xs={twoColumn ? 8 : false} />
-
-        <Grid item xs={twoColumn ? 4 : 12}>
-          <FormField
-            type="searchSelect"
-            name="administrationCenterId"
-            label="Site"
-            defaultDisplayValue={values && values.administrationCenterName}
-            selectLabelCondition={getAdminCenterLabel}
-            items={adminSites || []}
-            labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
-            disabled={initialValues.dateBanked}
-          />
-        </Grid>
-        <Grid item xs={twoColumn ? 8 : false} />
-
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.paymentInType} label="Type" />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.status} label="Status" />
-        </Grid>
+    <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+      <Grid item {...gridItemProps}>
+        <Uneditable
+          value={defaultContactName(values.payerName)}
+          label="Payment from"
+          labelAdornment={<LinkAdornment link={values && values.payerId} linkHandler={openContactLink} />}
+        />
       </Grid>
-      <Grid container columnSpacing={3}>
-        {values.ccSummary && values.ccSummary.length > 0 && (
-          <Grid item xs={twoColumn ? 2 : 6}>
-            <div className="textField">
-              <div>
-                <Typography variant="caption" color="textSecondary">
-                  Credit card
-                </Typography>
-                {values.ccSummary.map(line => (
-                  <Typography variant="body1">{line}</Typography>
+      <Grid item {...gridItemProps}>
+        <FormField
+          type="searchSelect"
+          name="administrationCenterId"
+          label="Site"
+          defaultDisplayValue={values && values.administrationCenterName}
+          selectLabelCondition={getAdminCenterLabel}
+          items={adminSites || []}
+          labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
+          disabled={initialValues.dateBanked}
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.paymentInType} label="Type" />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.status} label="Status" />
+      </Grid>
+      {values.ccSummary && values.ccSummary.length > 0 && (
+      <Grid item {...gridItemProps}>
+        <div className="textField">
+          <div>
+            <Typography variant="caption" color="textSecondary">
+              Credit card
+            </Typography>
+            {values.ccSummary.map(line => (
+              <Typography variant="body1">{line}</Typography>
                 ))}
-              </div>
-            </div>
-          </Grid>
+          </div>
+        </div>
+      </Grid>
         )}
-        {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
-          <Grid item xs={twoColumn ? 2 : 6}>
-            {Object.keys(values.chequeSummary).map(item => (
-              <Uneditable value={values.chequeSummary[item]} label={item} />
+      {values.chequeSummary && Object.keys(values.chequeSummary).length > 0 && (
+      <Grid item {...gridItemProps}>
+        {Object.keys(values.chequeSummary).map(item => (
+          <Uneditable value={values.chequeSummary[item]} label={item} />
             ))}
-          </Grid>
+      </Grid>
         )}
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.amount} money label="Amount" />
-        </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.amount} money label="Amount" />
       </Grid>
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.accountInName} label="Account" />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.source} label="Source" />
-        </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.accountInName} label="Account" />
       </Grid>
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={values.ccTransaction} label="CC transaction" />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          <FormControlLabel
-            className="pr-3"
-            control={<Checkbox checked={values.emailConfirmation} />}
-            label="Email confirmation"
-            disabled
-          />
-        </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.source} label="Source" />
       </Grid>
-      <Grid container columnSpacing={3}>
-        <Grid item xs={twoColumn ? 2 : 6}>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.ccTransaction} label="CC transaction" />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <FormControlLabel
+          className="pr-3"
+          control={<Checkbox checked={values.emailConfirmation} />}
+          label="Email confirmation"
+          disabled
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        <Uneditable
+          value={values.datePayed}
+          label="Date paid"
+          format={value => (value ? formatDate(new Date(value), III_DD_MMM_YYYY) : value)}
+        />
+      </Grid>
+      <Grid item {...gridItemProps}>
+        {dateBankedDisabled ? (
           <Uneditable
-            value={values.datePayed}
-            label="Date paid"
+            value={values.dateBanked}
+            label="Date banked"
             format={value => (value ? formatDate(new Date(value), III_DD_MMM_YYYY) : value)}
           />
-        </Grid>
-        <Grid item xs={twoColumn ? 2 : 6}>
-          {dateBankedDisabled ? (
-            <Uneditable
-              value={values.dateBanked}
-              label="Date banked"
-              format={value => (value ? formatDate(new Date(value), III_DD_MMM_YYYY) : value)}
-            />
           ) : (
             <FormField
               type="date"
@@ -211,21 +199,25 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               }
             />
           )}
-        </Grid>
       </Grid>
-      <Uneditable value={values.createdBy} label="Created by" />
-      <FieldArray
-        name="invoices"
-        goToLink="/invoice"
-        className="saveButtonTableOffset"
-        title={(values && values.invoices && values.invoices.length) === 1 ? "Invoice" : "Invoices"}
-        component={NestedTable}
-        columns={invoiceColumns}
-        onRowDoubleClick={openRow}
-        rerenderOnEveryChange
-        sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
-      />
-    </div>
+      <Grid item {...gridItemProps}>
+        <Uneditable value={values.createdBy} label="Created by" />
+      </Grid>
+      <Grid item xs={12} className="saveButtonTableOffset">
+        <FieldArray
+          name="invoices"
+          goToLink="/invoice"
+          title={(values && values.invoices && values.invoices.length) === 1 ? "Invoice" : "Invoices"}
+          component={NestedTable}
+          columns={invoiceColumns}
+          onRowDoubleClick={openRow}
+          rerenderOnEveryChange
+          sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+          calculateHeight
+        />
+      </Grid>
+    </Grid>
+
   ) : null;
 };
 

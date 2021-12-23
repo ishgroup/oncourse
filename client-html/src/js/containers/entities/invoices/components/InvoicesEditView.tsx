@@ -5,9 +5,7 @@
 
 import React, { useCallback, useEffect, useMemo } from "react";
 import Grid from "@mui/material/Grid";
-import {
- arrayInsert, arrayRemove, change, initialize
-} from "redux-form";
+import { arrayInsert, arrayRemove, change, initialize } from "redux-form";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -38,6 +36,7 @@ import { usePrevious } from "../../../../common/utils/hooks";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";
 import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
 import { validateTagsList } from "../../../../common/components/form/simpleTagListComponent/validateTagsList";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -249,8 +248,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     [form, defaultTerms, hasPaymentDues, invoiceLinesCount]
   );
 
-  const validateTagList = (value, allValues) => validateTagsList(tags, value, allValues, props);
-
   const updateDateDue = useCallback(() => {
     if (hasPaymentDues) {
       const closest = getInvoiceClosestPaymentDueDate(values);
@@ -340,13 +337,12 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       </Grid>
 
       {values.type !== "Quote" && (
-        <Grid item xs={twoColumn ? 3 : 12} className="textField">
-          <div>
-            <Typography variant="caption" color="textSecondary">
-              Overdue
-            </Typography>
-            <Typography className="money">{overdue}</Typography>
-          </div>
+        <Grid item xs={twoColumn ? 3 : 12}>
+          <Uneditable
+            label="Overdue"
+            value={overdue}
+            money
+          />
         </Grid>
       )}
 
@@ -470,22 +466,18 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         </Grid>
       )}
 
-      <Grid item xs={12} className="textField money">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Source
-          </Typography>
-          <Typography>{values.source}</Typography>
-        </div>
+      <Grid item xs={12}>
+        <Uneditable
+          label="Source"
+          value={values.source}
+        />
       </Grid>
 
-      <Grid item xs={12} className="textField">
-        <div>
-          <Typography variant="caption" color="textSecondary">
-            Created by
-          </Typography>
-          <Typography>{values.createdByUser}</Typography>
-        </div>
+      <Grid item xs={12}>
+        <Uneditable
+          label="Created by"
+          value={values.createdByUser}
+        />
       </Grid>
     </Grid>
   );

@@ -14,6 +14,7 @@ import {
   FundingSource
 } from "@api/model";
 import { connect } from "react-redux";
+import Divider from "@mui/material/Divider";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
 import {
@@ -216,9 +217,12 @@ const CourseClassVetTab = React.memo<Props>(props => {
             </Collapse>
           </Grid>
 
-          <CourseClassAttendanceTab {...props} showTrainingPlans />
+          <Grid item xs={12}>
+            <CourseClassAttendanceTab {...props} showTrainingPlans />
+          </Grid>
         </Grid>
       </ExpandableContainer>
+      <Divider className="mb-2" />
     </div>
   );
 });

@@ -7,13 +7,10 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import clsx from "clsx";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import {
-  arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit
-} from "redux-form";
+import { arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit } from "redux-form";
 import Dialog from "@mui/material/Dialog";
 import Grid from "@mui/material/Grid";
 import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -41,13 +38,16 @@ const styles = theme => createStyles({
   bulkChangeDialogContent: {
     "&:first-child": {
       paddingTop: theme.spacing(1)
-    }
+    },
+  },
+  checkboxes: {
+    marginLeft: theme.spacing(-1.25)
   },
   bulkChangeDaysInput: {
     maxWidth: theme.spacing(10)
   },
   bullkWrapperItem: {
-    paddingLeft: theme.spacing(4)
+    paddingLeft: theme.spacing(5)
   },
   disabledHeading: {
     color: `${theme.palette.text.secondary} !important`
@@ -77,6 +77,40 @@ const initialValues = {
   moveForward: "",
   moveBackwardChecked: false,
   moveBackward: ""
+};
+
+
+const BulkItemWrapper: React.FC<any> = props => {
+  const {
+    classes, title, name, children, noCollapse
+  } = props;
+  const [opened, setOpened] = React.useState(false);
+
+  const onChange = React.useCallback(checked => {
+    setOpened(checked);
+  }, [name]);
+
+  const renderedTitle = (
+    <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
+      {title}
+    </Typography>
+  );
+
+  return (
+    <div className="mb-2 w-100">
+      <div className="centeredFlex">
+        <FormField
+          type="checkbox"
+          name={`${name}Checked`}
+          color="secondary"
+          checked={opened}
+          onChange={onChange}
+        />
+        {noCollapse ? opened ? children : renderedTitle : renderedTitle}
+      </div>
+      {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
+    </div>
+  );
 };
 
 const CourseClassBulkChangeSessionForm = props => {
@@ -222,7 +256,7 @@ const CourseClassBulkChangeSessionForm = props => {
             root: classes.bulkChangeDialogContent
           }}
         >
-          <Grid container columnSpacing={3}>
+          <Grid container>
             <Grid item xs={12}>
               <div className={clsx("centeredFlex")}>
                 <div className="heading mt-2 mb-2">
@@ -232,137 +266,141 @@ const CourseClassBulkChangeSessionForm = props => {
               <div className="pb-2">
                 {`Update ${selection.length} timetable event${selection.length > 1 ? "s" : ""}`}
               </div>
-              {tutors.length > 0 && (
-                <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
-                  <div className={classes.sessionTutors} onClick={e => e.preventDefault()}>
-                    <Field
-                      name="tutorAttendances"
-                      component={CourseClassTutorRooster}
-                      session={bulkValues}
-                      tutors={tutors}
-                      onDeleteTutor={onDeleteTutor}
-                      onAddTutor={onAddTutor}
-                    />
-                  </div>
+            </Grid>
+            <Grid item xs={12} container className={classes.checkboxes}>
+              <Grid item xs={12}>
+                {tutors.length > 0 && (
+                  <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
+                    <div className={classes.sessionTutors}>
+                      <Field
+                        name="tutorAttendances"
+                        component={CourseClassTutorRooster}
+                        session={bulkValues}
+                        tutors={tutors}
+                        onDeleteTutor={onDeleteTutor}
+                        onAddTutor={onAddTutor}
+                      />
+                    </div>
+                  </BulkItemWrapper>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Location" name="location">
+                  <Grid container columnSpacing={3}>
+                    <Grid item xs={6}>
+                      <FormField
+                        type="remoteDataSearchSelect"
+                        entity="Room"
+                        name="roomId"
+                        label="Site and room"
+                        aqlColumns="name,site.name,site.localTimezone,site.id"
+                        selectValueMark="id"
+                        selectLabelCondition={roomLabel}
+                        onInnerValueChange={onRoomIdChange}
+                        rowHeight={36}
+                        allowEmpty
+                      />
+                    </Grid>
+                  </Grid>
                 </BulkItemWrapper>
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Location" name="location">
-                <Grid container columnSpacing={3}>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="remoteDataSearchSelect"
-                      entity="Room"
-                      name="roomId"
-                      label="Site and room"
-                      aqlColumns="name,site.name,site.localTimezone,site.id"
-                      selectValueMark="id"
-                      selectLabelCondition={roomLabel}
-                      onInnerValueChange={onRoomIdChange}
-                      rowHeight={36}
-                      allowEmpty
-                    />
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Actual payable duration" name="payableDuration">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <EditInPlaceDurationField
+                        label="Actual payable duration"
+                        meta={{}}
+                        input={{
+                          value: payableDurationValue,
+                          onChange: stubFunction,
+                          onBlur: onPayableDurationChange,
+                          onFocus: stubFunction
+                        }}
+                        hideLabel
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Actual payable duration" name="payableDuration">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <EditInPlaceDurationField
-                      label="Actual payable duration"
-                      meta={{}}
-                      input={{
-                        value: payableDurationValue,
-                        onChange: stubFunction,
-                        onBlur: onPayableDurationChange,
-                        onFocus: stubFunction
-                      }}
-                      hideLabel
-                    />
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper
+                  classes={classes}
+                  title={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
+                  name="start"
+                >
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <FormField
+                        type="time"
+                        name="start"
+                        label={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
+                        timezone={initial.siteTimezone || classTimezone}
+                        persistValue
+                        hideLabel
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper
-                classes={classes}
-                title={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
-                name="start"
-              >
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="time"
-                      name="start"
-                      label={`Start time ${initial.siteTimezone ? `(${initial.siteTimezone})` : classTimezone ? `(${classTimezone})` : ""}`}
-                      timezone={initial.siteTimezone || classTimezone}
-                      persistValue
-                      hideLabel
-                    />
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Duration" name="duration">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <EditInPlaceDurationField
+                        label="Duration"
+                        meta={{
+                          error: durationError,
+                          invalid: Boolean(durationError)
+                        }}
+                        input={{
+                          value: durationValue,
+                          onChange: stubFunction,
+                          onBlur: onDurationChange,
+                          onFocus: stubFunction
+                        }}
+                        hideLabel
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Duration" name="duration">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <EditInPlaceDurationField
-                      label="Duration"
-                      meta={{
-                        error: durationError,
-                        invalid: Boolean(durationError)
-                      }}
-                      input={{
-                        value: durationValue,
-                        onChange: stubFunction,
-                        onBlur: onDurationChange,
-                        onFocus: stubFunction
-                      }}
-                      hideLabel
-                    />
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Move forward" name="moveForward">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <FormField
+                        type="number"
+                        name="moveForward"
+                        formatting="inline"
+                        step="1"
+                        className={classes.bulkChangeDaysInput}
+                        hideArrows
+                      />
+                      {" "}
+                      days
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Move forward" name="moveForward">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormField
-                      type="number"
-                      name="moveForward"
-                      formatting="inline"
-                      step="1"
-                      className={classes.bulkChangeDaysInput}
-                      hideArrows
-                    />
-                    {" "}
-                    days
+                </BulkItemWrapper>
+              </Grid>
+              <Grid item xs={12}>
+                <BulkItemWrapper classes={classes} title="Move backward" name="moveBackward">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <FormField
+                        name="moveBackward"
+                        type="number"
+                        formatting="inline"
+                        step="1"
+                        className={classes.bulkChangeDaysInput}
+                        hideArrows
+                      />
+                      {" "}
+                      days
+                    </Grid>
                   </Grid>
-                </Grid>
-              </BulkItemWrapper>
-            </Grid>
-            <Grid item xs={12}>
-              <BulkItemWrapper classes={classes} title="Move backward" name="moveBackward">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormField
-                      name="moveBackward"
-                      type="number"
-                      formatting="inline"
-                      step="1"
-                      className={classes.bulkChangeDaysInput}
-                      hideArrows
-                    />
-                    {" "}
-                    days
-                  </Grid>
-                </Grid>
-              </BulkItemWrapper>
+                </BulkItemWrapper>
+              </Grid>
             </Grid>
           </Grid>
         </DialogContent>
@@ -382,46 +420,7 @@ const CourseClassBulkChangeSessionForm = props => {
       </form>
     </Dialog>
   );
-};
-
-const BulkItemWrapper: React.FC<any> = props => {
-  const {
- classes, title, name, children, noCollapse
-} = props;
-  const [opened, setOpened] = React.useState(false);
-
-  const onChange = React.useCallback(checked => {
-    setOpened(checked);
-  }, [name]);
-
-  const renderedTitle = (
-    <Typography variant="body2" className={clsx("secondaryHeading", { [classes.disabledHeading]: !opened })}>
-      {title}
-    </Typography>
-);
-
-  return (
-    <div className="mb-2 w-100">
-      <FormControlLabel
-        control={(
-          <FormField
-            type="checkbox"
-            name={`${name}Checked`}
-            color="secondary"
-            checked={opened}
-            onChange={onChange}
-          />
-        )}
-        label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
-        classes={{
-          root: 'd-flex',
-          label: 'w-100'
-        }}
-      />
-      {!noCollapse && <Collapse in={opened} className={classes.bullkWrapperItem}>{children}</Collapse>}
-    </div>
-  );
-};
+}
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   init: () => {

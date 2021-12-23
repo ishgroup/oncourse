@@ -41,7 +41,6 @@ import ish.oncourse.server.api.v1.service.DashboardApi
 import ish.oncourse.server.api.v1.service.DataCollectionApi
 import ish.oncourse.server.api.v1.service.DiscountApi
 import ish.oncourse.server.api.v1.service.DocumentApi
-import ish.oncourse.server.api.v1.service.DocumentExportApi
 import ish.oncourse.server.api.v1.service.EmailTemplateApi
 import ish.oncourse.server.api.v1.service.EnrolmentApi
 import ish.oncourse.server.api.v1.service.EntityApi
@@ -121,7 +120,6 @@ import ish.oncourse.server.api.v1.service.impl.DashboardApiImpl
 import ish.oncourse.server.api.v1.service.impl.DataCollectionApiImpl
 import ish.oncourse.server.api.v1.service.impl.DiscountApiImpl
 import ish.oncourse.server.api.v1.service.impl.DocumentApiImpl
-import ish.oncourse.server.api.v1.service.impl.DocumentExportApiImpl
 import ish.oncourse.server.api.v1.service.impl.EmailTemplateApiImpl
 import ish.oncourse.server.api.v1.service.impl.EnrolmentApiImpl
 import ish.oncourse.server.api.v1.service.impl.EntityApiImpl
@@ -204,7 +202,6 @@ class ApiImplementationModule implements Module {
         binder.bind(DataCollectionApi).to(DataCollectionApiImpl)
         binder.bind(DiscountApi).to(DiscountApiImpl)
         binder.bind(DocumentApi).to(DocumentApiImpl)
-        binder.bind(DocumentExportApi).to(DocumentExportApiImpl)
 
         binder.bind(EmailTemplateApi).to(EmailTemplateApiImpl)
         binder.bind(EnrolmentApi).to(EnrolmentApiImpl)

@@ -168,7 +168,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
         <Typography variant="h5">Transaction successful</Typography>
       </div>
       <div>
-        <Grid container columnSpacing={3} className="p-3 align-content-between">
+        <Grid container className="p-3 align-content-between">
           {payment.invoice && (
           <Grid item xs={12}>
             {summary.list.map((list, i) => (

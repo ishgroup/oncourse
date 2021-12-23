@@ -3,12 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import {
-  change, initialize, arrayRemove, startAsyncValidation, stopAsyncValidation
-} from "redux-form";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
 import withStyles from "@mui/styles/withStyles";
 import createStyles from "@mui/styles/createStyles";
 import {
@@ -85,7 +81,7 @@ const styles = () => createStyles({
       }
     },
     sessionActionButtonWrapper: {
-      right: -48
+      right: -34
     },
     sessionActionButton: {
       visibility: "hidden"
@@ -261,7 +257,6 @@ const CourseClassTimetableTab = ({
               dispatch(change(form, "sessions", []));
               dispatch(change(form, "trainingPlan", []));
               dispatch(change(form, "studentAttendance", []));
-              dispatch(change(form, "tutorAttendance", []));
               dispatch(change(form, "startDateTime", null));
               dispatch(change(form, "endDateTime", null));
               dispatch(addActionToQueue(postCourseClassSessions(values.id, []), "POST", "Session", values.id));
@@ -523,6 +518,7 @@ const CourseClassTimetableTab = ({
     });
   }, [form, values.sessions, sessionSelection]);
 
+ // Bulk update
   const onBulkSessionUpdate = bulkValue => {
     const updated = [...values.sessions];
 
@@ -638,11 +634,24 @@ const CourseClassTimetableTab = ({
           // Check for payslip
           const payslipAttendanceIndex = payslipAttendances.findIndex(pa => pa.courseClassTutorId === ta.courseClassTutorId);
           if (payslipAttendanceIndex !== -1) {
+            const result = payslipAttendances[payslipAttendanceIndex];
             payslipAttendances.splice(payslipAttendanceIndex, 1);
-            return payslipAttendances[payslipAttendanceIndex];
+            return result;
           }
+
+          const taStart = new Date(ta.start);
+          const taEnd = new Date(ta.end);
+          
+          const start = new Date(session.start);
+          const end = new Date(session.end);
+
+          start.setHours(taStart.getHours(), taStart.getMinutes(), 0, 0);
+          end.setHours(taEnd.getHours(), taEnd.getMinutes(), 0, 0);
+
           return {
             ...ta,
+            start: start.toISOString(),
+            end: end.toISOString(),
           };
         }).concat(payslipAttendances);
       }
@@ -759,7 +768,7 @@ const CourseClassTimetableTab = ({
   const disabledMenuItem = sessionSelection.length === 0;
 
   return (
-    <div className="pl-3 pr-3 pb-2">
+    <div className="pl-3 pr-3">
       {sessionSelection.length > 0 && (
         <CourseClassBulkChangeSession
           onSubmit={onBulkSessionUpdate}

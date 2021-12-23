@@ -202,8 +202,8 @@ const TutorPayContent: React.FC<Props> = ({
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item container xs={12} className="pt-2">
-        <Grid item xs={6} container alignItems="center">
+      <Grid item container columnSpacing={3} xs={12} className="pt-2">
+        <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className="text-nowrap money pt-1">
             {typeAndCostLabel}
           </Typography>
@@ -219,12 +219,12 @@ const TutorPayContent: React.FC<Props> = ({
             </Typography>
           )}
         </Grid>
-        <Grid item xs={6} container alignItems="center">
+        <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className="money pt-1">
             {budgetedCostLabel}
           </Typography>
         </Grid>
-        <Grid item xs={6} container alignItems="center">
+        <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className={classes.onCostRate}>
             <FormField
               type="persent"
@@ -245,19 +245,19 @@ const TutorPayContent: React.FC<Props> = ({
             </span>
           </Typography>
         </Grid>
-        <Grid item xs={6} className="textField" alignItems="center" container>
-          <Typography variant="body1" className="money pt-2">
+        <Grid item xs={6} className="centeredFlex">
+          <Typography variant="body1" className="money pt-1">
             {onCostTotalLabel}
           </Typography>
         </Grid>
-      </Grid>
-      <Grid item xs={6} container>
-        <Typography variant="body1">Total</Typography>
-      </Grid>
-      <Grid item xs={6} container>
-        <Typography variant="body1" className="money">
-          {budgetedIncOnCostLabel}
-        </Typography>
+        <Grid item xs={6} className="centeredFlex">
+          <Typography variant="body1">Total</Typography>
+        </Grid>
+        <Grid item xs={6} className="centeredFlex">
+          <Typography variant="body1" className="money pt-1">
+            {budgetedIncOnCostLabel}
+          </Typography>
+        </Grid>
       </Grid>
       <Grid item xs={12} className="pt-2 pb-2">
         <Divider />
